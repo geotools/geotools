@@ -71,7 +71,6 @@ import ucar.nc2.util.cache.FileCacheable;
 import ucar.nc2.util.cache.FileFactory;
 import ucar.unidata.util.StringUtil2;
 
-@SuppressWarnings("unchecked")
 @ThreadSafe
 /**
  * {@link FileCacheIF} implementation based on {@link ucar.nc2.util.cache.FileCache} from Unidata, using

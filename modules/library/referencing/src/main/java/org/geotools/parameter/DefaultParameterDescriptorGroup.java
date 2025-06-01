@@ -202,7 +202,6 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
 
     /** Returns the parameters in this group. */
     @Override
-    @SuppressWarnings("fallthrough")
     public List<GeneralParameterDescriptor> descriptors() {
         if (asList == null) {
             if (parameters == null) {

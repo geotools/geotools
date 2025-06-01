@@ -92,7 +92,6 @@ public final class Log4J2Logger extends LoggerAdapter {
      * @param level Java util logging level
      * @return Log4j Level for the provided java util logging Level.
      */
-    @SuppressWarnings("fallthrough")
     private static org.apache.logging.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {

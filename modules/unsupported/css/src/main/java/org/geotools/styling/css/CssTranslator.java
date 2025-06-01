@@ -192,7 +192,6 @@ public class CssTranslator {
     /** The style background */
     static final String BACKGROUND = "background";
 
-    @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS = Map.ofEntries(
             entry("graphic-margin", "graphic-margin"),
             entry("fill-label-obstacle", "labelObstacle"),
@@ -204,7 +203,6 @@ public class CssTranslator {
             entry("fill-random-rotation", "random-rotation"),
             entry("fill-composite", "composite"));
 
-    @SuppressWarnings("serial")
     static final Map<String, String> TEXT_VENDOR_OPTIONS = Map.ofEntries(
             entry("label-padding", TextSymbolizer.SPACE_AROUND_KEY),
             entry("label-group", TextSymbolizer.GROUP_KEY),
@@ -233,21 +231,17 @@ public class CssTranslator {
             entry("shield-placement", TextSymbolizer.GRAPHIC_PLACEMENT_KEY),
             entry("font-shrink-size-min", TextSymbolizer.FONT_SHRINK_SIZE_MIN));
 
-    @SuppressWarnings("serial")
     static final Map<String, String> LINE_VENDOR_OPTIONS =
             Map.ofEntries(entry("stroke-label-obstacle", "labelObstacle"), entry("stroke-composite", "composite"));
 
-    @SuppressWarnings("serial")
     static final Map<String, String> POINT_VENDOR_OPTIONS =
             Map.ofEntries(entry("mark-label-obstacle", "labelObstacle"), entry("mark-composite", "composite"));
 
-    @SuppressWarnings("serial")
     static final Map<String, String> RASTER_VENDOR_OPTIONS = Map.ofEntries(
             entry("raster-composite", "composite"),
             entry("raster-label-fi", "labelInFeatureInfo"),
             entry("raster-label-name", "labelAttributeName"));
 
-    @SuppressWarnings("serial")
     static final Map<String, String> CONTRASTENHANCMENT_VENDOR_OPTIONS = Map.ofEntries(
             entry("raster-contrast-enhancement-algorithm", "algorithm"),
             entry("raster-contrast-enhancement-min", "minValue"),

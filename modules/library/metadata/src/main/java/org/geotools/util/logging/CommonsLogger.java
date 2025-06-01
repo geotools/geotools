@@ -110,7 +110,6 @@ final class CommonsLogger extends LoggerAdapter {
     }
 
     @Override
-    @SuppressWarnings("fallthrough")
     public void log(final Level level, final String message) {
         final int n = level.intValue();
         switch (n / 100) {

@@ -32,7 +32,6 @@ import org.geotools.api.feature.type.Name;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @since 2.6
  */
-@SuppressWarnings("serial")
 public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
 
     /**

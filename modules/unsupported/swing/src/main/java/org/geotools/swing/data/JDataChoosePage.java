@@ -48,7 +48,6 @@ public class JDataChoosePage extends JPage {
         this.format = format;
     }
 
-    @SuppressWarnings("serial")
     @Override
     public JPanel createPanel() {
         final JPanel page = super.createPanel();

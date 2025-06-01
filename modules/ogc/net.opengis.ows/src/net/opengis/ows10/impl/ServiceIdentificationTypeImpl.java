@@ -282,8 +282,7 @@ public void setServiceTypeVersion(String newServiceTypeVersion) {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	@SuppressWarnings("unchecked")
-  @Override
+	@Override
   public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows10Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:

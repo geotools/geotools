@@ -173,7 +173,6 @@ public class FunctionParseTest {
     }
 
     /** Verify that an interval function for colours can be parsed. */
-    @SuppressWarnings("unchecked")
     @Test
     public void testParseIntervalFunctionColour() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("functionIntervalColour");
@@ -197,7 +196,6 @@ public class FunctionParseTest {
      * @throws IOException problem reading json
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testParseIntervalFunctionNumber() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("functionIntervalNumeric");
         JSONObject j =

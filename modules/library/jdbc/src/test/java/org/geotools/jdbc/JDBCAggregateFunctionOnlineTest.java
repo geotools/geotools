@@ -785,7 +785,6 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         assertTrue(expected.containsAll(result));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testUniqueMultipleAttrOneResult() throws Exception {
         // check that when the result is a single pair the result is returned as a single entry List

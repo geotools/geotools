@@ -129,7 +129,6 @@ public class FeatureTypeTest extends DataTestCase {
      *
      * <p>UML type hierarchy of test types: Feature <|-- A <|-- B <|-- C
      */
-    @SuppressWarnings("serial")
     @Test
     public void testAncestors() throws Exception {
         URI uri = new URI("http://www.geotools.org/example");

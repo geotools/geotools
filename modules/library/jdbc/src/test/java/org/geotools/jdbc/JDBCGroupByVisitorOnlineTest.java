@@ -420,7 +420,6 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
             boolean expectOptimized,
             Expression... groupByAttributes)
             throws IOException {
-        @SuppressWarnings("unchecked")
         List<Object[]> value = genericGroupByTestTest(
                 "buildings_group_by_tests",
                 query,

@@ -107,7 +107,6 @@ public class YsldValidateTest {
                 column);
     }
 
-    @SuppressWarnings("unchecked")
     Matcher<Mark> problemOn(int line) {
         return Matchers.describedAs(
                 "Problem somewhere on Line %0", allOf(Matchers.hasProperty("line", is(line - 1))), line);
@@ -219,7 +218,6 @@ public class YsldValidateTest {
         verify(finder, zctxt);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomWithDefaultGridValidateOrder() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -249,7 +247,6 @@ public class YsldValidateTest {
                         hasProperty("problemMark", problemOn(8))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomWithDefaultGridTupleSize() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -272,7 +269,6 @@ public class YsldValidateTest {
                         hasProperty("problemMark", problemOn(5))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomWithDefaultGridValidateRange() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -308,7 +304,6 @@ public class YsldValidateTest {
                         hasProperty("problemMark", problemOn(11))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testScaleTupleSize() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -331,7 +326,6 @@ public class YsldValidateTest {
                         hasProperty("problemMark", problemOn(5))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testScaleValidateRange() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -367,7 +361,6 @@ public class YsldValidateTest {
                         hasProperty("problemMark", problemOn(9))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testZoomWithExtendedGridValidateRange() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -434,7 +427,6 @@ public class YsldValidateTest {
         verify(finder, zctxt);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testAnchorTupleSize() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -461,7 +453,6 @@ public class YsldValidateTest {
                         hasProperty("problemMark", problemOn(9))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testAnchorValidateValues() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -492,7 +483,6 @@ public class YsldValidateTest {
                 errors, contains(hasProperty("problemMark", problemOn(11)), hasProperty("problemMark", problemOn(13))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testDisplacementTupleSize() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -519,7 +509,6 @@ public class YsldValidateTest {
                         hasProperty("problemMark", problemOn(9))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testDisplacementValidateValues() throws Exception {
         StringBuilder builder = new StringBuilder();
@@ -550,7 +539,6 @@ public class YsldValidateTest {
                 errors, contains(hasProperty("problemMark", problemOn(11)), hasProperty("problemMark", problemOn(13))));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testColourMapEntries() throws Exception {
         StringBuilder builder = new StringBuilder();

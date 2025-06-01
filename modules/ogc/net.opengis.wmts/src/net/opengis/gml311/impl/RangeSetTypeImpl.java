@@ -141,7 +141,6 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * @generated
      */
     @Override
-    @SuppressWarnings("unchecked")
     public EList<List> getBooleanList() {
         return getScalarValueList().list(Gml311Package.eINSTANCE.getRangeSetType_BooleanList());
     }
@@ -172,7 +171,6 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * @generated
      */
     @Override
-    @SuppressWarnings("unchecked")
     public EList<List> getCountList() {
         return getScalarValueList().list(Gml311Package.eINSTANCE.getRangeSetType_CountList());
     }

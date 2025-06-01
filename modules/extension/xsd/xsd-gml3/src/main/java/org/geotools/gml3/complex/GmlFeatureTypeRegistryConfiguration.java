@@ -225,7 +225,6 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
      * Map of the qualified-name of a known type in each supported GML version to the {@link Configuration} for that GML
      * version.
      */
-    @SuppressWarnings("serial")
     private static final Map<QName, Class<? extends Configuration>> SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP =
             Map.ofEntries(
                     // GML 3.1

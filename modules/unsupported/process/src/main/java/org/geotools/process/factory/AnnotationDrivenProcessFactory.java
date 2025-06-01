@@ -133,7 +133,6 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Map<String, Parameter<?>> getResultInfo(Name name, Map<String, Object> parameters)
             throws IllegalArgumentException {
         Method method = method(name.getLocalPart());

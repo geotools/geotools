@@ -1939,7 +1939,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      * Now creates the parameter descriptor.
                      */
                     final Map<String, Object> properties = generateProperties(name, epsg, remarks);
-                    @SuppressWarnings("unchecked")
                     final ParameterDescriptor<?> descriptor =
                             new DefaultParameterDescriptor<>(properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);

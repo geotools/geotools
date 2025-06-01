@@ -44,7 +44,6 @@ public class JXPathUtils {
      * @param declared true to include all declared prefixes; false for all active prefixes
      * @return the context
      */
-    @SuppressWarnings("unchecked")
     public static JXPathContext newSafeContext(
             Object contextBean, boolean lenient, NamespaceSupport ns, boolean declared) {
         JXPathContext context = JXPathContext.newContext(contextBean);

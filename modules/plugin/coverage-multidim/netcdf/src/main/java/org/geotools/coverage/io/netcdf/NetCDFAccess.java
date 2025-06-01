@@ -65,7 +65,6 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
     GeoSpatialImageReader reader = null;
 
     /** Constructor */
-    @SuppressWarnings("serial")
     NetCDFAccess(
             Driver driver,
             URL source,

@@ -5155,7 +5155,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGranuleFileViewSidecars() throws Exception {
         // copy the data and get the reader
         File directory = setupTestDirectory(this, this.rgbURL, "rbgFileView");

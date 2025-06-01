@@ -271,7 +271,6 @@ public class H2MigratorTest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void assertMultiCoverageMigration(File testDir, File logDir, H2MigrateConfiguration config)
             throws Exception {
         // check the migrated data
@@ -397,7 +396,6 @@ public class H2MigratorTest {
 
     /** Test migration on a mosaic with multiple files each one having one coverage */
     @Test
-    @SuppressWarnings("unchecked")
     public void testMultiCoverageSplitNames() throws Exception {
         File testDir = tempFolder.newFolder("gome");
         URL testUrl = URLs.fileToUrl(testDir);

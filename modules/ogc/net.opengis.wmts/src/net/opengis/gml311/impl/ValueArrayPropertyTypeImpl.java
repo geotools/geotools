@@ -149,7 +149,6 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * @generated
      */
     @Override
-    @SuppressWarnings("unchecked")
     public EList<List> getBooleanList() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_BooleanList());
     }
@@ -180,7 +179,6 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * @generated
      */
     @Override
-    @SuppressWarnings("unchecked")
     public EList<List> getCountList() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CountList());
     }
@@ -211,7 +209,6 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * @generated
      */
     @Override
-    @SuppressWarnings("unchecked")
     public EList<List> getCountExtent() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CountExtent());
     }

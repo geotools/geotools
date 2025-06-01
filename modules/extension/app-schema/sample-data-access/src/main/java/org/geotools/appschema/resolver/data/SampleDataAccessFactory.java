@@ -51,7 +51,6 @@ public class SampleDataAccessFactory implements DataAccessFactory {
             Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** The connection parameters required to use this factory. */
-    @SuppressWarnings("serial")
     public static final Map<String, Serializable> PARAMS =
             Map.of(SampleDataAccessFactory.DBTYPE.key, SampleDataAccessFactory.DBTYPE_STRING);
 

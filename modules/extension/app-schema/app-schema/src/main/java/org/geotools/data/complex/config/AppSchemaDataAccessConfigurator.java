@@ -950,7 +950,6 @@ public class AppSchemaDataAccessConfigurator {
      * Database connection parameters that are probably safe to report to the end user. (Things we can be pretty sure
      * are not passwords.)
      */
-    @SuppressWarnings("serial")
     private static final List<String> SAFE_DATASTORE_PARAMS = List.of(
             "url", // shapefile
             "directory", // propertyfile

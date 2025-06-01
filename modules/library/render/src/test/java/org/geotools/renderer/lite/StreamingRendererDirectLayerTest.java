@@ -3,6 +3,7 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
@@ -19,7 +21,6 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
-import org.jaitools.swing.ImageFrame;
 import org.junit.Test;
 
 /** @author michael */
@@ -118,11 +119,14 @@ public class StreamingRendererDirectLayerTest {
         });
     }
 
-    private static class TestImageFrame extends ImageFrame {
+    private static class TestImageFrame extends JFrame {
         BufferedImage image;
 
         public TestImageFrame(final BufferedImage image, final CountDownLatch latch) {
-            super(image, "Rendered image");
+            super("Rendered image");
+            ImageViewer comp = new ImageViewer();
+            comp.setImage(image);
+            add(comp);
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
             addWindowListener(new WindowAdapter() {

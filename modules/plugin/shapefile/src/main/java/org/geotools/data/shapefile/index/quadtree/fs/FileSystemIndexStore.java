@@ -160,7 +160,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
      */
     @Override
     // channel is managed in the returned value
-    @SuppressWarnings({"PMD.CloseResource", "PMD.UseTryWithResources"})
+    @SuppressWarnings("PMD.UseTryWithResources")
     public QuadTree load(IndexFile indexfile, boolean useMemoryMapping) throws StoreException {
         boolean initialized = false;
         FileInputStream fis = null;

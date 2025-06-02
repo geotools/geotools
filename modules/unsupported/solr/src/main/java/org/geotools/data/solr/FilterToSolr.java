@@ -121,7 +121,6 @@ public class FilterToSolr implements FilterVisitor {
      *
      * @return a string representing the filter encoded to SOLR.
      */
-    @SuppressWarnings("PMD.CloseResource")
     public String encodeToString(Filter filter) throws Exception {
         StringWriter out = new StringWriter();
         this.out = out;

@@ -54,7 +54,6 @@ public class DirectedBreadthFirstTopologicalIterator extends AbstractGraphIterat
     }
 
     @Override
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void cont(Graphable current, GraphTraversal traversal) {
         // increment the count of all adjacent nodes by one
         // if the result count equal to the degree, place it into the queue

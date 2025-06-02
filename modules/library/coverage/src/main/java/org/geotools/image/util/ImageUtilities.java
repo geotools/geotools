@@ -1182,7 +1182,6 @@ public final class ImageUtilities {
                     }
 
                     if ((imageReader != null) && (imageReader instanceof ImageReader)) {
-                        @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageReader reader = (ImageReader) imageReader;
                         @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageInputStream stream = (ImageInputStream) reader.getInput();

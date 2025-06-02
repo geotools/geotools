@@ -77,7 +77,6 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
         if (!schemaFile.canRead()) {
             return null;
         }
-        @SuppressWarnings("PMD.CloseResource") // closed in getSimpleFeatureType
         BufferedReader reader = new BufferedReader(new FileReader(schemaFile));
         return MongoUtil.getSimpleFeatureType(reader, name);
     }

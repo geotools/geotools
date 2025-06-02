@@ -42,7 +42,6 @@ public class UnWrapperTest {
         // some weird stuff happening in connection management, the H2 connection
         // has been already closed once the try-resource block finishes, so not using it here,
         // not our job to debug the connection pool nor H2
-        @SuppressWarnings("PMD.CloseResource")
         Connection conn = ds.getConnection();
         UnWrapper uw = DataSourceFinder.getUnWrapper(conn);
         Assert.assertNotNull(uw);

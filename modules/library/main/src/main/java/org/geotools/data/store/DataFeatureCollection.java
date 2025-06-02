@@ -221,7 +221,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
         if (close instanceof FeatureReaderIterator) {
-            @SuppressWarnings("PMD.CloseResource")
             FeatureReaderIterator<SimpleFeature> iterator = (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
         } else if (close instanceof FeatureWriterIterator) {

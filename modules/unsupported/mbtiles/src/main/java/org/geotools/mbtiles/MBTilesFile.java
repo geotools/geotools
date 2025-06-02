@@ -472,7 +472,6 @@ public class MBTilesFile implements AutoCloseable {
         return entry;
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles() throws SQLException {
         Connection cx = null;
         Statement st = null;
@@ -507,7 +506,6 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles(long zoomLevel) throws SQLException {
         Connection cx = null;
         PreparedStatement ps = null;
@@ -524,7 +522,6 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles(long zoomLevel, long leftTile, long bottomTile, long rightTile, long topTile)
             throws SQLException {
         Connection cx = null;

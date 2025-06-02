@@ -127,7 +127,7 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         SimpleFeature f = fBuilder.buildFeature(null);
         // used to fail here
         // need the transaction available for rollback in the catch
-        @SuppressWarnings({"PMD.CloseResource", "PMD.UseTryWithResources"})
+        @SuppressWarnings("PMD.CloseResource")
         Transaction transaction = new DefaultTransaction("create");
         SimpleFeatureSource featureSource =
                 dataStore.getFeatureSource(featureType.getName().getLocalPart());

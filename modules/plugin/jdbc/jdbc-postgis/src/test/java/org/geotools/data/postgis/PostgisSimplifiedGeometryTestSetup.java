@@ -20,7 +20,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.UnitTestShouldUseAfterAnnotation") // not a test by itself
 public class PostgisSimplifiedGeometryTestSetup extends JDBCGeometryTestSetup {
 
     public PostgisSimplifiedGeometryTestSetup(JDBCTestSetup delegate) {

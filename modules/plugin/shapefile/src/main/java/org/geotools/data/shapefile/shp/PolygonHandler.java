@@ -367,7 +367,6 @@ public class PolygonHandler implements ShapeHandler {
         return holesForShells;
     }
 
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     private List<List<LinearRing>> getListOfLists(int size) {
         List<List<LinearRing>> holesForShells = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {

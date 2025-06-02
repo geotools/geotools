@@ -124,7 +124,6 @@ public class SolrFeatureSource extends ContentFeatureSource {
         return bounds;
     }
 
-    @SuppressWarnings("PMD.CloseResource") // returned and closed there
     private FeatureReader<SimpleFeatureType, SimpleFeature> getReader(
             SolrDataStore store, Filter postFilter, SolrQuery q) throws SolrServerException, IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =

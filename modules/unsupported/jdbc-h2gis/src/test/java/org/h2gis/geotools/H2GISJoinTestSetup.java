@@ -18,7 +18,6 @@ package org.h2gis.geotools;
 
 import org.geotools.jdbc.JDBCJoinTestSetup;
 
-@SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GISJoinTestSetup extends JDBCJoinTestSetup {
 
     protected H2GISJoinTestSetup() {

@@ -300,7 +300,6 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.multiPolygon, geom);
     }
 
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     @Test
     public final void testDecodeMultiPolygonWithHole() throws SQLException {
         if (this.connection == null) return;

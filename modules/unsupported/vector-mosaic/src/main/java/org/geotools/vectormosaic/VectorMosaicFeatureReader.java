@@ -97,7 +97,6 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
 
     @Override
     // Should only close the store when it is exhausted or when the reader is closed
-    @SuppressWarnings("PMD.CloseResource")
     public boolean hasNext() throws IOException {
         if (nextGranule != null) {
             return true;

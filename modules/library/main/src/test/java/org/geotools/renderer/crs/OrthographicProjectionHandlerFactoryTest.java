@@ -41,7 +41,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-@SuppressWarnings("PMD.SimplifiableTestAssertion") // need equals with tolerance
 public class OrthographicProjectionHandlerFactoryTest {
 
     private static final GeometryFactory GFACTORY = new GeometryFactory();

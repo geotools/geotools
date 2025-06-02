@@ -34,7 +34,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 
-@SuppressWarnings("PMD.SimplifiableTestAssertion") // using equals with tolerance for bboxes
 public class ReprojectingFilterVisitorTest {
 
     SimpleFeatureType ft;

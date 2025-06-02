@@ -840,7 +840,6 @@ public class DbaseFileHeader {
 
             buffer.position(0);
 
-            @SuppressWarnings("PMD.UnusedLocalVariable")
             int r = buffer.remaining();
             while ((r -= out.write(buffer)) > 0) { // do nothing
             }

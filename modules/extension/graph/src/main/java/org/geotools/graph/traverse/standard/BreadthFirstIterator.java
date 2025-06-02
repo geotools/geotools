@@ -94,7 +94,6 @@ public class BreadthFirstIterator extends SourceGraphIterator {
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
     @Override
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void cont(Graphable current, GraphTraversal traversal) {
         for (Iterator<? extends Graphable> itr = current.getRelated(); itr.hasNext(); ) {
             Node related = (Node) itr.next();

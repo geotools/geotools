@@ -59,7 +59,7 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-@SuppressWarnings({"PMD.EmptyInitializer", "PMD.EmptyControlStatement"})
+@SuppressWarnings("PMD.EmptyControlStatement")
 public abstract class JDBCTestSupport extends OnlineTestSupport {
 
     static final Logger LOGGER = Logging.getLogger(JDBCTestSupport.class);
@@ -247,7 +247,6 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
         }
     }
 
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     protected void assertAttributeValuesEqual(Object expected, Object actual) {
         if (expected == null) {
             assertNull(actual);

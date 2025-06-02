@@ -127,7 +127,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * @param reportRemarks true to turn on column comments metadata
      * @throws SQLException if the connection is not valid or there is a problem setting the flag
      */
-    @SuppressWarnings("PMD.CloseResource") // connection is closed by caller
     public void setRemarksReporting(Connection cx, boolean reportRemarks) throws SQLException {
         OracleConnection ocx = unwrapConnection(cx);
         ocx.setRemarksReporting(reportRemarks);
@@ -549,7 +548,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readGeometry(rs.getObject(column), factory, cx);
     }
 
-    @SuppressWarnings("PMD.CloseResource") // the connection is managed by the caller
     Geometry readGeometry(Object struct, GeometryFactory factory, Connection cx) throws IOException, SQLException {
         if (struct == null) {
             return null;

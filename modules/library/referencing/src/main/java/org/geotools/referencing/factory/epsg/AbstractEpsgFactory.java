@@ -772,7 +772,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *     {@link SQLException} as its cause.
      */
     @Override
-    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public synchronized IdentifiedObject generateObject(final String code) throws FactoryException {
         ensureNonNull("code", code);
         final String KEY = "IdentifiedObject";

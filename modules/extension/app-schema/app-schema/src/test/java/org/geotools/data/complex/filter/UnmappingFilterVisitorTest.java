@@ -724,7 +724,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testBBox3D() throws Exception {
         BBOX bbox = ff.bbox("location", new ReferencedEnvelope3D(0, 10, 20, 50, 60, 70, null));
 

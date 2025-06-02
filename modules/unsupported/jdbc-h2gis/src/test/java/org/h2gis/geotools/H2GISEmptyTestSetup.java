@@ -19,7 +19,6 @@ package org.h2gis.geotools;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-@SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GISEmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected H2GISEmptyTestSetup() {

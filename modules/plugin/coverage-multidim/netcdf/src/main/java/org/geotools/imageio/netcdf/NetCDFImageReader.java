@@ -193,7 +193,6 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      * @param input the input object.
      * @return the dataset or <code>null</code>.
      */
-    @SuppressWarnings("PMD.CloseResource")
     private NetcdfDataset extractDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
         if (input instanceof URIImageInputStream) {
@@ -611,7 +610,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     /** @see javax.imageio.ImageReader#read(int, javax.imageio.ImageReadParam) */
     @Override
-    @SuppressWarnings({"deprecation", "PMD.ReplaceHashtableWithMap"}) // needed for BufferedImageConstructor
+    @SuppressWarnings({"deprecation"})
     public BufferedImage read(int imageIndex, ImageReadParam param) throws IOException {
         clearAbortRequest();
 

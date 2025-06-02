@@ -798,7 +798,6 @@ final class Resampler2D extends GridCoverage2D {
         return targetCoverage;
     }
 
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     private static void offsetUpper(int[] upper) {
         for (int i = 0; i < upper.length; i++) {
             upper[i]++; // Make them exclusive.

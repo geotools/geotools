@@ -89,7 +89,6 @@ public class FeatureConversions {
         builder.finishSizePrefixed(featureOffset);
 
         // Closing is caller responsibility
-        @SuppressWarnings("PMD.CloseResource")
         WritableByteChannel channel = Channels.newChannel(to);
         ByteBuffer dataBuffer = builder.dataBuffer();
         while (dataBuffer.hasRemaining()) channel.write(dataBuffer);

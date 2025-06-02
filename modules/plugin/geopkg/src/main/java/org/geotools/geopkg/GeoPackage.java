@@ -950,7 +950,6 @@ public class GeoPackage implements Closeable {
             throws IOException {
 
         DataStore dataStore = dataStore();
-        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         FeatureWriter w = append
                 ? dataStore.getFeatureWriterAppend(entry.getTableName(), tx)
                 : dataStore.getFeatureWriter(entry.getTableName(), filter, tx);
@@ -1455,7 +1454,6 @@ public class GeoPackage implements Closeable {
      * @param lowRow low row boundary
      * @param highRow high row boundary
      */
-    @SuppressWarnings("PMD.CloseResource") // cx and st get into the TileReader
     public TileReader reader(
             TileEntry entry,
             Integer lowZoom,

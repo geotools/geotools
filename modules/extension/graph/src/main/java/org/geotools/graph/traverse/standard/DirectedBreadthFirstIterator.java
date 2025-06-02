@@ -24,7 +24,6 @@ import org.geotools.graph.traverse.GraphTraversal;
 public class DirectedBreadthFirstIterator extends BreadthFirstIterator {
 
     @Override
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void cont(Graphable current, GraphTraversal traversal) {
         // only consider outing going related
         DirectedGraphable dg = (DirectedGraphable) current;

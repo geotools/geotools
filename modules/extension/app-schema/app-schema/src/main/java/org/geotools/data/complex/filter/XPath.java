@@ -360,7 +360,6 @@ public class XPath extends XPathUtil {
         }
     }
 
-    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private Attribute setLeafAttribute(
             AttributeDescriptor currStepDescriptor,
             Step currStep,

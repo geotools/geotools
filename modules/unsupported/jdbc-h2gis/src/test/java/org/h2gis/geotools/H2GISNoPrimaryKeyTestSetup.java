@@ -19,7 +19,6 @@ package org.h2gis.geotools;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-@SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GISNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected H2GISNoPrimaryKeyTestSetup() {

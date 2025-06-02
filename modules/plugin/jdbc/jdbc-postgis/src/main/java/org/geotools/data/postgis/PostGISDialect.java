@@ -1485,7 +1485,6 @@ public class PostGISDialect extends BasicSQLDialect {
      * Determines whether or not to escape backslashes based on the PostgreSQL server's standard_conforming_strings
      * setting.
      */
-    @SuppressWarnings("PMD.CloseResource")
     private void checkStandardConformingStrings(Connection conn) throws SQLException {
         Boolean escape = null;
         // first, try to determine the setting from a native connection object

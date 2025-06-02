@@ -153,7 +153,6 @@ class MergeSortDumper {
                 // reader based on the collection contents
                 Collections.sort(features, comparator);
 
-                @SuppressWarnings("PMD.CloseResource") // returned in wrapper
                 SimpleFeatureIterator fi = new ListFeatureCollection(schema, features).features();
                 return new DelegateSimpleFeatureReader(schema, fi);
             } else {

@@ -184,7 +184,6 @@ public class STACFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         Pair<SearchQuery, Filter> pair = queryBuilder.toSearchQuery(query, false);
         SearchQuery sq;

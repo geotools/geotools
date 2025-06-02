@@ -24,7 +24,6 @@ import org.geotools.referencing.CRS;
 /** Dumps the contents of the EPSG database out to a java property file for use by the wkt plugin. */
 public class PropertyDumper {
 
-    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
         String filename = "/tmp/wkt.properties";
         Properties diff = new Properties();

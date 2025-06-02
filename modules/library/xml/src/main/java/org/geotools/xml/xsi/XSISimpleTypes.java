@@ -47,7 +47,6 @@ import org.xml.sax.SAXException;
  * @author dzwiers www.refractions.net
  * @see Schema
  */
-@SuppressWarnings("PMD")
 public class XSISimpleTypes {
     private static Map<Object, SimpleType> m;
 

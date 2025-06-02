@@ -927,7 +927,6 @@ public class NetCDFUtilities {
                 guessedFile = ImageIOUtilities.urlToFile(tempURL);
             }
         } else if (input instanceof URIImageInputStream) {
-            @SuppressWarnings("PMD.CloseResource") // not managed here
             final URIImageInputStream uriInStream = (URIImageInputStream) input;
             String uri = uriInStream.getUri().toString();
             guessedFile = new File(uri);

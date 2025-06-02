@@ -197,7 +197,6 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
      * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
-    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int calculateHashCode() {
         return (int) serialVersionUID ^ super.calculateHashCode();
     }

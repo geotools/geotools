@@ -1090,7 +1090,6 @@ public class GeoPackageTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testIntegerTypes() throws Exception {
         // all types work in creation
         String typeName = "numericTypes";

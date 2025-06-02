@@ -22,9 +22,9 @@ import java.io.File;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Test; // NOPMD
-import junit.framework.TestResult; // NOPMD
-import junit.framework.TestSuite; // NOPMD
+import junit.framework.Test;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -42,7 +42,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-@SuppressWarnings("PMD.DisallowJUnit3") // weird stuff going on here
 public class DOMParserTestSuite extends TestSuite {
 
     /** Standard logging instance */
@@ -113,7 +112,6 @@ public class DOMParserTestSuite extends TestSuite {
      *
      * @return Test
      */
-    @SuppressWarnings("PMD.DisallowJunit3")
     public static Test suite() {
         DOMParserTestSuite suite = new DOMParserTestSuite();
 
@@ -135,7 +133,6 @@ public class DOMParserTestSuite extends TestSuite {
     }
 
     /** Quick test of a single xml document */
-    @SuppressWarnings("PMD.DisallowJunit3")
     class DomTestXml implements Test {
         String document;
 

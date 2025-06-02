@@ -244,7 +244,6 @@ public class CQLGeoOperationTest {
 
     /** BBOX test */
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion") // not the same equals
     public void bbox() throws CQLException, FactoryException {
 
         // BBOX

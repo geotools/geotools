@@ -39,7 +39,6 @@ import org.geotools.util.logging.Logging;
 public class VectorMosaicStore extends ContentDataStore {
     static final Logger LOGGER = Logging.getLogger(VectorMosaicStore.class);
 
-    @SuppressWarnings("PMD.UnusedPrivateField") // field is used in constructor
     private final Repository repository;
 
     private final String delegateStoreName;

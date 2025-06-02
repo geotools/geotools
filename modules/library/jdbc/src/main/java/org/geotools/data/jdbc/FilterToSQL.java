@@ -285,7 +285,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * @return a string representing the filter encoded to SQL.
      */
-    @SuppressWarnings("PMD.CloseResource")
     public String encodeToString(Filter filter) throws FilterToSQLException {
         StringWriter out = new StringWriter();
         this.out = out;
@@ -313,7 +312,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * @return a string representing the filter encoded to SQL.
      */
-    @SuppressWarnings("PMD.CloseResource")
     public String encodeToString(Expression expression) throws FilterToSQLException {
         StringWriter out = new StringWriter();
         this.out = out;

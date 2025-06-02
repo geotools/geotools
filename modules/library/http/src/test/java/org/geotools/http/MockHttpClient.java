@@ -66,7 +66,6 @@ public class MockHttpClient extends AbstractHttpClient {
         return getResponse(new Request(url, toByteArray(postContent), postContentType));
     }
 
-    @SuppressWarnings("PMD.UseTryWithResources")
     private byte[] toByteArray(InputStream is) throws IOException {
         byte[] result;
         try (is) {

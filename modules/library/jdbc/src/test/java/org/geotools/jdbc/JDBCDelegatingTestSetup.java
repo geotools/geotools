@@ -31,7 +31,6 @@ import org.apache.commons.dbcp.BasicDataSource;
  *
  * @see JDBC3DTestSetup
  */
-@SuppressWarnings({"PMD.UnitTestShouldUseAfterAnnotation", "PMD.UnitTestShouldUseBeforeAnnotation"})
 public class JDBCDelegatingTestSetup extends JDBCTestSetup {
 
     protected JDBCTestSetup delegate;

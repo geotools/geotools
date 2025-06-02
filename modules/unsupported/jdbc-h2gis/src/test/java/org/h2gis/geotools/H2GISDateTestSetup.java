@@ -19,7 +19,6 @@ package org.h2gis.geotools;
 
 import org.geotools.jdbc.JDBCDateTestSetup;
 
-@SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GISDateTestSetup extends JDBCDateTestSetup {
 
     public H2GISDateTestSetup() {

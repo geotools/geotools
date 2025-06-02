@@ -91,7 +91,6 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
         return new ForceCoordinateSystemIterator(results.features(), getSchema());
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     public void closeIterator(Iterator close) {
         if (close == null) return;
         if (close instanceof ForceCoordinateSystemIterator) {

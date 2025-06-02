@@ -184,7 +184,6 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * @throws IOException If results could not be obtained
      */
     @Override
-    @SuppressWarnings("PMD.CloseResource") // returned, the caller will close
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 ((DataStore) featureSource.getDataStore()).getFeatureReader(query, getTransaction());

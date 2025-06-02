@@ -183,7 +183,6 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
         return cal;
     }
 
-    @SuppressWarnings("PMD.CloseResource") // NetcdfDataset is wrapped and returned
     private CoordinateVariable<?> getCoordinateVariable(
             NetcdfDataset dataset, CoordinateAxis coordinateAxis, String units) {
         CoordinateAxis1DUnitWrapper wrapper =

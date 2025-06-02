@@ -60,7 +60,6 @@ public class OracleDateOnlineTest extends JDBCDateOnlineTest {
             builder.add(new Timestamp(theTimestamp));
             SimpleFeature feature = builder.buildFeature(null);
 
-            @SuppressWarnings("PMD.UseTryWithResources") // need variable in catch
             Transaction t = new DefaultTransaction("add");
             JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(timestampsTable, t);
             try {

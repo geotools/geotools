@@ -165,7 +165,7 @@ class IndexManager {
 
     /** Returns true if the specified index exists, is up to date, and can be read */
     // opened as a test, should not throw on close
-    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.UnusedLocalVariable", "PMD.EmptyControlStatement"})
+    @SuppressWarnings({"PMD.UnusedLocalVariable", "PMD.EmptyControlStatement"})
     boolean isIndexUseable(ShpFileType indexType) {
         if (shpFiles.isLocal()) {
             if (isIndexStale(indexType) || !shpFiles.exists(indexType)) {

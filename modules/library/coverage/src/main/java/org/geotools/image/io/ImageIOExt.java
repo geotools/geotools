@@ -157,7 +157,6 @@ public class ImageIOExt {
      *     writer.
      * @param allowed {@code false} to disallow native acceleration.
      */
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public static synchronized <T extends ImageReaderWriterSpi> void allowNativeCodec(
             final String format, final Class<T> category, final boolean allowed) {
         T standard = null;

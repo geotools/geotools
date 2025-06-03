@@ -466,7 +466,7 @@ public class GeoJSONReader implements AutoCloseable {
         while (restart) {
             restart = false;
 
-            Iterator<Entry<String, JsonNode>> fields = props.fields();
+            Iterator<Entry<String, JsonNode>> fields = props.properties().iterator();
             while (fields.hasNext()) {
                 Entry<String, JsonNode> n = fields.next();
                 AttributeDescriptor descriptor = schema.getDescriptor(n.getKey());
@@ -545,9 +545,9 @@ public class GeoJSONReader implements AutoCloseable {
             if (g != null) builder.set(GEOMETRY_NAME, g);
             String newId = getOrGenerateId(node);
             feature = builder.buildFeature(newId);
-            if (node.fields().hasNext()) {
+            if (node.properties().iterator().hasNext()) {
                 Map<String, Object> topLevelAttributes = new HashMap<>();
-                node.fields().forEachRemaining(e -> {
+                node.properties().iterator().forEachRemaining(e -> {
                     String k = e.getKey();
                     if (!"geometry".equals(k) && !"type".equals(k) && !"properties".equals(k) && !"bbox".equals(k)) {
                         topLevelAttributes.put(k, e.getValue());
@@ -636,7 +636,7 @@ public class GeoJSONReader implements AutoCloseable {
             }
         }
 
-        Iterator<Entry<String, JsonNode>> fields = props.fields();
+        Iterator<Entry<String, JsonNode>> fields = props.properties().iterator();
         while (fields.hasNext()) {
             Entry<String, JsonNode> n = fields.next();
             if (existing.contains(n.getKey())) {

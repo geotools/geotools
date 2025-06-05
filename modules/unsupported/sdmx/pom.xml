@@ -22,7 +22,6 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-cql</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bancaditalia.oss</groupId>

@@ -32,7 +32,7 @@ jobs:
         restore-keys: |
           gt-maven-
     - name: Build GeoTools dependent modules (no tests, prepare fresh artifacts)
-      run: mvn -B clean install -T1C -U -Dall --file pom.xml -DskipTests -pl modules/plugin/jdbc/jdbc-postgis -pl modules/plugin/imagemosaic -am -Dspotless.apply.skip=true
+      run: mvn -B clean install -T1C -U -Dall --file pom.xml -DskipTests -pl platform-dependencies,bom,modules/plugin/jdbc/jdbc-postgis,modules/plugin/imagemosaic -am -Dspotless.apply.skip=true
     - name: Build PostGIS data store with online tests
       run: |
         mkdir ~/.geotools

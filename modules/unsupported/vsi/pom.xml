@@ -23,12 +23,10 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-imageio-ext-gdal</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.gdal</groupId>

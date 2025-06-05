@@ -32,24 +32,39 @@ Review a couple of the repository search websites:
         <version>1.0.2</version>
       </dependency>
 
-3. Navigate to the root ``pom.xml`` for the project and go to the dependency management section.
+3. Navigate to the ``/platform-dependencies/pom.xml`` file and add the dependency to the ``<properties>`` section and ``<dependencyManagement>`` section:
    
-   Cut and past paste the dependency information here as well::
+   a. First add a property to define the version:
+   
+      .. code-block:: xml
       
-      <dependency>
-        <groupId>net.java.dev.swing-layout</groupId>
-        <artifactId>swing-layout</artifactId>
-        <version>1.0.2</version>
-      </dependency>
+         <properties>
+           <!-- existing properties -->
+           <swing-layout.version>1.0.2</swing-layout.version>
+         </properties>
+   
+   b. Then add the dependency in the appropriate section of the ``<dependencyManagement>`` block, using the property:
+   
+      .. code-block:: xml
+      
+         <dependency>
+           <groupId>net.java.dev.swing-layout</groupId>
+           <artifactId>swing-layout</artifactId>
+           <version>${swing-layout.version}</version>
+         </dependency>
 
-3. You can then adjust your ``pom.xml`` to not include the version number (as it will be retrieved
-   from the dependency management section).::
+4. You can then adjust your module's ``pom.xml`` to not include the version number (as it will be retrieved
+   from the platform dependencies BOM).::
       
       <dependency>
         <groupId>net.java.dev.swing-layout</groupId>
         <artifactId>swing-layout</artifactId>
-        <!-- version retrieved from parent -->
+        <!-- version managed by gt-platform-dependencies BOM -->
       </dependency>
+      
+   .. note::
+      As of GeoTools 34.0, the project uses the Maven Bill of Materials (BOM) pattern to manage dependencies.
+      See :doc:`bom` for more details on how this works.
 
 Recommended reading on Dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

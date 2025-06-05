@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Test POM structure with dependency management violations -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>test-project</artifactId>
+  <version>1.0.0</version>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.example</groupId>
+        <artifactId>managed-artifact</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- Violation: inline version when managed -->
+    <dependency>
+      <groupId>org.example</groupId>
+      <artifactId>managed-artifact</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
+    <!-- Violation: no version and not managed -->
+    <dependency>
+      <groupId>org.example</groupId>
+      <artifactId>unmanaged-artifact</artifactId>
+    </dependency>
+
+    <!-- Valid: no version but managed -->
+    <dependency>
+      <groupId>org.example</groupId>
+      <artifactId>managed-artifact</artifactId>
+    </dependency>
+
+    <!-- Valid: inline version and not managed -->
+    <dependency>
+      <groupId>org.example</groupId>
+      <artifactId>independent-artifact</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+  </dependencies>
+</project>

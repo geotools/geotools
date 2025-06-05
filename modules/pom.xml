@@ -98,4 +98,52 @@
       <!-- The version number is managed through the gt-platform-dependencies BOM -->
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>enforce-managed-versions</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.geotools.maven</groupId>
+                <artifactId>gt-enforce-managed-dependencies</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <id>enforce-managed-versions</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <enforceManagedDependencies>
+                      <message>All dependency versions must be managed in gt-platform-dependencies or gt-bom. Unsupported modules may define their own dependencyManagement sections</message>
+                      <failOnViolation>true</failOnViolation>
+                      <allowSnapshots>false</allowSnapshots>
+                      <allowTestScope>true</allowTestScope>
+                      <excludes>
+                        <exclude>org.geotools:gt-platform-dependencies</exclude>
+                        <exclude>org.geotools:gt-bom</exclude>
+                      </excludes>
+                    </enforceManagedDependencies>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

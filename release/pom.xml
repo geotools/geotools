@@ -28,6 +28,18 @@
     <copyright.year>${maven.build.timestamp}</copyright.year>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-platform-dependencies</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <!-- docs dependency only used to schedule release after docs module order        -->
     <!-- uses exclusions to avoid contributing additional dependencies to release     -->

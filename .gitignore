@@ -18,6 +18,7 @@ workspace
 *.db
 .metadata
 .gradle
+.factorypath
 
 # jenkins relesae build
 /settings.xml
@@ -31,3 +32,5 @@ _build
 
 # spotless up to date checks
 .spotless-index
+
+.flattened-pom.xml

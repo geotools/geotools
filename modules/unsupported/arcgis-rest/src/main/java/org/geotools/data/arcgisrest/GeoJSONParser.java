@@ -554,8 +554,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
     public SimpleFeature parseFeature() {
 
         Geometry geom = null;
-        String id =
-                SimpleFeatureBuilder.createDefaultFeatureIdentifier(FEATURES).getID();
+        String id = null;
         Map<String, Object> props = new HashMap<>();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(this.featureType);
 

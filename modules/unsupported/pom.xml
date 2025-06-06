@@ -48,6 +48,7 @@
     <module>jdbc-h2gis</module>
     <module>graticules</module>
     <module>geoparquet</module>
+    <module>jdbc-singlestore</module>
   </modules>
   <profiles>
     <!-- ================================================== -->
@@ -205,6 +206,7 @@
         <module>vsi</module>
         <module>jdbc-teradata</module>
         <module>graticules</module>
+        <module>jdbc-singlestore</module>
       </modules>
     </profile>
     <profile>
@@ -229,6 +231,12 @@
       <id>geoparquet</id>
       <modules>
         <module>geoparquet</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>singlestore</id>
+      <modules>
+        <module>jdbc-singlestore</module>
       </modules>
     </profile>
   </profiles>

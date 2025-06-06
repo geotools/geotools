@@ -90,6 +90,21 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     /** Allows implementations to request a longitude first axis ordering for CRSs. */
     protected boolean forceLongitudeFirst = false;
 
+    protected final double COORDINATE_EPS;
+
+    public JDBCTestSupport() {
+        COORDINATE_EPS = 0;
+    }
+
+    /**
+     * Constructs the test with a target coordinate precision for geometry comparisons
+     *
+     * @param coordinateEps
+     */
+    protected JDBCTestSupport(double coordinateEps) {
+        COORDINATE_EPS = coordinateEps;
+    }
+
     @Override
     protected Properties createOfflineFixture() {
         return createTestSetup().createOfflineFixture();

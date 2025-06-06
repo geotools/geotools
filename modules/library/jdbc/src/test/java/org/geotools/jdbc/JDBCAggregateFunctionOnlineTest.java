@@ -190,6 +190,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
 
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
@@ -251,6 +252,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
 
         assertFalse(visited);
@@ -617,6 +619,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
 
         assertFalse(visited);
@@ -676,6 +679,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
 
         assertFalse(visited);

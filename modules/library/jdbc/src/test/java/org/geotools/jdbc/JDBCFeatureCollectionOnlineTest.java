@@ -33,11 +33,20 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
 public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
     SimpleFeatureCollection collection;
     JDBCFeatureStore source;
+
+    public JDBCFeatureCollectionOnlineTest() {
+        super();
+    }
+
+    protected JDBCFeatureCollectionOnlineTest(double coordinateEps) {
+        super(coordinateEps);
+    }
 
     @Override
     protected void connect() throws Exception {
@@ -134,7 +143,9 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
                             1e-5);
                     assertEquals(
                             feature.getAttribute(aname("stringProperty")), f.getAttribute(aname("stringProperty")));
-                    assertEquals(feature.getAttribute(aname("geometry")), f.getAttribute(aname("geometry")));
+                    Geometry expected = (Geometry) feature.getAttribute(aname("geometry"));
+                    Geometry actual = (Geometry) f.getAttribute(aname("geometry"));
+                    assertTrue(expected.equalsExact(actual, COORDINATE_EPS));
                     found = true;
                 }
             }

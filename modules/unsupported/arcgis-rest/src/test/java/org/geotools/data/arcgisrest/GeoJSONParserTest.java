@@ -435,7 +435,7 @@ public class GeoJSONParserTest {
                 SimpleFeature feat = parser.next();
                 assertNotNull(feat);
                 String id = feat.getID();
-                assertTrue("Id identical to previous feature.", ids.add(id));
+                assertTrue("Id should not be identical to previous feature id.", ids.add(id));
             }
         }
     }

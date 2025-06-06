@@ -29,9 +29,11 @@ import com.google.gson.stream.MalformedJsonException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -419,6 +421,22 @@ public class GeoJSONParserTest {
             assertEquals("value0", feat.getAttribute("vstring"));
             assertTrue((Boolean) (feat.getAttribute("vboolean")));
             assertEquals(12, feat.getAttribute("vint"));
+        }
+    }
+
+    @Test
+    public void parseFeaturesNotSameId() throws Exception {
+        String json = this.json = ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/properties.geo.json");
+
+        try (GeoJSONParser parser = new GeoJSONParser(new ByteArrayInputStream(json.getBytes()), this.fType, null)) {
+            parser.parseFeatureCollection();
+            Set<String> ids = new HashSet<>();
+            while (parser.hasNext()) {
+                SimpleFeature feat = parser.next();
+                assertNotNull(feat);
+                String id = feat.getID();
+                assertTrue("Id should not be identical to previous feature id.", ids.add(id));
+            }
         }
     }
 

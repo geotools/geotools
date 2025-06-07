@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic.properties.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -59,6 +60,19 @@ public class TimestampFileNameExtractorTest {
         Date time = (Date) feature.getAttribute("time");
         assertNotNull(time);
         assertEquals("2013-03-01T00:00:00.000Z", df.format(time));
+    }
+
+    @Test
+    public void testFailedExtraction() {
+        PropertiesCollectorSPI spi = getTimestampSpi();
+        PropertiesCollector collector = spi.create("regex=[0-9]{8}T[0-9]{6}", Arrays.asList("time"));
+        File file = new File("polyphemus_20130301.nc");
+        collector.collect(file);
+        IllegalArgumentException exc =
+                assertThrows(IllegalArgumentException.class, () -> collector.setProperties(feature));
+        assertEquals(
+                "No matches found for: TimestampFileNameExtractor{customFormat=null, format='null', useHighTime=false, fullPath=false, pattern=[0-9]{8}T[0-9]{6}}",
+                exc.getMessage());
     }
 
     @Test

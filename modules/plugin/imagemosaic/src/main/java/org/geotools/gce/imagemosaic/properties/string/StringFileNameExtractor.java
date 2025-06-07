@@ -17,13 +17,10 @@
 package org.geotools.gce.imagemosaic.properties.string;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
-import org.geotools.util.logging.Logging;
 
 /**
  * {@link PropertiesCollector} that is able to collect properties from a file name.
@@ -31,7 +28,6 @@ import org.geotools.util.logging.Logging;
  * @author Simone Giannecchini, GeoSolutions SAS
  */
 class StringFileNameExtractor extends RegExPropertiesCollector {
-    private static final Logger LOGGER = Logging.getLogger(StringFileNameExtractor.class);
 
     public StringFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
         super(spi, propertyNames, regex, false);
@@ -45,7 +41,7 @@ class StringFileNameExtractor extends RegExPropertiesCollector {
 
         // set the properties, only if we have matches!
         if (matches.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("No matches found for this property extractor:");
+            throw new IllegalArgumentException("No matches found for: " + this);
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {
@@ -55,5 +51,10 @@ class StringFileNameExtractor extends RegExPropertiesCollector {
             // do we have more dates?
             if (index >= matches.size()) return;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "StringFileNameExtractor{" + "pattern=" + pattern + ", fullPath=" + fullPath + '}';
     }
 }

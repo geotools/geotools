@@ -61,11 +61,33 @@
   </dependencyManagement>
 
   <dependencies>
+    <!--
+     Adding gt-platform-dependencies and gt-bom as dependencies with type=pom and scope=provided here
+     does not change the dependency tree for the submodules at all, but forces the BOMs to be installed
+     in the local maven repository first, either when building the whole project or when a submodule is
+     built independently (e.g. mvn install -pl :gt-main -am), hence ensuring any change to the dependencies
+     is picked up.
+    -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-platform-dependencies</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-bom</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_core</artifactId>
       <!-- The version number is managed through the gt-platform-dependencies BOM -->
     </dependency>
   </dependencies>
-
 </project>

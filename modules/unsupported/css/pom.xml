@@ -49,6 +49,15 @@
     <!-- This is needed by Parboiled generated code, see https://github.com/sirthias/parboiled/issues/175 -->
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.parboiled</groupId>
+        <artifactId>parboiled-java</artifactId>
+        <version>1.4.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -73,7 +82,6 @@
     <dependency>
       <groupId>org.parboiled</groupId>
       <artifactId>parboiled-java</artifactId>
-      <version>1.4.1</version>
     </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>

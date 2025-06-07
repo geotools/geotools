@@ -49,9 +49,21 @@
     </developer>
   </developers>
 
+  <properties>
+    <duckdb-jdbc.version>1.2.2.0</duckdb-jdbc.version>
+  </properties>
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.duckdb</groupId>
+        <artifactId>duckdb_jdbc</artifactId>
+        <version>${duckdb-jdbc.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.duckdb</groupId>

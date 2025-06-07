@@ -11,6 +11,15 @@
   <packaging>jar</packaging>
   <name>FlatGeobuf DataStore</name>
   <description>A FlatGeobuf DataStore</description>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.wololo</groupId>
+        <artifactId>flatgeobuf</artifactId>
+        <version>3.26.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -23,7 +32,6 @@
     <dependency>
       <groupId>org.wololo</groupId>
       <artifactId>flatgeobuf</artifactId>
-      <version>3.26.2</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>

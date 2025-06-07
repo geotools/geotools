@@ -46,26 +46,46 @@
     <cts-version>1.7.1</cts-version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${h2-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>h2gis</artifactId>
+        <version>${h2gis-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>h2gis-utilities</artifactId>
+        <version>${h2gis-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>cts</artifactId>
+        <version>${cts-version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2-version}</version>
     </dependency>
     <dependency>
       <groupId>org.orbisgis</groupId>
       <artifactId>h2gis</artifactId>
-      <version>${h2gis-version}</version>
     </dependency>
     <dependency>
       <groupId>org.orbisgis</groupId>
       <artifactId>h2gis-utilities</artifactId>
-      <version>${h2gis-version}</version>
     </dependency>
     <dependency>
       <groupId>org.orbisgis</groupId>
       <artifactId>cts</artifactId>
-      <version>${cts-version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>

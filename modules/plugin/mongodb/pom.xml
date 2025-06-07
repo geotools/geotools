@@ -100,13 +100,9 @@
       <artifactId>gt-http</artifactId>
     </dependency>
     <!--   Third-party dependencies   -->
-    <!--   version number defined here as this is a community module -->
     <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-legacy</artifactId>
-      <version>4.0.6</version>
-      <type>jar</type>
-      <optional>false</optional>
     </dependency>
     <!--   Test dependencies   -->
     <dependency>

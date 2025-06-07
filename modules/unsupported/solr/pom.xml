@@ -45,9 +45,27 @@
     </developer>
   </developers>
 
+  <properties>
+    <solrj.version>8.11.3</solrj.version>
+  </properties>
   <!-- =========================================================== -->
   <!-- Dependency Management -->
   <!-- =========================================================== -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.solr</groupId>
+        <artifactId>solr-solrj</artifactId>
+        <version>${solrj.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>commons-beanutils</groupId>

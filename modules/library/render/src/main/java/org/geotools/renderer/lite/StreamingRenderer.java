@@ -784,13 +784,14 @@ public class StreamingRenderer implements GTRenderer {
         }
         Future painterFuture = localThreadPool.submit(painterThread);
         List<CompositingGroup> compositingGroups = null;
+        MapContent zGroupedMapContent =null;
         try {
             if (mapContent == null) {
                 throw new IllegalStateException("Cannot call paint, you did not set a MapContent in this renderer");
             }
 
             // re-organize the map content and generate the z group layers
-            MapContent zGroupedMapContent = ZGroupLayerFactory.filter(mapContent);
+            zGroupedMapContent = ZGroupLayerFactory.filter(mapContent);
 
             // split over multiple map contents, one per composition base
             compositingGroups = CompositingGroup.splitOnCompositingBase(graphics, paintArea, zGroupedMapContent);
@@ -893,6 +894,7 @@ public class StreamingRenderer implements GTRenderer {
                         }
                     }
                 }
+               Optional.ofNullable(zGroupedMapContent).ifPresent(MapContent::dispose);
             } finally {
                 try {
                     if (!renderingStopRequested) {

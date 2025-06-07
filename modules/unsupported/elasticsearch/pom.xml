@@ -44,7 +44,41 @@
     <elastic.test.image>docker.elastic.co/elasticsearch/elasticsearch-oss</elastic.test.image>
     <elastic.test.version>7.10.2</elastic.test.version>
     <!-- To run the latest check out https://www.docker.elastic.co/r/elasticsearch/elasticsearch -->
+    <elasticsearch.version>7.14.0</elasticsearch.version>
+    <spatial4j.version>0.8</spatial4j.version>
+    <geo.version>0.7.7</geo.version>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-client</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.locationtech.spatial4j</groupId>
+        <artifactId>spatial4j</artifactId>
+        <version>${spatial4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.davidmoten</groupId>
+        <artifactId>geo</artifactId>
+        <version>${geo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>5.7.14</version>
+        <scope>provided</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>javax.measure</groupId>
@@ -53,14 +87,6 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>5.7.14</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>aopalliance</groupId>
-          <artifactId>aopalliance</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.elasticsearch.client</groupId>

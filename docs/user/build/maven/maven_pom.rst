@@ -94,8 +94,6 @@ Second the dependency version is supplied in the “root” :file:`pom.xml` file
 
 We make use of properties to update multi-module dependencies at the same time:
 
-.. literalinclude:: /../../pom.xml
-   :start-after: <!-- dependency management -->
-   :end-before: <!-- javadoc configuration -->
-   :prepend: <properties>
-   :append: </properties>
+.. literalinclude:: /../../platform-dependencies/pom.xml
+   :start-after: <properties>
+   :end-before: </properties>

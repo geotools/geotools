@@ -49,9 +49,21 @@
     </developer>
   </developers>
 
+  <properties>
+    <java-vector-tile.version>1.3.9</java-vector-tile.version>
+  </properties>
   <!-- =========================================================== -->
   <!--     Dependency Mangement                                    -->
   <!-- =========================================================== -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>no.ecc.vectortile</groupId>
+        <artifactId>java-vector-tile</artifactId>
+        <version>${java-vector-tile.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>

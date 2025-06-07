@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
@@ -1338,6 +1339,25 @@ public class GeoPackageTest {
             assertTrue(attribute instanceof Timestamp);
             Timestamp readValue = (Timestamp) attribute;
             assertEquals(timestamp, readValue);
+        }
+    }
+
+    @Test
+    public void testUUID() throws Exception {
+
+        UUID uuid = UUID.randomUUID();
+        SimpleFeatureType featureType = createFeatureTypeWithAttribute("uuid", "uuid", UUID.class);
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
+        SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, uuid);
+        SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, collection);
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            Object attribute = reader.next().getAttribute("uuid");
+            assertTrue(attribute instanceof String);
+            assertEquals(uuid.toString(), attribute);
         }
     }
 

@@ -104,7 +104,7 @@ public abstract class AbstractParameter extends Formattable implements GeneralPa
      * @param value The expected value, or {@code null}.
      * @throws IllegalArgumentException if {@code value} is non-null and has a non-assignable class.
      */
-    static <T> void ensureValidClass(final Class<?> expectedClass, final Object value) throws IllegalArgumentException {
+    static void ensureValidClass(final Class<?> expectedClass, final Object value) throws IllegalArgumentException {
         if (value != null) {
             final Class<?> valueClass = value.getClass();
             if (!expectedClass.isAssignableFrom(valueClass)) {

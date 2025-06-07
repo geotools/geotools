@@ -63,13 +63,6 @@ public final class SortOrder extends CodeList<SortOrder> {
     }
 
     /**
-     * Constructs an enum with identical name and SQL keyword. This is needed for {@link CodeList#valueOf} reflection.
-     */
-    private SortOrder(final String name) {
-        this(name, name);
-    }
-
-    /**
      * Returns the element name for this sorting order as a SQL {@code "ASC"} or {@code "DESC"} keyword.
      *
      * <p>We have chosen to use the full names {@link #ASCENDING} and {@link #DESCENDING} for our code list. The

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -317,10 +318,10 @@ public class GeneralMatrix implements XMatrix, Serializable {
                      * value.
                      */
                     final boolean normal = srcAxe.equals(dstAxe);
-                    double scale = (normal) ? +1 : -1;
+                    double scale = normal ? +1 : -1;
                     double translate = 0;
                     if (validRegions) {
-                        translate = (normal) ? dstRegion.getMinimum(dstIndex) : dstRegion.getMaximum(dstIndex);
+                        translate = normal ? dstRegion.getMinimum(dstIndex) : dstRegion.getMaximum(dstIndex);
                         scale *= dstRegion.getSpan(dstIndex) / srcRegion.getSpan(srcIndex);
                         translate -= srcRegion.getMinimum(srcIndex) * scale;
                     }
@@ -713,7 +714,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @since 2.2
      */
     public static GeneralMatrix load(final File file) throws IOException {
-        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             return load(in, Locale.US);
         }
     }

@@ -151,7 +151,6 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
-        <version>${project.version}</version>
         <configuration>
           <schemaLocation>geopkg.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/geopkg/wps</schemaSourceDirectory>
@@ -177,7 +176,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${maven.pmd.plugin.version}</version>
         <configuration>
           <!-- Disable JUnit specific rules, this module tests extends JUnit3 based OnlineTest -->
           <rulesets>

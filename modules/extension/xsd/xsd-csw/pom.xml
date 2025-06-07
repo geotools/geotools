@@ -98,7 +98,6 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
-        <version>${project.version}</version>
         <!-- 
         <configuration>
           <schemaLocation>csw.xsd</schemaLocation>

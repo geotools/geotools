@@ -29,7 +29,6 @@ import java.util.Set;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
-import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
@@ -102,7 +101,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
         crs = CRS.decode(SOURCE_CRS);
         assertSame(crs, co.getTargetCRS());
 
-        assertTrue(co.getMathTransform() instanceof MathTransform);
+        assertNotNull(co.getMathTransform());
         double[] p = new double[2];
         co.getMathTransform().transform(DST_TEST_POINT, 0, p, 0, 1);
         assertEquals(p[0], SRC_TEST_POINT[0], 1e-8);
@@ -117,6 +116,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
 
     /** Test method for {@link CoordinateOperationFactoryUsingWKT#createCoordinateOperation}. */
     @Test
+    @SuppressWarnings("CatchFail")
     public void testCreateCoordinateOperation() throws TransformException {
 
         try {
@@ -139,7 +139,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
             assertSame(crs, co.getTargetCRS());
 
             // Test MathTransform
-            assertTrue(co.getMathTransform() instanceof MathTransform);
+            assertNotNull(co.getMathTransform());
             double[] p = new double[2];
             co.getMathTransform().transform(SRC_TEST_POINT, 0, p, 0, 1);
             assertEquals(p[0], DST_TEST_POINT[0], 1e-8);
@@ -153,6 +153,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
 
     /** Test method for {@link CoordinateOperationFactoryUsingWKT#createFromCoordinateReferenceSystemCodes}. */
     @Test
+    @SuppressWarnings("CatchFail")
     public void testCreateFromCoordinateReferenceSystemCodes() throws TransformException {
         try {
             Set<CoordinateOperation> cos = factory.createFromCoordinateReferenceSystemCodes(INVALID_CRS, INVALID_CRS);
@@ -177,7 +178,7 @@ public class CoordinateOperationFactoryUsingWKTTest {
             assertSame(crs, co.getTargetCRS());
 
             // Test MathTransform
-            assertTrue(co.getMathTransform() instanceof MathTransform);
+            assertNotNull(co.getMathTransform());
             double[] p = new double[2];
             co.getMathTransform().transform(SRC_TEST_POINT, 0, p, 0, 1);
             assertEquals(p[0], DST_TEST_POINT[0], 1e-8);

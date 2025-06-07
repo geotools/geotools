@@ -88,7 +88,7 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
 
     // TODO: document that returns true if this establishes new ordering
     private boolean createDirectedEdge(DirectedGraphNode source, DirectedGraphNode target) {
-        removeDirectedEdge(target, source);
+        removeDirectedEdge(/* source= */ target, /* target= */ source);
         boolean sourceNew = source.outgoings.add(target);
         boolean targetNew = target.ingoings.add(source);
         if (sourceNew != targetNew) {
@@ -192,7 +192,9 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
     class TopologicalSortIterator implements Iterator<E> {
 
         // lists of nodes with zero residual inDegrees (aka sources)
+        @SuppressWarnings("JdkObsolete") // LinkedList used for specific graph traversal ordering
         private final LinkedList<DirectedGraphNode> sources = new LinkedList<>();
+
         private final Map<DirectedGraphNode, Countdown> residualInDegrees = new LinkedHashMap<>();
 
         public TopologicalSortIterator() {

@@ -147,7 +147,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.17</version>
         <configuration>
           <!--systemPropertyVariables>
             <embedmongo.port>${embedmongo.port}</embedmongo.port>
@@ -182,7 +181,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${maven.pmd.plugin.version}</version>
         <configuration>
           <!-- Disable JUnit specific rules, this module tests extends JUnit3 based OnlineTest -->
           <rulesets>

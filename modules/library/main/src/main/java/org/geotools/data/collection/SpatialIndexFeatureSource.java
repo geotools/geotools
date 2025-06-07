@@ -134,6 +134,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         return getFeatureCollection(query, bounds);
     }
 
+    @SuppressWarnings("UnusedVariable") // revisit, parameter bounds is not used
     private SimpleFeatureCollection getFeatureCollection(Query query, Envelope bounds) throws IOException {
         query = DataUtilities.resolvePropertyNames(query, getSchema());
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;

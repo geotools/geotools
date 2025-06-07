@@ -46,6 +46,15 @@ import org.geotools.util.logging.Logging;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @version $Id$
  */
+@SuppressWarnings({
+    "AlreadyChecked",
+    "MixedMutabilityReturnType",
+    "MutablePublicArray",
+    "StringCaseLocaleUsage",
+    "UndefinedEquals",
+    "ImmutableEnumChecker",
+    "StringSplitter"
+}) // Date/time parsing utility with intentional patterns and legacy API
 public class DateTimeParser {
     static final Logger LOGGER = Logging.getLogger(DateTimeParser.class);
 

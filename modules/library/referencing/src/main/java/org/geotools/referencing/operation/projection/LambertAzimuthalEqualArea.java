@@ -63,6 +63,7 @@ import org.geotools.referencing.NamedIdentifier;
  * @author Beate Stollberg
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class LambertAzimuthalEqualArea extends MapProjection {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 1639914708790574760L;
@@ -331,7 +332,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
+        Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
             ensureSpherical();
         }

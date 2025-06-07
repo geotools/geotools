@@ -53,16 +53,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <release>17</release>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.11.1</version>
+        <version>3.11.2</version>
       </plugin>
     </plugins>
   </build>
@@ -72,10 +71,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.6.3</version>
 
         <configuration>
-          <source>11</source>
+          <release>17</release>
+          <!-- Force non-modular mode for projects without module-info.java -->
+          <legacyMode>true</legacyMode>
           <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
           <!-- Omit qualifying package name before class names in output.-->
@@ -144,7 +144,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>https://docs.oracle.com/javase/11/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
             <link>https://javaee.github.io/javaee-spec/javadocs/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
@@ -244,7 +244,7 @@
           </plugin>
           <plugin>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.1.2</version>
+            <version>3.6.0</version>
             <executions>
               <execution>
                 <goals>

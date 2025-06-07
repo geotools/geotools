@@ -32,11 +32,13 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -107,7 +109,7 @@ public class TestData implements Runnable {
      * The files to delete at shutdown time. {@link File#deleteOnExit} alone doesn't seem suffisient since it will
      * preserve any overwritten files.
      */
-    private static final LinkedList<Deletable> toDelete = new LinkedList<>();
+    private static final Deque<Deletable> toDelete = new ArrayDeque<>();
 
     /** {@code true} if JAI media lib is available. */
     private static final boolean mediaLibAvailable;
@@ -119,6 +121,7 @@ public class TestData implements Runnable {
         try {
             mediaLibImage = Class.forName("com.sun.medialib.mlib.Image");
         } catch (ClassNotFoundException e) {
+            // Media library not available, continue without it
         }
         boolean mediaLib = (mediaLibImage != null);
 
@@ -167,7 +170,7 @@ public class TestData implements Runnable {
         mediaLibAvailable = mediaLib;
     }
 
-    /**
+    /*
      * Register the thread to be automatically executed at shutdown time. This thread will delete all temporary files
      * registered in {@link #toDelete}.
      */
@@ -356,7 +359,7 @@ public class TestData implements Runnable {
      */
     public static LineNumberReader openReader(final Object caller, final String name)
             throws FileNotFoundException, IOException {
-        return new LineNumberReader(new InputStreamReader(url(caller, name).openStream()));
+        return new LineNumberReader(new InputStreamReader(url(caller, name).openStream(), StandardCharsets.UTF_8));
     }
 
     /**

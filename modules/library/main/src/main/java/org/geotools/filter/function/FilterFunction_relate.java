@@ -55,6 +55,6 @@ public class FilterFunction_relate extends FunctionExpressionImpl {
                     "Filter Function problem for function relate argument #1 - expected type Geometry");
         }
 
-        return (StaticGeometry.relate(arg0, arg1));
+        return StaticGeometry.relate(arg0, arg1);
     }
 }

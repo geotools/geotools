@@ -254,7 +254,7 @@ public final class XMath {
             upper = asText.length() - 1;
             power = 0;
         }
-        while ((asText.charAt(upper)) == '0') {
+        while (asText.charAt(upper) == '0') {
             upper--;
         }
         return Math.max(upper - asText.indexOf('.') - power, 0);

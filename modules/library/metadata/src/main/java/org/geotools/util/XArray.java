@@ -951,6 +951,7 @@ public final class XArray {
      * @todo The separator should be local-dependent.
      * @todo Should we implements this functionality in {@link org.geotools.util.LineFormat} instead?
      */
+    @SuppressWarnings("JdkObsolete") // StringBuffer required by NumberFormat.format()
     public static String toString(final Object array, final Locale locale) {
         final StringBuffer buffer = new StringBuffer();
         final NumberFormat format = NumberFormat.getNumberInstance(locale);

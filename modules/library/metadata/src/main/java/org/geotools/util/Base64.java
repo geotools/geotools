@@ -66,6 +66,8 @@ import java.io.IOException;
  * @author rob@iharder.net
  * @version 2.1
  */
+@SuppressWarnings({"NotJavadoc", "StringCharset", "UnnecessaryParentheses", "EmptyCatch", "DefaultCharset"
+}) // Third-party utility class, suppressing errorprone warnings for legacy code
 public class Base64 {
 
     /* ********  P U B L I C   F I E L D S  ******** */

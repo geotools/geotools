@@ -53,6 +53,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  * @author Martin Desruisseaux (IRD)
  * @author Andrea Aime
  */
+@SuppressWarnings("JdkObsolete") // SortedSet interface preserved for API compatibility
 public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range<T>>
         implements SortedSet<Range<T>>, Cloneable, Serializable {
     /** Serial number for interoperability with different versions. */
@@ -157,7 +158,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
 
     /** Converts a value from an arbitrary type to the wrapper of {@link #arrayElementClass}. */
     @SuppressWarnings("unchecked")
-    private <T> Comparable<T> toArrayElement(Comparable<T> value) {
+    private <R> Comparable<R> toArrayElement(Comparable<R> value) {
         if (!relaxedClass.isInstance(value)) {
             throw new IllegalArgumentException(
                     value == null
@@ -344,7 +345,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
          */
         assert (i0 & 1) == 0 : i0;
         assert (i1 & 1) != 0 : i1;
-        final int n = i1 - (++i0);
+        final int n = i1 - ++i0;
         if (n > 0) {
             modCount++;
             final Object old = array;
@@ -549,7 +550,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
          */
         assert (i0 & 1) != 0 : i0;
         assert (i1 & 1) == 0 : i1;
-        final int n = i1 - (++i0);
+        final int n = i1 - ++i0;
         if (n > 0) {
             modCount++;
             final Object old = array;
@@ -706,7 +707,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      */
     public final double getMinValueAsDouble(int index) throws IndexOutOfBoundsException, ClassCastException {
         index *= 2;
-        return (isPrimitive) ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
+        return isPrimitive ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
     }
 
     /**
@@ -721,7 +722,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      */
     public final double getMaxValueAsDouble(int index) throws IndexOutOfBoundsException, ClassCastException {
         index = 2 * index + 1;
-        return (isPrimitive) ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
+        return isPrimitive ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
     }
 
     /**
@@ -730,7 +731,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @param value The value to search.
      * @return The index of the range which contains this value, or -1 if there is no such range.
      */
-    public <T> int indexOfRange(final Comparable<T> value) {
+    public <R> int indexOfRange(final Comparable<R> value) {
         int index = binarySearch(toArrayElement(value));
         if (index < 0) {
             // Found an insertion point. Make sure that the insertion

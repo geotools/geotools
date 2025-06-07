@@ -1,5 +1,8 @@
+package org.geotools.metadata.i18n;
+
 import java.util.regex.Pattern;
 
+@SuppressWarnings("DefaultPackage") // Test utility class
 public class InternationalizationReplacements {
 
     public static void main(String[] args) {

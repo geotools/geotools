@@ -59,7 +59,7 @@ public class ServiceException extends SAXException {
      */
 
     /** Comment for <code>serialVersionUID</code> */
-    private static final long serialVersionUID = (("org.geotools.data.ows.ServiceException").hashCode());
+    private static final long serialVersionUID = "org.geotools.data.ows.ServiceException".hashCode();
 
     private String code = "";
     private String locator = null;
@@ -107,6 +107,7 @@ public class ServiceException extends SAXException {
     }
 
     @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
     public Throwable getCause() {
         if (this.cause != null) {
             return this.cause;

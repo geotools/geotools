@@ -62,7 +62,7 @@ public class FilterSAXParser {
     private short filterType;
 
     /** factory for creating filters. */
-    @SuppressWarnings("PMD.UnusedPrivateField")
+    @SuppressWarnings({"PMD.UnusedPrivateField", "UnusedVariable"})
     private FilterFactory ff;
 
     /** the Attributes of the filter (only applicable to LIKE filters, I think) */
@@ -350,7 +350,7 @@ public class FilterSAXParser {
             return "attribute";
         } else if ((filterType == AbstractFilter.FID)) {
             return "fid";
-        } else if ((AbstractFilter.isCompareFilter(filterType)) || (AbstractFilter.isGeometryFilter(filterType))) {
+        } else if (AbstractFilter.isCompareFilter(filterType) || AbstractFilter.isGeometryFilter(filterType)) {
             return "leftValue";
         } else {
             throw new IllegalFilterException("Filter type: " + filterType + " is not recognized");

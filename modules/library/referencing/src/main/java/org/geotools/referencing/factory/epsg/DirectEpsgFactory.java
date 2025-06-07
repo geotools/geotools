@@ -201,7 +201,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 + " CO.COORD_OP_ACCURACY,"
                 + " CO.COORD_OP_CODE DESC");
 
-        String order;
+        final String order;
 
         OperationOrder(String order) {
             this.order = order;
@@ -442,7 +442,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * will always be the exact same object, namely the hard-coded argument given to calls to {@link #prepareStatement}
      * in this class.
      */
-    private final Map<String, PreparedStatement> statements = new IdentityHashMap<>();
+    private final IdentityHashMap<String, PreparedStatement> statements = new IdentityHashMap<>();
 
     /**
      * The set of authority codes for different types. This map is used by the {@link #getAuthorityCodes} method as a
@@ -540,7 +540,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.FALSE);
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.FALSE);
         this.dataSource = dataSource;
-        this.lonLatFactory = new OrderedAxisAuthorityFactory(buffered, userHints, null);
+        this.lonLatFactory = new OrderedAxisAuthorityFactory(buffered, userHints);
         ensureNonNull("dataSource", dataSource);
     }
 
@@ -1530,7 +1530,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         int size = bwInfos.size();
         if (size > 1) {
             final BursaWolfInfo[] codes = bwInfos.toArray(new BursaWolfInfo[size]);
-            sort(codes);
+            sort((Object[]) codes);
             bwInfos.clear();
             final Set<String> added = new HashSet<>();
             for (final BursaWolfInfo candidate : codes) {
@@ -2552,7 +2552,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             while (result.next()) {
                 final short sourceDimensions = getDimensionForCRS(result.getString(1));
                 final short targetDimensions = getDimensionForCRS(result.getString(2));
-                temp.encoded = (sourceDimensions << 16) | (targetDimensions);
+                temp.encoded = (sourceDimensions << 16) | targetDimensions;
                 Dimensions candidate = dimensions.get(temp);
                 if (candidate == null) {
                     candidate = new Dimensions(temp.encoded);
@@ -3018,7 +3018,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
              * Alter the ordering using the information supplied in the supersession table.
              */
             final String[] codes = set.getAuthorityCodes();
-            sort(codes);
+            sort((Object[]) codes);
             set.setAuthorityCodes(codes);
         } catch (SQLException exception) {
             throw databaseFailure(CoordinateOperation.class, pair, exception);
@@ -3042,6 +3042,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @param codes The codes, usually as an array of {@link String}. If the array do not contains string objects, then
      *     the {@link Object#toString} method must returns the code for each element.
      */
+    @SafeVarargs
     private void sort(final Object... codes) throws SQLException, FactoryException {
         if (codes.length <= 1) {
             return; // Nothing to sort.
@@ -3277,7 +3278,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     final synchronized boolean canDispose() {
         boolean can = true;
-        Map<SoftReference, WeakReference<AuthorityCodes>> pool = null;
+        IdentityHashMap<SoftReference, WeakReference<AuthorityCodes>> pool = null;
         for (final Iterator<Map.Entry<Class<?>, Reference<AuthorityCodes>>> it =
                         authorityCodes.entrySet().iterator();
                 it.hasNext(); ) {
@@ -3333,7 +3334,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 it.remove();
             }
             for (final Iterator<PreparedStatement> it = statements.values().iterator(); it.hasNext(); ) {
-                (it.next()).close();
+                it.next().close();
                 it.remove();
             }
             shutdown(true);
@@ -3391,7 +3392,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @throws Throwable if an error occured while closing the connection.
      */
     @Override
-    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
+    @SuppressWarnings({"deprecation", "Finalize"}) // finalize is deprecated in Java 9
     protected final void finalize() throws Throwable {
         dispose();
         super.finalize();

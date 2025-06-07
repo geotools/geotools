@@ -112,7 +112,7 @@ public final class LocalizationGridTest {
         grid = new LocalizationGrid(width, height);
         for (int j = 0; j < height; j++) {
             final double[] line = GRID_DATA[j];
-            assertEquals("Grid is not square", width * 2, line.length);
+            assertEquals("Grid is not square", width * 2L, line.length);
             int offset = 0;
             for (int i = 0; i < width; i++) {
                 grid.setLocalizationPoint(i, j, line[offset++], line[offset++]);
@@ -141,13 +141,13 @@ public final class LocalizationGridTest {
         int offset = 0;
         for (int j = 0; j < height; j++) {
             final double[] line = GRID_DATA[j];
-            assertEquals("Grid is not square", width * 2, line.length);
+            assertEquals("Grid is not square", width * 2L, line.length);
             for (int i = 0; i < width; i++) {
-                array[offset++] = (real) ? line[i * 2 + 0] : i;
-                array[offset++] = (real) ? line[i * 2 + 1] : j;
+                array[offset++] = real ? line[i * 2 + 0] : i;
+                array[offset++] = real ? line[i * 2 + 1] : j;
             }
         }
-        assertEquals("Grid is not square", width * height * 2, offset);
+        assertEquals("Grid is not square", width * ((long) height) * 2L, offset);
         return array;
     }
 
@@ -165,13 +165,13 @@ public final class LocalizationGridTest {
         int offset = 0;
         for (int j = 0; j < height; j++) {
             final double[] line = GRID_DATA[j];
-            assertEquals("Grid is not square", width * 2, line.length);
+            assertEquals("Grid is not square", width * 2L, line.length);
             for (int i = 0; i < width; i++) {
                 assertEquals(real ? line[i * 2 + 0] : i, array[offset++], eps);
                 assertEquals(real ? line[i * 2 + 1] : j, array[offset++], eps);
             }
         }
-        assertEquals("Grid is not square", width * height * 2, offset);
+        assertEquals("Grid is not square", width * ((long) height) * 2L, offset);
     }
 
     /** Test direct transformation from grid coordinates to "real world" coordinates using the localization grid. */

@@ -42,6 +42,7 @@ import org.geotools.referencing.NamedIdentifier;
  * @see <A HREF="http://en.wikipedia.org/wiki/Van_der_Grinten_projection">Van der Grinten projection on Wikipedia</A>
  * @author Simon Nyvlt (ars navigandi)
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class WorldVanDerGrintenI extends MapProjection {
 
     /** */

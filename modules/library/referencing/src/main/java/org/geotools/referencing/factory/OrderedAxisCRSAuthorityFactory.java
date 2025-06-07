@@ -221,7 +221,7 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
      * @throws IllegalArgumentException If at least two axis directions are colinear.
      */
     protected static int[] computeDirectionRanks(AxisDirection... axisOrder) throws IllegalArgumentException {
-        if (axisOrder == null) {
+        if (axisOrder == null || axisOrder.length == 0) {
             axisOrder = DEFAULT_ORDER;
         }
         int length = 0;
@@ -350,6 +350,6 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
      */
     @Override
     protected AxisDirection replace(final AxisDirection direction) {
-        return (forceStandardDirections) ? direction.absolute() : direction;
+        return forceStandardDirections ? direction.absolute() : direction;
     }
 }

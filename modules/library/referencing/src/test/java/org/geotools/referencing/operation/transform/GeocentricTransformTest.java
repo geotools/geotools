@@ -152,7 +152,7 @@ public final class GeocentricTransformTest extends TransformTestBase {
                     range = 0;
                     break; // Should not happen
             }
-            array0[i] = range * random.nextDouble() - (range / 2);
+            array0[i] = range * random.nextDouble() - (range / 2.0);
         }
         array0[0] = 35.0;
         array0[1] = 24.0;

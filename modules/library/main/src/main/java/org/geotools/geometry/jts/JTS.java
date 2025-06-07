@@ -1540,8 +1540,8 @@ public final class JTS {
             BoundingBox3D b3 = (BoundingBox3D) b;
             return Math.abs(a3.getMinZ() - b3.getMinZ()) <= tolerance
                     && Math.abs(a3.getMaxZ() - b3.getMaxZ()) <= tolerance;
-        } else if (a instanceof BoundingBox3D && !(b instanceof BoundingBox3D)
-                || !(a instanceof BoundingBox3D) && b instanceof BoundingBox3D) {
+        } else if ((a instanceof BoundingBox3D && !(b instanceof BoundingBox3D))
+                || (!(a instanceof BoundingBox3D) && b instanceof BoundingBox3D)) {
             return false;
         }
 

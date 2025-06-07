@@ -43,6 +43,7 @@ import org.geotools.referencing.NamedIdentifier;
  * @since 2.6.3
  * @author Andrea Aime
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class Robinson extends MapProjection {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 8428056162968814860L;

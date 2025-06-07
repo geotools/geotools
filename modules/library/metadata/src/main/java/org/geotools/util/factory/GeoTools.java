@@ -28,6 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.text.MessageFormat;
@@ -90,7 +91,7 @@ import org.xml.sax.EntityResolver;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  */
-@SuppressWarnings("ErrorProne.BanJNDI")
+@SuppressWarnings("BanJNDI")
 public final class GeoTools {
 
     /** Properties about this geotools build */
@@ -105,11 +106,9 @@ public final class GeoTools {
         InputStream stream = GeoTools.class.getResourceAsStream(resource);
         if (stream != null) {
             try (stream) {
-                try {
-                    props.load(stream);
-                } catch (IOException ignore) {
-                }
+                props.load(stream);
             } catch (IOException ignore) {
+                Logging.getLogger(GeoTools.class).log(Level.FINE, "Error loading resource " + resource, ignore);
             }
         }
 
@@ -620,6 +619,7 @@ public final class GeoTools {
                     manifest.read(content);
                 }
             } catch (IOException ignore) {
+                Logging.getLogger(GeoTools.class).log(Level.FINE, "Error loading manifest " + manifestLocation, ignore);
             }
         }
         if (manifest.getMainAttributes().isEmpty()) {
@@ -629,8 +629,9 @@ public final class GeoTools {
                 String generated = "Manifest-Version: 1.0\n" + "Project-Version: " + getVersion() + "\n";
 
                 try {
-                    manifest.read(new ByteArrayInputStream(generated.getBytes()));
+                    manifest.read(new ByteArrayInputStream(generated.getBytes(StandardCharsets.UTF_8)));
                 } catch (IOException e) {
+                    Logging.getLogger(GeoTools.class).log(Level.FINE, "Error reading manifest " + manifestLocation, e);
                 }
             }
         }
@@ -759,7 +760,7 @@ public final class GeoTools {
             for (String factoryName : CANDIDATES) {
                 try {
                     Logging.ALL.setLoggerFactory(factoryName);
-                    if (factoryName == "org.geotools.util.logging.CommonsLoggerFactory") {
+                    if ("org.geotools.util.logging.CommonsLoggerFactory".equals(factoryName)) {
                         // check if delegating to jdk14logger
                         LoggerFactory factory = Logging.ALL.getLoggerFactory();
                         if (factory != null) {
@@ -1146,6 +1147,7 @@ public final class GeoTools {
      *     but does not put any object in the contex, the downstream * application should do it if necessary instead.
      */
     @Deprecated
+    @SuppressWarnings("UnusedVariable") // hints
     private static String fixName(Context context, final String name, final Hints hints) {
         String fixed = null;
         if (name != null) {

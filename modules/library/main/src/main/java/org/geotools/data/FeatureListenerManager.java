@@ -76,7 +76,8 @@ public class FeatureListenerManager {
      * EvenListenerLists by FeatureSource, using a WeakHashMap to allow listener lists to be cleaned up after their
      * FeatureSource is no longer referenced.
      */
-    Map<FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList> listenerMap = new WeakHashMap<>();
+    final Map<FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList> listenerMap =
+            new WeakHashMap<>();
 
     /** Used by FeaureSource implementations to provide listener support. */
     public void addFeatureListener(

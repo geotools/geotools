@@ -245,7 +245,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract implem
 
         switch (matchAction) {
             case ONE:
-                return (count == 1);
+                return count == 1;
             case ALL:
                 return true;
             case ANY:

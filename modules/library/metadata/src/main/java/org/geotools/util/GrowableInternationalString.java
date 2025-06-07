@@ -206,7 +206,7 @@ public class GrowableInternationalString extends AbstractInternationalString imp
      * @return The canonical instance of {@code locale}.
      */
     private static synchronized Locale unique(final Locale locale) {
-        /**
+        /*
          * Initialize the LOCALES map with the set of locales defined in the Locale class. This operation is done only
          * once.
          */

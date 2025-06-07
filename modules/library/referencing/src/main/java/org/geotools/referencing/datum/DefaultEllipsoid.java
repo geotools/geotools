@@ -452,9 +452,9 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
     public int hashCode() {
         long longCode = 37 * Double.doubleToLongBits(semiMajorAxis);
         if (ivfDefinitive) {
-            longCode += inverseFlattening;
+            longCode = (long) (longCode + inverseFlattening);
         } else {
-            longCode += semiMinorAxis;
+            longCode = (long) (longCode + semiMinorAxis);
         }
         return (((int) (longCode >>> 32)) ^ (int) longCode);
     }

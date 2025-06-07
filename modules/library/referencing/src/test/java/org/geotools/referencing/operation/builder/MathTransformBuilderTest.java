@@ -204,7 +204,7 @@ public final class MathTransformBuilderTest {
      *
      * @author jezekjas
      */
-    final class LSMTester extends ProjectiveTransformBuilder {
+    static final class LSMTester extends ProjectiveTransformBuilder {
         LSMTester(List<MappedPosition> pts) {
             super(pts);
         }

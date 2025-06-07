@@ -162,7 +162,7 @@ class FIDSQuery extends Query {
     public int hashCode() {
         String[] n = getPropertyNames();
 
-        return ((n == null) ? (-1) : ((n.length == 0) ? 0 : (n.length | n[0].hashCode())))
+        return ((n == null) ? -1 : ((n.length == 0) ? 0 : (n.length | n[0].hashCode())))
                 | getMaxFeatures()
                 | ((getFilter() == null) ? 0 : getFilter().hashCode())
                 | ((getTypeName() == null) ? 0 : getTypeName().hashCode())
@@ -348,7 +348,7 @@ class FIDSQuery extends Query {
      * @throws UnsupportedOperationException if called
      */
     @Override
-    public void setPropertyNames(String[] propNames) {
+    public void setPropertyNames(String... propNames) {
         throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
@@ -357,7 +357,7 @@ class FIDSQuery extends Query {
      * @throws UnsupportedOperationException if called
      */
     @Override
-    public void setSortBy(SortBy[] sortBy) {
+    public void setSortBy(SortBy... sortBy) {
         throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
     /**

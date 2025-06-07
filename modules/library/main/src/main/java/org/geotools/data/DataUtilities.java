@@ -779,7 +779,7 @@ public class DataUtilities {
      * @return Array of values, that are good starting point for data entry
      */
     public static Object[] defaultValues(SimpleFeatureType featureType) {
-        return defaultValues(featureType, null);
+        return defaultValues(featureType, (Object[]) null);
     }
 
     /**
@@ -1227,6 +1227,9 @@ public class DataUtilities {
      * @return SimpleFeatureCollection
      * @since 2.7
      */
+    @SuppressWarnings(
+            "BadInstanceof") // `featureCollection.getSchema()` is an instance of SimpleFeatureType which is a subtype
+    // of SimpleFeatureType, so this is equivalent to a null check.
     public static SimpleFeatureCollection simple(
             FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
         if (featureCollection instanceof SimpleFeatureCollection) {
@@ -1450,6 +1453,7 @@ public class DataUtilities {
      *
      * <p>This method can be slurp an in memory record of the contents of a
      */
+    @SuppressWarnings("EmptyCatch")
     public static Set<String> fidSet(FeatureCollection<?, ?> featureCollection) {
         final HashSet<String> fids = new HashSet<>();
         try {
@@ -1708,7 +1712,7 @@ public class DataUtilities {
     }
 
     private static boolean assertEquals(Object o1, Object o2) {
-        return o1 == null && o2 == null ? true : (o1 != null ? o1.equals(o2) : false);
+        return (o1 == null && o2 == null) ? true : (o1 != null ? o1.equals(o2) : false);
     }
 
     /**
@@ -1995,7 +1999,7 @@ public class DataUtilities {
      *
      * @param data Origional raw text as stored
      * @return data split using | as seperator
-     * @throws DataSourceException if the information stored is inconsistent with the headered provided
+     * @throws IllegalArgumentException if the information stored is inconsistent with the headered provided
      */
     private static String[] splitIntoText(String data, SimpleFeatureType type) {
         // return data.split("|", -1); // use -1 as a limit to include empty trailing spaces
@@ -2802,7 +2806,7 @@ public class DataUtilities {
             }
             if (value == null) {
                 if (param.required) {
-                    return (false);
+                    return false;
                 }
             } else {
                 if (!param.type.isInstance(value)) {

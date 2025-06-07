@@ -48,6 +48,6 @@ public class FilterFunction_geometryType extends FunctionExpressionImpl {
 
         if (arg0 == null) return null;
 
-        return (StaticGeometry.geometryType(arg0));
+        return StaticGeometry.geometryType(arg0);
     }
 }

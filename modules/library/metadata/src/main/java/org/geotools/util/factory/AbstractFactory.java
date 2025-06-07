@@ -360,8 +360,8 @@ public class AbstractFactory implements Factory, RegistrableFactory {
     @Override
     public String toString() {
         final String name = format(this);
-        final Map<Factory, String> done = new IdentityHashMap<>();
-        // We used IdentityHashMap above because we don't want to rely on Factory.equals(...)
+        // Using IdentityHashMap above because we don't want to rely on Factory.equals(...)
+        final IdentityHashMap<Factory, String> done = new IdentityHashMap<>();
         done.put(this, name);
         final String tree = format(getImplementationHints(), done);
         return name + System.getProperty("line.separator", "\n") + tree;

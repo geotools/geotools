@@ -194,7 +194,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IllegalArgumentException If provided feature array is empty
      */
     public void addFeatures(SimpleFeature... features) {
-        if ((features == null) || (features.length == 0)) {
+        if (features == null || features.length == 0) {
             throw new IllegalArgumentException("Provided features are empty");
         }
         synchronized (entries) {

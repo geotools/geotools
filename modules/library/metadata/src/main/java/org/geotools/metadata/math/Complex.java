@@ -231,6 +231,7 @@ public final class Complex implements Cloneable, Serializable {
     }
 
     /** Returns {@code true} if this complex number has the same value than the specified one. */
+    @SuppressWarnings("NonOverridingEquals") // Type-specific helper method, not overriding Object.equals
     public boolean equals(final Complex c) {
         return Double.doubleToLongBits(real) == Double.doubleToLongBits(c.real)
                 && Double.doubleToLongBits(imag) == Double.doubleToLongBits(c.imag);

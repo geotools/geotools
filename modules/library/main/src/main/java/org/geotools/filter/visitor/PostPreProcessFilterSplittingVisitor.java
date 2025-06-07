@@ -910,8 +910,8 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     private Filter translateOr(Or filter) throws IllegalFilterException {
-        if (!(filter instanceof Or)) {
-            return filter;
+        if (filter == null) {
+            return null;
         }
 
         // a|b == ~~(a|b) negative introduction

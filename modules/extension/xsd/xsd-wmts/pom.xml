@@ -99,7 +99,6 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
-        <version>${project.version}</version>
         <configuration>
           <schemaLocation>wmts.xsd</schemaLocation>
           <schemaSourceDirectory>${project.basedir}/src/main/resources/org/geotools/wmts/v_10/</schemaSourceDirectory>

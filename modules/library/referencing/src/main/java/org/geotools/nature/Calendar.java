@@ -103,7 +103,7 @@ public final class Calendar {
      */
     public static double tropicalYearLength(final Date time) {
         final double T = julianCentury(time);
-        return 365.2421896698 + T * (-0.00000615359 + T * (-7.29E-10 + T * (2.64E-10)));
+        return 365.2421896698 + T * (-0.00000615359 + T * (-7.29E-10 + T * 2.64E-10));
     }
 
     /**
@@ -113,7 +113,7 @@ public final class Calendar {
      */
     public static double synodicMonthLength(final Date time) {
         final double T = julianCentury(time);
-        return 29.5305888531 + T * (0.00000021621 + T * (-3.64E-10));
+        return 29.5305888531 + T * (0.00000021621 + T * -3.64E-10);
     }
 
     /**

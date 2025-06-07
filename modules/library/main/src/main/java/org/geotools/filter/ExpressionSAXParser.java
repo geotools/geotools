@@ -46,7 +46,7 @@ public class ExpressionSAXParser {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExpressionSAXParser.class);
 
     /** Factory to construct filters. */
-    @SuppressWarnings("PMD.UnusedPrivateField")
+    @SuppressWarnings({"PMD.UnusedPrivateField", "UnusedVariable"})
     private FilterFactory ff;
 
     private FunctionFinder functionFinder = new FunctionFinder(null);

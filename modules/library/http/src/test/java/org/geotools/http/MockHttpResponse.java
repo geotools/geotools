@@ -113,7 +113,7 @@ public class MockHttpResponse implements HTTPResponse {
     }
 
     public MockHttpResponse(String response, String contentType, String... headers) {
-        this(response.getBytes(), contentType, headers);
+        this(response.getBytes(StandardCharsets.UTF_8), contentType, headers);
     }
 
     public MockHttpResponse(String response, String contentType, Charset charset, String... headers) {

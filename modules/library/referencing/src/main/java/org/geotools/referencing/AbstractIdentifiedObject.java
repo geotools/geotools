@@ -123,6 +123,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         }
 
         /** Canonicalizes to the singleton on deserialization. */
+        @SuppressWarnings("ProtectedMembersInFinalClass")
         protected Object readResolve() throws ObjectStreamException {
             return NAME_COMPARATOR;
         }
@@ -142,6 +143,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         /** Compares the given identified objects for order. */
         @Override
         @SuppressFBWarnings("NS_DANGEROUS_NON_SHORT_CIRCUIT")
+        @SuppressWarnings("ShortCircuitBoolean")
         public int compare(final IdentifiedObject o1, final IdentifiedObject o2) {
             Collection<ReferenceIdentifier> a1 = o1.getIdentifiers();
             Collection<ReferenceIdentifier> a2 = o2.getIdentifiers();
@@ -162,6 +164,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         }
 
         /** Canonicalizes to the singleton on deserialization. */
+        @SuppressWarnings("ProtectedMembersInFinalClass")
         protected Object readResolve() throws ObjectStreamException {
             return IDENTIFIER_COMPARATOR;
         }
@@ -185,6 +188,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         }
 
         /** Canonicalizes to the singleton on deserialization. */
+        @SuppressWarnings("ProtectedMembersInFinalClass")
         protected Object readResolve() throws ObjectStreamException {
             return REMARKS_COMPARATOR;
         }
@@ -284,7 +288,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * @throws IllegalArgumentException if a property is invalid for some other reason.
      */
     public AbstractIdentifiedObject(final Map<String, ?> properties) throws IllegalArgumentException {
-        this(properties, null, null);
+        this(properties, null);
     }
 
     /**
@@ -874,6 +878,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
+    @SuppressWarnings("AmbiguousMethodReference")
     public boolean equals(final AbstractIdentifiedObject object, final boolean compareMetadata) {
         if (object != null && object.getClass().equals(getClass())) {
             if (!compareMetadata) {
@@ -898,6 +903,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
+    @SuppressWarnings("AmbiguousMethodReference")
     static boolean equals(
             final AbstractIdentifiedObject object1,
             final AbstractIdentifiedObject object2,

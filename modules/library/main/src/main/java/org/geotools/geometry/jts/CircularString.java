@@ -325,6 +325,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     }
 
     @Override
+    @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
         if (other instanceof CircularString) {
             CircularString csOther = (CircularString) other;

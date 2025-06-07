@@ -19,6 +19,7 @@ package org.geotools.referencing;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -219,7 +220,7 @@ public class Console extends AbstractConsole {
             console = new Console();
         } else
             try {
-                input = new LineNumberReader(new FileReader(file));
+                input = new LineNumberReader(new FileReader(file, StandardCharsets.UTF_8));
                 console = new Console(input);
                 console.setPrompt(null);
             } catch (IOException exception) {
@@ -232,7 +233,7 @@ public class Console extends AbstractConsole {
          */
         if (load != null)
             try {
-                final LineNumberReader in = new LineNumberReader(new FileReader(load));
+                final LineNumberReader in = new LineNumberReader(new FileReader(load, StandardCharsets.UTF_8));
                 try {
                     console.loadDefinitions(in);
                 } catch (ParseException exception) {

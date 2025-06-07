@@ -195,7 +195,7 @@ public interface DataAccessFactory extends Factory {
             }
             if (value == null) {
                 if (param.required) {
-                    return (false);
+                    return false;
                 }
             } else {
                 if (!param.type.isInstance(value)) {

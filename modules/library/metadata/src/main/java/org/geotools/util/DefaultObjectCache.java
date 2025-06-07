@@ -32,6 +32,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @version $Id$
  * @author Cory Horner (Refractions Research)
  */
+@SuppressWarnings("LockNotBeforeTry") // Complex locking patterns for cache performance
 final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
     /** The cached values for each key. */
     private final Map<K, ObjectCacheEntry<V>> cache;

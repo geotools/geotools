@@ -61,7 +61,7 @@ public class FilterFunction_isWithinDistance extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg2 = (getExpression(2).evaluate(feature, Double.class)).doubleValue();
+            arg2 = getExpression(2).evaluate(feature, Double.class).doubleValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

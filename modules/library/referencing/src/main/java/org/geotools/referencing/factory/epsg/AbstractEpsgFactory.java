@@ -235,7 +235,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * <p>This field is managed as part of our connection lifecycle.
      */
-    private final Map<String, PreparedStatement> statements = new IdentityHashMap<>();
+    private final IdentityHashMap<String, PreparedStatement> statements = new IdentityHashMap<>();
 
     /**
      * Last object type returned by {@link #createObject}, or -1 if none. This type is an index in the
@@ -1222,7 +1222,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         int size = bwInfos.size();
         if (size > 1) {
             final BursaWolfInfo[] codes = bwInfos.toArray(new BursaWolfInfo[size]);
-            sort(codes);
+            sort((Object[]) codes);
             bwInfos.clear();
             final Set<String> added = new HashSet<>();
             for (final BursaWolfInfo candidate : codes) {
@@ -2149,7 +2149,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             while (result.next()) {
                 final short sourceDimensions = getDimensionForCRS(result.getString(1));
                 final short targetDimensions = getDimensionForCRS(result.getString(2));
-                temp.encoded = (sourceDimensions << 16) | (targetDimensions);
+                temp.encoded = (sourceDimensions << 16) | targetDimensions;
                 Dimensions candidate = dimensions.get(temp);
                 if (candidate == null) {
                     candidate = new Dimensions(temp.encoded);
@@ -2617,7 +2617,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
              * Alter the ordering using the information supplied in the supersession table.
              */
             final String[] codes = set.getAuthorityCodes();
-            sort(codes);
+            sort((Object[]) codes);
             set.setAuthorityCodes(codes);
         } catch (SQLException exception) {
             throw databaseFailure(CoordinateOperation.class, pair, exception);
@@ -2642,6 +2642,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *     the {@link Object#toString} method must returns the code for each element.
      */
     // TODO: Use generic type for "Object[] codes" with J2SE 1.5.
+    @SafeVarargs
     private void sort(final Object... codes) throws SQLException, FactoryException {
         if (codes.length <= 1) {
             return; // Nothing to sort.
@@ -2688,6 +2689,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * <p><b>Implementation note:</b> Since this method may be invoked indirectly by {@link LongitudeFirstFactory}, it
      * must be insensitive to axis order.
      */
+    @SuppressWarnings({"UnusedNestedClass", "UnusedMethod"}) // TODO: remove this unused class
     private final class Finder extends IdentifiedObjectFinder {
         /** Creates a new finder backed by the specified <em>buffered</em> authority factory. */
         Finder(final Class<? extends IdentifiedObject> type) {
@@ -2839,7 +2841,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             try {
                 isClosed = connection.isClosed();
                 for (final Iterator<PreparedStatement> it = statements.values().iterator(); it.hasNext(); ) {
-                    (it.next()).close();
+                    it.next().close();
                     it.remove();
                 }
                 connection.close();
@@ -2903,7 +2905,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws Throwable if an error occurred while closing the connection.
      */
     @Override
-    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
+    @SuppressWarnings({"deprecation", "Finalize"}) // finalize is deprecated in Java 9
     protected final void finalize() throws Throwable {
         dispose();
         super.finalize();
@@ -3311,7 +3313,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         @Override
         public synchronized java.util.Iterator<String> iterator() {
             try {
-                final Iterator iterator = new Iterator(getAll());
+                final AuthorityCodeSet.Iterator iterator = new AuthorityCodeSet.Iterator(getAll());
                 /*
                  * Set the statement to null without closing it, in order to force a new statement
                  * creation if getAll() is invoked before the iterator finish its iteration.  This
@@ -3330,7 +3332,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
          * Returns a serializable copy of this set. This method is invoked automatically during serialization. The
          * serialised set of authority code is disconnected from the underlying database.
          */
-        protected LinkedHashSet<String> writeReplace() throws ObjectStreamException {
+        @SuppressWarnings("NonApiType") // LinkedHashSet explicit return type to denote order preserved
+        LinkedHashSet<String> writeReplace() throws ObjectStreamException {
             return new LinkedHashSet<>(this);
         }
 
@@ -3340,7 +3343,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
          * method can be executed an arbitrary amount of times.
          */
         @Override
-        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
+        @SuppressWarnings({"deprecation", "Finalize"}) // finalize is deprecated in Java 9
         protected synchronized void finalize() throws SQLException {
             if (querySingle != null) {
                 querySingle.close();
@@ -3433,7 +3436,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
 
             /** Closes the underlying result set. */
             @Override
-            @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
+            @SuppressWarnings({"deprecation", "Finalize"}) // finalize is deprecated in Java 9
             protected void finalize() throws SQLException {
                 next = null;
                 if (results != null) {
@@ -3461,7 +3464,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         /** Returns a view of this set as a map with object's name as value, or {@code null} if none. */
         final java.util.Map<String, String> asMap() {
             if (asMap == null) {
-                asMap = new Map();
+                asMap = new AuthorityCodeSet.Map();
             }
             return asMap;
         }
@@ -3520,6 +3523,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
              * @todo Not yet implemented.
              */
             @Override
+            @SuppressWarnings("NonCanonicalType")
             public Set<Map.Entry<String, String>> entrySet() {
                 throw new UnsupportedOperationException();
             }

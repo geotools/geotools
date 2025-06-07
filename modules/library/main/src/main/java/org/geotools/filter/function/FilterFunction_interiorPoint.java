@@ -47,6 +47,6 @@ public class FilterFunction_interiorPoint extends FunctionExpressionImpl {
                     "Filter Function problem for function interiorPoint argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.interiorPoint(arg0));
+        return StaticGeometry.interiorPoint(arg0);
     }
 }

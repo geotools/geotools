@@ -81,10 +81,8 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
             return evaluateInternal(object1, object2);
         }
 
-        Collection<Object> leftValues =
-                collection1 instanceof Collection ? collection1 : Collections.singletonList(object1);
-        Collection<Object> rightValues =
-                collection2 instanceof Collection ? collection2 : Collections.singletonList(object2);
+        Collection<Object> leftValues = collection1 != null ? collection1 : Collections.singletonList(object1);
+        Collection<Object> rightValues = collection2 != null ? collection2 : Collections.singletonList(object2);
 
         int count = 0;
 
@@ -111,7 +109,7 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
 
         switch (matchAction) {
             case ONE:
-                return (count == 1);
+                return count == 1;
             case ALL:
                 return true;
             case ANY:

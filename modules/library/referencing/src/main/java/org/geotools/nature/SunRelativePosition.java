@@ -141,8 +141,8 @@ public class SunRelativePosition {
     private static double sunEquationOfCenter(final double t) {
         final double m = Math.toRadians(sunGeometricMeanAnomaly(t));
         return Math.sin(1 * m) * (1.914602 - t * (0.004817 + 0.000014 * t))
-                + Math.sin(2 * m) * (0.019993 - t * (0.000101))
-                + Math.sin(3 * m) * (0.000289);
+                + Math.sin(2 * m) * (0.019993 - t * 0.000101)
+                + Math.sin(3 * m) * 0.000289;
     }
 
     /**
@@ -208,7 +208,7 @@ public class SunRelativePosition {
      * @return Mean obliquity in degrees.
      */
     private static double meanObliquityOfEcliptic(final double t) {
-        final double seconds = 21.448 - t * (46.8150 + t * (0.00059 - t * (0.001813)));
+        final double seconds = 21.448 - t * (46.8150 + t * (0.00059 - t * 0.001813));
         return 23.0 + (26.0 + (seconds / 60.0)) / 60.0;
     }
 

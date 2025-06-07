@@ -27,6 +27,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.Warp;
@@ -436,7 +437,7 @@ public class WarpBuilder {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    class ExcessiveDepthException extends RuntimeException {
+    static class ExcessiveDepthException extends RuntimeException {
         private static final long serialVersionUID = -3533898904532522502L;
 
         public ExcessiveDepthException() {
@@ -462,7 +463,7 @@ public class WarpBuilder {
 
         try {
             File output = File.createTempFile(start + name, ".properties");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(output))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(output, StandardCharsets.UTF_8))) {
                 writer.write("_=geom:Point:srid=32632");
                 writer.newLine();
                 for (int i = 0; i < points.length; i += 2) {

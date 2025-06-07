@@ -35,6 +35,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class FeatureLock {
     /** Lock requested for the duration of the Transaction (until next commit or revert). */
+    @SuppressWarnings(
+            "ClassInitializationDeadlock") // CurrentTransactionLock is a subclass of the containing class FeatureLock
     public static final FeatureLock TRANSACTION = new CurrentTransactionLock();
 
     protected String authorization;

@@ -34,6 +34,7 @@
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <eclipse.xsd.version>2.12.0</eclipse.xsd.version>
     <ejml-ddense.version>0.41</ejml-ddense.version>
+    <geodb.version>0.9</geodb.version>
     <geographiclib-java.version>1.49</geographiclib-java.version>
     <guava.version>33.4.8-jre</guava.version>
     <h2.version>1.1.119</h2.version>
@@ -444,7 +445,7 @@
         <!-- gt-jdbc-h2 dependency -->
         <groupId>org.opengeo</groupId>
         <artifactId>geodb</artifactId>
-        <version>0.9</version>
+        <version>${geodb.version}</version>
         <exclusions>
           <exclusion>
             <groupId>com.h2database</groupId>
@@ -1046,13 +1047,23 @@
   <build>
     <plugins>
       <plugin>
-        <!-- flatten plugin configured to install a BOM pom -->
-        <!-- see https://www.mojohaus.org/flatten-maven-plugin/flatten-mojo.html#flattenMode -->
+        <!--
+        flatten plugin configured to install a BOM pom, though not using flattenMode=bom because it doesn't resolve
+        version properties and adds properties defined in the root pom.
+        See https://www.mojohaus.org/flatten-maven-plugin/flatten-mojo.html#flattenMode
+        -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
         <configuration>
           <updatePomFile>true</updatePomFile>
-          <flattenMode>bom</flattenMode>
+          <flattenMode>ossrh</flattenMode>
+          <pomElements>
+            <!--
+            Take the element from the interpolated POM (original POM with variables interpolated).
+            This avoids adding dependencies defined in the root pom (e.g. junit) 
+            -->
+            <dependencyManagement>interpolate</dependencyManagement>
+          </pomElements>
         </configuration>
         <executions>
           <execution>

@@ -807,13 +807,23 @@
   <build>
     <plugins>
       <plugin>
-        <!-- flatten plugin configured to install a BOM pom -->
-        <!-- see https://www.mojohaus.org/flatten-maven-plugin/flatten-mojo.html#flattenMode -->
+        <!--
+        flatten plugin configured to install a BOM pom, though not using flattenMode=bom because it doesn't resolve
+        version properties and adds properties defined in the root pom.
+        See https://www.mojohaus.org/flatten-maven-plugin/flatten-mojo.html#flattenMode
+        -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
         <configuration>
           <updatePomFile>true</updatePomFile>
-          <flattenMode>bom</flattenMode>
+          <flattenMode>ossrh</flattenMode>
+          <pomElements>
+            <!--
+            Take the element from the interpolated POM (original POM with variables interpolated).
+            This avoids adding dependencies defined in the root pom (e.g. junit) 
+            -->
+            <dependencyManagement>interpolate</dependencyManagement>
+          </pomElements>
         </configuration>
         <executions>
           <execution>

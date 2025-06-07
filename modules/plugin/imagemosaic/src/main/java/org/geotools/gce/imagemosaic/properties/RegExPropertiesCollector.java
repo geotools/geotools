@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,9 +31,9 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector imple
 
     private static final Logger LOGGER = Logging.getLogger(RegExPropertiesCollector.class);
 
-    private boolean fullPath = false;
+    protected boolean fullPath = false;
 
-    private Pattern pattern;
+    protected Pattern pattern;
 
     @Override
     public boolean isFullPath() {
@@ -98,7 +97,9 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector imple
     private void addMatches(String name) {
         final Matcher matcher = pattern.matcher(name);
 
+        boolean matched = false;
         while (matcher.find()) {
+            matched = true;
             // Chaining group Strings together
             int count = matcher.groupCount();
             String match = "";
@@ -110,6 +111,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector imple
             }
             addMatch(match);
         }
+        if (!matched) LOGGER.fine("No matches found for the pattern: " + pattern.pattern() + " in the string: " + name);
     }
 
     @Override
@@ -120,7 +122,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector imple
 
         // set the properties, only if we have matches!
         if (matches.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("No matches found for this property extractor:");
+            throw new IllegalArgumentException("No matches found for: " + this);
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {
@@ -128,5 +130,10 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector imple
             // do we have more values?
             if (index >= matches.size()) return;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "RegExPropertiesCollector{" + "fullPath=" + fullPath + ", pattern=" + pattern + '}';
     }
 }

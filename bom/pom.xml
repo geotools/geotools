@@ -15,15 +15,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Import platform dependencies -->
-      <dependency>
-        <groupId>org.geotools</groupId>
-        <artifactId>gt-platform-dependencies</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
       <!-- GeoTools Maven plugin artifacts -->
       <dependency>
         <groupId>org.geotools.maven</groupId>

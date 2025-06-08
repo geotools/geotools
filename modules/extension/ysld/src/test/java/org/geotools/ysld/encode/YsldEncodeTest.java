@@ -36,6 +36,7 @@ import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -1701,7 +1702,7 @@ public class YsldEncodeTest {
                                 + "            type: values\n"
                                 + "            entries:\n"
                                 + "            - ['#e20374', 1.0, 1, Lorem Ipsum (magenta = covered)]")
-                        .getBytes()))
+                        .getBytes(StandardCharsets.UTF_8)))
                 .parse();
 
         RasterSymbolizer symbolizer = (RasterSymbolizer) ((NamedLayer) style.getStyledLayers()[0])

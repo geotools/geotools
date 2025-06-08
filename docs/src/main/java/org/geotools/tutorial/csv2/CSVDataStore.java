@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,7 @@ public class CSVDataStore extends ContentDataStore {
      * @return CsvReader for file
      */
     CsvReader read() throws IOException {
-        Reader reader = new FileReader(file);
+        Reader reader = new FileReader(file, StandardCharsets.UTF_8);
         CsvReader csvReader = new CsvReader(reader);
         return csvReader;
     }
@@ -92,7 +93,7 @@ public class CSVDataStore extends ContentDataStore {
             header.add(descriptor.getLocalName());
         }
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(file), ',');
+        CsvWriter writer = new CsvWriter(new FileWriter(file, StandardCharsets.UTF_8), ',');
         try {
             writer.writeRecord(header.toArray(new String[header.size()]));
         } finally {

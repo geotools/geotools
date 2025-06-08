@@ -14,6 +14,7 @@ package org.geotools.tutorial.csv3.parse;
 import com.csvreader.CsvWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.feature.Property;
@@ -75,7 +76,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
             }
         }
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()), ',');
+        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile(), StandardCharsets.UTF_8), ',');
         try {
             writer.writeRecord(header.toArray(new String[header.size()]));
         } finally {

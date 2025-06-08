@@ -18,6 +18,7 @@ package org.geotools.xml.styling;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsEqualTo;
@@ -101,6 +102,6 @@ public class SLDParserNamespaceTest {
     }
 
     InputStream input() {
-        return new ByteArrayInputStream(SLD.getBytes());
+        return new ByteArrayInputStream(SLD.getBytes(StandardCharsets.UTF_8));
     }
 }

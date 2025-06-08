@@ -33,6 +33,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.media.jai.Interpolation;
 import javax.media.jai.RasterFactory;
@@ -446,7 +447,7 @@ public class JGrassUtilities {
         if (!colrFile.getParentFile().exists()) {
             colrFile.getParentFile().mkdir();
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(colrFile))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(colrFile, StandardCharsets.UTF_8))) {
             if (rules.isEmpty()) {
                 throw new IllegalArgumentException("The list of colorrules can't be empty.");
             }

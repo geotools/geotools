@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -196,7 +197,7 @@ public class Slice2DIndex {
             int stringSize = (int) (endDataPosition - raf.getFilePointer());
             byte[] stringBytes = new byte[stringSize];
             raf.read(stringBytes);
-            String varName = new String(stringBytes);
+            String varName = new String(stringBytes, StandardCharsets.UTF_8);
 
             return new Slice2DIndex(index, varName);
         }
@@ -234,7 +235,7 @@ public class Slice2DIndex {
                     for (int j = 0; j < sliceNDIndex.getNCount(); j++) {
                         raf.writeInt(sliceNDIndex.getNIndex(j));
                     }
-                    raf.write(sliceNDIndex.getVariableName().getBytes());
+                    raf.write(sliceNDIndex.getVariableName().getBytes(StandardCharsets.UTF_8));
                 }
                 long dataEnd = raf.getFilePointer();
 

@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -109,7 +110,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                         factory.setNamespaceAware(true);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document doc = builder.parse(new ByteArrayInputStream(pc.getBytes()));
+                        Document doc = builder.parse(new ByteArrayInputStream(pc.getBytes(StandardCharsets.UTF_8)));
 
                         NodeList boxes = doc.getElementsByTagName("gml:Box");
                         for (int b = 0; b < boxes.getLength(); b++) {
@@ -163,7 +164,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                         }
                     }
                     in.close();
-                    in = new ByteArrayInputStream(pc.getBytes());
+                    in = new ByteArrayInputStream(pc.getBytes(StandardCharsets.UTF_8));
                 }
             } catch (SAXException | ParserConfigurationException | TransformerException | IOException ex) {
                 LOGGER.log(

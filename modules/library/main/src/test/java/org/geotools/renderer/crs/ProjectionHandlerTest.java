@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -349,7 +350,8 @@ public class ProjectionHandlerTest {
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         Geometry geom;
         try (Reader reader = new InputStreamReader(
-                new GZIPInputStream(ProjectionHandlerTest.class.getResourceAsStream("para.wkt.gz")))) {
+                new GZIPInputStream(ProjectionHandlerTest.class.getResourceAsStream("para.wkt.gz")),
+                StandardCharsets.UTF_8)) {
             geom = new WKTReader().read(reader);
         }
 

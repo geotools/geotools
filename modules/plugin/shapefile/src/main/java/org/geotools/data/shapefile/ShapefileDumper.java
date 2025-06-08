@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -391,7 +392,7 @@ public class ShapefileDumper {
         // (.cst is not a standard extension)
         sfds.setCharset(charset);
         File charsetFile = new File(targetDirectory, schema.getTypeName() + ".cst");
-        try (PrintWriter pw = new PrintWriter(charsetFile)) {
+        try (PrintWriter pw = new PrintWriter(charsetFile, StandardCharsets.UTF_8)) {
             pw.write(charset.name());
         }
 

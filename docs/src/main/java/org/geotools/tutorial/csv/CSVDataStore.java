@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.api.data.Query;
@@ -49,7 +50,7 @@ public class CSVDataStore extends ContentDataStore {
      * @return CsvReader for file
      */
     CsvReader read() throws IOException {
-        Reader reader = new FileReader(file);
+        Reader reader = new FileReader(file, StandardCharsets.UTF_8);
         CsvReader csvReader = new CsvReader(reader);
         return csvReader;
     }

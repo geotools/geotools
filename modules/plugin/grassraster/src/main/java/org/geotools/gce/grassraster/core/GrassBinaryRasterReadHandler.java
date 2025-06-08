@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -372,7 +373,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
 
             reclassTable = null;
             File cellhd = readerGrassEnv.getCELLHD();
-            BufferedReader cellhead = new BufferedReader(new FileReader(cellhd));
+            BufferedReader cellhead = new BufferedReader(new FileReader(cellhd, StandardCharsets.UTF_8));
             cellhead.mark(128);
             /*
              * Read first line to determine if file is a reclasses file. If it
@@ -419,7 +420,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                     throw new IOException(
                             "The reclassed cellhead file doesn't seems to exist: " + cellhd.getAbsolutePath());
                 }
-                cellhead = new BufferedReader(new FileReader(cellhd));
+                cellhead = new BufferedReader(new FileReader(cellhd, StandardCharsets.UTF_8));
             } else {
                 /* Push first line back onto buffered reader stack */
                 cellhead.reset();
@@ -538,8 +539,8 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                          * if the file f_format exists, then we are talking
                          * about floating maps
                          */
-                        BufferedReader cellmiscformat =
-                                new BufferedReader(new FileReader(readerGrassEnv.getCELLMISC_FORMAT()));
+                        BufferedReader cellmiscformat = new BufferedReader(
+                                new FileReader(readerGrassEnv.getCELLMISC_FORMAT(), StandardCharsets.UTF_8));
                         while ((line = cellmiscformat.readLine()) != null) {
                             StringTokenizer tokk = new StringTokenizer(line, ":");
                             if (tokk.countTokens() == 2) {
@@ -1087,7 +1088,8 @@ public class GrassBinaryRasterReadHandler implements Closeable {
          * File is a standard file where the categories values are stored in
          * the cats directory.
          */
-        try (BufferedReader rdr = new BufferedReader(new FileReader(readerGrassEnv.getCATS()))) {
+        try (BufferedReader rdr =
+                new BufferedReader(new FileReader(readerGrassEnv.getCATS(), StandardCharsets.UTF_8))) {
 
             /* Instantiate attribute table */
             AttributeTable attTable = new AttributeTable();
@@ -1211,7 +1213,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         if (projWtkFile.exists()) {
 
             StringBuffer wtkString = new StringBuffer();
-            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile))) {
+            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile, StandardCharsets.UTF_8))) {
                 String line = null;
                 while ((line = crsReader.readLine()) != null) {
                     wtkString.append(line.trim());

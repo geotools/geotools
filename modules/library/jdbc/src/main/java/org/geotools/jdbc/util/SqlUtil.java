@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -127,7 +128,7 @@ public class SqlUtil {
     }
 
     public static void runScript(InputStream stream, Connection cx) throws SQLException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                 Statement st = cx.createStatement()) {
             StringBuilder buf = new StringBuilder();
             String sql = reader.readLine();
@@ -163,7 +164,7 @@ public class SqlUtil {
             throws SQLException {
 
         int insideBlock = 0;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                 Statement st = cx.createStatement()) {
             StringBuilder buf = new StringBuilder();
             String sql = reader.readLine();

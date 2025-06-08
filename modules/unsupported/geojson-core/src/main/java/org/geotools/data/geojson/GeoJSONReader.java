@@ -33,6 +33,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -253,7 +254,8 @@ public class GeoJSONReader implements AutoCloseable {
 
     /** Pares and returns a single feature out of a GeoJSON document */
     public static SimpleFeature parseFeature(String json) throws JsonParseException, IOException {
-        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
+        try (JsonParser lParser =
+                factory.createParser(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))) {
             ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
             try (GeoJSONReader reader = new GeoJSONReader((InputStream) null)) {
@@ -276,7 +278,8 @@ public class GeoJSONReader implements AutoCloseable {
      */
     public static SimpleFeature parseFeature(String json, IdStrategy idStrategy, String idPrefix, String idFieldName)
             throws JsonParseException, IOException {
-        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
+        try (JsonParser lParser =
+                factory.createParser(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))) {
             ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
             try (GeoJSONReader reader = new GeoJSONReader((InputStream) null)) {
@@ -295,7 +298,8 @@ public class GeoJSONReader implements AutoCloseable {
 
     /** Parses and returns a feature collection from a GeoJSON */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
-        try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
+        try (GeoJSONReader reader =
+                new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)))) {
             SimpleFeatureCollection features = reader.getFeatures();
             return features;
         } catch (IOException e) {
@@ -305,7 +309,8 @@ public class GeoJSONReader implements AutoCloseable {
 
     /** Parses and returns a single geometry */
     public static Geometry parseGeometry(String input) {
-        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
+        try (JsonParser lParser =
+                factory.createParser(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)))) {
             ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
             Geometry g = GEOM_PARSER.geometryFromJson(node);

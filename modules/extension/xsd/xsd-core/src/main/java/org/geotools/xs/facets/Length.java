@@ -16,6 +16,7 @@
  */
 package org.geotools.xs.facets;
 
+import java.nio.charset.StandardCharsets;
 import org.eclipse.xsd.XSDLengthFacet;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -69,7 +70,7 @@ public abstract class Length {
         public void validate(XSDTypeDefinition definition, Object value) throws IllegalArgumentException {
             String text = (String) value;
 
-            if (text.getBytes().length > length(definition)) {
+            if (text.getBytes(StandardCharsets.UTF_8).length > length(definition)) {
                 throw new IllegalArgumentException(text);
             }
         }
@@ -101,7 +102,7 @@ public abstract class Length {
         public void validate(XSDTypeDefinition definition, Object value) throws IllegalArgumentException {
             String text = (String) value;
 
-            if (text.getBytes().length > length(definition)) {
+            if (text.getBytes(StandardCharsets.UTF_8).length > length(definition)) {
                 throw new IllegalArgumentException(text);
             }
         }

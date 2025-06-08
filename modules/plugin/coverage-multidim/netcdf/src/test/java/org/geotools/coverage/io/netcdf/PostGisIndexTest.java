@@ -19,6 +19,7 @@ package org.geotools.coverage.io.netcdf;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -208,7 +209,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
 
     private File createDatastoreProperties(File dir, Map<String, String> override) throws IOException {
         File outFile = new File(dir, "mddatastore.properties");
-        try (FileWriter out = new FileWriter(outFile)) {
+        try (FileWriter out = new FileWriter(outFile, StandardCharsets.UTF_8)) {
             // Preparing custom multidim datastore properties
             final Properties props = createExampleFixture();
             if (override != null && !override.isEmpty()) {

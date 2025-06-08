@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -286,7 +287,7 @@ class Utils {
         // build the .prj file if possible
         if (envelope.getCoordinateReferenceSystem() != null) {
             File prjFile = new File(directory, directory.getName() + ".prj");
-            try (PrintWriter pw = new PrintWriter(new FileOutputStream(prjFile))) {
+            try (PrintWriter pw = new PrintWriter(new FileOutputStream(prjFile), false, StandardCharsets.UTF_8)) {
                 pw.print(envelope.getCoordinateReferenceSystem().toString());
             } catch (IOException e) {
                 LOGGER.log(Level.INFO, "We could not write out the projection file " + prjFile.getPath(), e);

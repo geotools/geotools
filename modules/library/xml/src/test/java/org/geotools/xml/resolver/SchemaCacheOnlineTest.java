@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.URLs;
 import org.junit.After;
@@ -118,7 +119,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
     /** Basic sanity checks of schema and test store to disk. */
     private void check(byte[] bytes) {
         Assert.assertTrue(bytes.length > 0);
-        String text = new String(bytes);
+        String text = new String(bytes, StandardCharsets.UTF_8);
         Assert.assertTrue(text.contains("GeoSciML"));
         Assert.assertTrue(text.contains("<schema"));
         Assert.assertTrue(text.contains("</schema>"));

@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.DoubleSummaryStatistics;
@@ -57,8 +58,8 @@ public class EqualAreaListVisitorTest {
         SimpleFeatureType schema =
                 DataUtilities.createType("states", "the_geom:MultiPolygon,STATE_ABBR:String,PERSONS:Double");
 
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(EqualAreaListVisitorTest.class.getResourceAsStream("states.properties")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                EqualAreaListVisitorTest.class.getResourceAsStream("states.properties"), StandardCharsets.UTF_8))) {
             List<SimpleFeature> featureList = br.lines()
                     .map(line -> DataUtilities.createFeature(schema, line))
                     .collect(Collectors.toList());

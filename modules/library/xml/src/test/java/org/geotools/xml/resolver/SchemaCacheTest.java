@@ -27,6 +27,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import java.io.File;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import org.geotools.http.commons.MultithreadedHttpClientFactory;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
@@ -65,7 +66,7 @@ public class SchemaCacheTest {
         new File("target/test/a/b/c").mkdirs();
         new File("target/test/a/b/d/e/f").mkdirs();
         File f = new File("target/test/a/b/d/e/f/temp.txt");
-        try (PrintWriter printWriter = new PrintWriter(f)) {
+        try (PrintWriter printWriter = new PrintWriter(f, StandardCharsets.UTF_8)) {
             printWriter.println("Some text");
         }
         Assert.assertTrue(new File("target/test/a/b/d/e/f/temp.txt").exists());
@@ -115,7 +116,7 @@ public class SchemaCacheTest {
     public void downloadWithHttpClient() {
         Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, SchemaCacheMockHttpClientFactory.class);
         byte[] responseBody = SchemaCache.download(MOCK_SCHEMA_LOCATION);
-        Assert.assertArrayEquals(MOCK_HTTP_RESPONSE_BODY.getBytes(), responseBody);
+        Assert.assertArrayEquals(MOCK_HTTP_RESPONSE_BODY.getBytes(StandardCharsets.UTF_8), responseBody);
         Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
     }
 

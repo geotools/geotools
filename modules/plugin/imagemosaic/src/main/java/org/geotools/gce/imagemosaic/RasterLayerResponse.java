@@ -127,7 +127,7 @@ public class RasterLayerResponse {
 
     private final SubmosaicProducerFactory submosaicProducerFactory;
 
-    class MosaicOutput {
+    static class MosaicOutput {
 
         public MosaicOutput(MosaicElement element) {
             this.image = element.source;

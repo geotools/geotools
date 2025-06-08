@@ -66,7 +66,7 @@ public class DB2ClobConverterFactory implements ConverterFactory {
         return converter;
     }
 
-    class DB2ClobConverter implements Converter {
+    static class DB2ClobConverter implements Converter {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

@@ -31,7 +31,7 @@ import org.geotools.swing.control.DnDListModel;
 import org.junit.Test;
 
 public class DnDListModelTest {
-    class Watcher implements ListDataListener {
+    static class Watcher implements ListDataListener {
         int changed = 0;
 
         int added = 0;

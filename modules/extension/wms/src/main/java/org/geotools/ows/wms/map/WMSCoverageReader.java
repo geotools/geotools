@@ -514,7 +514,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
      *
      * @author ian
      */
-    private class LayerStyle {
+    private static class LayerStyle {
         private Layer layer;
 
         private String style = "";

@@ -76,7 +76,7 @@ public class OracleDateConverterFactory implements ConverterFactory {
         return converter;
     }
 
-    class OracleDateConverter implements Converter {
+    static class OracleDateConverter implements Converter {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

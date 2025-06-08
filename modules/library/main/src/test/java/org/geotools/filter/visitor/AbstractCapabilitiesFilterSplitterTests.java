@@ -42,7 +42,7 @@ import org.locationtech.jts.geom.Envelope;
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  */
 public class AbstractCapabilitiesFilterSplitterTests {
-    public class TestAccessor implements ClientTransactionAccessor {
+    public static class TestAccessor implements ClientTransactionAccessor {
 
         private Filter updateFilter;
 

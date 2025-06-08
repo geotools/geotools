@@ -2149,7 +2149,7 @@ public class LabelCacheImpl implements LabelCache {
     }
 
     /** sorts a list of LineStrings by length (long=1st) */
-    private final class LineLengthComparator implements java.util.Comparator<LineString> {
+    private static final class LineLengthComparator implements java.util.Comparator<LineString> {
         @Override
         public int compare(LineString o1, LineString o2) {
             // sort big->small

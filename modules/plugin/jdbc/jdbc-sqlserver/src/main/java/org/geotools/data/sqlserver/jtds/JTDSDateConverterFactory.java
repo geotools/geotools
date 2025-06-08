@@ -88,7 +88,7 @@ public class JTDSDateConverterFactory implements ConverterFactory {
         return converter;
     }
 
-    class JTDSDateConverter implements Converter {
+    static class JTDSDateConverter implements Converter {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

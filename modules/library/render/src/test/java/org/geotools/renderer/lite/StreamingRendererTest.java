@@ -903,7 +903,7 @@ public class StreamingRendererTest {
         assertFalse(reprojected.isNull());
     }
 
-    private class StreamingRendererTester extends StreamingRenderer {
+    private static class StreamingRendererTester extends StreamingRenderer {
 
         /** This method is currently only used when densification is enabled */
         @Override

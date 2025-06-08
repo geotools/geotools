@@ -126,7 +126,7 @@ public class PointBuffers implements VectorProcess {
     }
 
     /** A generator that uses JTS buffer to create the buffer polygons */
-    public class MetricGenerator extends BufferGenerator {
+    public static class MetricGenerator extends BufferGenerator {
         UnitConverter converter;
 
         public MetricGenerator(Point center, Integer quadrantSegments, UnitConverter converter) {

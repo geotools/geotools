@@ -414,7 +414,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         return clientProperties;
     }
 
-    private class FeatureFinder implements Runnable {
+    private static class FeatureFinder implements Runnable {
 
         private Feature feature = null;
 

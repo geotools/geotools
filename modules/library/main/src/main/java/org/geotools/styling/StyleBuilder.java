@@ -1670,7 +1670,7 @@ public class StyleBuilder {
         return entry;
     }
 
-    public class EqualClasses {
+    public static class EqualClasses {
         int numberClasses;
         double[] breaks;
         double[] collection;

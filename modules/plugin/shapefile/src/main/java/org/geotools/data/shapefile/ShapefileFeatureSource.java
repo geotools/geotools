@@ -104,7 +104,7 @@ import org.locationtech.jts.geom.Polygon;
 class ShapefileFeatureSource extends ContentFeatureSource {
 
     /** Attribute extract that resolves empty PropertyName references to the default geometry where appropriate. */
-    private final class AbsoluteAttributeExtractor extends FilterAttributeExtractor {
+    private static final class AbsoluteAttributeExtractor extends FilterAttributeExtractor {
         private AbsoluteAttributeExtractor(SimpleFeatureType featureType) {
             super(featureType);
         }

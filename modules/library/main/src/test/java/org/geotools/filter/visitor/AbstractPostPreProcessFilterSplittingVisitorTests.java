@@ -35,7 +35,7 @@ import org.junit.Before;
 import org.locationtech.jts.geom.Envelope;
 
 public class AbstractPostPreProcessFilterSplittingVisitorTests {
-    public class TestAccessor implements ClientTransactionAccessor {
+    public static class TestAccessor implements ClientTransactionAccessor {
 
         private Filter updateFilter;
         private String attribute;

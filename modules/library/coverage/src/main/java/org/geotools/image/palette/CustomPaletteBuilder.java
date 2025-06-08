@@ -634,7 +634,7 @@ public final class CustomPaletteBuilder {
     }
 
     /** The node of color tree. */
-    protected class ColorNode {
+    protected static class ColorNode {
         public boolean isLeaf;
 
         public int childCount;

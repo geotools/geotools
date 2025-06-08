@@ -153,7 +153,7 @@ class MemoryMapCache {
      *
      * @author Andrea Aime
      */
-    public class BufferCleaner implements ValueCleaner<MappingKey, MappedByteBuffer> {
+    public static class BufferCleaner implements ValueCleaner<MappingKey, MappedByteBuffer> {
 
         @Override
         public void clean(MappingKey key, MappedByteBuffer buffer) {

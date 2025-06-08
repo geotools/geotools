@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -92,7 +93,8 @@ public class JGrassColorTable {
             }
             return;
         }
-        try (BufferedReader rdr = new BufferedReader(new InputStreamReader(new FileInputStream(colrFile)))) {
+        try (BufferedReader rdr =
+                new BufferedReader(new InputStreamReader(new FileInputStream(colrFile), StandardCharsets.UTF_8))) {
             String line = rdr.readLine();
             if (line == null) {
                 if (colrFile.delete()) {

@@ -50,6 +50,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -1662,7 +1663,7 @@ public class NetCDFMosaicReaderTest {
 
         // check that the NetCDF database has been cleaned too
         Properties props = new Properties();
-        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
+        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"), StandardCharsets.UTF_8)) {
             props.load(fr);
         }
         JDBCDataStore store = new H2DataStoreFactory().createDataStore(DataUtilities.toConnectionParameters(props));
@@ -1778,7 +1779,7 @@ public class NetCDFMosaicReaderTest {
 
         // check that the NetCDF database has been cleaned too
         Properties props = new Properties();
-        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
+        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"), StandardCharsets.UTF_8)) {
             props.load(fr);
         }
         JDBCDataStore store = new H2DataStoreFactory().createDataStore(DataUtilities.toConnectionParameters(props));

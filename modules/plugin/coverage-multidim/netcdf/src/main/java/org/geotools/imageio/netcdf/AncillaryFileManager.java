@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -266,7 +267,7 @@ public class AncillaryFileManager implements FileSetManager {
 
         // Selection of the hashcode for creating a unique directory of the auxiliary files
         MessageDigest md = MessageDigest.getInstance("SHA-1");
-        md.update(mainFilePath.getBytes());
+        md.update(mainFilePath.getBytes(StandardCharsets.UTF_8));
         String hashCode = convertToHex(md.digest());
 
         String mainName = FilenameUtils.getName(mainFilePath);

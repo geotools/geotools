@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -125,12 +126,12 @@ public class DocumentWriter {
 
             File f2 = new File(
                     f.getParentFile(), f.getName().substring(0, f.getName().indexOf(".")) + ".xsd");
-            try (FileWriter wf = new FileWriter(f2)) {
+            try (FileWriter wf = new FileWriter(f2, StandardCharsets.UTF_8)) {
                 writeSchema(schema, wf, hints2);
             }
         }
 
-        try (FileWriter wf = new FileWriter(f)) {
+        try (FileWriter wf = new FileWriter(f, StandardCharsets.UTF_8)) {
             writeDocument(value, schema, wf, hints);
         }
     }
@@ -183,7 +184,7 @@ public class DocumentWriter {
             throw new IOException("Cannot write to " + f);
         }
 
-        try (FileWriter wf = new FileWriter(f)) {
+        try (FileWriter wf = new FileWriter(f, StandardCharsets.UTF_8)) {
             writeFragment(value, schema, wf, hints);
         }
     }

@@ -20,6 +20,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /** Synchronized writer dumping lines to a text file, helps writing multiple lines to files */
 class LogWriter implements AutoCloseable {
@@ -27,7 +28,7 @@ class LogWriter implements AutoCloseable {
     BufferedWriter writer;
 
     public LogWriter(File file) throws IOException {
-        this.writer = new BufferedWriter(new FileWriter(file));
+        this.writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
     }
 
     public synchronized void addLines(String... lines) throws IOException {

@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.data.DataStore;
@@ -46,7 +47,7 @@ public class PropertyExamples {
             }
             File example = new File(tmp, "example.properties");
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(example));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(example, StandardCharsets.UTF_8));
             writer.write("_=id:Integer,name:String,geom:Point");
             writer.newLine();
             writer.write("fid1=1|jody garnett|POINT(0 0)");

@@ -13,6 +13,7 @@ package org.geotools.cql;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -40,7 +41,7 @@ public class ECQLExamples {
     public static void main(String[] args) {
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             for (; ; ) {
 
                 System.out.println("Select the ECQL Example:");

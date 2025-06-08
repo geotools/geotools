@@ -13,6 +13,7 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
@@ -73,7 +74,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
         this.csvWriter = new CSVWriter(
-                new FileWriter(this.temp),
+                new FileWriter(this.temp, StandardCharsets.UTF_8),
                 csvStrategy.getSeparator(),
                 csvStrategy.getQuotechar(),
                 csvStrategy.getEscapechar(),
@@ -180,7 +181,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
             if (prjFile.exists()) {
                 prjFile.delete();
             }
-            try (FileWriter writer = new FileWriter(prjFile)) {
+            try (FileWriter writer = new FileWriter(prjFile, StandardCharsets.UTF_8)) {
                 writer.write(((Formattable) csvFileState.getCrs()).toWKT(Citations.EPSG, 2));
             }
         }

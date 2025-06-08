@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -103,7 +104,7 @@ public class CSVFileState {
     public CsvReader openCSVReader() throws IOException {
         Reader reader;
         if (file != null) {
-            reader = new BufferedReader(new FileReader(file));
+            reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
         } else {
             reader = new StringReader(dataInput);
         }

@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,7 +57,7 @@ public class ListStoredQueriesResponse extends WFSResponse {
                 rawResponse = buff.toByteArray();
             }
             if (RESPONSES.isLoggable(Level.FINE)) {
-                RESPONSES.fine("Full ListStoredQueries response: " + new String(rawResponse));
+                RESPONSES.fine("Full ListStoredQueries response: " + new String(rawResponse, StandardCharsets.UTF_8));
             }
             try {
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();

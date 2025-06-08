@@ -43,6 +43,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -391,7 +392,7 @@ public class HeterogenousCRSTest {
         // a single request will cause the deadlock in this case (but we try with a pool
         // nevertheless, to be extra sure)
         File datastoreProperties = new File(testDirectory, "datastore.properties");
-        try (FileWriter out = new FileWriter(datastoreProperties)) {
+        try (FileWriter out = new FileWriter(datastoreProperties, StandardCharsets.UTF_8)) {
             out.write("database=hetero_concurrent\n");
             out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n"
                     + "dbtype=h2\n"
@@ -1041,11 +1042,11 @@ public class HeterogenousCRSTest {
         // set up property selection
         File indexerFile = new File(testDirectory, "indexer.properties");
         Properties props = new Properties();
-        try (FileReader in = new FileReader(indexerFile)) {
+        try (FileReader in = new FileReader(indexerFile, StandardCharsets.UTF_8)) {
             props.load(in);
         }
         props.put(Utils.Prop.PROPERTY_SELECTION, "true");
-        try (FileWriter out = new FileWriter(indexerFile)) {
+        try (FileWriter out = new FileWriter(indexerFile, StandardCharsets.UTF_8)) {
             props.store(out, null);
         }
 

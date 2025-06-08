@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -657,7 +658,7 @@ public class ImageMosaicFootprintsTest {
     private Geometry readWktGeometry(String fileName) throws FileNotFoundException, IOException, ParseException {
         WKTReader wktReader = new WKTReader();
         File file = TestData.file(this, "footprint_wkts" + File.separatorChar + fileName);
-        try (FileReader fileReader = new FileReader(file)) {
+        try (FileReader fileReader = new FileReader(file, StandardCharsets.UTF_8)) {
             return wktReader.read(fileReader);
         }
     }

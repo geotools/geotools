@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FeatureReader;
@@ -123,7 +124,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     private String property(String key) throws IOException {
         File file = new File(store.dir, typeName + ".properties");
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                 if (line.startsWith(key + "=")) {
                     return line.substring(key.length() + 1);

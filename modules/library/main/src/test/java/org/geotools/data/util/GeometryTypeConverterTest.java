@@ -3,6 +3,7 @@ package org.geotools.data.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +57,7 @@ public class GeometryTypeConverterTest {
         factories = Converters.getConverterFactories(Geometry.class, Geometry.class);
         File testData = TestData.file(this, "converter/tests.txt");
         Assert.assertNotNull("Cannot find test file (converter.txt)", testData);
-        try (BufferedReader reader = new BufferedReader(new FileReader(testData))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(testData, StandardCharsets.UTF_8))) {
             String line = null;
 
             while ((line = reader.readLine()) != null) tests.add(line);

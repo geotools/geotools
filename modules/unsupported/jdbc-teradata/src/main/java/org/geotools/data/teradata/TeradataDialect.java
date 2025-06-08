@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -218,7 +219,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             // TODO: use WKB instead of WKT
             String wkt = new WKTWriter().write(g);
             if (wkt.length() > 64000) {
-                ByteArrayInputStream bin = new ByteArrayInputStream(wkt.getBytes());
+                ByteArrayInputStream bin = new ByteArrayInputStream(wkt.getBytes(StandardCharsets.UTF_8));
                 ps.setAsciiStream(column, bin, bin.available());
             } else {
                 ps.setString(column, wkt);
@@ -276,7 +277,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 return null;
             }
             try (InputStream in = clob.getAsciiStream()) {
-                return new WKTReader(factory).read(new InputStreamReader(in));
+                return new WKTReader(factory).read(new InputStreamReader(in, StandardCharsets.UTF_8));
             }
         } catch (ParseException e) {
             throw (IOException) new IOException("Error parsing geometry").initCause(e);

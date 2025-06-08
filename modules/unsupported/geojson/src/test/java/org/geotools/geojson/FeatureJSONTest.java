@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
@@ -111,7 +112,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     @Test
     public void testMultipleFeatureArrayWritesWithOutputStreamWriter() throws Exception {
         try (OutputStream outputStream = new ByteArrayOutputStream();
-                OutputStreamWriter writer = new OutputStreamWriter(outputStream)) {
+                OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
             fjson.writeFeature(featureArray(1), writer);
             writer.write(",");
             fjson.writeFeature(featureArray(2), writer);

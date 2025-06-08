@@ -186,22 +186,22 @@ public class DbaseFileTest extends TestCaseSupport {
 
         // A null string should result in padding
         String formattedString = formatter.getFieldString(sizeInBytes, null);
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("        ", formattedString);
 
         // A short string will be padded
         formattedString = formatter.getFieldString(sizeInBytes, "cat");
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("cat     ", formattedString);
 
         // A string that has the right number of bytes needs no padding
         formattedString = formatter.getFieldString(sizeInBytes, "12345678");
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("12345678", formattedString);
 
         // larger strings get trucated
         formattedString = formatter.getFieldString(sizeInBytes, "12345678910");
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("12345678", formattedString);
     }
 
@@ -214,22 +214,22 @@ public class DbaseFileTest extends TestCaseSupport {
 
         // a short string will be padded
         String formattedString = formatter.getFieldString(sizeInBytes, "\u0412");
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("\u0412  ", formattedString);
 
         // a string of size btyes need no padding
         formattedString = formatter.getFieldString(sizeInBytes, "\u0412\u0412");
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("\u0412\u0412", formattedString);
 
         // large strings get trucated
         formattedString = formatter.getFieldString(sizeInBytes, "\u0412\u0412\u0412");
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("\u0412\u0412", formattedString);
 
         // if a multi-byte character is the last to be removed then padding may be required to
         formattedString = formatter.getFieldString(sizeInBytes, "\u0412A\u0412\u0412");
-        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals(sizeInBytes, formattedString.getBytes(StandardCharsets.UTF_8).length);
         assertEquals("\u0412A ", formattedString);
     }
 
@@ -248,6 +248,6 @@ public class DbaseFileTest extends TestCaseSupport {
 
         String formattedString = formatter.getFieldString(8, test);
         assertEquals("\u0412A cat ", formattedString);
-        assertEquals(8, formattedString.getBytes().length);
+        assertEquals(8, formattedString.getBytes(StandardCharsets.UTF_8).length);
     }
 }

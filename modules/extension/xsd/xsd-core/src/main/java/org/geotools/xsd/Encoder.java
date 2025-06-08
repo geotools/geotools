@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1119,7 +1120,7 @@ public class Encoder {
     public String encodeAsString(Object object, QName name) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         encode(object, name, out);
-        return new String(out.toByteArray());
+        return new String(out.toByteArray(), StandardCharsets.UTF_8);
     }
 
     protected void closeIterator(Iterator iterator, Object source) {

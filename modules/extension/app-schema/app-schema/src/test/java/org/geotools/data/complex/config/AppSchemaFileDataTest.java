@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -251,8 +252,8 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         String relativePath;
         String absolutePath = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePathIn));
-                PrintWriter writer = new PrintWriter(new FileWriter(filePathOut))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePathIn, StandardCharsets.UTF_8));
+                PrintWriter writer = new PrintWriter(new FileWriter(filePathOut, StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 // change the file path from relative to absolute

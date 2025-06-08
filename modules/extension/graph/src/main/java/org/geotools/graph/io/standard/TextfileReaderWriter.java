@@ -21,6 +21,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.structure.Edge;
@@ -59,7 +60,8 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter implemen
         GraphGenerator generator = (GraphGenerator) getProperty(GENERATOR);
 
         // create in the file reader
-        try (BufferedReader in = new BufferedReader(new FileReader((String) getProperty(FILENAME)))) {
+        try (BufferedReader in =
+                new BufferedReader(new FileReader((String) getProperty(FILENAME), StandardCharsets.UTF_8))) {
 
             // read the delimiter property
             String delim = (String) getProperty(DELIMITER);
@@ -85,7 +87,8 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter implemen
     @Override
     public void write(Graph g) throws Exception {
         // create the file writer
-        try (BufferedWriter out = new BufferedWriter(new FileWriter((String) getProperty(FILENAME)))) {
+        try (BufferedWriter out =
+                new BufferedWriter(new FileWriter((String) getProperty(FILENAME), StandardCharsets.UTF_8))) {
 
             // check NODES property
             if (getProperty(NODES) != null) {

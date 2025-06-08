@@ -29,6 +29,7 @@ import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -304,7 +305,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         if (crs != null) {
             String s = toSingleLineWKT(crs);
 
-            try (FileWriter prjWriter = new FileWriter(prjStoragefile.getFile())) {
+            try (FileWriter prjWriter = new FileWriter(prjStoragefile.getFile(), StandardCharsets.UTF_8)) {
                 prjWriter.write(s);
             }
         } else {
@@ -408,7 +409,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         String s = toSingleLineWKT(crs);
         StorageFile storageFile = shpFiles.getStorageFile(PRJ);
 
-        try (FileWriter out = new FileWriter(storageFile.getFile())) {
+        try (FileWriter out = new FileWriter(storageFile.getFile(), StandardCharsets.UTF_8)) {
             out.write(s);
         }
         storageFile.replaceOriginal();

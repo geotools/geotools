@@ -15,6 +15,7 @@ import com.csvreader.CsvWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
@@ -74,7 +75,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         File file = ((CSVDataStore) state.getEntry().getDataStore()).file;
         File directory = file.getParentFile();
         this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "csv", directory);
-        this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
+        this.csvWriter = new CsvWriter(new FileWriter(this.temp, StandardCharsets.UTF_8), ',');
         this.delegate = new CSVFeatureReader(state, query);
         this.csvWriter.writeRecord(delegate.reader.getHeaders());
         String latField = "lat";

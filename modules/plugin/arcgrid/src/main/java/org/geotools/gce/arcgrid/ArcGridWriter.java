@@ -28,6 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -419,7 +420,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         File prjFile = new File(ascFile.getParent(), prjName);
 
         // create the file
-        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(prjFile))) {
+        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(prjFile, StandardCharsets.UTF_8))) {
             // write information on crs
             fileWriter.write(crs.toWKT());
         }

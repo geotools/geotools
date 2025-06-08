@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -92,7 +93,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
     }
 
     public PropertyFeatureReader(String namespace, File file, GeometryFactory geometryFactory) throws IOException {
-        reader = new BufferedReader(new FileReader(file));
+        reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
 
         // read until "_=";
         while ((line = reader.readLine()) != null) {

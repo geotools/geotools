@@ -273,7 +273,7 @@ public class XMLEncoderTest {
                     string);
         }
         ByteArrayInputStream byteStream =
-                new ByteArrayInputStream(output.toString().getBytes());
+                new ByteArrayInputStream(output.toString().getBytes(StandardCharsets.UTF_8));
         Filter roundTrip = (Filter) DocumentFactory.getInstance(byteStream, null, Level.OFF);
         Assert.assertEquals(filter, roundTrip);
     }

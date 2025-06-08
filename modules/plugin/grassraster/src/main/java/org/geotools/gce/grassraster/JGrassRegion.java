@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -492,7 +493,7 @@ public class JGrassRegion {
      * @param region the region to be set to the region file informations.
      */
     private void readRegionFromFile(String filePath, JGrassRegion region) throws IOException {
-        try (BufferedReader windReader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader windReader = new BufferedReader(new FileReader(filePath, StandardCharsets.UTF_8))) {
             LinkedHashMap<String, String> store = new LinkedHashMap<>();
             String line;
             while ((line = windReader.readLine()) != null) {
@@ -515,7 +516,8 @@ public class JGrassRegion {
                         throw new IOException(
                                 "The reclass cellhead file doesn't seem to exist. Unable to read the file region.");
                     }
-                    try (BufferedReader rmReader = new BufferedReader(new FileReader(reclassMap))) {
+                    try (BufferedReader rmReader =
+                            new BufferedReader(new FileReader(reclassMap, StandardCharsets.UTF_8))) {
                         line = rmReader.readLine();
                     }
                 }
@@ -730,13 +732,13 @@ public class JGrassRegion {
             } else {
                 // ok, file doesn't really exist, just create a blank window
                 // first
-                try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
+                try (BufferedWriter out = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
                     out.write(BLANK_REGION);
                 }
             }
         }
         LinkedHashMap<String, String> store = new LinkedHashMap<>();
-        try (BufferedReader windReader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader windReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             while ((line = windReader.readLine()) != null) {
                 StringTokenizer tok = new StringTokenizer(line, ":"); // $NON-NLS-1$
                 if (tok.countTokens() == 2) {
@@ -774,7 +776,7 @@ public class JGrassRegion {
             data.append(entry.getKey() + ":   " + entry.getValue() + "\n"); // $NON-NLS-1$ //$NON-NLS-2$
         }
 
-        try (BufferedWriter windWriter = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter windWriter = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             windWriter.write(data.toString());
             windWriter.flush();
         }

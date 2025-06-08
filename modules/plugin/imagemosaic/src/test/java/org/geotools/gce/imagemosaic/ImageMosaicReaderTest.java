@@ -68,6 +68,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -449,7 +450,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, "water_temp3");
 
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/water_temp3/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/water_temp3/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -584,7 +586,8 @@ public class ImageMosaicReaderTest {
 
         // place H2 file in the dir
 
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/water_temp5/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/water_temp5/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -608,7 +611,7 @@ public class ImageMosaicReaderTest {
         assertTrue("org.geotools.gce.geotiff.GeoTiffFormat"
                 .equalsIgnoreCase((String) properties.get(Prop.SUGGESTED_FORMAT)));
 
-        try (FileWriter fw = new FileWriter(mosaicFile)) {
+        try (FileWriter fw = new FileWriter(mosaicFile, StandardCharsets.UTF_8)) {
             assertNotNull(properties.remove("TypeName"));
             properties.store(fw, "");
         }
@@ -644,7 +647,7 @@ public class ImageMosaicReaderTest {
 
         // place H2 file in the dir
         File datastoreProperties = new File(workDir, "datastore.properties");
-        try (FileWriter out = new FileWriter(datastoreProperties)) {
+        try (FileWriter out = new FileWriter(datastoreProperties, StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -800,7 +803,8 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, "watertemp1/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "watertemp1");
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/watertemp1/indexer.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/watertemp1/indexer.properties"), StandardCharsets.UTF_8)) {
             out.write("TimeAttribute=ingestion\n");
             out.write("ElevationAttribute=elevation\n");
             out.write("Schema=*the_geom:Polygon,location:String,ingestion:java.util.Date,elevation:Double\n");
@@ -1122,7 +1126,8 @@ public class ImageMosaicReaderTest {
         File zipFile = new File(workDir, "temperature.zip");
         FileUtils.copyFile(TestData.file(this, "temperature.zip"), zipFile);
         TestData.unzipFile(this, "emptyMosaic/temperature.zip");
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/emptyMosaic/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/emptyMosaic/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -1218,8 +1223,8 @@ public class ImageMosaicReaderTest {
         File zipFile = new File(workDir, "temperature2.zip");
         FileUtils.copyFile(TestData.file(this, "temperature2.zip"), zipFile);
         TestData.unzipFile(this, "emptyMosaicXML/temperature2.zip");
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), "/emptyMosaicXML/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/emptyMosaicXML/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -2610,7 +2615,8 @@ public class ImageMosaicReaderTest {
         // other than its
         // name, but the name of the store is fixed to match the one of the coverage)
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(mosaicDirectory, "/datastore.properties"))) {
+        try (FileWriter out =
+                new FileWriter(new File(mosaicDirectory, "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3089,8 +3095,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3134,8 +3140,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove2\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3180,8 +3186,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove3\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3226,8 +3232,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove4\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3758,7 +3764,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, "stop-it");
 
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/stop-it/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/stop-it/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -4024,7 +4031,7 @@ public class ImageMosaicReaderTest {
 
         // place H2 file in the dir
         File dataStoreProperties = new File(testMosaic, "datastore.properties");
-        try (FileWriter out = new FileWriter(dataStoreProperties)) {
+        try (FileWriter out = new FileWriter(dataStoreProperties, StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -4040,7 +4047,7 @@ public class ImageMosaicReaderTest {
 
         // rename the table
         Properties h2Connection = new Properties();
-        try (FileReader fr = new FileReader(dataStoreProperties)) {
+        try (FileReader fr = new FileReader(dataStoreProperties, StandardCharsets.UTF_8)) {
             h2Connection.load(fr);
         }
         h2Connection.put("database", new File(testMosaic, "imagemosaic").getCanonicalPath());
@@ -4950,7 +4957,7 @@ public class ImageMosaicReaderTest {
         checkConcurrentHarvestAndRemove(
                 f -> {
                     // place H2 file in the dir
-                    try (FileWriter out = new FileWriter(new File(f, "datastore.properties"))) {
+                    try (FileWriter out = new FileWriter(new File(f, "datastore.properties"), StandardCharsets.UTF_8)) {
                         out.write("database=imagemosaic\n");
                         out.write(H2_SAMPLE_PROPERTIES);
                         out.flush();
@@ -5270,7 +5277,7 @@ public class ImageMosaicReaderTest {
         // Having a properties file with ArcGridFormat as suggested Format
         // although images are RGBA. The bad format will not be used
         // (the file might already be there and have a suggested format, so, overwriting)
-        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"))) {
+        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"), StandardCharsets.UTF_8)) {
             out.write("SuggestedFormat=org.geotools.gce.arcgrid.ArcGridFormat");
             out.flush();
         }
@@ -5374,7 +5381,8 @@ public class ImageMosaicReaderTest {
         ImageMosaicReader reader = format.getReader(workDir);
         try {
             // check the property was transferred to the main mosaic config
-            try (FileReader fr = new FileReader(new File(workDir, workDirName + ".properties"))) {
+            try (FileReader fr =
+                    new FileReader(new File(workDir, workDirName + ".properties"), StandardCharsets.UTF_8)) {
                 Properties p = new Properties();
                 p.load(fr);
                 assertEquals("true", p.getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS));

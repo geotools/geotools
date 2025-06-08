@@ -29,6 +29,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -261,7 +262,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         final String name = destFile.getName();
         final File tfw = new File(parentFile, name.replace("tif", "tfw"));
         final File prj = new File(parentFile, name.replace("tif", "prj"));
-        try (final BufferedWriter outW = new BufferedWriter(new FileWriter(prj))) {
+        try (final BufferedWriter outW = new BufferedWriter(new FileWriter(prj, StandardCharsets.UTF_8))) {
             new WorldFileWriter(tfw, tr); // side effect of creation writes the file
             outW.write(gc.getCoordinateReferenceSystem().toWKT());
         }

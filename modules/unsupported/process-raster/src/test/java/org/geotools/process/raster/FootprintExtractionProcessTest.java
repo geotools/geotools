@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -123,7 +124,8 @@ public class FootprintExtractionProcessTest {
                 }
                 // write to file
                 if (outputFile != null) {
-                    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputFile))) {
+                    try (BufferedWriter bufferedWriter =
+                            new BufferedWriter(new FileWriter(outputFile, StandardCharsets.UTF_8))) {
                         bufferedWriter.write(wkt.toString());
                     }
                 }
@@ -209,7 +211,7 @@ public class FootprintExtractionProcessTest {
     }
 
     private static Geometry wktRead(File geometryFile) throws IOException, ParseException {
-        try (FileReader fileReader = new FileReader(geometryFile)) {
+        try (FileReader fileReader = new FileReader(geometryFile, StandardCharsets.UTF_8)) {
             WKTReader wktReader = new WKTReader();
             return wktReader.read(fileReader);
         }

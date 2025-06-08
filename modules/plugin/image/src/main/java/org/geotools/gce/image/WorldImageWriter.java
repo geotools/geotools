@@ -31,6 +31,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
 import javax.imageio.stream.ImageOutputStream;
@@ -197,7 +198,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
     private static void createProjectionFile(
             final String baseFile, final CoordinateReferenceSystem coordinateReferenceSystem) throws IOException {
         final File prjFile = new File(new StringBuffer(baseFile).append(".prj").toString());
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(prjFile))) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(prjFile, StandardCharsets.UTF_8))) {
             out.write(coordinateReferenceSystem.toWKT());
         }
     }
@@ -252,7 +253,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         if (!it.hasNext()) throw new DataSourceException("Unable to parse extension " + extension);
         buff.append((String) it.next());
         final File worldFile = new File(buff.toString());
-        try (PrintWriter out = new PrintWriter(new FileOutputStream(worldFile))) {
+        try (PrintWriter out = new PrintWriter(new FileOutputStream(worldFile), false, StandardCharsets.UTF_8)) {
             out.println(xPixelSize);
             out.println(rotation1);
             out.println(rotation2);

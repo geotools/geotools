@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -617,7 +618,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
         double yMin = 0.0;
 
         // getting a buffered reader
-        try (BufferedReader in = new BufferedReader(new FileReader(file2Parse))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(file2Parse, StandardCharsets.UTF_8))) {
 
             // parsing the lines
             String str = null;

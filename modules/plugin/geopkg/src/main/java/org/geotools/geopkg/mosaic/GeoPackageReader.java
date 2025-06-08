@@ -524,11 +524,11 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             topTile = (int) Math.floor((offsetY - maxY) / resY);
             rightTile = (int) Math.ceil((maxX - offsetX) / resX);
             // but check if the extra tile is completely outside, and if so, remove
-            if (offsetX + (rightTile * resX) > maxX) {
+            if (offsetX + rightTile * resX > maxX) {
                 rightTile -= 1;
             }
             bottomTile = (int) Math.ceil((offsetY - minY) / resY);
-            if (offsetY - (bottomTile * resY) < minY) {
+            if (offsetY - bottomTile * resY < minY) {
                 bottomTile -= 1;
             }
             return this;

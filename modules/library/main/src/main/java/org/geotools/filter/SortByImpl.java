@@ -54,8 +54,8 @@ public class SortByImpl implements SortBy {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((propertyName == null) ? 0 : propertyName.hashCode());
-        result = prime * result + ((sortOrder == null) ? 0 : sortOrder.hashCode());
+        result = prime * result + (propertyName == null ? 0 : propertyName.hashCode());
+        result = prime * result + (sortOrder == null ? 0 : sortOrder.hashCode());
         return result;
     }
 

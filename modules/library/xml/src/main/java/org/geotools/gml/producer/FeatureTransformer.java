@@ -209,7 +209,7 @@ public class FeatureTransformer extends TransformerBase {
     public void setGmlPrefixing(boolean prefixGml) {
         this.prefixGml = prefixGml;
 
-        if (prefixGml && (gmlAtts == null)) {
+        if (prefixGml && gmlAtts == null) {
             gmlAtts = new HashSet<>();
             loadGmlAttributes(gmlAtts);
         }
@@ -620,7 +620,7 @@ public class FeatureTransformer extends TransformerBase {
 
         public void startFeatureCollection() {
             try {
-                String element = (getDefaultPrefix() == null) ? fc : (getDefaultPrefix() + ":" + fc);
+                String element = getDefaultPrefix() == null ? fc : getDefaultPrefix() + ":" + fc;
                 AttributesImpl atts = new AttributesImpl();
 
                 if (lockId != null) {
@@ -749,7 +749,8 @@ public class FeatureTransformer extends TransformerBase {
                             // cite tests, and having this check before the string
                             // equals should get us better performance.  Albeit
                             // very slightly, but this method gets called millions
-                            && (name.equals("boundedBy") && value instanceof Geometry)) {
+                            && name.equals("boundedBy")
+                            && value instanceof Geometry) {
 
                         Envelope envelopeInternal = ((Geometry) value).getEnvelopeInternal();
                         CoordinateReferenceSystem crs = null;
@@ -907,7 +908,7 @@ public class FeatureTransformer extends TransformerBase {
                     // HACK pt.2 see line 511, if the cite stuff wanted to hack
                     // in a boundedBy geometry, we don't want to do it twice.
                     // So if
-                    if (!prefixGml || (f.getProperty("boundedBy") == null)) {
+                    if (!prefixGml || f.getProperty("boundedBy") == null) {
                         writeBounds(f.getBounds());
                     }
                 }

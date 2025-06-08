@@ -201,7 +201,7 @@ public class TWKBReader {
     }
 
     private int zigzagDecode(int input) {
-        return (input >>> 1) ^ (-(input & 1));
+        return input >>> 1 ^ -(input & 1);
     }
 
     private TWKBMetadata readMetadata() throws IOException {

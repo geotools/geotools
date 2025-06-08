@@ -91,7 +91,7 @@ public class FilterSAXParser {
     public void start(short filterType) throws IllegalFilterException {
         LOGGER.finest("starting filter type " + filterType);
 
-        if ((filterType == AbstractFilter.FID) && !curState.equals("fid")) {
+        if (filterType == AbstractFilter.FID && !curState.equals("fid")) {
             LOGGER.finer("creating the FID filter");
             curFilter = new FidFilterImpl(Collections.emptySet());
         } else if (AbstractFilter.isGeometryDistanceFilter(filterType)) {
@@ -264,13 +264,13 @@ public class FilterSAXParser {
 
                 String wildcard = (String) attributes.get("wildCard");
 
-                if ((wildcard == null) || (wildcard.length() != 1)) {
+                if (wildcard == null || wildcard.length() != 1) {
                     throw new IllegalFilterException(
                             "like filter -- required attribute 'wildCard' missing or not exactly 1 char long.  Capitalization?");
                 }
                 String singleChar = (String) attributes.get("singleChar");
 
-                if ((singleChar == null) || (singleChar.length() != 1)) {
+                if (singleChar == null || singleChar.length() != 1) {
                     throw new IllegalFilterException(
                             "like filter -- required attribute 'singleChar' missing  or not exactly 1 char long.  Capitalization?");
                 }
@@ -279,7 +279,7 @@ public class FilterSAXParser {
                 if (escapeChar == null) // totally against spec, but...
                 escapeChar = (String) attributes.get("escapeChar");
 
-                if ((escapeChar == null) || (escapeChar.length() != 1)) {
+                if (escapeChar == null || escapeChar.length() != 1) {
                     throw new IllegalFilterException(
                             "like filter -- required attribute 'escape' missing  or not exactly 1 char long.  Capitalization?");
                 }
@@ -344,11 +344,11 @@ public class FilterSAXParser {
      * @throws IllegalFilterException if the filter type is not recognized.
      */
     private static String setInitialState(short filterType) throws IllegalFilterException {
-        if ((filterType == AbstractFilter.BETWEEN)
-                || (filterType == AbstractFilter.NULL)
-                || (filterType == AbstractFilter.LIKE)) {
+        if (filterType == AbstractFilter.BETWEEN
+                || filterType == AbstractFilter.NULL
+                || filterType == AbstractFilter.LIKE) {
             return "attribute";
-        } else if ((filterType == AbstractFilter.FID)) {
+        } else if (filterType == AbstractFilter.FID) {
             return "fid";
         } else if (AbstractFilter.isCompareFilter(filterType) || AbstractFilter.isGeometryFilter(filterType)) {
             return "leftValue";
@@ -413,6 +413,6 @@ public class FilterSAXParser {
      * @return <tt>true</tt> if the current state is either complete or fid
      */
     private boolean isComplete() {
-        return (curState.equals("complete") || curState.equals("fid"));
+        return curState.equals("complete") || curState.equals("fid");
     }
 }

@@ -69,7 +69,7 @@ public class QueryCapabilities {
      *     attribtue/order pairs
      */
     public boolean supportsSorting(SortBy... sortAttributes) {
-        return (sortAttributes == null) || (sortAttributes.length == 0);
+        return sortAttributes == null || sortAttributes.length == 0;
     }
 
     /**

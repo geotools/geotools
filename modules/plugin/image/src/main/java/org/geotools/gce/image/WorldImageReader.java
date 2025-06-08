@@ -161,7 +161,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
             // /////////////////////////////////////////////////////////////////////
             if (input instanceof URL) {
                 // URL that point to a file
-                final URL sourceURL = ((URL) input);
+                final URL sourceURL = (URL) input;
                 if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
                     String auth = sourceURL.getAuthority();
                     String path = sourceURL.getPath();
@@ -198,7 +198,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
                 this.parentPath = sourceFile.getParent();
                 this.coverageName = filename;
                 final int dotIndex = coverageName.lastIndexOf(".");
-                coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
+                coverageName = dotIndex == -1 ? coverageName : coverageName.substring(0, dotIndex);
             } else if (input instanceof URL) input = ((URL) input).openStream();
             // //
             //
@@ -319,10 +319,8 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
         if (numOverviews >= 1) {
             overViewResolutions = new double[numOverviews][2];
             for (int i = 0; i < numOverviews; i++) {
-                overViewResolutions[i][0] =
-                        (highestRes[0] * this.originalGridRange.getSpan(0)) / reader.getWidth(i + 1);
-                overViewResolutions[i][1] =
-                        (highestRes[1] * this.originalGridRange.getSpan(1)) / reader.getHeight(i + 1);
+                overViewResolutions[i][0] = highestRes[0] * this.originalGridRange.getSpan(0) / reader.getWidth(i + 1);
+                overViewResolutions[i][1] = highestRes[1] * this.originalGridRange.getSpan(1) / reader.getHeight(i + 1);
             }
         } else overViewResolutions = null;
     }
@@ -454,7 +452,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
      */
     private boolean WMSRequest(Object input) {
         // TODO do we need the requested envelope?
-        if (input instanceof URL && (((URL) input).getProtocol().equalsIgnoreCase("http"))) {
+        if (input instanceof URL && ((URL) input).getProtocol().equalsIgnoreCase("http")) {
             try {
                 // getting the query
                 final String query =
@@ -514,7 +512,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
     private void readCRS() throws IOException {
 
         // check to see if there is a projection file
-        if (source instanceof File || (source instanceof URL && (((URL) source).getProtocol() == "file"))) {
+        if (source instanceof File || source instanceof URL && ((URL) source).getProtocol() == "file") {
             // getting name for the prj file
             final String sourceAsString;
 
@@ -562,7 +560,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
     private void prepareWorldImageGridToWorldTransform() throws IOException {
 
         // getting name and extension
-        final String base = (parentPath != null)
+        final String base = parentPath != null
                 ? new StringBuffer(this.parentPath)
                         .append(File.separator)
                         .append(coverageName)

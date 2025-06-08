@@ -156,8 +156,8 @@ public class WMTSTileFactory extends TileFactory {
         CoordinateSystem coordinateSystem = crs.getCoordinateSystem();
 
         double pixelSpan = getPixelSpan(tileMatrix);
-        double tileSpanY = (tileMatrix.getTileHeight() * pixelSpan);
-        double tileSpanX = (tileMatrix.getTileWidth() * pixelSpan);
+        double tileSpanY = tileMatrix.getTileHeight() * pixelSpan;
+        double tileSpanX = tileMatrix.getTileWidth() * pixelSpan;
 
         double tileMatrixMinX;
         double tileMatrixMaxY;

@@ -474,7 +474,7 @@ public class DataUtilities {
             }
         }
 
-        if ((countA == countB) && (match == countA)) {
+        if (countA == countB && match == countA) {
             // all attributes in typeA agreed with typeB
             // (same order and type)
             return 0;
@@ -938,7 +938,7 @@ public class DataUtilities {
      */
     public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(final SimpleFeature... features)
             throws IOException {
-        if ((features == null) || (features.length == 0)) {
+        if (features == null || features.length == 0) {
             throw new IOException("Provided features where empty");
         }
 
@@ -963,7 +963,7 @@ public class DataUtilities {
 
             @Override
             public boolean hasNext() {
-                return (array != null) && (offset < (array.length - 1));
+                return array != null && offset < array.length - 1;
             }
 
             @Override
@@ -983,7 +983,7 @@ public class DataUtilities {
     public static SimpleFeatureSource source(final SimpleFeature... featureArray) {
         final SimpleFeatureType featureType;
 
-        if ((featureArray == null) || (featureArray.length == 0)) {
+        if (featureArray == null || featureArray.length == 0) {
             featureType = FeatureTypes.EMPTY;
         } else {
             featureType = featureArray[0].getFeatureType();
@@ -1653,7 +1653,7 @@ public class DataUtilities {
             URI namespace)
             throws SchemaException {
 
-        if ((properties == null) && (override == null)) {
+        if (properties == null && override == null) {
             return featureType;
         }
 
@@ -1669,10 +1669,10 @@ public class DataUtilities {
                 && featureType.getTypeName().equals(typeName)
                 && Utilities.equals(featureType.getName().getNamespaceURI(), namespaceURI);
 
-        for (int i = 0; (i < featureType.getAttributeCount()) && same; i++) {
+        for (int i = 0; i < featureType.getAttributeCount() && same; i++) {
             AttributeDescriptor type = featureType.getDescriptor(i);
             same = type.getLocalName().equals(properties[i])
-                    && (((override != null) && type instanceof GeometryDescriptor)
+                    && (override != null && type instanceof GeometryDescriptor
                             ? assertEquals(override, ((GeometryDescriptor) type).getCoordinateReferenceSystem())
                             : true);
         }
@@ -1686,7 +1686,7 @@ public class DataUtilities {
         for (int i = 0; i < properties.length; i++) {
             types[i] = featureType.getDescriptor(properties[i]);
 
-            if ((override != null) && types[i] instanceof GeometryDescriptor) {
+            if (override != null && types[i] instanceof GeometryDescriptor) {
                 AttributeTypeBuilder ab = new AttributeTypeBuilder();
                 ab.init(types[i]);
                 ab.setCRS(override);
@@ -1712,7 +1712,7 @@ public class DataUtilities {
     }
 
     private static boolean assertEquals(Object o1, Object o2) {
-        return (o1 == null && o2 == null) ? true : (o1 != null ? o1.equals(o2) : false);
+        return o1 == null && o2 == null ? true : o1 != null ? o1.equals(o2) : false;
     }
 
     /**
@@ -1728,7 +1728,7 @@ public class DataUtilities {
 
         boolean same = featureType.getAttributeCount() == properties.length;
 
-        for (int i = 0; (i < featureType.getAttributeCount()) && same; i++) {
+        for (int i = 0; i < featureType.getAttributeCount() && same; i++) {
             same = featureType.getDescriptor(i).getLocalName().equals(properties[i]);
         }
 
@@ -1815,8 +1815,8 @@ public class DataUtilities {
      */
     public static SimpleFeatureType createType(String typeName, String typeSpec) throws SchemaException {
         int split = typeName.lastIndexOf('.');
-        String namespace = (split == -1) ? null : typeName.substring(0, split);
-        String name = (split == -1) ? typeName : typeName.substring(split + 1);
+        String namespace = split == -1 ? null : typeName.substring(0, split);
+        String name = split == -1 ? typeName : typeName.substring(split + 1);
 
         return createType(namespace, name, typeSpec);
     }
@@ -1968,7 +1968,7 @@ public class DataUtilities {
 
         int fidSplit = line.indexOf('=');
         int barSplit = line.indexOf('|');
-        if (fidSplit == -1 || (barSplit != -1 && barSplit < fidSplit)) {
+        if (fidSplit == -1 || barSplit != -1 && barSplit < fidSplit) {
             fid = null; // we need to generate a feature id
         } else {
             fid = line.substring(0, fidSplit);
@@ -2297,7 +2297,7 @@ public class DataUtilities {
      * @throws IllegalArgumentException if the type names of both queries do not match
      */
     public static Query mixQueries(Query firstQuery, Query secondQuery, String handle) {
-        if ((firstQuery == null) && (secondQuery == null)) {
+        if (firstQuery == null && secondQuery == null) {
             // throw new NullPointerException("Cannot combine two null queries");
             return Query.ALL;
         }
@@ -2306,7 +2306,7 @@ public class DataUtilities {
         } else if (secondQuery == null || secondQuery.equals(Query.ALL)) {
             return firstQuery;
         }
-        if ((firstQuery.getTypeName() != null) && (secondQuery.getTypeName() != null)) {
+        if (firstQuery.getTypeName() != null && secondQuery.getTypeName() != null) {
             if (!firstQuery.getTypeName().equals(secondQuery.getTypeName())) {
                 String msg =
                         "Type names do not match: " + firstQuery.getTypeName() + " != " + secondQuery.getTypeName();
@@ -2335,9 +2335,9 @@ public class DataUtilities {
         Filter filter = firstQuery.getFilter();
         Filter filter2 = secondQuery.getFilter();
 
-        if ((filter == null) || filter.equals(Filter.INCLUDE)) {
+        if (filter == null || filter.equals(Filter.INCLUDE)) {
             filter = filter2;
-        } else if ((filter2 != null) && !filter2.equals(Filter.INCLUDE)) {
+        } else if (filter2 != null && !filter2.equals(Filter.INCLUDE)) {
             filter = ff.and(filter, filter2);
         }
         filter = SimplifyingFilterVisitor.simplify(filter);
@@ -2468,7 +2468,7 @@ public class DataUtilities {
 
             if (oldProps != null && oldProps.contains(propName)) {
                 properties.add(propName);
-            } else if (((descr.getMinOccurs() > 0) && (descr.getMaxOccurs() != 0))) {
+            } else if (descr.getMinOccurs() > 0 && descr.getMaxOccurs() != 0) {
                 // mandatory, add it
                 properties.add(propName);
             }

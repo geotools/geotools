@@ -125,7 +125,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
     public ThreadedEpsgFactory(final Hints userHints, final int priority) {
         super(userHints, priority);
 
-        Object hint = (userHints == null) ? null : userHints.get(Hints.EPSG_DATA_SOURCE);
+        Object hint = userHints == null ? null : userHints.get(Hints.EPSG_DATA_SOURCE);
 
         if (hint == null) {
             datasourceName = DATASOURCE_NAME;
@@ -174,7 +174,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
     @Override
     public Citation getAuthority() {
         final Citation authority = super.getAuthority();
-        return (authority != null) ? authority : Citations.EPSG;
+        return authority != null ? authority : Citations.EPSG;
     }
 
     /**

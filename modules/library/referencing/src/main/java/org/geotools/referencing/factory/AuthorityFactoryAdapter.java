@@ -155,18 +155,18 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     /** For {@link FallbackAuthorityFactory} constructor only. */
     AuthorityFactoryAdapter(final AuthorityFactory factory, final AuthorityFactory fallback) {
         this(
-                (factory instanceof CRSAuthorityFactory)
+                factory instanceof CRSAuthorityFactory
                         ? (CRSAuthorityFactory) factory
-                        : (fallback instanceof CRSAuthorityFactory) ? (CRSAuthorityFactory) fallback : null,
-                (factory instanceof CSAuthorityFactory)
+                        : fallback instanceof CRSAuthorityFactory ? (CRSAuthorityFactory) fallback : null,
+                factory instanceof CSAuthorityFactory
                         ? (CSAuthorityFactory) factory
-                        : (fallback instanceof CSAuthorityFactory) ? (CSAuthorityFactory) fallback : null,
-                (factory instanceof DatumAuthorityFactory)
+                        : fallback instanceof CSAuthorityFactory ? (CSAuthorityFactory) fallback : null,
+                factory instanceof DatumAuthorityFactory
                         ? (DatumAuthorityFactory) factory
-                        : (fallback instanceof DatumAuthorityFactory) ? (DatumAuthorityFactory) fallback : null,
-                (factory instanceof CoordinateOperationAuthorityFactory)
+                        : fallback instanceof DatumAuthorityFactory ? (DatumAuthorityFactory) fallback : null,
+                factory instanceof CoordinateOperationAuthorityFactory
                         ? (CoordinateOperationAuthorityFactory) factory
-                        : (fallback instanceof CoordinateOperationAuthorityFactory)
+                        : fallback instanceof CoordinateOperationAuthorityFactory
                                 ? (CoordinateOperationAuthorityFactory) fallback
                                 : null);
     }
@@ -211,7 +211,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
 
     /** Returns the priority of the specified factory, or {@link #NORMAL_PRIORITY} if unknown. */
     private static int getPriority(final AuthorityFactory factory) {
-        return (factory instanceof AbstractFactory) ? ((AbstractFactory) factory).getPriority() : NORMAL_PRIORITY;
+        return factory instanceof AbstractFactory ? ((AbstractFactory) factory).getPriority() : NORMAL_PRIORITY;
     }
 
     /** Adds the specified factory to the set of hints, if non null. */
@@ -368,7 +368,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
                 return true;
             }
         }
-        return (factory == backingStore) || (backingStore == null);
+        return factory == backingStore || backingStore == null;
     }
 
     /**
@@ -482,7 +482,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     @Override
     public String getBackingStoreDescription() throws FactoryException {
         final AbstractAuthorityFactory factory = getGeotoolsFactory(null, null);
-        return (factory != null) ? factory.getBackingStoreDescription() : null;
+        return factory != null ? factory.getBackingStoreDescription() : null;
     }
 
     /** Returns the vendor responsible for creating this factory implementation. */

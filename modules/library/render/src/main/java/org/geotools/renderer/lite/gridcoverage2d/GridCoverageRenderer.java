@@ -447,8 +447,8 @@ public final class GridCoverageRenderer {
         GridCoverage2D sanitized = preSymbolizer;
         RenderedImage preSymbolizerImage = preSymbolizer.getRenderedImage();
         RenderedImage preAffineImage = coverage.getRenderedImage();
-        if (preSymbolizerImage.getWidth() > (preAffineImage.getWidth() * 2)
-                || preSymbolizerImage.getHeight() > (preAffineImage.getHeight() * 2)) {
+        if (preSymbolizerImage.getWidth() > preAffineImage.getWidth() * 2
+                || preSymbolizerImage.getHeight() > preAffineImage.getHeight() * 2) {
             sanitized = crop(preSymbolizer, destinationEnvelope, false, bkgValues, interpolation);
         }
 
@@ -776,8 +776,8 @@ public final class GridCoverageRenderer {
                     symbolizedCoverages.add(symbolized);
                 }
             }
-        } else if ((!coverages.isEmpty()
-                        && !CRS.isEquivalent(coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS))
+        } else if (!coverages.isEmpty()
+                        && !CRS.isEquivalent(coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS)
                 || oversample) {
             // do the affine step to allow warp/affine merging, in order to best preserve rotations
             // in the warp in case of oversampling

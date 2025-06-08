@@ -281,7 +281,7 @@ public class JGrassRegion {
 
     @Override
     public String toString() {
-        return ("region:\nwest="
+        return "region:\nwest="
                 + west
                 + "\neast="
                 + east
@@ -296,7 +296,7 @@ public class JGrassRegion {
                 + "\nrows="
                 + rows
                 + "\ncols="
-                + cols);
+                + cols;
     }
 
     /**
@@ -357,11 +357,11 @@ public class JGrassRegion {
 
         double minx = region.getRectangle().getBounds2D().getMinX();
         double ewres = region.getWEResolution();
-        double xsnap = minx + (Math.ceil((x - minx) / ewres) * ewres);
+        double xsnap = minx + Math.ceil((x - minx) / ewres) * ewres;
 
         double miny = region.getRectangle().getBounds2D().getMinY();
         double nsres = region.getNSResolution();
-        double ysnap = miny + (Math.ceil((y - miny) / nsres) * nsres);
+        double ysnap = miny + Math.ceil((y - miny) / nsres) * nsres;
 
         return new Coordinate(xsnap, ysnap);
     }
@@ -534,7 +534,7 @@ public class JGrassRegion {
                      */
                     // this is to keep compatibility with GRASS, which seems to
                     // have changed
-                    if ((key.indexOf("res") != -1 && key.indexOf("resol") == -1) // $NON-NLS-1$ //$NON-NLS-2$
+                    if (key.indexOf("res") != -1 && key.indexOf("resol") == -1 // $NON-NLS-1$ //$NON-NLS-2$
                             || key.indexOf("res3") != -1) { // $NON-NLS-1$
                         if (!key.startsWith("compressed")) // $NON-NLS-1$
                         store.put(key.replaceAll("res", "resol"), value); // $NON-NLS-1$ //$NON-NLS-2$
@@ -746,7 +746,7 @@ public class JGrassRegion {
                      * this is now corrected, since GRASS seems to support only
                      * resol from 6.2 on
                      */
-                    if ((key.indexOf("res") != -1 && key.indexOf("resol") == -1) // $NON-NLS-1$ //$NON-NLS-2$
+                    if (key.indexOf("res") != -1 && key.indexOf("resol") == -1 // $NON-NLS-1$ //$NON-NLS-2$
                             || key.indexOf("res3") != -1) { // $NON-NLS-1$
                         store.put(key.replaceAll("res", "resol"), value); // $NON-NLS-1$ //$NON-NLS-2$
                     } else store.put(key, value);

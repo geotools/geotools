@@ -138,9 +138,9 @@ public class JGrassColorTable {
         float rinc = (float) (dataRange[1] - dataRange[0]) / 5;
         for (int i = 0; i < 5; i++) {
             StringBuffer rule = new StringBuffer();
-            rule.append((dataRange[0] + (i * rinc)) + ":");
+            rule.append((dataRange[0] + i * rinc) + ":");
             rule.append(rainbow[i][0] + ":" + rainbow[i][1] + ":" + rainbow[i][2] + " ");
-            rule.append((dataRange[0] + ((i + 1) * rinc)) + ":");
+            rule.append((dataRange[0] + (i + 1) * rinc) + ":");
             rule.append(rainbow[i + 1][0] + ":" + rainbow[i + 1][1] + ":" + rainbow[i + 1][2] + " " + alpha);
             rules.add(rule.toString());
         }

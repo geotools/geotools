@@ -465,7 +465,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
             q = xNew.getElement(6, 0);
 
             i++;
-        } while ((!dxMatrix.equals(zero, tolerance) & (i < maxSteps)));
+        } while (!dxMatrix.equals(zero, tolerance) & i < maxSteps);
 
         xNew.transpose();
 
@@ -479,7 +479,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      * @return Angle is seconds
      */
     private static double radiansToSeconds(double rad) {
-        return (rad * (180 / Math.PI) * 3600);
+        return rad * (180 / Math.PI) * 3600;
     }
 
     /**

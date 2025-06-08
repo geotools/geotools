@@ -68,7 +68,7 @@ final class Command {
 
     /** Creates an instance of the specified authority. */
     private Command(final String authority) {
-        factory = (authority == null)
+        factory = authority == null
                 ? CRS.getAuthorityFactory(false)
                 : ReferencingFactoryFinder.getCRSAuthorityFactory(authority, HINTS);
         formatter = new Parser();

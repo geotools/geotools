@@ -197,7 +197,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.hints = query != null ? query.getHints() : null;
 
         // grab a geometry factory... check for a special hint
-        geometryFactory = (hints != null) ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
+        geometryFactory = hints != null ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
         if (geometryFactory == null) {
             // look for a coordinate sequence factory
             CoordinateSequenceFactory csFactory =

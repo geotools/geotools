@@ -123,7 +123,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // does this binding actually map to an eObject?
-        if (EObject.class.isAssignableFrom(getType()) && (factory != null)) {
+        if (EObject.class.isAssignableFrom(getType()) && factory != null) {
             EObject eObject = createEObject(value);
             if (eObject == null) {
                 return value;
@@ -135,7 +135,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
             // check for a complex type with simpleContent, in this case use
             // the string value (if any) to set the value property
             if (instance.getElementDeclaration().getTypeDefinition().getBaseType() instanceof XSDTypeDefinition) {
-                if ((value != null) && EMFUtils.has(eObject, "value")) {
+                if (value != null && EMFUtils.has(eObject, "value")) {
                     setProperty(eObject, "value", value, false);
                 }
             }
@@ -149,7 +149,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
 
     /** Reflectively creates an instance of the target object. */
     protected EObject createEObject(Object value) throws Exception {
-        if ((value == null) || !(getType().isAssignableFrom(value.getClass()))) {
+        if (value == null || !getType().isAssignableFrom(value.getClass())) {
             // yes, try and use the factory to dynamically create a new instance
 
             // get the classname
@@ -277,7 +277,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /** Helper method to convert a value, throwing an exception when it cant be converted. */
     private Object convert(Object value, Class<?> target, RuntimeException toThrow) throws RuntimeException {
         Object converted = value;
-        if ((converted != null) && !converted.getClass().isAssignableFrom(target)) {
+        if (converted != null && !converted.getClass().isAssignableFrom(target)) {
             // TODO: log this
             converted = Converters.convert(value, target);
         }

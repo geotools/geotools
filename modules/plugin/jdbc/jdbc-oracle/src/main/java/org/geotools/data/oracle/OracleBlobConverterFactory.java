@@ -57,7 +57,7 @@ public class OracleBlobConverterFactory implements ConverterFactory {
         if (ORA_BLOB == null) return null;
 
         // can only convert towards byte[]
-        if (!(byte[].class.equals(target))) return null;
+        if (!byte[].class.equals(target)) return null;
 
         // can only deal with oracle specific blob classes
         if (!ORA_BLOB.isAssignableFrom(source)) return null;

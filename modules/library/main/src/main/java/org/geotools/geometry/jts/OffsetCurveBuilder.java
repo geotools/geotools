@@ -246,7 +246,7 @@ public class OffsetCurveBuilder {
 
     private GrowableOrdinateArray cleanupOrdinates(GrowableOrdinateArray ordinates, boolean closed) {
         final int max = ordinates.size();
-        if ((max <= 8 && closed) || (max < 8 && !closed)) {
+        if (max <= 8 && closed || max < 8 && !closed) {
             // not enough points for self intersection anyways
             return ordinates;
         }
@@ -267,12 +267,12 @@ public class OffsetCurveBuilder {
         c1.x = data[0];
         c1.y = data[1];
         boolean lastCurlEliminated = false;
-        for (int i = 2; i < (max - 3); i += 2) {
+        for (int i = 2; i < max - 3; i += 2) {
             c2.x = data[i];
             c2.y = data[i + 1];
             c3.x = data[i + 2];
             c3.y = data[i + 3];
-            for (int j = i + 4; j < (max - 1); j += 2) {
+            for (int j = i + 4; j < max - 1; j += 2) {
                 c4.x = data[j];
                 c4.y = data[j + 1];
 
@@ -381,7 +381,7 @@ public class OffsetCurveBuilder {
         int steps = 1 + (int) (segmentTurns / PI * 2);
 
         for (int step = 0; step <= steps; step++) {
-            appendPerpendicular(c1x, c1y, angle10 + (curveAngle * step) / steps, ordinates);
+            appendPerpendicular(c1x, c1y, angle10 + curveAngle * step / steps, ordinates);
         }
     }
 

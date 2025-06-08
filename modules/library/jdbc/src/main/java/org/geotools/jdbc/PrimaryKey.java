@@ -45,7 +45,7 @@ public class PrimaryKey {
 
     public PrimaryKeyColumn getColumn(String name) {
         for (PrimaryKeyColumn col : columns) {
-            if (name.equals((col.getName()))) {
+            if (name.equals(col.getName())) {
                 return col;
             }
         }

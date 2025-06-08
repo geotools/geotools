@@ -67,10 +67,10 @@ public class OracleDateConverterFactory implements ConverterFactory {
         if (ORA_DATE == null) return null;
 
         // can only convert towards java.util.Date && subclasses
-        if (!(Date.class.isAssignableFrom(target))) return null;
+        if (!Date.class.isAssignableFrom(target)) return null;
 
         // can only deal with oracle specific date classes
-        if (!(ORA_TIMESTAMP.isAssignableFrom(source)) && !(ORA_DATE.isAssignableFrom(source))) return null;
+        if (!ORA_TIMESTAMP.isAssignableFrom(source) && !ORA_DATE.isAssignableFrom(source)) return null;
 
         // converter is thread safe, so cache and return just one
         return converter;

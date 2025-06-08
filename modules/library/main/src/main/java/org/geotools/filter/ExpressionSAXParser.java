@@ -376,7 +376,7 @@ public class ExpressionSAXParser {
             throws IllegalFilterException {
         if (expression instanceof BinaryExpression) {
             return "leftValue";
-        } else if ((expression instanceof PropertyName) || (expression instanceof Literal)) {
+        } else if (expression instanceof PropertyName || expression instanceof Literal) {
             return "";
         } else if (expression instanceof FunctionExpression) {
             return "accumulate"; // start storing values!

@@ -88,7 +88,7 @@ public class OptNode extends OptGraphable implements Node {
             if (m_edge.getNodeA().equals(this) && m_edge.getNodeB().equals(other)
                     || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other)) return m_edge;
         }
-        return (null);
+        return null;
     }
 
     /** @see Node#getEdges(Node) */
@@ -99,7 +99,7 @@ public class OptNode extends OptGraphable implements Node {
             if (m_edge.getNodeA().equals(this) && m_edge.getNodeB().equals(other)
                     || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other)) edges.add(m_edge);
         }
-        return (edges);
+        return edges;
     }
 
     /**
@@ -108,7 +108,7 @@ public class OptNode extends OptGraphable implements Node {
      * @return An array containing edges adjacent to the node.
      */
     public Edge[] getEdgeArray() {
-        return (m_edges);
+        return m_edges;
     }
 
     /** @see Node#getEdges() */
@@ -120,7 +120,7 @@ public class OptNode extends OptGraphable implements Node {
             edges.add(m_edge);
         }
 
-        return (edges);
+        return edges;
     }
 
     /**
@@ -135,7 +135,7 @@ public class OptNode extends OptGraphable implements Node {
     /** @see Node#getDegree() */
     @Override
     public int getDegree() {
-        return (m_edges.length);
+        return m_edges.length;
     }
 
     /**
@@ -145,7 +145,7 @@ public class OptNode extends OptGraphable implements Node {
      */
     @Override
     public Iterator<Node> getRelated() {
-        return (new RelatedIterator(this));
+        return new RelatedIterator(this);
     }
 
     /**
@@ -207,7 +207,7 @@ public class OptNode extends OptGraphable implements Node {
          */
         @Override
         public boolean hasNext() {
-            return (m_index < m_edges.length);
+            return m_index < m_edges.length;
         }
 
         /**
@@ -218,7 +218,7 @@ public class OptNode extends OptGraphable implements Node {
         @Override
         public Node next() {
             Edge e = m_edges[m_index++];
-            return (e.getNodeA().equals(m_node) ? e.getNodeB() : e.getNodeA());
+            return e.getNodeA().equals(m_node) ? e.getNodeB() : e.getNodeA();
         }
     }
 }

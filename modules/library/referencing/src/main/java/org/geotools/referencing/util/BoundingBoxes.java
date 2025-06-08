@@ -107,7 +107,7 @@ public final class BoundingBoxes {
      * @param locale The locale, or {@code null} for the default one.
      */
     public static String toString(final GeographicBoundingBox box, final String pattern, final Locale locale) {
-        final AngleFormat format = (locale != null) ? new AngleFormat(pattern, locale) : new AngleFormat(pattern);
+        final AngleFormat format = locale != null ? new AngleFormat(pattern, locale) : new AngleFormat(pattern);
         final FieldPosition pos = new FieldPosition(0);
         final StringBuffer buffer = new StringBuffer();
         format.format(new Latitude(box.getNorthBoundLatitude()), buffer, pos).append(", ");

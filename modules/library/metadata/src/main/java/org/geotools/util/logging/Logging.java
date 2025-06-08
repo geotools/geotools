@@ -73,8 +73,8 @@ public final class Logging {
 
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR = (o1, o2) -> {
-        final String n1 = (o1 instanceof Logging) ? ((Logging) o1).name : o1.toString();
-        final String n2 = (o2 instanceof Logging) ? ((Logging) o2).name : o2.toString();
+        final String n1 = o1 instanceof Logging ? ((Logging) o1).name : o1.toString();
+        final String n2 = o2 instanceof Logging ? ((Logging) o2).name : o2.toString();
         return n1.compareTo(n2);
     };
 
@@ -188,7 +188,7 @@ public final class Logging {
     public static Logger getLogger(final Class<?> classe) {
         String name = classe.getName();
         final int separator = name.lastIndexOf('.');
-        name = (separator >= 1) ? name.substring(0, separator) : "";
+        name = separator >= 1 ? name.substring(0, separator) : "";
         return getLogger(name);
     }
 
@@ -252,7 +252,7 @@ public final class Logging {
             do {
                 Logging[] children = logging.children;
                 offset = base.indexOf('.', offset);
-                final String name = (offset >= 0) ? base.substring(0, offset) : base;
+                final String name = offset >= 0 ? base.substring(0, offset) : base;
                 int i = Arrays.binarySearch(children, name, COMPARATOR);
                 if (i < 0) {
                     // No exact match found.
@@ -480,7 +480,7 @@ public final class Logging {
      */
     public static boolean unexpectedException(
             final Logger logger, final Class<?> classe, final String method, final Throwable error) {
-        final String classname = (classe != null) ? classe.getName() : null;
+        final String classname = classe != null ? classe.getName() : null;
         return unexpectedException(logger, classname, method, error, Level.WARNING);
     }
 
@@ -520,7 +520,7 @@ public final class Logging {
         }
         if (logger == null && classe != null) {
             final int separator = classe.lastIndexOf('.');
-            final String packageName = (separator >= 1) ? classe.substring(0, separator - 1) : "";
+            final String packageName = separator >= 1 ? classe.substring(0, separator - 1) : "";
             logger = getLogger(packageName);
         }
         if (logger != null && !logger.isLoggable(level)) {
@@ -530,7 +530,7 @@ public final class Logging {
          * Loggeable, so complete the null argument from the stack trace if we can.
          */
         if (logger == null || classe == null || method == null) {
-            String packageName = (logger != null) ? logger.getName() : null;
+            String packageName = logger != null ? logger.getName() : null;
             final StackTraceElement[] elements = error.getStackTrace();
             for (final StackTraceElement element : elements) {
                 /*
@@ -569,7 +569,7 @@ public final class Logging {
                  */
                 if (packageName == null) {
                     final int separator = classname.lastIndexOf('.');
-                    packageName = (separator >= 1) ? classname.substring(0, separator - 1) : "";
+                    packageName = separator >= 1 ? classname.substring(0, separator - 1) : "";
                     logger = getLogger(packageName);
                     if (!logger.isLoggable(level)) {
                         return false;
@@ -634,7 +634,7 @@ public final class Logging {
      */
     public static boolean recoverableException(
             final Logger logger, final Class<?> classe, final String method, final Throwable error) {
-        final String classname = (classe != null) ? classe.getName() : null;
+        final String classname = classe != null ? classe.getName() : null;
         return unexpectedException(logger, classname, method, error, Level.FINE);
     }
 

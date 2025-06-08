@@ -59,7 +59,7 @@ public class PolarOrthographic extends Orthographic {
     protected PolarOrthographic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
         ensureLatitudeEquals(Provider.LATITUDE_OF_ORIGIN, latitudeOfOrigin, PI / 2);
-        northPole = (latitudeOfOrigin > 0);
+        northPole = latitudeOfOrigin > 0;
         latitudeOfOrigin = northPole ? PI / 2 : -PI / 2;
     }
 
@@ -93,7 +93,7 @@ public class PolarOrthographic extends Orthographic {
         final double rho = hypot(x, y);
         double sinc = rho;
         if (sinc > 1.0) {
-            if ((sinc - 1.0) > EPSILON) {
+            if (sinc - 1.0 > EPSILON) {
                 throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
             }
             sinc = 1.0;

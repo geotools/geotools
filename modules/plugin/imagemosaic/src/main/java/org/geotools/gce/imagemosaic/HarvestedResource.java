@@ -259,7 +259,7 @@ enum HarvestedResource {
         }
 
         String protocol = null;
-        if (url != null && ((protocol = url.getProtocol()) != null) && !"file".equalsIgnoreCase(protocol)) {
+        if (url != null && (protocol = url.getProtocol()) != null && !"file".equalsIgnoreCase(protocol)) {
             return URL;
         }
 
@@ -309,7 +309,7 @@ enum HarvestedResource {
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                    coverageNames != null && coverageNames.length > 0 ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
 
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
@@ -367,7 +367,7 @@ enum HarvestedResource {
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                    coverageNames != null && coverageNames.length > 0 ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
 
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
@@ -452,7 +452,7 @@ enum HarvestedResource {
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                    coverageNames != null && coverageNames.length > 0 ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
 
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
@@ -539,7 +539,7 @@ enum HarvestedResource {
         if (defaultCoverage == null) {
             String[] coverageNames = reader.getGridCoverageNames();
             defaultCoverage =
-                    (coverageNames != null && coverageNames.length > 0) ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                    coverageNames != null && coverageNames.length > 0 ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
         }
         configuration.setParameter(Utils.Prop.INDEX_NAME, defaultCoverage);
         configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));

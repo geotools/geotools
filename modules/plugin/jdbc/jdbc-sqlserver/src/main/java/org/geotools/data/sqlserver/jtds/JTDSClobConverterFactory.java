@@ -62,7 +62,7 @@ public class JTDSClobConverterFactory implements ConverterFactory {
         }
 
         // can only convert towards String
-        if (!(String.class.equals(target))) {
+        if (!String.class.equals(target)) {
             LOGGER.finest("Target not a string");
             return null;
         }

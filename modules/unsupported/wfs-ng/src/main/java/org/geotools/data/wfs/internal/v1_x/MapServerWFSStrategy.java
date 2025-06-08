@@ -119,14 +119,14 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                                 Element coord1 = (Element) coords.item(0);
                                 Element coord2 = (Element) coords.item(1);
                                 if (coord1 != null && coord2 != null) {
-                                    Element coordX1 = (Element) (coord1.getElementsByTagName("gml:X")
-                                            .item(0));
-                                    Element coordY1 = (Element) (coord1.getElementsByTagName("gml:Y")
-                                            .item(0));
-                                    Element coordX2 = (Element) (coord2.getElementsByTagName("gml:X")
-                                            .item(0));
-                                    Element coordY2 = (Element) (coord2.getElementsByTagName("gml:Y")
-                                            .item(0));
+                                    Element coordX1 = (Element)
+                                            coord1.getElementsByTagName("gml:X").item(0);
+                                    Element coordY1 = (Element)
+                                            coord1.getElementsByTagName("gml:Y").item(0);
+                                    Element coordX2 = (Element)
+                                            coord2.getElementsByTagName("gml:X").item(0);
+                                    Element coordY2 = (Element)
+                                            coord2.getElementsByTagName("gml:Y").item(0);
                                     if (coordX1 != null && coordY1 != null && coordX2 != null && coordY2 != null) {
                                         reformatted = true;
                                         String x1 = coordX1.getTextContent();

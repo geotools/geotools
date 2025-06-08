@@ -159,7 +159,7 @@ public class MongoDataStore extends ContentDataStore {
                 @SuppressWarnings("unchecked")
                 List<Integer> versionArray = (List) result.get("versionArray");
                 // if MongoDB server version < 2.6.0 disable native $or operator
-                if (versionArray.get(0) < 2 || (versionArray.get(0) == 2 && versionArray.get(1) < 6)) {
+                if (versionArray.get(0) < 2 || versionArray.get(0) == 2 && versionArray.get(1) < 6) {
                     deactivateOrAux = true;
                 }
             }

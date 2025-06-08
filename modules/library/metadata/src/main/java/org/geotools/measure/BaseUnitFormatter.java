@@ -260,27 +260,27 @@ public class BaseUnitFormatter implements UnitFormatter {
     }
 
     protected boolean isValidIdentifier(String name) {
-        if ((name == null) || (name.length() == 0)) return false;
+        if (name == null || name.length() == 0) return false;
         return isUnitIdentifierPart(name.charAt(0));
     }
 
     protected static boolean isUnitIdentifierPart(char ch) {
         return Character.isLetter(ch)
-                || (!Character.isWhitespace(ch)
+                || !Character.isWhitespace(ch)
                         && !Character.isDigit(ch)
-                        && (ch != MIDDLE_DOT)
-                        && (ch != '*')
-                        && (ch != '/')
-                        && (ch != '(')
-                        && (ch != ')')
-                        && (ch != '[')
-                        && (ch != ']')
-                        && (ch != '\u00b9')
-                        && (ch != '\u00b2')
-                        && (ch != '\u00b3')
-                        && (ch != '^')
-                        && (ch != '+')
-                        && (ch != '-'));
+                        && ch != MIDDLE_DOT
+                        && ch != '*'
+                        && ch != '/'
+                        && ch != '('
+                        && ch != ')'
+                        && ch != '['
+                        && ch != ']'
+                        && ch != '\u00b9'
+                        && ch != '\u00b2'
+                        && ch != '\u00b3'
+                        && ch != '^'
+                        && ch != '+'
+                        && ch != '-';
     }
 
     // Returns the name for the specified unit or null if product unit.
@@ -300,9 +300,9 @@ public class BaseUnitFormatter implements UnitFormatter {
             StringBuilder result = new StringBuilder();
             String baseUnitName = baseUnit.toString();
             String prefix = prefixFor(cvtr);
-            if ((baseUnitName.indexOf(MIDDLE_DOT) >= 0)
-                    || (baseUnitName.indexOf('*') >= 0)
-                    || (baseUnitName.indexOf('/') >= 0)) {
+            if (baseUnitName.indexOf(MIDDLE_DOT) >= 0
+                    || baseUnitName.indexOf('*') >= 0
+                    || baseUnitName.indexOf('/') >= 0) {
                 // We could use parentheses whenever baseUnits is an
                 // instanceof ProductUnit, but most ProductUnits have
                 // aliases,
@@ -510,7 +510,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                 return Token.OPEN_PAREN;
             } else if (c == ')') {
                 return Token.CLOSE_PAREN;
-            } else if ((c == '^') || (c == '\u00b9') || (c == '\u00b2') || (c == '\u00b3')) {
+            } else if (c == '^' || c == '\u00b9' || c == '\u00b2' || c == '\u00b3') {
                 return Token.EXPONENT;
             } else if (c == '*') {
                 if (csq.length() == pos.getIndex() + 1) {
@@ -525,9 +525,9 @@ public class BaseUnitFormatter implements UnitFormatter {
                 return Token.DIVIDE;
             } else if (c == '+') {
                 return Token.PLUS;
-            } else if ((c == '-') || Character.isDigit(c)) {
+            } else if (c == '-' || Character.isDigit(c)) {
                 int index = pos.getIndex() + 1;
-                while ((index < length) && (Character.isDigit(c) || (c == '-') || (c == '.') || (c == 'E'))) {
+                while (index < length && (Character.isDigit(c) || c == '-' || c == '.' || c == 'E')) {
                     c = csq.charAt(index++);
                     if (c == '.') {
                         return Token.FLOAT;
@@ -579,7 +579,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                     parseRoot = true;
                     break POWERLOOP;
                 default:
-                    if (c >= '0' && c <= '9') pow = pow * 10 + (c - '0');
+                    if (c >= '0' && c <= '9') pow = pow * 10 + c - '0';
                     else break POWERLOOP;
             }
             pos.setIndex(pos.getIndex() + 1);
@@ -607,7 +607,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                         root = root * 10 + 3;
                         break;
                     default:
-                        if (c >= '0' && c <= '9') root = root * 10 + (c - '0');
+                        if (c >= '0' && c <= '9') root = root * 10 + c - '0';
                         else break ROOTLOOP;
                 }
                 pos.setIndex(pos.getIndex() + 1);
@@ -626,8 +626,8 @@ public class BaseUnitFormatter implements UnitFormatter {
             char c = csq.charAt(pos.getIndex());
             if (c == '-') {
                 isNegative = true;
-            } else if ((c >= '0') && (c <= '9')) {
-                result = result * 10 + (c - '0');
+            } else if (c >= '0' && c <= '9') {
+                result = result * 10 + c - '0';
             } else {
                 break;
             }
@@ -736,11 +736,11 @@ public class BaseUnitFormatter implements UnitFormatter {
 
     private static void append(Appendable appendable, CharSequence symbol, int pow, int root) throws IOException {
         appendable.append(symbol);
-        if ((pow != 1) || (root != 1)) {
+        if (pow != 1 || root != 1) {
             // Write exponent.
-            if ((pow == 2) && (root == 1)) {
+            if (pow == 2 && root == 1) {
                 appendable.append('\u00b2'); // Square
-            } else if ((pow == 3) && (root == 1)) {
+            } else if (pow == 3 && root == 1) {
                 appendable.append('\u00b3'); // Cubic
             } else {
                 // Use general exponent form.

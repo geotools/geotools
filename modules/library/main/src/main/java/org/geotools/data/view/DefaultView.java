@@ -143,7 +143,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @throws DataSourceException If query could not meet the restrictions of definitionQuery
      */
     protected Query makeDefinitionQuery(Query query) throws IOException {
-        if ((query == Query.ALL) || query.equals(Query.ALL)) {
+        if (query == Query.ALL || query.equals(Query.ALL)) {
             return new Query(constraintQuery);
         }
 

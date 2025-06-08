@@ -171,7 +171,7 @@ public class SimpleFeatureIO {
         return ad.getUserData() != null
                 && ad.getUserData().containsKey(BIG_STRING)
                 && ad.getUserData().get(BIG_STRING) instanceof Boolean
-                && ((Boolean) ad.getUserData().get(BIG_STRING));
+                && (Boolean) ad.getUserData().get(BIG_STRING);
     }
 
     /** Reads the next feature form the file */

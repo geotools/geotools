@@ -118,7 +118,7 @@ public abstract class Mercator extends MapProjection {
          * in a single multiplication.
          */
         final double sinPhi = sin(latitudeOfOrigin);
-        globalScale *= (cos(latitudeOfOrigin) / sqrt(1 - excentricitySquared * sinPhi * sinPhi));
+        globalScale *= cos(latitudeOfOrigin) / sqrt(1 - excentricitySquared * sinPhi * sinPhi);
     }
 
     /** {@inheritDoc} */
@@ -139,7 +139,7 @@ public abstract class Mercator extends MapProjection {
      */
     @Override
     protected Point2D transformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
-        if (abs(y) > (PI / 2 - EPSILON)) {
+        if (abs(y) > PI / 2 - EPSILON) {
             throw new ProjectionException(y);
         }
         y = -log(tsfn(y, sin(y)));
@@ -192,7 +192,7 @@ public abstract class Mercator extends MapProjection {
          */
         @Override
         protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
-            if (abs(y) > (PI / 2 - EPSILON)) {
+            if (abs(y) > PI / 2 - EPSILON) {
                 throw new ProjectionException(y);
             }
             // Compute using ellipsoidal formulas, for comparaison later.

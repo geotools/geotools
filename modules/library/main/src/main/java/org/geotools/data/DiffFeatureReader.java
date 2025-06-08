@@ -142,7 +142,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
 
         if (filter == Filter.EXCLUDE) return false;
 
-        while ((reader != null) && reader.hasNext()) {
+        while (reader != null && reader.hasNext()) {
 
             try {
                 peek = reader.next();

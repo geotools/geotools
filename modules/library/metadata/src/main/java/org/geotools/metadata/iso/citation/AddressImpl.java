@@ -119,7 +119,7 @@ public class AddressImpl extends MetadataEntity implements Address {
     /** Returns the address line for the location (as described in ISO 11180, Annex A). */
     @Override
     public Collection<String> getDeliveryPoints() {
-        return (deliveryPoints = nonNullCollection(deliveryPoints, String.class));
+        return deliveryPoints = nonNullCollection(deliveryPoints, String.class);
     }
 
     /** Set the address line for the location (as described in ISO 11180, Annex A). */
@@ -130,7 +130,7 @@ public class AddressImpl extends MetadataEntity implements Address {
     /** Returns the address of the electronic mailbox of the responsible organization or individual. */
     @Override
     public Collection<String> getElectronicMailAddresses() {
-        return (electronicMailAddresses = nonNullCollection(electronicMailAddresses, String.class));
+        return electronicMailAddresses = nonNullCollection(electronicMailAddresses, String.class);
     }
 
     /** Set the address of the electronic mailbox of the responsible organization or individual. */

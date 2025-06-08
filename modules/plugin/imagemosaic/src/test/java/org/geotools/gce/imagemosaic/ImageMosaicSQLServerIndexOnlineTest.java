@@ -188,7 +188,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             dim.setSize(
                     reader.getOriginalGridRange().getSpan(0) / 2.0,
                     reader.getOriginalGridRange().getSpan(1) / 2.0);
-            final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+            final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, envelope));
@@ -345,7 +345,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             assertTrue(ingestion instanceof Timestamp);
             final GregorianCalendar gc = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
             gc.setTimeInMillis(1225497600000l);
-            assertEquals(0, (((Timestamp) ingestion).compareTo(gc.getTime())));
+            assertEquals(0, ((Timestamp) ingestion).compareTo(gc.getTime()));
             Object elevation = sf.getAttribute("elevation");
             assertTrue(elevation instanceof Integer);
             assertEquals(((Integer) elevation).intValue(), 0);
@@ -366,7 +366,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             assertNotNull(sf);
             ingestion = sf.getAttribute("ingestion");
             assertTrue(ingestion instanceof Timestamp);
-            assertNotSame(0, (((Timestamp) ingestion).compareTo(gc.getTime())));
+            assertNotSame(0, ((Timestamp) ingestion).compareTo(gc.getTime()));
             elevation = sf.getAttribute("elevation");
             assertTrue(elevation instanceof Integer);
             assertNotSame(((Integer) elevation).intValue(), 0);
@@ -474,7 +474,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             dim.setSize(
                     reader.getOriginalGridRange().getSpan(0) / 2.0,
                     reader.getOriginalGridRange().getSpan(1) / 2.0);
-            final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+            final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, envelope));

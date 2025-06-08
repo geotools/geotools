@@ -1446,7 +1446,7 @@ public class NetCDFMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange(name).getSpan(0) / 2.0,
                 reader.getOriginalGridRange(name).getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange(name));
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange(name);
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));

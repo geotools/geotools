@@ -35,7 +35,7 @@ public class H2ClobConverterFactory implements ConverterFactory {
     @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // can only convert towards String
-        if (!(String.class.equals(target))) return null;
+        if (!String.class.equals(target)) return null;
 
         // can only deal with JdbcClob
         if (!JdbcClob.class.isAssignableFrom(source)) return null;

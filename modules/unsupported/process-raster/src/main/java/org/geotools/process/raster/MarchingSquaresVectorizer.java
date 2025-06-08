@@ -174,10 +174,10 @@ public final class MarchingSquaresVectorizer {
             tileWidth = Math.min(inputRI.getTileWidth(), width);
             tileHeight = Math.min(inputRI.getTileHeight(), height);
 
-            minTileX = minX / tileWidth - (minX < 0 ? (-minX % tileWidth > 0 ? 1 : 0) : 0);
-            minTileY = minY / tileHeight - (minY < 0 ? (-minY % tileHeight > 0 ? 1 : 0) : 0);
-            maxTileX = maxX / tileWidth - (maxX < 0 ? (-maxX % tileWidth > 0 ? 1 : 0) : 0);
-            maxTileY = maxY / tileHeight - (maxY < 0 ? (-maxY % tileHeight > 0 ? 1 : 0) : 0);
+            minTileX = minX / tileWidth - (minX < 0 ? -minX % tileWidth > 0 ? 1 : 0 : 0);
+            minTileY = minY / tileHeight - (minY < 0 ? -minY % tileHeight > 0 ? 1 : 0 : 0);
+            maxTileX = maxX / tileWidth - (maxX < 0 ? -maxX % tileWidth > 0 ? 1 : 0 : 0);
+            maxTileY = maxY / tileHeight - (maxY < 0 ? -maxY % tileHeight > 0 ? 1 : 0 : 0);
         }
 
         public void init(RenderedImage inputRI) {
@@ -326,10 +326,10 @@ public final class MarchingSquaresVectorizer {
         this.simplifierFactor = simplifierFactor;
         this.exclusionLuminanceRanges = exclusionLuminanceRanges;
 
-        RenderingHints localHints = (hints != null) ? (RenderingHints) hints.clone() : null;
-        if ((localHints != null) && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+        RenderingHints localHints = hints != null ? (RenderingHints) hints.clone() : null;
+        if (localHints != null && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
             Object l = localHints.get(JAI.KEY_IMAGE_LAYOUT);
-            if ((l != null) && (l instanceof ImageLayout)) {
+            if (l != null && l instanceof ImageLayout) {
                 final ImageLayout layout = (ImageLayout) ((ImageLayout) l).clone();
                 localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
             }
@@ -359,10 +359,10 @@ public final class MarchingSquaresVectorizer {
         this.thresholdArea = thresholdArea;
         this.exclusionLuminanceRanges = exclusionLuminanceRanges;
 
-        RenderingHints localHints = (hints != null) ? (RenderingHints) hints.clone() : null;
-        if ((localHints != null) && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+        RenderingHints localHints = hints != null ? (RenderingHints) hints.clone() : null;
+        if (localHints != null && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
             Object l = localHints.get(JAI.KEY_IMAGE_LAYOUT);
-            if ((l != null) && (l instanceof ImageLayout)) {
+            if (l != null && l instanceof ImageLayout) {
                 final ImageLayout layout = (ImageLayout) ((ImageLayout) l).clone();
                 localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
             }
@@ -544,7 +544,7 @@ public final class MarchingSquaresVectorizer {
             } else {
                 // do we have transparency combination matrix
 
-                final double fillValue = (tr == Transparency.OPAQUE) ? (1.0 / numBands) : (1.0 / (numBands - 1));
+                final double fillValue = tr == Transparency.OPAQUE ? 1.0 / numBands : 1.0 / (numBands - 1);
                 final double[][] matrix = new double[1][numBands + 1];
                 for (int i = 0; i < numBands; i++) {
                     matrix[0][i] = fillValue;
@@ -590,7 +590,7 @@ public final class MarchingSquaresVectorizer {
      * holes.
      */
     private List<Polygon> validateGeometries(List<Polygon> geometriesList) {
-        if (forceValid && (!geometriesList.isEmpty())) {
+        if (forceValid && !geometriesList.isEmpty()) {
             List<Polygon> validated = new ArrayList<>(geometriesList.size());
             for (Polygon polygon : geometriesList) {
                 if (!polygon.isValid()) {
@@ -660,7 +660,7 @@ public final class MarchingSquaresVectorizer {
             final double tolerance = Math.max(xRes, yRes) * simplifierFactor;
 
             // Avoid simplification on small polygons
-            simplifiedFootprintGeometry = (area > MIN_AREA_TO_BE_SIMPLIFIED)
+            simplifiedFootprintGeometry = area > MIN_AREA_TO_BE_SIMPLIFIED
                     ? TopologyPreservingSimplifier.simplify(finalSimplifiedFootprint, tolerance)
                     : finalSimplifiedFootprint;
 
@@ -734,8 +734,8 @@ public final class MarchingSquaresVectorizer {
 
         if (!scanInfo.fullyCovered
                 && geometriesList.isEmpty()
-                && (scanInfo.refColumn != Integer.MIN_VALUE)
-                && (scanInfo.refColumn != Integer.MAX_VALUE)) {
+                && scanInfo.refColumn != Integer.MIN_VALUE
+                && scanInfo.refColumn != Integer.MAX_VALUE) {
             // We didn't find any polygon bigger than threshold area.
             // Let's take the first one we found, smaller than that threshold area
             scanInfo.takeFirst = true;
@@ -762,11 +762,11 @@ public final class MarchingSquaresVectorizer {
         final int tileWidth = imageProperties.tileWidth;
         final int tileHeight = imageProperties.tileHeight;
         for (int trow = 0; trow < tileHeight; trow++) {
-            int row = (tileY * tileHeight) + trow;
-            if ((row >= minY) && (row <= maxY)) {
+            int row = tileY * tileHeight + trow;
+            if (row >= minY && row <= maxY) {
                 for (int tcol = 0; tcol < tileWidth; tcol++) {
-                    int col = (tileX * tileWidth) + tcol;
-                    if ((col >= minX) && (col <= maxX)) {
+                    int col = tileX * tileWidth + tcol;
+                    if (col >= minX && col <= maxX) {
                         int value = iter.getSample(col, row, 0);
                         if (!bitSet.get(col - minX, row - minY)) {
                             if (value == I_VALUE) {
@@ -813,11 +813,11 @@ public final class MarchingSquaresVectorizer {
         final int tileWidth = imageProperties.tileWidth;
         final int tileHeight = imageProperties.tileHeight;
         for (int trow = 0; trow < tileHeight; trow++) {
-            int row = (tileY * tileHeight) + trow;
-            if ((row >= minY) && (row <= maxY)) {
+            int row = tileY * tileHeight + trow;
+            if (row >= minY && row <= maxY) {
                 for (int tcol = 0; tcol < tileWidth; tcol++) {
-                    int col = (tileX * tileWidth) + tcol;
-                    if ((col >= minX) && (col <= maxX)) {
+                    int col = tileX * tileWidth + tcol;
+                    if (col >= minX && col <= maxX) {
                         double value = iter.getSampleDouble(col, row, 0);
                         if (!bitSet.get(col - minX, row - minY) && !Double.isNaN(value)) {
                             if (areEqual(value, D_VALUE)) {
@@ -928,7 +928,7 @@ public final class MarchingSquaresVectorizer {
     private boolean checkFullyCovered(RandomIter iter, double refValue, List<Polygon> geometriesList) {
         for (int y = imageProperties.minY;
                 y <= imageProperties.maxY;
-                y += (imageProperties.maxY - imageProperties.minY)) {
+                y += imageProperties.maxY - imageProperties.minY) {
             for (int x = imageProperties.minX; x <= imageProperties.maxX; x++) {
                 double value = iter.getSample(x, y, 0);
                 if (value != refValue) {
@@ -939,10 +939,10 @@ public final class MarchingSquaresVectorizer {
 
         for (int x = imageProperties.minX;
                 x <= imageProperties.maxX;
-                x += (imageProperties.maxX - imageProperties.minX)) {
+                x += imageProperties.maxX - imageProperties.minX) {
             for (int y = imageProperties.minY;
                     y <= imageProperties.maxY;
-                    y += (imageProperties.maxY - imageProperties.minY)) {
+                    y += imageProperties.maxY - imageProperties.minY) {
                 double value = iter.getSample(x, y, 0);
                 if (value != refValue) {
                     return false;
@@ -978,10 +978,10 @@ public final class MarchingSquaresVectorizer {
             final int sampleDataType,
             final ScanInfo scanInfo)
             throws TransformException {
-        if ((initialX < imageProperties.minX)
-                || (initialX > imageProperties.maxX)
-                || (initialY < imageProperties.minY)
-                || (initialY > imageProperties.maxY)) {
+        if (initialX < imageProperties.minX
+                || initialX > imageProperties.maxX
+                || initialY < imageProperties.minY
+                || initialY > imageProperties.maxY) {
             throw new IllegalArgumentException("Coordinate outside the bounds.");
         }
 
@@ -1098,7 +1098,7 @@ public final class MarchingSquaresVectorizer {
             y = y + dy;
             v = value(iter, x, y, sampleDataType, true);
             awtPolygon.addPoint(x, y);
-        } while ((x != initialX) || (y != initialY));
+        } while (x != initialX || y != initialY);
 
         double polygonArea = getPolygonArea(awtPolygon.xpoints, awtPolygon.ypoints, awtPolygon.npoints - 1);
         if (polygonArea < thresholdArea) {
@@ -1130,9 +1130,9 @@ public final class MarchingSquaresVectorizer {
 
     /** Simple utility method checking if the tested pixel belongs to a lower corner 2*2 checker board. */
     private boolean isLowerCorner(RandomIter iter, int x, int y, int sampleDataType) {
-        return (value(iter, x + 1, y, sampleDataType, false) == 4)
-                && (value(iter, x, y + 1, sampleDataType, false) == 2)
-                && (value(iter, x + 1, y + 1, sampleDataType, false) == 1);
+        return value(iter, x + 1, y, sampleDataType, false) == 4
+                && value(iter, x, y + 1, sampleDataType, false) == 2
+                && value(iter, x + 1, y + 1, sampleDataType, false) == 1;
     }
 
     private int value(RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
@@ -1165,10 +1165,10 @@ public final class MarchingSquaresVectorizer {
     }
 
     private boolean isSet(RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
-        boolean isOutsideGrid = (x < imageProperties.minX)
-                || (x > imageProperties.maxX)
-                || (y < imageProperties.minY)
-                || (y > imageProperties.maxY);
+        boolean isOutsideGrid = x < imageProperties.minX
+                || x > imageProperties.maxX
+                || y < imageProperties.minY
+                || y > imageProperties.maxY;
         if (isOutsideGrid) {
             return false;
         }
@@ -1176,7 +1176,7 @@ public final class MarchingSquaresVectorizer {
             double value = iter.getSampleDouble(x, y, 0);
             if (!Double.isNaN(value)) {
                 // mark the used position
-                if (forceSetting || (x == imageProperties.maxX)) {
+                if (forceSetting || x == imageProperties.maxX) {
                     bitSet.set(x - imageProperties.minX, y - imageProperties.minY);
                 }
             } else {
@@ -1188,7 +1188,7 @@ public final class MarchingSquaresVectorizer {
         } else {
             int value = iter.getSample(x, y, 0);
             // mark the used position
-            if (forceSetting || (x == imageProperties.maxX)) {
+            if (forceSetting || x == imageProperties.maxX) {
                 bitSet.set(x - imageProperties.minX, y - imageProperties.minY);
             }
             if (value == I_VALUE) {
@@ -1263,7 +1263,7 @@ public final class MarchingSquaresVectorizer {
 
         area /= 2;
 
-        return ((area < 0) ? -area : area);
+        return area < 0 ? -area : area;
     }
 
     /**
@@ -1285,7 +1285,7 @@ public final class MarchingSquaresVectorizer {
 
         area /= 2;
 
-        return ((area < 0) ? -area : area);
+        return area < 0 ? -area : area;
     }
 
     /**

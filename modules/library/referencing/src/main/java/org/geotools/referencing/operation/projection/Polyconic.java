@@ -153,7 +153,7 @@ public class Polyconic {
                 ms = abs(cp = cos(phi)) > EPSILON ? msfn(sp, cp) / sp : 0.;
                 lam *= sp;
                 x = ms * sin(lam);
-                y = (mlfn(phi, sp, cp) - ml0) + ms * (1. - cos(lam));
+                y = mlfn(phi, sp, cp) - ml0 + ms * (1. - cos(lam));
             }
 
             if (ptDst != null) {

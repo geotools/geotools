@@ -83,8 +83,8 @@ public final class PolygonIterator extends AbstractLiteIterator {
         }
 
         this.at = at;
-        xScale = Math.sqrt((at.getScaleX() * at.getScaleX()) + (at.getShearX() * at.getShearX()));
-        yScale = Math.sqrt((at.getScaleY() * at.getScaleY()) + (at.getShearY() * at.getShearY()));
+        xScale = Math.sqrt(at.getScaleX() * at.getScaleX() + at.getShearX() * at.getShearX());
+        yScale = Math.sqrt(at.getScaleY() * at.getScaleY() + at.getShearY() * at.getShearY());
 
         coords = rings[0].getCoordinateSequence();
     }
@@ -200,7 +200,7 @@ public final class PolygonIterator extends AbstractLiteIterator {
     @Override
     public void next() {
         if (currentCoord == coords.size()) {
-            if (currentRing < (rings.length - 1)) {
+            if (currentRing < rings.length - 1) {
                 currentCoord = 0;
                 currentRing++;
                 coords = rings[currentRing].getCoordinateSequence();
@@ -223,9 +223,9 @@ public final class PolygonIterator extends AbstractLiteIterator {
                             distx = Math.abs(coords.getX(currentCoord) - oldCoord.x);
                             disty = Math.abs(coords.getY(currentCoord) - oldCoord.y);
                         }
-                    } while (((distx * xScale) < maxDistance)
-                            && ((disty * yScale) < maxDistance)
-                            && (currentCoord < coords.size()));
+                    } while (distx * xScale < maxDistance
+                            && disty * yScale < maxDistance
+                            && currentCoord < coords.size());
 
                     if (currentCoord < coords.size()) {
                         oldCoord = coords.getCoordinate(currentCoord);

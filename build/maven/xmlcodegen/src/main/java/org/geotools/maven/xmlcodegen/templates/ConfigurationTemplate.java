@@ -34,7 +34,7 @@ public class ConfigurationTemplate
     return result;
   }
 
-  public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
+  public final String NL = nl == null ? System.getProperties().getProperty("line.separator") : nl;
   protected final String TEXT_1 = "import org.eclipse.xsd.util.XSDSchemaLocationResolver;\t" + NL + "import org.geotools.xsd.Configuration;" + NL + "import org.picocontainer.MutablePicoContainer;" + NL + "" + NL + "/**" + NL + " * Parser configuration for the ";
   protected final String TEXT_2 = " schema." + NL + " *" + NL + " * @generated" + NL + " */" + NL + "public class ";
   protected final String TEXT_3 = "Configuration extends Configuration {" + NL + "" + NL + "    /**" + NL + "     * Creates a new configuration." + NL + "     * " + NL + "     * @generated" + NL + "     */     " + NL + "    public ";

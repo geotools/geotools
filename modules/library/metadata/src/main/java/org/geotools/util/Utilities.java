@@ -272,7 +272,7 @@ public final class Utilities {
      * @return The tolerance set in the hints, or its default value if not set
      */
     private static double getTolerance() {
-        Double tol = ((Double) Hints.getSystemDefault(Hints.COMPARISON_TOLERANCE));
+        Double tol = (Double) Hints.getSystemDefault(Hints.COMPARISON_TOLERANCE);
         if (tol == null) return Hints.COMPARISON_TOLERANCE.getDefault();
         else return tol;
     }
@@ -302,7 +302,7 @@ public final class Utilities {
     public static boolean equals(final Object object1, final Object object2) throws AssertionError {
         assert object1 == null || !object1.getClass().isArray() : object1;
         assert object2 == null || !object2.getClass().isArray() : object2;
-        return (object1 == object2) || (object1 != null && object1.equals(object2));
+        return object1 == object2 || object1 != null && object1.equals(object2);
     }
 
     /**
@@ -342,31 +342,31 @@ public final class Utilities {
             return false;
         }
         if (object1 instanceof Object[]) {
-            return (object2 instanceof Object[]) && Arrays.deepEquals((Object[]) object1, (Object[]) object2);
+            return object2 instanceof Object[] && Arrays.deepEquals((Object[]) object1, (Object[]) object2);
         }
         if (object1 instanceof double[]) {
-            return (object2 instanceof double[]) && Arrays.equals((double[]) object1, (double[]) object2);
+            return object2 instanceof double[] && Arrays.equals((double[]) object1, (double[]) object2);
         }
         if (object1 instanceof float[]) {
-            return (object2 instanceof float[]) && Arrays.equals((float[]) object1, (float[]) object2);
+            return object2 instanceof float[] && Arrays.equals((float[]) object1, (float[]) object2);
         }
         if (object1 instanceof long[]) {
-            return (object2 instanceof long[]) && Arrays.equals((long[]) object1, (long[]) object2);
+            return object2 instanceof long[] && Arrays.equals((long[]) object1, (long[]) object2);
         }
         if (object1 instanceof int[]) {
-            return (object2 instanceof int[]) && Arrays.equals((int[]) object1, (int[]) object2);
+            return object2 instanceof int[] && Arrays.equals((int[]) object1, (int[]) object2);
         }
         if (object1 instanceof short[]) {
-            return (object2 instanceof short[]) && Arrays.equals((short[]) object1, (short[]) object2);
+            return object2 instanceof short[] && Arrays.equals((short[]) object1, (short[]) object2);
         }
         if (object1 instanceof byte[]) {
-            return (object2 instanceof byte[]) && Arrays.equals((byte[]) object1, (byte[]) object2);
+            return object2 instanceof byte[] && Arrays.equals((byte[]) object1, (byte[]) object2);
         }
         if (object1 instanceof char[]) {
-            return (object2 instanceof char[]) && Arrays.equals((char[]) object1, (char[]) object2);
+            return object2 instanceof char[] && Arrays.equals((char[]) object1, (char[]) object2);
         }
         if (object1 instanceof boolean[]) {
-            return (object2 instanceof boolean[]) && Arrays.equals((boolean[]) object1, (boolean[]) object2);
+            return object2 instanceof boolean[] && Arrays.equals((boolean[]) object1, (boolean[]) object2);
         }
         return object1.equals(object2);
     }
@@ -419,7 +419,7 @@ public final class Utilities {
      * @return An updated hash code value.
      */
     public static int hash(long value, int seed) {
-        return seed * PRIME_NUMBER + (((int) value) ^ ((int) (value >>> 32)));
+        return seed * PRIME_NUMBER + ((int) value ^ (int) (value >>> 32));
     }
 
     /**

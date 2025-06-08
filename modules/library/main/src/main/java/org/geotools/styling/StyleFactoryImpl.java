@@ -809,7 +809,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     public ChannelSelection createChannelSelection(SelectedChannelType... channels) {
         ChannelSelection channelSel = new ChannelSelectionImpl();
 
-        if ((channels != null) && (channels.length > 0)) {
+        if (channels != null && channels.length > 0) {
             if (channels.length == 1) {
                 channelSel.setGrayChannel(channels[0]);
             } else {

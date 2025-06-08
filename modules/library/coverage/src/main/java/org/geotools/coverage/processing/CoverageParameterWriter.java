@@ -54,7 +54,7 @@ final class CoverageParameterWriter extends ParameterWriter {
         if (value instanceof AbstractCoverage) {
             final InternationalString name = ((AbstractCoverage) value).getName();
             final Locale locale = getLocale();
-            return (name != null)
+            return name != null
                     ? name.toString(locale)
                     : Vocabulary.getResources(locale).getString(VocabularyKeys.UNTITLED);
         }

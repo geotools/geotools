@@ -102,7 +102,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
 
                     String uri = parser.getNamespaceSupport().getURI(prefix);
 
-                    if ((uri != null) && uri.equals(XSDConstants.SCHEMA_INSTANCE_URI_2001)) {
+                    if (uri != null && uri.equals(XSDConstants.SCHEMA_INSTANCE_URI_2001)) {
                         continue;
                     }
                 }
@@ -387,6 +387,6 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
 
     @Override
     public String toString() {
-        return (node != null) ? node.toString() : "";
+        return node != null ? node.toString() : "";
     }
 }

@@ -66,7 +66,7 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
     public static boolean isLogicFilter(short filterType) {
         LOGGER.entering("AbstractFilter", "isLogicFilter", Short.valueOf(filterType));
 
-        return ((filterType == LOGIC_OR) || (filterType == LOGIC_AND) || (filterType == LOGIC_NOT));
+        return filterType == LOGIC_OR || filterType == LOGIC_AND || filterType == LOGIC_NOT;
     }
 
     /**
@@ -76,10 +76,10 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @return Whether or not this is a math filter type.
      */
     protected static boolean isMathFilter(int filterType) {
-        return ((filterType == COMPARE_LESS_THAN)
-                || (filterType == COMPARE_GREATER_THAN)
-                || (filterType == COMPARE_LESS_THAN_EQUAL)
-                || (filterType == COMPARE_GREATER_THAN_EQUAL));
+        return filterType == COMPARE_LESS_THAN
+                || filterType == COMPARE_GREATER_THAN
+                || filterType == COMPARE_LESS_THAN_EQUAL
+                || filterType == COMPARE_GREATER_THAN_EQUAL;
     }
 
     /**
@@ -89,10 +89,10 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @return Whether or not this is a compare filter type.
      */
     protected static boolean isCompareFilter(int filterType) {
-        return (isMathFilter(filterType)
-                || (filterType == COMPARE_EQUALS)
-                || (filterType == BETWEEN)
-                || (filterType == COMPARE_NOT_EQUALS));
+        return isMathFilter(filterType)
+                || filterType == COMPARE_EQUALS
+                || filterType == BETWEEN
+                || filterType == COMPARE_NOT_EQUALS;
     }
 
     /**
@@ -102,17 +102,17 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @return Whether or not this is a geometry filter type.
      */
     protected static boolean isGeometryFilter(short filterType) {
-        return ((filterType == GEOMETRY_BBOX)
-                || (filterType == GEOMETRY_EQUALS)
-                || (filterType == GEOMETRY_DISJOINT)
-                || (filterType == GEOMETRY_TOUCHES)
-                || (filterType == GEOMETRY_INTERSECTS)
-                || (filterType == GEOMETRY_CROSSES)
-                || (filterType == GEOMETRY_WITHIN)
-                || (filterType == GEOMETRY_CONTAINS)
-                || (filterType == GEOMETRY_OVERLAPS)
-                || (filterType == GEOMETRY_DWITHIN)
-                || (filterType == GEOMETRY_BEYOND));
+        return filterType == GEOMETRY_BBOX
+                || filterType == GEOMETRY_EQUALS
+                || filterType == GEOMETRY_DISJOINT
+                || filterType == GEOMETRY_TOUCHES
+                || filterType == GEOMETRY_INTERSECTS
+                || filterType == GEOMETRY_CROSSES
+                || filterType == GEOMETRY_WITHIN
+                || filterType == GEOMETRY_CONTAINS
+                || filterType == GEOMETRY_OVERLAPS
+                || filterType == GEOMETRY_DWITHIN
+                || filterType == GEOMETRY_BEYOND;
     }
 
     /**
@@ -122,7 +122,7 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @return Whether or not this is a geometry filter type.
      */
     protected static boolean isGeometryDistanceFilter(short filterType) {
-        return ((filterType == GEOMETRY_DWITHIN) || (filterType == GEOMETRY_BEYOND));
+        return filterType == GEOMETRY_DWITHIN || filterType == GEOMETRY_BEYOND;
     }
 
     /**
@@ -132,10 +132,10 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @return Whether or not this is a logic filter type.
      */
     public static boolean isSimpleFilter(short filterType) {
-        return (isCompareFilter(filterType)
+        return isCompareFilter(filterType)
                 || isGeometryFilter(filterType)
-                || (filterType == NULL)
-                || (filterType == FID)
-                || (filterType == LIKE));
+                || filterType == NULL
+                || filterType == FID
+                || filterType == LIKE;
     }
 }

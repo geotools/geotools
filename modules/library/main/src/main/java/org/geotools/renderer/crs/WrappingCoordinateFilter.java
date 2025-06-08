@@ -115,7 +115,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
             // is, it's probably something like Antarctica that does not need coordinate rewrapping,
             // the exception is when the object is already flipped
             if (distance > wrapLimit) {
-                boolean wraps = (distance < maxWrap) || preFlipped;
+                boolean wraps = distance < maxWrap || preFlipped;
                 // if we fail here, revert to more expensive calculation if
                 // we have a reverse transform
                 // this is analagous to the technique mentioned here:

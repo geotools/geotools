@@ -149,7 +149,7 @@ public class HsqlEpsgDatabase {
                          */
                         final int values = insertStatement.length();
                         insertStatement.append(line);
-                        final boolean hasMore = (line.charAt(length - 1) == ',');
+                        final boolean hasMore = line.charAt(length - 1) == ',';
                         if (hasMore) {
                             insertStatement.setLength(insertStatement.length() - 1);
                         }

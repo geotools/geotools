@@ -186,8 +186,7 @@ public final class Interpolator2D extends GridCoverage2D {
         boolean hasROI = roiProp != null;
         Object noDataProp = CoverageUtilities.getNoDataProperty(coverage);
         boolean hasNoData = noDataProp != null;
-        if (interpolations.length == 0
-                || (interpolations[0] instanceof InterpolationNearest && !hasROI && !hasNoData)) {
+        if (interpolations.length == 0 || interpolations[0] instanceof InterpolationNearest && !hasROI && !hasNoData) {
             return coverage;
         }
         return new Interpolator2D(coverage, interpolations, 0, be);
@@ -693,7 +692,7 @@ public final class Interpolator2D extends GridCoverage2D {
                 for (int j = 0; j < gaps[0].length; j++) {
                     if (j == 0) {
                         samples[i][j] = samples[i][searchFirstValid(gaps[i], j, true)];
-                    } else if (j == (gaps[0].length - 1)) {
+                    } else if (j == gaps[0].length - 1) {
                         samples[i][j] = samples[i][searchFirstValid(gaps[i], j, false)];
                     } else {
                         int before = searchFirstValid(gaps[i], j, true);
@@ -728,7 +727,7 @@ public final class Interpolator2D extends GridCoverage2D {
                 if (i == 0) {
                     int index = searchFirstValid(validLines, i, true);
                     samples[i] = samples[index];
-                } else if (i == (gaps.length - 1)) {
+                } else if (i == gaps.length - 1) {
                     int index = searchFirstValid(validLines, i, false);
                     samples[i] = samples[index];
                 } else {
@@ -782,7 +781,7 @@ public final class Interpolator2D extends GridCoverage2D {
                 for (int j = 0; j < gaps[0].length; j++) {
                     if (j == 0) {
                         samples[i][j] = samples[i][searchFirstValid(gaps[i], j, true)];
-                    } else if (j == (gaps[0].length - 1)) {
+                    } else if (j == gaps[0].length - 1) {
                         samples[i][j] = samples[i][searchFirstValid(gaps[i], j, false)];
                     } else {
                         int before = searchFirstValid(gaps[i], j, true);
@@ -817,7 +816,7 @@ public final class Interpolator2D extends GridCoverage2D {
                 if (i == 0) {
                     int index = searchFirstValid(validLines, i, true);
                     samples[i] = samples[index];
-                } else if (i == (gaps.length - 1)) {
+                } else if (i == gaps.length - 1) {
                     int index = searchFirstValid(validLines, i, false);
                     samples[i] = samples[index];
                 } else {
@@ -871,7 +870,7 @@ public final class Interpolator2D extends GridCoverage2D {
                 for (int j = 0; j < gaps[0].length; j++) {
                     if (j == 0) {
                         samples[i][j] = samples[i][searchFirstValid(gaps[i], j, true)];
-                    } else if (j == (gaps[0].length - 1)) {
+                    } else if (j == gaps[0].length - 1) {
                         samples[i][j] = samples[i][searchFirstValid(gaps[i], j, false)];
                     } else {
                         int before = searchFirstValid(gaps[i], j, true);
@@ -906,7 +905,7 @@ public final class Interpolator2D extends GridCoverage2D {
                 if (i == 0) {
                     int index = searchFirstValid(validLines, i, true);
                     samples[i] = samples[index];
-                } else if (i == (gaps.length - 1)) {
+                } else if (i == gaps.length - 1) {
                     int index = searchFirstValid(validLines, i, false);
                     samples[i] = samples[index];
                 } else {

@@ -190,9 +190,9 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
     }
 
     protected boolean hasElevations(CoordinateSequence seq) {
-        return (seq instanceof CoordinateArraySequence
-                        && !Double.isNaN(seq.getCoordinate(0).getZ()))
-                || (!(seq instanceof CoordinateArraySequence) && seq.getDimension() > 2);
+        return seq instanceof CoordinateArraySequence
+                        && !Double.isNaN(seq.getCoordinate(0).getZ())
+                || !(seq instanceof CoordinateArraySequence) && seq.getDimension() > 2;
     }
 
     /**
@@ -371,7 +371,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         @Override
         public void filter(Geometry geom) {
             if (geom instanceof LineString) {
-                LineString ls = ((LineString) geom);
+                LineString ls = (LineString) geom;
 
                 // look for the original line containing this one
                 LineString original = getOriginator(ls);
@@ -418,7 +418,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
                 // there is at least one intersection
                 // or if we're in tolerant mode
                 if (intersectionNum == LineIntersector.POINT_INTERSECTION
-                        || (tolerant && intersectionNum != LineIntersector.COLLINEAR)) {
+                        || tolerant && intersectionNum != LineIntersector.COLLINEAR) {
                     // this one might be due to a numerical issue, where the two lines to do
                     // intersect
                     // exactly, but almost. Let's compute the distance and see

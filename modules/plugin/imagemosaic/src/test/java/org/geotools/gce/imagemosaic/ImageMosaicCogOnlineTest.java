@@ -119,7 +119,7 @@ public class ImageMosaicCogOnlineTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 24,
                 reader.getOriginalGridRange().getSpan(1) / 24);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -345,7 +345,7 @@ public class ImageMosaicCogOnlineTest {
         String destinationPath = folder + "/";
         if (StringUtils.isNotBlank(subFolder)) {
             workDir = new File(workDir, subFolder);
-            destinationPath += (subFolder + "/");
+            destinationPath += subFolder + "/";
         }
         destinationPath += zipName;
         if (!workDir.mkdirs()) {

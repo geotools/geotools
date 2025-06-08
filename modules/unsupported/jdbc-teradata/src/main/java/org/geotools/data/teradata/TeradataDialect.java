@@ -404,7 +404,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
                         // check for "empty" envelope, means values were not set in geometry_columns
                         // table, fall out
-                        if (env.isEmpty() || env.isNull() || (env.getWidth() == 0 && env.getMinX() == 0)) {
+                        if (env.isEmpty() || env.isNull() || env.getWidth() == 0 && env.getMinX() == 0) {
                             throw new Exception("Empty universe in geometry columns");
                         }
                         envs.add(env);
@@ -1007,7 +1007,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 sql.append(orderBy).append(" ");
             }
 
-            long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
+            long max = limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset;
             sql.append("QUALIFY row_num > ")
                     .append(offset)
                     .append(" AND row_num <= ")

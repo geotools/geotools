@@ -137,7 +137,7 @@ public class ProjectionBuilder {
         double inverseFlattening = ellipsoid.getInverseFlattening();
 
         // setting missing parameters
-        parameters.parameter(NetCDFUtilities.SEMI_MINOR).setValue(semiMajor * (1 - (1 / inverseFlattening)));
+        parameters.parameter(NetCDFUtilities.SEMI_MINOR).setValue(semiMajor * (1 - 1 / inverseFlattening));
         parameters.parameter(NetCDFUtilities.SEMI_MAJOR).setValue(semiMajor);
     }
 

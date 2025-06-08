@@ -241,7 +241,7 @@ class NetCDFGeoreferenceManager {
                         }
                     }
                 }
-                return (hasXLon && hasYLat) ? coordinates : null;
+                return hasXLon && hasYLat ? coordinates : null;
             }
 
             public void dispose() {
@@ -617,14 +617,14 @@ class NetCDFGeoreferenceManager {
      */
     private void getCoordinate(CoordinateVariable<?> cv, double[] coordinate) throws IOException {
         if (cv.isRegular()) {
-            coordinate[0] = cv.getStart() - (cv.getIncrement() / 2d);
-            coordinate[1] = coordinate[0] + cv.getIncrement() * (cv.getSize());
+            coordinate[0] = cv.getStart() - cv.getIncrement() / 2d;
+            coordinate[1] = coordinate[0] + cv.getIncrement() * cv.getSize();
         } else {
             double min = ((Number) cv.getMinimum()).doubleValue();
             double max = ((Number) cv.getMaximum()).doubleValue();
             double incr = (max - min) / (cv.getSize() - 1);
-            coordinate[0] = min - (incr / 2d);
-            coordinate[1] = max + (incr / 2d);
+            coordinate[0] = min - incr / 2d;
+            coordinate[1] = max + incr / 2d;
         }
     }
 }

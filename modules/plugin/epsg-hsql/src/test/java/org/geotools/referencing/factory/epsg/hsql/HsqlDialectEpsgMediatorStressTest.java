@@ -93,11 +93,11 @@ public class HsqlDialectEpsgMediatorStressTest {
             System.out.println("Threads: " + RUNNER_COUNT);
             System.out.println("Maximum Workers: " + MAX_WORKERS);
             System.out.println("Iterations per Thread: " + ITERATIONS);
-            System.out.println("Average Time: " + (totalTime / totalRuns) + " ms");
+            System.out.println("Average Time: " + totalTime / totalRuns + " ms");
             System.out.println("Cumulative Time: " + totalTime + " ms");
             System.out.println("Cumulative Iterations: " + totalRuns);
             System.out.println("Overall Time: " + timeElapsed);
-            System.out.println("Throughput: " + (1000 * totalRuns / (double) totalTime) + " Hz");
+            System.out.println("Throughput: " + 1000 * totalRuns / (double) totalTime + " Hz");
             System.out.println("Min: " + minTime);
             System.out.println("Max: " + maxTime);
             System.out.println("BUFFER_POLICY: " + hints.get(Hints.CACHE_POLICY).toString());
@@ -118,7 +118,7 @@ public class HsqlDialectEpsgMediatorStressTest {
                     .append(", ")
                     .append(totalRuns)
                     .append(", ")
-                    .append((1000 * totalRuns / (double) totalTime))
+                    .append(1000 * totalRuns / (double) totalTime)
                     .append(", ")
                     .append(minTime)
                     .append(", ")

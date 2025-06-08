@@ -149,13 +149,13 @@ public final class VRTTest extends GDALTestCase {
         assertEquals(
                 DataBuffer.TYPE_SHORT, gc.getRenderedImage().getSampleModel().getDataType());
 
-        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle range = (GridEnvelope2D) reader.getOriginalGridRange();
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
 
         final GeneralBounds cropEnvelope = new GeneralBounds(
                 new double[] {
-                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
-                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + oldEnvelope.getSpan(0) / cropFactor,
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + oldEnvelope.getSpan(1) / cropFactor
                 },
                 new double[] {
                     oldEnvelope.getUpperCorner().getOrdinate(0),

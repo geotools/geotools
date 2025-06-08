@@ -110,7 +110,7 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
             DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
 
-        if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
+        if (filter instanceof DWithin && !swapped || filter instanceof Beyond && swapped) {
             encodeIndexPredicate(property, geometry);
 
             property.accept(this, extraData);
@@ -120,7 +120,7 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
             out.write(Double.toString(filter.getDistance()));
             out.write(")");
         }
-        if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
+        if (filter instanceof DWithin && swapped || filter instanceof Beyond && !swapped) {
             encodeIndexPredicate(property, geometry);
 
             property.accept(this, extraData);
@@ -230,7 +230,7 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
                 LOGGER.fine("Bounds:"
                         + oenv
                         + " covers "
-                        + (coverage * 100)
+                        + coverage * 100
                         + " of universe bounds: "
                         + uenv
                         + ". Forgoing index query.");

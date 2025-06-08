@@ -159,7 +159,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
         double sinphiy = Math.sin(phiy);
 
         /* Each row is calculated with values of proper GCPs */
-        for (int j = 0; j < (A.getNumRow() / 2); j++) {
+        for (int j = 0; j < A.getNumRow() / 2; j++) {
             double x = getSourcePoints()[j].getOrdinate(0);
             double y = getSourcePoints()[j].getOrdinate(1);
 
@@ -222,7 +222,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
         double cosphiy = Math.cos(phiy);
         double sinphiy = Math.sin(phiy);
 
-        for (int j = 0; j < (l.getNumRow() / 2); j++) {
+        for (int j = 0; j < l.getNumRow() / 2; j++) {
             double x = getSourcePoints()[j].getOrdinate(0);
             double y = getSourcePoints()[j].getOrdinate(1);
 
@@ -231,7 +231,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
             double dy = getTargetPoints()[j].getOrdinate(1) - (sx * sinphix * x + sy * cosphiy * y + ty);
 
             l.setElement(j, 0, dx);
-            l.setElement((l.getNumRow() / 2) + j, 0, dy);
+            l.setElement(l.getNumRow() / 2 + j, 0, dy);
         }
 
         return l;
@@ -411,7 +411,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
             i++;
         }
         if (valueConstrain.containsKey(SXY)) {
-            U.setRow(i, new double[] {(phix - phiy) + valueConstrain.get(SXY)});
+            U.setRow(i, new double[] {phix - phiy + valueConstrain.get(SXY)});
             i++;
         } else if (valueConstrain.containsKey(TY)) {
             U.setRow(i, new double[] {-ty + valueConstrain.get(TY)});

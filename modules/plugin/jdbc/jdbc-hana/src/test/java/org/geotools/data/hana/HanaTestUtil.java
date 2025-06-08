@@ -103,7 +103,7 @@ public class HanaTestUtil {
                     throw new AssertionError();
                 }
                 int count = rs.getInt(1);
-                return (count == 1);
+                return count == 1;
             }
         }
     }
@@ -128,7 +128,7 @@ public class HanaTestUtil {
                     throw new AssertionError();
                 }
                 int count = rs.getInt(1);
-                return (count == 1);
+                return count == 1;
             }
         }
     }
@@ -165,7 +165,7 @@ public class HanaTestUtil {
     }
 
     public boolean tableExists(String schemaName, String tableName) throws SQLException {
-        String sql = (schemaName == null)
+        String sql = schemaName == null
                 ? "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ?"
                 : "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = ? AND TABLE_NAME = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -180,7 +180,7 @@ public class HanaTestUtil {
                     throw new AssertionError();
                 }
                 int count = rs.getInt(1);
-                return (count == 1);
+                return count == 1;
             }
         }
     }
@@ -322,7 +322,7 @@ public class HanaTestUtil {
     }
 
     public boolean viewExists(String schemaName, String viewName) throws SQLException {
-        String sql = (schemaName == null)
+        String sql = schemaName == null
                 ? "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = CURRENT_SCHEMA AND VIEW_NAME = ?"
                 : "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = ? AND VIEW_NAME = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -337,7 +337,7 @@ public class HanaTestUtil {
                     throw new AssertionError();
                 }
                 int count = rs.getInt(1);
-                return (count == 1);
+                return count == 1;
             }
         }
     }
@@ -382,7 +382,7 @@ public class HanaTestUtil {
     }
 
     public boolean sequenceExists(String schemaName, String sequenceName) throws SQLException {
-        String sql = (schemaName == null)
+        String sql = schemaName == null
                 ? "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND SEQUENCE_NAME = ?"
                 : "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = ? AND SEQUENCE_NAME = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -397,7 +397,7 @@ public class HanaTestUtil {
                     throw new AssertionError();
                 }
                 int count = rs.getInt(1);
-                return (count == 1);
+                return count == 1;
             }
         }
     }

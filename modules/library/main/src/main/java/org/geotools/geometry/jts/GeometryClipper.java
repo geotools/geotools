@@ -97,7 +97,7 @@ public class GeometryClipper {
             return clip(g, ensureValid);
         } catch (TopologyException e) {
             try {
-                if (((g instanceof Polygon) || (g instanceof MultiPolygon)) && !g.isValid()) {
+                if ((g instanceof Polygon || g instanceof MultiPolygon) && !g.isValid()) {
                     // its an invalid Polygon or MultiPolygon. Use buffer(0) to attempt to fix it
                     // do not use buffer(0) on points or lines - it returns an empty polygon
                     return clip(g.buffer(0), ensureValid);
@@ -268,7 +268,7 @@ public class GeometryClipper {
         int outcode0 = computeOutCode(x0, y0, xmin, ymin, xmax, ymax);
         int outcode1 = computeOutCode(x1, y1, xmin, ymin, xmax, ymax);
 
-        return ((outcode0 & outcode1) > 0);
+        return (outcode0 & outcode1) > 0;
     }
 
     /** Checks if the point is inside the clipping bounds */
@@ -322,7 +322,7 @@ public class GeometryClipper {
             double x = cs.getX(i);
             double y = cs.getY(i);
             // check if the current segment lies on the bbox side fully
-            if ((x == px && (x == xmin || x == xmax)) || (y == py && (y == ymin || y == ymax))) {
+            if (x == px && (x == xmin || x == xmax) || y == py && (y == ymin || y == ymax)) {
                 px = x;
                 py = y;
             } else {
@@ -385,14 +385,14 @@ public class GeometryClipper {
 
             // use this to determine which bounding lines for the clip region the
             // containing line hits first (from which side, to which other side)
-            if ((deltaX > 0) || (deltaX == 0 && x0 > xmax)) {
+            if (deltaX > 0 || deltaX == 0 && x0 > xmax) {
                 xIn = xmin;
                 xOut = xmax;
             } else {
                 xIn = xmax;
                 xOut = xmin;
             }
-            if ((deltaY > 0) || (deltaY == 0 && y0 > ymax)) {
+            if (deltaY > 0 || deltaY == 0 && y0 > ymax) {
                 yIn = ymin;
                 yOut = ymax;
             } else {
@@ -469,17 +469,17 @@ public class GeometryClipper {
                     if (0 < tOut1 && tIn2 <= 1.0) {
                         if (0 <= tIn2) { // visible segment
                             if (tInX > tInY) {
-                                out.add(xIn, y0 + (tInX * deltaY));
+                                out.add(xIn, y0 + tInX * deltaY);
                             } else {
-                                out.add(x0 + (tInY * deltaX), yIn);
+                                out.add(x0 + tInY * deltaX, yIn);
                             }
                         }
 
                         if (1.0 >= tOut1) {
                             if (tOutX < tOutY) {
-                                out.add(xOut, y0 + (tOutX * deltaY));
+                                out.add(xOut, y0 + tOutX * deltaY);
                             } else {
-                                out.add(x0 + (tOutY * deltaX), yOut);
+                                out.add(x0 + tOutY * deltaX, yOut);
                             }
                         } else {
                             out.add(x1, y1);
@@ -487,7 +487,7 @@ public class GeometryClipper {
                     }
                 }
 
-                if ((0 < tOut2 && tOut2 <= 1.0)) {
+                if (0 < tOut2 && tOut2 <= 1.0) {
                     out.add(xOut, yOut);
                 }
             }

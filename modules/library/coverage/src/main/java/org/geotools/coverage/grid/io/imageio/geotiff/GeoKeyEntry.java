@@ -156,6 +156,6 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
      */
     @Override
     public int compareTo(GeoKeyEntry o) {
-        return this.keyID > o.keyID ? 1 : (this.keyID == o.keyID ? 0 : 1);
+        return this.keyID > o.keyID ? 1 : this.keyID == o.keyID ? 0 : 1;
     }
 }

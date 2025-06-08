@@ -35,6 +35,6 @@ public class BasicLineGraphBuilder extends BasicGraphBuilder {
      */
     @Override
     public Node buildNode() {
-        return (new BasicXYNode());
+        return new BasicXYNode();
     }
 }

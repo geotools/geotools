@@ -81,7 +81,7 @@ public final class Calendar {
      * @param time The date in milliseconds ellapsed since January 1st, 1970.
      */
     static double julianDay(final long time) {
-        return (time / MILLIS_IN_DAY) + JULIAN_DAY_1970;
+        return time / MILLIS_IN_DAY + JULIAN_DAY_1970;
     }
 
     /**
@@ -90,7 +90,7 @@ public final class Calendar {
      * Chapront (1988) pour la longueur d'un mois synodique.
      */
     static double julianCentury(final Date time) {
-        return ((time.getTime() / MILLIS_IN_DAY) + (JULIAN_DAY_1970 - 2451545.0)) / 36525;
+        return (time.getTime() / MILLIS_IN_DAY + (JULIAN_DAY_1970 - 2451545.0)) / 36525;
     }
 
     /**
@@ -129,7 +129,7 @@ public final class Calendar {
     public static final void main(final String... args) throws ParseException {
         final DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
-        final Date time = (args.length != 0) ? format.parse(args[0]) : new Date();
+        final Date time = args.length != 0 ? format.parse(args[0]) : new Date();
         System.out.print("Date (UTC)   : ");
         System.out.println(format.format(time));
         System.out.print("Tropical year: ");

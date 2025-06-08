@@ -298,11 +298,11 @@ class Granule {
                 return null;
 
             } else if (LOGGER.isLoggable(java.util.logging.Level.FINE))
-                LOGGER.fine((new StringBuffer("Loading level ")
+                LOGGER.fine(new StringBuffer("Loading level ")
                         .append(imageIndex)
                         .append(" with source region ")
                         .append(sourceArea)
-                        .toString()));
+                        .toString());
             final int ssx = readParameters.getSourceXSubsampling();
             final int ssy = readParameters.getSourceYSubsampling();
             final int newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx, ssy);
@@ -349,8 +349,8 @@ class Granule {
             // image sizes.
             //
             // place it in the dest image using the coords created above;
-            double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
-            double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
+            double decimationScaleX = 1.0 * sourceArea.width / raster.getWidth();
+            double decimationScaleY = 1.0 * sourceArea.height / raster.getHeight();
             final AffineTransform decimationScaleTranform =
                     XAffineTransform.getScaleInstance(decimationScaleX, decimationScaleY);
 

@@ -141,10 +141,10 @@ public class JGrassUtilities {
 
         double minx = activeRegion.getRectangle().getBounds2D().getMinX();
         double ewres = activeRegion.getWEResolution();
-        double snapx = minx + (Math.round((x - minx) / ewres) * ewres);
+        double snapx = minx + Math.round((x - minx) / ewres) * ewres;
         double miny = activeRegion.getRectangle().getBounds2D().getMinY();
         double nsres = activeRegion.getNSResolution();
-        double snapy = miny + (Math.round((y - miny) / nsres) * nsres);
+        double snapy = miny + Math.round((y - miny) / nsres) * nsres;
         double xmin = 0.0;
         double xmax = 0.0;
         double ymin = 0.0;

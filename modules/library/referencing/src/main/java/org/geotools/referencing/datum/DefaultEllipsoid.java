@@ -429,7 +429,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
                 return Utilities.equals(this.semiMajorAxis, converter.convert(that.semiMajorAxis))
                         && Utilities.equals(this.semiMinorAxis, converter.convert(that.semiMinorAxis));
             } else {
-                return (this.ivfDefinitive == that.ivfDefinitive)
+                return this.ivfDefinitive == that.ivfDefinitive
                         && Utilities.equals(this.semiMajorAxis, that.semiMajorAxis)
                         && Utilities.equals(this.semiMinorAxis, that.semiMinorAxis)
                         && Utilities.equals(this.inverseFlattening, that.inverseFlattening)
@@ -456,7 +456,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
         } else {
             longCode = (long) (longCode + semiMinorAxis);
         }
-        return (((int) (longCode >>> 32)) ^ (int) longCode);
+        return (int) (longCode >>> 32) ^ (int) longCode;
     }
 
     /**

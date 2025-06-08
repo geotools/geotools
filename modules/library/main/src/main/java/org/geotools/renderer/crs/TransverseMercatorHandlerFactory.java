@@ -50,8 +50,8 @@ public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactor
                 new ReferencedEnvelope(centralMeridian - 45, centralMeridian + 45, -85, 85, DefaultGeographicCRS.WGS84);
 
         ProjectionHandler ph = new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
-        if ((validArea.getMinX() < 180 && validArea.getMaxX() > 180)
-                || (validArea.getMinX() < -180 && validArea.getMaxX() > -180)) {
+        if (validArea.getMinX() < 180 && validArea.getMaxX() > 180
+                || validArea.getMinX() < -180 && validArea.getMaxX() > -180) {
             ph.computeDatelineX();
         }
 

@@ -278,9 +278,10 @@ public class Matrix2 implements XMatrix, Serializable {
     /** Returns a hash code value based on the data values in this object. */
     @Override
     public int hashCode() {
-        return (int) ((((Double.doubleToLongBits(m00) + 37 * Double.doubleToLongBits(m01))
-                                + 37 * Double.doubleToLongBits(m10))
-                        + 37 * Double.doubleToLongBits(m11))
+        return (int) (Double.doubleToLongBits(m00)
+                        + 37 * Double.doubleToLongBits(m01)
+                        + 37 * Double.doubleToLongBits(m10)
+                        + 37 * Double.doubleToLongBits(m11)
                 ^ serialVersionUID);
     }
 
@@ -418,7 +419,7 @@ public class Matrix2 implements XMatrix, Serializable {
 
     @Override
     public double determinate() {
-        return (m00 * m11) - (m01 * m10);
+        return m00 * m11 - m01 * m10;
     }
 
     @Override

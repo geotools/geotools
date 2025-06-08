@@ -107,7 +107,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      */
     public static String convertToSQL92(
             char escape, char multi, char single, boolean matchCase, String pattern, boolean escapeSingleQuote) {
-        if ((escape == '\'') || (multi == '\'') || (single == '\''))
+        if (escape == '\'' || multi == '\'' || single == '\'')
             throw new IllegalArgumentException("do not use single quote (') as special char!");
 
         StringBuilder result = new StringBuilder(pattern.length() + 5);
@@ -115,7 +115,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
             char chr = pattern.charAt(i);
             if (chr == escape) {
                 // emit the next char and skip it
-                if (i != (pattern.length() - 1)) result.append(pattern.charAt(i + 1)); //
+                if (i != pattern.length() - 1) result.append(pattern.charAt(i + 1)); //
                 i++; // skip next char
             } else if (chr == single) {
                 result.append('_');
@@ -403,8 +403,8 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     @Override
     public int hashCode() {
         int result = 17;
-        result = (37 * result) + ((attribute == null) ? 0 : attribute.hashCode());
-        result = (37 * result) + ((pattern == null) ? 0 : pattern.hashCode());
+        result = 37 * result + (attribute == null ? 0 : attribute.hashCode());
+        result = 37 * result + (pattern == null ? 0 : pattern.hashCode());
 
         return result;
     }

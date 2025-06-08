@@ -37,7 +37,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
 
     @After
     public void close() throws IOException {
-        if ((writer != null) && !writer.isClosed()) {
+        if (writer != null && !writer.isClosed()) {
             writer.close();
         }
 

@@ -238,7 +238,7 @@ public class DateTimeParser {
     }
 
     private boolean isFlagSet(final int referenceFlag) {
-        return ((flags & referenceFlag) == referenceFlag);
+        return (flags & referenceFlag) == referenceFlag;
     }
 
     /**
@@ -284,7 +284,7 @@ public class DateTimeParser {
             final DateRange left = (DateRange) o1;
             if (o2Date) {
                 // o2 date
-                return left.getMinValue().compareTo(((Date) o2));
+                return left.getMinValue().compareTo((Date) o2);
             }
             // o2 daterange
             return left.getMinValue().compareTo(((DateRange) o2).getMinValue());
@@ -484,9 +484,9 @@ public class DateTimeParser {
         // special handling for 'current', 'now' and 'present' keyword (we accept both wms and wcs
         // ways)
         if (CURRENT_TIME_NAMES.contains(computedValue.toLowerCase())) {
-            if ((computedValue.equalsIgnoreCase("current") && isFlagSet(FLAG_GET_TIME_ON_CURRENT))
-                    || (computedValue.equalsIgnoreCase("now") && isFlagSet(FLAG_GET_TIME_ON_NOW))
-                    || (computedValue.equalsIgnoreCase("present") && isFlagSet(FLAG_GET_TIME_ON_PRESENT))) {
+            if (computedValue.equalsIgnoreCase("current") && isFlagSet(FLAG_GET_TIME_ON_CURRENT)
+                    || computedValue.equalsIgnoreCase("now") && isFlagSet(FLAG_GET_TIME_ON_NOW)
+                    || computedValue.equalsIgnoreCase("present") && isFlagSet(FLAG_GET_TIME_ON_PRESENT)) {
                 Calendar now = Calendar.getInstance();
                 now.set(Calendar.MILLISECOND, 0);
                 computedValue = FormatAndPrecision.MILLISECOND.getFormat().format(now.getTime());

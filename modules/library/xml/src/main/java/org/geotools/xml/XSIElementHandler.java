@@ -120,7 +120,7 @@ public abstract class XSIElementHandler implements Serializable {
                 return getLocalName().equals(ob.getLocalName());
             }
 
-            return (null == ob.getLocalName());
+            return null == ob.getLocalName();
         }
 
         return false;

@@ -47,7 +47,7 @@ public class SchemaClassTemplate
     return result;
   }
 
-  public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
+  public final String NL = nl == null ? System.getProperties().getProperty("line.separator") : nl;
   protected final String TEXT_1 = "";
   protected final String TEXT_2 = NL + NL + "import java.util.ArrayList;" + NL + "import java.util.Collections;" + NL + "import java.util.List;" + NL + "" + NL + "import org.geotools.api.feature.type.AttributeType;" + NL + "import org.geotools.api.feature.type.ComplexType;" + NL + "import org.geotools.api.feature.type.PropertyDescriptor;" + NL + "import org.geotools.api.filter.Filter;" + NL + "" + NL + "import org.geotools.feature.NameImpl;" + NL + "import org.geotools.feature.type.AttributeDescriptorImpl;" + NL + "import org.geotools.feature.type.AttributeTypeImpl;" + NL + "import org.geotools.feature.type.ComplexTypeImpl;" + NL + "import org.geotools.feature.type.SchemaImpl;" + NL;
   protected final String TEXT_3 = NL + "import ";

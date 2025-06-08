@@ -302,7 +302,7 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         if (inferred != null && !inferred.equalsIgnoreCase(format)) {
             LOGGER.fine(String.format("Overriding tile format: was %s, set to %s", format, inferred));
         }
-        return (inferred != null ? inferred : format);
+        return inferred != null ? inferred : format;
     }
 
     protected static BufferedImage readImage(byte[] data, String format) throws IOException {

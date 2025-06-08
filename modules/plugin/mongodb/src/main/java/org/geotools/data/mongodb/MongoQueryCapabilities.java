@@ -49,6 +49,6 @@ class MongoQueryCapabilities extends QueryCapabilities {
     private boolean supportsPropertySorting(PropertyName propertyName) {
         AttributeDescriptor descriptor = (AttributeDescriptor) propertyName.evaluate(source.getSchema());
         return descriptor != null
-                && !(Geometry.class.isAssignableFrom(descriptor.getType().getBinding()));
+                && !Geometry.class.isAssignableFrom(descriptor.getType().getBinding());
     }
 }

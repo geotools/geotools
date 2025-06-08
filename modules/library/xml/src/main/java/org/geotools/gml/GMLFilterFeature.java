@@ -307,7 +307,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
             insideFeature = false;
         } else if (insideAttribute) {
             // _log.debug("end - inside attribute [" + tempValue + "]");
-            if ((tempValue != null) && !tempValue.toString().trim().equals("")) {
+            if (tempValue != null && !tempValue.toString().trim().equals("")) {
                 if (tempValue instanceof StringBuffer) {
                     tempValue = tempValue.toString();
                 }

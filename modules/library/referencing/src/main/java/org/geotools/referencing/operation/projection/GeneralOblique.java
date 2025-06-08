@@ -84,7 +84,7 @@ public class GeneralOblique extends MapProjection {
         final double sinlon1 = sin(x);
         final double coslon1 = cos(x);
 
-        x = toDegrees(atan((coslat * sinlon1) / (coslat * sinlatP * coslon1 + sinlat * coslatP))) / globalScale;
+        x = toDegrees(atan(coslat * sinlon1 / (coslat * sinlatP * coslon1 + sinlat * coslatP))) / globalScale;
         y = toDegrees(asin(sinlat * sinlatP - coslat * coslatP * coslon1)) / globalScale;
 
         if (ptDst != null) {
@@ -108,7 +108,7 @@ public class GeneralOblique extends MapProjection {
         final double sinlatP = sin(latitudeOfOrigin);
         final double coslatP = cos(latitudeOfOrigin);
 
-        x = -atan((coslat * sinlon) / (sinlat * coslatP - sinlatP * coslat * coslon));
+        x = -atan(coslat * sinlon / (sinlat * coslatP - sinlatP * coslat * coslon));
         y = asin(sinlat * sinlatP + coslat * coslon * coslatP);
 
         if (ptDst != null) {

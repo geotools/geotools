@@ -131,7 +131,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
 
             if (JAIExt.isJAIExtOperation(STATS)) {
                 // get the properties
-                Statistics[][] results = ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
+                Statistics[][] results = (Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY);
                 // Extracting the bins
                 int numBands = result.getNumBands();
                 double[] maximums = new double[numBands];
@@ -152,9 +152,9 @@ public class Extrema extends BaseStatisticsOperationJAI {
                 final double[] maximums = (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MAXIMUM);
                 final double[] minimums = (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MINIMUM);
                 Object property = result.getProperty(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS);
-                if ((property instanceof List[])) synthProp.put(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS, property);
+                if (property instanceof List[]) synthProp.put(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS, property);
                 property = result.getProperty(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS);
-                if ((property instanceof List[])) synthProp.put(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS, property);
+                if (property instanceof List[]) synthProp.put(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS, property);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_MINIMUM, minimums);

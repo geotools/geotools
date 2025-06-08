@@ -725,7 +725,7 @@ public class GeoTiffWriterTest extends Assert {
     private void writeAndRead(GridCoverage2D coverage, Boolean writeNoDataParam, double noDataValue)
             throws IOException {
         String suffix = "outputWithNodataParam";
-        suffix += (writeNoDataParam != null ? (writeNoDataParam.toString()) : "none");
+        suffix += writeNoDataParam != null ? writeNoDataParam.toString() : "none";
         final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), suffix + ".tif");
         writeAndRead(coverage, writeNoDataParam, noDataValue, output, null);
     }

@@ -497,7 +497,7 @@ class NetCDFResponse extends CoverageResponse {
         final AffineTransform g2w = new AffineTransform(baseGridToWorld);
         g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
-        if ((requestRes[0] < resX || requestRes[1] < resY)) {
+        if (requestRes[0] < resX || requestRes[1] < resY) {
             // Using the best available resolution
             oversampledRequest = true;
         } else {
@@ -687,8 +687,8 @@ class NetCDFResponse extends CoverageResponse {
             // image sizes.
             //
             // place it in the mosaic using the coords created above;
-            double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
-            double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
+            double decimationScaleX = 1.0 * sourceArea.width / raster.getWidth();
+            double decimationScaleY = 1.0 * sourceArea.height / raster.getHeight();
             final AffineTransform decimationScaleTranform =
                     XAffineTransform.getScaleInstance(decimationScaleX, decimationScaleY);
 

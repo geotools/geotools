@@ -102,7 +102,7 @@ public class DivideByConst extends OperationJAI {
             final NumberRange range = ranges[0];
             final double min = range.getMinimum() / c;
             final double max = range.getMaximum() / c;
-            return (max < min) ? NumberRange.create(max, min) : NumberRange.create(min, max);
+            return max < min ? NumberRange.create(max, min) : NumberRange.create(min, max);
         }
         return super.deriveRange(ranges, parameters);
     }

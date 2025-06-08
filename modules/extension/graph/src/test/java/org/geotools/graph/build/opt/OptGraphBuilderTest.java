@@ -198,6 +198,6 @@ public class OptGraphBuilderTest {
     }
 
     private OptGraphBuilder createBuilder() {
-        return (new OptGraphBuilder());
+        return new OptGraphBuilder();
     }
 }

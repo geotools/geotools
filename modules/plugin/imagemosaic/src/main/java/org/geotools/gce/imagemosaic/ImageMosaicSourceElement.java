@@ -72,7 +72,7 @@ abstract class ImageMosaicSourceElement<T> {
         @Override
         void fireHarvestingEvent(
                 ImageMosaicEventHandlers eventHandler, int elementIndex, int numElements, String message) {
-            eventHandler.fireFileEvent(Level.FINE, file, true, message, ((elementIndex + 1) * 99.0) / numElements);
+            eventHandler.fireFileEvent(Level.FINE, file, true, message, (elementIndex + 1) * 99.0 / numElements);
         }
 
         /** Prepare the location on top of the configuration and file to be processed. */
@@ -211,7 +211,7 @@ abstract class ImageMosaicSourceElement<T> {
         @Override
         void fireHarvestingEvent(
                 ImageMosaicEventHandlers eventHandler, int elementIndex, int numElements, String message) {
-            eventHandler.fireUrlEvent(Level.FINE, url, true, message, ((elementIndex + 1) * 99.0) / numElements);
+            eventHandler.fireUrlEvent(Level.FINE, url, true, message, (elementIndex + 1) * 99.0 / numElements);
         }
     }
 
@@ -242,7 +242,7 @@ abstract class ImageMosaicSourceElement<T> {
         @Override
         void fireHarvestingEvent(
                 ImageMosaicEventHandlers eventHandler, int elementIndex, int numElements, String message) {
-            eventHandler.fireURIEvent(Level.FINE, uri, true, message, ((elementIndex + 1) * 99.0) / numElements);
+            eventHandler.fireURIEvent(Level.FINE, uri, true, message, (elementIndex + 1) * 99.0 / numElements);
         }
     }
 }

@@ -131,7 +131,7 @@ public class FilterCapabilities {
     public static final long LOGIC_OR = 0x01 << 25;
 
     /** Scalar Mask for logical operation */
-    public static final long LOGICAL = (LOGIC_AND | LOGIC_OR | LOGIC_NOT);
+    public static final long LOGICAL = LOGIC_AND | LOGIC_OR | LOGIC_NOT;
     /** Scalar Mask for simple comparison operations */
     public static final long SIMPLE_COMPARISONS = COMPARE_EQUALS
             | COMPARE_GREATER_THAN

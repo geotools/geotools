@@ -162,13 +162,13 @@ class FIDSQuery extends Query {
     public int hashCode() {
         String[] n = getPropertyNames();
 
-        return ((n == null) ? -1 : ((n.length == 0) ? 0 : (n.length | n[0].hashCode())))
+        return (n == null ? -1 : n.length == 0 ? 0 : n.length | n[0].hashCode())
                 | getMaxFeatures()
-                | ((getFilter() == null) ? 0 : getFilter().hashCode())
-                | ((getTypeName() == null) ? 0 : getTypeName().hashCode())
-                | ((getVersion() == null) ? 0 : getVersion().hashCode())
-                | ((getCoordinateSystem() == null) ? 0 : getCoordinateSystem().hashCode())
-                | ((getCoordinateSystemReproject() == null)
+                | (getFilter() == null ? 0 : getFilter().hashCode())
+                | (getTypeName() == null ? 0 : getTypeName().hashCode())
+                | (getVersion() == null ? 0 : getVersion().hashCode())
+                | (getCoordinateSystem() == null ? 0 : getCoordinateSystem().hashCode())
+                | (getCoordinateSystemReproject() == null
                         ? 0
                         : getCoordinateSystemReproject().hashCode());
     }
@@ -183,7 +183,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public boolean equals(Object obj) {
-        if ((obj == null) || !(obj instanceof Query)) {
+        if (obj == null || !(obj instanceof Query)) {
             return false;
         }
 
@@ -194,22 +194,22 @@ class FIDSQuery extends Query {
         Query other = (Query) obj;
 
         return Arrays.equals(getPropertyNames(), other.getPropertyNames())
-                && (retrieveAllProperties() == other.retrieveAllProperties())
-                && (getMaxFeatures() == other.getMaxFeatures())
-                && ((getFilter() == null)
-                        ? (other.getFilter() == null)
+                && retrieveAllProperties() == other.retrieveAllProperties()
+                && getMaxFeatures() == other.getMaxFeatures()
+                && (getFilter() == null
+                        ? other.getFilter() == null
                         : getFilter().equals(other.getFilter()))
-                && ((getTypeName() == null)
-                        ? (other.getTypeName() == null)
+                && (getTypeName() == null
+                        ? other.getTypeName() == null
                         : getTypeName().equals(other.getTypeName()))
-                && ((getVersion() == null)
-                        ? (other.getVersion() == null)
+                && (getVersion() == null
+                        ? other.getVersion() == null
                         : getVersion().equals(other.getVersion()))
-                && ((getCoordinateSystem() == null)
-                        ? (other.getCoordinateSystem() == null)
+                && (getCoordinateSystem() == null
+                        ? other.getCoordinateSystem() == null
                         : getCoordinateSystem().equals(other.getCoordinateSystem()))
-                && ((getCoordinateSystemReproject() == null)
-                        ? (other.getCoordinateSystemReproject() == null)
+                && (getCoordinateSystemReproject() == null
+                        ? other.getCoordinateSystemReproject() == null
                         : getCoordinateSystemReproject().equals(other.getCoordinateSystemReproject()));
     }
 

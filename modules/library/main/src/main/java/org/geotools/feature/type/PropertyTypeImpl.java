@@ -152,7 +152,7 @@ public abstract class PropertyTypeImpl implements PropertyType {
      * empty list as equal
      */
     private boolean equals(final List object1, final List object2) {
-        if ((object1 == object2) || (object1 != null && object1.equals(object2))) return true;
+        if (object1 == object2 || object1 != null && object1.equals(object2)) return true;
         if (object1 == null && object2.isEmpty()) return true;
         if (object2 == null && object1.isEmpty()) return true;
         return false;

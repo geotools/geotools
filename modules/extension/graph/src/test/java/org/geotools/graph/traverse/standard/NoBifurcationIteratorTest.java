@@ -58,7 +58,7 @@ public class NoBifurcationIteratorTest {
 
                 // nodes should be visited in order
                 Assert.assertEquals(element.getID(), getCount() - 1);
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -97,14 +97,14 @@ public class NoBifurcationIteratorTest {
                     // check for stopping node
                     if (element.getID() == suspend) {
                         m_mode++;
-                        return (GraphTraversal.SUSPEND);
+                        return GraphTraversal.SUSPEND;
                     }
                 } else if (m_mode == 1) {
                     // check first node after continue
                     Assert.assertEquals(element.getID(), suspend + 1);
                     m_mode++;
                 }
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -119,7 +119,7 @@ public class NoBifurcationIteratorTest {
         GraphVisitor visitor = component -> {
             if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
             else Assert.assertFalse(component.isVisited());
-            return (0);
+            return 0;
         };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
@@ -129,7 +129,7 @@ public class NoBifurcationIteratorTest {
         // every node should now be visited
         visitor = component -> {
             Assert.assertTrue(component.isVisited());
-            return (0);
+            return 0;
         };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes);
@@ -158,13 +158,13 @@ public class NoBifurcationIteratorTest {
                     // check for stopping node
                     if (element.getID() == kill) {
                         m_mode++;
-                        return (GraphTraversal.KILL_BRANCH);
+                        return GraphTraversal.KILL_BRANCH;
                     }
                 } else if (m_mode == 1) {
                     // should never get here
                     Assert.fail();
                 }
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -179,7 +179,7 @@ public class NoBifurcationIteratorTest {
         GraphVisitor visitor = component -> {
             if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
             else Assert.assertFalse(component.isVisited());
-            return (0);
+            return 0;
         };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - kill + 1);
@@ -215,7 +215,7 @@ public class NoBifurcationIteratorTest {
                 Assert.assertFalse(component.isVisited());
             }
 
-            return (0);
+            return 0;
         };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - bif);
@@ -231,8 +231,8 @@ public class NoBifurcationIteratorTest {
         int nnodes = 100;
         GraphTestUtil.buildCircular(builder(), nnodes);
         GraphVisitor visitor = component -> {
-            if (component.getID() == 50) return (Graph.PASS_AND_CONTINUE);
-            return (Graph.FAIL_QUERY);
+            if (component.getID() == 50) return Graph.PASS_AND_CONTINUE;
+            return Graph.FAIL_QUERY;
         };
         Node source = builder().getGraph().queryNodes(visitor).get(0);
 
@@ -247,7 +247,7 @@ public class NoBifurcationIteratorTest {
         // ensure all nodes visisited
         visitor = component -> {
             Assert.assertTrue(component.isVisited());
-            return (0);
+            return 0;
         };
 
         builder().getGraph().visitNodes(visitor);
@@ -256,14 +256,14 @@ public class NoBifurcationIteratorTest {
     }
 
     protected GraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 
     protected NoBifurcationIterator createIterator() {
-        return (new NoBifurcationIterator());
+        return new NoBifurcationIterator();
     }
 }

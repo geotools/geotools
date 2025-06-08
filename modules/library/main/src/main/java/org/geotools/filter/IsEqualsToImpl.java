@@ -101,9 +101,9 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
         // try the usual conversions then
         final boolean isNumeric1 = value1 instanceof Number;
         final boolean isNumeric2 = value2 instanceof Number;
-        if ((isNumeric1 && isNumeric2)
-                || (isNumeric1 && (value2 instanceof CharSequence))
-                || (isNumeric2 && (value1 instanceof CharSequence))) {
+        if (isNumeric1 && isNumeric2
+                || isNumeric1 && value2 instanceof CharSequence
+                || isNumeric2 && value1 instanceof CharSequence) {
             // Numeric comparison, try to parse strings to numbers and do proper
             // comparison between, say, 5 and 5.0 (Long and Double would say
             // they are different)
@@ -126,7 +126,7 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
                 // Floating point comparaisons. Note: we do NOT use Double.equals or
                 // Double.doubleToLongBits because we want to consider +0.0 == -0.0.
                 // The Double.equals method would returns 'false' in the above case.
-                return (fp1 == fp2) || (Double.isNaN(fp1) && Double.isNaN(fp2));
+                return fp1 == fp2 || Double.isNaN(fp1) && Double.isNaN(fp2);
             }
         } else if (!isMatchingCase()) {
             // fall back to string and check the case insensitive flag

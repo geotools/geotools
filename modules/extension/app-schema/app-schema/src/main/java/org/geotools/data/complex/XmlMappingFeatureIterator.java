@@ -132,7 +132,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                         XmlMappingFeatureIterator.createIndexedItemXpathString(
                                 (XmlFeatureTypeMapping) mapping, xmlResponse, indexCounter));
                 Object value = idExpression.evaluate(data);
-                return (value == null ? "" : value.toString());
+                return value == null ? "" : value.toString();
             } else {
                 return XmlXpathUtilites.getSingleXPathValue(
                         mapping.getNamespaces(),
@@ -270,8 +270,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
             Object propExpr = entry.getValue();
             Object propValue;
             if (propExpr instanceof Expression) {
-                propValue =
-                        getValue((xpathPrefix == null ? "" : xpathPrefix.toString()), (Expression) propExpr, target);
+                propValue = getValue(xpathPrefix == null ? "" : xpathPrefix.toString(), (Expression) propExpr, target);
             } else {
                 propValue = propExpr;
             }

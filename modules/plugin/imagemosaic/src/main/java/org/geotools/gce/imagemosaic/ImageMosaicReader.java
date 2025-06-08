@@ -192,7 +192,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
         // max allowed tiles for a single request
         if (this.hints.containsKey(Hints.MAX_ALLOWED_TILES))
-            this.maxAllowedTiles = ((Integer) this.hints.get(Hints.MAX_ALLOWED_TILES));
+            this.maxAllowedTiles = (Integer) this.hints.get(Hints.MAX_ALLOWED_TILES);
 
         //
         // Check source
@@ -988,7 +988,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             result.add(new DefaultHarvestedSource(source, false, "Unrecognized source type"));
             return result;
         } else if (source instanceof File && !((File) source).exists()
-                || (HarvestedResource.FILE_COLLECTION == resource && singleFileList(source))) {
+                || HarvestedResource.FILE_COLLECTION == resource && singleFileList(source)) {
             result.add(new DefaultHarvestedSource(source, false, "Specified file path does not exist"));
             return result;
         }
@@ -1007,7 +1007,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     private Object convertToElementType(Object source, HarvestedResource resource) {
         if (source instanceof Collection) {
             @SuppressWarnings("unchecked")
-            Collection<Object> collection = ((Collection<Object>) source);
+            Collection<Object> collection = (Collection<Object>) source;
             source = collection.stream()
                     .map(o -> Converters.convert(o, resource.getElementType()))
                     .collect(Collectors.toList());
@@ -1020,7 +1020,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     /** Simple method used for checking if the list contains a single object and it is a file */
     private boolean singleFileList(Object source) {
         if (source instanceof Collection<?>) {
-            Collection<?> collection = ((Collection<?>) source);
+            Collection<?> collection = (Collection<?>) source;
             if (collection.size() == 1) {
                 // Selection of the single file
                 File file = (File) collection.iterator().next();

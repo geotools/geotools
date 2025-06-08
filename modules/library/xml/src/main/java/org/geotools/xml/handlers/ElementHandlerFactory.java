@@ -83,7 +83,7 @@ public class ElementHandlerFactory {
             Schema s = SchemaFactory.getInstance(tns, uri, logger.getLevel());
 
             if (s != null) {
-                if ((prefix == null) || "".equalsIgnoreCase(prefix)) {
+                if (prefix == null || "".equalsIgnoreCase(prefix)) {
                     defaultNS = s.getTargetNamespace();
                 }
 
@@ -117,7 +117,7 @@ public class ElementHandlerFactory {
                 return;
             }
 
-            if ((prefix == null) || "".equalsIgnoreCase(prefix)) {
+            if (prefix == null || "".equalsIgnoreCase(prefix)) {
                 defaultNS = s.getTargetNamespace();
             }
 
@@ -132,7 +132,7 @@ public class ElementHandlerFactory {
     /** @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String) */
     protected void startPrefixMapping(String prefix, Schema targ) {
         logger.finest("Target == '" + targ + "'");
-        if ((prefix == null) || "".equalsIgnoreCase(prefix)) {
+        if (prefix == null || "".equalsIgnoreCase(prefix)) {
             defaultNS = targ.getTargetNamespace();
         }
         targSchemas.put(targ.getTargetNamespace(), targ);

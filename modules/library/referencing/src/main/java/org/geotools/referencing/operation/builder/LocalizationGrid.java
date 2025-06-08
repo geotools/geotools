@@ -438,7 +438,7 @@ public class LocalizationGrid implements Serializable {
                 final int currentOffset = previousOffset + step;
                 if (grid[previousOffset] == grid[currentOffset]) {
                     if (singularityOffset == -1) {
-                        singularityOffset = (previousOffset == offset) ? previousOffset : previousOffset - step;
+                        singularityOffset = previousOffset == offset ? previousOffset : previousOffset - step;
                     }
                 } else if (singularityOffset != -1) {
                     final int num = (currentOffset - singularityOffset) / step + 1;
@@ -474,8 +474,8 @@ public class LocalizationGrid implements Serializable {
         final double increment = (grid[offset + (num - 1) * step] - grid[offset]) / (num - 1);
         final double value = grid[offset];
         offset += step;
-        for (int i = 0; i < (num - 2); i++, offset += step) {
-            grid[offset] = value + (increment * (i + 1));
+        for (int i = 0; i < num - 2; i++, offset += step) {
+            grid[offset] = value + increment * (i + 1);
         }
     }
 
@@ -538,11 +538,11 @@ public class LocalizationGrid implements Serializable {
         }
         n = (n - offset) / CP_LENGTH;
         assert n == width * height : n;
-        double x = (n * (double) (width - 1)) / 2;
-        double y = (n * (double) (height - 1)) / 2;
-        double xx = (n * (width - 0.5) * (width - 1)) / 3;
-        double yy = (n * (height - 0.5) * (height - 1)) / 3;
-        double xy = (n * (double) ((height - 1) * (width - 1))) / 4;
+        double x = n * (double) (width - 1) / 2;
+        double y = n * (double) (height - 1) / 2;
+        double xx = n * (width - 0.5) * (width - 1) / 3;
+        double yy = n * (height - 0.5) * (height - 1) / 3;
+        double xy = n * (double) ((height - 1) * (width - 1)) / 4;
         /*
          * Solve the following equations for cx and cy:
          *
@@ -554,7 +554,7 @@ public class LocalizationGrid implements Serializable {
         xx -= x * x / n;
         xy -= x * y / n;
         yy -= y * y / n;
-        final double den = (xy * xy - xx * yy);
+        final double den = xy * xy - xx * yy;
         final double cy = (zx * xy - zy * xx) / den;
         final double cx = (zy * xy - zx * yy) / den;
         final double c = (z - (cx * x + cy * y)) / n;

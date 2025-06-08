@@ -400,19 +400,19 @@ public class ProjectionHandler {
             int halfCircles = 0;
             if (minX < -180) {
                 halfCircles = (int) (Math.abs(minX) / 180);
-                minX += (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                minX += 360 * (halfCircles / 2 + halfCircles % 2);
                 maxX = minX + extent;
             } else if (minX > 180) {
                 halfCircles = (int) (minX / 180);
-                minX -= (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                minX -= 360 * (halfCircles / 2 + halfCircles % 2);
                 maxX = minX + extent;
             } else if (maxX < -180) {
                 halfCircles = (int) (Math.abs(maxX) / 180);
-                maxX += (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                maxX += 360 * (halfCircles / 2 + halfCircles % 2);
                 minX = maxX - extent;
             } else if (maxX > 180) {
                 halfCircles = (int) (Math.abs(maxX) / 180);
-                maxX -= (360 * ((halfCircles / 2) + (halfCircles % 2)));
+                maxX -= 360 * (halfCircles / 2 + halfCircles % 2);
                 minX = maxX - extent;
             }
 

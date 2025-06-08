@@ -244,7 +244,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // write tfw
         //
-        if (writeTfw && (destination instanceof File)) {
+        if (writeTfw && destination instanceof File) {
             handleTFW(gc, tr);
         }
     }

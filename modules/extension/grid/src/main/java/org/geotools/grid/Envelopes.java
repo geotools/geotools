@@ -105,7 +105,7 @@ public class Envelopes {
         double rounded;
         if (roundUp) {
             double x = unsigned / resolution;
-            int up = (x - (long) x) > EPS ? 1 : 0;
+            int up = x - (long) x > EPS ? 1 : 0;
             rounded = resolution * (up + (long) x);
         } else {
             rounded = resolution * (long) (unsigned / resolution);

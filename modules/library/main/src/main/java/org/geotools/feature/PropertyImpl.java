@@ -107,7 +107,7 @@ public abstract class PropertyImpl implements Property {
 
     @Override
     public int hashCode() {
-        return 37 * descriptor.hashCode() + (37 * (value == null ? 0 : value.hashCode()));
+        return 37 * descriptor.hashCode() + 37 * (value == null ? 0 : value.hashCode());
     }
 
     @Override

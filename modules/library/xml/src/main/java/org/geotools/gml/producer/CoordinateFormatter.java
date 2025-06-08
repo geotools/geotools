@@ -94,7 +94,7 @@ public final class CoordinateFormatter {
     /** Formats a number with the configured number of decimals */
     public StringBuffer format(double x, StringBuffer sb) {
         String formatted;
-        if ((Math.abs(x) >= DECIMAL_MIN && Math.abs(x) < DECIMAL_MAX) || x == 0) {
+        if (Math.abs(x) >= DECIMAL_MIN && Math.abs(x) < DECIMAL_MAX || x == 0) {
             x = truncate(x);
             long lx = (long) x;
             if (lx == x) {

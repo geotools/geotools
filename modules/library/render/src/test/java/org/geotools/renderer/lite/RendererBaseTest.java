@@ -110,7 +110,7 @@ public abstract class RendererBaseTest {
             }
         }
 
-        assert (hasData);
+        assert hasData;
         return image;
     }
 

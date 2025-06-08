@@ -70,7 +70,7 @@ public class ExpressionExtractor {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < expression.length(); i++) {
             final char curr = expression.charAt(i);
-            final boolean last = (i == expression.length() - 1);
+            final boolean last = i == expression.length() - 1;
             final char next = last ? 0 : expression.charAt(i + 1);
 
             if (curr == '\\') {

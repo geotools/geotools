@@ -155,7 +155,7 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
             final Comparable<?> v1 = this.getComponent(i);
             final Comparable<?> v2 = other.getComponent(i);
             if (v1 == null) {
-                return (v2 == null) ? 0 : -1;
+                return v2 == null ? 0 : -1;
             } else if (v2 == null) {
                 return +1;
             }

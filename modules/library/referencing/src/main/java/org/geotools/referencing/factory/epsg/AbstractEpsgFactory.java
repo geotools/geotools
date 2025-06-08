@@ -691,7 +691,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         }
         if (code != null) {
             final InternationalString edition = authority.getEdition();
-            final String version = (edition != null) ? edition.toString() : null;
+            final String version = edition != null ? edition.toString() : null;
             properties.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier(authority, code.trim(), version));
         }
         if (remarks != null && (remarks = remarks.trim()).length() != 0) {
@@ -835,7 +835,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         if (index >= 0) {
                             throw new FactoryException(MessageFormat.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
                         }
-                        index = (i < 0) ? lastObjectType : i;
+                        index = i < 0 ? lastObjectType : i;
                         if (isPrimaryKey) {
                             // Don't scan other tables, since primary keys should be unique.
                             // Note that names may be duplicated, so we don't stop for names.
@@ -927,7 +927,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     if (unit == null) {
                         // TODO: check unit consistency here.
                         if (b != 0 && c != 0) {
-                            unit = (b == c) ? base : base.multiply(b / c);
+                            unit = b == c ? base : base.multiply(b / c);
                         } else {
                             // TODO: provide a localized message.
                             throw new FactoryException("Unsupported unit: " + code);
@@ -1926,9 +1926,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     try (final ResultSet resultUnits = units.executeQuery()) {
                         if (resultUnits.next()) {
                             String element = resultUnits.getString(1);
-                            unit = (element != null) ? createUnit(element) : null;
+                            unit = element != null ? createUnit(element) : null;
                             element = resultUnits.getString(2);
-                            type = (element != null && element.trim().length() != 0) ? URI.class : double.class;
+                            type = element != null && element.trim().length() != 0 ? URI.class : double.class;
                         } else {
                             unit = null;
                             type = double.class;
@@ -2027,7 +2027,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 } else {
                     reference = null;
                     final String unitCode = result.getString(4);
-                    unit = (unitCode != null) ? createUnit(unitCode) : null;
+                    unit = unitCode != null ? createUnit(unitCode) : null;
                 }
                 final ParameterValue<?> param;
                 try {
@@ -2143,13 +2143,13 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         + " AND TARGET_CRS_CODE IS NOT NULL");
         stmt.setString(1, code);
         final Map<Dimensions, Dimensions> dimensions = new HashMap<>();
-        final Dimensions temp = new Dimensions((2 << 16) | 2); // Default to (2,2) dimensions.
+        final Dimensions temp = new Dimensions(2 << 16 | 2); // Default to (2,2) dimensions.
         Dimensions max = temp;
         try (ResultSet result = stmt.executeQuery()) {
             while (result.next()) {
                 final short sourceDimensions = getDimensionForCRS(result.getString(1));
                 final short targetDimensions = getDimensionForCRS(result.getString(2));
-                temp.encoded = (sourceDimensions << 16) | targetDimensions;
+                temp.encoded = sourceDimensions << 16 | targetDimensions;
                 Dimensions candidate = dimensions.get(temp);
                 if (candidate == null) {
                     candidate = new Dimensions(temp.encoded);
@@ -2181,7 +2181,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
 
         @Override
         public boolean equals(final Object object) { // MUST ignore 'occurences'.
-            return (object instanceof Dimensions) && ((Dimensions) object).encoded == encoded;
+            return object instanceof Dimensions && ((Dimensions) object).encoded == encoded;
         }
 
         @Override
@@ -2362,7 +2362,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                             result.close();
                             throw new FactoryException(exception);
                         }
-                        isBursaWolf = (num >= BURSA_WOLF_MIN_CODE && num <= BURSA_WOLF_MAX_CODE);
+                        isBursaWolf = num >= BURSA_WOLF_MIN_CODE && num <= BURSA_WOLF_MAX_CODE;
                         // Reminder: The source and target dimensions MUST be computed when
                         //           the information is available. Dimension is not always 2!!
                         method = generateOperationMethod(methodCode);

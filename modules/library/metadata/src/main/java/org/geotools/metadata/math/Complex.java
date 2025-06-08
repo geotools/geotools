@@ -106,8 +106,8 @@ public final class Complex implements Cloneable, Serializable {
         final double y1 = c1.imag;
         final double x2 = c2.real;
         final double y2 = c2.imag;
-        real = (x1 * x2) - (y1 * y2);
-        imag = (y1 * x2) + (x1 * y2);
+        real = x1 * x2 - y1 * y2;
+        imag = y1 * x2 + x1 * y2;
     }
 
     /**
@@ -126,9 +126,9 @@ public final class Complex implements Cloneable, Serializable {
         final double y1 = c1.imag;
         final double x2 = c2.real;
         final double y2 = c2.imag;
-        final double denom = (x2 * x2) + (y2 * y2);
-        real = ((x1 * x2) + (y1 * y2)) / denom;
-        imag = ((y1 * x2) - (x1 * y2)) / denom;
+        final double denom = x2 * x2 + y2 * y2;
+        real = (x1 * x2 + y1 * y2) / denom;
+        imag = (y1 * x2 - x1 * y2) / denom;
     }
 
     /**
@@ -163,8 +163,8 @@ public final class Complex implements Cloneable, Serializable {
         final double y1 = c1.imag;
         final double x2 = c2.real;
         final double y2 = c2.imag;
-        real = c0.real + ((x1 * x2) - (y1 * y2));
-        imag = c0.imag + ((y1 * x2) + (x1 * y2));
+        real = c0.real + (x1 * x2 - y1 * y2);
+        imag = c0.imag + (y1 * x2 + x1 * y2);
     }
 
     /**
@@ -193,29 +193,31 @@ public final class Complex implements Cloneable, Serializable {
                 break;
             }
             case 2: {
-                real = (x * x) - (y * y);
+                real = x * x - y * y;
                 imag = 2 * x * y;
                 break;
             }
             case 3: {
-                real = (x * x * x) - (3 * x * y * y);
-                imag = (3 * x * x * y) - (y * y * y);
+                real = x * x * x - 3 * x * y * y;
+                imag = 3 * x * x * y - y * y * y;
                 break;
             }
             case 4: {
-                real = (x * x * x * x) - (6 * x * x * y * y) + (y * y * y * y);
-                imag = (4 * x * x * x * y) - (4 * x * y * y * y);
+                real = x * x * x * x - 6 * x * x * y * y + y * y * y * y;
+                imag = 4 * x * x * x * y - 4 * x * y * y * y;
                 break;
             }
             case 5: {
-                real = (x * x * x * x * x) - (10 * x * x * x * y * y) + (5 * x * y * y * y * y);
-                imag = (5 * x * x * x * x * y) - (10 * x * x * y * y * y) + (y * y * y * y * y);
+                real = x * x * x * x * x - 10 * x * x * x * y * y + 5 * x * y * y * y * y;
+                imag = 5 * x * x * x * x * y - 10 * x * x * y * y * y + y * y * y * y * y;
                 break;
             }
             case 6: {
-                real = ((x * x * x * x * x * x) - (15 * x * x * x * x * y * y) + (15 * x * x * y * y * y * y))
-                        - (y * y * y * y * y * y);
-                imag = (6 * x * x * x * x * x * y) - (20 * x * x * x * y * y * y) + (6 * x * y * y * y * y * y);
+                real = x * x * x * x * x * x
+                        - 15 * x * x * x * x * y * y
+                        + 15 * x * x * y * y * y * y
+                        - y * y * y * y * y * y;
+                imag = 6 * x * x * x * x * x * y - 20 * x * x * x * y * y * y + 6 * x * y * y * y * y * y;
                 break;
             }
             default: {
@@ -240,7 +242,7 @@ public final class Complex implements Cloneable, Serializable {
     /** Compares this complex with the specified object for equality. */
     @Override
     public boolean equals(final Object c) {
-        return (c instanceof Complex) && equals((Complex) c);
+        return c instanceof Complex && equals((Complex) c);
     }
 
     /** Returns a hash value for this complex number. */

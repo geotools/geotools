@@ -225,7 +225,7 @@ public class Mosaicker {
                                 new RenderedImage[] {mosaic},
                                 rasterLayerResponse.getBackgroundValues(),
                                 sourceThreshold,
-                                (hasAlpha || doInputTransparency)
+                                hasAlpha || doInputTransparency
                                         ? new PlanarImage[] {in.alphaChannel}
                                         : new PlanarImage[] {null},
                                 new ROI[] {in.roi},
@@ -300,13 +300,13 @@ public class Mosaicker {
                 sources,
                 rasterLayerResponse.getBackgroundValues(),
                 sourceThreshold,
-                (hasAlpha || doInputTransparency) ? alphas : null,
+                hasAlpha || doInputTransparency ? alphas : null,
                 rois,
                 mosaicType,
                 localHints);
 
         Object property = mosaic.getProperty("ROI");
-        ROI overallROI = (property instanceof ROI) ? (ROI) property : null;
+        ROI overallROI = property instanceof ROI ? (ROI) property : null;
 
         if (rasterMask != null) {
             if (overallROI == null) {

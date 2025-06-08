@@ -215,7 +215,7 @@ class RangeVisitor implements FeatureCalc {
         Iterator<Range> iterator = set.iterator();
         while (iterator.hasNext()) {
             Range range = iterator.next();
-            minimalRanges.add((range.getMinValue() + "/" + range.getMaxValue()));
+            minimalRanges.add(range.getMinValue() + "/" + range.getMaxValue());
         }
     }
 

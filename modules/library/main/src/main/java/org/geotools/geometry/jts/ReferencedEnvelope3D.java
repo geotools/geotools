@@ -58,8 +58,10 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     public static boolean intersects(Coordinate p1, Coordinate p2, Coordinate q) {
         // OptimizeIt shows that Math#min and Math#max here are a bottleneck.
         // Replace with direct comparisons. [Jon Aquino]
-        if (((q.x >= (p1.x < p2.x ? p1.x : p2.x)) && (q.x <= (p1.x > p2.x ? p1.x : p2.x)))
-                && ((q.y >= (p1.y < p2.y ? p1.y : p2.y)) && (q.y <= (p1.y > p2.y ? p1.y : p2.y)))) {
+        if (q.x >= (p1.x < p2.x ? p1.x : p2.x)
+                && q.x <= (p1.x > p2.x ? p1.x : p2.x)
+                && q.y >= (p1.y < p2.y ? p1.y : p2.y)
+                && q.y <= (p1.y > p2.y ? p1.y : p2.y)) {
             return true;
         }
         return false;
@@ -1065,7 +1067,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
         }
         if (super.equals(other) && minz == otherEnvelope.getMinZ() && maxz == otherEnvelope.getMaxZ()) {
             final CoordinateReferenceSystem otherCRS =
-                    (other instanceof ReferencedEnvelope3D) ? ((ReferencedEnvelope3D) other).crs : null;
+                    other instanceof ReferencedEnvelope3D ? ((ReferencedEnvelope3D) other).crs : null;
 
             return CRS.equalsIgnoreMetadata(crs, otherCRS);
         }

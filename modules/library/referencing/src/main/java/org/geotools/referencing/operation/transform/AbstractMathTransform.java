@@ -679,7 +679,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      */
     protected static boolean needCopy(
             final int srcOff, final int dimSource, final int dstOff, final int dimTarget, final int numPts) {
-        if (numPts <= 1 || (srcOff >= dstOff && dimSource >= dimTarget)) {
+        if (numPts <= 1 || srcOff >= dstOff && dimSource >= dimTarget) {
             /*
              * Source coordinates are stored after target coordinates. If implementation
              * read coordinates from lower index to upper index, then the destination will
@@ -699,7 +699,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @return The longitude in the range &plusmn;&pi; radians.
      */
     protected static double rollLongitude(final double x) {
-        return x - (2 * Math.PI) * Math.floor(x / (2 * Math.PI) + 0.5);
+        return x - 2 * Math.PI * Math.floor(x / (2 * Math.PI) + 0.5);
     }
 
     /**
@@ -709,7 +709,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @return The normalized angle
      */
     protected static double normalizeAngle(final double x) {
-        return x - (2 * Math.PI) * Math.floor(x / (2 * Math.PI) + 0.5);
+        return x - 2 * Math.PI * Math.floor(x / (2 * Math.PI) + 0.5);
     }
 
     /**

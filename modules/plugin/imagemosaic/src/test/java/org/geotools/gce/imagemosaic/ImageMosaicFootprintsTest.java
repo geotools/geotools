@@ -241,13 +241,13 @@ public class ImageMosaicFootprintsTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) * (scalingFactorX * spanRatioX),
                 reader.getOriginalGridRange().getSpan(1) * (scalingFactorY * spanRatioY));
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         double maxX = envelope.getMaximum(0);
         double minY = envelope.getMinimum(1);
-        double minX = maxX - envelope.getSpan(0) * (spanRatioX);
-        double maxY = minY + envelope.getSpan(1) * (spanRatioY);
+        double minX = maxX - envelope.getSpan(0) * spanRatioX;
+        double maxY = minY + envelope.getSpan(1) * spanRatioY;
 
         final GeneralBounds env2 = new GeneralBounds(new double[] {minX, minY}, new double[] {maxX, maxY});
         env2.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
@@ -732,7 +732,7 @@ public class ImageMosaicFootprintsTest {
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final Dimension dim = new Dimension();
         dim.setSize(4, 4);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         rasterArea.x = 0;
         rasterArea.y = (int) (rasterArea.getHeight() / 2);
@@ -1379,7 +1379,7 @@ public class ImageMosaicFootprintsTest {
 
         // setup how much we are going to read
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         if (testOverviews) {
             Dimension dim = new Dimension();
             dim.setSize(8, 8);

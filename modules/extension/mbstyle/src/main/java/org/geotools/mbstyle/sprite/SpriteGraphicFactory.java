@@ -139,7 +139,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
 
         // Use "size" to scale the image, if > 0
         if (size > 0 && iconSubImg.getHeight() != size) {
-            double scaleY = ((double) size) / iconSubImg.getHeight(); // >1 if you're magnifying
+            double scaleY = (double) size / iconSubImg.getHeight(); // >1 if you're magnifying
             double scaleX = scaleY; // keep aspect ratio!
 
             AffineTransform scaleTx = AffineTransform.getScaleInstance(scaleX, scaleY);

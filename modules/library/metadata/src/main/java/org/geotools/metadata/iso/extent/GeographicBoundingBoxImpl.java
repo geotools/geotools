@@ -426,7 +426,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements G
             return super.hashCode();
         }
         final Boolean inclusion = getInclusion();
-        int code = (inclusion != null) ? inclusion.hashCode() : 0;
+        int code = inclusion != null ? inclusion.hashCode() : 0;
         code += hashCode(southBoundLatitude);
         code += hashCode(northBoundLatitude);
         code += hashCode(eastBoundLongitude);

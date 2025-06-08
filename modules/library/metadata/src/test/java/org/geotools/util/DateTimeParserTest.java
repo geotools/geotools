@@ -503,7 +503,7 @@ public class DateTimeParserTest {
         Collection time = PARSER.parse(timeInterval);
         assertEquals(5, time.size());
         assertEquals(1318241472000l, getTime(time, 0));
-        assertEquals(1318241472000l + (3600 * 1000 * 4), getTime(time, time.size() - 1));
+        assertEquals(1318241472000l + 3600 * 1000 * 4, getTime(time, time.size() - 1));
     }
 
     @Test
@@ -512,7 +512,7 @@ public class DateTimeParserTest {
         Collection time = PARSER.parse(timeInterval);
         assertEquals(3, time.size());
         assertEquals(1318241472000l, getTime(time, 0));
-        assertEquals(1318241472000l + (3600 * 1000 * 48), getTime(time, 1));
+        assertEquals(1318241472000l + 3600 * 1000 * 48, getTime(time, 1));
     }
 
     @Test

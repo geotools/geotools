@@ -641,7 +641,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -718,7 +718,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));

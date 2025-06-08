@@ -600,7 +600,7 @@ public class Encoder {
         }
 
         try {
-            serializer = (handler instanceof QNameValidatingHandler) ? handler : new QNameValidatingHandler(handler);
+            serializer = handler instanceof QNameValidatingHandler ? handler : new QNameValidatingHandler(handler);
 
             if (!inline) {
                 serializer.startDocument();
@@ -714,7 +714,7 @@ public class Encoder {
             String ns = attribute.getTargetNamespace();
             String local = attribute.getName();
 
-            if ((entry.encoding.getAttributeNS(ns, local) != null)
+            if (entry.encoding.getAttributeNS(ns, local) != null
                     && !"".equals(entry.encoding.getAttributeNS(ns, local))) {
                 continue;
             }
@@ -752,8 +752,8 @@ public class Encoder {
                     }
 
                     // check for a comment
-                    if ((child != null)
-                            && (COMMENT.getNamespaceURI().equals(child.getTargetNamespace()))
+                    if (child != null
+                            && COMMENT.getNamespaceURI().equals(child.getTargetNamespace())
                             && COMMENT.getLocalPart().equals(child.getName())) {
                         comment(child.getElement());
 
@@ -824,7 +824,7 @@ public class Encoder {
                         }
                     }
 
-                    if ((maxOccurs == -1) || (maxOccurs > 1)) {
+                    if (maxOccurs == -1 || maxOccurs > 1) {
                         // may have a collection or array, unwrap it
                         Iterator iterator = null;
 
@@ -1071,7 +1071,7 @@ public class Encoder {
             serializer.startPrefixMapping(pre != null ? pre : "", ns);
             serializer.endPrefixMapping(pre != null ? pre : "");
 
-            namespaces.declarePrefix((pre != null) ? pre : "", ns);
+            namespaces.declarePrefix(pre != null ? pre : "", ns);
         }
 
         // ensure a default namespace prefix set
@@ -1168,7 +1168,7 @@ public class Encoder {
         // declaration == null -> gml3 envelope encoding test failing
         // declaration.getSchema() == null -> wfs 2.0 feature collection encoding test failing
         if (forceQualified(declaration)) {
-            uri = (uri != null) ? uri : namespaces.getURI("");
+            uri = uri != null ? uri : namespaces.getURI("");
             qName = namespaces.getPrefix(uri) + ":" + qName;
 
         } else {
@@ -1240,7 +1240,7 @@ public class Encoder {
         String local = element.getLocalName();
         String qName = element.getLocalName();
 
-        if ((element.getPrefix() != null) && !"".equals(element.getPrefix())) {
+        if (element.getPrefix() != null && !"".equals(element.getPrefix())) {
             qName = element.getPrefix() + ":" + qName;
         } else {
             if (forceQualified(declaration)) {
@@ -1355,7 +1355,7 @@ public class Encoder {
 
             if (namespaces != null) {
                 String uri = n.getNamespaceURI();
-                String prefix = (uri != null) ? namespaces.getPrefix(uri) : null;
+                String prefix = uri != null ? namespaces.getPrefix(uri) : null;
 
                 if (prefix != null) {
                     return prefix + ":" + n.getLocalName();
@@ -1430,7 +1430,7 @@ public class Encoder {
 
         @Override
         public int getIndex(String uri, String localName) {
-            if ((uri == null) || uri.equals("")) {
+            if (uri == null || uri.equals("")) {
                 return getIndex(localName);
             }
 

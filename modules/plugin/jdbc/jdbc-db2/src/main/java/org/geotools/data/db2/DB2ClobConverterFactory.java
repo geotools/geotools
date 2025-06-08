@@ -57,7 +57,7 @@ public class DB2ClobConverterFactory implements ConverterFactory {
         if (DB2_CLOB == null) return null;
 
         // can only convert towards String
-        if (!(String.class.equals(target))) return null;
+        if (!String.class.equals(target)) return null;
 
         // can only deal with db2 specific blob classes
         if (!DB2_CLOB.isAssignableFrom(source)) return null;

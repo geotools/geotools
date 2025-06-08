@@ -365,7 +365,7 @@ public class GribTest extends Assert {
             assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS, crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
             assertTrue(crs instanceof DerivedCRS);
-            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            DerivedCRS derivedCRS = (DerivedCRS) crs;
             MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;

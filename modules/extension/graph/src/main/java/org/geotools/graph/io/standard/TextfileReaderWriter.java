@@ -73,7 +73,7 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter implemen
             }
         }
 
-        return (generator.getGraph());
+        return generator.getGraph();
     }
 
     /**

@@ -220,7 +220,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
         final int maxRow = height - 2;
         int postIncrement = 0;
         if (srcOff < dstOff) {
-            if ((srcPts2 != null) ? srcPts2 == dstPts2 : srcPts1 == dstPts1) {
+            if (srcPts2 != null ? srcPts2 == dstPts2 : srcPts1 == dstPts1) {
                 srcOff += (numPts - 1) * 2;
                 dstOff += (numPts - 1) * 2;
                 postIncrement = -4;
@@ -550,7 +550,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
                 inverseTransform(ptSrc, target, tr);
                 return target;
             }
-            if (ptDst != ptSrc && (ptDst instanceof Point2D.Double)) {
+            if (ptDst != ptSrc && ptDst instanceof Point2D.Double) {
                 inverseTransform(ptSrc, (Point2D.Double) ptDst, tr);
                 return ptDst;
             }

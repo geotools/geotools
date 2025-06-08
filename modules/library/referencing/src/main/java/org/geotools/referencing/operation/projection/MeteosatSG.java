@@ -157,7 +157,7 @@ public class MeteosatSG extends MapProjection {
         /* calculate the geocentric latitude from the */
         /* geographic one using equations on page 24, Ref. [1] */
 
-        double c_lat = atan((0.993243 * (sin(y) / cos(y))));
+        double c_lat = atan(0.993243 * (sin(y) / cos(y)));
 
         // Pre-compute some values
         double cos_c_lat = cos(c_lat);
@@ -167,7 +167,7 @@ public class MeteosatSG extends MapProjection {
         /* centre to the surface of the Earth ellipsoid */
         /* equations on page 23, Ref. [1] */
 
-        double re = R_POL / sqrt((1.0 - 0.00675701 * cos_c_lat * cos_c_lat));
+        double re = R_POL / sqrt(1.0 - 0.00675701 * cos_c_lat * cos_c_lat);
 
         /* calculate the forward projection using equations on */
         /* page 24, Ref. [1] */
@@ -186,7 +186,7 @@ public class MeteosatSG extends MapProjection {
         /* If the dot product is positive the point is visible otherwise it */
         /* is invisible. */
 
-        double dotprod = r1 * (rl * cos_c_lat * cos_x_SUB_LON) - r2 * r2 - r3 * r3 * pow((R_EQ / R_POL), 2);
+        double dotprod = r1 * (rl * cos_c_lat * cos_x_SUB_LON) - r2 * r2 - r3 * r3 * pow(R_EQ / R_POL, 2);
 
         if (dotprod <= 0) {
             /*
@@ -216,8 +216,8 @@ public class MeteosatSG extends MapProjection {
 
         /* the forward projection is x and y */
 
-        double xx = atan((-r2 / r1));
-        double yy = asin((-r3 / rn));
+        double xx = atan(-r2 / r1);
+        double yy = asin(-r3 / rn);
 
         /* convert to pixel column and row using the scaling functions on */
         /* page 28, Ref. [1]. And finding nearest integer value for them. */
@@ -303,7 +303,7 @@ public class MeteosatSG extends MapProjection {
         /* page 25, Ref. [1] */
 
         double sd = sqrt(
-                pow((SAT_HEIGHT * cos_x1 * cos_y1), 2) - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
+                pow(SAT_HEIGHT * cos_x1 * cos_y1, 2) - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
         sn = (SAT_HEIGHT * cos_x1 * cos_y1 - sd) / (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1);
 
         s1 = SAT_HEIGHT - sn * cos_x1 * cos_y1;
@@ -317,7 +317,7 @@ public class MeteosatSG extends MapProjection {
         /* the pixel row and column by equations on page 25, Ref [1]. */
 
         lon = atan(s2 / s1) + SUB_LON;
-        lat = atan((1.006803 * s3) / sxy);
+        lat = atan(1.006803 * s3 / sxy);
 
         if (ptDst != null) {
             ptDst.setLocation(lon, lat);
@@ -339,7 +339,7 @@ public class MeteosatSG extends MapProjection {
             return 3;
         }
         // Be less strict when the point is near an edge.
-        return (abs(longitude) > 179) || (abs(latitude) > 89) ? 5E-1 : 3E-1;
+        return abs(longitude) > 179 || abs(latitude) > 89 ? 5E-1 : 3E-1;
     }
 
     /** {@inheritDoc} */

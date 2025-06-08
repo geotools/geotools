@@ -350,7 +350,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;
         List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
-        if (attributes.isEmpty() || (attributes.size() == 1 && readSchema.getGeometryDescriptor() != null)) {
+        if (attributes.isEmpty() || attributes.size() == 1 && readSchema.getGeometryDescriptor() != null) {
             LOGGER.fine("The DBF file won't be opened since no attributes will be read from it");
         } else {
             dbfReader = shpManager.openDbfReader(goodRecs != null);
@@ -460,11 +460,11 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         if (geomDescriptor != null) {
             Class<?> geomBinding = geomDescriptor.getType().getBinding();
 
-            if ((geomBinding == Point.class) || (geomBinding == MultiPoint.class)) {
+            if (geomBinding == Point.class || geomBinding == MultiPoint.class) {
                 parent = BasicFeatureTypes.POINT;
-            } else if ((geomBinding == Polygon.class) || (geomBinding == MultiPolygon.class)) {
+            } else if (geomBinding == Polygon.class || geomBinding == MultiPolygon.class) {
                 parent = BasicFeatureTypes.POLYGON;
-            } else if ((geomBinding == LineString.class) || (geomBinding == MultiLineString.class)) {
+            } else if (geomBinding == LineString.class || geomBinding == MultiLineString.class) {
                 parent = BasicFeatureTypes.LINE;
             }
         }

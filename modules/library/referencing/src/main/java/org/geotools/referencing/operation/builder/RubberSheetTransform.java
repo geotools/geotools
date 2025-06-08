@@ -112,7 +112,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     public void transform(double[] srcPts, int srcOff, final double[] dstPt, int dstOff, int numPts)
             throws TransformException {
         for (int i = srcOff; i < numPts; i++) {
-            Point2D pos = new Position2D(srcPts[2 * i], srcPts[(2 * i) + 1]);
+            Point2D pos = new Position2D(srcPts[2 * i], srcPts[2 * i + 1]);
 
             TINTriangle triangle = searchTriangle((Position) pos);
 
@@ -121,7 +121,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
             Point2D dst = AT.transform(pos, null);
 
             dstPt[2 * i] = dst.getX();
-            dstPt[(2 * i) + 1] = dst.getY();
+            dstPt[2 * i + 1] = dst.getY();
         }
     }
 

@@ -104,7 +104,7 @@ public final class MrSIDTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         final int originalW = gc.getRenderedImage().getWidth();
         final int originalH = gc.getRenderedImage().getHeight();
-        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle range = (GridEnvelope2D) reader.getOriginalGridRange();
         final GeneralBounds originalEnvelope = reader.getOriginalEnvelope();
         final GeneralBounds reducedEnvelope = new GeneralBounds(
                 new double[] {
@@ -126,9 +126,7 @@ public final class MrSIDTest extends GDALTestCase {
         // NOTE: in some cases might be too restrictive
         Assert.assertTrue(reducedEnvelope.equals(
                 gc.getEnvelope(),
-                XAffineTransform.getScale(
-                                ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
-                        / 2,
+                XAffineTransform.getScale((AffineTransform) gc.getGridGeometry().getGridToCRS2D()) / 2,
                 true));
         // this should be fine since we give 1 pixel tolerance
         Assert.assertEquals(originalW / 2.0, gc.getRenderedImage().getWidth(), 1);
@@ -167,9 +165,7 @@ public final class MrSIDTest extends GDALTestCase {
         // NOTE: in some cases might be too restrictive
         Assert.assertTrue(reducedEnvelope.equals(
                 gc.getEnvelope(),
-                XAffineTransform.getScale(
-                                ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
-                        / 2,
+                XAffineTransform.getScale((AffineTransform) gc.getGridGeometry().getGridToCRS2D()) / 2,
                 true));
         // this should be fine since we give 1 pixel tolerance
         Assert.assertEquals(originalW / 2, gc.getRenderedImage().getWidth(), 1);

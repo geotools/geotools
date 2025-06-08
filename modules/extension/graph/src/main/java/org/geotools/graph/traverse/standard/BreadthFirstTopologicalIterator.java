@@ -65,7 +65,7 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
 
             if (node.getDegree() < 2) m_queue.add(node);
 
-            return (0);
+            return 0;
         });
     }
 
@@ -118,6 +118,6 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
      * @return A first in first out queue
      */
     protected Queue<Graphable> buildQueue(Graph graph) {
-        return (new ArrayDeque<>(graph.getNodes().size()));
+        return new ArrayDeque<>(graph.getNodes().size());
     }
 }

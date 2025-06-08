@@ -450,7 +450,7 @@ public class NestedAttributeMapping extends AttributeMapping {
         if (fSource == null) {
             return null;
         }
-        return (fSource instanceof MappingFeatureSource) ? ((MappingFeatureSource) fSource).getMapping() : null;
+        return fSource instanceof MappingFeatureSource ? ((MappingFeatureSource) fSource).getMapping() : null;
     }
 
     public NamespaceSupport getNamespaces() {

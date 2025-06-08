@@ -279,7 +279,7 @@ public abstract class AbstractParameter extends Formattable implements GeneralPa
             }
             buffer.write('}');
         } else {
-            final boolean isNumeric = (value instanceof Number);
+            final boolean isNumeric = value instanceof Number;
             if (!isNumeric) {
                 buffer.write('"');
             }

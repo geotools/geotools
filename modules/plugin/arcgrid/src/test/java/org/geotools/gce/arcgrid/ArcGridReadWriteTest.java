@@ -82,10 +82,10 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         final GeneralBounds e2 = (GeneralBounds) gc2.getEnvelope();
 
         /** Checking Envelopes */
-        if ((e1.getLowerCorner().getOrdinate(0) != e2.getLowerCorner().getOrdinate(0))
-                || (e1.getLowerCorner().getOrdinate(1) != e2.getLowerCorner().getOrdinate(1))
-                || (e1.getUpperCorner().getOrdinate(0) != e2.getUpperCorner().getOrdinate(0))
-                || (e1.getUpperCorner().getOrdinate(1) != e2.getUpperCorner().getOrdinate(1))) {
+        if (e1.getLowerCorner().getOrdinate(0) != e2.getLowerCorner().getOrdinate(0)
+                || e1.getLowerCorner().getOrdinate(1) != e2.getLowerCorner().getOrdinate(1)
+                || e1.getUpperCorner().getOrdinate(0) != e2.getUpperCorner().getOrdinate(0)
+                || e1.getUpperCorner().getOrdinate(1) != e2.getUpperCorner().getOrdinate(1)) {
             throw new Exception("GridCoverage Envelopes are not equal" + e1.toString() + e2.toString());
         }
 
@@ -121,7 +121,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
                         value1 = r1.getSampleDouble(i, j, 0);
                         value2 = r2.getSampleDouble(i, j, 0);
 
-                        if (!(noData1.compareTo(value1) == 0 && noData2.compareTo(value2) == 0) && (value1 != value2)) {
+                        if (!(noData1.compareTo(value1) == 0 && noData2.compareTo(value2) == 0) && value1 != value2) {
                             throw new Exception("GridCoverage Values are not equal: " + value1 + ", " + value2);
                         }
                     }

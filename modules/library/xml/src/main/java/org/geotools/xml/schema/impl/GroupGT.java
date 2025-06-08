@@ -89,11 +89,11 @@ public class GroupGT implements Group {
     /** @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String) */
     @Override
     public Element findChildElement(String name1) {
-        return (child == null) ? null : child.findChildElement(name1);
+        return child == null ? null : child.findChildElement(name1);
     }
 
     @Override
     public Element findChildElement(String localName, URI namespaceURI) {
-        return (child == null) ? null : child.findChildElement(localName, namespaceURI);
+        return child == null ? null : child.findChildElement(localName, namespaceURI);
     }
 }

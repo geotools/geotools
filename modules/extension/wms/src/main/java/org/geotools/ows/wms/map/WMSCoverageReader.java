@@ -145,7 +145,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         }
         // if preferred format is not supported default to first available on remote
         // if cap doc did not pass any formats, assume PNG
-        return (!formats.isEmpty()) ? formats.get(0) : "image/png";
+        return !formats.isEmpty() ? formats.get(0) : "image/png";
     }
 
     void addLayer(Layer layer) {

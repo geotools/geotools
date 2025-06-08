@@ -282,7 +282,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
              * the pixel space region that will be extracted. Since the origin
              * is always 0,0, we can continue to see this in world view.
              */
-            sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
+            sourceRegion = new Rectangle(xmin, ymin, xmax - xmin, ymax - ymin);
             requestedRegionEnvelope = ReferencedEnvelope.rect(
                     requestedWest, requestedSouth, requestedEast - requestedWest, requestedNorth - requestedSouth, crs);
 
@@ -335,10 +335,9 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                  * resolution from the given boundaries.
                  */
 
-                double sourceCols =
-                        (requestedEast - requestedWest) / (1 + (xPaddingSx / (xmax - xmin))) / requestedXres;
+                double sourceCols = (requestedEast - requestedWest) / (1 + xPaddingSx / (xmax - xmin)) / requestedXres;
                 double sourceRows =
-                        (requestedNorth - requestedSouth) / (1 + (yPaddingTop / (ymax - ymin))) / requestedYres;
+                        (requestedNorth - requestedSouth) / (1 + yPaddingTop / (ymax - ymin)) / requestedYres;
                 /*
                  * the padding has to be removed since inside the reader
                  * the padding is ignored and non present in the sourceRegion that
@@ -375,7 +374,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             int xmax = (int) Math.ceil((requestedEast - fileWest) * scaleX - EPS);
             int ymin = (int) Math.floor((fileNorth - requestedNorth) * scaleY + EPS);
             int ymax = (int) Math.ceil((fileNorth - requestedSouth) * scaleY - EPS);
-            sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
+            sourceRegion = new Rectangle(xmin, ymin, xmax - xmin, ymax - ymin);
             requestedRegionEnvelope = ReferencedEnvelope.rect(
                     requestedWest, requestedSouth, requestedEast - requestedWest, requestedNorth - requestedSouth, crs);
 
@@ -413,16 +412,16 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                 || requestedWest < fileWest
                 || requestedEast > fileEast
                 || requestedNorth > fileNorth) {
-            double totalHeigth = (requestedNorth - tmpDyN) - (requestedSouth - tmpDyS);
+            double totalHeigth = requestedNorth - tmpDyN - (requestedSouth - tmpDyS);
 
             int xPaddingDx = 0;
             if (xDeltaE > 0) {
                 xPaddingDx =
-                        (int) Math.round(xDeltaE * imageWidth / ((requestedEast - tmpDxE) - (requestedWest - tmpDxW)));
+                        (int) Math.round(xDeltaE * imageWidth / (requestedEast - tmpDxE - (requestedWest - tmpDxW)));
             }
             int yPaddingBottom = 0;
             if (yDeltaS < 0) {
-                yPaddingBottom = (int) Math.round(yDeltaS * imageHeight / (totalHeigth));
+                yPaddingBottom = (int) Math.round(yDeltaS * imageHeight / totalHeigth);
             }
             RenderedImage translatedImage = setPadding(xPaddingSx, xPaddingDx, yPaddingTop, yPaddingBottom, image);
 

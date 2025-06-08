@@ -121,7 +121,7 @@ public class TestData implements Runnable {
         } catch (ClassNotFoundException e) {
             // Media library not available, continue without it
         }
-        boolean mediaLib = (mediaLibImage != null);
+        boolean mediaLib = mediaLibImage != null;
 
         // now check if we either wanted to disable explicitly and if we installed the native libs
         if (mediaLib) {
@@ -248,7 +248,7 @@ public class TestData implements Runnable {
             name = DIRECTORY + '/' + name;
         }
         if (caller != null) {
-            final Class c = (caller instanceof Class) ? (Class) caller : caller.getClass();
+            final Class c = caller instanceof Class ? (Class) caller : caller.getClass();
             return c.getResource(name);
         } else {
             return Thread.currentThread().getContextClassLoader().getResource(name);
@@ -313,8 +313,8 @@ public class TestData implements Runnable {
     public static File temp(final Object caller, final String name) throws IOException {
         final File testData = file(caller, null);
         final int split = name.lastIndexOf('.');
-        final String prefix = (split < 0) ? name : name.substring(0, split);
-        final String suffix = (split < 0) ? "tmp" : name.substring(split + 1);
+        final String prefix = split < 0 ? name : name.substring(0, split);
+        final String suffix = split < 0 ? "tmp" : name.substring(split + 1);
         final File tmp = File.createTempFile(prefix, '.' + suffix, testData);
         deleteOnExit(tmp);
         return tmp;

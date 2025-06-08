@@ -109,7 +109,7 @@ public class NameImpl implements org.geotools.api.feature.type.Name, Serializabl
 
     @Override
     public String getURI() {
-        if ((namespace == null) && (local == null)) {
+        if (namespace == null && local == null) {
             return null;
         }
         if (namespace == null) {

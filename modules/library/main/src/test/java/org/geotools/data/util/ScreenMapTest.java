@@ -56,7 +56,7 @@ public class ScreenMapTest {
 
         for (int x = xmin; x < width; x++) {
             for (int y = ymin; y < height; y++) {
-                if ((x == xconst) && (y == yconst)) {
+                if (x == xconst && y == yconst) {
                     Assert.assertEquals("x=" + x + " y=" + y, bool, map.get(x, y));
                 } else {
                     Assert.assertFalse("x=" + x + " y=" + y, map.get(x, y));

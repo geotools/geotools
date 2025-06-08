@@ -49,7 +49,7 @@ public class RemoteImageFormat extends AbstractGridFormat implements Format {
 
     @Override
     public boolean accepts(Object source, Hints hints) {
-        return (source instanceof URL)
+        return source instanceof URL
                 && ((URL) source).getProtocol().equals("http")
                 && ((URL) source).getHost().equals("localhost")
                 && ((URL) source).getPort() == 8089;

@@ -145,7 +145,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertNotNull(location);
             Assert.assertTrue(location.startsWith("file:"));
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
-            Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
+            Assert.assertTrue(URLs.urlToFile(new URI(location).toURL()).exists());
         }
         // now that schema is is in the cache, should succeed even if downloading is disabled
         {
@@ -154,7 +154,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertNotNull(location);
             Assert.assertTrue(location.startsWith("file:"));
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
-            Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
+            Assert.assertTrue(URLs.urlToFile(new URI(location).toURL()).exists());
             // test that cache path is not canonical
             Assert.assertNotEquals(
                     CACHE_DIRECTORY.toString(),
@@ -162,7 +162,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             // test that resolved location is canonical, despite cache directory not being canonical
             Assert.assertEquals(
                     location,
-                    URLs.urlToFile((new URI(location)).toURL())
+                    URLs.urlToFile(new URI(location).toURL())
                             .getCanonicalFile()
                             .toURI()
                             .toString());

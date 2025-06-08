@@ -62,8 +62,8 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((latFile == null) ? 0 : latFile.hashCode());
-            result = prime * result + ((longFile == null) ? 0 : longFile.hashCode());
+            result = prime * result + (latFile == null ? 0 : latFile.hashCode());
+            result = prime * result + (longFile == null ? 0 : longFile.hashCode());
             return result;
         }
 
@@ -119,11 +119,11 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         String latGridName = URLs.urlToFile(latGridURL).getPath();
         String longGridName = URLs.urlToFile(longGridURL).getPath();
         try {
-            if ((latGridName.endsWith(".las") && longGridName.endsWith(".los"))
-                    || (latGridName.endsWith(".LAS") && longGridName.endsWith(".LOS"))) {
+            if (latGridName.endsWith(".las") && longGridName.endsWith(".los")
+                    || latGridName.endsWith(".LAS") && longGridName.endsWith(".LOS")) {
                 return loadBinaryGrid(latGridURL, longGridURL);
-            } else if ((latGridName.endsWith(".laa") && longGridName.endsWith(".loa"))
-                    || (latGridName.endsWith(".LAA") && longGridName.endsWith(".LOA"))) {
+            } else if (latGridName.endsWith(".laa") && longGridName.endsWith(".loa")
+                    || latGridName.endsWith(".LAA") && longGridName.endsWith(".LOA")) {
                 return loadTextGrid(latGridURL, longGridURL);
             } else {
                 throw new FactoryException(MessageFormat.format(
@@ -189,29 +189,29 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             float dy = latBuffer.getFloat();
 
             float angle = latBuffer.getFloat();
-            float xmax = xmin + ((nc - 1) * dx);
-            float ymax = ymin + ((nr - 1) * dy);
+            float xmax = xmin + (nc - 1) * dx;
+            float ymax = ymin + (nr - 1) * dy;
 
             // skip the longitude header description
             longBuffer.position(longBuffer.position() + DESCRIPTION_LENGTH);
 
             // check that latitude grid header is the same as for latitude grid
-            if ((nc != longBuffer.getInt())
-                    || (nr != longBuffer.getInt())
-                    || (nz != longBuffer.getInt())
-                    || (xmin != longBuffer.getFloat())
-                    || (dx != longBuffer.getFloat())
-                    || (ymin != longBuffer.getFloat())
-                    || (dy != longBuffer.getFloat())
-                    || (angle != longBuffer.getFloat())) {
+            if (nc != longBuffer.getInt()
+                    || nr != longBuffer.getInt()
+                    || nz != longBuffer.getInt()
+                    || xmin != longBuffer.getFloat()
+                    || dx != longBuffer.getFloat()
+                    || ymin != longBuffer.getFloat()
+                    || dy != longBuffer.getFloat()
+                    || angle != longBuffer.getFloat()) {
                 throw new FactoryException(ErrorKeys.GRID_LOCATIONS_UNEQUAL);
             }
 
             // //////////////////////
             // read grid shift data into LocalizationGrid
             // //////////////////////
-            final int RECORD_LENGTH = (nc * 4) + SEPARATOR_BYTES;
-            final int NUM_BYTES_LEFT = ((nr + 1) * RECORD_LENGTH) - HEADER_BYTES;
+            final int RECORD_LENGTH = nc * 4 + SEPARATOR_BYTES;
+            final int NUM_BYTES_LEFT = (nr + 1) * RECORD_LENGTH - HEADER_BYTES;
             final int START_OF_DATA = RECORD_LENGTH - HEADER_BYTES;
 
             latBuffer = fillBuffer(latChannel, NUM_BYTES_LEFT);
@@ -275,7 +275,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
 
         // channel reads return -1 when EOF or other error
         // because they a non-blocking reads, 0 is a valid return value!!
-        while ((buffer.remaining() > 0) && (r != -1)) {
+        while (buffer.remaining() > 0 && r != -1) {
             r = channel.read(buffer);
         }
 
@@ -365,8 +365,8 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             float dy = Float.parseFloat(latSt.nextToken());
 
             float angle = Float.parseFloat(latSt.nextToken());
-            float xmax = xmin + ((nc - 1) * dx);
-            float ymax = ymin + ((nr - 1) * dy);
+            float xmax = xmin + (nc - 1) * dx;
+            float ymax = ymin + (nr - 1) * dy;
 
             // now read long shift grid
             longBr.readLine(); // skip header description
@@ -382,14 +382,14 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             }
 
             // check that latitude grid header is the same as for latitude grid
-            if ((nc != Integer.parseInt(longSt.nextToken()))
-                    || (nr != Integer.parseInt(longSt.nextToken()))
-                    || (nz != Integer.parseInt(longSt.nextToken()))
-                    || (xmin != Float.parseFloat(longSt.nextToken()))
-                    || (dx != Float.parseFloat(longSt.nextToken()))
-                    || (ymin != Float.parseFloat(longSt.nextToken()))
-                    || (dy != Float.parseFloat(longSt.nextToken()))
-                    || (angle != Float.parseFloat(longSt.nextToken()))) {
+            if (nc != Integer.parseInt(longSt.nextToken())
+                    || nr != Integer.parseInt(longSt.nextToken())
+                    || nz != Integer.parseInt(longSt.nextToken())
+                    || xmin != Float.parseFloat(longSt.nextToken())
+                    || dx != Float.parseFloat(longSt.nextToken())
+                    || ymin != Float.parseFloat(longSt.nextToken())
+                    || dy != Float.parseFloat(longSt.nextToken())
+                    || angle != Float.parseFloat(longSt.nextToken())) {
                 throw new FactoryException(ErrorKeys.GRID_LOCATIONS_UNEQUAL);
             }
 

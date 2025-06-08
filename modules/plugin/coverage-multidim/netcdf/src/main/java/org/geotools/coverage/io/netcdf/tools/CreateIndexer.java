@@ -110,11 +110,11 @@ public class CreateIndexer {
 
         File sampleFile = new File(sampleFilePath);
         File temp = File.createTempFile("XML", "NC");
-        if (!(temp.delete())) {
+        if (!temp.delete()) {
             throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
         }
 
-        if (!(temp.mkdir())) {
+        if (!temp.mkdir()) {
             throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
         }
 
@@ -156,7 +156,7 @@ public class CreateIndexer {
 
         writeIndexer(builder.toString(), indexerFilePath);
         System.out.println("Deleting temporary folder");
-        if (!(FileUtils.deleteQuietly(temp))) {
+        if (!FileUtils.deleteQuietly(temp)) {
             System.out.println("Unable to delete folder: " + temp);
         }
         if (createDatastoreProperties) {
@@ -251,7 +251,7 @@ public class CreateIndexer {
         boolean longName = false;
         for (Object cov : coverages) {
             if (cov instanceof Element) {
-                if (setCoverage(((Element) cov), builder)) {
+                if (setCoverage((Element) cov, builder)) {
                     longName = true;
                 }
             }

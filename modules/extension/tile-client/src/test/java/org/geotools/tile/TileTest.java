@@ -86,7 +86,7 @@ public class TileTest {
         int blue = observed & 0xff;
         int green = (observed & 0xff00) >> 8;
         int red = (observed & 0xff0000) >> 16;
-        return (blue == blueExpected && red == redExpected && green == greenExpected);
+        return blue == blueExpected && red == redExpected && green == greenExpected;
     }
 
     @Test

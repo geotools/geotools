@@ -103,7 +103,7 @@ class TileURLBuilder {
         final StringBuilder builder = new StringBuilder(urlLength);
         try {
             String encodedtileMatrix = URLEncoder.encode(tileMatrix, "UTF-8");
-            parts.forEach((part) -> part.append(builder, encodedtileMatrix, tileCol, tileRow));
+            parts.forEach(part -> part.append(builder, encodedtileMatrix, tileCol, tileRow));
             final String url = builder.toString();
             urlLength = Math.max(urlLength, url.length());
             return url;

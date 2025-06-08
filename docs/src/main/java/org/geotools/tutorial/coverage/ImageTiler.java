@@ -169,9 +169,9 @@ public class ImageTiler {
             int horizontalIndex,
             int verticalIndex) {
 
-        double envelopeStartX = (horizontalIndex * geographicTileWidth) + coverageMinX;
+        double envelopeStartX = horizontalIndex * geographicTileWidth + coverageMinX;
         double envelopeEndX = envelopeStartX + geographicTileWidth;
-        double envelopeStartY = (verticalIndex * geographicTileHeight) + coverageMinY;
+        double envelopeStartY = verticalIndex * geographicTileHeight + coverageMinY;
         double envelopeEndY = envelopeStartY + geographicTileHeight;
 
         return new ReferencedEnvelope(envelopeStartX, envelopeEndX, envelopeStartY, envelopeEndY, targetCRS);

@@ -68,7 +68,7 @@ public class GeometryHeaderFlags {
     }
 
     public void setEnvelopeIndicator(EnvelopeType e) {
-        b |= ((e.getValue() << 1) & MASK_ENVELOPE_IND);
+        b |= e.getValue() << 1 & MASK_ENVELOPE_IND;
     }
 
     public int getEndianess() {
@@ -77,7 +77,7 @@ public class GeometryHeaderFlags {
 
     public void setEndianess(int endian) {
         byte e = (byte) (endian == ByteOrderValues.LITTLE_ENDIAN ? 1 : 0);
-        b |= (e & MASK_ENDIANESS);
+        b |= e & MASK_ENDIANESS;
     }
 
     public boolean isEmpty() {
@@ -97,7 +97,7 @@ public class GeometryHeaderFlags {
     }
 
     public void setBinaryType(GeopackageBinaryType binaryType) {
-        b |= ((binaryType.getValue() << 1) & MASK_BINARY_TYPE);
+        b |= binaryType.getValue() << 1 & MASK_BINARY_TYPE;
     }
 
     public byte toByte() {

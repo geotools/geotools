@@ -511,8 +511,8 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor i
     public int hashCode() {
         int code = super.hashCode() * 37 + valueClass.hashCode();
         if (defaultValue != null) code += 37 * defaultValue.hashCode();
-        if (minimum != null) code += (37 * 37) * minimum.hashCode();
-        if (maximum != null) code += (37 * 37 * 37) * maximum.hashCode();
+        if (minimum != null) code += 37 * 37 * minimum.hashCode();
+        if (maximum != null) code += 37 * 37 * 37 * maximum.hashCode();
         if (unit != null) code += unit.hashCode();
         return code;
     }

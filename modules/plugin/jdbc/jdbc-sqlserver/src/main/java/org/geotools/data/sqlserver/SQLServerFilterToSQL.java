@@ -169,7 +169,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
             SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             out.write("'" + DATETIME_FORMAT.format(literal) + "'");
         } else if (literal instanceof Boolean) {
-            out.write(String.valueOf(((Boolean) literal ? 1 : 0)));
+            out.write(String.valueOf((Boolean) literal ? 1 : 0));
         } else {
             super.writeLiteral(literal);
         }

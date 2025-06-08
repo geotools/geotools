@@ -274,7 +274,7 @@ public final class PixelTranslation implements Serializable {
         final double dy = target.dy - source.dy;
         MathTransform mt;
         if (dimension == 2 && (xDimension | yDimension) == 1 && dx == dy && Math.abs(dx) == 0.5) {
-            final int index = (dx >= 0) ? 5 : 4;
+            final int index = dx >= 0 ? 5 : 4;
             synchronized (translations) {
                 mt = translations[index];
                 if (mt == null) {

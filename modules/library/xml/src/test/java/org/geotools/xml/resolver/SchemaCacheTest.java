@@ -62,15 +62,15 @@ public class SchemaCacheTest {
      */
     @Test
     public void delete() throws Exception {
-        (new File("target/test/a/b/c")).mkdirs();
-        (new File("target/test/a/b/d/e/f")).mkdirs();
+        new File("target/test/a/b/c").mkdirs();
+        new File("target/test/a/b/d/e/f").mkdirs();
         File f = new File("target/test/a/b/d/e/f/temp.txt");
         try (PrintWriter printWriter = new PrintWriter(f)) {
             printWriter.println("Some text");
         }
-        Assert.assertTrue((new File("target/test/a/b/d/e/f/temp.txt")).exists());
+        Assert.assertTrue(new File("target/test/a/b/d/e/f/temp.txt").exists());
         SchemaCache.delete(new File("target/test/a"));
-        Assert.assertFalse((new File("target/test/a")).exists());
+        Assert.assertFalse(new File("target/test/a").exists());
     }
 
     /** Test resolution of a schema in an existing cache. */
@@ -83,14 +83,14 @@ public class SchemaCacheTest {
         String resolvedLocation = resolver.resolve("http://schemas.example.org/cache-test/cache-test.xsd");
         Assert.assertTrue(resolvedLocation.startsWith("file:"));
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
-        Assert.assertTrue(URLs.urlToFile((new URI(resolvedLocation)).toURL()).exists());
+        Assert.assertTrue(URLs.urlToFile(new URI(resolvedLocation).toURL()).exists());
         // test that cache path is not canonical
         Assert.assertNotEquals(
                 cacheDirectory.toString(), cacheDirectory.getCanonicalFile().toString());
         // test that resolved location is canonical, despite cache directory not being canonical
         Assert.assertEquals(
                 resolvedLocation,
-                URLs.urlToFile((new URI(resolvedLocation)).toURL())
+                URLs.urlToFile(new URI(resolvedLocation).toURL())
                         .getCanonicalFile()
                         .toURI()
                         .toString());

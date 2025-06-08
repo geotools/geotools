@@ -865,7 +865,7 @@ public final class CRS {
             return true;
         }
         if (object1 instanceof AbstractIdentifiedObject && object2 instanceof AbstractIdentifiedObject) {
-            return ((AbstractIdentifiedObject) object1).equals(((AbstractIdentifiedObject) object2), false);
+            return ((AbstractIdentifiedObject) object1).equals((AbstractIdentifiedObject) object2, false);
         }
         return object1 != null && object1.equals(object2);
     }
@@ -1567,9 +1567,8 @@ public final class CRS {
         // Attempt the 'equalsEpsilon' assertion only if source and destination are not same and
         // if the target envelope is Float or Double (this assertion doesn't work with integers).
 
-        assert (destination == envelope
-                                || !(destination instanceof Rectangle2D.Double
-                                        || destination instanceof Rectangle2D.Float))
+        assert destination == envelope
+                        || !(destination instanceof Rectangle2D.Double || destination instanceof Rectangle2D.Float)
                         || XRectangle2D.equalsEpsilon(
                                 destination,
                                 transform(
@@ -1733,7 +1732,7 @@ public final class CRS {
             }
         }
 
-        if ((longitudeDim >= 0) && (latitudeDim >= 0)) {
+        if (longitudeDim >= 0 && latitudeDim >= 0) {
             if (longitudeDim < latitudeDim) {
                 return AxisOrder.EAST_NORTH;
             } else {

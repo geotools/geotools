@@ -35,27 +35,27 @@ public class SimpleFileFilter extends FileFilter implements Serializable {
 
     @Override
     public boolean accept(File f) {
-        if (f.isDirectory()) return (true);
+        if (f.isDirectory()) return true;
         String path = f.getAbsolutePath();
-        if (path.length() < m_ext.length() + 1) return (false);
-        return (path.substring(path.length() - 4)).equals("." + m_ext);
+        if (path.length() < m_ext.length() + 1) return false;
+        return path.substring(path.length() - 4).equals("." + m_ext);
     }
 
     public String getExtension() {
-        return (m_ext);
+        return m_ext;
     }
 
     @Override
     public String getDescription() {
-        return (m_desc);
+        return m_desc;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) return (false);
+        if (o == null) return false;
         if (o instanceof SimpleFileFilter) {
             SimpleFileFilter other = (SimpleFileFilter) o;
-            return (m_ext.equals(other.m_ext));
+            return m_ext.equals(other.m_ext);
         }
         return false;
     }

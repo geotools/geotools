@@ -387,7 +387,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // Future versions should use both.
         //
         // //
-        final boolean useOverviews = (numOverviews > 0) ? true : false;
+        final boolean useOverviews = numOverviews > 0 ? true : false;
 
         // //
         //
@@ -1222,10 +1222,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         String parentPath = file.getParent();
         String filename = file.getName();
         final int i = filename.lastIndexOf('.');
-        filename = (i == -1) ? filename : filename.substring(0, i);
+        filename = i == -1 ? filename : filename.substring(0, i);
 
         // getting name and extension
-        final String base = (parentPath != null)
+        final String base = parentPath != null
                 ? new StringBuilder(parentPath)
                         .append(File.separator)
                         .append(filename)
@@ -1246,10 +1246,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         String parentPath = file.getParent();
         String filename = file.getName();
         final int i = filename.lastIndexOf('.');
-        filename = (i == -1) ? filename : filename.substring(0, i);
+        filename = i == -1 ? filename : filename.substring(0, i);
 
         // getting name and extension
-        final String base = (parentPath != null)
+        final String base = parentPath != null
                 ? new StringBuilder(parentPath)
                         .append(File.separator)
                         .append(filename)

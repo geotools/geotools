@@ -113,7 +113,7 @@ public final class ImageUtilities {
             mediaLibImage = Class.forName("com.sun.medialib.mlib.Image");
         } catch (ClassNotFoundException e) {
         }
-        boolean mediaLib = (mediaLibImage != null);
+        boolean mediaLib = mediaLibImage != null;
 
         // now check if we either wanted to disable explicitly and if we installed the native libs
         if (mediaLib) {
@@ -360,7 +360,7 @@ public final class ImageUtilities {
      */
     public static RenderingHints getRenderingHints(final RenderedImage image) {
         final ImageLayout layout = getImageLayout(image, false);
-        return (layout != null) ? new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout) : null;
+        return layout != null ? new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout) : null;
     }
 
     /**
@@ -465,7 +465,7 @@ public final class ImageUtilities {
          * consider that it doesn't worth to use a "non-standard" tile size. The purpose of this
          * arbitrary test is again to avoid too many small tiles (assuming that
          */
-        return (rmax >= tileSize - tileSize / 4) ? sopt : 0;
+        return rmax >= tileSize - tileSize / 4 ? sopt : 0;
     }
 
     /**
@@ -500,10 +500,10 @@ public final class ImageUtilities {
                 final int maxX = source.getWidth() + minX;
                 final int maxY = source.getHeight() + minY;
                 int mask = 0;
-                if (minXL < minX) mask |= (1 | 4); // set minX and width
-                if (minYL < minY) mask |= (2 | 8); // set minY and height
-                if (maxXL > maxX) mask |= (4); // Set width
-                if (maxYL > maxY) mask |= (8); // Set height
+                if (minXL < minX) mask |= 1 | 4; // set minX and width
+                if (minYL < minY) mask |= 2 | 8; // set minY and height
+                if (maxXL > maxX) mask |= 4; // Set width
+                if (maxYL > maxY) mask |= 8; // Set height
                 if (mask != 0) {
                     if (layout == result) {
                         result = (ImageLayout) layout.clone();
@@ -1172,7 +1172,7 @@ public final class ImageUtilities {
                         // underlying images. let's ignore it
                     }
 
-                    if ((imageReader != null) && (imageReader instanceof ImageReader)) {
+                    if (imageReader != null && imageReader instanceof ImageReader) {
                         final ImageReader reader = (ImageReader) imageReader;
                         @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageInputStream stream = (ImageInputStream) reader.getInput();
@@ -1207,11 +1207,11 @@ public final class ImageUtilities {
             // for some reason, chained cleanup may have already cleaned (and null) some images
             // let's ignore it
         }
-        if ((roi != null) && ((ROI.class.equals(roi.getClass()) || (roi instanceof RenderedImage)))) {
+        if (roi != null && (ROI.class.equals(roi.getClass()) || roi instanceof RenderedImage)) {
             if (roi instanceof ROI) {
                 ROI roiImage = (ROI) roi;
                 Rectangle bounds = roiImage.getBounds();
-                if (!(bounds.isEmpty())) {
+                if (!bounds.isEmpty()) {
                     PlanarImage image = roiImage.getAsImage();
                     if (image != null) {
                         // do not recurse, we have ROIs that have ROIs that have ROIs ....

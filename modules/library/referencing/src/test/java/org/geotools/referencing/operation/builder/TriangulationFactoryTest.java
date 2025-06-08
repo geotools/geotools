@@ -77,8 +77,8 @@ public final class TriangulationFactoryTest {
         Position[] vertices = new Position[number];
 
         for (int i = 0; i < number; i++) {
-            double x = leftDown.x + (randomCoord.nextDouble() * (rightDown.x - leftDown.x));
-            double y = leftDown.y + (randomCoord.nextDouble() * (leftTop.y - leftDown.y));
+            double x = leftDown.x + randomCoord.nextDouble() * (rightDown.x - leftDown.x);
+            double y = leftDown.y + randomCoord.nextDouble() * (leftTop.y - leftDown.y);
             vertices[i] = new Position2D(x, y);
         }
 

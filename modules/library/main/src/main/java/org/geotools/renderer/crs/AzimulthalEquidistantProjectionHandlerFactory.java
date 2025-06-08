@@ -159,7 +159,7 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
             // the extreme points are sitting around 180 - center.x, -center.y, but each
             // need to be perturbated a bit to create the 4 cardinal points...
             double eps = 1e-3;
-            double x = center.x > 0 ? (-180 + center.x) : (180 + center.x);
+            double x = center.x > 0 ? -180 + center.x : 180 + center.x;
             double y = -center.y;
             final double[] line = {
                 center.x,
@@ -193,7 +193,7 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
         }
 
         private double rollLongitude(final double x) {
-            return x - (((int) (x + Math.signum(x) * 180)) / 360.0) * 360.0;
+            return x - (int) (x + Math.signum(x) * 180) / 360.0 * 360.0;
         }
 
         private void initializeDatelineCutter(CoordinateReferenceSystem crs, Point2D.Double center)

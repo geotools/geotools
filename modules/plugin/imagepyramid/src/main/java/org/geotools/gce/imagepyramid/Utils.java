@@ -152,7 +152,7 @@ class Utils {
         }
 
         // check the gdal case and move files if necessary
-        if (!zeroLevelDirectory.exists() && (directories != null && numericDirectories.length == directories.length)) {
+        if (!zeroLevelDirectory.exists() && directories != null && numericDirectories.length == directories.length) {
             LOGGER.log(
                     Level.INFO, "Detected gdal_retile file structure, " + "moving root files to the '0' subdirectory");
             if (zeroLevelDirectory.mkdir()) {

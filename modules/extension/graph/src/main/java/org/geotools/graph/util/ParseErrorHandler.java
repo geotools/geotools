@@ -53,7 +53,7 @@ public class ParseErrorHandler extends DefaultHandler implements Serializable {
     }
 
     public boolean noErrors() {
-        return (m_parseErrors.isEmpty());
+        return m_parseErrors.isEmpty();
     }
 
     public void printErrors() {

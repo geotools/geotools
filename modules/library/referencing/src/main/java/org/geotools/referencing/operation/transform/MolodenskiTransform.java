@@ -171,8 +171,8 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
         daa = da * a;
         da_a = da / a;
         df = (ta - tb) / ta - (a - b) / a;
-        e2 = 1 - (b * b) / (a * a);
-        adf = (a * df) + (a - b) * da / a;
+        e2 = 1 - b * b / (a * a);
+        adf = a * df + (a - b) * da / a;
     }
 
     /** Returns the parameter descriptors for this math transform. */
@@ -342,10 +342,10 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
             if (abs(y) > PI / 2.0) {
                 if (dstPts2 != null) {
                     dstPts2[dstOff++] = 0.0;
-                    dstPts2[dstOff++] = (y > 0.0) ? 90.0 : -90.0;
+                    dstPts2[dstOff++] = y > 0.0 ? 90.0 : -90.0;
                 } else {
                     dstPts1[dstOff++] = 0.0f;
-                    dstPts1[dstOff++] = (y > 0.0f) ? 90.0f : -90.0f;
+                    dstPts1[dstOff++] = y > 0.0f ? 90.0f : -90.0f;
                 }
             } else {
                 x = toDegrees(rollLongitude(x));
@@ -401,7 +401,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
         final float[] tmp = new float[numPts * sourceDim];
         inverse.transform(dstPts1, dstPts2, dstOff, tmp, null, 0, numPts);
         for (int i = 0; i < tmp.length; i++, srcOff++) {
-            final float expected = (srcPts2 != null) ? (float) srcPts2[srcOff] : srcPts1[srcOff];
+            final float expected = srcPts2 != null ? (float) srcPts2[srcOff] : srcPts1[srcOff];
             float error = abs(tmp[i] - expected);
             switch (i % sourceDim) {
                 case 0:

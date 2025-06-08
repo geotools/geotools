@@ -175,10 +175,10 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((disp == null) ? 0 : disp.hashCode());
-        result = prime * result + ((fill == null) ? 0 : fill.hashCode());
-        result = prime * result + ((offset == null) ? 0 : offset.hashCode());
-        result = prime * result + ((stroke == null) ? 0 : stroke.hashCode());
+        result = prime * result + (disp == null ? 0 : disp.hashCode());
+        result = prime * result + (fill == null ? 0 : fill.hashCode());
+        result = prime * result + (offset == null ? 0 : offset.hashCode());
+        result = prime * result + (stroke == null ? 0 : stroke.hashCode());
         return result;
     }
 

@@ -59,6 +59,14 @@
   <!-- =========================================================== -->
   <dependencyManagement>
     <dependencies>
+      <!-- Import the GeoTools platform-dependencies BOM to get consistent dependency versions -->
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-platform-dependencies</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <!-- Import the GeoTools BOM to get consistent dependency versions -->
       <dependency>
         <groupId>org.geotools</groupId>

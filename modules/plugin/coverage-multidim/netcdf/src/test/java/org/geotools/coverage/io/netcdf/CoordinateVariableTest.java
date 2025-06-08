@@ -56,7 +56,7 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
     }
 
     /** Simple CoordinateAxis1D wrapper to override Units */
-    class CoordinateAxis1DUnitWrapper extends CoordinateAxis1D {
+    static class CoordinateAxis1DUnitWrapper extends CoordinateAxis1D {
 
         String units;
 

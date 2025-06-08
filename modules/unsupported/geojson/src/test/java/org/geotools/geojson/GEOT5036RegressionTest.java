@@ -39,7 +39,7 @@ public class GEOT5036RegressionTest {
     private final Random rand = new Random();
     private final Map<Date, Future<String>> expectationMap = new HashMap<>();
 
-    public class Task implements Callable<String> {
+    public static class Task implements Callable<String> {
         private final Date date;
 
         public Task(Date d) {

@@ -65,7 +65,7 @@ public class CatalogBuilderTest extends Assert {
         }
     }
 
-    private final class CatalogBuilderListener extends ProcessingEventListener {
+    private static final class CatalogBuilderListener extends ProcessingEventListener {
 
         @Override
         public void exceptionOccurred(ExceptionEvent event) {

@@ -92,7 +92,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         /* Attributes */
     }
 
-    class AnyTypeTestConfiguration extends Configuration {
+    static class AnyTypeTestConfiguration extends Configuration {
         public AnyTypeTestConfiguration() {
             super(ANYTYPETEST.getInstance());
         }
@@ -101,7 +101,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         protected void registerBindings(MutablePicoContainer container) {}
     }
 
-    class MyConfiguration extends Configuration {
+    static class MyConfiguration extends Configuration {
 
         public MyConfiguration() {
             super(ANYTYPETEST.getInstance());

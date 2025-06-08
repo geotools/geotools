@@ -122,7 +122,7 @@ public class DOMParserTestSuite extends TestSuite {
 
             File[] tests = dir.listFiles(pathname -> pathname.toString().endsWith("test20.xml"));
             for (File test : tests) {
-                suite.addTest(suite.new DomTestXml(test.getName()));
+                suite.addTest(new DomTestXml(test.getName()));
             }
             // .. etc..
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class DOMParserTestSuite extends TestSuite {
     }
 
     /** Quick test of a single xml document */
-    class DomTestXml implements Test {
+    static class DomTestXml implements Test {
         String document;
 
         public DomTestXml(String document) {

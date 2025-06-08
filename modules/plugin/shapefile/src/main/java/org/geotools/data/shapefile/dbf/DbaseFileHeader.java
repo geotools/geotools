@@ -77,7 +77,7 @@ public class DbaseFileHeader {
     public static long MILLIS_SINCE_4713 = -210866803200000L;
 
     /** Class for holding the information associated with a record. */
-    class DbaseField {
+    static class DbaseField {
 
         // Field Name
         String fieldName;

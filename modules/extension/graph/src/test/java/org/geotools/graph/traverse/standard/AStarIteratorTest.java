@@ -296,7 +296,7 @@ public class AStarIteratorTest {
         Assert.assertEquals(walker.getCount(), nnodes);
     }
 
-    private class MyVisitor implements GraphVisitor {
+    private static class MyVisitor implements GraphVisitor {
         public int count = 0;
 
         @Override

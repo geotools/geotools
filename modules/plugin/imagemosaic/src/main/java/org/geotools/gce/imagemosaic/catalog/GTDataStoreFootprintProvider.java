@@ -103,7 +103,7 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    public class GranuleFilterVisitor extends DuplicatingFilterVisitor implements FilterVisitor {
+    public static class GranuleFilterVisitor extends DuplicatingFilterVisitor implements FilterVisitor {
 
         private static final String GRANULE_PREFIX = "granule/";
 

@@ -19,7 +19,7 @@ public class FeatureReaderIteratorTest {
         }
     }
 
-    class BreakingFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+    static class BreakingFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
         @Override
         public void close() throws IOException {

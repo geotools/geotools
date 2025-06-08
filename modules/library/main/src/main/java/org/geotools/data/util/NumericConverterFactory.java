@@ -82,7 +82,7 @@ public class NumericConverterFactory implements ConverterFactory {
         return null;
     }
 
-    class SafeNumericConverter implements Converter {
+    static class SafeNumericConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
         @Override
         @SuppressWarnings("unchecked")
@@ -181,7 +181,7 @@ public class NumericConverterFactory implements ConverterFactory {
         }
     }
 
-    class NumericConverter implements Converter {
+    static class NumericConverter implements Converter {
 
         // target.cast won't work for both the object wrapper and the primitive class
         @Override

@@ -86,7 +86,7 @@ public class LockManager {
     }
 
     /** @author Tommaso Nolli */
-    private class LockImpl implements Lock {
+    private static class LockImpl implements Lock {
         private short type;
 
         /** @param type */

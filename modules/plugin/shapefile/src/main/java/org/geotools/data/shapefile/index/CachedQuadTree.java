@@ -149,7 +149,7 @@ public class CachedQuadTree {
     }
 
     /** An efficient wrapper around an array of integers */
-    class Indices {
+    static class Indices {
         /** The current coordinate */
         int curr;
 

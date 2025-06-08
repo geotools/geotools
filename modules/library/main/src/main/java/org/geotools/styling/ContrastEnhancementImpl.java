@@ -67,7 +67,7 @@ import org.geotools.factory.CommonFactoryFinder;
  */
 public class ContrastEnhancementImpl implements org.geotools.api.style.ContrastEnhancement {
 
-    @SuppressWarnings("PMD.UnusedPrivateField")
+    @SuppressWarnings({"PMD.UnusedPrivateField", "UnusedVariable"})
     private FilterFactory filterFactory;
 
     private Expression gamma;

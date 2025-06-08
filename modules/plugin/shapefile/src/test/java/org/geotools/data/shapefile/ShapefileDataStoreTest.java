@@ -114,7 +114,7 @@ import org.locationtech.jts.geom.Polygon;
 public class ShapefileDataStoreTest extends TestCaseSupport {
 
     // Custom class for testing
-    class CustomTypeClass {
+    static class CustomTypeClass {
 
         private int customField;
 

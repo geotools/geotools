@@ -476,7 +476,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     }
 
     /** Method object returning 4 separate params */
-    private class TileBoundsCalculator {
+    private static class TileBoundsCalculator {
         private Envelope requestedEnvelope;
         private double resX;
         private double resY;

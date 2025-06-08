@@ -52,7 +52,7 @@ class RangeVisitor implements FeatureCalc {
     }
 
     /** A DateRange comparator */
-    class DateRangeComparator implements Comparator<DateRange> {
+    static class DateRangeComparator implements Comparator<DateRange> {
 
         @Override
         public int compare(DateRange firstDateRange, DateRange secondDateRange) {

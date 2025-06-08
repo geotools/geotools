@@ -3422,7 +3422,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @author aaime
      */
-    protected abstract class RenderingRequest {
+    protected abstract static class RenderingRequest {
         abstract void execute();
     }
 

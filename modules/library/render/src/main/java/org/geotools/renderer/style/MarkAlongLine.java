@@ -531,7 +531,7 @@ public class MarkAlongLine implements Stroke {
     //        return percentage > simplicationTolerance;
     //    }
 
-    class MarkAlongLiteShape extends LiteShape {
+    static class MarkAlongLiteShape extends LiteShape {
 
         private static final String CLIPPED = "clipped";
         private static final String FINAL_COORDS = "final_coords";

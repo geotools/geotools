@@ -206,7 +206,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
                     && (writeBand < 0 || writeBand > gc.getNumSampleDimensions()))
                 throw new IllegalArgumentException(
                         "You need to supply a valid index for deciding which band to write.");
-            if (!((writeBands == null || writeBands.length == 0 || writeBands.length > 1))) writeBand = writeBands[0];
+            if (!(writeBands == null || writeBands.length == 0 || writeBands.length > 1)) writeBand = writeBands[0];
 
             // /////////////////////////////////////////////////////////////////
             //
@@ -355,7 +355,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         final Bounds oldEnv = gc.getEnvelope2D();
         final double W = oldEnv.getSpan(0);
         final double H = oldEnv.getSpan(1);
-        if ((dx - dy) > ArcGridWriter.ROTATION_EPS) {
+        if (dx - dy > ArcGridWriter.ROTATION_EPS) {
             /** we have higher resolution on the Y axis we have to increase it on the X axis as well. */
 
             // new number of columns
@@ -403,7 +403,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         URL url = null;
 
         if (this.destination instanceof String) {
-            url = (new File((String) this.destination)).toURI().toURL();
+            url = new File((String) this.destination).toURI().toURL();
         } else if (this.destination instanceof File) {
             url = ((File) this.destination).toURI().toURL();
         } else if (this.destination instanceof URL) {

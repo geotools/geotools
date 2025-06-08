@@ -322,7 +322,7 @@ public class SLD {
             return 1.0;
         }
         double value = Filters.asDouble(opacity);
-        return (Double.isNaN(value) ? 1.0 : value);
+        return Double.isNaN(value) ? 1.0 : value;
     }
 
     /**
@@ -1364,7 +1364,7 @@ public class SLD {
     public static Stroke stroke(PointSymbolizer sym) {
         Mark mark = mark(sym);
 
-        return (mark == null) ? null : mark.getStroke();
+        return mark == null ? null : mark.getStroke();
     }
 
     /**
@@ -1390,7 +1390,7 @@ public class SLD {
     public static Fill fill(PointSymbolizer sym) {
         Mark mark = mark(sym);
 
-        return (mark == null) ? null : mark.getFill();
+        return mark == null ? null : mark.getFill();
     }
 
     /**
@@ -1445,7 +1445,7 @@ public class SLD {
             return null;
         }
 
-        if ((type == null) || (type.getTypeName() == null)) {
+        if (type == null || type.getTypeName() == null) {
             return null;
         }
 
@@ -1466,7 +1466,7 @@ public class SLD {
      * @return The first object to match the feature type, otherwise null if no match.
      */
     public static Style matchingStyle(Style[] styles, SimpleFeatureType schema) {
-        if ((styles == null) || (styles.length == 0)) {
+        if (styles == null || styles.length == 0) {
             return null;
         }
 
@@ -1947,7 +1947,7 @@ public class SLD {
             return wrapSymbolizers(polySym);
 
         } else {
-            Font font = (labelFont == null ? sf.getDefaultFont() : labelFont);
+            Font font = labelFont == null ? sf.getDefaultFont() : labelFont;
             Fill labelFill = sf.createFill(ff.literal(Color.BLACK));
 
             TextSymbolizer textSym =
@@ -1987,7 +1987,7 @@ public class SLD {
             return wrapSymbolizers(lineSym);
 
         } else {
-            Font font = (labelFont == null ? sf.getDefaultFont() : labelFont);
+            Font font = labelFont == null ? sf.getDefaultFont() : labelFont;
             Fill labelFill = sf.createFill(ff.literal(Color.BLACK));
 
             TextSymbolizer textSym =
@@ -2054,7 +2054,7 @@ public class SLD {
             return wrapSymbolizers(pointSym);
 
         } else {
-            Font font = (labelFont == null ? sf.getDefaultFont() : labelFont);
+            Font font = labelFont == null ? sf.getDefaultFont() : labelFont;
             Fill labelFill = sf.createFill(ff.literal(Color.BLACK));
             AnchorPoint anchor = sf.createAnchorPoint(ff.literal(0.5), ff.literal(0.0));
             Displacement disp = sf.createDisplacement(ff.literal(0), ff.literal(5));

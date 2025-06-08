@@ -217,7 +217,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
         int test = maxClient;
 
-        while ((minClient <= test) && (test <= maxClient)) {
+        while (minClient <= test && test <= maxClient) {
             Specification tempSpecification = specs[test];
             String clientVersion = tempSpecification.getVersion();
 
@@ -251,7 +251,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
                 return tempCapabilities;
             }
 
-            if ((tempCapabilities != null) && versions.contains(serverVersion)) {
+            if (tempCapabilities != null && versions.contains(serverVersion)) {
                 // we can communicate with this server
                 int index = versions.indexOf(serverVersion);
                 this.specification = specs[index];
@@ -332,7 +332,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
             if (test.compareTo(version) < 0) {
 
-                if ((before == null) || (before.compareTo(test) < 0)) {
+                if (before == null || before.compareTo(test) < 0) {
                     before = test;
                 }
             }
@@ -359,7 +359,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
             String test = (String) o;
 
             if (test.compareTo(version) > 0) {
-                if ((after == null) || (after.compareTo(test) < 0)) {
+                if (after == null || after.compareTo(test) < 0) {
                     after = test;
                 }
             }

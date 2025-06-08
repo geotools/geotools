@@ -73,10 +73,10 @@ public class ElementTypeHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode()
-                        * ((id == null) ? 1 : id.hashCode())
-                        * ((ref == null) ? 1 : ref.hashCode())
-                        * ((name == null) ? 1 : name.hashCode()))
+        return LOCALNAME.hashCode()
+                        * (id == null ? 1 : id.hashCode())
+                        * (ref == null ? 1 : ref.hashCode())
+                        * (name == null ? 1 : name.hashCode())
                 + hashCodeOffset;
     }
 
@@ -155,7 +155,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             abstracT1 = atts.getValue(namespaceURI, "abstract");
         }
 
-        if ((abstracT1 == null) || "".equalsIgnoreCase(abstracT1)) {
+        if (abstracT1 == null || "".equalsIgnoreCase(abstracT1)) {
             this.abstracT = false;
         } else {
             if ("true".equals(abstracT1)) {
@@ -224,7 +224,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             maxOccurs1 = atts.getValue(namespaceURI, "maxOccurs");
         }
 
-        if ((maxOccurs1 != null) && !"".equalsIgnoreCase(maxOccurs1)) {
+        if (maxOccurs1 != null && !"".equalsIgnoreCase(maxOccurs1)) {
             if ("unbounded".equalsIgnoreCase(maxOccurs1)) {
                 this.maxOccurs = ElementGrouping.UNBOUNDED;
             } else {
@@ -241,7 +241,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             minOccurs1 = atts.getValue(namespaceURI, "minOccurs");
         }
 
-        if ((minOccurs1 != null) && !"".equalsIgnoreCase(minOccurs1)) {
+        if (minOccurs1 != null && !"".equalsIgnoreCase(minOccurs1)) {
             this.minOccurs = Integer.parseInt(minOccurs1);
         } else {
             this.minOccurs = 1;
@@ -261,7 +261,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             nillable1 = atts.getValue(namespaceURI, "nillable");
         }
 
-        if ((nillable1 == null) || "".equalsIgnoreCase(nillable1)) {
+        if (nillable1 == null || "".equalsIgnoreCase(nillable1)) {
             this.nillable = false;
         } else {
             this.nillable = Boolean.parseBoolean(nillable1);
@@ -360,11 +360,11 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             cache.name = e.getName();
             cache.type = e.getType();
 
-            if ((defaulT == null) || "".equalsIgnoreCase(defaulT)) {
+            if (defaulT == null || "".equalsIgnoreCase(defaulT)) {
                 cache.defaulT = e.getDefault();
             }
 
-            if ((fixed == null) || "".equalsIgnoreCase(fixed)) {
+            if (fixed == null || "".equalsIgnoreCase(fixed)) {
                 cache.fixed = e.getFixed();
             }
 
@@ -376,8 +376,8 @@ public class ElementTypeHandler extends ElementGroupingHandler {
                 cache.finaL = e.getFinal();
             }
 
-            cache.minOccurs = (minOccurs == 1) ? e.getMinOccurs() : minOccurs;
-            cache.maxOccurs = (maxOccurs == 1) ? e.getMaxOccurs() : maxOccurs;
+            cache.minOccurs = minOccurs == 1 ? e.getMinOccurs() : minOccurs;
+            cache.maxOccurs = maxOccurs == 1 ? e.getMaxOccurs() : maxOccurs;
 
             if (substitutionGroup != null) {
                 cache.substitutionGroup = e.getSubstitutionGroup();
@@ -431,7 +431,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
                 }
             }
 
-            return (type == null) ? null : type.findChildElement(name1);
+            return type == null ? null : type.findChildElement(name1);
         }
 
         /** @see org.geotools.xml.xsi.Element#isAbstract() */
@@ -531,7 +531,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
                 }
             }
 
-            return (type == null) ? null : XMLTypeHelper.findChildElement(type, localName, namespaceURI);
+            return type == null ? null : XMLTypeHelper.findChildElement(type, localName, namespaceURI);
         }
     }
 }

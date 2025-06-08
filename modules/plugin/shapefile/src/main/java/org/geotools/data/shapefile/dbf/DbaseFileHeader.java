@@ -241,7 +241,7 @@ public class DbaseFileHeader {
         tempFieldDescriptors[fields.length].fieldName = tempFieldName;
 
         // the field type
-        if ((inFieldType == 'C') || (inFieldType == 'c')) {
+        if (inFieldType == 'C' || inFieldType == 'c') {
             tempFieldDescriptors[fields.length].fieldType = 'C';
             if (inFieldLength > 254) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -252,7 +252,7 @@ public class DbaseFileHeader {
                             + " Which is longer than 254, not consistent with dbase III");
                 }
             }
-        } else if ((inFieldType == 'S') || (inFieldType == 's')) {
+        } else if (inFieldType == 'S' || inFieldType == 's') {
             tempFieldDescriptors[fields.length].fieldType = 'C';
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning(
@@ -270,7 +270,7 @@ public class DbaseFileHeader {
                 }
             }
             tempFieldDescriptors[fields.length].fieldLength = 8;
-        } else if ((inFieldType == 'D') || (inFieldType == 'd')) {
+        } else if (inFieldType == 'D' || inFieldType == 'd') {
             tempFieldDescriptors[fields.length].fieldType = 'D';
             if (inFieldLength != 8) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -295,7 +295,7 @@ public class DbaseFileHeader {
                 }
             }
             tempFieldDescriptors[fields.length].fieldLength = 8;
-        } else if ((inFieldType == 'F') || (inFieldType == 'f')) {
+        } else if (inFieldType == 'F' || inFieldType == 'f') {
             tempFieldDescriptors[fields.length].fieldType = 'F';
             if (inFieldLength > 20) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -307,7 +307,7 @@ public class DbaseFileHeader {
                                     + " Preserving length, but should be set to Max of 20 not valid for dbase IV, and UP specification, not present in dbaseIII.");
                 }
             }
-        } else if ((inFieldType == 'N') || (inFieldType == 'n')) {
+        } else if (inFieldType == 'N' || inFieldType == 'n') {
             tempFieldDescriptors[fields.length].fieldType = 'N';
             if (inFieldLength > 18) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -340,7 +340,7 @@ public class DbaseFileHeader {
                 }
                 tempFieldDescriptors[fields.length].decimalCount = inFieldLength - 1;
             }
-        } else if ((inFieldType == 'L') || (inFieldType == 'l')) {
+        } else if (inFieldType == 'L' || inFieldType == 'l') {
             tempFieldDescriptors[fields.length].fieldType = 'L';
             if (inFieldLength != 1) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -550,7 +550,7 @@ public class DbaseFileHeader {
             // read the length of the header structure.
             // ahhh.. unsigned little-endian shorts
             // mask out the byte and or it with shifted 2nd byte
-            headerLength = (in.get() & 0xff) | ((in.get() & 0xff) << 8);
+            headerLength = in.get() & 0xff | (in.get() & 0xff) << 8;
 
             // if the header is bigger than our 1K, reallocate
             if (headerLength > in.capacity()) {
@@ -567,7 +567,7 @@ public class DbaseFileHeader {
 
             // read the length of a record
             // ahhh.. unsigned little-endian shorts
-            recordLength = (in.get() & 0xff) | ((in.get() & 0xff) << 8);
+            recordLength = in.get() & 0xff | (in.get() & 0xff) << 8;
 
             // skip the reserved bytes in the header.
             in.position(in.position() + 20);
@@ -672,7 +672,7 @@ public class DbaseFileHeader {
         // read the length of the header structure.
         // ahhh.. unsigned little-endian shorts
         // mask out the byte and or it with shifted 2nd byte
-        headerLength = (in.get() & 0xff) | ((in.get() & 0xff) << 8);
+        headerLength = in.get() & 0xff | (in.get() & 0xff) << 8;
 
         // if the header is bigger than our 1K, reallocate
         if (headerLength > in.capacity()) {
@@ -682,7 +682,7 @@ public class DbaseFileHeader {
 
         // read the length of a record
         // ahhh.. unsigned little-endian shorts
-        recordLength = (in.get() & 0xff) | ((in.get() & 0xff) << 8);
+        recordLength = in.get() & 0xff | (in.get() & 0xff) << 8;
 
         // skip the reserved bytes in the header.
         in.position(in.position() + 20);
@@ -788,7 +788,7 @@ public class DbaseFileHeader {
             c.setTime(new Date());
             buffer.put((byte) (c.get(Calendar.YEAR) % 100));
             buffer.put((byte) (c.get(Calendar.MONTH) + 1));
-            buffer.put((byte) (c.get(Calendar.DAY_OF_MONTH)));
+            buffer.put((byte) c.get(Calendar.DAY_OF_MONTH));
 
             // write the number of records in the datafile.
             buffer.putInt(recordCnt);

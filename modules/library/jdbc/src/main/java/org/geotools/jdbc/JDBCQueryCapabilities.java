@@ -77,7 +77,7 @@ class JDBCQueryCapabilities extends QueryCapabilities {
             descriptor = source.getSchema().getDescriptor(attName);
         }
         return descriptor != null
-                && !(Geometry.class.isAssignableFrom(descriptor.getType().getBinding()));
+                && !Geometry.class.isAssignableFrom(descriptor.getType().getBinding());
     }
 
     /** Consults the fid mapper for the feature source, if the null feature map reliable fids not supported. */

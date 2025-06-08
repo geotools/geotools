@@ -160,7 +160,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     protected boolean isNull(Expression exp) {
         return exp == null
                 || exp instanceof NilExpression
-                || (exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null);
+                || exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null;
     }
 
     /** @see StyleVisitor#visit(org.geotools.api.style.Symbolizer) */

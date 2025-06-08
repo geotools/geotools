@@ -143,7 +143,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
         if (value != null) {
             if (!set.contains(value) && !skipped.contains(value)) {
-                if (currentItem >= startIndex && currentItem < (startIndex + maxFeatures)) {
+                if (currentItem >= startIndex && currentItem < startIndex + maxFeatures) {
                     set.add(value);
                 } else {
                     skipped.add(value);
@@ -163,7 +163,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
             skipped = new LinkedHashSet<>();
         }
         if (!set.contains(uniqueVal) && !skipped.contains(uniqueVal)) {
-            if (currentItem >= startIndex && currentItem < (startIndex + maxFeatures)) {
+            if (currentItem >= startIndex && currentItem < startIndex + maxFeatures) {
                 set.add(uniqueVal);
             } else {
                 skipped.add(uniqueVal);

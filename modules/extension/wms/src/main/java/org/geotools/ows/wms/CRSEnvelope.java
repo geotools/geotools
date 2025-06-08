@@ -209,7 +209,7 @@ public class CRSEnvelope implements Bounds {
             min = getMinY();
             // max = getMaxY();
         }
-        return min + (getLength(dimension) / 2);
+        return min + getLength(dimension) / 2;
     }
 
     public double getLength(int dimension) {

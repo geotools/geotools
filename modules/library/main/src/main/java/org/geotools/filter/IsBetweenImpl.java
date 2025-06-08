@@ -192,8 +192,8 @@ public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetwee
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((expression == null) ? 0 : expression.hashCode());
-        result = prime * result + ((matchAction == null) ? 0 : matchAction.hashCode());
+        result = prime * result + (expression == null ? 0 : expression.hashCode());
+        result = prime * result + (matchAction == null ? 0 : matchAction.hashCode());
         return result;
     }
 

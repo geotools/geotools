@@ -568,7 +568,7 @@ public class OperationJAI extends Operation2D {
          *     - Color model
          */
         RenderingHints hints = ImageUtilities.getRenderingHints(parameters.getSource());
-        ImageLayout layout = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
+        ImageLayout layout = hints != null ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
         if (layout == null || !layout.isValid(ImageLayout.COLOR_MODEL_MASK)) {
             if (sampleDims != null && sampleDims.length != 0) {
                 int visibleBand = CoverageUtilities.getVisibleBand(primarySource.getRenderedImage());
@@ -1125,7 +1125,7 @@ public class OperationJAI extends Operation2D {
 
         // Getting NoData propery
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
-        Range innerNodata = (nodataProp != null) ? nodataProp.getAsRange() : null;
+        Range innerNodata = nodataProp != null ? nodataProp.getAsRange() : null;
         // Setting the NoData Range parameter if not present
         if (JAIExt.isJAIExtOperation(operationName) && noDataIndex >= 0) {
             Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);

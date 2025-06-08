@@ -61,7 +61,7 @@ public final class XMath {
 
         // If next float away from zero, increase magnitude.
         // Else decrease magnitude
-        if ((bits > 0) == positive) {
+        if (bits > 0 == positive) {
             if (magnitude != POSITIVEINFINITY) {
                 magnitude++;
             }

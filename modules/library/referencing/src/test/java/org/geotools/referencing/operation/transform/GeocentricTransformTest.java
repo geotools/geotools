@@ -84,7 +84,7 @@ public final class GeocentricTransformTest extends TransformTestBase {
          * a specialized class, which is not the usual Ellipsoid class.
          */
         final double radius = e.getSemiMajorAxis();
-        final double circumference = (radius * 1.00000001) * (2 * Math.PI);
+        final double circumference = radius * 1.00000001 * (2 * Math.PI);
         final DefaultEllipsoid s = DefaultEllipsoid.createEllipsoid("Sphere", radius, radius, e.getAxisUnit());
         assertNotEquals("Spheroid class", DefaultEllipsoid.class, s.getClass());
         for (double i = 0; i <= 180; i += 1) {
@@ -152,7 +152,7 @@ public final class GeocentricTransformTest extends TransformTestBase {
                     range = 0;
                     break; // Should not happen
             }
-            array0[i] = range * random.nextDouble() - (range / 2.0);
+            array0[i] = range * random.nextDouble() - range / 2.0;
         }
         array0[0] = 35.0;
         array0[1] = 24.0;

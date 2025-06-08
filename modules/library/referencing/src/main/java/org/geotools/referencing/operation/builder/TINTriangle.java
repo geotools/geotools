@@ -74,11 +74,11 @@ class TINTriangle extends Polygon {
         double y2 = reducedVertices.get(2).getCoordinate()[1];
 
         // Calculation of Circumcicle center
-        double t = (0.5 * (((x1 * x1) + (y1 * y1)) - (x1 * x2) - (y1 * y2))) / ((y1 * x2) - (x1 * y2));
+        double t = 0.5 * ((x1 * x1 + y1 * y1) - x1 * x2 - y1 * y2) / (y1 * x2 - x1 * y2);
 
         // t = Math.abs(t);
-        Position2D center = new Position2D(
-                crs, (x2 / 2) - (t * y2) + p0.getCoordinate()[0], (y2 / 2) + (t * x2) + p0.getCoordinate()[1]);
+        Position2D center =
+                new Position2D(crs, x2 / 2 - t * y2 + p0.getCoordinate()[0], y2 / 2 + t * x2 + p0.getCoordinate()[1]);
 
         return new Circle(center.getDirectPosition(), center.distance(new Position2D(p0)));
     }

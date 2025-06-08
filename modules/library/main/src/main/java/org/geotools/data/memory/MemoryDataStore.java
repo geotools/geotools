@@ -165,7 +165,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IllegalArgumentException If provided collection is empty
      */
     public void addFeatures(Collection<?> collection) {
-        if ((collection == null) || collection.isEmpty()) {
+        if (collection == null || collection.isEmpty()) {
             throw new IllegalArgumentException("Provided Collection is empty");
         }
         synchronized (entries) {
@@ -176,7 +176,7 @@ public class MemoryDataStore extends ContentDataStore {
     }
 
     public void addFeatures(FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
-        if ((collection == null)) {
+        if (collection == null) {
             throw new IllegalArgumentException("Provided FeatureCollection is empty");
         }
         synchronized (entries) {

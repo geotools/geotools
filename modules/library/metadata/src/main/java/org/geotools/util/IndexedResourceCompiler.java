@@ -259,7 +259,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             out.writeInt(count);
             for (int i = 0; i < count; i++) {
                 final String value = (String) resources.get(allocatedIDs.get(i));
-                out.writeUTF((value != null) ? value : "");
+                out.writeUTF(value != null ? value : "");
             }
         }
     }

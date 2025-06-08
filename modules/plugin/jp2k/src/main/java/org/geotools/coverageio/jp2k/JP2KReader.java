@@ -622,7 +622,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
             coverageName = inputFile.getName();
 
             final int dotIndex = coverageName.lastIndexOf(".");
-            coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
+            coverageName = dotIndex == -1 ? coverageName : coverageName.substring(0, dotIndex);
 
             // //
             //

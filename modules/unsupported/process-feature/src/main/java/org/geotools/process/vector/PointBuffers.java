@@ -173,7 +173,7 @@ public class PointBuffers implements VectorProcess {
         public Polygon getBuffer(double distance) {
             CoordinateSequence cs = new LiteCoordinateSequence(quadrantSegments * 4 + 1, 2);
 
-            for (int i = 0; i < (cs.size() - 1); i++) {
+            for (int i = 0; i < cs.size() - 1; i++) {
                 double azimuth = 360.0 * i / cs.size() - 180;
                 calculator.setDirection(azimuth, distance);
                 Point2D dp = calculator.getDestinationGeographicPoint();
@@ -209,7 +209,7 @@ public class PointBuffers implements VectorProcess {
             }
         }
 
-        if ((longitudeDim >= 0) && (latitudeDim >= 0)) {
+        if (longitudeDim >= 0 && latitudeDim >= 0) {
             if (longitudeDim > latitudeDim) {
                 return true;
             }

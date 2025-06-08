@@ -572,7 +572,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * transformations are usually datum shift and must be visible.
      */
     private static boolean isIdentity(final CoordinateOperation operation) {
-        return (operation instanceof Conversion) && operation.getMathTransform().isIdentity();
+        return operation instanceof Conversion && operation.getMathTransform().isIdentity();
     }
 
     /**
@@ -599,7 +599,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         }
         final MathTransform transform = operation.getMathTransform().inverse();
         final Class<? extends CoordinateOperation> type = AbstractCoordinateOperation.getType(operation);
-        final OperationMethod method = (operation instanceof Operation) ? ((Operation) operation).getMethod() : null;
+        final OperationMethod method = operation instanceof Operation ? ((Operation) operation).getMethod() : null;
         return createFromMathTransform(properties, targetCRS, sourceCRS, transform, method, type);
     }
 
@@ -613,7 +613,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
 
     /** Returns the dimension of the specified coordinate system, or {@code 0} if the coordinate system is null. */
     static int getDimension(final CoordinateReferenceSystem crs) {
-        return (crs != null) ? crs.getCoordinateSystem().getDimension() : 0;
+        return crs != null ? crs.getCoordinateSystem().getDimension() : 0;
     }
 
     /**
@@ -632,7 +632,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
 
         /** Constructs an identifier derived from the specified one. */
         public TemporaryIdentifier(final ReferenceIdentifier parent) {
-            this(parent, ((parent instanceof TemporaryIdentifier) ? ((TemporaryIdentifier) parent).count : 0) + 1);
+            this(parent, (parent instanceof TemporaryIdentifier ? ((TemporaryIdentifier) parent).count : 0) + 1);
         }
 
         /** Work around for RFE #4093999 in Sun's bug database */

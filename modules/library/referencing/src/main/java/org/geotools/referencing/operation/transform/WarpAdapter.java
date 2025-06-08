@@ -81,7 +81,7 @@ final class WarpAdapter extends Warp {
 
         final int xmax = xmin + width;
         final int ymax = ymin + height;
-        final int count = ((width + (periodX - 1)) / periodX) * ((height + (periodY - 1)) / periodY);
+        final int count = (width + periodX - 1) / periodX * ((height + periodY - 1) / periodY);
         if (destRect == null) {
             destRect = new float[2 * count];
         }

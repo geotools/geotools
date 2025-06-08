@@ -81,7 +81,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
 
         getLines().add(line);
 
-        return (null);
+        return null;
     }
 
     /**
@@ -160,21 +160,21 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
         Edge edge = getGraphBuilder().buildEdge(n1, n2);
         getGraphBuilder().addEdge(edge);
 
-        return (edge);
+        return edge;
     }
 
     @Override
     public Node getNode(Coordinate c) {
         Node n = (Node) m_in2count.get(c);
 
-        if (n != null) return (n);
-        return ((Node) m_out2count.get(c));
+        if (n != null) return n;
+        return (Node) m_out2count.get(c);
     }
 
     @Override
     public Edge getEdge(Coordinate c1, Coordinate c2) {
         // TODO: IMPLEMENT
 
-        return (null);
+        return null;
     }
 }

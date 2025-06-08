@@ -82,7 +82,7 @@ public abstract class DateUtil {
      * Millisecond value of base time for internal representation. This gives the bias relative to January 1 of the year
      * 1 C.E.
      */
-    private static final long TIME_BASE = (1969 * MSPERYEAR) + (((1969 / 4) - 19 + 4) * LMSPERDAY);
+    private static final long TIME_BASE = 1969 * MSPERYEAR + (1969 / 4 - 19 + 4) * LMSPERDAY;
 
     /** Day number for start of month in non-leap year. */
     private static final int[] MONTHS_NONLEAP = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
@@ -153,8 +153,8 @@ public abstract class DateUtil {
             while (offset < limit) {
                 char chr = text.charAt(offset++);
 
-                if ((chr >= '0') && (chr <= '9')) {
-                    value = (value * 10) + (chr - '0');
+                if (chr >= '0' && chr <= '9') {
+                    value = value * 10 + chr - '0';
                 } else {
                     throw new IllegalArgumentException("Non-digit in number value");
                 }
@@ -264,7 +264,7 @@ public abstract class DateUtil {
         // check if overflow a potential problem
         long value = 0;
 
-        if ((limit - offset) > 18) {
+        if (limit - offset > 18) {
             // pass text to library parse code (less leading +)
             if (chr == '+') {
                 text = text.substring(1);
@@ -280,8 +280,8 @@ public abstract class DateUtil {
             while (offset < limit) {
                 chr = text.charAt(offset++);
 
-                if ((chr >= '0') && (chr <= '9')) {
-                    value = (value * 10) + (chr - '0');
+                if (chr >= '0' && chr <= '9') {
+                    value = value * 10 + (chr - '0');
                 } else {
                     throw new IllegalArgumentException("Non-digit in number value");
                 }
@@ -316,7 +316,7 @@ public abstract class DateUtil {
     public static short parseShort(String text) throws IllegalArgumentException {
         int value = parseInt(text);
 
-        if ((value < Short.MIN_VALUE) || (value > Short.MAX_VALUE)) {
+        if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
             throw new IllegalArgumentException("Value out of range");
         }
 
@@ -344,7 +344,7 @@ public abstract class DateUtil {
     public static byte parseByte(String text) throws IllegalArgumentException {
         int value = parseInt(text);
 
-        if ((value < Byte.MIN_VALUE) || (value > Byte.MAX_VALUE)) {
+        if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
             throw new IllegalArgumentException("Value out of range");
         }
 
@@ -402,7 +402,7 @@ public abstract class DateUtil {
     public static char parseChar(String text) throws IllegalArgumentException {
         int value = parseInt(text);
 
-        if ((value < Character.MIN_VALUE) || (value > Character.MAX_VALUE)) {
+        if (value < Character.MIN_VALUE || value > Character.MAX_VALUE) {
             throw new IllegalArgumentException("Value out of range");
         }
 
@@ -492,7 +492,7 @@ public abstract class DateUtil {
      */
     public static String serializeFloat(float value) {
         if (Float.isInfinite(value)) {
-            return (value < 0.0f) ? "-INF" : "INF";
+            return value < 0.0f ? "-INF" : "INF";
         } else {
             return Float.toString(value);
         }
@@ -531,7 +531,7 @@ public abstract class DateUtil {
      */
     public static String serializeDouble(double value) {
         if (Double.isInfinite(value)) {
-            return (value < 0.0f) ? "-INF" : "INF";
+            return value < 0.0f ? "-INF" : "INF";
         } else {
             return Double.toString(value);
         }
@@ -578,9 +578,9 @@ public abstract class DateUtil {
             year--;
         }
 
-        long day = ((((long) year) * 365) + (year / 4)) - (year / 100) + (year / 400);
+        long day = (long) year * 365 + year / 4 - year / 100 + year / 400;
 
-        return (day * MSPERDAY) - TIME_BASE;
+        return day * MSPERDAY - TIME_BASE;
     }
 
     /**
@@ -628,22 +628,20 @@ public abstract class DateUtil {
 
         int month = parseDigits(text, split + 1, 2) - 1;
 
-        if ((month < 0) || (month > 11)) {
+        if (month < 0 || month > 11) {
             throw new IllegalArgumentException("Month value out of range");
         }
 
-        boolean leap = ((year % 4) == 0) && !(((year % 100) == 0) && ((year % 400) != 0));
+        boolean leap = year % 4 == 0 && !(year % 100 == 0 && year % 400 != 0);
 
         if (year > 0) {
             year--;
         }
 
-        long day = ((((long) year) * 365) + (year / 4))
-                - (year / 100)
-                + (year / 400)
-                + (leap ? MONTHS_LEAP : MONTHS_NONLEAP)[month];
+        long day =
+                (long) year * 365 + year / 4 - year / 100 + year / 400 + (leap ? MONTHS_LEAP : MONTHS_NONLEAP)[month];
 
-        return (day * MSPERDAY) - TIME_BASE;
+        return day * MSPERDAY - TIME_BASE;
     }
 
     /**
@@ -671,7 +669,7 @@ public abstract class DateUtil {
         if (text.length() < minc) {
             valid = false;
         } else {
-            if ((text.charAt(split) != '-') || (text.charAt(split + 3) != '-')) {
+            if (text.charAt(split) != '-' || text.charAt(split + 3) != '-') {
                 valid = false;
             }
         }
@@ -689,15 +687,15 @@ public abstract class DateUtil {
 
         int month = parseDigits(text, split + 1, 2) - 1;
 
-        if ((month < 0) || (month > 11)) {
+        if (month < 0 || month > 11) {
             throw new IllegalArgumentException("Month value out of range");
         }
 
         long day = parseDigits(text, split + 4, 2) - 1L;
-        boolean leap = ((year % 4) == 0) && !(((year % 100) == 0) && ((year % 400) != 0));
+        boolean leap = year % 4 == 0 && !(year % 100 == 0 && year % 400 != 0);
         int[] starts = leap ? MONTHS_LEAP : MONTHS_NONLEAP;
 
-        if ((day < 0) || (day >= (starts[month + 1] - starts[month]))) {
+        if (day < 0 || day >= starts[month + 1] - starts[month]) {
             throw new IllegalArgumentException("Day value out of range");
         }
 
@@ -705,9 +703,9 @@ public abstract class DateUtil {
             year--;
         }
 
-        day += (((((long) year) * 365) + (year / 4)) - (year / 100) + (year / 400) + starts[month]);
+        day += (long) year * 365 + year / 4 - year / 100 + year / 400 + starts[month];
 
-        return (day * MSPERDAY) - TIME_BASE;
+        return day * MSPERDAY - TIME_BASE;
     }
 
     /**
@@ -742,7 +740,7 @@ public abstract class DateUtil {
         } else {
             // convert value, assuming maximum daylight time change of 2 hours
             long time = parseDate(text);
-            time += (TimeZone.getDefault().getRawOffset() + (MSPERHOUR * 2));
+            time += TimeZone.getDefault().getRawOffset() + MSPERHOUR * 2;
 
             return new java.sql.Date(time);
         }
@@ -761,18 +759,18 @@ public abstract class DateUtil {
     public static long parseTime(String text, int start, int length) throws IllegalArgumentException {
         // validate time value following date
         long milli = 0;
-        boolean valid = (length > (start + 7)) && (text.charAt(start + 2) == ':') && (text.charAt(start + 5) == ':');
+        boolean valid = length > start + 7 && text.charAt(start + 2) == ':' && text.charAt(start + 5) == ':';
 
         if (valid) {
             int hour = parseDigits(text, start, 2);
             int minute = parseDigits(text, start + 3, 2);
             int second = parseDigits(text, start + 6, 2);
 
-            if ((hour > 23) || (minute > 59) || (second > 60)) {
+            if (hour > 23 || minute > 59 || second > 60) {
                 valid = false;
             } else {
                 // convert to base millisecond in day
-                milli = ((((hour * 60L) + minute) * 60) + second) * 1000L;
+                milli = ((hour * 60L + minute) * 60 + second) * 1000L;
                 start += 8;
 
                 if (length > start) {
@@ -782,14 +780,14 @@ public abstract class DateUtil {
                     } else {
                         char chr = text.charAt(length - 6);
 
-                        if ((chr == '-') || (chr == '+')) {
+                        if (chr == '-' || chr == '+') {
                             hour = parseDigits(text, length - 5, 2);
                             minute = parseDigits(text, length - 2, 2);
 
-                            if ((hour > 23) || (minute > 59)) {
+                            if (hour > 23 || minute > 59) {
                                 valid = false;
                             } else {
-                                int offset = ((hour * 60) + minute) * 60 * 1000;
+                                int offset = (hour * 60 + minute) * 60 * 1000;
 
                                 if (chr == '-') {
                                     milli += offset;
@@ -805,7 +803,7 @@ public abstract class DateUtil {
                     // check for trailing fractional second
                     if (text.charAt(start) == '.') {
                         double fraction = Double.parseDouble(text.substring(start, length));
-                        milli = (long) (milli + (fraction * 1000.0));
+                        milli = (long) (milli + fraction * 1000.0);
                     } else if (length > start) {
                         valid = false;
                     }
@@ -887,7 +885,7 @@ public abstract class DateUtil {
                 while (++scan < limit) {
                     char chr = text.charAt(scan);
 
-                    if ((chr < '0') || (chr > '9')) {
+                    if (chr < '0' || chr > '9') {
                         break;
                     }
                 }
@@ -998,18 +996,18 @@ public abstract class DateUtil {
         //  relative to March 1 of the year 0 C.E., then using simple arithmetic
         //  operations to compute century, year, and month; it's slightly
         //  different for pre-C.E. values because of Java's handling of divisions.
-        long time = value + (306 * LMSPERDAY) + ((LMSPERDAY * 3) / 4);
+        long time = value + 306 * LMSPERDAY + LMSPERDAY * 3 / 4;
         long century = time / MSPERCENTURY; // count of centuries
-        long adjusted = time + ((century - (century / 4)) * MSPERDAY);
+        long adjusted = time + (century - century / 4) * MSPERDAY;
         int year = (int) (adjusted / MSPERAVGYEAR); // year in March 1 terms
 
         if (adjusted < 0) {
             year--;
         }
 
-        long yms = (adjusted + (LMSPERDAY / 4)) - (((year * 365) + (year / 4)) * LMSPERDAY);
+        long yms = adjusted + LMSPERDAY / 4 - (year * 365 + year / 4) * LMSPERDAY;
         int yday = (int) (yms / LMSPERDAY); // day number in year
-        int month = ((5 * yday) + 456) / 153; // (biased) month number
+        int month = (5 * yday + 456) / 153; // (biased) month number
 
         if (month > 12) { // convert start of year
             year++;
@@ -1033,16 +1031,16 @@ public abstract class DateUtil {
         //  relative to March 1 of the year 0 C.E., then using simple arithmetic
         //  operations to compute century, year, and month; it's slightly
         //  different for pre-C.E. values because of Java's handling of divisions.
-        long time = value + (306 * LMSPERDAY) + ((LMSPERDAY * 3) / 4);
+        long time = value + 306 * LMSPERDAY + LMSPERDAY * 3 / 4;
         long century = time / MSPERCENTURY; // count of centuries
-        long adjusted = time + ((century - (century / 4)) * MSPERDAY);
+        long adjusted = time + (century - century / 4) * MSPERDAY;
         int year = (int) (adjusted / MSPERAVGYEAR); // year in March 1 terms
 
         if (adjusted < 0) {
             year--;
         }
 
-        long yms = (adjusted + (LMSPERDAY / 4)) - (((year * 365) + (year / 4)) * LMSPERDAY);
+        long yms = adjusted + LMSPERDAY / 4 - (year * 365 + year / 4) * LMSPERDAY;
         int yday = (int) (yms / LMSPERDAY); // day number in year
 
         if (yday == 0) { // special for negative
@@ -1053,20 +1051,20 @@ public abstract class DateUtil {
                 year--;
             }
 
-            boolean isNormalLeapYear = ((year % 4) == 0);
-            boolean is400LeapYear = ((year % 400) == 0);
-            boolean is100NotLeapYear = ((year % 100) == 0);
-            int dcnt = (is400LeapYear || (isNormalLeapYear && !is100NotLeapYear)) ? 366 : 365;
+            boolean isNormalLeapYear = year % 4 == 0;
+            boolean is400LeapYear = year % 400 == 0;
+            boolean is100NotLeapYear = year % 100 == 0;
+            int dcnt = is400LeapYear || isNormalLeapYear && !is100NotLeapYear ? 366 : 365;
 
             if (!bce) {
                 year--;
             }
 
-            yms += (dcnt * LMSPERDAY);
+            yms += dcnt * LMSPERDAY;
             yday += dcnt;
         }
 
-        int month = ((5 * yday) + 456) / 153; // (biased) month number
+        int month = (5 * yday + 456) / 153; // (biased) month number
         long rem = yms - BIAS_MONTHMS[month] - LMSPERDAY; // ms into month
 
         if (month > 12) { // convert start of year
@@ -1365,7 +1363,7 @@ public abstract class DateUtil {
      *     </code>; <code>false</code> otherwise
      */
     public static boolean isEqual(Object a, Object b) {
-        return (a == null) ? (b == null) : a.equals(b);
+        return a == null ? b == null : a.equals(b);
     }
 
     /**
@@ -1385,7 +1383,7 @@ public abstract class DateUtil {
         int limit = enums.length - 1;
 
         while (base <= limit) {
-            int cur = (base + limit) >> 1;
+            int cur = base + limit >> 1;
             int diff = target.compareTo(enums[cur]);
 
             if (diff < 0) {
@@ -1436,13 +1434,13 @@ public abstract class DateUtil {
         // convert and store bytes of data
         switch (length) {
             case 3:
-                byts[fill + 2] = (byte) ((v2 << 6) | v3);
+                byts[fill + 2] = (byte) (v2 << 6 | v3);
 
             case 2:
-                byts[fill + 1] = (byte) ((v1 << 4) | (v2 >> 2));
+                byts[fill + 1] = (byte) (v1 << 4 | v2 >> 2);
 
             case 1:
-                byts[fill] = (byte) ((v0 << 2) | (v1 >> 4));
+                byts[fill] = (byte) (v0 << 2 | v1 >> 4);
 
                 break;
         }
@@ -1466,13 +1464,13 @@ public abstract class DateUtil {
         for (int i = 0; i < text.length(); i++) {
             char chr = text.charAt(i);
 
-            if ((chr < 128) && (s_base64Values[chr] >= 0)) {
+            if (chr < 128 && s_base64Values[chr] >= 0) {
                 chrs[length++] = chr;
             }
         }
 
         // check the text length
-        if ((length % 4) != 0) {
+        if (length % 4 != 0) {
             throw new IllegalArgumentException("Text length for base64 must be a multiple of 4");
         } else if (length == 0) {
             return new byte[0];
@@ -1532,23 +1530,23 @@ public abstract class DateUtil {
         // get actual byte data length to be encoded
         int length = 3;
 
-        if ((base + length) > byts.length) {
+        if (base + length > byts.length) {
             length = byts.length - base;
         }
 
         // convert up to three bytes of data to four characters of text
         int b0 = byts[base];
-        int value = (b0 >> 2) & 0x3F;
+        int value = b0 >> 2 & 0x3F;
         buff.append(s_base64Chars[value]);
 
         if (length > 1) {
             int b1 = byts[base + 1];
-            value = ((b0 & 3) << 4) + ((b1 >> 4) & 0x0F);
+            value = ((b0 & 3) << 4) + (b1 >> 4 & 0x0F);
             buff.append(s_base64Chars[value]);
 
             if (length > 2) {
                 int b2 = byts[base + 2];
-                value = ((b1 & 0x0F) << 2) + ((b2 >> 6) & 3);
+                value = ((b1 & 0x0F) << 2) + (b2 >> 6 & 3);
                 buff.append(s_base64Chars[value]);
                 value = b2 & 0x3F;
                 buff.append(s_base64Chars[value]);
@@ -1578,7 +1576,7 @@ public abstract class DateUtil {
         for (int i = 0; i < byts.length; i += 3) {
             encodeChunk(i, byts, buff);
 
-            if ((i > 0) && ((i % 57) == 0) && ((i + 3) < byts.length)) {
+            if (i > 0 && i % 57 == 0 && i + 3 < byts.length) {
                 buff.append("\r\n");
             }
         }

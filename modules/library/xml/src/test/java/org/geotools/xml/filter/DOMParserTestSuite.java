@@ -193,7 +193,7 @@ public class DOMParserTestSuite extends TestSuite {
                 for (int i = 0; i < list.getLength(); i++) {
                     child = list.item(i);
 
-                    if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                    if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                         continue;
                     }
 

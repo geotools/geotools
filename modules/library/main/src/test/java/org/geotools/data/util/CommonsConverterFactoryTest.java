@@ -71,11 +71,11 @@ public class CommonsConverterFactoryTest {
     @Test
     public void testTimeZoneConversion() throws Exception {
         Assert.assertEquals(
-                (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")).parse("2011-08-02T00:00:00.000Z"),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse("2011-08-02T00:00:00.000Z"),
                 factory.createConverter(String.class, Date.class, null)
                         .convert("2011-08-02T00:00:00.000Z", Date.class));
         Assert.assertEquals(
-                (new SimpleDateFormat("yyyy-MM-dd HH:mm:ssa")).parse("2011-08-02 00:00:00AM"),
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ssa").parse("2011-08-02 00:00:00AM"),
                 factory.createConverter(String.class, Date.class, null).convert("2011-08-02 00:00:00AM", Date.class));
         Assert.assertNull(
                 factory.createConverter(String.class, Date.class, null).convert("2011-08-02", Date.class));

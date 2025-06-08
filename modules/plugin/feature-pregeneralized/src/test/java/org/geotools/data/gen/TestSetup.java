@@ -237,7 +237,7 @@ public class TestSetup {
         SimpleFeature feature_gen = SimpleFeatureBuilder.deep(feature);
         feature_gen.setDefaultGeometry(geomNew);
         memDS.addFeature(feature_gen);
-        POINTMAP.get(distance).put(feature_gen.getID(), (geomNew.getNumPoints()));
+        POINTMAP.get(distance).put(feature_gen.getID(), geomNew.getNumPoints());
     }
 
     private static void addGeneralizedFeatureMixed(

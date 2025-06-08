@@ -1850,7 +1850,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         dialect.setValue(value, binding, att, ps, i, cx);
                     }
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine((i) + " = " + value);
+                        LOGGER.fine(i + " = " + value);
                     }
                     i++;
                 }
@@ -2012,7 +2012,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Filter filter,
             Connection cx)
             throws IOException, SQLException {
-        if ((attributes == null) || (attributes.length == 0)) {
+        if (attributes == null || attributes.length == 0) {
             LOGGER.warning("Update called with no attributes, doing nothing.");
 
             return;
@@ -3038,7 +3038,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         if (gname != null) {
-            if ((fid == null) && (gid == null)) {
+            if (fid == null && gid == null) {
                 sql.append(" WHERE ");
             } else {
                 sql.append(" AND ");
@@ -3096,7 +3096,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         if (gname != null) {
-            if ((fid == null) && (gid == null)) {
+            if (fid == null && gid == null) {
                 sql.append(" WHERE ");
             } else {
                 sql.append(" AND ");
@@ -3117,7 +3117,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         if (gname != null) {
-            ps.setString(fid != null ? (gid != null ? 3 : 2) : (gid != null ? 2 : 1), gname);
+            ps.setString(fid != null ? gid != null ? 3 : 2 : gid != null ? 2 : 1, gname);
         }
 
         return ps;
@@ -3180,7 +3180,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             // sql.append(sqlTypeNames[i]);
-            if (i < (sqlTypeNames.length - 1)) {
+            if (i < sqlTypeNames.length - 1) {
                 sql.append(", ");
             }
         }
@@ -3530,7 +3530,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /** Encodes the sort-by portion of an sql query */
     void sort(SimpleFeatureType featureType, SortBy[] sort, String prefix, StringBuffer sql) throws IOException {
-        if ((sort != null) && (sort.length > 0)) {
+        if (sort != null && sort.length > 0) {
             PrimaryKey key = getPrimaryKey(featureType);
             sql.append(" ORDER BY ");
 
@@ -4026,7 +4026,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 throw new RuntimeException("Failed to encode group by expressions", e);
             }
             FilterToSQL filterToSQL = getFilterToSQL(featureType);
-            boolean countQuery = isUniqueCount || (groupByComplexExpressions && "count".equals(function));
+            boolean countQuery = isUniqueCount || groupByComplexExpressions && "count".equals(function);
             if (countQuery) sql2.append("count(*)");
             else if (groupByComplexExpressions) {
                 sql2.append(function).append("(");
@@ -4732,7 +4732,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         // if we cannot, don't bother checking the query
         if (!dialect.isLimitOffsetSupported()) return false;
 
-        return limit != Integer.MAX_VALUE || (offset != null && offset > 0);
+        return limit != Integer.MAX_VALUE || offset != null && offset > 0;
     }
 
     /**

@@ -123,9 +123,9 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
             }
 
             Node srsNode = node.getChild(Envelope.class).getAttribute("srsName");
-            String srs = (srsNode != null) ? srsNode.getValue().toString() : null;
+            String srs = srsNode != null ? srsNode.getValue().toString() : null;
 
-            if ((srs == null) && (crs != null)) {
+            if (srs == null && crs != null) {
                 srs = GML2EncodingUtils.toURI(crs);
             }
 

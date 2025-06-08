@@ -333,7 +333,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             return null;
         }
 
-        Point2D ret = ((Point2D) srcPt.clone());
+        Point2D ret = (Point2D) srcPt.clone();
         ret.setLocation(coords[0], coords[1]);
         if (inside(ret, src.getRenderedImage())) return ret;
         else {
@@ -424,7 +424,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
         ReferencedEnvelope dstEnv = dst.getEnvelope2D();
 
-        Point2D ret = ((Point2D) destPt.clone());
+        Point2D ret = (Point2D) destPt.clone();
         ret.setLocation(coords[0], coords[1]);
 
         Coordinate coordinate = new Coordinate(coords[0], coords[1]);
@@ -500,10 +500,10 @@ public class GridCoverage2DRIA extends GeometricOpImage {
     private static float[] rect2PointArr(Rectangle rect) {
         float dx0 = rect.x;
         float dy0 = rect.y;
-        float dw = (rect.width);
-        float dh = (rect.height);
+        float dw = rect.width;
+        float dh = rect.height;
 
-        return new float[] {dx0, dy0, (dx0 + dw), dy0, (dx0 + dw), (dy0 + dh), dx0, (dy0 + dh)};
+        return new float[] {dx0, dy0, dx0 + dw, dy0, dx0 + dw, dy0 + dh, dx0, dy0 + dh};
     }
 
     private Rectangle pointArr2Rect(float[] points) {
@@ -1314,7 +1314,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
     }
 
     public float[] warpRect(int x, int y, int width, int height, float[] destRect) {
-        if (destRect != null && destRect.length < (width * height * 2)) {
+        if (destRect != null && destRect.length < width * height * 2) {
             throw new IllegalArgumentException("warpRect: bad destRect"); // JaiI18N.getString("Warp0"));
         }
         return warpSparseRect(x, y, width, height, 1, 1, destRect);

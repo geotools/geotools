@@ -584,7 +584,7 @@ public class StreamingRenderer implements GTRenderer {
         double scaleY = paintArea.getHeight() / mapExtent.getHeight();
 
         double tx = -mapExtent.getMinX() * scaleX;
-        double ty = (mapExtent.getMinY() * scaleY) + paintArea.getHeight();
+        double ty = mapExtent.getMinY() * scaleY + paintArea.getHeight();
 
         AffineTransform at = new AffineTransform(scaleX, 0.0d, 0.0d, -scaleY, tx, ty);
         AffineTransform originTranslation = AffineTransform.getTranslateInstance(paintArea.x, paintArea.y);
@@ -1751,8 +1751,8 @@ public class StreamingRenderer implements GTRenderer {
             // default geometry is used. So, we no longer add EVERY geometry
             // column to the query!!
 
-            if ((attName.getLocalPart().equalsIgnoreCase("grid")) && !attributeNames.contains(attName.getLocalPart())
-                    || (attName.getLocalPart().equalsIgnoreCase("params"))
+            if (attName.getLocalPart().equalsIgnoreCase("grid") && !attributeNames.contains(attName.getLocalPart())
+                    || attName.getLocalPart().equalsIgnoreCase("params")
                             && !attributeNames.contains(attName.getLocalPart())) {
                 atts.add(filterFactory.property(attName));
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("added attribute " + attName);
@@ -1850,8 +1850,8 @@ public class StreamingRenderer implements GTRenderer {
      * @return true if the scale is compatible with the rule settings
      */
     private boolean isWithInScale(Rule r) {
-        return ((r.getMinScaleDenominator() - TOLERANCE) <= scaleDenominator)
-                && ((r.getMaxScaleDenominator() + TOLERANCE) > scaleDenominator);
+        return r.getMinScaleDenominator() - TOLERANCE <= scaleDenominator
+                && r.getMaxScaleDenominator() + TOLERANCE > scaleDenominator;
     }
 
     /**
@@ -1892,7 +1892,7 @@ public class StreamingRenderer implements GTRenderer {
                 List<Rule> elseRuleList = splittedRules.get(1);
 
                 // if none, skip it
-                if ((ruleList.isEmpty()) && (elseRuleList.isEmpty())) continue;
+                if (ruleList.isEmpty() && elseRuleList.isEmpty()) continue;
 
                 // get the fts level composition, if any
                 Composite composite = styleFactory.getComposite(fts.getOptions());
@@ -1970,9 +1970,9 @@ public class StreamingRenderer implements GTRenderer {
     private boolean isFeatureTypeStyleActive(FeatureType ftype, FeatureTypeStyle fts) {
         // TODO: find a complex feature equivalent for this check
         return fts.featureTypeNames().isEmpty()
-                || ((ftype.getName().getLocalPart() != null)
+                || ftype.getName().getLocalPart() != null
                         && (fts.featureTypeNames().isEmpty()
-                                || fts.featureTypeNames().stream().anyMatch(tn -> FeatureTypes.matches(ftype, tn))));
+                                || fts.featureTypeNames().stream().anyMatch(tn -> FeatureTypes.matches(ftype, tn)));
     }
 
     private List<List<Rule>> splitRules(FeatureTypeStyle fts) {
@@ -2065,7 +2065,7 @@ public class StreamingRenderer implements GTRenderer {
                     List<Rule> elseRuleList = splittedRules.get(1);
 
                     // if none, skip this fts
-                    if ((ruleList.isEmpty()) && (elseRuleList.isEmpty())) continue;
+                    if (ruleList.isEmpty() && elseRuleList.isEmpty()) continue;
 
                     currCount++;
                 }
@@ -2203,8 +2203,8 @@ public class StreamingRenderer implements GTRenderer {
             } else if (result instanceof GridCoverage2D) {
                 GridCoverage2D coverage = (GridCoverage2D) result;
                 // we only avoid disposing if the input was a in memory GridCovereage2D
-                if ((schema instanceof SimpleFeatureType
-                        && !FeatureUtilities.isWrappedCoverage((SimpleFeatureType) schema))) {
+                if (schema instanceof SimpleFeatureType
+                        && !FeatureUtilities.isWrappedCoverage((SimpleFeatureType) schema)) {
                     coverage = new DisposableGridCoverage(coverage);
                 }
                 features = FeatureUtilities.wrapGridCoverage(coverage);
@@ -2263,10 +2263,10 @@ public class StreamingRenderer implements GTRenderer {
                 sortBy = curr.sortBy;
             } else {
                 // do they have the same transformation?
-                boolean differentTransformation = (transformation != curr.transformation)
-                        || (transformation != null
+                boolean differentTransformation = transformation != curr.transformation
+                        || transformation != null
                                 && curr.transformation != null
-                                && !curr.transformation.equals(transformation));
+                                && !curr.transformation.equals(transformation);
 
                 // is sorting incompatible, that is, different from the one
                 // we are working against? "null" means not caring about sorting,
@@ -3259,7 +3259,7 @@ public class StreamingRenderer implements GTRenderer {
                 MathTransform fullTransform = null;
                 if (sa == null) {
                     sa = new SymbolizerAssociation();
-                    sa.crs = (findGeometryCS(feature, symbolizer));
+                    sa.crs = findGeometryCS(feature, symbolizer);
                     try {
                         crsTransform = buildTransform(sa.crs, destinationCrs);
                         atTransform = ProjectiveTransform.create(worldToScreenTransform);

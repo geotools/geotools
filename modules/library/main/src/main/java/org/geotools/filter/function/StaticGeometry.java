@@ -587,7 +587,7 @@ public class StaticGeometry {
     public static boolean equalTo(Object o1, Object o2) {
         if (o1 == null || o2 == null) return false;
         if (o1.getClass() == o2.getClass()) return o1.equals(o2);
-        if ((o1 instanceof Number) && (o2 instanceof Number)) {
+        if (o1 instanceof Number && o2 instanceof Number) {
             return ((Number) o1).doubleValue() == ((Number) o2).doubleValue();
         }
         return o1.toString().equals(o2.toString());

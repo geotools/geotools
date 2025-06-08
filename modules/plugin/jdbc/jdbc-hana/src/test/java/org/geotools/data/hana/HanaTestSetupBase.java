@@ -77,7 +77,7 @@ public class HanaTestSetupBase extends JDBCTestSetup {
         String database = fixture.getProperty("database");
         String useSsl = fixture.getProperty("use ssl");
 
-        if ((fixture.getProperty("schemabase") != null) && (fixture.getProperty("schema") == null)) {
+        if (fixture.getProperty("schemabase") != null && fixture.getProperty("schema") == null) {
             String schemaBase = fixture.getProperty("schemabase");
             int counter = schemaCounter.getAndIncrement();
             String schema = schemaBase + "_" + counter;
@@ -90,7 +90,7 @@ public class HanaTestSetupBase extends JDBCTestSetup {
         }
 
         int port = 0;
-        if ((sport != null) && !sport.isEmpty()) {
+        if (sport != null && !sport.isEmpty()) {
             port = Integer.parseInt(sport);
         }
         if (port != 0) {
@@ -101,7 +101,7 @@ public class HanaTestSetupBase extends JDBCTestSetup {
         }
 
         int instance = Integer.parseInt(sinstance);
-        if ((database == null) || database.isEmpty()) {
+        if (database == null || database.isEmpty()) {
             fixture.setProperty(
                     "url",
                     HanaConnectionParameters.forSingleContainer(host, instance, options)

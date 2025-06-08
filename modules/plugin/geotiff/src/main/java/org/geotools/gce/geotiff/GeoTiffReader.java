@@ -229,7 +229,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             // information for this coverage
             //
             // /////////////////////////////////////////////////////////////////////
-            if ((source instanceof InputStream) || (source instanceof ImageInputStream)) closeMe = false;
+            if (source instanceof InputStream || source instanceof ImageInputStream) closeMe = false;
             if (source instanceof CogSourceSPIProvider) {
                 CogSourceSPIProvider readerInputObject = (CogSourceSPIProvider) input;
                 readerSpi = readerInputObject.getReaderSpi();
@@ -403,7 +403,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             File inputFile = null;
             if (source instanceof File) {
                 inputFile = (File) source;
-            } else if (source instanceof URL && (((URL) source).getProtocol() == "file")) {
+            } else if (source instanceof URL && ((URL) source).getProtocol() == "file") {
                 inputFile = URLs.urlToFile((URL) source);
             }
             // assume overviews are also TIFFs, that's the 99% case
@@ -442,7 +442,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
             if (gtcs != null
                     && metadata != null
-                    && (metadata.hasModelTrasformation() || (metadata.hasPixelScales() && metadata.hasTiePoints()))) {
+                    && (metadata.hasModelTrasformation() || metadata.hasPixelScales() && metadata.hasTiePoints())) {
                 this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
             } else {
                 // world file
@@ -848,7 +848,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         ImageInputStream stream = null;
 
         try {
-            if ((source instanceof InputStream) || (source instanceof ImageInputStream)) {
+            if (source instanceof InputStream || source instanceof ImageInputStream) {
                 closeMe = false;
             }
             if (source instanceof ImageInputStream) {
@@ -963,7 +963,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
     private CoordinateReferenceSystem getCRS(Object source) {
         CoordinateReferenceSystem crs = null;
-        if (source instanceof File || (source instanceof URL && (((URL) source).getProtocol() == "file"))) {
+        if (source instanceof File || source instanceof URL && ((URL) source).getProtocol() == "file") {
             // getting name for the prj file
             final String sourceAsString;
 
@@ -1007,14 +1007,14 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         // TODO: Add support for FileImageInputStreamExt
         // TODO: Check for WorldFile on URL beside the actual connection.
         if (source instanceof File) {
-            final File sourceFile = ((File) source);
+            final File sourceFile = (File) source;
             String parentPath = sourceFile.getParent();
             String filename = sourceFile.getName();
             final int i = filename.lastIndexOf('.');
-            filename = (i == -1) ? filename : filename.substring(0, i);
+            filename = i == -1 ? filename : filename.substring(0, i);
 
             // getting name and extension
-            final String base = (parentPath != null)
+            final String base = parentPath != null
                     ? new StringBuilder(parentPath)
                             .append(File.separator)
                             .append(filename)
@@ -1044,7 +1044,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     /** @throws IOException */
     static MapInfoFileReader parseMapInfoFile(Object source) throws IOException {
         if (source instanceof File) {
-            final File sourceFile = ((File) source);
+            final File sourceFile = (File) source;
             File file2Parse = getSibling(sourceFile, ".tab");
 
             if (file2Parse != null && file2Parse.exists()) {

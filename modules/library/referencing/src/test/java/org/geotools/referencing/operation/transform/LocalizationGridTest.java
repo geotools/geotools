@@ -147,7 +147,7 @@ public final class LocalizationGridTest {
                 array[offset++] = real ? line[i * 2 + 1] : j;
             }
         }
-        assertEquals("Grid is not square", width * ((long) height) * 2L, offset);
+        assertEquals("Grid is not square", width * (long) height * 2L, offset);
         return array;
     }
 
@@ -171,7 +171,7 @@ public final class LocalizationGridTest {
                 assertEquals(real ? line[i * 2 + 1] : j, array[offset++], eps);
             }
         }
-        assertEquals("Grid is not square", width * ((long) height) * 2L, offset);
+        assertEquals("Grid is not square", width * (long) height * 2L, offset);
     }
 
     /** Test direct transformation from grid coordinates to "real world" coordinates using the localization grid. */
@@ -226,10 +226,10 @@ public final class LocalizationGridTest {
             }
         }
         final int n = width * height;
-        assertEquals("sum_x", (n * (width - 1)) / 2, sum_x);
-        assertEquals("sum_y", (n * (height - 1)) / 2, sum_y);
-        assertEquals("sum_xy", (n * (width - 1) * (height - 1)) / 4, sum_xy);
-        assertEquals("sum_xx", (n * (width - 0.5) * (width - 1)) / 3, sum_xx, 1E-6);
-        assertEquals("sum_yy", (n * (height - 0.5) * (height - 1)) / 3, sum_yy, 1E-6);
+        assertEquals("sum_x", n * (width - 1) / 2, sum_x);
+        assertEquals("sum_y", n * (height - 1) / 2, sum_y);
+        assertEquals("sum_xy", n * (width - 1) * (height - 1) / 4, sum_xy);
+        assertEquals("sum_xx", n * (width - 0.5) * (width - 1) / 3, sum_xx, 1E-6);
+        assertEquals("sum_yy", n * (height - 0.5) * (height - 1) / 3, sum_yy, 1E-6);
     }
 }

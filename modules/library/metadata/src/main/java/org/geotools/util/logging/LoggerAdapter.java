@@ -320,7 +320,7 @@ public abstract class LoggerAdapter extends Logger {
                 // The default Formatter.messageFormat implementation ignores this exception
                 // and uses the bundle key as the message, so we mimic its behavior here.
             }
-        final boolean useThrown = (thrown != null) && (params == null || params.length == 0);
+        final boolean useThrown = thrown != null && (params == null || params.length == 0);
         if (localized) {
             // The message is already localized.
             if (useThrown) {
@@ -597,7 +597,7 @@ public abstract class LoggerAdapter extends Logger {
      * delegate their work to {@code log(..., Object[])}
      */
     private static Object[] asArray(final Object param) {
-        return (param != null) ? new Object[] {param} : null;
+        return param != null ? new Object[] {param} : null;
     }
 
     /**

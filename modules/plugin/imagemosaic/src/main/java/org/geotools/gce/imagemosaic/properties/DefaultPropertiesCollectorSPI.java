@@ -82,7 +82,7 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
                 indexesOf[1] = value.indexOf("," + FULL_PATH_PREFIX);
                 int minIndex = value.length();
                 for (int indexOf : indexesOf) {
-                    minIndex = (indexOf > 0 && indexOf < minIndex) ? indexOf : minIndex;
+                    minIndex = indexOf > 0 && indexOf < minIndex ? indexOf : minIndex;
                 }
 
                 if (value.startsWith(REGEX_PREFIX)) {

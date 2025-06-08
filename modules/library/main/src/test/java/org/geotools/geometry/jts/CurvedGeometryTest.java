@@ -339,14 +339,14 @@ public class CurvedGeometryTest {
         assertEnvelopeEquals(new Envelope(-10, 24, -10, 24), env);
 
         // check linearization
-        assertEquals((CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1 + 5) + (5 + 5), ms.getNumPoints());
+        assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1 + 5 + 5 + 5, ms.getNumPoints());
 
         // check cloning
         MultiSurface cloned = (MultiSurface) ms.copy();
         assertEquals(ms, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
-        assertEquals((2 * 10 * Math.PI + 8) + (16 + 4), ms.getLength(), 1e-1);
+        assertEquals(2 * 10 * Math.PI + 8 + (16 + 4), ms.getLength(), 1e-1);
 
         // topological operation check
         assertTrue(ms.intersects(JTS.toGeometry(new Envelope(0, 10, 5, 15))));

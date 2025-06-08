@@ -112,7 +112,7 @@ public final class OperationsTest extends GridProcessingTestBase {
                     difference = s - (float) constants[0];
                     if (difference < 0) {
                         assertEquals(0, t, 1E-3f);
-                    } else if (difference > (255 - constants[0])) {
+                    } else if (difference > 255 - constants[0]) {
                         assertEquals(255, t, 1E-3f);
                     } else {
                         assertEquals(difference, t, 1E-3f);

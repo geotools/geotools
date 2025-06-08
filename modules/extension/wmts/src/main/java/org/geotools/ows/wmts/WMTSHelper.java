@@ -65,7 +65,7 @@ public class WMTSHelper {
             throw new IllegalArgumentException("baseUrl cannot be null");
         }
         StringBuilder arguments = new StringBuilder();
-        String separator = (!baseUrl.contains("?") ? "?" : "&");
+        String separator = !baseUrl.contains("?") ? "?" : "&";
 
         String lowerBase = baseUrl.toLowerCase();
         try {

@@ -89,7 +89,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         // conflict even if we did not cut it to 10 chars due to remaps of previous long attributes)
         int counter = 0;
         while (usedFieldNames.contains(name)) {
-            String postfix = (counter++) + "";
+            String postfix = counter++ + "";
             name = name.substring(0, name.length() - postfix.length()) + postfix;
         }
         usedFieldNames.add(name);

@@ -183,7 +183,7 @@ public class CircularArc {
 
         // check if clockwise
 
-        boolean clockwise = (sa > ma && ma > ea) || (sa > ma && sa < ea) || (ma > ea && sa < ea);
+        boolean clockwise = sa > ma && ma > ea || sa > ma && sa < ea || ma > ea && sa < ea;
         if (clockwise) {
             // we need to walk all arcs the same way, or we incur in the risk of having
             // two close but concentric arcs to touch each other
@@ -322,7 +322,7 @@ public class CircularArc {
                 DMatrixRMaj A;
                 DMatrixRMaj b;
                 double sqs; // a^2 + b^2 + c^2 + d^2
-                if ((sqs1 <= sqs3) && (sqs2 <= sqs3)) {
+                if (sqs1 <= sqs3 && sqs2 <= sqs3) {
                     // Take equations (1) and (2)
                     A = new DMatrixRMaj(2, 2, true, dx12, dy12, dx13, dy13);
                     b = new DMatrixRMaj(
@@ -332,7 +332,7 @@ public class CircularArc {
                             0.5 * (dx12 * (sx + mx) + dy12 * (sy + my)),
                             0.5 * (dx13 * (sx + ex) + dy13 * (sy + ey)));
                     sqs = sqs1 + sqs2;
-                } else if ((sqs1 <= sqs2) && (sqs3 <= sqs2)) {
+                } else if (sqs1 <= sqs2 && sqs3 <= sqs2) {
                     // Take equations (1) and (3)
                     A = new DMatrixRMaj(2, 2, true, dx12, dy12, dx23, dy23);
                     b = new DMatrixRMaj(
@@ -471,7 +471,7 @@ public class CircularArc {
         double ma = atan2(my - centerY, mx - centerX);
         double ea = atan2(ey - centerY, ex - centerX);
 
-        boolean clockwise = (sa > ma && ma > ea) || (sa < ma && sa > ea) || (ma < ea && sa > ea);
+        boolean clockwise = sa > ma && ma > ea || sa < ma && sa > ea || ma < ea && sa > ea;
         if (clockwise) {
             // we want to go counter-clock wise to simplify the rest of the algorithm
             double tx = sx;

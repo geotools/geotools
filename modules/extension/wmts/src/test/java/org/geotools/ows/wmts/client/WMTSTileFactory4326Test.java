@@ -216,7 +216,7 @@ public class WMTSTileFactory4326Test {
             TileService service = services[i];
             // For some reason map proxy has an extra level compared to
             // GeoServer!
-            int offset = (i == 0 ? 1 : 0); // REST has 1 in offset
+            int offset = i == 0 ? 1 : 0; // REST has 1 in offset
             WMTSZoomLevel zoomLevel = ((WMTSTileService) service).getZoomLevel(1 + offset);
             WMTSTileIdentifier tileId = new WMTSTileIdentifier(1, 1, zoomLevel, "SomeName");
             WMTSTile tile = new WMTSTile(tileId, service);

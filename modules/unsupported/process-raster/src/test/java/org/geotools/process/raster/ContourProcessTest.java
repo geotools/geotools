@@ -166,7 +166,7 @@ public class ContourProcessTest {
             double[] levels = new double[40];
             double start = -2.0;
             for (int i = 0; i < levels.length; i++) {
-                levels[i] = start + (0.2 * i);
+                levels[i] = start + 0.2 * i;
             }
 
             SimpleFeatureCollection fc = process.execute(coverage, 0, levels, null, null, null, null, null);

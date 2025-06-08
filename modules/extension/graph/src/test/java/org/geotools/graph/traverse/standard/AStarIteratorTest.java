@@ -99,13 +99,13 @@ public class AStarIteratorTest {
                 if (m_mode == 0) {
                     if (element.getID() == suspend) {
                         m_mode++;
-                        return (GraphTraversal.SUSPEND);
+                        return GraphTraversal.SUSPEND;
                     }
                 } else if (m_mode == 1) {
                     Assert.assertEquals(element.getID(), suspend + 1);
                     m_mode++;
                 }
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -161,7 +161,7 @@ public class AStarIteratorTest {
 
         class Factory {
             public AStarIterator.AStarFunctions createFunctions(Node target) {
-                return (new AStarIterator.AStarFunctions(target) {
+                return new AStarIterator.AStarFunctions(target) {
                     @Override
                     public double cost(AStarNode n1, AStarNode n2) {
                         return 1;
@@ -180,14 +180,13 @@ public class AStarIteratorTest {
                             return Double.POSITIVE_INFINITY;
                         }
                     }
-                });
+                };
             }
         }
         Factory f = new Factory();
 
         AStarShortestPathFinder walker = new AStarShortestPathFinder(
-                builder().getGraph(), root, ((Node) map.get("0.1.0.1")), f.createFunctions(((Node)
-                        map.get("0.1.0.1"))));
+                builder().getGraph(), root, (Node) map.get("0.1.0.1"), f.createFunctions((Node) map.get("0.1.0.1")));
 
         walker.calculate();
         MyVisitor visitor = new MyVisitor();
@@ -310,23 +309,23 @@ public class AStarIteratorTest {
     }
 
     protected GraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 
     protected GraphBuilder createDirectedBuilder() {
-        return (new BasicDirectedGraphBuilder());
+        return new BasicDirectedGraphBuilder();
     }
 
     protected GraphBuilder directedBuilder() {
-        return (m_directed_builder);
+        return m_directed_builder;
     }
 
     protected AStarIterator createIterator(Node source, Node target) {
-        return (new AStarIterator(source, new AStarIterator.AStarFunctions(target) {
+        return new AStarIterator(source, new AStarIterator.AStarFunctions(target) {
 
             @Override
             public double cost(AStarNode n1, AStarNode n2) {
@@ -335,8 +334,8 @@ public class AStarIteratorTest {
 
             @Override
             public double h(Node n) {
-                return (getDest().getID() - n.getID());
+                return getDest().getID() - n.getID();
             }
-        }));
+        });
     }
 }

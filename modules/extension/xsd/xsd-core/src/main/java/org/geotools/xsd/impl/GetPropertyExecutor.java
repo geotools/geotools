@@ -68,7 +68,7 @@ public class GetPropertyExecutor implements BindingWalker.Visitor {
             Object parent = this.parent;
 
             if (parent != null
-                    && (binding.getType() != null)
+                    && binding.getType() != null
                     && !binding.getType().isAssignableFrom(parent.getClass())) {
                 LOGGER.fine(parent
                         + " ("

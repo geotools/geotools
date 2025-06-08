@@ -167,7 +167,7 @@ final class ProjectionAnalyzer {
 
     /** Returns the {@linkplain #transform} parameter descriptor, or {@code null} if none. */
     private ParameterDescriptorGroup getTransformDescriptor() {
-        return (transform instanceof AbstractMathTransform)
+        return transform instanceof AbstractMathTransform
                 ? ((AbstractMathTransform) transform).getParameterDescriptors()
                 : null;
     }
@@ -191,8 +191,8 @@ final class ProjectionAnalyzer {
          * the 'projectedScale' transform. The matrix dimensions are selected accordingly using
          * a robust code when possible, but the result should be a 3x3 matrix most of the time.
          */
-        final int sourceDim = (transform != null) ? transform.getTargetDimensions() : 2;
-        final int targetDim = (projectedScale != null) ? projectedScale.getNumCol() - 1 : sourceDim;
+        final int sourceDim = transform != null ? transform.getTargetDimensions() : 2;
+        final int targetDim = projectedScale != null ? projectedScale.getNumCol() - 1 : sourceDim;
         final XMatrix matrix = MatrixFactory.create(targetDim + 1, sourceDim + 1);
         /*
          * Search for "scale factor", "false easting" and "false northing" parameters.
@@ -289,7 +289,7 @@ final class ProjectionAnalyzer {
                             sourceNum = sourceValue.doubleValue();
                             targetNum = targetValue.doubleValue();
                         }
-                        double error = (targetNum - sourceNum);
+                        double error = targetNum - sourceNum;
                         if (targetNum != 0) error /= targetNum;
                         if (!(Math.abs(error) <= errorTolerance)) { // '!' for trapping NaN
                             return false;

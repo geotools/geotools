@@ -292,7 +292,7 @@ public class GeoJSONWriter implements AutoCloseable {
             g.writeEndArray();
         } else if (Collection.class.isAssignableFrom(binding)) {
             g.writeStartArray();
-            for (Object v : ((Collection) value)) {
+            for (Object v : (Collection) value) {
                 writeValue(g, v, v == null ? null : v.getClass());
             }
             g.writeEndArray();

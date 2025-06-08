@@ -262,7 +262,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
                  */
                 if (param instanceof ParameterValue) {
                     final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
-                    final double expected = (name == SEMI_MINOR)
+                    final double expected = name == SEMI_MINOR
                             ? // using '==' is okay here.
                             ellipsoid.getSemiMinorAxis()
                             : ellipsoid.getSemiMajorAxis();

@@ -120,8 +120,8 @@ public final class LineIterator extends AbstractLiteIterator {
         if (at == null) at = new AffineTransform();
         _init(ls, at, generalize, maxDistance);
 
-        xScale = (float) Math.sqrt((at.getScaleX() * at.getScaleX()) + (at.getShearX() * at.getShearX()));
-        yScale = (float) Math.sqrt((at.getScaleY() * at.getScaleY()) + (at.getShearY() * at.getShearY()));
+        xScale = (float) Math.sqrt(at.getScaleX() * at.getScaleX() + at.getShearX() * at.getShearX());
+        yScale = (float) Math.sqrt(at.getScaleY() * at.getScaleY() + at.getShearY() * at.getShearY());
     }
 
     /** */
@@ -257,7 +257,7 @@ public final class LineIterator extends AbstractLiteIterator {
      */
     @Override
     public void next() {
-        if (((currentCoord == (coordinateCount - 1)) && !isClosed) || ((currentCoord == coordinateCount) && isClosed)) {
+        if (currentCoord == coordinateCount - 1 && !isClosed || currentCoord == coordinateCount && isClosed) {
             done = true;
         } else {
             if (generalize) {
@@ -280,10 +280,10 @@ public final class LineIterator extends AbstractLiteIterator {
                             distx = Math.abs(x - oldX);
                             disty = Math.abs(y - oldY);
                         }
-                    } while (((distx * xScale) < maxDistance)
-                            && ((disty * yScale) < maxDistance)
-                            && ((!isClosed && (currentCoord < (coordinateCount - 1)))
-                                    || (isClosed && (currentCoord < coordinateCount))));
+                    } while (distx * xScale < maxDistance
+                            && disty * yScale < maxDistance
+                            && (!isClosed && currentCoord < coordinateCount - 1
+                                    || isClosed && currentCoord < coordinateCount));
 
                     oldX = x;
                     oldY = y;
@@ -302,7 +302,7 @@ public final class LineIterator extends AbstractLiteIterator {
             coords[1] = coordinates.getY(0);
             at.transform(coords, 0, coords, 0, 1);
             return SEG_MOVETO;
-        } else if ((currentCoord == coordinateCount) && isClosed) {
+        } else if (currentCoord == coordinateCount && isClosed) {
             return SEG_CLOSE;
         } else {
             coords[0] = coordinates.getX(currentCoord);

@@ -158,7 +158,7 @@ final class GridConvergenceAngleCalc {
         // still be close if units are close.
         //
 
-        if ((startValueUp + 1) > upAxisMax) {
+        if (startValueUp + 1 > upAxisMax) {
             position.setOrdinate(upAxisDimension, position.getOrdinate(upAxisDimension) - 1);
         }
 

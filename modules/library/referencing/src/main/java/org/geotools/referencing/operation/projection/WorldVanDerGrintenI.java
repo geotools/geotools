@@ -146,7 +146,7 @@ public class WorldVanDerGrintenI extends MapProjection {
         r = x2 + y2;
         r2 = r * r;
         c1 = -PI * ay * (r + PISQ);
-        c3 = r2 + (PI * 2) * (ay * r + PI * (y2 + PI * (ay + (PI / 2))));
+        c3 = r2 + PI * 2 * (ay * r + PI * (y2 + PI * (ay + PI / 2)));
         c2 = c1 + PISQ * (r - 3. * y2);
         c0 = PI * ay;
         c2 /= c3;
@@ -154,8 +154,8 @@ public class WorldVanDerGrintenI extends MapProjection {
         double m = 2. * sqrt(-THIRD * al);
         double d = C2_27 * c2 * c2 * c2 + (c0 * c0 - THIRD * c2 * c1) / c3;
 
-        if (((t = abs(d = 3. * d / (al * m))) - TOL) <= 1.) {
-            d = t > 1. ? (d > 0. ? 0. : PI) : acos(d);
+        if ((t = abs(d = 3. * d / (al * m))) - TOL <= 1.) {
+            d = t > 1. ? d > 0. ? 0. : PI : acos(d);
             phi = PI * (m * cos(d * THIRD + PI4_3) - THIRD * c2);
             if (y < 0.) phi = -phi;
             t = r2 + TPISQ * (x2 - y2 + HPISQ);

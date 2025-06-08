@@ -94,7 +94,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         m_lines.add(line);
 
         // return null, no componenets created
-        return (null);
+        return null;
     }
 
     /**
@@ -113,7 +113,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         Node n1 = (Node) m_coord2count.get(line.p0);
         Node n2 = (Node) m_coord2count.get(line.p0);
 
-        return (n1.getEdge(n2));
+        return n1.getEdge(n2);
 
         // note: if there are identical lines in the graph then it is undefined
         // which of them will be returned
@@ -134,13 +134,13 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
     /** @see GraphGenerator#getGraphBuilder() */
     @Override
     public GraphBuilder getGraphBuilder() {
-        return (m_builder);
+        return m_builder;
     }
 
     /** @see GraphGenerator#getGraph() */
     @Override
     public Graph getGraph() {
-        return (m_builder.getGraph());
+        return m_builder.getGraph();
     }
 
     /** Performs the actual generation of the graph. */
@@ -155,7 +155,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
      * @return Coordinate to node map.
      */
     public Map getNodeMap() {
-        return (m_coord2count);
+        return m_coord2count;
     }
 
     /**
@@ -164,7 +164,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
      * @return A list of LineSegment objects.
      */
     protected List<LineSegment> getLines() {
-        return (m_lines);
+        return m_lines;
     }
 
     protected void generateNodes() {
@@ -197,12 +197,12 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         OptEdge edge = (OptEdge) m_builder.buildEdge(n1, n2);
         m_builder.addEdge(edge);
 
-        return (edge);
+        return edge;
     }
 
     @Override
     public Node getNode(Coordinate c) {
-        return ((Node) m_coord2count.get(c));
+        return (Node) m_coord2count.get(c);
     }
 
     @Override
@@ -210,6 +210,6 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         Node n1 = (Node) m_coord2count.get(c1);
         Node n2 = (Node) m_coord2count.get(c2);
 
-        return (n1.getEdge(n2));
+        return n1.getEdge(n2);
     }
 }

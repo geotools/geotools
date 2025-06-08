@@ -237,13 +237,13 @@ public class CylindricalEqualArea extends MapProjection {
 
             if (e >= 1.0e-7) {
                 con = e * sinphi;
-                return (one_es * (sinphi / (1. - con * con) - (.5 / e) * Math.log((1. - con) / (1. + con))));
-            } else return (sinphi + sinphi);
+                return one_es * (sinphi / (1. - con * con) - .5 / e * Math.log((1. - con) / (1. + con)));
+            } else return sinphi + sinphi;
         }
 
         public static double authlat(double beta, double[] APA) {
             double t = beta + beta;
-            return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
+            return beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t);
         }
     }
 }

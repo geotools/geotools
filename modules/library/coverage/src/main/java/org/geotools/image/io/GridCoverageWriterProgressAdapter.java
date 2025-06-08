@@ -86,7 +86,7 @@ public class GridCoverageWriterProgressAdapter extends BaseGridCoverageProgressA
         reportProgress(progress, source);
 
         // are we done?
-        if (lastImageIndex == (numImages - 1)) monitor.complete();
+        if (lastImageIndex == numImages - 1) monitor.complete();
     }
 
     @Override

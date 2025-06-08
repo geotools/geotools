@@ -561,7 +561,7 @@ public final class GridCoverageRendererUtilities {
                 RenderedImage r1 = c1.getRenderedImage();
                 RenderedImage r2 = c2.getRenderedImage();
                 // area2 - area1, largest first
-                long areaDiff = ((long) r2.getWidth()) * r2.getHeight() - ((long) r1.getWidth()) * r1.getHeight();
+                long areaDiff = (long) r2.getWidth() * r2.getHeight() - (long) r1.getWidth() * r1.getHeight();
                 return (int) Math.signum(areaDiff);
             };
             Collections.sort(coverages, sliverComparator);

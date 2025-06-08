@@ -97,7 +97,7 @@ public class FidQueryTest extends FIDTestCase {
 
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(schema);
         GeometryFactory gf = new GeometryFactory();
-        build.add(gf.createPoint((new Coordinate(0, 0))));
+        build.add(gf.createPoint(new Coordinate(0, 0)));
         build.add(Long.valueOf(0));
         build.add(Long.valueOf(0));
         build.add("Hey");
@@ -180,7 +180,7 @@ public class FidQueryTest extends FIDTestCase {
 
         featureStore.removeFeatures(fidFilter);
         fids.remove(feature.getID());
-        assertEquals((size - 1), featureStore.getCount(Query.ALL));
+        assertEquals(size - 1, featureStore.getCount(Query.ALL));
         assertEquals(fids.size(), featureStore.getCount(Query.ALL));
 
         featureStore.getDataStore().dispose();
@@ -188,7 +188,7 @@ public class FidQueryTest extends FIDTestCase {
         ds = new ShapefileDataStore(url);
         numFeatures = 0;
         featureStore = (SimpleFeatureStore) ds.getFeatureSource();
-        assertEquals((size - 1), featureStore.getCount(Query.ALL));
+        assertEquals(size - 1, featureStore.getCount(Query.ALL));
 
         SimpleFeatureCollection features2 = featureStore.getFeatures(fidFilter);
         assertEquals("wrong number of features", 0, features2.size());

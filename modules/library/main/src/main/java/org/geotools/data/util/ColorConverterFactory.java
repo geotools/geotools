@@ -80,7 +80,7 @@ public class ColorConverterFactory implements ConverterFactory {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             Number number = (Number) source;
             // is it an integral number, and small enough to be an integer?
-            if (((int) number.doubleValue()) == number.doubleValue() && number.doubleValue() < Integer.MAX_VALUE) {
+            if ((int) number.doubleValue() == number.doubleValue() && number.doubleValue() < Integer.MAX_VALUE) {
                 int rgba = number.intValue();
                 int alpha = 0xff000000 & rgba;
                 return target.cast(new Color(rgba, alpha != 0));
@@ -402,19 +402,19 @@ public class ColorConverterFactory implements ConverterFactory {
                 } else if (text.startsWith("#") || text.startsWith("0x")) {
                     Number number = Long.decode(text);
                     long rgba = number.longValue();
-                    long h = (rgba >> 24) & 0xFF;
+                    long h = rgba >> 24 & 0xFF;
 
                     if (h != 0) {
                         int r = (int) h;
-                        int g = (int) ((rgba >> 16) & 0xFF);
-                        int b = (int) ((rgba >> 8) & 0xFF);
-                        int a = (int) ((rgba >> 0) & 0xFF);
+                        int g = (int) (rgba >> 16 & 0xFF);
+                        int b = (int) (rgba >> 8 & 0xFF);
+                        int a = (int) (rgba >> 0 & 0xFF);
                         Color color = new Color(r, g, b, a);
                         return target.cast(color);
                     } else {
-                        int r = (int) ((rgba >> 16) & 0xFF);
-                        int g = (int) ((rgba >> 8) & 0xFF);
-                        int b = (int) ((rgba >> 0) & 0xFF);
+                        int r = (int) (rgba >> 16 & 0xFF);
+                        int g = (int) (rgba >> 8 & 0xFF);
+                        int b = (int) (rgba >> 0 & 0xFF);
 
                         Color color = new Color(r, g, b);
                         return target.cast(color);

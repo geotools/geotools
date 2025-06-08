@@ -316,7 +316,7 @@ public class GeoPackage implements Closeable {
             if (rs.next()) {
                 int applicationId = rs.getInt(1);
                 // support legacy application id (before 1.2) as well as newer one (from 1.2)
-                initialized = (GPKG_100_APPID == applicationId || GPKG_120_APPID == applicationId);
+                initialized = GPKG_100_APPID == applicationId || GPKG_120_APPID == applicationId;
             }
         }
         if (!initialized) {
@@ -842,8 +842,8 @@ public class GeoPackage implements Closeable {
      */
     static SimpleFeatureCollection forceXY(SimpleFeatureCollection fc) {
         CoordinateReferenceSystem sourceCRS = fc.getSchema().getCoordinateReferenceSystem();
-        if ((CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.EAST_NORTH)
-                || (CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.INAPPLICABLE)) {
+        if (CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.EAST_NORTH
+                || CRS.getAxisOrder(sourceCRS) == CRS.AxisOrder.INAPPLICABLE) {
             return fc;
         }
 
@@ -897,7 +897,7 @@ public class GeoPackage implements Closeable {
                         if (pd.getType().getBinding() == Boolean.class) {
                             int bool = 0;
                             if (f.getAttribute(name) != null) {
-                                bool = (Boolean) (f.getAttribute(name)) ? 1 : 0;
+                                bool = (Boolean) f.getAttribute(name) ? 1 : 0;
                             }
                             g.setAttribute(name, bool);
                         }
@@ -1181,7 +1181,7 @@ public class GeoPackage implements Closeable {
     public void createSpatialIndex(FeatureEntry e) throws IOException {
         Map<String, String> properties = new HashMap<>();
 
-        PrimaryKey pk = ((JDBCFeatureStore) (dataStore.getFeatureSource(e.getTableName()))).getPrimaryKey();
+        PrimaryKey pk = ((JDBCFeatureStore) dataStore.getFeatureSource(e.getTableName())).getPrimaryKey();
         if (pk.getColumns().size() != 1) {
             throw new IOException("Spatial index only supported for primary key of single column.");
         }

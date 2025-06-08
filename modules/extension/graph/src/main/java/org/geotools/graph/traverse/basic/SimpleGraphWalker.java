@@ -46,7 +46,7 @@ public class SimpleGraphWalker implements GraphWalker {
      * @return The visitor being decorated by the walker.
      */
     public GraphVisitor getVistor() {
-        return (m_visitor);
+        return m_visitor;
     }
 
     /**
@@ -65,7 +65,7 @@ public class SimpleGraphWalker implements GraphWalker {
      */
     @Override
     public int visit(Graphable element, GraphTraversal traversal) {
-        return (m_visitor.visit(element));
+        return m_visitor.visit(element);
     }
 
     /**

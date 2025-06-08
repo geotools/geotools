@@ -529,7 +529,7 @@ public class FootprintExtractionProcessTest {
             throws IOException {
         Utilities.ensureNonNull("writingFormat", writingFormat);
         Utilities.ensureNonNull("geometry", geometry);
-        if ((outputFile != null) && outputFile.exists()) {
+        if (outputFile != null && outputFile.exists()) {
             FileUtils.deleteQuietly(outputFile);
         }
 

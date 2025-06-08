@@ -49,7 +49,7 @@ public class SQLServerDateOnlineTest extends JDBCDateOnlineTest {
         SimpleFeature datesFeat = DataUtilities.createFeature(
                 ft, "id=4|2009-09-29|2009-09-29T17:54:23|2009-09-29T17:54:23|2009-09-29T17:54:23+02:00|17:54:23");
         FeatureStore<SimpleFeatureType, SimpleFeature> fs =
-                (FeatureStore<SimpleFeatureType, SimpleFeature>) (dataStore.getFeatureSource("dates"));
+                (FeatureStore<SimpleFeatureType, SimpleFeature>) dataStore.getFeatureSource("dates");
         List<FeatureId> featIds = fs.addFeatures(DataUtilities.collection(datesFeat));
         assertEquals(1, featIds.size());
     }

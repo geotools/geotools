@@ -38,7 +38,7 @@ public class XSNonNegativeIntegerStrategyTest extends TestSchema {
     }
 
     public BigInteger integer(Object value) {
-        return (value instanceof BigInteger) ? ((BigInteger) value) : BigInteger.valueOf(((Number) value).longValue());
+        return value instanceof BigInteger ? (BigInteger) value : BigInteger.valueOf(((Number) value).longValue());
     }
 
     public Number number(String number) {

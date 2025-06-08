@@ -87,7 +87,7 @@ public class GrassRasterReaderWriterTest {
 
     private GridCoverage2D readGc(AbstractGridFormat format, File fileToRead) throws IOException {
         GridCoverageReader reader = format.getReader(fileToRead);
-        GridCoverage2D gc = ((GridCoverage2D) reader.read());
+        GridCoverage2D gc = (GridCoverage2D) reader.read();
         Assert.assertNotNull(gc);
 
         checkMatrixEqual(gc.getRenderedImage(), mapData, 0);

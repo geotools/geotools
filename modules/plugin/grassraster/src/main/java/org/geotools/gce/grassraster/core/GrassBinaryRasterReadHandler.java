@@ -270,7 +270,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
             /*
              * Calculate the map file row for the current data window row.
              */
-            double filerow = (filenorth - (datanorth - (row * datansres))) / filensres;
+            double filerow = (filenorth - (datanorth - row * datansres)) / filensres;
             filerow = Math.floor(filerow);
             if (filerow < 0 || filerow >= filerows) {
                 /*
@@ -550,10 +550,10 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                         }
                         // assign the values
                         if (!readerFileHeaderMap.get("type").equals("")) {
-                            if ((readerFileHeaderMap.get("type")).equalsIgnoreCase("double")) {
+                            if (readerFileHeaderMap.get("type").equalsIgnoreCase("double")) {
                                 readerMapType = -2;
                                 numberOfBytesPerValue = 8;
-                            } else if ((readerFileHeaderMap.get("type")).equalsIgnoreCase("float")) {
+                            } else if (readerFileHeaderMap.get("type").equalsIgnoreCase("float")) {
                                 readerMapType = -1;
                                 numberOfBytesPerValue = 4;
                             } else {
@@ -674,7 +674,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         // fileWindow.getRows()="+fileWindow.getRows());
 
         /* Reset row cache and read new row data */
-        ByteBuffer rowCache = ByteBuffer.allocate(nativeRasterRegion.getCols() * ((readerMapType == -2) ? 8 : 4));
+        ByteBuffer rowCache = ByteBuffer.allocate(nativeRasterRegion.getCols() * (readerMapType == -2 ? 8 : 4));
         // rowCache.rewind();
         getMapRow(currentfilerow, rowCache);
         // rowCacheRow = currentfilerow;
@@ -686,7 +686,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
              * Calculate the column value of the data to be extracted from the
              * row
              */
-            double x = (((activewest + (col * activeewres)) - filewest) / fileewres);
+            double x = (activewest + col * activeewres - filewest) / fileewres;
             x = Math.round(x);
             if (x < 0 || x >= nativeRasterRegion.getCols()) {
                 /*
@@ -834,7 +834,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
          */
         byte[] tmp = new byte[offset - 1];
         imageIS.seek(addressesOfRows[currentrow]);
-        int firstbyte = (imageIS.read() & 0xff);
+        int firstbyte = imageIS.read() & 0xff;
         if (firstbyte == 49) {
             /* The row is compressed. */
             // thefile.seek((long) adrows[rn] + 1);
@@ -859,7 +859,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     private void readUncompressedFPRowByNumber(ByteBuffer rowdata, int currentrow)
             throws IOException, DataFormatException {
         int datanumber = nativeRasterRegion.getCols() * numberOfBytesPerValue;
-        imageIS.seek((currentrow * (long) datanumber));
+        imageIS.seek(currentrow * (long) datanumber);
         imageIS.read(rowdata.array());
     }
 
@@ -881,7 +881,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
          * value and one byte for the count = 2 2 => if encoded: 2 bytes for the
          * value and one byte for the count = 3 etc... etc
          */
-        int bytespervalue = (imageIS.read() & 0xff);
+        int bytespervalue = imageIS.read() & 0xff;
         ByteBuffer cell = ByteBuffer.allocate(bytespervalue);
         int cellValue = 0;
 
@@ -895,7 +895,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
          * Create the buffer in which read the decompressed row. The final
          * decompressed row will always contain 4-byte integer values
          */
-        if ((offset - 1) == (bytespervalue * nativeRasterRegion.getCols())) {
+        if (offset - 1 == bytespervalue * nativeRasterRegion.getCols()) {
             /* There is no compression in this row */
             for (int i = 0; i < offset - 1; i = i + bytespervalue) {
                 /* Read the value */
@@ -907,7 +907,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                  * the padding is determined by the ByteOrder of the buffer.
                  */
                 if (bytespervalue == 1) {
-                    cellValue = (cell.get(0) & 0xff);
+                    cellValue = cell.get(0) & 0xff;
                 } else if (bytespervalue == 2) {
                     cellValue = cell.getShort(0);
                 } else if (bytespervalue == 4) {
@@ -929,7 +929,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
 
             for (int i = 0; i < couples; i++) {
                 /* Read the count of values */
-                int count = (tmpBuffer.get() & 0xff);
+                int count = tmpBuffer.get() & 0xff;
 
                 /* Read the value */
                 tmpBuffer.get(cell.array());
@@ -940,7 +940,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                  * the padding is determined by the ByteOrder of the buffer.
                  */
                 if (bytespervalue == 1) {
-                    cellValue = (cell.get(0) & 0xff);
+                    cellValue = cell.get(0) & 0xff;
                 } else if (bytespervalue == 2) {
                     cellValue = cell.getShort(0);
                 } else if (bytespervalue == 4) {
@@ -976,7 +976,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         int filerowsize = nativeRasterRegion.getCols() * readerMapType;
 
         /* Position the file pointer to read the row */
-        imageIS.seek((currentrow * (long) filerowsize));
+        imageIS.seek(currentrow * (long) filerowsize);
 
         /* Read the row of data from the file */
         ByteBuffer tmpBuffer = ByteBuffer.allocate(filerowsize);
@@ -996,7 +996,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
              * padding is determined by the ByteOrder of the buffer.
              */
             if (readerMapType == 1) {
-                cellValue = (cell.get(0) & 0xff);
+                cellValue = cell.get(0) & 0xff;
             } else if (readerMapType == 2) {
                 cellValue = cell.getShort(0);
             } else if (readerMapType == 4) {
@@ -1035,11 +1035,11 @@ public class GrassBinaryRasterReadHandler implements Closeable {
 
             // currentfilerow starts from 0, so it is the row before the one we
             // need
-            long byteToRead = (byteperrow * currentfilerow) + currentByte;
+            long byteToRead = byteperrow * currentfilerow + currentByte;
 
             imageNullFileIS.seek(byteToRead - 1);
 
-            int bitposition = (currentfilecol) % 8;
+            int bitposition = currentfilecol % 8;
 
             byte[] thetmp = new byte[1];
             thetmp[0] = imageNullFileIS.readByte();
@@ -1146,7 +1146,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     private BitSet fromByteArray(byte[] bytes) {
         BitSet bits = new BitSet();
         for (int i = 0; i < bytes.length * 8; i++) {
-            if ((bytes[bytes.length - i / 8 - 1] & (1 << (i % 8))) > 0) {
+            if ((bytes[bytes.length - i / 8 - 1] & 1 << i % 8) > 0) {
                 bits.set(i);
             }
         }

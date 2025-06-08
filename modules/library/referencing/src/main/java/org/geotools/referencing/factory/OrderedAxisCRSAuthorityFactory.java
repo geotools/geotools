@@ -268,7 +268,7 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
      */
     private final int rank(final CoordinateSystemAxis axis) {
         int c = axis.getDirection().absolute().ordinal();
-        c = (c >= 0 && c < directionRanks.length) ? directionRanks[c] : directionRanks.length;
+        c = c >= 0 && c < directionRanks.length ? directionRanks[c] : directionRanks.length;
         return c;
     }
 

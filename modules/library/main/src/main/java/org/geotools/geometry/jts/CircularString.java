@@ -105,7 +105,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
                     "Invalid number of ordinates, must be even, but it is " + length + " instead");
         }
         int pointCount = length / 2;
-        if ((pointCount != 0 && pointCount < 3) || (pointCount > 3 && (pointCount % 2) == 0)) {
+        if (pointCount != 0 && pointCount < 3 || pointCount > 3 && pointCount % 2 == 0) {
             throw new IllegalArgumentException("Invalid number of points, a circular string "
                     + "is always made of an odd number of points, with a mininum of 3, "
                     + "and adding 2 for each extra circular arc in the sequence. Found: "

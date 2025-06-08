@@ -211,7 +211,7 @@ public class MarkAlongLine implements Stroke {
                                 turnAngle = angleBetweenSegments(previousLineSegment, nextLineSegment);
                                 insideTurn =
                                         isInsideTurn(previousLineSegment, nextLineSegment, lastShapeEndedAtCoordinate);
-                                isLinear = (Math.abs(turnAngle - 180) < LINEAR_ANGLE_TOLERANCE);
+                                isLinear = Math.abs(turnAngle - 180) < LINEAR_ANGLE_TOLERANCE;
                                 if (LOGGER.isLoggable(Level.FINER)) {
                                     LOGGER.finer(
                                             "projection factor " + projFactor + " winding rule:" + i.getWindingRule());
@@ -220,7 +220,7 @@ public class MarkAlongLine implements Stroke {
                                     LOGGER.finer("is linear " + isLinear);
                                 }
 
-                                if ((projFactor < 1) || (insideTurn && !isLinear)) {
+                                if (projFactor < 1 || insideTurn && !isLinear) {
 
                                     if (LOGGER.isLoggable(Level.FINER)) {
                                         LOGGER.finer("shapes will overlap");
@@ -336,20 +336,20 @@ public class MarkAlongLine implements Stroke {
     // this method assumes that both segment have one common corrdinate
     private float angleBetweenSegments(LineSegment seg1, LineSegment seg2) {
         //        Coordinate tail = seg1.intersection(seg2);
-        Coordinate tail = (seg1.p0.equals2D(seg2.p0)) ? seg1.p0 : seg1.p1;
-        Coordinate tip1 = (seg1.p0.equals2D(tail)) ? seg1.p1 : seg1.p0;
-        Coordinate tip2 = (seg2.p0.equals2D(tail)) ? seg2.p1 : seg2.p0;
+        Coordinate tail = seg1.p0.equals2D(seg2.p0) ? seg1.p0 : seg1.p1;
+        Coordinate tip1 = seg1.p0.equals2D(tail) ? seg1.p1 : seg1.p0;
+        Coordinate tip2 = seg2.p0.equals2D(tail) ? seg2.p1 : seg2.p0;
 
         float angle = (float) Math.toDegrees(Angle.angleBetween(tip1, tail, tip2));
 
-        return (Float.isFinite(angle)) ? angle : 0f;
+        return Float.isFinite(angle) ? angle : 0f;
     }
 
     private boolean isInsideTurn(LineSegment seg1, LineSegment seg2, Coordinate pt) {
         //        Coordinate tail = seg1.intersection(seg2);
-        Coordinate tail = (seg1.p0.equals2D(seg2.p0)) ? seg1.p0 : seg1.p1;
-        Coordinate tip1 = (seg1.p0.equals2D(tail)) ? seg1.p1 : seg1.p0;
-        Coordinate tip2 = (seg2.p0.equals2D(tail)) ? seg2.p1 : seg2.p0;
+        Coordinate tail = seg1.p0.equals2D(seg2.p0) ? seg1.p0 : seg1.p1;
+        Coordinate tip1 = seg1.p0.equals2D(tail) ? seg1.p1 : seg1.p0;
+        Coordinate tip2 = seg2.p0.equals2D(tail) ? seg2.p1 : seg2.p0;
 
         return gf.createPolygon(gf.createLinearRing(new Coordinate[] {tail, tip1, tip2, tail}))
                 .intersects(gf.createPoint(pt));
@@ -387,7 +387,7 @@ public class MarkAlongLine implements Stroke {
             // translate along x according to the width and repetition number
             // first time use width of final shape, it might have previous part of shape also
             // else increment starting from previous translation + original size of shape
-            translateX = (i == 1)
+            translateX = i == 1
                     ? repeatedShape.getBounds().getWidth()
                     : translateX + this.wktShape.getBounds2D().getWidth();
             at.setToTranslation(translateX, 0);

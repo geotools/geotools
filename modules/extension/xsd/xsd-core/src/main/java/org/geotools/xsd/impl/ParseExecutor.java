@@ -113,11 +113,11 @@ public class ParseExecutor implements Visitor {
                     // if the type is simple or complex and mixed, use the
                     // text as is, other wise trim it, turning to null if the
                     // result is empty
-                    if ((type != null)
+                    if (type != null
                             && (type instanceof XSDSimpleTypeDefinition
                                     || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
-                    } else if ((value != null) && value instanceof String) {
+                    } else if (value != null && value instanceof String) {
                         if ("".equals(((String) value).trim())) {
                             result = null;
                         } else {

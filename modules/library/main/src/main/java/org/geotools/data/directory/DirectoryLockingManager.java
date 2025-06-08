@@ -40,7 +40,7 @@ public class DirectoryLockingManager implements LockingManager {
     public boolean exists(String authID) {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
-            if ((store.getLockingManager() != null) && store.getLockingManager().exists(authID)) {
+            if (store.getLockingManager() != null && store.getLockingManager().exists(authID)) {
                 return true;
             }
         }
@@ -52,7 +52,7 @@ public class DirectoryLockingManager implements LockingManager {
     public boolean release(String authID, Transaction transaction) throws IOException {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
-            if ((store.getLockingManager() != null) && store.getLockingManager().exists(authID)) {
+            if (store.getLockingManager() != null && store.getLockingManager().exists(authID)) {
                 return store.getLockingManager().release(authID, transaction);
             }
         }
@@ -64,7 +64,7 @@ public class DirectoryLockingManager implements LockingManager {
     public boolean refresh(String authID, Transaction transaction) throws IOException {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
-            if ((store.getLockingManager() != null) && store.getLockingManager().exists(authID)) {
+            if (store.getLockingManager() != null && store.getLockingManager().exists(authID)) {
                 return store.getLockingManager().refresh(authID, transaction);
             }
         }
@@ -77,7 +77,7 @@ public class DirectoryLockingManager implements LockingManager {
             throws IOException {
         DataStore store = cache.getDataStore(typeName, false);
 
-        if ((store != null) && (store.getLockingManager() != null)) {
+        if (store != null && store.getLockingManager() != null) {
             store.getLockingManager().unLockFeatureID(typeName, authID, transaction, featureLock);
         }
     }
@@ -87,7 +87,7 @@ public class DirectoryLockingManager implements LockingManager {
             throws IOException {
         DataStore store = cache.getDataStore(typeName, false);
 
-        if ((store != null) && (store.getLockingManager() != null)) {
+        if (store != null && store.getLockingManager() != null) {
             store.getLockingManager().lockFeatureID(typeName, authID, transaction, featureLock);
         }
     }

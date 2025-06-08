@@ -27,7 +27,7 @@ public class Wps20XMLProcessor extends XMLProcessor {
 	 * @generated
 	 */
 	public Wps20XMLProcessor() {
-		super((EPackage.Registry.INSTANCE));
+		super(EPackage.Registry.INSTANCE);
 		Wps20Package.eINSTANCE.eClass();
 	}
 	

@@ -304,8 +304,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * {@link NoSuchAuthorityCodeException}).
      */
     protected boolean isRecoverableFailure(final FactoryException exception) {
-        return (exception instanceof NoSuchIdentifierException
-                || exception.getMessage().startsWith("Could not locate grid file"));
+        return exception instanceof NoSuchIdentifierException
+                || exception.getMessage().startsWith("Could not locate grid file");
     }
 
     /**

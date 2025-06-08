@@ -268,7 +268,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                 if (name.equalsIgnoreCase("time_domain")) {
                     return parseDomain(name, timeDomain);
                 }
-                if ((name.equalsIgnoreCase("time_domain_minimum") || name.equalsIgnoreCase("time_domain_maximum"))) {
+                if (name.equalsIgnoreCase("time_domain_minimum") || name.equalsIgnoreCase("time_domain_maximum")) {
                     return parseDomain(name, timeDomain);
                 }
                 if (name.equalsIgnoreCase("time_domain_datatype")) {
@@ -447,7 +447,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
         LinkedHashSet<String> ranges = new LinkedHashSet<>();
         while (iterator.hasNext()) {
             NumberRange<Double> range = iterator.next();
-            ranges.add((range.getMinValue() + "/" + range.getMaxValue()));
+            ranges.add(range.getMinValue() + "/" + range.getMaxValue());
         }
         return buildResultsString(ranges);
     }

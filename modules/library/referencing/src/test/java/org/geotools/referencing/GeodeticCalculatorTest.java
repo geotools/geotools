@@ -175,8 +175,8 @@ public final class GeodeticCalculatorTest {
              */
             assertTrue(
                     x == 0
-                            ? (distance == 0)
-                            : (x < 179.5 ? (Math.abs(distance - last - 13.914936) < 2E-6) : (distance - last < 13)));
+                            ? distance == 0
+                            : x < 179.5 ? Math.abs(distance - last - 13.914936) < 2E-6 : distance - last < 13);
             last = distance;
         }
     }

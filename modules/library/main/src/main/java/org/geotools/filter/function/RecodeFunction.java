@@ -78,7 +78,7 @@ public class RecodeFunction implements Function {
         this.fallback = fallback;
 
         // check inputs
-        if ((parameters.size() % 2 != 1) && !parameters.isEmpty()) {
+        if (parameters.size() % 2 != 1 && !parameters.isEmpty()) {
             throw new IllegalArgumentException("There must be an equal number of lookup data and return values");
         }
 

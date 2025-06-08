@@ -78,7 +78,7 @@ public class DelaunayTriangulator {
                 DelaunayNode node = new DelaunayNode();
                 node.setCoordinate(centroid.getCoordinate());
                 node.setFeature(next);
-                if (!(arrayContains(node, nodes, index))) {
+                if (!arrayContains(node, nodes, index)) {
                     nodes[index] = node;
                     index++;
                 }
@@ -97,9 +97,9 @@ public class DelaunayTriangulator {
         boolean ret = false;
         boolean done = false;
         int i = 0;
-        while (!(done)) {
+        while (!done) {
             if (i < index) {
-                done = ret = (nodes[i].equals(node));
+                done = ret = nodes[i].equals(node);
                 i++;
             } else {
                 done = true;
@@ -184,14 +184,14 @@ public class DelaunayTriangulator {
                         ((DelaunayEdge) edges[i]).hasEndPoint(temp2)
                         || // add to the edge list any edges referring
                         ((DelaunayEdge) edges[i]).hasEndPoint(temp3))) { // to the temporary nodes
-                    if (!(edgeList.contains(edges[i]))) {
+                    if (!edgeList.contains(edges[i])) {
                         edgeList.add(edges[i]);
                         edges[i].getNodeA().add(edges[i]);
                         edges[i].getNodeB().add(edges[i]);
-                        if (!(nodeList.contains(edges[i].getNodeA()))) {
+                        if (!nodeList.contains(edges[i].getNodeA())) {
                             nodeList.add(edges[i].getNodeA());
                         }
-                        if (!(nodeList.contains(edges[i].getNodeB()))) {
+                        if (!nodeList.contains(edges[i].getNodeB())) {
                             nodeList.add(edges[i].getNodeB());
                         }
                     }
@@ -213,7 +213,7 @@ public class DelaunayTriangulator {
         Triangle borderB = null; // Note: assuming it's on the border of two triangles rather than at the
         // intersection of 3 or more.
         boolean notDone = true;
-        while ((triangleIterator.hasNext()) && (notDone)) {
+        while (triangleIterator.hasNext() && notDone) {
             Triangle next = triangleIterator.next();
             int relation = next.relate(newNode);
             switch (relation) {
@@ -298,7 +298,7 @@ public class DelaunayTriangulator {
             //            System.out.println("after legalization, triangle list now is: " +
             // triangleList);
 
-        } else if ((borderA != null) && (borderB != null)) {
+        } else if (borderA != null && borderB != null) {
             // check to see that borderA and borderB share an edge.  If not, whinge.
             DelaunayEdge shared = (DelaunayEdge) borderA.getSharedEdge(borderB);
             if (shared == null) {
@@ -429,7 +429,7 @@ public class DelaunayTriangulator {
     }
 
     private boolean isTemporary(DelaunayNode n) {
-        return ((n.equals(temp1)) || (n.equals(temp2)) || (n.equals(temp3)));
+        return n.equals(temp1) || n.equals(temp2) || n.equals(temp3);
     }
 
     private boolean isIllegal(Triangle t, DelaunayEdge e, DelaunayNode p) {
@@ -442,12 +442,12 @@ public class DelaunayTriangulator {
 
         DelaunayNode farNode = (DelaunayNode) e.getOtherFace(t).getThirdNode(e);
 
-        DelaunayEdge p_a = ((DelaunayEdge) t.getOppositeEdge(e.getNodeB()));
-        DelaunayEdge p_b = ((DelaunayEdge) t.getOppositeEdge(e.getNodeA()));
+        DelaunayEdge p_a = (DelaunayEdge) t.getOppositeEdge(e.getNodeB());
+        DelaunayEdge p_b = (DelaunayEdge) t.getOppositeEdge(e.getNodeA());
         DelaunayNode farNodeP_A = (DelaunayNode) p_a.getOtherFace(t).getThirdNode(p_a);
         DelaunayNode farNodeP_B = (DelaunayNode) p_b.getOtherFace(t).getThirdNode(p_b);
 
-        if ((farNode.equals(farNodeP_A)) || (farNode.equals(farNodeP_B))) {
+        if (farNode.equals(farNodeP_A) || farNode.equals(farNodeP_B)) {
             // Degenerate case.  There's already a line between p and farnode (p and k in the book)
             // making either
             // p_farnode_A or p_farNode_B a triangle already in the triangulation.  This will
@@ -504,11 +504,11 @@ public class DelaunayTriangulator {
     }
 
     private int whichSpecialNode(DelaunayNode a, DelaunayNode b) {
-        if ((a.equals(temp1)) || (b.equals(temp1))) {
+        if (a.equals(temp1) || b.equals(temp1)) {
             return 1;
-        } else if ((a.equals(temp2)) || (b.equals(temp2))) {
+        } else if (a.equals(temp2) || b.equals(temp2)) {
             return 2;
-        } else if ((a.equals(temp3)) || (b.equals(temp3))) {
+        } else if (a.equals(temp3) || b.equals(temp3)) {
             return 3;
         } else {
             throw new RuntimeException("I shouldn't be here.  Either node a or node b should be temporary.");
@@ -525,8 +525,8 @@ public class DelaunayTriangulator {
 
         Line bisectorA_B = new Line();
         bisectorA_B.setLine(
-                new Point2D.Double((midPointA_B.getX() + 100 * deltaYA_B), (midPointA_B.getY() - 100 * deltaXA_B)),
-                new Point2D.Double((midPointA_B.getX() - 100 * deltaYA_B), (midPointA_B.getY() + 100 * deltaXA_B)));
+                new Point2D.Double(midPointA_B.getX() + 100 * deltaYA_B, midPointA_B.getY() - 100 * deltaXA_B),
+                new Point2D.Double(midPointA_B.getX() - 100 * deltaYA_B, midPointA_B.getY() + 100 * deltaXA_B));
 
         Point2D.Double midPointA_C = new Point2D.Double(
                 (a.getCoordinate().x + c.getCoordinate().x) / 2, (a.getCoordinate().y + c.getCoordinate().y) / 2);
@@ -540,11 +540,11 @@ public class DelaunayTriangulator {
         do {
             bisectorA_C.setLine(
                     new Point2D.Double(
-                            (midPointA_C.getX() + Math.pow(100, i) * deltaYA_C),
-                            (midPointA_C.getY() - Math.pow(100, i) * deltaXA_C)),
+                            midPointA_C.getX() + Math.pow(100, i) * deltaYA_C,
+                            midPointA_C.getY() - Math.pow(100, i) * deltaXA_C),
                     new Point2D.Double(
-                            (midPointA_C.getX() - Math.pow(100, i) * deltaYA_C),
-                            (midPointA_C.getY() + Math.pow(100, i) * deltaXA_C)));
+                            midPointA_C.getX() - Math.pow(100, i) * deltaYA_C,
+                            midPointA_C.getY() + Math.pow(100, i) * deltaXA_C));
             intersection = bisectorA_B.intersectionPoint(bisectorA_C);
             i++;
         } while (intersection == null);
@@ -571,6 +571,6 @@ public class DelaunayTriangulator {
         double diff = newArea - oldArea;
         //        System.out.println("area difference is " + diff);
         double tolerance = 0.000001;
-        return (diff > tolerance);
+        return diff > tolerance;
     }
 }

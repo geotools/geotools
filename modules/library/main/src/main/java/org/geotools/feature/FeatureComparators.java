@@ -139,7 +139,7 @@ public final class FeatureComparators {
          */
         @SuppressWarnings("unchecked")
         protected int compareAtts(Object att1, Object att2) {
-            if ((att1 == null) && (att2 == null)) {
+            if (att1 == null && att2 == null) {
                 return 0;
             }
 

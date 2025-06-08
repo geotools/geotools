@@ -147,7 +147,7 @@ public class TransverseMercator extends MapProjection {
         double sinphi = sin(y);
         double cosphi = cos(y);
 
-        double t = (abs(cosphi) > EPSILON) ? sinphi / cosphi : 0;
+        double t = abs(cosphi) > EPSILON ? sinphi / cosphi : 0;
         t *= t;
         double al = cosphi * x;
         double als = al * al;
@@ -177,12 +177,12 @@ public class TransverseMercator extends MapProjection {
         double phi = inv_mlfn(ml0 + y);
 
         if (abs(phi) >= PI / 2) {
-            y = y < 0.0 ? -(PI / 2) : (PI / 2);
+            y = y < 0.0 ? -(PI / 2) : PI / 2;
             x = 0.0;
         } else {
             double sinphi = sin(phi);
             double cosphi = cos(phi);
-            double t = (abs(cosphi) > EPSILON) ? sinphi / cosphi : 0.0;
+            double t = abs(cosphi) > EPSILON ? sinphi / cosphi : 0.0;
             double n = esp * cosphi * cosphi;
             double con = 1.0 - excentricitySquared * sinphi * sinphi;
             double d = x * sqrt(con);
@@ -283,8 +283,8 @@ public class TransverseMercator extends MapProjection {
             double cosD = cos(latitudeOfOrigin + y);
             double phi = asin(sqrt((1.0 - cosD * cosD) / (1.0 + sinhX * sinhX)));
             // correct for the fact that we made everything positive using sqrt(x*x)
-            y = ((y + latitudeOfOrigin) < 0.0) ? -phi : phi;
-            x = (abs(sinhX) <= EPSILON && abs(cosD) <= EPSILON) ? 0.0 : atan2(sinhX, cosD);
+            y = y + latitudeOfOrigin < 0.0 ? -phi : phi;
+            x = abs(sinhX) <= EPSILON && abs(cosD) <= EPSILON ? 0.0 : atan2(sinhX, cosD);
 
             assert checkInverseTransform(x, y, ptDst, getToleranceForSphereAssertions(x));
             if (ptDst != null) {
@@ -350,7 +350,7 @@ public class TransverseMercator extends MapProjection {
         // longitude 1.
         t -= zoneCount * floor(t / zoneCount); // If negative, bring back to the interval 0
         // to (zoneCount-1).
-        return ((int) t) + 1;
+        return (int) t + 1;
     }
 
     /**

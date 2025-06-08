@@ -227,8 +227,8 @@ abstract class RangeCombiner {
 
                 // see if the sub-filter can be assimilated to a single range
                 if (!subCombiner.otherFilters.isEmpty()
-                        || (subCombiner.rangeMap.size() > 1
-                                && !subCombiner.getClass().equals(this.getClass()))) {
+                        || subCombiner.rangeMap.size() > 1
+                                && !subCombiner.getClass().equals(this.getClass())) {
                     otherFilters.add(f);
                 } else {
                     Map<Expression, MultiRange> combined = subCombiner.rangeMap;

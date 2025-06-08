@@ -117,7 +117,7 @@ public class WKTMarkFactory implements MarkFactory {
             Enumeration<String> names = (Enumeration<String>) propLib.propertyNames();
             for (Enumeration<String> e = names; e.hasMoreElements(); ) {
                 String shpName = e.nextElement();
-                library.put(shpName, (String) (propLib.get(shpName)));
+                library.put(shpName, (String) propLib.get(shpName));
             }
             CACHE.put(urlLib, library);
         }

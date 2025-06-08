@@ -57,7 +57,7 @@ public class OracleClobConverterFactory implements ConverterFactory {
         if (ORA_CLOB == null) return null;
 
         // can only convert towards String
-        if (!(String.class.equals(target))) return null;
+        if (!String.class.equals(target)) return null;
 
         // can only deal with oracle specific blob classes
         if (!ORA_CLOB.isAssignableFrom(source)) return null;

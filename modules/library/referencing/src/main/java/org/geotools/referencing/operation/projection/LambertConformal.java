@@ -254,7 +254,7 @@ public abstract class LambertConformal extends MapProjection {
             }
         } else {
             x = 0.0;
-            y = n < 0 ? -(PI / 2) : (PI / 2);
+            y = n < 0 ? -(PI / 2) : PI / 2;
         }
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -284,7 +284,7 @@ public abstract class LambertConformal extends MapProjection {
         }
         if (super.equals(object)) {
             final LambertConformal that = (LambertConformal) object;
-            return (this.belgium == that.belgium)
+            return this.belgium == that.belgium
                     && equals(this.n, that.n)
                     && equals(this.F, that.F)
                     && equals(this.rho0, that.rho0)

@@ -248,7 +248,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         // if it is an URL pointing to a File I convert it to a file.
         if (input instanceof URL) {
             // URL that point to a file
-            final URL sourceURL = ((URL) input);
+            final URL sourceURL = (URL) input;
             this.source = sourceURL;
 
             if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
@@ -310,7 +310,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             coverageName = sourceFile.getName();
 
             final int dotIndex = coverageName.lastIndexOf(".");
-            coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
+            coverageName = dotIndex == -1 ? coverageName : coverageName.substring(0, dotIndex);
         } else {
             throw new IllegalArgumentException("Unsupported input type");
         }
@@ -479,7 +479,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             File file = (File) source;
             String filename = file.getName();
 
-            if ((filename == null) || (filename.length() == 0)) {
+            if (filename == null || filename.length() == 0) {
                 localInfo.setTitle(file.getName());
             }
 

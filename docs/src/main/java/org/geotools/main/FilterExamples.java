@@ -472,7 +472,7 @@ public class FilterExamples {
         arg.append(codeBlock);
         Class<?> type = argument.getType();
 
-        if (type == null || (type == Object.class && argument.isRequired())) {
+        if (type == null || type == Object.class && argument.isRequired()) {
             // nothing more is known
         } else {
             arg.append(" (" + codeBlock);

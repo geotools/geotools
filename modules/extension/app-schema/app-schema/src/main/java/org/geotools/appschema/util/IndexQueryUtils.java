@@ -73,8 +73,8 @@ public final class IndexQueryUtils {
 
     /** Checks if property name is equals to source/identifier expression in attribute mapping */
     public static boolean equalsProperty(AttributeMapping mapping, String propertyName) {
-        return (equalsPropertyExpression(mapping.getSourceExpression(), propertyName)
-                || equalsPropertyExpression(mapping.getIdentifierExpression(), propertyName));
+        return equalsPropertyExpression(mapping.getSourceExpression(), propertyName)
+                || equalsPropertyExpression(mapping.getIdentifierExpression(), propertyName);
     }
 
     /** Compare if mapping-xpath == attMapping */

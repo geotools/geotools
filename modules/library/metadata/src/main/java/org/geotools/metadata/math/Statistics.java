@@ -129,7 +129,7 @@ public class Statistics implements Cloneable, Serializable {
              */
             if (!(min <= sample)) min = sample;
             if (!(max >= sample)) max = sample;
-            sum2 += (sample * sample);
+            sum2 += sample * sample;
             sum += sample;
             n++;
         } else {
@@ -149,7 +149,7 @@ public class Statistics implements Cloneable, Serializable {
         final double fdatum = sample;
         if (!(min <= fdatum)) min = fdatum;
         if (!(max >= fdatum)) max = fdatum;
-        sum2 += (fdatum * fdatum);
+        sum2 += fdatum * fdatum;
         sum += fdatum;
         n++;
     }
@@ -277,10 +277,10 @@ public class Statistics implements Cloneable, Serializable {
     /** Returns a hash code value for this statistics. */
     @Override
     public int hashCode() {
-        final long code = (Double.doubleToLongBits(min)
+        final long code = Double.doubleToLongBits(min)
                 + 37
                         * (Double.doubleToLongBits(max)
-                                + 37 * (Double.doubleToLongBits(sum) + 37 * Double.doubleToLongBits(sum2))));
+                                + 37 * (Double.doubleToLongBits(sum) + 37 * Double.doubleToLongBits(sum2)));
         return (int) code ^ (int) (code >>> 32) ^ n;
     }
 

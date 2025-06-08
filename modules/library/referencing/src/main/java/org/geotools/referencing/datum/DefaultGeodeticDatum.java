@@ -99,7 +99,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         super(datum);
         ellipsoid = datum.getEllipsoid();
         primeMeridian = datum.getPrimeMeridian();
-        bursaWolf = (datum instanceof DefaultGeodeticDatum) ? ((DefaultGeodeticDatum) datum).bursaWolf : null;
+        bursaWolf = datum instanceof DefaultGeodeticDatum ? ((DefaultGeodeticDatum) datum).bursaWolf : null;
     }
 
     /**

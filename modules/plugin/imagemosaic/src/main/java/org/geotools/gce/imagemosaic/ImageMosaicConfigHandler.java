@@ -266,7 +266,7 @@ public class ImageMosaicConfigHandler {
                 // parsing indicated granule acceptors
                 Map<String, GranuleAcceptorFactorySPI> granuleAcceptorsMap =
                         GranuleAcceptorFactorySPIFinder.getGranuleAcceptorFactorySPI();
-                Arrays.stream(granuleAcceptorsString.split(",")).forEach((factoryImpl) -> {
+                Arrays.stream(granuleAcceptorsString.split(",")).forEach(factoryImpl -> {
                     if (granuleAcceptorsMap.containsKey(factoryImpl)) {
                         granuleAcceptors.addAll(
                                 granuleAcceptorsMap.get(factoryImpl).create());
@@ -1001,7 +1001,7 @@ public class ImageMosaicConfigHandler {
                 // We did find some MosaicConfigurations
                 Set<String> keys = configurations.keySet();
                 boolean useName =
-                        (indexerFile != null && indexerFile.getAbsolutePath().endsWith("xml"))
+                        indexerFile != null && indexerFile.getAbsolutePath().endsWith("xml")
                                 || configurations.size() > 1;
                 if (haveConfigs || !supportsEmpty) {
                     for (String key : keys) {
@@ -1019,17 +1019,17 @@ public class ImageMosaicConfigHandler {
                 // one coverage does not have the default name
                 if (supportsEmpty
                         || useName
-                        || (!keys.isEmpty() && !base.equals(keys.iterator().next()))) {
+                        || !keys.isEmpty() && !base.equals(keys.iterator().next())) {
                     File mosaicFile = null;
                     File originFile = null;
                     if (indexerFile.getAbsolutePath().endsWith("xml")) {
                         mosaicFile = new File(
-                                indexerFile.getAbsolutePath().replace(IndexerUtils.INDEXER_XML, (base + ".xml")));
+                                indexerFile.getAbsolutePath().replace(IndexerUtils.INDEXER_XML, base + ".xml"));
                         originFile = indexerFile;
                     } else if (indexerFile.getAbsolutePath().endsWith("properties")) {
                         mosaicFile = new File(indexerFile
                                 .getAbsolutePath()
-                                .replace(IndexerUtils.INDEXER_PROPERTIES, (base + ".properties")));
+                                .replace(IndexerUtils.INDEXER_PROPERTIES, base + ".properties"));
                         originFile = indexerFile;
                     } else {
                         final String source = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
@@ -1038,7 +1038,7 @@ public class ImageMosaicConfigHandler {
                                 + ".properties";
                         mosaicFile = new File(indexerFile
                                 .getAbsolutePath()
-                                .replace(IndexerUtils.INDEXER_PROPERTIES, (base + ".properties")));
+                                .replace(IndexerUtils.INDEXER_PROPERTIES, base + ".properties"));
                         originFile = new File(source);
                     }
                     if (!mosaicFile.exists()) {
@@ -1443,7 +1443,7 @@ public class ImageMosaicConfigHandler {
         } else {
             catalogConfig = new CatalogBuilderConfiguration();
             CatalogConfigurationBean bean = mosaicConfiguration.getCatalogConfigurationBean();
-            catalogConfig.setParameter(Prop.LOCATION_ATTRIBUTE, (bean.getLocationAttribute()));
+            catalogConfig.setParameter(Prop.LOCATION_ATTRIBUTE, bean.getLocationAttribute());
             catalogConfig.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(bean.getPathType() == PathType.ABSOLUTE));
             catalogConfig.setParameter(Prop.PATH_TYPE, bean.getPathType().toString());
             catalogConfig.setParameter(

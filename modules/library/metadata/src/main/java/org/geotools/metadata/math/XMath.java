@@ -196,7 +196,7 @@ public final class XMath {
     public static double roundIfAlmostInteger(final double value, int maxULP) {
         final double target = Math.rint(value);
         if (value != target) {
-            final boolean pos = (value < target);
+            final boolean pos = value < target;
             double candidate = value;
             while (--maxULP >= 0) {
                 candidate = pos ? next(candidate) : previous(candidate);

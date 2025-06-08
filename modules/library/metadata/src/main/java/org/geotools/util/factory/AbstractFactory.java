@@ -311,7 +311,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      */
     @Override
     public final int hashCode() {
-        return getClass().hashCode() + (37 * priority);
+        return getClass().hashCode() + 37 * priority;
     }
 
     /**
@@ -404,7 +404,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
             throws IOException {
         for (final Map.Entry<?, ?> entry : hints.entrySet()) {
             final Object k = entry.getKey();
-            String key = (k instanceof RenderingHints.Key) ? Hints.nameOf((RenderingHints.Key) k) : String.valueOf(k);
+            String key = k instanceof RenderingHints.Key ? Hints.nameOf((RenderingHints.Key) k) : String.valueOf(k);
             Object value = entry.getValue();
             table.write(indent);
             table.write(key);

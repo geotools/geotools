@@ -90,8 +90,8 @@ class MatchFunction extends FunctionExpressionImpl {
         final Object inputType = params.get(0).evaluate(feature);
         // if it's not a Number or String, it's not formatted correctly
         if (inputType == null
-                || (!Number.class.isAssignableFrom(inputType.getClass())
-                        && !String.class.isAssignableFrom(inputType.getClass()))) {
+                || !Number.class.isAssignableFrom(inputType.getClass())
+                        && !String.class.isAssignableFrom(inputType.getClass())) {
             throw new MBFormatException(String.format(
                     "MBDecision \"match\" requires a number or string expression for input type, found %s",
                     inputType != null ? inputType.getClass().getName() : null));

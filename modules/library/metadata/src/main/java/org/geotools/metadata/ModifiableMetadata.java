@@ -379,8 +379,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
                     target.clear();
                 }
             } else {
-                final boolean isList = (source instanceof List);
-                if (target != null && (target instanceof List) == isList) {
+                final boolean isList = source instanceof List;
+                if (target != null && target instanceof List == isList) {
                     target.clear();
                 } else {
                     int capacity = source.size();

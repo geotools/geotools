@@ -187,7 +187,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
 
     /** True if this mediator is currently connected to one or more workers. */
     public boolean isConnected() {
-        return (workers.getNumActive() + workers.getNumIdle()) > 0;
+        return workers.getNumActive() + workers.getNumIdle() > 0;
     }
 
     ObjectPool getPool() {

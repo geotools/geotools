@@ -41,7 +41,7 @@ public class BindingTestClass
     return result;
   }
 
-  public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
+  public final String NL = nl == null ? System.getProperties().getProperty("line.separator") : nl;
   protected final String TEXT_1 = NL + "import org.geotools.xsd.Binding;" + NL + "" + NL + "/**" + NL + " * Binding test case for ";
   protected final String TEXT_2 = ":";
   protected final String TEXT_3 = "." + NL + " *" + NL + " * <p>" + NL + " *  <pre>" + NL + " *   <code>";

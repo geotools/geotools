@@ -93,7 +93,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
      */
     protected void ensureOperandsSet() throws IllegalArgumentException {
         // Checks to make sure both sub expressions exist.
-        if ((leftValue == null) || (rightValue == null)) {
+        if (leftValue == null || rightValue == null) {
             throw new IllegalArgumentException("Attempted read math expression with missing sub expressions.");
         }
     }

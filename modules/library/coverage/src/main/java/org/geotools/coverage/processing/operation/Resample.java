@@ -237,7 +237,7 @@ public class Resample extends Operation2D {
                     targetCRS,
                     targetGG,
                     interpolation,
-                    (hints instanceof Hints) ? hints : new Hints(hints),
+                    hints instanceof Hints ? hints : new Hints(hints),
                     bgValues);
         } catch (FactoryException | TransformException exception) {
             final Object arg0 = source.getName();

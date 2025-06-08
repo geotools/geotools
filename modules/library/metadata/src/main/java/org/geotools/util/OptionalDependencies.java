@@ -175,7 +175,7 @@ public final class OptionalDependencies {
         }
         final int count = model.getChildCount(node);
         for (int i = 0; i < count; i++) {
-            last[level] = (i == count - 1);
+            last[level] = i == count - 1;
             last = format(model, model.getChild(node, i), buffer, level + 1, last, lineSeparator);
         }
         return last;

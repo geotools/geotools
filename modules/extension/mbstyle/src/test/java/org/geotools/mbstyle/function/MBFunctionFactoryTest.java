@@ -251,11 +251,11 @@ public class MBFunctionFactoryTest {
         assertEquals(0.0, f.evaluate(null, Number.class).doubleValue(), tol);
 
         Function f2 = (Function)
-                ECQL.toExpression("zoomLevel(" + (ZoomLevelFunction.EPSG_3857_O_SCALE / 2.0) + ", 'EPSG:3857')");
+                ECQL.toExpression("zoomLevel(" + ZoomLevelFunction.EPSG_3857_O_SCALE / 2.0 + ", 'EPSG:3857')");
         assertEquals(1.0, f2.evaluate(null, Number.class).doubleValue(), tol);
 
         Function fhalf = (Function) ECQL.toExpression(
-                "zoomLevel(" + (ZoomLevelFunction.EPSG_3857_O_SCALE / (Math.pow(2.0, 0.5))) + ", 'EPSG:3857')");
+                "zoomLevel(" + ZoomLevelFunction.EPSG_3857_O_SCALE / Math.pow(2.0, 0.5) + ", 'EPSG:3857')");
         assertEquals(0.5, fhalf.evaluate(null, Number.class).doubleValue(), tol);
 
         double scaleDenomForZoom21 = 133.295598972;

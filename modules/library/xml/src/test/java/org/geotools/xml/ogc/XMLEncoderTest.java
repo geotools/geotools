@@ -208,7 +208,7 @@ public class XMLEncoderTest {
                 child = list.item(i);
 
                 // _log.getLoggerRepository().setThreshold(Level.INFO);
-                if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
 

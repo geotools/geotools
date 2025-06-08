@@ -172,7 +172,7 @@ public class GridCoverageReaderHelper {
         // cases where the calculation cannot be performed
         if (!(originalGridToWorld instanceof AffineTransform2D)
                 || levels == null
-                || (interpolation instanceof InterpolationNearest)) return paddings;
+                || interpolation instanceof InterpolationNearest) return paddings;
 
         // scale up padding factors if needed
         try {

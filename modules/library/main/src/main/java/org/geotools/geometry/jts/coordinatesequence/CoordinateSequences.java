@@ -102,10 +102,10 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
         boolean isCCW = false;
         if (disc == 0) {
             // poly is CCW if prev x is right of next x
-            isCCW = (ring.getOrdinate(iPrev, 0) > ring.getOrdinate(iNext, 0));
+            isCCW = ring.getOrdinate(iPrev, 0) > ring.getOrdinate(iNext, 0);
         } else {
             // if area is positive, points are ordered CCW
-            isCCW = (disc > 0);
+            isCCW = disc > 0;
         }
         return isCCW;
     }

@@ -952,7 +952,7 @@ public class Utils {
         if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COVERAGE_NAME_COLLECTOR_SPI)) {
             String coverageNameCollectorSpi = properties.getProperty(Prop.COVERAGE_NAME_COLLECTOR_SPI);
             if (coverageNameCollectorSpi != null
-                    && ((coverageNameCollectorSpi = coverageNameCollectorSpi.trim()) != null)) {
+                    && (coverageNameCollectorSpi = coverageNameCollectorSpi.trim()) != null) {
                 retValue.setCoverageNameCollectorSpi(coverageNameCollectorSpi);
             }
         }
@@ -2136,8 +2136,8 @@ public class Utils {
         int colorComponentsDifference = Math.abs(defNumComponents - actualNumComponents);
 
         if (colorComponentsDifference != 0) {
-            if ((defNumComponents == 1 && defaultCM instanceof ComponentColorModel)
-                    || (actualNumComponents == 1 && actualCM instanceof ComponentColorModel)) {
+            if (defNumComponents == 1 && defaultCM instanceof ComponentColorModel
+                    || actualNumComponents == 1 && actualCM instanceof ComponentColorModel) {
                 // gray expansion can be performed
                 return false;
             }
@@ -2166,7 +2166,7 @@ public class Utils {
         if (params.containsKey(DATABASE_KEY)) {
             String dbname = (String) params.get(DATABASE_KEY);
             // H2 database URLs must not be percent-encoded: see GEOT-4262.
-            params.put(DATABASE_KEY, "file:" + (new File(URLs.urlToFile(new URL(parentLocation)), dbname)).getPath());
+            params.put(DATABASE_KEY, "file:" + new File(URLs.urlToFile(new URL(parentLocation)), dbname).getPath());
         }
     }
 

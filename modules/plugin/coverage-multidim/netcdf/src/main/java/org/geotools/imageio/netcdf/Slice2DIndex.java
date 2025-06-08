@@ -87,7 +87,7 @@ public class Slice2DIndex {
         for (int j : index) {
             result = prime * result + j;
         }
-        result = prime * result + ((variableName == null) ? 0 : variableName.hashCode());
+        result = prime * result + (variableName == null ? 0 : variableName.hashCode());
         return result;
     }
 

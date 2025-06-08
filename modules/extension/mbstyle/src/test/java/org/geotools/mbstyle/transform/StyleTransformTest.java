@@ -731,7 +731,8 @@ public class StyleTransformTest {
 
         FontAlternativesFunction family =
                 (FontAlternativesFunction) tsym.fonts().get(0).getFamily().get(0);
-        MapBoxFontBaseNameFunction familyBaseName = (MapBoxFontBaseNameFunction) (family.getParameters()).get(0);
+        MapBoxFontBaseNameFunction familyBaseName =
+                (MapBoxFontBaseNameFunction) family.getParameters().get(0);
         assertEquals(
                 "Apple-Chancery",
                 ((CategorizeFunction) familyBaseName.getParameters().get(0))

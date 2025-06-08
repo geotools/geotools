@@ -147,7 +147,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
             throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NOT_COMPARABLE_CLASS_$1, type));
         }
         Class<?> elementType = ClassChanger.getTransformedClass(type); // e.g. change Date --> Long
-        useClassChanger = (elementType != type);
+        useClassChanger = elementType != type;
         elementClass = type;
         arrayElementClass = wrapperToPrimitive(elementType);
         arrayElementCode = getEnumConstant(arrayElementClass);
@@ -198,7 +198,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     /** Returns the number of ranges in this set. */
     @Override
     public int size() {
-        return (array != null) ? Array.getLength(array) / 2 : 0;
+        return array != null ? Array.getLength(array) / 2 : 0;
     }
 
     /**
@@ -849,7 +849,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         private int modCount = RangeSet.this.modCount;
 
         /** The array length. */
-        private int length = (array != null) ? Array.getLength(array) : 0;
+        private int length = array != null ? Array.getLength(array) : 0;
 
         /** Current position in {@link RangeSet#array}. */
         private int position;

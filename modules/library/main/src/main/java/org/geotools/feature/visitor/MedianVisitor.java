@@ -245,13 +245,13 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
         int index = list.size() / 2;
 
-        if ((list.size() % 2) == 0) {
+        if (list.size() % 2 == 0) {
             // even number of elements, so we must average the 2 middle ones, or
             // return a list for non-numeric elements
             Object input1 = list.get(index - 1);
             Object input2 = list.get(index);
 
-            if ((input1 instanceof Number) && (input2 instanceof Number)) {
+            if (input1 instanceof Number && input2 instanceof Number) {
                 Number num1 = (Number) input1;
                 Number num2 = (Number) input2;
                 Number[] numbers = new Number[2];

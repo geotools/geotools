@@ -154,9 +154,9 @@ public class ClassifyByRangeProcess implements VectorProcess {
             for (int count = 1; count <= ranges.size(); count++) {
                 outputValues[count - 1] = count + "";
             }
-            outputValues[ranges.size()] = (ranges.size() + 1 + "");
+            outputValues[ranges.size()] = ranges.size() + 1 + "";
         }
-        if (outputValues.length != (ranges.size() + 1)) {
+        if (outputValues.length != ranges.size() + 1) {
             throw new ProcessException("values are not consistent with thresholds (should be +1)");
         }
         for (int count = 0; count < ranges.size(); count++) {

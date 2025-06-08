@@ -219,7 +219,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             setElement(i, srcDim, translate);
         }
         setElement(dstDim, srcDim, 1);
-        assert (srcDim != dstDim) || isAffine() : this;
+        assert srcDim != dstDim || isAffine() : this;
     }
 
     /**
@@ -336,7 +336,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             }
         }
         setElement(dstAxis.length, srcAxis.length, 1);
-        assert (srcAxis.length != dstAxis.length) || isAffine() : this;
+        assert srcAxis.length != dstAxis.length || isAffine() : this;
     }
 
     //
@@ -637,7 +637,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         result = prime * result + mat.numCols;
         for (double d : mat.data) {
             long bits = Double.doubleToRawLongBits(d);
-            result = prime * result + ((int) (bits ^ (bits >>> 32)));
+            result = prime * result + (int) (bits ^ bits >>> 32);
         }
         return result;
     }
@@ -762,7 +762,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             numRow++;
             assert numData % numRow == 0 : numData;
         }
-        data = (data != null) ? XArray.resize(data, numData) : new double[0];
+        data = data != null ? XArray.resize(data, numData) : new double[0];
         return new GeneralMatrix(numRow, numData / numRow, data);
     }
 

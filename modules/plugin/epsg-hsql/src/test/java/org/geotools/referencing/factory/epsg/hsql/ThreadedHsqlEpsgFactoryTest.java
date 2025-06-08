@@ -305,7 +305,7 @@ public class ThreadedHsqlEpsgFactoryTest {
 
         // sleep and force gc to allow the backing store to be released
         long start = System.currentTimeMillis();
-        while ((System.currentTimeMillis() - start) < 4000 && factory.isConnected()) {
+        while (System.currentTimeMillis() - start < 4000 && factory.isConnected()) {
             Thread.currentThread().sleep(200);
             System.gc();
             System.runFinalization();

@@ -74,7 +74,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
                 Literal literal = (Literal) getParameters().get(2);
                 percentages = (Boolean) literal.getValue();
             }
-            if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
+            if (globalMin instanceof Number && globalMax instanceof Number) {
                 result = calculateNumerical(classNum, globalMin, globalMax);
                 if (percentages) result.setPercentages(getNumericalPercentages(classNum, result, featureCollection));
             } else {
@@ -102,8 +102,8 @@ public class EqualIntervalFunction extends ClassificationFunction {
         Comparable[] localMax = new Comparable[classNum];
         for (int i = 0; i < classNum; i++) {
             // calculate the min + max values
-            localMin[i] = Double.valueOf(((Number) globalMin).doubleValue() + (i * slotWidth));
-            localMax[i] = Double.valueOf(((Number) globalMax).doubleValue() - ((classNum - i - 1) * slotWidth));
+            localMin[i] = Double.valueOf(((Number) globalMin).doubleValue() + i * slotWidth);
+            localMax[i] = Double.valueOf(((Number) globalMax).doubleValue() - (classNum - i - 1) * slotWidth);
             // determine number of decimal places to allow
             int decPlaces = decimalPlaces(slotWidth);
             // clean up truncation error
@@ -122,7 +122,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
                     localMax[i] = Double.valueOf(fixRound(((Number) localMax[i]).doubleValue(), decPlaces, true));
             }
             // synchronize min with previous max
-            if ((i != 0) && !localMin[i].equals(localMax[i - 1])) {
+            if (i != 0 && !localMin[i].equals(localMax[i - 1])) {
                 localMin[i] = localMax[i - 1];
             }
         }
@@ -165,25 +165,25 @@ public class EqualIntervalFunction extends ClassificationFunction {
         for (int binIndex = 0; binIndex < classNum; binIndex++) {
             // store min
             if (binIndex < localMin.length)
-                localMin[binIndex] = (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
+                localMin[binIndex] = itemIndex < values.length ? values[itemIndex] : values[values.length - 1];
             else
                 localMin[localMin.length - 1] =
-                        (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
+                        itemIndex < values.length ? values[itemIndex] : values[values.length - 1];
             itemIndex += binPop;
             // store max
             if (binIndex == classNum - 1) {
                 if (binIndex < localMax.length)
-                    localMax[binIndex] = (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
+                    localMax[binIndex] = itemIndex < values.length ? values[itemIndex] : values[values.length - 1];
                 else
                     localMax[localMax.length - 1] =
-                            (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
+                            itemIndex < values.length ? values[itemIndex] : values[values.length - 1];
             } else {
                 if (binIndex < localMax.length)
                     localMax[binIndex] =
-                            (itemIndex + 1 < values.length ? values[itemIndex + 1] : values[values.length - 1]);
+                            itemIndex + 1 < values.length ? values[itemIndex + 1] : values[values.length - 1];
                 else
                     localMax[localMax.length - 1] =
-                            (itemIndex + 1 < values.length ? values[itemIndex + 1] : values[values.length - 1]);
+                            itemIndex + 1 < values.length ? values[itemIndex + 1] : values[values.length - 1];
             }
             if (lastBigBin == binIndex) binPop--; // decrease the number of items in a bin for the
             // next iteration
@@ -205,7 +205,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         double classMembers = (double) totalSize / classNum;
         double[] percentages = new double[classNum];
         for (int i = 0; i < classNum; i++) {
-            percentages[i] = (classMembers / totalSize) * 100;
+            percentages[i] = classMembers / totalSize * 100;
             if (lastBigBin != 0 && lastBigBin == i) {
                 classMembers--;
             }

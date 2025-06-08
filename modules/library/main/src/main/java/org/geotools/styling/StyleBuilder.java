@@ -1552,7 +1552,7 @@ public class StyleBuilder {
         LOGGER.fine("added low class " + breaks[0] + " " + colors[0]);
 
         //        LOGGER.fine(rules[0].toString());
-        for (int i = 1; i < (colors.length - 1); i++) {
+        for (int i = 1; i < colors.length - 1; i++) {
             rules[i] = sf.createRule();
 
             Expression expr = value;
@@ -1638,11 +1638,11 @@ public class StyleBuilder {
         ColorMap colorMap = sf.createColorMap();
         colorMap.setType(type);
 
-        if ((labels == null)
-                || (quantities == null)
-                || (colors == null)
-                || (labels.length != quantities.length)
-                || (quantities.length != colors.length)) {
+        if (labels == null
+                || quantities == null
+                || colors == null
+                || labels.length != quantities.length
+                || quantities.length != colors.length) {
             throw new IllegalArgumentException(
                     "Labels, quantities and colors arrays should be not null and have the same size");
         }

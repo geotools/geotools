@@ -486,7 +486,7 @@ public class SLDParser {
 
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -532,7 +532,7 @@ public class SLDParser {
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -567,7 +567,7 @@ public class SLDParser {
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -586,7 +586,7 @@ public class SLDParser {
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -617,7 +617,7 @@ public class SLDParser {
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -674,7 +674,7 @@ public class SLDParser {
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -738,7 +738,7 @@ public class SLDParser {
         for (int j = 0; j < length; j++) {
             Node child = children.item(j);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE) || (child.getFirstChild() == null)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE || child.getFirstChild() == null) {
                 continue;
             }
             if (LOGGER.isLoggable(Level.FINEST)) {
@@ -782,7 +782,7 @@ public class SLDParser {
         for (int j = 0; j < length; j++) {
             Node child = children.item(j);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE) || (child.getFirstChild() == null)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE || child.getFirstChild() == null) {
                 continue;
             }
             // System.out.println("The child is: " + child.getNodeName() + " or
@@ -832,7 +832,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
 
@@ -884,7 +884,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
 
@@ -907,7 +907,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -940,8 +940,8 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("ElseFilter")) {
                 rule.setElseFilter(true);
             } else if (childName.equalsIgnoreCase("LegendGraphic")) {
-                findElements(((Element) child), graphicSt);
-                NodeList g = findElements(((Element) child), graphicSt);
+                findElements((Element) child, graphicSt);
+                NodeList g = findElements((Element) child, graphicSt);
                 final int l = g.getLength();
                 for (int k = 0; k < l; k++) {
                     Graphic graphic = parseGraphic(g.item(k));
@@ -989,7 +989,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null)) {
+            if (child == null) {
                 continue;
             } else if (child.getNodeType() == Node.TEXT_NODE || child.getNodeType() == Node.CDATA_SECTION_NODE) {
                 // append text as is
@@ -1066,7 +1066,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1111,7 +1111,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1155,7 +1155,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1255,7 +1255,7 @@ public class SLDParser {
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1415,7 +1415,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1440,7 +1440,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1477,7 +1477,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1505,7 +1505,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1532,7 +1532,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1584,7 +1584,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1612,7 +1612,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1657,7 +1657,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1691,7 +1691,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1761,7 +1761,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1810,7 +1810,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -1839,7 +1839,7 @@ public class SLDParser {
                     LOGGER.finest("format child is " + child);
                     LOGGER.finest("setting ExtGraph format " + getFirstChildValue(child));
                 }
-                format = (getFirstChildValue(child));
+                format = getFirstChildValue(child);
             } else if (childName.equalsIgnoreCase("customProperty")) {
                 if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("custom child is " + child);
                 String propName = child.getAttributes().getNamedItem("name").getNodeValue();
@@ -1910,7 +1910,7 @@ public class SLDParser {
     /** Internal parse method - made protected for unit testing */
     protected Stroke parseStroke(Node root) {
         Stroke stroke = factory.getDefaultStroke();
-        NodeList list = findElements(((Element) root), "GraphicFill");
+        NodeList list = findElements((Element) root, "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
             if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("stroke: found a graphic fill " + list.item(0));
@@ -1920,7 +1920,7 @@ public class SLDParser {
             for (int i = 0; i < kids.getLength(); i++) {
                 Node child = kids.item(i);
 
-                if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
                 String childName = child.getLocalName();
@@ -1935,7 +1935,7 @@ public class SLDParser {
             }
         }
 
-        list = findElements(((Element) root), "GraphicStroke");
+        list = findElements((Element) root, "GraphicStroke");
         length = list.getLength();
         if (length > 0) {
             if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("stroke: found a graphic stroke " + list.item(0));
@@ -1945,7 +1945,7 @@ public class SLDParser {
             for (int i = 0; i < kids.getLength(); i++) {
                 Node child = kids.item(i);
 
-                if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
                 String childName = child.getLocalName();
@@ -1960,12 +1960,12 @@ public class SLDParser {
             }
         }
 
-        list = findElements(((Element) root), "CssParameter");
+        list = findElements((Element) root, "CssParameter");
         length = list.getLength();
         for (int i = 0; i < length; i++) {
             Node child = list.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
 
@@ -2072,7 +2072,7 @@ public class SLDParser {
         }
 
         Fill fill = factory.getDefaultFill();
-        NodeList list = findElements(((Element) root), "GraphicFill");
+        NodeList list = findElements((Element) root, "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
             if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("fill found a graphic fill " + list.item(0));
@@ -2082,7 +2082,7 @@ public class SLDParser {
             for (int i = 0; i < kids.getLength(); i++) {
                 Node child = kids.item(i);
 
-                if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
                 String childName = child.getLocalName();
@@ -2097,12 +2097,12 @@ public class SLDParser {
             }
         }
 
-        list = findElements(((Element) root), "CssParameter");
+        list = findElements((Element) root, "CssParameter");
         length = list.getLength();
         for (int i = 0; i < length; i++) {
             Node child = list.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
 
@@ -2176,7 +2176,7 @@ public class SLDParser {
 
             // Added mixed="true" management through concatenation of text and
             // expression nodes
-            if ((child == null)) {
+            if (child == null) {
                 continue;
             } else if (child.getNodeType() == Node.TEXT_NODE) {
                 String value = child.getNodeValue();
@@ -2322,12 +2322,12 @@ public class SLDParser {
 
         Font font = factory.getDefaultFont();
         boolean firstFontFamily = true;
-        NodeList list = findElements(((Element) root), "CssParameter");
+        NodeList list = findElements((Element) root, "CssParameter");
         int length = list.getLength();
         for (int i = 0; i < length; i++) {
             Node child = list.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
 
@@ -2370,7 +2370,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -2402,7 +2402,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -2410,11 +2410,11 @@ public class SLDParser {
                 childName = child.getNodeName();
             }
             if (childName.equalsIgnoreCase("AnchorPoint")) {
-                ap = (parseAnchorPoint(child));
+                ap = parseAnchorPoint(child);
             } else if (childName.equalsIgnoreCase("Displacement")) {
-                dp = (parseDisplacement(child));
+                dp = parseDisplacement(child);
             } else if (childName.equalsIgnoreCase("Rotation")) {
-                rotation = (parseCssParameter(child));
+                rotation = parseCssParameter(child);
             }
         }
 
@@ -2440,7 +2440,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -2471,7 +2471,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -2479,9 +2479,9 @@ public class SLDParser {
                 childName = child.getNodeName();
             }
             if (childName.equalsIgnoreCase("AnchorPointX")) {
-                x = (parseCssParameter(child));
+                x = parseCssParameter(child);
             } else if (childName.equalsIgnoreCase("AnchorPointY")) {
-                y = (parseCssParameter(child));
+                y = parseCssParameter(child);
             }
         }
 
@@ -2503,7 +2503,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -2511,11 +2511,11 @@ public class SLDParser {
                 childName = child.getNodeName();
             }
             if (childName.equalsIgnoreCase("DisplacementX")) {
-                x = (parseCssParameter(child));
+                x = parseCssParameter(child);
             }
 
             if (childName.equalsIgnoreCase("DisplacementY")) {
-                y = (parseCssParameter(child));
+                y = parseCssParameter(child);
             }
         }
 
@@ -2536,7 +2536,7 @@ public class SLDParser {
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();

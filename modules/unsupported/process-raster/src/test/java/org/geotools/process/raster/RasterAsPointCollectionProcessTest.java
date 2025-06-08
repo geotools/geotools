@@ -421,8 +421,8 @@ public class RasterAsPointCollectionProcessTest {
                     // Selection of the associated point
                     Point point = (Point) ft.getDefaultGeometry();
                     Point rasterPoint = (Point) JTS.transform(point, w2g);
-                    int x = (int) (rasterPoint.getX());
-                    int y = (int) (rasterPoint.getY());
+                    int x = (int) rasterPoint.getX();
+                    int y = (int) rasterPoint.getY();
                     // Selection of the value for the single band for the selected position
                     int sampleIMG = imageIterator.getSample(x, y, 0);
                     int sampleColl = (Short) ft.getAttribute(bandName);

@@ -159,8 +159,8 @@ public class GridCoverageReaderHelperTest {
         at = (AffineTransform) coverages.get(0).getGridGeometry().getGridToCRS();
 
         // Accurate resolution has not been used.
-        assertTrue(Math.abs(at.getScaleX()) > (originalResolution * 3));
-        assertTrue(Math.abs(at.getScaleY()) > (originalResolution * 3));
+        assertTrue(Math.abs(at.getScaleX()) > originalResolution * 3);
+        assertTrue(Math.abs(at.getScaleY()) > originalResolution * 3);
     }
 
     @Test

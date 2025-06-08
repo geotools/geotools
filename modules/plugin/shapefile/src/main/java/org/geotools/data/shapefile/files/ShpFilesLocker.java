@@ -100,10 +100,10 @@ class ShpFilesLocker {
      */
     public void compare(URL url2, Object requestor) {
         URL url = this.url;
-        assert (url2 == url) : "Expected: " + url + " but got: " + url2;
-        assert (reader == null || requestor == reader)
+        assert url2 == url : "Expected: " + url + " but got: " + url2;
+        assert reader == null || requestor == reader
                 : "Expected the requestor and the reader to be the same object: " + reader.id();
-        assert (writer == null || requestor == writer)
+        assert writer == null || requestor == writer
                 : "Expected the requestor and the writer to be the same object: " + writer.id();
     }
 
@@ -130,9 +130,9 @@ class ShpFilesLocker {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((reader == null) ? 0 : reader.hashCode());
-        result = prime * result + ((url == null) ? 0 : url.hashCode());
-        result = prime * result + ((writer == null) ? 0 : writer.hashCode());
+        result = prime * result + (reader == null ? 0 : reader.hashCode());
+        result = prime * result + (url == null ? 0 : url.hashCode());
+        result = prime * result + (writer == null ? 0 : writer.hashCode());
         return result;
     }
 

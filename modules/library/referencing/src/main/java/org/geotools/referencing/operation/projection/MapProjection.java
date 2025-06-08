@@ -297,8 +297,8 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
         scaleFactor = doubleValue(expected, AbstractProvider.SCALE_FACTOR, values);
         falseEasting = doubleValue(expected, AbstractProvider.FALSE_EASTING, values);
         falseNorthing = doubleValue(expected, AbstractProvider.FALSE_NORTHING, values);
-        isSpherical = (semiMajor == semiMinor);
-        excentricitySquared = 1.0 - (semiMinor * semiMinor) / (semiMajor * semiMajor);
+        isSpherical = semiMajor == semiMinor;
+        excentricitySquared = 1.0 - semiMinor * semiMinor / (semiMajor * semiMajor);
         excentricity = sqrt(excentricitySquared);
         globalScale = scaleFactor * semiMajor;
         ensureLongitudeInRange(AbstractProvider.CENTRAL_MERIDIAN, centralMeridian, true);
@@ -410,8 +410,8 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     static void ensureLatitudeInRange(final ParameterDescriptor name, double y, final boolean edge)
             throws IllegalArgumentException {
         if (edge
-                ? (y >= Latitude.MIN_VALUE * PI / 180 && y <= Latitude.MAX_VALUE * PI / 180)
-                : (y > Latitude.MIN_VALUE * PI / 180 && y < Latitude.MAX_VALUE * PI / 180)) {
+                ? y >= Latitude.MIN_VALUE * PI / 180 && y <= Latitude.MAX_VALUE * PI / 180
+                : y > Latitude.MIN_VALUE * PI / 180 && y < Latitude.MAX_VALUE * PI / 180) {
             return;
         }
         y = toDegrees(y);
@@ -433,8 +433,8 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     static void ensureLongitudeInRange(final ParameterDescriptor name, double x, final boolean edge)
             throws IllegalArgumentException {
         if (edge
-                ? (x >= Longitude.MIN_VALUE * PI / 180 && x <= Longitude.MAX_VALUE * PI / 180)
-                : (x > Longitude.MIN_VALUE * PI / 180 && x < Longitude.MAX_VALUE * PI / 180)) {
+                ? x >= Longitude.MIN_VALUE * PI / 180 && x <= Longitude.MAX_VALUE * PI / 180
+                : x > Longitude.MIN_VALUE * PI / 180 && x < Longitude.MAX_VALUE * PI / 180) {
             return;
         }
         x = toDegrees(x);
@@ -456,9 +456,8 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
      */
     private static boolean verifyGeographicRanges(final AbstractMathTransform tr, final double x, final double y) {
         // Note: the following tests should not fails for NaN values.
-        final boolean xOut =
-                (x < (Longitude.MIN_VALUE - ANGLE_TOLERANCE) || x > (Longitude.MAX_VALUE + ANGLE_TOLERANCE));
-        final boolean yOut = (y < (Latitude.MIN_VALUE - ANGLE_TOLERANCE) || y > (Latitude.MAX_VALUE + ANGLE_TOLERANCE));
+        final boolean xOut = x < Longitude.MIN_VALUE - ANGLE_TOLERANCE || x > Longitude.MAX_VALUE + ANGLE_TOLERANCE;
+        final boolean yOut = y < Latitude.MIN_VALUE - ANGLE_TOLERANCE || y > Latitude.MAX_VALUE + ANGLE_TOLERANCE;
         if (!xOut && !yOut) {
             return false;
         }
@@ -851,7 +850,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
         ptDst.setLocation(globalScale * ptDst.getX() + falseEasting, globalScale * ptDst.getY() + falseNorthing);
 
         if (invertible) {
-            assert checkReciprocal(ptDst, (ptSrc != ptDst) ? ptSrc : new Point2D.Double(x, y), true);
+            assert checkReciprocal(ptDst, ptSrc != ptDst ? ptSrc : new Point2D.Double(x, y), true);
         }
         return ptDst;
     }
@@ -872,7 +871,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
          * Ce sera le cas si les tableaux source et destination se
          * chevauchent et que la destination est après la source.
          */
-        final boolean reverse = (srcPts == dstPts && srcOff < dstOff && srcOff + (2 * numPts) > dstOff);
+        final boolean reverse = srcPts == dstPts && srcOff < dstOff && srcOff + 2 * numPts > dstOff;
         if (reverse) {
             srcOff += 2 * numPts;
             dstOff += 2 * numPts;
@@ -914,7 +913,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     @Override
     public final void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
             throws ProjectionException {
-        final boolean reverse = (srcPts == dstPts && srcOff < dstOff && srcOff + (2 * numPts) > dstOff);
+        final boolean reverse = srcPts == dstPts && srcOff < dstOff && srcOff + 2 * numPts > dstOff;
         if (reverse) {
             srcOff += 2 * numPts;
             dstOff += 2 * numPts;
@@ -1002,7 +1001,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
                     warningLogged();
                 }
             }
-            assert checkReciprocal(ptDst, (ptSrc != ptDst) ? ptSrc : new Point2D.Double(x0, y0), false);
+            assert checkReciprocal(ptDst, ptSrc != ptDst ? ptSrc : new Point2D.Double(x0, y0), false);
             return ptDst;
         }
 
@@ -1022,7 +1021,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
              * Ce sera le cas si les tableaux source et destination se
              * chevauchent et que la destination est après la source.
              */
-            final boolean reverse = (src == dest && srcOffset < dstOffset && srcOffset + (2 * numPts) > dstOffset);
+            final boolean reverse = src == dest && srcOffset < dstOffset && srcOffset + 2 * numPts > dstOffset;
             if (reverse) {
                 srcOffset += 2 * numPts;
                 dstOffset += 2 * numPts;
@@ -1064,7 +1063,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
         @Override
         public final void transform(final float[] src, int srcOffset, final float[] dest, int dstOffset, int numPts)
                 throws ProjectionException {
-            final boolean reverse = (src == dest && srcOffset < dstOffset && srcOffset + (2 * numPts) > dstOffset);
+            final boolean reverse = src == dest && srcOffset < dstOffset && srcOffset + 2 * numPts > dstOffset;
             if (reverse) {
                 srcOffset += 2 * numPts;
                 dstOffset += 2 * numPts;
@@ -1134,7 +1133,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
             return 1;
         }
         // Be less strict when the point is near an edge.
-        return (abs(longitude) > 179) || (abs(latitude) > 89) ? 1E-1 : 3E-3;
+        return abs(longitude) > 179 || abs(latitude) > 89 ? 1E-1 : 3E-3;
     }
 
     /**
@@ -1230,10 +1229,10 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     /** Iteratively solve equation (7-9) from Snyder. */
     final double cphi2(final double ts) throws ProjectionException {
         final double eccnth = 0.5 * excentricity;
-        double phi = (PI / 2) - 2.0 * atan(ts);
+        double phi = PI / 2 - 2.0 * atan(ts);
         for (int i = 0; i < MAXIMUM_ITERATIONS; i++) {
             final double con = excentricity * sin(phi);
-            final double dphi = (PI / 2) - 2.0 * atan(ts * pow((1 - con) / (1 + con), eccnth)) - phi;
+            final double dphi = PI / 2 - 2.0 * atan(ts * pow((1 - con) / (1 + con), eccnth)) - phi;
             phi += dphi;
             if (abs(dphi) <= ITERATION_TOLERANCE) {
                 return phi;
@@ -1248,7 +1247,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
      * is the {@linkplain #excentricitySquared eccentricity squared}.
      */
     final double msfn(final double s, final double c) {
-        return c / sqrt(1.0 - (s * s) * excentricitySquared);
+        return c / sqrt(1.0 - s * s * excentricitySquared);
     }
 
     /** Computes function (15-9) and (9-13) from Snyder. Equivalent to negative of function (7-7). */
@@ -1305,7 +1304,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     double aasin(double v) {
         double av = abs(v);
         if (av >= 1.) {
-            return (v < 0. ? -PI / 2 : PI / 2);
+            return v < 0. ? -PI / 2 : PI / 2;
         }
         return asin(v);
     }

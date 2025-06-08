@@ -43,7 +43,7 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
         for (int r = 0; r < 256; r += 51) {
             for (int g = 0; g < 256; g += 51) {
                 for (int b = 0; b < 256; b += 51) {
-                    cmap[i] = opaqueAlpha | (r << 16) | (g << 8) | b;
+                    cmap[i] = opaqueAlpha | r << 16 | g << 8 | b;
                     i++;
                 }
             }
@@ -51,15 +51,15 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
 
         // The gray scale. Make sure we end up with gray == 255
         int grayIncr = 256 / (255 - i);
-        int gray = 255 - ((255 - i - 1) * grayIncr);
+        int gray = 255 - (255 - i - 1) * grayIncr;
 
         for (; i < 255; i++) {
-            cmap[i] = opaqueAlpha | (gray << 16) | (gray << 8) | gray;
+            cmap[i] = opaqueAlpha | gray << 16 | gray << 8 | gray;
             gray += grayIncr;
         }
 
         // setup the transparent color (alpha == 0)
-        cmap[255] = (255 << 16) | (255 << 8) | 255;
+        cmap[255] = 255 << 16 | 255 << 8 | 255;
 
         // create the color model
         return new IndexColorModel(8, 256, cmap, 0, true, 255, DataBuffer.TYPE_BYTE);
@@ -143,7 +143,7 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
         final int numColors = ((Integer) param.getObjectParameter(1)).intValue();
         final int alphaThreashold = ((Integer) param.getObjectParameter(2)).intValue();
         if (alphaThreashold < 0 || alphaThreashold > 255) return false;
-        if (numColors <= 0 || (numColors > 256)) return false;
+        if (numColors <= 0 || numColors > 256) return false;
         return true;
     }
 }

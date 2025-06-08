@@ -227,7 +227,7 @@ public class LetterConflictTest {
                 t0 = System.nanoTime();
                 image1 = RendererBaseTest.renderImage(renderer, bounds2, null);
                 t1 = System.nanoTime();
-                ta += (t1 - t0);
+                ta += t1 - t0;
             }
             LOGGER.fine("time false " + ta / 10000000);
             mc.dispose();
@@ -246,7 +246,7 @@ public class LetterConflictTest {
                 image2 = RendererBaseTest.renderImage(renderer, bounds2, null);
                 t3 = System.nanoTime();
                 // System.out.println("time true " + (t3 - t2) + " ms");
-                ta += (t3 - t2);
+                ta += t3 - t2;
             }
             LOGGER.fine("time true " + ta / 10000000);
             mc.dispose();

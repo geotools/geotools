@@ -764,7 +764,7 @@ public class HeterogenousCRSTest {
                 // grab the streams from the reader, the particular implementation being
                 // used has an accessor for the source files
                 Object imageReader = inputImage.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
-                if ((imageReader != null) && (imageReader instanceof ImageReader)) {
+                if (imageReader != null && imageReader instanceof ImageReader) {
                     final ImageReader reader = (ImageReader) imageReader;
                     final ImageInputStream stream = (ImageInputStream) reader.getInput();
                     if (stream instanceof FileImageInputStreamExtImpl) {

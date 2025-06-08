@@ -125,7 +125,7 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
 
         GridEnvelope doubleRange = reader.getOriginalGridRange();
         dim.setSize(doubleRange.getSpan(0) * 2, doubleRange.getSpan(1) * 2);
-        rasterArea = ((GridEnvelope2D) doubleRange);
+        rasterArea = (GridEnvelope2D) doubleRange;
         rasterArea.setSize(dim);
         range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(doubleRange, doubleEnvelope));

@@ -46,7 +46,7 @@ public class BaseCoverageAlgebraProcess {
             throws ProcessException {
         if (coverageA == null || coverageB == null) {
             String coveragesNull =
-                    coverageA == null ? (coverageB == null ? "coverageA and coverageB" : "coverageA") : "coverageB";
+                    coverageA == null ? coverageB == null ? "coverageA and coverageB" : "coverageA" : "coverageB";
             throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, coveragesNull));
         }
 

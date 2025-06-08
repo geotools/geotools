@@ -425,9 +425,9 @@ public class GeoPackageTest {
             geopkg.add(entry, shp.getFeatureSource(), null);
             while (re.hasNext()) {
                 SimpleFeature f = re.next();
-                try (ResultSet rs = st.executeQuery((String.format(
+                try (ResultSet rs = st.executeQuery(String.format(
                         "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID="
-                                + f.getProperty("ID").getValue())))) {
+                                + f.getProperty("ID").getValue()))) {
                     assertEquals(
                             rs.getDouble(1),
                             ((Geometry) f.getDefaultGeometry())
@@ -542,9 +542,9 @@ public class GeoPackageTest {
 
             while (re.hasNext()) {
                 SimpleFeature f = re.next();
-                try (ResultSet rs = st.executeQuery((String.format(
+                try (ResultSet rs = st.executeQuery(String.format(
                         "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID="
-                                + f.getProperty("ID").getValue())))) {
+                                + f.getProperty("ID").getValue()))) {
                     assertEquals(
                             rs.getDouble(1),
                             ((Geometry) f.getDefaultGeometry())
@@ -1022,7 +1022,7 @@ public class GeoPackageTest {
     void assertSimilar(SimpleFeature expected, SimpleFeature actual) {
         assertNotNull(actual);
 
-        assertTrue(((Geometry) expected.getDefaultGeometry()).equals(((Geometry) actual.getDefaultGeometry())));
+        assertTrue(((Geometry) expected.getDefaultGeometry()).equals((Geometry) actual.getDefaultGeometry()));
         for (AttributeDescriptor d : expected.getType().getAttributeDescriptors()) {
             Object e = expected.getAttribute(d.getLocalName());
             Object a = actual.getAttribute(d.getLocalName());

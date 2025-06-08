@@ -326,7 +326,7 @@ public class XsDateTimeFormat extends Format {
                         return null;
                     }
                     c = pString.charAt(offset);
-                    if ((i != 2 && Character.isDigit(c)) || (i == 2 && c == ':')) {
+                    if (i != 2 && Character.isDigit(c) || i == 2 && c == ':') {
                         digits.append(c);
                     } else {
                         pParsePosition.setErrorIndex(offset);

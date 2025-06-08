@@ -174,7 +174,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
     public ParameterValue<?> parameter(String name) throws ParameterNotFoundException {
         ensureNonNull("name", name);
         name = name.trim();
-        final MatrixParameterDescriptors descriptor = ((MatrixParameterDescriptors) this.descriptor);
+        final MatrixParameterDescriptors descriptor = (MatrixParameterDescriptors) this.descriptor;
         final String prefix = descriptor.prefix;
         RuntimeException cause = null;
         if (name.regionMatches(true, 0, prefix, 0, prefix.length())) {
@@ -336,7 +336,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      */
     @SuppressWarnings("unchecked") // Because of array creation
     public void setMatrix(final Matrix matrix) {
-        final MatrixParameterDescriptors matrixDescriptor = ((MatrixParameterDescriptors) this.descriptor);
+        final MatrixParameterDescriptors matrixDescriptor = (MatrixParameterDescriptors) this.descriptor;
         final int numRow = matrix.getNumRow();
         final int numCol = matrix.getNumCol();
         this.numRow.setValue(numRow);

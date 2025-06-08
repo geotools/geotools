@@ -134,8 +134,8 @@ public final class GeoTiffException extends IOException {
             final TiePoint[] modelTiePoints = metadata.getModelTiePoints();
             if (modelTiePoints != null) {
                 final int numTiePoints = modelTiePoints.length;
-                message.println("(" + (numTiePoints) + " tie points)");
-                for (int i = 0; i < (numTiePoints); i++) {
+                message.println("(" + numTiePoints + " tie points)");
+                for (int i = 0; i < numTiePoints; i++) {
                     message.print("TP #" + i + ": ");
                     message.print("[" + modelTiePoints[i].getValueAt(0));
                     message.print("," + modelTiePoints[i].getValueAt(1));

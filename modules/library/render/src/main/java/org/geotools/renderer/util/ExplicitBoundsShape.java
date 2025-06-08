@@ -123,7 +123,7 @@ public class ExplicitBoundsShape implements Shape {
         if (obj instanceof ExplicitBoundsShape) {
             ExplicitBoundsShape other = (ExplicitBoundsShape) obj;
             boolean result = shape.equals(other.shape);
-            if (bounds == null) return result && (other.bounds == null);
+            if (bounds == null) return result && other.bounds == null;
             return result & bounds.equals(other.bounds);
         } else if (obj instanceof Shape) {
             if (bounds == null) return shape.equals(obj);

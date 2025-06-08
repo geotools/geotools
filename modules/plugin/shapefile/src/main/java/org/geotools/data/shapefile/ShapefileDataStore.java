@@ -345,7 +345,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
             int fieldLen = FeatureTypes.getFieldLength(type);
             if (fieldLen == FeatureTypes.ANY_LENGTH) fieldLen = 255;
-            if ((colType == Integer.class) || (colType == Short.class) || (colType == Byte.class)) {
+            if (colType == Integer.class || colType == Short.class || colType == Byte.class) {
                 header.addColumn(colName, 'N', Math.min(fieldLen, 9), 0);
             } else if (colType == Long.class) {
                 header.addColumn(colName, 'N', Math.min(fieldLen, 19), 0);

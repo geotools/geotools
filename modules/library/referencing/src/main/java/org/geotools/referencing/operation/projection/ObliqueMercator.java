@@ -408,7 +408,7 @@ public class ObliqueMercator extends MapProjection {
             ensureLongitudeInRange(Provider.LONGITUDE_OF_CENTRE, longitudeOfCentre, true);
             azimuth = doubleValue(expected, Provider.AZIMUTH, parameters);
             // Already checked for +-360 deg. above.
-            if ((azimuth > -1.5 * PI && azimuth < -0.5 * PI) || (azimuth > 0.5 * PI && azimuth < 1.5 * PI)) {
+            if (azimuth > -1.5 * PI && azimuth < -0.5 * PI || azimuth > 0.5 * PI && azimuth < 1.5 * PI) {
                 final String name = Provider.AZIMUTH.getName().getCode();
                 final Angle value = new Angle(toDegrees(azimuth));
                 throw new InvalidParameterValueException(
@@ -426,7 +426,7 @@ public class ObliqueMercator extends MapProjection {
                 if (abs(abs(temp) - 1.0) > EPSILON) {
                     throw new IllegalArgumentException(ErrorKeys.TOLERANCE_ERROR);
                 }
-                temp = (temp > 0) ? 1.0 : -1.0;
+                temp = temp > 0 ? 1.0 : -1.0;
             }
             centralMeridian = longitudeOfCentre - asin(temp) / B;
         }
@@ -506,7 +506,7 @@ public class ObliqueMercator extends MapProjection {
             if (abs(temp) < EPSILON_LATITUDE) {
                 u = AB * x;
             } else {
-                u = ArB * atan2((S * cosgamma0 + V * singamma0), temp);
+                u = ArB * atan2(S * cosgamma0 + V * singamma0, temp);
             }
         } else {
             v = y > 0 ? v_pole_n : v_pole_s;
@@ -539,7 +539,7 @@ public class ObliqueMercator extends MapProjection {
         } else {
             y = pow(E / sqrt((1. + Up) / (1. - Up)), 1.0 / B); // calculate t
             y = cphi2(y);
-            x = -atan2((Sp * cosgamma0 - Vp * singamma0), cos(BrA * u)) / B;
+            x = -atan2(Sp * cosgamma0 - Vp * singamma0, cos(BrA * u)) / B;
         }
         if (ptDst != null) {
             ptDst.setLocation(x, y);

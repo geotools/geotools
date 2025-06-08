@@ -209,7 +209,7 @@ public class SunRelativePosition {
      */
     private static double meanObliquityOfEcliptic(final double t) {
         final double seconds = 21.448 - t * (46.8150 + t * (0.00059 - t * 0.001813));
-        return 23.0 + (26.0 + (seconds / 60.0)) / 60.0;
+        return 23.0 + (26.0 + seconds / 60.0) / 60.0;
     }
 
     /**
@@ -248,7 +248,7 @@ public class SunRelativePosition {
      * @return Time in minutes from beginnning of day in UTC.
      */
     private static double solarNoonTime(final double lon, final double eqTime) {
-        return 720.0 + (lon * 4.0) - eqTime;
+        return 720.0 + lon * 4.0 - eqTime;
     }
 
     /**
@@ -350,14 +350,14 @@ public class SunRelativePosition {
         double solarDec = sunDeclination(time);
         double eqTime = equationOfTime(time);
         this.noonTime =
-                Math.round(solarNoonTime(longitude, eqTime) * (60 * 1000)) + (this.time / DAY_MILLIS) * DAY_MILLIS;
+                Math.round(solarNoonTime(longitude, eqTime) * (60 * 1000)) + this.time / DAY_MILLIS * DAY_MILLIS;
 
         // Formula below use longitude in degrees. Steps are:
         //   1) Extract the time part of the date, in minutes.
         //   2) Apply a correction for longitude and equation of time.
         //   3) Clamp in a 24 hours range (24 hours == 1440 minutes).
-        double trueSolarTime = ((julianDay + 0.5) - Math.floor(julianDay + 0.5)) * 1440;
-        trueSolarTime += (eqTime - 4.0 * longitude); // Correction in minutes.
+        double trueSolarTime = (julianDay + 0.5 - Math.floor(julianDay + 0.5)) * 1440;
+        trueSolarTime += eqTime - 4.0 * longitude; // Correction in minutes.
         trueSolarTime -= 1440 * Math.floor(trueSolarTime / 1440);
 
         // Convert all angles to radians.  From this point until
@@ -379,7 +379,7 @@ public class SunRelativePosition {
         ////    Compute azimuth in degrees    ////
         //////////////////////////////////////////
         if (Math.abs(azDenom) > 0.001) {
-            double azRad = ((Math.sin(latitude) * Math.cos(zenith)) - Math.sin(solarDec)) / azDenom;
+            double azRad = (Math.sin(latitude) * Math.cos(zenith) - Math.sin(solarDec)) / azDenom;
             if (azRad > +1) azRad = +1;
             if (azRad < -1) azRad = -1;
 
@@ -388,7 +388,7 @@ public class SunRelativePosition {
                 azimuth = -azimuth;
             }
         } else {
-            azimuth = (latitude > 0) ? 180 : 0;
+            azimuth = latitude > 0 ? 180 : 0;
         }
         azimuth -= 360 * Math.floor(azimuth / 360);
 

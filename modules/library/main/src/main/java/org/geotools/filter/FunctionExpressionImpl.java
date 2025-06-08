@@ -209,10 +209,10 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((fallback == null) ? 0 : fallback.hashCode());
-        result = prime * result + ((functionName == null) ? 0 : functionName.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((params == null) ? 0 : params.hashCode());
+        result = prime * result + (fallback == null ? 0 : fallback.hashCode());
+        result = prime * result + (functionName == null ? 0 : functionName.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (params == null ? 0 : params.hashCode());
         return result;
     }
 

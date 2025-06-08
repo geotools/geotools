@@ -467,11 +467,11 @@ abstract class KeysFetcher {
 
         public static Object increment(Object value) throws IOException {
             if (value instanceof Integer) {
-                return ((Integer) value) + 1;
+                return (Integer) value + 1;
             } else if (value instanceof Long) {
-                return ((Long) value) + 1;
+                return (Long) value + 1;
             } else if (value instanceof Short) {
-                return (short) (((Short) value) + 1);
+                return (short) ((Short) value + 1);
             } else if (value instanceof BigDecimal) {
                 return ((BigDecimal) value).add(BigDecimal.ONE);
             } else if (value instanceof BigInteger) {

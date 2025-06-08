@@ -131,7 +131,7 @@ public class MockHttpClient extends AbstractHttpClient {
             }
             return Arrays.stream(url.getQuery().split("&"))
                     .map(s -> s.split("="))
-                    .collect(Collectors.toMap(o -> decode(o[0]), o -> (o.length == 2 ? decode(o[1]) : "")));
+                    .collect(Collectors.toMap(o -> decode(o[0]), o -> o.length == 2 ? decode(o[1]) : ""));
         }
 
         private static String decode(final String encoded) {
@@ -152,10 +152,10 @@ public class MockHttpClient extends AbstractHttpClient {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((contentType == null) ? 0 : contentType.hashCode());
+            result = prime * result + (contentType == null ? 0 : contentType.hashCode());
             result = prime * result + (isGetRequest ? 1231 : 1237);
-            result = prime * result + ((kvp == null) ? 0 : kvp.hashCode());
-            result = prime * result + ((path == null) ? 0 : path.hashCode());
+            result = prime * result + (kvp == null ? 0 : kvp.hashCode());
+            result = prime * result + (path == null ? 0 : path.hashCode());
             result = prime * result + Arrays.hashCode(postContent);
             return result;
         }

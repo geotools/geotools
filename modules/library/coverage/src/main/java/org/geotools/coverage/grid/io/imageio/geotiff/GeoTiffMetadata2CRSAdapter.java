@@ -481,8 +481,8 @@ public final class GeoTiffMetadata2CRSAdapter {
             gm.setElement(0, 1, 0);
             gm.setElement(1, 0, 0);
 
-            gm.setElement(0, 2, tiePoints[0].getValueAt(3) - (scaleRaster2ModelLongitude * tiePointColumn));
-            gm.setElement(1, 2, tiePoints[0].getValueAt(4) - (scaleRaster2ModelLatitude * tiePointRow));
+            gm.setElement(0, 2, tiePoints[0].getValueAt(3) - scaleRaster2ModelLongitude * tiePointColumn);
+            gm.setElement(1, 2, tiePoints[0].getValueAt(4) - scaleRaster2ModelLatitude * tiePointRow);
 
             // make it a LinearTransform
             xform = ProjectiveTransform.create(gm);
@@ -744,7 +744,7 @@ public final class GeoTiffMetadata2CRSAdapter {
         double inverseFlattening = tempEll.getInverseFlattening();
         double semiMajorAxis = tempEll.getSemiMajorAxis();
         // setting missing parameters
-        parameters.parameter("semi_minor").setValue(semiMajorAxis * (1 - (1 / inverseFlattening)));
+        parameters.parameter("semi_minor").setValue(semiMajorAxis * (1 - 1 / inverseFlattening));
         parameters.parameter("semi_major").setValue(semiMajorAxis);
     }
 
@@ -893,7 +893,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 
             // we are going to use the provided EPSG code
             try {
-                datum = (GeodeticDatum) (this.allAuthoritiesFactory.createDatum("EPSG:" + datumCode));
+                datum = (GeodeticDatum) this.allAuthoritiesFactory.createDatum("EPSG:" + datumCode);
             } catch (Exception cce) {
                 final GeoTiffException ex = new GeoTiffException(metadata, cce.getLocalizedMessage(), cce);
                 throw ex;
@@ -945,14 +945,14 @@ public final class GeoTiffMetadata2CRSAdapter {
             // //
             // getting temporary parameters
             temp = metadata.getGeoKey(GeoTiffGCSCodes.GeogSemiMajorAxisGeoKey);
-            final double semiMajorAxis = (temp != null ? Double.parseDouble(temp) : Double.NaN);
+            final double semiMajorAxis = temp != null ? Double.parseDouble(temp) : Double.NaN;
             temp = metadata.getGeoKey(GeoTiffGCSCodes.GeogInvFlatteningGeoKey);
             final double inverseFlattening;
             if (temp != null) {
-                inverseFlattening = (temp != null ? Double.parseDouble(temp) : Double.NaN);
+                inverseFlattening = temp != null ? Double.parseDouble(temp) : Double.NaN;
             } else {
                 temp = metadata.getGeoKey(GeoTiffGCSCodes.GeogSemiMinorAxisGeoKey);
-                final double semiMinorAxis = (temp != null ? Double.parseDouble(temp) : Double.NaN);
+                final double semiMinorAxis = temp != null ? Double.parseDouble(temp) : Double.NaN;
                 inverseFlattening = semiMajorAxis / (semiMajorAxis - semiMinorAxis);
             }
             // look for the Ellipsoid first then build the datum
@@ -1028,7 +1028,7 @@ public final class GeoTiffMetadata2CRSAdapter {
         final String coordTrans = metadata.getGeoKey(GeoTiffPCSCodes.ProjCoordTransGeoKey);
 
         // throw descriptive exception if ProjCoordTransGeoKey not defined
-        if ((coordTrans == null) || coordTrans.equalsIgnoreCase(GeoTiffConstants.GTUserDefinedGeoKey_String)) {
+        if (coordTrans == null || coordTrans.equalsIgnoreCase(GeoTiffConstants.GTUserDefinedGeoKey_String)) {
             throw new GeoTiffException(
                     metadata,
                     "GeoTiffMetadata2CRSAdapter::createUserDefinedProjectionParameter(String name):User defined projections must specify"

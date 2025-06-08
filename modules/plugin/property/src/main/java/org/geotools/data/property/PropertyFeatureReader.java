@@ -99,7 +99,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
             if (line.startsWith("_=")) break;
         }
 
-        if ((line == null) || !line.startsWith("_=")) {
+        if (line == null || !line.startsWith("_=")) {
             throw new IOException("Property file schema not available found");
         }
         String typeSpec = line.substring(2);

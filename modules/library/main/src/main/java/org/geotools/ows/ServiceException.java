@@ -94,7 +94,7 @@ public class ServiceException extends SAXException {
      * @see SAXException#SAXException(java.lang.String)
      */
     public ServiceException(String msg, String code, String locator) {
-        super((msg == null) ? code : msg);
+        super(msg == null ? code : msg);
         this.code = code;
         this.locator = locator;
     }

@@ -304,7 +304,7 @@ public class Formatter {
         appendSeparator(true);
         int base = buffer.length();
         buffer.append(symbols.open);
-        final IdentifiedObject info = (formattable instanceof IdentifiedObject) ? (IdentifiedObject) formattable : null;
+        final IdentifiedObject info = formattable instanceof IdentifiedObject ? (IdentifiedObject) formattable : null;
         if (info != null) {
             final String c = getNameColor(info);
             if (c != null) {
@@ -355,7 +355,7 @@ public class Formatter {
                  * as the authority name (e.g. "EPSG").
                  */
                 InternationalString inter = authority.getTitle();
-                String title = (inter != null) ? inter.toString(symbols.locale) : null;
+                String title = inter != null ? inter.toString(symbols.locale) : null;
                 for (final InternationalString alt : authority.getAlternateTitles()) {
                     if (alt != null) {
                         final String candidate = alt.toString(symbols.locale);
@@ -425,7 +425,7 @@ public class Formatter {
             appendSeparator(false);
             setColor(CODELIST_COLOR);
             final String name = code.name();
-            final boolean needQuotes = (name.indexOf(' ') >= 0);
+            final boolean needQuotes = name.indexOf(' ') >= 0;
             if (needQuotes) {
                 buffer.append(symbols.quote);
             }
@@ -674,7 +674,7 @@ public class Formatter {
             return true;
         }
         // The "null" locale argument is required for getting the unlocalized version.
-        return (citation != null)
+        return citation != null
                 && authority
                         .getTitle()
                         .toString(null)
@@ -778,7 +778,7 @@ public class Formatter {
      * @return {@code true} if the WKT is invalid.
      */
     public boolean isInvalidWKT() {
-        return unformattable != null || (buffer != null && buffer.length() == 0);
+        return unformattable != null || buffer != null && buffer.length() == 0;
         /*
          * Note: we really use a "and" condition (not an other "or") for the buffer test because
          *       the buffer is reset to 'null' by AbstractParser after a successfull formatting.

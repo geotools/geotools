@@ -433,7 +433,7 @@ public final class Decimator {
         // coordinates can just be transformed directly
         if (spanx == -1 && spany == -1) {
             // do the xform if needed
-            if ((transform != null) && !transform.isIdentity()) {
+            if (transform != null && !transform.isIdentity()) {
                 transform.transform(coords, 0, coords, 0, ncoords);
                 seq.setArray(coords, 2);
             }
@@ -487,11 +487,11 @@ public final class Decimator {
         int actualCoords = 1;
         double lastX = coords[0];
         double lastY = coords[1];
-        for (int t = 1; t < (ncoords - 1); t++) {
+        for (int t = 1; t < ncoords - 1; t++) {
             // see if this one should be added
             double x = coords[t * 2];
             double y = coords[t * 2 + 1];
-            if ((Math.abs(x - lastX) > spanx) || (Math.abs(y - lastY) > spany)) {
+            if (Math.abs(x - lastX) > spanx || Math.abs(y - lastY) > spany) {
                 coords[actualCoords * 2] = x;
                 coords[actualCoords * 2 + 1] = y;
                 lastX = x;

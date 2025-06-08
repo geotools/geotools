@@ -388,7 +388,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -496,7 +496,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -746,7 +746,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -863,7 +863,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 3.0,
                 reader.getOriginalGridRange().getSpan(1) / 3.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -909,7 +909,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -1640,7 +1640,7 @@ public class ImageMosaicReaderTest {
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(10, 10);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -2990,7 +2990,7 @@ public class ImageMosaicReaderTest {
         Function<File, String> expectedLocation1 = d -> "world.200402.3x5400x2700.tiff";
         Function<File, String> expectedLocation2 =
                 d -> "../singleHarvest2/world.200405.3x5400x2700.tiff".replace('/', File.separatorChar);
-        Consumer<File> mosaicDirSetup = (dir) -> {};
+        Consumer<File> mosaicDirSetup = dir -> {};
 
         checkSingleFileHarvest(mosaicDirSetup, expectedLocation1, expectedLocation2);
     }
@@ -3003,7 +3003,7 @@ public class ImageMosaicReaderTest {
             File pf = d.getParentFile();
             return new File(pf, "singleHarvest2/world.200405.3x5400x2700.tiff").getAbsolutePath();
         };
-        Consumer<File> mosaicDirSetup = (dir) -> {
+        Consumer<File> mosaicDirSetup = dir -> {
             File indexer = new File(dir, "indexer.properties");
             try {
                 String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
@@ -3023,7 +3023,7 @@ public class ImageMosaicReaderTest {
         Function<File, String> expectedLocation1 = d -> new File(d, "world.200402.3x5400x2700.tiff").getAbsolutePath();
         Function<File, String> expectedLocation2 =
                 d -> new File(d.getParentFile(), "singleHarvest2/world.200405.3x5400x2700.tiff").getAbsolutePath();
-        Consumer<File> mosaicDirSetup = (dir) -> {
+        Consumer<File> mosaicDirSetup = dir -> {
             File indexer = new File(dir, "indexer.properties");
             try {
                 String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
@@ -3533,7 +3533,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -4033,7 +4033,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -4346,7 +4346,7 @@ public class ImageMosaicReaderTest {
         // this should return an empty coverage
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         GeneralBounds envelope = reader.getOriginalEnvelope();
-        Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
@@ -4444,7 +4444,7 @@ public class ImageMosaicReaderTest {
         // this should return an empty coverage
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         GeneralBounds envelope = reader.getOriginalEnvelope();
-        Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
@@ -5652,7 +5652,7 @@ public class ImageMosaicReaderTest {
             final Dimension dim = new Dimension();
             GridEnvelope gridRange = reader.getOriginalGridRange();
             dim.setSize(gridRange.getSpan(0) / 15.8, gridRange.getSpan(1) / 15.8);
-            final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+            final Rectangle rasterArea = (GridEnvelope2D) gridRange;
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, envelope));

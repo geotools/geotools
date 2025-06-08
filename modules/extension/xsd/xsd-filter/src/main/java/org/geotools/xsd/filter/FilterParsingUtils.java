@@ -82,7 +82,7 @@ public class FilterParsingUtils {
             return filter;
         }
         // &lt;xsd:element ref="ogc:temporalOps"/&gt;
-        if ("temporalOps".equals(name) && (filter instanceof BinaryTemporalOperator)) {
+        if ("temporalOps".equals(name) && filter instanceof BinaryTemporalOperator) {
             return filter;
         }
 

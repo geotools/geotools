@@ -342,7 +342,7 @@ public class LabelCacheImpl implements LabelCache {
                     voParser.getBooleanOption(symbolizer, org.geotools.api.style.TextSymbolizer.GROUP_KEY, false);
             LabelCacheItem item =
                     buildLabelCacheItem(layerId, symbolizer, feature, shape, scaleRange, label, priorityValue);
-            if (!(group)) {
+            if (!group) {
                 labelCache.add(item);
             } else { // / --------- grouping case ----------------
                 // LabelCacheItem equals and hashcode work based on the label equality and the
@@ -355,7 +355,7 @@ public class LabelCacheImpl implements LabelCache {
                     // add to the priority only in the non-default case or non-literal. Ie.
                     // area()
                     Expression priority = symbolizer.getPriority();
-                    if ((priority != null) && (!(priority instanceof Literal))) {
+                    if (priority != null && !(priority instanceof Literal)) {
                         groupItem.setPriority(groupItem.getPriority() + priorityValue);
                     }
 
@@ -612,10 +612,9 @@ public class LabelCacheImpl implements LabelCache {
             AffineTransform tempTransform = new AffineTransform();
 
             Geometry geom = labelItem.getGeometry();
-            if ((geom instanceof Point) || (geom instanceof MultiPoint))
+            if (geom instanceof Point || geom instanceof MultiPoint)
                 paintPointLabel(painter, tempTransform, displayArea, glyphs);
-            else if (((geom instanceof LineString) && !(geom instanceof LinearRing))
-                    || (geom instanceof MultiLineString)) {
+            else if (geom instanceof LineString && !(geom instanceof LinearRing) || geom instanceof MultiLineString) {
                 // letter conflict should be used if not disabled, and if there is any letter to
                 // paint (not laying out a symbol with conflict resolution, with an empty label)
                 if (!DISABLE_LETTER_LEVEL_CONFLICT
@@ -675,11 +674,10 @@ public class LabelCacheImpl implements LabelCache {
                 Point pp = gf.createPoint(c);
                 double[] gp = new double[2];
                 double[] tp = new double[2];
-                for (int i = 1; i < (painter.getLineCount() + 1); i++) {
-                    gp[1] = glyphBounds.getY()
-                            + (glyphBounds.getHeight()) * (((double) i) / (painter.getLineCount() + 1));
-                    for (int j = 1; j < (n + 1); j++) {
-                        gp[0] = glyphBounds.getX() + (glyphBounds.getWidth()) * (((double) j) / (n + 1));
+                for (int i = 1; i < painter.getLineCount() + 1; i++) {
+                    gp[1] = glyphBounds.getY() + glyphBounds.getHeight() * ((double) i / (painter.getLineCount() + 1));
+                    for (int j = 1; j < n + 1; j++) {
+                        gp[0] = glyphBounds.getX() + glyphBounds.getWidth() * ((double) j / (n + 1));
                         transform.transform(gp, 0, tp, 0, 1);
                         c.x = tp[0];
                         c.y = tp[1];
@@ -694,7 +692,7 @@ public class LabelCacheImpl implements LabelCache {
                         }
                     }
                 }
-                return ((double) count) / (n * painter.getLineCount());
+                return (double) count / (n * painter.getLineCount());
             } catch (Exception e) {
                 Geometry g = representativeGeom.getGeometry();
                 g.geometryChanged();
@@ -703,7 +701,7 @@ public class LabelCacheImpl implements LabelCache {
                         toEnvelope(transform.createTransformedShape(glyphBounds).getBounds2D());
                 Envelope inter = intersection(ePoly, eglyph);
                 if (inter != null) {
-                    return (inter.getWidth() * inter.getHeight()) / (eglyph.getWidth() * eglyph.getHeight());
+                    return inter.getWidth() * inter.getHeight() / (eglyph.getWidth() * eglyph.getHeight());
                 } else {
                     return 0.0;
                 }
@@ -781,8 +779,8 @@ public class LabelCacheImpl implements LabelCache {
             // account that we might have to displace the labels
             LineStringCursor cursor = new LineStringCursor(line);
             AffineTransform tx = new AffineTransform();
-            boolean mightSkipLastLabel = line.isClosed()
-                    && (lineStringLength - ((labelPositions.length - 1) * labelDistance)) < labelDistance;
+            boolean mightSkipLastLabel =
+                    line.isClosed() && lineStringLength - (labelPositions.length - 1) * labelDistance < labelDistance;
             for (int i = 0; i < labelPositions.length; i++) {
                 cursor.moveTo(labelPositions[i]);
                 Coordinate centroid = cursor.getCurrentPosition();
@@ -790,7 +788,7 @@ public class LabelCacheImpl implements LabelCache {
 
                 // label displacement loop
                 boolean painted = false;
-                while (Math.abs(currOffset) <= (labelOffset * 2) && !painted) {
+                while (Math.abs(currOffset) <= labelOffset * 2 && !painted) {
                     // reset transform and other computation parameters
                     tx.setToIdentity();
                     double maxAngleChange = 0;
@@ -835,7 +833,7 @@ public class LabelCacheImpl implements LabelCache {
                         if (labelItem.isFollowLineEnabled()) {
                             // for curved labels we never paint in case of
                             // overrun
-                            if ((startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength())) {
+                            if (startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength()) {
                                 if (maxAngleChange <= maxAngleDelta) {
                                     // a max distance related to both the font size, but also having
                                     // a visual limit
@@ -856,7 +854,7 @@ public class LabelCacheImpl implements LabelCache {
                         } else {
                             // for straight labels, check overrun only if
                             // required
-                            if ((allowOverruns || (startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength()))) {
+                            if (allowOverruns || startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength()) {
                                 painter.paintStraightLabel(tx);
                                 painted = true;
                             }
@@ -884,7 +882,7 @@ public class LabelCacheImpl implements LabelCache {
                         // do not paint the last label on a ring if we have painted its symmetric
                         // one and the residual space at the ends does not guarantee labelDistance
                         // between last and second to last
-                        if ((i == labelPositions.length - 2) && painted && mightSkipLastLabel) {
+                        if (i == labelPositions.length - 2 && painted && mightSkipLastLabel) {
                             i++;
                         }
                     } else {
@@ -991,8 +989,8 @@ public class LabelCacheImpl implements LabelCache {
             // in a linear ring to be painted both. Will verify if the second to last is painted
             // before
             // painting the last one (making sure only one is)
-            boolean mightSkipLastLabel = line.isClosed()
-                    && (lineStringLength - ((labelPositions.length - 1) * labelDistance)) < labelDistance;
+            boolean mightSkipLastLabel =
+                    line.isClosed() && lineStringLength - (labelPositions.length - 1) * labelDistance < labelDistance;
             for (int i = 0; i < labelPositions.length; i++) {
                 cursor.moveTo(labelPositions[i]);
                 Coordinate centroid = cursor.getCurrentPosition();
@@ -1060,7 +1058,7 @@ public class LabelCacheImpl implements LabelCache {
                         } else {
                             // for straight labels, check overrun only if
                             // required
-                            if ((allowOverruns || (startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength()))) {
+                            if (allowOverruns || startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength()) {
                                 painter.paintStraightLabel(tx);
                                 painted = true;
                             }
@@ -1086,7 +1084,7 @@ public class LabelCacheImpl implements LabelCache {
                         // do not paint the last label on a ring if we have painted its symmetric
                         // one and the residual space at the ends does not guarantee labelDistance
                         // between last and second to last
-                        if ((i == labelPositions.length - 2) && painted && mightSkipLastLabel) {
+                        if (i == labelPositions.length - 2 && painted && mightSkipLastLabel) {
                             i++;
                         }
                     } else {
@@ -1118,7 +1116,7 @@ public class LabelCacheImpl implements LabelCache {
         if (labelDistance > 0 && labelDistance < lineStringLength / 2) {
             // one label in the middle, plus all the labels we can fit before/after on the two half
             // lines
-            final int positionCount = (int) ((lineStringLength / 2) / labelDistance) * 2 + 1;
+            final int positionCount = (int) (lineStringLength / 2 / labelDistance) * 2 + 1;
             labelPositions = new double[positionCount];
             labelPositions[0] = lineStringLength / 2;
             double offset = labelDistance;
@@ -1161,7 +1159,7 @@ public class LabelCacheImpl implements LabelCache {
         for (int i = 1; i < inputCoordinates.length - 1; i++) {
             Coordinate curr = inputCoordinates[i];
             // see if this one should be added
-            if ((Math.abs(curr.x - prev.x) > step) || (Math.abs(curr.y - prev.y)) > step) {
+            if (Math.abs(curr.x - prev.x) > step || Math.abs(curr.y - prev.y) > step) {
                 simplified.add(curr);
                 prev = curr;
             }
@@ -1207,11 +1205,11 @@ public class LabelCacheImpl implements LabelCache {
         // and the real positioning of the text bounds (the bounds are placed
         // so that the baseline is in the origin, and the text goes up in
         // the negative coordinates)
-        double displacementX = (textStyle.getAnchorX() * (-textBounds.getWidth())) + textStyle.getDisplacementX();
-        double displacementY = (textStyle.getAnchorY() * (textBounds.getHeight()))
+        double displacementX = textStyle.getAnchorX() * -textBounds.getWidth() + textStyle.getDisplacementX();
+        double displacementY = textStyle.getAnchorY() * textBounds.getHeight()
                 - textStyle.getDisplacementY()
                 - textBounds.getHeight()
-                + ((painter.lines.size() == 1)
+                + (painter.lines.size() == 1
                         ? painter.getLineHeight()
                         : painter.getLineHeightForAnchorY(textStyle.getAnchorY()));
         tempTransform.translate(displacementX, displacementY);
@@ -1255,8 +1253,8 @@ public class LabelCacheImpl implements LabelCache {
             anchorY = painter.getLinePlacementYAnchor();
         }
 
-        double displacementX = (anchorX * (-textBounds.getWidth())) + textStyle.getDisplacementX();
-        displacementY += (anchorY * (textBounds.getHeight())) - textStyle.getDisplacementY();
+        double displacementX = anchorX * -textBounds.getWidth() + textStyle.getDisplacementX();
+        displacementY += anchorY * textBounds.getHeight() - textStyle.getDisplacementY();
 
         if (Double.isNaN(rotation) || Double.isInfinite(rotation)) rotation = 0.0;
         tempTransform.rotate(rotation);
@@ -1418,8 +1416,8 @@ public class LabelCacheImpl implements LabelCache {
                 .createTransformedShape(painter.getFullLabelBounds())
                 .getBounds2D();
         if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
-                || (labelItem.isConflictResolutionEnabled()
-                        && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
+                || labelItem.isConflictResolutionEnabled()
+                        && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())) {
             return false;
         } else {
             painter.paintStraightLabel(tempTransform, point.getCoordinate());
@@ -1604,8 +1602,8 @@ public class LabelCacheImpl implements LabelCache {
                 .createTransformedShape(painter.getFullLabelBounds())
                 .getBounds2D();
         if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
-                || (labelItem.isConflictResolutionEnabled()
-                        && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))
+                || labelItem.isConflictResolutionEnabled()
+                        && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())
                 || goodnessOfFit(painter, tempTransform, pg)
                         < painter.getLabel().getGoodnessOfFit()) {
             // try the alternate rotation if possible
@@ -1617,8 +1615,8 @@ public class LabelCacheImpl implements LabelCache {
                         .createTransformedShape(painter.getFullLabelBounds())
                         .getBounds2D();
                 if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
-                        || (labelItem.isConflictResolutionEnabled()
-                                && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))
+                        || labelItem.isConflictResolutionEnabled()
+                                && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())
                         || goodnessOfFit(painter, tempTransform, pg)
                                 < painter.getLabel().getGoodnessOfFit()) {
                     textStyle.flipRotation(pg.getGeometry());
@@ -1678,7 +1676,7 @@ public class LabelCacheImpl implements LabelCache {
         ArrayList<Point> pts = new ArrayList<>();
 
         for (Geometry g : geoms) {
-            if (!((g instanceof Point) || (g instanceof MultiPoint))) // handle
+            if (!(g instanceof Point || g instanceof MultiPoint)) // handle
                 // lines,polys, gc, etc..
                 g = g.getCentroid(); // will be point
             if (g instanceof Point) {
@@ -1735,7 +1733,7 @@ public class LabelCacheImpl implements LabelCache {
             if (!partialsEnabled) {
                 // more robust clipper -- see its dox
                 MultiLineString ll = clipLineString(ls);
-                if ((ll != null) && (!(ll.isEmpty()))) {
+                if (ll != null && !ll.isEmpty()) {
                     for (int t = 0; t < ll.getNumGeometries(); t++) clippedLines.add((LineString) ll.getGeometryN(t));
                 }
             }
@@ -1786,17 +1784,17 @@ public class LabelCacheImpl implements LabelCache {
     }
 
     private int accumulateLineStrings(Geometry g, List<LineString> lines) {
-        if (!((g instanceof LineString)
-                || (g instanceof MultiLineString)
-                || (g instanceof Polygon)
-                || (g instanceof MultiPolygon))) return 0;
+        if (!(g instanceof LineString
+                || g instanceof MultiLineString
+                || g instanceof Polygon
+                || g instanceof MultiPolygon)) return 0;
 
         // reduce polygons to their boundaries
-        if ((g instanceof Polygon) || (g instanceof MultiPolygon)) {
+        if (g instanceof Polygon || g instanceof MultiPolygon) {
             g = g.getBoundary(); // line or multiline m
             // TODO: boundary included the inside rings, might want to
             // replace this with getExteriorRing()
-            if (!((g instanceof LineString) || (g instanceof MultiLineString))) return 0;
+            if (!(g instanceof LineString || g instanceof MultiLineString)) return 0;
         }
 
         // deal with line and multi line string, and finally with geom
@@ -1874,7 +1872,7 @@ public class LabelCacheImpl implements LabelCache {
         // if its a polygon, add it to "polys"
         // if its a multipolgon, add each component to "polys"
         for (Geometry g : geoms) {
-            if (!((g instanceof Polygon) || (g instanceof MultiPolygon))) continue;
+            if (!(g instanceof Polygon || g instanceof MultiPolygon)) continue;
 
             if (g instanceof Polygon) {
                 polys.add((Polygon) g);
@@ -1895,7 +1893,7 @@ public class LabelCacheImpl implements LabelCache {
             // If we want labels to be entirely in the display area, clip polygons
             if (!partialsEnabled) {
                 MultiPolygon pp = clipPolygon(p, (Polygon) displayGeometry, displayGeomEnv);
-                if ((pp != null) && (!(pp.isEmpty()))) {
+                if (pp != null && !pp.isEmpty()) {
                     for (int t = 0; t < pp.getNumGeometries(); t++) clippedPolys.add((Polygon) pp.getGeometryN(t));
                 }
             }
@@ -2047,7 +2045,7 @@ public class LabelCacheImpl implements LabelCache {
             List<LineString> nodeList2 = nodes.get(key2);
 
             // case 1 -- this line is independent
-            if ((nodeList.isEmpty()) && (nodeList2.isEmpty())) {
+            if (nodeList.isEmpty() && nodeList2.isEmpty()) {
                 result.add(ls);
                 index++; // move to next line
                 continue;

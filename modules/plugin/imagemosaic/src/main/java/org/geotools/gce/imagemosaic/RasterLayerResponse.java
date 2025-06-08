@@ -347,7 +347,7 @@ public class RasterLayerResponse {
             }
             if (!footprintBehavior.handleFootprints()
                     || inclusionGeometry == null
-                    || (footprintBehavior.handleFootprints() && intersects)) {
+                    || footprintBehavior.handleFootprints() && intersects) {
 
                 // find the right filter for this granule
                 boolean found = false;
@@ -822,7 +822,7 @@ public class RasterLayerResponse {
                     at.getScaleX(), at.getShearX(), at.getShearY(), at.getScaleY(), dst.getX(), dst.getY());
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
-            if ((requestRes[0] < resX || requestRes[1] < resY)) {
+            if (requestRes[0] < resX || requestRes[1] < resY) {
                 // Using the best available resolution
                 oversampledRequest = true;
             }

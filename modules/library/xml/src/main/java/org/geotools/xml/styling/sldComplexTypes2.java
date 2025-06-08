@@ -316,7 +316,7 @@ public class sldComplexTypes2 {
 
             Expression offset = null;
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
                 Element e = elementValue.getElement();
@@ -396,7 +396,7 @@ public class sldComplexTypes2 {
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -497,7 +497,7 @@ public class sldComplexTypes2 {
             Mark symbol = CommonFactoryFinder.getStyleFactory().getDefaultMark();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -591,7 +591,7 @@ public class sldComplexTypes2 {
             NamedLayer sld = new NamedLayerImpl();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -687,7 +687,7 @@ public class sldComplexTypes2 {
             NamedStyle sld = new NamedStyleImpl();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -1110,7 +1110,7 @@ public class sldComplexTypes2 {
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -1195,7 +1195,7 @@ public class sldComplexTypes2 {
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -1354,7 +1354,7 @@ public class sldComplexTypes2 {
             // symbol.setGraphic(null);
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -1724,7 +1724,7 @@ public class sldComplexTypes2 {
             Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -1832,7 +1832,7 @@ public class sldComplexTypes2 {
             StyledLayerDescriptor sld = CommonFactoryFinder.getStyleFactory().createStyledLayerDescriptor();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -1932,7 +1932,7 @@ public class sldComplexTypes2 {
             List<Font> fonts = new ArrayList<>();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
                 Element e = elementValue.getElement();
@@ -2028,7 +2028,7 @@ public class sldComplexTypes2 {
             UserLayer sld = new UserLayerImpl();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -2196,7 +2196,7 @@ public class sldComplexTypes2 {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints) {
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -2292,7 +2292,7 @@ public class sldComplexTypes2 {
             org.geotools.api.style.SelectedChannelType symbol = new SelectedChannelTypeImpl();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 

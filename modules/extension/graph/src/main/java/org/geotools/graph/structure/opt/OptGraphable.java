@@ -74,7 +74,7 @@ public abstract class OptGraphable implements Graphable, Serializable {
     /** @see Graphable#isVisited() */
     @Override
     public boolean isVisited() {
-        return (m_visited);
+        return m_visited;
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class OptGraphable implements Graphable, Serializable {
     /** @see Graphable#getCount() */
     @Override
     public int getCount() {
-        return (m_count);
+        return m_count;
     }
 
     /**

@@ -230,7 +230,7 @@ public class QuadTree implements Closeable {
             node.setBounds(subNode.getBounds());
         }
 
-        return (node.getNumSubNodes() == 0 && node.getNumShapeIds() == 0);
+        return node.getNumSubNodes() == 0 && node.getNumShapeIds() == 0;
     }
 
     /**
@@ -243,7 +243,7 @@ public class QuadTree implements Closeable {
         Envelope[] ret = new Envelope[2];
         double range, calc;
 
-        if ((in.getMaxX() - in.getMinX()) > (in.getMaxY() - in.getMinY())) {
+        if (in.getMaxX() - in.getMinX() > in.getMaxY() - in.getMinY()) {
             // Split in X direction
             range = in.getMaxX() - in.getMinX();
 

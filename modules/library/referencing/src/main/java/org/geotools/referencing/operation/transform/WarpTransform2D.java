@@ -329,7 +329,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
     protected WarpTransform2D(final Warp warp, final Warp inverse) {
         ensureNonNull("warp", warp);
         this.warp = warp;
-        this.inverse = (inverse != null) ? new WarpTransform2D(inverse, this) : null;
+        this.inverse = inverse != null ? new WarpTransform2D(inverse, this) : null;
     }
 
     /**

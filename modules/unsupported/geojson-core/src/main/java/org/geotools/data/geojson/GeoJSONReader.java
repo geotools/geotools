@@ -452,13 +452,13 @@ public class GeoJSONReader implements AutoCloseable {
         if (props == null) props = mapper.createObjectNode();
 
         if (builder == null
-                || (builder.getFeatureType().getGeometryDescriptor() == null && g != null)
-                || (builder.getFeatureType().getGeometryDescriptor() != null
+                || builder.getFeatureType().getGeometryDescriptor() == null && g != null
+                || builder.getFeatureType().getGeometryDescriptor() != null
                         && !builder.getFeatureType()
                                 .getGeometryDescriptor()
                                 .getType()
                                 .getBinding()
-                                .isInstance(g))) {
+                                .isInstance(g)) {
             builder = getBuilder(props, g);
         }
         boolean restart = true;

@@ -517,7 +517,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         GeodeticDatum datum = crs.getDatum();
         final EllipsoidalCS cs = crs.getCoordinateSystem();
         final EllipsoidalCS STANDARD =
-                (cs.getDimension() <= 2) ? DefaultEllipsoidalCS.GEODETIC_2D : DefaultEllipsoidalCS.GEODETIC_3D;
+                cs.getDimension() <= 2 ? DefaultEllipsoidalCS.GEODETIC_2D : DefaultEllipsoidalCS.GEODETIC_3D;
         if (forceGreenwich && getGreenwichLongitude(datum.getPrimeMeridian()) != 0) {
             datum = new TemporaryDatum(datum);
         } else if (hasStandardAxis(cs, STANDARD)) {
@@ -1590,7 +1590,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                 mt = getMathTransformFactory().createPassThroughTransform(lower, mt, dimensions - upper);
                 step = new DefaultPassThroughOperation(properties, sourceStepCRS, targetStepCRS, (Operation) step, mt);
             }
-            operation = (operation == null) ? step : concatenate(operation, step);
+            operation = operation == null ? step : concatenate(operation, step);
             sourceStepCRS = targetStepCRS;
         }
         assert upper == dimensions : upper;

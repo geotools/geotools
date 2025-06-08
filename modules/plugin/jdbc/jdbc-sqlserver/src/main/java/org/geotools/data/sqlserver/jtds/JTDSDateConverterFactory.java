@@ -73,13 +73,13 @@ public class JTDSDateConverterFactory implements ConverterFactory {
         }
 
         // can only convert towards java.util.Date && subclasses
-        if (!(Date.class.isAssignableFrom(target))) {
+        if (!Date.class.isAssignableFrom(target)) {
             LOGGER.finest("Target is not a Date");
             return null;
         }
 
         // can only deal with JTDScle specific date classes
-        if (!(JTDS_TIMESTAMP.isAssignableFrom(source)) && !(JTDS_DATE.isAssignableFrom(source))) {
+        if (!JTDS_TIMESTAMP.isAssignableFrom(source) && !JTDS_DATE.isAssignableFrom(source)) {
             LOGGER.finest("Source is not a date time object");
             return null;
         }

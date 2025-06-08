@@ -122,7 +122,7 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
     @Override
     public Citation getAuthority() {
         final Citation authority = super.getAuthority();
-        return (authority != null) ? authority : Citations.EPSG;
+        return authority != null ? authority : Citations.EPSG;
     }
 
     /**

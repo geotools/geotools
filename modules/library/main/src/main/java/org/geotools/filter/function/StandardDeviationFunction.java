@@ -100,12 +100,12 @@ public class StandardDeviationFunction extends ClassificationFunction {
 
     private Double getMin(int index, int numClasses, double average, double standardDeviation) {
         if (index <= 0 || index >= numClasses) return null;
-        return Double.valueOf(average - (((numClasses / 2.0) - index) * standardDeviation));
+        return Double.valueOf(average - (numClasses / 2.0 - index) * standardDeviation);
     }
 
     private Double getMax(int index, int numClasses, double average, double standardDeviation) {
         if (index < 0 || index >= numClasses - 1) return null;
-        return Double.valueOf(average - (((numClasses / 2.0) - 1 - index) * standardDeviation));
+        return Double.valueOf(average - (numClasses / 2.0 - 1 - index) * standardDeviation);
     }
 
     private double[] getPercentages(
@@ -121,7 +121,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
         // we don't know the min value in the collection because the
         // the first interval is open to infinity to the left.
         // needs a query to get the classMembers
-        percentages[0] = ((double) sizeFirstClass / totalSize) * 100;
+        percentages[0] = (double) sizeFirstClass / totalSize * 100;
 
         double min = ((Number) classifier.getMin(1)).doubleValue();
         percentages = computeGroupByPercentages(subCollection, percentages, totalSize, min, standardDeviation);
@@ -137,7 +137,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
     @Override
     protected void computePercentage(double[] percentages, double classMembers, double totalSize, int index) {
         index += 1;
-        if (index < percentages.length - 1) percentages[index] = (classMembers / totalSize) * 100;
+        if (index < percentages.length - 1) percentages[index] = classMembers / totalSize * 100;
     }
 
     protected boolean percentages() {

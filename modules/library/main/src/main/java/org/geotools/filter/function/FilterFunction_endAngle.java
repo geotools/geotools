@@ -52,8 +52,8 @@ public class FilterFunction_endAngle extends FunctionExpressionImpl {
 
         CoordinateSequence cs = ls.getCoordinateSequence();
 
-        double dx = (cs.getX(cs.size() - 1) - cs.getX(cs.size() - 2));
-        double dy = (cs.getY(cs.size() - 1) - cs.getY(cs.size() - 2));
+        double dx = cs.getX(cs.size() - 1) - cs.getX(cs.size() - 2);
+        double dy = cs.getY(cs.size() - 1) - cs.getY(cs.size() - 2);
         return -Math.toDegrees(Math.atan2(dy, dx));
     }
 }

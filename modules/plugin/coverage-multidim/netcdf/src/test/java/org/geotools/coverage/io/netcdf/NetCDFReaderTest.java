@@ -304,7 +304,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -406,7 +406,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -512,7 +512,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -626,7 +626,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -724,7 +724,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -1247,7 +1247,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
             final Dimension dim = new Dimension();
             GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
             dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-            final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+            final Rectangle rasterArea = (GridEnvelope2D) gridRange;
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, reducedEnvelope));

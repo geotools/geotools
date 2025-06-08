@@ -1353,10 +1353,10 @@ public class GridCoverageRendererTest {
             final ContrastMethodStrategy method = new NormalizeContrastMethodStrategy();
             method.addOption(
                     "algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
-            method.addOption("minValue", sldBuilder.literalExpression(min + (20 * i)));
-            method.addOption("maxValue", sldBuilder.literalExpression(max + (20 * i)));
+            method.addOption("minValue", sldBuilder.literalExpression(min + 20 * i));
+            method.addOption("maxValue", sldBuilder.literalExpression(max + 20 * i));
             cntEnh.setMethod(method);
-            channels[i].setChannelName(Integer.toString((i * 2) + 1));
+            channels[i].setChannelName(Integer.toString(i * 2 + 1));
             channels[i].setContrastEnhancement(cntEnh);
         }
         chSel.setRGBChannels(chTypeRed, chTypeGreen, chTypeBlue);
@@ -1743,7 +1743,7 @@ public class GridCoverageRendererTest {
     /** Checks the pixel i/j is fully transparent */
     protected void assertPixelIsTransparent(BufferedImage image, int i, int j) {
         int pixel = image.getRGB(i, j);
-        assertEquals((pixel >> 24), 0x00);
+        assertEquals(pixel >> 24, 0x00);
     }
 
     private RasterSymbolizer buildChannelSelectingSymbolizer(int band) {
@@ -2174,7 +2174,7 @@ public class GridCoverageRendererTest {
         gcr.setAdvancedProjectionHandlingEnabled(true);
         gcr.setWrapEnabled(true);
         RenderedImage ri = gcr.renderImage(imReader, null, null, interpolation, null, 256, 256);
-        RenderedOp ro = ((RenderedOp) ri);
+        RenderedOp ro = (RenderedOp) ri;
         Object rendering = ro.getRendering();
 
         /* Without the isEquivalentCRS fix, the involved processing chain

@@ -744,7 +744,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             final CoordinateReferenceSystem otherCRS =
-                    (object instanceof ReferencedEnvelope) ? ((ReferencedEnvelope) object).crs : null;
+                    object instanceof ReferencedEnvelope ? ((ReferencedEnvelope) object).crs : null;
 
             return CRS.equalsIgnoreMetadata(crs, otherCRS);
         }
@@ -837,8 +837,8 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public boolean boundsEquals(final Bounds that, final int xDim, final int yDim, double eps) {
         eps *= 0.5 * (getWidth() + getHeight());
         for (int i = 0; i < 4; i++) {
-            final int dim2D = (i & 1);
-            final int dimND = (dim2D == 0) ? xDim : yDim;
+            final int dim2D = i & 1;
+            final int dimND = dim2D == 0 ? xDim : yDim;
             final double value2D, valueND;
             if ((i & 2) == 0) {
                 value2D = this.getMinimum(dim2D);

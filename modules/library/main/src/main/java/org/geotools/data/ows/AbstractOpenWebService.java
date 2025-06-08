@@ -261,7 +261,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R> {
             }
         }
 
-        while ((minClient <= test) && (test <= maxClient)) {
+        while (minClient <= test && test <= maxClient) {
             Specification tempSpecification = specs[test];
             String clientVersion = tempSpecification.getVersion();
 
@@ -372,7 +372,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R> {
 
             if (test.compareTo(version) < 0) {
 
-                if ((before == null) || (before.compareTo(test) < 0)) {
+                if (before == null || before.compareTo(test) < 0) {
                     before = test;
                 }
             }
@@ -399,7 +399,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R> {
             String test = (String) o;
 
             if (test.compareTo(version) > 0) {
-                if ((after == null) || (after.compareTo(test) < 0)) {
+                if (after == null || after.compareTo(test) < 0) {
                     after = test;
                 }
             }

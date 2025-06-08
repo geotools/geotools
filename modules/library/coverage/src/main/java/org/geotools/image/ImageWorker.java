@@ -816,7 +816,7 @@ public class ImageWorker {
 
     /** Returns the rendering hint for the specified key, or {@code null} if none. */
     public final Object getRenderingHint(final RenderingHints.Key key) {
-        return (commonHints != null) ? commonHints.get(key) : null;
+        return commonHints != null ? commonHints.get(key) : null;
     }
 
     /**
@@ -931,7 +931,7 @@ public class ImageWorker {
                 hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
             }
         }
-        if (tileCacheDisabled != 0 && (commonHints != null && !commonHints.containsKey(JAI.KEY_TILE_CACHE))) {
+        if (tileCacheDisabled != 0 && commonHints != null && !commonHints.containsKey(JAI.KEY_TILE_CACHE)) {
             hints.add(new RenderingHints(JAI.KEY_TILE_CACHE, null));
         }
         return hints;
@@ -1038,7 +1038,7 @@ public class ImageWorker {
     /** Returns the transparent pixel value, or -1 if none. */
     public final int getTransparentPixel() {
         final ColorModel cm = image.getColorModel();
-        return (cm instanceof IndexColorModel) ? ((IndexColorModel) cm).getTransparentPixel() : -1;
+        return cm instanceof IndexColorModel ? ((IndexColorModel) cm).getTransparentPixel() : -1;
     }
 
     /**
@@ -1049,7 +1049,7 @@ public class ImageWorker {
      */
     private Object getComputedProperty(final String name) {
         final Object value = image.getProperty(name);
-        return (value == inheritanceStopPoint.getProperty(name)) ? Image.UndefinedProperty : value;
+        return value == inheritanceStopPoint.getProperty(name) ? Image.UndefinedProperty : value;
     }
 
     /**
@@ -1422,9 +1422,9 @@ public class ImageWorker {
         final int length = extrema[0].length;
         final double[] scale = new double[length];
         final double[] offset = new double[length];
-        final double destNodata = (background != null && background.length > 0)
+        final double destNodata = background != null && background.length > 0
                 ? background[0]
-                : ((nodata != null && !nodata.contains(0)) ? 0d : Double.NaN);
+                : nodata != null && !nodata.contains(0) ? 0d : Double.NaN;
 
         // If setting noData to zero, make sure the rescale doesn't map good values to zero.
         double offsetAdjustment = nodata != null || Math.abs(destNodata - 0) < 1E-6 ? 1 : 0;
@@ -1432,9 +1432,9 @@ public class ImageWorker {
         boolean computeRescale = false;
         for (int i = 0; i < length; i++) {
             final double delta = extrema[1][i] - extrema[0][i];
-            if ((Math.abs(delta) > 1E-6 // maximum and minimum does not coincide
-                            && ((extrema[1][i] - 255 > 1E-6) // the maximum is greater than 255
-                                    || (extrema[0][i] < -1E-6))) // the minimum is smaller than 0
+            if (Math.abs(delta) > 1E-6 // maximum and minimum does not coincide
+                            && (extrema[1][i] - 255 > 1E-6 // the maximum is greater than 255
+                                    || extrema[0][i] < -1E-6) // the minimum is smaller than 0
                     || offsetAdjustment > 0) // noData has been remapped to byte
             {
                 // we need to rescale
@@ -1442,7 +1442,7 @@ public class ImageWorker {
 
                 // rescale factors
                 scale[i] = (255 - offsetAdjustment) / delta;
-                offset[i] = (-scale[i] * extrema[0][i]) + offsetAdjustment;
+                offset[i] = -scale[i] * extrema[0][i] + offsetAdjustment;
             } else {
                 // we do not rescale explicitly bu in case we have to, we relay on the clamping
                 // capabilities of the format operator
@@ -1632,14 +1632,14 @@ public class ImageWorker {
             if (newPixelSize <= 8) {
                 final byte[] table = new byte[mapSize];
                 for (int i = 0; i < mapSize; i++) {
-                    table[i] = (byte) ((oldCM.getAlpha(i) == 0) ? suggestedTransparent : i);
+                    table[i] = (byte) (oldCM.getAlpha(i) == 0 ? suggestedTransparent : i);
                 }
                 lookupTable =
                         LookupTableFactory.create(table, image.getSampleModel().getDataType());
             } else {
                 final short[] table = new short[mapSize];
                 for (int i = 0; i < mapSize; i++) {
-                    table[i] = (short) ((oldCM.getAlpha(i) == 0) ? suggestedTransparent : i);
+                    table[i] = (short) (oldCM.getAlpha(i) == 0 ? suggestedTransparent : i);
                 }
                 lookupTable = LookupTableFactory.create(table, true);
             }
@@ -1810,7 +1810,7 @@ public class ImageWorker {
             /*
              * If the image is grayscale, retain only the needed bands.
              */
-            final int numDestinationBands = gray ? (alpha ? 2 : 1) : (alpha ? 4 : 3);
+            final int numDestinationBands = gray ? alpha ? 2 : 1 : alpha ? 4 : 3;
             LookupTable lut = null;
 
             switch (datatype) {
@@ -1934,7 +1934,7 @@ public class ImageWorker {
 
         } else {
             // Most of the code adapted from jai-interests is in 'getRenderingHints(int)'.
-            final int type = (cm instanceof DirectColorModel)
+            final int type = cm instanceof DirectColorModel
                     ? DataBuffer.TYPE_BYTE
                     : image.getSampleModel().getTransferType();
             final RenderingHints hints = getRenderingHints(type);
@@ -2813,7 +2813,7 @@ public class ImageWorker {
 
         // now prepare the lookups
         final byte[][] tableData = new byte[numColorBands][256];
-        final boolean singleStep = (numColorBands == 1);
+        final boolean singleStep = numColorBands == 1;
         if (singleStep) {
             final byte[] data = tableData[0];
             Arrays.fill(data, (byte) 255);
@@ -3873,8 +3873,8 @@ public class ImageWorker {
                 writer.setOutput(outStream);
                 // the JDK writer has problems with images that do not start at minx==miny==0
                 // while the clib writer has issues with tiled images
-                if ((!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0))
-                        || (nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1))) {
+                if (!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0)
+                        || nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1)) {
                     final BufferedImage finalImage = new BufferedImage(
                             image.getColorModel(),
                             ((WritableRaster) image.getData()).createWritableTranslatedChild(0, 0),
@@ -4076,15 +4076,17 @@ public class ImageWorker {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
                         hasSameNodata = nodata == null
-                                || (sBgValues != null
+                                || sBgValues != null
                                         && this.nodata != null
                                         && sBgValues.length > 0
-                                        && sBgValues[0] == this.nodata.getMin().doubleValue());
+                                        && sBgValues[0] == this.nodata.getMin().doubleValue();
                     }
                 }
 
-                if ((sInterp == interpolation && Arrays.equals(sBgValues, bgValues))
-                        && ((nodata == null || hasSameNodata) && (r == null || similarROI))) {
+                if (sInterp == interpolation
+                        && Arrays.equals(sBgValues, bgValues)
+                        && (nodata == null || hasSameNodata)
+                        && (r == null || similarROI)) {
                     // we can replace it
                     AffineTransform concat = new AffineTransform(tx);
                     concat.concatenate(sTx);
@@ -4131,13 +4133,13 @@ public class ImageWorker {
                         }
                     }
                     hasSameNodata = nodata == null
-                            || (sBgValues != null
+                            || sBgValues != null
                                     && this.nodata != null
                                     && sBgValues.length > 0
-                                    && sBgValues[0] == this.nodata.getMin().doubleValue());
+                                    && sBgValues[0] == this.nodata.getMin().doubleValue();
                 }
 
-                if (sInterp == interpolation && ((nodata == null || hasSameNodata) && (r == null || similarROI))) {
+                if (sInterp == interpolation && (nodata == null || hasSameNodata) && (r == null || similarROI)) {
                     // we can replace it
                     AffineTransform concat = new AffineTransform(tx);
                     concat.concatenate(new AffineTransform(
@@ -4166,8 +4168,8 @@ public class ImageWorker {
         hasShearY = Math.abs(tx.getShearY()) * size > RS_EPS;
         hasTranslateX = Math.abs(tx.getTranslateX()) > RS_EPS;
         hasTranslateY = Math.abs(tx.getTranslateY()) > RS_EPS;
-        boolean intTranslateX = Math.abs((tx.getTranslateX() - Math.round(tx.getTranslateX()))) < RS_EPS;
-        boolean intTranslateY = Math.abs((tx.getTranslateY() - Math.round(tx.getTranslateY()))) < RS_EPS;
+        boolean intTranslateX = Math.abs(tx.getTranslateX() - Math.round(tx.getTranslateX())) < RS_EPS;
+        boolean intTranslateY = Math.abs(tx.getTranslateY() - Math.round(tx.getTranslateY())) < RS_EPS;
         boolean nonNegativeScaleX = tx.getScaleX() >= 0;
         boolean nonNegativeScaleY = tx.getScaleY() >= 0;
 
@@ -4228,7 +4230,8 @@ public class ImageWorker {
         // as normal bands to avoid partial transparencies
         if (cm.hasAlpha()
                 && (numBands == 2 || numBands == 4)
-                && (interpolation != null && (interpolation.getWidth() > 1 || interpolation.getHeight() > 1))) {
+                && interpolation != null
+                && (interpolation.getWidth() > 1 || interpolation.getHeight() > 1)) {
 
             // Extract Alpha for future re-attach
             ImageWorker noAlpha =
@@ -4410,7 +4413,7 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             double destinationNoData = nodata != null
                     ? nodata.getMin().doubleValue()
-                    : (background != null && background.length > 0) ? background[0] : Double.NaN;
+                    : background != null && background.length > 0 ? background[0] : Double.NaN;
             pb.set(new double[] {destinationNoData}, 6);
         }
 
@@ -4546,7 +4549,7 @@ public class ImageWorker {
                     nodataBackground = new double[1];
                     nodataBackground[0] = nodProp.getMax().doubleValue();
                 }
-                noInternalNoData &= (nodProp == null);
+                noInternalNoData &= nodProp == null;
                 nodataNew[i] = nodProp;
             }
         }
@@ -4972,10 +4975,10 @@ public class ImageWorker {
 
             // if we have a grayscale image see if we have to expand to RGB
             if (ccm.getNumColorComponents() == 1) {
-                if ((ccm.getTransferType() == DataBuffer.TYPE_DOUBLE
+                if (ccm.getTransferType() == DataBuffer.TYPE_DOUBLE
                         || ccm.getTransferType() == DataBuffer.TYPE_FLOAT
                         || ccm.getTransferType() == DataBuffer.TYPE_UNDEFINED
-                        || !hasAlpha)) {
+                        || !hasAlpha) {
                     // expand to RGB, this is not a case we can optimize
                     final ImageWorker iw = new ImageWorker(image);
                     if (hasAlpha) {
@@ -5050,7 +5053,7 @@ public class ImageWorker {
                         } else {
                             // need to combine all bands to extract alpha based on nodata.
                             // we may want to setup a custom jai operation for that.
-                            final double weight = (1.0 / numBands);
+                            final double weight = 1.0 / numBands;
                             final double[][] matrix = new double[1][numBands + 1];
 
                             // Assign a weight to each band to combine results of RangeLookup
@@ -5426,8 +5429,8 @@ public class ImageWorker {
                 Range oldNoData = (Range)
                         (sourceParamBlock.getNumParameters() > 3 ? sourceParamBlock.getObjectParameter(4) : null);
                 boolean hasSameNodata =
-                        (oldNoData == null && nodata == null) || (oldNoData != null && oldNoData.equals(nodata));
-                if (((property == null) || property.equals(Image.UndefinedProperty) || !(property instanceof ROI))) {
+                        oldNoData == null && nodata == null || oldNoData != null && oldNoData.equals(nodata);
+                if (property == null || property.equals(Image.UndefinedProperty) || !(property instanceof ROI)) {
                     paramBlk.add(warp).add(interpolation).add(bgValues);
                     if (oldNoData != null) {
                         paramBlk.set(oldNoData, 4);

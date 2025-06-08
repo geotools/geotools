@@ -259,7 +259,7 @@ class GeometrySmoother {
         for (int i = 0; i < N; i++) {
             v[0] = v[1];
             v[1] = v[2];
-            v[2] = (i < N - 1 ? coords[i + 1] : vN);
+            v[2] = i < N - 1 ? coords[i + 1] : vN;
 
             mid[0].x = mid[1].x;
             mid[0].y = mid[1].y;

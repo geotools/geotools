@@ -387,7 +387,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 										// probably a jar:file: URL, which is opaque and thus not
 										// supported by URI.resolve()
 										URL contextUrl = new URL(xsdSchema.getSchemaLocation());
-										return (new URL(contextUrl, schemaLocationURI)).toString();
+										return new URL(contextUrl, schemaLocationURI).toString();
 									} else {
 										return contextUri.resolve(schemaLocationURI).toString();
 									}

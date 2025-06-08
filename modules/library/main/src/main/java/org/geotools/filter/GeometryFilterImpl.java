@@ -143,7 +143,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract implem
         org.geotools.api.filter.expression.Expression leftGeometry = getExpression1();
         org.geotools.api.filter.expression.Expression rightGeometry = getExpression2();
 
-        if ((expression1 == null) && (rightGeometry == null)) {
+        if (expression1 == null && rightGeometry == null) {
             return "[ " + "null" + operator + "null" + " ]";
         } else if (leftGeometry == null) {
             return "[ " + "null" + operator + rightGeometry.toString() + " ]";
@@ -183,9 +183,9 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract implem
         org.geotools.api.filter.expression.Expression rightGeometry = getExpression2();
 
         int result = 17;
-        result = (37 * result) + getClass().hashCode();
-        result = (37 * result) + ((leftGeometry == null) ? 0 : leftGeometry.hashCode());
-        result = (37 * result) + ((rightGeometry == null) ? 0 : rightGeometry.hashCode());
+        result = 37 * result + getClass().hashCode();
+        result = 37 * result + (leftGeometry == null ? 0 : leftGeometry.hashCode());
+        result = 37 * result + (rightGeometry == null ? 0 : rightGeometry.hashCode());
 
         return result;
     }

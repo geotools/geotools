@@ -106,7 +106,7 @@ public class NetCDFCRSTest {
             String[] coverages = reader.getGridCoverageNames();
             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(coverages[0]);
             assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
+            ProjectedCRS projectedCRS = (ProjectedCRS) crs;
             GeographicCRS baseCRS = projectedCRS.getBaseCRS();
 
             // Dealing with SPATIAL_REF Attribute
@@ -136,7 +136,7 @@ public class NetCDFCRSTest {
             String[] coverages = reader.getGridCoverageNames();
             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(coverages[0]);
             assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
+            ProjectedCRS projectedCRS = (ProjectedCRS) crs;
             Projection projection = projectedCRS.getConversionFromBase();
             MathTransform transform = projection.getMathTransform();
             assertTrue(transform instanceof TransverseMercator);
@@ -188,7 +188,7 @@ public class NetCDFCRSTest {
             String[] coverages = reader.getGridCoverageNames();
             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(coverages[0]);
             assertTrue(crs instanceof ProjectedCRS);
-            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
+            ProjectedCRS projectedCRS = (ProjectedCRS) crs;
             Projection projection = projectedCRS.getConversionFromBase();
             MathTransform transform = projection.getMathTransform();
             assertTrue(transform instanceof AlbersEqualArea);
@@ -222,7 +222,7 @@ public class NetCDFCRSTest {
             assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS, crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
             assertTrue(crs instanceof DerivedCRS);
-            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            DerivedCRS derivedCRS = (DerivedCRS) crs;
             MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;
@@ -316,7 +316,7 @@ public class NetCDFCRSTest {
                 transform);
 
         assertTrue(crs instanceof ProjectedCRS);
-        ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
+        ProjectedCRS projectedCRS = (ProjectedCRS) crs;
         GeographicCRS baseCRS = projectedCRS.getBaseCRS();
 
         assertTrue(CRS.equalsIgnoreMetadata(baseCRS, DefaultGeographicCRS.WGS84));

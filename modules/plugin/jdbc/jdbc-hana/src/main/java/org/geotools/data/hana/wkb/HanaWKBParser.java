@@ -204,7 +204,7 @@ public class HanaWKBParser {
     }
 
     private CoordinateSequence patchRing(CoordinateSequence cs) {
-        if ((cs.size() >= 4) || (cs.size() == 0)) {
+        if (cs.size() >= 4 || cs.size() == 0) {
             return cs;
         }
         Coordinate[] coords = new Coordinate[4];

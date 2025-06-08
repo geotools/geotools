@@ -156,7 +156,7 @@ public final class Gnomonic extends MapProjection {
     private double getLatitudeFromPolar(double normalisedCylindricalRadius, double normalisedZ) {
         final double eccentricityRatio = excentricitySquared / sqrt(1.0 - excentricitySquared);
         final double modifiedRadiusSq =
-                (normalisedCylindricalRadius * normalisedCylindricalRadius) / (1.0 - excentricitySquared);
+                normalisedCylindricalRadius * normalisedCylindricalRadius / (1.0 - excentricitySquared);
 
         double zExtension = 1.0;
         double estimate = 0.0;
@@ -170,7 +170,7 @@ public final class Gnomonic extends MapProjection {
         final double latitude;
         if (abs(normalisedCylindricalRadius) <= EPSILON) {
             // need to check whether at north or south pole
-            if ((normalisedZ + estimate) > 0.0) { // north
+            if (normalisedZ + estimate > 0.0) { // north
                 latitude = PI / 2;
             } else { // south
                 latitude = -PI / 2;

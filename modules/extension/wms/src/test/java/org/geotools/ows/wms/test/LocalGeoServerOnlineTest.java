@@ -452,7 +452,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
         ContentType contentType = new ContentType(wmsResponse.getContentType());
         try (InputStreamReader stream = getInputStreamReader(wmsResponse, contentType)) {
 
-            Style[] styles = (new SLDParser(styleFactory, stream)).readXML();
+            Style[] styles = new SLDParser(styleFactory, stream).readXML();
 
             assert styles.length > 0;
 
@@ -472,7 +472,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
 
             for (Style style : styles) namedLayer.addStyle(style);
 
-            StyledLayerDescriptor sld = (new StyledLayerDescriptorBuilder()).build();
+            StyledLayerDescriptor sld = new StyledLayerDescriptorBuilder().build();
             sld.addStyledLayer(namedLayer);
             String xml = styleTransform.transform(sld);
             assert xml.length() > 300;

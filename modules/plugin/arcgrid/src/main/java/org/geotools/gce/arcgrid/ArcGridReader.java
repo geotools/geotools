@@ -201,7 +201,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         // otherwise, later on, I will try to get an inputstream out of it.
         if (input instanceof URL) {
             // URL that point to a file
-            final URL sourceURL = ((URL) input);
+            final URL sourceURL = (URL) input;
             if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
                 this.source = input = URLs.urlToFile(sourceURL);
             }
@@ -219,7 +219,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
             this.coverageName = sourceFile.getName();
             final int dotIndex = coverageName.indexOf(".");
             gzipped = coverageName.toLowerCase().endsWith("gz");
-            coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
+            coverageName = dotIndex == -1 ? coverageName : coverageName.substring(0, dotIndex);
             if (gzipped)
                 inStream = ImageIO.createImageInputStream(new GZIPInputStream(new FileInputStream(sourceFile)));
             else {
@@ -235,7 +235,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         //
         // //
         if (input instanceof URL) {
-            final URL tempURL = ((URL) input);
+            final URL tempURL = (URL) input;
             try {
                 input = tempURL.openConnection().getInputStream();
                 inStream = ImageIO.createImageInputStream(new GZIPInputStream((InputStream) input));
@@ -525,7 +525,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         }
 
         originalEnvelope = new GeneralBounds(
-                new double[] {xll, yll}, new double[] {xll + (hrWidth * cellsizeX), yll + (hrHeight * cellsizeY)});
+                new double[] {xll, yll}, new double[] {xll + hrWidth * cellsizeX, yll + hrHeight * cellsizeY});
 
         // setting the coordinate reference system for the envelope
         originalEnvelope.setCoordinateReferenceSystem(crs);
@@ -541,7 +541,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
     private void initCoordinateReferenceSystem() throws FileNotFoundException, IOException {
 
         // check to see if there is a projection file
-        if (source instanceof File || (source instanceof URL && (((URL) source).getProtocol() == "file"))) {
+        if (source instanceof File || source instanceof URL && ((URL) source).getProtocol() == "file") {
             // getting name for the prj file
             final String sourceAsString;
 

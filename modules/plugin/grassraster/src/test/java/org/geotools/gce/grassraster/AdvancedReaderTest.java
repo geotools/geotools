@@ -264,7 +264,7 @@ public class AdvancedReaderTest {
 
         AbstractGridFormat format = new GrassCoverageFormatFactory().createFormat();
         GridCoverageReader reader = format.getReader(file);
-        GridCoverage2D gc = ((GridCoverage2D) reader.read(readParams));
+        GridCoverage2D gc = (GridCoverage2D) reader.read(readParams);
         return gc;
     }
 
@@ -289,7 +289,7 @@ public class AdvancedReaderTest {
         // do the reading
         AbstractGridFormat format = new GrassCoverageFormatFactory().createFormat();
         GridCoverageReader reader = format.getReader(file);
-        GridCoverage2D gc = ((GridCoverage2D) reader.read(readParams));
+        GridCoverage2D gc = (GridCoverage2D) reader.read(readParams);
 
         // readgrassraster stop
         return gc;

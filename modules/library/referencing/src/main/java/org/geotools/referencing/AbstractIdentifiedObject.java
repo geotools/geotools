@@ -674,7 +674,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                 }
             }
         }
-        return (authority == null) ? info.getName() : null;
+        return authority == null ? info.getName() : null;
     }
 
     /**
@@ -852,7 +852,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     @Override
     public final boolean equals(final Object object) {
-        return (object instanceof AbstractIdentifiedObject) && equals((AbstractIdentifiedObject) object, true);
+        return object instanceof AbstractIdentifiedObject && equals((AbstractIdentifiedObject) object, true);
     }
 
     /**
@@ -908,7 +908,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
             final AbstractIdentifiedObject object1,
             final AbstractIdentifiedObject object2,
             final boolean compareMetadata) {
-        return (object1 == object2) || (object1 != null && object1.equals(object2, compareMetadata));
+        return object1 == object2 || object1 != null && object1.equals(object2, compareMetadata);
     }
 
     /**
@@ -941,7 +941,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
     protected static boolean equals(
             final IdentifiedObject[] array1, final IdentifiedObject[] array2, final boolean compareMetadata) {
         if (array1 != array2) {
-            if ((array1 == null) || (array2 == null) || (array1.length != array2.length)) {
+            if (array1 == null || array2 == null || array1.length != array2.length) {
                 return false;
             }
             for (int i = array1.length; --i >= 0; ) {
@@ -990,7 +990,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     private static <E extends Comparable<E>> int doCompare(final E c1, final E c2) {
         if (c1 == null) {
-            return (c2 == null) ? 0 : -1;
+            return c2 == null ? 0 : -1;
         }
         if (c2 == null) {
             return +1;

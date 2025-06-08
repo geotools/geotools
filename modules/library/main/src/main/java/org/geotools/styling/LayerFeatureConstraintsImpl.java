@@ -54,7 +54,7 @@ public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
         int result = 0;
 
         if (constraints != null) {
-            result = (PRIME * result) + Arrays.hashCode(constraints);
+            result = PRIME * result + Arrays.hashCode(constraints);
         }
 
         return result;

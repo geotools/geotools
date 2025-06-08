@@ -175,7 +175,7 @@ public final class JTS {
 
         npoints++; // for the starting point.
 
-        final double[] coordinates = new double[(4 * npoints) * 2];
+        final double[] coordinates = new double[4 * npoints * 2];
         final double xmin = sourceEnvelope.getMinX();
         final double xmax = sourceEnvelope.getMaxX();
         final double ymin = sourceEnvelope.getMinY();
@@ -533,7 +533,7 @@ public final class JTS {
             }
         }
 
-        if (!startPointTransformed && (firstError != null)) {
+        if (!startPointTransformed && firstError != null) {
             throw firstError;
         }
     }
@@ -1031,12 +1031,12 @@ public final class JTS {
         Coordinate[] c = geom.getCoordinates();
 
         for (Coordinate coordinate : c) {
-            if (!xUnbounded && ((coordinate.x < x.getMinimumValue()) || (coordinate.x > x.getMaximumValue()))) {
+            if (!xUnbounded && (coordinate.x < x.getMinimumValue() || coordinate.x > x.getMaximumValue())) {
                 throw new PointOutsideEnvelopeException(
                         coordinate.x + " outside of (" + x.getMinimumValue() + "," + x.getMaximumValue() + ")");
             }
 
-            if (!yUnbounded && ((coordinate.y < y.getMinimumValue()) || (coordinate.y > y.getMaximumValue()))) {
+            if (!yUnbounded && (coordinate.y < y.getMinimumValue() || coordinate.y > y.getMaximumValue())) {
                 throw new PointOutsideEnvelopeException(
                         coordinate.y + " outside of (" + y.getMinimumValue() + "," + y.getMaximumValue() + ")");
             }
@@ -1321,7 +1321,7 @@ public final class JTS {
         // work on the exterior ring
         LineString exterior = polygon.getExteriorRing();
         LineString shell = removeCollinearVertices(exterior);
-        if ((shell == null) || shell.isEmpty()) {
+        if (shell == null || shell.isEmpty()) {
             return null;
         }
 
@@ -1331,7 +1331,7 @@ public final class JTS {
         for (int i = 0; i < size; i++) {
             LineString hole = polygon.getInteriorRingN(i);
             hole = removeCollinearVertices(hole);
-            if ((hole != null) && !hole.isEmpty()) {
+            if (hole != null && !hole.isEmpty()) {
                 holes.add(hole);
             }
         }
@@ -1386,7 +1386,7 @@ public final class JTS {
     public static Geometry removeCollinearVertices(final Geometry geometry, int minPoints) {
         ensureNonNull("geometry", geometry);
 
-        if ((minPoints <= 0) || (geometry.getNumPoints() < minPoints)) {
+        if (minPoints <= 0 || geometry.getNumPoints() < minPoints) {
             return geometry;
         }
 
@@ -1540,8 +1540,8 @@ public final class JTS {
             BoundingBox3D b3 = (BoundingBox3D) b;
             return Math.abs(a3.getMinZ() - b3.getMinZ()) <= tolerance
                     && Math.abs(a3.getMaxZ() - b3.getMaxZ()) <= tolerance;
-        } else if ((a instanceof BoundingBox3D && !(b instanceof BoundingBox3D))
-                || (!(a instanceof BoundingBox3D) && b instanceof BoundingBox3D)) {
+        } else if (a instanceof BoundingBox3D && !(b instanceof BoundingBox3D)
+                || !(a instanceof BoundingBox3D) && b instanceof BoundingBox3D) {
             return false;
         }
 

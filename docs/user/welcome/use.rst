@@ -13,6 +13,9 @@ Maven (recommended):
    system is very good at sorting out dependencies between lots of little jars - and
    is the recommended way to start using GeoTools.
    
+   GeoTools provides a **Bill of Materials (BOM)** that simplifies dependency management 
+   by ensuring consistent versions across all GeoTools modules and their transitive dependencies.
+   
    Both Eclipse and NetBeans offer maven integration, for details please review
    the Eclipse Quickstart and NetBeans quickstart.
    

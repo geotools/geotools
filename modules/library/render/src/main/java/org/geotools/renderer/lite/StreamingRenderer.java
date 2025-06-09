@@ -47,6 +47,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.concurrent.BlockingQueue;
@@ -894,7 +895,13 @@ public class StreamingRenderer implements GTRenderer {
                         }
                     }
                 }
-               Optional.ofNullable(zGroupedMapContent).ifPresent(MapContent::dispose);
+                Optional.ofNullable(zGroupedMapContent)
+                        .map(MapContent::layers)
+                        .ifPresent(layers -> {
+                            layers.stream()
+                                    .filter(layer -> layer instanceof ZGroupLayer)
+                                    .forEach(this::disposeQuietly);
+                        });
             } finally {
                 try {
                     if (!renderingStopRequested) {
@@ -953,7 +960,14 @@ public class StreamingRenderer implements GTRenderer {
     protected BlockingQueue<RenderingRequest> getRequestsQueue() {
         return new RenderingBlockingQueue(10000);
     }
-
+    
+    private void disposeQuietly(Layer layer) {
+        try {
+            layer.dispose();
+        } catch (Exception ignored) {
+        }
+    }
+    
     /**
      * Extends the provided {@link Envelope} in order to add the number of pixels specified by <code>buffer</code> in
      * every direction.

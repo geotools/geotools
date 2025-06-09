@@ -66,6 +66,9 @@ definitely makes working with GeoTools much easier:
 
 * The single *local repository* makes it easier to work on other multiple open source projects.
 
+* GeoTools provides a **Bill of Materials (BOM)** that manages dependency versions automatically,
+  ensuring all GeoTools modules and their transitive dependencies work together correctly.
+
 
 Installing Maven
 ----------------
@@ -161,22 +164,33 @@ Creating a new project
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml
       :start-after: <url>http://maven.apache.org</url>
-      :end-before: <dependencies>
+      :end-before: <dependencyManagement>
    
    To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
-   
-#. We specify the following dependencies (GeoTools modules which your application will need):
+
+#. We use the GeoTools Bill of Materials (BOM) to manage dependency versions. This ensures that all GeoTools modules use compatible versions and simplifies dependency management:
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml
-      :start-after: </properties>
-      :end-before: <repositories>
+      :start-at: <dependencyManagement>
+      :end-at: </dependencyManagement>
+
+   The BOM (Bill of Materials) pattern is a Maven best practice that centralizes version management. By importing the ``gt-bom``, we don't need to specify version numbers for individual GeoTools modules.
+   
+#. We specify the following dependencies (GeoTools modules which your application will need).
+
+   Note that we don't specify version numbers since these are managed by the BOM:
+
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+      :start-after: </dependencyManagement>
+      :end-at: </dependencies>
         
 #. We tell maven which repositories to download jars from:
    
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml
-      :start-after: </dependencies>
+      :start-at: <repositories>
       :end-before: <build>
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)

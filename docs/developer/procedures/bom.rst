@@ -8,10 +8,12 @@ What is a BOM?
 
 A BOM (Bill of Materials) is a special POM file that manages dependency versions across a project. Rather than specifying versions for each dependency individually, you can import the BOM which provides consistent versioning.
 
-GeoTools provides two BOMs:
+GeoTools provides two BOMs that serve different purposes and are imported separately:
 
-1. ``gt-platform-dependencies`` - Manages third-party dependency versions
-2. ``gt-bom`` - Manages GeoTools module versions (also imports platform-dependencies)
+1. ``gt-platform-dependencies`` - Manages third-party dependency versions only
+2. ``gt-bom`` - Manages GeoTools module versions only
+
+**Important**: These BOMs are independent and should be imported separately based on your project's needs.
 
 BOM Structure
 -------------
@@ -28,9 +30,9 @@ The GeoTools BOM system is organized into two main components:
 2. **GeoTools Modules BOM** (``gt-bom``)
 
    * Located at: ``/bom/pom.xml``
-   * Imports the platform dependencies BOM
-   * Manages versions for all GeoTools modules
+   * Manages versions for all GeoTools modules only
    * Covers GeoTools library modules, plugin modules, extensions modules, and test artifacts
+   * Does not include third-party dependencies (these are managed separately by ``gt-platform-dependencies``)
 
 BOM Usage in GeoTools Development
 ---------------------------------
@@ -63,7 +65,9 @@ The GeoTools internal development model follows the "eat your own dog food" prin
 BOM Usage for Downstream Projects
 ---------------------------------
 
-Applications using GeoTools should import the ``gt-bom`` in their dependency management. This ensures consistent versioning of all GeoTools modules and their transitive dependencies.
+**Simple Applications using GeoTools**
+
+Applications using GeoTools should import the ``gt-bom`` in their dependency management. This ensures consistent versioning of all GeoTools modules.
 
 To use the GeoTools BOM in your project:
 
@@ -72,6 +76,34 @@ To use the GeoTools BOM in your project:
     <dependencyManagement>
       <dependencies>
         <!-- Import GeoTools BOM -->
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-bom</artifactId>
+          <version>34.0</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
+      </dependencies>
+    </dependencyManagement>
+
+**Projects Heavily Integrated with GeoTools**
+
+Projects like GeoServer and GeoWebCache that are heavily integrated with GeoTools should import both BOMs to centralize management of shared third-party dependencies:
+
+.. code-block:: xml
+
+    <dependencyManagement>
+      <dependencies>
+        <!-- Import platform dependencies for third-party libraries -->
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-platform-dependencies</artifactId>
+          <version>34.0</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
+
+        <!-- Import GeoTools modules BOM -->
         <dependency>
           <groupId>org.geotools</groupId>
           <artifactId>gt-bom</artifactId>
@@ -106,7 +138,7 @@ To use the GeoTools BOM in your project:
 Using Platform Dependencies Only
 --------------------------------
 
-In some cases, you might want to use only the platform dependencies BOM:
+The ``gt-platform-dependencies`` BOM can be imported separately from ``gt-bom`` when you only need third-party dependency management:
 
 .. code-block:: xml
 
@@ -122,7 +154,23 @@ In some cases, you might want to use only the platform dependencies BOM:
       </dependencies>
     </dependencyManagement>
 
-This approach is useful if you only need the third-party dependencies managed by GeoTools but not the GeoTools modules themselves.
+**When to use gt-platform-dependencies only:**
+
+* You're building a project that uses some of the same third-party libraries as GeoTools (JTS, Jackson, etc.) but don't need GeoTools modules
+* You want to ensure version compatibility with GeoTools without depending on GeoTools itself
+* You're creating a library that will be used alongside GeoTools
+
+**When to use gt-bom only:**
+
+* You're building a simple application that uses GeoTools modules (recommended for most users)
+* You're following the quickstart tutorials
+* You only need GeoTools modules and are fine with transitive dependency versions
+
+**When to use both BOMs:**
+
+* You're building a project heavily integrated with GeoTools (like GeoServer, GeoWebCache)
+* You need centralized management of both GeoTools modules and shared third-party dependencies
+* You want explicit control over third-party library versions used by both your project and GeoTools
 
 Test Artifacts
 --------------
@@ -155,7 +203,7 @@ If you need to override a specific dependency version managed by the BOM:
           <type>pom</type>
           <scope>import</scope>
         </dependency>
-        
+
         <!-- Override a specific dependency -->
         <dependency>
           <groupId>org.locationtech.jts</groupId>
@@ -165,10 +213,12 @@ If you need to override a specific dependency version managed by the BOM:
       </dependencies>
     </dependencyManagement>
 
-Multiple BOMs
--------------
+Combining Multiple BOMs
+-----------------------
 
-When using Spring Framework or other frameworks that provide their own BOMs, you can combine them with GeoTools BOM:
+You can combine GeoTools BOMs with other framework BOMs. Here are common patterns:
+
+**Simple Application with Spring Framework:**
 
 .. code-block:: xml
 
@@ -182,12 +232,47 @@ When using Spring Framework or other frameworks that provide their own BOMs, you
           <type>pom</type>
           <scope>import</scope>
         </dependency>
-        
+
         <!-- GeoTools BOM -->
         <dependency>
           <groupId>org.geotools</groupId>
           <artifactId>gt-bom</artifactId>
           <version>34.0</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
+      </dependencies>
+    </dependencyManagement>
+
+**Complex Application with Full Dependency Control:**
+
+.. code-block:: xml
+
+    <dependencyManagement>
+      <dependencies>
+        <!-- Platform dependencies for third-party libraries -->
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-platform-dependencies</artifactId>
+          <version>34.0</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
+
+        <!-- GeoTools modules -->
+        <dependency>
+          <groupId>org.geotools</groupId>
+          <artifactId>gt-bom</artifactId>
+          <version>34.0</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
+
+        <!-- Other framework BOMs -->
+        <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-framework-bom</artifactId>
+          <version>5.3.39</version>
           <type>pom</type>
           <scope>import</scope>
         </dependency>

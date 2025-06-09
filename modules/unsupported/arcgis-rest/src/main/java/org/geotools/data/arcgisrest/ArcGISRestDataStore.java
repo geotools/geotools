@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -440,9 +440,8 @@ public class ArcGISRestDataStore extends ContentDataStore {
             this.LOGGER.log(Level.FINER, String.format("About to query POST '%s' with body: %s", url, params));
         }
 
-        httpRequest.setConfig(RequestConfig.custom()
-                .setCookieSpec(CookieSpecs.BROWSER_COMPATIBILITY)
-                .build());
+        httpRequest.setConfig(
+                RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT).build());
 
         // Adds authorization if login/password is set
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
@@ -452,45 +451,50 @@ public class ArcGISRestDataStore extends ContentDataStore {
                             httpRequest.getURI().getHost(), httpRequest.getURI().getPort()),
                     new UsernamePasswordCredentials("user", "passwd"));
         }
-        CloseableHttpClient client = HttpClients.custom()
+        try (CloseableHttpClient client = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
-                .build();
-        CloseableHttpResponse httpResponse;
-        // Re-tries the request if necessary
-        while (true) {
+                .build()) {
 
-            // Executes the request (a POST, since the URL may get too long)
-            httpResponse = client.execute(httpRequest);
+            // Re-tries the request if necessary
+            while (true) {
 
-            // If HTTP error, throws an exception
-            if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                throw new IOException(String.format(
-                        "HTTP Status: %d for URL: %s",
-                        httpResponse.getStatusLine().getStatusCode(), httpRequest.getURI()));
-            }
+                // Executes the request (a POST, since the URL may get too long)
+                try (CloseableHttpResponse httpResponse = client.execute(httpRequest)) {
 
-            // Retrieve the wait period is returned by the server
-            int wait = 0;
-            Header header = httpResponse.getFirstHeader("Retry-After");
-            if (header != null) {
-                wait = Integer.parseInt(header.getValue());
-            }
+                    // If HTTP error, throws an exception
+                    if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                        throw new IOException(String.format(
+                                "HTTP Status: %d for URL: %s",
+                                httpResponse.getStatusLine().getStatusCode(), httpRequest.getURI()));
+                    }
 
-            // Exists if no retry is necessary
-            if (wait == 0) {
-                break;
-            }
+                    // Retrieve the wait period is returned by the server
+                    int wait = 0;
+                    Header header = httpResponse.getFirstHeader("Retry-After");
+                    if (header != null) {
+                        wait = Integer.parseInt(header.getValue());
+                    }
 
-            try {
-                Thread.sleep(wait * 1000);
-            } catch (InterruptedException e) {
-                LOGGER.log(Level.SEVERE, "InterruptedException: " + e.getMessage());
-                throw new IOException(e);
+                    // Exits if no retry is necessary
+                    if (wait == 0) {
+                        return httpResponse.getEntity().getContent();
+                    }
+
+                    try {
+                        this.LOGGER.log(
+                                Level.FINE,
+                                String.format(
+                                        "Waiting %d seconds before retrying request to %s",
+                                        wait, httpRequest.getURI()));
+                        Thread.sleep(wait * 1000);
+
+                    } catch (InterruptedException e) {
+                        LOGGER.log(Level.SEVERE, "InterruptedException: " + e.getMessage());
+                        throw new IOException(e);
+                    }
+                }
             }
         }
-
-        // Extracts an returns the response
-        return httpResponse.getEntity().getContent();
     }
 
     /**

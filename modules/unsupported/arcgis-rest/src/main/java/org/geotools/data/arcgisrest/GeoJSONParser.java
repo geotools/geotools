@@ -1,10 +1,8 @@
-package org.geotools.data.arcgisrest;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +15,8 @@ package org.geotools.data.arcgisrest;
  *    Lesser General Public License for more details.
  *
  */
+
+package org.geotools.data.arcgisrest;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
@@ -166,9 +166,6 @@ public class GeoJSONParser implements SimpleFeatureIterator {
     /**
      * Returns an iterator to navigate the features in the GeoJSON input stream. Since ArcGIS ReST API may return an
      * error message as a JSON (not a GeoJSON), this case is handled by throwing an exception
-     *
-     * @return A simple feature collection iterator
-     * @throws IOException
      */
     public void parseFeatureCollection() throws IOException {
 

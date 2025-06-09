@@ -37,7 +37,7 @@
     <geodb.version>0.9</geodb.version>
     <geographiclib-java.version>1.49</geographiclib-java.version>
     <guava.version>33.4.8-jre</guava.version>
-    <h2.version>1.1.119</h2.version>
+    <h2.version>2.2.220</h2.version>
     <hsqldb.version>2.7.2</hsqldb.version>
     <httpclient.version>4.5.14</httpclient.version>
     <imageio.ext.version>1.4.15</imageio.ext.version>

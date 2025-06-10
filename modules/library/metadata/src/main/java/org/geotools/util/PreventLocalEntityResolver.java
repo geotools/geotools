@@ -53,7 +53,8 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     // http(s) - external schema reference
     // jar - internal schema reference
     // vfs - internal schema reference (JBoss/WildFly)
-    private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|http|vfs)[^?#;]*\\.xsd");
+    // jar:nested - internal schema reference (Spring Boot)
+    private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|jar:nested|http|vfs)[^?#;]*\\.xsd");
 
     /** Singleton instance of PreventLocalEntityResolver */
     public static final PreventLocalEntityResolver INSTANCE = new PreventLocalEntityResolver();

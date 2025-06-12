@@ -27,7 +27,7 @@
   <properties>
     <maven.version>3.8.1</maven.version>
     <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-    <plexus-utils.version>3.0.16</plexus-utils.version>
+    <plexus-utils.version>3.0.24</plexus-utils.version>
   </properties>
 
   <dependencies>

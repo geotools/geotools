@@ -212,7 +212,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform implements Mat
         }
 
         /** Creates a new instance with the given offset. */
-        protected Base10(final double offset) {
+        Base10(final double offset) {
             super(10, offset);
         }
 

@@ -56,6 +56,7 @@ import si.uom.SI;
  * @author Frank Warmerdam
  * @author Martin Desruisseaux (IRD)
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class GeocentricTransform extends AbstractMathTransform implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3352045463953828140L;

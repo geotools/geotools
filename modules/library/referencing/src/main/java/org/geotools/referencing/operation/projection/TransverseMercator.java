@@ -90,6 +90,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
  * @author Martin Desruisseaux (PMO, IRD)
  * @author Rueben Schulz
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class TransverseMercator extends MapProjection {
     /** Maximum difference allowed when comparing real numbers. */
     private static final double EPSILON = 1E-6;
@@ -241,7 +242,7 @@ public class TransverseMercator extends MapProjection {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
+        Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
             ensureSpherical();
         }
@@ -306,7 +307,7 @@ public class TransverseMercator extends MapProjection {
          *     from it.
          * @return The tolerance level for assertions, in meters.
          */
-        protected double getToleranceForSphereAssertions(final double longitude) {
+        double getToleranceForSphereAssertions(final double longitude) {
             if (abs(abs(longitude) - PI / 2) < EPSILON_LATITUDE) { // 90 degrees
                 // elliptical equations are at their worst here
                 return 1E+18;

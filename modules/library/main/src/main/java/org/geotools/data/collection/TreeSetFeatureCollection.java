@@ -201,13 +201,10 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
         Iterator<SimpleFeature> iterator = collection.iterator();
         try {
-            List featuresAdded = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = iterator.next();
                 boolean added = add(f);
                 changed |= added;
-
-                if (added) featuresAdded.add(f);
             }
             return changed;
         } finally {
@@ -220,13 +217,10 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         boolean changed = false;
 
         try (FeatureIterator<?> iterator = collection.features()) {
-            List<SimpleFeature> featuresAdded = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean added = add(f);
                 changed |= added;
-
-                if (added) featuresAdded.add(f);
             }
             return changed;
         }
@@ -238,12 +232,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      */
     public void clear() {
         if (contents.isEmpty()) return;
-
-        SimpleFeature[] oldFeatures = new SimpleFeature[contents.size()];
-        oldFeatures = contents.values().toArray(oldFeatures);
-
         contents.clear();
-        // fireChange(oldFeatures, CollectionEvent.FEATURES_REMOVED);
     }
 
     /**
@@ -374,14 +363,12 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         boolean changed = false;
         Iterator iterator = collection.iterator();
         try {
-            List removedFeatures = new ArrayList<>(collection.size());
             while (iterator.hasNext()) {
                 SimpleFeature f = (SimpleFeature) iterator.next();
                 boolean removed = contents.values().remove(f);
 
                 if (removed) {
                     changed = true;
-                    removedFeatures.add(f);
                 }
             }
             return changed;
@@ -402,7 +389,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      */
     @SuppressWarnings("unchecked")
     public boolean retainAll(Collection collection) {
-        List removedFeatures = new ArrayList<>(contents.size() - collection.size());
         boolean modified = false;
 
         for (Iterator it = contents.values().iterator(); it.hasNext(); ) {
@@ -410,7 +396,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
             if (!collection.contains(f)) {
                 it.remove();
                 modified = true;
-                removedFeatures.add(f);
             }
         }
         return modified;

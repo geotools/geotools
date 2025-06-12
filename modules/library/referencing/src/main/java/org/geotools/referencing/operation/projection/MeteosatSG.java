@@ -139,6 +139,7 @@ public class MeteosatSG extends MapProjection {
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     @Override
+    @SuppressWarnings("UnusedVariable") // assignments to r1, r2, r3, sn, s1, s2, and s3, are never used
     protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         /* x - lon, y -lat */
@@ -185,7 +186,7 @@ public class MeteosatSG extends MapProjection {
         /* If the dot product is positive the point is visible otherwise it */
         /* is invisible. */
 
-        double dotprod = r1 * (rl * cos_c_lat * cos_x_SUB_LON) - r2 * r2 - r3 * r3 * (pow((R_EQ / R_POL), 2));
+        double dotprod = r1 * (rl * cos_c_lat * cos_x_SUB_LON) - r2 * r2 - r3 * r3 * pow((R_EQ / R_POL), 2);
 
         if (dotprod <= 0) {
             /*
@@ -240,6 +241,7 @@ public class MeteosatSG extends MapProjection {
      * the result in {@code ptDst}.
      */
     @Override
+    @SuppressWarnings("UnusedVariable") // assignments to sn, s1, s2, and s3, are never read
     protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         // x- column, y -row

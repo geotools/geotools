@@ -25,6 +25,7 @@ import java.util.List;
  * @author Kevin Smith, Boundless
  * @deprecated Use {@link org.geotools.styling.zoom.ListZoomContext} instead.
  */
+@Deprecated
 public class ListZoomContext extends org.geotools.styling.zoom.ListZoomContext {
     public ListZoomContext(List<Double> scales, int initial) {
         super(scales, initial);

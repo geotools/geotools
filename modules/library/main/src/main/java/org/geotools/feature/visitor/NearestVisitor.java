@@ -30,7 +30,6 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @author Andrea Aime - GeoSolutions
  * @author Ilkka Rinne / Spatineo Inc for the Finnish Meteorological Institute
- * @param <T>
  */
 public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
@@ -244,7 +243,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
     }
 
-    class NumberAccumulator implements NearestAccumulator<Number> {
+    static class NumberAccumulator implements NearestAccumulator<Number> {
 
         double targetValue;
 
@@ -274,7 +273,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
     }
 
-    class DateAccumulator implements NearestAccumulator<Date> {
+    static class DateAccumulator implements NearestAccumulator<Date> {
 
         long targetValue;
 
@@ -304,7 +303,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
     }
 
-    class GeometryAccumulator implements NearestAccumulator<Geometry> {
+    static class GeometryAccumulator implements NearestAccumulator<Geometry> {
 
         Geometry targetValue;
 

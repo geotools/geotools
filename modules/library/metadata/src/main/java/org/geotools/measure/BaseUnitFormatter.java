@@ -445,7 +445,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                     if (token == Token.INTEGER) {
                         long n = readLong(csq, pos);
                         if (n != 1) {
-                            result = result.multiply(n);
+                            result = result.multiply((double) n);
                         }
                     } else if (token == Token.FLOAT) {
                         double d = readDouble(csq, pos);
@@ -462,7 +462,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                     if (token == Token.INTEGER) {
                         long n = readLong(csq, pos);
                         if (n != 1) {
-                            result = result.divide(n);
+                            result = result.divide((double) n);
                         }
                     } else if (token == Token.FLOAT) {
                         double d = readDouble(csq, pos);
@@ -479,7 +479,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                     if (token == Token.INTEGER) {
                         long n = readLong(csq, pos);
                         if (n != 1) {
-                            result = result.shift(n);
+                            result = result.shift((double) n);
                         }
                     } else if (token == Token.FLOAT) {
                         double d = readDouble(csq, pos);

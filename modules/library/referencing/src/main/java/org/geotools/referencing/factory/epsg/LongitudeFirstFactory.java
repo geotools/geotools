@@ -159,6 +159,6 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
         } catch (FactoryRegistryException exception) {
             throw new FactoryException(exception);
         }
-        return new OrderedAxisAuthorityFactory(factory, new Hints(hints), null);
+        return new OrderedAxisAuthorityFactory(factory, new Hints(hints));
     }
 }

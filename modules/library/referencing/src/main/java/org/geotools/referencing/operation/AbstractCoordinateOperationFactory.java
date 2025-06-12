@@ -433,7 +433,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      */
     @Override
     public CoordinateOperation createConcatenatedOperation(
-            final Map<String, ?> properties, final CoordinateOperation[] operations) throws FactoryException {
+            final Map<String, ?> properties, final CoordinateOperation... operations) throws FactoryException {
         CoordinateOperation operation;
         operation = new DefaultConcatenatedOperation(properties, operations, mtFactory);
         operation = pool.unique(operation);

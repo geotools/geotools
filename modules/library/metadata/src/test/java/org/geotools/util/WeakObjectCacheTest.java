@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -79,6 +78,7 @@ public final class WeakObjectCacheTest {
     }
 
     @Test
+    @SuppressWarnings("ThreadPriorityCheck")
     public void testConcurrent() throws InterruptedException {
         ObjectCache<Integer, String> cache = new WeakObjectCache<>();
 
@@ -107,11 +107,7 @@ public final class WeakObjectCacheTest {
         assertEquals(2, cache.getKeys().size());
 
         // unlock
-        try {
-            cache.writeUnLock(key1);
-        } catch (Exception e) {
-            fail("couldn't unlock");
-        }
+        cache.writeUnLock(key1);
 
         // check that the write thread is unblocked
         t1.join();
@@ -142,11 +138,7 @@ public final class WeakObjectCacheTest {
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             } finally {
-                try {
-                    cache.writeUnLock(key1);
-                } catch (Exception e) {
-                    fail("couldn't unlock");
-                }
+                cache.writeUnLock(key1);
             }
         }
 

@@ -52,7 +52,7 @@ final class URN_Parser extends URI_Parser {
      * @param version the version of the resource or null if none
      * @param code the resource code
      */
-    protected URN_Parser(String urn, URI_Type type, String authority, Version version, String code) {
+    URN_Parser(String urn, URI_Type type, String authority, Version version, String code) {
         super(urn, type, authority, version, code);
     }
 
@@ -97,7 +97,7 @@ final class URN_Parser extends URI_Parser {
                                 urnCode = code.substring(lastEnd + 1).trim();
                             }
                             // handle empty version
-                            urnVersion = (StringUtils.isEmpty(urnVersion)) ? null : urnVersion;
+                            urnVersion = StringUtils.isEmpty(urnVersion) ? null : urnVersion;
                             if (urnCode.contains("CRS")) {
                                 urnAuthority = "CRS";
                                 urnCode = urnCode.substring(3);

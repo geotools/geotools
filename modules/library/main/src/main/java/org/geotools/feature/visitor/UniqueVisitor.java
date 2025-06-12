@@ -181,7 +181,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     }
 
     public Set getUnique() {
-        /** Return a list of unique values from the collection */
+        /* Return a list of unique values from the collection */
         return set;
     }
 
@@ -206,7 +206,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     }
 
     public void reset() {
-        /** Reset the unique and current minimum for the features in the collection */
+        /* Reset the unique and current minimum for the features in the collection */
         this.set = createNewSet(Collections.emptyList());
         this.skipped = new HashSet<>();
 

@@ -504,7 +504,6 @@
     <checkstyle.skip>false</checkstyle.skip>
     <errorProne.version>2.31.0</errorProne.version>
     <errorProneFlags></errorProneFlags>
-    <lint>deprecation,unchecked</lint>
     <pmd.skip>false</pmd.skip>
     <pmd.version>7.14.0</pmd.version>
     <pom.fmt.action>sort</pom.fmt.action>

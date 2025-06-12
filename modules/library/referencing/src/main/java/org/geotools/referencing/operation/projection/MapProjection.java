@@ -87,6 +87,7 @@ import tech.units.indriya.AbstractUnit;
  * @see <A HREF="http://atlas.gc.ca/site/english/learningresources/carto_corner/map_projections.html">Map projections on
  *     the atlas of Canada</A>
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public abstract class MapProjection extends AbstractMathTransform implements MathTransform2D, Serializable {
 
     /**
@@ -1271,7 +1272,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     protected final double mlfn(final double phi, double sphi, double cphi) {
         cphi *= sphi;
         sphi *= sphi;
-        return en0 * phi - cphi * (en1 + sphi * (en2 + sphi * (en3 + sphi * (en4))));
+        return en0 * phi - cphi * (en1 + sphi * (en2 + sphi * (en3 + sphi * en4)));
     }
 
     /**

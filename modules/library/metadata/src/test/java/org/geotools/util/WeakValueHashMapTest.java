@@ -125,6 +125,7 @@ public final class WeakValueHashMapTest {
         // hard to reproduce bug, the sizes and actions here have been carefully crafted
         // to make it happen
         WeakValueHashMap<Integer, Integer> map = new WeakValueHashMap<>(10);
+        @SuppressWarnings("ModifiedButNotUsed") // revisit?
         List<Integer> values = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             Integer v = Integer.valueOf(i);

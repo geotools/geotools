@@ -461,7 +461,7 @@ public class ObliqueMercator extends MapProjection {
     /** {@inheritDoc} */
     @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
-        return (twoPoint) ? Provider_TwoPoint.PARAMETERS : Provider.PARAMETERS;
+        return twoPoint ? Provider_TwoPoint.PARAMETERS : Provider.PARAMETERS;
     }
 
     /** {@inheritDoc} */

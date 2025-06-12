@@ -118,7 +118,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
                 getMappedPositions().size() * 2, getMappedPositions().size() * 2);
 
         for (int i = 0; i < getMappedPositions().size(); i = i + 2) {
-            if (Double.compare((getMappedPositions().get(i).getAccuracy()), Double.NaN) == 0) {
+            if (Double.compare(getMappedPositions().get(i).getAccuracy(), Double.NaN) == 0) {
                 throw new MissingInfoException("Accuracy has to be defined for all points");
             }
 
@@ -177,7 +177,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      * 1 / accuracy<sup>2<sup>.
      *
      * @param include if true then the weights will be included onto the calculation. False is default.
-     * @throws FactoryException if all or some of the {@linkplain #setMappedPositions(List) points} does not have
+     * @throws MissingInfoException if all or some of the {@linkplain #setMappedPositions(List) points} does not have
      *     accuracy setup properly.
      */
     public void includeWeights(boolean include) throws MissingInfoException {

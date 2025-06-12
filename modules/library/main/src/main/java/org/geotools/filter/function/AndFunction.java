@@ -44,7 +44,7 @@ public class AndFunction extends FunctionExpressionImpl {
         boolean right;
 
         try { // attempt to get the left value and perform conversion
-            left = (getExpression(0).evaluate(feature, Boolean.class));
+            left = getExpression(0).evaluate(feature, Boolean.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -52,7 +52,7 @@ public class AndFunction extends FunctionExpressionImpl {
         }
 
         try { // attempt to get the right value and perform conversion
-            right = (getExpression(1).evaluate(feature, Boolean.class));
+            right = getExpression(1).evaluate(feature, Boolean.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

@@ -23,6 +23,7 @@ package org.geotools.ysld.parse;
  * @author Kevin Smith, Boundless
  * @deprecated Use {@link org.geotools.styling.zoom.RatioZoomContext} instead.
  */
+@Deprecated
 public class RatioZoomContext extends org.geotools.styling.zoom.RatioZoomContext {
     public RatioZoomContext(double initialScale, double ratio) {
         super(initialScale, ratio);

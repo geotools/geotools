@@ -90,6 +90,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
      *
      * @param diff2 Differences of Feature by FID
      */
+    @SuppressWarnings("SynchronizeOnNonFinalField")
     public DiffFeatureReader(FeatureReader<T, F> reader, Diff diff2, Filter filter) {
         this.reader = reader;
         this.diff = diff2;

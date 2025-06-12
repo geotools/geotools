@@ -105,7 +105,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation im
      */
     private DefaultConcatenatedOperation(
             final Map<String, ?> properties,
-            final ArrayList<SingleOperation> list,
+            final List<SingleOperation> list,
             final CoordinateOperation... operations) {
         this(properties, expand(operations, list), list);
     }
@@ -116,7 +116,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation im
      */
     private DefaultConcatenatedOperation(
             final Map<String, ?> properties,
-            final ArrayList<SingleOperation> list,
+            final List<SingleOperation> list,
             final CoordinateOperation[] operations,
             final MathTransformFactory factory)
             throws FactoryException {

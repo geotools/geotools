@@ -51,6 +51,15 @@ public final class SortOrder extends CodeList<SortOrder> {
     private final String sqlKeyword;
 
     /**
+     * Constructs an enum with identical name and SQL keyword. This is needed for {@link CodeList#valueOf} reflection.
+     *
+     * @implNote required by {@code Codelist.valueOf(Class, String)}
+     */
+    private SortOrder(final String name) {
+        this(name, name);
+    }
+
+    /**
      * Constructs an enum with the given name. The new enum is automatically added to the list returned by
      * {@link #values}.
      *
@@ -60,13 +69,6 @@ public final class SortOrder extends CodeList<SortOrder> {
     private SortOrder(final String name, final String sqlKeyword) {
         super(name, VALUES);
         this.sqlKeyword = sqlKeyword;
-    }
-
-    /**
-     * Constructs an enum with identical name and SQL keyword. This is needed for {@link CodeList#valueOf} reflection.
-     */
-    private SortOrder(final String name) {
-        this(name, name);
     }
 
     /**

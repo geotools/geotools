@@ -132,8 +132,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
      *     reachable.
      * @param global A global affine transform for the whole grid.
      */
-    protected LocalizationGridTransform2D(
-            final int width, final int height, final double[] grid, final AffineTransform global) {
+    LocalizationGridTransform2D(final int width, final int height, final double[] grid, final AffineTransform global) {
         this.width = width;
         this.height = height;
         this.grid = grid;

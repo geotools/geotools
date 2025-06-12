@@ -74,6 +74,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
+@SuppressWarnings("JdkObsolete") // StringBuffer required by java.text.Format
 public class LineFormat extends Format {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 1663380990689494113L;
@@ -145,7 +146,7 @@ public class LineFormat extends Format {
      * is more columns than formats, then the last format object is reused for all remaining columns.
      *
      * @param formats The formats to use for parsing.
-     * @throws IllegalArgumentException if {@code formats} is null or an element of {@code format} is null.
+     * @throws IllegalArgumentException if {@code formats} is null or an element of {@code formats} is null.
      */
     public LineFormat(final Format... formats) throws IllegalArgumentException {
         this.data = new Object[formats.length];

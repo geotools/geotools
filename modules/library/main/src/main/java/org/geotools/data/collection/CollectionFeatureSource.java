@@ -144,7 +144,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
                 }
 
                 @Override
-                public boolean supportsSorting(org.geotools.api.filter.sort.SortBy[] sortAttributes) {
+                public boolean supportsSorting(org.geotools.api.filter.sort.SortBy... sortAttributes) {
                     return true;
                 }
             };

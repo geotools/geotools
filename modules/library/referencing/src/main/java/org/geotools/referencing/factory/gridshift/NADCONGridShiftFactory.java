@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
@@ -89,7 +90,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
     protected static final Logger LOGGER = Logging.getLogger(NADCONGridShiftFactory.class);
 
     /** The soft cache that holds loaded grids. */
-    private SoftValueHashMap<NADCONKey, NADConGridShift> gridCache;
+    private final SoftValueHashMap<NADCONKey, NADConGridShift> gridCache;
 
     /** Constructs a factory with the default priority. */
     public NADCONGridShiftFactory() {
@@ -335,8 +336,10 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         // //////////////////////
         // setup
         // //////////////////////
-        try (BufferedReader latBr = new BufferedReader(new InputStreamReader(latGridUrl.openStream()));
-                BufferedReader longBr = new BufferedReader(new InputStreamReader(longGridUrl.openStream()))) {
+        try (BufferedReader latBr =
+                        new BufferedReader(new InputStreamReader(latGridUrl.openStream(), StandardCharsets.UTF_8));
+                BufferedReader longBr =
+                        new BufferedReader(new InputStreamReader(longGridUrl.openStream(), StandardCharsets.UTF_8))) {
             // //////////////////////
             // read header info
             // //////////////////////

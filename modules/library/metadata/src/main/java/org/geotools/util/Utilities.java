@@ -143,6 +143,7 @@ public final class Utilities {
         }
 
         /** Returns the singleton instance of deserialization. */
+        @SuppressWarnings("ProtectedMembersInFinalClass") // readResolve must be protected for serialization
         protected Object readResolve() throws ObjectStreamException {
             return EMPTY_QUEUE;
         }

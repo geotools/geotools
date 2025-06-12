@@ -129,7 +129,7 @@ class TINTriangle extends Polygon {
     }
 
     /**
-     * Tries to add {@code adjacent} triangles. Before adding they are checked whether they are really adjacent or not
+     * Tries to add {@code adjacents} triangles. Before adding they are checked whether they are really adjacent or not
      * and whether they are not already known.
      *
      * @param adjacents triangles to be added

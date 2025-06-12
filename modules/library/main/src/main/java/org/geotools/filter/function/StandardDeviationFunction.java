@@ -125,11 +125,11 @@ public class StandardDeviationFunction extends ClassificationFunction {
 
         double min = ((Number) classifier.getMin(1)).doubleValue();
         percentages = computeGroupByPercentages(subCollection, percentages, totalSize, min, standardDeviation);
-        computeLastPercentage(percentages, totalSize);
+        computeLastPercentage(percentages);
         return percentages;
     }
 
-    private void computeLastPercentage(double[] percentages, double totalSize) {
+    private void computeLastPercentage(double[] percentages) {
         double sum = Arrays.stream(percentages).sum();
         percentages[percentages.length - 1] = 100.0 - sum;
     }
@@ -144,7 +144,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
         boolean percentages = false;
         if (getParameters().size() > 2) {
             Literal literal = (Literal) getParameters().get(2);
-            percentages = ((Boolean) literal.getValue()).booleanValue();
+            percentages = (Boolean) literal.getValue();
         }
         return percentages;
     }

@@ -147,6 +147,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
         }
 
         /** Compares the specified entry with this one for equality. */
+        @SuppressWarnings("NonOverridingEquals") // Type-specific helper method, not overriding Object.equals
         public boolean equals(final Map.Entry<?, ?> entry) {
             return Utilities.equals(getKey(), entry.getKey()) && Utilities.equals(getValue(), entry.getValue());
         }

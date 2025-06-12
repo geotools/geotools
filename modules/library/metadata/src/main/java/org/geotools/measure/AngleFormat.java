@@ -600,6 +600,7 @@ public class AngleFormat extends Format {
      * @param angle Angle to format, in degrees.
      * @return The formatted string.
      */
+    @SuppressWarnings("JdkObsolete") // format() method requires StringBuffer
     public final String format(final double angle) {
         return format(angle, new StringBuffer(), null).toString();
     }
@@ -948,7 +949,7 @@ public class AngleFormat extends Format {
      *     {@code true} fait que l'angle "45 30" sera interprété comme "45°30".
      * @return L'angle lu.
      */
-    @SuppressWarnings("fallthrough")
+    @SuppressWarnings({"fallthrough", "LabelledBreakTarget"})
     private synchronized Angle parse(final String source, final ParsePosition pos, final boolean spaceAsSeparator) {
         double degrees = Double.NaN;
         double minutes = Double.NaN;

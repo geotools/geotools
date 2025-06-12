@@ -99,8 +99,8 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
         }
 
         // try the usual conversions then
-        final boolean isNumeric1 = (value1 instanceof Number);
-        final boolean isNumeric2 = (value2 instanceof Number);
+        final boolean isNumeric1 = value1 instanceof Number;
+        final boolean isNumeric2 = value2 instanceof Number;
         if ((isNumeric1 && isNumeric2)
                 || (isNumeric1 && (value2 instanceof CharSequence))
                 || (isNumeric2 && (value1 instanceof CharSequence))) {

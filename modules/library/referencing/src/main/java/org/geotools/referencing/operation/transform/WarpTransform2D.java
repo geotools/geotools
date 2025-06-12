@@ -152,8 +152,8 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
      * @param srcOffset The inital entry of {@code srcCoords} to be used.
      * @param dstBounds Bounding box of destination coordinates, or {@code null} if unknow.
      * @param dstCoords Destination coordinates.
-     * @param dstOffset The inital entry of {@code destCoords} to be used.
-     * @param numCoords The number of coordinates from {@code srcCoords} and {@code destCoords} to be used.
+     * @param dstOffset The inital entry of {@code dstCoords} to be used.
+     * @param numCoords The number of coordinates from {@code srcCoords} and {@code dstCoords} to be used.
      * @param degree The desired degree of the warp polynomials.
      */
     public WarpTransform2D(
@@ -197,8 +197,8 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
      * @param srcOffset The inital entry of {@code srcCoords} to be used.
      * @param dstBounds Bounding box of destination coordinates, or {@code null} if unknow.
      * @param dstCoords Destination coordinates with <var>x</var> and <var>y</var> alternating.
-     * @param dstOffset The inital entry of {@code destCoords} to be used.
-     * @param numCoords The number of coordinates from {@code srcCoords} and {@code destCoords} to be used.
+     * @param dstOffset The inital entry of {@code dstCoords} to be used.
+     * @param numCoords The number of coordinates from {@code srcCoords} and {@code dstCoords} to be used.
      * @param degree The desired degree of the warp polynomials.
      */
     public WarpTransform2D(
@@ -217,6 +217,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
      * Work around for a bug in WarpPolynomial.createWarp(...). This constructor should move in the one above when the
      * {@code cloneCoords} argument will no longer be needed (after the JAI bug get fixed).
      */
+    @SuppressWarnings("NarrowingCompoundAssignment")
     private WarpTransform2D(
             final Rectangle2D srcBounds,
             float[] srcCoords,

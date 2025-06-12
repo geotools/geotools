@@ -335,7 +335,7 @@ public class ThreadedHsqlEpsgFactoryTest {
             assertNotNull(factory.createCoordinateReferenceSystem("EPSG:4326"));
             String creationMarker = String.format(
                     "GeoTools/Databases/HSQL/v%s/EPSG_creation_marker.txt", ThreadedHsqlEpsgFactory.VERSION);
-            assertTrue((new File(tmpDir, creationMarker)).exists());
+            assertTrue(new File(tmpDir, creationMarker).exists());
         } finally {
             System.setProperty(JAVA_IO_TMPDIR_PROPERTY, oldTmpDir);
             factory.dispose();

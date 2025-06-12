@@ -62,6 +62,6 @@ public class FilterFunction_min_4 extends FunctionExpressionImpl {
                     "Filter Function problem for function min argument #1 - expected type int");
         }
 
-        return (Math.min((Integer) arg0, (Integer) arg1));
+        return Math.min((Integer) arg0, (Integer) arg1);
     }
 }

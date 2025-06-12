@@ -158,13 +158,13 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
         } else if (length == 1) {
             throw new IllegalArgumentException(schema);
         }
-        /**
+        /*
          * Update the map, prepending the schema name to the table name so long as the value is a table name and not a
          * field. This algorithm assumes that all old table names start with "epsg_".
          */
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
             final String tableName = stringStringEntry.getValue();
-            /**
+            /*
              * Update the map, prepending the schema name to the table name so long as the value is a table name and not
              * a field. This algorithm assumes that all old table names start with "epsg_".
              */

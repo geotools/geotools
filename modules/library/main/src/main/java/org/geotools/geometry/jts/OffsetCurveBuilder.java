@@ -246,7 +246,7 @@ public class OffsetCurveBuilder {
 
     private GrowableOrdinateArray cleanupOrdinates(GrowableOrdinateArray ordinates, boolean closed) {
         final int max = ordinates.size();
-        if (max <= 8 && closed || (max < 8 && !closed)) {
+        if ((max <= 8 && closed) || (max < 8 && !closed)) {
             // not enough points for self intersection anyways
             return ordinates;
         }

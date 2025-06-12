@@ -161,7 +161,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
             }
 
             // find the proper create method
-            Method create = factory.getClass().getMethod("create" + className, null);
+            Method create = factory.getClass().getMethod("create" + className);
 
             if (create == null) {
                 // no dice
@@ -169,7 +169,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
             }
 
             // create the instance
-            return (EObject) create.invoke(factory, null);
+            return (EObject) create.invoke(factory);
         } else {
             // value already provided (e.g., by a subtype binding with
             // BEFORE execution mode)
@@ -225,7 +225,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
                         // JD: this is a hack
                         try {
                             String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
-                            Method g = eObject.getClass().getMethod(methodName, null);
+                            Method g = eObject.getClass().getMethod(methodName);
                             if (g == null) {
                                 throw e;
                             }

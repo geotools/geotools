@@ -48,6 +48,6 @@ public class FilterFunction_strTrim extends FunctionExpressionImpl {
                     "Filter Function problem for function strTrim argument #0 - expected type String");
         }
 
-        return (StaticGeometry.strTrim(arg0));
+        return StaticGeometry.strTrim(arg0);
     }
 }

@@ -280,7 +280,7 @@ public class Statistics implements Cloneable, Serializable {
         final long code = (Double.doubleToLongBits(min)
                 + 37
                         * (Double.doubleToLongBits(max)
-                                + 37 * (Double.doubleToLongBits(sum) + 37 * (Double.doubleToLongBits(sum2)))));
+                                + 37 * (Double.doubleToLongBits(sum) + 37 * Double.doubleToLongBits(sum2))));
         return (int) code ^ (int) (code >>> 32) ^ n;
     }
 

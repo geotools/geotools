@@ -221,7 +221,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     public void resolve(int n) throws FactoryException {
         if (n > 0)
             try {
-                for (Object o : this) {
+                for (Object unused : this) {
                     if (--n == 0) {
                         break;
                     }

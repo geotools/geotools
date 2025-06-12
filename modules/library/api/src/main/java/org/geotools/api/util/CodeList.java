@@ -64,7 +64,7 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
      */
     @SuppressWarnings("unchecked")
     protected CodeList(String name, final Collection<E> values) {
-        this.name = (name = name.trim());
+        this.name = name;
         synchronized (values) {
             this.ordinal = values.size();
             if (!values.add((E) this)) {

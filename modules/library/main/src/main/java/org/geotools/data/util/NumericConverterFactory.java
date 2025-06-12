@@ -56,7 +56,7 @@ public class NumericConverterFactory implements ConverterFactory {
 
         // check if source is a number or a string. We can't convert to a number
         // from anything else.
-        if (!(Number.class.isAssignableFrom(source)) && !(String.class.isAssignableFrom(source))) return null;
+        if (!Number.class.isAssignableFrom(source) && !String.class.isAssignableFrom(source)) return null;
 
         // check if target is one of supported
         if (Long.class.equals(target)
@@ -232,21 +232,25 @@ public class NumericConverterFactory implements ConverterFactory {
                     try {
                         return Integer.valueOf(s.toString());
                     } catch (Exception e) {
+                        // ignore and continue
                     }
 
                     try {
                         return new BigInteger(s.toString());
                     } catch (Exception e) {
+                        // ignore and continue
                     }
 
                     try {
                         return Double.valueOf(s.toString());
                     } catch (Exception e) {
+                        // ignore and continue
                     }
 
                     try {
                         return new BigDecimal(s.toString());
                     } catch (Exception e) {
+                        // ignore and continue
                     }
                 }
             } else if (source instanceof String) {
@@ -291,21 +295,25 @@ public class NumericConverterFactory implements ConverterFactory {
                         try {
                             return Integer.valueOf(integral);
                         } catch (Exception e) {
+                            // ignore and continue
                         }
 
                         try {
                             return new BigInteger(integral);
                         } catch (Exception e) {
+                            // ignore and continue
                         }
                     }
                     try {
                         return Double.valueOf(s);
                     } catch (Exception e) {
+                        // ignore and continue
                     }
 
                     try {
                         return new BigDecimal(s);
                     } catch (Exception e) {
+                        // ignore and continue
                     }
                 }
             }

@@ -84,7 +84,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
     @Override
     public void visit(org.geotools.api.feature.Feature feature) {
-        /** Visitor function */
+        /* Visitor function */
         Object result = expr.evaluate(feature);
         if (result == null) {
             return; // skip
@@ -213,7 +213,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 int i;
                 for (i = 0; i < list.size(); i++) values[i] = list.get(i);
                 for (int j = 0; j < toAdd.size(); j++) values[i + j] = toAdd.get(j);
-                Class bestClass = CalcUtil.bestClass(values);
+                Class bestClass = CalcUtil.bestClass((Object[]) values);
                 for (int k = 0; k < size; k++) {
                     if (values[k].getClass() != bestClass)
                         values[k] = (Comparable) CalcUtil.convert(values[k], bestClass);

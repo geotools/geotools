@@ -45,8 +45,6 @@ import java.awt.image.WritableRenderedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -117,7 +115,7 @@ public final class ImageUtilities {
         }
         boolean mediaLib = (mediaLibImage != null);
 
-        // npw check if we either wanted to disable explicitly and if we installed the native libs
+        // now check if we either wanted to disable explicitly and if we installed the native libs
         if (mediaLib) {
 
             try {
@@ -127,22 +125,15 @@ public final class ImageUtilities {
                 // native libs installed
                 if (mediaLib) {
                     final Class<?> mImage = mediaLibImage;
-                    PrivilegedAction<Boolean> action = () -> {
-                        try {
-                            // get the method
-                            final Class<?>[] params = {};
-                            Method method = mImage.getDeclaredMethod("isAvailable", params);
-
-                            // invoke
-                            final Object[] paramsObj = {};
-
-                            final Object o = mImage.getDeclaredConstructor().newInstance();
-                            return (Boolean) method.invoke(o, paramsObj);
-                        } catch (Throwable e) {
-                            return false;
-                        }
-                    };
-                    mediaLib = AccessController.doPrivileged(action);
+                    try {
+                        // get the method
+                        Method method = mImage.getDeclaredMethod("isAvailable");
+                        // invoke
+                        final Object o = mImage.getDeclaredConstructor().newInstance();
+                        mediaLib = (Boolean) method.invoke(o);
+                    } catch (Throwable e) {
+                        mediaLib = false;
+                    }
                 }
             } catch (Throwable e) {
                 // Because the property com.sun.media.jai.disableMediaLib isn't

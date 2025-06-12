@@ -28,6 +28,7 @@ import javax.media.jai.Interpolation;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -351,7 +352,7 @@ public class RasterLayerRequest {
             }
             MosaicQueryBuilder builder = new MosaicQueryBuilder(this, queryBounds);
             Query query = builder.build();
-            query.setSortBy(null); // no need to actually sort on anything here
+            query.setSortBy((SortBy[]) null); // no need to actually sort on anything here
             GranuleSource granules = rasterManager.getGranuleSource(true, null);
             // ... load only the default geometry if possible
             final GeometryDescriptor gd = granules.getSchema().getGeometryDescriptor();

@@ -117,9 +117,8 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         for (AttributeDescriptor ad : f.getFeatureType().getAttributeDescriptors()) {
             Object attribute = f.getAttribute(ad.getName());
             if (ad instanceof GeometryDescriptor) {
-                Class target = ad.getType().getBinding();
-                attribute = clipGeometry(
-                        (Geometry) attribute, target, ((GeometryDescriptor) ad).getCoordinateReferenceSystem());
+                attribute =
+                        clipGeometry((Geometry) attribute, ((GeometryDescriptor) ad).getCoordinateReferenceSystem());
                 if (attribute == null && f.getFeatureType().getGeometryDescriptor() == ad) {
                     // the feature has been clipped out
                     fb.reset();
@@ -143,7 +142,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         return result;
     }
 
-    private Object clipGeometry(Geometry geom, Class target, CoordinateReferenceSystem crs) {
+    private Object clipGeometry(Geometry geom, CoordinateReferenceSystem crs) {
         // first off, clip
         Geometry clipped = null;
         if (clipper != null) {
@@ -359,6 +358,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
 
         private final ArrayList<LineString> originalLines;
 
+        @SuppressWarnings("UnusedVariable") // crs
         public LinearElevationInterpolator(Geometry original, CoordinateReferenceSystem crs) {
             originalLines = new ArrayList<>();
             original.apply((GeometryComponentFilter) geom -> {

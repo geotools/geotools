@@ -150,7 +150,7 @@ public class WarpBuilderTest {
                 scale = -scale;
                 offset = mapExtent.getMaximum(j);
             }
-            offset -= scale * (gridRange.getLowerCorner().getOrdinate(i));
+            offset -= scale * gridRange.getLowerCorner().getOrdinate(i);
 
             matrix.setElement(j, j, 0.0);
             matrix.setElement(j, i, scale);

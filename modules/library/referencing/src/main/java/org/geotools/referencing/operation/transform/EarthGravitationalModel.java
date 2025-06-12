@@ -64,6 +64,7 @@ import org.geotools.referencing.operation.MathTransformProvider;
  * @author Pierre Cardinal
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public final class EarthGravitationalModel extends VerticalTransform {
     /** Pre-computed values of some square roots. */
     private static final double SQRT_03 = 1.7320508075688772935274463415059,
@@ -189,7 +190,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
      * @param filename The filename (e.g. {@code "WGS84.cof"}, relative to this class directory.
      * @throws IOException if the file can't be read or has an invalid content.
      */
-    protected void load(final String filename) throws IOException {
+    void load(final String filename) throws IOException {
         try (InputStream stream = EarthGravitationalModel.class.getResourceAsStream(filename)) {
             if (stream == null) {
                 throw new FileNotFoundException(filename);
@@ -274,7 +275,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
                 final int ll = locatingArray(j) + i;
                 final int n = 2 * j + 1;
                 final int ji = (j - i) * (j + i);
-                aClenshaw[ll] = Math.sqrt(n * (2 * j - 1) / (double) (ji));
+                aClenshaw[ll] = Math.sqrt(n * (2 * j - 1) / (double) ji);
                 bClenshaw[ll] = Math.sqrt(n * (j + i - 1) * (j - i - 1) / (double) (ji * (2 * j - 3)));
             }
         }

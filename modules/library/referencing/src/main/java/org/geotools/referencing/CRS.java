@@ -174,7 +174,7 @@ public final class CRS {
 
     private static SoftValueHashMap<String, CoordinateReferenceSystem> wktCache = new SoftValueHashMap<>();
 
-    /** Registers a listener automatically invoked when the system-wide configuration changed. */
+    /* Registers a listener automatically invoked when the system-wide configuration changed. */
     static {
         GeoTools.addChangeListener(new ChangeListener() {
             @Override
@@ -214,7 +214,7 @@ public final class CRS {
      */
     public static synchronized CRSAuthorityFactory getAuthorityFactory(final boolean longitudeFirst)
             throws FactoryRegistryException {
-        CRSAuthorityFactory factory = (longitudeFirst) ? xyFactory : defaultFactory;
+        CRSAuthorityFactory factory = longitudeFirst ? xyFactory : defaultFactory;
         if (factory == null)
             try {
                 // what matters is the value of the flag when the factories are created,. do updated
@@ -288,10 +288,10 @@ public final class CRS {
      * @since 2.4
      */
     public static CoordinateOperationFactory getCoordinateOperationFactory(final boolean lenient) {
-        CoordinateOperationFactory factory = (lenient) ? lenientFactory : strictFactory;
+        CoordinateOperationFactory factory = lenient ? lenientFactory : strictFactory;
         if (factory == null) {
             synchronized (CRS.class) {
-                factory = (lenient) ? lenientFactory : strictFactory;
+                factory = lenient ? lenientFactory : strictFactory;
                 if (factory == null) {
                     final Hints hints = GeoTools.getDefaultHints();
                     if (lenient) {
@@ -645,6 +645,7 @@ public final class CRS {
      * @return The horizontal CRS, or {@code null} if none.
      * @since 2.4
      */
+    @SuppressWarnings("LabelledBreakTarget")
     public static SingleCRS getHorizontalCRS(final CoordinateReferenceSystem crs) {
         if (crs instanceof SingleCRS) {
             final CoordinateSystem cs = crs.getCoordinateSystem();

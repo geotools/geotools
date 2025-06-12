@@ -30,6 +30,7 @@ import javax.swing.JTextArea;
 import javax.xml.transform.TransformerException;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.api.data.Parameter;
+import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.StyledLayerDescriptor;
@@ -282,7 +283,7 @@ public class StyleConverter extends JFrame {
 
         // FeatureTypeConstraint ftc =
         // styleFactory.createFeatureTypeConstraint(null, Filter.INCLUDE, null);
-        layer.setLayerFeatureConstraints(null);
+        layer.setLayerFeatureConstraints((FeatureTypeConstraint[]) null);
         sld.addStyledLayer(layer);
         layer.addUserStyle(style);
 

@@ -16,6 +16,9 @@
  */
 package org.geotools.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,7 +36,7 @@ import org.junit.runners.Parameterized;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 @RunWith(Parameterized.class)
-public class DateTimeParserTest extends Assert {
+public class DateTimeParserTest {
 
     private static final DateTimeParser PARSER = new DateTimeParser(
             -1,

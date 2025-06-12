@@ -113,7 +113,7 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
             super(sourceCRS, validAreaBounds, renderingEnvelope);
 
             CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
-            Point2D.Double center = getCenter(crs);
+            Point2D.Double center = getCenter();
             initializeDatelineCutter(crs, center);
             double radius = getRadius(crs, center);
             renderingGeometry = JTS.toGeometry(renderingEnvelope);
@@ -193,7 +193,7 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
         }
 
         private double rollLongitude(final double x) {
-            return x - (((int) (x + Math.signum(x) * 180)) / 360) * 360.0;
+            return x - (((int) (x + Math.signum(x) * 180)) / 360.0) * 360.0;
         }
 
         private void initializeDatelineCutter(CoordinateReferenceSystem crs, Point2D.Double center)
@@ -327,7 +327,7 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
             return renderingWithinRadius;
         }
 
-        private Point2D.Double getCenter(CoordinateReferenceSystem crs) {
+        private Point2D.Double getCenter() {
             MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
             ParameterValue<?> centralMeridian = getParameter(mapProjection, AbstractProvider.CENTRAL_MERIDIAN);
             ParameterValue<?> latitudeOfOrigin = getParameter(mapProjection, AbstractProvider.LATITUDE_OF_ORIGIN);

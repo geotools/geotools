@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: 17
           distribution: 'temurin'
       - uses: actions/checkout@v4
       - name: Maven repository caching
@@ -66,12 +66,12 @@ jobs:
         run: |
           echo "Building GeoServer"
           export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
-          export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
+          export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
           cd ~
           sed -i "s/<mf.version>2.2.0<\/mf.version>/<mf.version>2.3-SNAPSHOT<\/mf.version>/g" geoserver/src/pom.xml
           sed -i "s/<gf.version>3.6.0<\/gf.version>/<gf.version>3.6-SNAPSHOT<\/gf.version>/g" geoserver/src/pom.xml
           mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T1C
-          mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T1C
+          mvn -B -f geoserver/src/community/pom.xml install -nsu -PcommunityRelease -Dspotless.apply.skip=true -DskipTests -T1C
           mvn -B -f geoserver/src/pom.xml test -fae -T1C -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
       - name: Remove SNAPSHOT jars from repository
         run: |

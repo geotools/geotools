@@ -167,6 +167,10 @@ class EnvelopeReprojector {
      * @param envelope
      * @return
      */
+    @SuppressWarnings(
+            "OperatorPrecedence") // revisit: Use grouping parenthesis to make the operator precedence explicit (see
+    // https://errorprone.info/bugpattern/OperatorPrecedence)
+    // Did you mean '|| ((growth(transformed, oldTransformed, 0) < 0.01)'?
     private static GeneralBounds bisectionTransform(
             MathTransform mt, Bounds envelope, GeneralBounds transformed, int maxDepth) throws TransformException {
         if (maxDepth <= 0) {
@@ -802,6 +806,7 @@ class EnvelopeReprojector {
         envelope.add(workPoint);
     }
 
+    @SuppressWarnings("NarrowCalculation") // revisit? shouldn't it be "/ 360.0"
     private static double rollLongitude(final double x) {
         double rolled = x - (((int) (x + Math.signum(x) * 180)) / 360) * 360.0;
         return rolled;

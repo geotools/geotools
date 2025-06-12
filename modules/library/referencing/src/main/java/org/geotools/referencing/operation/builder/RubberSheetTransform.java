@@ -152,7 +152,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
                 return triangle;
             }
         }
-        throw (new TransformException("Points are outside the scope"));
+        throw new TransformException("Points are outside the scope");
     }
 
     /** Returns the inverse transform. */

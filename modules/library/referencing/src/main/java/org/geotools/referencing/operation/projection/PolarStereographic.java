@@ -139,7 +139,7 @@ public class PolarStereographic extends Stereographic {
         } else {
             southPole = (latitudeTrueScale < 0);
         }
-        this.latitudeOfOrigin = (southPole) ? -(PI / 2) : +(PI / 2);
+        this.latitudeOfOrigin = southPole ? -(PI / 2) : +(PI / 2);
         this.standardParallel = latitudeTrueScale; // May be anything in [-90 .. +90] range.
         /*
          * Computes coefficients.
@@ -203,7 +203,7 @@ public class PolarStereographic extends Stereographic {
             final double phi = (PI / 2) - 2.0 * atan(t * pow((1 - esinphi) / (1 + esinphi), halfe));
             if (abs(phi - phi0) < ITERATION_TOLERANCE) {
                 x = (abs(rho) < EPSILON) ? 0.0 : atan2(x, -y);
-                y = (southPole) ? -phi : phi;
+                y = southPole ? -phi : phi;
                 break;
             }
             phi0 = phi;
@@ -356,7 +356,7 @@ public class PolarStereographic extends Stereographic {
             } else {
                 final double c = 2.0 * atan(rho / k0);
                 final double cosc = cos(c);
-                y = (southPole) ? asin(-cosc) : asin(cosc);
+                y = southPole ? asin(-cosc) : asin(cosc);
                 // (20-14) with phi1=90
             }
             assert checkInverseTransform(x, y, ptDst);
@@ -455,7 +455,7 @@ public class PolarStereographic extends Stereographic {
             final double sin2chi = sin(2.0 * chi);
             final double cos2chi = cos(2.0 * chi);
             y = chi + sin2chi * (A + cos2chi * (B + cos2chi * (C + D * cos2chi)));
-            y = (southPole) ? -y : y;
+            y = southPole ? -y : y;
 
             assert checkInverseTransform(x, y, ptDst);
             if (ptDst != null) {

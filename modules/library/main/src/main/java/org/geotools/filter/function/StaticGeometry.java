@@ -590,12 +590,12 @@ public class StaticGeometry {
         if ((o1 instanceof Number) && (o2 instanceof Number)) {
             return ((Number) o1).doubleValue() == ((Number) o2).doubleValue();
         }
-        return (o1).toString().equals((o2).toString());
+        return o1.toString().equals(o2.toString());
     }
 
     public static boolean notEqualTo(Object o1, Object o2) {
         if (o1 == null || o2 == null) return false;
-        return !(equalTo(o1, o2));
+        return !equalTo(o1, o2);
     }
 
     /** Delegates to FilterFactory */
@@ -641,50 +641,45 @@ public class StaticGeometry {
     // SQL "var in (list)"
 
     public static boolean in2(Object s, Object s1, Object s2) {
-        return (equalTo(s, s1) || equalTo(s, s2));
+        return equalTo(s, s1) || equalTo(s, s2);
     }
 
     public static boolean in3(Object s, Object s1, Object s2, Object s3) {
-        return (equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3));
+        return equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3);
     }
 
     public static boolean in4(Object s, Object s1, Object s2, Object s3, Object s4) {
-        return (equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3) || equalTo(s, s4));
+        return equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3) || equalTo(s, s4);
     }
 
     public static boolean in5(Object s, Object s1, Object s2, Object s3, Object s4, Object s5) {
-        return (equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3) || equalTo(s, s4) || equalTo(s, s5));
+        return equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3) || equalTo(s, s4) || equalTo(s, s5);
     }
 
     public static boolean in6(Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6) {
-        return (equalTo(s, s1)
-                || equalTo(s, s2)
-                || equalTo(s, s3)
-                || equalTo(s, s4)
-                || equalTo(s, s5)
-                || equalTo(s, s6));
+        return equalTo(s, s1) || equalTo(s, s2) || equalTo(s, s3) || equalTo(s, s4) || equalTo(s, s5) || equalTo(s, s6);
     }
 
     public static boolean in7(Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) {
-        return (equalTo(s, s1)
+        return equalTo(s, s1)
                 || equalTo(s, s2)
                 || equalTo(s, s3)
                 || equalTo(s, s4)
                 || equalTo(s, s5)
                 || equalTo(s, s6)
-                || equalTo(s, s7));
+                || equalTo(s, s7);
     }
 
     public static boolean in8(
             Object s, Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7, Object s8) {
-        return (equalTo(s, s1)
+        return equalTo(s, s1)
                 || equalTo(s, s2)
                 || equalTo(s, s3)
                 || equalTo(s, s4)
                 || equalTo(s, s5)
                 || equalTo(s, s6)
                 || equalTo(s, s7)
-                || equalTo(s, s8));
+                || equalTo(s, s8);
     }
 
     public static boolean in9(
@@ -698,7 +693,7 @@ public class StaticGeometry {
             Object s7,
             Object s8,
             Object s9) {
-        return (equalTo(s, s1)
+        return equalTo(s, s1)
                 || equalTo(s, s2)
                 || equalTo(s, s3)
                 || equalTo(s, s4)
@@ -706,7 +701,7 @@ public class StaticGeometry {
                 || equalTo(s, s6)
                 || equalTo(s, s7)
                 || equalTo(s, s8)
-                || equalTo(s, s9));
+                || equalTo(s, s9);
     }
 
     public static boolean in10(
@@ -721,7 +716,7 @@ public class StaticGeometry {
             Object s8,
             Object s9,
             Object s10) {
-        return (equalTo(s, s1)
+        return equalTo(s, s1)
                 || equalTo(s, s2)
                 || equalTo(s, s3)
                 || equalTo(s, s4)
@@ -730,6 +725,6 @@ public class StaticGeometry {
                 || equalTo(s, s7)
                 || equalTo(s, s8)
                 || equalTo(s, s9)
-                || equalTo(s, s10));
+                || equalTo(s, s10);
     }
 }

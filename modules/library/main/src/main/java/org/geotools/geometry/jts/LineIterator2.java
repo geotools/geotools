@@ -64,7 +64,7 @@ public final class LineIterator2 implements PathIterator {
     /** */
     public void init(LineString ls, AffineTransform at) {
 
-        if ((at == null) || (at.isIdentity())) {
+        if ((at == null) || at.isIdentity()) {
             this.at = null;
         } else {
             this.at = at;

@@ -154,7 +154,7 @@ public class GeometryCollector {
         Class<? extends Geometry> result = baseType(geometries.get(0).getClass());
         for (int i = 1; i < geometries.size(); i++) {
             Class<? extends Geometry> curr = geometries.get(i).getClass();
-            if (curr != result && !(result.isAssignableFrom(curr))) {
+            if (curr != result && !result.isAssignableFrom(curr)) {
                 return GeometryCollection.class;
             }
         }

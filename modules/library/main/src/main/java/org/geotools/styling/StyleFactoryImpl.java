@@ -226,7 +226,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public FeatureTypeConstraint createFeatureTypeConstraint(String featureTypeName, Filter filter, Extent[] extents) {
+    public FeatureTypeConstraint createFeatureTypeConstraint(String featureTypeName, Filter filter, Extent... extents) {
         FeatureTypeConstraint constraint = new FeatureTypeConstraintImpl();
         constraint.setFeatureTypeName(featureTypeName);
         constraint.setFilter(filter);
@@ -236,7 +236,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public LayerFeatureConstraints createLayerFeatureConstraints(FeatureTypeConstraint[] featureTypeConstraints) {
+    public LayerFeatureConstraints createLayerFeatureConstraints(FeatureTypeConstraint... featureTypeConstraints) {
         LayerFeatureConstraints constraints = new LayerFeatureConstraintsImpl();
         constraints.setFeatureTypeConstraints(featureTypeConstraints);
 
@@ -249,7 +249,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public FeatureTypeStyle createFeatureTypeStyle(Rule[] rules) {
+    public FeatureTypeStyle createFeatureTypeStyle(Rule... rules) {
         return new FeatureTypeStyleImpl(rules);
     }
 
@@ -806,7 +806,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public ChannelSelection createChannelSelection(SelectedChannelType[] channels) {
+    public ChannelSelection createChannelSelection(SelectedChannelType... channels) {
         ChannelSelection channelSel = new ChannelSelectionImpl();
 
         if ((channels != null) && (channels.length > 0)) {

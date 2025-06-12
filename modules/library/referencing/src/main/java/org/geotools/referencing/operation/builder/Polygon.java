@@ -104,7 +104,7 @@ class Polygon implements Cloneable {
      * @return True if the point is inside (or is the vertex of polygon, false if not.
      */
     protected boolean containsOrIsVertex(Position dp) {
-        if (generateGeneralPath(vertices).contains((Point2D) dp) || (hasVertex(dp))) {
+        if (generateGeneralPath(vertices).contains((Point2D) dp) || hasVertex(dp)) {
             return true;
         }
 

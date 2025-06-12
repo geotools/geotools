@@ -46,6 +46,6 @@ public class FilterFunction_toWKT extends FunctionExpressionImpl {
                     "Filter Function problem for function toWKT argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.toWKT(arg0));
+        return StaticGeometry.toWKT(arg0);
     }
 }

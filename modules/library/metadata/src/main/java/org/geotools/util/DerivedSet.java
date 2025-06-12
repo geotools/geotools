@@ -111,7 +111,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E> implements Checked
     @SuppressWarnings("PMD.UnusedLocalVariable")
     public int size() {
         int count = 0;
-        for (E e : this) {
+        for (E unused : this) {
             count++;
         }
         return count;

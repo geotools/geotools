@@ -82,7 +82,7 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             iNext = (iNext + 1) % nPts;
         } while (equals2D(ring, iNext, hiIndex) && iNext != hiIndex);
 
-        /**
+        /*
          * This check catches cases where the ring contains an A-B-A configuration of points. This can happen if the
          * ring does not contain 3 distinct points (including the case where the input array has fewer than 4 elements),
          * or it contains coincident line segments.
@@ -92,7 +92,7 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
 
         int disc = computeOrientation(ring, iPrev, hiIndex, iNext);
 
-        /**
+        /*
          * If disc is exactly 0, lines are collinear. There are two possible cases: (1) the lines lie along the x axis
          * in opposite directions (2) the lines lie on top of one another
          *

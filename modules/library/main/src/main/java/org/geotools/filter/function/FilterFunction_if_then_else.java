@@ -44,7 +44,7 @@ public class FilterFunction_if_then_else extends FunctionExpressionImpl {
         Object arg2;
 
         try { // attempt to get value and perform conversion
-            select = (getExpression(0).evaluate(feature, Boolean.class));
+            select = getExpression(0).evaluate(feature, Boolean.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

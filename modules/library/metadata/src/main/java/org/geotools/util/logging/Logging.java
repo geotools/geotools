@@ -133,8 +133,8 @@ public final class Logging {
             Method getImagingListener = JAI.getMethod("getImagingListener");
             Method setImagingListener = JAI.getMethod("setImagingListener", IMAGING_LISTENER);
 
-            Object jai = getDefaultInstance.invoke(null, null);
-            Object imagingListener = getImagingListener.invoke(jai, null);
+            Object jai = getDefaultInstance.invoke(null);
+            Object imagingListener = getImagingListener.invoke(jai);
 
             if (imagingListener == null || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
                 // Client code has not provided an ImagingListener so we can use our own

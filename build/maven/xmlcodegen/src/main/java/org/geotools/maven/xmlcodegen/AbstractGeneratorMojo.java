@@ -287,8 +287,8 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 			String className = xsdNames.get( i );
 			try {
 				Class<?> clazz = ext.loadClass( className );
-				Method m = clazz.getMethod("getInstance", null);
-				XSD xsd = (XSD) m.invoke(null, null);
+				Method m = clazz.getMethod("getInstance");
+				XSD xsd = (XSD) m.invoke(null);
 				xsds.add(xsd);
 			} 
 			catch (Exception e) {

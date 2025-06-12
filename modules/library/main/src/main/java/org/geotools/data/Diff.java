@@ -107,7 +107,7 @@ public class Diff {
     private SpatialIndex spatialIndex;
 
     /** Simple object used for locking */
-    Object mutex;
+    final Object mutex;
 
     /** Create an empty Diff */
     public Diff() {

@@ -693,7 +693,7 @@ public abstract class DateUtil {
             throw new IllegalArgumentException("Month value out of range");
         }
 
-        long day = parseDigits(text, split + 4, 2) - 1;
+        long day = parseDigits(text, split + 4, 2) - 1L;
         boolean leap = ((year % 4) == 0) && !(((year % 100) == 0) && ((year % 400) != 0));
         int[] starts = leap ? MONTHS_LEAP : MONTHS_NONLEAP;
 
@@ -772,7 +772,7 @@ public abstract class DateUtil {
                 valid = false;
             } else {
                 // convert to base millisecond in day
-                milli = ((((hour * 60) + minute) * 60) + second) * 1000;
+                milli = ((((hour * 60L) + minute) * 60) + second) * 1000L;
                 start += 8;
 
                 if (length > start) {
@@ -805,7 +805,7 @@ public abstract class DateUtil {
                     // check for trailing fractional second
                     if (text.charAt(start) == '.') {
                         double fraction = Double.parseDouble(text.substring(start, length));
-                        milli += (fraction * 1000.0);
+                        milli = (long) (milli + (fraction * 1000.0));
                     } else if (length > start) {
                         valid = false;
                     }
@@ -1056,7 +1056,7 @@ public abstract class DateUtil {
             boolean isNormalLeapYear = ((year % 4) == 0);
             boolean is400LeapYear = ((year % 400) == 0);
             boolean is100NotLeapYear = ((year % 100) == 0);
-            int dcnt = (is400LeapYear || (isNormalLeapYear && (!is100NotLeapYear))) ? 366 : 365;
+            int dcnt = (is400LeapYear || (isNormalLeapYear && !is100NotLeapYear)) ? 366 : 365;
 
             if (!bce) {
                 year--;
@@ -1414,6 +1414,7 @@ public abstract class DateUtil {
      * @return number of decoded bytes
      * @throws IllegalArgumentException if invalid character in base64 representation
      */
+    @SuppressWarnings("FallThrough")
     private static int decodeChunk(int base, char[] chrs, int fill, byte[] byts) throws IllegalArgumentException {
         // find the byte count to be decoded
         int length = 3;

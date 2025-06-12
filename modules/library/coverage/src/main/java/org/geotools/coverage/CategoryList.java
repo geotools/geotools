@@ -185,7 +185,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
                             }
                         }
                     }
-                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, args));
+                    throw new IllegalArgumentException(
+                            MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object[]) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {

@@ -1163,7 +1163,7 @@ public class SLD {
     public static String textLabelString(TextSymbolizer symbolizer) {
         Expression exp = textLabel(symbolizer);
 
-        return (exp == null) ? null : exp.toString();
+        return exp == null ? null : exp.toString();
     }
 
     /**

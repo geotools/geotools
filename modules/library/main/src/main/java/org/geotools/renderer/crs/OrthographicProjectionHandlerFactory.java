@@ -68,7 +68,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
 
         Geometry validArea;
         if (Math.abs(lo) < 1E-6) {
-            validArea = getEquatorialValidArea(cm, lo);
+            validArea = getEquatorialValidArea(cm);
         } else if (90 - Math.abs(lo) < 1E-6) {
             validArea = getPolarValidArea(lo);
         } else {
@@ -94,7 +94,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
      * This one is a square, but it can be crossing the dateline, in which case, it needs to be split into two parts
      * (multi-polygon valid area)
      */
-    private Geometry getEquatorialValidArea(double centralMeridian, double latitudeOrigin) {
+    private Geometry getEquatorialValidArea(double centralMeridian) {
         double minLat = -90 + EPS;
         double maxLat = 90 - EPS;
         Geometry validArea;

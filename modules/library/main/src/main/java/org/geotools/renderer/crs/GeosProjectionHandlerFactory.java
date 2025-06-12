@@ -113,7 +113,7 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
     }
 
     /** Projection handler for {@link GeostationarySatellite} projection */
-    class GeosProjectionHandler extends ProjectionHandler {
+    static class GeosProjectionHandler extends ProjectionHandler {
 
         /*
         The two parts of the valid area, in case of dateline crossing with equatorial projection

@@ -368,7 +368,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 
     /** @deprecated Use #intersects instead. */
     @Override
-    @SuppressWarnings("deprecation")
+    @Deprecated
     public boolean overlaps(Coordinate p) {
         return intersects(p);
     }

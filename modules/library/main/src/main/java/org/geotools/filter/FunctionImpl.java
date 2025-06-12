@@ -197,6 +197,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      * <p>This method calls {@link #validateArguments()} which enforces java style argument conventions for multi valued
      * parameters. Basically enforcing that only the last argument in a function can be variable.
      */
+    @SuppressWarnings("NonApiType")
     protected LinkedHashMap<String, Object> dispatchArguments(Object obj) {
         LinkedHashMap<String, Object> prepped = new LinkedHashMap<>();
 

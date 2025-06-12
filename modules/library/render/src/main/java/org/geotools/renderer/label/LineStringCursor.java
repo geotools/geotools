@@ -274,6 +274,7 @@ public class LineStringCursor {
      *
      * @deprecated Does not work correctly, will be removed (tried too many times to fix it)
      */
+    @Deprecated
     public double getMaxAngleChange(double startOrdinate, double endOrdinate, double step) {
         if (startOrdinate > endOrdinate)
             throw new IllegalArgumentException("Invalid arguments, endOrdinate < starOrdinate");

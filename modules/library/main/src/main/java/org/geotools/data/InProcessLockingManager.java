@@ -51,7 +51,7 @@ import org.geotools.util.SuppressFBWarnings;
  */
 public class InProcessLockingManager implements LockingManager {
     /** lockTable access by typeName stores Transactions or MemoryLocks */
-    protected Map<String, Map<String, Lock>> lockTables = new HashMap<>();
+    protected final Map<String, Map<String, Lock>> lockTables = new HashMap<>();
 
     /**
      * Aquire lock on featureID.
@@ -469,7 +469,7 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @author Jody Garnett, Refractions Research
      */
-    class TransactionLock implements Lock, State {
+    static class TransactionLock implements Lock, State {
         /** This will be non-null while lock is fresh */
         Transaction transaction;
 
@@ -583,7 +583,7 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @author Jody Garnett, Refractions Reasearch Inc.
      */
-    class MemoryLock implements Lock {
+    static class MemoryLock implements Lock {
         String authID;
         long duration;
         long expiry;

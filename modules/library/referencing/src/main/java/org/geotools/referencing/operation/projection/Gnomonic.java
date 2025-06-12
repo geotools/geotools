@@ -64,7 +64,7 @@ public final class Gnomonic extends MapProjection {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected Gnomonic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
+    Gnomonic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
         final Collection<GeneralParameterDescriptor> expected =
                 getParameterDescriptors().descriptors();

@@ -61,6 +61,6 @@ public class FilterFunction_min_3 extends FunctionExpressionImpl {
                     "Filter Function problem for function min argument #1 - expected type float");
         }
 
-        return (Math.min((Float) arg0, (Float) arg1));
+        return Math.min((Float) arg0, (Float) arg1);
     }
 }

@@ -118,7 +118,7 @@ public abstract class Mercator extends MapProjection {
          * in a single multiplication.
          */
         final double sinPhi = sin(latitudeOfOrigin);
-        globalScale *= (cos(latitudeOfOrigin) / (sqrt(1 - excentricitySquared * sinPhi * sinPhi)));
+        globalScale *= (cos(latitudeOfOrigin) / sqrt(1 - excentricitySquared * sinPhi * sinPhi));
     }
 
     /** {@inheritDoc} */

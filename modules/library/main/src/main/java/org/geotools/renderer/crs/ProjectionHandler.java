@@ -399,7 +399,7 @@ public class ProjectionHandler {
 
             int halfCircles = 0;
             if (minX < -180) {
-                halfCircles = (int) ((Math.abs(minX) / 180));
+                halfCircles = (int) (Math.abs(minX) / 180);
                 minX += (360 * ((halfCircles / 2) + (halfCircles % 2)));
                 maxX = minX + extent;
             } else if (minX > 180) {

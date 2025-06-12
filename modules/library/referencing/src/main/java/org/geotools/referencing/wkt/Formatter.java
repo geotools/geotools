@@ -759,6 +759,7 @@ public class Formatter {
      *
      * @param unit The new unit, or {@code null}.
      */
+    @SuppressWarnings("EqualsIncompatibleType") // AbstractUnit.ONE.equals(unit)
     public void setAngularUnit(final Unit<Angle> unit) {
         if (unit != null && (!SI.RADIAN.isCompatible(unit) || AbstractUnit.ONE.equals(unit))) {
             throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));

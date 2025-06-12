@@ -97,12 +97,13 @@ public class GeometryClipper {
             return clip(g, ensureValid);
         } catch (TopologyException e) {
             try {
-                if (((g instanceof Polygon) || (g instanceof MultiPolygon)) && (!g.isValid())) {
+                if (((g instanceof Polygon) || (g instanceof MultiPolygon)) && !g.isValid()) {
                     // its an invalid Polygon or MultiPolygon. Use buffer(0) to attempt to fix it
                     // do not use buffer(0) on points or lines - it returns an empty polygon
                     return clip(g.buffer(0), ensureValid);
                 }
             } catch (TopologyException e2) {
+                // ignored
             }
 
             if (scale != 0) {
@@ -126,6 +127,7 @@ public class GeometryClipper {
                     // Step 3: try again with ensureValid false
                     return clip(g, false);
                 } catch (TopologyException e3) {
+                    // ignored
                 }
             }
             return g; // unable to clip geometry

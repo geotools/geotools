@@ -122,12 +122,14 @@ public class Query {
      * Implements a query that will fetch all features from a datasource. This query should retrieve all properties,
      * with no maxFeatures, no filtering, and the default featureType.
      */
+    @SuppressWarnings("ClassInitializationDeadlock")
     public static final Query ALL = new ALLQuery();
 
     /**
      * Implements a query that will fetch all the FeatureIDs from a datasource. This query should retrieve no
      * properties, with no maxFeatures, no filtering, and the a featureType with no attribtues.
      */
+    @SuppressWarnings("ClassInitializationDeadlock")
     public static final Query FIDS = new FIDSQuery();
 
     /**
@@ -833,7 +835,7 @@ public class Query {
     public int hashCode() {
         String[] n = getPropertyNames();
 
-        return ((n == null) ? (-1) : ((n.length == 0) ? 0 : (n.length | n[0].hashCode())))
+        return ((n == null) ? -1 : ((n.length == 0) ? 0 : (n.length | n[0].hashCode())))
                 | getMaxFeatures()
                 | ((getFilter() == null) ? 0 : getFilter().hashCode())
                 | ((getTypeName() == null) ? 0 : getTypeName().hashCode())
@@ -911,7 +913,7 @@ public class Query {
 
         returnString.append("\n   [properties: ");
 
-        if ((properties == null) || (properties.isEmpty())) {
+        if ((properties == null) || properties.isEmpty()) {
             returnString.append(" ALL ]");
         } else {
             for (int i = 0; i < properties.size(); i++) {

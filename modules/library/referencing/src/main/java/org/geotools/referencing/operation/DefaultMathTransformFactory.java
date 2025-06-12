@@ -179,7 +179,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
          */
         @Override
         public boolean test(MathTransformProvider element) {
-            if (element instanceof MathTransformProvider) {
+            if (element != null) {
                 final Class<? extends Operation> t = element.getOperationType();
                 if (t != null && !type.isAssignableFrom(t)) {
                     return false;

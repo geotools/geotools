@@ -326,14 +326,14 @@ public class FilterCapabilities {
         if (filter instanceof BinaryLogicOperator) {
             BinaryLogicOperator lf = (BinaryLogicOperator) filter;
             for (Filter testFilter : lf.getChildren()) {
-                if (!(this.fullySupports(testFilter))) {
+                if (!this.fullySupports(testFilter)) {
                     supports = false;
                     break;
                 }
             }
         } else if (filter instanceof Not) {
             Not lf = (Not) filter;
-            if (!(this.fullySupports(lf.getFilter()))) {
+            if (!this.fullySupports(lf.getFilter())) {
                 supports = false;
             }
         } else {
@@ -445,9 +445,6 @@ public class FilterCapabilities {
         if (filter instanceof Or) return FilterType.LOGIC_OR;
         if (filter instanceof PropertyIsNull) return FilterType.NULL;
 
-        if (filter instanceof Filter) {
-            return 0;
-        }
         return 0;
     }
 }

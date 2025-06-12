@@ -60,7 +60,7 @@ public class PolarOrthographic extends Orthographic {
         super(parameters);
         ensureLatitudeEquals(Provider.LATITUDE_OF_ORIGIN, latitudeOfOrigin, PI / 2);
         northPole = (latitudeOfOrigin > 0);
-        latitudeOfOrigin = (northPole) ? PI / 2 : -PI / 2;
+        latitudeOfOrigin = northPole ? PI / 2 : -PI / 2;
     }
 
     /**

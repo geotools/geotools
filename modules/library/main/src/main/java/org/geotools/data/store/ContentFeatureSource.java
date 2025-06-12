@@ -1179,7 +1179,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }
 
             @Override
-            public boolean supportsSorting(SortBy[] sortAttributes) {
+            public boolean supportsSorting(SortBy... sortAttributes) {
                 if (queryCapabilities.supportsSorting(sortAttributes)) {
                     // natively supported
                     return true;

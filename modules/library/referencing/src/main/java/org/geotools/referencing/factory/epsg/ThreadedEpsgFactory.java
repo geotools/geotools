@@ -403,6 +403,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
     }
 
     @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
     protected void disposeBackingStore() {
         super.disposeBackingStore();
         if (dynamicDataSource) {

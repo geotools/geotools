@@ -67,6 +67,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;
@@ -701,7 +702,7 @@ public class RasterLayerResponse {
                                 .getName()),
                         bboxExtractor.getBBox()));
                 query.setMaxFeatures(1);
-                query.setSortBy(null);
+                query.setSortBy((SortBy[]) null);
                 rasterManager.getGranuleDescriptors(query, dryRunVisitor);
                 if (dryRunVisitor.granulesNumber > 0) {
                     LOGGER.fine(

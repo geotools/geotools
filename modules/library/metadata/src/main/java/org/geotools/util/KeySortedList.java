@@ -338,6 +338,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Compares two iterators for equality, assuming that they are iterator for the same {@link KeySortedList} (this
          * is not verified). This method is used for assertions only.
          */
+        @SuppressWarnings("NonOverridingEquals") // Private method for assertions, not overriding Object.equals
         private boolean equals(final Iter that) {
             return this.key == that.key
                     && this.values == that.values

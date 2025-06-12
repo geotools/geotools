@@ -169,7 +169,7 @@ public final class PolygonIterator extends AbstractLiteIterator {
         }
     }
 
-    protected void transform(double[] src, int index, double[] dest, int destIndex, int numPoints) {
+    void transform(double[] src, int index, double[] dest, int destIndex, int numPoints) {
         at.transform(src, index, dest, destIndex, numPoints);
     }
 

@@ -170,7 +170,7 @@ public class Krovak extends MapProjection {
         y_scale = doubleValue(expected, BaseProvider.Y_SCALE, parameters);
         xy_plane_rotation = doubleValue(expected, BaseProvider.XY_PLANE_ROTATION, parameters);
 
-        /**
+        /*
          * Check if there are parameters for axis swapping used by ESRI - if so then set variable so the proper
          * ParameterDescriptorGroup will be returned by getParameterDescriptors()
          */
@@ -216,7 +216,7 @@ public class Krovak extends MapProjection {
     }
 
     private MathTransform createAffineTransform(double x_scale, double y_scale, double xy_plane_rotation) {
-        /** calculates matrix coefficients form geometric coefficients */
+        /* calculates matrix coefficients form geometric coefficients */
         double a00 = x_scale * Math.cos(xy_plane_rotation);
         double a01 = -y_scale * Math.sin(xy_plane_rotation);
         double a10 = x_scale * Math.sin(xy_plane_rotation);
@@ -268,7 +268,7 @@ public class Krovak extends MapProjection {
         final double x = -(ro * sin(eps));
 
         double[] result = {x, y};
-        /** swap axis if required */
+        /* swap axis if required */
         if (axisTransform != null) {
             try {
                 axisTransform.transform(new double[] {x, y}, 0, result, 0, 1);
@@ -290,7 +290,7 @@ public class Krovak extends MapProjection {
             throws ProjectionException {
         // x -> southing, y -> westing
         double[] result = {x, y};
-        /** swap axis if required */
+        /* swap axis if required */
         if (axisTransform != null) {
             try {
                 axisTransform.transform(new double[] {x, y}, 0, result, 0, 1);

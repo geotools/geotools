@@ -77,7 +77,7 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl {
         final JsonPointer expectedPointer =
                 jsonPointerCache.getOrDefault(pointerSpec, JsonPointer.compile(pointerSpec));
         jsonPointerCache.put(pointerSpec, expectedPointer);
-        /**
+        /*
          * Iterate over the json until the expected value is found inside the json pointer array or the end of the json
          * is reached
          */

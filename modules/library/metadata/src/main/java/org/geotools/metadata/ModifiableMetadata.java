@@ -306,7 +306,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     protected final <E> List<E> copyList(
             final Collection<? extends E> source, List<E> target, final Class<E> elementType)
             throws UnmodifiableMetadataException {
-        if (unmodifiable == FREEZING) {
+        if (unmodifiable == FREEZING) { // Intentional reference comparison for sentinel value
             /*
              * freeze() method is under progress. The source list is already
              * an unmodifiable instance created by unmodifiable(Object).
@@ -357,7 +357,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
     protected final <E> Collection<E> copyCollection(
             final Collection<? extends E> source, Collection<E> target, final Class<E> elementType)
             throws UnmodifiableMetadataException {
-        if (unmodifiable == FREEZING) {
+        if (unmodifiable == FREEZING) { // Intentional reference comparison for sentinel value
             /*
              * freeze() method is under progress. The source collection is already
              * an unmodifiable instance created by unmodifiable(Object).

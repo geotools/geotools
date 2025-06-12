@@ -242,7 +242,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
          * would be executed everytime and would hurt performance for normal operations
          * (instead of slowing down during debugging only).
          */
-        assert !(target3D && srcPts != dstPts && (maxError(null, srcPts, srcOff, null, dstPts, dstOff, numPts)) > EPS);
+        assert !(target3D && srcPts != dstPts && maxError(null, srcPts, srcOff, null, dstPts, dstOff, numPts) > EPS);
     }
 
     /**
@@ -273,7 +273,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
          * would be executed everytime and would hurt performance for normal operations
          * (instead of slowing down during debugging only).
          */
-        assert !(target3D && srcPts != dstPts && (maxError(srcPts, null, srcOff, dstPts, null, dstOff, numPts)) > EPS);
+        assert !(target3D && srcPts != dstPts && maxError(srcPts, null, srcOff, dstPts, null, dstOff, numPts) > EPS);
     }
 
     /** Implementation of the transformation methods for all cases. */
@@ -306,11 +306,11 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
             if (srcPts2 != null) {
                 x = srcPts2[srcOff++];
                 y = srcPts2[srcOff++];
-                z = (source3D) ? srcPts2[srcOff++] : 0.0;
+                z = source3D ? srcPts2[srcOff++] : 0.0;
             } else {
                 x = srcPts1[srcOff++];
                 y = srcPts1[srcOff++];
-                z = (source3D) ? srcPts1[srcOff++] : 0.0;
+                z = source3D ? srcPts1[srcOff++] : 0.0;
             }
             x = toRadians(x);
             y = toRadians(y);
@@ -334,7 +334,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
                 y += (dz * cosY
                                 - sinY * (dy * sinX + dx * cosX)
                                 + da_a * (Rn * e2 * sinY * cosY)
-                                + df * (Rm * (a_b) + Rn * (b_a)) * sinY * cosY)
+                                + df * (Rm * a_b + Rn * b_a) * sinY * cosY)
                         / (Rm + z);
                 x += (dy * cosX - dx * sinX) / ((Rn + z) * cosY);
             }
@@ -362,7 +362,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
                 if (abridged) {
                     z += dx * cosY * cosX + dy * cosY * sinX + dz * sinY + adf * sin2Y - da;
                 } else {
-                    z += dx * cosY * cosX + dy * cosY * sinX + dz * sinY + df * (b_a) * Rn * sin2Y - daa / Rn;
+                    z += dx * cosY * cosX + dy * cosY * sinX + dz * sinY + df * b_a * Rn * sin2Y - daa / Rn;
                 }
                 if (dstPts2 != null) {
                     dstPts2[dstOff++] = z;
@@ -376,10 +376,12 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
     }
 
     /**
-     * After a call to {@code transform}, applies the <em>inverse</em> transform on {@code dstPts} and compares the
-     * result with {@code srcPts}. The maximal difference (in absolute value) is returned. This method is used for
+     * After a call to {@code transform}, applies the <em>inverse</em> transform on {@code dstPts1} and compares the
+     * result with {@code srcPts1}. The maximal difference (in absolute value) is returned. This method is used for
      * assertions.
      */
+    @SuppressWarnings(
+            "NarrowingCompoundAssignment") // Did you mean 'error = (float) (error - 360 * floor(error / 360));'?
     private float maxError(
             final float[] srcPts1,
             final double[] srcPts2,

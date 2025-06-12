@@ -89,7 +89,7 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @return Whether or not this is a compare filter type.
      */
     protected static boolean isCompareFilter(int filterType) {
-        return ((isMathFilter(filterType))
+        return (isMathFilter(filterType)
                 || (filterType == COMPARE_EQUALS)
                 || (filterType == BETWEEN)
                 || (filterType == COMPARE_NOT_EQUALS));

@@ -1693,9 +1693,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             result = ((UniqueVisitor) visitor).getExpressions();
         } else {
             try {
-                Method g = visitor.getClass().getMethod("getExpression", null);
+                Method g = visitor.getClass().getMethod("getExpression");
                 if (g != null) {
-                    Object expr = g.invoke(visitor, null);
+                    Object expr = g.invoke(visitor);
                     if (expr instanceof Expression) {
                         result = Arrays.asList((Expression) expr);
                     }

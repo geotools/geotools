@@ -139,7 +139,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
         final Position[] sourcePoints = getSourcePoints();
         GeneralMatrix x = new GeneralMatrix(3 * sourcePoints.length, 1);
 
-        for (int j = 0; j < (x.getNumRow()); j = j + 3) {
+        for (int j = 0; j < x.getNumRow(); j = j + 3) {
             x.setElement(j, 0, sourcePoints[j / 3].getCoordinate()[0]);
             x.setElement(j + 1, 0, sourcePoints[j / 3].getCoordinate()[1]);
             x.setElement(j + 2, 0, sourcePoints[j / 3].getCoordinate()[2]);
@@ -158,7 +158,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
         final Position[] targetPoints = getTargetPoints();
         GeneralMatrix X = new GeneralMatrix(3 * sourcePoints.length, 1);
 
-        for (int j = 0; j < (X.getNumRow()); j = j + 3) {
+        for (int j = 0; j < X.getNumRow(); j = j + 3) {
             X.setElement(j, 0, targetPoints[j / 3].getCoordinate()[0]);
             X.setElement(j + 1, 0, targetPoints[j / 3].getCoordinate()[1]);
             X.setElement(j + 2, 0, targetPoints[j / 3].getCoordinate()[2]);
@@ -414,6 +414,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      * @param maxSteps highest number of iteations.
      * @return GeneralMatrix of calculated parameters.
      */
+    @SuppressWarnings("ShortCircuitBoolean") // see while() statement
     private GeneralMatrix getDxMatrix(double tolerance, int maxSteps) {
         // Matriix of new calculated coefficeients
         GeneralMatrix xNew = new GeneralMatrix(7, 1);
@@ -478,7 +479,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      * @return Angle is seconds
      */
     private static double radiansToSeconds(double rad) {
-        return (rad * (180 / Math.PI) * (3600));
+        return (rad * (180 / Math.PI) * 3600);
     }
 
     /**

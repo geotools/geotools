@@ -108,7 +108,7 @@ public final class Version {
         if (dateTime == null) {
             throw new IllegalArgumentException("dateTime can't be null");
         }
-        this.union = UNION_DATE | (dateTime.getTime());
+        this.union = UNION_DATE | dateTime.getTime();
     }
 
     public boolean isEmpty() {

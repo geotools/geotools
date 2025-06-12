@@ -72,7 +72,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
             boolean percentages = false;
             if (getParameters().size() > 2) {
                 Literal literal = (Literal) getParameters().get(2);
-                percentages = ((Boolean) literal.getValue()).booleanValue();
+                percentages = (Boolean) literal.getValue();
             }
             if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
                 result = calculateNumerical(classNum, globalMin, globalMax);
@@ -122,7 +122,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
                     localMax[i] = Double.valueOf(fixRound(((Number) localMax[i]).doubleValue(), decPlaces, true));
             }
             // synchronize min with previous max
-            if ((i != 0) && (!localMin[i].equals(localMax[i - 1]))) {
+            if ((i != 0) && !localMin[i].equals(localMax[i - 1])) {
                 localMin[i] = localMax[i - 1];
             }
         }

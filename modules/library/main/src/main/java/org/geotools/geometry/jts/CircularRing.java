@@ -267,6 +267,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     }
 
     @Override
+    @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
         if (other instanceof CircularRing) {
             CircularRing csOther = (CircularRing) other;

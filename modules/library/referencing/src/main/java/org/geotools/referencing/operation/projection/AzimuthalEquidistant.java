@@ -170,6 +170,7 @@ public class AzimuthalEquidistant {
          *     java.awt.geom.Point2D)
          */
         @Override
+        @SuppressWarnings("FallThrough") // `case NORTH_POLAR` falls through `case SOUTH_POLAR`
         protected Point2D transformNormalized(double lambda, double phi, Point2D ptDst) throws ProjectionException {
             double x = 0;
             double y = 0;
@@ -324,6 +325,7 @@ public class AzimuthalEquidistant {
          *     java.awt.geom.Point2D)
          */
         @Override
+        @SuppressWarnings("FallThrough") // `case NORTH_POLAR` falls through `case SOUTH_POLAR`
         protected Point2D transformNormalized(double lambda, double phi, Point2D ptDst) throws ProjectionException {
             double x = 0;
             double y = 0;

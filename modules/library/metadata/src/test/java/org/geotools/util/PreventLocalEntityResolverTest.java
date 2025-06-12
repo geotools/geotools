@@ -48,6 +48,14 @@ public class PreventLocalEntityResolverTest {
     }
 
     @Test
+    public void testValidAbsoluteSystemIdNested() throws Exception {
+        assertNull(
+                INSTANCE.resolveEntity(
+                        null,
+                        "jar:nested:/home/spring/tailormap-api.jar/!BOOT-INF/lib/gt-xsd-gml3-33.1.jar!/org/geotools/gml3/gml.xsd"));
+    }
+
+    @Test
     public void testValidAbsoluteSystemIdWithBase() throws Exception {
         assertNull(INSTANCE.resolveEntity(null, null, "http://xyz/a.xsd", "http://xyz/b.xsd"));
     }

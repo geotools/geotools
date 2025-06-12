@@ -74,7 +74,7 @@
     <opendap.version>2.1</opendap.version>
     <oro.version>2.0.8</oro.version>
     <picocontainer.version>1.2</picocontainer.version>
-    <postgresql.jdbc.version>42.7.6</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.7.7</postgresql.jdbc.version>
     <postgis-driver.version>1.0</postgis-driver.version>
     <re2j.version>1.8</re2j.version>
     <reload4j.version>1.2.19</reload4j.version>

@@ -228,17 +228,23 @@ public class JJTreeJavaCC extends AbstractMojo {
         }
         /*
          * Reprocess generated java files so that they won't contain invalid escape characters
+         * and add @SuppressWarnings annotations for Java 17 compatibility
          */
-        if (windowsOs) {
-            try {
-                String[] files = FileUtils.getFilesFromExtension(outputDirectory, new String[] {"java"});
-                for (String file : files) {
+        try {
+            String[] files = FileUtils.getFilesFromExtension(outputDirectory, new String[] {"java"});
+            for (String file : files) {
+                if (windowsOs) {
                     System.out.println("Fixing " + file);
                     fixHeader(new File(file));
                 }
-            } catch (IOException e) {
-                throw new MojoExecutionException("Failed to fix header for java file.", e);
+                // Add @SuppressWarnings for generated parser files to fix Java 17 warnings
+                if (file.endsWith("Parser.java")) {
+                    System.out.println("Adding @SuppressWarnings to " + file);
+                    addSuppressWarnings(new File(file));
+                }
             }
+        } catch (IOException e) {
+            throw new MojoExecutionException("Failed to fix header for java file.", e);
         }
         /*
          * Add the generated-sources directory to the compilation root for the remaining
@@ -247,6 +253,34 @@ public class JJTreeJavaCC extends AbstractMojo {
         if (project != null) {
             project.addCompileSourceRoot(outputDirectory);
         }
+    }
+
+    /**
+     * Adds @SuppressWarnings("unchecked") annotation to generated parser classes to suppress Java 17 warnings about raw
+     * type usage in generated code.
+     *
+     * @param sourceFile the parser file to process.
+     * @throws IOException if the file can't be read or the result can't be written.
+     */
+    private void addSuppressWarnings(final File sourceFile) throws IOException {
+        File fixedFile = new File(sourceFile.getParentFile(), sourceFile.getName() + ".fix");
+        try (BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fixedFile))) {
+            String line;
+            boolean classFound = false;
+            while ((line = reader.readLine()) != null) {
+                // Add @SuppressWarnings annotation before the class declaration
+                if (!classFound && line.contains("public class") && line.contains("Parser")) {
+                    writer.write("@SuppressWarnings(\"unchecked\")");
+                    writer.newLine();
+                    classFound = true;
+                }
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+        sourceFile.delete();
+        fixedFile.renameTo(sourceFile);
     }
 
     /**

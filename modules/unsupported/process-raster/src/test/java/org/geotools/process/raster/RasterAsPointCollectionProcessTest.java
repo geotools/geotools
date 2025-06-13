@@ -134,7 +134,7 @@ public class RasterAsPointCollectionProcessTest {
         // Get a reader for the selected format
         GridCoverageReader reader = format.getReader(tiff);
         // Read the input Coverage
-        inputCoverage = (GridCoverage2D) reader.read(null);
+        inputCoverage = (GridCoverage2D) reader.read();
         // Reproject to the default WGS84 CRS
         processor = CoverageProcessor.getInstance(GeoTools.getDefaultHints());
         final ParameterValueGroup param = processor.getOperation("Resample").getParameters();
@@ -367,7 +367,7 @@ public class RasterAsPointCollectionProcessTest {
             double x1, double x2, double y1, double y2, CoordinateReferenceSystem outCRS) throws IOException {
         // Read the global coverage in LonLat coordinates
         GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         reader.dispose();
         // Crop the global coverage to the specified envelope
         CoordinateReferenceSystem inCRS = coverage.getCoordinateReferenceSystem();

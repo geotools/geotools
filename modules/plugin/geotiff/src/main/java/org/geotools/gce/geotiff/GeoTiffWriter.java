@@ -156,7 +156,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      *      org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
-    public void write(final GridCoverage gc, final GeneralParameterValue[] params)
+    public void write(final GridCoverage gc, final GeneralParameterValue... params)
             throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
 
         GeoToolsWriteParams gtParams = null;
@@ -170,9 +170,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            Parameter<?> param;
             for (GeneralParameterValue generalParameterValue : params) {
-                param = (Parameter) generalParameterValue;
+                Parameter<?> param = (Parameter<?>) generalParameterValue;
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
                     gtParams = (GeoToolsWriteParams) param.getValue();

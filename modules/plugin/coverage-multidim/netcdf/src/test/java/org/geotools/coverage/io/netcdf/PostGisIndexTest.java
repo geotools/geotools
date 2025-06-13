@@ -367,7 +367,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
             granules = source.getGranules(q);
             assertEquals(4, granules.size());
 
-            assertNotNull(reader.read("O3", null));
+            assertNotNull(reader.read("O3"));
         } finally {
             reader.dispose();
         }

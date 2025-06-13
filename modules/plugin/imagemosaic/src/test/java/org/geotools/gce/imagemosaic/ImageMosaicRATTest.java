@@ -122,7 +122,7 @@ public class ImageMosaicRATTest {
         assertEquals(rowOnlySecondOriginal, rowOnlySecond);
 
         // check nodata
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         NoDataContainer cvNoData = CoverageUtilities.getNoDataProperty(coverage);
         assertEquals(Double.NaN, cvNoData.getAsSingleValue(), 0d);
         RenderedImage ri = coverage.getRenderedImage();

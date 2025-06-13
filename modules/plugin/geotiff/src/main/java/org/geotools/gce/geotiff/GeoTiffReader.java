@@ -596,7 +596,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      * @throws IOException on any IO related troubles
      */
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IOException {
         GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;
         Color inputTransparentColor = null;

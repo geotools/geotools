@@ -191,7 +191,7 @@ public class ImageTiler {
         }
 
         GridCoverage2DReader gridReader = format.getReader(this.getInputFile(), hints);
-        GridCoverage2D gridCoverage = gridReader.read(null);
+        GridCoverage2D gridCoverage = gridReader.read();
         // docs end load coverage
 
         // docs start envelope
@@ -232,7 +232,7 @@ public class ImageTiler {
 
                 // use the AbstractGridFormat's writer to write out the tile
                 File tileFile = new File(tileDirectory, i + "_" + j + "." + fileExtension);
-                format.getWriter(tileFile).write(finalCoverage, null);
+                format.getWriter(tileFile).write(finalCoverage);
             }
         }
     }

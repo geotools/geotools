@@ -1469,8 +1469,7 @@ public class NetCDFMosaicReaderTest {
             }
         }
         // Test the output coverage
-        GridCoverage2D coverage = reader.read(
-                name, new GeneralParameterValue[] {gg, bkg, NO_DEFERRED_LOADING_PARAM, sigmaValue, dateValue});
+        GridCoverage2D coverage = reader.read(name, gg, bkg, NO_DEFERRED_LOADING_PARAM, sigmaValue, dateValue);
         assertNotNull(coverage);
         reader.dispose();
     }

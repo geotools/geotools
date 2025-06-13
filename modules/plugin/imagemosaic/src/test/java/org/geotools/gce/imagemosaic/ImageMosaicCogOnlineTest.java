@@ -91,7 +91,7 @@ public class ImageMosaicCogOnlineTest {
     public void testCogMosaic() throws Exception {
         File workDir = prepareWorkingDir("s3cogtest.zip", "s3cogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
@@ -159,7 +159,7 @@ public class ImageMosaicCogOnlineTest {
         }
 
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
@@ -363,7 +363,7 @@ public class ImageMosaicCogOnlineTest {
     public void testGSCogMosaic() throws Exception {
         File workDir = prepareWorkingDir("gscogtest.zip", "gscogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
@@ -379,7 +379,7 @@ public class ImageMosaicCogOnlineTest {
     public void testGSURICogMosaic() throws Exception {
         File workDir = prepareWorkingDir("gsuricogtest.zip", "gsuricogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();

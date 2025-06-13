@@ -120,7 +120,7 @@ public final class VRTTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
         forceDataLoading(gc);
 
         // check the nodata has been read
@@ -193,7 +193,7 @@ public final class VRTTest extends GDALTestCase {
         final File file = TestData.file(this, "n43.dt0.nan.vrt");
         final BaseGDALGridCoverage2DReader reader = new VRTReader(file, hints);
 
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
 
         // check the nodata has been read
         double noData = getNoData(gc);

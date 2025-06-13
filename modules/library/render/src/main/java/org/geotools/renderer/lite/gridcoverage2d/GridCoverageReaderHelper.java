@@ -625,7 +625,7 @@ public class GridCoverageReaderHelper {
         } else if (gg != null) {
             coverage = reader.read(new GeneralParameterValue[] {readGGParam});
         } else {
-            coverage = reader.read(null);
+            coverage = reader.read();
         }
 
         // try to crop on the requested area

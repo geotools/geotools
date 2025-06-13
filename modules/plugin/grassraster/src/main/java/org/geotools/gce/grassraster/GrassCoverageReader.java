@@ -618,7 +618,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IllegalArgumentException, IOException {
 
         GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;

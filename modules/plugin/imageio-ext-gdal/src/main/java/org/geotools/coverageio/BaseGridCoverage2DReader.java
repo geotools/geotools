@@ -354,7 +354,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      * @param params a {@code GeneralParameterValue} array to customize the read operation.
      */
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IllegalArgumentException, IOException {
 
         // Setup a new coverage request
         final RasterLayerRequest request = new RasterLayerRequest(params, this);

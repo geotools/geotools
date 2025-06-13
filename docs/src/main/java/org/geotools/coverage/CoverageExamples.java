@@ -41,7 +41,7 @@ public class CoverageExamples {
         AbstractGridFormat format = GridFormatFinder.findFormat(file);
         GridCoverage2DReader reader = format.getReader(file);
 
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         // exampleGridFormat end
     }
 
@@ -62,7 +62,7 @@ public class CoverageExamples {
         AbstractGridFormat format = GridFormatFinder.findFormat(file);
         GridCoverage2DReader reader = format.getReader(file);
         // exampleGridCoverageUsing start
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem2D();
         Bounds env = coverage.getEnvelope();
@@ -79,7 +79,7 @@ public class CoverageExamples {
         AbstractGridFormat format = GridFormatFinder.findFormat(file);
         GridCoverage2DReader reader = format.getReader(file);
         // exampleGridCoverageDirect start
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // direct access
         Position position = new Position2D(crs, x, y);

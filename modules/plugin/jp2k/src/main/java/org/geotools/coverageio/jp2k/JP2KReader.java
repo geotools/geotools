@@ -659,7 +659,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      * @see org.geotools.api.coverage.grid.GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IOException {
 
         if (LOGGER.isLoggable(FINE)) {
             LOGGER.fine("Reading image from " + sourceURL.toString());

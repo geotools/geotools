@@ -318,7 +318,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
      * @see org.geotools.api.coverage.grid.GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IllegalArgumentException, IOException {
         GeneralBounds readEnvelope = null;
         Rectangle requestedDim = null;
         OverviewPolicy overviewPolicy = null;

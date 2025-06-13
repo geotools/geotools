@@ -266,7 +266,7 @@ public class NetCDFCRSTest {
         Unit<?> unit2 = null;
         try {
             reader = new NetCDFReader(file, null);
-            GridCoverage2D coverage = reader.read(null);
+            GridCoverage2D coverage = reader.read();
             GridSampleDimension sampleDimension = coverage.getSampleDimension(0);
             unit1 = sampleDimension.getUnits();
         } finally {
@@ -276,7 +276,7 @@ public class NetCDFCRSTest {
         }
         try {
             reader = new NetCDFReader(file, null);
-            GridCoverage2D coverage = reader.read(null);
+            GridCoverage2D coverage = reader.read();
             GridSampleDimension sampleDimension = coverage.getSampleDimension(0);
             unit2 = sampleDimension.getUnits();
         } finally {

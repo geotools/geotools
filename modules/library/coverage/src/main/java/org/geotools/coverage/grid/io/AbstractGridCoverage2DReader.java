@@ -249,7 +249,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     @Override
-    public GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters)
+    public GridCoverage2D read(String coverageName, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
         // Default implementation for backwards compatibility
         if (coverageName.equalsIgnoreCase(this.coverageName)) {
@@ -282,7 +282,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image library.
      */
     @Override
-    public abstract GridCoverage2D read(GeneralParameterValue[] parameters)
+    public abstract GridCoverage2D read(GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException;
 
     // -------------------------------------------------------------------------

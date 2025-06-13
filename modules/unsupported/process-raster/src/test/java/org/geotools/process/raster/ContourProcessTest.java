@@ -159,7 +159,7 @@ public class ContourProcessTest {
         try {
             reader = format.getReader(input);
 
-            GridCoverage2D coverage = reader.read(null);
+            GridCoverage2D coverage = reader.read();
             CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
 
             // Run process asking for contours at different levels

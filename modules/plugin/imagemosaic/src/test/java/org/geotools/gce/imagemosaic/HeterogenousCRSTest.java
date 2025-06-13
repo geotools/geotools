@@ -684,7 +684,7 @@ public class HeterogenousCRSTest {
         FileUtils.copyDirectory(testDataFolder, testDirectory);
 
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
-        GridCoverage2D coverage = imReader.read(null);
+        GridCoverage2D coverage = imReader.read();
         if (coverage.getRenderedImage() instanceof PlanarImage) {
             ImageUtilities.disposePlanarImageChain((PlanarImage) coverage.getRenderedImage());
         }

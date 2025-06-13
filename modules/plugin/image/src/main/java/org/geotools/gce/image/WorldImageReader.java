@@ -346,7 +346,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
      * @return a new GridCoverage read from the source.
      */
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IllegalArgumentException, IOException {
 
         // /////////////////////////////////////////////////////////////////////
         //

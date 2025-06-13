@@ -129,7 +129,7 @@ public class TPKReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException {
 
         long startRead = System.currentTimeMillis();
 

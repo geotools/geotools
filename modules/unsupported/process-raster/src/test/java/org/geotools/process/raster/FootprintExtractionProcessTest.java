@@ -231,7 +231,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, false, null, true, true, null, null);
             assertEquals(1, fc.size());
 
@@ -262,7 +262,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, true, 4d, true, true, null, null);
             assertEquals(2, fc.size());
             try (FeatureIterator<SimpleFeature> iter = fc.features()) {
@@ -305,7 +305,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, false, null, false, true, null, null);
 
             SimpleFeature feature = DataUtilities.first(fc);
@@ -342,7 +342,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
 
             // Exclude pixels with luminance less than 20.
             final int referenceLuminance = 10;
@@ -396,7 +396,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(islandFile);
-            cov = reader.read(null);
+            cov = reader.read();
 
             // Test removing black areas and clouds
             List<Range<Integer>> exclusionRanges = new ArrayList<>();
@@ -432,7 +432,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             BandSelectProcess select = new BandSelectProcess();
             cov = select.execute(cov, new int[] {0}, null);
             List<Range<Integer>> exclusionRange = new ArrayList<>();
@@ -482,7 +482,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, false, null, true, true, null, null);
             assertEquals(1, fc.size());
 

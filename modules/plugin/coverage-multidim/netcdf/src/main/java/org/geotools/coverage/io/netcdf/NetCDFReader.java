@@ -469,7 +469,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     }
 
     @Override
-    public GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters)
+    public GridCoverage2D read(String coverageName, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
         final CoverageSource gridSource = getGridCoverageSource(coverageName);
         final CoverageReadRequest request = setupCoverageRequest(parameters, gridSource);
@@ -640,7 +640,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
 
     /** Read a GridCoverage2D base on the specified read parameters. */
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
         if (!names.isEmpty()) {
             if (names.size() > 1) {
                 throw new IllegalArgumentException("You need to specify a coverageName");

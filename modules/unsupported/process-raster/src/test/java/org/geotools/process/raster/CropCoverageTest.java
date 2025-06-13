@@ -60,7 +60,7 @@ public class CropCoverageTest {
         GridCoverageReader reader = format.getReader(input);
         try {
             // Read the simple gray image
-            return (GridCoverage2D) reader.read(null);
+            return (GridCoverage2D) reader.read();
             // Reader disposal
         } finally {
             reader.dispose();

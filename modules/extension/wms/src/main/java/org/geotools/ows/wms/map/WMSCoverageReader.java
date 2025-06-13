@@ -276,7 +276,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
         // try to get request params from the request
         Bounds requestedEnvelope = null;
         int width = -1;

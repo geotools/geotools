@@ -601,7 +601,7 @@ public class JGrassMapEnvironment {
          */
         GrassCoverageReader coverageReader = new GrassCoverageReader(getCELL());
         coverageReader.setParams(PixelInCell.CELL_CENTER, null, false, false, null);
-        coverageReader.read(null);
+        coverageReader.read();
         double[] dataRange = coverageReader.getRange();
 
         // write the range to disk

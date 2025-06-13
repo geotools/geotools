@@ -97,7 +97,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         assertEquals(0, ge.getMinimum(1), 1d);
         assertEquals(300, ge.getSpan(0), 1d);
         assertEquals(300, ge.getSpan(0), 1d);
-        GridCoverage2D gc = wiReader.read(null);
+        GridCoverage2D gc = wiReader.read();
         ReferencedEnvelope envelope = gc.getEnvelope2D();
         assertEquals(0, envelope.getMinimum(0), 1d);
         assertEquals(0, envelope.getMinimum(1), 1d);
@@ -327,7 +327,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         assertTrue(layout.getTileWidth(null) > 0);
 
         // get the coverage
-        final GridCoverage2D coverage = wiReader.read(null);
+        final GridCoverage2D coverage = wiReader.read();
 
         // test the coverage
         assertNotNull(coverage);

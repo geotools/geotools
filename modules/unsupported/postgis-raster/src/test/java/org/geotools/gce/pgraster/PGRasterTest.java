@@ -103,7 +103,7 @@ public class PGRasterTest extends OnlineTestCase {
         config.table = "gray";
 
         PGRasterReader reader = new PGRasterReader(config, null, null);
-        GridCoverage2D rast = reader.read(null);
+        GridCoverage2D rast = reader.read();
         assertNotNull(rast);
 
         show(rast);
@@ -114,7 +114,7 @@ public class PGRasterTest extends OnlineTestCase {
         config.table = "world";
 
         PGRasterReader reader = new PGRasterReader(config, null, null);
-        GridCoverage2D rast = reader.read(null);
+        GridCoverage2D rast = reader.read();
         assertNotNull(rast);
 
         show(rast);

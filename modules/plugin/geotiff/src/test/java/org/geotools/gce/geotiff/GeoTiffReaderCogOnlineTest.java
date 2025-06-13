@@ -62,7 +62,7 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
     public void testCogRead() throws URISyntaxException, IOException {
         GeoTiffReader reader = new GeoTiffReader(getInputProvider());
         assertEquals("B01", reader.getGridCoverageNames()[0]);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();

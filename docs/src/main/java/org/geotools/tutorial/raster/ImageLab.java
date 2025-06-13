@@ -177,7 +177,7 @@ public class ImageLab {
     private Style createGreyscaleStyle() {
         GridCoverage2D cov = null;
         try {
-            cov = reader.read(null);
+            cov = reader.read();
         } catch (IOException giveUp) {
             throw new RuntimeException(giveUp);
         }
@@ -234,7 +234,7 @@ public class ImageLab {
     private Style createRGBStyle() {
         GridCoverage2D cov = null;
         try {
-            cov = reader.read(null);
+            cov = reader.read();
         } catch (IOException giveUp) {
             throw new RuntimeException(giveUp);
         }

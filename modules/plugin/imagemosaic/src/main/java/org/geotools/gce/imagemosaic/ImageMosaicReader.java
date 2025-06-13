@@ -543,7 +543,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IOException {
         return read(UNSPECIFIED, params);
     }
 
@@ -552,7 +552,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
      *     org.geotools.api.coverage.grid.GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[]) @Override
      */
     @Override
-    public GridCoverage2D read(String coverageName, GeneralParameterValue[] params) throws IOException {
+    public GridCoverage2D read(String coverageName, GeneralParameterValue... params) throws IOException {
 
         // check if we were disposed already
         if (rasterManagers == null) {
@@ -575,7 +575,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         // add max allowed tiles if missing
         //
         if (this.maxAllowedTiles != ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue()) {
-            if (params != null) {
+            if (params != null && params.length > 0) { // beware a call with no values mean an empty array
                 // first thing let's see if we have it already, in which case we do nothing since a
                 // read parameter override a Hint
                 boolean found = false;

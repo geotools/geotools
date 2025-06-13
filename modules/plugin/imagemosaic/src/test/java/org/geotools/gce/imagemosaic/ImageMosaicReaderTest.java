@@ -1776,7 +1776,7 @@ public class ImageMosaicReaderTest {
 
             // read the coverage
             @SuppressWarnings("unused")
-            GridCoverage2D gc = reader.read(null);
+            GridCoverage2D gc = reader.read();
             fail("MAX_ALLOWED_TILES was not respected");
         } catch (Throwable e) {
 
@@ -1790,7 +1790,7 @@ public class ImageMosaicReaderTest {
                     .getReader(rgbURL, new Hints(Hints.MAX_ALLOWED_TILES, Integer.valueOf(1000)));
             Assert.assertNotNull(reader);
             // read the coverage
-            GridCoverage2D gc = reader.read(null);
+            GridCoverage2D gc = reader.read();
             Assert.assertTrue(true);
             gc.dispose(true);
             reader.dispose();
@@ -3706,7 +3706,7 @@ public class ImageMosaicReaderTest {
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
 
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
         checkPAMDataset(object, 72.6912, 83.2542);
 
@@ -3725,7 +3725,7 @@ public class ImageMosaicReaderTest {
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
 
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
         checkPAMDataset(object, 72.6912, 83.2542);
 
@@ -3818,7 +3818,7 @@ public class ImageMosaicReaderTest {
         ImageMosaicReader reader = getReader(testURL, format);
 
         // test the coverage
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // Check that the coverage has an IndexColormodel
         assertTrue(coverage.getRenderedImage().getColorModel() instanceof IndexColorModel);
@@ -3843,7 +3843,7 @@ public class ImageMosaicReaderTest {
         reader = getReader(testURL, format);
 
         // test the coverage
-        coverage = reader.read(null);
+        coverage = reader.read();
 
         // Check that the coverage has a component Colormodel
         assertTrue(coverage.getRenderedImage().getColorModel() instanceof ComponentColorModel);
@@ -4063,7 +4063,7 @@ public class ImageMosaicReaderTest {
 
         // now read again, see if the config gets read properly
         final ImageMosaicReader reader2 = getReader(testMosaicUrl, format);
-        GridCoverage2D coverage = reader2.read(null);
+        GridCoverage2D coverage = reader2.read();
         coverage.dispose(true);
         reader2.dispose();
     }
@@ -4075,7 +4075,7 @@ public class ImageMosaicReaderTest {
         final AbstractGridFormat format = TestUtils.getFormat(mixedSampleModelURL);
         ImageMosaicReader reader = getReader(mixedSampleModelURL, format);
 
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         assertNotNull(coverage);
         RenderedImage ri = coverage.getRenderedImage();
         assertThat(ri.getSampleModel(), instanceOf(ComponentSampleModel.class));
@@ -4210,7 +4210,7 @@ public class ImageMosaicReaderTest {
 
         AbstractGridFormat format = TestUtils.getFormat(coverageBands2URL);
         ImageMosaicReader reader = getReader(coverageBands2URL, format);
-        reader.read("rgb", null);
+        reader.read("rgb");
         reader.dispose();
     }
 
@@ -4225,7 +4225,7 @@ public class ImageMosaicReaderTest {
         for (int i = 0; i < coverageCount; i++) {
             String coverageName = coverageNames[i];
             assertEquals(expectedNames[i], coverageName);
-            GridCoverage2D coverage = reader.read(coverageNames[i], null);
+            GridCoverage2D coverage = reader.read(coverageNames[i]);
             assertNotNull(coverage);
             RenderedImage ri = coverage.getRenderedImage();
             assertThat(ri.getSampleModel(), instanceOf(ComponentSampleModel.class));
@@ -4303,7 +4303,7 @@ public class ImageMosaicReaderTest {
         assertNull(coverage);
 
         // read without parameters, should also give null, since the bbox of the coverage is used
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNull(coverage);
 
         // use more complex parameters and own bbox --> should also return null coverage
@@ -4344,7 +4344,7 @@ public class ImageMosaicReaderTest {
         assertFalse(manager.spatialDomainManager.coverageBBox.isEmpty());
 
         // read without parameters, should give back the whole coverage
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNotNull(coverage);
         assertNotNull(coverage.getRenderedImage());
         coverage.dispose(true);
@@ -4363,7 +4363,7 @@ public class ImageMosaicReaderTest {
         assertTrue(manager.spatialDomainManager.coverageBBox.isEmpty());
 
         // read without parameters, should give back a null coverage
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNull(coverage);
 
         // use more complex parameters and own bbox --> should also return a null coverage
@@ -4401,7 +4401,7 @@ public class ImageMosaicReaderTest {
         assertNull(coverage);
 
         // read without parameters, should also give null, since the bbox of the coverage is used
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNull(coverage);
 
         // use more complex parameters and own bbox
@@ -4589,7 +4589,7 @@ public class ImageMosaicReaderTest {
         URL granuleUrl = fileToUrl(file);
         AbstractGridFormat granuleFormat = TestUtils.getFormat(granuleUrl);
         AbstractGridCoverage2DReader granuleReader = granuleFormat.getReader(granuleUrl);
-        GridCoverage2D expected = granuleReader.read(null);
+        GridCoverage2D expected = granuleReader.read();
 
         // check footprint is the same
         final Bounds expectedEnvelope = expected.getEnvelope();
@@ -5277,7 +5277,7 @@ public class ImageMosaicReaderTest {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(workDir);
 
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
         Assert.assertNotNull(gc);
         reader.dispose();
     }
@@ -5420,13 +5420,13 @@ public class ImageMosaicReaderTest {
         assertThat(Arrays.asList(reader.getGridCoverageNames()), CoreMatchers.hasItems("rgb", "gray"));
 
         // rgb comes from the rgb_sample file
-        GridCoverage2D rgb = reader.read("rgb", null);
+        GridCoverage2D rgb = reader.read("rgb");
         assertThat(
                 (String) rgb.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY),
                 CoreMatchers.endsWith("rgb_sample.tif"));
         rgb.dispose(true);
 
-        GridCoverage2D gray = reader.read("gray", null);
+        GridCoverage2D gray = reader.read("gray");
         assertThat(
                 (String) gray.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY),
                 CoreMatchers.endsWith("gray_sample.tif"));
@@ -5499,7 +5499,7 @@ public class ImageMosaicReaderTest {
         final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
         GridCoverage2D coverage = null;
         try {
-            coverage = reader.read(null);
+            coverage = reader.read();
             File sample = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/rgba-overlap.png");
             ImageAssert.assertEquals(sample, coverage.getRenderedImage(), 0);
         } finally {
@@ -5527,7 +5527,7 @@ public class ImageMosaicReaderTest {
 
         // read everything, will populate the cache
         ImageMosaicReader reader = getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         coverage.dispose(true);
 
         String name = reader.getGridCoverageNames()[0];

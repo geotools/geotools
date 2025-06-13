@@ -101,19 +101,25 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
 
         // set the properties, only if we have matches!
         if (dates.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("No matches found for this property extractor:");
-            }
-            throw new IllegalArgumentException("No matches found for this property extractor");
+            throw new IllegalArgumentException("No matches found for: " + this);
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {
             // set the property
-
             feature.setAttribute(propertyName, dates.get(index++));
 
             // do we have more dates?
             if (index >= dates.size()) return;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "TimestampFileNameExtractor{" + "customFormat="
+                + customFormat + ", format='"
+                + format + '\'' + ", useHighTime="
+                + useHighTime + ", fullPath="
+                + fullPath + ", pattern="
+                + pattern + '}';
     }
 }

@@ -115,7 +115,7 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         ComparisonOperators comparison = (ComparisonOperators) object;
 
-        if (name.equals(OGC.Simple_Comparisons) && (comparison.getOperator("LessThan") != null)) {
+        if (name.equals(OGC.Simple_Comparisons) && comparison.getOperator("LessThan") != null) {
             return new Object();
         }
 

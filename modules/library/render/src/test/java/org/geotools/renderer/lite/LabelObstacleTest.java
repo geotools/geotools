@@ -26,6 +26,7 @@ import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.data.FeatureSource;
@@ -100,7 +101,8 @@ public class LabelObstacleTest {
 
         try (FeatureWriter w = mem.getFeatureWriter(name, Transaction.AUTO_COMMIT);
                 BufferedReader r = new BufferedReader(new InputStreamReader(
-                        LabelObstacleTest.class.getResourceAsStream("test-data/obstacles/" + name + ".txt")))) {
+                        LabelObstacleTest.class.getResourceAsStream("test-data/obstacles/" + name + ".txt"),
+                        StandardCharsets.UTF_8))) {
             String line = null;
             while ((line = r.readLine()) != null) {
                 String[] values = line.split(";");

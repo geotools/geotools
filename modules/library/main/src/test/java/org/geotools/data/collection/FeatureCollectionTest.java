@@ -252,7 +252,7 @@ public abstract class FeatureCollectionTest {
      *
      * @author Jody
      */
-    class ListenerProxy implements CollectionListener {
+    static class ListenerProxy implements CollectionListener {
         int changeEvents = 0;
 
         @Override

@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -48,6 +50,7 @@ import org.geotools.referencing.wkt.Formattable;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import si.uom.NonSI;
 import si.uom.SI;
@@ -60,6 +63,8 @@ import si.uom.SI;
  */
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class ReferencingExamples {
+
+    private static final Logger LOGGER = Logging.getLogger(ReferencingExamples.class);
 
     @SuppressWarnings("unused")
     private ProjectedCRS utm10NCRS;
@@ -84,7 +89,7 @@ public class ReferencingExamples {
             toWKT();
             toWKTFormat();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error initializing example", e);
         }
     }
 
@@ -487,7 +492,7 @@ public class ReferencingExamples {
 
         int totalmeters = (int) distance;
         int km = totalmeters / 1000;
-        int meters = totalmeters - (km * 1000);
+        int meters = totalmeters - km * 1000;
         float remaining_cm = (float) (distance - totalmeters) * 10000;
         remaining_cm = Math.round(remaining_cm);
         float cm = remaining_cm / 100;

@@ -104,10 +104,10 @@ public class ShadedReliefImpl implements ShadedRelief {
         int result = 0;
 
         if (reliefFactor != null) {
-            result = (PRIME * result) + reliefFactor.hashCode();
+            result = PRIME * result + reliefFactor.hashCode();
         }
 
-        result = (PRIME * result) + (brightness ? 1 : 0);
+        result = PRIME * result + (brightness ? 1 : 0);
 
         return result;
     }

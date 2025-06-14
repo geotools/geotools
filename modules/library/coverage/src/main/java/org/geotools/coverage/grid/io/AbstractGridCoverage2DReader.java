@@ -249,7 +249,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     @Override
-    public GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters)
+    public GridCoverage2D read(String coverageName, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
         // Default implementation for backwards compatibility
         if (coverageName.equalsIgnoreCase(this.coverageName)) {
@@ -282,7 +282,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image library.
      */
     @Override
-    public abstract GridCoverage2D read(GeneralParameterValue[] parameters)
+    public abstract GridCoverage2D read(GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException;
 
     // -------------------------------------------------------------------------
@@ -387,7 +387,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // Future versions should use both.
         //
         // //
-        final boolean useOverviews = (numOverviews > 0) ? true : false;
+        final boolean useOverviews = numOverviews > 0 ? true : false;
 
         // //
         //
@@ -1222,10 +1222,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         String parentPath = file.getParent();
         String filename = file.getName();
         final int i = filename.lastIndexOf('.');
-        filename = (i == -1) ? filename : filename.substring(0, i);
+        filename = i == -1 ? filename : filename.substring(0, i);
 
         // getting name and extension
-        final String base = (parentPath != null)
+        final String base = parentPath != null
                 ? new StringBuilder(parentPath)
                         .append(File.separator)
                         .append(filename)
@@ -1246,10 +1246,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         String parentPath = file.getParent();
         String filename = file.getName();
         final int i = filename.lastIndexOf('.');
-        filename = (i == -1) ? filename : filename.substring(0, i);
+        filename = i == -1 ? filename : filename.substring(0, i);
 
         // getting name and extension
-        final String base = (parentPath != null)
+        final String base = parentPath != null
                 ? new StringBuilder(parentPath)
                         .append(File.separator)
                         .append(filename)

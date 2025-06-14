@@ -56,7 +56,7 @@ public class OracleNClobConverterFactory implements ConverterFactory {
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if (ORA_NCLOB == null) return null;
 
-        if (!(String.class.equals(target))) return null;
+        if (!String.class.equals(target)) return null;
 
         if (!ORA_NCLOB.isAssignableFrom(source)) return null;
 

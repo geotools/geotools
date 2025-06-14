@@ -80,7 +80,7 @@ public class IndexerUtils {
                     }
                     continue;
                 }
-                if (roundRPos != (pcDef.length() - 1)) { // end with )
+                if (roundRPos != pcDef.length() - 1) { // end with )
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("Skipping unparseable PropertyCollector definition: " + pcDef);
                     }

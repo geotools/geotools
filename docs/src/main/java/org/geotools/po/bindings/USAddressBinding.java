@@ -52,6 +52,7 @@ public class USAddressBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return PO.USAddress;
     }
@@ -63,6 +64,7 @@ public class USAddressBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return USAddress.class;
     }
@@ -74,6 +76,7 @@ public class USAddressBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         USAddress address = factory.createUSAddress();
 

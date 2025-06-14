@@ -375,7 +375,7 @@ public class SLDColorMapBuilder {
             if (preservedValuesColor != null) colorsToDistribute--;
 
             // compute the number of colors we can use for each color map element
-            colorsPerColorMapElement = (int) ((colorsToDistribute)
+            colorsPerColorMapElement = (int) (colorsToDistribute
                     /
                     // we remove one since the first and last element use 1 color
                     // only, hence we want to account only the internal ranges
@@ -479,7 +479,7 @@ public class SLDColorMapBuilder {
         if (opacityValue == null) {
             throw new IllegalArgumentException("Opacity value null or could not be converted to a double" + opacity);
         }
-        if ((opacityValue.doubleValue() - 1) > 0 || opacityValue.doubleValue() < 0) {
+        if (opacityValue.doubleValue() - 1 > 0 || opacityValue.doubleValue() < 0) {
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Opacity", opacityValue));
         }

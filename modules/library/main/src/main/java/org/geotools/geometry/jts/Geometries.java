@@ -115,7 +115,7 @@ public enum Geometries {
         this.binding = type;
         this.sqlType = sqlType;
         this.name = type.getSimpleName();
-        this.simpleName = (name.startsWith("Multi") ? name.substring(5) : name);
+        this.simpleName = name.startsWith("Multi") ? name.substring(5) : name;
     }
 
     /**

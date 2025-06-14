@@ -135,7 +135,7 @@ public class ECQLLiteralTest extends CQLLiteralTest {
 
     private void assertParseReferencedAndUnreferenced(
             String wkt, String expectedWkt, Class expectedGeometryClass, Integer srid) throws Exception {
-        String sridPrefix = srid != null ? ("SRID=" + srid + ";") : "";
+        String sridPrefix = srid != null ? "SRID=" + srid + ";" : "";
         Expression expression = CompilerUtil.parseExpression(language, sridPrefix + wkt);
 
         assertThat(expression, instanceOf(Literal.class));

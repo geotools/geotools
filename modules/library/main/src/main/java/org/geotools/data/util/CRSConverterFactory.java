@@ -77,7 +77,7 @@ public class CRSConverterFactory implements ConverterFactory {
             }
 
             // STRING TO CRS
-            if ((source instanceof String) && CoordinateReferenceSystem.class.isAssignableFrom(target)) {
+            if (source instanceof String && CoordinateReferenceSystem.class.isAssignableFrom(target)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("CRSConverter: Converting object of class "
                             + source.getClass().getCanonicalName()
@@ -108,7 +108,7 @@ public class CRSConverterFactory implements ConverterFactory {
             }
 
             // CRS TO STRING
-            if ((source instanceof CoordinateReferenceSystem) && String.class.isAssignableFrom(target)) {
+            if (source instanceof CoordinateReferenceSystem && String.class.isAssignableFrom(target)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("CRSConverter: Converting object of class "
                             + source.getClass().getCanonicalName()

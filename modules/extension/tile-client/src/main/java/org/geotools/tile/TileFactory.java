@@ -96,7 +96,7 @@ public abstract class TileFactory {
                 value += range;
             }
 
-            return (value - maxValue + 1);
+            return value - maxValue + 1;
         } else {
             value = (value + maxValue) % range;
 
@@ -104,7 +104,7 @@ public abstract class TileFactory {
                 value += range;
             }
 
-            return (value - maxValue);
+            return value - maxValue;
         }
     }
 }

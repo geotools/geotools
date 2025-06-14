@@ -191,17 +191,17 @@ public class FilterMockData {
     static SpatialOperators spatial() {
         List<SpatialOperator> o = new ArrayList<>();
 
-        o.add(ff.spatialOperator("BBOX", null));
-        o.add(ff.spatialOperator("Equals", null));
-        o.add(ff.spatialOperator("Disjoint", null));
-        o.add(ff.spatialOperator("Intersect", null));
-        o.add(ff.spatialOperator("Touches", null));
-        o.add(ff.spatialOperator("Crosses", null));
-        o.add(ff.spatialOperator("Within", null));
-        o.add(ff.spatialOperator("Contains", null));
-        o.add(ff.spatialOperator("Overlaps", null));
-        o.add(ff.spatialOperator("Beyond", null));
-        o.add(ff.spatialOperator("DWithin", null));
+        o.add(ff.spatialOperator("BBOX"));
+        o.add(ff.spatialOperator("Equals"));
+        o.add(ff.spatialOperator("Disjoint"));
+        o.add(ff.spatialOperator("Intersect"));
+        o.add(ff.spatialOperator("Touches"));
+        o.add(ff.spatialOperator("Crosses"));
+        o.add(ff.spatialOperator("Within"));
+        o.add(ff.spatialOperator("Contains"));
+        o.add(ff.spatialOperator("Overlaps"));
+        o.add(ff.spatialOperator("Beyond"));
+        o.add(ff.spatialOperator("DWithin"));
 
         return ff.spatialOperators(o.toArray(new SpatialOperator[o.size()]));
     }

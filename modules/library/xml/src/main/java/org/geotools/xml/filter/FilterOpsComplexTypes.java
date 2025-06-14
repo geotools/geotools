@@ -326,7 +326,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & FilterCapabilities.SIMPLE_COMPARISONS)
@@ -335,7 +335,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && (value instanceof BinaryComparisonOperator
                             || value instanceof PropertyIsBetween
@@ -543,7 +543,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if (fc.getSpatialOps() == 0) {
@@ -551,7 +551,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof BinarySpatialOperator;
         }
@@ -697,7 +697,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & FilterCapabilities.LOGICAL) != FilterCapabilities.LOGICAL) {
@@ -705,7 +705,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && (value instanceof BinaryLogicOperator || value instanceof Not);
         }
@@ -853,18 +853,18 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
-                if ((fc.getScalarOps() == 0) && (fc.getSpatialOps() == 0)) {
+                if (fc.getScalarOps() == 0 && fc.getSpatialOps() == 0) {
                     return false;
                 }
             }
 
-            boolean r = ((element != null)
-                    && (element.getType() != null)
-                    && getName().equals(element.getType().getName()));
-            r = (r && (value != null) && value instanceof Filter);
+            boolean r = element != null
+                    && element.getType() != null
+                    && getName().equals(element.getType().getName());
+            r = r && value != null && value instanceof Filter;
 
             return r;
         }
@@ -968,7 +968,7 @@ public class FilterOpsComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((element == null) || (value == null) || (element.getType() == null)) {
+            if (element == null || value == null || element.getType() == null) {
                 throw new SAXException("Invalid parameters : null found");
             }
 
@@ -982,7 +982,7 @@ public class FilterOpsComplexTypes {
 
             String fid = attrs1.getValue("", FeatureIdType.attrs[0].getName());
 
-            if ((fid == null) || "".equals(fid)) {
+            if (fid == null || "".equals(fid)) {
                 fid = attrs1.getValue(
                         FeatureIdType.attrs[0].getNamespace().toString(), FeatureIdType.attrs[0].getName());
             }
@@ -1012,7 +1012,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof Id;
         }
@@ -1157,7 +1157,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & (FilterCapabilities.SIMPLE_COMPARISONS | FilterCapabilities.SIMPLE_ARITHMETIC))
@@ -1166,7 +1166,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof BinaryComparisonOperator;
         }
@@ -1296,7 +1296,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & FilterCapabilities.LIKE) != FilterCapabilities.LIKE) {
@@ -1304,7 +1304,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof PropertyIsLike;
         }
@@ -1409,7 +1409,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & FilterCapabilities.NULL_CHECK) != FilterCapabilities.NULL_CHECK) {
@@ -1417,7 +1417,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof PropertyIsNull;
         }
@@ -1524,7 +1524,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & FilterCapabilities.BETWEEN) != FilterCapabilities.BETWEEN) {
@@ -1532,7 +1532,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof PropertyIsBetween;
         }
@@ -1610,7 +1610,7 @@ public class FilterOpsComplexTypes {
 
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if (fc.getScalarOps() == FilterCapabilities.NO_OP) {
@@ -1618,7 +1618,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof Expression;
         }
@@ -1694,7 +1694,7 @@ public class FilterOpsComplexTypes {
 
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if (fc.getScalarOps() == FilterCapabilities.NO_OP) {
@@ -1702,7 +1702,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof Expression;
         }
@@ -1836,16 +1836,16 @@ public class FilterOpsComplexTypes {
 
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
                 FilterCapabilities elementkey = FilterCapabilities.findOperation(element.getName());
 
-                if ((elementkey == null) || !fc.supports(elementkey)) {
+                if (elementkey == null || !fc.supports(elementkey)) {
                     return false;
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof BinarySpatialOperator;
         }
@@ -1866,9 +1866,9 @@ public class FilterOpsComplexTypes {
             output.startElement(element.getNamespace(), element.getName(), null);
             short type1 = Filters.getExpressionType(lf.getExpression1());
             short type2 = Filters.getExpressionType(lf.getExpression2());
-            if ((type1 == org.geotools.filter.ExpressionType.LITERAL_STRING)
-                    || (type1 == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING)
-                    || (type1 == org.geotools.filter.ExpressionType.ATTRIBUTE)) {
+            if (type1 == org.geotools.filter.ExpressionType.LITERAL_STRING
+                    || type1 == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING
+                    || type1 == org.geotools.filter.ExpressionType.ATTRIBUTE) {
                 elems[0].getType().encode(elems[0], lf.getExpression1(), output, hints); // prop name
 
                 if (type2 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
@@ -1880,9 +1880,9 @@ public class FilterOpsComplexTypes {
                 }
             } else {
 
-                if ((type2 == org.geotools.filter.ExpressionType.LITERAL_STRING)
-                        || (type2 == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING)
-                        || (type2 == org.geotools.filter.ExpressionType.ATTRIBUTE)) {
+                if (type2 == org.geotools.filter.ExpressionType.LITERAL_STRING
+                        || type2 == org.geotools.filter.ExpressionType.ATTRIBUTE_STRING
+                        || type2 == org.geotools.filter.ExpressionType.ATTRIBUTE) {
                     elems[0].getType().encode(elems[0], lf.getExpression2(), output, hints); // prop name
 
                     if (type1 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
@@ -2006,7 +2006,7 @@ public class FilterOpsComplexTypes {
 
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getSpatialOps() & FilterCapabilities.SPATIAL_BBOX) != FilterCapabilities.SPATIAL_BBOX) {
@@ -2014,7 +2014,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof BinarySpatialOperator;
         }
@@ -2044,7 +2044,7 @@ public class FilterOpsComplexTypes {
                 if (TYPE2 == org.geotools.filter.ExpressionType.LITERAL_GEOMETRY) {
                     elems[0].getType().encode(elems[0], lf.getExpression1(), output, hints); // prop name
 
-                    ReferencedEnvelope re = ((ReferencedEnvelope) ((Literal) lf.getExpression2()).getValue());
+                    ReferencedEnvelope re = (ReferencedEnvelope) ((Literal) lf.getExpression2()).getValue();
                     elems[1].getType().encode(elems[1], re, output, hints); // geom
                 } else {
                     throw new OperationNotSupportedException(
@@ -2131,7 +2131,7 @@ public class FilterOpsComplexTypes {
 
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getSpatialOps() & (FilterCapabilities.SPATIAL_BEYOND | FilterCapabilities.SPATIAL_DWITHIN))
@@ -2140,7 +2140,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof DistanceBufferOperator;
         }
@@ -2255,7 +2255,7 @@ public class FilterOpsComplexTypes {
 
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getSpatialOps() & (FilterCapabilities.SPATIAL_BEYOND | FilterCapabilities.SPATIAL_DWITHIN))
@@ -2264,7 +2264,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof DistanceBufferOperator;
         }
@@ -2421,7 +2421,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & FilterCapabilities.LOGICAL) != FilterCapabilities.LOGICAL) {
@@ -2429,7 +2429,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof BinaryLogicOperator;
         }
@@ -2544,7 +2544,7 @@ public class FilterOpsComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((hints != null) && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
+            if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
 
                 if ((fc.getScalarOps() & FilterCapabilities.LOGICAL) != FilterCapabilities.LOGICAL) {
@@ -2552,7 +2552,7 @@ public class FilterOpsComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof Not;
         }

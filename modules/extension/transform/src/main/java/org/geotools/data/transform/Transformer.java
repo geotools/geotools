@@ -250,7 +250,7 @@ class Transformer {
         // can we support the required sorting?
         QueryCapabilities caps = source.getQueryCapabilities();
         if (query.getSortBy() != null && !caps.supportsSorting(txQuery.getSortBy())) {
-            txQuery.setSortBy(null);
+            txQuery.setSortBy((SortBy[]) null);
         }
 
         // if the original query had sorting but we cannot pass it down we

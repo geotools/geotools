@@ -20,6 +20,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import org.geotools.api.data.FileDataStore;
@@ -60,6 +61,8 @@ import org.locationtech.jts.geom.Polygon;
  * yellow.
  */
 public class SelectionLab {
+
+    private static final Logger LOGGER = Logger.getLogger(SelectionLab.class.getName());
 
     /*
      * Factories that we will use to create style and filter objects
@@ -216,7 +219,7 @@ public class SelectionLab {
             displaySelectedFeatures(IDs);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.severe("Error selecting features: " + ex.getMessage());
         }
     }
     // docs end select features

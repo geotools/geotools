@@ -143,6 +143,7 @@ public class ImageLab {
         menuBar.add(menu);
 
         menu.add(new SafeAction("Grayscale display") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 Style style = createGreyscaleStyle();
                 if (style != null) {
@@ -153,6 +154,7 @@ public class ImageLab {
         });
 
         menu.add(new SafeAction("RGB display") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 Style style = createRGBStyle();
                 if (style != null) {
@@ -177,7 +179,7 @@ public class ImageLab {
     private Style createGreyscaleStyle() {
         GridCoverage2D cov = null;
         try {
-            cov = reader.read(null);
+            cov = reader.read();
         } catch (IOException giveUp) {
             throw new RuntimeException(giveUp);
         }
@@ -234,7 +236,7 @@ public class ImageLab {
     private Style createRGBStyle() {
         GridCoverage2D cov = null;
         try {
-            cov = reader.read(null);
+            cov = reader.read();
         } catch (IOException giveUp) {
             throw new RuntimeException(giveUp);
         }

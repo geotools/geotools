@@ -18,7 +18,6 @@
 
 package org.geotools.maven.xmlcodegen.templates;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +31,6 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.maven.xmlcodegen.SchemaGenerator;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.ComplexType;
@@ -40,6 +38,7 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
 import org.geotools.api.feature.type.Schema;
+import org.geotools.maven.xmlcodegen.SchemaGenerator;
 
 public class CycleSchemaClassTemplate
 {
@@ -52,7 +51,7 @@ public class CycleSchemaClassTemplate
     return result;
   }
 
-  public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
+  public final String NL = nl == null ? System.getProperties().getProperty("line.separator") : nl;
   protected final String TEXT_1 = "";
   protected final String TEXT_2 = NL + NL + "import java.util.ArrayList;" + NL + "import java.util.Collection;" + NL + "import java.util.List;" + NL + "import java.util.TreeMap;" + NL + "" + NL + "import org.geotools.feature.NameImpl;" + NL + "import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;" + NL + "import org.geotools.feature.type.AbstractLazyComplexTypeImpl;" + NL + "import org.geotools.feature.type.AttributeDescriptorImpl;" + NL + "import org.geotools.feature.type.SchemaImpl;" + NL + "import org.geotools.api.feature.type.AttributeType;" + NL + "import org.geotools.api.feature.type.ComplexType;" + NL + "import org.geotools.api.feature.type.Name;" + NL + "import org.geotools.api.feature.type.PropertyDescriptor;" + NL + "import org.geotools.api.feature.type.Schema;";
   protected final String TEXT_3 = NL + "import ";

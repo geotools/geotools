@@ -61,8 +61,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     private void guard(Runnable operation, Lock lock) {
+        lock.lock();
         try {
-            lock.lock();
             operation.run();
         } finally {
             lock.unlock();
@@ -70,8 +70,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     private <V> V guard(Supplier<V> supplier, Lock lock) {
+        lock.lock();
         try {
-            lock.lock();
             return supplier.get();
         } finally {
             lock.unlock();
@@ -79,8 +79,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     private <V> V guardIO(IOCallable<V> operation, Lock lock) throws IOException {
+        lock.lock();
         try {
-            lock.lock();
             return operation.call();
         } finally {
             lock.unlock();
@@ -88,8 +88,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     }
 
     private void guardIO(IORunnable operation, Lock lock) throws IOException {
+        lock.lock();
         try {
-            lock.lock();
             operation.run();
         } finally {
             lock.unlock();
@@ -115,8 +115,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     @Override
     public void createType(String namespace, String typeName, String typeSpec) throws IOException, SchemaException {
         Lock lock = rwLock.writeLock();
+        lock.lock();
         try {
-            lock.lock();
             delegate.createType(namespace, typeName, typeSpec);
         } finally {
             lock.unlock();
@@ -131,8 +131,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     @Override
     public void createType(String identification, String typeSpec) throws SchemaException, IOException {
         Lock lock = rwLock.writeLock();
+        lock.lock();
         try {
-            lock.lock();
             delegate.createType(identification, typeSpec);
         } finally {
             lock.unlock();
@@ -142,8 +142,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     @Override
     public void dispose() {
         Lock lock = rwLock.writeLock();
+        lock.lock();
         try {
-            lock.lock();
             delegate.dispose();
         } finally {
             lock.unlock();
@@ -153,8 +153,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     @Override
     public BoundingBox getBounds(String typeName) {
         Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             return delegate.getBounds(typeName);
         } finally {
             lock.unlock();
@@ -164,8 +164,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     @Override
     public BoundingBox getBounds(final String typeName, Transaction t) {
         Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             return delegate.getBounds(typeName, t);
         } finally {
             lock.unlock();
@@ -221,8 +221,8 @@ public class LockingGranuleCatalog extends GranuleCatalog {
     @Override
     public String[] getTypeNames() {
         Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             return delegate.getTypeNames();
         } finally {
             lock.unlock();

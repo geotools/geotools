@@ -78,7 +78,7 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
      */
     public static final DefaultTimeCS MILLISECONDS;
 
-    /** Creates the constants, reusing some intermediate constructs for efficiency. */
+    /* Creates the constants, reusing some intermediate constructs for efficiency. */
     static {
         final Map<String, Object> properties = name(VocabularyKeys.TEMPORAL);
         CoordinateSystemAxis axis = DefaultCoordinateSystemAxis.TIME;

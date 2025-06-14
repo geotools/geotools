@@ -19,6 +19,7 @@ package org.geotools.referencing.factory.epsg.hsql;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import javax.sql.DataSource;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
@@ -76,7 +77,7 @@ public class HsqlDialectEpsgMediatorStressTest {
 
         // count exceptions and metrics
         int exceptions = 0;
-        int totalTime = 0;
+        long totalTime = 0;
         int totalRuns = 0;
         long minTime = Long.MAX_VALUE;
         long maxTime = 0;
@@ -92,11 +93,11 @@ public class HsqlDialectEpsgMediatorStressTest {
             System.out.println("Threads: " + RUNNER_COUNT);
             System.out.println("Maximum Workers: " + MAX_WORKERS);
             System.out.println("Iterations per Thread: " + ITERATIONS);
-            System.out.println("Average Time: " + (totalTime / totalRuns) + " ms");
+            System.out.println("Average Time: " + totalTime / totalRuns + " ms");
             System.out.println("Cumulative Time: " + totalTime + " ms");
             System.out.println("Cumulative Iterations: " + totalRuns);
             System.out.println("Overall Time: " + timeElapsed);
-            System.out.println("Throughput: " + (1000 * totalRuns / (double) totalTime) + " Hz");
+            System.out.println("Throughput: " + 1000 * totalRuns / (double) totalTime + " Hz");
             System.out.println("Min: " + minTime);
             System.out.println("Max: " + maxTime);
             System.out.println("BUFFER_POLICY: " + hints.get(Hints.CACHE_POLICY).toString());
@@ -117,7 +118,7 @@ public class HsqlDialectEpsgMediatorStressTest {
                     .append(", ")
                     .append(totalRuns)
                     .append(", ")
-                    .append((1000 * totalRuns / (double) totalTime))
+                    .append(1000 * totalRuns / (double) totalTime)
                     .append(", ")
                     .append(minTime)
                     .append(", ")
@@ -132,7 +133,7 @@ public class HsqlDialectEpsgMediatorStressTest {
                         "THREADS, MAX_WORKERS, ITERATIONS_PER_THREAD, CACHE, AVG_TIME, TOTAL_TIME, TOTAL_RUNS, THROUGHPUT, MIN_TIME, MAX_TIME, EXCEPTIONS";
             }
             file.createNewFile();
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
                 if (header != null) {
                     bw.write(header);
                 }

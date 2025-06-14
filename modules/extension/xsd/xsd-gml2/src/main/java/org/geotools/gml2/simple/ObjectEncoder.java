@@ -24,7 +24,7 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  * @author Justin Deoliveira, OpenGeo
  */
-public abstract class ObjectEncoder<T extends Object> {
+public abstract class ObjectEncoder<T> {
 
     protected Encoder encoder;
 

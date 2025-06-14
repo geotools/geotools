@@ -54,7 +54,6 @@ public class TileTest {
 
         Assert.assertEquals(this.tile, this.tile);
         Assert.assertNotEquals(null, this.tile);
-        Assert.assertNotEquals("Blah", this.tile);
 
         Tile otherTile = createTestTile();
         Assert.assertEquals(this.tile, otherTile);
@@ -86,7 +85,7 @@ public class TileTest {
         int blue = observed & 0xff;
         int green = (observed & 0xff00) >> 8;
         int red = (observed & 0xff0000) >> 16;
-        return (blue == blueExpected && red == redExpected && green == greenExpected);
+        return blue == blueExpected && red == redExpected && green == greenExpected;
     }
 
     @Test

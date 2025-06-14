@@ -129,7 +129,7 @@ public class TestPiecewise {
         //
         // /////////////////////////////////////////////////////////////////////
         DefaultPiecewiseTransform1DElement e0 = DefaultPiecewiseTransform1DElement.create(
-                "zero", RangeFactory.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY), ((byte) 0));
+                "zero", RangeFactory.create(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY), (byte) 0);
         Assert.assertTrue(e0 instanceof DefaultConstantPiecewiseTransformElement);
         // checks
         Assert.assertEquals(0.0, e0.transform(0), 0.0);
@@ -563,7 +563,7 @@ public class TestPiecewise {
                         return minimum[0]
                                 + 1.2
                                         * Math.log(arg0 / minimum[0])
-                                        * ((maximum[0] - minimum[0]) / (Math.log(maximum[0] / minimum[0])));
+                                        * ((maximum[0] - minimum[0]) / Math.log(maximum[0] / minimum[0]));
                     }
 
                     @Override

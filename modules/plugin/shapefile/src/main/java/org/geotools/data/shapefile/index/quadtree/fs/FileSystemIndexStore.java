@@ -110,7 +110,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
     private void writeNode(Node node, FileChannel channel, ByteOrder order) throws IOException, StoreException {
         int offset = this.getSubNodeOffset(node);
 
-        ByteBuffer buf = ByteBuffer.allocate((4 * 8) + (3 * 4) + (node.getNumShapeIds() * 4));
+        ByteBuffer buf = ByteBuffer.allocate(4 * 8 + 3 * 4 + node.getNumShapeIds() * 4);
 
         buf.order(order);
         buf.putInt(offset);
@@ -144,8 +144,8 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
 
         for (int i = 0; i < node.getNumSubNodes(); i++) {
             tmp = node.getSubNode(i);
-            offset += (4 * 8); // Envelope size
-            offset += ((tmp.getNumShapeIds() + 3) * 4); // Entries size + 3
+            offset += 4 * 8; // Envelope size
+            offset += (tmp.getNumShapeIds() + 3) * 4; // Entries size + 3
             offset += this.getSubNodeOffset(tmp);
         }
 

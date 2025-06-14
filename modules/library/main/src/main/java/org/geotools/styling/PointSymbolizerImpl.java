@@ -113,7 +113,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((graphic == null) ? 0 : graphic.hashCode());
+        result = prime * result + (graphic == null ? 0 : graphic.hashCode());
         return result;
     }
 

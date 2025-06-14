@@ -93,10 +93,10 @@ public class ComplexTypeHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode()
-                        * ((id == null) ? 1 : id.hashCode())
-                        * ((attrDecs == null) ? 1 : attrDecs.hashCode())
-                        * ((name == null) ? 1 : name.hashCode()))
+        return LOCALNAME.hashCode()
+                        * (id == null ? 1 : id.hashCode())
+                        * (attrDecs == null ? 1 : attrDecs.hashCode())
+                        * (name == null ? 1 : name.hashCode())
                 + hashCodeOffset;
     }
 
@@ -248,7 +248,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             abstracT1 = atts.getValue(namespaceURI, "abstract");
         }
 
-        if ((abstracT1 == null) || "".equals(abstracT1)) {
+        if (abstracT1 == null || "".equals(abstracT1)) {
             this.abstracT = false;
         } else {
             if ("true".equals(abstracT1)) {
@@ -284,7 +284,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             mixed1 = atts.getValue(namespaceURI, "mixed");
         }
 
-        if ((mixed1 == null) || "".equalsIgnoreCase(mixed1)) {
+        if (mixed1 == null || "".equalsIgnoreCase(mixed1)) {
             this.mixed = false;
         } else {
             if ("true".equals(mixed1)) {
@@ -317,7 +317,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
      * @return int
      */
     public static int findBlock(String block) throws SAXException {
-        if ((block == null) || "".equalsIgnoreCase(block)) {
+        if (block == null || "".equalsIgnoreCase(block)) {
             return DEFAULT;
         }
 
@@ -382,7 +382,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
 
         DefaultComplexType dct = new DefaultComplexType();
         dct.abstracT = abstracT;
-        dct.anyAttributeNameSpace = (anyAttribute != null) ? anyAttribute.getNamespace() : null;
+        dct.anyAttributeNameSpace = anyAttribute != null ? anyAttribute.getNamespace() : null;
 
         Set<Attribute> attr = new HashSet<>();
 
@@ -458,12 +458,12 @@ public class ComplexTypeHandler extends XSIElementHandler {
         dct.name = name;
         cache = dct;
 
-        if (((cache.getChild() == null) && !abstracT) && !dct.simple) {
+        if (cache.getChild() == null && !abstracT && !dct.simple) {
             logger.warning(getName() + " :: " + parent.getTargetNamespace() + " should have a real child: ");
             throw new NullPointerException();
         }
 
-        if ((dct.parent == null) && dct.simple) {
+        if (dct.parent == null && dct.simple) {
             logger.warning(getName() + " :: " + parent.getTargetNamespace() + " should have a real parent: ");
             throw new NullPointerException();
         }
@@ -546,7 +546,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             logger.finest("Looked up "
                     + ext.getBase()
                     + " and found "
-                    + ((ct == null) ? null : (ct.getName() + ":::" + ct.getNamespace()))
+                    + (ct == null ? null : ct.getName() + ":::" + ct.getNamespace())
                     + " for "
                     + name);
 
@@ -616,7 +616,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
 
         SimpleType st;
 
-        if ((ext.getBase() == null) || ext.getBase().equalsIgnoreCase("")) {
+        if (ext.getBase() == null || ext.getBase().equalsIgnoreCase("")) {
             st = ((SimpleTypeHandler) ext.getChild()).compress(parent);
         } else {
             st = parent.lookUpSimpleType(ext.getBase());
@@ -870,7 +870,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
+                    return l.isEmpty() ? null : l.toArray(new Element[l.size()]);
 
                 case ElementGrouping.ELEMENT:
                     return new Element[] {
@@ -895,7 +895,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                         }
                     }
 
-                    return (l.isEmpty()) ? null : l.toArray(new Element[l.size()]);
+                    return l.isEmpty() ? null : l.toArray(new Element[l.size()]);
             }
 
             return null;
@@ -1031,7 +1031,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 for (int i = 1; i < value.length + 1; i++) {
                     values[i] = value[i - (isMixed() ? 0 : 1)].getValue();
                     logger.finest(
-                            "*" + ((values[i] != null) ? values[i].getClass().getName() : "null"));
+                            "*" + (values[i] != null ? values[i].getClass().getName() : "null"));
                 }
 
                 if (isMixed()) values[values.length - 1] = value[0];
@@ -1048,8 +1048,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
         /** @see org.geotools.xml.xsi.ComplexType#findChildElement(java.lang.String) */
         @Override
         public Element findChildElement(String name1) {
-            Element e = (child == null) ? null : child.findChildElement(name1);
-            e = e == null ? (parent == null ? null : parent.findChildElement(name1)) : e;
+            Element e = child == null ? null : child.findChildElement(name1);
+            e = e == null ? parent == null ? null : parent.findChildElement(name1) : e;
             return e;
         }
 
@@ -1058,7 +1058,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((parent != null) && parent.canEncode(element, value, hints)) {
+            if (parent != null && parent.canEncode(element, value, hints)) {
                 return true;
             }
 
@@ -1072,7 +1072,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((parent != null) && parent.canEncode(element, value, hints)) {
+            if (parent != null && parent.canEncode(element, value, hints)) {
                 parent.encode(element, value, output, hints);
             } else {
                 output.startElement(element.getNamespace(), element.getName(), null);

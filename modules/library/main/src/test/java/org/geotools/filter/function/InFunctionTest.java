@@ -130,7 +130,7 @@ public class InFunctionTest extends FunctionTestSupport {
         Object result = func.evaluate(feature);
         assertEquals(false, result);
 
-        feature.setAttribute("group", "Group" + (NUM_ARGS / 2));
+        feature.setAttribute("group", "Group" + NUM_ARGS / 2);
 
         result = func.evaluate(feature);
         assertEquals(true, result);

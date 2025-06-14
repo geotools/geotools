@@ -229,7 +229,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     public boolean equals(Object filter) {
         LOGGER.finest("condition: " + filter);
 
-        if ((filter != null) && (filter.getClass() == this.getClass())) {
+        if (filter != null && filter.getClass() == this.getClass()) {
             FidFilterImpl other = (FidFilterImpl) filter;
             return fids.equals(other.fids);
         } else {

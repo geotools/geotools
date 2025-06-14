@@ -100,7 +100,7 @@ public abstract class RendererBaseTest {
             }
         }
 
-        assert (hasData);
+        assert hasData;
     }
 
     /** responsible for actually rendering. */

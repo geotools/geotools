@@ -534,7 +534,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         sql.append(joinClause);
 
         boolean isRootFeature =
-                (query.getQueryJoins() == null || query.getQueryJoins().isEmpty());
+                query.getQueryJoins() == null || query.getQueryJoins().isEmpty();
 
         boolean pagingApplied = false;
 
@@ -550,12 +550,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     // that uses attributes that aren't returned in the results
                     lastSortBy = isRootFeature
                             ? query.getSortBy()
-                            : (query.getQueryJoins() == null
+                            : query.getQueryJoins() == null
                                             || query.getQueryJoins().isEmpty()
                                     ? query.getSortBy()
                                     : query.getQueryJoins()
                                             .get(query.getQueryJoins().size() - 1)
-                                            .getSortBy());
+                                            .getSortBy();
                 }
                 String lastTableName = isRootFeature
                         ? query.getTypeName()
@@ -1109,9 +1109,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         // rebuild and add primary key column if there's no idExpression pointing to a database
         // column
         // this is so we can retrieve the PK later to use for feature chaining grouping
-        SimpleFeatureType fullSchema = (query.hasIdColumn() && query.getQueryJoins() == null)
-                ? querySchema
-                : getFeatureType(querySchema, query);
+        SimpleFeatureType fullSchema =
+                query.hasIdColumn() && query.getQueryJoins() == null ? querySchema : getFeatureType(querySchema, query);
 
         // create the reader
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;

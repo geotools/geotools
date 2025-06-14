@@ -583,7 +583,7 @@ public class RasterManager implements Cloneable {
 
         /** @return @TODO We can surely improve it by making use of Regular Expressions */
         private String cleanupDomainName(String domainName) {
-            if (attributeHasRange(domainName) || (domainName.contains("(") && domainName.contains(")"))) {
+            if (attributeHasRange(domainName) || domainName.contains("(") && domainName.contains(")")) {
                 // Getting rid of the attributes definition to get only the domain name
                 domainName = domainName.substring(0, domainName.indexOf("("));
             }
@@ -1053,7 +1053,7 @@ public class RasterManager implements Cloneable {
         }
         if (typeName == null && granuleCatalog != null) {
             String[] typeNames = granuleCatalog.getTypeNames();
-            typeName = (typeNames != null && typeNames.length > 0) ? typeNames[0] : null;
+            typeName = typeNames != null && typeNames.length > 0 ? typeNames[0] : null;
         }
     }
 
@@ -1573,7 +1573,7 @@ public class RasterManager implements Cloneable {
             if (name.equalsIgnoreCase("time_domain")) {
                 return timeDomainManager.getMetadataValue(name);
             }
-            if ((name.equalsIgnoreCase("time_domain_minimum") || name.equalsIgnoreCase("time_domain_maximum"))) {
+            if (name.equalsIgnoreCase("time_domain_minimum") || name.equalsIgnoreCase("time_domain_maximum")) {
                 return timeDomainManager.getMetadataValue(name);
             }
             if (name.equalsIgnoreCase("time_domain_datatype")) {

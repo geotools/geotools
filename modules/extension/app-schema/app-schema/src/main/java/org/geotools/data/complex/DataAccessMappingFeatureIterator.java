@@ -535,7 +535,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             // </AttributeMapping>
             // As there can be multiple nodes of mo:composition in this case, we need to retrieve
             // all of them
-            AttributeExpressionImpl attribExpression = ((AttributeExpressionImpl) expression);
+            AttributeExpressionImpl attribExpression = (AttributeExpressionImpl) expression;
             String xpath = attribExpression.getPropertyName();
             ComplexAttribute sourceFeature = (ComplexAttribute) sourceFeatureInput;
             StepList xpathSteps = XPath.steps(sourceFeature.getDescriptor(), xpath, namespaces);
@@ -570,7 +570,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             id = extractIdForAttribute(attMapping.getIdentifierExpression(), source);
         }
         if (attMapping.isNestedAttribute()) {
-            NestedAttributeMapping nestedMapping = ((NestedAttributeMapping) attMapping);
+            NestedAttributeMapping nestedMapping = (NestedAttributeMapping) attMapping;
             Object mappingName = nestedMapping.getNestedFeatureType(source);
             if (mappingName != null) {
                 if (nestedMapping.isSameSource() && mappingName instanceof Name) {
@@ -1448,8 +1448,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     } else if (getEncodeIfEmpty(p)) {
                         values.add(p);
                         result = true;
-                    } else if ((p).getDescriptor().getMinOccurs() > 0) {
-                        if ((p).getDescriptor().isNillable()) {
+                    } else if (p.getDescriptor().getMinOccurs() > 0) {
+                        if (p.getDescriptor().isNillable()) {
                             // add nil mandatory property
                             values.add(p);
                         }
@@ -1581,9 +1581,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected boolean isByReference(Map<Name, Expression> clientPropsMappings, boolean isNested) {
         // only care for chained features
         return isNested
-                ? (clientPropsMappings.isEmpty()
+                ? clientPropsMappings.isEmpty()
                         ? false
-                        : (clientPropsMappings.get(XLINK_HREF_NAME) == null) ? false : true)
+                        : clientPropsMappings.get(XLINK_HREF_NAME) == null ? false : true
                 : false;
     }
 
@@ -1615,7 +1615,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     private boolean getEncodeIfEmpty(Property p) {
-        Object o = ((p.getDescriptor()).getUserData().get("encodeIfEmpty"));
+        Object o = p.getDescriptor().getUserData().get("encodeIfEmpty");
         if (o == null) {
             return false;
         }

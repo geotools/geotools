@@ -66,7 +66,7 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
             Integer.parseInt(System.getProperty(MBSTYLE_ROOT_TILE_PIXELS_KEY, "512"));
 
     /** Scale denominator of the root tile. Changes based on the ROOT_TILE_PIXELS value. */
-    public static final double EPSG_3857_O_SCALE = (559_082_263.9508929 / ROOT_TILE_PIXELS) * 256;
+    public static final double EPSG_3857_O_SCALE = 559_082_263.9508929 / ROOT_TILE_PIXELS * 256;
 
     public ZoomLevelFunction() {
         super(NAME);

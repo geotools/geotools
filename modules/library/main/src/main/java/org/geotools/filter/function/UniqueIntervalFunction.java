@@ -164,7 +164,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 value += queryResult.get(key);
             }
             if (value > 0.0) {
-                percentages[i] = (value / totalSize) * 100;
+                percentages[i] = value / totalSize * 100;
             } else {
                 percentages[i] = 0.0;
             }

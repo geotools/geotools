@@ -47,6 +47,9 @@ public class LinearTransform1D extends AbstractMathTransform implements MathTran
     private static final long serialVersionUID = -7595037195668813000L;
 
     /** The identity transform. */
+    @SuppressWarnings(
+            "ClassInitializationDeadlock") // Possible class initialization deadlock: IdentityTransform1D is a subclass
+    // of the containing class LinearTransform1D
     public static final LinearTransform1D IDENTITY = IdentityTransform1D.ONE;
 
     /** The value which is multiplied to input values. */

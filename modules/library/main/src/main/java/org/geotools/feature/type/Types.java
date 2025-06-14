@@ -150,7 +150,7 @@ public class Types {
 
                 @SuppressWarnings("unchecked")
                 Collection<Attribute> attributeList = (Collection<Attribute>) attributeContent;
-                validateAll((ComplexType) type, (ComplexAttribute) attribute, attributeList);
+                validateAll((ComplexType) type, attributeList);
             }
         }
 
@@ -729,7 +729,7 @@ public class Types {
             return;
         }
 
-        validateAll(type, attribute, content);
+        validateAll(type, content);
 
         if (type.getSuper() != null) {
             validate((ComplexType) type.getSuper(), attribute, content);
@@ -740,12 +740,10 @@ public class Types {
      * Validate attribute content values, and check also that attributes follow min / max occurs restrictions.
      *
      * @param type ComplexType being validated, may be a super type or abstract
-     * @param att ComplexAttribute
      * @param content Attributes in order provided for validation
      * @throws IllegalAttributeException
      */
-    private static void validateAll(ComplexType type, ComplexAttribute att, Collection<Attribute> content)
-            throws IllegalAttributeException {
+    private static void validateAll(ComplexType type, Collection<Attribute> content) throws IllegalAttributeException {
 
         // JG: validate each attribute individually
         for (Attribute attribute : content) {

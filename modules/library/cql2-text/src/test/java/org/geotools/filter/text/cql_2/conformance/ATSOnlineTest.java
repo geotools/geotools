@@ -84,7 +84,7 @@ public abstract class ATSOnlineTest {
 
     protected DataStore naturalEarthData() throws IOException {
         downloadNaturalEarthData();
-        Map params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("dbtype", "geopkg");
         params.put("database", neGpkg.getAbsolutePath());
         params.put("read-only", true);

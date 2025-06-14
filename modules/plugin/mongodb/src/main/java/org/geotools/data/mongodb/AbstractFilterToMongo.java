@@ -398,7 +398,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
 
         String multi = filter.getWildCard();
         String single = filter.getSingleChar();
-        int flags = (filter.isMatchingCase()) ? 0 : Pattern.CASE_INSENSITIVE;
+        int flags = filter.isMatchingCase() ? 0 : Pattern.CASE_INSENSITIVE;
 
         String regex = filter.getLiteral().replace(multi, ".*").replace(single, ".");
         // force full string match
@@ -432,7 +432,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
             objectIds.add(new ObjectId(id.toString()));
         }
 
-        Object objectIdDBO = (objectIds.size() > 1) ? new BasicDBObject("$in", objectIds) : objectIds.get(0);
+        Object objectIdDBO = objectIds.size() > 1 ? new BasicDBObject("$in", objectIds) : objectIds.get(0);
 
         output.put("_id", objectIdDBO);
         return output;

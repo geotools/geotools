@@ -126,7 +126,7 @@ public class RecordingHandler implements ContentHandler {
         }
     }
 
-    abstract class Action<T> {
+    abstract static class Action<T> {
 
         protected T obj;
 

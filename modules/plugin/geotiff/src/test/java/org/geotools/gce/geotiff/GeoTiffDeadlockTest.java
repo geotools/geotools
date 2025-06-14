@@ -46,7 +46,7 @@ public class GeoTiffDeadlockTest {
             Runnable testRunner = () -> {
                 try {
                     GeoTiffReader reader = new GeoTiffReader(file);
-                    reader.read(null);
+                    reader.read();
                 } catch (Exception e) {
                     throw new RuntimeException("Exception opening file " + file, e);
                 } finally {

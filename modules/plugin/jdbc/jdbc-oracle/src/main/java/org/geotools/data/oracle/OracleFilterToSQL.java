@@ -472,7 +472,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (original instanceof Polygon || original instanceof MultiPolygon) {
             List<Polygon> polys = new ArrayList<>();
             accumulateGeometries(polys, coll, Polygon.class);
-            return original.getFactory().createMultiPolygon((polys.toArray(new Polygon[polys.size()])));
+            return original.getFactory().createMultiPolygon(polys.toArray(new Polygon[polys.size()]));
         } else if (original instanceof LineString || original instanceof MultiLineString) {
             List<LineString> ls = new ArrayList<>();
             accumulateGeometries(ls, coll, LineString.class);

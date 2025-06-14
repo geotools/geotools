@@ -460,14 +460,13 @@ public class TPKFile {
 
         double resolution = zoomLevelResolutionMap.get(zl.getZoomLevel());
 
-        double minX = ((zl.getMinColumn() * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET) * 180.0;
-        double maxX =
-                (((zl.getMaxColumn() + 1) * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET) * 180.0;
+        double minX = (zl.getMinColumn() * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET * 180.0;
+        double maxX = ((zl.getMaxColumn() + 1) * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET * 180.0;
 
-        double lat = ((zl.getMinRow() * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET) * 180;
+        double lat = (zl.getMinRow() * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET * 180;
         double minY = 180.0 / Math.PI * (2 * Math.atan(Math.exp(lat * Math.PI / 180.0)) - Math.PI / 2.0);
 
-        lat = (((zl.getMaxRow() + 1) * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET) * 180;
+        lat = ((zl.getMaxRow() + 1) * TILE_PIXEL_SIZE * resolution - ORIGIN_OFFSET) / ORIGIN_OFFSET * 180;
         double maxY = 180.0 / Math.PI * (2 * Math.atan(Math.exp(lat * Math.PI / 180.0)) - Math.PI / 2.0);
 
         bounds = new ReferencedEnvelope(minX, maxX, minY, maxY, TPKReader.WGS_84);

@@ -179,7 +179,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
                     literalTypes.add(attValues.get(j) != null ? attValues.get(j).getClass() : null);
                     descriptors.add(null);
 
-                    if (j < (attValues.size() - 1)) {
+                    if (j < attValues.size() - 1) {
                         out.write(" AND ");
                     }
                 }

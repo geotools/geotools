@@ -187,8 +187,8 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
         final long currentTime = System.currentTimeMillis();
         final int capacity = Math.max(Math.round(count / (LOAD_FACTOR / 2)), count + MIN_CAPACITY);
         if (augmentation
-                ? (capacity <= table.length)
-                : (capacity >= table.length || currentTime - lastRehashTime < HOLD_TIME)) {
+                ? capacity <= table.length
+                : capacity >= table.length || currentTime - lastRehashTime < HOLD_TIME) {
             return;
         }
         lastRehashTime = currentTime;
@@ -358,7 +358,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
             }
         }
         assert valid();
-        return (operation == INTERN) ? obj : null;
+        return operation == INTERN ? obj : null;
     }
 
     /** Removes all of the elements from this set. */

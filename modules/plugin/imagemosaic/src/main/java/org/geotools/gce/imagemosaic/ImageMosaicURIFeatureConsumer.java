@@ -95,7 +95,7 @@ public class ImageMosaicURIFeatureConsumer implements ImageMosaicElementConsumer
             ImageMosaicEventHandlers eventHandler = walker.getEventHandler();
             ImageMosaicConfigHandler configHandler = walker.getConfigHandler();
 
-            eventHandler.fireEvent(Level.INFO, "Now indexing uri " + uri, ((elementIndex * 100.0) / numElements));
+            eventHandler.fireEvent(Level.INFO, "Now indexing uri " + uri, elementIndex * 100.0 / numElements);
             GridCoverage2DReader coverageReader = null;
             try {
                 // STEP 1
@@ -116,14 +116,14 @@ public class ImageMosaicURIFeatureConsumer implements ImageMosaicElementConsumer
                         format = GridFormatFinder.findFormat(readerInputObject, Utils.EXCLUDE_MOSAIC_HINTS);
                     }
                 }
-                if ((format instanceof UnknownFormat) || format == null) {
+                if (format instanceof UnknownFormat || format == null) {
 
                     eventHandler.fireURIEvent(
                             Level.INFO,
                             uri,
                             false,
                             "Skipped granule " + uri + ": format is not supported.",
-                            ((elementIndex * 99.0) / numElements));
+                            elementIndex * 99.0 / numElements);
 
                     return;
                 }

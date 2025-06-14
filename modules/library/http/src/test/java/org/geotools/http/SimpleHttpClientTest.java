@@ -91,7 +91,7 @@ public class SimpleHttpClientTest {
                 .withStatus(200)
                 .withHeader("Content-Type", "text/xml")
                 .withBody("<response>Some content</response>");
-        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
+        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes(StandardCharsets.UTF_8));
         SimpleHttpClient client = new SimpleHttpClient();
 
         // GET
@@ -141,7 +141,7 @@ public class SimpleHttpClientTest {
         // again
 
         // POST
-        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
+        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes(StandardCharsets.UTF_8));
         client.post(urlWithoutExtraParams, postBody, "text/plain");
         service.verify(postRequestedFor(urlMatching("/test[\\w?&=%]*"))
                 .withQueryParam("key1", equalTo("123"))

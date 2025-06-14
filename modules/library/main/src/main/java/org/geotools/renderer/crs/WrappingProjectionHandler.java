@@ -81,7 +81,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
 
         CoordinateSystemAxis axis = sourceCrs.getCoordinateSystem().getAxis(0);
         if (sourceCrs instanceof GeographicCRS
-                || (sourceCrs instanceof DerivedCRS && axis.getUnit().isCompatible(SI.RADIAN))) {
+                || sourceCrs instanceof DerivedCRS && axis.getUnit().isCompatible(SI.RADIAN)) {
             sourceHalfCircle = 180;
         } else {
             // assume a simplified earth circumference, which is 40075 km
@@ -157,12 +157,12 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // like antarctica
         final boolean northEast = CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.NORTH_EAST;
         if (datelineWrappingCheckEnabled
-                && ((geometry.getUserData() == LARGE_EARTH_OBJECT && width < targetHalfCircle)
-                        || (geometry.getUserData() != LARGE_EARTH_OBJECT
+                && (geometry.getUserData() == LARGE_EARTH_OBJECT && width < targetHalfCircle
+                        || geometry.getUserData() != LARGE_EARTH_OBJECT
                                 && width > targetHalfCircle
-                                && width < targetHalfCircle * 2)
-                        || (geometry.getUserData() != null
-                                && geometry.getUserData().equals(PREFLIPPED_OBJECT)))) {
+                                && width < targetHalfCircle * 2
+                        || geometry.getUserData() != null
+                                && geometry.getUserData().equals(PREFLIPPED_OBJECT))) {
             final Geometry wrapped = geometry.copy();
             wrapped.apply(new WrappingCoordinateFilter(
                     targetHalfCircle,

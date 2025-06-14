@@ -81,8 +81,8 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
     public int hashCode() {
         int result = 23;
 
-        result = (37 * result) + getExpression1().hashCode();
-        result = (37 * result) + getExpression2().hashCode();
+        result = 37 * result + getExpression1().hashCode();
+        result = 37 * result + getExpression2().hashCode();
 
         return result;
     }

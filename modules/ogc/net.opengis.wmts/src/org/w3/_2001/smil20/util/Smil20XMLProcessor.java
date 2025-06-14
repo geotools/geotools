@@ -27,7 +27,7 @@ public class Smil20XMLProcessor extends XMLProcessor {
      * @generated
      */
     public Smil20XMLProcessor() {
-        super((EPackage.Registry.INSTANCE));
+        super(EPackage.Registry.INSTANCE);
         Smil20Package.eINSTANCE.eClass();
     }
     

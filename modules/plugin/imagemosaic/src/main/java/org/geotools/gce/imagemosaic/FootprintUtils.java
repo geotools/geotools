@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -90,7 +91,8 @@ class FootprintUtils {
         }
         Utilities.ensureNonNull("footprintsID_GeometryMap", footprintsIDGeometryMap);
 
-        try (BufferedReader bReader = new BufferedReader(new FileReader(footprintSummaryFile))) {
+        try (BufferedReader bReader =
+                new BufferedReader(new FileReader(footprintSummaryFile, StandardCharsets.UTF_8))) {
             String footprint;
 
             final WKTReader geometryReader = new WKTReader();
@@ -216,7 +218,7 @@ class FootprintUtils {
 
         if (footprintsLocationGeometryMap.isEmpty()) return;
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(footprintSummaryFile))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(footprintSummaryFile, StandardCharsets.UTF_8))) {
             final String[] typeNames = store.getTypeNames();
             if (typeNames.length <= 0) {
                 throw new IllegalArgumentException(

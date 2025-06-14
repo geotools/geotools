@@ -117,7 +117,7 @@ public class CurvedGeometries {
 
     /** Builds a circular arc out of the specified coordinate sequence */
     public static CircularArc getArc(CoordinateSequence cs, int startCoordinate) {
-        if (cs.size() < (startCoordinate + 3)) {
+        if (cs.size() < startCoordinate + 3) {
             throw new IllegalArgumentException("The coordinate sequence has "
                     + cs.size()
                     + " points, cannot extract a circular arc starting from coordinate "

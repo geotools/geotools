@@ -46,7 +46,7 @@ public class AbstractGetMapRequestTest {
         Assert.assertNotEquals(-1, processedURL.indexOf("SERVICE=WMS"));
     }
 
-    private class RequestTestHelp extends AbstractGetMapRequest {
+    private static class RequestTestHelp extends AbstractGetMapRequest {
 
         /** */
         public RequestTestHelp(URL onlineResource, Properties properties) {

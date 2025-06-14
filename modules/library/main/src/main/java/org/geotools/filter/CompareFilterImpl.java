@@ -99,7 +99,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
                         leftObj = leftConverted;
                         rightObj = rightConverted;
                     }
-                } else if (leftObj instanceof Number && (rightObj.getClass() == String.class)) {
+                } else if (leftObj instanceof Number && rightObj.getClass() == String.class) {
                     try {
                         rightObj = Double.valueOf(Double.parseDouble((String) rightObj));
                         leftObj = Double.valueOf(((Number) leftObj).doubleValue());
@@ -107,7 +107,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
                     }
-                } else if ((leftObj.getClass() == String.class) && rightObj instanceof Number) {
+                } else if (leftObj.getClass() == String.class && rightObj instanceof Number) {
                     try {
                         leftObj = Double.valueOf(Double.parseDouble((String) leftObj));
                         rightObj = Double.valueOf(((Number) rightObj).doubleValue());
@@ -134,7 +134,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
             // both numbers, make double
             double left = ((Number) leftObj).doubleValue();
             double right = ((Number) rightObj).doubleValue();
-            return left > right ? 1 : (left == right ? 0 : -1);
+            return left > right ? 1 : left == right ? 0 : -1;
         }
     }
 
@@ -191,8 +191,8 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
             //
             final Expression cfe1 = cFilter.getExpression1();
             final Expression cfe2 = cFilter.getExpression2();
-            return (expression1 == cfe1 || (expression1 != null && expression1.equals(cfe1)))
-                    && (expression2 == cfe2 || (expression2 != null && expression2.equals(cfe2)));
+            return (expression1 == cfe1 || expression1 != null && expression1.equals(cfe1))
+                    && (expression2 == cfe2 || expression2 != null && expression2.equals(cfe2));
         } else {
             return false;
         }
@@ -206,9 +206,9 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     @Override
     public int hashCode() {
         int result = 17;
-        result = (37 * result) + this.getClass().hashCode();
-        result = (37 * result) + ((expression1 == null) ? 0 : expression1.hashCode());
-        result = (37 * result) + ((expression2 == null) ? 0 : expression2.hashCode());
+        result = 37 * result + this.getClass().hashCode();
+        result = 37 * result + (expression1 == null ? 0 : expression1.hashCode());
+        result = 37 * result + (expression2 == null ? 0 : expression2.hashCode());
 
         return result;
     }

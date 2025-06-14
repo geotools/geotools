@@ -96,7 +96,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                         fac.not(fac.greater(property, literal3, true, MatchAction.ONE))))),
                 fac.and(new ArrayList<>(Arrays.asList(
                         fac.not(fac.greater(property, literal1, true, MatchAction.ONE)),
-                        fac.not((fac.greater(property, literal2, true, MatchAction.ONE))),
+                        fac.not(fac.greater(property, literal2, true, MatchAction.ONE)),
                         fac.greater(property, literal3, true, MatchAction.ONE)))))));
 
         demultiplied = (Filter) filter.accept(visitor, null);
@@ -161,7 +161,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                         fac.not(fac.beyond(property, literal3, 5, "x", MatchAction.ONE))))),
                 fac.and(new ArrayList<>(Arrays.asList(
                         fac.not(fac.beyond(property, literal1, 5, "x", MatchAction.ONE)),
-                        fac.not((fac.beyond(property, literal2, 5, "x", MatchAction.ONE))),
+                        fac.not(fac.beyond(property, literal2, 5, "x", MatchAction.ONE)),
                         fac.beyond(property, literal3, 5, "x", MatchAction.ONE)))))));
 
         demultiplied = (Filter) filter.accept(visitor, null);
@@ -224,7 +224,7 @@ public class LiteralDemultiplyingFilterVisitorTest {
                         fac.not(fac.after(property, literal3, MatchAction.ONE))))),
                 fac.and(new ArrayList<>(Arrays.asList(
                         fac.not(fac.after(property, literal1, MatchAction.ONE)),
-                        fac.not((fac.after(property, literal2, MatchAction.ONE))),
+                        fac.not(fac.after(property, literal2, MatchAction.ONE)),
                         fac.after(property, literal3, MatchAction.ONE)))))));
 
         demultiplied = (Filter) filter.accept(visitor, null);

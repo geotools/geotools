@@ -109,7 +109,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * @return Minimum value
      */
     public Comparable getMin() {
-        /** Return the minimum value derived from the collection */
+        /* Return the minimum value derived from the collection */
         if (!visited) {
             throw new IllegalStateException("Must visit before min value is ready!");
         }
@@ -118,7 +118,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public void reset() {
-        /** Reset the count and current minimum */
+        /* Reset the count and current minimum */
         this.visited = false;
         this.minvalue = null;
     }

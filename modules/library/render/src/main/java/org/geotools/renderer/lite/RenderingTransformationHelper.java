@@ -310,8 +310,8 @@ public abstract class RenderingTransformationHelper {
                 Rectangle rect = new Rectangle(
                         minx - TRANSFORM_READ_BUFFER_PIXELS,
                         miny - TRANSFORM_READ_BUFFER_PIXELS,
-                        (maxx - minx) + TRANSFORM_READ_BUFFER_PIXELS * 2,
-                        (maxy - miny) + TRANSFORM_READ_BUFFER_PIXELS * 2);
+                        maxx - minx + TRANSFORM_READ_BUFFER_PIXELS * 2,
+                        maxy - miny + TRANSFORM_READ_BUFFER_PIXELS * 2);
                 GridEnvelope2D gridEnvelope = new GridEnvelope2D(rect);
                 readGG = new GridGeometry2D(
                         gridEnvelope,

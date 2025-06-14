@@ -245,7 +245,7 @@ public class SpatialRequestHelper {
         // Create the crop bbox in the coverage CRS for cropping it later on.
         //
         computeCropBBOX();
-        if (empty || (cropBBox != null && cropBBox.isEmpty())) {
+        if (empty || cropBBox != null && cropBBox.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "RequestedBBox empty or null");
             }
@@ -258,7 +258,7 @@ public class SpatialRequestHelper {
         // CROP SOURCE REGION using the refined requested envelope
         //
         computeCropRasterArea();
-        if (empty || (destinationRasterArea != null && destinationRasterArea.isEmpty())) {
+        if (empty || destinationRasterArea != null && destinationRasterArea.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "CropRasterArea empty or null");
             }

@@ -98,7 +98,7 @@ public class STACMosaicIntegrationTest extends AbstractSTACStoreTest {
 
         ParameterValue<Color> intx = ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
         intx.setValue(Color.BLACK);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         File expected = new File("src/test/resources/org/geotools/stac/wsf.png");
         ImageAssert.assertEquals(expected, coverage.getRenderedImage(), 0);
     }

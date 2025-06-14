@@ -469,7 +469,7 @@ public class GeoJSONWriteTest {
             }
         }
 
-        try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+        try (BufferedReader r = new BufferedReader(new FileReader(out, StandardCharsets.UTF_8))) {
             assertTrue("missing bbox", r.readLine().endsWith("\"bbox\":[-124.731422,24.955967,-66.969849,49.371735]}"));
         }
     }
@@ -508,7 +508,7 @@ public class GeoJSONWriteTest {
             }
         }
 
-        try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+        try (BufferedReader r = new BufferedReader(new FileReader(out, StandardCharsets.UTF_8))) {
 
             assertTrue(
                     "missing bbox",

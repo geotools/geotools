@@ -302,7 +302,7 @@ public class InterpolateFunction implements Function {
         context = sanitizeContext(context);
         validateArguments(context);
 
-        /**
+        /*
          * Lookup value should be either the name of a feature property which can be evaluated to a Double or the string
          * "RasterData" (case-insensitive) indicating use of this function in a raster colormap.
          */
@@ -323,7 +323,7 @@ public class InterpolateFunction implements Function {
         }
         if (lookupValue == null) return null;
 
-        /** Degenerate case: a single interpolation point. Evaluate it directly. */
+        /* Degenerate case: a single interpolation point. Evaluate it directly. */
         if (interpPoints.size() == 1) {
             return parameters.get(2).evaluate(object, context);
         }
@@ -337,7 +337,7 @@ public class InterpolateFunction implements Function {
             return interpPoints.get(interpPoints.size() - 1).getValue(object, context);
         }
 
-        /**
+        /*
          * The lookup value is within or above the range of the interpolation points - perform the requested type of
          * interpolation
          */
@@ -382,6 +382,7 @@ public class InterpolateFunction implements Function {
         }
     }
 
+    @SuppressWarnings("LongDoubleConversion")
     private <T> T linearInterpolate(
             final Double lookupValue, final Object object, final int segment, Class<T> context) {
         if (segment < 1 || segment >= interpPoints.size()) {
@@ -409,6 +410,7 @@ public class InterpolateFunction implements Function {
         }
     }
 
+    @SuppressWarnings("LongDoubleConversion")
     private <T> T cosineInterpolate(
             final Double lookupValue, final Object object, final int segment, Class<T> context) {
         if (segment < 1 || segment >= interpPoints.size()) {
@@ -437,6 +439,7 @@ public class InterpolateFunction implements Function {
         }
     }
 
+    @SuppressWarnings("LongDoubleConversion")
     private <T> T cubicInterpolate(final Double lookupValue, final Object object, int segment, Class<T> context) {
         if (segment < 1 || segment >= interpPoints.size()) {
             throw new IllegalArgumentException("segment index outside valid range");

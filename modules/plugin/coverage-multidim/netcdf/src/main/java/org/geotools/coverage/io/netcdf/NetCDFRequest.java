@@ -102,7 +102,7 @@ class NetCDFRequest extends CoverageReadRequest {
     /** Initialize coverage input properties by collecting them from a {@link CoverageSourceWrapper} */
     private void initInputCoverageProperties() throws IOException {
         VariableAdapter.UnidataSpatialDomain spatialDomain =
-                (org.geotools.imageio.netcdf.VariableAdapter.UnidataSpatialDomain) (source.getSpatialDomain());
+                (org.geotools.imageio.netcdf.VariableAdapter.UnidataSpatialDomain) source.getSpatialDomain();
 
         // Getting spatial context
         final Set<? extends RasterLayout> rasterElements = spatialDomain.getRasterElements(false, null);

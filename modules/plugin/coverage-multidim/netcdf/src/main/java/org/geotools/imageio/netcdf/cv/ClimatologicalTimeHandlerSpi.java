@@ -60,7 +60,7 @@ public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
         return new ClimatologicalTimeHandler();
     }
 
-    public class ClimatologicalTimeHandler implements CoordinateHandler {
+    public static class ClimatologicalTimeHandler implements CoordinateHandler {
 
         @Override
         public CoordinateVariable<Date> createCoordinateVariable(CoordinateAxis axis) {

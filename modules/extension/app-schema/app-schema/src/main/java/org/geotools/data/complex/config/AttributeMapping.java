@@ -394,18 +394,16 @@ public class AttributeMapping implements Serializable {
         return "AttributeMappingDTO[id > "
                 + identifierExpression
                 + ", "
-                + ((sourceExpression == null)
-                        ? ((inputAttributePath == null ? "" : inputAttributePath))
-                        : sourceExpression)
+                + (sourceExpression == null ? inputAttributePath == null ? "" : inputAttributePath : sourceExpression)
                 + " -> "
                 + targetAttributePath
                 + ", isMultiple: "
                 + isMultiple
                 + ", encodeIfEmpty: "
                 + encodeIfEmpty
-                + ((targetAttributeSchemaElement == null) ? "" : (", target node: " + targetAttributeSchemaElement))
-                + ((linkElement == null) ? "" : (", linkElement: " + linkElement))
-                + ((linkField == null) ? "" : (", linkField: " + linkField))
+                + (targetAttributeSchemaElement == null ? "" : ", target node: " + targetAttributeSchemaElement)
+                + (linkElement == null ? "" : ", linkElement: " + linkElement)
+                + (linkField == null ? "" : ", linkField: " + linkField)
                 + "]";
     }
 

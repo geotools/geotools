@@ -104,10 +104,10 @@ public class WMTSCapabilitiesTest {
             Assert.assertNotNull(bbox);
         } catch (Exception e) {
             Logger.getGlobal().log(Level.INFO, "", e);
-            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+            if (e.getMessage() != null && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
-                throw (e);
+                throw e;
             }
         }
     }
@@ -186,10 +186,10 @@ public class WMTSCapabilitiesTest {
 
         } catch (Exception e) {
             Logger.getGlobal().log(Level.INFO, "", e);
-            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+            if (e.getMessage() != null && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
-                throw (e);
+                throw e;
             }
         }
     }
@@ -236,10 +236,10 @@ public class WMTSCapabilitiesTest {
 
         } catch (Exception e) {
             Logger.getGlobal().log(Level.INFO, "", e);
-            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+            if (e.getMessage() != null && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
-                throw (e);
+                throw e;
             }
         }
     }
@@ -263,10 +263,10 @@ public class WMTSCapabilitiesTest {
 
         } catch (Exception e) {
             // a standard catch block shared with the other tests
-            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+            if (e.getMessage() != null && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
-                throw (e);
+                throw e;
             }
         }
     }
@@ -298,10 +298,10 @@ public class WMTSCapabilitiesTest {
 
         } catch (Exception e) {
             // a standard catch block shared with the other tests
-            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+            if (e.getMessage() != null && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
-                throw (e);
+                throw e;
             }
         }
     }

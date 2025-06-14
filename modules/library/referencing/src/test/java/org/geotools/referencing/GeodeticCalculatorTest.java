@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.measure.MetricPrefix;
 import org.geotools.api.geometry.Position;
@@ -174,8 +175,8 @@ public final class GeodeticCalculatorTest {
              */
             assertTrue(
                     x == 0
-                            ? (distance == 0)
-                            : (x < 179.5 ? (Math.abs(distance - last - 13.914936) < 2E-6) : (distance - last < 13)));
+                            ? distance == 0
+                            : x < 179.5 ? Math.abs(distance - last - 13.914936) < 2E-6 : distance - last < 13);
             last = distance;
         }
     }
@@ -287,7 +288,7 @@ public final class GeodeticCalculatorTest {
         // taken from Wikipedia Talk page.
         // https://en.wikipedia.org/wiki/Talk:Geodesics_on_an_ellipsoid#Computations
         try (InputStream in = TestData.openStream(this, "vincenty.csv");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             CsvReader creader = new CsvReader(reader);
             creader.setComment('#');
             creader.setUseComments(true);

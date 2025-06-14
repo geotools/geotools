@@ -202,14 +202,14 @@ public class StyleGenerator {
             defaultStroke = sb.createStroke(color, 1, opacity);
         }
 
-        if ((geometryAttrType.getType().getBinding() == MultiPolygon.class)
-                || (geometryAttrType.getType().getBinding() == Polygon.class)) {
+        if (geometryAttrType.getType().getBinding() == MultiPolygon.class
+                || geometryAttrType.getType().getBinding() == Polygon.class) {
             Fill fill = sb.createFill(color, opacity);
             symb = sb.createPolygonSymbolizer(defaultStroke, fill);
         } else if (geometryAttrType.getType().getBinding() == LineString.class) {
             symb = sb.createLineSymbolizer(color);
-        } else if ((geometryAttrType.getType().getBinding() == MultiPoint.class)
-                || (geometryAttrType.getType().getBinding() == Point.class)) {
+        } else if (geometryAttrType.getType().getBinding() == MultiPoint.class
+                || geometryAttrType.getType().getBinding() == Point.class) {
             Fill fill = sb.createFill(color, opacity);
             Mark square = sb.createMark(StyleBuilder.MARK_SQUARE, fill, defaultStroke);
             Graphic graphic = sb.createGraphic(null, square, null); // , 1, 4, 0);
@@ -230,7 +230,7 @@ public class StyleGenerator {
      * @return Integer(value) if applicable
      */
     private static Object chopInteger(Object value) {
-        if ((value instanceof Number) && (value.toString().endsWith(".0"))) {
+        if (value instanceof Number && value.toString().endsWith(".0")) {
             return Integer.valueOf(((Number) value).intValue());
         } else {
             return value;
@@ -286,18 +286,18 @@ public class StyleGenerator {
             }
             if (localMax != null) {
                 // if this is the global maximum, include the max value
-                if (i == (classifier.getSize() - 1)) {
+                if (i == classifier.getSize() - 1) {
                     hiBoundFilter = ff.lessOrEqual(expression, ff.literal(localMax));
                 } else {
                     hiBoundFilter = ff.less(expression, ff.literal(localMax));
                 }
             }
 
-            if ((localMin != null) && (localMax != null)) {
+            if (localMin != null && localMax != null) {
                 filter = ff.and(lowBoundFilter, hiBoundFilter);
-            } else if ((localMin == null) && (localMax != null)) {
+            } else if (localMin == null && localMax != null) {
                 filter = hiBoundFilter;
-            } else if ((localMin != null) && (localMax == null)) {
+            } else if (localMin != null && localMax == null) {
                 filter = lowBoundFilter;
             }
         }
@@ -347,7 +347,7 @@ public class StyleGenerator {
                 title += items[item].toString();
             }
 
-            if ((item + 1) != items.length) {
+            if (item + 1 != items.length) {
                 title += ", ";
             }
 
@@ -398,7 +398,7 @@ public class StyleGenerator {
             BinaryComparisonOperator filter2 = (BinaryComparisonOperator) children.get(1);
 
             // filter1 should be 1 <= x and filter2 should be x <(=) 5
-            if (!(filter1.getExpression2().equals(filter2.getExpression1()))) {
+            if (!filter1.getExpression2().equals(filter2.getExpression1())) {
                 throw new IllegalArgumentException("Subfilters or subExpressions in incorrect order");
             }
 
@@ -720,9 +720,9 @@ public class StyleGenerator {
             Expression leftExpression = compareFilter.getExpression1();
             Expression rightExpression = compareFilter.getExpression2();
 
-            if ((leftExpression instanceof PropertyName) && (rightExpression instanceof Literal)) {
+            if (leftExpression instanceof PropertyName && rightExpression instanceof Literal) {
                 styleExpression = rightExpression.toString();
-            } else if ((leftExpression instanceof Literal) && (rightExpression instanceof PropertyName)) {
+            } else if (leftExpression instanceof Literal && rightExpression instanceof PropertyName) {
                 styleExpression = leftExpression.toString();
             } else {
                 throw new IllegalArgumentException(

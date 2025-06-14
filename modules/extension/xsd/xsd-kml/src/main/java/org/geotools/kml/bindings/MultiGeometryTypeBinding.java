@@ -112,7 +112,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
                 return geometryFactory.createMultiPoint(geometries.toArray(new Point[geometries.size()]));
             }
 
-            if ((geometryClass == LineString.class) || (geometryClass == LinearRing.class)) {
+            if (geometryClass == LineString.class || geometryClass == LinearRing.class) {
                 // create a multi line string
                 return geometryFactory.createMultiLineString(geometries.toArray(new LineString[geometries.size()]));
             }

@@ -369,6 +369,8 @@ public abstract class ComplexTestData {
     }
 
     /** Asserts the corresponding properties of <code>type</code> for equality with the provided parameter values */
+    @SuppressWarnings("JUnitIncompatibleType") // The types of this assertion are mismatched: type `List<Filter>` is not
+    // compatible with `Set<Filter>`. REVISIT: looks like dead-code or
     public static void checkType(
             AttributeType type,
             Name name,

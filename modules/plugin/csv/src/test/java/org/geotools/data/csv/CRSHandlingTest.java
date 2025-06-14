@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
@@ -121,7 +122,7 @@ public class CRSHandlingTest {
 
         CoordinateReferenceSystem expected = schema.getCoordinateReferenceSystem();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(prj))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(prj, StandardCharsets.UTF_8))) {
             String line = "";
             StringBuffer buffer = new StringBuffer();
             while ((line = reader.readLine()) != null) {

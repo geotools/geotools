@@ -64,10 +64,10 @@ public class IndexHeader {
 
             boolean lsb;
 
-            if ((tmp[4] == 0) && (tmp[5] == 0) && (tmp[6] == 0) && (tmp[7] == 0)) {
-                lsb = !((tmp[0] == 0) && (tmp[1] == 0));
+            if (tmp[4] == 0 && tmp[5] == 0 && tmp[6] == 0 && tmp[7] == 0) {
+                lsb = !(tmp[0] == 0 && tmp[1] == 0);
             } else {
-                lsb = !((tmp[4] == 0) && (tmp[5] == 0));
+                lsb = !(tmp[4] == 0 && tmp[5] == 0);
             }
 
             this.byteOrder = lsb ? LSB_ORDER : MSB_ORDER;

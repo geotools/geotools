@@ -260,7 +260,7 @@ class FilterToSqlHelper {
     void visitDistanceSpatialOperator(
             DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
-        if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
+        if (filter instanceof DWithin && !swapped || filter instanceof Beyond && swapped) {
             out.write("ST_DWithin(");
             property.accept(delegate, extraData);
             out.write(",");
@@ -269,7 +269,7 @@ class FilterToSqlHelper {
             out.write(toNativeUnits(filter));
             out.write(")");
         }
-        if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
+        if (filter instanceof DWithin && swapped || filter instanceof Beyond && !swapped) {
             out.write("ST_Distance(");
             property.accept(delegate, extraData);
             out.write(",");
@@ -428,9 +428,9 @@ class FilterToSqlHelper {
         if (ex instanceof Literal) {
             Object value = ex.evaluate(null, Geometry.class);
             return value instanceof CurvedGeometry
-                    || (value != null
+                    || value != null
                             && (Geometry.class.equals(value.getClass())
-                                    || GeometryCollection.class.equals(value.getClass())));
+                                    || GeometryCollection.class.equals(value.getClass()));
         } else if (ex instanceof PropertyName) {
             AttributeDescriptor ad = ex.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
             return Optional.ofNullable(ad)
@@ -873,7 +873,7 @@ class FilterToSqlHelper {
     }
 
     boolean isNull(Expression exp) {
-        return (exp instanceof Literal && (exp.evaluate(null) == null)) || exp instanceof NilExpression;
+        return exp instanceof Literal && exp.evaluate(null) == null || exp instanceof NilExpression;
     }
 
     boolean isArray(Class clazz) {
@@ -903,8 +903,9 @@ class FilterToSqlHelper {
         try {
             // match any against non array literals? we need custom logic
             MultiValuedFilter.MatchAction matchAction = filter.getMatchAction();
-            if ((matchAction == MultiValuedFilter.MatchAction.ANY || matchAction == MultiValuedFilter.MatchAction.ONE)
-                    && (!isArray(left) && !isArray(right))) {
+            if ((matchAction == MatchAction.ANY || matchAction == MatchAction.ONE)
+                    && !isArray(left)
+                    && !isArray(right)) {
                 // the only indexable search in this block
                 if ("=".equalsIgnoreCase(type) && !isNull(left) && !isNull(right)) {
                     // if using a prepared statement dialect we need the native type info
@@ -942,8 +943,9 @@ class FilterToSqlHelper {
                     }
                     out.write(") WHERE ");
                     // oh fun, if there are nulls we cannot write the same sql
-                    if ((isPropertyLeft && isNull(right))
-                            || (isPropertyRight && isNull(left))
+                    if (isPropertyLeft && isNull(right)
+                            || isPropertyRight
+                                    && isNull(left)
                                     && ("=".equalsIgnoreCase(type) || "!=".equalsIgnoreCase(type))) {
                         if ("=".equalsIgnoreCase(type)) {
                             out.write("unnest is NULL");

@@ -92,7 +92,7 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
         @Override
         public boolean hasNext() {
             // is there a current iterator that has another element
-            if ((iterator != null) && iterator.hasNext()) {
+            if (iterator != null && iterator.hasNext()) {
                 return true;
             }
 

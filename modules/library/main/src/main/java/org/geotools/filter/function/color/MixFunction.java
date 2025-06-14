@@ -54,7 +54,7 @@ public class MixFunction extends FunctionImpl {
         // adjust weight based on alpha
         double da = color1.getAlpha() - color2.getAlpha();
         double w = weight * 2 - 1;
-        double w1 = (((w * da == -1) ? w : (w + da) / (1 + w * da)) + 1) / 2.0;
+        double w1 = ((w * da == -1 ? w : (w + da) / (1 + w * da)) + 1) / 2.0;
         double w2 = 1 - w1;
 
         // mix colors

@@ -816,7 +816,8 @@ public class SLDParserTest {
     public void testContrastEnhancement() throws Exception {
 
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        org.w3c.dom.Document node = builder.parse(new ByteArrayInputStream(contrastEnhance.getBytes()));
+        org.w3c.dom.Document node =
+                builder.parse(new ByteArrayInputStream(contrastEnhance.getBytes(StandardCharsets.UTF_8)));
         // First check the happy path for normalize
         SLDParser parser = new SLDParser(styleFactory);
         ContrastEnhancement ce = parser.parseContrastEnhancement(node.getDocumentElement());
@@ -837,7 +838,7 @@ public class SLDParserTest {
         // check the other methods still work
         for (String methodName : new String[] {"Normalize", "Logarithmic", "Exponential", "Histogram"}) {
             String target = contrastEnhanceOther.replace("METHOD", methodName);
-            node = builder.parse(new ByteArrayInputStream(target.getBytes()));
+            node = builder.parse(new ByteArrayInputStream(target.getBytes(StandardCharsets.UTF_8)));
             ce = parser.parseContrastEnhancement(node.getDocumentElement());
             method = ce.getMethod();
             assertNotNull(method);
@@ -850,7 +851,7 @@ public class SLDParserTest {
         for (String methodName : new String[] {"Logarithmic", "Exponential"}) {
             String target = contrastEnhancelogExp.replace("METHOD", methodName);
             // System.out.println(target);
-            node = builder.parse(new ByteArrayInputStream(target.getBytes()));
+            node = builder.parse(new ByteArrayInputStream(target.getBytes(StandardCharsets.UTF_8)));
             ce = parser.parseContrastEnhancement(node.getDocumentElement());
             method = ce.getMethod();
             assertNotNull(method);
@@ -870,7 +871,7 @@ public class SLDParserTest {
                     params.get("correctionFactor").evaluate(null));
         }
         // now see what happens if we break things
-        node = builder.parse(new ByteArrayInputStream(contrastEnhanceBroken.getBytes()));
+        node = builder.parse(new ByteArrayInputStream(contrastEnhanceBroken.getBytes(StandardCharsets.UTF_8)));
         ce = parser.parseContrastEnhancement(node.getDocumentElement());
         method = ce.getMethod();
         assertNotNull(method);
@@ -939,6 +940,6 @@ public class SLDParserTest {
     }
 
     InputStream input(String sld) {
-        return new ByteArrayInputStream(sld.getBytes());
+        return new ByteArrayInputStream(sld.getBytes(StandardCharsets.UTF_8));
     }
 }

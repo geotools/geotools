@@ -247,7 +247,7 @@ public enum TestUtils {
                         value = seq.get(i);
                     }
                 }
-                return (m.matches(value));
+                return m.matches(value);
             }
 
             @Override
@@ -281,7 +281,7 @@ public enum TestUtils {
                         value = map.get(key);
                     }
                 }
-                return (m.matches(value));
+                return m.matches(value);
             }
 
             @Override

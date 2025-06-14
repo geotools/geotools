@@ -60,10 +60,10 @@ public class CycleDetectorTest {
     }
 
     protected GraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 }

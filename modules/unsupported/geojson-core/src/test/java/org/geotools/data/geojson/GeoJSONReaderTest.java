@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -136,7 +137,8 @@ public class GeoJSONReaderTest {
                 + "]\n"
                 + "}";
 
-        try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(input.getBytes()))) {
+        try (GeoJSONReader reader =
+                new GeoJSONReader(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)))) {
             SimpleFeatureCollection features = reader.getFeatures();
             assertNotNull(features);
             assertEquals(
@@ -306,7 +308,8 @@ public class GeoJSONReaderTest {
         geojson1 = geojson1.replace('\'', '"');
 
         SimpleFeature f = null;
-        try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(geojson1.getBytes()))) {
+        try (GeoJSONReader reader =
+                new GeoJSONReader(new ByteArrayInputStream(geojson1.getBytes(StandardCharsets.UTF_8)))) {
             FeatureCollection<SimpleFeatureType, SimpleFeature> features = reader.getFeatures();
             assertNotNull(features);
             assertFalse(features.isEmpty());

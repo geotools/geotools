@@ -202,15 +202,15 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
         int result = 0;
 
         if (fill != null) {
-            result = (PRIME * result) + fill.hashCode();
+            result = PRIME * result + fill.hashCode();
         }
 
         if (stroke != null) {
-            result = (PRIME * result) + stroke.hashCode();
+            result = PRIME * result + stroke.hashCode();
         }
 
         if (wellKnownName != null) {
-            result = (PRIME * result) + wellKnownName.hashCode();
+            result = PRIME * result + wellKnownName.hashCode();
         }
 
         return result;

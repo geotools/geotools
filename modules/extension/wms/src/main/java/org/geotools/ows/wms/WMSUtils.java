@@ -54,7 +54,7 @@ public class WMSUtils {
                 .toArray(new Layer[capabilities.getLayerList().size()]);
 
         for (Layer layer : layers) {
-            if ((layer.getName() != null) && (layer.getName().length() != 0)) {
+            if (layer.getName() != null && layer.getName().length() != 0) {
                 namedLayersList.add(layer);
             }
         }

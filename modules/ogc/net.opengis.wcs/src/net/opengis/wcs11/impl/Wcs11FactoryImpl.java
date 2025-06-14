@@ -593,6 +593,7 @@ public class Wcs11FactoryImpl extends EFactoryImpl implements Wcs11Factory {
 	 * @deprecated
 	 * @generated
 	 */
+@Deprecated
 	public static Wcs11Package getPackage() {
 		return Wcs11Package.eINSTANCE;
 	}

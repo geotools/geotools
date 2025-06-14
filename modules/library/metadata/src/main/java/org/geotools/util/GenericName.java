@@ -62,7 +62,7 @@ public abstract class GenericName implements org.geotools.api.util.GenericName, 
      * constructors.
      */
     static CharSequence validate(final CharSequence name) {
-        return (name == null || name instanceof InternationalString) ? name : name.toString();
+        return name == null || name instanceof InternationalString ? name : name.toString();
     }
 
     /**

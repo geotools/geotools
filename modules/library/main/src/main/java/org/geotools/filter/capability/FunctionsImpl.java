@@ -107,7 +107,7 @@ public class FunctionsImpl implements Functions {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((functionNames == null) ? 0 : functionNames.hashCode());
+        result = prime * result + (functionNames == null ? 0 : functionNames.hashCode());
         return result;
     }
 

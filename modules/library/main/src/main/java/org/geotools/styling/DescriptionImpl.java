@@ -89,8 +89,8 @@ public class DescriptionImpl implements org.geotools.api.style.Description {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (title == null ? 0 : title.hashCode());
         return result;
     }
 

@@ -31,6 +31,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
 import javax.imageio.stream.ImageOutputStream;
@@ -93,7 +94,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         if (this.destination instanceof String) {
             this.destination = new File((String) destination);
         } else if (this.destination instanceof URL) {
-            final URL url = ((URL) destination);
+            final URL url = (URL) destination;
             if (url.getProtocol().equalsIgnoreCase("file")) {
                 String auth = url.getAuthority();
                 String path = url.getPath();
@@ -140,13 +141,13 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
      *     org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
-    public void write(GridCoverage coverage, GeneralParameterValue[] parameters)
+    public void write(GridCoverage coverage, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
         final GridCoverage2D gc = (GridCoverage2D) coverage;
-        // checking parameters
-        // if provided we have to use them
+        // checking parameters, if provided we have to use them
         // specifically this is one of the way we can provide an output format
-        if (parameters != null) {
+        // beware a call with no values mean an empty array.
+        if (parameters != null && parameters.length > 0) {
             this.extension = ((Parameter) parameters[0]).stringValue();
         }
 
@@ -197,7 +198,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
     private static void createProjectionFile(
             final String baseFile, final CoordinateReferenceSystem coordinateReferenceSystem) throws IOException {
         final File prjFile = new File(new StringBuffer(baseFile).append(".prj").toString());
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(prjFile))) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(prjFile, StandardCharsets.UTF_8))) {
             out.write(coordinateReferenceSystem.toWKT());
         }
     }
@@ -222,7 +223,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         // ////////////////////////////////////////////////////////////////////
         final AffineTransform gridToWorld =
                 (AffineTransform) gc.getGridGeometry().getGridToCRS();
-        final boolean lonFirst = (XAffineTransform.getSwapXY(gridToWorld) != -1);
+        final boolean lonFirst = XAffineTransform.getSwapXY(gridToWorld) != -1;
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -233,10 +234,10 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         // inside the grid to world transform.
         //
         // ////////////////////////////////////////////////////////////////////
-        final double xPixelSize = (lonFirst) ? gridToWorld.getScaleX() : gridToWorld.getShearY();
-        final double rotation1 = (lonFirst) ? gridToWorld.getShearX() : gridToWorld.getScaleX();
-        final double rotation2 = (lonFirst) ? gridToWorld.getShearY() : gridToWorld.getScaleY();
-        final double yPixelSize = (lonFirst) ? gridToWorld.getScaleY() : gridToWorld.getShearX();
+        final double xPixelSize = lonFirst ? gridToWorld.getScaleX() : gridToWorld.getShearY();
+        final double rotation1 = lonFirst ? gridToWorld.getShearX() : gridToWorld.getScaleX();
+        final double rotation2 = lonFirst ? gridToWorld.getShearY() : gridToWorld.getScaleY();
+        final double yPixelSize = lonFirst ? gridToWorld.getScaleY() : gridToWorld.getShearX();
         final double xLoc = gridToWorld.getTranslateX();
         final double yLoc = gridToWorld.getTranslateY();
 
@@ -252,7 +253,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         if (!it.hasNext()) throw new DataSourceException("Unable to parse extension " + extension);
         buff.append((String) it.next());
         final File worldFile = new File(buff.toString());
-        try (PrintWriter out = new PrintWriter(new FileOutputStream(worldFile))) {
+        try (PrintWriter out = new PrintWriter(new FileOutputStream(worldFile), false, StandardCharsets.UTF_8)) {
             out.println(xPixelSize);
             out.println(rotation1);
             out.println(rotation2);
@@ -278,7 +279,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
             throw new IllegalArgumentException("A coverage must be provided in order for write to succeed!");
         }
 
-        RenderedImage image = (sourceCoverage).getRenderedImage();
+        RenderedImage image = sourceCoverage.getRenderedImage();
         final ImageWorker worker = new ImageWorker(image);
         // Setting NoData and ROI if present
         worker.setROI(CoverageUtilities.getROIProperty(sourceCoverage));
@@ -291,7 +292,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         //
         // /////////////////////////////////////////////////////////////////////
         if (image.getColorModel() instanceof IndexColorModel
-                && (image.getSampleModel().getNumBands() > 1)) {
+                && image.getSampleModel().getNumBands() > 1) {
             worker.retainBands(1);
             image = worker.getRenderedImage();
         }
@@ -317,7 +318,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
              * The only transfert types avalaible for IndexColorModel are byte and ushort.
              */
             if (image.getColorModel() instanceof IndexColorModel
-                    && (image.getSampleModel().getTransferType() != DataBuffer.TYPE_BYTE)) {
+                    && image.getSampleModel().getTransferType() != DataBuffer.TYPE_BYTE) {
                 worker.forceComponentColorModel();
                 image = worker.getRenderedImage();
             }

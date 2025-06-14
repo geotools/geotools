@@ -83,7 +83,7 @@ public class FunctionFactoryTest {
                         }
                     });
                     @SuppressWarnings("unchecked")
-                    Iterator<T> cast = (Iterator<T>) (l.iterator());
+                    Iterator<T> cast = (Iterator<T>) l.iterator();
                     return cast;
                 }
                 return null;

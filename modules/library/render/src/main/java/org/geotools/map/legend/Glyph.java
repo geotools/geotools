@@ -268,7 +268,7 @@ public class Glyph {
 
         Color c = color;
         Color f = fill;
-        int w = (width > 0) ? width : 1;
+        int w = width > 0 ? width : 1;
 
         if (c == null) c = Color.BLACK;
         if (f == null) f = Color.LIGHT_GRAY;
@@ -428,7 +428,7 @@ public class Glyph {
             for (int i = 0; i < 16; i++) color = Color.GRAY;
         } else {
             for (int i = 0; i < 16; i++) {
-                int lookup = (i * c.length) / 16;
+                int lookup = i * c.length / 16;
                 if (c[lookup] != null) color = c[lookup];
                 colors[i] = color;
             }

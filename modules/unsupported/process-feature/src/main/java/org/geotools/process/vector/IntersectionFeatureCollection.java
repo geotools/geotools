@@ -193,7 +193,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
                 Geometry geometry = densifiedGeometry.getGeometryN(j);
                 Coordinate[] coordinates = geometry.getCoordinates();
                 int n = coordinates.length;
-                for (int i = 0; i < (n - 1); i++) {
+                for (int i = 0; i < n - 1; i++) {
                     Coordinate[] coords = new Coordinate[2];
                     coords[0] = coordinates[i];
                     coords[1] = coordinates[i + 1];
@@ -234,7 +234,8 @@ public class IntersectionFeatureCollection implements VectorProcess {
         try {
             Geometry firstTargetGeometry = reprojectAndDensify(first, firstCRS, null);
             Geometry secondTargetGeometry = reprojectAndDensify(second, firstCRS, null);
-            double numeratorArea = (firstTargetGeometry.intersection(secondTargetGeometry)).getArea();
+            double numeratorArea =
+                    firstTargetGeometry.intersection(secondTargetGeometry).getArea();
             if (divideFirst) {
                 double denom = firstTargetGeometry.getArea();
                 if (denom != 0) return numeratorArea / denom;
@@ -511,7 +512,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
         public boolean hasNext() {
             //   logger.info("qui");
             logger.finer("HAS NEXT");
-            while ((next == null && delegate.hasNext()) || (next == null && added)) {
+            while (next == null && delegate.hasNext() || next == null && added) {
                 //     logger.info("qui nel while");
                 if (complete) {
                     first = delegate.next();
@@ -531,7 +532,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
                             while (iterator.hasNext()) {
                                 added = false;
                                 SimpleFeature second = iterator.next();
-                                if (currentGeom.getEnvelope().intersects(((Geometry) second.getDefaultGeometry()))) {
+                                if (currentGeom.getEnvelope().intersects((Geometry) second.getDefaultGeometry())) {
                                     // compute geometry
                                     if (intersectionMode == IntersectionMode.INTERSECTION) {
                                         attribute = currentGeom.intersection((Geometry) second.getDefaultGeometry());

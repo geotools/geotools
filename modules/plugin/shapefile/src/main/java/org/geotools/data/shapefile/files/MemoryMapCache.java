@@ -69,7 +69,7 @@ class MemoryMapCache {
             }
         }
 
-        return (MappedByteBuffer) buffer.duplicate();
+        return MappedByteBuffer.class.cast(buffer.duplicate());
     }
 
     /**
@@ -127,9 +127,9 @@ class MemoryMapCache {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((file == null) ? 0 : file.hashCode());
-            result = prime * result + (int) (position ^ (position >>> 32));
-            result = prime * result + (int) (size ^ (size >>> 32));
+            result = prime * result + (file == null ? 0 : file.hashCode());
+            result = prime * result + (int) (position ^ position >>> 32);
+            result = prime * result + (int) (size ^ size >>> 32);
             return result;
         }
 
@@ -153,7 +153,7 @@ class MemoryMapCache {
      *
      * @author Andrea Aime
      */
-    public class BufferCleaner implements ValueCleaner<MappingKey, MappedByteBuffer> {
+    public static class BufferCleaner implements ValueCleaner<MappingKey, MappedByteBuffer> {
 
         @Override
         public void clean(MappingKey key, MappedByteBuffer buffer) {

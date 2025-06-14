@@ -142,7 +142,7 @@ public class MongoGeometryBuilder {
         }
         List<Object> l = new BasicDBList();
         for (int i = 0; i < mp.getNumGeometries(); i++) {
-            l.add(toList(((Polygon) mp.getGeometryN(i))));
+            l.add(toList((Polygon) mp.getGeometryN(i)));
         }
         return BasicDBObjectBuilder.start()
                 .add("type", "MultiPolygon")

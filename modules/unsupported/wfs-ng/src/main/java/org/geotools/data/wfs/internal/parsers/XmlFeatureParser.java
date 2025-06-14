@@ -96,9 +96,9 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
                     break;
                 }
             }
-            final String namespace = (strategy == null
+            final String namespace = strategy == null
                     ? WFS.NAMESPACE
-                    : strategy.getWfsConfiguration().getNamespaceURI());
+                    : strategy.getWfsConfiguration().getNamespaceURI();
             parser.require(START_ELEMENT, namespace, WFS.FeatureCollection.getLocalPart());
 
             String nof = parser.getAttributeValue(null, "numberOfFeatures");

@@ -38,9 +38,9 @@ public class DelaunayNode extends BasicXYNode {
 
     @Override
     public boolean equals(Object o) {
-        return ((o instanceof DelaunayNode)
-                && (this.getCoordinate().x == ((DelaunayNode) o).getCoordinate().x)
-                && (this.getCoordinate().y == ((DelaunayNode) o).getCoordinate().y));
+        return o instanceof DelaunayNode
+                && this.getCoordinate().x == ((DelaunayNode) o).getCoordinate().x
+                && this.getCoordinate().y == ((DelaunayNode) o).getCoordinate().y;
     }
 
     @Override

@@ -283,9 +283,9 @@ public abstract class ClassificationFunction extends DefaultExpression implement
         // for three classes, we would have value 25 falling in group with key 3
         if (index >= percentages.length) {
             int last = percentages.length - 1;
-            percentages[last] += (classMembers / totalSize) * 100;
+            percentages[last] += classMembers / totalSize * 100;
         } else {
-            percentages[index] = (classMembers / totalSize) * 100;
+            percentages[index] = classMembers / totalSize * 100;
         }
     }
 }

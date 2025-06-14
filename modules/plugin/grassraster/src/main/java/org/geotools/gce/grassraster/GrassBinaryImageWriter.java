@@ -83,7 +83,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
     @Override
     public void write(IIOMetadata streamMetadata, IIOImage image, ImageWriteParam param) throws IOException {
 
-        hasListeners = (this.progressListeners != null && (!(this.progressListeners.isEmpty()))) ? true : false;
+        hasListeners = this.progressListeners != null && !this.progressListeners.isEmpty() ? true : false;
 
         if (hasListeners) {
             clearAbortRequest();

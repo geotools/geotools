@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedList;
 import org.geotools.util.factory.Hints;
@@ -36,7 +37,7 @@ import org.mockito.Mockito;
 public class DefaultHTTPClientFactoryTest {
 
     private URL url;
-    private ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
+    private ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes(StandardCharsets.UTF_8));
     private HTTPResponse mockResponse = Mockito.mock(HTTPResponse.class);
     private HTTPClient mockClient = Mockito.mock(HTTPClient.class);
 

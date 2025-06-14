@@ -320,7 +320,7 @@ public abstract class LoggerAdapter extends Logger {
                 // The default Formatter.messageFormat implementation ignores this exception
                 // and uses the bundle key as the message, so we mimic its behavior here.
             }
-        final boolean useThrown = (thrown != null) && (params == null || params.length == 0);
+        final boolean useThrown = thrown != null && (params == null || params.length == 0);
         if (localized) {
             // The message is already localized.
             if (useThrown) {
@@ -395,8 +395,8 @@ public abstract class LoggerAdapter extends Logger {
 
     /**
      * Logs a record at the specified level. The defaut implementation delegates to <code>
-     * {@linkplain #log(Level,String,Object[]) log}(level, message, params)</code> where the {@code params} array is
-     * built from the {@code param} object.
+     * {@linkplain #log(Level,String,Object[]) log}(level, message, param)</code> where the {@code param} array is built
+     * from the {@code param} object.
      */
     @Override
     public void log(final Level level, final String message, final Object param) {
@@ -445,7 +445,7 @@ public abstract class LoggerAdapter extends Logger {
     /**
      * Logs a record at the specified level. The defaut implementation delegates to <code>
      * {@linkplain #logp(Level,String,String,String,Object[]) logp}(level, sourceClass,
-     * sourceMethod, message, params)</code> where the {@code params} array is built from the {@code param} object.
+     * sourceMethod, message, param)</code> where the {@code param} array is built from the {@code param} object.
      *
      * <p>Note that {@code sourceClass} and {@code sourceMethod} will be discarted unless the target
      * {@link #logp(Level,String,String,String) logp} method has been overriden.
@@ -597,7 +597,7 @@ public abstract class LoggerAdapter extends Logger {
      * delegate their work to {@code log(..., Object[])}
      */
     private static Object[] asArray(final Object param) {
-        return (param != null) ? new Object[] {param} : null;
+        return param != null ? new Object[] {param} : null;
     }
 
     /**

@@ -235,7 +235,7 @@ public class ScreenMap {
         int[] pixels;
 
         public BitFieldMatrix() {
-            int arraySize = ((width * height) / 32) + 1;
+            int arraySize = width * height / 32 + 1;
             pixels = new int[arraySize];
         }
 
@@ -243,7 +243,7 @@ public class ScreenMap {
             // if it's outside of the screenmap we cannot say whether it's busy or not, and
             // we cannot skip it because rendering or geometry transformation might put the geometry
             // right in the map
-            if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1) return false;
+            if (x - minx < 0 || x - minx > width - 1 || y - miny < 0 || y - miny > height - 1) return false;
             int bit = bit(x - minx, y - miny);
             int index = bit / 32;
             int offset = bit % 32;
@@ -265,14 +265,14 @@ public class ScreenMap {
             // if it's outside of the screenmap we cannot say whether it's busy or not, and
             // we cannot skip it because rendering or geometry transformation might put the geometry
             // right in the map
-            if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1) return false;
+            if (x - minx < 0 || x - minx > width - 1 || y - miny < 0 || y - miny > height - 1) return false;
             int bit = bit(x - minx, y - miny);
             int index = bit / 32;
             int offset = bit % 32;
             int mask = 1 << offset;
 
             try {
-                return ((pixels[index] & mask) != 0) ? true : false;
+                return (pixels[index] & mask) != 0 ? true : false;
             } catch (Exception e) {
 
                 return true;
@@ -280,7 +280,7 @@ public class ScreenMap {
         }
 
         public void set(int x, int y, boolean value) {
-            if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1) return;
+            if (x - minx < 0 || x - minx > width - 1 || y - miny < 0 || y - miny > height - 1) return;
             int bit = bit(x - minx, y - miny);
             int index = bit / 32;
             int offset = bit % 32;
@@ -292,14 +292,14 @@ public class ScreenMap {
             } else {
                 int tmp = pixels[index];
                 tmp = ~tmp;
-                tmp = (tmp | mask);
+                tmp = tmp | mask;
                 tmp = ~tmp;
                 pixels[index] = tmp;
             }
         }
 
         private int bit(int x, int y) {
-            return (width * y) + x;
+            return width * y + x;
         }
     }
 }

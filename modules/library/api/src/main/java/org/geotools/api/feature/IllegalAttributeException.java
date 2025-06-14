@@ -78,11 +78,11 @@ public class IllegalAttributeException extends IllegalArgumentException {
     }
 
     @Override
-    public String toString() {
+    public String getMessage() {
         String s = getClass().getName();
         String message = getLocalizedMessage();
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append(s);
         if (message != null) {
             buf.append(":");

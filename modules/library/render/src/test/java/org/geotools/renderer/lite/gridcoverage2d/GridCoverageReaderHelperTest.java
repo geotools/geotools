@@ -159,8 +159,8 @@ public class GridCoverageReaderHelperTest {
         at = (AffineTransform) coverages.get(0).getGridGeometry().getGridToCRS();
 
         // Accurate resolution has not been used.
-        assertTrue(Math.abs(at.getScaleX()) > (originalResolution * 3));
-        assertTrue(Math.abs(at.getScaleY()) > (originalResolution * 3));
+        assertTrue(Math.abs(at.getScaleX()) > originalResolution * 3);
+        assertTrue(Math.abs(at.getScaleY()) > originalResolution * 3);
     }
 
     @Test
@@ -290,7 +290,7 @@ public class GridCoverageReaderHelperTest {
             }
 
             @Override
-            public GridCoverage2D read(GeneralParameterValue[] parameters)
+            public GridCoverage2D read(GeneralParameterValue... parameters)
                     throws IllegalArgumentException, IOException {
                 // return fake coveage
                 return coverage;

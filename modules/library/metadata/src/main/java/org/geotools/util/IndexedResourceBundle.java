@@ -118,7 +118,7 @@ public class IndexedResourceBundle extends ResourceBundle {
     private String getPackageName() {
         final String name = getClass().getName();
         final int index = name.lastIndexOf('.');
-        return (index >= 0) ? name.substring(0, index) : "org.geotools";
+        return index >= 0 ? name.substring(0, index) : "org.geotools";
     }
 
     /**
@@ -186,7 +186,7 @@ public class IndexedResourceBundle extends ResourceBundle {
                  */
                 record = new LogRecord(Level.FINER, "Loaded resources for {0} from bundle \"{1}\".");
                 record.setSourceClassName(getClass().getName());
-                record.setSourceMethodName((key != null) ? "getObject" : "getKeys");
+                record.setSourceMethodName(key != null ? "getObject" : "getKeys");
                 /*
                  * Loads resources from the UTF file.
                  */
@@ -286,7 +286,7 @@ public class IndexedResourceBundle extends ResourceBundle {
         } catch (NumberFormatException exception) {
             return null;
         }
-        return (keyID >= 0 && keyID < values.length) ? values[keyID] : null;
+        return keyID >= 0 && keyID < values.length ? values[keyID] : null;
     }
 
     /**
@@ -323,7 +323,7 @@ public class IndexedResourceBundle extends ResourceBundle {
          * Computes maximum length for one half of the string. Take into
          * account the space needed for inserting the " (...) " string.
          */
-        maxLength = (maxLength - 7) >> 1;
+        maxLength = maxLength - 7 >> 1;
         if (maxLength <= 0) {
             return text;
         }
@@ -338,7 +338,7 @@ public class IndexedResourceBundle extends ResourceBundle {
          */
         int break1 = maxLength;
         int break2 = length - maxLength;
-        for (final int lower = (maxLength >> 1); break1 >= lower; break1--) {
+        for (final int lower = maxLength >> 1; break1 >= lower; break1--) {
             if (!Character.isUnicodeIdentifierPart(text.charAt(break1))) {
                 break1--;
                 while (break1 >= lower && !Character.isUnicodeIdentifierPart(text.charAt(break1))) {

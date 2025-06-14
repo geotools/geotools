@@ -135,7 +135,7 @@ public class GraphViewer extends JPanel {
         Iterator edgeIt = edges.iterator();
         while (edgeIt.hasNext()) {
             Edge next = (Edge) edgeIt.next();
-            if (!((next.getNodeA() instanceof XYNode) && (next.getNodeB() instanceof XYNode))) {
+            if (!(next.getNodeA() instanceof XYNode && next.getNodeB() instanceof XYNode)) {
                 throw new RuntimeException("I can't draw an edge without endpoint coordinates.");
             }
             Coordinate coordA = ((XYNode) next.getNodeA()).getCoordinate();

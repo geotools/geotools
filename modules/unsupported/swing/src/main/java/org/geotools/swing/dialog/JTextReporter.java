@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -625,7 +626,7 @@ public class JTextReporter {
                     setAlwaysOnTop(alwaysOnTop);
 
                     if (file != null) {
-                        try (Writer writer = new BufferedWriter(new FileWriter(file))) {
+                        try (Writer writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
                             for (int line = 0; line < textArea.getLineCount(); line++) {
                                 int start = textArea.getLineStartOffset(line);
                                 int end = textArea.getLineEndOffset(line);

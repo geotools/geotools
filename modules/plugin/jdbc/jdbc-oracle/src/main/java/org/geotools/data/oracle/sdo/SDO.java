@@ -212,7 +212,7 @@ public final class SDO {
      * <p>Subclasses may wish to repress this method and force Points to be represented using SDO_ORDINATES.
      */
     public static double[] point(Geometry geom) {
-        if (geom instanceof Point && (L(geom) == 0)) {
+        if (geom instanceof Point && L(geom) == 0) {
             Point point = (Point) geom;
             Coordinate coord = point.getCoordinate();
 
@@ -352,14 +352,14 @@ public final class SDO {
         addInt(elemInfoList, offset);
         addInt(elemInfoList, elemInfoEType(polygon));
         addInt(elemInfoList, elemInfoInterpretation(polygon, ETYPE.POLYGON_EXTERIOR));
-        offset += (ring.getNumPoints() * LEN);
+        offset += ring.getNumPoints() * LEN;
 
         for (int i = 1; i <= HOLES; i++) {
             ring = polygon.getInteriorRingN(i - 1);
             addInt(elemInfoList, offset);
             addInt(elemInfoList, ETYPE.POLYGON_INTERIOR);
             addInt(elemInfoList, elemInfoInterpretation(ring, ETYPE.POLYGON_INTERIOR));
-            offset += (ring.getNumPoints() * LEN);
+            offset += ring.getNumPoints() * LEN;
         }
     }
 
@@ -379,7 +379,7 @@ public final class SDO {
         for (int i = 0; i < lines.getNumGeometries(); i++) {
             line = (LineString) lines.getGeometryN(i);
             addElemInfo(elemInfoList, line, offset);
-            offset += (line.getNumPoints() * LEN);
+            offset += line.getNumPoints() * LEN;
         }
     }
 
@@ -395,9 +395,9 @@ public final class SDO {
             if (poly != null && !poly.isEmpty()) {
                 addElemInfo(elemInfoList, poly, offset, GTYPE);
                 if (isRectangle(poly)) {
-                    offset += (2 * LEN);
+                    offset += 2 * LEN;
                 } else {
-                    offset += (poly.getNumPoints() * LEN);
+                    offset += poly.getNumPoints() * LEN;
                 }
             }
         }
@@ -413,9 +413,9 @@ public final class SDO {
             geom = geoms.getGeometryN(i);
             elemInfo(elemInfoList, geom, offset, GTYPE);
             if (geom instanceof Polygon && isRectangle((Polygon) geom)) {
-                offset += (2 * LEN);
+                offset += 2 * LEN;
             } else {
-                offset += (geom.getNumPoints() * LEN);
+                offset += geom.getNumPoints() * LEN;
             }
         }
     }
@@ -977,17 +977,17 @@ public final class SDO {
             if (ordinate == 0) {
                 for (int i = 0; i < LENGTH; i++) {
                     c = coords.getCoordinate(i);
-                    array[i] = (c != null) ? c.x : Double.NaN;
+                    array[i] = c != null ? c.x : Double.NaN;
                 }
             } else if (ordinate == 1) {
                 for (int i = 0; i < LENGTH; i++) {
                     c = coords.getCoordinate(i);
-                    array[i] = (c != null) ? c.y : Double.NaN;
+                    array[i] = c != null ? c.y : Double.NaN;
                 }
             } else if (ordinate == 2) {
                 for (int i = 0; i < LENGTH; i++) {
                     c = coords.getCoordinate(i);
-                    array[i] = (c != null) ? c.getZ() : Double.NaN;
+                    array[i] = c != null ? c.getZ() : Double.NaN;
                 }
             } else {
                 // default to NaN
@@ -1026,17 +1026,17 @@ public final class SDO {
         if (ordinate == 0) {
             for (int i = 0; i < LENGTH; i++) {
                 c = array[i];
-                ords[i] = (c != null) ? c.x : Double.NaN;
+                ords[i] = c != null ? c.x : Double.NaN;
             }
         } else if (ordinate == 1) {
             for (int i = 0; i < LENGTH; i++) {
                 c = array[i];
-                ords[i] = (c != null) ? c.y : Double.NaN;
+                ords[i] = c != null ? c.y : Double.NaN;
             }
         } else if (ordinate == 2) {
             for (int i = 0; i < LENGTH; i++) {
                 c = array[i];
-                ords[i] = (c != null) ? c.getZ() : Double.NaN;
+                ords[i] = c != null ? c.getZ() : Double.NaN;
             }
         } else {
             // default to NaN
@@ -1060,17 +1060,17 @@ public final class SDO {
         if (ordinate == 0) {
             for (int i = 0; i < LENGTH; i++) {
                 c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? c.x : Double.NaN;
+                ords[i] = c != null ? c.x : Double.NaN;
             }
         } else if (ordinate == 1) {
             for (int i = 0; i < LENGTH; i++) {
                 c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? c.y : Double.NaN;
+                ords[i] = c != null ? c.y : Double.NaN;
             }
         } else if (ordinate == 2) {
             for (int i = 0; i < LENGTH; i++) {
                 c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? c.getZ() : Double.NaN;
+                ords[i] = c != null ? c.getZ() : Double.NaN;
             }
         } else {
             // default to NaN
@@ -1184,7 +1184,7 @@ public final class SDO {
             ords = (double[]) list.get(i);
 
             for (int j = 0; j < LEN; j++) {
-                array[(i * LEN) + j] = ords[j];
+                array[i * LEN + j] = ords[j];
             }
         }
 
@@ -1212,7 +1212,7 @@ public final class SDO {
             ords = (double[]) list.get(i);
 
             for (int j = 0; j < LEN; j++) {
-                array[(i * LEN) + j] = ords[j];
+                array[i * LEN + j] = ords[j];
             }
         }
 
@@ -1301,7 +1301,7 @@ public final class SDO {
             return false;
         }
 
-        if ((coords[0] == null) || (coords[1] == null) || (coords[2] == null) || (coords[3] == null)) {
+        if (coords[0] == null || coords[1] == null || coords[2] == null || coords[3] == null) {
             return false;
         }
 
@@ -1318,14 +1318,14 @@ public final class SDO {
         double x4 = coords[3].x;
         double y4 = coords[3].y;
 
-        if ((x1 == x4) && (y1 == y2) && (x3 == x2) && (y3 == y4)) {
+        if (x1 == x4 && y1 == y2 && x3 == x2 && y3 == y4) {
             // 1+-----+2
             //  |     |
             // 4+-----+3
             return true;
         }
 
-        if ((x1 == x2) && (y1 == y4) && (x3 == x4) && (y3 == y2)) {
+        if (x1 == x2 && y1 == y4 && x3 == x4 && y3 == y2) {
             // 2+-----+3
             //  |     |
             // 1+-----+4
@@ -1382,13 +1382,13 @@ public final class SDO {
             ENDING_OFFSET += LEN;
         }
 
-        if ((STARTING_OFFSET == 1) && (ENDING_OFFSET == -1)) {
+        if (STARTING_OFFSET == 1 && ENDING_OFFSET == -1) {
             // Use all Cordiantes
             return coords;
         }
 
         int start = (STARTING_OFFSET - 1) / LEN;
-        int end = (ENDING_OFFSET != -1) ? ((ENDING_OFFSET - 1) / LEN) : coords.size();
+        int end = ENDING_OFFSET != -1 ? (ENDING_OFFSET - 1) / LEN : coords.size();
 
         return subList(factory, coords, start, end);
     }
@@ -1408,7 +1408,7 @@ public final class SDO {
      */
     private static CoordinateSequence subList(
             CoordinateSequenceFactory factory, CoordinateSequence coords, int start, int end) {
-        if ((start == 0) && (end == coords.size())) {
+        if (start == 0 && end == coords.size()) {
             return coords;
         }
 
@@ -1472,12 +1472,12 @@ public final class SDO {
 
     /** Access L (for LRS) as encoded in GTYPE */
     public static int L(final int GTYPE) {
-        return (GTYPE - (D(GTYPE) * 1000)) / 100;
+        return (GTYPE - D(GTYPE) * 1000) / 100;
     }
 
     /** Access TT (for geometry type) as encoded in GTYPE */
     public static int TT(final int GTYPE) {
-        return GTYPE - (D(GTYPE) * 1000) - (L(GTYPE) * 100);
+        return GTYPE - D(GTYPE) * 1000 - L(GTYPE) * 100;
     }
 
     /**
@@ -1486,11 +1486,11 @@ public final class SDO {
      * <p>
      */
     private static int STARTING_OFFSET(int[] elemInfo, int triplet) {
-        if (((triplet * 3) + 0) >= elemInfo.length) {
+        if (triplet * 3 + 0 >= elemInfo.length) {
             return -1;
         }
 
-        return elemInfo[(triplet * 3) + 0];
+        return elemInfo[triplet * 3 + 0];
     }
 
     /**
@@ -1580,19 +1580,19 @@ public final class SDO {
      * @return ETYPE for indicated triplet
      */
     private static int ETYPE(int[] elemInfo, int triplet) {
-        if (((triplet * 3) + 1) >= elemInfo.length) {
+        if (triplet * 3 + 1 >= elemInfo.length) {
             return -1;
         }
 
-        return elemInfo[(triplet * 3) + 1];
+        return elemInfo[triplet * 3 + 1];
     }
 
     private static int INTERPRETATION(int[] elemInfo, int triplet) {
-        if (((triplet * 3) + 2) >= elemInfo.length) {
+        if (triplet * 3 + 2 >= elemInfo.length) {
             return -1;
         }
 
-        return elemInfo[(triplet * 3) + 2];
+        return elemInfo[triplet * 3 + 2];
     }
 
     /** Coordinates from <code>(x,y,x2,y2,...)</code> ordinates. */
@@ -1606,7 +1606,7 @@ public final class SDO {
         Coordinate[] coords = new Coordinate[length];
 
         for (int i = 0; i < length; i++) {
-            coords[i] = new Coordinate(ordinates[i * d], ordinates[(i * d) + 1]);
+            coords[i] = new Coordinate(ordinates[i * d], ordinates[i * d + 1]);
         }
 
         return coords;
@@ -1635,7 +1635,7 @@ public final class SDO {
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      */
     public static CoordinateSequence coordinates(CoordinateSequenceFactory f, final int GTYPE, double[] ordinates) {
-        if ((ordinates == null) || (ordinates.length == 0)) {
+        if (ordinates == null || ordinates.length == 0) {
             return f.create(new Coordinate[0]);
         }
 
@@ -1645,7 +1645,7 @@ public final class SDO {
 
         //      POINT_TYPE Special Case
         //
-        if ((D == 2) && (L == 0) && (TT == 1)) {
+        if (D == 2 && L == 0 && TT == 1) {
             CoordinateSequence cs = JTS.createCS(f, 1, 2);
             for (int i = 0; i < 2; i++) cs.setOrdinate(0, i, ordinates[i]);
             return cs;
@@ -1654,7 +1654,7 @@ public final class SDO {
         final int LEN = D; // bugfix 20121231-BK: LEN = D instead of LEN = D + L as Oracle supports only one
         // LRS ordinate!
 
-        if ((ordinates.length % LEN) != 0) {
+        if (ordinates.length % LEN != 0) {
             // bugfix 20121231-BK: LEN is D instead of D + L
             throw new IllegalArgumentException("Dimension D:"
                     + D
@@ -1804,7 +1804,7 @@ public final class SDO {
 
         CoordinateSequence coords;
 
-        if ((L == 0) && (TT == 01) && (point != null) && (elemInfo == null)) {
+        if (L == 0 && TT == 01 && point != null && elemInfo == null) {
             // Single Point Type Optimization
             coords = SDO.coordinates(gf.getCoordinateSequenceFactory(), GTYPE, point);
             elemInfo = new int[] {1, ETYPE.POINT, 1};
@@ -2058,9 +2058,9 @@ public final class SDO {
                     ETYPE.POLYGON_EXTERIOR,
                     ETYPE.FACE_EXTERIOR
                 });
-        if ((eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR)
-                && (eTYPE != ETYPE.COMPOUND_POLYGON)
-                && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {
+        if (eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR
+                && eTYPE != ETYPE.COMPOUND_POLYGON
+                && (INTERPRETATION < 1 || INTERPRETATION > 4)) {
             LOGGER.warning("Could not create JTS Polygon with INTERPRETATION "
                     + INTERPRETATION
                     + " "
@@ -2159,10 +2159,10 @@ public final class SDO {
                     ETYPE.POLYGON_INTERIOR,
                     ETYPE.FACE_EXTERIOR
                 });
-        if ((eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR)
-                && (eTYPE != ETYPE.COMPOUND_POLYGON)
-                && (eTYPE != ETYPE.COMPOUND_POLYGON_INTERIOR)
-                && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {
+        if (eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR
+                && eTYPE != ETYPE.COMPOUND_POLYGON
+                && eTYPE != ETYPE.COMPOUND_POLYGON_INTERIOR
+                && (INTERPRETATION < 1 || INTERPRETATION > 4)) {
             LOGGER.warning("Could not create LinearRing with INTERPRETATION "
                     + INTERPRETATION
                     + " - we can only support 1, 2, 3 and 4");
@@ -2343,12 +2343,12 @@ public final class SDO {
         }
 
         // final int LEN = D(GTYPE);
-        final int endTriplet = (N != -1) ? (triplet + N) : (elemInfo.length / 3);
+        final int endTriplet = N != -1 ? triplet + N : elemInfo.length / 3;
 
         List<LineString> list = new LinkedList<>();
         int etype;
         LINES: // bad bad gotos jody
-        for (int i = triplet; (i < endTriplet) && ((etype = ETYPE(elemInfo, i)) != -1); i++) {
+        for (int i = triplet; i < endTriplet && (etype = ETYPE(elemInfo, i)) != -1; i++) {
             if (etype == ETYPE.LINE) {
                 list.add(createLine(gf, GTYPE, SRID, elemInfo, i, coords, false));
             } else { // not a LinearString - get out of here
@@ -2420,16 +2420,16 @@ public final class SDO {
                     + " - we can only represent 1 for straight edges, or 3 for rectangle");
             return null;
         }
-        final int endTriplet = (N != -1) ? (triplet + N) : ((elemInfo.length / 3) + 1);
+        final int endTriplet = N != -1 ? triplet + N : elemInfo.length / 3 + 1;
 
         List<Polygon> list = new LinkedList<>();
         int etype;
         POLYGONS:
-        for (int i = triplet; (i < endTriplet) && ((etype = ETYPE(elemInfo, i)) != -1); i++) {
-            if ((etype == ETYPE.POLYGON)
-                    || (etype == ETYPE.POLYGON_EXTERIOR)
-                    || (etype == ETYPE.FACE_EXTERIOR)
-                    || (etype == ETYPE.FACE_INTERIOR)) {
+        for (int i = triplet; i < endTriplet && (etype = ETYPE(elemInfo, i)) != -1; i++) {
+            if (etype == ETYPE.POLYGON
+                    || etype == ETYPE.POLYGON_EXTERIOR
+                    || etype == ETYPE.FACE_EXTERIOR
+                    || etype == ETYPE.FACE_INTERIOR) {
                 Polygon poly = createPolygon(gf, GTYPE, SRID, elemInfo, i, coords);
                 i += poly.getNumInteriorRing(); // skip interior rings
                 list.add(poly);
@@ -2509,7 +2509,7 @@ public final class SDO {
                     + " inconsistent with ORDINATES length "
                     + coords.size());
 
-        final int endTriplet = (N != -1) ? (triplet + N) : ((elemInfo.length / 3) + 1);
+        final int endTriplet = N != -1 ? triplet + N : elemInfo.length / 3 + 1;
 
         List<Geometry> list = new LinkedList<>();
         int etype;

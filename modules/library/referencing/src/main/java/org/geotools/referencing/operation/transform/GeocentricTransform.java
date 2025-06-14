@@ -56,6 +56,7 @@ import si.uom.SI;
  * @author Frank Warmerdam
  * @author Martin Desruisseaux (IRD)
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class GeocentricTransform extends AbstractMathTransform implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3352045463953828140L;
@@ -213,7 +214,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
     private void transform(
             double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts, boolean hasHeight) {
         final int dimSource = getSourceDimensions();
-        hasHeight |= (dimSource >= 3);
+        hasHeight |= dimSource >= 3;
         if (srcPts == dstPts && needCopy(srcOff, dimSource, dstOff, 3, numPts)) {
             // Source and destination arrays overlaps: copy in a temporary buffer.
             final double[] old = srcPts;
@@ -243,7 +244,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
     @Override
     public void transform(float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         final int dimSource = getSourceDimensions();
-        final boolean hasHeight = (dimSource >= 3);
+        final boolean hasHeight = dimSource >= 3;
         if (srcPts == dstPts && needCopy(srcOff, dimSource, dstOff, 3, numPts)) {
             // Source and destination arrays overlaps: copy in a temporary buffer.
             final float[] old = srcPts;
@@ -324,7 +325,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             int dstOff,
             int numPts,
             final int dimTarget) {
-        final boolean hasHeight = (dimTarget >= 3);
+        final boolean hasHeight = dimTarget >= 3;
         boolean computeHeight = hasHeight;
         assert (computeHeight = true) == true; // Force computeHeight to true if assertions are enabled.
         while (--numPts >= 0) {
@@ -594,7 +595,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final int dimGeographic = intValue(DIM, values);
             final double semiMajor = doubleValue(SEMI_MAJOR, values);
             final double semiMinor = doubleValue(SEMI_MINOR, values);
-            final boolean hasHeight = (dimGeographic != 2); // Value may be 0, which default as 3.
+            final boolean hasHeight = dimGeographic != 2; // Value may be 0, which default as 3.
             MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight);
             if (!hasHeight) {
                 if (noHeight == null) {
@@ -658,7 +659,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final int dimGeographic = intValue(DIM, values);
             final double semiMajor = doubleValue(SEMI_MAJOR, values);
             final double semiMinor = doubleValue(SEMI_MINOR, values);
-            final boolean hasHeight = (dimGeographic != 2); // Value may be 0, which default as 3.
+            final boolean hasHeight = dimGeographic != 2; // Value may be 0, which default as 3.
             MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight).inverse();
             if (!hasHeight) {
                 if (noHeight == null) {

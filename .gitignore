@@ -1,4 +1,5 @@
 pmd-report.txt
+.pmd
 *.qix
 *.db
 .project

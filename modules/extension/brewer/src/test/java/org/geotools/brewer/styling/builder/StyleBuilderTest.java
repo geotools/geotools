@@ -51,7 +51,7 @@ public class StyleBuilderTest {
         UserLayer layer = sf.createUserLayer();
         layer.setName("layer");
 
-        FeatureTypeConstraint constraint = sf.createFeatureTypeConstraint("Feature", Filter.INCLUDE, null);
+        FeatureTypeConstraint constraint = sf.createFeatureTypeConstraint("Feature", Filter.INCLUDE);
 
         layer.layerFeatureConstraints().add(constraint);
 

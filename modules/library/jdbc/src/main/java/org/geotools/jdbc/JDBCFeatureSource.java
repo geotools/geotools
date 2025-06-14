@@ -432,7 +432,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         Filter preFilter = split[0];
         Filter postFilter = split[1];
 
-        boolean manual = (postFilter != null) && (postFilter != Filter.INCLUDE);
+        boolean manual = postFilter != null && postFilter != Filter.INCLUDE;
         if (!manual && !query.getJoins().isEmpty()) {
             // check any join post filters as well
             JoinInfo join = JoinInfo.create(query, this);
@@ -498,9 +498,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
         try {
 
-            if ((postFilter != null) && (postFilter != Filter.INCLUDE)
-                    || (query.getMaxFeatures() < Integer.MAX_VALUE && !canLimit(query))
-                    || (query.getStartIndex() != null && query.getStartIndex() > 0 && !canOffset(query))) {
+            if (postFilter != null && postFilter != Filter.INCLUDE
+                    || query.getMaxFeatures() < Integer.MAX_VALUE && !canLimit(query)
+                    || query.getStartIndex() != null && query.getStartIndex() > 0 && !canOffset(query)) {
                 // calculate manually, don't use datastore optimization
                 getDataStore().getLogger().fine("Calculating bounds manually");
 
@@ -746,7 +746,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             return false; // optimization restricted to column evaulation
         }
         Class binding = descriptor.getType().getBinding();
-        if (Geometry.class.isAssignableFrom(binding) || !(Comparable.class.isAssignableFrom(binding))) {
+        if (Geometry.class.isAssignableFrom(binding) || !Comparable.class.isAssignableFrom(binding)) {
             // we may roll out KNN support in the dialect for geometries, but for the moment, we say
             // we can't
             return false;

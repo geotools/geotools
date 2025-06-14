@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -116,7 +117,7 @@ public class OGCFilterTest {
         OGCConfiguration configuration = new OGCConfiguration();
 
         Parser parser = new Parser(configuration);
-        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(filter);
 
         // Asserting the Property Name
@@ -157,7 +158,7 @@ public class OGCFilterTest {
         OGCConfiguration configuration = new OGCConfiguration();
 
         Parser parser = new Parser(configuration);
-        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(filter);
 
         // Asserting the Distance

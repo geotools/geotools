@@ -325,7 +325,7 @@ class IndexManager {
             try {
                 @SuppressWarnings("PMD.CloseResource") // managed as part of the return
                 QuadTree quadTree = openQuadTree();
-                if ((quadTree != null) && !bbox.contains(quadTree.getRoot().getBounds())) {
+                if (quadTree != null && !bbox.contains(quadTree.getRoot().getBounds())) {
                     tmp = quadTree.search(bbox);
                 }
                 if (tmp == null && quadTree != null) {
@@ -353,7 +353,7 @@ class IndexManager {
         try {
             File treeFile = URLs.urlToFile(treeURL);
 
-            if (!treeFile.exists() || (treeFile.length() == 0)) {
+            if (!treeFile.exists() || treeFile.length() == 0) {
                 return null;
             }
 

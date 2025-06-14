@@ -43,6 +43,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -391,7 +392,7 @@ public class HeterogenousCRSTest {
         // a single request will cause the deadlock in this case (but we try with a pool
         // nevertheless, to be extra sure)
         File datastoreProperties = new File(testDirectory, "datastore.properties");
-        try (FileWriter out = new FileWriter(datastoreProperties)) {
+        try (FileWriter out = new FileWriter(datastoreProperties, StandardCharsets.UTF_8)) {
             out.write("database=hetero_concurrent\n");
             out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n"
                     + "dbtype=h2\n"
@@ -684,7 +685,7 @@ public class HeterogenousCRSTest {
         FileUtils.copyDirectory(testDataFolder, testDirectory);
 
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
-        GridCoverage2D coverage = imReader.read(null);
+        GridCoverage2D coverage = imReader.read();
         if (coverage.getRenderedImage() instanceof PlanarImage) {
             ImageUtilities.disposePlanarImageChain((PlanarImage) coverage.getRenderedImage());
         }
@@ -764,7 +765,7 @@ public class HeterogenousCRSTest {
                 // grab the streams from the reader, the particular implementation being
                 // used has an accessor for the source files
                 Object imageReader = inputImage.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
-                if ((imageReader != null) && (imageReader instanceof ImageReader)) {
+                if (imageReader != null && imageReader instanceof ImageReader) {
                     final ImageReader reader = (ImageReader) imageReader;
                     final ImageInputStream stream = (ImageInputStream) reader.getInput();
                     if (stream instanceof FileImageInputStreamExtImpl) {
@@ -1041,11 +1042,11 @@ public class HeterogenousCRSTest {
         // set up property selection
         File indexerFile = new File(testDirectory, "indexer.properties");
         Properties props = new Properties();
-        try (FileReader in = new FileReader(indexerFile)) {
+        try (FileReader in = new FileReader(indexerFile, StandardCharsets.UTF_8)) {
             props.load(in);
         }
         props.put(Utils.Prop.PROPERTY_SELECTION, "true");
-        try (FileWriter out = new FileWriter(indexerFile)) {
+        try (FileWriter out = new FileWriter(indexerFile, StandardCharsets.UTF_8)) {
             props.store(out, null);
         }
 

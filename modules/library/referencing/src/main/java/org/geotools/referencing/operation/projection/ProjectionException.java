@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.Latitude;
@@ -31,6 +32,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class ProjectionException extends TransformException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3031350727691500915L;
 
     /** Constructs a new exception with no detail message. */

@@ -71,9 +71,9 @@ public final class LineIterator2 implements PathIterator {
         }
 
         CoordinateSequence coordinates = ls.getCoordinateSequence();
-        if (coordinates instanceof LiteCoordinateSequence) {
+        if (coordinates instanceof LiteCoordinateSequence sequence) {
             // array already there for us
-            allCoords = ((LiteCoordinateSequence) coordinates).getXYArray();
+            allCoords = sequence.getXYArray();
             actualCoords = coordinates.size();
         } else {
             // build the array

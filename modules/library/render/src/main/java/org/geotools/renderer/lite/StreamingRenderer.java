@@ -457,8 +457,8 @@ public class StreamingRenderer implements GTRenderer {
     @Override
     public void addRenderListener(RenderListener listener) {
         renderListeners.add(listener);
-        if (labelCache instanceof LabelCacheImpl) {
-            ((LabelCacheImpl) labelCache).addRenderListener(listener);
+        if (labelCache instanceof LabelCacheImpl impl) {
+            impl.addRenderListener(listener);
         }
     }
 
@@ -493,8 +493,8 @@ public class StreamingRenderer implements GTRenderer {
         LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
         if (!renderListeners.isEmpty()) {
             Exception e;
-            if (t instanceof Exception) {
-                e = (Exception) t;
+            if (t instanceof Exception exception) {
+                e = exception;
             } else {
                 e = new Exception(t);
             }
@@ -810,9 +810,8 @@ public class StreamingRenderer implements GTRenderer {
                 // ////////////////////////////////////////////////////////////////////
 
                 labelCache.start();
-                if (labelCache instanceof LabelCacheImpl) {
-                    ((LabelCacheImpl) labelCache)
-                            .setLabelRenderingMode(LabelRenderingMode.valueOf(getTextRenderingMethod()));
+                if (labelCache instanceof LabelCacheImpl impl) {
+                    impl.setLabelRenderingMode(LabelRenderingMode.valueOf(getTextRenderingMethod()));
                 }
 
                 for (Layer layer : currentMapContent.layers()) {
@@ -839,17 +838,15 @@ public class StreamingRenderer implements GTRenderer {
                     }
 
                     labelCache.startLayer(layerId);
-                    if (layer instanceof DirectLayer) {
-                        RenderingRequest request =
-                                new RenderDirectLayerRequest(compositingGraphic, (DirectLayer) layer);
+                    if (layer instanceof DirectLayer directLayer) {
+                        RenderingRequest request = new RenderDirectLayerRequest(compositingGraphic, directLayer);
                         try {
                             requests.put(request);
                         } catch (InterruptedException e) {
                             fireErrorEvent(e);
                         }
-                    } else if (layer instanceof ZGroupLayer) {
+                    } else if (layer instanceof ZGroupLayer zGroup) {
                         try {
-                            ZGroupLayer zGroup = (ZGroupLayer) layer;
                             zGroup.drawFeatures(compositingGraphic, this, layerId);
                         } catch (Throwable t) {
                             fireErrorEvent(t);
@@ -1488,8 +1485,7 @@ public class StreamingRenderer implements GTRenderer {
         for (PropertyName name : attNames) {
             Object att = name.evaluate(schema);
 
-            if (att instanceof GeometryDescriptor) {
-                GeometryDescriptor gd = (GeometryDescriptor) att;
+            if (att instanceof GeometryDescriptor gd) {
                 CoordinateReferenceSystem gdCrs = gd.getCoordinateReferenceSystem();
                 if (crs == null) {
                     crs = gdCrs;
@@ -2199,18 +2195,16 @@ public class StreamingRenderer implements GTRenderer {
                     transform, featureSource, definitionQuery, styleQuery, gridGeometry, sourceCrs, java2dHints);
             if (result == null) {
                 return null;
-            } else if (result instanceof FeatureCollection) {
-                features = (FeatureCollection) result;
-            } else if (result instanceof GridCoverage2D) {
-                GridCoverage2D coverage = (GridCoverage2D) result;
+            } else if (result instanceof FeatureCollection collection) {
+                features = collection;
+            } else if (result instanceof GridCoverage2D coverage) {
                 // we only avoid disposing if the input was a in memory GridCovereage2D
-                if (schema instanceof SimpleFeatureType
-                        && !FeatureUtilities.isWrappedCoverage((SimpleFeatureType) schema)) {
+                if (schema instanceof SimpleFeatureType type && !FeatureUtilities.isWrappedCoverage(type)) {
                     coverage = new DisposableGridCoverage(coverage);
                 }
                 features = FeatureUtilities.wrapGridCoverage(coverage);
-            } else if (result instanceof GridCoverage2DReader) {
-                features = FeatureUtilities.wrapGridCoverageReader((GridCoverage2DReader) result, null);
+            } else if (result instanceof GridCoverage2DReader reader) {
+                features = FeatureUtilities.wrapGridCoverageReader(reader, null);
             } else {
                 // last attempt to convert the result to a FeatureCollection
                 features = Converters.convert(result, FeatureCollection.class);
@@ -2774,8 +2768,8 @@ public class StreamingRenderer implements GTRenderer {
                     // //
                     final Object grid = gridPropertyName.evaluate(drawMe.feature);
 
-                    if (grid instanceof GridCoverage2D) {
-                        coverage = (GridCoverage2D) grid;
+                    if (grid instanceof GridCoverage2D coverage2D) {
+                        coverage = coverage2D;
                         if (coverage != null) {
                             disposeCoverage = grid instanceof DisposableGridCoverage;
                             requests.put(new RenderRasterRequest(
@@ -2788,10 +2782,9 @@ public class StreamingRenderer implements GTRenderer {
                                     getRenderingInterpolation(drawMe.layer)));
                             paintCommands++;
                         }
-                    } else if (grid instanceof GridCoverage2DReader) {
+                    } else if (grid instanceof GridCoverage2DReader reader) {
                         final GeneralParameterValue[] params =
                                 (GeneralParameterValue[]) paramsPropertyName.evaluate(drawMe.feature);
-                        GridCoverage2DReader reader = (GridCoverage2DReader) grid;
                         requests.put(new RenderCoverageReaderRequest(
                                 graphics,
                                 reader,
@@ -2817,8 +2810,8 @@ public class StreamingRenderer implements GTRenderer {
                     continue;
                 }
 
-                if (symbolizer instanceof TextSymbolizer && drawMe.feature instanceof Feature) {
-                    labelCache.put(drawMe.layerId, (TextSymbolizer) symbolizer, drawMe.feature, shape, null);
+                if (symbolizer instanceof TextSymbolizer textSymbolizer && drawMe.feature instanceof Feature) {
+                    labelCache.put(drawMe.layerId, textSymbolizer, drawMe.feature, shape, null);
                     paintCommands++;
                 } else {
                     Style2D style = styleFactory.createStyle(drawMe.feature, symbolizer);
@@ -2836,18 +2829,17 @@ public class StreamingRenderer implements GTRenderer {
                     Geometry source = shape.getGeometry();
                     // we need to preserve the topology if we end up applying buffer for perp.
                     // offset
-                    boolean preserveTopology = style instanceof LineStyle2D
-                            && ((LineStyle2D) style).getPerpendicularOffset() != 0
+                    boolean preserveTopology = style instanceof LineStyle2D lsd
+                            && lsd.getPerpendicularOffset() != 0
                             && (source instanceof Polygon || source instanceof MultiPolygon);
 
                     Geometry g = clipper.clipSafe(shape.getGeometry(), preserveTopology, 1);
 
                     // handle perpendincular offset as needed
-                    if (style instanceof LineStyle2D
-                            && ((LineStyle2D) style).getPerpendicularOffset() != 0
+                    if (style instanceof LineStyle2D ls
+                            && ls.getPerpendicularOffset() != 0
                             && g != null
                             && !g.isEmpty()) {
-                        LineStyle2D ls = (LineStyle2D) style;
                         double offset = ls.getPerpendicularOffset();
                         // people applying an offset on a polygon really expect a buffer instead,
                         // do so... however buffering is damn expensive, so let's apply some
@@ -2872,10 +2864,10 @@ public class StreamingRenderer implements GTRenderer {
                             OffsetCurveBuilder offseter = new OffsetCurveBuilder(offset);
                             g = offseter.offset(g);
                         }
-                    } else if (style instanceof LineStyle2D) {
-                        if (((LineStyle2D) style).getStroke() instanceof MarkAlongLine) {
+                    } else if (style instanceof LineStyle2D style2D) {
+                        if (style2D.getStroke() instanceof MarkAlongLine) {
                             double simplificationFactor =
-                                    ((MarkAlongLine) ((LineStyle2D) style).getStroke()).getSimplificatorFactor();
+                                    ((MarkAlongLine) style2D.getStroke()).getSimplificatorFactor();
                             if (simplificationFactor != 0) {
                                 Decimator d = new Decimator(simplificationFactor, simplificationFactor);
                                 g = source;
@@ -2911,8 +2903,8 @@ public class StreamingRenderer implements GTRenderer {
     private Polygon getClip(RenderableFeature drawMe) {
         if (drawMe.feature.hasUserData()) {
             Object clipCandidate = drawMe.feature.getUserData().get(Hints.GEOMETRY_CLIP);
-            if (clipCandidate instanceof Polygon) {
-                return (Polygon) clipCandidate;
+            if (clipCandidate instanceof Polygon polygon) {
+                return polygon;
             }
         }
         return null;
@@ -2960,8 +2952,8 @@ public class StreamingRenderer implements GTRenderer {
         // get the geometry
         Geometry geom;
         if (geomExpr == null) {
-            if (drawMe instanceof SimpleFeature) geom = (Geometry) ((SimpleFeature) drawMe).getDefaultGeometry();
-            else if (drawMe instanceof Feature) geom = findComplexFeatureGeometry((Feature) drawMe);
+            if (drawMe instanceof SimpleFeature feature1) geom = (Geometry) feature1.getDefaultGeometry();
+            else if (drawMe instanceof Feature feature) geom = findComplexFeatureGeometry(feature);
             else geom = defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
         } else {
             geom = geomExpr.evaluate(drawMe, Geometry.class);
@@ -3005,8 +2997,8 @@ public class StreamingRenderer implements GTRenderer {
 
         Expression geometry = s.getGeometry();
 
-        if (geometry instanceof PropertyName) {
-            return getAttributeCRS((PropertyName) geometry, schema);
+        if (geometry instanceof PropertyName name1) {
+            return getAttributeCRS(name1, schema);
         } else if (geometry == null) {
             return getAttributeCRS(null, schema);
         } else {
@@ -3361,9 +3353,9 @@ public class StreamingRenderer implements GTRenderer {
                     // then post process it (provide reverse transform if available)
                     MathTransform reverse = null;
                     if (sa.crsxform != null) {
-                        if (sa.crsxform instanceof ConcatenatedTransform
-                                && ((ConcatenatedTransform) sa.crsxform).transform1.getTargetDimensions() >= 3
-                                && ((ConcatenatedTransform) sa.crsxform).transform2.getTargetDimensions() == 2) {
+                        if (sa.crsxform instanceof ConcatenatedTransform transform
+                                && transform.transform1.getTargetDimensions() >= 3
+                                && transform.transform2.getTargetDimensions() == 2) {
                             reverse = null; // We are downcasting 3D data to 2D data so no inverse is
                             // available
                         } else {
@@ -3470,8 +3462,8 @@ public class StreamingRenderer implements GTRenderer {
 
         @Override
         void execute() {
-            if (graphic instanceof DelayedBackbufferGraphic) {
-                ((DelayedBackbufferGraphic) graphic).init();
+            if (graphic instanceof DelayedBackbufferGraphic backbufferGraphic) {
+                backbufferGraphic.init();
             }
 
             try {
@@ -3524,23 +3516,23 @@ public class StreamingRenderer implements GTRenderer {
 
         @Override
         void execute() {
-            if (graphics instanceof DelayedBackbufferGraphic) {
-                ((DelayedBackbufferGraphic) graphics).init();
+            if (graphics instanceof DelayedBackbufferGraphic graphic) {
+                graphic.init();
             }
 
             for (LiteFeatureTypeStyle currentLayer : lfts) {
                 // first fts won't have an image, it's using the user provided graphics
                 // straight, so we don't need to compose it back in.
                 final Graphics2D ftsGraphics = currentLayer.graphics;
-                if (ftsGraphics instanceof DelayedBackbufferGraphic && !(ftsGraphics == graphics)) {
-                    BufferedImage image = ((DelayedBackbufferGraphic) ftsGraphics).image;
+                if (ftsGraphics instanceof DelayedBackbufferGraphic graphic && !(ftsGraphics == graphics)) {
+                    BufferedImage image = graphic.image;
                     if (currentLayer.composite == null) {
                         graphics.setComposite(AlphaComposite.SrcOver);
                     } else {
                         // we may have not found anything to paint, in that case the delegate
                         // has not been initialized
                         if (image == null) {
-                            Rectangle size = ((DelayedBackbufferGraphic) ftsGraphics).screenSize;
+                            Rectangle size = graphic.screenSize;
                             image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
                         }
                         graphics.setComposite(currentLayer.composite);
@@ -3566,8 +3558,8 @@ public class StreamingRenderer implements GTRenderer {
 
         @Override
         void execute() {
-            if (graphics instanceof DelayedBackbufferGraphic) {
-                ((DelayedBackbufferGraphic) graphics).init();
+            if (graphics instanceof DelayedBackbufferGraphic graphic) {
+                graphic.init();
             }
             final BufferedImage image = ((DelayedBackbufferGraphic) compositingGroup.graphics).image;
             // we may have not found anything to paint, in that case the delegate
@@ -3623,8 +3615,8 @@ public class StreamingRenderer implements GTRenderer {
                 LOGGER.fine("Rendering Raster " + coverage);
             }
 
-            if (graphics instanceof DelayedBackbufferGraphic) {
-                ((DelayedBackbufferGraphic) graphics).init();
+            if (graphics instanceof DelayedBackbufferGraphic graphic) {
+                graphic.init();
             }
 
             try {
@@ -3648,8 +3640,8 @@ public class StreamingRenderer implements GTRenderer {
                     if (coverage != null && disposeCoverage) {
                         coverage.dispose(true);
                         final RenderedImage image = coverage.getRenderedImage();
-                        if (image instanceof PlanarImage) {
-                            ImageUtilities.disposePlanarImageChain((PlanarImage) image);
+                        if (image instanceof PlanarImage planarImage) {
+                            ImageUtilities.disposePlanarImageChain(planarImage);
                         }
                     }
                 }
@@ -3710,8 +3702,8 @@ public class StreamingRenderer implements GTRenderer {
                 LOGGER.fine("Rendering reader " + reader);
             }
 
-            if (graphics instanceof DelayedBackbufferGraphic) {
-                ((DelayedBackbufferGraphic) graphics).init();
+            if (graphics instanceof DelayedBackbufferGraphic graphic) {
+                graphic.init();
             }
 
             try {
@@ -3756,8 +3748,8 @@ public class StreamingRenderer implements GTRenderer {
                 LOGGER.fine("Rendering DirectLayer: " + layer);
             }
 
-            if (graphics instanceof DelayedBackbufferGraphic) {
-                ((DelayedBackbufferGraphic) graphics).init();
+            if (graphics instanceof DelayedBackbufferGraphic graphic) {
+                graphic.init();
             }
 
             try {

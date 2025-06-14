@@ -50,8 +50,8 @@ public class FilterFunction_list extends FunctionExpressionImpl {
         for (Expression expr : getParameters()) {
             try {
                 Object value = expr.evaluate(feature);
-                if (value instanceof Collection) {
-                    for (Object item : (Collection) value) {
+                if (value instanceof Collection collection) {
+                    for (Object item : collection) {
                         result.add(item);
                     }
                 } else {

@@ -44,8 +44,8 @@ public class S3GeoTiffReader extends GeoTiffReader {
         super(input, uHints);
         closeMe = true;
         this.inStreamSPI = new S3ImageInputStreamImplSpi();
-        if (input instanceof S3ImageInputStreamImpl) {
-            String fileName = ((S3ImageInputStreamImpl) input).getFileName();
+        if (input instanceof S3ImageInputStreamImpl impl) {
+            String fileName = impl.getFileName();
             final int dotIndex = fileName.lastIndexOf('.');
             if (dotIndex != -1 && dotIndex != fileName.length()) {
                 this.coverageName = fileName.substring(0, dotIndex);

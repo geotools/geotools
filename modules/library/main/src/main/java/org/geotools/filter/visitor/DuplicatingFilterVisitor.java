@@ -98,7 +98,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
     }
 
     protected FilterFactory getFactory(Object extraData) {
-        if (extraData instanceof FilterFactory) return (FilterFactory) extraData;
+        if (extraData instanceof FilterFactory factory) return factory;
         return ff;
     }
 
@@ -344,8 +344,8 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
             args[i++] = visit(exp, extraData);
         }
         Function duplicate;
-        if (expression instanceof InternalFunction) {
-            duplicate = ((InternalFunction) expression).duplicate(args);
+        if (expression instanceof InternalFunction function) {
+            duplicate = function.duplicate(args);
         } else {
             duplicate = getFactory(extraData).function(expression.getName(), args);
         }

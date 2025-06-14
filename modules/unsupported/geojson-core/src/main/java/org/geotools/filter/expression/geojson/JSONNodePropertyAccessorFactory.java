@@ -54,17 +54,16 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
         @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             try {
-                if (xpath != null && object != null && object instanceof SimpleFeature) {
+                if (xpath != null && object != null && object instanceof SimpleFeature feature) {
                     String[] parts = stripAndReturnHeadAndRest(xpath);
-                    SimpleFeature feature = (SimpleFeature) object;
                     Object value = getValue(parts, feature);
-                    if (value != null && value instanceof JsonNode) {
+                    if (value != null && value instanceof JsonNode node) {
                         if (parts.length < 2) {
                             // only one part means return whole JsonNode
                             return true;
                         } else {
                             JsonPointer pointer = JsonPointer.compile(parts[1]);
-                            JsonNode jsonNode = ((JsonNode) value).at(pointer);
+                            JsonNode jsonNode = node.at(pointer);
                             return !jsonNode.isMissingNode();
                         }
                     }
@@ -111,17 +110,16 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
         @SuppressWarnings("unchecked")
         public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
             JsonNode jsonNode = null;
-            if (xpath != null && object != null && object instanceof SimpleFeature) {
+            if (xpath != null && object != null && object instanceof SimpleFeature feature) {
                 String[] parts = stripAndReturnHeadAndRest(xpath);
-                SimpleFeature feature = (SimpleFeature) object;
                 Object value = getValue(parts, feature);
-                if (value != null && value instanceof JsonNode) {
+                if (value != null && value instanceof JsonNode node) {
                     if (parts.length < 2) {
                         // only one part means return whole JsonNode
                         return (T) value;
                     } else {
                         JsonPointer pointer = JsonPointer.compile(parts[1]);
-                        jsonNode = ((JsonNode) value).at(pointer);
+                        jsonNode = node.at(pointer);
                         if (jsonNode.isMissingNode()) {
                             throw new IllegalArgumentException("Cannot get property " + xpath + " from " + object);
                         }

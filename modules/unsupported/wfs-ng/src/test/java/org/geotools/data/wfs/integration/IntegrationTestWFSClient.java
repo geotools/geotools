@@ -99,17 +99,17 @@ public class IntegrationTestWFSClient extends WFSClient {
             if (request instanceof GetCapabilitiesRequest) {
                 return mockCapabilities(request);
             }
-            if (request instanceof DescribeFeatureTypeRequest) {
-                return mockDFT((DescribeFeatureTypeRequest) request);
+            if (request instanceof DescribeFeatureTypeRequest typeRequest) {
+                return mockDFT(typeRequest);
             }
-            if (request instanceof GetFeatureRequest) {
-                return mockGetFeature((GetFeatureRequest) request);
+            if (request instanceof GetFeatureRequest featureRequest) {
+                return mockGetFeature(featureRequest);
             }
-            if (request instanceof TransactionRequest) {
+            if (request instanceof TransactionRequest transactionRequest) {
                 if (failOnTransaction) {
-                    return mockTransactionFailure((TransactionRequest) request);
+                    return mockTransactionFailure(transactionRequest);
                 } else {
-                    return mockTransactionSuccess((TransactionRequest) request);
+                    return mockTransactionSuccess(transactionRequest);
                 }
             }
         } catch (ServiceException e) {
@@ -167,8 +167,8 @@ public class IntegrationTestWFSClient extends WFSClient {
         final GetParser<SimpleFeature> allFeatures = gfr.getFeatures();
 
         // register custom scheme
-        if (allFeatures instanceof PullParserFeatureReader) {
-            ((PullParserFeatureReader) allFeatures).setContextCustomizer(context -> {
+        if (allFeatures instanceof PullParserFeatureReader reader) {
+            reader.setContextCustomizer(context -> {
                 QName key = new QName("http://www.openplans.org/spearfish", "schemaLocationResolver");
                 context.registerComponentInstance(
                         key, (XSDSchemaLocationResolver) (xsdSchema, namespaceURI, schemaLocationURI) -> {
@@ -280,17 +280,17 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         for (TransactionElement e : request.getTransactionElements()) {
             QName typeName = e.getTypeName();
-            if (e instanceof Insert) {
+            if (e instanceof Insert insert) {
                 Diff diff = diff(typeName);
-                for (SimpleFeature f : ((Insert) e).getFeatures()) {
+                for (SimpleFeature f : insert.getFeatures()) {
                     // String newId = "wfs-generated-" + idseq.incrementAndGet();
                     diff.add(f.getID(), f);
                     added.add(f.getID());
                 }
             }
-            if (e instanceof Delete) {
+            if (e instanceof Delete delete) {
                 Diff diff = diff(typeName);
-                Filter filter = ((Delete) e).getFilter();
+                Filter filter = delete.getFilter();
                 List<SimpleFeature> features = features(typeName);
                 for (SimpleFeature f : features) {
                     if (filter.evaluate(f)) {
@@ -299,9 +299,8 @@ public class IntegrationTestWFSClient extends WFSClient {
                     }
                 }
             }
-            if (e instanceof Update) {
+            if (e instanceof Update u) {
                 Diff diff = diff(typeName);
-                Update u = (Update) e;
                 Filter filter = u.getFilter();
                 List<SimpleFeature> features = features(typeName);
                 List<QName> propertyNames = u.getPropertyNames();

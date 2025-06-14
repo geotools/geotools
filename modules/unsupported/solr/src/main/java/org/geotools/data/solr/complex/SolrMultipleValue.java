@@ -43,8 +43,7 @@ public final class SolrMultipleValue implements MultipleValue {
         try {
             this.expression = parseOgcCqlExpression(expression, filterFactory);
         } catch (Exception exception) {
-            throw new RuntimeException(
-                    String.format("Error parsing target value expression '%s'.", expression), exception);
+            throw new RuntimeException("Error parsing target value expression '%s'.".formatted(expression), exception);
         }
     }
 

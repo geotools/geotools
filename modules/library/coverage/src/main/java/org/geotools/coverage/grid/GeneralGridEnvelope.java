@@ -19,6 +19,7 @@ package org.geotools.coverage.grid;
 import java.awt.Rectangle;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ import org.geotools.util.Classes;
  */
 public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1695224412095031712L;
 
     /** The lower left corner, inclusive. Will be created only when first needed. */
@@ -456,8 +458,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof GeneralGridEnvelope) {
-            final GeneralGridEnvelope that = (GeneralGridEnvelope) object;
+        if (object instanceof GeneralGridEnvelope that) {
             return Arrays.equals(this.index, that.index);
         }
         return false;

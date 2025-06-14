@@ -95,8 +95,8 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
-            if (filter instanceof DistanceBufferOperator) {
-                visitDistanceSpatialOperator((DistanceBufferOperator) filter, property, geometry, swapped, extraData);
+            if (filter instanceof DistanceBufferOperator operator) {
+                visitDistanceSpatialOperator(operator, property, geometry, swapped, extraData);
             } else {
                 visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
             }
@@ -263,21 +263,21 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         out.write(escapeName(tinfo.getIndexTableName()));
         out.write(" t, TABLE (SYSSPATIAL.tessellate_search(1,");
 
-        out.write(String.format(
-                "%f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %f, %d)) AS i ",
-                oenv.getMinX(),
-                oenv.getMinY(),
-                oenv.getMaxX(),
-                oenv.getMaxY(),
-                uenv.getMinX(),
-                uenv.getMinY(),
-                uenv.getMaxX(),
-                uenv.getMaxY(),
-                tinfo.getNx(),
-                tinfo.getNy(),
-                tinfo.getLevels(),
-                tinfo.getScale(),
-                tinfo.getShift()));
+        out.write("%f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %f, %d)) AS i "
+                .formatted(
+                        oenv.getMinX(),
+                        oenv.getMinY(),
+                        oenv.getMaxX(),
+                        oenv.getMaxY(),
+                        uenv.getMinX(),
+                        uenv.getMinY(),
+                        uenv.getMaxX(),
+                        uenv.getMaxY(),
+                        tinfo.getNx(),
+                        tinfo.getNy(),
+                        tinfo.getLevels(),
+                        tinfo.getScale(),
+                        tinfo.getShift()));
 
         out.write(" WHERE t.cellid = i.cellid)");
         return true;

@@ -17,6 +17,7 @@
 package org.geotools.geometry;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ import org.geotools.util.SuppressFBWarnings;
  */
 public class GeneralPosition extends AbstractPosition implements Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 9071833698385715524L;
 
     /** The ordinates of the direct position. */

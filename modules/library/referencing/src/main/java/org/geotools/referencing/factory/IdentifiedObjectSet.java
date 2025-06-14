@@ -17,6 +17,7 @@
 package org.geotools.referencing.factory;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -78,6 +79,7 @@ import org.geotools.util.Utilities;
  */
 public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     /** For cross-version compatibility during serialisation. */
+    @Serial
     private static final long serialVersionUID = -4221260663706882719L;
 
     /**
@@ -227,8 +229,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
                 }
             } catch (BackingStoreException exception) {
                 final Throwable cause = exception.getCause();
-                if (cause instanceof FactoryException) {
-                    throw (FactoryException) cause;
+                if (cause instanceof FactoryException factoryException) {
+                    throw factoryException;
                 }
                 throw exception;
             }

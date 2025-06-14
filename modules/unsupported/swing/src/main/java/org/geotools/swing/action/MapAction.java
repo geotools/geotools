@@ -17,6 +17,7 @@
 
 package org.geotools.swing.action;
 
+import java.io.Serial;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -31,6 +32,7 @@ import org.geotools.swing.MapPane;
  * @version $Id$
  */
 public abstract class MapAction extends AbstractAction {
+    @Serial
     private static final long serialVersionUID = 2400755645451641127L;
 
     private MapPane mapPane;

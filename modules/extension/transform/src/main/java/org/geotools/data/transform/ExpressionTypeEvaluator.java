@@ -93,8 +93,8 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
                     "Original feature type does not have a property named " + expression.getPropertyName());
         }
 
-        if (result instanceof GeometryDescriptor) {
-            this.crs = ((GeometryDescriptor) result).getCoordinateReferenceSystem();
+        if (result instanceof GeometryDescriptor descriptor) {
+            this.crs = descriptor.getCoordinateReferenceSystem();
         }
         return result.getType().getBinding();
     }

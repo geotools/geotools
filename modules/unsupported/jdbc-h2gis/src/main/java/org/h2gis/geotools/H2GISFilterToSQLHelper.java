@@ -141,8 +141,8 @@ public class H2GISFilterToSQLHelper {
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
-            if (filter instanceof DistanceBufferOperator) {
-                visitDistanceSpatialOperator((DistanceBufferOperator) filter, property, geometry, swapped, extraData);
+            if (filter instanceof DistanceBufferOperator operator) {
+                visitDistanceSpatialOperator(operator, property, geometry, swapped, extraData);
             } else {
                 visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
             }

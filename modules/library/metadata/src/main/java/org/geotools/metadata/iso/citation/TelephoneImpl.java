@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import net.opengis.ows11.TelephoneType;
@@ -34,6 +35,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class TelephoneImpl extends MetadataEntity implements Telephone {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 4920157673337669241L;
 
     /** Telephone numbers by which individuals can speak to the responsible organization or individual. */

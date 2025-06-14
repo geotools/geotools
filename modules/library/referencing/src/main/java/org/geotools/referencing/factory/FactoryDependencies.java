@@ -145,13 +145,12 @@ public class FactoryDependencies {
     /** Returns the dependencies for the specified factory. */
     private MutableTreeNode createTree(final Factory factory, final Set<Factory> done) {
         final DefaultMutableTreeNode root = createNode(factory);
-        if (factory instanceof ReferencingFactory) {
-            final Collection<?> dep = ((ReferencingFactory) factory).dependencies();
+        if (factory instanceof ReferencingFactory referencingFactory) {
+            final Collection<?> dep = referencingFactory.dependencies();
             if (dep != null) {
                 for (final Object element : dep) {
                     final MutableTreeNode child;
-                    if (element instanceof Factory) {
-                        final Factory candidate = (Factory) element;
+                    if (element instanceof Factory candidate) {
                         if (!done.add(candidate)) {
                             continue;
                         }
@@ -172,8 +171,8 @@ public class FactoryDependencies {
     /** Creates a single node for the specified factory. */
     private DefaultMutableTreeNode createNode(final Factory factory) {
         final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(factory)).append('[');
-        if (factory instanceof AuthorityFactory) {
-            final Citation authority = ((AuthorityFactory) factory).getAuthority();
+        if (factory instanceof AuthorityFactory authorityFactory) {
+            final Citation authority = authorityFactory.getAuthority();
             if (authority != null) {
                 final Collection<? extends Identifier> identifiers = authority.getIdentifiers();
                 if (identifiers != null && !identifiers.isEmpty()) {

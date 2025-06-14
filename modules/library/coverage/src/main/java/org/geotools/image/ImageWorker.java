@@ -541,10 +541,10 @@ public class ImageWorker {
     public Range extractNoDataProperty(final RenderedImage image) {
         Object property = image.getProperty(NoDataContainer.GC_NODATA);
         if (property != null) {
-            if (property instanceof NoDataContainer) {
-                return ((NoDataContainer) property).getAsRange();
-            } else if (property instanceof Double) {
-                return RangeFactory.create((Double) property, (Double) property);
+            if (property instanceof NoDataContainer container) {
+                return container.getAsRange();
+            } else if (property instanceof Double double1) {
+                return RangeFactory.create(double1, double1);
             }
         }
         return null;
@@ -620,8 +620,8 @@ public class ImageWorker {
      * @since 2.5
      */
     public final BufferedImage getBufferedImage() {
-        if (image instanceof BufferedImage) {
-            return (BufferedImage) image;
+        if (image instanceof BufferedImage bufferedImage) {
+            return bufferedImage;
         } else {
             return getPlanarImage().getAsBufferedImage();
         }
@@ -649,8 +649,8 @@ public class ImageWorker {
      */
     public final RenderedOp getRenderedOperation() {
         final RenderedImage image = getRenderedImage();
-        if (image instanceof RenderedOp) {
-            return (RenderedOp) image;
+        if (image instanceof RenderedOp renderedOp) {
+            return renderedOp;
         }
         // Creating a parameter block
         ParameterBlock pb = new ParameterBlock();
@@ -995,8 +995,8 @@ public class ImageWorker {
      */
     private static ImageLayout getImageLayout(final RenderingHints hints) {
         final Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
-        if (candidate instanceof ImageLayout) {
-            return (ImageLayout) candidate;
+        if (candidate instanceof ImageLayout layout) {
+            return layout;
         }
         return new ImageLayout();
     }
@@ -1038,7 +1038,7 @@ public class ImageWorker {
     /** Returns the transparent pixel value, or -1 if none. */
     public final int getTransparentPixel() {
         final ColorModel cm = image.getColorModel();
-        return cm instanceof IndexColorModel ? ((IndexColorModel) cm).getTransparentPixel() : -1;
+        return cm instanceof IndexColorModel icm ? icm.getTransparentPixel() : -1;
     }
 
     /**
@@ -1088,8 +1088,8 @@ public class ImageWorker {
                     ext[1][i] = extBand[1];
                 }
                 // Setting the property
-                if (image instanceof PlanarImage) {
-                    ((PlanarImage) image).setProperty(EXTREMA, ext);
+                if (image instanceof PlanarImage planarImage) {
+                    planarImage.setProperty(EXTREMA, ext);
                 } else {
                     PlanarImage p = getPlanarImage();
                     p.setProperty(EXTREMA, ext);
@@ -1111,8 +1111,7 @@ public class ImageWorker {
     public Histogram getHistogram(int[] numBins, double[] lowValues, double[] highValues) {
         Object histogram = getComputedProperty(HISTOGRAM);
         // can reuse cached histogram only if the bucket definitions are the same
-        if (histogram instanceof HistogramWrapper) {
-            HistogramWrapper wrapper = (HistogramWrapper) histogram;
+        if (histogram instanceof HistogramWrapper wrapper) {
             double[] prevHighs = wrapper.getHighValue();
             double[] prevLows = wrapper.getLowValue();
             int[] prevNumBins = wrapper.getNumBins();
@@ -1170,8 +1169,8 @@ public class ImageWorker {
             }
             HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
             // Setting the property
-            if (image instanceof PlanarImage) {
-                ((PlanarImage) image).setProperty(HISTOGRAM, wrapper);
+            if (image instanceof PlanarImage planarImage) {
+                planarImage.setProperty(HISTOGRAM, wrapper);
             } else {
                 PlanarImage p = getPlanarImage();
                 p.setProperty(HISTOGRAM, wrapper);
@@ -1224,8 +1223,8 @@ public class ImageWorker {
                     meanBands[i] = (double) results[i][0].getResult();
                 }
                 // Setting the property
-                if (image instanceof PlanarImage) {
-                    ((PlanarImage) image).setProperty(MEAN, meanBands);
+                if (image instanceof PlanarImage planarImage) {
+                    planarImage.setProperty(MEAN, meanBands);
                 } else {
                     PlanarImage p = getPlanarImage();
                     p.setProperty(MEAN, meanBands);
@@ -1594,8 +1593,7 @@ public class ImageWorker {
      */
     public final ImageWorker forceBitmaskIndexColorModel(int suggestedTransparent, final boolean errorDiffusion) {
         final ColorModel cm = image.getColorModel();
-        if (cm instanceof IndexColorModel) {
-            final IndexColorModel oldCM = (IndexColorModel) cm;
+        if (cm instanceof IndexColorModel oldCM) {
             switch (oldCM.getTransparency()) {
                 case Transparency.OPAQUE: {
                     // Suitable color model. There is nothing to do.
@@ -1800,8 +1798,7 @@ public class ImageWorker {
             return this;
         }
         // shortcut for index color model
-        if (cm instanceof IndexColorModel) {
-            final IndexColorModel icm = (IndexColorModel) cm;
+        if (cm instanceof IndexColorModel icm) {
             final SampleModel sm = this.image.getSampleModel();
             final int datatype = sm.getDataType();
             Range noData = getNoData();
@@ -1890,8 +1887,8 @@ public class ImageWorker {
             final RenderingHints hints = getRenderingHints();
             final ImageLayout layout;
             final Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
-            if (candidate instanceof ImageLayout) {
-                layout = (ImageLayout) candidate;
+            if (candidate instanceof ImageLayout imageLayout) {
+                layout = imageLayout;
             } else {
                 layout = new ImageLayout(image);
                 hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
@@ -3401,9 +3398,7 @@ public class ImageWorker {
 
         // if it's an index color model we can just recompute the palette
         // and replace it
-        if (colorModel instanceof IndexColorModel) {
-            // grab the original palette
-            IndexColorModel index = (IndexColorModel) colorModel;
+        if (colorModel instanceof IndexColorModel index) {
             byte[] reds = new byte[index.getMapSize()];
             byte[] greens = new byte[index.getMapSize()];
             byte[] blues = new byte[index.getMapSize()];
@@ -3854,8 +3849,7 @@ public class ImageWorker {
             iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
             iwp.setCompressionType(compression); // Lossy compression.
             iwp.setCompressionQuality(compressionRate); // We can control quality here.
-            if (iwp instanceof JPEGImageWriteParam) {
-                final JPEGImageWriteParam param = (JPEGImageWriteParam) iwp;
+            if (iwp instanceof JPEGImageWriteParam param) {
                 param.setOptimizeHuffmanTables(true);
                 try {
                     param.setProgressiveMode(JPEGImageWriteParam.MODE_DEFAULT);
@@ -4016,8 +4010,7 @@ public class ImageWorker {
 
         // affine over affine/scale?
         RenderedImage source = image;
-        if (image instanceof RenderedOp) {
-            RenderedOp op = (RenderedOp) image;
+        if (image instanceof RenderedOp op) {
 
             Object mtProperty = op.getProperty("MathTransform");
             Object sourceBoundsProperty = op.getProperty("SourceBoundingBox");
@@ -4028,8 +4021,8 @@ public class ImageWorker {
 
             boolean preserveChainedAffines = false;
             Object preserveHints = getRenderingHint(PRESERVE_CHAINED_AFFINES);
-            if (preserveHints != null && preserveHints instanceof Boolean) {
-                preserveChainedAffines = (Boolean) preserveHints;
+            if (preserveHints != null && preserveHints instanceof Boolean boolean1) {
+                preserveChainedAffines = boolean1;
             }
             if (WARP_REDUCTION_ENABLED
                     && "Warp".equals(opName)
@@ -4280,8 +4273,7 @@ public class ImageWorker {
             RenderedImage scaledImage, RenderingHints hints, ColorModel cm, SampleModel sm) {
         ImageWorker merged = new ImageWorker(scaledImage);
         Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
-        if (candidate instanceof ImageLayout) {
-            ImageLayout layout = (ImageLayout) candidate;
+        if (candidate instanceof ImageLayout layout) {
             if (layout.getTileWidth(null) > 0 && layout.getTileHeight(null) > 0) {
                 ImageLayout layout2 = new ImageLayout2(
                         layout.getTileGridXOffset(null),
@@ -4309,8 +4301,8 @@ public class ImageWorker {
             RenderedImage localImage = image;
             // there might be the case that the image comes from a bandMerge
             // so let's try to extract the ROI from the source image
-            if (localImage instanceof RenderedOp) {
-                String operationName = ((RenderedOp) localImage).getOperationName();
+            if (localImage instanceof RenderedOp renderedOp) {
+                String operationName = renderedOp.getOperationName();
                 if ("BandMerge".equalsIgnoreCase(operationName)) {
                     List<RenderedImage> sources = localImage.getSources();
                     if (!sources.isEmpty()) {
@@ -4328,8 +4320,8 @@ public class ImageWorker {
                 prop = localImage.getProperty("roi");
             }
             // Actual ROI update
-            if (prop != null && prop instanceof ROI) {
-                setROI((ROI) prop);
+            if (prop != null && prop instanceof ROI oI) {
+                setROI(oI);
             } else {
                 setROI(null);
             }
@@ -4380,8 +4372,7 @@ public class ImageWorker {
 
         // crop over crop
         RenderedImage source = image;
-        if (image instanceof RenderedOp) {
-            RenderedOp op = (RenderedOp) image;
+        if (image instanceof RenderedOp op) {
             if ("Crop".equals(op.getOperationName()) || "GTCrop".equals(op.getOperationName())) {
                 ParameterBlock paramBlock = op.getParameterBlock();
                 source = paramBlock.getRenderedSource(0);
@@ -4484,11 +4475,10 @@ public class ImageWorker {
         if (images != null && images.length > 0) {
             ColorModel cmref = images[0].getColorModel();
             Color backgroundColor = getBackgroundColor();
-            if (cmref instanceof IndexColorModel
+            if (cmref instanceof IndexColorModel icm
                     && (cmref.getTransparency() != IndexColorModel.OPAQUE
                             || images[0].getProperty("ROI") instanceof ROI)
                     && backgroundColor != null) {
-                IndexColorModel icm = (IndexColorModel) cmref;
                 int index = ColorUtilities.getColorIndex(icm, backgroundColor, -1);
                 Color color;
                 if (icm.hasAlpha()) {
@@ -4910,8 +4900,8 @@ public class ImageWorker {
         ROI roi = getROI();
         if (roi == null) {
             Object roiCandidate = image.getProperty("roi");
-            if (roiCandidate instanceof ROI) {
-                roi = (ROI) roiCandidate;
+            if (roiCandidate instanceof ROI oI) {
+                roi = oI;
             }
         }
         if (nodata == null && roi == null) {
@@ -4928,8 +4918,7 @@ public class ImageWorker {
 
         // in case of index color model we try to preserve it, so that output
         // formats that can work with it can enjoy its extra compactness
-        if (cm instanceof IndexColorModel) {
-            IndexColorModel icm = (IndexColorModel) cm;
+        if (cm instanceof IndexColorModel icm) {
             // try to find the index that matches the requested background color
             final int bgColorIndex = icm.getTransparentPixel();
 
@@ -4970,9 +4959,7 @@ public class ImageWorker {
                         new ImageWorker(getRenderedImage()).retainLastBand().getRenderedImage();
                 alphaChannels = new PlanarImage[] {PlanarImage.wrapRenderedImage(alpha)};
             }
-        } else if (cm instanceof ComponentColorModel) {
-            // convert to RGB if necessary
-            ComponentColorModel ccm = (ComponentColorModel) cm;
+        } else if (cm instanceof ComponentColorModel ccm) {
             boolean hasAlpha = cm.hasAlpha();
 
             // if we have a grayscale image see if we have to expand to RGB
@@ -5011,7 +4998,7 @@ public class ImageWorker {
 
                 // get back the ColorModel
                 cm = image.getColorModel();
-                ccm = (ComponentColorModel) cm;
+                ccm = ccm;
                 hasAlpha = cm.hasAlpha();
             }
 
@@ -5245,11 +5232,11 @@ public class ImageWorker {
             c.getMethod("show", new Class[] {RenderedImage.class}).invoke(null, new Object[] {image});
         } catch (InvocationTargetException e) {
             final Throwable cause = e.getCause();
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
+            if (cause instanceof RuntimeException exception) {
+                throw exception;
             }
-            if (cause instanceof Error) {
-                throw (Error) cause;
+            if (cause instanceof Error error) {
+                throw error;
             }
             throw new AssertionError(e);
         } catch (Exception e) {
@@ -5281,8 +5268,8 @@ public class ImageWorker {
         this.roi = null;
         if (this.image instanceof PlanarImage) {
             ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(image));
-        } else if (this.image instanceof BufferedImage) {
-            ((BufferedImage) this.image).flush();
+        } else if (this.image instanceof BufferedImage bufferedImage) {
+            bufferedImage.flush();
             this.image = null;
         }
     }
@@ -5443,8 +5430,7 @@ public class ImageWorker {
                         ROI reprojectedROI = roi;
                         try {
                             MathTransform inverse = originalTransform.inverse();
-                            if (inverse instanceof AffineTransform) {
-                                AffineTransform inv = (AffineTransform) inverse;
+                            if (inverse instanceof AffineTransform inv) {
                                 newROI = reprojectedROI.transform(inv);
                             }
                         } catch (Exception e) {
@@ -5468,8 +5454,7 @@ public class ImageWorker {
                         ROI reprojectedROI = roi;
                         try {
                             MathTransform inverse = originalTransform.inverse();
-                            if (inverse instanceof AffineTransform) {
-                                AffineTransform inv = (AffineTransform) inverse;
+                            if (inverse instanceof AffineTransform inv) {
                                 reprojectedROI = reprojectedROI.transform(inv);
                                 newROI = reprojectedROI.intersect((ROI) property);
                             }
@@ -5521,8 +5506,8 @@ public class ImageWorker {
                     image = result;
                     // getting the new ROI property
                     Object prop = result.getProperty("roi");
-                    if (prop != null && prop instanceof ROI) {
-                        setROI((ROI) prop);
+                    if (prop != null && prop instanceof ROI oI) {
+                        setROI(oI);
                     } else {
                         setROI(null);
                     }

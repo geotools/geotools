@@ -217,8 +217,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // GridCoverageFactory initialization
         if (this.hints.containsKey(Hints.GRID_COVERAGE_FACTORY)) {
             final Object factory = this.hints.get(Hints.GRID_COVERAGE_FACTORY);
-            if (factory != null && factory instanceof GridCoverageFactory) {
-                this.coverageFactory = (GridCoverageFactory) factory;
+            if (factory != null && factory instanceof GridCoverageFactory gridCoverageFactory) {
+                this.coverageFactory = gridCoverageFactory;
             }
         }
         if (this.coverageFactory == null) {
@@ -619,12 +619,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(
                         Level.FINE,
-                        String.format(
-                                "coverageName:%s,imageChoice:%d,subSamplingFactorX:%d,subSamplingFactorY:%d",
-                                coverageName,
-                                imageChoice.intValue(),
-                                readP.getSourceXSubsampling(),
-                                readP.getSourceYSubsampling()));
+                        "coverageName:%s,imageChoice:%d,subSamplingFactorX:%d,subSamplingFactorY:%d"
+                                .formatted(
+                                        coverageName,
+                                        imageChoice.intValue(),
+                                        readP.getSourceXSubsampling(),
+                                        readP.getSourceYSubsampling()));
         }
     }
 
@@ -852,8 +852,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         if (pixInCell == PixelInCell.CELL_CENTER) return raster2Model;
 
         // we do have to change the pixel datum
-        if (raster2Model instanceof AffineTransform) {
-            final AffineTransform tr = new AffineTransform((AffineTransform) raster2Model);
+        if (raster2Model instanceof AffineTransform transform) {
+            final AffineTransform tr = new AffineTransform(transform);
             tr.concatenate(AffineTransform.getTranslateInstance(-0.5, -0.5));
             return ProjectiveTransform.create(tr);
         }
@@ -952,15 +952,13 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             info = new DefaultServiceInfo();
         }
         info.setDescription(source == null ? null : String.valueOf(source));
-        if (source instanceof URL) {
-            URL url = (URL) source;
+        if (source instanceof URL url) {
             info.setTitle(url.getFile());
             try {
                 info.setSource(url.toURI());
             } catch (URISyntaxException e) {
             }
-        } else if (source instanceof File) {
-            File file = (File) source;
+        } else if (source instanceof File file) {
             String filename = file.getName();
             if (filename == null || filename.length() == 0) {
                 info.setTitle(file.getName());
@@ -987,10 +985,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /** Returns the source as a File, if it can be converted to one, and it exists */
     protected File getSourceAsFile() {
         File file = null;
-        if (source instanceof File) {
-            file = (File) source;
-        } else if (source instanceof URL) {
-            File sf = URLs.urlToFile((URL) source);
+        if (source instanceof File file1) {
+            file = file1;
+        } else if (source instanceof URL rL) {
+            File sf = URLs.urlToFile(rL);
             if (sf.exists()) {
                 file = sf;
             }
@@ -1280,8 +1278,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
     /** Collects the scales and offsets for value rescaling from the metadata, if present */
     protected void collectScaleOffset(IIOMetadata iioMetadata) {
-        if (iioMetadata instanceof CoreCommonImageMetadata) {
-            CoreCommonImageMetadata ccm = (CoreCommonImageMetadata) iioMetadata;
+        if (iioMetadata instanceof CoreCommonImageMetadata ccm) {
             this.scales = ccm.getScales();
             this.offsets = ccm.getOffsets();
         }
@@ -1311,8 +1308,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
         // So far supported only by TIFF files, we can consider moving up to CoreCommonImageMetadata
         // if more examples show up in different formats
-        if (metadata instanceof TIFFImageMetadata) {
-            PAMDataset gdalMetadata = getPamDataset((TIFFImageMetadata) metadata);
+        if (metadata instanceof TIFFImageMetadata imageMetadata) {
+            PAMDataset gdalMetadata = getPamDataset(imageMetadata);
             if (gdalMetadata != null) return gdalMetadata;
         }
 

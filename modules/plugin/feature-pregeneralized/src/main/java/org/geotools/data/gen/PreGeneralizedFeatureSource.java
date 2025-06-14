@@ -217,7 +217,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 
         SimpleFeatureSource fs = getFeatureSourceFor(query);
         DataAccess<SimpleFeatureType, SimpleFeature> access = fs.getDataStore();
-        if (access instanceof DataStore) {
+        if (access instanceof DataStore store) {
             Generalization di = info.getGeneralizationForDistance(getRequestedDistance(query));
             if (di != null) logDistanceInfo(di);
 
@@ -229,7 +229,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
                     getSchema(),
                     getReturnedSchema(getSchema(), query),
                     indexMapping.get(di == null ? 0.0 : di.getDistance()),
-                    ((DataStore) access).getFeatureReader(newQuery, transaction),
+                    store.getFeatureReader(newQuery, transaction),
                     info.getGeomPropertyName(),
                     backendGeometryPropertyName);
         }

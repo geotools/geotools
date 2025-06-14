@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -42,6 +43,7 @@ import org.geotools.referencing.operation.DefiningConversion;
  */
 public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8149602276542469876L;
 
     /**

@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.util.List;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -29,6 +30,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<MultiPolygon> {
 
+    @Serial
     private static final long serialVersionUID = -5796254063449438787L;
 
     private static final String TYPENAME_MULTISURFACE = "MultiSurface";
@@ -56,8 +58,7 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
         Polygon[] linearized = new Polygon[numGeometries];
         for (int k = 0; k < numGeometries; k++) {
             Polygon component = (Polygon) getGeometryN(k);
-            if (component instanceof CurvedGeometry<?>) {
-                CurvedGeometry<?> curved = (CurvedGeometry<?>) component;
+            if (component instanceof CurvedGeometry<?> curved) {
                 linearized[k] = (Polygon) curved.linearize(tolerance);
             } else {
                 linearized[k] = component;
@@ -77,8 +78,7 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
             sb.append("(");
             for (int k = 0; k < numGeometries; k++) {
                 Polygon component = (Polygon) getGeometryN(k);
-                if (component instanceof CurvedGeometry<?>) {
-                    CurvedGeometry<?> curved = (CurvedGeometry<?>) component;
+                if (component instanceof CurvedGeometry<?> curved) {
                     sb.append(curved.toCurvedText());
                 } else {
                     // straight lines polygon

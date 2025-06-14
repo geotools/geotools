@@ -326,10 +326,10 @@ public class Triangle {
     @Override
     public boolean equals(Object o) {
         boolean ret;
-        if (o instanceof Triangle) {
-            ret = this.containsEdge(((Triangle) o).getEdges()[0])
-                    && this.containsEdge(((Triangle) o).getEdges()[1])
-                    && this.containsEdge(((Triangle) o).getEdges()[2]);
+        if (o instanceof Triangle triangle) {
+            ret = this.containsEdge(triangle.getEdges()[0])
+                    && this.containsEdge(triangle.getEdges()[1])
+                    && this.containsEdge(triangle.getEdges()[2]);
         } else {
             ret = false;
         }

@@ -17,6 +17,7 @@
 package org.geotools.parameter;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +53,7 @@ import org.geotools.util.XArray;
  */
 public class MatrixParameters extends ParameterGroup implements ParameterDescriptorGroup {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7747712999115044943L;
 
     /** The parameter values. Will be constructed only when first requested. */

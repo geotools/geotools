@@ -1424,8 +1424,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         public Object getProperty(String name, Object opNode) {
             validate(name, opNode);
 
-            if (opNode instanceof GridCoverage2DRIA && name.equalsIgnoreCase("roi")) {
-                GridCoverage2DRIA op = (GridCoverage2DRIA) opNode;
+            if (opNode instanceof GridCoverage2DRIA op && name.equalsIgnoreCase("roi")) {
 
                 // Retrieve the rendered source image and its ROI.
                 RenderedImage src = op.src.getRenderedImage();
@@ -1449,7 +1448,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                 // Determine the effective source bounds.
                 Rectangle srcBounds = null;
                 PlanarImage dst = op;
-                if (dst instanceof GeometricOpImage && ((GeometricOpImage) dst).getBorderExtender() == null) {
+                if (dst instanceof GeometricOpImage image && image.getBorderExtender() == null) {
                     srcBounds = new Rectangle(
                             src.getMinX() + interp.getLeftPadding(),
                             src.getMinY() + interp.getTopPadding(),

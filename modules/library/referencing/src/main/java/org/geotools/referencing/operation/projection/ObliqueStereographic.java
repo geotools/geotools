@@ -33,6 +33,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -73,6 +74,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class ObliqueStereographic extends StereographicUSGS {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = -1454098847621943639L;
 
     /*
@@ -229,6 +231,7 @@ public class ObliqueStereographic extends StereographicUSGS {
      */
     public static final class Provider extends Stereographic.Provider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 6505988910141381354L;
 
         /** The parameters group. */

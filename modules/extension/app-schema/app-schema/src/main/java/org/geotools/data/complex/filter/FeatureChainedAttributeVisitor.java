@@ -186,9 +186,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                 if (isClientProperty(lastAttrPath) && isXlinkHref(lastAttrPath)) {
                     StepList parentAttrPath = lastAttrPath.subList(0, lastAttrPath.size() - 1);
                     AttributeMapping parentAttr = currentType.getAttributeMapping(parentAttrPath);
-                    if (parentAttr != null && parentAttr instanceof NestedAttributeMapping) {
-                        // yes, it's feature chaining by reference: add another step to the chain
-                        NestedAttributeMapping nestedAttr = (NestedAttributeMapping) parentAttr;
+                    if (parentAttr != null && parentAttr instanceof NestedAttributeMapping nestedAttr) {
                         attrDescr.addLink(new FeatureChainLink(currentType, nestedAttr));
                         // add last step
                         if (nestedAttr.isConditional() && feature == null) {

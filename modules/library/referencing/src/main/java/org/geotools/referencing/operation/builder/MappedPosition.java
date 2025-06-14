@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.builder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -41,6 +42,7 @@ import org.geotools.util.Utilities;
  */
 public class MappedPosition implements Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 3262172371858749543L;
 
     /** The source position. */
@@ -106,8 +108,8 @@ public class MappedPosition implements Serializable {
 
     /** Set the source direct position to the specified value. */
     public void setSource(final Position point) {
-        if (source instanceof Position2D) {
-            ((Position2D) source).setLocation(point);
+        if (source instanceof Position2D position2D) {
+            position2D.setLocation(point);
         } else {
             ((GeneralPosition) source).setLocation(point);
         }

@@ -117,8 +117,8 @@ public class TPKReader extends AbstractGridCoverage2DReader {
 
         file.close();
 
-        String msg = String.format(
-                "TPKReader constructor finished in %d milliseconds", System.currentTimeMillis() - startConstructor);
+        String msg = "TPKReader constructor finished in %d milliseconds"
+                .formatted(System.currentTimeMillis() - startConstructor);
 
         LOGGER.fine(msg);
     }
@@ -235,9 +235,8 @@ public class TPKReader extends AbstractGridCoverage2DReader {
 
         file.close();
 
-        String msg = String.format(
-                "At zoom level %d TPK read completed in %d milliseconds",
-                zoomLevel, System.currentTimeMillis() - startRead);
+        String msg = "At zoom level %d TPK read completed in %d milliseconds"
+                .formatted(zoomLevel, System.currentTimeMillis() - startRead);
 
         LOGGER.fine(msg);
 
@@ -300,7 +299,7 @@ public class TPKReader extends AbstractGridCoverage2DReader {
     private static String getImageFormat(byte[] imageData, String format) {
         String inferred = ImageFormats.inferFormatFromImageData(imageData);
         if (inferred != null && !inferred.equalsIgnoreCase(format)) {
-            LOGGER.fine(String.format("Overriding tile format: was %s, set to %s", format, inferred));
+            LOGGER.fine("Overriding tile format: was %s, set to %s".formatted(format, inferred));
         }
         return inferred != null ? inferred : format;
     }
@@ -374,7 +373,7 @@ public class TPKReader extends AbstractGridCoverage2DReader {
                     image = readImage(tile.tileData, tile.imageFormat);
                 } catch (Exception ex) {
                     String template = "Bad tile data, zl=%d, row=%d, col=%d ==> %s";
-                    LOGGER.info(String.format(template, tile.zoomLevel, row, col, ex.getMessage()));
+                    LOGGER.info(template.formatted(tile.zoomLevel, row, col, ex.getMessage()));
                     image = null;
                 }
             }

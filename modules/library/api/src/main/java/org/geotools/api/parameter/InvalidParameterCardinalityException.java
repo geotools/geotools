@@ -9,6 +9,7 @@
  */
 package org.geotools.api.parameter;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ import java.util.List;
  */
 public class InvalidParameterCardinalityException extends IllegalStateException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 4030549323541812311L;
 
     /** The name of the parameter with invalid cardinality. */

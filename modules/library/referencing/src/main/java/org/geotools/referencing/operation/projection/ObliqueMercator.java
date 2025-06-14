@@ -35,6 +35,7 @@ import static java.lang.Math.tan;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
@@ -151,6 +152,7 @@ import si.uom.NonSI;
  */
 public class ObliqueMercator extends MapProjection {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = 5382294977124711214L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -623,6 +625,7 @@ public class ObliqueMercator extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 201776686002266891L;
 
         /**
@@ -770,6 +773,7 @@ public class ObliqueMercator extends MapProjection {
      */
     public static class Provider_TwoPoint extends Provider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 7124258885016543889L;
 
         /**

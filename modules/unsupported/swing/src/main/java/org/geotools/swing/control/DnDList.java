@@ -31,6 +31,7 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.io.Serial;
 import java.util.List;
 import javax.swing.JList;
 
@@ -45,6 +46,7 @@ import javax.swing.JList;
  * @version $Id$
  */
 public class DnDList<T> extends JList<T> implements DragGestureListener, DragSourceListener, DropTargetListener {
+    @Serial
     private static final long serialVersionUID = 3310751294076288683L;
 
     private DragSource src;

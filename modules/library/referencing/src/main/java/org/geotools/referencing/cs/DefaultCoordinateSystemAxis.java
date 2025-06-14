@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,6 +66,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject implements CoordinateSystemAxis {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7883614853277827689L;
 
     /**

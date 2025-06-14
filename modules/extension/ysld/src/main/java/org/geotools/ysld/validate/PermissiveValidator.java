@@ -107,7 +107,7 @@ public class PermissiveValidator extends StatefulValidator {
             case STARTED:
                 break;
             default:
-                context.error(String.format("Unexpected alias '%s'", evt.getAnchor()), evt.getStartMark());
+                context.error("Unexpected alias '%s'".formatted(evt.getAnchor()), evt.getStartMark());
                 break;
         }
     }

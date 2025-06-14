@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.matrix;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -30,6 +31,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class Matrix1 implements XMatrix, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4829171016106097031L;
 
     /** The only element in this matrix. */

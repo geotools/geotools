@@ -293,11 +293,11 @@ public class OGRDataStore extends ContentDataStore {
                     Object ogrFeature = ogr.LayerNewFeature(layerDefinition);
                     for (int i = 0; i < schema.getAttributeCount(); i++) {
                         Object value = feature.getAttribute(i);
-                        if (value instanceof Geometry) {
+                        if (value instanceof Geometry geometry1) {
                             // using setGeometryDirectly the feature becomes the owner of the
                             // generated
                             // OGR geometry and we don't have to .delete() it (it's faster, too)
-                            Object geometry = geomMapper.parseGTGeometry((Geometry) value);
+                            Object geometry = geomMapper.parseGTGeometry(geometry1);
                             ogr.FeatureSetGeometryDirectly(ogrFeature, geometry);
                         } else {
                             // remap index

@@ -308,12 +308,15 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         List<String> parameters = new ArrayList<>();
 
         // setup the sql to use for the ALL_SDO table
-        String allSdoSqlStatement = "SELECT META.SDO_LAYER_GTYPE\n"
-                + "FROM ALL_INDEXES INFO\n"
-                + "INNER JOIN MDSYS.ALL_SDO_INDEX_METADATA META\n"
-                + "ON INFO.INDEX_NAME = META.SDO_INDEX_NAME\n"
-                + "WHERE INFO.TABLE_NAME = ?\n"
-                + "AND REPLACE(meta.sdo_column_name, '\"') = ?\n";
+        String allSdoSqlStatement =
+                """
+                SELECT META.SDO_LAYER_GTYPE
+                FROM ALL_INDEXES INFO
+                INNER JOIN MDSYS.ALL_SDO_INDEX_METADATA META
+                ON INFO.INDEX_NAME = META.SDO_INDEX_NAME
+                WHERE INFO.TABLE_NAME = ?
+                AND REPLACE(meta.sdo_column_name, '"') = ?
+                """;
 
         parameters.add(tableName);
         parameters.add(columnName);
@@ -340,12 +343,15 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         List<String> parameters = new ArrayList<>();
 
         // setup the sql to use for the USER_SDO table
-        String userSdoSqlStatement = "SELECT META.SDO_LAYER_GTYPE\n"
-                + "FROM ALL_INDEXES INFO\n"
-                + "INNER JOIN MDSYS.USER_SDO_INDEX_METADATA META\n"
-                + "ON INFO.INDEX_NAME = META.SDO_INDEX_NAME\n"
-                + "WHERE INFO.TABLE_NAME = ?\n"
-                + "AND REPLACE(meta.sdo_column_name, '\"') = ?\n";
+        String userSdoSqlStatement =
+                """
+                SELECT META.SDO_LAYER_GTYPE
+                FROM ALL_INDEXES INFO
+                INNER JOIN MDSYS.USER_SDO_INDEX_METADATA META
+                ON INFO.INDEX_NAME = META.SDO_INDEX_NAME
+                WHERE INFO.TABLE_NAME = ?
+                AND REPLACE(meta.sdo_column_name, '"') = ?
+                """;
         parameters.add(tableName);
         parameters.add(columnName);
 
@@ -526,12 +532,12 @@ public class OracleDialect extends PreparedStatementSQLDialect {
 
         // in Oracle you can have polygons in a column declared to be multipolygon, and so on...
         // so we better convert geometries, since our feature model is not so lenient
-        if (targetClazz.equals(MultiPolygon.class) && geom instanceof Polygon) {
-            return factory.createMultiPolygon(new Polygon[] {(Polygon) geom});
-        } else if (targetClazz.equals(MultiPoint.class) && geom instanceof Point) {
-            return factory.createMultiPoint(new Point[] {(Point) geom});
-        } else if (targetClazz.equals(MultiLineString.class) && geom instanceof LineString) {
-            return factory.createMultiLineString(new LineString[] {(LineString) geom});
+        if (targetClazz.equals(MultiPolygon.class) && geom instanceof Polygon polygon) {
+            return factory.createMultiPolygon(new Polygon[] {polygon});
+        } else if (targetClazz.equals(MultiPoint.class) && geom instanceof Point point) {
+            return factory.createMultiPoint(new Point[] {point});
+        } else if (targetClazz.equals(MultiLineString.class) && geom instanceof LineString string) {
+            return factory.createMultiLineString(new LineString[] {string});
         } else if (targetClazz.equals(GeometryCollection.class)) {
             return factory.createGeometryCollection(new Geometry[] {geom});
         }
@@ -848,7 +854,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                 }
 
                 for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                    if (att instanceof GeometryDescriptor) {
+                    if (att instanceof GeometryDescriptor descriptor) {
                         String columnName = att.getName().getLocalPart();
                         // check if we can access the MDSYS.USER_SDO_GEOM_METADATA table
                         if (canAccessUserViews(cx)) {
@@ -866,8 +872,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
 
                                 // reproject and merge
                                 if (env != null && !env.isNull()) {
-                                    CoordinateReferenceSystem crs =
-                                            ((GeometryDescriptor) att).getCoordinateReferenceSystem();
+                                    CoordinateReferenceSystem crs = descriptor.getCoordinateReferenceSystem();
                                     result.add(new ReferencedEnvelope(env, crs));
                                     rs.close();
                                     continue;
@@ -899,8 +904,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
 
                             // reproject and merge
                             if (env != null && !env.isNull()) {
-                                CoordinateReferenceSystem crs =
-                                        ((GeometryDescriptor) att).getCoordinateReferenceSystem();
+                                CoordinateReferenceSystem crs = descriptor.getCoordinateReferenceSystem();
                                 result.add(new ReferencedEnvelope(env, crs));
                             }
                         }
@@ -952,7 +956,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             }
 
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                if (att instanceof GeometryDescriptor) {
+                if (att instanceof GeometryDescriptor descriptor) {
                     // use estimated extent (optimizer statistics)
                     StringBuilder sql = new StringBuilder();
                     sql.append("select SDO_TUNE.EXTENT_OF('");
@@ -964,8 +968,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     rs = st.executeQuery(sql.toString());
 
                     if (rs.next()) {
-                        // decode the geometry
-                        GeometryDescriptor descriptor = (GeometryDescriptor) att;
                         Geometry geometry = readGeometry(rs, 1, new GeometryFactory(), cx);
 
                         // Either a ReferencedEnvelope or ReferencedEnvelope3D will be generated
@@ -1005,8 +1007,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
 
             // register all geometry columns in the database
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                if (att instanceof GeometryDescriptor) {
-                    GeometryDescriptor geom = (GeometryDescriptor) att;
+                if (att instanceof GeometryDescriptor geom) {
 
                     // guess a tolerance, very small value for geographic data, 10cm for non
                     // geographic data

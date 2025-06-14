@@ -181,8 +181,8 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         List<GraphicalSymbol> symbolsCopy = new ArrayList<>(symbols.size());
 
         for (GraphicalSymbol symbol : symbols) {
-            if (symbol instanceof Symbol) {
-                symbolsCopy.add(copy((Symbol) symbol));
+            if (symbol instanceof Symbol symbol1) {
+                symbolsCopy.add(copy(symbol1));
             } else {
                 throw new RuntimeException("Don't know how to rescale " + symbol);
             }
@@ -224,18 +224,14 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
             // rescales label placement
             LabelPlacement placement = copy.getLabelPlacement();
-            if (placement instanceof PointPlacement) {
-                // rescales point label placement
-                PointPlacement pointPlacement = (PointPlacement) placement;
+            if (placement instanceof PointPlacement pointPlacement) {
                 Displacement disp = pointPlacement.getDisplacement();
                 if (disp != null) {
                     disp.setDisplacementX(rescale(disp.getDisplacementX()));
                     disp.setDisplacementY(rescale(disp.getDisplacementY()));
                     pointPlacement.setDisplacement(disp);
                 }
-            } else if (placement instanceof LinePlacement) {
-                // rescales line label placement
-                LinePlacement linePlacement = (LinePlacement) placement;
+            } else if (placement instanceof LinePlacement linePlacement) {
                 linePlacement.setGap(rescale(linePlacement.getGap()));
                 linePlacement.setInitialGap(rescale(linePlacement.getInitialGap()));
                 linePlacement.setPerpendicularOffset(rescale(linePlacement.getPerpendicularOffset()));

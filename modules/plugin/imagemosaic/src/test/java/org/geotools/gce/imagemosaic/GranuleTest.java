@@ -194,49 +194,53 @@ public class GranuleTest extends Assert {
         reader.dispose();
     }
 
-    static final String NZTM_WKT_NE = "PROJCS[\"NZGD2000 / New Zealand Transverse Mercator 2000\", \n"
-            + "  GEOGCS[\"NZGD2000\", \n"
-            + "    DATUM[\"New Zealand Geodetic Datum 2000\", \n"
-            + "      SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]], \n"
-            + "      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \n"
-            + "      AUTHORITY[\"EPSG\",\"6167\"]], \n"
-            + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-            + "    UNIT[\"degree\", 0.017453292519943295], \n"
-            + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-            + "    AXIS[\"Geodetic longitude\", EAST], \n"
-            + "    AUTHORITY[\"EPSG\",\"4167\"]], \n"
-            + "  PROJECTION[\"Transverse_Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \n"
-            + "  PARAMETER[\"central_meridian\", 173.0], \n"
-            + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
-            + "  PARAMETER[\"scale_factor\", 0.9996], \n"
-            + "  PARAMETER[\"false_easting\", 1600000.0], \n"
-            + "  PARAMETER[\"false_northing\", 10000000.0], \n"
-            + "  UNIT[\"m\", 1.0], \n"
-            + "  AXIS[\"Northing\", NORTH], \n"
-            + "  AXIS[\"Easting\", EAST], \n"
-            + "  AUTHORITY[\"EPSG\",\"2193\"]]";
+    static final String NZTM_WKT_NE =
+            """
+            PROJCS["NZGD2000 / New Zealand Transverse Mercator 2000",\s
+              GEOGCS["NZGD2000",\s
+                DATUM["New Zealand Geodetic Datum 2000",\s
+                  SPHEROID["GRS 1980", 6378137.0, 298.257222101, AUTHORITY["EPSG","7019"]],\s
+                  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\s
+                  AUTHORITY["EPSG","6167"]],\s
+                PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                UNIT["degree", 0.017453292519943295],\s
+                AXIS["Geodetic latitude", NORTH],\s
+                AXIS["Geodetic longitude", EAST],\s
+                AUTHORITY["EPSG","4167"]],\s
+              PROJECTION["Transverse_Mercator", AUTHORITY["EPSG","9807"]],\s
+              PARAMETER["central_meridian", 173.0],\s
+              PARAMETER["latitude_of_origin", 0.0],\s
+              PARAMETER["scale_factor", 0.9996],\s
+              PARAMETER["false_easting", 1600000.0],\s
+              PARAMETER["false_northing", 10000000.0],\s
+              UNIT["m", 1.0],\s
+              AXIS["Northing", NORTH],\s
+              AXIS["Easting", EAST],\s
+              AUTHORITY["EPSG","2193"]]""";
 
-    static final String NZTM_WKT_EN = "PROJCS[\"NZGD2000 / New Zealand Transverse Mercator 2000\", \n"
-            + "  GEOGCS[\"NZGD2000\", \n"
-            + "    DATUM[\"New Zealand Geodetic Datum 2000\", \n"
-            + "      SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]], \n"
-            + "      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \n"
-            + "      AUTHORITY[\"EPSG\",\"6167\"]], \n"
-            + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-            + "    UNIT[\"degree\", 0.017453292519943295], \n"
-            + "    AXIS[\"Geodetic longitude\", EAST], \n"
-            + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-            + "    AUTHORITY[\"EPSG\",\"4167\"]], \n"
-            + "  PROJECTION[\"Transverse_Mercator\"], \n"
-            + "  PARAMETER[\"central_meridian\", 173.0], \n"
-            + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
-            + "  PARAMETER[\"scale_factor\", 0.9996], \n"
-            + "  PARAMETER[\"false_easting\", 1600000.0], \n"
-            + "  PARAMETER[\"false_northing\", 10000000.0], \n"
-            + "  UNIT[\"m\", 1.0], \n"
-            + "  AXIS[\"Easting\", EAST], \n"
-            + "  AXIS[\"Northing\", NORTH], \n"
-            + "  AUTHORITY[\"EPSG\",\"2193\"]]";
+    static final String NZTM_WKT_EN =
+            """
+            PROJCS["NZGD2000 / New Zealand Transverse Mercator 2000",\s
+              GEOGCS["NZGD2000",\s
+                DATUM["New Zealand Geodetic Datum 2000",\s
+                  SPHEROID["GRS 1980", 6378137.0, 298.257222101, AUTHORITY["EPSG","7019"]],\s
+                  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\s
+                  AUTHORITY["EPSG","6167"]],\s
+                PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                UNIT["degree", 0.017453292519943295],\s
+                AXIS["Geodetic longitude", EAST],\s
+                AXIS["Geodetic latitude", NORTH],\s
+                AUTHORITY["EPSG","4167"]],\s
+              PROJECTION["Transverse_Mercator"],\s
+              PARAMETER["central_meridian", 173.0],\s
+              PARAMETER["latitude_of_origin", 0.0],\s
+              PARAMETER["scale_factor", 0.9996],\s
+              PARAMETER["false_easting", 1600000.0],\s
+              PARAMETER["false_northing", 10000000.0],\s
+              UNIT["m", 1.0],\s
+              AXIS["Easting", EAST],\s
+              AXIS["Northing", NORTH],\s
+              AUTHORITY["EPSG","2193"]]""";
 
     @Test
     public void testCRS_NorthingEasting() throws Exception {

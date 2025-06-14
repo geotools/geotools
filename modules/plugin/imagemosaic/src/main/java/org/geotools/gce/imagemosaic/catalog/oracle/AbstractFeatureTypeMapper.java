@@ -150,8 +150,8 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
             Name name = descriptor.getName();
             Definition definition = definitionsMapping.get(name);
             AttributeType type = descriptor.getType();
-            if (type instanceof GeometryType) {
-                coordinateReferenceSystem = ((GeometryType) type).getCoordinateReferenceSystem();
+            if (type instanceof GeometryType geometryType) {
+                coordinateReferenceSystem = geometryType.getCoordinateReferenceSystem();
                 remapGeometryAttribute(tb, definition, descriptor, type);
             } else {
                 tb.add(definition.getExpression().toString(), definition.getBinding());

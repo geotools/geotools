@@ -70,10 +70,13 @@ public final class MrSIDTest extends GDALTestCase {
     public void test() throws Exception {
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
-            LOGGER.info("==================================================================\n"
-                    + " Warning! No valid test File has been specified.\n"
-                    + " Please provide a valid sample in the source code and repeat this test!\n"
-                    + "========================================================================");
+            LOGGER.info(
+                    """
+                    ==================================================================
+                     Warning! No valid test File has been specified.
+                     Please provide a valid sample in the source code and repeat this test!
+                    ========================================================================\
+                    """);
 
             return;
         }
@@ -185,10 +188,13 @@ public final class MrSIDTest extends GDALTestCase {
     public void test2() throws Exception {
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
-            LOGGER.info("==================================================================\n"
-                    + " Warning! No valid test File has been specified.\n"
-                    + " Please provide a valid sample in the source code and repeat this test!\n"
-                    + "========================================================================");
+            LOGGER.info(
+                    """
+                    ==================================================================
+                     Warning! No valid test File has been specified.
+                     Please provide a valid sample in the source code and repeat this test!
+                    ========================================================================\
+                    """);
             return;
         }
 

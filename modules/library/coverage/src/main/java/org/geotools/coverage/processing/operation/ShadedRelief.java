@@ -18,6 +18,7 @@ package org.geotools.coverage.processing.operation;
 
 import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
@@ -129,6 +130,7 @@ import org.geotools.coverage.processing.OperationJAI;
  */
 public class ShadedRelief extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1077713495023498436L;
 
     /** ShadedRelief property name */

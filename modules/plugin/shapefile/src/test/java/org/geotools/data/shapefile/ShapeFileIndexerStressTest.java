@@ -67,7 +67,7 @@ public class ShapeFileIndexerStressTest {
 
         @Override
         public String toString() {
-            return String.format("|%,d|%s|", featureCount, Stopwatch.getTimeString(ellapsed));
+            return "|%,d|%s|".formatted(featureCount, Stopwatch.getTimeString(ellapsed));
         }
     }
 
@@ -81,9 +81,9 @@ public class ShapeFileIndexerStressTest {
         dataStore.setIndexCreationEnabled(false);
         SimpleFeatureType featureType = DataUtilities.createType(typeName, "id:0,the_geom:LineString");
         dataStore.createSchema(featureType);
-        LOGGER.info(String.format("Setting up %,d features shapefile %s...", featureCount, file));
+        LOGGER.info("Setting up %,d features shapefile %s...".formatted(featureCount, file));
         addFeatures(dataStore, featureType, featureCount);
-        LOGGER.info(String.format("%,d features shapefile %s, %,d bytes...", featureCount, file, file.length()));
+        LOGGER.info("%,d features shapefile %s, %,d bytes...".formatted(featureCount, file, file.length()));
     }
 
     @After

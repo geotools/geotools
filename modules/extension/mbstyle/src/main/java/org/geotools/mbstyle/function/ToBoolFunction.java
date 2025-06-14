@@ -48,16 +48,16 @@ class ToBoolFunction extends FunctionExpressionImpl {
         if (arg0 == null) {
             return Boolean.FALSE;
         }
-        if (arg0 instanceof Double && ((Double) arg0).isNaN()) {
+        if (arg0 instanceof Double double1 && double1.isNaN()) {
             return Boolean.FALSE;
         }
         if (Number.class.isAssignableFrom(arg0.getClass()) && ((Number) arg0).doubleValue() == 0d) {
             return Boolean.FALSE;
         }
-        if (arg0 instanceof Boolean && !((Boolean) arg0)) {
+        if (arg0 instanceof Boolean boolean1 && !boolean1) {
             return Boolean.FALSE;
         }
-        if (arg0 instanceof String && ((String) arg0).isEmpty()) {
+        if (arg0 instanceof String string && string.isEmpty()) {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

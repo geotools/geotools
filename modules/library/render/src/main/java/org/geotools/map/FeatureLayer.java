@@ -132,8 +132,8 @@ public class FeatureLayer extends StyleLayer {
      * @return SimpleFeatureSource for this layer, or null if not available
      */
     public SimpleFeatureSource getSimpleFeatureSource() {
-        if (featureSource instanceof SimpleFeatureSource) {
-            return (SimpleFeatureSource) featureSource;
+        if (featureSource instanceof SimpleFeatureSource source) {
+            return source;
         }
         return null; // not available
     }

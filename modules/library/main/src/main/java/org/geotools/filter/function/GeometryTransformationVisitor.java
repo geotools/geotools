@@ -39,8 +39,8 @@ public class GeometryTransformationVisitor extends DefaultFilterVisitor {
         }
 
         // apply the current function is possible
-        if (expression instanceof GeometryTransformation) {
-            merged = ((GeometryTransformation) expression).invert(merged);
+        if (expression instanceof GeometryTransformation transformation) {
+            merged = transformation.invert(merged);
         }
 
         return merged;

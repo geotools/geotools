@@ -160,30 +160,30 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     protected boolean isNull(Expression exp) {
         return exp == null
                 || exp instanceof NilExpression
-                || exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null;
+                || exp instanceof ConstantExpression ce && ce.getValue() == null;
     }
 
     /** @see StyleVisitor#visit(org.geotools.api.style.Symbolizer) */
     @Override
     public void visit(Symbolizer sym) {
-        if (sym instanceof PointSymbolizer) {
-            visit((PointSymbolizer) sym);
+        if (sym instanceof PointSymbolizer symbolizer) {
+            visit(symbolizer);
         }
 
-        if (sym instanceof LineSymbolizer) {
-            visit((LineSymbolizer) sym);
+        if (sym instanceof LineSymbolizer symbolizer) {
+            visit(symbolizer);
         }
 
-        if (sym instanceof PolygonSymbolizer) {
-            visit((PolygonSymbolizer) sym);
+        if (sym instanceof PolygonSymbolizer symbolizer) {
+            visit(symbolizer);
         }
 
-        if (sym instanceof TextSymbolizer) {
-            visit((TextSymbolizer) sym);
+        if (sym instanceof TextSymbolizer symbolizer) {
+            visit(symbolizer);
         }
 
-        if (sym instanceof RasterSymbolizer) {
-            visit((RasterSymbolizer) sym);
+        if (sym instanceof RasterSymbolizer symbolizer) {
+            visit(symbolizer);
         }
     }
 
@@ -303,8 +303,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             }
 
             for (GraphicalSymbol gs : gr.graphicalSymbols()) {
-                if (gs instanceof ExternalGraphic) {
-                    ExternalGraphic eg = (ExternalGraphic) gs;
+                if (gs instanceof ExternalGraphic eg) {
                     Icon icon = null;
                     if (eg.getInlineContent() != null) {
                         icon = eg.getInlineContent();
@@ -336,8 +335,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                         }
                         return;
                     }
-                } else if (gs instanceof Mark) {
-                    Mark mark = (Mark) gs;
+                } else if (gs instanceof Mark mark) {
                     int markSize;
                     if (isSizeConstant) {
                         markSize = imageSize;
@@ -466,10 +464,10 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         StyledLayer[] layers = sld.getStyledLayers();
 
         for (StyledLayer layer : layers) {
-            if (layer instanceof NamedLayer) {
-                ((NamedLayer) layer).accept(this);
-            } else if (layer instanceof UserLayer) {
-                ((UserLayer) layer).accept(this);
+            if (layer instanceof NamedLayer namedLayer) {
+                namedLayer.accept(this);
+            } else if (layer instanceof UserLayer userLayer) {
+                userLayer.accept(this);
             }
         }
     }

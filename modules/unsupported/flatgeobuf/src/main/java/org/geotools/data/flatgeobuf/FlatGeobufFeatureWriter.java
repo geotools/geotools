@@ -60,8 +60,8 @@ public class FlatGeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
         this.state = state;
         String typeName = query.getTypeName();
         DataStore dataStore = state.getEntry().getDataStore();
-        if (dataStore instanceof FlatGeobufDirectoryDataStore) {
-            this.flatGeobufDataStore = ((FlatGeobufDirectoryDataStore) dataStore).getDataStore(typeName);
+        if (dataStore instanceof FlatGeobufDirectoryDataStore store) {
+            this.flatGeobufDataStore = store.getDataStore(typeName);
             this.file = flatGeobufDataStore.getFile();
         } else {
             this.flatGeobufDataStore = (FlatGeobufDataStore) dataStore;

@@ -216,8 +216,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         try {
             readerSpi = TIFF_READER_SPI;
             // setting source
-            if (input instanceof URL) {
-                final URL sourceURL = (URL) input;
+            if (input instanceof URL sourceURL) {
                 source = URLs.urlToFile(sourceURL);
             }
 
@@ -235,7 +234,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 readerSpi = readerInputObject.getReaderSpi();
                 inStreamSPI = readerInputObject.getStreamSpi();
                 inStream = readerInputObject.getStream();
-            } else if (source instanceof ImageInputStream) inStream = (ImageInputStream) source;
+            } else if (source instanceof ImageInputStream stream) inStream = stream;
             else {
 
                 inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
@@ -245,8 +244,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
             if (inStream == null) {
                 // Try to figure out what went wrong and provide some info to the user.
-                if (source instanceof File) {
-                    File f = (File) source;
+                if (source instanceof File f) {
                     if (!f.exists()) {
                         throw new FileNotFoundException("File " + f.getAbsolutePath() + " does not exist.");
                     } else if (f.isDirectory()) {
@@ -294,10 +292,10 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     }
 
     private String extractCoverageName() {
-        if (source instanceof File) {
-            return ((File) source).getName();
-        } else if (source instanceof CogSourceSPIProvider) {
-            BasicAuthURI uri = ((CogSourceSPIProvider) source).getCogUri();
+        if (source instanceof File file) {
+            return file.getName();
+        } else if (source instanceof CogSourceSPIProvider provider) {
+            BasicAuthURI uri = provider.getCogUri();
             String path = uri.getUri().getPath();
             int indexOf = path.lastIndexOf("/");
             path = path.substring(indexOf + 1);
@@ -401,10 +399,10 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
             // Creating a new OverviewsProvider instance
             File inputFile = null;
-            if (source instanceof File) {
-                inputFile = (File) source;
-            } else if (source instanceof URL && ((URL) source).getProtocol() == "file") {
-                inputFile = URLs.urlToFile((URL) source);
+            if (source instanceof File file) {
+                inputFile = file;
+            } else if (source instanceof URL rL && rL.getProtocol() == "file") {
+                inputFile = URLs.urlToFile(rL);
             }
             // assume overviews are also TIFFs, that's the 99% case
             if (inputFile != null) {
@@ -419,8 +417,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 maskOvrProvider = new MaskOverviewProvider(
                         dtLayout, url, new MaskOverviewProvider.SpiHelper(url, TIFF_READER_SPI), skipOverviews);
                 hasMaskOvrProvider = true;
-            } else if (source instanceof CogSourceSPIProvider) {
-                CogSourceSPIProvider cogSourceProvider = (CogSourceSPIProvider) source;
+            } else if (source instanceof CogSourceSPIProvider cogSourceProvider) {
                 maskOvrProvider = new MaskOverviewProvider(
                         dtLayout,
                         cogSourceProvider.getSourceUrl(),
@@ -777,8 +774,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             ImageUtilities.disposePlanarImageChain(coverageRaster);
 
             // rethrow
-            if (e instanceof DataSourceException) {
-                throw (DataSourceException) e;
+            if (e instanceof DataSourceException exception) {
+                throw exception;
             }
             throw new DataSourceException(e);
         }
@@ -851,8 +848,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (source instanceof InputStream || source instanceof ImageInputStream) {
                 closeMe = false;
             }
-            if (source instanceof ImageInputStream) {
-                stream = (ImageInputStream) source;
+            if (source instanceof ImageInputStream inputStream) {
+                stream = inputStream;
             } else {
                 inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
                 if (inStreamSPI == null) {
@@ -963,12 +960,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
     private CoordinateReferenceSystem getCRS(Object source) {
         CoordinateReferenceSystem crs = null;
-        if (source instanceof File || source instanceof URL && ((URL) source).getProtocol() == "file") {
+        if (source instanceof File || source instanceof URL rL && rL.getProtocol() == "file") {
             // getting name for the prj file
             final String sourceAsString;
 
-            if (source instanceof File) {
-                sourceAsString = ((File) source).getAbsolutePath();
+            if (source instanceof File file) {
+                sourceAsString = file.getAbsolutePath();
             } else {
                 String auth = ((URL) source).getAuthority();
                 String path = ((URL) source).getPath();
@@ -1006,8 +1003,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
         // TODO: Add support for FileImageInputStreamExt
         // TODO: Check for WorldFile on URL beside the actual connection.
-        if (source instanceof File) {
-            final File sourceFile = (File) source;
+        if (source instanceof File sourceFile) {
             String parentPath = sourceFile.getParent();
             String filename = sourceFile.getName();
             final int i = filename.lastIndexOf('.');
@@ -1043,8 +1039,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
     /** @throws IOException */
     static MapInfoFileReader parseMapInfoFile(Object source) throws IOException {
-        if (source instanceof File) {
-            final File sourceFile = (File) source;
+        if (source instanceof File sourceFile) {
             File file2Parse = getSibling(sourceFile, ".tab");
 
             if (file2Parse != null && file2Parse.exists()) {

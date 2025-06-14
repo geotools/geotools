@@ -126,29 +126,23 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
 
     private void checkOpacity(Expression exp) {
         if (exp != null) {
-            if (exp instanceof Literal) {
-                Literal literal = (Literal) exp;
+            if (exp instanceof Literal literal) {
                 Object obj = literal.getValue();
                 float opacity;
 
-                if (obj instanceof Integer) {
-                    Integer i = (Integer) obj;
+                if (obj instanceof Integer i) {
                     opacity = i.floatValue();
-                } else if (obj instanceof Float) {
-                    Float i = (Float) obj;
+                } else if (obj instanceof Float i) {
                     opacity = i.floatValue();
-                } else if (obj instanceof Double) {
-                    Double i = (Double) obj;
+                } else if (obj instanceof Double i) {
                     opacity = i.floatValue();
-                } else if (obj instanceof Short) {
-                    Short i = (Short) obj;
+                } else if (obj instanceof Short i) {
                     opacity = i.floatValue();
-                } else if (obj instanceof Byte) {
-                    Byte i = (Byte) obj;
+                } else if (obj instanceof Byte i) {
                     opacity = i.floatValue();
-                } else if (obj instanceof String) {
+                } else if (obj instanceof String string) {
                     try {
-                        Double value = Double.valueOf((String) obj);
+                        Double value = Double.valueOf(string);
                         opacity = value.floatValue();
                     } catch (NumberFormatException e) {
                         return;
@@ -180,23 +174,19 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      */
     @Override
     public void visit(Symbolizer sym) {
-        if (sym instanceof PointSymbolizer) {
-            PointSymbolizer ps = (PointSymbolizer) sym;
+        if (sym instanceof PointSymbolizer ps) {
             ps.accept(this);
         }
 
-        if (sym instanceof LineSymbolizer) {
-            LineSymbolizer ps = (LineSymbolizer) sym;
+        if (sym instanceof LineSymbolizer ps) {
             ps.accept(this);
         }
 
-        if (sym instanceof PolygonSymbolizer) {
-            PolygonSymbolizer ps = (PolygonSymbolizer) sym;
+        if (sym instanceof PolygonSymbolizer ps) {
             ps.accept(this);
         }
 
-        if (sym instanceof RasterSymbolizer) {
-            RasterSymbolizer rs = (RasterSymbolizer) sym;
+        if (sym instanceof RasterSymbolizer rs) {
             rs.accept(this);
         }
     }

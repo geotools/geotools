@@ -16,6 +16,8 @@
  */
 package org.geotools.xml.filter;
 
+import java.io.Serial;
+
 /**
  * Indicates an illegal filter configuration according to the compliance level set.
  *
@@ -23,6 +25,7 @@ package org.geotools.xml.filter;
  * @since 2.2.1
  */
 public class UnsupportedFilterException extends RuntimeException {
+    @Serial
     private static final long serialVersionUID = 1522023598004933175L;
 
     public UnsupportedFilterException(String message, Exception e) {

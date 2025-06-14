@@ -159,9 +159,9 @@ public final class Units {
             return true;
         }
         if (unit1 != null) {
-            if (unit1 instanceof TransformedUnit<?> && unit2 != null && unit2 instanceof TransformedUnit<?>) {
-                TransformedUnit<?> tunit1 = (TransformedUnit<?>) unit1;
-                TransformedUnit<?> tunit2 = (TransformedUnit<?>) unit2;
+            if (unit1 instanceof TransformedUnit<?> tunit1
+                    && unit2 != null
+                    && unit2 instanceof TransformedUnit<?> tunit2) {
                 if (unit1.getSystemUnit().equals(unit2.getSystemUnit())) {
                     try {
                         float factor = (float) tunit1.getSystemConverter()

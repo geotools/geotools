@@ -52,10 +52,10 @@ public class SequenceValidator extends StatefulValidator implements Cloneable {
             state = State.STARTED;
         } else if (state == State.STARTED) {
             YsldValidateHandler sub = getSubValidator();
-            if (sub instanceof TupleValidator) {
-                ((TupleValidator) sub).reset();
-            } else if (sub instanceof SequenceValidator) {
-                ((SequenceValidator) sub).reset();
+            if (sub instanceof TupleValidator validator1) {
+                validator1.reset();
+            } else if (sub instanceof SequenceValidator validator) {
+                validator.reset();
             }
             context.push(sub);
             sub.sequence(evt, context);
@@ -83,16 +83,16 @@ public class SequenceValidator extends StatefulValidator implements Cloneable {
         switch (state) {
             case STARTED:
                 YsldValidateHandler sub = getSubValidator();
-                if (sub instanceof TupleValidator) {
-                    ((TupleValidator) sub).reset();
-                } else if (sub instanceof SequenceValidator) {
-                    ((SequenceValidator) sub).reset();
+                if (sub instanceof TupleValidator validator1) {
+                    validator1.reset();
+                } else if (sub instanceof SequenceValidator validator) {
+                    validator.reset();
                 }
                 context.push(sub);
                 sub.scalar(evt, context);
                 break;
             default:
-                context.error(String.format("Unexpected scalar '%s'", val), evt.getStartMark());
+                context.error("Unexpected scalar '%s'".formatted(val), evt.getStartMark());
                 break;
         }
     }
@@ -121,7 +121,7 @@ public class SequenceValidator extends StatefulValidator implements Cloneable {
             case STARTED:
                 break;
             default:
-                context.error(String.format("Unexpected alias '%s'", evt.getAnchor()), evt.getStartMark());
+                context.error("Unexpected alias '%s'".formatted(evt.getAnchor()), evt.getStartMark());
                 break;
         }
     }

@@ -711,9 +711,12 @@ public final class NetCDFBasicTest extends NetCDFBaseTest {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         boolean isNC4available = NetCDFUtilities.isNC4CAvailable();
         if (!isNC4available) {
-            LOGGER.warning("NetCDF4 reading test will be skipped due to "
-                    + "missing NetCDF C library.\nIf you want test to be executed, make sure you have "
-                    + "added the NetCDF C libraries location to the PATH environment variable");
+            LOGGER.warning(
+                    """
+                    NetCDF4 reading test will be skipped due to \
+                    missing NetCDF C library.
+                    If you want test to be executed, make sure you have \
+                    added the NetCDF C libraries location to the PATH environment variable""");
             return;
         }
         String name = "temperatureisobaricNC4.nc";

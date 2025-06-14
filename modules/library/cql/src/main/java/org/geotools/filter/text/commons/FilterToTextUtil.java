@@ -57,8 +57,8 @@ public final class FilterToTextUtil {
 
     /** Process the possibly user supplied extraData parameter into a StringBuilder. */
     public static StringBuilder asStringBuilder(Object extraData) {
-        if (extraData instanceof StringBuilder) {
-            return (StringBuilder) extraData;
+        if (extraData instanceof StringBuilder builder) {
+            return builder;
         }
         return new StringBuilder();
     }

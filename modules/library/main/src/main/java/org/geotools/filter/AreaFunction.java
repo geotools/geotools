@@ -99,12 +99,12 @@ public class AreaFunction extends FunctionExpressionImpl {
      */
     public double getArea(Geometry geometry) {
         double area = 0.0d;
-        if (geometry instanceof GeometryCollection) {
-            area += getArea((GeometryCollection) geometry);
-        } else if (geometry instanceof MultiPolygon) {
-            area += getArea((MultiPolygon) geometry);
-        } else if (geometry instanceof Polygon) {
-            area += getArea((Polygon) geometry);
+        if (geometry instanceof GeometryCollection collection) {
+            area += getArea(collection);
+        } else if (geometry instanceof MultiPolygon polygon1) {
+            area += getArea(polygon1);
+        } else if (geometry instanceof Polygon polygon) {
+            area += getArea(polygon);
         } else {
             area += 0.0d;
         }
@@ -122,16 +122,16 @@ public class AreaFunction extends FunctionExpressionImpl {
      */
     public double getPerimeter(Geometry geometry) {
         double perimeter = 0.0d;
-        if (geometry instanceof GeometryCollection) {
-            perimeter += getPerimeter((GeometryCollection) geometry);
-        } else if (geometry instanceof MultiPolygon) {
-            perimeter += getPerimeter((MultiPolygon) geometry);
-        } else if (geometry instanceof Polygon) {
-            perimeter += getPerimeter((Polygon) geometry);
-        } else if (geometry instanceof MultiLineString) {
-            perimeter += getPerimeter((MultiLineString) geometry);
-        } else if (geometry instanceof LineString) {
-            perimeter += getPerimeter((LineString) geometry);
+        if (geometry instanceof GeometryCollection collection) {
+            perimeter += getPerimeter(collection);
+        } else if (geometry instanceof MultiPolygon polygon1) {
+            perimeter += getPerimeter(polygon1);
+        } else if (geometry instanceof Polygon polygon) {
+            perimeter += getPerimeter(polygon);
+        } else if (geometry instanceof MultiLineString string1) {
+            perimeter += getPerimeter(string1);
+        } else if (geometry instanceof LineString string) {
+            perimeter += getPerimeter(string);
         } else {
             perimeter += 0.0d;
         }

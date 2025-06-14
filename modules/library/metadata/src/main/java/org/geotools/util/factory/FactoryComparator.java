@@ -54,10 +54,10 @@ final class FactoryComparator {
                 final Object v1 = entry.getValue();
                 final Object v2 = m2.get(key);
                 if (v1 == v2) continue;
-                if (v1 instanceof Factory) {
+                if (v1 instanceof Factory factory) {
                     if (v2 == null
                             || !v1.getClass().equals(v2.getClass())
-                            || !new FactoryComparator((Factory) v1, (Factory) v2).compare(done)) {
+                            || !new FactoryComparator(factory, (Factory) v2).compare(done)) {
                         return false;
                     }
                 } else if (!Utilities.equals(v1, v2)) {
@@ -74,8 +74,7 @@ final class FactoryComparator {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof FactoryComparator) {
-            final FactoryComparator that = (FactoryComparator) object;
+        if (object instanceof FactoryComparator that) {
             return this.f1 == that.f1 && this.f2 == that.f2 || this.f1 == that.f2 && this.f2 == that.f1;
         }
         return false;

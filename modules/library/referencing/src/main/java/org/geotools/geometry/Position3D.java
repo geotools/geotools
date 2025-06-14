@@ -16,10 +16,7 @@
  */
 package org.geotools.geometry;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -37,6 +34,7 @@ public class Position3D implements Position, Serializable, Cloneable {
     public double x, y, z;
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 835130287438466996L;
 
     /** The coordinate reference system for this position; */
@@ -228,8 +226,7 @@ public class Position3D implements Position, Serializable, Cloneable {
          * If the other object implements the DirectPosition interface, performs
          * the comparaison as specified in DirectPosition.equals(Object) contract.
          */
-        if (object instanceof Position) {
-            final Position other = (Position) object;
+        if (object instanceof Position other) {
             if (other.getDimension() == 3
                     && Utilities.equals(other.getOrdinate(0), x)
                     && Utilities.equals(other.getOrdinate(1), y)

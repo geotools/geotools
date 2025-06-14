@@ -313,8 +313,7 @@ public class RuleImpl implements Rule, Cloneable {
             return true;
         }
 
-        if (oth instanceof RuleImpl) {
-            RuleImpl other = (RuleImpl) oth;
+        if (oth instanceof RuleImpl other) {
 
             return Utilities.equals(name, other.name)
                     && Utilities.equals(description, other.description)
@@ -367,8 +366,8 @@ public class RuleImpl implements Rule, Cloneable {
     static RuleImpl cast(Rule rule) {
         if (rule == null) {
             return null;
-        } else if (rule instanceof RuleImpl) {
-            return (RuleImpl) rule;
+        } else if (rule instanceof RuleImpl impl) {
+            return impl;
         } else {
             RuleImpl copy = new RuleImpl(rule); // replace with casting ...
             return copy;

@@ -71,11 +71,16 @@ public class CreateIndexer {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static void main(String[] args) throws JDOMException, IOException, TransformerException {
         if (args.length < 1) {
-            System.out.println("Usage: java -jar CreateIndexer"
-                    + " /path/to/sampleFile.nc "
-                    + "[-P /path/to/netcdfprojectionsfile]\n "
-                    + "[-cd [=create sample_datastore.properties]]\n "
-                    + "[/path/to/optional/outputFolder]\n");
+            System.out.println(
+                    """
+                    Usage: java -jar CreateIndexer\
+                     /path/to/sampleFile.nc \
+                    [-P /path/to/netcdfprojectionsfile]
+                     \
+                    [-cd [=create sample_datastore.properties]]
+                     \
+                    [/path/to/optional/outputFolder]
+                    """);
             System.exit(1);
         }
 
@@ -251,8 +256,8 @@ public class CreateIndexer {
                 XPathFactory.instance().compile("coverages/coverage").evaluate(root);
         boolean longName = false;
         for (Object cov : coverages) {
-            if (cov instanceof Element) {
-                if (setCoverage((Element) cov, builder)) {
+            if (cov instanceof Element element) {
+                if (setCoverage(element, builder)) {
                     longName = true;
                 }
             }
@@ -312,8 +317,8 @@ public class CreateIndexer {
                 .evaluate(root);
 
         for (Object e : schemaAttributes) {
-            if (e instanceof Element) {
-                String attributes = ((Element) e).getText();
+            if (e instanceof Element element) {
+                String attributes = element.getText();
                 String[] attribs = attributes.split(",");
                 for (String attrib : attribs) {
                     if (attrib.contains(TIME_ATTRIB_TYPE)) {

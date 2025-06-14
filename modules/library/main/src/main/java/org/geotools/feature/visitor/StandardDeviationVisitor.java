@@ -85,10 +85,10 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
 
     public void setValue(Object value) {
         reset();
-        if (value instanceof Result) {
-            this.result = (Result) value;
-        } else if (value instanceof Number) {
-            this.result = new Result(((Number) value).doubleValue());
+        if (value instanceof Result result1) {
+            this.result = result1;
+        } else if (value instanceof Number number) {
+            this.result = new Result(number.doubleValue());
         } else {
             throw new IllegalArgumentException("Result must be a " + Result.class.getName() + " or a Number");
         }
@@ -129,8 +129,8 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
             return; // don't store this value
         }
 
-        if (value instanceof Double) {
-            double doubleVal = ((Double) value).doubleValue();
+        if (value instanceof Double double1) {
+            double doubleVal = double1.doubleValue();
             if (Double.isNaN(doubleVal) || Double.isInfinite(doubleVal)) {
                 countNaN++; // increment the NaN count
                 return; // don't store NaN value

@@ -109,8 +109,8 @@ public final class SDO {
     public static int D(Geometry geom) {
         CoordinateSequenceFactory f = geom != null ? geom.getFactory().getCoordinateSequenceFactory() : null;
 
-        if (f instanceof CoordinateAccessFactory) {
-            return ((CoordinateAccessFactory) f).getDimension();
+        if (f instanceof CoordinateAccessFactory factory) {
+            return factory.getDimension();
         } else if (geom == null || geom.getCoordinate() == null || geom.isEmpty()) {
             return 2;
         } else {
@@ -132,8 +132,8 @@ public final class SDO {
     public static int L(Geometry geom) {
         CoordinateSequenceFactory f = geom.getFactory().getCoordinateSequenceFactory();
 
-        if (f instanceof CoordinateAccessFactory) {
-            return ((CoordinateAccessFactory) f).getDimension();
+        if (f instanceof CoordinateAccessFactory factory) {
+            return factory.getDimension();
         } else {
             return 0;
         }
@@ -212,8 +212,7 @@ public final class SDO {
      * <p>Subclasses may wish to repress this method and force Points to be represented using SDO_ORDINATES.
      */
     public static double[] point(Geometry geom) {
-        if (geom instanceof Point && L(geom) == 0) {
-            Point point = (Point) geom;
+        if (geom instanceof Point point && L(geom) == 0) {
             Coordinate coord = point.getCoordinate();
 
             return new double[] {coord.x, coord.y, coord.getZ()};
@@ -412,7 +411,7 @@ public final class SDO {
         for (int i = 0; i < geoms.getNumGeometries(); i++) {
             geom = geoms.getGeometryN(i);
             elemInfo(elemInfoList, geom, offset, GTYPE);
-            if (geom instanceof Polygon && isRectangle((Polygon) geom)) {
+            if (geom instanceof Polygon polygon && isRectangle(polygon)) {
                 offset += 2 * LEN;
             } else {
                 offset += geom.getNumPoints() * LEN;
@@ -587,8 +586,7 @@ public final class SDO {
             case ETYPE.POLYGON:
             case ETYPE.POLYGON_EXTERIOR:
             case ETYPE.POLYGON_INTERIOR:
-                if (geom instanceof Polygon) {
-                    Polygon polygon = (Polygon) geom;
+                if (geom instanceof Polygon polygon) {
 
                     if (isCurve(polygon)) {
                         return 2;
@@ -781,8 +779,7 @@ public final class SDO {
      * <p>The double array will contain all the ordinates in the Coordinate sequence.
      */
     private static void addCoordinates(List<double[]> list, CoordinateSequence sequence) {
-        if (sequence instanceof CoordinateAccess) {
-            CoordinateAccess access = (CoordinateAccess) sequence;
+        if (sequence instanceof CoordinateAccess access) {
 
             for (int i = 0; i < access.size(); i++) {
                 list.add(ordinateArray(access, i));
@@ -934,20 +931,20 @@ public final class SDO {
         for (int i = 0; i < geoms.getNumGeometries(); i++) {
             geom = geoms.getGeometryN(i);
             if (geom == null || geom.isEmpty()) continue;
-            if (geom instanceof Point) {
-                addCoordinates(list, (Point) geom);
-            } else if (geom instanceof LineString) {
-                addCoordinates(list, (LineString) geom);
-            } else if (geom instanceof Polygon) {
-                addCoordinates(list, (Polygon) geom);
-            } else if (geom instanceof MultiPoint) {
-                addCoordinates(list, (MultiPoint) geom);
-            } else if (geom instanceof MultiLineString) {
-                addCoordinates(list, (MultiLineString) geom);
-            } else if (geom instanceof MultiPolygon) {
-                addCoordinates(list, (MultiPolygon) geom);
-            } else if (geom instanceof GeometryCollection) {
-                addCoordinates(list, (GeometryCollection) geom);
+            if (geom instanceof Point point1) {
+                addCoordinates(list, point1);
+            } else if (geom instanceof LineString string1) {
+                addCoordinates(list, string1);
+            } else if (geom instanceof Polygon polygon1) {
+                addCoordinates(list, polygon1);
+            } else if (geom instanceof MultiPoint point) {
+                addCoordinates(list, point);
+            } else if (geom instanceof MultiLineString string) {
+                addCoordinates(list, string);
+            } else if (geom instanceof MultiPolygon polygon) {
+                addCoordinates(list, polygon);
+            } else if (geom instanceof GeometryCollection collection) {
+                addCoordinates(list, collection);
             }
         }
     }
@@ -965,8 +962,7 @@ public final class SDO {
      * </ul>
      */
     public static double[] ordinateArray(CoordinateSequence coords, int ordinate) {
-        if (coords instanceof CoordinateAccess) {
-            CoordinateAccess access = (CoordinateAccess) coords;
+        if (coords instanceof CoordinateAccess access) {
 
             return access.toOrdinateArray(ordinate);
         } else {
@@ -1673,8 +1669,8 @@ public final class SDO {
         }
 
         // special optimization for faster 2D rendering
-        if (D == 2 && L == 0 && f instanceof LiteCoordinateSequenceFactory) {
-            return ((LiteCoordinateSequenceFactory) f).create(ordinates);
+        if (D == 2 && L == 0 && f instanceof LiteCoordinateSequenceFactory factory) {
+            return factory.create(ordinates);
         }
 
         OrdinateList x = new OrdinateList(ordinates, 0, LEN);
@@ -1896,8 +1892,8 @@ public final class SDO {
      */
     private static CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
         CurvedGeometryFactory curvedFactory;
-        if (gf instanceof CurvedGeometryFactory) {
-            curvedFactory = (CurvedGeometryFactory) gf;
+        if (gf instanceof CurvedGeometryFactory factory) {
+            curvedFactory = factory;
         } else {
             curvedFactory = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
         }
@@ -2459,8 +2455,7 @@ public final class SDO {
     }
 
     private static int getCurvilinearElementsCount(LineString ls) {
-        if (ls instanceof CompoundCurvedGeometry<?>) {
-            CompoundCurvedGeometry<?> curved = (CompoundCurvedGeometry<?>) ls;
+        if (ls instanceof CompoundCurvedGeometry<?> curved) {
             // take into account the elemInfo describing the compound
             return curved.getComponents().size() + 1;
         } else {

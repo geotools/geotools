@@ -295,16 +295,15 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         // We need to obtain our DataSource
         if (userHints != null) {
             Object hint = userHints.get(Hints.EPSG_DATA_SOURCE);
-            if (hint instanceof String) {
-                String name = (String) hint;
+            if (hint instanceof String name) {
                 try {
                     dataSource = (DataSource) GeoTools.jndiLookup(name);
                 } catch (NamingException e) {
                     throw new FactoryException("A EPSG_DATA_SOURCE hint is required:" + e);
                 }
                 hints.put(Hints.EPSG_DATA_SOURCE, dataSource);
-            } else if (hint instanceof DataSource) {
-                dataSource = (DataSource) hint;
+            } else if (hint instanceof DataSource source) {
+                dataSource = source;
                 hints.put(Hints.EPSG_DATA_SOURCE, dataSource);
             } else {
                 throw new FactoryException("A EPSG_DATA_SOURCE hint is required.");
@@ -472,8 +471,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         IdentifiedObject identifiedObject = createObject(code);
         final Identifier identifier = identifiedObject.getName();
-        if (identifier instanceof GenericName) {
-            return ((GenericName) identifier).toInternationalString();
+        if (identifier instanceof GenericName name) {
+            return name.toInternationalString();
         }
         return new SimpleInternationalString(identifier.getCode());
     }
@@ -1775,9 +1774,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         final CartesianCS cs = createCartesianCS(csCode);
                         final GeographicCRS baseCRS = createGeographicCRS(geoCode);
                         final CoordinateOperation op = createCoordinateOperation(opCode);
-                        if (op instanceof Conversion) {
+                        if (op instanceof Conversion conversion) {
                             final Map<String, Object> properties = generateProperties(name, epsg, area, scope, remarks);
-                            crs = factory.createProjectedCRS(properties, baseCRS, (Conversion) op, cs);
+                            crs = factory.createProjectedCRS(properties, baseCRS, conversion, cs);
                         } else {
                             throw noSuchAuthorityCode(Projection.class, opCode);
                         }
@@ -1827,10 +1826,10 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         final CoordinateSystem cs = createCoordinateSystem(csCode);
                         final GeodeticDatum datum = createGeodeticDatum(dmCode);
                         final Map<String, Object> properties = generateProperties(name, epsg, area, scope, remarks);
-                        if (cs instanceof CartesianCS) {
-                            crs = factory.createGeocentricCRS(properties, datum, (CartesianCS) cs);
-                        } else if (cs instanceof SphericalCS) {
-                            crs = factory.createGeocentricCRS(properties, datum, (SphericalCS) cs);
+                        if (cs instanceof CartesianCS cS1) {
+                            crs = factory.createGeocentricCRS(properties, datum, cS1);
+                        } else if (cs instanceof SphericalCS cS) {
+                            crs = factory.createGeocentricCRS(properties, datum, cS);
                         } else {
                             result.close();
                             throw new FactoryException(MessageFormat.format(
@@ -2181,7 +2180,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
 
         @Override
         public boolean equals(final Object object) { // MUST ignore 'occurences'.
-            return object instanceof Dimensions && ((Dimensions) object).encoded == encoded;
+            return object instanceof Dimensions d && d.encoded == encoded;
         }
 
         @Override
@@ -2706,21 +2705,21 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             String select = "COORD_REF_SYS_CODE";
             String from = "[Coordinate Reference System]";
             String where, code;
-            if (object instanceof Ellipsoid) {
+            if (object instanceof Ellipsoid ellipsoid) {
                 select = "ELLIPSOID_CODE";
                 from = "[Ellipsoid]";
                 where = "SEMI_MAJOR_AXIS";
-                code = Double.toString(((Ellipsoid) object).getSemiMajorAxis());
+                code = Double.toString(ellipsoid.getSemiMajorAxis());
             } else {
                 IdentifiedObject dependency;
-                if (object instanceof GeneralDerivedCRS) {
-                    dependency = ((GeneralDerivedCRS) object).getBaseCRS();
+                if (object instanceof GeneralDerivedCRS rS1) {
+                    dependency = rS1.getBaseCRS();
                     where = "BASE_CRS_CODE";
-                } else if (object instanceof SingleCRS) {
-                    dependency = ((SingleCRS) object).getDatum();
+                } else if (object instanceof SingleCRS rS) {
+                    dependency = rS.getDatum();
                     where = "DATUM_CODE";
-                } else if (object instanceof GeodeticDatum) {
-                    dependency = ((GeodeticDatum) object).getEllipsoid();
+                } else if (object instanceof GeodeticDatum datum) {
+                    dependency = datum.getEllipsoid();
                     select = "DATUM_CODE";
                     from = "[Datum]";
                     where = "ELLIPSOID_CODE";

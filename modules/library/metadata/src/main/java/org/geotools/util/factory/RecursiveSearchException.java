@@ -16,6 +16,7 @@
  */
 package org.geotools.util.factory;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.function.Predicate;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -37,6 +38,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class RecursiveSearchException extends FactoryRegistryException {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -2028654588882874110L;
 
     /** Creates a new exception with a default message determined from the specified category. */

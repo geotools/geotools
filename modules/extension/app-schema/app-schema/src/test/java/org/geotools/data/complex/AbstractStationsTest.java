@@ -171,8 +171,8 @@ public abstract class AbstractStationsTest {
             List<Element> elements = new ArrayList<>();
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
-                if (node instanceof Element) {
-                    elements.add((Element) node);
+                if (node instanceof Element element) {
+                    elements.add(element);
                 }
             }
             return elements;

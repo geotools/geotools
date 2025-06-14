@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -50,6 +51,7 @@ import org.geotools.ows.wms.WebMapServer;
  * <p>Initially we are going to work with a JList, we will switch to a JTree when we get a chance.
  */
 public class WMSLayerChooser extends JDialog implements ActionListener {
+    @Serial
     private static final long serialVersionUID = -409825958139086013L;
 
     WebMapServer wms;

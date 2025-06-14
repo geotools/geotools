@@ -43,10 +43,6 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.filter.PropertyIsGreaterThan;
-import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
-import org.geotools.api.filter.PropertyIsLessThan;
-import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -173,23 +169,19 @@ public class FeatureTypes {
                     if (f == null) {
                         continue;
                     }
-                    if (f instanceof PropertyIsLessThan) {
-                        BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
+                    if (f instanceof BinaryComparisonOperator cf) {
                         if (cf.getExpression1() instanceof LengthFunction) {
                             filterLength = cf.getExpression2().evaluate(null, Integer.class) - 1;
                         }
-                    } else if (f instanceof PropertyIsLessThanOrEqualTo) {
-                        BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
+                    } else if (f instanceof BinaryComparisonOperator cf) {
                         if (cf.getExpression1() instanceof LengthFunction) {
                             filterLength = cf.getExpression2().evaluate(null, Integer.class);
                         }
-                    } else if (f instanceof PropertyIsGreaterThan) {
-                        BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
+                    } else if (f instanceof BinaryComparisonOperator cf) {
                         if (cf.getExpression2() instanceof LengthFunction) {
                             filterLength = cf.getExpression1().evaluate(null, Integer.class) - 1;
                         }
-                    } else if (f instanceof PropertyIsGreaterThanOrEqualTo) {
-                        BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
+                    } else if (f instanceof BinaryComparisonOperator cf) {
                         if (cf.getExpression2() instanceof LengthFunction) {
                             filterLength = cf.getExpression1().evaluate(null, Integer.class);
                         }
@@ -229,19 +221,18 @@ public class FeatureTypes {
                 if (f == null) {
                     continue;
                 }
-                if (f instanceof PropertyIsEqualTo) {
-                    Object value = getOption((PropertyIsEqualTo) f);
+                if (f instanceof PropertyIsEqualTo to1) {
+                    Object value = getOption(to1);
                     if (value != null) {
                         currentOptions = Collections.singletonList(value);
                     } else {
                         continue;
                     }
-                } else if (f instanceof Or) {
-                    Or or = (Or) f;
+                } else if (f instanceof Or or) {
                     currentOptions = new ArrayList<>();
                     for (Filter child : or.getChildren()) {
-                        if (child instanceof PropertyIsEqualTo) {
-                            Object value = getOption((PropertyIsEqualTo) child);
+                        if (child instanceof PropertyIsEqualTo to) {
+                            Object value = getOption(to);
                             if (value != null) {
                                 currentOptions.add(value);
                             } else {
@@ -273,7 +264,7 @@ public class FeatureTypes {
         PropertyIsEqualTo equal = f;
         Expression x1 = equal.getExpression1();
         Expression x2 = equal.getExpression2();
-        if (x1 instanceof PropertyName && ".".equals(((PropertyName) x1).getPropertyName()) && x2 instanceof Literal) {
+        if (x1 instanceof PropertyName name && ".".equals(name.getPropertyName()) && x2 instanceof Literal) {
             return x2.evaluate(null);
         }
         return null;
@@ -342,8 +333,7 @@ public class FeatureTypes {
 
         for (int i = 0; i < schema.getAttributeCount(); i++) {
             AttributeDescriptor attributeType = schema.getDescriptor(i);
-            if (attributeType instanceof GeometryDescriptor) {
-                GeometryDescriptor geometryType = (GeometryDescriptor) attributeType;
+            if (attributeType instanceof GeometryDescriptor geometryType) {
 
                 tb.descriptor(geometryType);
 

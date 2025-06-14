@@ -89,8 +89,8 @@ public class BoundingShapeTypeBinding extends AbstractComplexBinding {
     @Override
     public Object getProperty(Object object, QName name) {
         // check for a polygon
-        if (object instanceof Polygon) {
-            object = ((Polygon) object).getEnvelopeInternal();
+        if (object instanceof Polygon polygon) {
+            object = polygon.getEnvelopeInternal();
         }
         Envelope e = (Envelope) object;
 

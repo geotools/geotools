@@ -24,6 +24,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
+import java.io.Serial;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.math.XMath;
 
@@ -46,6 +47,7 @@ import org.geotools.metadata.math.XMath;
  */
 public class XAffineTransform extends AffineTransform {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5215291166450556451L;
 
     /** Constructs a new {@code XAffineTransform} that is a copy of the specified {@code AffineTransform} object. */
@@ -259,15 +261,13 @@ public class XAffineTransform extends AffineTransform {
         // then we can optimize the transformation of rectangular shapes.
         if ((type & (TYPE_GENERAL_ROTATION | TYPE_GENERAL_TRANSFORM)) == 0) {
             // For a Rectangle input, the output should be a rectangle as well.
-            if (shape instanceof Rectangle2D) {
-                final Rectangle2D rect = (Rectangle2D) shape;
+            if (shape instanceof Rectangle2D rect) {
                 return transform(transform, rect, overwrite ? rect : null);
             }
             // For other rectangular shapes, we restrict to cases whithout
             // rotation or flip because we don't know if the shape is symetric.
             if ((type & (TYPE_FLIP | TYPE_MASK_ROTATION)) == 0) {
-                if (shape instanceof RectangularShape) {
-                    RectangularShape rect = (RectangularShape) shape;
+                if (shape instanceof RectangularShape rect) {
                     if (!overwrite) {
                         rect = (RectangularShape) rect.clone();
                     }
@@ -279,15 +279,13 @@ public class XAffineTransform extends AffineTransform {
         }
         // TODO: Check for Path2D instance instead of GeneralPath
         //       when we will be allowed to compile for Java 6.
-        if (shape instanceof GeneralPath) {
-            final GeneralPath path = (GeneralPath) shape;
+        if (shape instanceof GeneralPath path) {
             if (overwrite) {
                 path.transform(transform);
             } else {
                 shape = path.createTransformedShape(transform);
             }
-        } else if (shape instanceof Area) {
-            final Area area = (Area) shape;
+        } else if (shape instanceof Area area) {
             if (overwrite) {
                 area.transform(transform);
             } else {

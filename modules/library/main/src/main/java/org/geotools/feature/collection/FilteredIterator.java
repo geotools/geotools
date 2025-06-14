@@ -54,8 +54,8 @@ public class FilteredIterator<F extends Feature> implements Iterator<F>, Feature
     /** Package protected, please use SubFeatureCollection.close( iterator ) */
     @Override
     public void close() {
-        if (delegate instanceof FeatureIterator) {
-            ((FeatureIterator<?>) delegate).close();
+        if (delegate instanceof FeatureIterator<?> iterator) {
+            iterator.close();
         }
         delegate = null;
         filter = null;

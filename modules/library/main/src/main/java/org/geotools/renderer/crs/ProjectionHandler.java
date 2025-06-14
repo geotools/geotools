@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.crs;
 
-import static java.lang.String.format;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
 import java.util.ArrayList;
@@ -95,9 +94,9 @@ public class ProjectionHandler {
         String property = System.getProperty(DENSIFICATION_LIMIT_KEY);
         if (property != null) {
             // parse and validate, prepare error message to re-use its setup
-            String errorMessage = format(
-                    "Invalid value for %s, it should be a positive integer greater than 2. Will use the default value.",
-                    DENSIFICATION_LIMIT_KEY);
+            String errorMessage =
+                    "Invalid value for %s, it should be a positive integer greater than 2. Will use the default value."
+                            .formatted(DENSIFICATION_LIMIT_KEY);
             try {
                 int limit = Integer.parseInt(property);
                 if (limit > 2) {
@@ -784,8 +783,8 @@ public class ProjectionHandler {
                         if (intersected != null) {
                             if (intersected.getGeometryType().equals(geometryType)) {
                                 elements.add(intersected);
-                            } else if (intersected instanceof GeometryCollection) {
-                                addGeometries(elements, (GeometryCollection) intersected, geometryType);
+                            } else if (intersected instanceof GeometryCollection collection) {
+                                addGeometries(elements, collection, geometryType);
                             }
                         }
                     }
@@ -934,8 +933,7 @@ public class ProjectionHandler {
     }
 
     protected void accumulateTransforms(MathTransform mt, List<MathTransform> elements) {
-        if (mt instanceof ConcatenatedTransform) {
-            ConcatenatedTransform ct = (ConcatenatedTransform) mt;
+        if (mt instanceof ConcatenatedTransform ct) {
             accumulateTransforms(ct.transform1, elements);
             accumulateTransforms(ct.transform2, elements);
         } else {
@@ -1035,8 +1033,8 @@ public class ProjectionHandler {
             if (geo.getGeometryType().equals(geometryType)) {
                 geoms.add(geo);
                 // Otherwise if it is a collection we try to iterate on it (recursion)
-            } else if (geo instanceof GeometryCollection) {
-                addGeometries(geoms, (GeometryCollection) geo, geometryType);
+            } else if (geo instanceof GeometryCollection geometryCollection) {
+                addGeometries(geoms, geometryCollection, geometryType);
             }
         }
     }

@@ -123,8 +123,7 @@ public final class ElasticsearchDateConverter {
 
         Assert.notNull("accessor", "accessor must not be null");
 
-        if (accessor instanceof Instant) {
-            Instant instant = (Instant) accessor;
+        if (accessor instanceof Instant instant) {
             ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
             return dateFormatter.format(zonedDateTime);
         }
@@ -379,9 +378,9 @@ public final class ElasticsearchDateConverter {
             try {
                 return formatter.format(accessor);
             } catch (Exception e) {
-                if (accessor instanceof Instant) {
+                if (accessor instanceof Instant instant) {
                     // as alternatives try to format a ZonedDateTime or LocalDateTime
-                    return formatter.format(ZonedDateTime.ofInstant((Instant) accessor, ZoneId.of("UTC")));
+                    return formatter.format(ZonedDateTime.ofInstant(instant, ZoneId.of("UTC")));
                 } else {
                     throw e;
                 }

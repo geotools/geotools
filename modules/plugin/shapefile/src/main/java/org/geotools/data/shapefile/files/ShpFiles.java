@@ -247,12 +247,10 @@ public class ShpFiles {
     private String baseName(Object obj) {
         for (ShpFileType type : ShpFileType.values()) {
             String base = null;
-            if (obj instanceof File) {
-                File file = (File) obj;
+            if (obj instanceof File file) {
                 base = type.toBase(file);
             }
-            if (obj instanceof URL) {
-                URL file = (URL) obj;
+            if (obj instanceof URL file) {
                 base = type.toBase(file);
             }
             if (base != null) {
@@ -663,12 +661,12 @@ public class ShpFiles {
             return input;
         } catch (Throwable e) {
             unlockRead(url, requestor);
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof IOException exception1) {
+                throw exception1;
+            } else if (e instanceof RuntimeException exception) {
+                throw exception;
+            } else if (e instanceof Error error) {
+                throw error;
             } else {
                 throw new RuntimeException(e);
             }
@@ -721,12 +719,12 @@ public class ShpFiles {
             if (out != null) {
                 out.close();
             }
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof IOException exception1) {
+                throw exception1;
+            } else if (e instanceof RuntimeException exception) {
+                throw exception;
+            } else if (e instanceof Error error) {
+                throw error;
             } else {
                 throw new RuntimeException(e);
             }
@@ -762,12 +760,12 @@ public class ShpFiles {
             }
         } catch (Throwable e) {
             unlockRead(url, requestor);
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof IOException exception1) {
+                throw exception1;
+            } else if (e instanceof RuntimeException exception) {
+                throw exception;
+            } else if (e instanceof Error error) {
+                throw error;
             } else {
                 throw new RuntimeException(e);
             }
@@ -812,12 +810,12 @@ public class ShpFiles {
             return channel;
         } catch (Throwable e) {
             unlockWrite(url, requestor);
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof IOException exception1) {
+                throw exception1;
+            } else if (e instanceof RuntimeException exception) {
+                throw exception;
+            } else if (e instanceof Error error) {
+                throw error;
             } else {
                 throw new RuntimeException(e);
             }

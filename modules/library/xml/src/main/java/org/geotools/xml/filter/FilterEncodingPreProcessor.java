@@ -239,8 +239,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                     break;
             }
         } catch (Exception e) {
-            if (e instanceof UnsupportedFilterException) {
-                throw (UnsupportedFilterException) e;
+            if (e instanceof UnsupportedFilterException exception) {
+                throw exception;
             }
 
             throw new UnsupportedFilterException("Exception creating filter", e);
@@ -277,8 +277,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                     break;
             }
         } catch (Exception e) {
-            if (e instanceof UnsupportedFilterException) {
-                throw (UnsupportedFilterException) e;
+            if (e instanceof UnsupportedFilterException exception) {
+                throw exception;
             }
 
             throw new UnsupportedFilterException("Exception creating filter", e);
@@ -625,27 +625,27 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     }
 
     protected void visitCompareFilter(org.geotools.api.filter.Filter filter) {
-        if (filter instanceof PropertyIsNull) {
-            visit((PropertyIsNull) filter);
+        if (filter instanceof PropertyIsNull null1) {
+            visit(null1);
             return;
         }
 
-        if (filter instanceof PropertyIsLike) {
-            visit((PropertyIsLike) filter);
+        if (filter instanceof PropertyIsLike like) {
+            visit(like);
         }
 
-        if (filter instanceof BinaryComparisonOperator) {
-            visit((BinaryComparisonOperator) filter);
+        if (filter instanceof BinaryComparisonOperator operator) {
+            visit(operator);
         }
 
-        if (filter instanceof Not) {
-            visit((Not) filter);
+        if (filter instanceof Not not) {
+            visit(not);
         }
     }
 
     protected void visitGeometryFilter(SpatialOperator filter) {
-        if (filter instanceof BinarySpatialOperator) {
-            visit((BinarySpatialOperator) filter);
+        if (filter instanceof BinarySpatialOperator operator) {
+            visit(operator);
         }
     }
 

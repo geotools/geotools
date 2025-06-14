@@ -20,6 +20,7 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -41,6 +42,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class HotineObliqueMercator extends ObliqueMercator {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 7376814731765422533L;
 
     /**
@@ -99,6 +101,7 @@ public class HotineObliqueMercator extends ObliqueMercator {
      */
     public static final class Provider extends ObliqueMercator.Provider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 5822488360988630419L;
 
         /** The parameters group. */
@@ -159,6 +162,7 @@ public class HotineObliqueMercator extends ObliqueMercator {
      */
     public static final class Provider_TwoPoint extends ObliqueMercator.Provider_TwoPoint {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -3104452416276842816L;
 
         /** The parameters group. */

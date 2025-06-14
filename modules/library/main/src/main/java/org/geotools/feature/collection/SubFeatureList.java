@@ -68,8 +68,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
             sort = Collections.emptyList();
         } else {
             sort = new ArrayList<>();
-            if (collection instanceof SubFeatureList) {
-                SubFeatureList sorted = (SubFeatureList) collection;
+            if (collection instanceof SubFeatureList sorted) {
                 sort.addAll(sorted.sort);
             }
             sort.add(subSort);
@@ -93,8 +92,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
      */
     public SimpleFeature get(int position) {
         FeatureId fid = index.get(position);
-        if (collection instanceof RandomFeatureAccess) {
-            RandomFeatureAccess random = (RandomFeatureAccess) collection;
+        if (collection instanceof RandomFeatureAccess random) {
             return random.getFeatureMember(fid.getID());
         }
         try (SimpleFeatureIterator it = collection.features()) {
@@ -262,8 +260,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         }
 
         protected SimpleFeature getFeature(String id) {
-            if (collection instanceof RandomFeatureAccess) {
-                RandomFeatureAccess random = (RandomFeatureAccess) collection;
+            if (collection instanceof RandomFeatureAccess random) {
                 return random.getFeatureMember(id);
             } else if (cacheFeatures) {
                 // check in the cache

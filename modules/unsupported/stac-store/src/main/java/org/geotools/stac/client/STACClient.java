@@ -111,8 +111,8 @@ public class STACClient implements Closeable {
 
     @Override
     public void close() throws IOException {
-        if (http instanceof Closeable) {
-            ((Closeable) http).close();
+        if (http instanceof Closeable closeable) {
+            closeable.close();
         }
     }
 
@@ -125,12 +125,12 @@ public class STACClient implements Closeable {
     public List<Collection> getCollections() throws IOException {
         Optional<Link> maybeData =
                 landingPage.getLinks().stream().filter(this::isDataJSONLink).findFirst();
-        if (!maybeData.isPresent()) {
+        if (maybeData.isEmpty()) {
             maybeData = landingPage.getLinks().stream()
                     .filter(this::isChildrenJSONLink)
                     .findFirst();
         }
-        if (!maybeData.isPresent()) return Collections.emptyList();
+        if (maybeData.isEmpty()) return Collections.emptyList();
 
         HTTPResponse response = http.get(new URL(maybeData.get().getHref()));
         checkJSONResponse(response);

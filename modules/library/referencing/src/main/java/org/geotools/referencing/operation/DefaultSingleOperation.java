@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.Conversion;
@@ -34,6 +35,7 @@ import org.geotools.api.referencing.operation.SingleOperation;
  */
 public class DefaultSingleOperation extends AbstractCoordinateOperation implements SingleOperation {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 672935231344137185L;
 
     /**

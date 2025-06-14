@@ -368,7 +368,7 @@ public class JniOGR implements OGR {
 
     @Override
     public boolean LayerDeleteFeature(Object layer, long fid) {
-        return ((Layer) layer).DeleteFeature((int) fid) == 0;
+        return ((Layer) layer).DeleteFeature(fid) == 0;
     }
 
     @Override

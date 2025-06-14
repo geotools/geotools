@@ -69,7 +69,7 @@ class MemoryMapCache {
             }
         }
 
-        return buffer.duplicate();
+        return MappedByteBuffer.class.cast(buffer.duplicate());
     }
 
     /**

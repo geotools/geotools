@@ -154,11 +154,7 @@ public class TestLinearClassifier extends Assert {
         return image;
     }
 
-    /**
-     * Building a synthetic image upon a DOUBLE sample-model.
-     *
-     * @return {@linkplain BufferedImage}
-     */
+    /** Building a synthetic image upon a DOUBLE sample-model. */
     @Test
     public void Synthetic_Float() throws IOException {
 

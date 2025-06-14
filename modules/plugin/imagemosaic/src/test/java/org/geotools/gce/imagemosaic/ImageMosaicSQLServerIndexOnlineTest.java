@@ -62,6 +62,7 @@ import org.geotools.util.factory.Hints;
 import org.junit.Test;
 
 /** Testing using a SQLServer database for storing the index for the ImageMosaic */
+@SuppressWarnings("DuplicateDateFormatField") // we're not reusing SimpleDateFormat, errorprone complains though
 public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
     static final String tempFolderNoEpsg = "rgbNoEpsg";

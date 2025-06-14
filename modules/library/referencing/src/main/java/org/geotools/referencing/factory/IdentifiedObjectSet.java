@@ -217,7 +217,6 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      *     size}, then the creation of all objects is garantee successful.
      * @throws FactoryException if an {@linkplain #createObject object creation} failed.
      */
-    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void resolve(int n) throws FactoryException {
         if (n > 0)
             try {

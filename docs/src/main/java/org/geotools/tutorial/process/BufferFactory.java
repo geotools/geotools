@@ -65,32 +65,39 @@ public class BufferFactory extends SingleProcessFactory {
         return new BufferProcess(this);
     }
 
+    @Override
     public InternationalString getDescription() {
         return Text.text("Buffer a geometry");
     }
 
+    @Override
     public Map<String, Parameter<?>> getParameterInfo() {
         return Collections.unmodifiableMap(prameterInfo);
     }
 
+    @Override
     public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters) throws IllegalArgumentException {
         return Collections.unmodifiableMap(resultInfo);
     }
 
+    @Override
     public InternationalString getTitle() {
         // please note that this is a title for display purposes only
         // finding an specific implementation by name is not possible
         return Text.text("Buffer");
     }
 
+    @Override
     public Process create() throws IllegalArgumentException {
         return new BufferProcess(this);
     }
 
+    @Override
     public boolean supportsProgress() {
         return true;
     }
 
+    @Override
     public String getVersion() {
         return "1.0.0";
     }

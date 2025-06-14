@@ -108,7 +108,6 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E> implements Checked
      * @return the number of elements in this set.
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
     public int size() {
         int count = 0;
         for (E unused : this) {

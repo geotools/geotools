@@ -81,6 +81,10 @@ import org.json.simple.parser.ParseException;
  * @see <a
  *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
  */
+@SuppressWarnings(
+        "URLEqualsHashCode") // TODO: imageCache and imageCache: Avoid hash-based containers of java.net.URL--the
+// containers rely on equals() and hashCode(), which cause java.net.URL to make blocking
+// internet connections.
 public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCache {
 
     /** {@link ExternalGraphic} instances with this format will be handled by the {@link SpriteGraphicFactory}. */

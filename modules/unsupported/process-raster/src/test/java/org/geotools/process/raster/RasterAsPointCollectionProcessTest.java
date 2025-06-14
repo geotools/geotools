@@ -436,7 +436,7 @@ public class RasterAsPointCollectionProcessTest {
                 // Check the GridConvergenceAngle
                 if (crsExists) {
                     double angle = (double) ft.getAttribute("gridConvergenceAngleCorrection");
-                    Assert.assertNotEquals(0, angle);
+                    Assert.assertNotEquals(0d, angle);
                 }
             }
         }

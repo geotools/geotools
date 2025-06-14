@@ -204,7 +204,7 @@ public class CreateIndexer {
     }
 
     @SuppressWarnings("PMD.SystemPrintln")
-    private static void writeIndexer(String xml, String indexerFilePath) throws FileNotFoundException {
+    private static void writeIndexer(String xml, String indexerFilePath) throws IOException {
         System.out.println("Writing the indexer.xml: " + indexerFilePath);
         try (PrintWriter out = new PrintWriter(indexerFilePath, StandardCharsets.UTF_8)) {
             out.println(xml);

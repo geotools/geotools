@@ -49,6 +49,7 @@ class DateExtractor extends PropertiesCollector {
         return this;
     }
 
+    @SuppressWarnings("DuplicateDateFormatField") // we're not reusing SimpleDateFormat, errorprone complains though
     private Date getDate() {
         String dateStr = !getMatches().isEmpty() ? getMatches().get(0) : null;
         if (dateStr != null && !dateStr.isEmpty()) {

@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.FeatureReader;
@@ -26,8 +28,11 @@ import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.util.logging.Logging;
 
 public class PropertyExamples {
+
+    private static final Logger LOGGER = Logging.getLogger(PropertyExamples.class);
 
     static File directory;
 
@@ -68,7 +73,7 @@ public class PropertyExamples {
                 System.exit(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error running example", e);
         } finally {
             if (tmp != null) {
                 File[] list = tmp.listFiles();

@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -71,7 +72,7 @@ public class GEOT5036RegressionTest {
         final ExecutorService exec = Executors.newFixedThreadPool(8);
 
         // perform date conversions
-        for (final Date key : expectationMap.keySet()) {
+        for (final Date key : Set.copyOf(expectationMap.keySet())) {
             final Task task = new Task(key);
             expectationMap.put(key, exec.submit(task));
         }

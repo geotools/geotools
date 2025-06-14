@@ -87,8 +87,7 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests {
      * with an edit to the attribute being queried by filter.
      *
      * @param filter filter to process
-     * @param filterTypeMask the constant in {@link FilterCapabilities} that is equivalent to the FilterType used in
-     *     filter
+     * @param supportedCaps filter capabilities for the visitor under test
      * @param attToEdit the attribute in filter that is queried. If null then edit test is not ran.
      */
     protected void runTest(Filter filter, FilterCapabilities supportedCaps, String attToEdit) throws SchemaException {

@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -40,6 +42,7 @@ import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
 import org.geotools.util.SuppressFBWarnings;
+import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.geotools.xsd.Encoder;
@@ -51,6 +54,9 @@ import org.geotools.xsd.Encoder;
  */
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class StyleConverter extends JFrame {
+
+    private static final Logger LOGGER = Logging.getLogger(StyleConverter.class);
+
     private static final String SE_1_1 = "se 1.1";
 
     private static final String SLD_1_1 = "sld 1.1";
@@ -64,6 +70,7 @@ public class StyleConverter extends JFrame {
 
     private ActionListener convertListener = new ActionListener() {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             if (SLD_1_0.equals(command)) {
@@ -196,7 +203,7 @@ public class StyleConverter extends JFrame {
 
             text.setText(document);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error running example", e);
         }
     }
 
@@ -212,7 +219,7 @@ public class StyleConverter extends JFrame {
 
             display(document, SLD_1_0);
         } catch (TransformerException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error running example", e);
             return;
         }
     }
@@ -236,7 +243,7 @@ public class StyleConverter extends JFrame {
 
             display(document, SLD_1_1);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error running example", e);
         }
     }
 

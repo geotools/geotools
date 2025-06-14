@@ -97,7 +97,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     @Override
-    public void setStyledLayers(StyledLayer[] layers) {
+    public void setStyledLayers(StyledLayer... layers) {
         this.layers.clear();
 
         for (StyledLayer layer : layers) {

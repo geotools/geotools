@@ -40,7 +40,7 @@ class JDBCQueryCapabilities extends QueryCapabilities {
     }
 
     @Override
-    public boolean supportsSorting(final SortBy[] sortAttributes) {
+    public boolean supportsSorting(final SortBy... sortAttributes) {
         if (super.supportsSorting(sortAttributes)) return true;
 
         for (SortBy sortBy : sortAttributes) {

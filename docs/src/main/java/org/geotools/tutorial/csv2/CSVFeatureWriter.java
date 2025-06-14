@@ -144,12 +144,14 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
 
     // remove start
     /** Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively removing it. */
+    @Override
     public void remove() throws IOException {
         this.currentFeature = null; // just mark it done which means it will not get written out.
     }
     // remove end
 
     // write start
+    @Override
     public void write() throws IOException {
         if (this.currentFeature == null) {
             return; // current feature has been deleted

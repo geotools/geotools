@@ -237,6 +237,7 @@ public class DuckDBFilterToSQL extends FilterToSQL {
         return extraData;
     }
 
+    @SuppressWarnings("AnnotateFormatMethod")
     protected void write(String fmt, Object... args) {
         try {
             out.write(String.format(fmt, args));

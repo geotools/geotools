@@ -109,10 +109,6 @@ public abstract class XSIElementHandler implements Serializable {
     /** @see java.lang.Object#equals(java.lang.Object) */
     @Override
     public boolean equals(Object obj) {
-        if (super.equals(obj)) {
-            return true;
-        }
-
         if (obj instanceof XSIElementHandler) {
             XSIElementHandler ob = (XSIElementHandler) obj;
 

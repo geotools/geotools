@@ -30,7 +30,7 @@ public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
     }
 
     @Override
-    public void setFeatureTypeConstraints(FeatureTypeConstraint[] constraints) {
+    public void setFeatureTypeConstraints(FeatureTypeConstraint... constraints) {
         this.constraints = constraints;
     }
 

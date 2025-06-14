@@ -59,7 +59,7 @@ public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneab
     }
 
     @Override
-    public void setExtents(Extent[] extents) {
+    public void setExtents(Extent... extents) {
         this.extents = extents;
     }
 

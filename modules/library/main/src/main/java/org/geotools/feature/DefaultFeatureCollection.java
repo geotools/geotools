@@ -195,7 +195,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @see #add(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public boolean addAll(Collection<? extends SimpleFeature> collection) {
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
@@ -265,7 +265,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @return true if collection is completly covered
      */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public boolean containsAll(Collection<?> collection) {
         Iterator<?> iterator = collection.iterator();
         try {
@@ -363,7 +363,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @see #contains(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public boolean removeAll(Collection<?> collection) {
         boolean changed = false;
         Iterator<?> iterator = collection.iterator();

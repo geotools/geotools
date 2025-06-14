@@ -367,7 +367,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * @see #contains(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public boolean containsAll(Collection<?> c) {
         Iterator<?> e = c.iterator();
         try {

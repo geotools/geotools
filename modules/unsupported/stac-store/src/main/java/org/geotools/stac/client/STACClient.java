@@ -110,6 +110,7 @@ public class STACClient implements Closeable {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // Closeable is closed, PMD just doesn't see it
     public void close() throws IOException {
         if (http instanceof Closeable closeable) {
             closeable.close();

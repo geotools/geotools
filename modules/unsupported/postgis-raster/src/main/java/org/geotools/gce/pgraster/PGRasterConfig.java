@@ -181,6 +181,7 @@ class PGRasterConfig implements Closeable {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // PGRasterDataSource is closed, PMD just doesn't see it
     public void close() {
         if (dataSource instanceof PGRasterDataSource source) {
             try {

@@ -106,6 +106,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     }
 
     /** Constructor for a {@link GeoTiffWriter}. */
+    @SuppressWarnings("PMD.CloseResource")
     public GeoTiffWriter(Object destination, Hints hints) throws IOException {
 
         this.destination = destination;
@@ -123,8 +124,9 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
             } else {
                 this.outStream = ImageIOExt.createImageOutputStream(null, destination);
             }
-        } else if (destination instanceof ImageOutputStream stream) this.outStream = stream;
-        else throw new IllegalArgumentException("The provided destination canno be used!");
+        } else if (destination instanceof ImageOutputStream stream) {
+            this.outStream = stream;
+        } else throw new IllegalArgumentException("The provided destination canno be used!");
         // //
         //
         // managing hints

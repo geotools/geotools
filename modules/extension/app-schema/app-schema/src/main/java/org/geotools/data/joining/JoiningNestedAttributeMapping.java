@@ -267,6 +267,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
      * @return The matching input feature
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource") // transaction not managed here
     public List<Feature> getInputFeatures(
             Object caller,
             Object foreignKeyValue,
@@ -283,7 +284,6 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             throw new UnsupportedOperationException("Link field is missing from feature chaining mapping!");
         }
 
-        @SuppressWarnings("PMD.CloseResource") // not managed here
         Transaction transaction = null;
         if (caller instanceof AbstractMappingFeatureIterator iterator) {
             transaction = iterator.getTransaction();
@@ -352,6 +352,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
      * @return The matching simple features
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource") // Transaction not managed here
     public List<Feature> getFeatures(
             Object caller,
             Object foreignKeyValue,
@@ -370,7 +371,6 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             throw new UnsupportedOperationException("Link field is missing from feature chaining mapping!");
         }
 
-        @SuppressWarnings("PMD.CloseResource") // not managed here
         Transaction transaction = null;
         if (caller instanceof AbstractMappingFeatureIterator iterator) {
             transaction = iterator.getTransaction();

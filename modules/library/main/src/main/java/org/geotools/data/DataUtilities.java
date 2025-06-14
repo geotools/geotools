@@ -1168,9 +1168,9 @@ public class DataUtilities {
      * <p>Any problems are logged at {@link Level#FINE}.
      */
     public static void close(Iterator<?> iterator) {
-        if (iterator != null && iterator instanceof Closeable closeable) {
+        if (iterator instanceof Closeable) {
             try {
-                closeable.close();
+                ((Closeable) iterator).close();
             } catch (IOException e) {
                 String name = iterator.getClass().getPackage().toString();
                 Logger log = Logger.getLogger(name);

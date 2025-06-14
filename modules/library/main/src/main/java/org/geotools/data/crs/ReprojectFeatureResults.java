@@ -91,8 +91,8 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return new ReprojectFeatureIterator(results.features(), getSchema(), transform);
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     public void closeIterator(Iterator close) {
-        if (close == null) return;
         if (close instanceof ReprojectFeatureIterator iterator) {
             iterator.close();
         }

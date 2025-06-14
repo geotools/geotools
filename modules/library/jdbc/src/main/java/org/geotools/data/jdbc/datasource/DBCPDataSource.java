@@ -56,9 +56,4 @@ public class DBCPDataSource extends AbstractManageableDataSource {
         }
         return null;
     }
-
-    public java.util.logging.Logger getParentLogger() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

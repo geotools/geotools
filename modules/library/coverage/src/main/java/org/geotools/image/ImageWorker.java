@@ -4998,7 +4998,7 @@ public class ImageWorker {
 
                 // get back the ColorModel
                 cm = image.getColorModel();
-                ccm = ccm;
+                ccm = (ComponentColorModel) cm;
                 hasAlpha = cm.hasAlpha();
             }
 

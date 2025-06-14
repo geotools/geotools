@@ -4827,9 +4827,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public void dispose() {
         super.dispose();
-        if (dataSource != null && dataSource instanceof ManageableDataSource mds) {
+        if (dataSource instanceof ManageableDataSource mds) {
             try {
                 mds.close();
             } catch (SQLException e) {

@@ -82,6 +82,7 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
      * @throws IllegalArgumentException if input is not an instance of the correct class or is null.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public ImageInputStream createInputStreamInstance(Object input, boolean useCache, File cacheDir) {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("S3ImageInputStreamImplSpi.createInputStreamInstance(" + input.getClass() + ")");

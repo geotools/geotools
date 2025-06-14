@@ -118,9 +118,10 @@ public class GeoJSONUtil {
      * @param output The output object.
      * @return A writer.
      */
+    @SuppressWarnings("PMD.CloseResource")
     public static Writer toWriter(Object output) throws IOException {
         // If the user passed in an OutputStreamWriter, we'll trust them to close it themselves.
-        if (output instanceof Writer streamWriter) {
+        if (output instanceof OutputStreamWriter streamWriter) {
             return new Writer() {
                 Writer writer = new BufferedWriter(streamWriter);
 

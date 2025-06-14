@@ -127,6 +127,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     /** enum support */
     EnumMapping[] enumMappings;
 
+    @SuppressWarnings("PMD.CloseResource")
     public JDBCFeatureReader(
             String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query)
             throws SQLException {

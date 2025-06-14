@@ -91,6 +91,7 @@ public abstract class JDBCTestSetup {
 
     protected void setUpDataStore(JDBCDataStore dataStore) {}
 
+    @SuppressWarnings("PMD.CloseResource")
     public void tearDown() throws Exception {
         final String leakMessage = "Expected no active connection, either there is a connection leak "
                 + "or you forgot to close some object holding onto connections in the tests (e.g., a reader, an iterator)";

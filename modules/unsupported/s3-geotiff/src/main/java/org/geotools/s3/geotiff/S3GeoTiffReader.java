@@ -40,6 +40,7 @@ public class S3GeoTiffReader extends GeoTiffReader {
         closeMe = true;
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     public S3GeoTiffReader(Object input, Hints uHints) throws DataSourceException {
         super(input, uHints);
         closeMe = true;

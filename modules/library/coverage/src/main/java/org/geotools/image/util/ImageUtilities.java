@@ -740,6 +740,7 @@ public final class ImageUtilities {
         disposePlanarImageChain(pi, new HashSet<>());
     }
 
+    @SuppressWarnings("PMD.CloseResource") // iis.close() is being called explicitly
     private static void disposePlanarImageChain(PlanarImage pi, Set<PlanarImage> visited) {
         List<?> sinks = pi.getSinks();
         // check all the sinks (the image might be in the middle of a chain)

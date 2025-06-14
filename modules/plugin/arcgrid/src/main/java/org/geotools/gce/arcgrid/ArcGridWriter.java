@@ -106,6 +106,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      *
      * @param destination the URL or String pointing to the file to load the ArcGrid
      */
+    @SuppressWarnings("PMD.CloseResource") // ImageOutputStream stream
     public ArcGridWriter(Object destination, Hints hints) throws DataSourceException {
         this.destination = destination;
         if (destination instanceof File)
@@ -135,8 +136,11 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
                 throw new DataSourceException(e);
             }
 
-        } else if (destination instanceof ImageOutputStream stream) this.destination = outStream = stream;
-        else throw new DataSourceException("The provided destination cannot be used!");
+        } else if (destination instanceof ImageOutputStream stream) {
+            this.destination = outStream = stream;
+        } else {
+            throw new DataSourceException("The provided destination cannot be used!");
+        }
         // //
         //
         // managing hints

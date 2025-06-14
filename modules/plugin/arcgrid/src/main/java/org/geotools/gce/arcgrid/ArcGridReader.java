@@ -188,6 +188,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
      * @param input provided to this {@link ArcGridReader}.
      * @param hints Hints to be used by this reader throughout his life.
      */
+    @SuppressWarnings("PMD.CloseResource")
     private void checkSource(Object input, final Hints hints)
             throws UnsupportedEncodingException, DataSourceException, IOException, FileNotFoundException {
 

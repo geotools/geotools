@@ -693,6 +693,7 @@ public class MBTilesFile implements AutoCloseable {
      * <p>The application should always call this method when done with a mbtiles to prevent connection leakage.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource") // ManageableDataSource is closed, PMD just doesn't see it
     public void close() {
         try {
             if (connPool instanceof BasicDataSource source1) {

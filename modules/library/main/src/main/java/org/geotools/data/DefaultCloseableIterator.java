@@ -36,6 +36,7 @@ public class DefaultCloseableIterator<T> implements CloseableIterator<T> {
 
     protected Closeable closeableItem;
 
+    @SuppressWarnings("PMD.CloseResource")
     public DefaultCloseableIterator(Iterator<T> wrapped) {
         this.wrapped = wrapped;
         if (wrapped instanceof Closeable closeable) {

@@ -17,7 +17,12 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.text.FieldPosition;
 import java.text.MessageFormat;

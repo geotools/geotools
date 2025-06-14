@@ -416,6 +416,7 @@ public class GeoPackage implements Closeable {
      * <p>The application should always call this method when done with a geopackage to prevent connection leakage.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public void close() {
         if (dataStore != null) {
             dataStore.dispose();

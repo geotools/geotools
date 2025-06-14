@@ -193,6 +193,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      * @param input the input object.
      * @return the dataset or <code>null</code>.
      */
+    @SuppressWarnings("PMD.CloseResource") // URIImageInputStream
     private NetcdfDataset extractDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
         if (input instanceof URIImageInputStream uriInStream) {
@@ -277,6 +278,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // ImageInputStream
     public void setInput(Object input, boolean seekForwardOnly, boolean ignoreMetadata) {
         super.setInput(input, seekForwardOnly, ignoreMetadata);
         if (dataset != null) {

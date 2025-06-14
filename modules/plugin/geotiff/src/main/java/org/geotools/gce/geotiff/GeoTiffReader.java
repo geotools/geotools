@@ -248,7 +248,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      * @param input the GeoTiff file
      * @param uHints user-supplied hints TODO currently are unused
      */
-    @SuppressWarnings({"PMD.UseTryWithResources" // closing is conditional
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource" // closing is conditional
     })
     public GeoTiffReader(Object input, Hints uHints) throws DataSourceException {
         super(input, uHints);
@@ -279,8 +279,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 readerSpi = readerInputObject.getReaderSpi();
                 inStreamSPI = readerInputObject.getStreamSpi();
                 inStream = readerInputObject.getStream();
-            } else if (source instanceof ImageInputStream stream) inStream = stream;
-            else {
+            } else if (source instanceof ImageInputStream stream) {
+                inStream = stream;
+            } else {
 
                 inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
                 if (inStreamSPI == null) throw new IllegalArgumentException("No input stream for the provided source");

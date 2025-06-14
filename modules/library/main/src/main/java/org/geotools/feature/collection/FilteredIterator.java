@@ -53,6 +53,7 @@ public class FilteredIterator<F extends Feature> implements Iterator<F>, Feature
 
     /** Package protected, please use SubFeatureCollection.close( iterator ) */
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public void close() {
         if (delegate instanceof FeatureIterator<?> iterator) {
             iterator.close();

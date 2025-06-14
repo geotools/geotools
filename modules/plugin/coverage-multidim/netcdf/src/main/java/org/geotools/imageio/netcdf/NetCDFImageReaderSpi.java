@@ -156,6 +156,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // FileImageInputStreamExtImpl
     public boolean canDecodeInput(Object source) throws IOException {
         URI input = null;
         if (source instanceof URI rI) {

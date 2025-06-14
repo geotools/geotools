@@ -139,7 +139,6 @@ public class ExpressionToSolr implements ExpressionVisitor {
             temp.append("\"" + dateFormatUTC.format(literal) + "\"");
         } else if (literal instanceof Period period) {
             if (filter instanceof After) {
-                Period period = (Period) literal;
                 temp.append(
                         dateFormatUTC.format(period.getEnding().getPosition().getDate()));
             }
@@ -150,13 +149,11 @@ public class ExpressionToSolr implements ExpressionVisitor {
                         + "\"");
             }
             if (filter instanceof Ends || filter instanceof EndedBy) {
-                Period period = period;
                 temp.append("\""
                         + dateFormatUTC.format(period.getEnding().getPosition().getDate())
                         + "\"");
             }
             if (filter instanceof During || filter instanceof TContains) {
-                Period period = period;
                 temp.append("\""
                         + dateFormatUTC.format(
                                 period.getBeginning().getPosition().getDate())

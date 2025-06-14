@@ -91,9 +91,9 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
 
         if (this.relativePosition(other).equals(RelativePosition.BEFORE)
                 || this.relativePosition(other).equals(RelativePosition.AFTER)) {
-            if (this instanceof Instant instant2 && other instanceof Instant instant2) {
+            if (this instanceof Instant instant1 && other instanceof Instant instant2) {
                 diff = Math.min(
-                        Math.abs(iTime(instant2) - iTime(instant2)), Math.abs(iTime(instant2) - iTime(instant2)));
+                        Math.abs(iTime(instant2) - iTime(instant1)), Math.abs(iTime(instant1) - iTime(instant2)));
             } else if (this instanceof Instant instant1 && other instanceof Period period3) {
                 diff = Math.min(
                         Math.abs(pbTime(period3) - iTime(instant1)),

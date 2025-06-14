@@ -34,18 +34,18 @@ public class GeoJSON {
     }
 
     public static void write(Object obj, Object output) throws IOException {
-        if (obj instanceof Geometry) {
-            gjson.write((Geometry) obj, output);
+        if (obj instanceof Geometry geometry) {
+            gjson.write(geometry, output);
         } else if (obj instanceof Feature
                 || obj instanceof FeatureCollection
                 || obj instanceof CoordinateReferenceSystem) {
 
-            if (obj instanceof SimpleFeature) {
-                fjson.writeFeature((SimpleFeature) obj, output);
-            } else if (obj instanceof FeatureCollection) {
-                fjson.writeFeatureCollection((FeatureCollection) obj, output);
-            } else if (obj instanceof CoordinateReferenceSystem) {
-                fjson.writeCRS((CoordinateReferenceSystem) obj, output);
+            if (obj instanceof SimpleFeature feature) {
+                fjson.writeFeature(feature, output);
+            } else if (obj instanceof FeatureCollection collection) {
+                fjson.writeFeatureCollection(collection, output);
+            } else if (obj instanceof CoordinateReferenceSystem system) {
+                fjson.writeCRS(system, output);
             } else {
                 throw new IllegalArgumentException("Unable able to encode object of type " + obj.getClass());
             }

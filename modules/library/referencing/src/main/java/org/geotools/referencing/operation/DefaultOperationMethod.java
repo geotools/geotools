@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,6 +57,7 @@ import org.geotools.util.Utilities;
  */
 public class DefaultOperationMethod extends AbstractIdentifiedObject implements OperationMethod, PROJFormattable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -98032729598205972L;
 
     /** List of localizable properties. To be given to {@link AbstractIdentifiedObject} constructor. */
@@ -98,8 +100,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
      */
     private static Map<String, ?> getProperties(final MathTransform transform) {
         ensureNonNull("transform", transform);
-        if (transform instanceof AbstractMathTransform) {
-            final AbstractMathTransform mt = (AbstractMathTransform) transform;
+        if (transform instanceof AbstractMathTransform mt) {
             if (mt.getParameterDescriptors() != null) {
                 return getProperties(mt.getParameterDescriptors(), null);
             }
@@ -113,8 +114,8 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
      */
     private static ParameterDescriptorGroup getDescriptor(final MathTransform transform) {
         ParameterDescriptorGroup descriptor = null;
-        if (transform instanceof AbstractMathTransform) {
-            descriptor = ((AbstractMathTransform) transform).getParameterDescriptors();
+        if (transform instanceof AbstractMathTransform mathTransform) {
+            descriptor = mathTransform.getParameterDescriptors();
         }
         return descriptor;
     }
@@ -320,8 +321,8 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
      * row and each column. This method is used for implementation of the {@link #checkDimensions} method only.
      */
     private static boolean isTrivial(final MathTransform transform) {
-        if (transform instanceof LinearTransform) {
-            final Matrix matrix = ((LinearTransform) transform).getMatrix();
+        if (transform instanceof LinearTransform linearTransform) {
+            final Matrix matrix = linearTransform.getMatrix();
             final int size = matrix.getNumRow();
             if (matrix.getNumCol() == size) {
                 for (int j = 0; j < size; j++) {
@@ -359,9 +360,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
         if (method != null && transform != null) {
             int actual, expected = method.getSourceDimensions();
             while ((actual = transform.getSourceDimensions()) > expected) {
-                if (transform instanceof ConcatenatedTransform) {
-                    // Ignore axis switch and unit conversions.
-                    final ConcatenatedTransform c = (ConcatenatedTransform) transform;
+                if (transform instanceof ConcatenatedTransform c) {
                     if (isTrivial(c.transform1)) {
                         transform = c.transform2;
                     } else if (isTrivial(c.transform2)) {
@@ -372,8 +371,8 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
                         // exception be thrown after the loop.
                         break;
                     }
-                } else if (transform instanceof PassThroughTransform) {
-                    transform = ((PassThroughTransform) transform).getSubTransform();
+                } else if (transform instanceof PassThroughTransform throughTransform) {
+                    transform = throughTransform.getSubTransform();
                 } else {
                     break;
                 }

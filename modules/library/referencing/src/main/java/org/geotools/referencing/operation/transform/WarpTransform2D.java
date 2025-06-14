@@ -18,6 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,6 +69,7 @@ import org.geotools.util.XArray;
  */
 public class WarpTransform2D extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7949539694656719923L;
 
     private static final boolean USE_HACK;
@@ -349,8 +351,8 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
      * @return The transform for the given warp.
      */
     public static MathTransform2D create(final Warp warp) {
-        if (warp instanceof WarpAdapter) {
-            return ((WarpAdapter) warp).getTransform();
+        if (warp instanceof WarpAdapter adapter) {
+            return adapter.getTransform();
         }
         return new WarpTransform2D(warp, (Warp) null);
     }
@@ -377,8 +379,8 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
      *     AffineTransform, and remove that optimization from Resampler2D.
      */
     public static Warp getWarp(CharSequence name, final MathTransform2D transform) {
-        if (transform instanceof WarpTransform2D) {
-            return ((WarpTransform2D) transform).getWarp();
+        if (transform instanceof WarpTransform2D transform2D) {
+            return transform2D.getWarp();
         }
         if (name == null) {
             name = Vocabulary.formatInternational(VocabularyKeys.UNKNOWN);
@@ -412,8 +414,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
     @SuppressWarnings("unchecked")
     @Override
     public ParameterValueGroup getParameterValues() {
-        if (warp instanceof WarpPolynomial) {
-            final WarpPolynomial poly = (WarpPolynomial) warp;
+        if (warp instanceof WarpPolynomial poly) {
             final ParameterValue[] p = new ParameterValue[7];
             int c = 0;
             p[c++] = new Parameter<>(WarpTransform2DProvider.DEGREE, Integer.valueOf(poly.getDegree()));

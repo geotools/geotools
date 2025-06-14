@@ -237,8 +237,7 @@ public class SchemaClassTemplate
           }
 
           String description = "null";
-          if (type instanceof ComplexType && !typeBindings.containsKey(name)) {
-              ComplexType cType = (ComplexType) type;
+          if (type instanceof ComplexType cType && !typeBindings.containsKey(name)) {
 
               if (!cType.getDescriptors().isEmpty()) {
 

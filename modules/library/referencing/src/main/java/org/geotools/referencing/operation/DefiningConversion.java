@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -40,6 +41,7 @@ import org.geotools.referencing.wkt.Formatter;
  */
 public class DefiningConversion extends DefaultConversion {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7399026512478064721L;
 
     /** The parameter values. */

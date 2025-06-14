@@ -35,7 +35,7 @@ final class LoggingImagingListener implements ImagingListener {
         if (where == null) {
             log = Logging.getLogger("org.eclipse.imagen");
         } else {
-            Class classe = where instanceof Class ? (Class) where : where.getClass();
+            Class classe = where instanceof Class c ? c : where.getClass();
             log = Logging.getLogger(classe);
         }
         if (message.contains("Continuing in pure Java mode")) {
@@ -43,8 +43,8 @@ final class LoggingImagingListener implements ImagingListener {
             return false; // we are not trying to recover
         } else {
             log.log(Level.INFO, message, thrown);
-            if (thrown instanceof RuntimeException && !(where instanceof OperationRegistry)) {
-                throw (RuntimeException) thrown;
+            if (thrown instanceof RuntimeException exception && !(where instanceof OperationRegistry)) {
+                throw exception;
             } else {
                 return false;
             }

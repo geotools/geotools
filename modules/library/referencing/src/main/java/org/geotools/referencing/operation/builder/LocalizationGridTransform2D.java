@@ -22,6 +22,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -63,6 +64,7 @@ import org.geotools.util.logging.Logging;
  */
 final class LocalizationGridTransform2D extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1067560328828441295L;
 
     /** Maximal number of iterations to try before to fail during an inverse transformation. */
@@ -534,6 +536,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
      */
     private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D, Serializable {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = 4876426825123740986L;
 
         /** Default constructor. */
@@ -550,8 +553,8 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
                 inverseTransform(ptSrc, target, tr);
                 return target;
             }
-            if (ptDst != ptSrc && ptDst instanceof Point2D.Double) {
-                inverseTransform(ptSrc, (Point2D.Double) ptDst, tr);
+            if (ptDst != ptSrc && ptDst instanceof Point2D.Double double1) {
+                inverseTransform(ptSrc, double1, tr);
                 return ptDst;
             }
             final Point2D.Double target = new Point2D.Double();
@@ -676,6 +679,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
      */
     private static class Provider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -8263439392080019340L;
 
         /** The parameters group. */

@@ -75,13 +75,12 @@ public class ImageIOExt {
     public static ImageOutputStream createImageOutputStream(RenderedImage image, Object destination)
             throws IOException {
         // already what we need?
-        if (destination instanceof ImageOutputStream) {
-            return (ImageOutputStream) destination;
+        if (destination instanceof ImageOutputStream stream) {
+            return stream;
         }
 
         // generate the ImageOutputStream
-        if (destination instanceof OutputStream && filesystemThreshold != null && image != null) {
-            OutputStream stream = (OutputStream) destination;
+        if (destination instanceof OutputStream stream && filesystemThreshold != null && image != null) {
 
             // if going to wrap a output stream and we have a threshold set
             long imageSize = computeImageSize(image);
@@ -322,8 +321,8 @@ public class ImageIOExt {
     }
 
     private static ImageInputStream getImageInputStream(Object input) throws IOException {
-        if (input instanceof ImageInputStream) {
-            return (ImageInputStream) input;
+        if (input instanceof ImageInputStream stream) {
+            return stream;
         }
         ImageInputStream stream = ImageIO.createImageInputStream(input);
         if (stream == null) {
@@ -342,8 +341,8 @@ public class ImageIOExt {
         RenderedImage ri = ImageIOExt.read(input);
         if (ri == null) {
             return null;
-        } else if (ri instanceof BufferedImage) {
-            return (BufferedImage) ri;
+        } else if (ri instanceof BufferedImage image) {
+            return image;
         } else {
             return PlanarImage.wrapRenderedImage(ri).getAsBufferedImage();
         }

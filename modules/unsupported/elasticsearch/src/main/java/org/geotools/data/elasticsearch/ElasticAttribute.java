@@ -16,6 +16,7 @@
  */
 package org.geotools.data.elasticsearch;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +35,7 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
 
     private static final Pattern beginLetters = Pattern.compile("^[A-Za-z_].*");
 
+    @Serial
     private static final long serialVersionUID = 8839579461838862328L;
 
     private final String name;

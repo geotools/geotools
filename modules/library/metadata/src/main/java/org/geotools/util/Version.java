@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
  */
 public class Version implements CharSequence, Comparable<Version>, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -6793384507333713770L;
 
     /** The pattern to use for splitting version numbers. */

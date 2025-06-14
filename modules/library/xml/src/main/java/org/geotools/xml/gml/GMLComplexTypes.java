@@ -116,50 +116,50 @@ public class GMLComplexTypes {
     private static final String STREAM_FEATURE_NAME_HINT = "org.geotools.xml.gml.STREAM_FEATURE_NAME_HINT";
 
     static void encode(Element e, Geometry g, PrintHandler output) throws OperationNotSupportedException, IOException {
-        if (g instanceof Point) {
-            encode(e, (Point) g, output);
+        if (g instanceof Point point) {
+            encode(e, point, output);
 
             return;
         }
 
-        if (g instanceof Polygon) {
-            encode(e, (Polygon) g, output);
+        if (g instanceof Polygon polygon) {
+            encode(e, polygon, output);
 
             return;
         }
 
-        if (g instanceof LinearRing) {
-            encode(e, (LinearRing) g, output);
+        if (g instanceof LinearRing ring) {
+            encode(e, ring, output);
 
             return;
         }
 
-        if (g instanceof LineString) {
-            encode(e, (LineString) g, output);
+        if (g instanceof LineString string) {
+            encode(e, string, output);
 
             return;
         }
 
-        if (g instanceof MultiLineString) {
-            encode(e, (MultiLineString) g, output);
+        if (g instanceof MultiLineString string) {
+            encode(e, string, output);
 
             return;
         }
 
-        if (g instanceof MultiPolygon) {
-            encode(e, (MultiPolygon) g, output);
+        if (g instanceof MultiPolygon polygon) {
+            encode(e, polygon, output);
 
             return;
         }
 
-        if (g instanceof MultiPoint) {
-            encode(e, (MultiPoint) g, output);
+        if (g instanceof MultiPoint point) {
+            encode(e, point, output);
 
             return;
         }
 
-        if (g instanceof GeometryCollection) {
-            encode(e, (GeometryCollection) g, output);
+        if (g instanceof GeometryCollection collection) {
+            encode(e, collection, output);
         }
     }
 
@@ -1876,8 +1876,7 @@ public class GMLComplexTypes {
 
             GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
-            if (t instanceof Coordinate) {
-                Coordinate c = (Coordinate) t;
+            if (t instanceof Coordinate c) {
                 p = gf.createPoint(c);
             } else {
                 CoordinateSequence c = (CoordinateSequence) t;
@@ -2440,8 +2439,7 @@ public class GMLComplexTypes {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode " + value);
             }
-            if (value instanceof ReferencedEnvelope) {
-                ReferencedEnvelope bbox = (ReferencedEnvelope) value;
+            if (value instanceof ReferencedEnvelope bbox) {
                 AttributesImpl ai = new AttributesImpl();
 
                 // no GID
@@ -3843,8 +3841,7 @@ public class GMLComplexTypes {
         }
 
         private void assignValue(ElementValue[] value, Object[] values, AttributeDescriptor at, int i, int k) {
-            if (at instanceof ChoiceAttributeType) {
-                ChoiceAttributeType choiceAT = (ChoiceAttributeType) at;
+            if (at instanceof ChoiceAttributeType choiceAT) {
                 values[k] = choiceAT.convert(value[i].getValue());
             } else values[k] = value[i].getValue();
         }
@@ -3857,8 +3854,7 @@ public class GMLComplexTypes {
 
             Class<?> instanceClass = value[i].getValue().getClass();
 
-            if (AttributeDescriptor instanceof ChoiceAttributeType) {
-                ChoiceAttributeType choiceAT = (ChoiceAttributeType) AttributeDescriptor;
+            if (AttributeDescriptor instanceof ChoiceAttributeType choiceAT) {
                 Class<?>[] choices = choiceAT.getChoices();
                 for (Class<?> choice : choices) {
                     if (choice.isAssignableFrom(instanceClass)) return true;
@@ -5932,14 +5928,14 @@ public class GMLComplexTypes {
             if (attr != null) {
                 build.add(attr);
 
-                if (geometryAttribute == null && attr instanceof GeometryDescriptor) {
+                if (geometryAttribute == null && attr instanceof GeometryDescriptor descriptor) {
                     if (!attr.getLocalName()
                             //
                             // .equalsIgnoreCase(BoxType.getInstance().getName())) {
                             .equalsIgnoreCase(AbstractFeatureType.getInstance()
                                     .getChildElements()[2]
                                     .getName())) {
-                        geometryAttribute = (GeometryDescriptor) attr;
+                        geometryAttribute = descriptor;
                     }
                 }
             }
@@ -5977,13 +5973,13 @@ public class GMLComplexTypes {
 
             build.add(attributeDescriptor);
 
-            if (geometryAttribute == null && attributeDescriptor instanceof GeometryDescriptor) {
+            if (geometryAttribute == null && attributeDescriptor instanceof GeometryDescriptor descriptor) {
                 if (!attributeDescriptor
                         .getLocalName()
                         .equalsIgnoreCase(AbstractFeatureType.getInstance()
                                 .getChildElements()[2]
                                 .getName())) {
-                    geometryAttribute = (GeometryDescriptor) attributeDescriptor;
+                    geometryAttribute = descriptor;
                 }
             }
         }

@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -44,6 +45,7 @@ import org.geotools.referencing.operation.matrix.Matrix2;
  */
 public class LinearTransform1D extends AbstractMathTransform implements MathTransform1D, LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7595037195668813000L;
 
     /** The identity transform. */

@@ -64,9 +64,7 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
     @Override
     public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
         if (stopCollection) return;
-        if (event instanceof FileProcessingEvent) {
-            // grab the file and check if it exists
-            FileProcessingEvent fileEvent = (FileProcessingEvent) event;
+        if (event instanceof FileProcessingEvent fileEvent) {
             // skip non ingested files
             if (!fileEvent.isIngested()) return;
             File file = fileEvent.getFile();
@@ -127,8 +125,7 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
         if (reader != null) {
             try {
                 ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
-                if (info instanceof PAMResourceInfo) {
-                    PAMResourceInfo pamInfo = (PAMResourceInfo) info;
+                if (info instanceof PAMResourceInfo pamInfo) {
                     PAMDataset pam = pamInfo.getPAMDataset();
                     collectRAT(pam);
                 }

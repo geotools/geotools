@@ -57,20 +57,20 @@ public class HanaWKBWriter {
     private static final int COORD_SIZE = 8;
 
     private static int computeSize(Geometry geometry, int dimension) throws HanaWKBWriterException {
-        if (geometry instanceof Point) {
-            return computeSize((Point) geometry, dimension);
-        } else if (geometry instanceof LineString) {
-            return computeSize((LineString) geometry, dimension);
-        } else if (geometry instanceof Polygon) {
-            return computeSize((Polygon) geometry, dimension);
-        } else if (geometry instanceof MultiPoint) {
-            return computeSize((MultiPoint) geometry, dimension);
-        } else if (geometry instanceof MultiLineString) {
-            return computeSize((MultiLineString) geometry, dimension);
-        } else if (geometry instanceof MultiPolygon) {
-            return computeSize((MultiPolygon) geometry, dimension);
-        } else if (geometry instanceof GeometryCollection) {
-            return computeSize((GeometryCollection) geometry, dimension);
+        if (geometry instanceof Point point1) {
+            return computeSize(point1, dimension);
+        } else if (geometry instanceof LineString string1) {
+            return computeSize(string1, dimension);
+        } else if (geometry instanceof Polygon polygon1) {
+            return computeSize(polygon1, dimension);
+        } else if (geometry instanceof MultiPoint point) {
+            return computeSize(point, dimension);
+        } else if (geometry instanceof MultiLineString string) {
+            return computeSize(string, dimension);
+        } else if (geometry instanceof MultiPolygon polygon) {
+            return computeSize(polygon, dimension);
+        } else if (geometry instanceof GeometryCollection collection) {
+            return computeSize(collection, dimension);
         } else {
             throw new HanaWKBWriterException(
                     MessageFormat.format("Unsupported geometry type {0}", geometry.getGeometryType()));
@@ -133,20 +133,20 @@ public class HanaWKBWriter {
     private static final int DIM_OFFSET = 1000;
 
     private static void write(Geometry geometry, int dimension, ByteBuffer buffer) throws HanaWKBWriterException {
-        if (geometry instanceof Point) {
-            write((Point) geometry, dimension, buffer);
-        } else if (geometry instanceof LineString) {
-            write((LineString) geometry, dimension, buffer);
-        } else if (geometry instanceof Polygon) {
-            write((Polygon) geometry, dimension, buffer);
-        } else if (geometry instanceof MultiPoint) {
-            write((MultiPoint) geometry, dimension, buffer);
-        } else if (geometry instanceof MultiLineString) {
-            write((MultiLineString) geometry, dimension, buffer);
-        } else if (geometry instanceof MultiPolygon) {
-            write((MultiPolygon) geometry, dimension, buffer);
-        } else if (geometry instanceof GeometryCollection) {
-            write((GeometryCollection) geometry, dimension, buffer);
+        if (geometry instanceof Point point1) {
+            write(point1, dimension, buffer);
+        } else if (geometry instanceof LineString string1) {
+            write(string1, dimension, buffer);
+        } else if (geometry instanceof Polygon polygon1) {
+            write(polygon1, dimension, buffer);
+        } else if (geometry instanceof MultiPoint point) {
+            write(point, dimension, buffer);
+        } else if (geometry instanceof MultiLineString string) {
+            write(string, dimension, buffer);
+        } else if (geometry instanceof MultiPolygon polygon) {
+            write(polygon, dimension, buffer);
+        } else if (geometry instanceof GeometryCollection collection) {
+            write(collection, dimension, buffer);
         } else {
             throw new HanaWKBWriterException(
                     MessageFormat.format("Unsupported geometry type {0}", geometry.getGeometryType()));

@@ -50,8 +50,8 @@ public class HaloImpl implements Halo, Cloneable {
     static HaloImpl cast(org.geotools.api.style.Halo halo) {
         if (halo == null) {
             return null;
-        } else if (halo instanceof HaloImpl) {
-            return (HaloImpl) halo;
+        } else if (halo instanceof HaloImpl impl) {
+            return impl;
         } else {
             HaloImpl copy = new HaloImpl();
             copy.setFill(halo.getFill());
@@ -166,8 +166,7 @@ public class HaloImpl implements Halo, Cloneable {
             return true;
         }
 
-        if (obj instanceof HaloImpl) {
-            HaloImpl other = (HaloImpl) obj;
+        if (obj instanceof HaloImpl other) {
 
             return Utilities.equals(radius, other.radius) && Utilities.equals(fill, other.fill);
         }

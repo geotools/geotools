@@ -168,7 +168,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
                 break;
             }
         }
-        Assert.assertNotNull(String.format("We should find %s here.", NAME), featureName);
+        Assert.assertNotNull("We should find %s here.".formatted(NAME), featureName);
 
         FeatureSource<FeatureType, Feature> source = dataAccess.getFeatureSource(featureName);
         HashSet<String> properties = new HashSet<>();

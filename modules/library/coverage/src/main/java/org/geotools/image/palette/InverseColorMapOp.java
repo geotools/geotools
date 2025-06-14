@@ -93,7 +93,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
         // ShortCut for using bufferedimages and avoiding tiling
         //
         // //
-        if (src instanceof BufferedImage) return filter((BufferedImage) src, null);
+        if (src instanceof BufferedImage image) return filter(image, null);
 
         // //
         //

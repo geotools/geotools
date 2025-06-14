@@ -107,8 +107,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
      * @param input the {@link File} to use for future decoding.
      */
     public GrassCoverageReader(Object input) {
-        if (input instanceof File) {
-            File file = (File) input;
+        if (input instanceof File file) {
             imageReader = new GrassBinaryImageReader(new GrassBinaryImageReaderSpi());
             imageReader.setInput(input);
 
@@ -437,8 +436,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             finalImage = image;
         }
 
-        if (finalImage instanceof RenderedOp) {
-            RenderedOp rOp = (RenderedOp) finalImage;
+        if (finalImage instanceof RenderedOp rOp) {
             finalImage = rOp.getAsBufferedImage();
         }
 

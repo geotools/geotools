@@ -989,10 +989,10 @@ public class XSISimpleTypes {
                 throws IOException {
             if (value instanceof java.sql.Date) {
                 value = Converters.convert(value, java.lang.String.class);
-            } else if (value instanceof java.util.Date) {
+            } else if (value instanceof java.util.Date date) {
                 // converting java.util.Date to java.sql.Date ensures formatting
                 // as Date, as required, rather than DateTime format
-                value = new java.sql.Date(((java.util.Date) value).getTime());
+                value = new java.sql.Date(date.getTime());
                 value = Converters.convert(value, java.lang.String.class);
             }
             super.encode(element, value, output, hints);

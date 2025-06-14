@@ -51,41 +51,44 @@ public class ProjJSONModuleTest {
 
     @Test
     public void testDeserializeWGS84() throws Exception {
-        String json = "{\n"
-                + "  \"$schema\": \"https://proj.org/schemas/v0.7/projjson.schema.json\",\n"
-                + "  \"type\": \"GeographicCRS\",\n"
-                + "  \"name\": \"WGS 84\",\n"
-                + "  \"datum\": {\n"
-                + "    \"type\": \"GeodeticReferenceFrame\",\n"
-                + "    \"name\": \"World Geodetic System 1984\",\n"
-                + "    \"ellipsoid\": {\n"
-                + "      \"name\": \"WGS 84\",\n"
-                + "      \"semi_major_axis\": 6378137,\n"
-                + "      \"inverse_flattening\": 298.257223563\n"
-                + "    }\n"
-                + "  },\n"
-                + "  \"coordinate_system\": {\n"
-                + "    \"type\": \"ellipsoidal\",\n"
-                + "    \"axes\": [\n"
-                + "      {\n"
-                + "        \"name\": \"Geodetic latitude\",\n"
-                + "        \"abbreviation\": \"Lat\",\n"
-                + "        \"direction\": \"north\",\n"
-                + "        \"unit\": \"degree\"\n"
-                + "      },\n"
-                + "      {\n"
-                + "        \"name\": \"Geodetic longitude\",\n"
-                + "        \"abbreviation\": \"Lon\",\n"
-                + "        \"direction\": \"east\",\n"
-                + "        \"unit\": \"degree\"\n"
-                + "      }\n"
-                + "    ]\n"
-                + "  },\n"
-                + "  \"id\": {\n"
-                + "    \"authority\": \"EPSG\",\n"
-                + "    \"code\": 4326\n"
-                + "  }\n"
-                + "}";
+        String json =
+                """
+                {
+                  "$schema": "https://proj.org/schemas/v0.7/projjson.schema.json",
+                  "type": "GeographicCRS",
+                  "name": "WGS 84",
+                  "datum": {
+                    "type": "GeodeticReferenceFrame",
+                    "name": "World Geodetic System 1984",
+                    "ellipsoid": {
+                      "name": "WGS 84",
+                      "semi_major_axis": 6378137,
+                      "inverse_flattening": 298.257223563
+                    }
+                  },
+                  "coordinate_system": {
+                    "type": "ellipsoidal",
+                    "axes": [
+                      {
+                        "name": "Geodetic latitude",
+                        "abbreviation": "Lat",
+                        "direction": "north",
+                        "unit": "degree"
+                      },
+                      {
+                        "name": "Geodetic longitude",
+                        "abbreviation": "Lon",
+                        "direction": "east",
+                        "unit": "degree"
+                      }
+                    ]
+                  },
+                  "id": {
+                    "authority": "EPSG",
+                    "code": 4326
+                  }
+                }\
+                """;
 
         CoordinateReferenceSystem crs = mapper.readValue(json, CoordinateReferenceSystem.class);
 
@@ -112,41 +115,44 @@ public class ProjJSONModuleTest {
 
     @Test
     public void testHelperParseCRS() throws Exception {
-        String json = "{\n"
-                + "  \"$schema\": \"https://proj.org/schemas/v0.7/projjson.schema.json\",\n"
-                + "  \"type\": \"GeographicCRS\",\n"
-                + "  \"name\": \"WGS 84\",\n"
-                + "  \"datum\": {\n"
-                + "    \"type\": \"GeodeticReferenceFrame\",\n"
-                + "    \"name\": \"World Geodetic System 1984\",\n"
-                + "    \"ellipsoid\": {\n"
-                + "      \"name\": \"WGS 84\",\n"
-                + "      \"semi_major_axis\": 6378137,\n"
-                + "      \"inverse_flattening\": 298.257223563\n"
-                + "    }\n"
-                + "  },\n"
-                + "  \"coordinate_system\": {\n"
-                + "    \"type\": \"ellipsoidal\",\n"
-                + "    \"axes\": [\n"
-                + "      {\n"
-                + "        \"name\": \"Geodetic latitude\",\n"
-                + "        \"abbreviation\": \"Lat\",\n"
-                + "        \"direction\": \"north\",\n"
-                + "        \"unit\": \"degree\"\n"
-                + "      },\n"
-                + "      {\n"
-                + "        \"name\": \"Geodetic longitude\",\n"
-                + "        \"abbreviation\": \"Lon\",\n"
-                + "        \"direction\": \"east\",\n"
-                + "        \"unit\": \"degree\"\n"
-                + "      }\n"
-                + "    ]\n"
-                + "  },\n"
-                + "  \"id\": {\n"
-                + "    \"authority\": \"EPSG\",\n"
-                + "    \"code\": 4326\n"
-                + "  }\n"
-                + "}";
+        String json =
+                """
+                {
+                  "$schema": "https://proj.org/schemas/v0.7/projjson.schema.json",
+                  "type": "GeographicCRS",
+                  "name": "WGS 84",
+                  "datum": {
+                    "type": "GeodeticReferenceFrame",
+                    "name": "World Geodetic System 1984",
+                    "ellipsoid": {
+                      "name": "WGS 84",
+                      "semi_major_axis": 6378137,
+                      "inverse_flattening": 298.257223563
+                    }
+                  },
+                  "coordinate_system": {
+                    "type": "ellipsoidal",
+                    "axes": [
+                      {
+                        "name": "Geodetic latitude",
+                        "abbreviation": "Lat",
+                        "direction": "north",
+                        "unit": "degree"
+                      },
+                      {
+                        "name": "Geodetic longitude",
+                        "abbreviation": "Lon",
+                        "direction": "east",
+                        "unit": "degree"
+                      }
+                    ]
+                  },
+                  "id": {
+                    "authority": "EPSG",
+                    "code": 4326
+                  }
+                }\
+                """;
 
         org.geotools.api.referencing.crs.CoordinateReferenceSystem crs = ProjJSONHelper.parseCRS(json);
 

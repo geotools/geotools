@@ -88,8 +88,8 @@ public class FilterSchema implements Schema {
      */
     static FilterFactory filterFactory(Map map) {
         Hints hints = null;
-        if (map instanceof Hints) {
-            hints = (Hints) map;
+        if (map instanceof Hints hints1) {
+            hints = hints1;
         }
         return CommonFactoryFinder.getFilterFactory(hints);
     }

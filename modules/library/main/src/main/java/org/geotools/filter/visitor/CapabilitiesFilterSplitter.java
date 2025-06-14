@@ -637,9 +637,9 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
             // logical operators aren't supported
 
             // if the logical operator is AND
-            if (filter instanceof And) {
+            if (filter instanceof And and) {
                 // test if one of its children is supported
-                Iterator<Filter> it = ((And) filter).getChildren().iterator();
+                Iterator<Filter> it = and.getChildren().iterator();
                 Filter supportedChild = null;
                 List<Filter> otherChildren = new ArrayList<>();
                 while (it.hasNext()) {
@@ -677,10 +677,10 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
 
         int i = postStack.size();
         int j = preStack.size();
-        if (filter instanceof Not) {
+        if (filter instanceof Not not) {
 
-            if (((Not) filter).getFilter() != null) {
-                Filter next = ((Not) filter).getFilter();
+            if (not.getFilter() != null) {
+                Filter next = not.getFilter();
                 next.accept(this, null);
 
                 if (i < postStack.size()) {
@@ -698,11 +698,11 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                 }
             }
         } else {
-            if (filter instanceof Or) {
+            if (filter instanceof Or or) {
                 Filter orReplacement;
 
                 try {
-                    orReplacement = translateOr((Or) filter);
+                    orReplacement = translateOr(or);
                     orReplacement.accept(this, null);
                 } catch (IllegalFilterException e) {
                     popToSize(preStack, j);
@@ -980,9 +980,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         while (i.hasNext()) {
             Filter f = (Filter) i.next();
 
-            if (f instanceof Not) {
-                // simplify it
-                Not logic = (Not) f;
+            if (f instanceof Not logic) {
                 Filter next = logic.getFilter();
                 translated.add(next);
             } else {

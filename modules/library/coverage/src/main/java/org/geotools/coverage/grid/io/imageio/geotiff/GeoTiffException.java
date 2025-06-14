@@ -37,6 +37,7 @@ package org.geotools.coverage.grid.io.imageio.geotiff;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.io.StringWriter;
 
 /**
@@ -62,6 +63,7 @@ import java.io.StringWriter;
 public final class GeoTiffException extends IOException {
 
     /** */
+    @Serial
     private static final long serialVersionUID = 1008533682021487024L;
 
     private GeoTiffIIOMetadataDecoder metadata = null;

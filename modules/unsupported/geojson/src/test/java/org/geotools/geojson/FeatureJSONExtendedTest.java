@@ -136,8 +136,8 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
     }
 
     String toDateString(int val) {
-        return String.format(
-                "%s-%s-%sT%s:%s:%s.000+0000", pad(2000 + val), pad(val), pad(val), pad(val), pad(val), pad(val));
+        return "%s-%s-%sT%s:%s:%s.000+0000"
+                .formatted(pad(2000 + val), pad(val), pad(val), pad(val), pad(val), pad(val));
     }
 
     Date toDate(int val) {

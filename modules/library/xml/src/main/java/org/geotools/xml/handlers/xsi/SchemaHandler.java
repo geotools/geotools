@@ -396,8 +396,7 @@ public class SchemaHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object obj = it.next();
 
-                if (obj instanceof ImportHandler) {
-                    ImportHandler imp = (ImportHandler) obj;
+                if (obj instanceof ImportHandler imp) {
                     URI incURI = null;
 
                     // if ((imp.getSchemaLocation() != null) && (thisURI != null)) {
@@ -455,8 +454,7 @@ public class SchemaHandler extends XSIElementHandler {
             Set<SimpleType> cache = new HashSet<>();
             while (it.hasNext()) {
                 Object t = it.next();
-                if (t instanceof SimpleTypeHandler) {
-                    SimpleTypeHandler tt = (SimpleTypeHandler) t;
+                if (t instanceof SimpleTypeHandler tt) {
                     cache.add(tt.compress(this));
                     it.remove();
                 }
@@ -475,8 +473,7 @@ public class SchemaHandler extends XSIElementHandler {
             HashSet<AttributeGroup> cache = new HashSet<>();
             while (it.hasNext()) {
                 Object t = it.next();
-                if (t instanceof AttributeGroupHandler) {
-                    AttributeGroupHandler tt = (AttributeGroupHandler) t;
+                if (t instanceof AttributeGroupHandler tt) {
                     cache.add(tt.compress(this));
                     it.remove();
                 }
@@ -495,8 +492,7 @@ public class SchemaHandler extends XSIElementHandler {
             HashSet<Attribute> cache = new HashSet<>();
             while (it.hasNext()) {
                 Object t = it.next();
-                if (t instanceof AttributeHandler) {
-                    AttributeHandler tt = (AttributeHandler) t;
+                if (t instanceof AttributeHandler tt) {
                     cache.add(tt.compress(this));
                     it.remove();
                 }
@@ -515,8 +511,7 @@ public class SchemaHandler extends XSIElementHandler {
             HashSet<ComplexType> cache = new HashSet<>();
             while (it.hasNext()) {
                 Object t = it.next();
-                if (t instanceof ComplexTypeHandler) {
-                    ComplexTypeHandler tt = (ComplexTypeHandler) t;
+                if (t instanceof ComplexTypeHandler tt) {
                     cache.add(tt.compress(this));
                 }
             }
@@ -535,8 +530,7 @@ public class SchemaHandler extends XSIElementHandler {
             HashSet<ElementGrouping> cache = new HashSet<>();
             while (it.hasNext()) {
                 Object t = it.next();
-                if (t instanceof ElementTypeHandler) {
-                    ElementTypeHandler tt = (ElementTypeHandler) t;
+                if (t instanceof ElementTypeHandler tt) {
                     cache.add(tt.compress(this));
                     it.remove();
                 }
@@ -555,8 +549,7 @@ public class SchemaHandler extends XSIElementHandler {
             Set<ElementGrouping> cache = new HashSet<>();
             while (it.hasNext()) {
                 Object t = it.next();
-                if (t instanceof GroupHandler) {
-                    GroupHandler tt = (GroupHandler) t;
+                if (t instanceof GroupHandler tt) {
                     cache.add(tt.compress(this));
                     it.remove();
                 }
@@ -654,8 +647,7 @@ public class SchemaHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof SimpleTypeHandler) {
-                    SimpleTypeHandler sst = (SimpleTypeHandler) o;
+                if (o instanceof SimpleTypeHandler sst) {
 
                     if (localName.equalsIgnoreCase(sst.getName())) {
                         return sst.compress(this);
@@ -758,8 +750,7 @@ public class SchemaHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof ComplexTypeHandler) {
-                    ComplexTypeHandler sst = (ComplexTypeHandler) o;
+                if (o instanceof ComplexTypeHandler sst) {
 
                     if (localName.equalsIgnoreCase(sst.getName())) {
                         return sst.compress(this);
@@ -872,8 +863,7 @@ public class SchemaHandler extends XSIElementHandler {
         while (it.hasNext()) {
             Object o = it.next();
 
-            if (o instanceof ElementTypeHandler) {
-                ElementTypeHandler sst = (ElementTypeHandler) o;
+            if (o instanceof ElementTypeHandler sst) {
 
                 if (localName.equalsIgnoreCase(sst.getName())) {
                     return (Element) sst.compress(this);
@@ -967,8 +957,7 @@ public class SchemaHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof GroupHandler) {
-                    GroupHandler sst = (GroupHandler) o;
+                if (o instanceof GroupHandler sst) {
 
                     if (localName.equalsIgnoreCase(sst.getName())) {
                         return (Group) sst.compress(this);
@@ -1064,8 +1053,7 @@ public class SchemaHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof AttributeGroupHandler) {
-                    AttributeGroupHandler sst = (AttributeGroupHandler) o;
+                if (o instanceof AttributeGroupHandler sst) {
 
                     if (localName.equalsIgnoreCase(sst.getName())) {
                         return sst.compress(this);
@@ -1163,8 +1151,7 @@ public class SchemaHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof AttributeHandler) {
-                    AttributeHandler sst = (AttributeHandler) o;
+                if (o instanceof AttributeHandler sst) {
 
                     if (localName.equalsIgnoreCase(sst.getName())) {
                         return sst.compress(this);
@@ -1453,24 +1440,25 @@ public class SchemaHandler extends XSIElementHandler {
         @Override
         public int compare(Object arg0, Object arg1) {
             // attribute
-            if (arg0 instanceof Attribute && arg1 instanceof Attribute)
-                return compareAttribute((Attribute) arg0, (Attribute) arg1);
+            if (arg0 instanceof Attribute attribute && arg1 instanceof Attribute attribute1)
+                return compareAttribute(attribute, attribute1);
             // attrbute group
-            if (arg0 instanceof AttributeGroup && arg1 instanceof AttributeGroup)
-                return compareAttributeGroup((AttributeGroup) arg0, (AttributeGroup) arg1);
+            if (arg0 instanceof AttributeGroup group && arg1 instanceof AttributeGroup group1)
+                return compareAttributeGroup(group, group1);
             // complex type
-            if (arg0 instanceof ComplexType && arg1 instanceof ComplexType)
-                return compareComplexType((ComplexType) arg0, (ComplexType) arg1);
+            if (arg0 instanceof ComplexType type && arg1 instanceof ComplexType type1)
+                return compareComplexType(type, type1);
             // simpletype
-            if (arg0 instanceof SimpleType && arg1 instanceof SimpleType)
-                return compareSimpleType((SimpleType) arg0, (SimpleType) arg1);
+            if (arg0 instanceof SimpleType type && arg1 instanceof SimpleType type1)
+                return compareSimpleType(type, type1);
             // group
-            if (arg0 instanceof Group && arg1 instanceof Group) return compareGroup((Group) arg0, (Group) arg1);
+            if (arg0 instanceof Group group && arg1 instanceof Group group1) return compareGroup(group, group1);
             // element
-            if (arg0 instanceof Element && arg1 instanceof Element)
-                return compareElement((Element) arg0, (Element) arg1);
+            if (arg0 instanceof Element element && arg1 instanceof Element element1)
+                return compareElement(element, element1);
             // imports
-            if (arg0 instanceof Schema && arg1 instanceof Schema) return compareImport((Schema) arg0, (Schema) arg1);
+            if (arg0 instanceof Schema schema1 && arg1 instanceof Schema schema2)
+                return compareImport(schema1, schema2);
 
             return -1; // hack for unresolved portions
             // throw new ClassCastException("Unknown type "+arg0.getClass().getName());

@@ -61,7 +61,7 @@ public class LoggingImagingListenerTest {
             listener.errorOccurred(thrown.getMessage(), thrown, JAI.class, false);
         } catch (IllegalStateException expected) {
         } catch (Throwable t) {
-            fail(String.format("Exception '%s' not expected", t.getClass().getSimpleName()));
+            fail("Exception '%s' not expected".formatted(t.getClass().getSimpleName()));
         }
         assertEquals(1, logHandler.logged.size());
         LogRecord logRecord = logHandler.logged.get(0);

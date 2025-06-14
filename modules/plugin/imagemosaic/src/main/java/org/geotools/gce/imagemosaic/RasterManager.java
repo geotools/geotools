@@ -255,8 +255,8 @@ public class RasterManager implements Cloneable {
             if (pixInCell == PixelInCell.CELL_CENTER) return coverageGridToWorld2D;
 
             // we do have to change the pixel datum
-            if (coverageGridToWorld2D instanceof AffineTransform) {
-                final AffineTransform tr = new AffineTransform((AffineTransform) coverageGridToWorld2D);
+            if (coverageGridToWorld2D instanceof AffineTransform transform) {
+                final AffineTransform tr = new AffineTransform(transform);
                 tr.concatenate(AffineTransform.getTranslateInstance(-0.5, -0.5));
                 return ProjectiveTransform.create(tr);
             }
@@ -979,8 +979,8 @@ public class RasterManager implements Cloneable {
                     parentDir = parentReader.parentDirectory.getAbsolutePath();
                 } else {
                     Object source = parentReader.getSource();
-                    if (source != null && source instanceof File && ((File) source).isDirectory()) {
-                        parentDir = ((File) source).getAbsolutePath();
+                    if (source != null && source instanceof File file && file.isDirectory()) {
+                        parentDir = file.getAbsolutePath();
                     }
                 }
                 if (parentDir != null) hints.add(new RenderingHints(Utils.PARENT_DIR, parentDir));
@@ -1148,8 +1148,8 @@ public class RasterManager implements Cloneable {
             // load SM and CM
             defaultCM = sampleImage.getColorModel();
             defaultSM = sampleImage.getSampleModel();
-            if (defaultCM instanceof IndexColorModel) {
-                defaultPalette = Utils.extractPalette((IndexColorModel) defaultCM);
+            if (defaultCM instanceof IndexColorModel model) {
+                defaultPalette = Utils.extractPalette(model);
             }
 
             // default ImageLayout
@@ -1373,8 +1373,7 @@ public class RasterManager implements Cloneable {
                 GridCoverage2DReader coverageReader = null;
                 try {
                     coverageReader = format.getReader(rasterPath, hints);
-                    if (coverageReader instanceof StructuredGridCoverage2DReader) {
-                        StructuredGridCoverage2DReader reader = (StructuredGridCoverage2DReader) coverageReader;
+                    if (coverageReader instanceof StructuredGridCoverage2DReader reader) {
                         if (delete) {
                             reader.delete(deleteData);
                         } else {

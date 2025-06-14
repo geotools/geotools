@@ -95,8 +95,8 @@ public final class WktUnitFormat extends BaseUnitFormatter {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof UnitWrapper) {
-                return Units.equals(unit, ((UnitWrapper) obj).getUnit());
+            if (obj instanceof UnitWrapper wrapper) {
+                return Units.equals(unit, wrapper.getUnit());
             }
             return false;
         }

@@ -120,8 +120,7 @@ public class ExplicitBoundsShape implements Shape {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ExplicitBoundsShape) {
-            ExplicitBoundsShape other = (ExplicitBoundsShape) obj;
+        if (obj instanceof ExplicitBoundsShape other) {
             boolean result = shape.equals(other.shape);
             if (bounds == null) return result && other.bounds == null;
             return result & bounds.equals(other.bounds);

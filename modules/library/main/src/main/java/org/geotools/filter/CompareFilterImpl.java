@@ -99,18 +99,18 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
                         leftObj = leftConverted;
                         rightObj = rightConverted;
                     }
-                } else if (leftObj instanceof Number && rightObj.getClass() == String.class) {
+                } else if (leftObj instanceof Number number1 && rightObj.getClass() == String.class) {
                     try {
                         rightObj = Double.valueOf(Double.parseDouble((String) rightObj));
-                        leftObj = Double.valueOf(((Number) leftObj).doubleValue());
+                        leftObj = Double.valueOf(number1.doubleValue());
                     } catch (Exception e) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
                     }
-                } else if (leftObj.getClass() == String.class && rightObj instanceof Number) {
+                } else if (leftObj.getClass() == String.class && rightObj instanceof Number number) {
                     try {
                         leftObj = Double.valueOf(Double.parseDouble((String) leftObj));
-                        rightObj = Double.valueOf(((Number) rightObj).doubleValue());
+                        rightObj = Double.valueOf(number.doubleValue());
                     } catch (Exception e) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
@@ -119,11 +119,11 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
                     leftObj = leftObj.toString();
                     rightObj = rightObj.toString();
                 }
-            } else if (leftObj instanceof String && rightObj instanceof String) {
+            } else if (leftObj instanceof String string && rightObj instanceof String string1) {
                 // Check for case of strings that can both be converted to Numbers
                 try {
-                    leftObj = Double.valueOf(Double.parseDouble((String) leftObj));
-                    rightObj = Double.valueOf(Double.parseDouble((String) rightObj));
+                    leftObj = Double.valueOf(Double.parseDouble(string));
+                    rightObj = Double.valueOf(Double.parseDouble(string1));
                 } catch (Exception e) {
                     leftObj = leftObj.toString();
                     rightObj = rightObj.toString();

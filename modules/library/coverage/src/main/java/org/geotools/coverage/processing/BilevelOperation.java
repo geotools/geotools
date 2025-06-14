@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
 import java.util.Arrays;
 import org.eclipse.imagen.media.binarize.BinarizeDescriptor;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
@@ -32,6 +33,7 @@ import org.geotools.coverage.GridSampleDimension;
  */
 public class BilevelOperation extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8975871552152978976L;
 
     /** The sample dimension for the resulting image. */

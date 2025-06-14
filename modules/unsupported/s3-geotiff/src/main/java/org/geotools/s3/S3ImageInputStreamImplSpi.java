@@ -86,9 +86,9 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("S3ImageInputStreamImplSpi.createInputStreamInstance(" + input.getClass() + ")");
         }
-        if (input instanceof S3ImageInputStreamImpl) {
+        if (input instanceof S3ImageInputStreamImpl impl) {
             try {
-                return new S3ImageInputStreamImpl(((S3ImageInputStreamImpl) input).getUrl());
+                return new S3ImageInputStreamImpl(impl.getUrl());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

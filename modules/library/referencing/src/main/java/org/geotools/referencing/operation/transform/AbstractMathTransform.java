@@ -517,13 +517,13 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
                 throw new MismatchedDimensionException(constructMessage("point", dimPoint, dimSource));
             }
             if (dimSource == 2) {
-                if (point instanceof Point2D) {
-                    return derivative((Point2D) point);
+                if (point instanceof Point2D point2D) {
+                    return derivative(point2D);
                 }
                 return derivative(new Point2D.Double(point.getOrdinate(0), point.getOrdinate(1)));
             }
-            if (this instanceof MathTransform1D) {
-                return new Matrix1(((MathTransform1D) this).derivative(point.getOrdinate(0)));
+            if (this instanceof MathTransform1D transform1D) {
+                return new Matrix1(transform1D.derivative(point.getOrdinate(0)));
             }
         }
         throw new TransformException(ErrorKeys.CANT_COMPUTE_DERIVATIVE);
@@ -718,8 +718,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * {@code XMatrix} object.
      */
     static XMatrix toXMatrix(final Matrix matrix) {
-        if (matrix instanceof XMatrix) {
-            return (XMatrix) matrix;
+        if (matrix instanceof XMatrix xMatrix) {
+            return xMatrix;
         }
         return MatrixFactory.create(matrix);
     }
@@ -733,8 +733,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * suffisient. Use this method only if a {@code GeneralMatrix} is really necessary.
      */
     static GeneralMatrix toGMatrix(final Matrix matrix) {
-        if (matrix instanceof GeneralMatrix) {
-            return (GeneralMatrix) matrix;
+        if (matrix instanceof GeneralMatrix generalMatrix) {
+            return generalMatrix;
         } else {
             return new GeneralMatrix(matrix);
         }
@@ -865,8 +865,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
                 // Slight optimization
                 return true;
             }
-            if (object instanceof Inverse) {
-                final Inverse that = (Inverse) object;
+            if (object instanceof Inverse that) {
                 return Utilities.equals(this.inverse(), that.inverse());
             } else {
                 return false;

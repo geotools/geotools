@@ -37,6 +37,7 @@ import static org.junit.Assert.fail;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.xml.transform.TransformerException;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Expression;
@@ -154,9 +155,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
             for (Rule rule : ftStyle.rules()) {
                 assertNotNull("Rule name is null", rule.getName());
                 assertEquals(
-                        "Rule name does not match the expected unique name",
-                        String.format("%d", ruleNbr++),
-                        rule.getName());
+                        "Rule name does not match the expected unique name", "%d".formatted(ruleNbr++), rule.getName());
             }
         }
     }
@@ -782,7 +781,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     private void checkAutoExtend(int colorCount, boolean expectedExtended) {
         StringBuilder sb = new StringBuilder("* { raster-channels: 'auto'; " + "raster-color-map:");
         for (int i = 0; i < colorCount; i++) {
-            Color color = new Color((int) (Math.random() * 0x1000000)); // random color
+            Color color = new Color((int) (ThreadLocalRandom.current().nextDouble() * 0x1000000)); // random color
             String colorSpec = Converters.convert(color, String.class);
             sb.append("color-map-entry(" + colorSpec + ", ").append(i).append(") ");
         }
@@ -797,22 +796,17 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     @Test
     public void multiComment() throws Exception {
-        String css = "/* This is an initial comment */\n"
-                + //
-                "\n"
-                + //
-                "/* @title This is the title */\n"
-                + //
-                "* {\n"
-                + //
-                "    mark: symbol('circle');\n"
-                + //
-                "}\n"
-                + //
-                "\n"
-                + //
-                "/* This is a closing comment */" //
-                + "\n  ";
+        String css =
+                """
+                /* This is an initial comment */
+
+                /* @title This is the title */
+                * {
+                    mark: symbol('circle');
+                }
+
+                /* This is a closing comment */
+                  """;
         Style style = translate(css);
         Rule rule = assertSingleRule(style);
         assertSingleSymbolizer(rule, PointSymbolizer.class);
@@ -1426,8 +1420,11 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     @Test
     public void testTwoLevelTransform() throws Exception {
-        String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black; z-index: 0}\n"
-                + "* { transform: ras:RasterAsPointCollection(); mark: symbol('square'); z-index: 1}";
+        String css =
+                """
+                * { transform: ras:Contour(levels: 1100 1200 1300); stroke: black; z-index: 0}
+                * { transform: ras:RasterAsPointCollection(); mark: symbol('square'); z-index: 1}\
+                """;
         Style style = translate(css);
         assertEquals(2, style.featureTypeStyles().size());
 
@@ -1962,15 +1959,18 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     @Test
     public void testVectorTilesOptionPlacement() {
-        String css = "topp:states {\n"
-                + "   fill: black;\n"
-                + "   vt-attributes: 'PERSONS';\n"
-                + "   vt-coalesce: true;\n"
-                + "   [@z >= 4] {\n"
-                + "     vt-labels: true;\n"
-                + "     vt-label-attributes: 'STATE_ABBR,STATE_NAME';  \n"
-                + "   }\n"
-                + "}";
+        String css =
+                """
+                topp:states {
+                   fill: black;
+                   vt-attributes: 'PERSONS';
+                   vt-coalesce: true;
+                   [@z >= 4] {
+                     vt-labels: true;
+                     vt-label-attributes: 'STATE_ABBR,STATE_NAME'; \s
+                   }
+                }\
+                """;
 
         StyledLayerDescriptor sld = translateMultiLayer(css);
         assertEquals(1, sld.getStyledLayers().length);

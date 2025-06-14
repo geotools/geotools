@@ -72,7 +72,7 @@ public class MongoUtil {
 
     private static Object getDBOValueInternal(Iterator<String> path, Object current) {
         if (path.hasNext()) {
-            if (current instanceof DBObject) {
+            if (current instanceof DBObject object) {
                 String key = path.next();
                 // If we are in an array, key must be an int
                 if (current instanceof BasicDBList) {
@@ -82,7 +82,7 @@ public class MongoUtil {
                         return null;
                     }
                 }
-                Object value = ((DBObject) current).get(key);
+                Object value = object.get(key);
                 return getDBOValueInternal(path, value);
             }
             return null;
@@ -104,8 +104,8 @@ public class MongoUtil {
         if (path.hasNext()) {
             Object next = currentDBO.get(key);
             DBObject nextDBO;
-            if (next instanceof DBObject) {
-                nextDBO = (DBObject) next;
+            if (next instanceof DBObject object) {
+                nextDBO = object;
             } else {
                 currentDBO.put(key, nextDBO = new BasicDBObject());
             }
@@ -132,8 +132,8 @@ public class MongoUtil {
         Set<String> fields = new LinkedHashSet<>();
         for (DBObject index : indices) {
             Object key = index.get("key");
-            if (key instanceof DBObject) {
-                for (Map.Entry<?, ?> entry : ((Map<?, ?>) ((DBObject) key).toMap()).entrySet()) {
+            if (key instanceof DBObject object) {
+                for (Map.Entry<?, ?> entry : ((Map<?, ?>) object.toMap()).entrySet()) {
                     if (type == null || type.equals(entry.getValue())) {
                         fields.add(entry.getKey().toString());
                     }
@@ -164,14 +164,13 @@ public class MongoUtil {
         Map<String, Class<?>> map = new LinkedHashMap<>();
         for (Map.Entry<?, ?> e : ((Map<?, ?>) dbo.toMap()).entrySet()) {
             Object k = e.getKey();
-            if (k instanceof String) {
-                String field = (String) k;
+            if (k instanceof String field) {
                 Object v = e.getValue();
-                if (v instanceof DBObject) {
+                if (v instanceof DBObject object) {
                     // No list support
                     if (!(v instanceof BasicDBList)) {
                         for (Map.Entry<String, Class<?>> childEntry :
-                                doFindMappableFields((DBObject) v).entrySet()) {
+                                doFindMappableFields(object).entrySet()) {
                             map.put(field + "." + childEntry.getKey(), childEntry.getValue());
                         }
                     }

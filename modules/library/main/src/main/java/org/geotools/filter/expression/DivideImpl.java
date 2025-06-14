@@ -64,8 +64,7 @@ public class DivideImpl extends MathExpressionImpl implements Divide {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DivideImpl) {
-            DivideImpl other = (DivideImpl) obj;
+        if (obj instanceof DivideImpl other) {
 
             return Utilities.equals(getExpression1(), other.getExpression1())
                     && Utilities.equals(getExpression2(), other.getExpression2());

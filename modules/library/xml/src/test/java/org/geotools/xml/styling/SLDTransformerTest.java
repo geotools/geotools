@@ -897,8 +897,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         List<Symbolizer> symbolizers =
                 s.featureTypeStyles().get(0).rules().get(0).symbolizers();
         for (Symbolizer symbolizer : symbolizers) {
-            if (symbolizer instanceof TextSymbolizer) {
-                Font font = ((TextSymbolizer) symbolizer).fonts().get(0);
+            if (symbolizer instanceof TextSymbolizer textSymbolizer) {
+                Font font = textSymbolizer.fonts().get(0);
                 assertFalse(font.getFamily().isEmpty());
                 return font.getFamily().get(0) == null
                         ? null

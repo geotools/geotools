@@ -682,8 +682,8 @@ class EnvelopeReprojector {
         // TODO: avoid the hack below if we provide a contains(DirectPosition)
         // method in GeoAPI Envelope interface.
         GeneralBounds generalEnvelope;
-        if (envelope instanceof GeneralBounds) {
-            generalEnvelope = (GeneralBounds) envelope;
+        if (envelope instanceof GeneralBounds bounds) {
+            generalEnvelope = bounds;
         } else {
             generalEnvelope = new GeneralBounds(envelope);
         }
@@ -699,9 +699,9 @@ class EnvelopeReprojector {
                 geographic = projectedCRS.getBaseCRS();
                 MathTransform mt = findMathTransform(projectedCRS, geographic);
                 mt.transform(point, result);
-            } else if (crs instanceof GeographicCRS) {
+            } else if (crs instanceof GeographicCRS rS) {
                 result = point;
-                geographic = (GeographicCRS) crs;
+                geographic = rS;
             } else {
                 return false;
             }

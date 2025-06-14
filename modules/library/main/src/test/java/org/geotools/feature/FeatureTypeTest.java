@@ -241,9 +241,8 @@ public class FeatureTypeTest extends DataTestCase {
                 assertDuplicate(message + "[" + i + "]", Array.get(expected, i), Array.get(value, i));
             }
             // assertNotSame( message, expected, value );
-        } else if (expected instanceof SimpleFeature) {
-            assertDuplicate(
-                    message, ((SimpleFeature) expected).getAttributes(), ((SimpleFeature) value).getAttributes());
+        } else if (expected instanceof SimpleFeature feature) {
+            assertDuplicate(message, feature.getAttributes(), ((SimpleFeature) value).getAttributes());
         } else {
             assertEquals(message, expected, value);
         }

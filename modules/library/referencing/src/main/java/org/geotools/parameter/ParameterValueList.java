@@ -16,6 +16,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.AbstractList;
@@ -40,6 +41,7 @@ import org.geotools.referencing.AbstractIdentifiedObject;
  */
 final class ParameterValueList extends AbstractList<GeneralParameterValue> implements RandomAccess, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7446077551686135264L;
 
     /** The descriptor. */
@@ -149,8 +151,8 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue> imple
              * was invalid.
              */
             final Object value;
-            if (parameter instanceof ParameterValue) {
-                value = ((ParameterValue) parameter).getValue();
+            if (parameter instanceof ParameterValue parameterValue) {
+                value = parameterValue.getValue();
             } else {
                 value = "(group)";
             }

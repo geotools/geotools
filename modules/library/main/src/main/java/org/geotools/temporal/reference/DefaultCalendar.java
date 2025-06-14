@@ -260,8 +260,7 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultCalendar && super.equals(object)) {
-            final DefaultCalendar that = (DefaultCalendar) object;
+        if (object instanceof DefaultCalendar that && super.equals(object)) {
 
             return Utilities.equals(this.basis, that.basis) && Utilities.equals(this.timeBasis, that.timeBasis);
         }

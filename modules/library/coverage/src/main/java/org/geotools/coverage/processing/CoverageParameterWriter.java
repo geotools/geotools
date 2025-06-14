@@ -51,21 +51,20 @@ final class CoverageParameterWriter extends ParameterWriter {
         if (KernelJAI.GRADIENT_MASK_SOBEL_VERTICAL.equals(value)) {
             return "GRADIENT_MASK_SOBEL_VERTICAL";
         }
-        if (value instanceof AbstractCoverage) {
-            final InternationalString name = ((AbstractCoverage) value).getName();
+        if (value instanceof AbstractCoverage coverage) {
+            final InternationalString name = coverage.getName();
             final Locale locale = getLocale();
             return name != null
                     ? name.toString(locale)
                     : Vocabulary.getResources(locale).getString(VocabularyKeys.UNTITLED);
         }
-        if (value instanceof Interpolation) {
-            return ImageUtilities.getInterpolationName((Interpolation) value);
+        if (value instanceof Interpolation interpolation) {
+            return ImageUtilities.getInterpolationName(interpolation);
         }
-        if (value instanceof EnumeratedParameter) {
-            return ((EnumeratedParameter) value).getName();
+        if (value instanceof EnumeratedParameter parameter) {
+            return parameter.getName();
         }
-        if (value instanceof Color) {
-            final Color c = (Color) value;
+        if (value instanceof Color c) {
             return "RGB[" + c.getRed() + ',' + c.getGreen() + ',' + c.getBlue() + ']';
         }
         return super.formatValue(value);

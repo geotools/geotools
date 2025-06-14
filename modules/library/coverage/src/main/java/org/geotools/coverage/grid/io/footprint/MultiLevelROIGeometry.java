@@ -177,8 +177,8 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
          *     geometry, nor a shape.
          */
         private Geometry getGeometry(ROI roi) {
-            if (roi instanceof ROIGeometry) {
-                return ((ROIGeometry) roi).getAsGeometry();
+            if (roi instanceof ROIGeometry geometry) {
+                return geometry.getAsGeometry();
             } else if (roi instanceof ROIShape) {
                 final Shape shape = roi.getAsShape();
                 final Geometry geom = ShapeReader.read(shape, 0, new GeometryFactory());

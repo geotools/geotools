@@ -204,8 +204,8 @@ class DirectoryTypeCache {
 
         // grab all the candidate files
         FileFilter filter = null;
-        if (factory instanceof FilteringFileStoreFactory) {
-            filter = ((FilteringFileStoreFactory) factory).getFilter();
+        if (factory instanceof FilteringFileStoreFactory storeFactory) {
+            filter = storeFactory.getFilter();
         }
 
         File[] files = directory.listFiles(filter);

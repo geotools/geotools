@@ -182,9 +182,9 @@ class PGRasterConfig implements Closeable {
 
     @Override
     public void close() {
-        if (dataSource instanceof PGRasterDataSource) {
+        if (dataSource instanceof PGRasterDataSource source) {
             try {
-                ((PGRasterDataSource) dataSource).close();
+                source.close();
             } catch (SQLException e) {
                 LOG.log(Level.WARNING, "Error closing data source", e);
             }

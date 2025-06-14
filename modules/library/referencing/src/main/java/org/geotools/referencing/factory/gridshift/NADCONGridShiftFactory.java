@@ -135,8 +135,8 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             }
         } catch (IOException exception) {
             final Throwable cause = exception.getCause();
-            if (cause instanceof FactoryException) {
-                throw (FactoryException) cause;
+            if (cause instanceof FactoryException factoryException) {
+                throw factoryException;
             }
             throw new FactoryException(exception.getLocalizedMessage(), exception);
         }

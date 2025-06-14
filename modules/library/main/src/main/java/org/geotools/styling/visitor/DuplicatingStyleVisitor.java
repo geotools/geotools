@@ -150,11 +150,11 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         StyledLayer[] layersCopy = new StyledLayer[layers.length];
         final int length = layers.length;
         for (int i = 0; i < length; i++) {
-            if (layers[i] instanceof UserLayer) {
-                ((UserLayer) layers[i]).accept(this);
+            if (layers[i] instanceof UserLayer layer1) {
+                layer1.accept(this);
                 layersCopy[i] = (UserLayer) pages.pop();
-            } else if (layers[i] instanceof NamedLayer) {
-                ((NamedLayer) layers[i]).accept(this);
+            } else if (layers[i] instanceof NamedLayer layer) {
+                layer.accept(this);
                 layersCopy[i] = (NamedLayer) pages.pop();
             }
         }
@@ -661,16 +661,16 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
     @Override
     public void visit(Symbolizer sym) {
-        if (sym instanceof RasterSymbolizer) {
-            visit((RasterSymbolizer) sym);
-        } else if (sym instanceof LineSymbolizer) {
-            visit((LineSymbolizer) sym);
-        } else if (sym instanceof PolygonSymbolizer) {
-            visit((PolygonSymbolizer) sym);
-        } else if (sym instanceof PointSymbolizer) {
-            visit((PointSymbolizer) sym);
-        } else if (sym instanceof TextSymbolizer) {
-            visit((TextSymbolizer) sym);
+        if (sym instanceof RasterSymbolizer symbolizer4) {
+            visit(symbolizer4);
+        } else if (sym instanceof LineSymbolizer symbolizer3) {
+            visit(symbolizer3);
+        } else if (sym instanceof PolygonSymbolizer symbolizer2) {
+            visit(symbolizer2);
+        } else if (sym instanceof PointSymbolizer symbolizer1) {
+            visit(symbolizer1);
+        } else if (sym instanceof TextSymbolizer symbolizer) {
+            visit(symbolizer);
         } else {
             throw new RuntimeException("visit(Symbolizer) unsupported");
         }
@@ -815,8 +815,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     private List<GraphicalSymbol> copy(List<GraphicalSymbol> symbols) {
         List<GraphicalSymbol> copy = new ArrayList<>(symbols.size());
         for (GraphicalSymbol symbol : symbols) {
-            if (symbol instanceof Symbol) {
-                copy.add(copy((Symbol) symbol));
+            if (symbol instanceof Symbol symbol1) {
+                copy.add(copy(symbol1));
             } else {
                 throw new RuntimeException("Don't know how to copy " + symbol);
             }

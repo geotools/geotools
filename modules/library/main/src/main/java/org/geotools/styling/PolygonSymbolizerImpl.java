@@ -206,11 +206,9 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
     static PolygonSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
-        } else if (symbolizer instanceof PolygonSymbolizerImpl) {
-            return (PolygonSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.geotools.api.style.PolygonSymbolizer) {
-            org.geotools.api.style.PolygonSymbolizer polygonSymbolizer =
-                    (org.geotools.api.style.PolygonSymbolizer) symbolizer;
+        } else if (symbolizer instanceof PolygonSymbolizerImpl impl) {
+            return impl;
+        } else if (symbolizer instanceof org.geotools.api.style.PolygonSymbolizer polygonSymbolizer) {
             PolygonSymbolizerImpl copy = new PolygonSymbolizerImpl();
             copy.setStroke(StrokeImpl.cast(polygonSymbolizer.getStroke()));
             copy.setDescription(polygonSymbolizer.getDescription());

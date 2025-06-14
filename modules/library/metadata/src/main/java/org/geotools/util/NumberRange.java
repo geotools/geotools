@@ -19,6 +19,7 @@ package org.geotools.util;
 import static org.geotools.util.ClassChanger.getFinestClass;
 import static org.geotools.util.ClassChanger.getWidestClass;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
 
@@ -38,6 +39,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     //
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -818167965963008231L;
 
     /**

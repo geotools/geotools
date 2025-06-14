@@ -40,8 +40,8 @@ final class InternalWindowListener implements InternalFrameListener {
         if (listener == null) {
             return null;
         }
-        if (listener instanceof InternalFrameListener) {
-            return (InternalFrameListener) listener;
+        if (listener instanceof InternalFrameListener frameListener) {
+            return frameListener;
         }
         return new InternalWindowListener(listener);
     }

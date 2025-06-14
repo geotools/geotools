@@ -89,7 +89,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
     /** Implementation of the {@link AbstractCS#standard} method. */
     static CoordinateSystem standard(final CoordinateSystem cs) throws IllegalArgumentException {
         final int dimension = cs.getDimension();
-        if (cs instanceof CartesianCS) {
+        if (cs instanceof CartesianCS cS) {
             switch (dimension) {
                 case 2: {
                     if (DefaultCartesianCS.PROJECTED.axisColinearWith(cs)) {
@@ -101,7 +101,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
                     if (DefaultCartesianCS.GENERIC_2D.directionColinearWith(cs)) {
                         return DefaultCartesianCS.GENERIC_2D;
                     }
-                    return rightHanded((CartesianCS) cs);
+                    return rightHanded(cS);
                 }
                 case 3: {
                     if (DefaultCartesianCS.GEOCENTRIC.axisColinearWith(cs)) {
@@ -110,12 +110,12 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
                     if (DefaultCartesianCS.GENERIC_3D.directionColinearWith(cs)) {
                         return DefaultCartesianCS.GENERIC_3D;
                     }
-                    return rightHanded((CartesianCS) cs);
+                    return rightHanded(cS);
                 }
             }
         }
-        if (cs instanceof AffineCS) {
-            return rightHanded((AffineCS) cs);
+        if (cs instanceof AffineCS cS) {
+            return rightHanded(cS);
         }
         if (cs instanceof EllipsoidalCS) {
             switch (dimension) {
@@ -144,8 +144,8 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
                     return DefaultTimeCS.DAYS;
             }
         }
-        if (cs instanceof DefaultCompoundCS) {
-            final List<CoordinateSystem> components = ((DefaultCompoundCS) cs).getCoordinateSystems();
+        if (cs instanceof DefaultCompoundCS cS) {
+            final List<CoordinateSystem> components = cS.getCoordinateSystems();
             final CoordinateSystem[] user = new CoordinateSystem[components.size()];
             final CoordinateSystem[] std = new CoordinateSystem[user.length];
             for (int i = 0; i < std.length; i++) {

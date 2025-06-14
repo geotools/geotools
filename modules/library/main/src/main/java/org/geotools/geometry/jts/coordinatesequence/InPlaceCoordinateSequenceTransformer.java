@@ -56,8 +56,8 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
      */
     @Override
     public CoordinateSequence transform(CoordinateSequence cs, MathTransform transform) throws TransformException {
-        if (cs instanceof PackedCoordinateSequence) {
-            return transformInternal((PackedCoordinateSequence) cs, transform);
+        if (cs instanceof PackedCoordinateSequence sequence) {
+            return transformInternal(sequence, transform);
         }
         throw new TransformException(
                 cs.getClass().getName() + " is not a implementation that is known to be transformable in place");

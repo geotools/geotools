@@ -51,7 +51,7 @@
     <java-mail.version>1.4.7</java-mail.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <javax.measure.version>2.2</javax.measure.version>
-    <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
+    <jaxb.api.version>2.3.3</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
     <jaxen.version>1.1.6</jaxen.version>
     <jdom2.version>2.0.6.1</jdom2.version>
@@ -786,8 +786,8 @@
 
       <!-- JAXB -->
       <dependency>
-        <groupId>javax.xml.bind</groupId>
-        <artifactId>jaxb-api</artifactId>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
         <version>${jaxb.api.version}</version>
       </dependency>
       <dependency>

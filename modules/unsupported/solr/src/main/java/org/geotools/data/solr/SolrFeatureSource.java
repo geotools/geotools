@@ -171,8 +171,8 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 }
             }
         } catch (Throwable e) { // NOSONAR
-            if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof Error error) {
+                throw error;
             } else {
                 throw (IOException) new IOException().initCause(e);
             }
@@ -209,8 +209,8 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 if (!returnedSchema.equals(querySchema)) reader = new ReTypeFeatureReader(reader, returnedSchema);
             }
         } catch (Throwable e) {
-            if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof Error error) {
+                throw error;
             } else {
                 throw (IOException) new IOException().initCause(e);
             }
@@ -247,8 +247,8 @@ public class SolrFeatureSource extends ContentFeatureSource {
                     .collect(Collectors.toList());
 
         } catch (Throwable e) {
-            if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof Error error) {
+                throw error;
             } else {
                 throw (IOException) new IOException().initCause(e);
             }
@@ -396,8 +396,8 @@ public class SolrFeatureSource extends ContentFeatureSource {
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         // UniqueVisitor handling:
-        if (visitor instanceof UniqueVisitor) {
-            handleUniqueVisitor(query, (UniqueVisitor) visitor);
+        if (visitor instanceof UniqueVisitor uniqueVisitor) {
+            handleUniqueVisitor(query, uniqueVisitor);
             return true;
         }
 
@@ -409,9 +409,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
 
         SortBy sortBy;
 
-        if (visitor instanceof MinVisitor) {
-            // Get Minimum value
-            MinVisitor minVisitor = (MinVisitor) visitor;
+        if (visitor instanceof MinVisitor minVisitor) {
             List<Expression> exprs = minVisitor.getExpressions();
             if (exprs.size() != 1 || !(exprs.get(0) instanceof PropertyName)) {
                 return false;
@@ -419,9 +417,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
 
             PropertyName propName = (PropertyName) exprs.get(0);
             sortBy = new SortByImpl(propName, SortOrder.ASCENDING);
-        } else if (visitor instanceof MaxVisitor) {
-            // Get Maximum Value
-            MaxVisitor maxVisitor = (MaxVisitor) visitor;
+        } else if (visitor instanceof MaxVisitor maxVisitor) {
             List<Expression> exprs = maxVisitor.getExpressions();
             if (exprs.size() != 1 || !(exprs.get(0) instanceof PropertyName)) {
                 return false;
@@ -429,8 +425,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
 
             PropertyName propName = (PropertyName) exprs.get(0);
             sortBy = new SortByImpl(propName, SortOrder.DESCENDING);
-        } else if (visitor instanceof NearestVisitor) {
-            NearestVisitor nearestVisitor = (NearestVisitor) visitor;
+        } else if (visitor instanceof NearestVisitor nearestVisitor) {
             Expression exp = nearestVisitor.getExpression();
 
             if (!(exp instanceof PropertyName)) {

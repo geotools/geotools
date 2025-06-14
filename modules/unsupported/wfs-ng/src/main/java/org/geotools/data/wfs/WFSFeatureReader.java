@@ -47,8 +47,8 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         this.next = parser.parse();
         if (this.next != null) {
             FeatureType parsedType = next.getFeatureType();
-            if (parsedType instanceof SimpleFeatureType) {
-                this.featureType = (SimpleFeatureType) parsedType;
+            if (parsedType instanceof SimpleFeatureType type) {
+                this.featureType = type;
             } else {
                 // this is the FeatureType as parsed by the StreamingParser, we need a simple view
                 this.featureType = EmfAppSchemaParser.toSimpleFeatureType(parsedType);

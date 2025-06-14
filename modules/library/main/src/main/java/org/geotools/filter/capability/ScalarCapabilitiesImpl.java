@@ -89,8 +89,8 @@ public class ScalarCapabilitiesImpl implements ScalarCapabilities {
         if (comparisonOperators == null) {
             return new ComparisonOperatorsImpl();
         }
-        if (comparisonOperators instanceof ComparisonOperatorsImpl) {
-            return (ComparisonOperatorsImpl) comparisonOperators;
+        if (comparisonOperators instanceof ComparisonOperatorsImpl impl) {
+            return impl;
         } else {
             return new ComparisonOperatorsImpl(comparisonOperators);
         }
@@ -99,8 +99,8 @@ public class ScalarCapabilitiesImpl implements ScalarCapabilities {
     private static ArithmeticOperatorsImpl toArithmeticOperatorsImpl(ArithmeticOperators arithmeticOperators) {
         if (arithmeticOperators == null) {
             return new ArithmeticOperatorsImpl();
-        } else if (arithmeticOperators instanceof ArithmeticOperatorsImpl) {
-            return (ArithmeticOperatorsImpl) arithmeticOperators;
+        } else if (arithmeticOperators instanceof ArithmeticOperatorsImpl impl) {
+            return impl;
         } else {
             return new ArithmeticOperatorsImpl(arithmeticOperators);
         }

@@ -115,8 +115,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
                 if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                 throw new DataSourceException(e);
             }
-        else if (destination instanceof URL) {
-            final URL dest = (URL) destination;
+        else if (destination instanceof URL dest) {
             if (dest.getProtocol().equalsIgnoreCase("file")) {
                 File destFile = URLs.urlToFile(dest);
                 try {
@@ -136,8 +135,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
                 throw new DataSourceException(e);
             }
 
-        } else if (destination instanceof ImageOutputStream)
-            this.destination = outStream = (ImageOutputStream) destination;
+        } else if (destination instanceof ImageOutputStream stream) this.destination = outStream = stream;
         else throw new DataSourceException("The provided destination cannot be used!");
         // //
         //
@@ -403,12 +401,12 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         // getting the path of this object and the name
         URL url = null;
 
-        if (this.destination instanceof String) {
-            url = new File((String) this.destination).toURI().toURL();
-        } else if (this.destination instanceof File) {
-            url = ((File) this.destination).toURI().toURL();
-        } else if (this.destination instanceof URL) {
-            url = (URL) this.destination;
+        if (this.destination instanceof String string) {
+            url = new File(string).toURI().toURL();
+        } else if (this.destination instanceof File file) {
+            url = file.toURI().toURL();
+        } else if (this.destination instanceof URL rL) {
+            url = rL;
         } else {
             // do nothing for the moment
             return;

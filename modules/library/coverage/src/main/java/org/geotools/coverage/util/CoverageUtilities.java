@@ -109,11 +109,11 @@ public final class CoverageUtilities {
      * @throws TransformException if the CRS can't be reduced to two dimensions.
      */
     public static CoordinateReferenceSystem getCRS2D(final Coverage coverage) throws TransformException {
-        if (coverage instanceof GridCoverage2D) {
-            return ((GridCoverage2D) coverage).getCoordinateReferenceSystem2D();
+        if (coverage instanceof GridCoverage2D coverage2D) {
+            return coverage2D.getCoordinateReferenceSystem2D();
         }
-        if (coverage instanceof GridCoverage) {
-            final GridGeometry2D geometry = GridGeometry2D.wrap(((GridCoverage) coverage).getGridGeometry());
+        if (coverage instanceof GridCoverage gridCoverage) {
+            final GridGeometry2D geometry = GridGeometry2D.wrap(gridCoverage.getGridGeometry());
             if (geometry.isDefined(GridGeometry2D.CRS_BITMASK)) {
                 return geometry.getCoordinateReferenceSystem2D();
             } else
@@ -136,11 +136,11 @@ public final class CoverageUtilities {
      */
     public static CoordinateReferenceSystem getHorizontalCRS(final Coverage coverage) throws TransformException {
         CoordinateReferenceSystem returnedCRS = null;
-        if (coverage instanceof GridCoverage2D) {
-            returnedCRS = ((GridCoverage2D) coverage).getCoordinateReferenceSystem2D();
+        if (coverage instanceof GridCoverage2D coverage2D) {
+            returnedCRS = coverage2D.getCoordinateReferenceSystem2D();
         }
-        if (coverage instanceof GridCoverage) {
-            final GridGeometry2D geometry = GridGeometry2D.wrap(((GridCoverage) coverage).getGridGeometry());
+        if (coverage instanceof GridCoverage gridCoverage) {
+            final GridGeometry2D geometry = GridGeometry2D.wrap(gridCoverage.getGridGeometry());
             if (geometry.isDefined(GridGeometry2D.CRS_BITMASK)) {
                 returnedCRS = geometry.getCoordinateReferenceSystem2D();
             } else
@@ -165,11 +165,11 @@ public final class CoverageUtilities {
      * @throws MismatchedDimensionException if the envelope can't be reduced to two dimensions.
      */
     public static ReferencedEnvelope getEnvelope2D(final Coverage coverage) throws MismatchedDimensionException {
-        if (coverage instanceof GridCoverage2D) {
-            return ((GridCoverage2D) coverage).getEnvelope2D();
+        if (coverage instanceof GridCoverage2D coverage2D) {
+            return coverage2D.getEnvelope2D();
         }
-        if (coverage instanceof GridCoverage) {
-            final GridGeometry2D geometry = GridGeometry2D.wrap(((GridCoverage) coverage).getGridGeometry());
+        if (coverage instanceof GridCoverage gridCoverage) {
+            final GridGeometry2D geometry = GridGeometry2D.wrap(gridCoverage.getGridGeometry());
             if (geometry.isDefined(GridGeometry2D.ENVELOPE_BITMASK)) {
                 return geometry.getEnvelope2D();
             } else {
@@ -190,10 +190,10 @@ public final class CoverageUtilities {
         final Object noData = coverage.getProperty(NoDataContainer.GC_NODATA);
         if (noData != null) {
             // Returning a new instance of NoDataContainer
-            if (noData instanceof NoDataContainer) {
-                return (NoDataContainer) noData;
-            } else if (noData instanceof Double) {
-                return new NoDataContainer((Double) noData);
+            if (noData instanceof NoDataContainer container) {
+                return container;
+            } else if (noData instanceof Double double1) {
+                return new NoDataContainer(double1);
             }
         }
         return null;
@@ -208,8 +208,8 @@ public final class CoverageUtilities {
         // Searching for the ROI
         final Object roi = coverage.getProperty("GC_ROI");
         // Returning it if present
-        if (roi != null && roi instanceof ROI) {
-            return (ROI) roi;
+        if (roi != null && roi instanceof ROI oI) {
+            return oI;
         }
         return null;
     }
@@ -226,14 +226,14 @@ public final class CoverageUtilities {
             return;
         }
         // Creation of a new NoDataContainer instance and setting it inside the properties
-        if (noData instanceof Range) {
-            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer((Range) noData));
-        } else if (noData instanceof Double) {
-            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer((Double) noData));
-        } else if (noData instanceof double[]) {
-            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer((double[]) noData));
-        } else if (noData instanceof NoDataContainer) {
-            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer((NoDataContainer) noData));
+        if (noData instanceof Range range) {
+            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(range));
+        } else if (noData instanceof Double double1) {
+            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(double1));
+        } else if (noData instanceof double[] doubles) {
+            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(doubles));
+        } else if (noData instanceof NoDataContainer container) {
+            properties.put(NoDataContainer.GC_NODATA, new NoDataContainer(container));
         }
     }
 
@@ -274,8 +274,8 @@ public final class CoverageUtilities {
 
         // try to get the GC_NODATA double value from the coverage property
         final Object noData = coverage.getProperty(NoDataContainer.GC_NODATA);
-        if (noData != null && noData instanceof NoDataContainer) {
-            return ((NoDataContainer) noData).getAsArray();
+        if (noData != null && noData instanceof NoDataContainer container) {
+            return container.getAsArray();
             // new double[]{((Double)noData).doubleValue()};
         }
 
@@ -353,13 +353,13 @@ public final class CoverageUtilities {
      */
     public static int getVisibleBand(final Object image) {
         Object candidate = null;
-        if (image instanceof RenderedImage) {
-            candidate = ((RenderedImage) image).getProperty("GC_VisibleBand");
-        } else if (image instanceof PropertySource) {
-            candidate = ((PropertySource) image).getProperty("GC_VisibleBand");
+        if (image instanceof RenderedImage renderedImage) {
+            candidate = renderedImage.getProperty("GC_VisibleBand");
+        } else if (image instanceof PropertySource source) {
+            candidate = source.getProperty("GC_VisibleBand");
         }
-        if (candidate instanceof Integer) {
-            return ((Integer) candidate).intValue();
+        if (candidate instanceof Integer integer) {
+            return integer.intValue();
         }
         return 0;
     }

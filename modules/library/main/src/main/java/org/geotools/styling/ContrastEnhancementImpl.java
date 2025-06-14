@@ -143,8 +143,8 @@ public class ContrastEnhancementImpl implements org.geotools.api.style.ContrastE
     static ContrastEnhancementImpl cast(org.geotools.api.style.ContrastEnhancement enhancement) {
         if (enhancement == null) {
             return null;
-        } else if (enhancement instanceof ContrastEnhancementImpl) {
-            return (ContrastEnhancementImpl) enhancement;
+        } else if (enhancement instanceof ContrastEnhancementImpl impl) {
+            return impl;
         } else {
             ContrastEnhancementImpl copy = new ContrastEnhancementImpl();
             copy.setGammaValue(enhancement.getGammaValue());

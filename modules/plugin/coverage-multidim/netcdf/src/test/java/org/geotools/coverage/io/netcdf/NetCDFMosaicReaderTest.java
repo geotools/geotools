@@ -169,8 +169,11 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                """;
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
@@ -261,8 +264,11 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                """;
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
@@ -316,8 +322,11 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                """;
         final String auxiliaryFilePath =
                 mosaic.getAbsolutePath() + File.separatorChar + ".polyphemus_20130301_NO2_time2";
         final File auxiliaryFileDir = new File(auxiliaryFilePath);
@@ -739,8 +748,11 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                """;
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
@@ -844,8 +856,11 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                """;
         //  + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
         indexer += AUXILIARY_FILE + "=" + "hdf5Coverage2D.xml";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
@@ -865,8 +880,11 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                """;
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
@@ -952,9 +970,12 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
-                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)
+                """;
         indexer += AUXILIARY_FILE + "=" + "GOME2.NO2_new.xml";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
@@ -1020,9 +1041,12 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
-                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)
+                """;
         indexer += AUXILIARY_FILE + "=" + "GOME2.NO2.xml";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
@@ -1115,9 +1139,12 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
-                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)
+                """;
         indexer += AUXILIARY_FILE + "=" + "GOME2.NO2.xml";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
@@ -1208,9 +1235,12 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
-                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)
+                """;
         indexer += AUXILIARY_FILE + "=" + "GOME2.NO2.xml\n";
 
         // Setting RelativePath behavior
@@ -1266,8 +1296,11 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                """;
         indexer += AUXILIARY_FILE + "=" + "O3-NO2.xml";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
@@ -1316,9 +1349,12 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
-                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)
+                """;
         indexer += AUXILIARY_FILE + "=" + "DUMMYGOME2.xml";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
@@ -1385,9 +1421,12 @@ public class NetCDFMosaicReaderTest {
         FileUtils.copyFileToDirectory(xml, mosaic);
 
         // The indexer
-        String indexer = "TimeAttribute=time\n"
-                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
-                + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
+        String indexer =
+                """
+                TimeAttribute=time
+                Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date
+                PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)
+                """;
         indexer += AUXILIARY_FILE + "=" + "DUMMYGOME2.xml";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 

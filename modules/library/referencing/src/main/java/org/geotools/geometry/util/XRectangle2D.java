@@ -18,6 +18,7 @@ package org.geotools.geometry.util;
 
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
@@ -47,6 +48,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
     public static final Rectangle2D INFINITY = InfiniteRectangle2D.INFINITY;
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1918221103635749436L;
 
     /** Minimal <var>x</var> coordinate. */

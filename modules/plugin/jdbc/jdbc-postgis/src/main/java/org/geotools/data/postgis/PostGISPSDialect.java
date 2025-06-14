@@ -229,9 +229,9 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     public void setGeometryValue(Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
             throws SQLException {
         if (g != null) {
-            if (g instanceof LinearRing) {
+            if (g instanceof LinearRing ring) {
                 // postgis does not handle linear rings, convert to just a line string
-                g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
+                g = g.getFactory().createLineString(ring.getCoordinateSequence());
             }
 
             byte[] bytes = new WKBWriter(dimension).write(g);

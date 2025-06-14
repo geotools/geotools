@@ -34,6 +34,7 @@ import java.awt.image.SampleModel;
 import java.awt.image.renderable.RenderContext;
 import java.awt.image.renderable.RenderableImage;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
 import java.text.MessageFormat;
@@ -105,6 +106,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class AbstractCoverage extends PropertySourceImpl implements Coverage {
     /** For compatibility during cross-version serialization. */
+    @Serial
     private static final long serialVersionUID = -2989320942499746295L;
 
     /** The sample dimension to make visible by {@link #getRenderableImage}. */
@@ -149,10 +151,9 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @param coverage The source coverage.
      */
     protected AbstractCoverage(final CharSequence name, final Coverage coverage) {
-        super(null, coverage instanceof PropertySource ? (PropertySource) coverage : null);
+        super(null, coverage instanceof PropertySource ps ? ps : null);
         final InternationalString n = SimpleInternationalString.wrap(name);
-        if (coverage instanceof AbstractCoverage) {
-            final AbstractCoverage source = (AbstractCoverage) coverage;
+        if (coverage instanceof AbstractCoverage source) {
             this.name = n != null ? n : source.name;
             this.crs = source.crs;
         } else {
@@ -475,6 +476,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      */
     protected class Renderable extends PropertySourceImpl implements RenderableImage, ImageFunction {
         /** For compatibility during cross-version serialization. */
+        @Serial
         private static final long serialVersionUID = -6661389795161502552L;
 
         /** The two dimensional view of the coverage's envelope. */

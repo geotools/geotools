@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.io.Serial;
 import java.lang.reflect.Array;
 import org.eclipse.imagen.Interpolation;
 import org.geotools.api.coverage.Coverage;
@@ -90,6 +91,7 @@ import org.geotools.util.factory.Hints;
  */
 public class Interpolate extends Operation2D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6742127682733620661L;
 
     /** The parameter descriptor for the interpolation type. */

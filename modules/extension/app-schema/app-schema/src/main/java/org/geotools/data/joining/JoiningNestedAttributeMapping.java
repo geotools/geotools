@@ -135,9 +135,9 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         Expression nestedSourceExpression = mapping.getSourceExpression();
 
         List<JoiningQuery.QueryJoin> joins = new ArrayList<>();
-        if (instance.baseTableQuery instanceof JoiningQuery) {
-            if (((JoiningQuery) instance.baseTableQuery).getQueryJoins() != null) {
-                joins.addAll(((JoiningQuery) instance.baseTableQuery).getQueryJoins());
+        if (instance.baseTableQuery instanceof JoiningQuery joiningQuery) {
+            if (joiningQuery.getQueryJoins() != null) {
+                joins.addAll(joiningQuery.getQueryJoins());
             }
         }
 
@@ -285,8 +285,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         @SuppressWarnings("PMD.CloseResource") // not managed here
         Transaction transaction = null;
-        if (caller instanceof AbstractMappingFeatureIterator) {
-            transaction = ((AbstractMappingFeatureIterator) caller).getTransaction();
+        if (caller instanceof AbstractMappingFeatureIterator iterator) {
+            transaction = iterator.getTransaction();
         }
 
         Instance instance = instances.get(caller);
@@ -372,8 +372,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         @SuppressWarnings("PMD.CloseResource") // not managed here
         Transaction transaction = null;
-        if (caller instanceof AbstractMappingFeatureIterator) {
-            transaction = ((AbstractMappingFeatureIterator) caller).getTransaction();
+        if (caller instanceof AbstractMappingFeatureIterator iterator) {
+            transaction = iterator.getTransaction();
         }
 
         Instance instance = instances.get(caller);

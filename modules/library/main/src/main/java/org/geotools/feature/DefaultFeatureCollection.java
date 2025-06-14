@@ -209,8 +209,8 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
             }
             return changed;
         } finally {
-            if (iterator instanceof FeatureIterator) {
-                ((FeatureIterator<?>) iterator).close();
+            if (iterator instanceof FeatureIterator<?> featureIterator) {
+                featureIterator.close();
             }
         }
     }
@@ -277,8 +277,8 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
             }
             return true;
         } finally {
-            if (iterator instanceof FeatureIterator) {
-                ((FeatureIterator<?>) iterator).close();
+            if (iterator instanceof FeatureIterator<?> featureIterator) {
+                featureIterator.close();
             }
         }
     }
@@ -378,8 +378,8 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
             }
             return changed;
         } finally {
-            if (iterator instanceof FeatureIterator) {
-                ((FeatureIterator<?>) iterator).close();
+            if (iterator instanceof FeatureIterator<?> featureIterator) {
+                featureIterator.close();
             }
         }
     }

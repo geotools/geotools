@@ -127,8 +127,7 @@ public class RasterZonalStatistics implements RasterProcess {
                 tb.minOccurs(att.getMinOccurs());
                 tb.maxOccurs(att.getMaxOccurs());
                 tb.restrictions(att.getType().getRestrictions());
-                if (att instanceof GeometryDescriptor) {
-                    GeometryDescriptor gatt = (GeometryDescriptor) att;
+                if (att instanceof GeometryDescriptor gatt) {
                     tb.crs(gatt.getCoordinateReferenceSystem());
                 }
                 tb.add("z_" + att.getLocalName(), att.getType().getBinding());

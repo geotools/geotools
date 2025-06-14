@@ -66,8 +66,8 @@ public class CoverageTestBase {
      *     not affine.
      */
     protected static AffineTransform getAffineTransform(final Coverage coverage) {
-        if (coverage instanceof GridCoverage) {
-            final GridGeometry geometry = ((GridCoverage) coverage).getGridGeometry();
+        if (coverage instanceof GridCoverage gridCoverage) {
+            final GridGeometry geometry = gridCoverage.getGridGeometry();
             if (geometry != null) {
                 final MathTransform gridToCRS;
                 if (geometry instanceof GridGeometry2D) {
@@ -75,8 +75,8 @@ public class CoverageTestBase {
                 } else {
                     gridToCRS = geometry.getGridToCRS();
                 }
-                if (gridToCRS instanceof AffineTransform) {
-                    return (AffineTransform) gridToCRS;
+                if (gridToCRS instanceof AffineTransform transform) {
+                    return transform;
                 }
             }
         }
@@ -213,8 +213,8 @@ public class CoverageTestBase {
              * The OperationTreeBrowser is not part of Geotools's core. It is optional and this
              * class should not fails if it is not presents. This is only a helper for debugging.
              */
-            if (coverage instanceof GridCoverage2D) {
-                Viewer.show((GridCoverage2D) coverage);
+            if (coverage instanceof GridCoverage2D coverage2D) {
+                Viewer.show(coverage2D);
             } else {
                 Viewer.show(image);
             }

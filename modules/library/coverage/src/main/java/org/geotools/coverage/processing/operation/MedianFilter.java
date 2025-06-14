@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.io.Serial;
 import org.eclipse.imagen.operator.MedianFilterDescriptor;
 import org.eclipse.imagen.operator.MedianFilterShape;
 import org.geotools.coverage.processing.OperationJAI;
@@ -65,6 +66,7 @@ import org.geotools.coverage.processing.OperationJAI;
  */
 public class MedianFilter extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8604321975842276962L;
 
     /** Constructs a default {@code "MedianFilter"} operation. */

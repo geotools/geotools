@@ -71,7 +71,7 @@ public class ScaleRange {
 
     @Override
     public String toString() {
-        return String.format("[1:%f, 1:%f)", minDenom, maxDenom);
+        return "[1:%f, 1:%f)".formatted(minDenom, maxDenom);
     }
 
     /** Returns the minimum scale denominator. */

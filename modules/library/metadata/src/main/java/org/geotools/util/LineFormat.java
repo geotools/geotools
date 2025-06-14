@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.lang.reflect.Array;
 import java.text.FieldPosition;
 import java.text.Format;
@@ -77,6 +78,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
 @SuppressWarnings("JdkObsolete") // StringBuffer required by java.text.Format
 public class LineFormat extends Format {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1663380990689494113L;
 
     /**

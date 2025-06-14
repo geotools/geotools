@@ -191,8 +191,8 @@ public class GeometryTransformer extends TransformerBase {
         }
 
         public void encode(Object o, String srsName) throws IllegalArgumentException {
-            if (o instanceof Geometry) {
-                encode((Geometry) o, srsName);
+            if (o instanceof Geometry geometry) {
+                encode(geometry, srsName);
             } else {
                 throw new IllegalArgumentException("Unable to encode " + o);
             }

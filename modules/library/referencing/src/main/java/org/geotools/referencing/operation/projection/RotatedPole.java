@@ -28,6 +28,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.logging.Level;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -58,6 +59,7 @@ import org.geotools.referencing.NamedIdentifier;
 public class RotatedPole extends MapProjection {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 9008485425176368580L;
 
     /**
@@ -146,6 +148,7 @@ public class RotatedPole extends MapProjection {
     public static class Provider extends AbstractProvider {
 
         /** serialVersionUID */
+        @Serial
         private static final long serialVersionUID = 8452425384927757022L;
 
         /** The parameters group. */

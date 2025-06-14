@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.referencing.crs.EngineeringCRS;
@@ -60,6 +61,7 @@ import si.uom.SI;
  */
 public class DefaultEngineeringCRS extends AbstractSingleCRS implements EngineeringCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6695541732063382701L;
 
     /** Marks the CRS as a wildcard one. Wildcard CRS will transform to any other CRS with the identity transform */
@@ -126,8 +128,8 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      */
     public DefaultEngineeringCRS(final EngineeringCRS crs) {
         super(crs);
-        if (crs instanceof DefaultEngineeringCRS) {
-            this.wildcard = ((DefaultEngineeringCRS) crs).wildcard;
+        if (crs instanceof DefaultEngineeringCRS rS) {
+            this.wildcard = rS.wildcard;
         }
     }
 

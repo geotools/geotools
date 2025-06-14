@@ -102,7 +102,7 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
             // just log the exception and move on
             LOGGER.log(
                     Level.WARNING,
-                    String.format("Error removing tests root directory '%s'.", TESTS_ROOT_DIR.getAbsolutePath()),
+                    "Error removing tests root directory '%s'.".formatted(TESTS_ROOT_DIR.getAbsolutePath()),
                     exception);
         }
     }

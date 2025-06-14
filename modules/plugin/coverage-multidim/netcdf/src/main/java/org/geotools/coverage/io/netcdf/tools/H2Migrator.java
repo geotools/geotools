@@ -299,7 +299,7 @@ public class H2Migrator {
             parameters.add(param);
         }
         Optional<Parameter> auxParameter = getParameter(Utils.Prop.AUXILIARY_FILE, parameters);
-        if (!auxParameter.isPresent()) {
+        if (auxParameter.isEmpty()) {
             final Parameter param = new Parameter();
             param.setName(Utils.Prop.AUXILIARY_FILE);
             param.setValue("_auxiliary.xml");
@@ -414,14 +414,13 @@ public class H2Migrator {
                     final SimpleFeatureType schema = buildTargetSchema(sourceSchema);
                     targetStore.createSchema(schema);
                     // create indexes if we can
-                    if (targetStore instanceof JDBCDataStore) {
-                        ((JDBCDataStore) targetStore)
-                                .createIndex(new Index(
-                                        schema.getTypeName(),
-                                        schema.getTypeName() + "_loc_idx",
-                                        true,
-                                        "location",
-                                        CoverageSlicesCatalog.IMAGE_INDEX_ATTR));
+                    if (targetStore instanceof JDBCDataStore store) {
+                        store.createIndex(new Index(
+                                schema.getTypeName(),
+                                schema.getTypeName() + "_loc_idx",
+                                true,
+                                "location",
+                                CoverageSlicesCatalog.IMAGE_INDEX_ATTR));
                     }
                 }
             }

@@ -88,8 +88,7 @@ public class DefaultTemporalPosition implements TemporalPosition {
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultTemporalPosition) {
-            final DefaultTemporalPosition that = (DefaultTemporalPosition) object;
+        if (object instanceof DefaultTemporalPosition that) {
 
             return Utilities.equals(this.frame, that.frame)
                     && Utilities.equals(this.indeterminatePosition, that.indeterminatePosition);

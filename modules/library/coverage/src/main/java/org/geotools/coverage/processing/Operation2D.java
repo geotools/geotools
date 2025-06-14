@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ import org.geotools.util.factory.Hints;
  */
 public abstract class Operation2D extends AbstractOperation {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 574096338873406394L;
 
     /**

@@ -86,13 +86,13 @@ public class MongoDBObjectFeature implements SimpleFeature {
     @Override
     public BoundingBox getBounds() {
         Object o = getDefaultGeometry();
-        if (o instanceof Geometry) {
+        if (o instanceof Geometry geometry) {
             CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
             if (crs == null) {
                 crs = DefaultGeographicCRS.WGS84;
             }
             Envelope bounds = ReferencedEnvelope.create(crs);
-            bounds.init(JTS.bounds((Geometry) o, crs));
+            bounds.init(JTS.bounds(geometry, crs));
             return (BoundingBox) bounds;
         }
         return null;
@@ -141,7 +141,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     private Object doGetAttribute(AttributeDescriptor d) throws IndexOutOfBoundsException {
         if (d instanceof GeometryDescriptor) {
             Object o = getDBOValue(mapper.getGeometryPath());
-            return o instanceof DBObject ? mapper.getGeometry((DBObject) o) : null;
+            return o instanceof DBObject dbo ? mapper.getGeometry(dbo) : null;
         }
         return getDBOValue(mapper.getPropertyPath(d.getLocalName()));
     }

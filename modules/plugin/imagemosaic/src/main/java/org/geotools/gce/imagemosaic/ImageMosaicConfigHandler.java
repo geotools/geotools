@@ -545,8 +545,9 @@ public class ImageMosaicConfigHandler {
                 String[] ranges = attribute.split(Utils.RANGE_SPLITTER_CHAR);
                 if (ranges.length != 2) {
                     throw new IllegalArgumentException(
-                            "All ranges attribute need to be composed of a maximum of 2 elements:\n"
-                                    + "As an instance (min;max) or (low;high) or (begin;end) , ...");
+                            """
+                            All ranges attribute need to be composed of a maximum of 2 elements:
+                            As an instance (min;max) or (low;high) or (begin;end) , ...""");
                 } else {
                     featureBuilder.add(ranges[0], classType);
                     featureBuilder.add(ranges[1], classType);
@@ -595,13 +596,13 @@ public class ImageMosaicConfigHandler {
         GranuleHandler geometryHandler = this.getGeometryHandler();
 
         // getting input granules
-        if (inputReader instanceof StructuredGridCoverage2DReader) {
+        if (inputReader instanceof StructuredGridCoverage2DReader reader) {
             //
             // Case A: input reader is a StructuredGridCoverage2DReader. We can get granules from a
             // source
             //
             handleStructuredGridCoverage(
-                    ((StructuredGridCoverage2DReader) inputReader).getGranules(coverageName, true),
+                    reader.getGranules(coverageName, true),
                     elementBeingProcessed,
                     inputReader,
                     propertiesCollectors,
@@ -666,9 +667,7 @@ public class ImageMosaicConfigHandler {
                 new AbstractFeatureVisitor() {
                     @Override
                     public void visit(Feature feature) {
-                        if (feature instanceof SimpleFeature) {
-                            // get the feature
-                            final SimpleFeature sourceFeature = (SimpleFeature) feature;
+                        if (feature instanceof SimpleFeature sourceFeature) {
                             final SimpleFeature destFeature = DataUtilities.template(indexSchema);
                             Collection<Property> props = sourceFeature.getProperties();
                             Name propName = null;
@@ -803,11 +802,11 @@ public class ImageMosaicConfigHandler {
         ImageMosaicReader imReader = null;
         if (hints != null && hints.containsKey(Utils.MOSAIC_READER)) {
             Object reader = hints.get(Utils.MOSAIC_READER);
-            if (reader instanceof ImageMosaicReader) {
+            if (reader instanceof ImageMosaicReader mosaicReader) {
                 if (getParentReader() == null) {
-                    setParentReader((ImageMosaicReader) reader);
+                    setParentReader(mosaicReader);
                 }
-                imReader = (ImageMosaicReader) reader;
+                imReader = mosaicReader;
             }
         }
         return imReader;
@@ -1167,8 +1166,7 @@ public class ImageMosaicConfigHandler {
         }
 
         SourceSPIProviderFactory urlSourceSpiProvider = catalogConfigurationBean.getUrlSourceSPIProvider();
-        if (urlSourceSpiProvider instanceof CogConfiguration) {
-            CogConfiguration cogBean = (CogConfiguration) urlSourceSpiProvider;
+        if (urlSourceSpiProvider instanceof CogConfiguration cogBean) {
             properties.setProperty(Prop.COG, Boolean.toString(true));
             String rangeReader = cogBean.getRangeReader();
             if (rangeReader != null) {
@@ -1339,8 +1337,7 @@ public class ImageMosaicConfigHandler {
             ColorModel defaultCM = cm;
 
             // Checking palette
-            if (defaultCM instanceof IndexColorModel) {
-                IndexColorModel icm = (IndexColorModel) defaultCM;
+            if (defaultCM instanceof IndexColorModel icm) {
                 byte[][] defaultPalette = Utils.extractPalette(icm);
                 configBuilder.setPalette(defaultPalette);
             }

@@ -292,8 +292,7 @@ public class ContourProcess implements RasterProcess {
         Object interpolationKeyValue = targetQuery.getHints().get(JAI.KEY_INTERPOLATION);
         // no need for extra padding if the reader is alredy using high order interpolations,
         // some padding will be added anyways
-        if (interpolationKeyValue instanceof Interpolation) {
-            Interpolation interpolation = (Interpolation) interpolationKeyValue;
+        if (interpolationKeyValue instanceof Interpolation interpolation) {
             if (!(interpolation instanceof InterpolationNearest)) return gg;
         }
 

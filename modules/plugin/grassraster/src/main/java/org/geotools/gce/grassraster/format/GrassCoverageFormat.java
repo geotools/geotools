@@ -85,12 +85,12 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
     public boolean accepts(final Object o, Hints hints) {
         File fileToUse;
 
-        if (o instanceof File) {
-            fileToUse = (File) o;
-        } else if (o instanceof URL) {
-            fileToUse = URLs.urlToFile((URL) o);
-        } else if (o instanceof String) {
-            fileToUse = new File((String) o);
+        if (o instanceof File file) {
+            fileToUse = file;
+        } else if (o instanceof URL rL) {
+            fileToUse = URLs.urlToFile(rL);
+        } else if (o instanceof String string) {
+            fileToUse = new File(string);
         } else {
             return false;
         }

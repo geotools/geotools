@@ -20,12 +20,14 @@ package org.geotools.image.palette;
 
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
+import java.io.Serial;
 import org.eclipse.imagen.OperationDescriptorImpl;
 import org.eclipse.imagen.registry.RenderedRegistryMode;
 
 public class ColorReductionDescriptor extends OperationDescriptorImpl {
 
     /** */
+    @Serial
     private static final long serialVersionUID = -8931287738914712392L;
     /** The operation name, which is {@value}. */
     public static final String OPERATION_NAME = "org.geotools.ColorReduction";

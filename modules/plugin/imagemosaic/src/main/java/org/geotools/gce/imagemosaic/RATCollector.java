@@ -78,8 +78,8 @@ public class RATCollector {
                     String currValue = curr.get(i);
                     if (countField != null && i == countField) continue;
                     if (!prevValue.equals(currValue)) {
-                        throw new IllegalArgumentException(String.format(
-                                "Different values for band %d in row %s: %s != %s", band, key, prevValue, currValue));
+                        throw new IllegalArgumentException("Different values for band %d in row %s: %s != %s"
+                                .formatted(band, key, prevValue, currValue));
                     }
                 }
                 if (countField != null) {

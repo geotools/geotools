@@ -24,6 +24,7 @@ import java.awt.GridLayout;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -40,6 +41,7 @@ import org.geotools.util.logging.Logging;
 
 class CompareImageDialog extends JDialog {
 
+    @Serial
     private static final long serialVersionUID = -8640087805737551918L;
 
     static final Logger LOGGER = Logging.getLogger(CompareImageDialog.class);

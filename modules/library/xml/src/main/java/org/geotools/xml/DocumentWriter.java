@@ -1609,8 +1609,7 @@ public class DocumentWriter {
                             }
                     }
 
-                    if (order instanceof Schema[]) {
-                        Schema[] sOrder = (Schema[]) order;
+                    if (order instanceof Schema[] sOrder) {
 
                         for (Schema value : sOrder) {
                             int nsIndex = targNS.indexOf(value.getTargetNamespace());

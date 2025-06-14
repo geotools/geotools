@@ -17,6 +17,7 @@
 
 package org.geotools.data.solr;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -35,6 +36,7 @@ import java.io.Serializable;
  */
 public class SolrAttribute implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 8839579461838862328L;
 
     private String name;

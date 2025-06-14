@@ -16,6 +16,7 @@
  */
 package org.geotools.measure;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
@@ -38,6 +39,7 @@ import org.geotools.util.ClassChanger;
  */
 public class Angle implements Comparable<Angle>, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1158747349433104534L;
 
     /** A shared instance of {@link AngleFormat}. */

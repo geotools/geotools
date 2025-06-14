@@ -79,8 +79,8 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 } else if (o2 == null) {
                     return 1;
                 }
-                if (o1 instanceof String && o2 instanceof String) {
-                    return ((String) o1).compareTo((String) o2);
+                if (o1 instanceof String string && o2 instanceof String string1) {
+                    return string.compareTo(string1);
                 }
                 return 0;
             });

@@ -9,6 +9,8 @@
  */
 package org.geotools.api.referencing;
 
+import java.io.Serial;
+
 /**
  * Thrown when a {@linkplain Factory factory} can't create an instance of the requested object. It may be a failure to
  * create a {@linkplain org.geotools.api.referencing.datum.Datum datum}, a
@@ -26,6 +28,7 @@ package org.geotools.api.referencing;
  */
 public class FactoryException extends Exception {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3414250034883898315L;
 
     /** Construct an exception with no detail message. */

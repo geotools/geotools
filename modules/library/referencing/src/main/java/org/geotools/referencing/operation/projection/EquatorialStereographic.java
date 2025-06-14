@@ -30,6 +30,7 @@ import static java.lang.Math.hypot;
 import static java.lang.Math.sin;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -47,6 +48,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class EquatorialStereographic extends StereographicUSGS {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -5098015759558831875L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -111,6 +113,7 @@ public class EquatorialStereographic extends StereographicUSGS {
      */
     static final class Spherical extends EquatorialStereographic {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -4790138052004333003L;
 
         /**

@@ -157,9 +157,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         // WorldFile and projection file.
         //
         // ////////////////////////////////////////////////////////////////////
-        if (destination instanceof File) {
-            // files destinations
-            File imageFile = (File) destination;
+        if (destination instanceof File imageFile) {
             final String path = imageFile.getAbsolutePath();
             final int index = path.lastIndexOf(".");
             final String baseFile = index >= 0 ? path.substring(0, index) : path;

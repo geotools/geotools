@@ -18,6 +18,7 @@ package org.geotools.coverage.grid;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.logging.Level;
@@ -78,6 +79,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     static final Logger LOGGER = Logging.getLogger(GeneralGridGeometry.class);
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 124700383873732132L;
 
     private static boolean assertsEnabled = false;
@@ -179,9 +181,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @since 2.5
      */
     public GeneralGridGeometry(final GridGeometry other) {
-        if (other instanceof GeneralGridGeometry) {
-            // Uses this path when possible in order to accept null values.
-            final GeneralGridGeometry general = (GeneralGridGeometry) other;
+        if (other instanceof GeneralGridGeometry general) {
             gridRange = general.gridRange; // Do not clone; we assume it is safe to share.
             gridToCRS = general.gridToCRS;
             cornerToCRS = general.cornerToCRS;
@@ -459,8 +459,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * which defines a {@code clone()} method, instead of {@link GridRange2D} itself, for gaining some generality.
      */
     private static GridEnvelope clone(GridEnvelope gridRange) {
-        if (gridRange instanceof Cloneable) {
-            gridRange = (GridEnvelope) ((Cloneable) gridRange).clone();
+        if (gridRange instanceof Cloneable cloneable) {
+            gridRange = (GridEnvelope) cloneable.clone();
         }
         return gridRange;
     }

@@ -673,8 +673,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * and the expression second. Will return null otherwise.
      */
     private Expression[] getNameLiteralFromEquality(Filter child) {
-        if (child instanceof PropertyIsEqualTo) {
-            PropertyIsEqualTo equal = (PropertyIsEqualTo) child;
+        if (child instanceof PropertyIsEqualTo equal) {
             Expression ex1 = equal.getExpression1();
             Expression ex2 = equal.getExpression2();
             if (ex1 instanceof PropertyName && ex2 instanceof Literal) {
@@ -817,15 +816,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         // shortcut for IN case, to have a more natural encoding for the common/sane case of
         // "in(property, v1, v2, ... vn) = true" into "property in (v1, v2, ..., vn)
         if (inEncodingEnabled && ("=".equals(extraData) || "!=".equals(extraData))) {
-            if (right instanceof Literal
+            if (right instanceof Literal literal1
                     && InFunction.isInFunction(left)
                     && right.evaluate(null, Boolean.class) != null) {
-                encodeInComparison((Function) left, (Literal) right, extraData);
+                encodeInComparison((Function) left, literal1, extraData);
                 return;
-            } else if (left instanceof Literal
+            } else if (left instanceof Literal literal
                     && InFunction.isInFunction(right)
                     && left.evaluate(null, Boolean.class) != null) {
-                encodeInComparison((Function) right, (Literal) left, extraData);
+                encodeInComparison((Function) right, literal, extraData);
                 return;
             }
         }
@@ -971,8 +970,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             AttributeDescriptor ad = (AttributeDescriptor) ex.evaluate(featureType);
             if (ad != null) {
                 Object o = ad.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-                if (o instanceof EnumMapping) {
-                    return (EnumMapping) o;
+                if (o instanceof EnumMapping mapping) {
+                    return mapping;
                 }
             }
         }
@@ -1006,9 +1005,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             if (attType != null) {
                 binding = attType.getType().getBinding();
             }
-        } else if (expression instanceof Function) {
+        } else if (expression instanceof Function function) {
             // check for a function return type
-            Class ret = getFunctionReturnType((Function) expression);
+            Class ret = getFunctionReturnType(function);
             if (ret != null) {
                 binding = ret;
             }
@@ -1125,8 +1124,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
                 for (int j = 0; j < attValues.size(); j++) {
                     // in case of join the pk columns need to be qualified with alias
-                    if (filter instanceof JoinId) {
-                        out.write(escapeName(((JoinId) filter).getAlias()));
+                    if (filter instanceof JoinId joinId) {
+                        out.write(escapeName(joinId.getAlias()));
                         out.write(".");
                     }
                     out.write(escapeName(columns.get(j).getName()));
@@ -1237,18 +1236,18 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 // name has
                 // not been specified (convention -> the default geometry)
                 AttributeDescriptor descriptor = (AttributeDescriptor) e1.evaluate(featureType);
-                if (descriptor instanceof GeometryDescriptor) {
-                    currentGeometry = (GeometryDescriptor) descriptor;
+                if (descriptor instanceof GeometryDescriptor geometryDescriptor) {
+                    currentGeometry = geometryDescriptor;
                     currentSRID = (Integer) descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
                     currentDimension = (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
                 }
             }
         }
 
-        if (e1 instanceof PropertyName && e2 instanceof Literal) {
+        if (e1 instanceof PropertyName name && e2 instanceof Literal literal) {
             // call the "regular" method
             return visitBinarySpatialOperator(
-                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
+                    filter, name, literal, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinarySpatialOperator(filter, e1, e2, extraData);
@@ -1284,10 +1283,10 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             e2 = filter.getExpression1();
         }
 
-        if (e1 instanceof PropertyName && e2 instanceof Literal) {
+        if (e1 instanceof PropertyName name && e2 instanceof Literal literal) {
             // call the "regular" method
             return visitBinaryTemporalOperator(
-                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
+                    filter, name, literal, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinaryTemporalOperator(filter, e1, e2, extraData);
@@ -1460,17 +1459,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         LOGGER.finer("exporting PropertyName");
 
         Class target = null;
-        if (extraData instanceof Class) {
-            target = (Class) extraData;
+        if (extraData instanceof Class class1) {
+            target = class1;
         }
 
         try {
             SimpleFeatureType featureType = this.featureType;
 
             // check for join
-            if (expression instanceof JoinPropertyName) {
+            if (expression instanceof JoinPropertyName name) {
                 // encode the prefix
-                out.write(escapeName(((JoinPropertyName) expression).getAlias()));
+                out.write(escapeName(name.getAlias()));
                 out.write(".");
             }
 
@@ -1554,8 +1553,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         // type to convert the literal to
         Class target = null;
-        if (context instanceof Class) {
-            target = (Class) context;
+        if (context instanceof Class class1) {
+            target = class1;
         }
 
         try {
@@ -1566,8 +1565,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             if (literal instanceof Geometry) {
                 // call this method for backwards compatibility with subclasses
                 visitLiteralGeometry(filterFactory.literal(literal));
-            } else if (literal instanceof Envelope) {
-                visitLiteralGeometry(filterFactory.literal(BBOXImpl.boundingPolygon((Envelope) literal)));
+            } else if (literal instanceof Envelope envelope) {
+                visitLiteralGeometry(filterFactory.literal(BBOXImpl.boundingPolygon(envelope)));
             } else {
                 // write out the literal allowing subclasses to override this
                 // behaviour (for writing out dates and the like using the BDMS custom functions)
@@ -1647,12 +1646,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // java.sql.date toString declares to always format to yyyy-mm-dd
             // (and TimeStamp uses a similar approach)
             out.write("'" + literal + "'");
-        } else if (literal instanceof java.util.Date) {
+        } else if (literal instanceof Date date1) {
             // get back to the previous case
-            Timestamp ts = new java.sql.Timestamp(((Date) literal).getTime());
+            Timestamp ts = new java.sql.Timestamp(date1.getTime());
             out.write("'" + ts + "'");
-        } else if (literal instanceof Instant) {
-            java.util.Date date = ((Instant) literal).getPosition().getDate();
+        } else if (literal instanceof Instant instant) {
+            java.util.Date date = instant.getPosition().getDate();
             Timestamp ts = new java.sql.Timestamp(date.getTime());
             out.write("'" + ts + "'");
         } else if (literal.getClass().isArray()) {
@@ -2051,8 +2050,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         try {
             out.write("(" + filter.getNative() + ")");
         } catch (Exception exception) {
-            throw new RuntimeException(
-                    String.format("Error encoding native filter '%s'.", filter.getNative()), exception);
+            throw new RuntimeException("Error encoding native filter '%s'.".formatted(filter.getNative()), exception);
         }
         return data;
     }

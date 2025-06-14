@@ -469,7 +469,13 @@ public class JiffleProcessTest {
         Map<String, Object> inputs = new HashMap<>();
         inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {coverage});
         String script =
-                "maxBand = src->bands - 1;\n" + "foreach (b in 0:maxBand) {\n" + "dest[b] = src[b] * 2\n;" + "}";
+                """
+                maxBand = src->bands - 1;
+                foreach (b in 0:maxBand) {
+                dest[b] = src[b] * 2
+                ;\
+                }\
+                """;
         inputs.put(JiffleProcess.IN_SCRIPT, script);
         inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 13);
         Map<String, Object> output = jiffle.execute(inputs, null);

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.jdbc;
 
+import java.io.Serial;
+
 /**
  * Indicates a client class has attempted to encode a filter not supported by the SQLEncoder being used, or that there
  * were io problems.
@@ -23,6 +25,7 @@ package org.geotools.data.jdbc;
  * @author Chris Holmes, TOPP
  */
 public class FilterToSQLException extends Exception {
+    @Serial
     private static final long serialVersionUID = -2394509611777950167L;
 
     /**

@@ -19,6 +19,7 @@ package org.geotools.coverage.processing.operation;
 // JAI dependencies (for javadoc)
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Map;
 import org.eclipse.imagen.ParameterBlockJAI;
@@ -76,6 +77,7 @@ public class Add extends BaseMathOperationJAI {
     private static final String ALGEBRIC = "algebric";
     private static final String ADD = "Add";
     /** */
+    @Serial
     private static final long serialVersionUID = -4029879745691129215L;
 
     /** Constructs a default {@code "Add"} operation. */

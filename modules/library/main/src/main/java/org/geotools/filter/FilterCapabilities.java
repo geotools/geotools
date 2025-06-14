@@ -220,8 +220,7 @@ public class FilterCapabilities {
             if ((key & type) != 0) {
                 Object filter = entry.getValue();
                 if (filter != null) {
-                    if (filter instanceof Class[]) {
-                        Class[] filters = (Class[]) filter;
+                    if (filter instanceof Class[] filters) {
                         for (Class aClass : filters) {
                             addType(aClass, false);
                         }
@@ -323,16 +322,14 @@ public class FilterCapabilities {
                     "Null filters can not be " + "unpacked, did you mean " + "Filter.INCLUDE?");
         }
 
-        if (filter instanceof BinaryLogicOperator) {
-            BinaryLogicOperator lf = (BinaryLogicOperator) filter;
+        if (filter instanceof BinaryLogicOperator lf) {
             for (Filter testFilter : lf.getChildren()) {
                 if (!this.fullySupports(testFilter)) {
                     supports = false;
                     break;
                 }
             }
-        } else if (filter instanceof Not) {
-            Not lf = (Not) filter;
+        } else if (filter instanceof Not lf) {
             if (!this.fullySupports(lf.getFilter())) {
                 supports = false;
             }

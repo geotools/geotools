@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.Conversion;
@@ -44,6 +45,7 @@ import org.geotools.api.referencing.operation.Projection;
  */
 public class DefaultProjection extends DefaultConversion implements Projection {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7176751851369816864L;
 
     /**

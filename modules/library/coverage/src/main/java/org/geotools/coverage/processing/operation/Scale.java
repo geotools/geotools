@@ -19,6 +19,7 @@ package org.geotools.coverage.processing.operation;
 import java.awt.RenderingHints;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.imagen.Interpolation;
@@ -51,6 +52,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 public class Scale extends BaseScaleOperationJAI {
 
     /** Serial number for cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -3212656385631097713L;
 
     /** Default constructor. */
@@ -112,15 +114,14 @@ public class Scale extends BaseScaleOperationJAI {
         if (parameters.parameters.getNumParameters() > 5 && parameters.parameters.getObjectParameter(8) != null) {
             // Setting NoData property if needed
             Object bkgProp = parameters.parameters.getObjectParameter(8);
-            if (bkgProp != null && bkgProp instanceof double[]) {
-                double[] background = (double[]) bkgProp;
+            if (bkgProp != null && bkgProp instanceof double[] background) {
                 CoverageUtilities.setNoDataProperty(properties, background);
             }
         }
 
         // Setting ROI if present
-        if (data instanceof RenderedOp) {
-            String operationName = ((RenderedOp) data).getOperationName();
+        if (data instanceof RenderedOp op) {
+            String operationName = op.getOperationName();
             PropertyGenerator propertyGenerator = null;
             if (operationName.equalsIgnoreCase(SCALE) || operationName.equalsIgnoreCase(TRANSLATE)) {
                 propertyGenerator =
@@ -128,8 +129,8 @@ public class Scale extends BaseScaleOperationJAI {
             }
             if (propertyGenerator != null) {
                 Object roiProp = propertyGenerator.getProperty(ROI, data);
-                if (roiProp != null && roiProp instanceof ROI) {
-                    CoverageUtilities.setROIProperty(properties, (ROI) roiProp);
+                if (roiProp != null && roiProp instanceof ROI oI) {
+                    CoverageUtilities.setROIProperty(properties, oI);
                 }
             }
         }

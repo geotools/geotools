@@ -127,6 +127,7 @@ import org.mockito.Mockito;
  * @author Jody
  * @author PHustad
  */
+@SuppressWarnings("DirectInvocationOnMock")
 public class StreamingRendererTest {
 
     private SimpleFeatureType testLineFeatureType;

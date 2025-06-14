@@ -18,10 +18,14 @@
 
 package org.geotools.maven.xmlcodegen.templates;
 
-import java.util.*;
-import java.io.*;
-import org.eclipse.xsd.*;
-import org.geotools.maven.xmlcodegen.*;
+import java.io.File;
+import java.util.List;
+
+import org.eclipse.xsd.XSDAttributeDeclaration;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.maven.xmlcodegen.GeneratorUtils;
 import org.geotools.xsd.Schemas;
 
 public class XSDTemplate

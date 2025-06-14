@@ -52,7 +52,7 @@ public class TPKTile {
             if (temp != 0) {
                 return temp;
             }
-            return (int) (a.tileInfo.tileDataOffset - b.tileInfo.tileDataOffset);
+            return Long.compare(a.tileInfo.tileDataOffset, b.tileInfo.tileDataOffset);
         }
     }
 

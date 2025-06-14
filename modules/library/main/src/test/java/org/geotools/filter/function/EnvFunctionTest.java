@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -350,7 +351,7 @@ public class EnvFunctionTest {
                 function.setFallbackValue(ff.literal(0));
 
                 handler.flush();
-                String logMsg = out.toString();
+                String logMsg = out.toString(StandardCharsets.UTF_8);
                 assertNotNull(logMsg);
                 assertTrue(logMsg.toLowerCase().contains("setfallbackvalue"));
 

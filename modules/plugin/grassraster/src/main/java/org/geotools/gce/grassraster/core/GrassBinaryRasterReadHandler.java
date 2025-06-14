@@ -821,6 +821,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
      * @param rowdata the buffer to hold the read row.
      * @param currentrow the index of the row to read.
      */
+    @SuppressWarnings("ByteBufferBackingArray")
     private void readCompressedFPRowByNumber(ByteBuffer rowdata, int currentrow)
             throws DataFormatException, IOException {
         // System.out.println("row: " + (currentrow+1) + " position: " + addressesOfRows[currentrow
@@ -857,6 +858,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
      * @param rowdata the buffer to hold the read row.
      * @param currentrow the index of the row to read.
      */
+    @SuppressWarnings("ByteBufferBackingArray")
     private void readUncompressedFPRowByNumber(ByteBuffer rowdata, int currentrow)
             throws IOException, DataFormatException {
         int datanumber = nativeRasterRegion.getCols() * numberOfBytesPerValue;

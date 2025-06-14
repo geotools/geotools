@@ -1375,7 +1375,7 @@ public class GridCoverageRendererTest {
     public void testContrastEnhancementInChannelSelectionAfterBandSelectionWithoutColorModel() throws Exception {
         GridCoverage2DReader reader = new TestMultiBandReader(0, 2, 4) {
             @Override
-            public GridCoverage2D read(GeneralParameterValue[] parameters) throws IOException {
+            public GridCoverage2D read(GeneralParameterValue... parameters) throws IOException {
                 GridCoverage2D originalCoverage = super.read(parameters);
                 RenderedImage source = new ImageWorker(originalCoverage.getRenderedImage())
                         .format(DataBuffer.TYPE_USHORT)

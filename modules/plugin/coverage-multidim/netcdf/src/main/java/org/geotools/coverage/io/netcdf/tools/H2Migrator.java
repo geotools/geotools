@@ -43,6 +43,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.api.data.DataStore;
@@ -385,10 +386,11 @@ public class H2Migrator {
         }
         final File auxDirectory = new File(database).getParentFile();
         final String databaseName = new File(database).getName();
-        return Files.list(auxDirectory.toPath())
-                .filter(p -> isH2DatabaseFile(databaseName, p))
-                .map(p -> p.toAbsolutePath().toString())
-                .toArray(n -> new String[n]);
+        try (Stream<Path> list = Files.list(auxDirectory.toPath())) {
+            return list.filter(p -> isH2DatabaseFile(databaseName, p))
+                    .map(p -> p.toAbsolutePath().toString())
+                    .toArray(n -> new String[n]);
+        }
     }
 
     private boolean isH2DatabaseFile(String databaseName, Path p) {

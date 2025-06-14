@@ -33,7 +33,7 @@ class MongoQueryCapabilities extends QueryCapabilities {
     }
 
     @Override
-    public boolean supportsSorting(SortBy[] sortAttributes) {
+    public boolean supportsSorting(SortBy... sortAttributes) {
         for (SortBy sort : sortAttributes) {
             if (!supportsPropertySorting(sort.getPropertyName())) return false;
         }

@@ -18,7 +18,6 @@
 
 package org.geotools.maven.xmlcodegen.templates;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +31,6 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.maven.xmlcodegen.SchemaGenerator;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.ComplexType;
@@ -40,6 +38,7 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
 import org.geotools.api.feature.type.Schema;
+import org.geotools.maven.xmlcodegen.SchemaGenerator;
 
 public class CycleSchemaClassTemplate
 {

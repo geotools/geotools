@@ -65,6 +65,7 @@ public class CSVDataStore extends ContentDataStore {
     // reader end
 
     // createTypeNames start
+    @Override
     protected List<Name> createTypeNames() throws IOException {
         String name = file.getName();
         name = name.substring(0, name.lastIndexOf('.'));

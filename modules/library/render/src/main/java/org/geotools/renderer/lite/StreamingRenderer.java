@@ -3508,7 +3508,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @author aaime
      */
-    protected class MergeLayersRequest extends RenderingRequest {
+    protected static class MergeLayersRequest extends RenderingRequest {
         Graphics2D graphics;
         List<LiteFeatureTypeStyle> lfts;
 
@@ -3549,7 +3549,7 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
 
-    protected class MargeCompositingGroupRequest extends RenderingRequest {
+    protected static class MargeCompositingGroupRequest extends RenderingRequest {
         Graphics2D graphics;
 
         CompositingGroup compositingGroup;
@@ -3768,7 +3768,7 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
 
-    public class RenderTimeStatisticsRequest extends RenderingRequest {
+    public static class RenderTimeStatisticsRequest extends RenderingRequest {
 
         private List<RenderListener> listeners;
 
@@ -3790,7 +3790,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @author Andrea Aime - OpenGeo
      */
-    protected class EndRequest extends RenderingRequest {
+    protected static class EndRequest extends RenderingRequest {
 
         @Override
         void execute() {

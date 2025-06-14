@@ -205,6 +205,7 @@ import org.locationtech.jts.geom.LinearRing;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
  */
+@SuppressWarnings("DuplicateDateFormatField") // we're not reusing SimpleDateFormat, errorprone complains though
 public class ImageMosaicReaderTest {
 
     private static final FilterFactory FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
@@ -4800,6 +4801,7 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
+    @SuppressWarnings("FloatingPointAssertionWithinEpsilon")
     public void testNoDataRescaleStats() throws Exception {
         // For this test the input files havethe nodata value that is very high compared
         // to the valid data, ask for a geometry that requires some translation, and

@@ -779,8 +779,10 @@ public class AncillaryFileManager implements FileSetManager {
                     final String SPIClass = properties.getProperty("SPI");
                     try {
                         // create a datastore as instructed
-                        final DataStoreFactorySpi spi = (DataStoreFactorySpi)
-                                Class.forName(SPIClass).getDeclaredConstructor().newInstance();
+                        final DataStoreFactorySpi spi = Class.forName(SPIClass)
+                                .asSubclass(DataStoreFactorySpi.class)
+                                .getDeclaredConstructor()
+                                .newInstance();
                         Map<String, Serializable> datastoreParams = Utils.filterDataStoreParams(properties, spi);
 
                         // create a datastore configuration using the specified SPI and

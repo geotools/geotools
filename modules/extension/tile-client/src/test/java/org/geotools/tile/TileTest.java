@@ -54,7 +54,6 @@ public class TileTest {
 
         Assert.assertEquals(this.tile, this.tile);
         Assert.assertNotEquals(null, this.tile);
-        Assert.assertNotEquals("Blah", this.tile);
 
         Tile otherTile = createTestTile();
         Assert.assertEquals(this.tile, otherTile);

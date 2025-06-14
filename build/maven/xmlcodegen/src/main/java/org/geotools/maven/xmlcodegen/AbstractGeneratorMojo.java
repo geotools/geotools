@@ -29,7 +29,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -239,6 +238,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
         		);
 		}
 	
+		@SuppressWarnings("URLEqualsHashCode")
 		Set<URL> urls = new HashSet<>();
         for (Artifact artifact : artifacts) {
             getLog().debug("Attempting to dynamically resolve: " + artifact);

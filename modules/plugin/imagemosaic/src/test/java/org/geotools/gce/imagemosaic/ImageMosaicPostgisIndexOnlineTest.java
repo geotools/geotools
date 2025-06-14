@@ -68,6 +68,7 @@ import org.junit.Test;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
+@SuppressWarnings("DuplicateDateFormatField") // we're not reusing SimpleDateFormat, errorprone complains though
 public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     private static final Logger LOGGER = Logging.getLogger(ImageMosaicPostgisIndexOnlineTest.class);

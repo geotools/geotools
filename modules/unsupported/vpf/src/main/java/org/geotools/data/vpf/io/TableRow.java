@@ -152,6 +152,7 @@ public class TableRow implements VPFRow {
     }
 
     @Override
+    @SuppressWarnings("SuperCallToObjectMethod")
     public int hashCode() {
         int code = 0;
 

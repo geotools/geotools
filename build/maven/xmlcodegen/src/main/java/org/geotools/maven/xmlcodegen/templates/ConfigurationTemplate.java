@@ -18,9 +18,13 @@
 
 package org.geotools.maven.xmlcodegen.templates;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.eclipse.xsd.*;
+import org.eclipse.xsd.XSDAttributeDeclaration;
+import org.eclipse.xsd.XSDNamedComponent;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.xsd.Schemas;
 
 public class ConfigurationTemplate

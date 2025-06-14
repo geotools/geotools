@@ -127,9 +127,8 @@ public class ExplicitBoundsShape implements Shape {
             return result & bounds.equals(other.bounds);
         } else if (obj instanceof Shape) {
             if (bounds == null) return shape.equals(obj);
-            return false;
         }
-        return super.equals(obj);
+        return false;
     }
 
     @Override

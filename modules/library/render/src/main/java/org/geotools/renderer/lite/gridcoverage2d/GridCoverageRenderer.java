@@ -228,6 +228,7 @@ public final class GridCoverageRenderer {
      *     {@link GridToEnvelopeMapper} is used to calculate the affine transform.
      * @param newHints {@link RenderingHints} to control this rendering process.
      */
+    @SuppressWarnings("ErroneousBitwiseExpression") // see REVISIT comment below
     public GridCoverageRenderer(
             final CoordinateReferenceSystem destinationCRS,
             final Envelope envelope,
@@ -296,6 +297,10 @@ public final class GridCoverageRenderer {
             final ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
             //            // only tiles are valid at this stage?? TODO
             layout.unsetImageBounds();
+            // REVISIT:  [ErroneousBitwiseExpression] This expression evaluates to 0. If this isn't an error, consider
+            // expressing it as a literal 0.
+            // (see https://errorprone.info/bugpattern/ErroneousBitwiseExpression)
+            // Did you mean 'layout.unsetValid(ImageLayout.COLOR_MODEL_MASK | ImageLayout.SAMPLE_MODEL_MASK);
             layout.unsetValid(ImageLayout.COLOR_MODEL_MASK & ImageLayout.SAMPLE_MODEL_MASK);
         }
         // this prevents users from overriding lenient hint

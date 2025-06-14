@@ -245,6 +245,7 @@ public class CRSLab {
         class ValidationVisitor implements FeatureVisitor {
             public int numInvalidGeometries = 0;
 
+            @Override
             public void visit(Feature f) {
                 SimpleFeature feature = (SimpleFeature) f;
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
@@ -274,6 +275,7 @@ public class CRSLab {
             putValue(Action.SHORT_DESCRIPTION, "Export using current crs");
         }
 
+        @Override
         public void action(ActionEvent e) throws Throwable {
             exportToShapefile();
         }
@@ -291,6 +293,7 @@ public class CRSLab {
             putValue(Action.SHORT_DESCRIPTION, "Check each geometry");
         }
 
+        @Override
         public void action(ActionEvent e) throws Throwable {
             int numInvalid = validateFeatureGeometry(null);
             String msg;
@@ -315,11 +318,13 @@ public class CRSLab {
             putValue(Action.SHORT_DESCRIPTION, "Check each geometry");
         }
 
+        @Override
         public void action(ActionEvent e) throws Throwable {
             // Here we use the SwingWorker helper class to run the validation routine in a
             // background thread, otherwise the GUI would wait and the progress bar would not be
             // displayed properly
             SwingWorker worker = new SwingWorker<String, Object>() {
+                @Override
                 protected String doInBackground() throws Exception {
                     // For shapefiles with many features its nice to display a progress bar
                     final JProgressWindow progress = new JProgressWindow(null);
@@ -333,6 +338,7 @@ public class CRSLab {
                     }
                 }
 
+                @Override
                 protected void done() {
                     try {
                         Object result = get();

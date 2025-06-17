@@ -2267,7 +2267,8 @@ public class GridCoverageRendererTest {
         CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,170,-16", true);
         ReferencedEnvelope azeqEnvelope = readerEnvelope.transform(crs, true);
 
-        testImage(reader, azeqEnvelope, "pacificRadar.png");
+        // 50px tolerance out of 401*257=103057. Testing with Java 17 yields a 43px difference between linux and macos
+        testImage(reader, azeqEnvelope, "pacificRadar.png", 50);
     }
 
     @Test
@@ -2279,7 +2280,7 @@ public class GridCoverageRendererTest {
         ReferencedEnvelope azeqEnvelope =
                 new ReferencedEnvelope(898340.67097417, 1127313.3142259, -8529.3690118708, 220443.2742399, crs);
 
-        testImage(reader, azeqEnvelope, "pacificRadarZoomedIn.png");
+        testImage(reader, azeqEnvelope, "pacificRadarZoomedIn.png", 20);
     }
 
     @Test
@@ -2290,10 +2291,10 @@ public class GridCoverageRendererTest {
         CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,0,0", true);
         ReferencedEnvelope azeqEnvelope = new ReferencedEnvelope(-10698974, 10065735, -18709397, -1.4979931, crs);
 
-        testImage(reader, azeqEnvelope, "pacificRadarCentralAzeq.png");
+        testImage(reader, azeqEnvelope, "pacificRadarCentralAzeq.png", 20);
     }
 
-    private void testImage(GeoTiffReader reader, ReferencedEnvelope vaiEnvelope, String fileName)
+    private void testImage(GeoTiffReader reader, ReferencedEnvelope vaiEnvelope, String fileName, int tolerancePixels)
             throws TransformException, NoninvertibleTransformException, FactoryException, IOException {
         ReferencedEnvelope mapExtent = vaiEnvelope;
         Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight() / mapExtent.getWidth() * 400));
@@ -2314,7 +2315,7 @@ public class GridCoverageRendererTest {
         assertNotNull(image);
         // RenderedImageBrowser.showChain(image, true, true, "foo", true);
         File reference = new File("src/test/resources/org/geotools/renderer/lite/gridcoverage2d/" + fileName);
-        ImageAssert.assertEquals(reference, image, 20);
+        ImageAssert.assertEquals(reference, image, tolerancePixels);
     }
 
     private RasterSymbolizer buildRadardStyle() {

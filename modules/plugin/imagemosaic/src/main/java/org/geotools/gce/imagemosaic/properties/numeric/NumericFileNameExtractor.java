@@ -76,7 +76,7 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>> extend
 
     private static final Logger LOGGER = Logging.getLogger(NumericFileNameExtractor.class);
 
-    private Class<? extends Number> targetClasse;
+    private Class<? extends Number> targetClass;
 
     private Converter converter;
 
@@ -84,21 +84,8 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>> extend
             PropertiesCollectorSPI spi, List<String> propertyNames, String regex, final Class<N> targetClass) {
         super(spi, propertyNames, regex, false);
 
-        this.targetClasse = targetClass;
-        this.converter = factory.createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
-        // if (targetClasse != null) {
-        // // look up a converter
-        // final Set<ConverterFactory> converters = Converters.getConverterFactories(String.class,
-        // targetClasse);
-        // if (!converters.isEmpty()) {
-        // this.converter = converters.iterator().next().createConverter(String.class, targetClasse,
-        // GeoTools.getDefaultHints());
-        // return;
-        // }
-        // throw new IllegalArgumentException("Unable to find a proper converter from String to the
-        // class:" + targetClasse);
-        // }
-
+        this.targetClass = targetClass;
+        this.converter = factory.createConverter(String.class, this.targetClass, GeoTools.getDefaultHints());
     }
 
     @Override
@@ -109,7 +96,7 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>> extend
         for (String match : getMatches()) {
             // try to convert to date
             try {
-                values.add(converter.convert(match, targetClasse));
+                values.add(converter.convert(match, targetClass));
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
             }
@@ -117,7 +104,7 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>> extend
 
         // set the properties, if we have some
         if (values.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("No matches found for this property extractor:");
+            throw new IllegalArgumentException("No matches found for: " + this);
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {
@@ -127,5 +114,13 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>> extend
             // do we have more dates?
             if (index >= values.size()) return;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "NumericFileNameExtractor{" + "targetClass="
+                + targetClass + ", fullPath="
+                + fullPath + ", pattern="
+                + pattern + '}';
     }
 }

@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic.properties.string;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 import java.io.File;
 import java.net.URI;
@@ -53,6 +54,19 @@ public class StringFileNameExtractorTest {
         String seq = (String) feature.getAttribute("seq");
         assertNotNull(seq);
         assertEquals("20130301T000000", seq);
+    }
+
+    @Test
+    public void testFailedExtraction() {
+        PropertiesCollectorSPI spi = getStringFileNameSpi();
+        PropertiesCollector collector = spi.create("regex=_([0-9]{8}T[0-9]{6})_", Arrays.asList("seq"));
+        File file = new File("polyphemus_20130301_.nc");
+        collector.collect(file);
+        IllegalArgumentException ex =
+                assertThrows(IllegalArgumentException.class, () -> collector.setProperties(feature));
+        assertEquals(
+                "No matches found for: StringFileNameExtractor{pattern=_([0-9]{8}T[0-9]{6})_, fullPath=false}",
+                ex.getMessage());
     }
 
     @Test

@@ -963,6 +963,11 @@ public class RasterLayerResponse {
                 .setTileHeight((int) tileSize.getHeight());
         final RenderingHints renderingHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il);
 
+        // the output image is empty, if background values are not provided we use the noData value
+        Double noData = rasterManager.getConfiguration().getNoData();
+        if (backgroundValues == null && noData != null) {
+            backgroundValues = new double[] {noData};
+        }
         final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
         RenderedImage finalImage;
         if (ImageUtilities.isMediaLibAvailable()) {
@@ -1032,7 +1037,6 @@ public class RasterLayerResponse {
                     },
                     new Range[] {RangeFactory.create(0, 0)});
             // there was really nothing here, so make sure this comes out in the output
-            Double noData = rasterManager.getConfiguration().getNoData();
             if (noData != null) {
                 w.setNoData(RangeFactory.create(noData, noData));
             }

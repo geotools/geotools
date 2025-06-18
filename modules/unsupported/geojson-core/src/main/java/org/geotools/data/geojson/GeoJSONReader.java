@@ -257,8 +257,7 @@ public class GeoJSONReader implements AutoCloseable {
             ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
             try (GeoJSONReader reader = new GeoJSONReader((InputStream) null)) {
-                SimpleFeature feature = reader.getNextFeature(node);
-                return feature;
+                return reader.getNextFeature(node);
             }
         }
     }
@@ -287,8 +286,7 @@ public class GeoJSONReader implements AutoCloseable {
                 if (idFieldName != null) {
                     reader.setIdFieldName(idFieldName);
                 }
-                SimpleFeature feature = reader.getNextFeature(node);
-                return feature;
+                return reader.getNextFeature(node);
             }
         }
     }
@@ -296,8 +294,7 @@ public class GeoJSONReader implements AutoCloseable {
     /** Parses and returns a feature collection from a GeoJSON */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
         try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
-            SimpleFeatureCollection features = reader.getFeatures();
-            return features;
+            return reader.getFeatures();
         } catch (IOException e) {
             throw new RuntimeException("problem parsing FeatureCollection", e);
         }
@@ -308,8 +305,7 @@ public class GeoJSONReader implements AutoCloseable {
         try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
             ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
-            Geometry g = GEOM_PARSER.geometryFromJson(node);
-            return g;
+            return GEOM_PARSER.geometryFromJson(node);
         } catch (IOException e) {
             throw new RuntimeException("problem parsing Geometry", e);
         }
@@ -507,8 +503,6 @@ public class GeoJSONReader implements AutoCloseable {
                                 vc = item.asText();
                                 break;
                             case OBJECT:
-                                vc = item;
-                                break;
                             case ARRAY:
                                 vc = item;
                                 break;
@@ -583,7 +577,7 @@ public class GeoJSONReader implements AutoCloseable {
     }
 
     private String prefixId(ObjectNode node) {
-        String id = null;
+        String id;
         if (idFieldName != null && node.has(idFieldName)) {
             id = node.get(idFieldName).asText();
         } else {
@@ -654,10 +648,11 @@ public class GeoJSONReader implements AutoCloseable {
             } else if (value instanceof BooleanNode) {
                 typeBuilder.add(n.getKey(), Boolean.class);
             } else if (value instanceof ObjectNode) {
-                if (Optional.ofNullable(value.get("type"))
-                        .map(t -> t.asText())
-                        .map(t -> Geometries.getForName(t))
-                        .isPresent()) {
+                boolean isGeometry = Optional.ofNullable(value.get("type"))
+                        .map(JsonNode::asText)
+                        .map(Geometries::getForName)
+                        .isPresent();
+                if (isGeometry) {
                     typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
                 } else {
                     // a complex object, we don't know what it is going to be

@@ -27,6 +27,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -635,6 +636,77 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         // to the range bounds
         assertEquals(50, min[0], DELTA);
         assertEquals(200, max[0], DELTA);
+        testRasterSymbolizerHelper(rsh_StyleBuilder);
+    }
+
+    /** Variation where nodata is -10000 and checking it's correctly mapped to the output nodata value of 0. */
+    @Test
+    public void contrastEnhancement_Normalize_ClipMinMax_Short_Nodata() throws Exception {
+        // create an image with short pixxls, nodata value -10000 filling the upper triangle, and a range of other
+        // values
+        final int width = 100;
+        final int height = 100;
+        final short noDataValue = -10000;
+        final WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_SHORT, width, height, 1, null);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (x > y) raster.setSample(x, y, 0, noDataValue);
+                else raster.setSample(x, y, 0, (x + y));
+            }
+        }
+        ColorModel cm = new ComponentColorModelJAI(
+                ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
+        final RenderedImage image = new ImageWorker(new BufferedImage(cm, raster, false, null))
+                .setNoData(RangeFactory.create(noDataValue, noDataValue))
+                .getRenderedImage();
+        GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "name",
+                        image,
+                        new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
+                        new GridSampleDimension[] {new GridSampleDimension("test1BandShort_SLD")},
+                        null,
+                        null);
+
+        // build the RasterSymbolizer
+        StyleBuilder sldBuilder = new StyleBuilder();
+        // the RasterSymbolizer Helper
+        RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
+
+        final RasterSymbolizer rsb = sldBuilder.createRasterSymbolizer();
+        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final SelectedChannelType chTypeGray = new SelectedChannelTypeImpl();
+        final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
+
+        final ContrastMethodStrategy method = new NormalizeContrastMethodStrategy();
+
+        method.addOption(
+                "algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_MINMAX_NAME));
+        method.addOption("minValue", sldBuilder.literalExpression(20));
+        method.addOption("maxValue", sldBuilder.literalExpression(100));
+        cntEnh.setMethod(method);
+
+        chTypeGray.setChannelName("1");
+        chTypeGray.setContrastEnhancement(cntEnh);
+        chSel.setGrayChannel(chTypeGray);
+        rsb.setChannelSelection(chSel);
+
+        // visit the RasterSymbolizer
+        rsh_StyleBuilder.visit(rsb);
+        GridCoverage2D output = (GridCoverage2D) rsh_StyleBuilder.getOutput();
+        ImageWorker worker = new ImageWorker(output.getRenderedImage());
+
+        // nodata has been assigned during the piecewise computation
+        assertEquals(RangeFactory.create(0d, 0d), worker.getNoData());
+
+        // the pixels in the upper triangle should be set to 0 (the nodata)
+        Raster outputRaster = output.getRenderedImage().getData();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (x > y) assertEquals(0, outputRaster.getSample(x, y, 0), 0d);
+            }
+        }
+
         testRasterSymbolizerHelper(rsh_StyleBuilder);
     }
 

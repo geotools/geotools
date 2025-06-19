@@ -4815,13 +4815,15 @@ public class ImageWorker {
         pb.set(bandIndex, 1);
         pb.set(roi, 2);
         pb.set(nodata, 3);
+        image = JAI.create("GenericPiecewise", pb, getRenderingHints());
+        // this sets the NoData value in the output image (so must be done after the JAI operation)
         if (isNoDataNeeded()) {
-            if (transform.hasGaps()) {
+            // if there is nodata in input, GenericPiecewise will transform it to the default value, gap or not
+            if (transform.hasGaps() || nodata != null) {
                 // We must set the new NoData value
                 setNoData(RangeFactory.create(transform.getDefaultValue(), transform.getDefaultValue()));
             }
         }
-        image = JAI.create("GenericPiecewise", pb, getRenderingHints());
 
         return this;
     }

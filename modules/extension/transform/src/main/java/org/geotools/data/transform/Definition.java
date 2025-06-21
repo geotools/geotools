@@ -301,11 +301,11 @@ public class Definition {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((binding == null) ? 0 : binding.hashCode());
-        result = prime * result + ((crs == null) ? 0 : crs.hashCode());
-        result = prime * result + ((expression == null) ? 0 : expression.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + (binding == null ? 0 : binding.hashCode());
+        result = prime * result + (crs == null ? 0 : crs.hashCode());
+        result = prime * result + (expression == null ? 0 : expression.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (description == null ? 0 : description.hashCode());
         return result;
     }
 

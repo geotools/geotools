@@ -106,7 +106,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (random.nextFloat() > 0.9) raster.setSample(x, y, 0, noDataValue);
-                else raster.setSample(x, y, 0, (x + y));
+                else raster.setSample(x, y, 0, x + y);
             }
         }
         final ColorModel cm = new ComponentColorModelJAI(
@@ -1868,7 +1868,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                 if (random.nextFloat() > 0.9) {
                     raster.setSample(x, y, 0, 0);
                 } else {
-                    raster.setSample(x, y, 0, (x + y));
+                    raster.setSample(x, y, 0, x + y);
                 }
                 raster.setSample(x, y, 1, 255);
             }
@@ -2296,10 +2296,10 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             method.addOption(
                     "algorithm",
                     sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_STRETCH_TO_MINMAX_NAME));
-            method.addOption("minValue", sldBuilder.literalExpression(min + (20 * i)));
-            method.addOption("maxValue", sldBuilder.literalExpression(max + (20 * i)));
+            method.addOption("minValue", sldBuilder.literalExpression(min + 20 * i));
+            method.addOption("maxValue", sldBuilder.literalExpression(max + 20 * i));
             cntEnh.setMethod(method);
-            channels[i].setChannelName(Integer.toString((i * 2) + 1));
+            channels[i].setChannelName(Integer.toString(i * 2 + 1));
             channels[i].setContrastEnhancement(cntEnh);
         }
         chSel.setRGBChannels(chTypeRed, chTypeGreen, chTypeBlue);
@@ -2318,7 +2318,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             ContrastMethod method = cntEnh.getMethod();
 
             // Assert channels number have been re-arranged
-            assertTrue(Integer.toString((i) + 1)
+            assertTrue(Integer.toString(i + 1)
                     .equalsIgnoreCase(postBandSelectionChannel.getChannelName().evaluate(null, String.class)));
             assertTrue(method.name().equalsIgnoreCase(ContrastMethod.NORMALIZE.name()));
 
@@ -2329,8 +2329,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             assertEquals(
                     options.get("algorithm"),
                     sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_STRETCH_TO_MINMAX_NAME));
-            assertEquals(options.get("minValue"), sldBuilder.literalExpression(min + (20 * i)));
-            assertEquals(options.get("maxValue"), sldBuilder.literalExpression(max + (20 * i)));
+            assertEquals(options.get("minValue"), sldBuilder.literalExpression(min + 20 * i));
+            assertEquals(options.get("maxValue"), sldBuilder.literalExpression(max + 20 * i));
         }
     }
 }

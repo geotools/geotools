@@ -90,9 +90,9 @@ public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperat
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((e1 == null) ? 0 : e1.hashCode());
-        result = prime * result + ((e2 == null) ? 0 : e2.hashCode());
-        result = prime * result + ((matchAction == null) ? 0 : matchAction.hashCode());
+        result = prime * result + (e1 == null ? 0 : e1.hashCode());
+        result = prime * result + (e2 == null ? 0 : e2.hashCode());
+        result = prime * result + (matchAction == null ? 0 : matchAction.hashCode());
         return result;
     }
 

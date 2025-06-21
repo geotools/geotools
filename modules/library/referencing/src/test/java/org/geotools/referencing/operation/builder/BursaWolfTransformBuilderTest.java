@@ -36,7 +36,7 @@ public final class BursaWolfTransformBuilderTest {
         Random random = new Random(773418718);
 
         double R = 6370000;
-        double angle = (((random.nextDouble() * 10) / 3600) * Math.PI) / 180;
+        double angle = random.nextDouble() * 10 / 3600 * Math.PI / 180;
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
 
@@ -52,19 +52,19 @@ public final class BursaWolfTransformBuilderTest {
 
         for (int i = 0; i < vectors.size(); i++) {
             points[i * 3] = vectors.get(i).getSource().getCoordinate()[0];
-            points[(i * 3) + 1] = vectors.get(i).getSource().getCoordinate()[1];
-            points[(i * 3) + 2] = vectors.get(i).getSource().getCoordinate()[2];
+            points[i * 3 + 1] = vectors.get(i).getSource().getCoordinate()[1];
+            points[i * 3 + 2] = vectors.get(i).getSource().getCoordinate()[2];
         }
 
         double[] dstPoints = new double[points.length];
 
         MathTransformBuilder BWPT = new BursaWolfTransformBuilder(vectors);
-        BWPT.getMathTransform().transform(points, 0, dstPoints, 0, (points.length / 3));
+        BWPT.getMathTransform().transform(points, 0, dstPoints, 0, points.length / 3);
 
         for (int i = 0; i < vectors.size(); i++) {
             assertEquals(dstPoints[i * 3], vectors.get(i).getTarget().getCoordinate()[0], 1E-2);
-            assertEquals(dstPoints[(i * 3) + 1], vectors.get(i).getTarget().getCoordinate()[1], 1E-2);
-            assertEquals(dstPoints[(i * 3) + 2], vectors.get(i).getTarget().getCoordinate()[2], 1E-2);
+            assertEquals(dstPoints[i * 3 + 1], vectors.get(i).getTarget().getCoordinate()[1], 1E-2);
+            assertEquals(dstPoints[i * 3 + 2], vectors.get(i).getTarget().getCoordinate()[2], 1E-2);
         }
     }
 
@@ -92,9 +92,9 @@ public final class BursaWolfTransformBuilderTest {
 
         GeocentricTranslation gt = new GeocentricTranslation(bwp);
 
-        for (int i = 0; i < (3 * 10); i++) {
-            double gamma = ((45 + (random.nextDouble() * 10)) * Math.PI) / 180;
-            double alfa = ((45 + (random.nextDouble() * 10)) * Math.PI) / 180;
+        for (int i = 0; i < 3 * 10; i++) {
+            double gamma = (45 + random.nextDouble() * 10) * Math.PI / 180;
+            double alfa = (45 + random.nextDouble() * 10) * Math.PI / 180;
 
             //   generate source points
             ptSrc = new GeneralPosition(

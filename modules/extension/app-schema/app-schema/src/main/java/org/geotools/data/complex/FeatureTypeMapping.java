@@ -388,7 +388,7 @@ public class FeatureTypeMapping {
         return Objects.equals(attributeMappings, that.attributeMappings)
                 && Objects.equals(sourceDatastoreId, that.sourceDatastoreId)
                 && isDenormalised == that.isDenormalised
-                && ((mappingName != null && Objects.equals(mappingName, that.mappingName))
+                && (mappingName != null && Objects.equals(mappingName, that.mappingName)
                         || Objects.equals(
                                 getTargetFeature().getName(),
                                 that.getTargetFeature().getName()));

@@ -400,7 +400,7 @@ class HivePartitionResolver {
 
         // If maxDepth is null or 0, return all partition parts
         int depth =
-                (maxDepth == null || maxDepth == 0) ? partitionParts.size() : Math.min(maxDepth, partitionParts.size());
+                maxDepth == null || maxDepth == 0 ? partitionParts.size() : Math.min(maxDepth, partitionParts.size());
 
         // Join the specified number of partition parts
         return String.join("/", partitionParts.subList(0, depth));

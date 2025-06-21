@@ -165,7 +165,7 @@ public class CoordinateWriter {
         if (tupleDelim == null || tupleDelim.length() == 0) {
             throw new IllegalArgumentException("Tuple delimeter cannot be null or zero length");
         }
-        if ((coordDelim != null) && coordDelim.length() == 0) {
+        if (coordDelim != null && coordDelim.length() == 0) {
             throw new IllegalArgumentException("Coordinate delimeter cannot be null or zero length");
         }
         D = dimension;

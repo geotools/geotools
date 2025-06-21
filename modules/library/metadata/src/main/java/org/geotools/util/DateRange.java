@@ -86,7 +86,7 @@ public class DateRange extends Range<Date> {
 
     /** Returns a clone of the specified date. */
     private static Date clone(final Date date) {
-        return (date != null) ? (Date) date.clone() : null;
+        return date != null ? (Date) date.clone() : null;
     }
 
     /** Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in constructors"). */

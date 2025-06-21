@@ -319,8 +319,8 @@ public class CoverageSlicesCatalog {
 
     public void dispose() {
         final Lock l = rwLock.writeLock();
+        l.lock();
         try {
-            l.lock();
             try {
                 if (slicesIndexStore != null && !repositoryStore) slicesIndexStore.dispose();
             } catch (Throwable e) {
@@ -348,8 +348,8 @@ public class CoverageSlicesCatalog {
             throws IOException {
         Utilities.ensureNonNull("granuleMetadata", granules);
         final Lock lock = rwLock.writeLock();
+        lock.lock();
         try {
-            lock.lock();
             // check if the index has been cleared
             checkStore();
 
@@ -366,8 +366,8 @@ public class CoverageSlicesCatalog {
         Utilities.ensureNonNull("query", q);
         final List<CoverageSlice> returnValue = new ArrayList<>();
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             final String typeName = q.getTypeName();
 
@@ -475,8 +475,8 @@ public class CoverageSlicesCatalog {
 
     public ReferencedEnvelope getBounds(final String typeName) {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             return this.slicesIndexStore.getFeatureSource(typeName).getBounds();
 
@@ -491,9 +491,9 @@ public class CoverageSlicesCatalog {
     public void createType(SimpleFeatureType featureType) throws IOException {
         Utilities.ensureNonNull("featureType", featureType);
         final Lock lock = rwLock.writeLock();
-        String typeName = null;
+        lock.lock();
         try {
-            lock.lock();
+            String typeName = null;
             checkStore();
             SimpleFeatureType existing = null;
 
@@ -539,8 +539,8 @@ public class CoverageSlicesCatalog {
 
     public SimpleFeatureType getSchema(final String typeName) throws IOException {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             if (typeName == null) {
                 return null;
@@ -553,8 +553,8 @@ public class CoverageSlicesCatalog {
 
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             SimpleFeatureSource fs = slicesIndexStore.getFeatureSource(query.getTypeName());
 
@@ -570,8 +570,8 @@ public class CoverageSlicesCatalog {
 
     public QueryCapabilities getQueryCapabilities(final String typeName) {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
 
             return slicesIndexStore.getFeatureSource(typeName).getQueryCapabilities();
@@ -604,8 +604,8 @@ public class CoverageSlicesCatalog {
         Utilities.ensureNonNull("filter", filter);
         Utilities.ensureNonNull("transaction", transaction);
         final Lock lock = rwLock.writeLock();
+        lock.lock();
         try {
-            lock.lock();
             // check if the index has been cleared
             checkStore();
 

@@ -743,7 +743,7 @@ public class SimplifyingFilterVisitorTest {
      * Simple mock function to test function simplification. Implements also internal function so that this mock does
      * not need to be registered. Creating the same behavior with EasyMock is actually more complicated.
      */
-    private class MockSimplifiableFunction extends FunctionExpressionImpl
+    private static class MockSimplifiableFunction extends FunctionExpressionImpl
             implements InternalFunction, SimplifiableFunction {
 
         protected MockSimplifiableFunction() {

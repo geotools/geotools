@@ -30,7 +30,7 @@ public abstract class WorldImageBaseTestCase {
      *
      * @author giannecchini
      */
-    class MyFileFilter implements FilenameFilter {
+    static class MyFileFilter implements FilenameFilter {
         private Set<String> extensions = new HashSet<>();
 
         public MyFileFilter() {

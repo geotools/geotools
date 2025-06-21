@@ -34,7 +34,6 @@ import java.util.Properties;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.geometry.MismatchedDimensionException;
-import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
@@ -83,7 +82,7 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         //
         // Get the coverage
         //
-        GridCoverage2D coverage = reader.read(coverageNames[0], null);
+        GridCoverage2D coverage = reader.read(coverageNames[0]);
         assertNotNull(coverage);
         RenderedImage renderedImage = coverage.getRenderedImage();
         int colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
@@ -103,7 +102,7 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
 
-        coverage = reader.read(coverageNames[1], new GeneralParameterValue[] {gg});
+        coverage = reader.read(coverageNames[1], gg);
         assertNotNull(coverage);
         renderedImage = coverage.getRenderedImage();
         colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
@@ -126,12 +125,12 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
 
         GridEnvelope doubleRange = reader.getOriginalGridRange();
         dim.setSize(doubleRange.getSpan(0) * 2, doubleRange.getSpan(1) * 2);
-        rasterArea = ((GridEnvelope2D) doubleRange);
+        rasterArea = (GridEnvelope2D) doubleRange;
         rasterArea.setSize(dim);
         range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(doubleRange, doubleEnvelope));
 
-        coverage = reader.read(coverageNames[1], new GeneralParameterValue[] {gg});
+        coverage = reader.read(coverageNames[1], gg);
 
         assertNotNull(coverage);
         renderedImage = coverage.getRenderedImage();

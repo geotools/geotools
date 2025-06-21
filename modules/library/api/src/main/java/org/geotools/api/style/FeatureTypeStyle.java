@@ -242,7 +242,7 @@ public interface FeatureTypeStyle {
         LEGENDONLY("legendOnly"),
         MAPONLY("mapOnly");
 
-        private String option;
+        private final String option;
 
         RenderingSelectionOptions(String option) {
             this.option = option;

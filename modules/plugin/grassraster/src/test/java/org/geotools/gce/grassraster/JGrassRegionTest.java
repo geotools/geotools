@@ -74,7 +74,7 @@ public class JGrassRegionTest {
         cellhdFile = URLs.urlToFile(theUrl);
         tmpRegion = new JGrassRegion(cellhdFile.getAbsolutePath());
         Assert.assertTrue(tmpRegion.getNorth() - 0.0004 < EPSI);
-        Assert.assertTrue(tmpRegion.getSouth() - (-5.0004) < EPSI);
+        Assert.assertTrue(tmpRegion.getSouth() - -5.0004 < EPSI);
         Assert.assertTrue(tmpRegion.getEast() - 35.0004 < EPSI);
         Assert.assertTrue(tmpRegion.getWest() - 25 < EPSI);
         Assert.assertTrue(tmpRegion.getNSResolution() - 8.333333333333334E-4 < EPSI);

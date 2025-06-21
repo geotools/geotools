@@ -31,6 +31,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -91,7 +92,7 @@ public class ImageMosaicCogOnlineTest {
     public void testCogMosaic() throws Exception {
         File workDir = prepareWorkingDir("s3cogtest.zip", "s3cogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
@@ -119,7 +120,7 @@ public class ImageMosaicCogOnlineTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 24,
                 reader.getOriginalGridRange().getSpan(1) / 24);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -152,14 +153,14 @@ public class ImageMosaicCogOnlineTest {
             properties.load(fin);
         }
 
-        try (FileWriter fw = new FileWriter(file)) {
+        try (FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8)) {
             Assert.assertNotNull(properties.remove("CogRangeReader"));
             Assert.assertNotNull(properties.remove("SuggestedSPI"));
             properties.store(fw, "");
         }
 
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
@@ -180,7 +181,7 @@ public class ImageMosaicCogOnlineTest {
             properties.load(fin);
         }
 
-        try (FileWriter fw = new FileWriter(file)) {
+        try (FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8)) {
             Assert.assertNotNull(properties.remove("CogRangeReader"));
             Assert.assertNotNull(properties.remove("SuggestedSPI"));
             properties.store(fw, "");
@@ -209,7 +210,7 @@ public class ImageMosaicCogOnlineTest {
             properties.load(fin);
         }
 
-        try (FileWriter fw = new FileWriter(file)) {
+        try (FileWriter fw = new FileWriter(file, StandardCharsets.UTF_8)) {
             Assert.assertNotNull(properties.remove("UseExistingSchema"));
             properties.store(fw, "");
         }
@@ -241,8 +242,8 @@ public class ImageMosaicCogOnlineTest {
     @Test
     public void testEmptyMosaic() throws Exception {
         final File workDir = prepareWorkingDir("emptycog.zip", "emptyCogMosaic", "");
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), "/emptyCogMosaic/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/emptyCogMosaic/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogmosaic\n");
             out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -279,12 +280,14 @@ public class ImageMosaicCogOnlineTest {
     @Test
     public void testTimeDimensionMosaic() throws Exception {
         final File workDir = prepareWorkingDir("emptycog.zip", "timeMosaic", "");
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/timeMosaic/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/timeMosaic/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogtimemosaic\n");
             out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
             out.flush();
         }
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/timeMosaic/timeregex.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/timeMosaic/timeregex.properties"), StandardCharsets.UTF_8)) {
             out.write("regex=[0-9]{8},fullPath=true");
             out.flush();
         }
@@ -345,7 +348,7 @@ public class ImageMosaicCogOnlineTest {
         String destinationPath = folder + "/";
         if (StringUtils.isNotBlank(subFolder)) {
             workDir = new File(workDir, subFolder);
-            destinationPath += (subFolder + "/");
+            destinationPath += subFolder + "/";
         }
         destinationPath += zipName;
         if (!workDir.mkdirs()) {
@@ -363,7 +366,7 @@ public class ImageMosaicCogOnlineTest {
     public void testGSCogMosaic() throws Exception {
         File workDir = prepareWorkingDir("gscogtest.zip", "gscogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
@@ -379,7 +382,7 @@ public class ImageMosaicCogOnlineTest {
     public void testGSURICogMosaic() throws Exception {
         File workDir = prepareWorkingDir("gsuricogtest.zip", "gsuricogtest", "");
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Assert.assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         int numTileX = image.getNumXTiles();
@@ -428,7 +431,8 @@ public class ImageMosaicCogOnlineTest {
 
     private void harvestSingleGoogleCOG(String folder, String expected, Object source) throws IOException {
         final File workDir = prepareWorkingDir("emptygscog.zip", folder, "");
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), folder + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogmosaic\n");
             out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -471,13 +475,13 @@ public class ImageMosaicCogOnlineTest {
         final File workDir = new File("./target/" + folder);
         FileUtils.deleteDirectory(workDir);
         assertTrue(workDir.mkdir());
-        try (FileWriter out = new FileWriter(new File(workDir, "datastore.properties"))) {
+        try (FileWriter out = new FileWriter(new File(workDir, "datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogmosaic\n");
             out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
             out.flush();
         }
         String name = "emptycog";
-        try (FileWriter out = new FileWriter(new File(workDir, "indexer.properties"))) {
+        try (FileWriter out = new FileWriter(new File(workDir, "indexer.properties"), StandardCharsets.UTF_8)) {
             Properties p = new Properties();
             p.put(Prop.COG, "true");
             p.put(Prop.NAME, name);

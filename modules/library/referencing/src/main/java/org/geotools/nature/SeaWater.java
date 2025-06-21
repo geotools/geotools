@@ -212,7 +212,8 @@ public final class SeaWater {
         // Compression terms, DK = K(S,T,P) - K(35,0,P)
         final double K0 = (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
         final double DK = K0
-                + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
+                + ((EOS80_J * SR + polynome(T, EOS80_I)) * S
+                                + polynome(T, EOS80_H)
                                 + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
                         * P;
 
@@ -252,7 +253,8 @@ public final class SeaWater {
         // Compression terms, DK = K(S,T,P) - K(35,0,P)
         final double K0 = (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
         final double DK = K0
-                + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
+                + ((EOS80_J * SR + polynome(T, EOS80_I)) * S
+                                + polynome(T, EOS80_H)
                                 + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
                         * P;
 
@@ -287,23 +289,24 @@ public final class SeaWater {
         // Compression terms, DK = K(S,T,P) - K(35,0,P)
         final double K0 = (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
         final double DK = K0
-                + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
+                + ((EOS80_J * SR + polynome(T, EOS80_I)) * S
+                                + polynome(T, EOS80_H)
                                 + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
                         * P;
 
         final double K_35_0_P = polynome(P, EOS80_N);
         final double V_S_T_0 = SVAN_S_T_0 + V_35_0_0;
-        return (SVAN_S_T_0 * (1.0 - P / K_35_0_P) + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK)));
+        return SVAN_S_T_0 * (1.0 - P / K_35_0_P) + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK));
     }
 
     /** Practical salinity scale 1978 definition with temperature correction, XR = SQRT( Rt ) */
     private static double sal(double RT, double XT) {
-        return polynome(RT, PSS78_A) + (XT / (1.0 + PSS78_K * XT)) * polynome(RT, PSS78_B);
+        return polynome(RT, PSS78_A) + XT / (1.0 + PSS78_K * XT) * polynome(RT, PSS78_B);
     }
 
     /** {@code dsal(RT,XT)} function for derivative of {@code sal(RT,XT)} with <var>RT</var>. */
     private static double dsal(double RT, double XT) {
-        return polynome(RT, PSS78_G) + (XT / (1.0 + PSS78_K * XT)) * polynome(RT, PSS78_H);
+        return polynome(RT, PSS78_G) + XT / (1.0 + PSS78_K * XT) * polynome(RT, PSS78_H);
     }
 
     /**
@@ -362,7 +365,7 @@ public final class SeaWater {
             double CP = RTT * (BT + polynome(P, PSS78_E) * P);
             BT -= RTT * AT;
             // Solve quadratic equation for C = RT35*RT*(1+C/AR+b)
-            double cnd = 0.5 * (Math.sqrt(Math.abs((BT * BT) + 4.0 * AT * CP)) - BT) / AT;
+            double cnd = 0.5 * (Math.sqrt(Math.abs(BT * BT + 4.0 * AT * CP)) - BT) / AT;
             return cnd * STANDARD_CONDUCTIVITY;
         } else {
             return 0; // Zero salinity trap
@@ -380,12 +383,12 @@ public final class SeaWater {
     public static double specificHeat(final double S, final double T, double P) {
         P /= 10.0;
         final double SR = Math.sqrt(S);
-        return (polynome(T, HEAT_CC)
+        return polynome(T, HEAT_CC)
                 + (polynome(T, HEAT_BB) * SR + polynome(T, HEAT_AA)) * S
-                + (((polynome(T, HEAT_C) * P + polynome(T, HEAT_B)) * P + polynome(T, HEAT_A)) * P)
-                + ((((HEAT_J * SR + polynome(T, HEAT_H)) * S * P + (HEAT_G * SR + polynome(T, HEAT_F)) * S) * P
+                + ((polynome(T, HEAT_C) * P + polynome(T, HEAT_B)) * P + polynome(T, HEAT_A)) * P
+                + (((HEAT_J * SR + polynome(T, HEAT_H)) * S * P + (HEAT_G * SR + polynome(T, HEAT_F)) * S) * P
                                 + (polynome(T, HEAT_E) * SR + polynome(T, HEAT_D)) * S)
-                        * P));
+                        * P;
     }
 
     /**
@@ -409,9 +412,9 @@ public final class SeaWater {
      */
     public static double adiabeticTemperatureGradient(double S, final double T, final double P) {
         S -= 35.0;
-        return (polynome(T, GRAD_A)
+        return polynome(T, GRAD_A)
                 + polynome(T, GRAD_B) * S
-                + (polynome(T, GRAD_C) + polynome(T, GRAD_D) * S + polynome(T, GRAD_E) * P) * P);
+                + (polynome(T, GRAD_C) + polynome(T, GRAD_D) * S + polynome(T, GRAD_E) * P) * P;
     }
 
     /**
@@ -425,7 +428,7 @@ public final class SeaWater {
         lat = Math.sin(lat);
         lat *= lat;
         lat = 9.780318 * (1.0 + 5.2788E-3 * lat + 2.36E-5 * (lat * lat));
-        return polynome(P, DEPTH_C) * P / (lat + (0.5 * 2.184E-6) * P);
+        return polynome(P, DEPTH_C) * P / (lat + 0.5 * 2.184E-6 * P);
     }
 
     /**

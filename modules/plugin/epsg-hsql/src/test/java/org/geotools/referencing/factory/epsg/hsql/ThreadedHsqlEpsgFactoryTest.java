@@ -305,7 +305,7 @@ public class ThreadedHsqlEpsgFactoryTest {
 
         // sleep and force gc to allow the backing store to be released
         long start = System.currentTimeMillis();
-        while ((System.currentTimeMillis() - start) < 4000 && factory.isConnected()) {
+        while (System.currentTimeMillis() - start < 4000 && factory.isConnected()) {
             Thread.currentThread().sleep(200);
             System.gc();
             System.runFinalization();
@@ -335,7 +335,7 @@ public class ThreadedHsqlEpsgFactoryTest {
             assertNotNull(factory.createCoordinateReferenceSystem("EPSG:4326"));
             String creationMarker = String.format(
                     "GeoTools/Databases/HSQL/v%s/EPSG_creation_marker.txt", ThreadedHsqlEpsgFactory.VERSION);
-            assertTrue((new File(tmpDir, creationMarker)).exists());
+            assertTrue(new File(tmpDir, creationMarker).exists());
         } finally {
             System.setProperty(JAVA_IO_TMPDIR_PROPERTY, oldTmpDir);
             factory.dispose();

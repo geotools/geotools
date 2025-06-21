@@ -140,7 +140,7 @@ public class AllHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode())) + (minOccurs * maxOccurs);
+        return LOCALNAME.hashCode() * (id == null ? 1 : id.hashCode()) + minOccurs * maxOccurs;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */

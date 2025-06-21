@@ -164,7 +164,7 @@ public abstract class CoordinateVariable<T> {
                     : 0;
             // j will be zero for 1D axis
             return convertedData.get(
-                    i + (j != 0 ? (j * coordinateAxis.getDimension(1).getLength()) : 0));
+                    i + (j != 0 ? j * coordinateAxis.getDimension(1).getLength() : 0));
         }
 
         @Override
@@ -307,8 +307,8 @@ public abstract class CoordinateVariable<T> {
         AxisType axisType = coordinateAxis.getAxisType();
         // Legacy: Special management for projected coordinates with unit = km
         if (NetCDFCRSUtilities.isConvertAxisKm()
-                && ((axisType == AxisType.GeoX || axisType == AxisType.GeoY)
-                        && coordinateAxis.getUnitsString().equalsIgnoreCase("km"))) {
+                && (axisType == AxisType.GeoX || axisType == AxisType.GeoY)
+                && coordinateAxis.getUnitsString().equalsIgnoreCase("km")) {
             conversionFactor = KM_TO_M;
             convertAxis = true;
         }
@@ -317,7 +317,7 @@ public abstract class CoordinateVariable<T> {
     protected void init() {
         if (!coordinateAxis.isNumeric()
                 || !(coordinateAxis instanceof CoordinateAxis1D)
-                || (coordinateAxis.hasMissing() && !AxisType.Time.equals(coordinateAxis.getAxisType()))) {
+                || coordinateAxis.hasMissing() && !AxisType.Time.equals(coordinateAxis.getAxisType())) {
             // Not sure time variable can have actual NoData values in the array.
             // Let's exclude it from GeneralHelper case.
             // We may revisit it if we find some data with FillValues in the array.

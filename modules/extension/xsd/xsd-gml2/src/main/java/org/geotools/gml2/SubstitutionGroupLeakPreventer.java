@@ -77,8 +77,8 @@ public class SubstitutionGroupLeakPreventer implements Adapter {
                 for (int i = 0; i < e.getSubstitutionGroup().size(); i++) {
                     XSDElementDeclaration se = e.getSubstitutionGroup().get(i);
                     if (se == null
-                            || (Utilities.equals(el.getTargetNamespace(), se.getTargetNamespace())
-                                    && Utilities.equals(el.getName(), se.getName()))) {
+                            || Utilities.equals(el.getTargetNamespace(), se.getTargetNamespace())
+                                    && Utilities.equals(el.getName(), se.getName())) {
                         toremove.add(i);
                     }
                 }

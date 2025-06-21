@@ -156,7 +156,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
         assertNotNull(reader);
         try {
             String[] names = reader.getGridCoverageNames();
-            GridCoverage2D grid = reader.read(names[0], null);
+            GridCoverage2D grid = reader.read(names[0]);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
             float[] value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, -84, 26), new float[1]);

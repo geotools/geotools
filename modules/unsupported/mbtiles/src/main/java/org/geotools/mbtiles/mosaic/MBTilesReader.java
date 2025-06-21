@@ -118,7 +118,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
         try (MBTilesFile file = new MBTilesFile(sourceFile)) {
 
             ReferencedEnvelope requestedEnvelope = null;

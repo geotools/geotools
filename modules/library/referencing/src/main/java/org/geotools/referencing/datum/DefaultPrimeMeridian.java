@@ -180,7 +180,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         final long code = Double.doubleToLongBits(greenwichLongitude);
-        return ((int) (code >>> 32) ^ (int) code) ^ (int) serialVersionUID;
+        return (int) (code >>> 32) ^ (int) code ^ (int) serialVersionUID;
     }
 
     /**

@@ -176,7 +176,7 @@ public class GrowableInternationalString extends AbstractInternationalString imp
         final String[] parts = {"", "", ""};
         for (int i = 0; /*break condition inside*/ ; i++) {
             if (position == length) {
-                final Locale locale = (i == 0)
+                final Locale locale = i == 0
                         ? null
                         : unique(new Locale(parts[0] /* language */, parts[1] /* country  */, parts[2] /* variant  */));
                 add(locale, string);
@@ -206,7 +206,7 @@ public class GrowableInternationalString extends AbstractInternationalString imp
      * @return The canonical instance of {@code locale}.
      */
     private static synchronized Locale unique(final Locale locale) {
-        /**
+        /*
          * Initialize the LOCALES map with the set of locales defined in the Locale class. This operation is done only
          * once.
          */

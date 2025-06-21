@@ -427,7 +427,7 @@ public class VectorToRasterProcess implements VectorProcess {
             extent = new ReferencedEnvelope(bounds);
         }
 
-        extentGeometry = (new GeometryFactory()).toGeometry(extent);
+        extentGeometry = new GeometryFactory().toGeometry(extent);
 
         // Compare the CRS of faetures and requested output bounds. If they
         // are different (and both non-null) flag that we need to transform

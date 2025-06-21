@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -102,7 +103,7 @@ public class WMSLayer extends GridReaderLayer {
     public String getFeatureInfoAsText(Position2D pos, int featureCount) throws IOException {
         GetMapRequest mapRequest = getReader().mapRequest;
         try (InputStream is = getReader().getFeatureInfo(pos, "text/plain", featureCount, mapRequest);
-                BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             String line;
             StringBuilder sb = new StringBuilder();
             while ((line = br.readLine()) != null) {

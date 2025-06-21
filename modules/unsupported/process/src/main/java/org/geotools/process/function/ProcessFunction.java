@@ -219,7 +219,7 @@ public class ProcessFunction implements Function {
             // not if
             // they have to deal with two conversions, from single to multi,
             // from type to type
-            if (!(paramValue instanceof Collection) && !(paramValue.getClass().isArray())) {
+            if (!(paramValue instanceof Collection) && !paramValue.getClass().isArray()) {
                 List<Object> collection = Collections.singletonList(paramValue);
                 converted = Converters.convert(
                         collection, Array.newInstance(param.type, 0).getClass());
@@ -269,12 +269,12 @@ public class ProcessFunction implements Function {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((fallbackValue == null) ? 0 : fallbackValue.hashCode());
-        result = prime * result + ((functionName == null) ? 0 : functionName.hashCode());
-        result = prime * result + ((inputExpressions == null) ? 0 : inputExpressions.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
-        result = prime * result + ((processName == null) ? 0 : processName.hashCode());
+        result = prime * result + (fallbackValue == null ? 0 : fallbackValue.hashCode());
+        result = prime * result + (functionName == null ? 0 : functionName.hashCode());
+        result = prime * result + (inputExpressions == null ? 0 : inputExpressions.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (parameters == null ? 0 : parameters.hashCode());
+        result = prime * result + (processName == null ? 0 : processName.hashCode());
         return result;
     }
 

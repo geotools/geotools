@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.mongodb.data.SchemaStoreDirectory;
@@ -130,10 +131,9 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         assertNotNull(type);
         mss.deleteSchema(new NameImpl("stations"));
         // cleanup
-        Files.walk(new File(directory.getDirectory(), "mockshema").toPath())
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
+        try (Stream<Path> walk = Files.walk(new File(directory.getDirectory(), "mockshema").toPath())) {
+            walk.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+        }
     }
 
     @Test
@@ -165,10 +165,9 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         mss.storeSchema(type2);
         assertEquals(2, mss.typeNames().size());
         // cleanup
-        Files.walk(new File(directory.getDirectory(), "mockshema").toPath())
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
+        try (Stream<Path> walk = Files.walk(new File(directory.getDirectory(), "mockshema").toPath())) {
+            walk.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+        }
     }
 
     @Test
@@ -201,10 +200,9 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         assertEquals(2, mss.typeNames().size());
 
         // cleanup
-        Files.walk(new File(directory.getDirectory(), "mockshema").toPath())
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
+        try (Stream<Path> walk = Files.walk(new File(directory.getDirectory(), "mockshema").toPath())) {
+            walk.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+        }
     }
 
     @Test

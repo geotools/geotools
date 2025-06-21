@@ -79,6 +79,7 @@ public class GraticuleLabelPointProcessTest extends GraticuleLabelTestSupport {
         runLabels(bbox, "bottomLeft");
     }
 
+    @SuppressWarnings("MissingCasesInEnumSwitch") // REVISIT: add default case to switch?
     private void checkLabels(SimpleFeatureCollection features, String placement) {
         GraticuleLabelPointProcess.PositionEnum pos =
                 GraticuleLabelPointProcess.PositionEnum.byName(placement).get();

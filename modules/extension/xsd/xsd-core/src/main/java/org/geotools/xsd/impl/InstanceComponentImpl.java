@@ -57,12 +57,12 @@ public abstract class InstanceComponentImpl implements InstanceComponent {
 
     @Override
     public String getText() {
-        return (text != null) ? text.toString() : "";
+        return text != null ? text.toString() : "";
     }
 
     @Override
     public void setText(String text) {
-        this.text = (text != null) ? new StringBuffer(text) : new StringBuffer();
+        this.text = text != null ? new StringBuffer(text) : new StringBuffer();
     }
 
     public void addText(String text) {

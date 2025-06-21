@@ -28,6 +28,7 @@ import javax.media.jai.Interpolation;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -351,7 +352,7 @@ public class RasterLayerRequest {
             }
             MosaicQueryBuilder builder = new MosaicQueryBuilder(this, queryBounds);
             Query query = builder.build();
-            query.setSortBy(null); // no need to actually sort on anything here
+            query.setSortBy((SortBy[]) null); // no need to actually sort on anything here
             GranuleSource granules = rasterManager.getGranuleSource(true, null);
             // ... load only the default geometry if possible
             final GeometryDescriptor gd = granules.getSchema().getGeometryDescriptor();
@@ -413,7 +414,7 @@ public class RasterLayerRequest {
             // //
             if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
                 if (value == null) continue;
-                readType = ((Boolean) value) ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
+                readType = (Boolean) value ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
                 continue;
             }
 
@@ -532,7 +533,7 @@ public class RasterLayerRequest {
                 final String suggestedTileSize = (String) value;
 
                 // Preliminary checks on parameter value
-                if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
+                if (suggestedTileSize != null && suggestedTileSize.trim().length() > 0) {
 
                     if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
                         final String[] tilesSize = suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
@@ -789,7 +790,7 @@ public class RasterLayerRequest {
             final String suggestedTileSize = (String) param.getValue();
 
             // Preliminary checks on parameter value
-            if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
+            if (suggestedTileSize != null && suggestedTileSize.trim().length() > 0) {
 
                 if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
                     final String[] tilesSize = suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);

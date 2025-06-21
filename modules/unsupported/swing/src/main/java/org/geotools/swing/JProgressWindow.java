@@ -294,7 +294,7 @@ public class JProgressWindow implements ProgressListener {
         if (margin != null) {
             margin = trim(margin);
             if (margin.length() != 0) {
-                wm -= (margin.length() + 3);
+                wm -= margin.length() + 3;
                 for (int i = 0; i < wm; i++) {
                     buffer.append(' ');
                 }

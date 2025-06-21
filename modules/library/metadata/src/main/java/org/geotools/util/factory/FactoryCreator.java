@@ -44,6 +44,7 @@ import org.geotools.util.logging.Logging;
  * @author Martin Desruisseaux
  * @author Jody Garnett
  */
+@SuppressWarnings({"UnusedVariable", "JdkObsolete", "StreamToIterable", "Finally"})
 public class FactoryCreator extends FactoryRegistry {
     /** The array of classes for searching the one-argument constructor. */
     private static final Class<?>[] HINTS_ARGUMENT = {Hints.class};

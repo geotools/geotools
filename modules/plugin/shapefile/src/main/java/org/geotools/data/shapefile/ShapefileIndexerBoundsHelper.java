@@ -77,7 +77,7 @@ class ShapefileIndexerBoundsHelper {
      * <p>Set to the equivalent of 1MB of heap memory, accounting for 32768 records (for a 32 byte serialized envelope
      * size), or 65536 records if the shapefile geometry type is POINT (using 16 bytes per envelope).
      */
-    private static final int FALLBACK_TO_FILE_REC_COUNT_THRESHOLD = (1024 * 1024) / 32;
+    private static final int FALLBACK_TO_FILE_REC_COUNT_THRESHOLD = 1024 * 1024 / 32;
 
     /**
      * Returns a bounds reader strategy following the logic explained at the class' javadocs.

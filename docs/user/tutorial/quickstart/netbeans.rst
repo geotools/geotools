@@ -195,7 +195,7 @@ such as GeoTools publish their work.
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-6. GeoTools requires Java 11, you need to tell Maven to use the 11 source level
+6. GeoTools requires Java 17, you need to tell Maven to use the 17 source level
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml

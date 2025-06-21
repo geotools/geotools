@@ -119,7 +119,7 @@ public class PoissonClusterer {
                             DelaunayNode farNode = (DelaunayNode) nextEdge.getOtherNode(next2);
                             //                            System.out.println("checking " + farNode +
                             // " in " + newNodes);
-                            if (!(newNodes.contains(farNode))) {
+                            if (!newNodes.contains(farNode)) {
                                 nodesToAdd.add(farNode);
                                 edgesToAdd.add(nextEdge);
                                 //                                System.out.println("adding node "
@@ -153,7 +153,7 @@ public class PoissonClusterer {
             }
             double expectedTarget = meanRate * totalBase;
 
-            double top = ((Math.pow(Math.E, (0 - expectedTarget)) * (Math.pow(expectedTarget, totalTarget))));
+            double top = Math.pow(Math.E, 0 - expectedTarget) * Math.pow(expectedTarget, totalTarget);
             double bottom = fact((int) Math.round(totalTarget));
             double poissonProb = top / bottom;
             //            System.out.println("testing " + newNodes);
@@ -179,7 +179,7 @@ public class PoissonClusterer {
     }
 
     private static double iterFact(int i, int f) {
-        if ((i == 0) || (i == 1)) {
+        if (i == 0 || i == 1) {
             return f;
         } else {
             return iterFact(i - 1, i * f);

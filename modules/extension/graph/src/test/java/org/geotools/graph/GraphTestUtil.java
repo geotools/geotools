@@ -66,7 +66,7 @@ public class GraphTestUtil {
             n1 = n2;
         }
 
-        return (new Node[] {first, n1});
+        return new Node[] {first, n1};
     }
 
     public static Node[] buildNoBifurcations(GraphGenerator gen, int nnodes) {
@@ -82,7 +82,7 @@ public class GraphTestUtil {
             }
         }
 
-        return (ends);
+        return ends;
     }
 
     public static Object[] buildNoBifurcations(OptGraphBuilder builder, int nnodes) {
@@ -115,7 +115,7 @@ public class GraphTestUtil {
             n1 = n2;
         }
 
-        return (new Object[] {first, n1, node2id, edge2id});
+        return new Object[] {first, n1, node2id, edge2id};
     }
 
     public static Object[] buildNoBifurcations(OptDirectedGraphBuilder builder, int nnodes) {
@@ -154,7 +154,7 @@ public class GraphTestUtil {
             n1 = n2;
         }
 
-        return (new Object[] {first, n1, node2id, edge2id});
+        return new Object[] {first, n1, node2id, edge2id};
     }
 
     public static Node[] buildSingleBifurcation(final GraphBuilder builder, int nnodes, final int bifurcation) {
@@ -167,7 +167,7 @@ public class GraphTestUtil {
                 bif.add(component);
             }
 
-            return (0);
+            return 0;
         });
 
         Edge e = builder.buildEdge(n, (Node) bif.get(0));
@@ -175,7 +175,7 @@ public class GraphTestUtil {
         builder.addEdge(e);
 
         Node[] bifends = {ends[0], ends[1], (Node) bif.get(0)};
-        return (bifends);
+        return bifends;
     }
 
     /**
@@ -232,7 +232,7 @@ public class GraphTestUtil {
             level++;
         }
 
-        return (new Object[] {root, id2node});
+        return new Object[] {root, id2node};
     }
 
     public static Object[] buildPerfectBinaryTree(OptGraphBuilder builder, int levels) {
@@ -273,7 +273,7 @@ public class GraphTestUtil {
             level++;
         }
 
-        return (new Object[] {root});
+        return new Object[] {root};
     }
 
     public static Object[] buildPerfectBinaryTree(OptDirectedGraphBuilder builder, int levels) {
@@ -325,7 +325,7 @@ public class GraphTestUtil {
             level++;
         }
 
-        return (new Object[] {root});
+        return new Object[] {root};
     }
 
     public static Node[] buildCircular(GraphBuilder builder, int nnodes) {
@@ -334,13 +334,13 @@ public class GraphTestUtil {
         Edge e = builder.buildEdge(ends[1], ends[0]);
         builder.addEdge(e);
 
-        return (ends);
+        return ends;
     }
 
     public static Node[] buildCircular(GraphGenerator gen, int nnodes) {
         Node[] ends = buildNoBifurcations(gen, nnodes);
         gen.add(new Object[] {"0", String.valueOf(nnodes - 1)});
 
-        return (ends);
+        return ends;
     }
 }

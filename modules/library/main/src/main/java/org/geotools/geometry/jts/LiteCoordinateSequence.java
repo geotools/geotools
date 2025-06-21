@@ -431,7 +431,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     @Override
     public String toString() {
         if (size > 0) {
-            StringBuffer strBuf = new StringBuffer((9 * dimension) * size);
+            StringBuffer strBuf = new StringBuffer(9 * dimension * size);
             strBuf.append('(');
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < dimension; j++) {

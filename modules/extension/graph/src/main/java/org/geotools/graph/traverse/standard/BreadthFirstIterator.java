@@ -82,9 +82,9 @@ public class BreadthFirstIterator extends SourceGraphIterator {
     public Graphable next(GraphTraversal traversal) {
         while (!m_active.isEmpty()) {
             Graphable next = m_active.remove();
-            if (!traversal.isVisited(next)) return (next);
+            if (!traversal.isVisited(next)) return next;
         }
-        return (null);
+        return null;
     }
 
     /**
@@ -120,7 +120,7 @@ public class BreadthFirstIterator extends SourceGraphIterator {
      * @return A First In First Out queue.
      */
     protected Queue<Graphable> buildQueue(Graph graph) {
-        return (new ArrayDeque<>(graph.getNodes().size()));
+        return new ArrayDeque<>(graph.getNodes().size());
     }
 
     /**
@@ -129,6 +129,6 @@ public class BreadthFirstIterator extends SourceGraphIterator {
      * @return The node queue.
      */
     protected Queue<Graphable> getQueue() {
-        return (m_active);
+        return m_active;
     }
 }

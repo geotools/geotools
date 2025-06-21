@@ -168,7 +168,7 @@ public class GeometryCoordinateSequenceTransformer {
         // do a special check for coordinate reference system
         transformed.setUserData(g.getUserData());
 
-        if ((g.getUserData() == null) || g.getUserData() instanceof CoordinateReferenceSystem) {
+        if (g.getUserData() == null || g.getUserData() instanceof CoordinateReferenceSystem) {
             // set the new one to be the target crs
             if (crs != null) {
                 transformed.setUserData(crs);

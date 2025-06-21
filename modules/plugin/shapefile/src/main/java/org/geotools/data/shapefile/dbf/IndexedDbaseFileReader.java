@@ -101,7 +101,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
 
             if (this.useMemoryMappedBuffer) {
                 if (newPosition < this.currentOffset
-                        || (this.currentOffset + buffer.limit()) < (newPosition + header.getRecordLength())) {
+                        || this.currentOffset + buffer.limit() < newPosition + header.getRecordLength()) {
                     NIOUtilities.clean(buffer);
                     FileChannel fc = (FileChannel) channel;
                     if (fc.size() > newPosition + Integer.MAX_VALUE) {

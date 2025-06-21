@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 import org.geotools.data.shapefile.files.FileReader;
@@ -75,7 +76,7 @@ public class StorageFileTest implements FileReader {
         File file = storage.getFile();
         file.deleteOnExit();
 
-        try (FileWriter writer = new FileWriter(file)) {
+        try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
             writer.write(writtenToStorageFile);
         }
     }
@@ -85,7 +86,7 @@ public class StorageFileTest implements FileReader {
             ByteBuffer buffer = ByteBuffer.allocate(20);
             channel.read(buffer);
             buffer.flip();
-            String data = new String(buffer.array()).trim();
+            String data = new String(buffer.array(), StandardCharsets.UTF_8).trim();
             assertEquals(writtenToStorageFile, data);
         }
     }

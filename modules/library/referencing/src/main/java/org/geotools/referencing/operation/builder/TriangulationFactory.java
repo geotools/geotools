@@ -117,7 +117,7 @@ class TriangulationFactory {
         Iterator<TINTriangle> j = triangle.getAdjacentTriangles().iterator();
         int ct = 0;
 
-        while (j.hasNext() && (changedTriangles.size() == ct)) {
+        while (j.hasNext() && changedTriangles.size() == ct) {
             TINTriangle adjacent = j.next();
 
             // The delaunay test

@@ -188,20 +188,20 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
         int result = 17;
 
         if (perpendicularOffset != null) {
-            result = (result * PRIME) + perpendicularOffset.hashCode();
+            result = result * PRIME + perpendicularOffset.hashCode();
         }
 
         if (gap != null) {
-            result = (result * PRIME) + gap.hashCode();
+            result = result * PRIME + gap.hashCode();
         }
 
         if (initialGap != null) {
-            result = (result * PRIME) + initialGap.hashCode();
+            result = result * PRIME + initialGap.hashCode();
         }
 
-        result = (result * PRIME) + Boolean.valueOf(generalized).hashCode();
-        result = (result * PRIME) + Boolean.valueOf(aligned).hashCode();
-        result = (result * PRIME) + Boolean.valueOf(repeated).hashCode();
+        result = result * PRIME + Boolean.valueOf(generalized).hashCode();
+        result = result * PRIME + Boolean.valueOf(aligned).hashCode();
+        result = result * PRIME + Boolean.valueOf(repeated).hashCode();
 
         return result;
     }

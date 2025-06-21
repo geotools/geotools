@@ -126,7 +126,7 @@ class ImageLevelsMapper {
 
         // Mapping overviews
         for (int i = 0; i < resolutionGroupsNumber; i++) {
-            for (int k = (i != 0 ? 0 : 1); k < resolutionsSet[i].length; k++) {
+            for (int k = i != 0 ? 0 : 1; k < resolutionsSet[i].length; k++) {
                 overViewResolutions[numResolutions][0] = resolutionsSet[i][k][0];
                 overViewResolutions[numResolutions][1] = resolutionsSet[i][k][1];
                 numResolutions++;

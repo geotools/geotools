@@ -56,7 +56,7 @@ public class RootHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((uri == null) ? 1 : uri.hashCode());
+        return LOCALNAME.hashCode() * (uri == null ? 1 : uri.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

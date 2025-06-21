@@ -183,7 +183,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
             }
         } else if (baseDirectory == null) {
             // use current working directory
-            return "jdbc:h2:" + database + autoServerSpec + (mvcc != null ? (";MVCC=" + mvcc) : "");
+            return "jdbc:h2:" + database + autoServerSpec + (mvcc != null ? ";MVCC=" + mvcc : "");
         } else {
             // use directory specified if the patch is relative
             String location;
@@ -193,7 +193,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
                 location = database;
             }
 
-            return "jdbc:h2:file:" + location + autoServerSpec + (mvcc != null ? (";MVCC=" + mvcc) : "");
+            return "jdbc:h2:file:" + location + autoServerSpec + (mvcc != null ? ";MVCC=" + mvcc : "");
         }
     }
 

@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.filter.capability.FilterCapabilities;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Parser;
@@ -91,7 +92,8 @@ public class _Filter_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestS
                 + "</Filter_Capabilities>";
 
         Parser parser = new Parser(createConfiguration());
-        FilterCapabilities caps = (FilterCapabilities) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        FilterCapabilities caps =
+                (FilterCapabilities) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         assertEquals(FilterCapabilities.VERSION_100, caps.getVersion());
         assertNotNull(caps.getScalarCapabilities());
         assertNotNull(caps.getSpatialCapabilities());

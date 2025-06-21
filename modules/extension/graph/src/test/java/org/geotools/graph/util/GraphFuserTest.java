@@ -58,7 +58,7 @@ public class GraphFuserTest {
         GraphVisitor visitor = component -> {
             String id = (String) component.getObject();
             Assert.assertTrue(id.equals("0") || id.equals(String.valueOf(nnodes - 1)));
-            return (0);
+            return 0;
         };
         generator().getGraph().visitNodes(visitor);
 
@@ -67,10 +67,10 @@ public class GraphFuserTest {
             String id0 = (String) e.getNodeA().getObject();
             String id1 = (String) e.getNodeB().getObject();
 
-            Assert.assertTrue((id0.equals("0") && id1.equals(String.valueOf(nnodes - 1)))
-                    || (id0.equals(String.valueOf(nnodes - 1)) && id1.equals("0")));
+            Assert.assertTrue(id0.equals("0") && id1.equals(String.valueOf(nnodes - 1))
+                    || id0.equals(String.valueOf(nnodes - 1)) && id1.equals("0"));
 
-            return (0);
+            return 0;
         };
         generator().getGraph().visitEdges(visitor);
     }
@@ -98,9 +98,11 @@ public class GraphFuserTest {
 
         GraphVisitor visitor = component -> {
             String id = (String) component.getObject();
-            Assert.assertTrue((id.equals("0") || id.equals(String.valueOf(nnodes - 1)))
-                    || (id.equals(String.valueOf(cyc)) || id.equals(String.valueOf(cyc + 1))));
-            return (0);
+            Assert.assertTrue(id.equals("0")
+                    || id.equals(String.valueOf(nnodes - 1))
+                    || id.equals(String.valueOf(cyc))
+                    || id.equals(String.valueOf(cyc + 1)));
+            return 0;
         };
         generator().getGraph().visitNodes(visitor);
 
@@ -109,14 +111,14 @@ public class GraphFuserTest {
             String id0 = (String) e.getNodeA().getObject();
             String id1 = (String) e.getNodeB().getObject();
 
-            Assert.assertTrue((id0.equals("0") && id1.equals(String.valueOf(cyc)))
-                    || (id0.equals(String.valueOf(cyc)) && id1.equals("0"))
-                    || (id0.equals(String.valueOf(cyc)) && id1.equals(String.valueOf(cyc + 1)))
-                    || (id0.equals(String.valueOf(cyc + 1)) && id1.equals(String.valueOf(cyc)))
-                    || (id0.equals(String.valueOf(cyc + 1)) && id1.equals(String.valueOf(nnodes - 1)))
-                    || (id0.equals(String.valueOf(nnodes - 1)) && id1.equals(String.valueOf(cyc + 1))));
+            Assert.assertTrue(id0.equals("0") && id1.equals(String.valueOf(cyc))
+                    || id0.equals(String.valueOf(cyc)) && id1.equals("0")
+                    || id0.equals(String.valueOf(cyc)) && id1.equals(String.valueOf(cyc + 1))
+                    || id0.equals(String.valueOf(cyc + 1)) && id1.equals(String.valueOf(cyc))
+                    || id0.equals(String.valueOf(cyc + 1)) && id1.equals(String.valueOf(nnodes - 1))
+                    || id0.equals(String.valueOf(nnodes - 1)) && id1.equals(String.valueOf(cyc + 1)));
 
-            return (0);
+            return 0;
         };
         generator().getGraph().visitEdges(visitor);
     }
@@ -144,9 +146,11 @@ public class GraphFuserTest {
 
         GraphVisitor visitor = component -> {
             String id = (String) component.getObject();
-            Assert.assertTrue((id.equals("0") || id.equals(String.valueOf(nnodes - 1)))
-                    || (id.equals(String.valueOf(cyc)) || id.equals(String.valueOf(cyc + 2))));
-            return (0);
+            Assert.assertTrue(id.equals("0")
+                    || id.equals(String.valueOf(nnodes - 1))
+                    || id.equals(String.valueOf(cyc))
+                    || id.equals(String.valueOf(cyc + 2)));
+            return 0;
         };
         generator().getGraph().visitNodes(visitor);
 
@@ -155,14 +159,14 @@ public class GraphFuserTest {
             String id0 = (String) e.getNodeA().getObject();
             String id1 = (String) e.getNodeB().getObject();
 
-            Assert.assertTrue((id0.equals("0") && id1.equals(String.valueOf(cyc)))
-                    || (id0.equals(String.valueOf(cyc)) && id1.equals("0"))
-                    || (id0.equals(String.valueOf(cyc)) && id1.equals(String.valueOf(cyc + 2)))
-                    || (id0.equals(String.valueOf(cyc + 2)) && id1.equals(String.valueOf(cyc)))
-                    || (id0.equals(String.valueOf(cyc + 2)) && id1.equals(String.valueOf(nnodes - 1)))
-                    || (id0.equals(String.valueOf(nnodes - 1)) && id1.equals(String.valueOf(cyc + 2))));
+            Assert.assertTrue(id0.equals("0") && id1.equals(String.valueOf(cyc))
+                    || id0.equals(String.valueOf(cyc)) && id1.equals("0")
+                    || id0.equals(String.valueOf(cyc)) && id1.equals(String.valueOf(cyc + 2))
+                    || id0.equals(String.valueOf(cyc + 2)) && id1.equals(String.valueOf(cyc))
+                    || id0.equals(String.valueOf(cyc + 2)) && id1.equals(String.valueOf(nnodes - 1))
+                    || id0.equals(String.valueOf(nnodes - 1)) && id1.equals(String.valueOf(cyc + 2)));
 
-            return (0);
+            return 0;
         };
         generator().getGraph().visitEdges(visitor);
     }
@@ -185,15 +189,15 @@ public class GraphFuserTest {
     }
 
     protected GraphGenerator createGenerator() {
-        return (new BasicGraphGenerator());
+        return new BasicGraphGenerator();
     }
 
     protected GraphGenerator generator() {
-        return (m_gen);
+        return m_gen;
     }
 
     protected GraphFuser.EdgeMerger createEdgeMerger() {
-        return (new GraphFuser.EdgeMerger() {
+        return new GraphFuser.EdgeMerger() {
             @Override
             public Object merge(List<Edge> edges) {
                 List<Edge> ends = new ArrayList<>();
@@ -218,7 +222,7 @@ public class GraphFuserTest {
                     obj[1] = edges.get(0).getNodeA().getObject();
                 } else throw new IllegalStateException("Found " + ends.size() + " ends.");
 
-                return (obj);
+                return obj;
             }
 
             public void setMergedObject(Edge newEdge, Object merged) {
@@ -229,6 +233,6 @@ public class GraphFuserTest {
             public void setMergedObject(Edge newEdge, Object merged, List edges) {
                 newEdge.setObject(merged);
             }
-        });
+        };
     }
 }

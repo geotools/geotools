@@ -144,7 +144,7 @@ public class ShapefileTest extends TestCaseSupport {
                 if (reader1.hasNext()) {
 
                     Geometry g1 = (Geometry) reader1.nextRecord().shape();
-                    Geometry g2 = (Geometry) reader2.shapeAt(2 * (index.getOffset(i)));
+                    Geometry g2 = (Geometry) reader2.shapeAt(2 * index.getOffset(i));
                     assertTrue(g1.equalsExact(g2));
 
                 } else {

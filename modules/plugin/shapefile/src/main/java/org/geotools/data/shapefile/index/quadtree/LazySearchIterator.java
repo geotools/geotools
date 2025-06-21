@@ -167,7 +167,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
     }
 
     /** An efficient wrapper around an array of integers */
-    class Indices {
+    static class Indices {
         /** The current coordinate */
         int curr;
 
@@ -187,7 +187,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
         /** Adds a coordinate to this list */
         void add(int index) {
             curr++;
-            if ((curr * 2 + 1) >= indices.length) {
+            if (curr * 2 + 1 >= indices.length) {
                 int newSize = indices.length * 3 / 2;
                 if (newSize < 10) {
                     newSize = 10;

@@ -247,7 +247,7 @@ public class FeatureClassStats implements VectorProcess {
         }
 
         public void addSample(double value) {
-            if (Double.isNaN(value) || (noData != null && noData.equals(value))) {
+            if (Double.isNaN(value) || noData != null && noData.equals(value)) {
                 return; // skip noData values
             }
             for (Statistics stat : stats) {

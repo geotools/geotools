@@ -136,8 +136,8 @@ class ParameterFunction implements Function {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((fallbackValue == null) ? 0 : fallbackValue.hashCode());
-        result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
+        result = prime * result + (fallbackValue == null ? 0 : fallbackValue.hashCode());
+        result = prime * result + (parameters == null ? 0 : parameters.hashCode());
         return result;
     }
 

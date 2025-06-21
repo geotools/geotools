@@ -208,7 +208,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertTrue(Citations.identifierMatches(authority, "EPSG"));
 
         // Tests the modified factory.
-        factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        factory = new OrderedAxisAuthorityFactory("EPSG", null);
         authority = factory.getAuthority();
         assertNotNull(authority);
         assertTrue(Citations.identifierMatches(authority, "EPSG"));
@@ -218,7 +218,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testVendor() {
 
-        CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null);
         Citation vendor = factory.getVendor();
         assertNotNull(vendor);
         assertEquals("Geotools", vendor.getTitle().toString(Locale.US));
@@ -228,7 +228,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /** Tests the amount of codes available. */
     @Test
     public void testCodes() throws FactoryException {
-        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null);
         final Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
         assertNotNull(codes);
         assertTrue(codes.size() >= 3000);
@@ -237,7 +237,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /** A random CRS for fun. */
     @Test
     public void test26910() throws FactoryException {
-        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null);
         final CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("EPSG:26910");
         assertNotNull(crs);
         assertSame(crs, factory.createObject("EPSG:26910"));
@@ -246,7 +246,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /** UDIG requires this to work. */
     @Test
     public void test4326() throws FactoryException {
-        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null);
         final CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("EPSG:4326");
         assertNotNull(crs);
         assertSame(crs, factory.createObject("EPSG:4326"));
@@ -255,7 +255,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /** UDIG requires this to work. */
     @Test
     public void test4269() throws FactoryException {
-        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null);
         final CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("EPSG:4269");
         assertNotNull(crs);
         assertSame(crs, factory.createObject("EPSG:4269"));
@@ -353,7 +353,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         if (!verbose) {
             return;
         }
-        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null);
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
         for (Object o : codes) {
             CoordinateReferenceSystem crs;
@@ -520,6 +520,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         // test coordinate: Berne, old reference point
         // see
         // http://www.swisstopo.admin.ch/internet/swisstopo/en/home/topics/survey/sys/refsys/switzerland.html
+        @SuppressWarnings("FloatingPointLiteralPrecision")
         Position2D source = new Position2D(sourceCRS, 46.9510827861504654, 7.4386324175389165);
         Position2D result = new Position2D();
 

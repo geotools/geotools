@@ -175,7 +175,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         if (ft != null) return ft;
         Date d = new Date(Calendar.getInstance().getTimeInMillis() + timeout);
 
-        while ((ft == null) && ((state != FINISH) && (state != STOP))) {
+        while (ft == null && state != FINISH && state != STOP) {
             Thread.yield(); // let the parser run ... this is being called from
 
             if (d.before(Calendar.getInstance().getTime())) {
@@ -185,7 +185,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         }
 
         // the original thread
-        if ((state == FINISH) || (state == STOP)) {
+        if (state == FINISH || state == STOP) {
             return ft;
         }
 
@@ -245,7 +245,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
 
         resetTimer();
 
-        while ((size <= 1) && (state != FINISH) && (state != STOP)) { // && t>0) {
+        while (size <= 1 && state != FINISH && state != STOP) { // && t>0) {
 
             if (exception != null) {
                 state = STOP;

@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
@@ -252,12 +253,14 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
     private void createUtilityFiles(JGrassRegion dataRegion) throws IOException {
         // create the right files in the right places
         // cats/<name>
-        try (OutputStreamWriter catsWriter = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCATS()))) {
+        try (OutputStreamWriter catsWriter =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCATS()), StandardCharsets.UTF_8)) {
             catsWriter.write("# xyz categories\n#\n#\n 0.00 0.00 0.00 0.00"); // $NON-NLS-1$
         }
 
         // cell/<name>
-        try (OutputStreamWriter cellWriter = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELL()))) {
+        try (OutputStreamWriter cellWriter =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELL()), StandardCharsets.UTF_8)) {
             cellWriter.write(""); // $NON-NLS-1$
         }
 
@@ -267,8 +270,8 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         // extended)
 
         // f_format
-        try (OutputStreamWriter cell_miscFormatWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLMISC_FORMAT()))) {
+        try (OutputStreamWriter cell_miscFormatWriter = new OutputStreamWriter(
+                new FileOutputStream(writerGrassEnv.getCELLMISC_FORMAT()), StandardCharsets.UTF_8)) {
             if (outputToDiskType * 4 == 8) {
                 cell_miscFormatWriter.write("type: double\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
             } else {
@@ -277,8 +280,8 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         }
 
         // f_quant
-        try (OutputStreamWriter cell_miscQantWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLMISC_QUANT()))) {
+        try (OutputStreamWriter cell_miscQantWriter = new OutputStreamWriter(
+                new FileOutputStream(writerGrassEnv.getCELLMISC_QUANT()), StandardCharsets.UTF_8)) {
             cell_miscQantWriter.write("round"); // $NON-NLS-1$
         }
 
@@ -309,7 +312,8 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
                 1);
 
         // hist/<name>
-        try (OutputStreamWriter windFile = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getHIST()))) {
+        try (OutputStreamWriter windFile =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getHIST()), StandardCharsets.UTF_8)) {
             Date date = new Date();
             windFile.write(date + "\n"); // $NON-NLS-1$
             windFile.write(writerGrassEnv.getCELL().getName() + "\n"); // $NON-NLS-1$
@@ -364,7 +368,8 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
                 .append("e-w resol:   " + chewres + "\n")
                 .append("format:   " + chformat + "\n")
                 .append("compressed:   " + chcompressed);
-        try (OutputStreamWriter windFile = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLHD()))) {
+        try (OutputStreamWriter windFile =
+                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLHD()), StandardCharsets.UTF_8)) {
             windFile.write(data.toString());
         }
     }
@@ -425,7 +430,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         if (projWtkFile.exists()) {
 
             StringBuffer wtkString = new StringBuffer();
-            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile))) {
+            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile, StandardCharsets.UTF_8))) {
                 String line = null;
                 while ((line = crsReader.readLine()) != null) {
                     wtkString.append(line.trim());

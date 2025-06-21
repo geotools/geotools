@@ -68,7 +68,7 @@ public class BasicGraph implements Graph, Serializable {
     /** @see Graph#getNodes() */
     @Override
     public Collection<Node> getNodes() {
-        return (m_nodes);
+        return m_nodes;
     }
 
     /**
@@ -83,21 +83,21 @@ public class BasicGraph implements Graph, Serializable {
     /** @see Graph#getEdges() */
     @Override
     public Collection<Edge> getEdges() {
-        return (m_edges);
+        return m_edges;
     }
 
     /** @see Graph#queryNodes(GraphVisitor) */
     @Override
     @SuppressWarnings("unchecked")
     public List<Node> queryNodes(GraphVisitor visitor) {
-        return (List<Node>) (query(getNodes(), visitor));
+        return (List<Node>) query(getNodes(), visitor);
     }
 
     /** @see Graph#queryEdges(GraphVisitor) */
     @Override
     @SuppressWarnings("unchecked")
     public List<Edge> queryEdges(GraphVisitor visitor) {
-        return (List<Edge>) (query(getEdges(), visitor));
+        return (List<Edge>) query(getEdges(), visitor);
     }
 
     /** @see Graph#visitNodes(GraphVisitor) */
@@ -120,24 +120,24 @@ public class BasicGraph implements Graph, Serializable {
     public List<Node> getNodesOfDegree(int n) {
         final int degree = n;
 
-        return (queryNodes(component -> {
-            if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
-            return (FAIL_QUERY);
-        }));
+        return queryNodes(component -> {
+            if (((Node) component).getDegree() == degree) return PASS_AND_CONTINUE;
+            return FAIL_QUERY;
+        });
     }
 
     /** @see Graph#getVisitedNodes(boolean) */
     @SuppressWarnings("unchecked")
     @Override
     public List<Node> getVisitedNodes(boolean visited) {
-        return (List<Node>) (getVisited(getNodes(), visited));
+        return (List<Node>) getVisited(getNodes(), visited);
     }
 
     /** @see Graph#getVisitedEdges(boolean) */
     @SuppressWarnings("unchecked")
     @Override
     public List<Edge> getVisitedEdges(boolean visited) {
-        return (List<Edge>) (getVisited(getEdges(), visited));
+        return (List<Edge>) getVisited(getEdges(), visited);
     }
 
     /**
@@ -174,7 +174,7 @@ public class BasicGraph implements Graph, Serializable {
      */
     @Override
     public String toString() {
-        return ("V=" + m_nodes.toString() + "\n" + "E=" + m_edges.toString());
+        return "V=" + m_nodes.toString() + "\n" + "E=" + m_edges.toString();
     }
     /*
      * Internal query method.
@@ -190,14 +190,14 @@ public class BasicGraph implements Graph, Serializable {
 
                 case PASS_AND_STOP:
                     result.add(component);
-                    return (result);
+                    return result;
 
                 case FAIL_QUERY:
                     continue;
             }
         }
 
-        return (result);
+        return result;
     }
 
     /*
@@ -214,9 +214,9 @@ public class BasicGraph implements Graph, Serializable {
      */
     private List<? extends Graphable> getVisited(Collection<? extends Graphable> components, boolean visited) {
         final boolean isVisited = visited;
-        return (query(components, component -> {
-            if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
-            return (FAIL_QUERY);
-        }));
+        return query(components, component -> {
+            if (component.isVisited() == isVisited) return PASS_AND_CONTINUE;
+            return FAIL_QUERY;
+        });
     }
 }

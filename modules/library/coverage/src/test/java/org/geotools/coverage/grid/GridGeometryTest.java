@@ -229,14 +229,14 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         GridCoordinates2D low = gridBounds.getLow();
         Position2D dp = (Position2D) gg.gridToWorld(low);
 
-        assertTrue(Math.abs(dp.x - (cellWidthX / 2) - worldBounds.getMinX()) < TOL);
-        assertTrue(Math.abs(dp.y + (cellWidthY / 2) - worldBounds.getMaxY()) < TOL);
+        assertTrue(Math.abs(dp.x - cellWidthX / 2 - worldBounds.getMinX()) < TOL);
+        assertTrue(Math.abs(dp.y + cellWidthY / 2 - worldBounds.getMaxY()) < TOL);
 
         GridCoordinates2D high = gridBounds.getHigh();
         dp = (Position2D) gg.gridToWorld(high);
 
-        assertTrue(Math.abs(dp.x + (cellWidthX / 2) - worldBounds.getMaxX()) < TOL);
-        assertTrue(Math.abs(dp.y - (cellWidthY / 2) - worldBounds.getMinY()) < TOL);
+        assertTrue(Math.abs(dp.x + cellWidthX / 2 - worldBounds.getMaxX()) < TOL);
+        assertTrue(Math.abs(dp.y - cellWidthY / 2 - worldBounds.getMinY()) < TOL);
     }
 
     @Test

@@ -127,7 +127,7 @@ public class EMFUtils {
     public static void add(EObject eobject, String property, Object value) {
         EStructuralFeature feature = feature(eobject, property);
 
-        if ((feature != null)) {
+        if (feature != null) {
             add(eobject, feature, value);
         }
     }

@@ -108,7 +108,7 @@ final class OverviewsController {
             if (useVirtual) {
                 virtualRequestedScaleFactorX = virtualNativeResolution[0] / max.resolutionX;
                 virtualRequestedScaleFactorY = virtualNativeResolution[1] / max.resolutionY;
-                virtualRequestedScaleFactor = (virtualRequestedScaleFactorX <= virtualRequestedScaleFactorY)
+                virtualRequestedScaleFactor = virtualRequestedScaleFactorX <= virtualRequestedScaleFactorY
                         ? virtualRequestedScaleFactorX
                         : virtualRequestedScaleFactorY;
             }
@@ -216,7 +216,7 @@ final class OverviewsController {
     }
 
     public OverviewLevel getLevel(final int overviewIndex) {
-        if (overviewIndex < 0 || overviewIndex > (numberOfOverviews)) {
+        if (overviewIndex < 0 || overviewIndex > numberOfOverviews) {
             throw new IllegalArgumentException(
                     "overviewIndex is out of range, it should be >= 0 and < " + numberOfOverviews);
         }

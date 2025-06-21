@@ -331,7 +331,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
         try {
             if (hints != null
                     && hints.containsKey(Utils.EXCLUDE_MOSAIC)
-                    && ((Boolean) hints.get(Utils.EXCLUDE_MOSAIC) == true)) {
+                    && (Boolean) hints.get(Utils.EXCLUDE_MOSAIC) == true) {
                 return false;
             }
 
@@ -386,8 +386,10 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     // SPI
                     final String SPIClass = properties.getProperty("SPI");
                     // create a datastore as instructed
-                    final DataStoreFactorySpi spi = (DataStoreFactorySpi)
-                            Class.forName(SPIClass).getDeclaredConstructor().newInstance();
+                    final DataStoreFactorySpi spi = Class.forName(SPIClass)
+                            .asSubclass(DataStoreFactorySpi.class)
+                            .getDeclaredConstructor()
+                            .newInstance();
 
                     // get the params
                     final Map<String, Serializable> params = new HashMap<>();
@@ -487,8 +489,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 final String locationAttributeName = catalogBean.getLocationAttribute();
                 if (locationAttributeName != null
                         && schema != null
-                        && (schema.getDescriptor(locationAttributeName) == null
-                                && schema.getDescriptor(locationAttributeName.toUpperCase()) == null)) {
+                        && schema.getDescriptor(locationAttributeName) == null
+                        && schema.getDescriptor(locationAttributeName.toUpperCase()) == null) {
                     return false;
                 }
 

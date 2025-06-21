@@ -133,7 +133,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
         // //
         final int numBands = src.getSampleModel().getNumBands();
         final int[] rgba = new int[numBands];
-        final boolean sourceHasAlpha = (numBands % 2 == 0);
+        final boolean sourceHasAlpha = numBands % 2 == 0;
         final int alphaBand = sourceHasAlpha ? numBands - 1 : -1;
         final EfficientInverseColorMapComputation invCM = rasterOp.getInvCM();
         final int minx_ = src.getMinX();
@@ -176,7 +176,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
 
                         if (!sourceHasAlpha
                                 || !hasAlpha
-                                || (sourceHasAlpha && hasAlpha && rgba[alphaBand] >= this.alphaThreshold)) {
+                                || sourceHasAlpha && hasAlpha && rgba[alphaBand] >= this.alphaThreshold) {
                             int val = invCM.getIndexNearest(
                                     rgba[0] & 0xff, rgba[numBands == 1 ? 0 : 1] & 0xff, rgba[numBands == 1 ? 0 : 2]);
                             if (hasAlpha && val >= transparencyIndex) val++;

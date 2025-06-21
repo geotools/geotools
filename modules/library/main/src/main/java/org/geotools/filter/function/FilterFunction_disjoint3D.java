@@ -56,7 +56,7 @@ public class FilterFunction_disjoint3D extends FunctionExpressionImpl {
                     "Filter Function problem for function disjoint3D argument #1 - expected type Geometry");
         }
 
-        /**
+        /*
          * Use the fact that two geometries are disjoint if and only if the distance between them is greated than zero.
          */
         return Boolean.valueOf(Distance3DOp.distance(arg0, arg1) > 0.0);

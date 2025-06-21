@@ -354,7 +354,7 @@ public class RecyclingTileFactory extends java.util.Observable
     public void recycleTile(Raster tile) {
         DataBuffer db = tile.getDataBuffer();
 
-        Long key = Long.valueOf(((long) db.getDataType() << 56) | ((long) db.getNumBanks() << 32) | db.getSize());
+        Long key = Long.valueOf((long) db.getDataType() << 56 | (long) db.getNumBanks() << 32 | db.getSize());
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Recycling array for: " + db.getDataType() + " " + db.getNumBanks() + " " + db.getSize());
@@ -384,7 +384,7 @@ public class RecyclingTileFactory extends java.util.Observable
 
     /** Retrieve an array of the specified type and length. */
     private Object getRecycledArray(int arrayType, long numBanks, long arrayLength) {
-        Long key = Long.valueOf(((long) arrayType << 56) | numBanks << 32 | arrayLength);
+        Long key = Long.valueOf((long) arrayType << 56 | numBanks << 32 | arrayLength);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Attempting to get array for: " + arrayType + " " + numBanks + " " + arrayLength);

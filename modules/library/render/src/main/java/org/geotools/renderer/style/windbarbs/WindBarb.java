@@ -217,8 +217,8 @@ class WindBarb {
             }
         }
         pennants = knots / 50;
-        longBarbs = (knots - (pennants * 50)) / 10;
-        shortBarbs = (knots - (pennants * 50) - (longBarbs * 10)) / 5;
+        longBarbs = (knots - pennants * 50) / 10;
+        shortBarbs = (knots - pennants * 50 - longBarbs * 10) / 5;
     }
 
     /** Build a {@Shape} WindBarb */

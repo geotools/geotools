@@ -194,7 +194,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
 
         // check out if time coordinate is needed, and provide a valid default
         String time = null;

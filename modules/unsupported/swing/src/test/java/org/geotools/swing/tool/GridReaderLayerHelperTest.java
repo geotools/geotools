@@ -146,7 +146,7 @@ public class GridReaderLayerHelperTest {
 
         File file = File.createTempFile("test-image", ".tiff");
         GeoTiffWriter writer = new GeoTiffWriter(file);
-        writer.write(coverage, null);
+        writer.write(coverage);
         writer.dispose();
 
         reader = new GeoTiffReader(file);

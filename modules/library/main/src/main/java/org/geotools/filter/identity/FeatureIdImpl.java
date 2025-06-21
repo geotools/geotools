@@ -95,7 +95,7 @@ public class FeatureIdImpl implements FeatureId {
 
     @Override
     public boolean equalsExact(FeatureId id) {
-        if (id instanceof FeatureId) {
+        if (id != null) {
             return fid.equals(id.getID())
                     && fid.equals(id.getRid())
                     && id.getPreviousRid() == null

@@ -50,7 +50,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     protected static final Logger LOGGER = Logging.getLogger(NTv2GridShiftFactory.class);
 
     /** The soft cache that holds loaded grids. */
-    private SoftValueHashMap<String, GridShiftFile> ntv2GridCache;
+    private final SoftValueHashMap<String, GridShiftFile> ntv2GridCache;
 
     /** Constructs a factory with the default priority. */
     public NTv2GridShiftFactory() {

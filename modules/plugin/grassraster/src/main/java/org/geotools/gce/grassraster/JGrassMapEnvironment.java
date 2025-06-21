@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -476,7 +477,7 @@ public class JGrassMapEnvironment {
          * File is a standard file where the categories values are stored in
          * the cats directory.
          */
-        try (BufferedReader rdr = new BufferedReader(new FileReader(getCATS()))) {
+        try (BufferedReader rdr = new BufferedReader(new FileReader(getCATS(), StandardCharsets.UTF_8))) {
             /* Instantiate attribute table */
             AttributeTable attTable = new AttributeTable();
             /* Ignore first 4 lines. */
@@ -601,7 +602,7 @@ public class JGrassMapEnvironment {
          */
         GrassCoverageReader coverageReader = new GrassCoverageReader(getCELL());
         coverageReader.setParams(PixelInCell.CELL_CENTER, null, false, false, null);
-        coverageReader.read(null);
+        coverageReader.read();
         double[] dataRange = coverageReader.getRange();
 
         // write the range to disk
@@ -643,7 +644,7 @@ public class JGrassMapEnvironment {
         File projWtkFile = getPROJ_WKT();
         if (projWtkFile.exists()) {
             StringBuffer wtkString = new StringBuffer();
-            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile))) {
+            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile, StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = crsReader.readLine()) != null) {
                     wtkString.append(line.trim());

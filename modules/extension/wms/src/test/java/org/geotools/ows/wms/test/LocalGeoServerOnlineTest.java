@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -452,7 +453,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
         ContentType contentType = new ContentType(wmsResponse.getContentType());
         try (InputStreamReader stream = getInputStreamReader(wmsResponse, contentType)) {
 
-            Style[] styles = (new SLDParser(styleFactory, stream)).readXML();
+            Style[] styles = new SLDParser(styleFactory, stream).readXML();
 
             assert styles.length > 0;
 
@@ -472,7 +473,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
 
             for (Style style : styles) namedLayer.addStyle(style);
 
-            StyledLayerDescriptor sld = (new StyledLayerDescriptorBuilder()).build();
+            StyledLayerDescriptor sld = new StyledLayerDescriptorBuilder().build();
             sld.addStyledLayer(namedLayer);
             String xml = styleTransform.transform(sld);
             assert xml.length() > 300;
@@ -484,7 +485,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
         InputStreamReader stream;
         if (contentType.getParameter("charset") != null)
             stream = new InputStreamReader(wmsResponse.getInputStream(), contentType.getParameter("charset"));
-        else stream = new InputStreamReader(wmsResponse.getInputStream());
+        else stream = new InputStreamReader(wmsResponse.getInputStream(), StandardCharsets.UTF_8);
         return stream;
     }
 }

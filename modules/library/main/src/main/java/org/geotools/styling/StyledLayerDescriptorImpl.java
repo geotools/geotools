@@ -97,7 +97,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     }
 
     @Override
-    public void setStyledLayers(StyledLayer[] layers) {
+    public void setStyledLayers(StyledLayer... layers) {
         this.layers.clear();
 
         for (StyledLayer layer : layers) {
@@ -191,10 +191,10 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
         if (oth instanceof StyledLayerDescriptorImpl) {
             StyledLayerDescriptorImpl other = (StyledLayerDescriptorImpl) oth;
 
-            return (Utilities.equals(abstractStr, other.abstractStr)
+            return Utilities.equals(abstractStr, other.abstractStr)
                     && Utilities.equals(layers, other.layers)
                     && Utilities.equals(name, other.name)
-                    && Utilities.equals(title, other.title));
+                    && Utilities.equals(title, other.title);
         }
 
         return false;

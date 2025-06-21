@@ -120,9 +120,9 @@ public class DuckDBDialect extends BasicSQLDialect {
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
         // exclude DuckDB system tables
-        boolean systemTable = (tableName.startsWith("pg_")
+        boolean systemTable = tableName.startsWith("pg_")
                 || tableName.startsWith("sqlite_")
-                || tableName.startsWith("information_schema"));
+                || tableName.startsWith("information_schema");
 
         return !systemTable;
     }

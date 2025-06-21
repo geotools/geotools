@@ -29,7 +29,7 @@ public class ZoomInterpolationTest {
 
         // Assert output is interpolated
         Double d = fn.evaluate(null, Number.class).doubleValue();
-        double expectedVal = (4.25 / 6.0) * 256.0;
+        double expectedVal = 4.25 / 6.0 * 256.0;
         assertEquals("Linear interpolation", expectedVal, d, .000001);
     }
 

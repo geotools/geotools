@@ -38,9 +38,9 @@ public class HanaVirtualTableHintOnlineTest extends JDBCTestSupport {
             fail("Expected exception");
         } catch (IOException e) {
             boolean foundMessage = false;
-            for (Throwable t = e; (t != null) && !foundMessage; t = t.getCause()) {
+            for (Throwable t = e; t != null && !foundMessage; t = t.getCause()) {
                 String msg = e.getMessage();
-                foundMessage = (msg != null) && msg.contains("statement execution blocked by THROW_ERROR hint");
+                foundMessage = msg != null && msg.contains("statement execution blocked by THROW_ERROR hint");
             }
         }
     }

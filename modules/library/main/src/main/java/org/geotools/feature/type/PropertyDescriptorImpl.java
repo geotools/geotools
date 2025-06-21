@@ -49,7 +49,7 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
             throw new NullPointerException("name");
         }
 
-        if (max > 0 && (max < min)) {
+        if (max > 0 && max < min) {
             throw new IllegalArgumentException("max must be -1, or >= min");
         }
     }
@@ -93,14 +93,14 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
         PropertyDescriptorImpl other = (PropertyDescriptorImpl) obj;
         return Utilities.equals(type, other.type)
                 && Utilities.equals(name, other.name)
-                && (minOccurs == other.minOccurs)
-                && (maxOccurs == other.maxOccurs)
-                && (isNillable == other.isNillable);
+                && minOccurs == other.minOccurs
+                && maxOccurs == other.maxOccurs
+                && isNillable == other.isNillable;
     }
 
     @Override
     public int hashCode() {
-        return (37 * minOccurs + 37 * maxOccurs) ^ type.hashCode() ^ name.hashCode();
+        return 37 * minOccurs + 37 * maxOccurs ^ type.hashCode() ^ name.hashCode();
     }
 
     @Override

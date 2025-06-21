@@ -230,7 +230,6 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * not provide an optimized result via FeatureSource.getBounds( Query ). If the feature has no geometry, then an
      * empty envelope is returned.
      *
-     * @throws DataSourceException See IOException
      * @see org.geotools.data.FeatureResults#getBounds()
      */
     @Override
@@ -281,7 +280,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
             // optimization worked, return maxFeatures if count is
             // greater.
             int maxFeatures = query.getMaxFeatures();
-            return (count < maxFeatures) ? count : maxFeatures;
+            return count < maxFeatures ? count : maxFeatures;
         }
 
         // Okay lets count the FeatureReader

@@ -46,7 +46,7 @@ public class WKTMarkFactoryTest {
 
     // This inner class is used to make some members public in
     // order to carry out testing
-    final class WKTMarkFactoryPublic extends WKTMarkFactory {
+    static final class WKTMarkFactoryPublic extends WKTMarkFactory {
         public String getFromCachePublic(String urlLib, String wktName) {
             return this.getFromCache(urlLib, wktName);
         }

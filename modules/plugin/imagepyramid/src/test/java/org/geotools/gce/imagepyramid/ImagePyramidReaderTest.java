@@ -185,7 +185,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // Show the coverage
         //
-        final GridCoverage2D coverage = reader.read(null);
+        final GridCoverage2D coverage = reader.read();
         assertEquals("pyramid", coverage.getName().toString());
         assertNotNull("Null value returned instead of a coverage", coverage);
         assertTrue(
@@ -217,7 +217,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // Show the coverage
         //
-        final GridCoverage2D coverage = reader.read(null);
+        final GridCoverage2D coverage = reader.read();
         assertNotNull("Null value returned instead of a coverage", coverage);
         assertTrue(
                 "coverage dimensions different from what we expected",
@@ -248,7 +248,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // Show the coverage
         //
-        final GridCoverage2D coverage = reader.read(null);
+        final GridCoverage2D coverage = reader.read();
         assertNotNull("Null value returned instead of a coverage", coverage);
         assertTrue(
                 "coverage dimensions different from what we expected",
@@ -641,7 +641,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -718,7 +718,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -773,7 +773,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // Get the coverage
         //
-        GridCoverage2D coverage = reader.read(coverageNames[0], null);
+        GridCoverage2D coverage = reader.read(coverageNames[0]);
         assertNotNull(coverage);
         RenderedImage renderedImage = coverage.getRenderedImage();
         int colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
@@ -782,7 +782,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         assertEquals(20, gridEnvelope.getSpan(0), DELTA);
         assertEquals(20, gridEnvelope.getSpan(1), DELTA);
 
-        coverage = reader.read(coverageNames[1], null);
+        coverage = reader.read(coverageNames[1]);
         assertNotNull(coverage);
         renderedImage = coverage.getRenderedImage();
         colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();

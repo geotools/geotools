@@ -63,7 +63,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
         public CRSPair(final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS) {
             this.sourceCRS = sourceCRS;
             this.targetCRS = targetCRS;
-            this.hash = (37 * sourceCRS.hashCode()) + targetCRS.hashCode();
+            this.hash = 37 * sourceCRS.hashCode() + targetCRS.hashCode();
         }
 
         /** Returns the hash code value. */

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -110,11 +111,11 @@ public class CreateIndexer {
 
         File sampleFile = new File(sampleFilePath);
         File temp = File.createTempFile("XML", "NC");
-        if (!(temp.delete())) {
+        if (!temp.delete()) {
             throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
         }
 
-        if (!(temp.mkdir())) {
+        if (!temp.mkdir()) {
             throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
         }
 
@@ -156,7 +157,7 @@ public class CreateIndexer {
 
         writeIndexer(builder.toString(), indexerFilePath);
         System.out.println("Deleting temporary folder");
-        if (!(FileUtils.deleteQuietly(temp))) {
+        if (!FileUtils.deleteQuietly(temp)) {
             System.out.println("Unable to delete folder: " + temp);
         }
         if (createDatastoreProperties) {
@@ -168,7 +169,7 @@ public class CreateIndexer {
     @SuppressWarnings("PMD.SystemPrintln")
     private static void writeDatastorePropertyFile(String datastorePath) throws IOException {
         System.out.println("Writing the sample datastore.properties: " + datastorePath);
-        try (PrintWriter out = new PrintWriter(new File(datastorePath))) {
+        try (PrintWriter out = new PrintWriter(new File(datastorePath), StandardCharsets.UTF_8)) {
             out.write("SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory\n");
             out.write("host=localhost\n");
             out.write("port=5432\n");
@@ -203,9 +204,9 @@ public class CreateIndexer {
     }
 
     @SuppressWarnings("PMD.SystemPrintln")
-    private static void writeIndexer(String xml, String indexerFilePath) throws FileNotFoundException {
+    private static void writeIndexer(String xml, String indexerFilePath) throws IOException {
         System.out.println("Writing the indexer.xml: " + indexerFilePath);
-        try (PrintWriter out = new PrintWriter(indexerFilePath)) {
+        try (PrintWriter out = new PrintWriter(indexerFilePath, StandardCharsets.UTF_8)) {
             out.println(xml);
             out.flush();
         }
@@ -220,7 +221,7 @@ public class CreateIndexer {
         // initialize StreamResult with File object to save to file
         StreamResult result = new StreamResult(new StringWriter());
         try (InputStream is = new FileInputStream(auxiliaryFile);
-                PrintWriter out = new PrintWriter(finalAuxFile)) {
+                PrintWriter out = new PrintWriter(finalAuxFile, StandardCharsets.UTF_8)) {
 
             transformer.transform(new StreamSource(is), result);
             String xmlString = result.getWriter().toString();
@@ -251,7 +252,7 @@ public class CreateIndexer {
         boolean longName = false;
         for (Object cov : coverages) {
             if (cov instanceof Element) {
-                if (setCoverage(((Element) cov), builder)) {
+                if (setCoverage((Element) cov, builder)) {
                     longName = true;
                 }
             }

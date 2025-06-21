@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import javax.xml.namespace.QName;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.bindings.ML;
@@ -32,7 +33,7 @@ public class StreamingParserTest {
     public void testParseXXE() throws Exception {
         String xml = "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///\" >]>"
                 + "<mails><mail><body>&xxe;</body></mail></mails>";
-        ByteArrayInputStream in = new ByteArrayInputStream(xml.getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
         StreamingParser parser = new StreamingParser(new MLConfiguration(), in, new QName(ML.NAMESPACE, "mail"));
         parser.setEntityResolver(PreventLocalEntityResolver.INSTANCE);
         // StreamingParser returns null if the parsing fails
@@ -41,7 +42,7 @@ public class StreamingParserTest {
 
     @Test
     public void testParseWithJavaMethod() throws Exception {
-        ByteArrayInputStream in = new ByteArrayInputStream("<mails></mails>".getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream("<mails></mails>".getBytes(StandardCharsets.UTF_8));
         StreamingParser parser = new StreamingParser(new MLConfiguration(), in, "java.lang.Thread.sleep(30000)");
         // StreamingParser returns null if the parsing fails
         long start = System.currentTimeMillis();

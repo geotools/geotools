@@ -38,7 +38,7 @@ public class ComplexContentHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((mixed == null) ? 2 : mixed.hashCode());
+        return LOCALNAME.hashCode() * (id == null ? 1 : id.hashCode()) * (mixed == null ? 2 : mixed.hashCode());
     }
 
     /**

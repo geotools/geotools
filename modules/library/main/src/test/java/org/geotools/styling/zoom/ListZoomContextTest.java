@@ -84,7 +84,7 @@ public class ListZoomContextTest {
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1 / EPSILON)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(10_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(2_000_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(2_000_000d));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(EPSILON)));
     }
@@ -97,7 +97,7 @@ public class ListZoomContextTest {
         ScaleRange result = ctxt.getRange(0, 0);
 
         // assertThat(result, rangeContains(1/EPSILON));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(5_000_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(2_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(EPSILON)));
@@ -113,7 +113,7 @@ public class ListZoomContextTest {
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1 / EPSILON)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(2_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(1_000_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(1_000_000d));
         // assertThat(result, rangeContains(EPSILON));
     }
 
@@ -127,9 +127,9 @@ public class ListZoomContextTest {
 
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1 / EPSILON)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(2_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(1_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(500_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(2_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(1_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(500_000d));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(200_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(100_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(EPSILON)));
@@ -144,10 +144,10 @@ public class ListZoomContextTest {
         ScaleRange result = ctxt.getRange(0, 3);
 
         // assertThat(result, (rangeContains(1/EPSILON)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(5_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(2_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(1_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(500_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(2_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(1_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(500_000d));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(200_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(100_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(EPSILON)));
@@ -165,9 +165,9 @@ public class ListZoomContextTest {
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(2_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(500_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(200_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(100_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(500_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(200_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(100_000d));
         // assertThat(result, (rangeContains(EPSILON)));
 
     }
@@ -180,11 +180,11 @@ public class ListZoomContextTest {
 
         ScaleRange result = ctxt.getRange(null, 3);
 
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(1 / EPSILON)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(5_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(2_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(1_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(500_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(1 / EPSILON));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(2_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(1_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(500_000d));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(200_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(100_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(EPSILON)));
@@ -202,10 +202,10 @@ public class ListZoomContextTest {
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(2_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(500_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(200_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(100_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(EPSILON)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(500_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(200_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(100_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(EPSILON));
     }
 
     @Test
@@ -216,11 +216,11 @@ public class ListZoomContextTest {
 
         ScaleRange result = ctxt.getRange(-1, 3);
 
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(1 / EPSILON)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(5_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(2_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(1_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(500_000d)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(1 / EPSILON));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(2_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(1_000_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(500_000d));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(200_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(100_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(EPSILON)));
@@ -238,10 +238,10 @@ public class ListZoomContextTest {
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(2_000_000d)));
         MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(1_000_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(500_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(200_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(100_000d)));
-        MatcherAssert.assertThat(result, (TestUtils.rangeContains(EPSILON)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(500_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(200_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(100_000d));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(EPSILON));
     }
 
     @Test

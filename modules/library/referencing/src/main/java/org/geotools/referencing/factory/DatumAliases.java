@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -222,7 +223,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
         final LogRecord record = Loggings.format(Level.FINE, LoggingKeys.LOADING_DATUM_ALIASES_$1, aliasURL);
         record.setLoggerName(LOGGER.getName());
         LOGGER.log(record);
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(aliasURL.openStream()))) {
+        try (BufferedReader in =
+                new BufferedReader(new InputStreamReader(aliasURL.openStream(), StandardCharsets.UTF_8))) {
             /*
              * Parses the title line. This line contains authority names as column titles.
              * The authority names will be used as the scope for each identifiers to be

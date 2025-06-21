@@ -424,7 +424,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
         RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
-        GridCoverage2D coverage = worldReader.read(null);
+        GridCoverage2D coverage = worldReader.read();
         RenderedImage image = renderer.renderImage(
                 coverage,
                 rasterSymbolizer,
@@ -496,7 +496,7 @@ public class GridCoverageRendererTest {
         // write out as geotiff
         File testFile = new File("./target/testReprojection.tiff");
         GeoTiffWriter writer = new GeoTiffWriter(testFile);
-        writer.write(coverage, null);
+        writer.write(coverage);
 
         // setup to read only a block 50x50 in the middle
         MathTransform r2m = coverage.getGridGeometry().getGridToCRS();
@@ -531,7 +531,7 @@ public class GridCoverageRendererTest {
         GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
         RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
-        GridCoverage2D coverage = worldReader.read(null);
+        GridCoverage2D coverage = worldReader.read();
         RenderedImage image = renderer.renderImage(
                 coverage,
                 rasterSymbolizer,
@@ -1353,10 +1353,10 @@ public class GridCoverageRendererTest {
             final ContrastMethodStrategy method = new NormalizeContrastMethodStrategy();
             method.addOption(
                     "algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
-            method.addOption("minValue", sldBuilder.literalExpression(min + (20 * i)));
-            method.addOption("maxValue", sldBuilder.literalExpression(max + (20 * i)));
+            method.addOption("minValue", sldBuilder.literalExpression(min + 20 * i));
+            method.addOption("maxValue", sldBuilder.literalExpression(max + 20 * i));
             cntEnh.setMethod(method);
-            channels[i].setChannelName(Integer.toString((i * 2) + 1));
+            channels[i].setChannelName(Integer.toString(i * 2 + 1));
             channels[i].setContrastEnhancement(cntEnh);
         }
         chSel.setRGBChannels(chTypeRed, chTypeGreen, chTypeBlue);
@@ -1374,7 +1374,7 @@ public class GridCoverageRendererTest {
     public void testContrastEnhancementInChannelSelectionAfterBandSelectionWithoutColorModel() throws Exception {
         GridCoverage2DReader reader = new TestMultiBandReader(0, 2, 4) {
             @Override
-            public GridCoverage2D read(GeneralParameterValue[] parameters) throws IOException {
+            public GridCoverage2D read(GeneralParameterValue... parameters) throws IOException {
                 GridCoverage2D originalCoverage = super.read(parameters);
                 RenderedImage source = new ImageWorker(originalCoverage.getRenderedImage())
                         .format(DataBuffer.TYPE_USHORT)
@@ -1548,7 +1548,7 @@ public class GridCoverageRendererTest {
         ReferencedEnvelope mapExtent = re.transform(utm32n, true);
 
         // get a subset of the coverage
-        GridCoverage2D global = worldReader.read(null);
+        GridCoverage2D global = worldReader.read();
         CoverageProcessor processor = CoverageProcessor.getInstance(new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
         final ParameterValueGroup param =
                 processor.getOperation("CoverageCrop").getParameters().clone();
@@ -1575,7 +1575,7 @@ public class GridCoverageRendererTest {
         ReferencedEnvelope re = new ReferencedEnvelope(0, 20, 20, 40, DefaultGeographicCRS.WGS84);
 
         // get a subset of the coverage
-        GridCoverage2D global = worldReader.read(null);
+        GridCoverage2D global = worldReader.read();
         CoverageProcessor processor = CoverageProcessor.getInstance(new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
         final ParameterValueGroup param =
                 processor.getOperation("CoverageCrop").getParameters().clone();
@@ -1743,7 +1743,7 @@ public class GridCoverageRendererTest {
     /** Checks the pixel i/j is fully transparent */
     protected void assertPixelIsTransparent(BufferedImage image, int i, int j) {
         int pixel = image.getRGB(i, j);
-        assertEquals((pixel >> 24), 0x00);
+        assertEquals(pixel >> 24, 0x00);
     }
 
     private RasterSymbolizer buildChannelSelectingSymbolizer(int band) {
@@ -1832,7 +1832,7 @@ public class GridCoverageRendererTest {
         }
 
         @Override
-        public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+        public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
             assertTrue(Arrays.stream(parameters)
                     .anyMatch(p -> "Bands".equals(p.getDescriptor().getName().toString())
                             && Arrays.equals(expectedBands, (int[]) ((ParameterValue) p).getValue())));
@@ -1934,7 +1934,7 @@ public class GridCoverageRendererTest {
         }
 
         @Override
-        public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+        public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
             for (GeneralParameterValue parameter : parameters) {
                 if ("Bands".equals(parameter.getDescriptor().getName().toString())) {
                     assertArrayEquals(expectedBands, (int[]) ((ParameterValue) parameter).getValue());
@@ -1987,7 +1987,7 @@ public class GridCoverageRendererTest {
         AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
         GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
 
-        GridCoverage2D coverage = worldReader.read(null);
+        GridCoverage2D coverage = worldReader.read();
         RenderedImage image = renderer.renderImage(
                 coverage, null, Interpolation.getInstance(Interpolation.INTERP_BICUBIC), Color.RED, 256, 256);
         File reference =
@@ -2026,7 +2026,7 @@ public class GridCoverageRendererTest {
 
     @Test
     public void testMultiPixelPackedRender() throws Exception {
-        GridCoverage2D coverage = multiPixelPacked.read(null);
+        GridCoverage2D coverage = multiPixelPacked.read();
         RenderedImage image = coverage.getRenderedImage();
         ReferencedEnvelope mapExtent = ReferencedEnvelope.reference(coverage.getEnvelope2D());
         Rectangle screenSize = new Rectangle(image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight());
@@ -2106,7 +2106,7 @@ public class GridCoverageRendererTest {
     public void testContrastEnhancementWithNodataDataset() throws Exception {
         URL coverageFile = org.geotools.test.TestData.url(GridCoverageRendererTest.class, "nodataNbands.tiff");
         GeoTiffReader reader = new GeoTiffReader(coverageFile);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(coverage);
         assertNotNull(noDataProperty);
         double noData = noDataProperty.getAsSingleValue();
@@ -2174,7 +2174,7 @@ public class GridCoverageRendererTest {
         gcr.setAdvancedProjectionHandlingEnabled(true);
         gcr.setWrapEnabled(true);
         RenderedImage ri = gcr.renderImage(imReader, null, null, interpolation, null, 256, 256);
-        RenderedOp ro = ((RenderedOp) ri);
+        RenderedOp ro = (RenderedOp) ri;
         Object rendering = ro.getRendering();
 
         /* Without the isEquivalentCRS fix, the involved processing chain
@@ -2215,7 +2215,7 @@ public class GridCoverageRendererTest {
     public void testContrastEnhancementWithNodataZero() throws Exception {
         URL coverageFile = org.geotools.test.TestData.url(GridCoverageRendererTest.class, "nodatazero.tif");
         GeoTiffReader reader = new GeoTiffReader(coverageFile);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(coverage);
         assertNotNull(noDataProperty);
         double noData = noDataProperty.getAsSingleValue();
@@ -2267,7 +2267,8 @@ public class GridCoverageRendererTest {
         CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,170,-16", true);
         ReferencedEnvelope azeqEnvelope = readerEnvelope.transform(crs, true);
 
-        testImage(reader, azeqEnvelope, "pacificRadar.png");
+        // 50px tolerance out of 401*257=103057. Testing with Java 17 yields a 43px difference between linux and macos
+        testImage(reader, azeqEnvelope, "pacificRadar.png", 50);
     }
 
     @Test
@@ -2279,7 +2280,7 @@ public class GridCoverageRendererTest {
         ReferencedEnvelope azeqEnvelope =
                 new ReferencedEnvelope(898340.67097417, 1127313.3142259, -8529.3690118708, 220443.2742399, crs);
 
-        testImage(reader, azeqEnvelope, "pacificRadarZoomedIn.png");
+        testImage(reader, azeqEnvelope, "pacificRadarZoomedIn.png", 20);
     }
 
     @Test
@@ -2290,10 +2291,10 @@ public class GridCoverageRendererTest {
         CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,0,0", true);
         ReferencedEnvelope azeqEnvelope = new ReferencedEnvelope(-10698974, 10065735, -18709397, -1.4979931, crs);
 
-        testImage(reader, azeqEnvelope, "pacificRadarCentralAzeq.png");
+        testImage(reader, azeqEnvelope, "pacificRadarCentralAzeq.png", 20);
     }
 
-    private void testImage(GeoTiffReader reader, ReferencedEnvelope vaiEnvelope, String fileName)
+    private void testImage(GeoTiffReader reader, ReferencedEnvelope vaiEnvelope, String fileName, int tolerancePixels)
             throws TransformException, NoninvertibleTransformException, FactoryException, IOException {
         ReferencedEnvelope mapExtent = vaiEnvelope;
         Rectangle screenSize = new Rectangle(400, (int) (mapExtent.getHeight() / mapExtent.getWidth() * 400));
@@ -2314,7 +2315,7 @@ public class GridCoverageRendererTest {
         assertNotNull(image);
         // RenderedImageBrowser.showChain(image, true, true, "foo", true);
         File reference = new File("src/test/resources/org/geotools/renderer/lite/gridcoverage2d/" + fileName);
-        ImageAssert.assertEquals(reference, image, 20);
+        ImageAssert.assertEquals(reference, image, tolerancePixels);
     }
 
     private RasterSymbolizer buildRadardStyle() {

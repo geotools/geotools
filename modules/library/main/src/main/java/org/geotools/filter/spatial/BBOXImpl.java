@@ -218,7 +218,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
     private static ReferencedEnvelope buildEnvelope(double minx, double maxx, double miny, double maxy, String srs) {
         CoordinateReferenceSystem crs = null;
 
-        if (srs != null && !("".equals(srs)))
+        if (srs != null && !"".equals(srs))
             try {
                 try {
                     crs = CRS.decode(srs);
@@ -228,7 +228,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
                     CRS.parseWKT(srs);
                 }
             } catch (FactoryException e) {
-
+                // ignored
             }
 
         return new ReferencedEnvelope(minx, maxx, miny, maxy, crs);

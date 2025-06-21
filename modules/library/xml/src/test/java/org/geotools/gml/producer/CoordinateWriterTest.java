@@ -168,7 +168,7 @@ public class CoordinateWriterTest {
                 output.received);
     }
 
-    class CoordinateHandler implements ContentHandler {
+    static class CoordinateHandler implements ContentHandler {
         StringBuffer buffer;
         String received;
 

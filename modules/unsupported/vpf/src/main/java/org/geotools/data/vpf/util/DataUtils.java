@@ -278,8 +278,8 @@ public class DataUtils implements DataTypesDefinition {
         short res = 0;
         int shift = 8;
 
-        for (int i = 0; (i < bytes.length) && (shift >= 0); i++) {
-            res |= ((short) (bytes[i] & 0xff) << shift);
+        for (int i = 0; i < bytes.length && shift >= 0; i++) {
+            res |= (short) (bytes[i] & 0xff) << shift;
             shift -= 8;
         }
 
@@ -290,7 +290,7 @@ public class DataUtils implements DataTypesDefinition {
         int res = 0;
         int limit = Math.min(fourBytes.length, 4);
         for (int i = 0; i < limit; i++) {
-            res |= (fourBytes[i] & 0xFF) << (i * 8);
+            res |= (fourBytes[i] & 0xFF) << i * 8;
         } // end of for (int i = 0; i < limit-1; i++)
         return res;
     }
@@ -305,8 +305,8 @@ public class DataUtils implements DataTypesDefinition {
         int res = 0;
         int shift = 24;
 
-        for (int i = 0; (i < bytes.length) && (shift >= 0); i++) {
-            res |= ((bytes[i] & 0xff) << shift);
+        for (int i = 0; i < bytes.length && shift >= 0; i++) {
+            res |= (bytes[i] & 0xff) << shift;
             shift -= 8;
         }
 
@@ -323,8 +323,8 @@ public class DataUtils implements DataTypesDefinition {
         int res = 0;
         int shift = 24;
 
-        for (int i = 0; (i < bytes.length) && (shift >= 0); i++) {
-            res |= ((bytes[i] & 0xff) << shift);
+        for (int i = 0; i < bytes.length && shift >= 0; i++) {
+            res |= (bytes[i] & 0xff) << shift;
             shift -= 8;
         }
 
@@ -341,8 +341,8 @@ public class DataUtils implements DataTypesDefinition {
         long res = 0;
         int shift = 56;
 
-        for (int i = 0; (i < bytes.length) && (shift >= 0); i++) {
-            res |= ((long) (bytes[i] & 0xff) << shift);
+        for (int i = 0; i < bytes.length && shift >= 0; i++) {
+            res |= (long) (bytes[i] & 0xff) << shift;
             shift -= 8;
         }
 

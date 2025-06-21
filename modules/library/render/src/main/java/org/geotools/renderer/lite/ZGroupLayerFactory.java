@@ -109,7 +109,7 @@ class ZGroupLayerFactory {
         List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
         for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
             String groupName = fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP);
-            if (!(groupName == currentGroupId || (groupName != null && groupName.equals(currentGroupId)))
+            if (!(groupName == currentGroupId || groupName != null && groupName.equals(currentGroupId))
                     && !featureTypeStyles.isEmpty()) {
                 // the group name changed, dump the current feature type styles
                 addToSplitLayers(layer, previousGroup, splitLayers, currentGroupId, featureTypeStyles);

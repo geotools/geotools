@@ -46,9 +46,9 @@ public class Path extends Walk {
         if (super.isValid()) {
             // test repetitions
             HashSet<Node> s = new HashSet<>(this);
-            return (size() == s.size());
+            return size() == s.size();
         }
 
-        return (false);
+        return false;
     }
 }

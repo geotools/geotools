@@ -172,7 +172,7 @@ public class WMS1_1_0_Test {
             if (e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
-                throw (e);
+                throw e;
             }
         }
     }
@@ -196,7 +196,7 @@ public class WMS1_1_0_Test {
                 // System.err.println("Unable to test - timed out: " + ce);
                 return null;
             } else {
-                throw (ce);
+                throw ce;
             }
         }
     }

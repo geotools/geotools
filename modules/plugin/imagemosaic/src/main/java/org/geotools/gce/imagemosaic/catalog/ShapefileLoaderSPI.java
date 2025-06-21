@@ -38,7 +38,7 @@ public class ShapefileLoaderSPI implements FootprintLoaderSpi {
     }
 
     /** Loads footprints from a sidecar shepefile with a single record, will complain if more than one is found */
-    public class ShapefileLoader implements FootprintLoader {
+    public static class ShapefileLoader implements FootprintLoader {
 
         @Override
         public Geometry loadFootprint(String pathNoExtension) throws Exception {

@@ -364,11 +364,11 @@ For the most part these changes are method compatible, attempting common replace
 GeoTools 29.x
 -------------
 
-Java 11 as the minimum version
+Java 17 as the minimum version
 ------------------------------
 
-GeoTools 29.x requires Java 11 as the minimum version. If you are still using Java 8, you will have
-to remain on GeoTools 28.x or ealier.
+GeoTools 34.x requires Java 17 as the minimum version. If you are still using Java 11, you will have
+to remain on GeoTools 33.x or earlier.
 
 Deprecated functions removed
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

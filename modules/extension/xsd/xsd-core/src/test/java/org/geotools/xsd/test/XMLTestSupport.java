@@ -19,6 +19,7 @@ package org.geotools.xsd.test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -374,7 +375,8 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         docFactory.setNamespaceAware(true);
 
-        document = docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes()));
+        document =
+                docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
     }
 
     /** Convenience method for finding a node in a document which matches the specified name. */

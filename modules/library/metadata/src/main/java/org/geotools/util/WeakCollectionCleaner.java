@@ -41,6 +41,7 @@ public final class WeakCollectionCleaner extends Thread {
      * Constructs and starts a new thread as a daemon. This thread will be sleeping most of the time. It will run only
      * some few nanoseconds each time a new {@link Reference} is enqueded.
      */
+    @SuppressWarnings("ThreadPriorityCheck") // Background cleanup thread needs lower priority
     private WeakCollectionCleaner() {
         super("WeakCollectionCleaner");
         setPriority(MAX_PRIORITY - 2);
@@ -100,7 +101,7 @@ public final class WeakCollectionCleaner extends Thread {
         try {
             this.join(500);
         } catch (InterruptedException e) {
-
+            // Ignored: thread interruption during shutdown is expected
         }
     }
 }

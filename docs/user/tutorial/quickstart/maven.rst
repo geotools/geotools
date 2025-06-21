@@ -32,7 +32,7 @@ Java Install
 
 We are going to be making use of Java so if you don't have a Java Development Kit (JDK) installed now is the time to do so. 
 
-#. Download the latest Java 11 JDK:
+#. Download the latest Java 17 JDK:
 
    * OpenJDK: http://openjdk.java.net/
    * Adoptium distribution: https://adoptium.net/
@@ -195,7 +195,7 @@ Creating a new project
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-#. GeoTools requires Java 11, you need to tell Maven to use the 11 source level
+#. GeoTools requires Java 17, you need to tell Maven to use the 17 source level
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml

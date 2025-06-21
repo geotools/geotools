@@ -275,6 +275,6 @@ Current Limitations
 Requirements
 ------------
 
-- Java 11 or higher
+- Java 17 or higher
 - GeoTools 33 or later
 - Internet connection (for extension installation if needed)

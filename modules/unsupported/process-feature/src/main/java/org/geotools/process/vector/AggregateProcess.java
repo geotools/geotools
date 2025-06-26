@@ -523,10 +523,10 @@ public class AggregateProcess implements VectorProcess {
                     case StdDev:
                     case Sum:
                     case SumArea:
+                    case Median: // in case of even number of elements, the median is actually a double
                         tb.add(function.name(), Double.class);
                         break;
                     case Max:
-                    case Median:
                     case Min:
                         tb.add(function.name(), type);
                         break;

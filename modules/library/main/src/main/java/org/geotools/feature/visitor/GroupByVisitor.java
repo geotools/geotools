@@ -65,6 +65,14 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /**
+     * Returns the aggregate visitor used by this group by visitor. This is the visitor that will be applied to each
+     * group of features.
+     */
+    public Aggregate getAggregate() {
+        return aggregate;
+    }
+
+    /**
      * This method computes and returns the group by visitor result. If the computation was optimized the optimization
      * result is returned otherwise the result is computed in memory. If for some reason an optimization result exists
      * and there are visited features, an in memory computation is performed and is merged with the existing

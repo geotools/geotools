@@ -161,6 +161,7 @@ import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
 import org.geotools.styling.visitor.RenderingSelectorStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
+import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -2211,10 +2212,14 @@ public class StreamingRenderer implements GTRenderer {
             } else if (result instanceof GridCoverage2DReader) {
                 features = FeatureUtilities.wrapGridCoverageReader((GridCoverage2DReader) result, null);
             } else {
-                throw new IllegalArgumentException("Don't know how to handle the results of the transformation, "
-                        + "the supported result types are FeatureCollection, GridCoverage2D "
-                        + "and GridCoverage2DReader, but we got: "
-                        + result.getClass());
+                // last attempt to convert the result to a FeatureCollection
+                features = Converters.convert(result, FeatureCollection.class);
+                if (features == null) {
+                    throw new IllegalArgumentException("Don't know how to handle the results of the transformation, "
+                            + "the supported result types are FeatureCollection, GridCoverage2D "
+                            + "and GridCoverage2DReader, but we got: "
+                            + result.getClass());
+                }
             }
         } else {
             Query mixed = DataUtilities.mixQueries(definitionQuery, styleQuery, null);

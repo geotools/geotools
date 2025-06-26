@@ -22,11 +22,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * Data store test for mysql.
- *
- * @author Justin Deoliveira, The Open Planning Project
- */
+/** Data store test for SingleStore. */
 public class SingleStoreDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     public SingleStoreDataStoreOnlineTest() {

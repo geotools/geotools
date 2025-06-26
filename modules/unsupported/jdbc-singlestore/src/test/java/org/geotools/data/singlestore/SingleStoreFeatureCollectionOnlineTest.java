@@ -19,11 +19,7 @@ package org.geotools.data.singlestore;
 import org.geotools.jdbc.JDBCFeatureCollectionOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * SimpleFeatureCollection test for SingleStore.
- *
- * @author Justin Deoliveira, The Open Planning Project
- */
+/** SimpleFeatureCollection test for SingleStore. */
 public class SingleStoreFeatureCollectionOnlineTest extends JDBCFeatureCollectionOnlineTest {
 
     public SingleStoreFeatureCollectionOnlineTest() {

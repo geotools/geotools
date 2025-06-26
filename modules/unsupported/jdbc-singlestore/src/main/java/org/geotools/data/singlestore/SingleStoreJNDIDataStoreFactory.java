@@ -19,12 +19,7 @@ package org.geotools.data.singlestore;
 import java.util.Map;
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
-/**
- * JNDI DataStoreFactory for mysql database.
- *
- * @author Christian Mueller
- */
-// temporary work around, the factory parameters map will be fixed separately
+/** JNDI DataStoreFactory for SingleStore database. */
 @SuppressWarnings("unchecked")
 public class SingleStoreJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

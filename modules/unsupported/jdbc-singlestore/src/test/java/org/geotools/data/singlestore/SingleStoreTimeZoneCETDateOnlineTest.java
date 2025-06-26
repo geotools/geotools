@@ -20,6 +20,10 @@ import java.util.TimeZone;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
+/**
+ * A version of the {@link JDBCTimeZoneDateOnlineTest} that uses SingleStore with a Central European Time (CET)
+ * timezone.
+ */
 public class SingleStoreTimeZoneCETDateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override

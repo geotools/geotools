@@ -23,11 +23,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * Test harness for mysql.
- *
- * @author Justin Deoliveira, The Open Planning Project
- */
+/** Test harness for SingleStore. */
 public class SingleStoreTestSetup extends JDBCTestSetup {
 
     @Override
@@ -49,23 +45,9 @@ public class SingleStoreTestSetup extends JDBCTestSetup {
         run("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_DATE',''));");
 
         // drop old data
-        try {
-            run("DROP TABLE IF EXISTS ft1;");
-        } catch (Exception e) {
-            // e.printStackTrace();
-        }
-
-        try {
-            run("DROP TABLE IF EXISTS ft2;");
-        } catch (Exception e) {
-            // e.printStackTrace();
-        }
-
-        try {
-            run("DROP TABLE IF EXISTS ft4;");
-        } catch (Exception e) {
-            // e.printStackTrace();
-        }
+        runSafe("DROP TABLE IF EXISTS ft1;");
+        runSafe("DROP TABLE IF EXISTS ft2;");
+        runSafe("DROP TABLE IF EXISTS ft4;");
         runSafe("DELETE FROM geometry_columns");
 
         // create some data

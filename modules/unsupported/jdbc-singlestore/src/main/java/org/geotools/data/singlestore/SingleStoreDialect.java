@@ -22,7 +22,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
 import java.util.logging.Level;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -47,10 +46,6 @@ import org.locationtech.jts.io.WKTReader;
  * implements the common part of the api.
  */
 public class SingleStoreDialect extends SQLDialect {
-
-    /** singlestore spatial types */
-    //    protected Integer POINT = Integer.valueOf(1111);
-    //    protected Integer GEOMETRY = Integer.valueOf(1111);
 
     public SingleStoreDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -140,36 +135,6 @@ public class SingleStoreDialect extends SQLDialect {
     }
 
     @Override
-    public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
-        super.registerClassToSqlMappings(mappings);
-
-        //        mappings.put(Point.class, POINT);
-        //        mappings.put(Geometry.class, GEOMETRY);
-    }
-
-    @Override
-    public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
-        super.registerSqlTypeToClassMappings(mappings);
-
-        //        mappings.put(POINT, Point.class);
-        //        mappings.put(GEOMETRY, Geometry.class);
-    }
-
-    @Override
-    public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
-        super.registerSqlTypeNameToClassMappings(mappings);
-
-        //        mappings.put("GEOGRAPHYPOINT", Point.class);
-        //        mappings.put("GEOGRAPHY", Geometry.class);
-    }
-
-    @Override
-    public void registerSqlTypeToSqlTypeNameOverrides(Map<Integer, String> overrides) {
-        //        overrides.put(Types.BOOLEAN, "BOOL");
-        //        overrides.put(Types.CLOB, "TEXT");
-    }
-
-    @Override
     public void encodePostColumnCreateTable(AttributeDescriptor att, StringBuffer sql) {
         if (att instanceof GeometryDescriptor && !att.isNillable()) {
             if (!sql.toString().trim().endsWith(" NOT NULL")) {
@@ -194,27 +159,26 @@ public class SingleStoreDialect extends SQLDialect {
                 // create it
                 Statement st = cx.createStatement();
                 try {
-                    StringBuffer sql = new StringBuffer("CREATE TABLE ");
-                    encodeTableName("geometry_columns", sql);
-                    sql.append("(");
-                    encodeColumnName(null, "f_table_schema", sql);
-                    sql.append(" varchar(255), ");
-                    encodeColumnName(null, "f_table_name", sql);
-                    sql.append(" varchar(255), ");
-                    encodeColumnName(null, "f_geometry_column", sql);
-                    sql.append(" varchar(255), ");
-                    encodeColumnName(null, "coord_dimension", sql);
-                    sql.append(" int, ");
-                    encodeColumnName(null, "srid", sql);
-                    sql.append(" int, ");
-                    encodeColumnName(null, "type", sql);
-                    sql.append(" varchar(32)");
-                    sql.append(")");
+                    StringBuffer sqlb = new StringBuffer("CREATE TABLE ");
+                    encodeTableName("geometry_columns", sqlb);
+                    sqlb.append("(");
+                    encodeColumnName(null, "f_table_schema", sqlb);
+                    sqlb.append(" varchar(255), ");
+                    encodeColumnName(null, "f_table_name", sqlb);
+                    sqlb.append(" varchar(255), ");
+                    encodeColumnName(null, "f_geometry_column", sqlb);
+                    sqlb.append(" varchar(255), ");
+                    encodeColumnName(null, "coord_dimension", sqlb);
+                    sqlb.append(" int, ");
+                    encodeColumnName(null, "srid", sqlb);
+                    sqlb.append(" int, ");
+                    encodeColumnName(null, "type", sqlb);
+                    sqlb.append(" varchar(32)");
+                    sqlb.append(")");
 
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(sql.toString());
-                    }
-                    st.execute(sql.toString());
+                    String sql = sqlb.toString();
+                    LOGGER.fine(sql);
+                    st.execute(sql);
                 } finally {
                     dataStore.closeSafe(st);
                 }
@@ -344,7 +308,7 @@ public class SingleStoreDialect extends SQLDialect {
             if (offset > 0) sql.append(" LIMIT " + offset + ", " + limit);
             else sql.append(" LIMIT " + limit);
         } else if (offset > 0) {
-            // MySql pretends to have limit specified along with offset
+            // SingleStore pretends to have limit specified along with offset
             sql.append(" LIMIT " + offset + ", " + Long.MAX_VALUE);
         }
     }

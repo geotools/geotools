@@ -45,10 +45,6 @@ public class SingleStoreDialectPrepared extends PreparedStatementSQLDialect {
     SingleStoreDialect delegate;
 
     public SingleStoreDialectPrepared(JDBCDataStore dataStore) {
-        this(dataStore, false);
-    }
-
-    public SingleStoreDialectPrepared(JDBCDataStore dataStore, boolean usePreciseSpatialOps) {
         super(dataStore);
         delegate = new SingleStoreDialect(dataStore);
     }
@@ -187,7 +183,6 @@ public class SingleStoreDialectPrepared extends PreparedStatementSQLDialect {
             throws SQLException {
         if (g != null) {
             ps.setBytes(column, new WKBWriter(dimension).write(g));
-            // ps.setString( column, g.toText() );
         } else {
             ps.setNull(column, Types.OTHER);
         }

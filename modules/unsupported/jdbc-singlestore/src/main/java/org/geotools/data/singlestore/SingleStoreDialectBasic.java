@@ -39,12 +39,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
-/**
- * SingleStore database dialect based on basic (non-prepared) statements.
- *
- * @author Justin Deoliveira, OpenGEO
- * @author Nikolaos Pringouris <nprigour@gmail.com> added support for SingleStore versions 5.6 (and above)
- */
+/** SingleStore database dialect based on basic (non-prepared) statements. */
 public class SingleStoreDialectBasic extends BasicSQLDialect {
 
     SingleStoreDialect delegate;

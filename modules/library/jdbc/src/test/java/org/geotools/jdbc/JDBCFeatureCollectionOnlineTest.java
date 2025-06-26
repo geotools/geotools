@@ -145,7 +145,11 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
                             feature.getAttribute(aname("stringProperty")), f.getAttribute(aname("stringProperty")));
                     Geometry expected = (Geometry) feature.getAttribute(aname("geometry"));
                     Geometry actual = (Geometry) f.getAttribute(aname("geometry"));
-                    assertTrue(expected.equalsExact(actual, COORDINATE_EPS));
+                    assertTrue(
+                            String.format(
+                                    "Was expecting %s but got %s, comparison failed with a tolerance of %s",
+                                    expected, actual, COORDINATE_EPS),
+                            expected.equalsExact(actual, COORDINATE_EPS));
                     found = true;
                 }
             }

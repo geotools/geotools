@@ -24,17 +24,12 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 
-/**
- * DataStoreFactory for SingleStore database.
- *
- * @author David Winslow, The Open Planning Project
- * @author Nikolaos Pringouris <nprigour@gmail.com> added support for SingleStore versions 5.6 (and above)
- */
+/** DataStoreFactory for SingleStore database. */
 public class SingleStoreDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE = new Param(
             "dbtype", String.class, "Type", true, "singlestore", Collections.singletonMap(Parameter.LEVEL, "program"));
-    /** Default port number for MYSQL */
+    /** Default port number for SingleStore */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 3306);
     /** Storage engine to use when creating tables */
     public static final Param ENHANCED_SPATIAL_SUPPORT =
@@ -44,7 +39,6 @@ public class SingleStoreDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-        // return new SingleStoreDialectPrepared(dataStore);
         return new SingleStoreDialectBasic(dataStore, enhancedSpatialSupport);
     }
 
@@ -78,9 +72,6 @@ public class SingleStoreDataStoreFactory extends JDBCDataStoreFactory {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(PORT.key, PORT);
-
-        // TODO Why do we remove the schema key is this necessary
-        parameters.remove(SCHEMA.key);
     }
 
     @Override

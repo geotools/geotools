@@ -20,6 +20,7 @@ import java.util.TimeZone;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
+/** A version of the {@link JDBCTimeZoneDateOnlineTest} that uses SingleStore with a GMT+12 timezone. */
 public class SingleStoreTimeZoneGMTPlus12DateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override

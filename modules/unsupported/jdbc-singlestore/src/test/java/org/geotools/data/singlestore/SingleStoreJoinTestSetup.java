@@ -27,7 +27,7 @@ public class SingleStoreJoinTestSetup extends JDBCJoinTestSetup {
 
     @Override
     protected void createJoinTable() throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("CREATE ROWSTORE TABLE ftjoin ")
                 .append("(id INT PRIMARY KEY, ")
                 .append("name VARCHAR(255) COLLATE latin1_general_cs, ")
@@ -36,22 +36,22 @@ public class SingleStoreJoinTestSetup extends JDBCJoinTestSetup {
                 .append("SHARD KEY (id));");
         run(sb.toString());
 
-        sb = new StringBuffer();
+        sb = new StringBuilder();
         sb.append("INSERT INTO ftjoin VALUES (")
                 .append("0, 'zero', \"POLYGON((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1))\", 0);");
         run(sb.toString());
 
-        sb = new StringBuffer();
+        sb = new StringBuilder();
         sb.append("INSERT INTO ftjoin VALUES (")
                 .append("1, 'one', \"POLYGON ((-1.1 -1.1, -1.1 1.1, 1.1 1.1, 1.1 -1.1, -1.1 -1.1))\", 1);");
         run(sb.toString());
 
-        sb = new StringBuffer();
+        sb = new StringBuilder();
         sb.append("INSERT INTO ftjoin VALUES (")
                 .append("2, 'two', \"POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10))\", 2);");
         run(sb.toString());
 
-        sb = new StringBuffer();
+        sb = new StringBuilder();
         sb.append("INSERT INTO ftjoin VALUES (").append("3, 'three', NULL, 3);");
         run(sb.toString());
 

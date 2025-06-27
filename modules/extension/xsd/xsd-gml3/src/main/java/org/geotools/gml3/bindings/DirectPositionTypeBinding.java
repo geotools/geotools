@@ -111,14 +111,14 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         Position dp = null;
 
         if (position.length < 2) {
-            dp = (crs != null) ? new Position1D(crs) : new Position1D();
+            dp = crs != null ? new Position1D(crs) : new Position1D();
             dp.setOrdinate(0, position[0].doubleValue());
         } else if (position.length < 3) {
-            dp = (crs != null) ? new Position2D(crs) : new Position2D();
+            dp = crs != null ? new Position2D(crs) : new Position2D();
             dp.setOrdinate(0, position[0].doubleValue());
             dp.setOrdinate(1, position[1].doubleValue());
         } else {
-            dp = (crs != null) ? new Position3D(crs) : new Position3D();
+            dp = crs != null ? new Position3D(crs) : new Position3D();
             dp.setOrdinate(0, position[0].doubleValue());
             dp.setOrdinate(1, position[1].doubleValue());
             dp.setOrdinate(2, position[2].doubleValue());

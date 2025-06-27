@@ -771,7 +771,7 @@ public class PostGISDialect extends BasicSQLDialect {
             // geometry_columns is a view populated from system tables, so we check for 0 and take
             // that to mean unset
 
-            if (srid == null || (getVersion(cx).compareTo(V_2_0_0) >= 0 && srid == 0)) {
+            if (srid == null || getVersion(cx).compareTo(V_2_0_0) >= 0 && srid == 0) {
                 String sql = "SELECT ST_SRID("
                         + escapeName(columnName)
                         + ") "
@@ -1405,7 +1405,7 @@ public class PostGISDialect extends BasicSQLDialect {
         for (int i = 0; i < length; i++) {
             Object element = Array.get(value, i);
             encodeValue(element, type.getComponentType(), sql);
-            if (i < (length - 1)) {
+            if (i < length - 1) {
                 sql.append(", ");
             }
         }

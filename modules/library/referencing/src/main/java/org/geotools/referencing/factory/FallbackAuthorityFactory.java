@@ -110,7 +110,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     protected FallbackAuthorityFactory(final AuthorityFactory primary, final AuthorityFactory fallback) {
         super(primary, fallback);
         ensureNonNull("fallback", fallback);
-        this.fallback = (fallback instanceof AbstractAuthorityFactory)
+        this.fallback = fallback instanceof AbstractAuthorityFactory
                 ? (AbstractAuthorityFactory) fallback
                 : new AuthorityFactoryAdapter(fallback);
     }
@@ -193,7 +193,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
                     if (automatic) {
                         // Restricts the interface to be implemented to the
                         // same set of interfaces than the backing factories.
-                        interfaceMask &= (interfaceMask(primary) | interfaceMask(fallback));
+                        interfaceMask &= interfaceMask(primary) | interfaceMask(fallback);
                     }
                     primary = create(interfaceMask, primary, fallback);
                 } else {

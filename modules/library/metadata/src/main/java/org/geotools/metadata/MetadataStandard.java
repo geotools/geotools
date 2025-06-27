@@ -79,6 +79,7 @@ public final class MetadataStandard {
      * Shared pool of {@link PropertyTree} instances, once for each thread (in order to avoid the need for thread
      * synchronization).
      */
+    @SuppressWarnings("ThreadLocalUsage") // Cannot be static as it depends on specific instance
     private final ThreadLocal<PropertyTree> treeBuilders = new ThreadLocal<>() {
         @Override
         protected PropertyTree initialValue() {

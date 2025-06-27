@@ -185,7 +185,7 @@ public class CalcResultTest {
     }
 
     /** A simple results set which allows us to test the AbstractCalcResult type conversions */
-    public class MockCalcResult extends AbstractCalcResult {
+    public static class MockCalcResult extends AbstractCalcResult {
         Object value;
 
         public MockCalcResult() {}

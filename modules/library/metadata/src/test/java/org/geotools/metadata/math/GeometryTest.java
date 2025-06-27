@@ -69,6 +69,7 @@ public final class GeometryTest {
 
     /** Tests {@link org.geotools.metadata.math.Line#isoscelesTriangleBase}. */
     @Test
+    @SuppressWarnings("FloatingPointLiteralPrecision")
     public void testIsoscelesTriangleBase() {
         final Line test = new Line();
         test.setLine(new Point2D.Double(20, 30), new Point2D.Double(80, 95));

@@ -27,6 +27,7 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class CylindricalEqualArea extends MapProjection {
 
     private static final double DTR = Math.PI / 180.0;
@@ -48,7 +49,7 @@ public class CylindricalEqualArea extends MapProjection {
 
         es = excentricitySquared;
         e = excentricity;
-        one_es = 1 - (excentricitySquared);
+        one_es = 1 - excentricitySquared;
 
         double t = trueScaleLatitude;
         scaleFactor = Math.cos(t);
@@ -236,13 +237,13 @@ public class CylindricalEqualArea extends MapProjection {
 
             if (e >= 1.0e-7) {
                 con = e * sinphi;
-                return (one_es * (sinphi / (1. - con * con) - (.5 / e) * Math.log((1. - con) / (1. + con))));
-            } else return (sinphi + sinphi);
+                return one_es * (sinphi / (1. - con * con) - .5 / e * Math.log((1. - con) / (1. + con)));
+            } else return sinphi + sinphi;
         }
 
         public static double authlat(double beta, double[] APA) {
             double t = beta + beta;
-            return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
+            return beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t);
         }
     }
 }

@@ -265,34 +265,34 @@ public class RuleImpl implements Rule, Cloneable {
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
-        result = (PRIME * result) + symbolizers.hashCode();
+        result = PRIME * result + symbolizers.hashCode();
 
-        if (legend != null) result = (PRIME * result) + legend.hashCode();
+        if (legend != null) result = PRIME * result + legend.hashCode();
 
         if (name != null) {
-            result = (PRIME * result) + name.hashCode();
+            result = PRIME * result + name.hashCode();
         }
 
         if (description != null) {
-            result = (PRIME * result) + description.hashCode();
+            result = PRIME * result + description.hashCode();
         }
 
         if (filter != null) {
-            result = (PRIME * result) + filter.hashCode();
+            result = PRIME * result + filter.hashCode();
         }
 
         if (options != null) {
-            result = (PRIME * result) + options.hashCode();
+            result = PRIME * result + options.hashCode();
         }
 
-        result = (PRIME * result) + (hasElseFilter ? 1 : 0);
+        result = PRIME * result + (hasElseFilter ? 1 : 0);
 
         long temp = Double.doubleToLongBits(maxScaleDenominator);
-        result = (PRIME * result) + (int) (temp >>> 32);
-        result = (PRIME * result) + (int) (temp & 0xFFFFFFFF);
+        result = PRIME * result + (int) (temp >>> 32);
+        result = PRIME * result + (int) (temp & 0xFFFFFFFF);
         temp = Double.doubleToLongBits(minScaleDenominator);
-        result = (PRIME * result) + (int) (temp >>> 32);
-        result = (PRIME * result) + (int) (temp & 0xFFFFFFFF);
+        result = PRIME * result + (int) (temp >>> 32);
+        result = PRIME * result + (int) (temp & 0xFFFFFFFF);
 
         return result;
     }
@@ -319,13 +319,13 @@ public class RuleImpl implements Rule, Cloneable {
             return Utilities.equals(name, other.name)
                     && Utilities.equals(description, other.description)
                     && Utilities.equals(filter, other.filter)
-                    && (hasElseFilter == other.hasElseFilter)
+                    && hasElseFilter == other.hasElseFilter
                     && Utilities.equals(legend, other.legend)
                     && Utilities.equals(symbolizers, other.symbolizers)
-                    && (Double.doubleToLongBits(maxScaleDenominator)
-                            == Double.doubleToLongBits(other.maxScaleDenominator))
-                    && (Double.doubleToLongBits(minScaleDenominator)
-                            == Double.doubleToLongBits(other.minScaleDenominator))
+                    && Double.doubleToLongBits(maxScaleDenominator)
+                            == Double.doubleToLongBits(other.maxScaleDenominator)
+                    && Double.doubleToLongBits(minScaleDenominator)
+                            == Double.doubleToLongBits(other.minScaleDenominator)
                     && getOptions().equals(other.getOptions());
         }
 

@@ -75,10 +75,10 @@ public class Tile {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((column == null) ? 0 : column.hashCode());
+        result = prime * result + (column == null ? 0 : column.hashCode());
         result = prime * result + Arrays.hashCode(data);
-        result = prime * result + ((row == null) ? 0 : row.hashCode());
-        result = prime * result + ((zoom == null) ? 0 : zoom.hashCode());
+        result = prime * result + (row == null ? 0 : row.hashCode());
+        result = prime * result + (zoom == null ? 0 : zoom.hashCode());
         return result;
     }
 

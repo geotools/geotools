@@ -242,6 +242,8 @@ public final class FactoriesTest {
      * @throws FactoryException If a CRS can not be created.
      */
     @Test
+    @SuppressWarnings(
+            "UndefinedEquals") // Subtypes of Collection are not guaranteed to implement a useful #equals method.
     public void testDatumAliases() throws FactoryException {
         final String name0 = "Nouvelle Triangulation Francaise (Paris)";
         final String name1 = "Nouvelle_Triangulation_Francaise_Paris";

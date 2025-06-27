@@ -68,9 +68,9 @@ public class AStarShortestPathFinder implements GraphWalker {
     @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         if (element.equals(m_target)) {
-            return (GraphTraversal.STOP);
+            return GraphTraversal.STOP;
         } else {
-            return (GraphTraversal.CONTINUE);
+            return GraphTraversal.CONTINUE;
         }
     }
 
@@ -94,7 +94,7 @@ public class AStarShortestPathFinder implements GraphWalker {
         if (!path.getLast().equals(m_iterator.getSource())) {
             throw new WrongPathException("getPath: The path obtained doesn't begin correctly");
         }
-        return (path);
+        return path;
     }
 
     /**

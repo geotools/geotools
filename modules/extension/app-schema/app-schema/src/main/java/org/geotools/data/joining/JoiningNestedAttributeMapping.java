@@ -191,7 +191,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             throw new IOException("Internal error: Mapping feature Collection expected but found " + collection);
         }
 
-        MappingFeatureCollection mfc = ((MappingFeatureCollection) collection);
+        MappingFeatureCollection mfc = (MappingFeatureCollection) collection;
         // copy unrolled filter
         mfc.setUnrolledFilter(instance.baseTableQuery.getFilter());
 

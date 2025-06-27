@@ -162,7 +162,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             b.set(aname("intProperty"), Integer.valueOf(i));
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             b.featureUserData(Hints.USE_PROVIDED_FID, Boolean.TRUE);
-            collection.add(b.buildFeature(typeName + "." + (i * 10)));
+            collection.add(b.buildFeature(typeName + "." + i * 10));
         }
         List<FeatureId> fids = featureStore.addFeatures((SimpleFeatureCollection) collection);
 

@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -61,6 +62,7 @@ import org.geotools.util.factory.Hints;
 import org.junit.Test;
 
 /** Testing using a SQLServer database for storing the index for the ImageMosaic */
+@SuppressWarnings("DuplicateDateFormatField") // we're not reusing SimpleDateFormat, errorprone complains though
 public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
     static final String tempFolderNoEpsg = "rgbNoEpsg";
@@ -124,7 +126,8 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
         // place datastore.properties file in the dir for the indexing
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), folder + "/datastore.properties"), StandardCharsets.UTF_8)) {
             final Set<Object> keyset = fixture.keySet();
             for (Object key : keyset) {
                 final String key_ = (String) key;
@@ -188,7 +191,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             dim.setSize(
                     reader.getOriginalGridRange().getSpan(0) / 2.0,
                     reader.getOriginalGridRange().getSpan(1) / 2.0);
-            final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+            final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, envelope));
@@ -345,7 +348,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             assertTrue(ingestion instanceof Timestamp);
             final GregorianCalendar gc = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
             gc.setTimeInMillis(1225497600000l);
-            assertEquals(0, (((Timestamp) ingestion).compareTo(gc.getTime())));
+            assertEquals(0, ((Timestamp) ingestion).compareTo(gc.getTime()));
             Object elevation = sf.getAttribute("elevation");
             assertTrue(elevation instanceof Integer);
             assertEquals(((Integer) elevation).intValue(), 0);
@@ -366,7 +369,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             assertNotNull(sf);
             ingestion = sf.getAttribute("ingestion");
             assertTrue(ingestion instanceof Timestamp);
-            assertNotSame(0, (((Timestamp) ingestion).compareTo(gc.getTime())));
+            assertNotSame(0, ((Timestamp) ingestion).compareTo(gc.getTime()));
             elevation = sf.getAttribute("elevation");
             assertTrue(elevation instanceof Integer);
             assertNotSame(((Integer) elevation).intValue(), 0);
@@ -474,7 +477,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             dim.setSize(
                     reader.getOriginalGridRange().getSpan(0) / 2.0,
                     reader.getOriginalGridRange().getSpan(1) / 2.0);
-            final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+            final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, envelope));

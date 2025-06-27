@@ -113,7 +113,7 @@ public class MySQLDialect extends SQLDialect {
 
     @Override
     public String getNameEscape() {
-        return (usePreciseSpatialOps ? "`" : "");
+        return usePreciseSpatialOps ? "`" : "";
     }
 
     @Override

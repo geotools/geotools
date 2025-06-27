@@ -90,7 +90,7 @@ final class ComparableAxisWrapper implements Comparable<ComparableAxisWrapper> {
         boolean changed = false;
         for (int i = 0; i < axis.length; i++) {
             final CoordinateSystemAxis a = wrappers[i].axis;
-            changed |= (axis[i] != a);
+            changed |= axis[i] != a;
             axis[i] = a;
         }
         return changed;

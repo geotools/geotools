@@ -340,6 +340,6 @@ public final class FeatureUtilities {
             area -= polyPoints[j].getX() * polyPoints[i].getY();
         }
         area /= 2.0;
-        return (area);
+        return area;
     }
 }

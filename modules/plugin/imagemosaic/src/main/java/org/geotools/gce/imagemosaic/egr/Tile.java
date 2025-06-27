@@ -152,7 +152,7 @@ class Tile {
     }
 
     public boolean isFullyCovered() {
-        return (tileWidth * tileHeight) == coverageCount;
+        return tileWidth * tileHeight == coverageCount;
     }
 
     /** @return the bbox of this tile in world coordinates */
@@ -172,7 +172,7 @@ class Tile {
 
             final int offset = antiAliasing ? 2 : 0;
 
-            graphics.setClip(-offset, -offset, tileWidth + (offset * 2), tileHeight + (offset * 2));
+            graphics.setClip(-offset, -offset, tileWidth + offset * 2, tileHeight + offset * 2);
             graphics.translate(-this.col * stdTileWidth, -this.row * stdTileHeight);
 
             graphics.setRenderingHint(
@@ -284,7 +284,7 @@ class Tile {
     private void allocateRaster(boolean inverted) {
         final int value = inverted ? 1 : 0;
         WritableRaster result;
-        if ((tileWidth != tileHeight) || (value == 0)) {
+        if (tileWidth != tileHeight || value == 0) {
             result = buildSolidRaster(tileWidth, tileHeight, value);
         } else {
             Raster template = getSolidRaster(tileWidth, tileHeight, value);
@@ -341,8 +341,8 @@ class Tile {
     private SampleModel getMPSampleModel(int tileWidth, int tileHeight) {
         SampleModel sampleModel;
 
-        if ((tileWidth == ROIExcessGranuleRemover.DEFAULT_TILE_SIZE)
-                && (tileHeight == ROIExcessGranuleRemover.DEFAULT_TILE_SIZE)) {
+        if (tileWidth == ROIExcessGranuleRemover.DEFAULT_TILE_SIZE
+                && tileHeight == ROIExcessGranuleRemover.DEFAULT_TILE_SIZE) {
             sampleModel = DEFAULT_PACKED_SAMPLE_MODEL;
         } else {
             String key = tileWidth + "x" + tileHeight;

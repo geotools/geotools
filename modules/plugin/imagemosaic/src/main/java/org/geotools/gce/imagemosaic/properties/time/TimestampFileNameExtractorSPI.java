@@ -92,7 +92,7 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
                 indexesOf[1] = value.indexOf("," + FULL_PATH_PREFIX);
                 indexesOf[2] = value.indexOf("," + USE_HIGH_TIME_PREFIX);
                 for (int indexOf : indexesOf) {
-                    minIndex = (indexOf > 0 && indexOf < minIndex) ? indexOf : minIndex;
+                    minIndex = indexOf > 0 && indexOf < minIndex ? indexOf : minIndex;
                 }
 
                 if (value.startsWith(REGEX_PREFIX)) {

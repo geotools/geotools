@@ -418,6 +418,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param precisionModel the <code>PrecisionModel</code> to use to convert from a precise coordinate to an external
      *     coordinate
      */
+    @SuppressWarnings("UnusedVariable") // level and precisionModel are not used
     private void appendPointText(Coordinate coordinate, int level, Writer writer, PrecisionModel precisionModel)
             throws IOException {
         if (coordinate == null) {

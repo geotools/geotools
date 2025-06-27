@@ -204,7 +204,7 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
             return true;
         }
         final String identifier = identifier();
-        return (identifier != null) && name.equalsIgnoreCase(identifier);
+        return identifier != null && name.equalsIgnoreCase(identifier);
     }
 
     /**

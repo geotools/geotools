@@ -33,6 +33,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import org.apache.http.HttpException;
 import org.geotools.http.HTTPResponse;
@@ -219,7 +220,7 @@ public class MultithreadedHttpClientTest {
             String body = "<data>A body string</data>";
             client.post(
                     new URL("http://localhost:" + service.port() + "/test"),
-                    new ByteArrayInputStream(body.getBytes()),
+                    new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)),
                     "text/xml");
 
             String encodedCredentials =
@@ -266,7 +267,7 @@ public class MultithreadedHttpClientTest {
                 .withStatus(200)
                 .withHeader("Content-Type", "text/xml")
                 .withBody("<response>Some content</response>");
-        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
+        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes(StandardCharsets.UTF_8));
         HTTPResponse response = null;
 
         // GET

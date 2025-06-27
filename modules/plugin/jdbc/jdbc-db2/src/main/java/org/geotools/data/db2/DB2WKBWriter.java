@@ -56,7 +56,7 @@ public class DB2WKBWriter {
         public void filter(Coordinate coord) {
             if (dimension == 3) // no further testing needed
             return;
-            if (!(Double.isNaN(coord.getZ()))) dimension = 3;
+            if (!Double.isNaN(coord.getZ())) dimension = 3;
         }
 
         int getDimension() {
@@ -80,7 +80,7 @@ public class DB2WKBWriter {
     public static String bytesToHex(byte[] bytes) {
         StringBuffer buf = new StringBuffer();
         for (byte b : bytes) {
-            buf.append(toHexDigit((b >> 4) & 0x0F));
+            buf.append(toHexDigit(b >> 4 & 0x0F));
             buf.append(toHexDigit(b & 0x0F));
         }
         return buf.toString();
@@ -89,7 +89,7 @@ public class DB2WKBWriter {
     private static char toHexDigit(int n) {
         if (n < 0 || n > 15) throw new IllegalArgumentException("Nibble value out of range: " + n);
         if (n <= 9) return (char) ('0' + n);
-        return (char) ('A' + (n - 10));
+        return (char) ('A' + n - 10);
     }
 
     private int outputDimension = 2;

@@ -187,7 +187,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
 
     /** True if this mediator is currently connected to one or more workers. */
     public boolean isConnected() {
-        return (workers.getNumActive() + workers.getNumIdle()) > 0;
+        return workers.getNumActive() + workers.getNumIdle() > 0;
     }
 
     ObjectPool getPool() {
@@ -700,7 +700,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @param runner Used to generate a value in the case of a cache miss
      * @return value from either the cache or generated
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "TypeParameterUnusedInFormals"})
     protected <T> T createWith(Object key, WorkerSafeRunnable runner) throws FactoryException {
         T value = (T) cache.get(key);
         if (value == null) {
@@ -736,7 +736,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      *
      * <p>The worker is borrowed from the pool
      */
-    protected abstract class WorkerSafeRunnable {
+    protected abstract static class WorkerSafeRunnable {
         public abstract Object run(AbstractCachedAuthorityFactory worker) throws FactoryException;
     }
 

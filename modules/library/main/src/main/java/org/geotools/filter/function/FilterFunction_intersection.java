@@ -57,6 +57,6 @@ public class FilterFunction_intersection extends FunctionExpressionImpl {
                     "Filter Function problem for function intersection argument #1 - expected type Geometry");
         }
 
-        return (StaticGeometry.intersection(arg0, arg1));
+        return StaticGeometry.intersection(arg0, arg1);
     }
 }

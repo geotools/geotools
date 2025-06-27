@@ -214,11 +214,11 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((scalar == null) ? 0 : scalar.hashCode());
-        result = prime * result + ((spatial == null) ? 0 : spatial.hashCode());
-        result = prime * result + ((temporal == null) ? 0 : temporal.hashCode());
-        result = prime * result + ((version == null) ? 0 : version.hashCode());
+        result = prime * result + (id == null ? 0 : id.hashCode());
+        result = prime * result + (scalar == null ? 0 : scalar.hashCode());
+        result = prime * result + (spatial == null ? 0 : spatial.hashCode());
+        result = prime * result + (temporal == null ? 0 : temporal.hashCode());
+        result = prime * result + (version == null ? 0 : version.hashCode());
         return result;
     }
 

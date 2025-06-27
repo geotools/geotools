@@ -913,6 +913,7 @@ public Ows11Package getOws11Package() {
    * @deprecated
    * @generated
    */
+@Deprecated
   public static Ows11Package getPackage() {
     return Ows11Package.eINSTANCE;
   }

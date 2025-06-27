@@ -181,7 +181,7 @@ public class EquidistantConic extends MapProjection {
     /** Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in {@code ptDst}. */
     @Override
     protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
-        double rho = hypot(x, (y = this.rho0 - y));
+        double rho = hypot(x, y = this.rho0 - y);
         double phi, lam;
 
         if (rho != 0.0) {
@@ -197,7 +197,7 @@ public class EquidistantConic extends MapProjection {
             lam = atan2(x, y) / this.n;
         } else {
             lam = 0;
-            phi = (this.n > 0) ? PI / 2. : -PI / 2.;
+            phi = this.n > 0 ? PI / 2. : -PI / 2.;
         }
 
         if (ptDst != null) {

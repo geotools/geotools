@@ -84,7 +84,7 @@ public class DefaultCalendarDateTest {
         int[] result = calendarDate1.getCalendarDate();
         int[] caldate = {1995, 5, 5};
         ((DefaultCalendarDate) calendarDate1).setCalendarDate(caldate);
-        assertThat(calendarDate1.getCalendarDate(), not(equalTo((result))));
+        assertThat(calendarDate1.getCalendarDate(), not(equalTo(result)));
     }
 
     /** Test of equals method, of class DefaultCalendarDate. */

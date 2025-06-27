@@ -97,6 +97,6 @@ public class XSAnySimpleTypeBinding implements SimpleBinding {
      */
     @Override
     public String encode(Object object, String value) {
-        return (object == null) ? null : String.valueOf(object);
+        return object == null ? null : String.valueOf(object);
     }
 }

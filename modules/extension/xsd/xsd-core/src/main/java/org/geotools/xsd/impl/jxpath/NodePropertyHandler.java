@@ -33,7 +33,7 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
         Node node = (Node) object;
         List children = node.getChildren();
 
-        if ((children == null) || children.isEmpty()) {
+        if (children == null || children.isEmpty()) {
             return new String[] {};
         }
 

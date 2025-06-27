@@ -53,31 +53,31 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     /** @see DirectedEdge#getInNode() */
     @Override
     public DirectedNode getInNode() {
-        return (m_in);
+        return m_in;
     }
 
     /** @see DirectedEdge#getOutNode() */
     @Override
     public DirectedNode getOutNode() {
-        return (m_out);
+        return m_out;
     }
 
     /** @see Edge#getNodeA() */
     @Override
     public Node getNodeA() {
-        return (m_in);
+        return m_in;
     }
 
     /** @see Edge#getNodeB() */
     @Override
     public Node getNodeB() {
-        return (m_out);
+        return m_out;
     }
 
     /** @see Edge#getOtherNode(Node) */
     @Override
     public Node getOtherNode(Node node) {
-        return (node == m_in ? m_out : node == m_out ? m_in : null);
+        return node == m_in ? m_out : node == m_out ? m_in : null;
     }
 
     /** Unsupported Operation. */
@@ -89,11 +89,11 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     /** @see Edge#compareNodes(Edge) */
     @Override
     public int compareNodes(Edge other) {
-        if (m_in.equals(other.getNodeA()) && m_out.equals(other.getNodeB())) return (Edge.EQUAL_NODE_ORIENTATION);
+        if (m_in.equals(other.getNodeA()) && m_out.equals(other.getNodeB())) return Edge.EQUAL_NODE_ORIENTATION;
 
-        if (m_in.equals(other.getNodeB()) && m_out.equals(other.getNodeA())) return (Edge.OPPOSITE_NODE_ORIENTATION);
+        if (m_in.equals(other.getNodeB()) && m_out.equals(other.getNodeA())) return Edge.OPPOSITE_NODE_ORIENTATION;
 
-        return (Edge.UNEQUAL_NODE_ORIENTATION);
+        return Edge.UNEQUAL_NODE_ORIENTATION;
     }
 
     /** @see Graphable#getRelated() */
@@ -108,7 +108,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
 
         edges = m_in.getOutEdgeArray();
         for (Edge e : edges) {
-            if (!e.equals(this) && !(e.getNodeA().equals(e.getNodeB()))) related.add(e);
+            if (!e.equals(this) && !e.getNodeA().equals(e.getNodeB())) related.add(e);
         }
 
         edges = m_out.getInEdgeArray();
@@ -135,19 +135,19 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
             }
         }
 
-        return (related.iterator());
+        return related.iterator();
     }
 
     /** @see DirectedGraphable#getInRelated() */
     @Override
     public Iterator<? extends Graphable> getInRelated() {
-        return (new RelatedIterator(RelatedIterator.IN));
+        return new RelatedIterator(RelatedIterator.IN);
     }
 
     /** @see DirectedGraphable#getOutRelated() */
     @Override
     public Iterator<? extends Graphable> getOutRelated() {
-        return (new RelatedIterator(RelatedIterator.OUT));
+        return new RelatedIterator(RelatedIterator.OUT);
     }
 
     /**
@@ -210,7 +210,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
          */
         @Override
         public boolean hasNext() {
-            return (m_index < m_n);
+            return m_index < m_n;
         }
 
         /**
@@ -222,12 +222,12 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
         public Graphable next() {
             switch (m_mode) {
                 case IN:
-                    return (m_in.getInEdgeArray()[m_index++]);
+                    return m_in.getInEdgeArray()[m_index++];
                 case OUT:
-                    return (m_out.getOutEdgeArray()[m_index++]);
+                    return m_out.getOutEdgeArray()[m_index++];
             }
 
-            return (null);
+            return null;
         }
     }
 }

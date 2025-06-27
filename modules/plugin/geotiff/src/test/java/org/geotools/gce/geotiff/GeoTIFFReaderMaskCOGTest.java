@@ -81,7 +81,7 @@ public class GeoTIFFReaderMaskCOGTest {
     public void testCogRead() throws URISyntaxException, IOException {
         GeoTiffReader reader = new GeoTiffReader(getInputProvider());
         assertEquals("masked2cog", reader.getGridCoverageNames()[0]);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         assertNotNull(coverage);
         RenderedImage image = coverage.getRenderedImage();
         assertEquals(1, image.getNumXTiles());

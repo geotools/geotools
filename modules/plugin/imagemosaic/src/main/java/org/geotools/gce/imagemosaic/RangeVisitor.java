@@ -52,7 +52,7 @@ class RangeVisitor implements FeatureCalc {
     }
 
     /** A DateRange comparator */
-    class DateRangeComparator implements Comparator<DateRange> {
+    static class DateRangeComparator implements Comparator<DateRange> {
 
         @Override
         public int compare(DateRange firstDateRange, DateRange secondDateRange) {
@@ -215,7 +215,7 @@ class RangeVisitor implements FeatureCalc {
         Iterator<Range> iterator = set.iterator();
         while (iterator.hasNext()) {
             Range range = iterator.next();
-            minimalRanges.add((range.getMinValue() + "/" + range.getMaxValue()));
+            minimalRanges.add(range.getMinValue() + "/" + range.getMaxValue());
         }
     }
 

@@ -56,11 +56,11 @@ public abstract class WebMercatorTileFactory extends TileFactory {
 
     public static final double tile2lon(double x, int z) {
 
-        return (x / Math.pow(2.0, z) * 360.0) - 180;
+        return x / Math.pow(2.0, z) * 360.0 - 180;
     }
 
     public static final double tile2lat(double y, int z) {
-        double n = Math.PI - ((2.0 * Math.PI * y) / Math.pow(2.0, z));
+        double n = Math.PI - 2.0 * Math.PI * y / Math.pow(2.0, z);
         // return 180.0 / Math.PI * Math.atan(0.5 * (Math.exp(n) -
         // Math.exp(-n)));
         return Math.toDegrees(Math.atan(Math.sinh(n)));

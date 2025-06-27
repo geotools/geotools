@@ -58,6 +58,6 @@ public class CountingWalker implements GraphWalker {
      * @return int Value of the counter.
      */
     public int getCount() {
-        return (m_counter);
+        return m_counter;
     }
 }

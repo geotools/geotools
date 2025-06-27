@@ -68,7 +68,7 @@ public class RowField extends Number implements DataTypesDefinition {
      */
     @Override
     public boolean equals(Object obj) {
-        if ((obj == null) || !(obj instanceof RowField)) {
+        if (obj == null || !(obj instanceof RowField)) {
             return false;
         }
         return toString().equals(obj.toString());

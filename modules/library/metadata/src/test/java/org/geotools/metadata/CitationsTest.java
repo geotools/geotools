@@ -83,6 +83,8 @@ public final class CitationsTest {
 
     /** Tests {@link PositionalAccuracyImpl} constants. */
     @Test
+    @SuppressWarnings(
+            "UndefinedEquals") // Subtypes of Collection are not guaranteed to implement a useful #equals method.
     public void testPositionalAccuracy() {
         assertEquals(
                 "Identity comparaison",

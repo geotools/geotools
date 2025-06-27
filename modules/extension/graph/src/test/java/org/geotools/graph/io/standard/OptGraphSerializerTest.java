@@ -101,22 +101,22 @@ public class OptGraphSerializerTest {
     }
 
     protected OptGraphBuilder createBuilder() {
-        return (new OptGraphBuilder());
+        return new OptGraphBuilder();
     }
 
     protected OptGraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 
     protected OptGraphBuilder createRebuilder() {
-        return (new OptGraphBuilder());
+        return new OptGraphBuilder();
     }
 
     protected OptGraphBuilder rebuilder() {
-        return (m_rebuilder);
+        return m_rebuilder;
     }
 
     protected SerializedReaderWriter serializer() {
-        return (m_serializer);
+        return m_serializer;
     }
 }

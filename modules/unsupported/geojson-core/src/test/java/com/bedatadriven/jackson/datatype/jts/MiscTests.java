@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
@@ -25,7 +26,7 @@ public class MiscTests {
             // writing the feature using its current CRS
             writer.setEncodeFeatureCollectionCRS(true);
             writer.write(feature);
-            String featureJson = new String(out.toByteArray());
+            String featureJson = new String(out.toByteArray(), StandardCharsets.UTF_8);
             assertTrue("Coordinates should not be formatted", featureJson.contains("1000000"));
         }
     }

@@ -336,7 +336,7 @@ abstract class AuthorityFactoryProxy {
      * @author Martin Desruisseaux
      */
     private static final class Geographic extends CRS {
-        protected Geographic(final CRSAuthorityFactory factory) {
+        Geographic(final CRSAuthorityFactory factory) {
             super(factory);
         }
 
@@ -358,7 +358,7 @@ abstract class AuthorityFactoryProxy {
      * @author Martin Desruisseaux
      */
     private static final class Projected extends CRS {
-        protected Projected(final CRSAuthorityFactory factory) {
+        Projected(final CRSAuthorityFactory factory) {
             super(factory);
         }
 

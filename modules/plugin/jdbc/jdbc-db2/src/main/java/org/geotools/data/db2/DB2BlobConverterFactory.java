@@ -57,7 +57,7 @@ public class DB2BlobConverterFactory implements ConverterFactory {
         if (DB2_BLOB == null) return null;
 
         // can only convert towards byte[]
-        if (!(byte[].class.equals(target))) return null;
+        if (!byte[].class.equals(target)) return null;
 
         // can only deal with db2 specific blob classes
         if (!DB2_BLOB.isAssignableFrom(source)) return null;
@@ -66,7 +66,7 @@ public class DB2BlobConverterFactory implements ConverterFactory {
         return converter;
     }
 
-    class DB2BlobConverter implements Converter {
+    static class DB2BlobConverter implements Converter {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

@@ -86,11 +86,11 @@ class FeatureTypeMapper {
             }
 
             // compute a default parent feature type
-            if ((geometryBinding == Point.class) || (geometryBinding == MultiPoint.class)) {
+            if (geometryBinding == Point.class || geometryBinding == MultiPoint.class) {
                 tb.setSuperType(BasicFeatureTypes.POINT);
-            } else if ((geometryBinding == Polygon.class) || (geometryBinding == MultiPolygon.class)) {
+            } else if (geometryBinding == Polygon.class || geometryBinding == MultiPolygon.class) {
                 tb.setSuperType(BasicFeatureTypes.POLYGON);
-            } else if ((geometryBinding == LineString.class) || (geometryBinding == MultiLineString.class)) {
+            } else if (geometryBinding == LineString.class || geometryBinding == MultiLineString.class) {
                 tb.setSuperType(BasicFeatureTypes.LINE);
             }
 

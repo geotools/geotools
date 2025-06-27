@@ -73,11 +73,11 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
                 for (int i = 0; i < 5; i++) {
                     for (int j = 0; j < 5; j++) {
                         run("INSERT INTO NEIGHBORS (id, geometry, magicnumber) VALUES ("
-                                + (++id)
+                                + ++id
                                 + ","
                                 + pointSql(srid, i * 10, j * 10)
                                 + ", "
-                                + (i * j)
+                                + i * j
                                 + ")");
                     }
                 }

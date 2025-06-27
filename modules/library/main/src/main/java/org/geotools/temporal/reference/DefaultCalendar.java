@@ -98,14 +98,11 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
                     julianYear--;
                     julianMonth += 13;
                 }
-                double julian = (java.lang.Math.floor(365.25 * julianYear)
-                        + java.lang.Math.floor(30.6001 * julianMonth)
-                        + day
-                        + 1720995.0);
+                double julian = Math.floor(365.25 * julianYear) + Math.floor(30.6001 * julianMonth) + day + 1720995.0;
                 if (day + 31 * (month + 12 * year) >= julianGre) {
                     // change over to Gregorian calendar
                     int ja = (int) (0.01 * julianYear);
-                    julian += 2 - ja + (0.25 * ja);
+                    julian += 2 - ja + 0.25 * ja;
                 }
                 coordinateValue = java.lang.Math.floor(julian);
                 response = new DefaultJulianDate(refSystem, null, coordinateValue);
@@ -126,9 +123,8 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
                 if (clk.length > 1) {
                     second = clk[2];
                 }
-                double julian = ((hour.doubleValue() - 12) / 24)
-                        + (minute.doubleValue() / 1440)
-                        + (second.doubleValue() / 86400);
+                double julian =
+                        (hour.doubleValue() - 12) / 24 + minute.doubleValue() / 1440 + second.doubleValue() / 86400;
                 coordinateValue = julian;
                 response = new DefaultJulianDate(refSystem, null, coordinateValue);
                 return response;
@@ -178,13 +174,10 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
                     julianYear--;
                     julianMonth += 13;
                 }
-                double julian = (java.lang.Math.floor(365.25 * julianYear)
-                        + java.lang.Math.floor(30.6001 * julianMonth)
-                        + day
-                        + 1720995.0);
+                double julian = Math.floor(365.25 * julianYear) + Math.floor(30.6001 * julianMonth) + day + 1720995.0;
                 if (day + 31 * (month + 12 * year) >= julianGre) {
                     int ja = (int) (0.01 * julianYear);
-                    julian += 2 - ja + (0.25 * ja);
+                    julian += 2 - ja + 0.25 * ja;
                 }
                 coordinateValue = java.lang.Math.floor(julian);
             }
@@ -201,9 +194,8 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
                 if (clk.length > 1) {
                     second = clk[2];
                 }
-                double julian = ((hour.doubleValue() - 12) / 24)
-                        + (minute.doubleValue() / 1440)
-                        + (second.doubleValue() / 86400);
+                double julian =
+                        (hour.doubleValue() - 12) / 24 + minute.doubleValue() / 1440 + second.doubleValue() / 86400;
                 coordinateValue = coordinateValue.doubleValue() + julian;
             }
         }

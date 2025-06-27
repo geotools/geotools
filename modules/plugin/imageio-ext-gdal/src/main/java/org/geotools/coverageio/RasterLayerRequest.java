@@ -300,7 +300,7 @@ class RasterLayerRequest {
     private void setTileSize(ParameterValue<?> param) {
         final String suggestedTileSize = (String) param.getValue();
         // Preliminary checks on parameter value
-        if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
+        if (suggestedTileSize != null && suggestedTileSize.trim().length() > 0) {
 
             if (suggestedTileSize.contains(BaseGDALGridFormat.TILE_SIZE_SEPARATOR)) {
                 final String[] tilesSize = suggestedTileSize.split(BaseGDALGridFormat.TILE_SIZE_SEPARATOR);
@@ -408,7 +408,7 @@ class RasterLayerRequest {
         if (this.hints != null) {
             final Object o = this.hints.get(Hints.USE_JAI_IMAGEREAD);
             if (o != null) {
-                return ((Boolean) o);
+                return (Boolean) o;
             }
         }
 
@@ -499,7 +499,7 @@ class RasterLayerRequest {
             fullRes = approximateCoverageWGS84FullResolution;
         }
 
-        if ((requestedRes[0] > fullRes[0]) || (requestedRes[1] > fullRes[1])) {
+        if (requestedRes[0] > fullRes[0] || requestedRes[1] > fullRes[1]) {
             setDecimationParameters(requestedRes, fullRes);
         }
     }
@@ -635,14 +635,14 @@ class RasterLayerRequest {
                                     Math.floor(coverageRequestedRasterArea.height * yRatio)));
                 } else {
                     int subSamplingFactorX = (int) Math.floor(requestedRes[0] / fullResolution[0]);
-                    subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
-                    while (((w / subSamplingFactorX) <= 0) && (subSamplingFactorX >= 0)) subSamplingFactorX--;
-                    subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
+                    subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
+                    while (w / subSamplingFactorX <= 0 && subSamplingFactorX >= 0) subSamplingFactorX--;
+                    subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
 
                     int subSamplingFactorY = (int) Math.floor(requestedRes[1] / fullResolution[1]);
-                    subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
-                    while (((h / subSamplingFactorY) <= 0) && (subSamplingFactorY >= 0)) subSamplingFactorY--;
-                    subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
+                    subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
+                    while (h / subSamplingFactorY <= 0 && subSamplingFactorY >= 0) subSamplingFactorY--;
+                    subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
                     imageReadParam.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
                 }
             }
@@ -754,7 +754,7 @@ class RasterLayerRequest {
     private void setBaseParameters(final BaseGridCoverage2DReader reader) {
         input = reader.getInputFile();
         this.coverageEnvelope = reader.getOriginalEnvelope().clone();
-        this.coverageRasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        this.coverageRasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         this.coverageCRS = reader.getCoordinateReferenceSystem();
         this.coverageName = reader.getCoverageName();
         this.coverageGridToWorld2D = (MathTransform2D) reader.getRaster2Model();

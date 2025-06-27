@@ -143,7 +143,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
         // DJB: I modified this so it doesnt throw an error if you
         // do an update and you didnt actually change anything.
         // (We do the work)
-        if ((live != null)) {
+        if (live != null) {
             // We have a modification to record!
             diff.modify(live.getID(), current);
 
@@ -151,7 +151,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
             state.fireFeatureUpdated(store, live, bounds);
             live = null;
             current = null;
-        } else if ((live == null) && (current != null)) {
+        } else if (live == null && current != null) {
             // We have new content to record
             //
             String fid = current.getID();

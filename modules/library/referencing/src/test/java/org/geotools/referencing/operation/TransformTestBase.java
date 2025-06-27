@@ -93,8 +93,8 @@ public abstract class TransformTestBase {
         if (transform.getTargetDimensions() != dim) {
             dim = 0;
         }
-        assertEquals("MathTransform1D", (dim == 1), (transform instanceof MathTransform1D));
-        assertEquals("MathTransform2D", (dim == 2), (transform instanceof MathTransform2D));
+        assertEquals("MathTransform1D", dim == 1, transform instanceof MathTransform1D);
+        assertEquals("MathTransform2D", dim == 2, transform instanceof MathTransform2D);
     }
 
     /**

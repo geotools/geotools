@@ -128,12 +128,12 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
         setObject(e, line);
 
         // return the created edge
-        return (e);
+        return e;
     }
 
     protected LineSegment alterLine(LineSegment line, Node n1, Node n2) {
-        Coordinate c1added = ((Coordinate) n1.getObject());
-        Coordinate c2added = ((Coordinate) n2.getObject());
+        Coordinate c1added = (Coordinate) n1.getObject();
+        Coordinate c2added = (Coordinate) n2.getObject();
         if (!c1added.equals2D(line.p0) || c2added.equals2D(line.p1)) {
             return new LineSegment(c1added, c2added);
         }
@@ -157,10 +157,10 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
         Node n1 = retrieveNode(line.p0);
         Node n2 = retrieveNode(line.p1);
 
-        if (n1 == null || n2 == null) return (null);
+        if (n1 == null || n2 == null) return null;
 
         // return edge shared between them
-        return (n1.getEdge(n2));
+        return n1.getEdge(n2);
 
         // note: if there are identical lines in the graph then it is undefined
         // which of them will be returned
@@ -178,12 +178,12 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
         Node n1 = retrieveNode(line.p0);
         Node n2 = retrieveNode(line.p1);
 
-        if (n1 == null || n2 == null) return (null);
+        if (n1 == null || n2 == null) return null;
 
         Edge e = n1.getEdge(n2);
         getGraphBuilder().removeEdge(e);
 
-        return (e);
+        return e;
     }
 
     /** @see GraphGenerator#setGraphBuilder(GraphBuilder) */
@@ -195,13 +195,13 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
     /** @see GraphGenerator#getGraphBuilder() */
     @Override
     public GraphBuilder getGraphBuilder() {
-        return (m_builder);
+        return m_builder;
     }
 
     /** @see GraphGenerator#getGraph() */
     @Override
     public Graph getGraph() {
-        return (getGraphBuilder().getGraph());
+        return getGraphBuilder().getGraph();
     }
 
     /**
@@ -210,7 +210,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
      * @return coordinate to node map.
      */
     public Map getNodeMap() {
-        return (m_coord2node);
+        return m_coord2node;
     }
 
     // TODO COMMENT ME!
@@ -224,7 +224,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
         Node n1 = retrieveNode(c1);
         Node n2 = retrieveNode(c2);
 
-        return (n1.getEdge(n2));
+        return n1.getEdge(n2);
     }
 
     protected void setObject(Edge e, Object obj) {

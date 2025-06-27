@@ -95,7 +95,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
         final double rho = hypot(x, y);
         double sinc = rho;
         if (sinc > 1.0) {
-            if ((sinc - 1.0) > EPSILON) {
+            if (sinc - 1.0 > EPSILON) {
                 throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
             }
             sinc = 1.0;
@@ -111,7 +111,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
 
             // begin sinchk
             if (abs(phi) >= 1.0) {
-                phi = (phi < 0.0) ? -PI / 2.0 : PI / 2.0;
+                phi = phi < 0.0 ? -PI / 2.0 : PI / 2.0;
             } else {
                 phi = asin(phi);
             }
@@ -121,7 +121,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
                 if (x == 0.0) {
                     x = 0.0;
                 } else {
-                    x = (x < 0.0) ? -PI / 2.0 : PI / 2.0;
+                    x = x < 0.0 ? -PI / 2.0 : PI / 2.0;
                 }
             } else {
                 x = atan2(x, y);

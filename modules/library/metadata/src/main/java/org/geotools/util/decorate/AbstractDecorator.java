@@ -67,10 +67,6 @@ public class AbstractDecorator<D> implements Wrapper, Serializable {
 
     @Override
     public String toString() {
-        return new StringBuilder(getClass().getSimpleName())
-                .append('[')
-                .append(delegate)
-                .append(']')
-                .toString();
+        return getClass().getSimpleName() + '[' + delegate + ']';
     }
 }

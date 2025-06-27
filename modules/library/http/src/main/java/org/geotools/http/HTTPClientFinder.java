@@ -98,9 +98,9 @@ public class HTTPClientFinder extends FactoryFinder {
 
         return getServiceRegistry()
                 .getFactories(HTTPClientFactory.class, null, null)
-                .filter((fact) -> matchHttpFactoryHints(fact, hints))
-                .filter((fact) -> matchHttpClientHintsBehaviors(fact, hints, behaviors))
-                .filter((fact) -> matchDefault(fact, hints, behaviors))
+                .filter(fact -> matchHttpFactoryHints(fact, hints))
+                .filter(fact -> matchHttpClientHintsBehaviors(fact, hints, behaviors))
+                .filter(fact -> matchDefault(fact, hints, behaviors))
                 .findFirst()
                 .orElseThrow(() -> new HTTPFactoryException("Couldn't create HTTP client.", hints, behaviors))
                 .createClient(hints, behaviors);
@@ -121,9 +121,9 @@ public class HTTPClientFinder extends FactoryFinder {
             return true;
         }
         Object val = hints.get(Hints.HTTP_CLIENT_FACTORY);
-        return (val instanceof String
+        return val instanceof String
                 ? fact.getClass().getName().equalsIgnoreCase((String) val)
-                : fact.getClass() == (Class<?>) val);
+                : fact.getClass() == (Class<?>) val;
     }
 
     /** Check if any of then factory's clients can process the hints and behaviors */

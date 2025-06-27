@@ -155,7 +155,7 @@ public class ZonalStatsProcessTest extends Assert {
             for (int i = raster.getWidth(); --i >= 0; ) {
                 for (int j = raster.getHeight(); --j >= 0; ) {
                     // create a simple raster used for classification
-                    int sampleValue = (i % 2 == 0) ? 1 : 2;
+                    int sampleValue = i % 2 == 0 ? 1 : 2;
                     raster.setSample(i, j, 0, sampleValue);
                 }
             }
@@ -182,7 +182,7 @@ public class ZonalStatsProcessTest extends Assert {
                 while (iterator.hasNext()) {
                     SimpleFeature feature = iterator.next();
                     String sampleId = feature.getID() + feature.getAttribute("classification");
-                    assertEquals(sampleId + " is not equals", (feature.toString()), results.get(sampleId));
+                    assertEquals(sampleId + " is not equals", feature.toString(), results.get(sampleId));
                 }
             }
 

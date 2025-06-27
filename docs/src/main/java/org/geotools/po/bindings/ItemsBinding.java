@@ -63,6 +63,7 @@ public class ItemsBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return PO.Items;
     }
@@ -74,6 +75,7 @@ public class ItemsBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Items.class;
     }
@@ -86,6 +88,7 @@ public class ItemsBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Items items = factory.createItems();
         items.getItem().addAll(node.getChildValues("item"));

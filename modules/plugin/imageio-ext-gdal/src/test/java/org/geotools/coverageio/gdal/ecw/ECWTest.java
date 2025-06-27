@@ -106,12 +106,12 @@ public final class ECWTest extends GDALTestCase {
         //
         // /////////////////////////////////////////////////////////////////////
         final double cropFactor = 2.0;
-        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle range = (GridEnvelope2D) reader.getOriginalGridRange();
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
         final GeneralBounds cropEnvelope = new GeneralBounds(
                 new double[] {
-                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
-                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + oldEnvelope.getSpan(0) / cropFactor,
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + oldEnvelope.getSpan(1) / cropFactor
                 },
                 new double[] {
                     oldEnvelope.getUpperCorner().getOrdinate(0),
@@ -130,9 +130,7 @@ public final class ECWTest extends GDALTestCase {
         // NOTE: in some cases might be too restrictive
         Assert.assertTrue(cropEnvelope.equals(
                 gc.getEnvelope(),
-                XAffineTransform.getScale(
-                                ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
-                        / 2,
+                XAffineTransform.getScale((AffineTransform) gc.getGridGeometry().getGridToCRS2D()) / 2,
                 true));
 
         forceDataLoading(gc);
@@ -217,10 +215,10 @@ public final class ECWTest extends GDALTestCase {
 
         // Assert point in Greenland is masked out
         gc.evaluate(pointInGreenland, pixel);
-        assertEquals(0, (pixel[3] & 0xFF));
+        assertEquals(0, pixel[3] & 0xFF);
 
         // Assert point in Africa is present
         gc.evaluate(pointInAfrica, pixel);
-        assertEquals(255, (pixel[3] & 0xFF));
+        assertEquals(255, pixel[3] & 0xFF);
     }
 }

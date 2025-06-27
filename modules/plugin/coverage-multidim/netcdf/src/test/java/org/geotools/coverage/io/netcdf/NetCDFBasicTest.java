@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -465,7 +466,7 @@ public final class NetCDFBasicTest extends NetCDFBaseTest {
             assertNotNull(cs);
 
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(file.getCanonicalPath().getBytes());
+            md.update(file.getCanonicalPath().getBytes(StandardCharsets.UTF_8));
             String hashCode = AncillaryFileManager.convertToHex(md.digest());
 
             // Check if the auxiliary files directory is present

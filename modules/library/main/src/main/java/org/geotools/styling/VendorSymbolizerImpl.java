@@ -46,8 +46,8 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((extensionName == null) ? 0 : extensionName.hashCode());
-        result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
+        result = prime * result + (extensionName == null ? 0 : extensionName.hashCode());
+        result = prime * result + (parameters == null ? 0 : parameters.hashCode());
         return result;
     }
 

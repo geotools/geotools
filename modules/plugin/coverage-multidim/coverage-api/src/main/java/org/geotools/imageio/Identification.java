@@ -58,7 +58,7 @@ public class Identification implements CharSequence, Serializable {
     /** Returns the {@linkplain #name} length. */
     @Override
     public int length() {
-        return (name != null) ? name.length() : 0;
+        return name != null ? name.length() : 0;
     }
 
     /** Returns the {@linkplain #name} character at the specified index. */

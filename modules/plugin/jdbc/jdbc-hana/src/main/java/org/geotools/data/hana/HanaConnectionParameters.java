@@ -96,7 +96,7 @@ public final class HanaConnectionParameters {
     }
 
     public Map<String, String> getAdditionalOptions() {
-        return (additionalOptions == null) ? null : Collections.unmodifiableMap(additionalOptions);
+        return additionalOptions == null ? null : Collections.unmodifiableMap(additionalOptions);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class HanaConnectionParameters {
             sb.append(":");
             sb.append(port.toString());
         }
-        if ((additionalOptions != null) && !additionalOptions.isEmpty()) {
+        if (additionalOptions != null && !additionalOptions.isEmpty()) {
             sb.append("/?");
             boolean first = true;
             for (Map.Entry<String, String> option : additionalOptions.entrySet()) {

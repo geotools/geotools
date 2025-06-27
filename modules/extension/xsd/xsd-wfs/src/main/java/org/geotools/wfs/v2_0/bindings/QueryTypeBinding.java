@@ -89,7 +89,7 @@ public class QueryTypeBinding extends ComplexEMFBinding {
             }
             s.setLength(s.length() - 1);
             return s.toString();
-        } else if (("AbstractProjectionClause").equalsIgnoreCase(name.getLocalPart())) {
+        } else if ("AbstractProjectionClause".equalsIgnoreCase(name.getLocalPart())) {
             return null;
         }
 

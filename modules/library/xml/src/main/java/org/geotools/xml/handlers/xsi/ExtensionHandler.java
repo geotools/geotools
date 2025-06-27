@@ -43,7 +43,7 @@ public class ExtensionHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((base == null) ? 1 : base.hashCode()) * ((child == null) ? 1 : child.hashCode());
+        return LOCALNAME.hashCode() * (base == null ? 1 : base.hashCode()) * (child == null ? 1 : child.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

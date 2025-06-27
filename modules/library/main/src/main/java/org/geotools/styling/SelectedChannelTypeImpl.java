@@ -108,11 +108,11 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         int result = 0;
 
         if (name != null) {
-            result = (PRIME * result) + name.hashCode();
+            result = PRIME * result + name.hashCode();
         }
 
         if (contrastEnhancement != null) {
-            result = (PRIME * result) + contrastEnhancement.hashCode();
+            result = PRIME * result + contrastEnhancement.hashCode();
         }
 
         return result;

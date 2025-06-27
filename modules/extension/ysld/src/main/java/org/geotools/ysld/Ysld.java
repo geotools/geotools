@@ -30,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -70,9 +71,10 @@ public class Ysld {
         if (input instanceof Reader) {
             return new YsldInput((Reader) input);
         } else if (input instanceof InputStream) {
-            return new YsldInput(new BufferedReader(new InputStreamReader((InputStream) input)));
+            return new YsldInput(
+                    new BufferedReader(new InputStreamReader((InputStream) input, StandardCharsets.UTF_8)));
         } else if (input instanceof File) {
-            return new YsldInput(new BufferedReader(new FileReader((File) input)));
+            return new YsldInput(new BufferedReader(new FileReader((File) input, StandardCharsets.UTF_8)));
         } else if (input instanceof String) {
             return new YsldInput(new StringReader((String) input));
         } else {
@@ -98,9 +100,9 @@ public class Ysld {
         if (output instanceof Writer) {
             return (Writer) output;
         } else if (output instanceof OutputStream) {
-            return new BufferedWriter(new OutputStreamWriter((OutputStream) output));
+            return new BufferedWriter(new OutputStreamWriter((OutputStream) output, StandardCharsets.UTF_8));
         } else if (output instanceof File) {
-            return new BufferedWriter(new FileWriter((File) output));
+            return new BufferedWriter(new FileWriter((File) output, StandardCharsets.UTF_8));
         } else {
             throw new IllegalArgumentException("Unable to turn " + output + " into writer");
         }

@@ -118,7 +118,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
 
             if (JAIExt.isJAIExtOperation(STATS)) {
                 // get the properties
-                Statistics[][] results = ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
+                Statistics[][] results = (Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY);
                 // Extracting the bins
                 int numBands = result.getNumBands();
                 int[][] bins = new int[numBands][];

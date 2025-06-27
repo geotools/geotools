@@ -69,6 +69,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -205,6 +206,7 @@ import org.locationtech.jts.geom.LinearRing;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
  */
+@SuppressWarnings("DuplicateDateFormatField") // we're not reusing SimpleDateFormat, errorprone complains though
 public class ImageMosaicReaderTest {
 
     private static final FilterFactory FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
@@ -388,7 +390,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -450,7 +452,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, "water_temp3");
 
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/water_temp3/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/water_temp3/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -496,7 +499,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -585,7 +588,8 @@ public class ImageMosaicReaderTest {
 
         // place H2 file in the dir
 
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/water_temp5/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/water_temp5/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -609,7 +613,7 @@ public class ImageMosaicReaderTest {
         assertTrue("org.geotools.gce.geotiff.GeoTiffFormat"
                 .equalsIgnoreCase((String) properties.get(Prop.SUGGESTED_FORMAT)));
 
-        try (FileWriter fw = new FileWriter(mosaicFile)) {
+        try (FileWriter fw = new FileWriter(mosaicFile, StandardCharsets.UTF_8)) {
             assertNotNull(properties.remove("TypeName"));
             properties.store(fw, "");
         }
@@ -645,7 +649,7 @@ public class ImageMosaicReaderTest {
 
         // place H2 file in the dir
         File datastoreProperties = new File(workDir, "datastore.properties");
-        try (FileWriter out = new FileWriter(datastoreProperties)) {
+        try (FileWriter out = new FileWriter(datastoreProperties, StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -746,7 +750,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -801,7 +805,8 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, "watertemp1/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "watertemp1");
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/watertemp1/indexer.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/watertemp1/indexer.properties"), StandardCharsets.UTF_8)) {
             out.write("TimeAttribute=ingestion\n");
             out.write("ElevationAttribute=elevation\n");
             out.write("Schema=*the_geom:Polygon,location:String,ingestion:java.util.Date,elevation:Double\n");
@@ -863,7 +868,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 3.0,
                 reader.getOriginalGridRange().getSpan(1) / 3.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -909,7 +914,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -1123,7 +1128,8 @@ public class ImageMosaicReaderTest {
         File zipFile = new File(workDir, "temperature.zip");
         FileUtils.copyFile(TestData.file(this, "temperature.zip"), zipFile);
         TestData.unzipFile(this, "emptyMosaic/temperature.zip");
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/emptyMosaic/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/emptyMosaic/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -1219,8 +1225,8 @@ public class ImageMosaicReaderTest {
         File zipFile = new File(workDir, "temperature2.zip");
         FileUtils.copyFile(TestData.file(this, "temperature2.zip"), zipFile);
         TestData.unzipFile(this, "emptyMosaicXML/temperature2.zip");
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), "/emptyMosaicXML/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/emptyMosaicXML/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -1640,7 +1646,7 @@ public class ImageMosaicReaderTest {
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(10, 10);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -1777,7 +1783,7 @@ public class ImageMosaicReaderTest {
 
             // read the coverage
             @SuppressWarnings("unused")
-            GridCoverage2D gc = reader.read(null);
+            GridCoverage2D gc = reader.read();
             fail("MAX_ALLOWED_TILES was not respected");
         } catch (Throwable e) {
 
@@ -1791,7 +1797,7 @@ public class ImageMosaicReaderTest {
                     .getReader(rgbURL, new Hints(Hints.MAX_ALLOWED_TILES, Integer.valueOf(1000)));
             Assert.assertNotNull(reader);
             // read the coverage
-            GridCoverage2D gc = reader.read(null);
+            GridCoverage2D gc = reader.read();
             Assert.assertTrue(true);
             gc.dispose(true);
             reader.dispose();
@@ -2660,7 +2666,8 @@ public class ImageMosaicReaderTest {
         // other than its
         // name, but the name of the store is fixed to match the one of the coverage)
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(mosaicDirectory, "/datastore.properties"))) {
+        try (FileWriter out =
+                new FileWriter(new File(mosaicDirectory, "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -2990,7 +2997,7 @@ public class ImageMosaicReaderTest {
         Function<File, String> expectedLocation1 = d -> "world.200402.3x5400x2700.tiff";
         Function<File, String> expectedLocation2 =
                 d -> "../singleHarvest2/world.200405.3x5400x2700.tiff".replace('/', File.separatorChar);
-        Consumer<File> mosaicDirSetup = (dir) -> {};
+        Consumer<File> mosaicDirSetup = dir -> {};
 
         checkSingleFileHarvest(mosaicDirSetup, expectedLocation1, expectedLocation2);
     }
@@ -3003,7 +3010,7 @@ public class ImageMosaicReaderTest {
             File pf = d.getParentFile();
             return new File(pf, "singleHarvest2/world.200405.3x5400x2700.tiff").getAbsolutePath();
         };
-        Consumer<File> mosaicDirSetup = (dir) -> {
+        Consumer<File> mosaicDirSetup = dir -> {
             File indexer = new File(dir, "indexer.properties");
             try {
                 String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
@@ -3023,7 +3030,7 @@ public class ImageMosaicReaderTest {
         Function<File, String> expectedLocation1 = d -> new File(d, "world.200402.3x5400x2700.tiff").getAbsolutePath();
         Function<File, String> expectedLocation2 =
                 d -> new File(d.getParentFile(), "singleHarvest2/world.200405.3x5400x2700.tiff").getAbsolutePath();
-        Consumer<File> mosaicDirSetup = (dir) -> {
+        Consumer<File> mosaicDirSetup = dir -> {
             File indexer = new File(dir, "indexer.properties");
             try {
                 String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
@@ -3139,8 +3146,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3184,8 +3191,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove2\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3230,8 +3237,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove3\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3276,8 +3283,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, referenceDir);
 
         // place H2 file in the dir
-        try (FileWriter out =
-                new FileWriter(new File(TestData.file(this, "."), referenceDir + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove4\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3533,7 +3540,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -3756,7 +3763,7 @@ public class ImageMosaicReaderTest {
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
 
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
         checkPAMDataset(object, 72.6912, 83.2542);
 
@@ -3775,7 +3782,7 @@ public class ImageMosaicReaderTest {
         final String[] metadataNames = reader.getMetadataNames();
         assertNotNull(metadataNames);
 
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Object object = coverage.getProperty(GridCoverage2DReader.PAM_DATASET);
         checkPAMDataset(object, 72.6912, 83.2542);
 
@@ -3808,7 +3815,8 @@ public class ImageMosaicReaderTest {
         final URL timeElevURL = TestData.url(this, "stop-it");
 
         // place H2 file in the dir
-        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), "/stop-it/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(
+                new File(TestData.file(this, "."), "/stop-it/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -3868,7 +3876,7 @@ public class ImageMosaicReaderTest {
         ImageMosaicReader reader = getReader(testURL, format);
 
         // test the coverage
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // Check that the coverage has an IndexColormodel
         assertTrue(coverage.getRenderedImage().getColorModel() instanceof IndexColorModel);
@@ -3893,7 +3901,7 @@ public class ImageMosaicReaderTest {
         reader = getReader(testURL, format);
 
         // test the coverage
-        coverage = reader.read(null);
+        coverage = reader.read();
 
         // Check that the coverage has a component Colormodel
         assertTrue(coverage.getRenderedImage().getColorModel() instanceof ComponentColorModel);
@@ -4033,7 +4041,7 @@ public class ImageMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -4074,7 +4082,7 @@ public class ImageMosaicReaderTest {
 
         // place H2 file in the dir
         File dataStoreProperties = new File(testMosaic, "datastore.properties");
-        try (FileWriter out = new FileWriter(dataStoreProperties)) {
+        try (FileWriter out = new FileWriter(dataStoreProperties, StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
             out.write(H2_SAMPLE_PROPERTIES);
             out.flush();
@@ -4090,7 +4098,7 @@ public class ImageMosaicReaderTest {
 
         // rename the table
         Properties h2Connection = new Properties();
-        try (FileReader fr = new FileReader(dataStoreProperties)) {
+        try (FileReader fr = new FileReader(dataStoreProperties, StandardCharsets.UTF_8)) {
             h2Connection.load(fr);
         }
         h2Connection.put("database", new File(testMosaic, "imagemosaic").getCanonicalPath());
@@ -4113,7 +4121,7 @@ public class ImageMosaicReaderTest {
 
         // now read again, see if the config gets read properly
         final ImageMosaicReader reader2 = getReader(testMosaicUrl, format);
-        GridCoverage2D coverage = reader2.read(null);
+        GridCoverage2D coverage = reader2.read();
         coverage.dispose(true);
         reader2.dispose();
     }
@@ -4125,7 +4133,7 @@ public class ImageMosaicReaderTest {
         final AbstractGridFormat format = TestUtils.getFormat(mixedSampleModelURL);
         ImageMosaicReader reader = getReader(mixedSampleModelURL, format);
 
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         assertNotNull(coverage);
         RenderedImage ri = coverage.getRenderedImage();
         assertThat(ri.getSampleModel(), instanceOf(ComponentSampleModel.class));
@@ -4260,7 +4268,7 @@ public class ImageMosaicReaderTest {
 
         AbstractGridFormat format = TestUtils.getFormat(coverageBands2URL);
         ImageMosaicReader reader = getReader(coverageBands2URL, format);
-        reader.read("rgb", null);
+        reader.read("rgb");
         reader.dispose();
     }
 
@@ -4275,7 +4283,7 @@ public class ImageMosaicReaderTest {
         for (int i = 0; i < coverageCount; i++) {
             String coverageName = coverageNames[i];
             assertEquals(expectedNames[i], coverageName);
-            GridCoverage2D coverage = reader.read(coverageNames[i], null);
+            GridCoverage2D coverage = reader.read(coverageNames[i]);
             assertNotNull(coverage);
             RenderedImage ri = coverage.getRenderedImage();
             assertThat(ri.getSampleModel(), instanceOf(ComponentSampleModel.class));
@@ -4346,14 +4354,14 @@ public class ImageMosaicReaderTest {
         // this should return an empty coverage
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         GeneralBounds envelope = reader.getOriginalEnvelope();
-        Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
         assertNull(coverage);
 
         // read without parameters, should also give null, since the bbox of the coverage is used
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNull(coverage);
 
         // use more complex parameters and own bbox --> should also return null coverage
@@ -4394,7 +4402,7 @@ public class ImageMosaicReaderTest {
         assertFalse(manager.spatialDomainManager.coverageBBox.isEmpty());
 
         // read without parameters, should give back the whole coverage
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNotNull(coverage);
         assertNotNull(coverage.getRenderedImage());
         coverage.dispose(true);
@@ -4413,7 +4421,7 @@ public class ImageMosaicReaderTest {
         assertTrue(manager.spatialDomainManager.coverageBBox.isEmpty());
 
         // read without parameters, should give back a null coverage
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNull(coverage);
 
         // use more complex parameters and own bbox --> should also return a null coverage
@@ -4444,14 +4452,14 @@ public class ImageMosaicReaderTest {
         // this should return an empty coverage
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         GeneralBounds envelope = reader.getOriginalEnvelope();
-        Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
         assertNull(coverage);
 
         // read without parameters, should also give null, since the bbox of the coverage is used
-        coverage = reader.read(null);
+        coverage = reader.read();
         assertNull(coverage);
 
         // use more complex parameters and own bbox
@@ -4639,7 +4647,7 @@ public class ImageMosaicReaderTest {
         URL granuleUrl = fileToUrl(file);
         AbstractGridFormat granuleFormat = TestUtils.getFormat(granuleUrl);
         AbstractGridCoverage2DReader granuleReader = granuleFormat.getReader(granuleUrl);
-        GridCoverage2D expected = granuleReader.read(null);
+        GridCoverage2D expected = granuleReader.read();
 
         // check footprint is the same
         final Bounds expectedEnvelope = expected.getEnvelope();
@@ -4843,6 +4851,7 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
+    @SuppressWarnings("FloatingPointAssertionWithinEpsilon")
     public void testNoDataRescaleStats() throws Exception {
         // For this test the input files havethe nodata value that is very high compared
         // to the valid data, ask for a geometry that requires some translation, and
@@ -5000,7 +5009,7 @@ public class ImageMosaicReaderTest {
         checkConcurrentHarvestAndRemove(
                 f -> {
                     // place H2 file in the dir
-                    try (FileWriter out = new FileWriter(new File(f, "datastore.properties"))) {
+                    try (FileWriter out = new FileWriter(new File(f, "datastore.properties"), StandardCharsets.UTF_8)) {
                         out.write("database=imagemosaic\n");
                         out.write(H2_SAMPLE_PROPERTIES);
                         out.flush();
@@ -5320,14 +5329,14 @@ public class ImageMosaicReaderTest {
         // Having a properties file with ArcGridFormat as suggested Format
         // although images are RGBA. The bad format will not be used
         // (the file might already be there and have a suggested format, so, overwriting)
-        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"))) {
+        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"), StandardCharsets.UTF_8)) {
             out.write("SuggestedFormat=org.geotools.gce.arcgrid.ArcGridFormat");
             out.flush();
         }
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(workDir);
 
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
         Assert.assertNotNull(gc);
         reader.dispose();
     }
@@ -5424,7 +5433,8 @@ public class ImageMosaicReaderTest {
         ImageMosaicReader reader = format.getReader(workDir);
         try {
             // check the property was transferred to the main mosaic config
-            try (FileReader fr = new FileReader(new File(workDir, workDirName + ".properties"))) {
+            try (FileReader fr =
+                    new FileReader(new File(workDir, workDirName + ".properties"), StandardCharsets.UTF_8)) {
                 Properties p = new Properties();
                 p.load(fr);
                 assertEquals("true", p.getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS));
@@ -5470,13 +5480,13 @@ public class ImageMosaicReaderTest {
         assertThat(Arrays.asList(reader.getGridCoverageNames()), CoreMatchers.hasItems("rgb", "gray"));
 
         // rgb comes from the rgb_sample file
-        GridCoverage2D rgb = reader.read("rgb", null);
+        GridCoverage2D rgb = reader.read("rgb");
         assertThat(
                 (String) rgb.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY),
                 CoreMatchers.endsWith("rgb_sample.tif"));
         rgb.dispose(true);
 
-        GridCoverage2D gray = reader.read("gray", null);
+        GridCoverage2D gray = reader.read("gray");
         assertThat(
                 (String) gray.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY),
                 CoreMatchers.endsWith("gray_sample.tif"));
@@ -5549,7 +5559,7 @@ public class ImageMosaicReaderTest {
         final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
         GridCoverage2D coverage = null;
         try {
-            coverage = reader.read(null);
+            coverage = reader.read();
             File sample = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/rgba-overlap.png");
             ImageAssert.assertEquals(sample, coverage.getRenderedImage(), 0);
         } finally {
@@ -5577,7 +5587,7 @@ public class ImageMosaicReaderTest {
 
         // read everything, will populate the cache
         ImageMosaicReader reader = getReader(workDir);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         coverage.dispose(true);
 
         String name = reader.getGridCoverageNames()[0];
@@ -5652,7 +5662,7 @@ public class ImageMosaicReaderTest {
             final Dimension dim = new Dimension();
             GridEnvelope gridRange = reader.getOriginalGridRange();
             dim.setSize(gridRange.getSpan(0) / 15.8, gridRange.getSpan(1) / 15.8);
-            final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+            final Rectangle rasterArea = (GridEnvelope2D) gridRange;
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, envelope));

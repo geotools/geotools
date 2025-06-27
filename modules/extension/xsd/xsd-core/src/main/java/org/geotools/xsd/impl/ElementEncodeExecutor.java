@@ -155,7 +155,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
 
             try {
                 if (object != null) {
-                    String value = simple.encode(object, (text != null) ? text.getData() : null);
+                    String value = simple.encode(object, text != null ? text.getData() : null);
 
                     if (value != null) {
                         // set the text of the node

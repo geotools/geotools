@@ -20,16 +20,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
-import org.apache.commons.lang3.JavaVersion;
-import org.apache.commons.lang3.SystemUtils;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -43,8 +39,6 @@ public final class NIOUtilities {
 
     /** The buffer cache, partitioned by buffer size and fully concurrent */
     static Map<Integer, Queue<Object>> cache = new ConcurrentHashMap<>();
-
-    static Map<Class, Method> cleanerMethodCache = new ConcurrentHashMap<>();
 
     /**
      * The maximum size of the hard reference cache (the soft one can be unbounded, the GC will regulate its size
@@ -137,6 +131,7 @@ public final class NIOUtilities {
             // this is the only synchronized bit, we don't want multiple queues
             // to be created. result == null will be true only at the application startup
             // for the common byte buffer sizes
+            // TODO: replace by cache.computeIfAbsent(...)
             synchronized (cache) {
                 result = cache.get(size);
                 if (result == null) {
@@ -182,80 +177,28 @@ public final class NIOUtilities {
         if (buffer == null || !buffer.isDirect()) {
             return true;
         }
-
-        PrivilegedAction<Boolean> action = SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)
-                ? () -> new CleanupAfterJdk8(buffer).clean()
-                : () -> new CleanupPriorJdk9(buffer).clean();
-
-        return AccessController.doPrivileged(action).booleanValue();
+        return cleanupAfterJdk8(buffer);
     }
 
-    private static class CleanupPriorJdk9 {
-        private final ByteBuffer buffer;
+    private static boolean cleanupAfterJdk8(ByteBuffer buffer) {
+        boolean success = false;
+        try {
+            // https://bugs.openjdk.java.net/browse/JDK-8171377
+            // https://bugs.openjdk.java.net/browse/JDK-4724038
+            final Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+            final Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
+            theUnsafeField.setAccessible(true);
+            final Object theUnsafe = theUnsafeField.get(null);
+            final Method invokeCleanerMethod = unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
+            invokeCleanerMethod.invoke(theUnsafe, buffer);
 
-        CleanupPriorJdk9(ByteBuffer buffer) {
-            this.buffer = buffer;
-        }
-
-        Boolean clean() {
-            Boolean success = Boolean.FALSE;
-            try {
-                Method getCleanerMethod = getCleanerMethod(buffer);
-                if (getCleanerMethod != null) {
-                    Object cleaner = getCleanerMethod.invoke(buffer, (Object[]) null);
-                    if (cleaner != null) {
-                        Method clean = cleaner.getClass().getMethod("clean", (Class[]) null);
-                        clean.invoke(cleaner, (Object[]) null);
-                        success = Boolean.TRUE;
-                    }
-                }
-            } catch (Exception e) {
-                // This really is a show stopper on windows
-                if (isLoggable()) {
-                    log(e, buffer);
-                }
+            success = true;
+        } catch (Exception e) {
+            if (isLoggable()) {
+                log(e, buffer);
             }
-            return success;
         }
-    }
-
-    private static class CleanupAfterJdk8 {
-        private final ByteBuffer buffer;
-
-        CleanupAfterJdk8(ByteBuffer buffer) {
-            this.buffer = buffer;
-        }
-
-        Boolean clean() {
-            Boolean success = Boolean.FALSE;
-            try {
-                // https://bugs.openjdk.java.net/browse/JDK-8171377
-                // https://bugs.openjdk.java.net/browse/JDK-4724038
-                final Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
-                final Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
-                theUnsafeField.setAccessible(true);
-                final Object theUnsafe = theUnsafeField.get(null);
-                final Method invokeCleanerMethod = unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
-                invokeCleanerMethod.invoke(theUnsafe, buffer);
-
-                success = Boolean.TRUE;
-            } catch (Exception e) {
-                if (isLoggable()) {
-                    log(e, buffer);
-                }
-            }
-            return success;
-        }
-    }
-
-    static Method getCleanerMethod(final ByteBuffer buffer) throws NoSuchMethodException {
-        Method result = cleanerMethodCache.get(buffer.getClass());
-        if (result == null) {
-            result = buffer.getClass().getMethod("cleaner", (Class[]) null);
-            result.setAccessible(true);
-            cleanerMethodCache.put(buffer.getClass(), result);
-        }
-        return result;
+        return success;
     }
 
     public static boolean returnToCache(final ByteBuffer buffer) {

@@ -72,7 +72,7 @@ public class MinVisitorTest {
     }
 
     /** A MinVisitor that set's visited without minvalue being set. */
-    private class PreVisitedMinVisitor extends MinVisitor {
+    private static class PreVisitedMinVisitor extends MinVisitor {
         PreVisitedMinVisitor(String attribute) {
             super(attribute);
             this.visited = true;

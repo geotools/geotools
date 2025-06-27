@@ -123,7 +123,7 @@ class ShapefileSetManager implements FileReader {
 
         if (store.isTryCPGFile()
                 && shpFiles.get(CPG) != null
-                && (!shpFiles.isLocal() || (shpFiles.isLocal() && shpFiles.exists(CPG)))) {
+                && (!shpFiles.isLocal() || shpFiles.isLocal() && shpFiles.exists(CPG))) {
             try (BufferedReader br =
                     new BufferedReader(new InputStreamReader(shpFiles.getInputStream(CPG, this), ISO_8859_1))) {
                 String charsetName;

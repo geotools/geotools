@@ -49,6 +49,7 @@ class MapTriangulationFactory {
      * @return Map of a source and destination triangles.
      * @throws TriangulationException thrown when the source points are outside the quad.
      */
+    @SuppressWarnings("NonApiType") // public method, can't return Map without risking breaking client code
     public HashMap<TINTriangle, Object> getTriangleMap() throws TriangulationException {
         Quadrilateral mQuad = mappedQuad(quad, vectors);
 

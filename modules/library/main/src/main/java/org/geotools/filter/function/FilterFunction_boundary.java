@@ -46,6 +46,6 @@ public class FilterFunction_boundary extends FunctionExpressionImpl {
                     "Filter Function problem for function boundary argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.boundary(arg0));
+        return StaticGeometry.boundary(arg0);
     }
 }

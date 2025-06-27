@@ -1137,7 +1137,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
             double epsilon;
             if (epsIsRelative) {
                 epsilon = Math.max(getSpan(i), envelope.getSpan(i));
-                epsilon = (epsilon > 0 && epsilon < Double.POSITIVE_INFINITY) ? epsilon * eps : eps;
+                epsilon = epsilon > 0 && epsilon < Double.POSITIVE_INFINITY ? epsilon * eps : eps;
             } else {
                 epsilon = eps;
             }

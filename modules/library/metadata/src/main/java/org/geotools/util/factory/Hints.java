@@ -1678,7 +1678,7 @@ public class Hints extends RenderingHints {
          */
         @Override
         public boolean isCompatibleValue(final Object value) {
-            return wildcard ? (value instanceof String) : options.contains(value);
+            return wildcard ? value instanceof String : options.contains(value);
         }
     }
 
@@ -1703,7 +1703,7 @@ public class Hints extends RenderingHints {
         /** Returns {@code true} if the specified object is a data source or data source name. */
         @Override
         public boolean isCompatibleValue(final Object value) {
-            return (value instanceof DataSource) || (value instanceof String) || (value instanceof Name);
+            return value instanceof DataSource || value instanceof String || value instanceof Name;
         }
     }
 

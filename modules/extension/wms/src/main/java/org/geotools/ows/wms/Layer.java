@@ -450,7 +450,7 @@ public class Layer implements Comparable<Layer> {
         // (para 7.1.4.5.4) "A child shall not redefine a Style with the same Name as one
         // inherited from a parent. A child may define a new Style with a new Name that is
         // not available for the parent Layer."
-        if ((styles != null) && !styles.isEmpty()) {
+        if (styles != null && !styles.isEmpty()) {
             for (StyleImpl style : styles) {
                 if (!allStyles.contains(style)) allStyles.add(style);
             }
@@ -509,7 +509,7 @@ public class Layer implements Comparable<Layer> {
      */
     @Override
     public int compareTo(Layer layer) {
-        if ((this.getName() != null) && (layer.getName() != null)) {
+        if (this.getName() != null && layer.getName() != null) {
             return this.getName().compareTo(layer.getName());
         }
 

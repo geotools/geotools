@@ -689,7 +689,7 @@ public class SEExampleTest extends SETestSupport {
         assertThat(eg1.getURI(), containsString("transport/amenity=parking.svg?fill=%2300eb00"));
         ExternalGraphic eg2 = (ExternalGraphic) symbols.get(1);
         assertThat(eg2.getURI(), containsString("transport/amenity=parking.svg"));
-        assertThat(eg2.getURI(), not((containsString("transport/amenity=parking.svg?fill=%2300eb00"))));
+        assertThat(eg2.getURI(), not(containsString("transport/amenity=parking.svg?fill=%2300eb00")));
         Mark mark = (Mark) symbols.get(2);
         assertEquals("square", mark.getWellKnownName().evaluate(null, String.class));
     }

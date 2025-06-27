@@ -52,7 +52,7 @@ public class QuantileFunction extends AbstractQuantityClassificationFunction {
         boolean percentages = false;
         if (getParameters().size() > 2) {
             Literal literal = (Literal) getParameters().get(2);
-            percentages = ((Boolean) literal.getValue()).booleanValue();
+            percentages = (Boolean) literal.getValue();
         }
         return percentages;
     }

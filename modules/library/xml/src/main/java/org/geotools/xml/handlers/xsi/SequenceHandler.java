@@ -49,8 +49,7 @@ public class SequenceHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
-                + ((children == null) ? 2 : children.hashCode());
+        return LOCALNAME.hashCode() * (id == null ? 1 : id.hashCode()) + (children == null ? 2 : children.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -149,13 +148,13 @@ public class SequenceHandler extends ElementGroupingHandler {
             minOccurs1 = atts.getValue(namespaceURI, "minOccurs");
         }
 
-        if ((minOccurs1 != null) && !"".equalsIgnoreCase(minOccurs1)) {
+        if (minOccurs1 != null && !"".equalsIgnoreCase(minOccurs1)) {
             this.minOccurs = Integer.parseInt(minOccurs1);
         } else {
             this.minOccurs = 1;
         }
 
-        if ((maxOccurs1 != null) && !"".equalsIgnoreCase(maxOccurs1)) {
+        if (maxOccurs1 != null && !"".equalsIgnoreCase(maxOccurs1)) {
             if ("unbounded".equalsIgnoreCase(maxOccurs1)) {
                 this.maxOccurs = ElementGrouping.UNBOUNDED;
             } else {
@@ -185,7 +184,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         cache.minOccurs = minOccurs;
         cache.maxOccurs = maxOccurs;
 
-        logger.finest(id + " :: This Sequence has " + ((children == null) ? 0 : children.size()) + " children");
+        logger.finest(id + " :: This Sequence has " + (children == null ? 0 : children.size()) + " children");
 
         if (children != null) {
             cache.children = new ElementGrouping[children.size()];

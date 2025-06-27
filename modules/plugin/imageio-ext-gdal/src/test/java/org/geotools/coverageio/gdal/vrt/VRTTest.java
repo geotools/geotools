@@ -120,7 +120,7 @@ public final class VRTTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
         forceDataLoading(gc);
 
         // check the nodata has been read
@@ -149,13 +149,13 @@ public final class VRTTest extends GDALTestCase {
         assertEquals(
                 DataBuffer.TYPE_SHORT, gc.getRenderedImage().getSampleModel().getDataType());
 
-        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle range = (GridEnvelope2D) reader.getOriginalGridRange();
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
 
         final GeneralBounds cropEnvelope = new GeneralBounds(
                 new double[] {
-                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
-                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + oldEnvelope.getSpan(0) / cropFactor,
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + oldEnvelope.getSpan(1) / cropFactor
                 },
                 new double[] {
                     oldEnvelope.getUpperCorner().getOrdinate(0),
@@ -193,7 +193,7 @@ public final class VRTTest extends GDALTestCase {
         final File file = TestData.file(this, "n43.dt0.nan.vrt");
         final BaseGDALGridCoverage2DReader reader = new VRTReader(file, hints);
 
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
 
         // check the nodata has been read
         double noData = getNoData(gc);

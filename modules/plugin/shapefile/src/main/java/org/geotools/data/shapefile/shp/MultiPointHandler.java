@@ -75,18 +75,13 @@ public class MultiPointHandler implements ShapeHandler {
 
         if (shapeType == ShapeType.MULTIPOINT) {
             // two doubles per coord (16 * numgeoms) + 40 for header
-            length = (mp.getNumGeometries() * 16) + 40;
+            length = mp.getNumGeometries() * 16 + 40;
         } else if (shapeType == ShapeType.MULTIPOINTM) {
             // add the additional MMin, MMax for 16, then 8 per measure
-            length = (mp.getNumGeometries() * 16) + 40 + 16 + (8 * mp.getNumGeometries());
+            length = mp.getNumGeometries() * 16 + 40 + 16 + 8 * mp.getNumGeometries();
         } else if (shapeType == ShapeType.MULTIPOINTZ) {
             // add the additional ZMin,ZMax, plus 8 per Z
-            length = (mp.getNumGeometries() * 16)
-                    + 40
-                    + 16
-                    + (8 * mp.getNumGeometries())
-                    + 16
-                    + (8 * mp.getNumGeometries());
+            length = mp.getNumGeometries() * 16 + 40 + 16 + 8 * mp.getNumGeometries() + 16 + 8 * mp.getNumGeometries();
         } else {
             throw new IllegalStateException("Expected ShapeType of Arc, got " + shapeType);
         }
@@ -134,7 +129,7 @@ public class MultiPointHandler implements ShapeHandler {
             }
         }
 
-        boolean isArcZWithM = shapeType == ShapeType.MULTIPOINTZ && (dbuffer.remaining() >= numpoints + 2);
+        boolean isArcZWithM = shapeType == ShapeType.MULTIPOINTZ && dbuffer.remaining() >= numpoints + 2;
         if ((isArcZWithM || shapeType == ShapeType.MULTIPOINTM) && !flatGeometry) {
             dbuffer.position(dbuffer.position() + 2);
 
@@ -165,7 +160,7 @@ public class MultiPointHandler implements ShapeHandler {
         buffer.putInt(mp.getNumGeometries());
 
         for (int t = 0, tt = mp.getNumGeometries(); t < tt; t++) {
-            Coordinate c = (mp.getGeometryN(t)).getCoordinate();
+            Coordinate c = mp.getGeometryN(t).getCoordinate();
             buffer.putDouble(c.x);
             buffer.putDouble(c.y);
         }
@@ -184,7 +179,7 @@ public class MultiPointHandler implements ShapeHandler {
             }
 
             for (int t = 0; t < mp.getNumGeometries(); t++) {
-                Coordinate c = (mp.getGeometryN(t)).getCoordinate();
+                Coordinate c = mp.getGeometryN(t).getCoordinate();
                 double z = c.getZ();
 
                 if (Double.isNaN(z)) {

@@ -99,7 +99,7 @@ public class TestData {
                 new Object[] {
                     Integer.valueOf(1), line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1",
                 },
-                ROAD + "." + (initialFidValue));
+                ROAD + "." + initialFidValue);
 
         //       + 3,4
         //       + 3,3
@@ -123,11 +123,11 @@ public class TestData {
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[1].getBounds()));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[2].getBounds()));
 
-        rd1Filter = ff.id(Collections.singleton(ff.featureId(ROAD + "." + (initialFidValue))));
+        rd1Filter = ff.id(Collections.singleton(ff.featureId(ROAD + "." + initialFidValue)));
         rd2Filter = ff.id(Collections.singleton(ff.featureId(ROAD + "." + (initialFidValue + 1))));
 
         Set<FeatureId> fids = new HashSet<>();
-        fids.add(ff.featureId(ROAD + "." + (initialFidValue)));
+        fids.add(ff.featureId(ROAD + "." + initialFidValue));
         fids.add(ff.featureId(ROAD + "." + (initialFidValue + 1)));
         rd12Filter = ff.id(fids);
 
@@ -170,7 +170,7 @@ public class TestData {
                     "rv1",
                     Double.valueOf(4.5)
                 },
-                RIVER + "." + (initialFidValue));
+                RIVER + "." + initialFidValue);
 
         //         + 6,10
         //        /
@@ -237,7 +237,7 @@ public class TestData {
 
     /** Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates and an arbitrary amount of holes. */
     public Polygon polygon(int[] xy, int[][] holes) {
-        if ((holes == null) || (holes.length == 0)) {
+        if (holes == null || holes.length == 0) {
             return polygon(xy);
         }
 

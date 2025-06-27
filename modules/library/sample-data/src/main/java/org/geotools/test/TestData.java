@@ -32,11 +32,11 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -107,7 +107,7 @@ public class TestData implements Runnable {
      * The files to delete at shutdown time. {@link File#deleteOnExit} alone doesn't seem suffisient since it will
      * preserve any overwritten files.
      */
-    private static final LinkedList<Deletable> toDelete = new LinkedList<>();
+    private static final Deque<Deletable> toDelete = new ArrayDeque<>();
 
     /** {@code true} if JAI media lib is available. */
     private static final boolean mediaLibAvailable;
@@ -115,14 +115,15 @@ public class TestData implements Runnable {
     static {
 
         // do we wrappers at hand?
-        Class mediaLibImage = null;
+        Class<?> mediaLibImage = null;
         try {
             mediaLibImage = Class.forName("com.sun.medialib.mlib.Image");
         } catch (ClassNotFoundException e) {
+            // Media library not available, continue without it
         }
-        boolean mediaLib = (mediaLibImage != null);
+        boolean mediaLib = mediaLibImage != null;
 
-        // npw check if we either wanted to disable explicitly and if we installed the native libs
+        // now check if we either wanted to disable explicitly and if we installed the native libs
         if (mediaLib) {
 
             try {
@@ -131,23 +132,16 @@ public class TestData implements Runnable {
 
                 // native libs installed
                 if (mediaLib) {
-                    final Class mImage = mediaLibImage;
-                    PrivilegedAction<Boolean> action = () -> {
-                        try {
-                            // get the method
-                            final Class[] params = {};
-                            Method method = mImage.getDeclaredMethod("isAvailable", params);
-
-                            // invoke
-                            final Object[] paramsObj = {};
-
-                            final Object o = mImage.getDeclaredConstructor().newInstance();
-                            return (Boolean) method.invoke(o, paramsObj);
-                        } catch (Throwable e) {
-                            return false;
-                        }
-                    };
-                    mediaLib = AccessController.doPrivileged(action);
+                    final Class<?> mImage = mediaLibImage;
+                    try {
+                        // get the method
+                        Method method = mImage.getDeclaredMethod("isAvailable");
+                        // invoke
+                        final Object o = mImage.getDeclaredConstructor().newInstance();
+                        mediaLib = (Boolean) method.invoke(o);
+                    } catch (Throwable e) {
+                        mediaLib = false;
+                    }
                 }
             } catch (Throwable e) {
                 // Because the property com.sun.media.jai.disableMediaLib isn't
@@ -167,7 +161,7 @@ public class TestData implements Runnable {
         mediaLibAvailable = mediaLib;
     }
 
-    /**
+    /*
      * Register the thread to be automatically executed at shutdown time. This thread will delete all temporary files
      * registered in {@link #toDelete}.
      */
@@ -254,7 +248,7 @@ public class TestData implements Runnable {
             name = DIRECTORY + '/' + name;
         }
         if (caller != null) {
-            final Class c = (caller instanceof Class) ? (Class) caller : caller.getClass();
+            final Class c = caller instanceof Class ? (Class) caller : caller.getClass();
             return c.getResource(name);
         } else {
             return Thread.currentThread().getContextClassLoader().getResource(name);
@@ -319,8 +313,8 @@ public class TestData implements Runnable {
     public static File temp(final Object caller, final String name) throws IOException {
         final File testData = file(caller, null);
         final int split = name.lastIndexOf('.');
-        final String prefix = (split < 0) ? name : name.substring(0, split);
-        final String suffix = (split < 0) ? "tmp" : name.substring(split + 1);
+        final String prefix = split < 0 ? name : name.substring(0, split);
+        final String suffix = split < 0 ? "tmp" : name.substring(split + 1);
         final File tmp = File.createTempFile(prefix, '.' + suffix, testData);
         deleteOnExit(tmp);
         return tmp;
@@ -356,7 +350,7 @@ public class TestData implements Runnable {
      */
     public static LineNumberReader openReader(final Object caller, final String name)
             throws FileNotFoundException, IOException {
-        return new LineNumberReader(new InputStreamReader(url(caller, name).openStream()));
+        return new LineNumberReader(new InputStreamReader(url(caller, name).openStream(), StandardCharsets.UTF_8));
     }
 
     /**

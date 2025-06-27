@@ -74,7 +74,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     /** Collection based on a generic collection */
     protected DataFeatureCollection() {
-        this("features" + (unique++));
+        this("features" + unique++);
     }
     /** Collection based on a generic collection */
     protected DataFeatureCollection(String id) {
@@ -191,7 +191,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      *
      * @return Iterator, should be closed closeIterator
      */
-    @SuppressWarnings("PMD.CloseResource")
+    @SuppressWarnings({"PMD.CloseResource", "EmptyCatch"})
     protected Iterator<SimpleFeature> openIterator() throws IOException {
         try {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer = writer();

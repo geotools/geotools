@@ -137,7 +137,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
         } else if (thisBeginning.before(otherBeginning) && thisEnding.compareTo(otherEnding) == 0) {
             return RelativePosition.ENDED_BY;
         } else {
-            return (thisBeginning.compareTo(otherEnding) == 0) ? RelativePosition.MET_BY : RelativePosition.AFTER;
+            return thisBeginning.compareTo(otherEnding) == 0 ? RelativePosition.MET_BY : RelativePosition.AFTER;
         }
     }
 
@@ -154,9 +154,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
                 if (otherBeginning.before(thisDate) && otherEnd.after(thisDate)) {
                     return RelativePosition.DURING;
                 } else {
-                    return (otherBeginning.compareTo(thisDate) == 0)
-                            ? RelativePosition.BEGINS
-                            : RelativePosition.BEFORE;
+                    return otherBeginning.compareTo(thisDate) == 0 ? RelativePosition.BEGINS : RelativePosition.BEFORE;
                 }
             }
         }
@@ -174,7 +172,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
             if (thisStart.before(otherDate) && thisEnd.after(otherDate)) {
                 return RelativePosition.CONTAINS;
             } else {
-                return (thisStart.compareTo(otherDate) == 0) ? RelativePosition.BEGUN_BY : RelativePosition.AFTER;
+                return thisStart.compareTo(otherDate) == 0 ? RelativePosition.BEGUN_BY : RelativePosition.AFTER;
             }
         }
     }
@@ -185,7 +183,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
         if (thisDate.before(otherDate)) {
             return RelativePosition.BEFORE;
         } else {
-            return (thisDate.compareTo(otherDate) == 0) ? RelativePosition.EQUALS : RelativePosition.AFTER;
+            return thisDate.compareTo(otherDate) == 0 ? RelativePosition.EQUALS : RelativePosition.AFTER;
         }
     }
 }

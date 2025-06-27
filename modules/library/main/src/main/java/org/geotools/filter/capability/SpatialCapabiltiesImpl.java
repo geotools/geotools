@@ -112,8 +112,8 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((geometryOperands == null) ? 0 : geometryOperands.hashCode());
-        result = prime * result + ((spatialOperators == null) ? 0 : spatialOperators.hashCode());
+        result = prime * result + (geometryOperands == null ? 0 : geometryOperands.hashCode());
+        result = prime * result + (spatialOperators == null ? 0 : spatialOperators.hashCode());
         return result;
     }
 

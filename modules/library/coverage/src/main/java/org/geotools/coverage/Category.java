@@ -327,13 +327,13 @@ public class Category implements Serializable {
      *     to return the number with no change.
      */
     private static double doubleValue(final Class<?> type, final Comparable number, final int direction) {
-        assert (direction >= -1) && (direction <= +1) : direction;
+        assert direction >= -1 && direction <= +1 : direction;
         return org.geotools.util.XMath.rool(type, ((Number) number).doubleValue(), direction);
     }
 
     /** Returns the given color in an array of length 1, or {@code null} if {@code color} is null. */
     private static Color[] toArray(final Color color) {
-        return (color != null) ? new Color[] {color} : null;
+        return color != null ? new Color[] {color} : null;
     }
 
     /**

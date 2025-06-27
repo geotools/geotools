@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureStore;
@@ -67,7 +68,7 @@ public class PropertyDataStore3DTest {
         if (file.exists()) {
             file.delete();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=name:String,geom:Geometry:srid=7415");
             writer.newLine();
             writer.write(

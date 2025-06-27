@@ -86,13 +86,13 @@ public class AbstractGMLBindingTest {
             Object[] attValues) {
         NodeImpl node = new NodeImpl(instance);
 
-        if ((elements != null) && (elements.length > 0)) {
+        if (elements != null && elements.length > 0) {
             for (int i = 0; i < elements.length; i++) {
                 node.addChild(new NodeImpl(elements[i], elementValues[i]));
             }
         }
 
-        if ((attributes != null) && (attributes.length > 0)) {
+        if (attributes != null && attributes.length > 0) {
             for (int i = 0; i < attributes.length; i++) {
                 node.addAttribute(new NodeImpl(attributes[i], attValues[i]));
             }

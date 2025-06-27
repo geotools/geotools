@@ -232,14 +232,14 @@ public class ElementGT implements Element {
      */
     @Override
     public Element findChildElement(String name1) {
-        return (getName() != null && getName().equals(name1)) ? this : null;
+        return getName() != null && getName().equals(name1) ? this : null;
     }
 
     @Override
     public Element findChildElement(String localName, URI namespaceURI) {
-        return (getName() != null
+        return getName() != null
                         && getName().equals(localName)
-                        && getNamespace().equals(namespaceURI))
+                        && getNamespace().equals(namespaceURI)
                 ? this
                 : null;
     }

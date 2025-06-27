@@ -196,7 +196,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         this.calendar = Calendar.getInstance(calTimeZone, Locale.US);
 
         this.useMemoryMappedBuffer = useMemoryMappedBuffer;
-        this.randomAccessEnabled = (channel instanceof FileChannel);
+        this.randomAccessEnabled = channel instanceof FileChannel;
         streamLogger.open();
         header = new DbaseFileHeader(stringCharset);
 
@@ -204,7 +204,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         // if we have a FileChannel, lets map it
         if (channel instanceof FileChannel && this.useMemoryMappedBuffer) {
             final FileChannel fc = (FileChannel) channel;
-            if ((fc.size() - fc.position()) < Integer.MAX_VALUE) {
+            if (fc.size() - fc.position() < Integer.MAX_VALUE) {
                 buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             } else {
                 buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, Integer.MAX_VALUE);
@@ -614,7 +614,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         final char[] chars = new char[fieldLen];
         for (int i = 0; i < fieldLen; i++) {
             // force the byte to a positive integer interpretation before casting to char
-            chars[i] = ((char) (0x00FF & bytes[fieldOffset + i]));
+            chars[i] = (char) (0x00FF & bytes[fieldOffset + i]);
         }
         return new String(chars);
     }

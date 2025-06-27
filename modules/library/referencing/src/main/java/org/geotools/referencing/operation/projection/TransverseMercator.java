@@ -90,6 +90,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
  * @author Martin Desruisseaux (PMO, IRD)
  * @author Rueben Schulz
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class TransverseMercator extends MapProjection {
     /** Maximum difference allowed when comparing real numbers. */
     private static final double EPSILON = 1E-6;
@@ -146,7 +147,7 @@ public class TransverseMercator extends MapProjection {
         double sinphi = sin(y);
         double cosphi = cos(y);
 
-        double t = (abs(cosphi) > EPSILON) ? sinphi / cosphi : 0;
+        double t = abs(cosphi) > EPSILON ? sinphi / cosphi : 0;
         t *= t;
         double al = cosphi * x;
         double als = al * al;
@@ -176,12 +177,12 @@ public class TransverseMercator extends MapProjection {
         double phi = inv_mlfn(ml0 + y);
 
         if (abs(phi) >= PI / 2) {
-            y = y < 0.0 ? -(PI / 2) : (PI / 2);
+            y = y < 0.0 ? -(PI / 2) : PI / 2;
             x = 0.0;
         } else {
             double sinphi = sin(phi);
             double cosphi = cos(phi);
-            double t = (abs(cosphi) > EPSILON) ? sinphi / cosphi : 0.0;
+            double t = abs(cosphi) > EPSILON ? sinphi / cosphi : 0.0;
             double n = esp * cosphi * cosphi;
             double con = 1.0 - excentricitySquared * sinphi * sinphi;
             double d = x * sqrt(con);
@@ -241,7 +242,7 @@ public class TransverseMercator extends MapProjection {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
+        Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
             ensureSpherical();
         }
@@ -282,8 +283,8 @@ public class TransverseMercator extends MapProjection {
             double cosD = cos(latitudeOfOrigin + y);
             double phi = asin(sqrt((1.0 - cosD * cosD) / (1.0 + sinhX * sinhX)));
             // correct for the fact that we made everything positive using sqrt(x*x)
-            y = ((y + latitudeOfOrigin) < 0.0) ? -phi : phi;
-            x = (abs(sinhX) <= EPSILON && abs(cosD) <= EPSILON) ? 0.0 : atan2(sinhX, cosD);
+            y = y + latitudeOfOrigin < 0.0 ? -phi : phi;
+            x = abs(sinhX) <= EPSILON && abs(cosD) <= EPSILON ? 0.0 : atan2(sinhX, cosD);
 
             assert checkInverseTransform(x, y, ptDst, getToleranceForSphereAssertions(x));
             if (ptDst != null) {
@@ -306,7 +307,7 @@ public class TransverseMercator extends MapProjection {
          *     from it.
          * @return The tolerance level for assertions, in meters.
          */
-        protected double getToleranceForSphereAssertions(final double longitude) {
+        double getToleranceForSphereAssertions(final double longitude) {
             if (abs(abs(longitude) - PI / 2) < EPSILON_LATITUDE) { // 90 degrees
                 // elliptical equations are at their worst here
                 return 1E+18;
@@ -349,7 +350,7 @@ public class TransverseMercator extends MapProjection {
         // longitude 1.
         t -= zoneCount * floor(t / zoneCount); // If negative, bring back to the interval 0
         // to (zoneCount-1).
-        return ((int) t) + 1;
+        return (int) t + 1;
     }
 
     /**

@@ -41,7 +41,7 @@ public class AnyAttributeHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((namespace == null) ? 1 : namespace.hashCode());
+        return LOCALNAME.hashCode() * (namespace == null ? 1 : namespace.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

@@ -370,7 +370,7 @@ final class Resampler2D extends GridCoverage2D {
         sourceProps = sourceProps != null ? new HashMap<>(sourceProps) : new HashMap<>();
         Object roiProp = sourceProps.get("GC_ROI");
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
-        ROI roi = (roiProp != null && roiProp instanceof ROI) ? (ROI) roiProp : null;
+        ROI roi = roiProp != null && roiProp instanceof ROI ? (ROI) roiProp : null;
         Range nodata = nodataProp != null ? nodataProp.getAsRange() : null;
 
         // From this point, consider 'sourceCoverage' as final.
@@ -443,7 +443,7 @@ final class Resampler2D extends GridCoverage2D {
                 throw new CannotReprojectException(ErrorKeys.UNSPECIFIED_CRS);
             }
             final CoordinateOperation operation = factory.createOperation(sourceCRS, targetCRS);
-            final boolean force2D = (sourceCRS != compatibleSourceCRS);
+            final boolean force2D = sourceCRS != compatibleSourceCRS;
             step2 = factory.createOperation(targetCRS, compatibleSourceCRS).getMathTransform();
             step3 = (force2D ? sourceGG.getGridToCRS2D(CORNER) : sourceGG.getGridToCRS(CORNER)).inverse();
             final Bounds sourceEnvelope = sourceCoverage.getEnvelope(); // Don't force this one to 2D.
@@ -585,8 +585,8 @@ final class Resampler2D extends GridCoverage2D {
         final Map<String, Object> imageProperties = new HashMap<>();
         Warp warp = null;
         if (allSteps.isIdentity()
-                || (allSteps instanceof AffineTransform
-                        && XAffineTransform.isIdentity((AffineTransform) allSteps, EPS))) {
+                || allSteps instanceof AffineTransform
+                        && XAffineTransform.isIdentity((AffineTransform) allSteps, EPS)) {
             sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
             w.setImage(sourceImage);
             if (targetBB.equals(sourceBB)) {
@@ -690,7 +690,7 @@ final class Resampler2D extends GridCoverage2D {
                             Bounds target = CRS.transform(targetGG.getEnvelope(), targetCRS);
                             source = targetGG.reduce(source);
                             target = targetGG.reduce(target);
-                            if (!(new GeneralBounds(source).contains(target, true))) {
+                            if (!new GeneralBounds(source).contains(target, true)) {
                                 if (interpolation != null && !(interpolation instanceof InterpolationNearest)) {
                                     hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
                                     return reproject(sourceCoverage, targetCRS, targetGG, null, hints, background);
@@ -768,9 +768,9 @@ final class Resampler2D extends GridCoverage2D {
         assert CRS.equalsIgnoreMetadata(targetCoverage.getCoordinateReferenceSystem(), targetCRS) : targetGG;
         assert targetCoverage.getGridGeometry().getGridRange2D().equals(targetImage.getBounds()) : targetGG;
         if (CoverageProcessor.LOGGER.isLoggable(LOGGING_LEVEL)) {
-            Object bgParameter = (background != null)
+            Object bgParameter = background != null
                     ? background.length == 1
-                            ? (Double.isNaN(background[0]) ? "NaN" : Double.valueOf(background[0]))
+                            ? Double.isNaN(background[0]) ? "NaN" : Double.valueOf(background[0])
                             : XArray.toString(background, locale)
                     : "No background used";
             log(Loggings.getResources(locale)
@@ -814,14 +814,14 @@ final class Resampler2D extends GridCoverage2D {
         // NoData and ROI must be handled
         ROI roiProp = CoverageUtilities.getROIProperty(coverage);
         Object nodataProp = CoverageUtilities.getNoDataProperty(coverage);
-        boolean hasROI = (roiProp != null);
-        boolean hasNoData = (nodataProp != null);
+        boolean hasROI = roiProp != null;
+        boolean hasNoData = nodataProp != null;
         if (hasROI || hasNoData) {
             return null;
         }
         while (!equivalent(coverage.getGridGeometry(), targetGG)
-                || (!CRS.equalsIgnoreMetadata(targetCRS, coverage.getCoordinateReferenceSystem())
-                        && !CRS.equalsIgnoreMetadata(targetCRS, coverage.getCoordinateReferenceSystem2D()))) {
+                || !CRS.equalsIgnoreMetadata(targetCRS, coverage.getCoordinateReferenceSystem())
+                        && !CRS.equalsIgnoreMetadata(targetCRS, coverage.getCoordinateReferenceSystem2D())) {
             if (!(coverage instanceof Resampler2D)) {
                 return null;
             }
@@ -886,8 +886,8 @@ final class Resampler2D extends GridCoverage2D {
             final CoordinateReferenceSystem sourceCRS,
             final CoordinateReferenceSystem targetCRS) {
         final int dim2D = sourceCRS2D.getCoordinateSystem().getDimension();
-        return (targetCRS.getCoordinateSystem().getDimension() == dim2D
-                        && sourceCRS.getCoordinateSystem().getDimension() > dim2D)
+        return targetCRS.getCoordinateSystem().getDimension() == dim2D
+                        && sourceCRS.getCoordinateSystem().getDimension() > dim2D
                 ? sourceCRS2D
                 : sourceCRS;
     }
@@ -1006,8 +1006,8 @@ final class Resampler2D extends GridCoverage2D {
              * the actual and expected bounding boxes should be only 1 pixel.
              */
             if (actualBB != null) {
-                final double scaleX = 1 - (sourceBB.width / (double) actualBB.width);
-                final double scaleY = 1 - (sourceBB.height / (double) actualBB.height);
+                final double scaleX = 1 - sourceBB.width / (double) actualBB.width;
+                final double scaleY = 1 - sourceBB.height / (double) actualBB.height;
                 final double translateX = sourceBB.x - actualBB.x;
                 final double translateY = sourceBB.y - actualBB.y;
                 final double factor = step / (double) EMPIRICAL_ADJUSTMENT_STEPS;

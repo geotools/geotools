@@ -109,6 +109,7 @@ public class InterpolationConverterFactory implements ConverterFactory {
     }
 
     /** @author Simone Giannecchini, GeoSolutions */
+    @SuppressWarnings("ImmutableEnumChecker")
     enum InterpolationParser {
         INTERPOLATIONNEAREST {
 

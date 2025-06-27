@@ -169,7 +169,7 @@ public class SampleDataAccessData {
      */
     public static Geometry readGeometry(String wellKnownText) {
         try {
-            return (new WKTReader()).read(wellKnownText);
+            return new WKTReader().read(wellKnownText);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

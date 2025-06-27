@@ -155,11 +155,11 @@ public class FunctionToStringTest {
                     parameters.add(ff.literal(""));
                 } else if (type == String.class) {
                     parameters.add(ff.literal(""));
-                } else if ((type == Number.class) || (type == Double.class)) {
+                } else if (type == Number.class || type == Double.class) {
                     parameters.add(ff.literal(0.0));
                 } else if (type == Float.class) {
                     parameters.add(ff.literal(0.0f));
-                } else if ((type == Integer.class) || (type == Long.class)) {
+                } else if (type == Integer.class || type == Long.class) {
                     parameters.add(ff.literal(0));
                 } else if (type == Boolean.class) {
                     parameters.add(ff.literal(false));

@@ -277,7 +277,7 @@ public class MBObjectParser {
                 return value;
             }
             if (value instanceof JSONArray) {
-                return ff.literal(MBExpression.transformExpression(((JSONArray) value)));
+                return ff.literal(MBExpression.transformExpression((JSONArray) value));
             }
         }
         throw new MBFormatException(context.getSimpleName() + " requires [" + index + "] string, numeric or boolean");

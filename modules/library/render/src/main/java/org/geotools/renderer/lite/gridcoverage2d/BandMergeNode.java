@@ -125,7 +125,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
             //
             // //
             final int size = sources.size();
-            final boolean hasAlpha = (alpha != null);
+            final boolean hasAlpha = alpha != null;
             if (size == 1 && !hasAlpha) {
                 // returns the source if we don't need to restore the alpha channel
                 return getSource(0).getOutput();
@@ -167,7 +167,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                     gridGeometry = gg;
 
                     // color model
-                    final ColorSpace colorSpace = (size == 1 && hasAlpha)
+                    final ColorSpace colorSpace = size == 1 && hasAlpha
                             ? ColorSpace.getInstance(ColorSpace.CS_GRAY)
                             : ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB);
                     final int transparency = hasAlpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE;

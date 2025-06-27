@@ -36,7 +36,7 @@ public class WebMercatorZoomLevel extends ZoomLevel {
      */
     @Override
     public int calculateMaxTilePerColNumber(int zoomLevel) {
-        return (1 << zoomLevel); // 2 ^ (zoomLevel)
+        return 1 << zoomLevel; // 2 ^ (zoomLevel)
     }
 
     @Override

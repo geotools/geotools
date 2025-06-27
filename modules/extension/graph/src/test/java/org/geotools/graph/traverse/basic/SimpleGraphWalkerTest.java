@@ -32,7 +32,7 @@ public class SimpleGraphWalkerTest {
 
         GraphVisitor visitor = component -> {
             m_visited = true;
-            return (GraphTraversal.CONTINUE);
+            return GraphTraversal.CONTINUE;
         };
 
         Node n = new BasicNode();

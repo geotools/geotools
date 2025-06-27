@@ -85,7 +85,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
         dataEnd = channelSize;
 
         long initialMapSize =
-                (channelSize - channel.position()) < BUFFER_MEMORY_LIMIT ? channelSize : BUFFER_MEMORY_LIMIT;
+                channelSize - channel.position() < BUFFER_MEMORY_LIMIT ? channelSize : BUFFER_MEMORY_LIMIT;
         mappedByteBuffer = channel.map(mapMode, 0, initialMapSize);
         mappedByteBuffer.position((int) channel.position());
         bufferStart = 0;

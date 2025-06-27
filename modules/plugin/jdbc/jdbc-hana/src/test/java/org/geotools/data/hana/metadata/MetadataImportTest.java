@@ -42,7 +42,7 @@ public class MetadataImportTest extends JDBCTestSupport {
         args.add(fixture.getProperty("host"));
         args.add(fixture.getProperty("instance"));
         String database = fixture.getProperty("database");
-        if ((database != null) && !database.isEmpty()) {
+        if (database != null && !database.isEmpty()) {
             args.add(database);
         }
         MetadataImport.IPasswordReader passwordReader =

@@ -211,7 +211,7 @@ public class GeoPackageReaderTest {
     public void testPngJpegTileReading() throws IOException {
         // hit everything, mixing transparent and opaque
         GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("giantPoly.gpkg"), null);
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
         RenderedImage img = gc.getRenderedImage();
         File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
         ImageAssert.assertEquals(referenceFull, img, 1000);
@@ -298,7 +298,7 @@ public class GeoPackageReaderTest {
     public void testtCoverageWithDots() throws IOException {
         // used to break here, query failed to run
         GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("dot.in.name.gpkg"), null);
-        GridCoverage2D gc = reader.read("dot.in.name", null);
+        GridCoverage2D gc = reader.read("dot.in.name");
         assertNotNull(gc);
 
         // check read was succesful

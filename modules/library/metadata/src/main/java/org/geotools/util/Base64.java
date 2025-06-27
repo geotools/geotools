@@ -28,6 +28,7 @@
 package org.geotools.util;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Encodes and decodes to and from Base64 notation.
@@ -66,6 +67,8 @@ import java.io.IOException;
  * @author rob@iharder.net
  * @version 2.1
  */
+@SuppressWarnings({"NotJavadoc", "StringCharset", "UnnecessaryParentheses", "EmptyCatch", "DefaultCharset"
+}) // Third-party utility class, suppressing errorprone warnings for legacy code
 public class Base64 {
 
     /* ********  P U B L I C   F I E L D S  ******** */
@@ -448,7 +451,7 @@ public class Base64 {
             return new String(baos.toByteArray(), PREFERRED_ENCODING);
         } // end try
         catch (java.io.UnsupportedEncodingException uue) {
-            return new String(baos.toByteArray());
+            return new String(baos.toByteArray(), StandardCharsets.UTF_8);
         } // end catch
     } // end encode
 
@@ -567,7 +570,7 @@ public class Base64 {
                 return new String(baos.toByteArray(), PREFERRED_ENCODING);
             } // end try
             catch (java.io.UnsupportedEncodingException uue) {
-                return new String(baos.toByteArray());
+                return new String(baos.toByteArray(), StandardCharsets.UTF_8);
             } // end catch
         } // end if: compress
 
@@ -606,7 +609,7 @@ public class Base64 {
                 return new String(outBuff, 0, e, PREFERRED_ENCODING);
             } // end try
             catch (java.io.UnsupportedEncodingException uue) {
-                return new String(outBuff, 0, e);
+                return new String(outBuff, 0, e, StandardCharsets.UTF_8);
             } // end catch
         } // end else: don't compress
     } // end encodeBytes
@@ -830,7 +833,7 @@ public class Base64 {
             bytes = s.getBytes(PREFERRED_ENCODING);
         } // end try
         catch (java.io.UnsupportedEncodingException uee) {
-            bytes = s.getBytes();
+            bytes = s.getBytes(StandardCharsets.UTF_8);
         } // end catch
         // </change>
 

@@ -351,7 +351,7 @@ public class Utils {
         if (ordinalPosition.getOrdinalPosition() != null) {
             Date beginEra = ordinalPosition.getOrdinalPosition().getBeginning();
             Date endEra = ordinalPosition.getOrdinalPosition().getEnd();
-            Long middle = ((endEra.getTime() - beginEra.getTime()) / 2) + beginEra.getTime();
+            Long middle = (endEra.getTime() - beginEra.getTime()) / 2 + beginEra.getTime();
             calendar.setTimeInMillis(middle);
             return calendar.getTime();
         } else {

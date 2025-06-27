@@ -49,7 +49,7 @@ public class MBTilesFile implements AutoCloseable {
 
     public static final String PRAGMA_JOURNAL_MODE_OFF = "PRAGMA journal_mode=OFF";
 
-    public class TileIterator implements Iterator<MBTilesTile>, Closeable {
+    public static class TileIterator implements Iterator<MBTilesTile>, Closeable {
 
         ResultSet rs;
 

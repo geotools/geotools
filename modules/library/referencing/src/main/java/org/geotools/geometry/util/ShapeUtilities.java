@@ -111,16 +111,16 @@ public final class ShapeUtilities {
          * la paire (x,y) ci-dessous sera les véritables coordonnées du point d'intersection.
          */
         x = ((by1 - ay1) * (ax2 * bx2) + x * ax1 - y * bx1) / (x - y);
-        y = abs(bx2) > abs(ax2) ? (by2 / bx2) * (x - bx1) + by1 : (ay2 / ax2) * (x - ax1) + ay1;
+        y = abs(bx2) > abs(ax2) ? by2 / bx2 * (x - bx1) + by1 : ay2 / ax2 * (x - ax1) + ay1;
         /*
          * Les expressions '!=0' ci-dessous sont importantes afin d'éviter des problèmes
          * d'erreurs d'arrondissement lorsqu'un segment est vertical ou horizontal. Les
          * '!' qui suivent sont importants pour un fonctionnement correct avec NaN.
          */
-        if (ax2 != 0 && !(ax2 < 0 ? (x <= ax1 && x >= ax1 + ax2) : (x >= ax1 && x <= ax1 + ax2))) return null;
-        if (bx2 != 0 && !(bx2 < 0 ? (x <= bx1 && x >= bx1 + bx2) : (x >= bx1 && x <= bx1 + bx2))) return null;
-        if (ay2 != 0 && !(ay2 < 0 ? (y <= ay1 && y >= ay1 + ay2) : (y >= ay1 && y <= ay1 + ay2))) return null;
-        if (by2 != 0 && !(by2 < 0 ? (y <= by1 && y >= by1 + by2) : (y >= by1 && y <= by1 + by2))) return null;
+        if (ax2 != 0 && !(ax2 < 0 ? x <= ax1 && x >= ax1 + ax2 : x >= ax1 && x <= ax1 + ax2)) return null;
+        if (bx2 != 0 && !(bx2 < 0 ? x <= bx1 && x >= bx1 + bx2 : x >= bx1 && x <= bx1 + bx2)) return null;
+        if (ay2 != 0 && !(ay2 < 0 ? y <= ay1 && y >= ay1 + ay2 : y >= ay1 && y <= ay1 + ay2)) return null;
+        if (by2 != 0 && !(by2 < 0 ? y <= by1 && y >= by1 + by2 : y >= by1 && y <= by1 + by2)) return null;
         return new Point2D.Double(x, y);
     }
 
@@ -174,7 +174,7 @@ public final class ShapeUtilities {
             final double x1, final double y1, final double x2, final double y2, double x, double y) {
         final double slope = (y2 - y1) / (x2 - x1);
         if (!Double.isInfinite(slope)) {
-            final double y0 = (y2 - slope * x2);
+            final double y0 = y2 - slope * x2;
             x = ((y - y0) * slope + x) / (slope * slope + 1);
             y = x * slope + y0;
         } else {
@@ -269,7 +269,7 @@ public final class ShapeUtilities {
             x2 = x + dx;
         } else {
             final double m = (y1 - y2) / (x2 - x1);
-            final double y0 = (y2 - y) + m * (x2 - x);
+            final double y0 = y2 - y + m * (x2 - x);
             final double B = m * y0;
             final double A = m * m + 1;
             final double C = sqrt(B * B + A * (distance - y0 * y0));
@@ -371,7 +371,7 @@ public final class ShapeUtilities {
             final int orientation)
             throws IllegalArgumentException {
         final Point2D p = parabolicControlPoint(x0, y0, x1, y1, x2, y2, orientation, null);
-        return (p != null) ? new QuadCurve2D.Double(x0, y0, p.getX(), p.getY(), x2, y2) : null;
+        return p != null ? new QuadCurve2D.Double(x0, y0, p.getX(), p.getY(), x2, y2) : null;
     }
 
     /**
@@ -438,7 +438,7 @@ public final class ShapeUtilities {
                  * de contrôle selon le nouveau système d'axes.
                  */
                 final double x = 0.5; // Really "x/x2"
-                final double y = (y1 * x * x2) / (x1 * (x2 - x1)); // Really "y/y2"
+                final double y = y1 * x * x2 / (x1 * (x2 - x1)); // Really "y/y2"
                 final double check = abs(y);
                 if (!(check <= 1 / EPS)) return null; // Deux points ont les mêmes coordonnées.
                 if (!(check >= EPS)) return null; // Les trois points sont colinéaires.
@@ -446,8 +446,8 @@ public final class ShapeUtilities {
                  * Applique une rotation inverse puis une translation pour
                  * ramener le système d'axe dans sa position d'origine.
                  */
-                x1 = (x * rx2 - y * ry2) + x0;
-                y1 = (y * rx2 + x * ry2) + y0;
+                x1 = x * rx2 - y * ry2 + x0;
+                y1 = y * rx2 + x * ry2 + y0;
                 break;
             }
             case HORIZONTAL: {
@@ -508,8 +508,8 @@ public final class ShapeUtilities {
         x3 -= x1;
         y2 -= y1;
         y3 -= y1;
-        final double sq2 = (x2 * x2 + y2 * y2);
-        final double sq3 = (x3 * x3 + y3 * y3);
+        final double sq2 = x2 * x2 + y2 * y2;
+        final double sq3 = x3 * x3 + y3 * y3;
         final double x = (y2 * sq3 - y3 * sq2) / (y2 * x3 - y3 * x2);
         return new Point2D.Double(x1 + 0.5 * x, y1 + 0.5 * (sq2 - x * x2) / y2);
     }

@@ -169,7 +169,7 @@ class GridGeometryReducer {
             AffineTransform2D at = (AffineTransform2D) mt;
             double scaleX = Math.abs(at.getScaleX());
             double scaleY = Math.abs(at.getScaleY());
-            double step = ((scaleX + scaleY) / 2.) / 10.;
+            double step = (scaleX + scaleY) / 2. / 10.;
 
             ReferencedEnvelope envelope = reduced.getEnvelope2D();
             result = new GeneralBounds(envelope.getCoordinateReferenceSystem());

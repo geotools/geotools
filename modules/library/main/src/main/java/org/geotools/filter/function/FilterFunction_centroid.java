@@ -47,6 +47,6 @@ public class FilterFunction_centroid extends FunctionExpressionImpl {
                     "Filter Function problem for function centroid argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.centroid(arg0));
+        return StaticGeometry.centroid(arg0);
     }
 }

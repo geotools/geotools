@@ -68,7 +68,7 @@ public class BeanProcessFactoryTest {
     /** Constant used for absolute reference tests */
     public static final Rectangle DEFAULT_RECTANGLE = new Rectangle(0, 0, 10, 10);
 
-    public class BeanProcessFactory extends AnnotatedBeanProcessFactory {
+    public static class BeanProcessFactory extends AnnotatedBeanProcessFactory {
 
         public BeanProcessFactory() {
             super(

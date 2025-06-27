@@ -26,17 +26,17 @@ final class ColorUtils {
 
     /** Returns the alpha component of the specified color */
     public static int alpha(int color) {
-        return ((color >> 24) & 0xFF);
+        return color >> 24 & 0xFF;
     }
 
     /** Returns the red component of the specified color */
     public static int red(int color) {
-        return (color >> 16) & 0xFF;
+        return color >> 16 & 0xFF;
     }
 
     /** Returns the green component of the specified color */
     public static int green(int color) {
-        return (color >> 8) & 0xFF;
+        return color >> 8 & 0xFF;
     }
 
     /** Returns the blue component of the specified color */
@@ -46,7 +46,7 @@ final class ColorUtils {
 
     /** Puts back the four color components into a integer representation */
     public static int color(int red, int green, int blue, int alpha) {
-        return ((alpha & 0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 0);
+        return (alpha & 0xFF) << 24 | (red & 0xFF) << 16 | (green & 0xFF) << 8 | (blue & 0xFF) << 0;
     }
 
     /** Bit shifts a color component, loosing the less significant bits */

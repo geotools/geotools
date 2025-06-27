@@ -104,7 +104,7 @@ public class BindingWalker implements TypeWalker.Visitor {
                 }
             }
 
-            if ((bindingName == null) || (loader.getBinding(bindingName) == null)) {
+            if (bindingName == null || loader.getBinding(bindingName) == null) {
                 // special case check, look for an anonymous complex type
                 // with simple content
                 if (type instanceof XSDComplexTypeDefinition && type.getBaseType() instanceof XSDSimpleTypeDefinition) {

@@ -61,6 +61,6 @@ public class FilterFunction_min extends FunctionExpressionImpl {
                     "Filter Function problem for function min argument #1 - expected type double");
         }
 
-        return (Math.min((Double) arg0, (Double) arg1));
+        return Math.min((Double) arg0, (Double) arg1);
     }
 }

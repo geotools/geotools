@@ -46,6 +46,6 @@ public class FilterFunction_convexHull extends FunctionExpressionImpl {
                     "Filter Function problem for function convexHull argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.convexHull(arg0));
+        return StaticGeometry.convexHull(arg0);
     }
 }

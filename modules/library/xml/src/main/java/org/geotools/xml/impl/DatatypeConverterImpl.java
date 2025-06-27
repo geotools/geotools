@@ -176,7 +176,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return HexBinary.decode(arg0);
     }
 
-    private static final long MAX_UNSIGNED_INT = (((long) Integer.MAX_VALUE) * 2) + 1;
+    private static final long MAX_UNSIGNED_INT = (long) Integer.MAX_VALUE * 2 + 1;
 
     @Override
     public long parseUnsignedInt(String arg0) {

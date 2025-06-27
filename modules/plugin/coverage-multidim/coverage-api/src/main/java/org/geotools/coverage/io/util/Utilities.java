@@ -663,7 +663,7 @@ public class Utilities {
         // TODO: fix if slashIndex == -1
         fileName = fileName.substring(slashIndex + 1, fileName.length());
         final int dotIndex = fileName.lastIndexOf(".");
-        final String coverageNameString = (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+        final String coverageNameString = dotIndex == -1 ? fileName : fileName.substring(0, dotIndex);
         return new NameImpl(coverageNameString);
     }
 
@@ -742,7 +742,7 @@ public class Utilities {
         //
         // ////////////////////////////////////////////////////////////////////
         if (highestRes == null) throw new IllegalArgumentException("Unspecified highest Resolution");
-        if ((requestedRes[0] > highestRes[0]) || (requestedRes[1] > highestRes[1])) {
+        if (requestedRes[0] > highestRes[0] || requestedRes[1] > highestRes[1]) {
             Utilities.setDecimationParameters(readParam, gridRange, requestedRes, highestRes);
         }
     }

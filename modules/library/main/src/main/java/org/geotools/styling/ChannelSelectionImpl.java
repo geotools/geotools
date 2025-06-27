@@ -104,19 +104,19 @@ public class ChannelSelectionImpl implements ChannelSelection {
         int result = 0;
 
         if (gray != null) {
-            result = (PRIME * result) + gray.hashCode();
+            result = PRIME * result + gray.hashCode();
         }
 
         if (red != null) {
-            result = (PRIME * result) + red.hashCode();
+            result = PRIME * result + red.hashCode();
         }
 
         if (blue != null) {
-            result = (PRIME * result) + blue.hashCode();
+            result = PRIME * result + blue.hashCode();
         }
 
         if (green != null) {
-            result = (PRIME * result) + green.hashCode();
+            result = PRIME * result + green.hashCode();
         }
 
         return result;

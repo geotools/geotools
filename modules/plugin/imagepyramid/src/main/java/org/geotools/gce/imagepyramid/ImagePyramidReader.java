@@ -247,7 +247,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IOException {
         return read(coverageName, params);
     }
 
@@ -294,7 +294,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
     }
 
     @Override
-    public GridCoverage2D read(final String coverageName, GeneralParameterValue[] params) throws IOException {
+    public GridCoverage2D read(final String coverageName, GeneralParameterValue... params) throws IOException {
 
         GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;

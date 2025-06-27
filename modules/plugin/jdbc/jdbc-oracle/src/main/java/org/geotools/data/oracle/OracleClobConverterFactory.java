@@ -57,7 +57,7 @@ public class OracleClobConverterFactory implements ConverterFactory {
         if (ORA_CLOB == null) return null;
 
         // can only convert towards String
-        if (!(String.class.equals(target))) return null;
+        if (!String.class.equals(target)) return null;
 
         // can only deal with oracle specific blob classes
         if (!ORA_CLOB.isAssignableFrom(source)) return null;
@@ -66,7 +66,7 @@ public class OracleClobConverterFactory implements ConverterFactory {
         return converter;
     }
 
-    class OracleDateConverter implements Converter {
+    static class OracleDateConverter implements Converter {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

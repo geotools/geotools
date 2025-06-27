@@ -389,6 +389,13 @@ public class BarnesSurfaceInterpolator {
         return sumWgtVal / sumWgt;
     }
 
+    @SuppressWarnings(
+            "ArgumentSelectionDefectChecker") // REVISIT: The following arguments may have been swapped: 'gridPt' for
+    // formal parameter 'dataPt', 'dataPt' for formal parameter 'gridPt'.
+    // Either add clarifying `/* paramName= */` comments, or swap the arguments if that is what was intended
+    // (see https://errorprone.info/bugpattern/ArgumentSelectionDefectChecker)
+    // Did you mean 'return weight(/* dataPt= */gridPt, /* gridPt= */dataPt, lengthScale, 1.0);' or 'return
+    // weight(dataPt, gridPt, lengthScale, 1.0);'?
     private double weight(Coordinate dataPt, Coordinate gridPt, double lengthScale) {
         return weight(gridPt, dataPt, lengthScale, 1.0);
     }

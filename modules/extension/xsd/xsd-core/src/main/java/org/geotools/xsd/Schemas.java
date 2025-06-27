@@ -257,13 +257,13 @@ public class Schemas {
         ResourceSet resourceSet = new ResourceSetImpl();
 
         // add the specialized schema location resolvers
-        if ((resolvers != null) && !resolvers.isEmpty()) {
+        if (resolvers != null && !resolvers.isEmpty()) {
             AdapterFactory adapterFactory = new SchemaLocationResolverAdapterFactory(resolvers);
             resourceSet.getAdapterFactories().add(adapterFactory);
         }
 
         // add the specialized schema locators as adapters
-        if ((locators != null) && !locators.isEmpty()) {
+        if (locators != null && !locators.isEmpty()) {
             AdapterFactory adapterFactory = new SchemaLocatorAdapterFactory(locators);
             resourceSet.getAdapterFactories().add(adapterFactory);
         }
@@ -396,7 +396,7 @@ public class Schemas {
      * @return a map to be used as response
      */
     private static Map<?, ?> getOrCreateResponseFrom(Map<Object, Object> options) {
-        Map<?, ?> response = (options == null) ? null : (Map<?, ?>) options.get(URIConverter.OPTION_RESPONSE);
+        Map<?, ?> response = options == null ? null : (Map<?, ?>) options.get(URIConverter.OPTION_RESPONSE);
         if (response == null) {
             response = new HashMap<>();
         }
@@ -513,8 +513,8 @@ public class Schemas {
             String location, XSDSchemaLocator[] locators, XSDSchemaLocationResolver[] resolvers) throws IOException {
         return validateImportsIncludes(
                 location,
-                (locators != null) ? Arrays.asList(locators) : emptyList(),
-                (resolvers != null) ? Arrays.asList(resolvers) : emptyList());
+                locators != null ? Arrays.asList(locators) : emptyList(),
+                resolvers != null ? Arrays.asList(resolvers) : emptyList());
     }
 
     public static final List validateImportsIncludes(
@@ -863,7 +863,7 @@ public class Schemas {
      */
     private static void visitAnyElements(XSDComplexTypeDefinition cType, ElementVisitor visitor) {
         // simple content cant define children
-        if ((cType.getContent() == null) || (cType.getContent() instanceof XSDSimpleTypeDefinition)) {
+        if (cType.getContent() == null || cType.getContent() instanceof XSDSimpleTypeDefinition) {
             return;
         }
 
@@ -1097,7 +1097,7 @@ public class Schemas {
             LinkedList<XSDComplexTypeDefinition> baseTypes = new LinkedList<>();
             XSDTypeDefinition baseType = cType.getBaseType();
 
-            while ((baseType != null) && (baseType != baseType.getBaseType())) {
+            while (baseType != null && baseType != baseType.getBaseType()) {
                 if (baseType instanceof XSDComplexTypeDefinition) {
                     baseTypes.addLast((XSDComplexTypeDefinition) baseType);
                 }
@@ -1115,7 +1115,7 @@ public class Schemas {
 
     private static void visitElements(XSDComplexTypeDefinition cType, ElementVisitor visitor) {
         // simple content cant define children
-        if ((cType.getContent() == null) || (cType.getContent() instanceof XSDSimpleTypeDefinition)) {
+        if (cType.getContent() == null || cType.getContent() instanceof XSDSimpleTypeDefinition) {
             return;
         }
 
@@ -1499,7 +1499,7 @@ public class Schemas {
         n1 = "".equals(n1) ? null : n1;
         n2 = "".equals(n2) ? null : n2;
 
-        if ((ns1 == null) && (ns2 != null)) {
+        if (ns1 == null && ns2 != null) {
             // try the default namespace
             if (component.getSchema() != null) {
                 ns1 = component.getSchema().getTargetNamespace();

@@ -308,7 +308,7 @@ public class XLinkSchema implements Schema {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1) || (value[0] == null)) {
+            if (value == null || value.length != 1 || value[0] == null) {
                 return null;
             }
 
@@ -342,7 +342,7 @@ public class XLinkSchema implements Schema {
          */
         @Override
         public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints) {
-            return (attribute.getName() != null)
+            return attribute.getName() != null
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
         }
@@ -411,7 +411,7 @@ public class XLinkSchema implements Schema {
          */
         @Override
         public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints) {
-            return (attribute.getName() != null)
+            return attribute.getName() != null
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
         }
@@ -464,7 +464,7 @@ public class XLinkSchema implements Schema {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1) || (value[0] == null)) {
+            if (value == null || value.length != 1 || value[0] == null) {
                 return null;
             }
 

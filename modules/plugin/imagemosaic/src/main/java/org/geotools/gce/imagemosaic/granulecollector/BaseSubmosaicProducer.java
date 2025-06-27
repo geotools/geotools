@@ -375,10 +375,10 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
     @Override
     public List<MosaicElement> createMosaic() throws IOException {
-        final MosaicElement mosaic = (new Mosaicker(
+        final MosaicElement mosaic = new Mosaicker(
                         this.rasterLayerResponse,
                         collectGranules(),
-                        rasterLayerResponse.getRequest().getMergeBehavior()))
+                        rasterLayerResponse.getRequest().getMergeBehavior())
                 .createMosaic();
         if (mosaic == null) {
             return Collections.emptyList();

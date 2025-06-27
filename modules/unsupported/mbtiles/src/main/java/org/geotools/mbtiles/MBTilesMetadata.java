@@ -52,7 +52,7 @@ public class MBTilesMetadata {
 
         public static t_type lookUp(final String s) throws IllegalArgumentException {
             return Arrays.stream(t_type.values())
-                    .filter((t) -> t.identifier.equalsIgnoreCase(s))
+                    .filter(t -> t.identifier.equalsIgnoreCase(s))
                     .findAny()
                     .orElseThrow(() -> new IllegalArgumentException(String.format("Unknown mbtiles type '%s'", s)));
         }

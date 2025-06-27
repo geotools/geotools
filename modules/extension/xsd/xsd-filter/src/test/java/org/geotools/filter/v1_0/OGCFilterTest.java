@@ -17,6 +17,7 @@
 package org.geotools.filter.v1_0;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Literal;
@@ -66,7 +67,7 @@ public class OGCFilterTest {
 
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
-        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(filter);
     }
 
@@ -81,7 +82,7 @@ public class OGCFilterTest {
 
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
-        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(filter);
         PropertyIsEqualTo equal = (PropertyIsEqualTo) filter;
         PropertyName pn = (PropertyName) equal.getExpression1();
@@ -106,7 +107,7 @@ public class OGCFilterTest {
         OGCConfiguration configuration = new OGCConfiguration();
 
         Parser parser = new Parser(configuration);
-        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(filter);
 
         // Asserting the Property Name

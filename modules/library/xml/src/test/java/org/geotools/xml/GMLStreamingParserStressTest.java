@@ -190,7 +190,7 @@ public class GMLStreamingParserStressTest {
                     count2++;
                 }
             }
-            Assert.assertTrue("Must have used both readers", (count1 > 20 && count2 > 20));
+            Assert.assertTrue("Must have used both readers", count1 > 20 && count2 > 20);
             // System.out.println("\n# Features: " + count1 + " , " + count2);
 
         } catch (Throwable e) {

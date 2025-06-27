@@ -22,6 +22,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -156,7 +157,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
 
         // Write out header, producing an empty file of the correct type
         try (CSVWriter writer = new CSVWriter(
-                new FileWriter(this.csvFileState.getFile()),
+                new FileWriter(this.csvFileState.getFile(), StandardCharsets.UTF_8),
                 getSeparator(),
                 getQuotechar(),
                 getEscapechar(),

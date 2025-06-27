@@ -221,11 +221,11 @@ public class MBExpressionParseTest {
         MBStyle rgbTest = MBStyle.create(mbstyle);
         SymbolMBLayer rgbLayer = (SymbolMBLayer) rgbTest.layer("rgbExpression");
         List<FeatureTypeStyle> rgbFeatures = rgbLayer.transformInternal(rgbTest);
-        Color sldColor = (((TextSymbolizer)
+        Color sldColor = ((TextSymbolizer)
                         rgbFeatures.get(0).rules().get(0).symbolizers().get(0))
                 .getFill()
                 .getColor()
-                .evaluate(null, Color.class));
+                .evaluate(null, Color.class);
         assertEquals(new Color(0, 111, 222), sldColor);
         String xml = new SLDTransformer().transform(rgbFeatures.get(0));
         assertTrue(xml.contains("<sld:Fill><sld:CssParameter name=\"fill\"><ogc:Function name=\"torgb\">"

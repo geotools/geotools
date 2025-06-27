@@ -144,7 +144,7 @@ public class LineWriter extends FilterWriter {
     private void writeLine(final char[] cbuf, final int lower, int upper) throws IOException {
         while (upper != lower) {
             final char c = cbuf[upper - 1];
-            assert (c != '\r' && c != '\n');
+            assert c != '\r' && c != '\n';
             if (isWhitespace(c)) {
                 upper--;
                 continue;
@@ -163,7 +163,7 @@ public class LineWriter extends FilterWriter {
     private void writeLine(final String str, final int lower, int upper) throws IOException {
         while (upper != lower) {
             final char c = str.charAt(upper - 1);
-            assert (c != '\r' && c != '\n');
+            assert c != '\r' && c != '\n';
             if (isWhitespace(c)) {
                 upper--;
                 continue;
@@ -228,7 +228,7 @@ public class LineWriter extends FilterWriter {
      */
     @Override
     public void write(final char[] cbuf, int offset, int length) throws IOException {
-        if (offset < 0 || length < 0 || (offset + length) > cbuf.length) {
+        if (offset < 0 || length < 0 || offset + length > cbuf.length) {
             throw new IndexOutOfBoundsException();
         }
         if (length == 0) {
@@ -260,7 +260,7 @@ public class LineWriter extends FilterWriter {
                     }
                 }
             }
-            skipCR = (cbuf[upper - 1] == '\r');
+            skipCR = cbuf[upper - 1] == '\r';
             /*
              * Write the remainding characters and
              * put trailing blanks into the buffer.
@@ -291,7 +291,7 @@ public class LineWriter extends FilterWriter {
      */
     @Override
     public void write(final String string, int offset, int length) throws IOException {
-        if (offset < 0 || length < 0 || (offset + length) > string.length()) {
+        if (offset < 0 || length < 0 || offset + length > string.length()) {
             throw new IndexOutOfBoundsException();
         }
         if (length == 0) {
@@ -323,7 +323,7 @@ public class LineWriter extends FilterWriter {
                     }
                 }
             }
-            skipCR = (string.charAt(upper - 1) == '\r');
+            skipCR = string.charAt(upper - 1) == '\r';
             /*
              * Write the remainding characters and
              * put trailing blanks into the buffer.

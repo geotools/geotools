@@ -190,6 +190,6 @@ public class WarpTransform2DProvider extends MathTransformProvider {
     private static float scale(final ParameterDescriptor<Float> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final Object value = value(param, group);
-        return (value != null) ? ((Number) value).floatValue() : 1;
+        return value != null ? ((Number) value).floatValue() : 1;
     }
 }

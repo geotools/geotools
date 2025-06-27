@@ -46,10 +46,10 @@ class IntegerRgbAccessor implements RgbaAccessor {
     @Override
     public void getColor(int x, int[] rgba) {
         int pixel = pixels[x];
-        rgba[0] = (pixel >> 16) & 0xFF;
-        rgba[1] = (pixel >> 8) & 0xFF;
-        rgba[2] = (pixel) & 0xFF;
-        rgba[3] = hasAlpha ? (pixel >> 24) & 0xFF : 255;
+        rgba[0] = pixel >> 16 & 0xFF;
+        rgba[1] = pixel >> 8 & 0xFF;
+        rgba[2] = pixel & 0xFF;
+        rgba[3] = hasAlpha ? pixel >> 24 & 0xFF : 255;
     }
 
     @Override

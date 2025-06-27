@@ -62,10 +62,10 @@ public class AttributeGroupHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode()
-                        * ((id == null) ? 1 : id.hashCode())
-                        * ((ref == null) ? 1 : ref.hashCode())
-                        * ((name == null) ? 1 : name.hashCode()))
+        return LOCALNAME.hashCode()
+                        * (id == null ? 1 : id.hashCode())
+                        * (ref == null ? 1 : ref.hashCode())
+                        * (name == null ? 1 : name.hashCode())
                 + hashCodeOffset;
     }
 
@@ -157,7 +157,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
             return cache;
         }
 
-        String anyAttributeNamespace = (anyAttribute == null) ? null : anyAttribute.getNamespace();
+        String anyAttributeNamespace = anyAttribute == null ? null : anyAttribute.getNamespace();
         Attribute[] attributes = null;
 
         if (attrDecs != null) {
@@ -173,7 +173,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
                     AttributeGroupHandler agh = (AttributeGroupHandler) o;
                     AttributeGroup ag = agh.compress(parent);
 
-                    if ((ag != null) && (ag.getAttributes() != null)) {
+                    if (ag != null && ag.getAttributes() != null) {
                         Attribute[] aa = ag.getAttributes();
 
                         for (Attribute attribute : aa) h.add(attribute);
@@ -186,7 +186,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
 
         String name1 = this.name;
 
-        if ((ref != null) && !"".equalsIgnoreCase(ref)) {
+        if (ref != null && !"".equalsIgnoreCase(ref)) {
             AttributeGroup ag = parent.lookUpAttributeGroup(ref);
 
             if (ag == null) {
@@ -195,7 +195,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
 
             name1 = ag.getName();
 
-            if ((anyAttribute == null) || "".equalsIgnoreCase(anyAttribute.getNamespace())) {
+            if (anyAttribute == null || "".equalsIgnoreCase(anyAttribute.getNamespace())) {
                 anyAttributeNamespace = ag.getAnyAttributeNameSpace();
             }
 

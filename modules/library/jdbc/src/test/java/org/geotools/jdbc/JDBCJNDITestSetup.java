@@ -81,7 +81,7 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         }
 
         @Override
-        @SuppressWarnings("PMD.ReplaceHashtableWithMap") // JDK API, we cannot do anything about it
+        @SuppressWarnings({"BanJNDI", "PMD.ReplaceHashtableWithMap"}) // JDK API, we cannot do anything about it
         public Context getInitialContext(Hashtable environment) throws NamingException {
             mockContext = Mockito.mock(Context.class);
             Mockito.when(mockContext.lookup("ds")).thenReturn(dataSource);

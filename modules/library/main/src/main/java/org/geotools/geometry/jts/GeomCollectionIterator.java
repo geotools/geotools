@@ -201,7 +201,7 @@ public final class GeomCollectionIterator extends AbstractLiteIterator {
         // if the iterator is finished, let's move to the next one (and if
         // the next one, should the next one be empty)
         while (currentIterator.isDone() && !done) {
-            if (currentGeom < (gc.getNumGeometries() - 1)) {
+            if (currentGeom < gc.getNumGeometries() - 1) {
                 currentGeom++;
                 currentIterator = getIterator(gc.getGeometryN(currentGeom));
             } else {

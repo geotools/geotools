@@ -31,6 +31,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.lang.reflect.Proxy;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -86,11 +87,11 @@ public class GeoJSONUtil {
         }
 
         if (input instanceof InputStream) {
-            return new BufferedReader(new InputStreamReader((InputStream) input));
+            return new BufferedReader(new InputStreamReader((InputStream) input, StandardCharsets.UTF_8));
         }
 
         if (input instanceof File) {
-            return new BufferedReader(new FileReader((File) input));
+            return new BufferedReader(new FileReader((File) input, StandardCharsets.UTF_8));
         }
 
         if (input instanceof String) {
@@ -147,15 +148,15 @@ public class GeoJSONUtil {
         }
 
         if (output instanceof OutputStream) {
-            return new BufferedWriter(new OutputStreamWriter((OutputStream) output));
+            return new BufferedWriter(new OutputStreamWriter((OutputStream) output, StandardCharsets.UTF_8));
         }
 
         if (output instanceof File) {
-            return new BufferedWriter(new FileWriter((File) output));
+            return new BufferedWriter(new FileWriter((File) output, StandardCharsets.UTF_8));
         }
 
         if (output instanceof String) {
-            return new BufferedWriter(new FileWriter((String) output));
+            return new BufferedWriter(new FileWriter((String) output, StandardCharsets.UTF_8));
         }
 
         throw new IllegalArgumentException("Unable to turn " + output + " into a writer");

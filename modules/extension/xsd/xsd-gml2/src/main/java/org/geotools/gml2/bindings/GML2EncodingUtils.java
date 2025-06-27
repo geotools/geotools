@@ -71,7 +71,7 @@ public class GML2EncodingUtils {
             Identifier id = referenceIdentifier;
 
             // return "EPSG:" + id.getCode();
-            if ((id.getAuthority() != null) && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
+            if (id.getAuthority() != null && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
                 return id.getCode();
             }
         }
@@ -111,7 +111,7 @@ public class GML2EncodingUtils {
         for (ReferenceIdentifier referenceIdentifier : crs.getIdentifiers()) {
             Identifier id = referenceIdentifier;
 
-            if ((id.getAuthority() != null) && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
+            if (id.getAuthority() != null && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
                 code = id.getCode();
                 break;
             }

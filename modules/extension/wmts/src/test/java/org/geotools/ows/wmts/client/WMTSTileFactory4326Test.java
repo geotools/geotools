@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.wmts.model.TileMatrixSet;
@@ -216,7 +217,7 @@ public class WMTSTileFactory4326Test {
             TileService service = services[i];
             // For some reason map proxy has an extra level compared to
             // GeoServer!
-            int offset = (i == 0 ? 1 : 0); // REST has 1 in offset
+            int offset = i == 0 ? 1 : 0; // REST has 1 in offset
             WMTSZoomLevel zoomLevel = ((WMTSTileService) service).getZoomLevel(1 + offset);
             WMTSTileIdentifier tileId = new WMTSTileIdentifier(1, 1, zoomLevel, "SomeName");
             WMTSTile tile = new WMTSTile(tileId, service);
@@ -288,7 +289,7 @@ public class WMTSTileFactory4326Test {
     public static WMTSCapabilities createCapabilities(File capFile) throws Exception {
         Parser parser = new Parser(new WMTSConfiguration());
 
-        Object object = parser.parse(new FileReader(capFile));
+        Object object = parser.parse(new FileReader(capFile, StandardCharsets.UTF_8));
         assertTrue("Capabilities failed to parse " + object.getClass(), object instanceof CapabilitiesType);
 
         return new WMTSCapabilities((CapabilitiesType) object);

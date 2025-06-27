@@ -124,7 +124,7 @@ public class CoordinateSequenceTransformerTest {
         double[] coords = new double[100];
         final Coordinate[] scs = cs.toCoordinateArray();
         final Coordinate[] tcs = new Coordinate[scs.length];
-        if (coords.length < (scs.length * 2)) {
+        if (coords.length < scs.length * 2) {
             coords = new double[scs.length * 2];
         }
         for (int i = 0; i < scs.length; i++) {

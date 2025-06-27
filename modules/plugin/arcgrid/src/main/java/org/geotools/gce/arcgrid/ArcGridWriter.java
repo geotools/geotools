@@ -28,6 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -206,7 +207,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
                     && (writeBand < 0 || writeBand > gc.getNumSampleDimensions()))
                 throw new IllegalArgumentException(
                         "You need to supply a valid index for deciding which band to write.");
-            if (!((writeBands == null || writeBands.length == 0 || writeBands.length > 1))) writeBand = writeBands[0];
+            if (!(writeBands == null || writeBands.length == 0 || writeBands.length > 1)) writeBand = writeBands[0];
 
             // /////////////////////////////////////////////////////////////////
             //
@@ -355,7 +356,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         final Bounds oldEnv = gc.getEnvelope2D();
         final double W = oldEnv.getSpan(0);
         final double H = oldEnv.getSpan(1);
-        if ((dx - dy) > ArcGridWriter.ROTATION_EPS) {
+        if (dx - dy > ArcGridWriter.ROTATION_EPS) {
             /** we have higher resolution on the Y axis we have to increase it on the X axis as well. */
 
             // new number of columns
@@ -403,7 +404,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         URL url = null;
 
         if (this.destination instanceof String) {
-            url = (new File((String) this.destination)).toURI().toURL();
+            url = new File((String) this.destination).toURI().toURL();
         } else if (this.destination instanceof File) {
             url = ((File) this.destination).toURI().toURL();
         } else if (this.destination instanceof URL) {
@@ -419,7 +420,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         File prjFile = new File(ascFile.getParent(), prjName);
 
         // create the file
-        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(prjFile))) {
+        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(prjFile, StandardCharsets.UTF_8))) {
             // write information on crs
             fileWriter.write(crs.toWKT());
         }
@@ -433,9 +434,9 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      *     org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
-    public void write(GridCoverage coverage, GeneralParameterValue[] parameters)
+    public void write(GridCoverage coverage, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
-        ensureWeCanWrite(coverage, parameters);
+        ensureWeCanWrite(coverage);
         writeGridCoverage((GridCoverage2D) coverage, parameters);
     }
 
@@ -449,9 +450,8 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      * </ol>
      *
      * @param coverage to check for the possibility to be written b this writer.
-     * @param parameters to control the writing process.
      */
-    private static void ensureWeCanWrite(GridCoverage coverage, GeneralParameterValue[] parameters) throws IOException {
+    private static void ensureWeCanWrite(GridCoverage coverage) throws IOException {
         // /////////////////////////////////////////////////////////////////////
         //
         // RULE 1

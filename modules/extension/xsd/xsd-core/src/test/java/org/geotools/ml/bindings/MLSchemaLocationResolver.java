@@ -27,7 +27,7 @@ public class MLSchemaLocationResolver implements XSDSchemaLocationResolver {
         }
 
         // if no namespace given, assume default for the current schema
-        if (((namespaceURI == null) || "".equals(namespaceURI)) && (xsdSchema != null)) {
+        if ((namespaceURI == null || "".equals(namespaceURI)) && xsdSchema != null) {
             namespaceURI = xsdSchema.getTargetNamespace();
         }
 

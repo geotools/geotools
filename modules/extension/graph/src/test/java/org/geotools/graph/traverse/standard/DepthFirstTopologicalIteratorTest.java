@@ -104,14 +104,14 @@ public class DepthFirstTopologicalIteratorTest {
     }
 
     protected GraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 
     protected DepthFirstTopologicalIterator createIterator() {
-        return (new DepthFirstTopologicalIterator());
+        return new DepthFirstTopologicalIterator();
     }
 }

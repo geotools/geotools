@@ -209,9 +209,9 @@ class RasterLayerResponse {
         final ReferencedEnvelope intersection =
                 new ReferencedEnvelope(bbox.intersection(cropBBox), cropBBox.getCoordinateReferenceSystem());
         if (intersection.isEmpty()
-                || (useFootprint
+                || useFootprint
                         && inclusionGeometry != null
-                        && !JTS.toGeometry(cropBBox).intersects(inclusionGeometry))) {
+                        && !JTS.toGeometry(cropBBox).intersects(inclusionGeometry)) {
             if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
                 LOGGER.fine("Got empty intersection for granule "
                         + this.toString()
@@ -239,8 +239,8 @@ class RasterLayerResponse {
                 finalRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
                 // Compute scale and translate factors
-                double decimationScaleX = ((1.0 * sourceArea.width) / width);
-                double decimationScaleY = ((1.0 * sourceArea.height) / height);
+                double decimationScaleX = 1.0 * sourceArea.width / width;
+                double decimationScaleY = 1.0 * sourceArea.height / height;
                 final AffineTransform decimationScaleTranform =
                         XAffineTransform.getScaleInstance(decimationScaleX, decimationScaleY);
                 final AffineTransform afterDecimationTranslateTranform =

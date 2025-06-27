@@ -61,7 +61,7 @@ public class VersionTest {
         Version version = new Version(now);
 
         assertTrue(version.isDateTime());
-        assertEquals(now, version.getDateTime());
+        assertEquals(now.getTime(), version.getDateTime().getTime());
         assertNull(version.getIndex());
         assertNull(version.getVersionAction());
     }

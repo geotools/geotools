@@ -49,25 +49,17 @@ public class SortByImpl implements SortBy {
         this.sortOrder = sortOrder;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((propertyName == null) ? 0 : propertyName.hashCode());
-        result = prime * result + ((sortOrder == null) ? 0 : sortOrder.hashCode());
+        result = prime * result + (propertyName == null ? 0 : propertyName.hashCode());
+        result = prime * result + (sortOrder == null ? 0 : sortOrder.hashCode());
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+    /** @see java.lang.Object#equals(java.lang.Object) */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -83,11 +75,7 @@ public class SortByImpl implements SortBy {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
+    /** @see java.lang.Object#toString() */
     @Override
     public String toString() {
         return "SortByImpl [propertyName=" + propertyName + ", sortOrder=" + sortOrder + "]";

@@ -62,6 +62,6 @@ public class FilterFunction_max_3 extends FunctionExpressionImpl {
                     "Filter Function problem for function max argument #1 - expected type float");
         }
 
-        return (Math.max((Float) arg0, (Float) arg1));
+        return Math.max((Float) arg0, (Float) arg1);
     }
 }

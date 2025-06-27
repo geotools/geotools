@@ -56,9 +56,9 @@ public abstract class DefaultExpression extends ExpressionAbstract {
      * @return Whether or not this is an attribute expression type.
      */
     protected static boolean isAttributeExpression(short expressionType) {
-        return ((expressionType == ATTRIBUTE_DOUBLE)
-                || (expressionType == ATTRIBUTE_INTEGER)
-                || (expressionType == ATTRIBUTE_STRING));
+        return expressionType == ATTRIBUTE_DOUBLE
+                || expressionType == ATTRIBUTE_INTEGER
+                || expressionType == ATTRIBUTE_STRING;
     }
 
     /**
@@ -68,10 +68,10 @@ public abstract class DefaultExpression extends ExpressionAbstract {
      * @return Whether or not this is a math expression type.
      */
     protected static boolean isMathExpression(short expressionType) {
-        return ((expressionType == MATH_ADD)
-                || (expressionType == MATH_SUBTRACT)
-                || (expressionType == MATH_MULTIPLY)
-                || (expressionType == MATH_DIVIDE));
+        return expressionType == MATH_ADD
+                || expressionType == MATH_SUBTRACT
+                || expressionType == MATH_MULTIPLY
+                || expressionType == MATH_DIVIDE;
     }
 
     /**
@@ -81,10 +81,10 @@ public abstract class DefaultExpression extends ExpressionAbstract {
      * @return Whether or not this is a geometry expression type.
      */
     protected static boolean isLiteralExpression(short expressionType) {
-        return ((expressionType == LITERAL_GEOMETRY)
-                || (expressionType == LITERAL_DOUBLE)
-                || (expressionType == LITERAL_INTEGER)
-                || (expressionType == LITERAL_STRING));
+        return expressionType == LITERAL_GEOMETRY
+                || expressionType == LITERAL_DOUBLE
+                || expressionType == LITERAL_INTEGER
+                || expressionType == LITERAL_STRING;
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class DefaultExpression extends ExpressionAbstract {
      * @return Whether or not this is a geometry expression type.
      */
     protected static boolean isGeometryExpression(short expressionType) {
-        return ((expressionType == ATTRIBUTE_GEOMETRY) || (expressionType == LITERAL_GEOMETRY));
+        return expressionType == ATTRIBUTE_GEOMETRY || expressionType == LITERAL_GEOMETRY;
     }
 
     /**
@@ -104,9 +104,9 @@ public abstract class DefaultExpression extends ExpressionAbstract {
      * @return Whether or not this is a geometry expression type.
      */
     public static boolean isExpression(short expressionType) {
-        return (isMathExpression(expressionType)
-                        || isAttributeExpression(expressionType)
-                        || isLiteralExpression(expressionType))
+        return isMathExpression(expressionType)
+                || isAttributeExpression(expressionType)
+                || isLiteralExpression(expressionType)
                 || isFunctionExpression(expressionType);
     }
 

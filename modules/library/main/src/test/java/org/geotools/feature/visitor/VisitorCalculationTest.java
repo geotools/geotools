@@ -653,7 +653,7 @@ public class VisitorCalculationTest extends DataTestCase {
         } else {
             boolean found = false;
             for (Object object : validResults) {
-                found |= object != null ? (object.equals(nearestMatch)) : nearestMatch == null;
+                found |= object != null ? object.equals(nearestMatch) : nearestMatch == null;
             }
 
             assertTrue(

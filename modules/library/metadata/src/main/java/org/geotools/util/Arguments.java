@@ -26,9 +26,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.regex.Pattern;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
@@ -117,7 +117,7 @@ public class Arguments {
      */
     private Locale getLocale(final String locale) throws IllegalArgumentException {
         if (locale != null) {
-            final String[] s = Pattern.compile("_").split(locale);
+            final String[] s = locale.split("_", -1);
             switch (s.length) {
                 case 1:
                     return new Locale(s[0]);
@@ -335,6 +335,7 @@ public class Arguments {
      * @param in The input stream to wrap.
      * @return A {@link Reader} wrapping the specified input stream.
      */
+    @SuppressWarnings("SystemConsoleNull")
     public static Reader getReader(final InputStream in) {
         if (in == System.in) {
             final Console candidate = System.console();
@@ -342,7 +343,7 @@ public class Arguments {
                 return candidate.reader();
             }
         }
-        return new InputStreamReader(in);
+        return new InputStreamReader(in, StandardCharsets.UTF_8);
     }
 
     /**
@@ -351,6 +352,7 @@ public class Arguments {
      * @param out The output stream to wrap.
      * @return A {@link Writer} wrapping the specified output stream.
      */
+    @SuppressWarnings("SystemConsoleNull")
     public static Writer getWriter(final OutputStream out) {
         if (out == System.out || out == System.err) {
             final Console candidate = System.console();
@@ -358,7 +360,7 @@ public class Arguments {
                 return candidate.writer();
             }
         }
-        return new OutputStreamWriter(out);
+        return new OutputStreamWriter(out, StandardCharsets.UTF_8);
     }
 
     /**
@@ -367,6 +369,7 @@ public class Arguments {
      * @param out The print stream to wrap.
      * @return A {@link PrintWriter} wrapping the specified print stream.
      */
+    @SuppressWarnings("SystemConsoleNull")
     public static PrintWriter getPrintWriter(final PrintStream out) {
         if (out == System.out || out == System.err) {
             final Console candidate = System.console();
@@ -374,7 +377,7 @@ public class Arguments {
                 return candidate.writer();
             }
         }
-        return new PrintWriter(out, true);
+        return new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8), true);
     }
 
     /**

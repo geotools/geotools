@@ -90,7 +90,7 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter implem
      */
     @Override
     public boolean accept(final File file) {
-        return (file != null) && pattern.matcher(file.getName()).matches();
+        return file != null && pattern.matcher(file.getName()).matches();
     }
 
     /**
@@ -102,6 +102,6 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter implem
      */
     @Override
     public boolean accept(final File directory, final String name) {
-        return (name != null) && pattern.matcher(name).matches();
+        return name != null && pattern.matcher(name).matches();
     }
 }

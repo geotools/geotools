@@ -19,6 +19,7 @@ package org.geotools.data.property;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
@@ -63,7 +64,7 @@ public class PropertyDataStoreCurveTest {
         if (file.exists()) {
             file.delete();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=geom:LineString:4326,name:String");
             writer.newLine();
             writer.write("cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");

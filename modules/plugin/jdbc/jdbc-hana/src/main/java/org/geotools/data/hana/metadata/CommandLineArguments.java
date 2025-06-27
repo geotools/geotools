@@ -69,7 +69,7 @@ class CommandLineArguments {
                 showUsage();
                 return null;
             }
-            if ((aidx < args.length) && !args[aidx].startsWith("--")) {
+            if (aidx < args.length && !args[aidx].startsWith("--")) {
                 database = args[aidx++];
                 connType = ConnectionType.MULTI_CONTAINER;
             } else {

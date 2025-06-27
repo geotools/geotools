@@ -55,7 +55,7 @@ class Utils {
         // if it is a URL or a String let's try to see if we can get a file to
         // check if we have to build the index
         if (source instanceof URL) {
-            sourceURL = ((URL) source);
+            sourceURL = (URL) source;
             source = URLs.urlToFile(sourceURL);
         } else if (source instanceof String) {
             // is it a File?
@@ -127,14 +127,14 @@ class Utils {
         final int length = 8;
         int count = 0;
         final byte[] tmp = new byte[length];
-        for (i = start; i < (start + length); i++) {
+        for (i = start; i < start + length; i++) {
             tmp[count] = bytes[i];
             count++;
         }
         long accum = 0;
         i = 0;
         for (int shiftBy = 0; shiftBy < 64; shiftBy += 8) {
-            accum |= ((long) (tmp[i] & 0xff)) << shiftBy;
+            accum |= (long) (tmp[i] & 0xff) << shiftBy;
             i++;
         }
         return Double.longBitsToDouble(accum);
@@ -146,14 +146,14 @@ class Utils {
         final int length = 4;
         int count = 0;
         final byte[] tmp = new byte[length];
-        for (i = start; i < (start + length); i++) {
+        for (i = start; i < start + length; i++) {
             tmp[count] = bytes[i];
             count++;
         }
         long accum = 0;
         i = 0;
         for (int shiftBy = 0; shiftBy < 32; shiftBy += 8) {
-            accum |= ((long) (tmp[i] & 0xff)) << shiftBy;
+            accum |= (long) (tmp[i] & 0xff) << shiftBy;
             i++;
         }
         return accum;

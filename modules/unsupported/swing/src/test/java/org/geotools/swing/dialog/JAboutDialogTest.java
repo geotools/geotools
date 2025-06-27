@@ -185,8 +185,7 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
         assertEquals(expectedN, listItems.size());
 
         for (JAboutDialog.Category cat : JAboutDialog.Category.values()) {
-            boolean b =
-                    listItems.contains(cat.toString()) || (cat == JAboutDialog.Category.APPLICATION && !showAppInfo);
+            boolean b = listItems.contains(cat.toString()) || cat == JAboutDialog.Category.APPLICATION && !showAppInfo;
             assertTrue("List is missing " + cat.toString(), b);
         }
     }

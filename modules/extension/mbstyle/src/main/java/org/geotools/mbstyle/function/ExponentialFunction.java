@@ -146,7 +146,7 @@ public class ExponentialFunction extends FunctionImpl {
                     + " were provided.");
         }
 
-        for (int i = 2; (i + 1) < parameters.size(); i = i + 2) {
+        for (int i = 2; i + 1 < parameters.size(); i = i + 2) {
             Stop stop = new Stop(parameters.get(i), parameters.get(i + 1));
             stops.add(stop);
         }
@@ -169,7 +169,7 @@ public class ExponentialFunction extends FunctionImpl {
         double value2 = upper.value.evaluate(object, Double.class);
         double t = exponentialInterpolationRatio(object, inputValue, base, stop1, stop2);
 
-        return (value1 * (1 - t)) + (value2 * t);
+        return value1 * (1 - t) + value2 * t;
     }
 
     /**

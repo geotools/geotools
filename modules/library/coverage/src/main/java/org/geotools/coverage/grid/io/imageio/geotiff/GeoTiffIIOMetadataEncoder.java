@@ -111,7 +111,7 @@ public class GeoTiffIIOMetadataEncoder {
     }
 
     public static boolean isTiffUShort(final int value) {
-        return (value >= GeoTiffConstants.USHORT_MIN) && (value <= GeoTiffConstants.USHORT_MAX);
+        return value >= GeoTiffConstants.USHORT_MIN && value <= GeoTiffConstants.USHORT_MAX;
     }
 
     public int getGeoTIFFVersion() {
@@ -194,7 +194,7 @@ public class GeoTiffIIOMetadataEncoder {
     public void addModelTiePoint(double i, double j, double k, double x, double y, double z) {
         final int numTiePoints = numModelTiePoints;
 
-        if (numTiePoints >= (modelTiePoints.length - 1)) {
+        if (numTiePoints >= modelTiePoints.length - 1) {
             final TiePoint[] tiePoints = new TiePoint[numTiePoints + GeoTiffConstants.ARRAY_ELEM_INCREMENT];
             System.arraycopy(modelTiePoints, 0, tiePoints, 0, numTiePoints);
             modelTiePoints = tiePoints;
@@ -211,7 +211,7 @@ public class GeoTiffIIOMetadataEncoder {
     public GeoKeyEntry getGeoKeyEntryAt(int index) {
         // got to retrieve the eleme at a certain index
         final Object it = this.geoTiffEntries.get(index);
-        if (it != null) return (GeoKeyEntry) (it);
+        if (it != null) return (GeoKeyEntry) it;
         return null;
     }
 
@@ -288,7 +288,7 @@ public class GeoTiffIIOMetadataEncoder {
         final int offset = entry.getValueOffset();
         checkParamTag(tag, getGeoAsciiParamsTag().getNumber());
 
-        return geoTiffAsciiParams.substring(offset, (offset + count));
+        return geoTiffAsciiParams.substring(offset, offset + count);
     }
 
     public GeoKeyEntry addGeoShortParam(int keyID, int value) {
@@ -513,7 +513,7 @@ public class GeoTiffIIOMetadataEncoder {
     private void addDoubleParam(double param) {
         final int numDoubleParams = numGeoTiffDoubleParams;
 
-        if (numDoubleParams >= (geoTiffDoubleParams.length - 1)) {
+        if (numDoubleParams >= geoTiffDoubleParams.length - 1) {
             final double[] doubleParams = new double[numDoubleParams + GeoTiffConstants.ARRAY_ELEM_INCREMENT];
             System.arraycopy(geoTiffDoubleParams, 0, doubleParams, 0, numDoubleParams);
             geoTiffDoubleParams = doubleParams;

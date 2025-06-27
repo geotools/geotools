@@ -969,7 +969,7 @@ public class GMLSchema implements Schema {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attr, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1) || (value[0].getValue() == null)) {
+            if (value == null || value.length != 1 || value[0].getValue() == null) {
                 return null;
             }
 

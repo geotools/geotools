@@ -40,7 +40,7 @@ public class OptGraphBuilder extends BasicGraphBuilder {
      */
     @Override
     public Node buildNode() {
-        return (new OptNode());
+        return new OptNode();
     }
 
     /**
@@ -51,6 +51,6 @@ public class OptGraphBuilder extends BasicGraphBuilder {
      */
     @Override
     public Edge buildEdge(Node nodeA, Node nodeB) {
-        return (new OptEdge((OptNode) nodeA, (OptNode) nodeB));
+        return new OptEdge((OptNode) nodeA, (OptNode) nodeB);
     }
 }

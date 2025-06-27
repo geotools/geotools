@@ -30,6 +30,7 @@ public class PurchaseOrderBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return PO.purchaseOrder;
     }
@@ -41,6 +42,7 @@ public class PurchaseOrderBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return PurchaseOrderType.class;
     }
@@ -52,6 +54,7 @@ public class PurchaseOrderBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         PurchaseOrderType po = new PurchaseOrderType();
 

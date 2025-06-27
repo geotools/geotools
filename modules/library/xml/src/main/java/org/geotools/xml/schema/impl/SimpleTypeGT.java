@@ -117,7 +117,7 @@ public class SimpleTypeGT implements SimpleType {
     @Override
     public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
-        if ((value == null) || (value.length != 1)) {
+        if (value == null || value.length != 1) {
             throw new SAXException("can only have one text value ... and one is required");
         }
 
@@ -159,7 +159,7 @@ public class SimpleTypeGT implements SimpleType {
      */
     private Object getListValue(Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
-        if ((parents == null) || (parents[0] == null)) {
+        if (parents == null || parents[0] == null) {
             return null;
         }
 
@@ -182,7 +182,7 @@ public class SimpleTypeGT implements SimpleType {
      */
     private Object getRestValue(Element element, ElementValue value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
-        if ((parents == null) || (parents[0] == null)) {
+        if (parents == null || parents[0] == null) {
             return null;
         }
 

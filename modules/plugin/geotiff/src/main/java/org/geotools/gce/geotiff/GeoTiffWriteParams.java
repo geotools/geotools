@@ -62,7 +62,7 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
  *       		if (reader != null) {
  *
  *       			// reading the coverage
- *       			gc = (GridCoverage2D) reader.read(null);
+ *       			gc = (GridCoverage2D) reader.read();
  *   				if (gc != null) {
  *       					final File writeFile = new File(new StringBuffer(writedir
  *       							.getAbsolutePath()).append(File.separatorChar)

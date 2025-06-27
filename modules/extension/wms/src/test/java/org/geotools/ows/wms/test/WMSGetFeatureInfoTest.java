@@ -103,7 +103,7 @@ public class WMSGetFeatureInfoTest {
     /*
        Test Class Extending WMLayer that allows to create a WMSLayer Object passing a reader
     */
-    class WMSLayerTest extends WMSLayer {
+    static class WMSLayerTest extends WMSLayer {
         public WMSLayerTest(WebMapServer wms, Layer layer, WMSCoverageReader reader) {
             super(wms, layer);
             this.reader = reader;

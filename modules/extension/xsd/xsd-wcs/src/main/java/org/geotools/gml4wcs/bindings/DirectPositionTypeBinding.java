@@ -113,7 +113,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
             for (int i = 0; i < coordinates.length; i++) {
                 sb.append(String.valueOf(coordinates[i]));
 
-                if (i != (coordinates.length - 1)) {
+                if (i != coordinates.length - 1) {
                     sb.append(" ");
                 }
             }

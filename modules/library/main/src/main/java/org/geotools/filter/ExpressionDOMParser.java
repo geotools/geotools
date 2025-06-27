@@ -120,7 +120,7 @@ public final class ExpressionDOMParser {
     public Expression expression(Node root) {
         // NodeList children = root.getChildNodes();
         // LOGGER.finest("children "+children);
-        if ((root == null) || (root.getNodeType() != Node.ELEMENT_NODE)) {
+        if (root == null || root.getNodeType() != Node.ELEMENT_NODE) {
             LOGGER.finer("bad node input ");
 
             return null;
@@ -130,7 +130,7 @@ public final class ExpressionDOMParser {
 
         Node child = root;
 
-        String childName = (child.getLocalName() != null) ? child.getLocalName() : child.getNodeName();
+        String childName = child.getLocalName() != null ? child.getLocalName() : child.getNodeName();
 
         if (childName.indexOf(':') != -1) {
             // the DOM parser wasnt properly set to handle namespaces...

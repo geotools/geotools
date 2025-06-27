@@ -50,6 +50,6 @@ public class FilterFunction_geomFromWKT extends FunctionExpressionImpl {
                     "Filter Function problem for function geomFromWKT argument #0 - expected type String");
         }
 
-        return (StaticGeometry.geomFromWKT(arg0));
+        return StaticGeometry.geomFromWKT(arg0);
     }
 }

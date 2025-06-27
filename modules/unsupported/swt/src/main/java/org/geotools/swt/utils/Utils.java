@@ -325,7 +325,7 @@ public class Utils {
     public static Style createRGBStyle(GridCoverage2DReader reader) {
         GridCoverage2D cov = null;
         try {
-            cov = reader.read(null);
+            cov = reader.read();
         } catch (IOException giveUp) {
             throw new RuntimeException(giveUp);
         }

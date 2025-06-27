@@ -300,7 +300,7 @@ public class FilterToCQLTest {
         Assert.assertNotNull(filter);
 
         // double quote escaped by repeating should be unescaped to just one
-        Assert.assertEquals("the\"geom", ((PropertyName) (((Intersects) filter).getExpression1())).getPropertyName());
+        Assert.assertEquals("the\"geom", ((PropertyName) ((Intersects) filter).getExpression1()).getPropertyName());
 
         FilterToCQL toCQL = new FilterToCQL();
         String output = filter.accept(toCQL, null).toString();

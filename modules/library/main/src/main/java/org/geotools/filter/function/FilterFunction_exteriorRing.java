@@ -47,6 +47,6 @@ public class FilterFunction_exteriorRing extends FunctionExpressionImpl {
                     "Filter Function problem for function exteriorRing argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.exteriorRing(arg0));
+        return StaticGeometry.exteriorRing(arg0);
     }
 }

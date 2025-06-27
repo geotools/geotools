@@ -32,6 +32,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -334,8 +335,8 @@ public class WFSParsingTest {
     }
 
     void copy(InputStream in, File to) throws Exception {
-        try (Writer writer = new BufferedWriter(new FileWriter(to))) {
-            InputStreamReader reader = new InputStreamReader(in);
+        try (Writer writer = new BufferedWriter(new FileWriter(to, StandardCharsets.UTF_8))) {
+            InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
 
             int b = -1;
 

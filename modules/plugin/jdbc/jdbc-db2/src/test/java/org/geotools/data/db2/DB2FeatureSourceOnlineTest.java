@@ -36,6 +36,6 @@ public class DB2FeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         String name1 = crs1.getName().toString();
         String name2 = crs2.getName().toString();
 
-        return (name1.contains("WGS") && name1.contains("84") && name2.contains("WGS") && name2.contains("84"));
+        return name1.contains("WGS") && name1.contains("84") && name2.contains("WGS") && name2.contains("84");
     }
 }

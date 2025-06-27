@@ -76,7 +76,7 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
     }
 
     @Override
-    public GeneralParameterValue[] customizeReadParams(GridCoverageReader reader, GeneralParameterValue[] params) {
+    public GeneralParameterValue[] customizeReadParams(GridCoverageReader reader, GeneralParameterValue... params) {
         RenderingProcess process = (RenderingProcess) this.process;
         // evaluate input expressions
         // at this point do not have an object to evaluate them against

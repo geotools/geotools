@@ -63,6 +63,6 @@ public abstract class AbstractReaderWriter implements GraphReaderWriter {
     /** @see GraphReaderWriter#getProperty(String) */
     @Override
     public Object getProperty(String name) {
-        return (m_properties.get(name));
+        return m_properties.get(name);
     }
 }

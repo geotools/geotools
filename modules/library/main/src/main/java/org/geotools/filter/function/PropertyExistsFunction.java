@@ -121,6 +121,7 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
             // PropertyUtils.getProperty(bean, propName);
             // return true;
         } catch (IntrospectionException ignore) {
+            // ignored
         }
         return false;
     }

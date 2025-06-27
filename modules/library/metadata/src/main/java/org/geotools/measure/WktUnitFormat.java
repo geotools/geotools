@@ -113,6 +113,7 @@ public final class WktUnitFormat extends BaseUnitFormatter {
                     float factor1 = (float) unit.getConverterToAny(systemUnit).convert(1.0);
                     return Objects.hash(systemUnit, Float.floatToIntBits(factor1));
                 } catch (Throwable e) {
+                    // Fall back to standard hashCode if conversion fails
                 }
             }
             return unit.hashCode();

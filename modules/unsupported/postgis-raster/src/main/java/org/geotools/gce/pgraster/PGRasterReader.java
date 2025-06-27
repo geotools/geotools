@@ -200,7 +200,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IllegalArgumentException, IOException {
 
         ReadRequest req = new ReadRequest(this);
 

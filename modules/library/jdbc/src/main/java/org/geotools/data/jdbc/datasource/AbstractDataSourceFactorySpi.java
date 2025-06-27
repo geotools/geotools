@@ -69,7 +69,7 @@ public abstract class AbstractDataSourceFactorySpi implements DataSourceFactoryS
             }
             if (value == null) {
                 if (param.required) {
-                    return (false);
+                    return false;
                 }
             } else {
                 if (!param.type.isInstance(value)) {

@@ -75,7 +75,7 @@ public class OptLineGraphGeneratorTest {
             //            Math.abs(a.getX() - b.getX()) == 1
             //         && Math.abs(a.getY() - b.getY()) == 1
             //        );
-            return (0);
+            return 0;
         };
         built.visitEdges(visitor);
     }
@@ -122,16 +122,16 @@ public class OptLineGraphGeneratorTest {
                         && Math.abs(a.getCoordinate().y - b.getCoordinate().y) == 1);
             }
 
-            return (0);
+            return 0;
         };
         built.visitEdges(visitor);
     }
 
     protected OptLineGraphGenerator createGenerator() {
-        return (new OptLineGraphGenerator());
+        return new OptLineGraphGenerator();
     }
 
     protected OptLineGraphGenerator generator() {
-        return (m_gen);
+        return m_gen;
     }
 }

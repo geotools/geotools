@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.FileDataStoreFactorySpi;
@@ -34,8 +36,11 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.URLs;
+import org.geotools.util.logging.Logging;
 
 public class DataExamples {
+
+    private static final Logger LOGGER = Logging.getLogger(DataExamples.class);
 
     // alter start
     SimpleFeatureSource alter(
@@ -59,6 +64,7 @@ public class DataExamples {
 
             collection.accepts(
                     new FeatureVisitor() {
+                        @Override
                         public void visit(Feature feature) {
                             SimpleFeatureBuilder builder = new SimpleFeatureBuilder(schema);
 
@@ -77,7 +83,7 @@ public class DataExamples {
             return memory.getFeatureSource(typename);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Unexpected error", e);
         }
         return null;
     }

@@ -193,8 +193,10 @@ public class CatalogConfigurationBean {
     public AbstractGridFormat suggestedFormat() throws ReflectiveOperationException {
         if (suggestedFormat == null) return null;
         if (resolvedFormat == null) {
-            resolvedFormat = (AbstractGridFormat)
-                    Class.forName(suggestedFormat).getDeclaredConstructor().newInstance();
+            resolvedFormat = Class.forName(suggestedFormat)
+                    .asSubclass(AbstractGridFormat.class)
+                    .getDeclaredConstructor()
+                    .newInstance();
         }
         return resolvedFormat;
     }
@@ -206,8 +208,10 @@ public class CatalogConfigurationBean {
     public ImageInputStreamSpi suggestedIsSPI() throws ReflectiveOperationException {
         if (suggestedIsSPI == null) return null;
         if (resolvedIsSPI == null) {
-            resolvedIsSPI = (ImageInputStreamSpi)
-                    Class.forName(suggestedIsSPI).getDeclaredConstructor().newInstance();
+            resolvedIsSPI = Class.forName(suggestedIsSPI)
+                    .asSubclass(ImageInputStreamSpi.class)
+                    .getDeclaredConstructor()
+                    .newInstance();
         }
         return resolvedIsSPI;
     }

@@ -37,6 +37,7 @@ public class IntersectionBuilder extends GridFeatureBuilder {
         this.source = source;
     }
 
+    @Override
     public void setAttributes(GridElement el, Map<String, Object> attributes) {
         attributes.put("id", ++id);
     }

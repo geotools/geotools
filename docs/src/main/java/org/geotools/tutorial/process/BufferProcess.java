@@ -36,6 +36,7 @@ class BufferProcess extends AbstractProcess {
         return factory;
     }
 
+    @Override
     public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor) {
         if (started) throw new IllegalStateException("Process can only be run once");
         started = true;

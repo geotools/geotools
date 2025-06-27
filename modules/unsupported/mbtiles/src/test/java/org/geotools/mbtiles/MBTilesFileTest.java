@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
@@ -91,7 +92,7 @@ public class MBTilesFileTest {
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     MBTilesTile tile1 = new MBTilesTile(1, i, j);
-                    tile1.setData("dummy data 1".getBytes());
+                    tile1.setData("dummy data 1".getBytes(StandardCharsets.UTF_8));
                     file.saveTile(tile1);
                 }
             }
@@ -129,9 +130,9 @@ public class MBTilesFileTest {
             file.init();
 
             MBTilesTile tile1 = new MBTilesTile(1, 0, 0);
-            tile1.setData("dummy data 1".getBytes());
+            tile1.setData("dummy data 1".getBytes(StandardCharsets.UTF_8));
             MBTilesTile tile2 = new MBTilesTile(2, 0, 1);
-            tile2.setData("dummy data 2".getBytes());
+            tile2.setData("dummy data 2".getBytes(StandardCharsets.UTF_8));
 
             file.saveTile(tile1);
             file.saveTile(tile2);
@@ -170,13 +171,13 @@ public class MBTilesFileTest {
             file.init();
 
             MBTilesGrid grid1 = new MBTilesGrid(1, 0, 0);
-            grid1.setGrid("dummy data 1".getBytes());
+            grid1.setGrid("dummy data 1".getBytes(StandardCharsets.UTF_8));
             grid1.setGridDataKey("key1", "dummy value1");
             grid1.setGridDataKey("key2", "dummy value2");
             MBTilesGrid grid2 = new MBTilesGrid(2, 0, 1);
             grid2.setGridDataKey("key3", "dummy value3");
             grid2.setGridDataKey("key4", "dummy value4");
-            grid2.setGrid("dummy data 2".getBytes());
+            grid2.setGrid("dummy data 2".getBytes(StandardCharsets.UTF_8));
 
             file.saveGrid(grid1);
             file.saveGrid(grid2);

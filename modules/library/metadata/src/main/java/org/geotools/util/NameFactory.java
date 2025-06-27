@@ -134,7 +134,7 @@ public final class NameFactory {
             final GenericName[] names = new GenericName[values.length];
             for (int i = 0; i < values.length; i++) {
                 final CharSequence v = values[i];
-                names[i] = (v instanceof GenericName) ? (GenericName) v : create(v.toString());
+                names[i] = v instanceof GenericName ? (GenericName) v : create(v.toString());
             }
             return names;
         }
@@ -143,7 +143,7 @@ public final class NameFactory {
             final GenericName[] names = new GenericName[values.length];
             for (int i = 0; i < values.length; i++) {
                 final Identifier v = values[i];
-                names[i] = (v instanceof GenericName) ? (GenericName) v : create(v.getCode());
+                names[i] = v instanceof GenericName ? (GenericName) v : create(v.getCode());
             }
             return names;
         }

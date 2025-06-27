@@ -90,7 +90,7 @@ public class MapLayerEvent extends EventObject {
         super(source);
         this.reason = reason;
 
-        if ((reason <= 0) || (reason > PRE_DISPOSE)) {
+        if (reason <= 0 || reason > PRE_DISPOSE) {
             throw new IllegalArgumentException("Invalid value for reason argument: " + reason);
         }
     }

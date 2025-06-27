@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
@@ -26,7 +27,7 @@ public class MockHttpResponse implements HTTPResponse {
     boolean disposed;
 
     public MockHttpResponse(String response, String contentType, String... headers) {
-        this(response.getBytes(), contentType, headers);
+        this(response.getBytes(StandardCharsets.UTF_8), contentType, headers);
     }
 
     public MockHttpResponse(URL response, String contentType, String... headers) throws IOException {

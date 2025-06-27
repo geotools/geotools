@@ -93,6 +93,7 @@ public class JExampleWizard extends JWizard {
         }
         ;
 
+        @Override
         public boolean isValid() {
             try {
                 String txt = field.getText();

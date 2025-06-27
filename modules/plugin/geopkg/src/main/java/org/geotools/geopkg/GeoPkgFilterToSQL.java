@@ -68,7 +68,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         String super_result = super.escapeName(name);
         AttributeDescriptor desc = featureType.getDescriptor(name);
         // desc might be null in the case of joins et al
-        if ((desc != null) && (desc.getType().getBinding() != null)) {
+        if (desc != null && desc.getType().getBinding() != null) {
             Class<?> binding = desc.getType().getBinding();
             // utc -- everything must be consistent -- see literal visitor
             if (Time.class.isAssignableFrom(binding)) {
@@ -119,7 +119,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         if (!isPrepareEnabled()) return super.visit(expression, context);
 
         // evaluate the literal and store it for later
-        Object literalValue = evaluateLiteral(expression, (context instanceof Class ? (Class) context : null));
+        Object literalValue = evaluateLiteral(expression, context instanceof Class ? (Class) context : null);
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);

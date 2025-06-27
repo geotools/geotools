@@ -237,7 +237,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
                     : null;
 
             Object property = image.getProperty("ROI");
-            ROI overallROI = (property instanceof ROI) ? (ROI) property : null;
+            ROI overallROI = property instanceof ROI ? (ROI) property : null;
             return new MosaicElement(alphaBand, overallROI, image, mosaicElement.getPamDataset());
         } else {
             return mosaicElement;
@@ -363,8 +363,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
 
         @Override
         public List<MosaicElement> createMosaic() throws IOException {
-            final MosaicElement mosaic = (new Mosaicker(
-                            this.rasterLayerResponse, collectGranules(), MergeBehavior.FLAT))
+            final MosaicElement mosaic = new Mosaicker(this.rasterLayerResponse, collectGranules(), MergeBehavior.FLAT)
                     .createMosaic(false, true);
             if (mosaic == null) {
                 return Collections.emptyList();

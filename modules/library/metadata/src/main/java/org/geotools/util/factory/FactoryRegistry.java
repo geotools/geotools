@@ -166,7 +166,7 @@ public class FactoryRegistry {
     }
 
     @Override
-    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
+    @SuppressWarnings({"deprecation", "Finalize"}) // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         deregisterAll();
         super.finalize();
@@ -546,7 +546,7 @@ public class FactoryRegistry {
         }
         if (hints != null) {
             if (candidate instanceof Factory) {
-                if (!usesAcceptableHints((Factory) candidate, category, hints, null)) {
+                if (!usesAcceptableHints((Factory) candidate, hints, null)) {
                     return false;
                 }
             }
@@ -564,13 +564,11 @@ public class FactoryRegistry {
      * Class, Hints)} method. This method invokes itself recursively.
      *
      * @param factory The factory to checks.
-     * @param category The factory category. Usually an interface.
      * @param hints The user requirements ({@code null} not allowed).
      * @param alreadyDone Should be {@code null} except on recursive calls (for internal use only).
      * @return {@code true} if the {@code factory} meets the hints requirements.
      */
-    private boolean usesAcceptableHints(
-            final Factory factory, final Class<?> category, final Hints hints, Set<Factory> alreadyDone) {
+    private boolean usesAcceptableHints(final Factory factory, final Hints hints, Set<Factory> alreadyDone) {
         /*
          * Ask for implementation hints with special care against infinite recursivity.
          * Some implementations use deferred algorithms fetching dependencies only when
@@ -648,14 +646,8 @@ public class FactoryRegistry {
                         remaining = new Hints(hints);
                         remaining.keySet().removeAll(implementationHints.keySet());
                     }
-                    final Class<?> type;
-                    if (key instanceof Hints.Key) {
-                        type = ((Hints.Key) key).getValueClass();
-                    } else {
-                        type = Factory.class; // Kind of unknown factory type...
-                    }
                     // Recursive call to this method for scanning dependencies.
-                    if (!usesAcceptableHints(dependency, type, remaining, alreadyDone)) {
+                    if (!usesAcceptableHints(dependency, remaining, alreadyDone)) {
                         return false;
                     }
                 }
@@ -1021,6 +1013,7 @@ public class FactoryRegistry {
                          * not be properly ordered. Since this code exists more for compatibility reasons
                          * than as a commited API, we ignore this short comming for now.
                          */
+                        @SuppressWarnings("StreamToIterable")
                         Iterable<T> factories = getFactories(category, false)::iterator;
                         for (final T other : factories) {
                             if (other != factory) {
@@ -1205,6 +1198,7 @@ public class FactoryRegistry {
     public <T> boolean setOrdering(final Class<T> category, final Comparator<T> comparator) {
         boolean set = false;
         final List<T> previous = new ArrayList<>();
+        @SuppressWarnings("StreamToIterable")
         Iterable<T> factories = getFactories(category, false)::iterator;
         for (final T f1 : factories) {
             for (int i = previous.size(); --i >= 0; ) {
@@ -1270,6 +1264,7 @@ public class FactoryRegistry {
         boolean done = false;
         T impl1 = null;
         T impl2 = null;
+        @SuppressWarnings("StreamToIterable")
         Iterable<T> factories = getFactories(category, false)::iterator;
         for (final T factory : factories) {
             if (filter1.test(factory)) impl1 = factory;

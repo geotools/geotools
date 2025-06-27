@@ -220,17 +220,20 @@ public class WFSDataStore extends ContentDataStore {
 
     public StoredQueryDescriptionType getStoredQueryDescriptionType(String storedQueryId) throws IOException {
 
+        StoredQueryDescriptionType desc;
         storedQueryDescriptionTypesLock.readLock().lock();
-        StoredQueryDescriptionType desc = storedQueryDescriptionTypes.get(storedQueryId);
-        storedQueryDescriptionTypesLock.readLock().unlock();
-
+        try {
+            desc = storedQueryDescriptionTypes.get(storedQueryId);
+        } finally {
+            storedQueryDescriptionTypesLock.readLock().unlock();
+        }
         if (desc == null) {
             storedQueryDescriptionTypesLock.writeLock().lock();
-
-            // Make sure another thread has not retrieved this information while waiting for locks
-            desc = storedQueryDescriptionTypes.get(storedQueryId);
-
             try {
+
+                // Make sure another thread has not retrieved this information while waiting for locks
+                desc = storedQueryDescriptionTypes.get(storedQueryId);
+
                 // If desc is still null, retrieve it
                 if (desc == null) {
                     DescribeStoredQueriesRequest request = client.createDescribeStoredQueriesRequest();

@@ -142,8 +142,8 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     public int hashCode() {
         if (cachedHash == 0) {
             int result = 17;
-            result = (37 * result) + getClass().hashCode();
-            result = (37 * result) + children.hashCode();
+            result = 37 * result + getClass().hashCode();
+            result = 37 * result + children.hashCode();
             cachedHash = result;
         }
 

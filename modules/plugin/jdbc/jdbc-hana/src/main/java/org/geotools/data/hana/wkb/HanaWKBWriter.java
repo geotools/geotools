@@ -88,7 +88,7 @@ public class HanaWKBWriter {
     private static int computeSize(Polygon polygon, int dimension) {
         int size = HEADER_SIZE + COUNT_SIZE;
         LineString shell = polygon.getExteriorRing();
-        if ((shell == null) || (shell.getNumPoints() == 0)) {
+        if (shell == null || shell.getNumPoints() == 0) {
             return size;
         }
         int pointSize = dimension * COORD_SIZE;
@@ -177,7 +177,7 @@ public class HanaWKBWriter {
     private static void write(Polygon polygon, int dimension, ByteBuffer buffer) {
         writeHeader(GeometryType.POLYGON, dimension, buffer);
         LineString shell = polygon.getExteriorRing();
-        if ((shell == null) || (shell.getNumPoints() == 0)) {
+        if (shell == null || shell.getNumPoints() == 0) {
             buffer.putInt(0);
             return;
         }

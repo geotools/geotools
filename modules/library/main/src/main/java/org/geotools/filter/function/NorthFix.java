@@ -200,7 +200,7 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
             crs = org.geotools.referencing.CRS.getHorizontalCRS(crs);
         }
         // geographic and engineering CRSs are always north up
-        if ((crs instanceof GeographicCRS) || (crs instanceof EngineeringCRS)) {
+        if (crs instanceof GeographicCRS || crs instanceof EngineeringCRS) {
             return false;
         }
 

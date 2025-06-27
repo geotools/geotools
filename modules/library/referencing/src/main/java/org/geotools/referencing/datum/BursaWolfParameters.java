@@ -127,7 +127,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
          *       rotation angles?
          */
         final double S = 1 + ppm / 1E+6;
-        final double RS = (Math.PI / (180 * 3600)) * S;
+        final double RS = Math.PI / (180 * 3600) * S;
         return new Matrix4(S, -ez * RS, +ey * RS, dx, +ez * RS, S, -ex * RS, dy, -ey * RS, +ex * RS, S, dz, 0, 0, 0, 1);
     }
 
@@ -155,7 +155,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
         dy = matrix.getElement(1, 3);
         dz = matrix.getElement(2, 3);
         final double S = (matrix.getElement(0, 0) + matrix.getElement(1, 1) + matrix.getElement(2, 2)) / 3;
-        final double RS = (Math.PI / (180 * 3600)) * S;
+        final double RS = Math.PI / (180 * 3600) * S;
         ppm = (S - 1) * 1E+6;
         for (int j = 0; j < 2; j++) {
             final double eltS = (matrix.getElement(j, j) - 1) * 1E+6;

@@ -151,7 +151,7 @@ public class TileMatrix {
 
         CoordinateReferenceSystem crs = getCrs();
         if (isLongitudeFirstAxisOrderForced
-                || (crs != null && CRS.getAxisOrder(crs).equals(CRS.AxisOrder.EAST_NORTH))) {
+                || crs != null && CRS.getAxisOrder(crs).equals(CRS.AxisOrder.EAST_NORTH)) {
             topLeft = gf.createPoint(new Coordinate(lon, lat));
         } else {
             // guess lat/lon?

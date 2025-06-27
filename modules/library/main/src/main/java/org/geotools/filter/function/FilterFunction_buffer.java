@@ -55,14 +55,14 @@ public class FilterFunction_buffer extends FunctionExpressionImpl implements Geo
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (getExpression(1).evaluate(feature, Double.class)).doubleValue();
+            arg1 = getExpression(1).evaluate(feature, Double.class).doubleValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
                     "Filter Function problem for function buffer argument #1 - expected type double");
         }
 
-        return (StaticGeometry.buffer(arg0, arg1));
+        return StaticGeometry.buffer(arg0, arg1);
     }
 
     /**

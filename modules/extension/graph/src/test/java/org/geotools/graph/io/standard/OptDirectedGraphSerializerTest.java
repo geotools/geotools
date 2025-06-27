@@ -67,15 +67,15 @@ public class OptDirectedGraphSerializerTest {
             // ensure two nodes of degree 1, and nnodes-2 nodes of degree 2
             GraphVisitor visitor = component -> {
                 DirectedNode node = (DirectedNode) component;
-                if (node.getInDegree() == 0 || node.getOutDegree() == 0) return (Graph.PASS_AND_CONTINUE);
-                return (Graph.FAIL_QUERY);
+                if (node.getInDegree() == 0 || node.getOutDegree() == 0) return Graph.PASS_AND_CONTINUE;
+                return Graph.FAIL_QUERY;
             };
             Assert.assertEquals(2, after.queryNodes(visitor).size());
 
             visitor = component -> {
                 DirectedNode node = (DirectedNode) component;
-                if (node.getInDegree() == 1 || node.getOutDegree() == 1) return (Graph.PASS_AND_CONTINUE);
-                return (Graph.FAIL_QUERY);
+                if (node.getInDegree() == 1 || node.getOutDegree() == 1) return Graph.PASS_AND_CONTINUE;
+                return Graph.FAIL_QUERY;
             };
 
             Assert.assertEquals(after.getNodesOfDegree(2).size(), nnodes - 2);
@@ -112,22 +112,22 @@ public class OptDirectedGraphSerializerTest {
 
             GraphVisitor visitor = component -> {
                 DirectedNode node = (DirectedNode) component;
-                if (node.getInDegree() == 0 && node.getOutDegree() == 2) return (Graph.PASS_AND_CONTINUE);
-                return (Graph.FAIL_QUERY);
+                if (node.getInDegree() == 0 && node.getOutDegree() == 2) return Graph.PASS_AND_CONTINUE;
+                return Graph.FAIL_QUERY;
             };
             Assert.assertEquals(1, after.queryNodes(visitor).size()); // root
 
             visitor = component -> {
                 DirectedNode node = (DirectedNode) component;
-                if (node.getInDegree() == 1 && node.getOutDegree() == 2) return (Graph.PASS_AND_CONTINUE);
-                return (Graph.FAIL_QUERY);
+                if (node.getInDegree() == 1 && node.getOutDegree() == 2) return Graph.PASS_AND_CONTINUE;
+                return Graph.FAIL_QUERY;
             };
             Assert.assertEquals(after.queryNodes(visitor).size(), (int) Math.pow(2, k) - 2); // internal
 
             visitor = component -> {
                 DirectedNode node = (DirectedNode) component;
-                if (node.getInDegree() == 1 && node.getOutDegree() == 0) return (Graph.PASS_AND_CONTINUE);
-                return (Graph.FAIL_QUERY);
+                if (node.getInDegree() == 1 && node.getOutDegree() == 0) return Graph.PASS_AND_CONTINUE;
+                return Graph.FAIL_QUERY;
             };
             Assert.assertEquals(after.queryNodes(visitor).size(), (int) Math.pow(2, k)); // leaves
         } catch (Exception e) {
@@ -137,22 +137,22 @@ public class OptDirectedGraphSerializerTest {
     }
 
     protected OptDirectedGraphBuilder createBuilder() {
-        return (new OptDirectedGraphBuilder());
+        return new OptDirectedGraphBuilder();
     }
 
     protected OptDirectedGraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 
     protected OptGraphBuilder createRebuilder() {
-        return (new OptGraphBuilder());
+        return new OptGraphBuilder();
     }
 
     protected OptDirectedGraphBuilder rebuilder() {
-        return (m_rebuilder);
+        return m_rebuilder;
     }
 
     protected SerializedReaderWriter serializer() {
-        return (m_serializer);
+        return m_serializer;
     }
 }

@@ -76,7 +76,8 @@ public class FeatureListenerManager {
      * EvenListenerLists by FeatureSource, using a WeakHashMap to allow listener lists to be cleaned up after their
      * FeatureSource is no longer referenced.
      */
-    Map<FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList> listenerMap = new WeakHashMap<>();
+    final Map<FeatureSource<? extends FeatureType, ? extends Feature>, EventListenerList> listenerMap =
+            new WeakHashMap<>();
 
     /** Used by FeaureSource implementations to provide listener support. */
     public void addFeatureListener(
@@ -148,7 +149,7 @@ public class FeatureListenerManager {
                     continue; // skip as typeName does not match
                 }
 
-                if ((transaction != Transaction.AUTO_COMMIT) && hasTransaction(featureSource)) {
+                if (transaction != Transaction.AUTO_COMMIT && hasTransaction(featureSource)) {
                     // need to ensure Transactions match
                     if (transaction != getTransaction(featureSource)) {
                         continue; // skip as transactions do not match
@@ -169,7 +170,7 @@ public class FeatureListenerManager {
 
     private static boolean hasTransaction(FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
         return featureSource instanceof FeatureStore
-                && (((FeatureStore<? extends FeatureType, ? extends Feature>) featureSource).getTransaction() != null);
+                && ((FeatureStore<? extends FeatureType, ? extends Feature>) featureSource).getTransaction() != null;
     }
 
     private static Transaction getTransaction(FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
@@ -322,7 +323,7 @@ public class FeatureListenerManager {
             featureSource = (FeatureSource<? extends FeatureType, ? extends Feature>) entry.getKey();
             listeners = (FeatureListener[]) entry.getValue();
 
-            if (hasTransaction(featureSource) && (getTransaction(featureSource) == transaction)) {
+            if (hasTransaction(featureSource) && getTransaction(featureSource) == transaction) {
                 continue; // skip notify members of the same transaction
             }
 

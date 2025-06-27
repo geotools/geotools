@@ -53,7 +53,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetFeatures() throws Exception {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> r =
-                dataStore.getFeatureReader(new Query(tname(("guid"))), Transaction.AUTO_COMMIT)) {
+                dataStore.getFeatureReader(new Query(tname("guid")), Transaction.AUTO_COMMIT)) {
             r.hasNext();
 
             Set<UUID> uuids = new HashSet<>();

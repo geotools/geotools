@@ -145,7 +145,7 @@ public class TestLinearClassifier extends Assert {
         final WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_DOUBLE, width, height, 1, null);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                raster.setSample(x, y, 0, (x + y));
+                raster.setSample(x, y, 0, x + y);
             }
         }
         final ColorModel cm = new ComponentColorModelJAI(
@@ -154,11 +154,7 @@ public class TestLinearClassifier extends Assert {
         return image;
     }
 
-    /**
-     * Building a synthetic image upon a DOUBLE sample-model.
-     *
-     * @return {@linkplain BufferedImage}
-     */
+    /** Building a synthetic image upon a DOUBLE sample-model. */
     @Test
     public void Synthetic_Float() throws IOException {
 
@@ -235,7 +231,7 @@ public class TestLinearClassifier extends Assert {
         final WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                raster.setSample(x, y, 0, (x + y));
+                raster.setSample(x, y, 0, x + y);
             }
         }
         final ColorModel cm = new ComponentColorModelJAI(

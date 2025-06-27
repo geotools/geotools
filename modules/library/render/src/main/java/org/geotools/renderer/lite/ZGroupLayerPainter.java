@@ -82,7 +82,7 @@ class ZGroupLayerPainter implements AutoCloseable {
             }
             // we have to restart from the beginning with the next fts, remember
             // the first feature was already loaded
-            if (i < (lfts.size() - 1)) {
+            if (i < lfts.size() - 1) {
                 iterator.reset();
                 complete = false;
                 currentFeature = startFeature;

@@ -139,7 +139,7 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
         }
 
         // if no namespace given, assume default for the current schema
-        if (((uri == null) || "".equals(uri)) && (schema != null)) {
+        if ((uri == null || "".equals(uri)) && schema != null) {
             uri = schema.getTargetNamespace();
         }
 

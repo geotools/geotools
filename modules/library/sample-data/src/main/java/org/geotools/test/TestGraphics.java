@@ -28,7 +28,6 @@ import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.RenderingHints.Key;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
@@ -52,7 +51,7 @@ import java.util.Map;
  * @author Jody Garnett
  */
 public class TestGraphics extends Graphics2D {
-    public Map<Key, ?> hints;
+    public Map<RenderingHints.Key, ?> hints;
     public Shape clip;
     public Shape draw;
     public GlyphVector glyphs;
@@ -135,7 +134,7 @@ public class TestGraphics extends Graphics2D {
 
     @Override
     public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-        StringBuffer build = new StringBuffer();
+        StringBuilder build = new StringBuilder();
         char c;
         while ((c = iterator.next()) != iterator.DONE) {
             build.append(c);
@@ -147,7 +146,7 @@ public class TestGraphics extends Graphics2D {
 
     @Override
     public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-        StringBuffer build = new StringBuffer();
+        StringBuilder build = new StringBuilder();
         char c;
         while ((c = iterator.next()) != iterator.DONE) {
             build.append(c);
@@ -189,7 +188,7 @@ public class TestGraphics extends Graphics2D {
     }
 
     @Override
-    public Object getRenderingHint(Key hintKey) {
+    public Object getRenderingHint(RenderingHints.Key hintKey) {
         return hints.get(hintKey);
     }
 
@@ -253,7 +252,7 @@ public class TestGraphics extends Graphics2D {
     }
 
     @Override
-    public void setRenderingHint(Key hintKey, Object hintValue) {
+    public void setRenderingHint(RenderingHints.Key hintKey, Object hintValue) {
         // TODO Auto-generated method stub
 
     }
@@ -261,7 +260,7 @@ public class TestGraphics extends Graphics2D {
     @Override
     @SuppressWarnings("unchecked")
     public void setRenderingHints(Map<?, ?> hints) {
-        this.hints = (Map<Key, ?>) hints;
+        this.hints = (Map<RenderingHints.Key, ?>) hints;
     }
 
     @Override

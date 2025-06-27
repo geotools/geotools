@@ -82,16 +82,16 @@ class SpeedConverter {
             return speed;
         }
         if (uom.equalsIgnoreCase(METER_PER_SECOND)) {
-            return (speed * METERS_PER_SECOND_TO_KNOTS);
+            return speed * METERS_PER_SECOND_TO_KNOTS;
         }
         if (uom.equalsIgnoreCase(CENTIMETER_PER_SECOND)) {
-            return (speed * CENTIMETERS_PER_SECOND_TO_KNOTS);
+            return speed * CENTIMETERS_PER_SECOND_TO_KNOTS;
         }
         if (uom.equalsIgnoreCase(KILOMETER_PER_HOUR)) {
-            return (speed * KILOMETERS_PER_HOUR_TO_KNOTS);
+            return speed * KILOMETERS_PER_HOUR_TO_KNOTS;
         }
         if (uom.equalsIgnoreCase(MILE_PER_HOUR)) {
-            return (speed * MILES_PER_HOUR_TO_KNOTS);
+            return speed * MILES_PER_HOUR_TO_KNOTS;
         }
 
         // ok let's try harder --> this is going to be slower

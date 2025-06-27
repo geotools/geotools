@@ -163,7 +163,7 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
         Set<String> names = new HashSet<>();
         try (FeatureIterator it = features.features()) {
             while (it.hasNext()) {
-                names.add((((SimpleFeature) it.next()).getAttribute("name")).toString());
+                names.add(((SimpleFeature) it.next()).getAttribute("name").toString());
             }
         }
 

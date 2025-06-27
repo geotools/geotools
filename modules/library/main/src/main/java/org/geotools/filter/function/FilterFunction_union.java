@@ -58,6 +58,6 @@ public class FilterFunction_union extends FunctionExpressionImpl {
                     "Filter Function problem for function union argument #1 - expected type Geometry");
         }
 
-        return (StaticGeometry.union(arg0, arg1));
+        return StaticGeometry.union(arg0, arg1);
     }
 }

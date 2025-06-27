@@ -139,13 +139,13 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
         } else if (length == 1) {
             throw new IllegalArgumentException(schema);
         }
-        /**
+        /*
          * Update the map, prepending the schema name to the table name so long as the value is a table name and not a
          * field. This algorithm assumes that all old table names start with "epsg_".
          */
         for (final Map.Entry<String, String> entry : map.entrySet()) {
             final String tableName = entry.getValue();
-            /**
+            /*
              * Update the map, prepending the schema name to the table name so long as the value is a table name and not
              * a field. This algorithm assumes that all old table names start with "epsg_".
              */

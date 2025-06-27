@@ -107,7 +107,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.geot
      */
     @Override
     public NameSpace scope() {
-        return (asScopedName != null) ? asScopedName.scope() : super.scope();
+        return asScopedName != null ? asScopedName.scope() : super.scope();
     }
 
     /**

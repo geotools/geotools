@@ -88,7 +88,7 @@ public class Absolute extends BaseMathOperationJAI {
         final NumberRange range = ranges[0];
         final double min = Math.abs(range.getMinimum());
         final double max = Math.abs(range.getMaximum());
-        return (max < min) ? NumberRange.create(max, min) : NumberRange.create(min, max);
+        return max < min ? NumberRange.create(max, min) : NumberRange.create(min, max);
     }
 
     @Override

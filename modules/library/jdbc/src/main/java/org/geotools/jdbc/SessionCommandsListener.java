@@ -128,7 +128,7 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < sql.length(); i++) {
             final char curr = sql.charAt(i);
-            final boolean last = (i == sql.length() - 1);
+            final boolean last = i == sql.length() - 1;
             final char next = last ? 0 : sql.charAt(i + 1);
 
             if (curr == '\\') {

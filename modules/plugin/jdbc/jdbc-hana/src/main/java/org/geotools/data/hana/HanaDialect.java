@@ -186,7 +186,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         super.initializeConnection(cx);
         if (hanaVersion == null) {
             hanaVersion = new HanaVersion(cx.getMetaData().getDatabaseProductVersion());
-            if ((hanaVersion.getVersion() == 1) && (hanaVersion.getRevision() < 120)) {
+            if (hanaVersion.getVersion() == 1 && hanaVersion.getRevision() < 120) {
                 throw new SQLException("Only HANA 2 and HANA 1 SPS 12 and later are supported");
             }
 
@@ -506,8 +506,8 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     public void encodeGeometryColumnSimplified(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
         encodeColumnName(prefix, gatt.getLocalName(), sql);
-        if ((distance != null)
-                && (distance >= 0.0)
+        if (distance != null
+                && distance >= 0.0
                 && !simplifyDisabled
                 && isPlanarCRS(gatt.getCoordinateReferenceSystem())) {
             sql.append(".ST_Simplify(");
@@ -802,7 +802,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
                 throw new AssertionError();
             }
             int count = rs.getInt(1);
-            return (count == 1) ? sequenceName : null;
+            return count == 1 ? sequenceName : null;
         } finally {
             dataStore.closeSafe(rs);
             dataStore.closeSafe(ps);
@@ -855,8 +855,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     @Override
     protected void addSupportedHints(Set<org.geotools.util.factory.Hints.Key> hints) {
         if (!simplifyDisabled) {
-            if ((hanaVersion.getVersion() > 2)
-                    || ((hanaVersion.getVersion() == 2) && (hanaVersion.getRevision() >= 40))) {
+            if (hanaVersion.getVersion() > 2 || hanaVersion.getVersion() == 2 && hanaVersion.getRevision() >= 40) {
                 hints.add(Hints.GEOMETRY_SIMPLIFICATION);
             }
         }
@@ -874,7 +873,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void handleSelectHints(StringBuffer sql, SimpleFeatureType featureType, Query query) {
-        if ((selectHints == null) || selectHints.trim().isEmpty()) {
+        if (selectHints == null || selectHints.trim().isEmpty()) {
             return;
         }
         sql.append(" WITH HINT( ");
@@ -985,7 +984,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
                 throw new AssertionError();
             }
             int count = rs.getInt(1);
-            return (count == 1);
+            return count == 1;
         } finally {
             dataStore.closeSafe(rs);
             dataStore.closeSafe(ps);

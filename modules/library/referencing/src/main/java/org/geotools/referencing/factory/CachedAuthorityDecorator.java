@@ -135,7 +135,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The cache to use
      */
-    protected CachedAuthorityDecorator(AuthorityFactory factory, ObjectCache<Object, Object> cache) {
+    CachedAuthorityDecorator(AuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         authority = factory;
@@ -147,14 +147,14 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
+    static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
     //
     // Utility Methods and Cache Care and Feeding
     //
-    protected String toKey(String code) {
+    String toKey(String code) {
         return ObjectCaches.toKey(getAuthority(), code);
     }
 

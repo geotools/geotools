@@ -213,7 +213,7 @@ public final class SoftValueHashMapTest {
         executor.awaitTermination(3, TimeUnit.SECONDS);
     }
 
-    private class CacheTestThreadGetPut implements Runnable {
+    private static class CacheTestThreadGetPut implements Runnable {
 
         private SoftValueHashMap<Integer, Integer> cache;
         private Random random;
@@ -242,7 +242,7 @@ public final class SoftValueHashMapTest {
         }
     }
 
-    private class CacheTestThreadIterators implements Runnable {
+    private static class CacheTestThreadIterators implements Runnable {
 
         private SoftValueHashMap<Integer, Integer> cache;
         private CountDownLatch latch;

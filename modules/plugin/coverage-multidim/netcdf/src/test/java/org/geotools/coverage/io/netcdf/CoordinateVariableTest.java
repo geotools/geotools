@@ -56,7 +56,7 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
     }
 
     /** Simple CoordinateAxis1D wrapper to override Units */
-    class CoordinateAxis1DUnitWrapper extends CoordinateAxis1D {
+    static class CoordinateAxis1DUnitWrapper extends CoordinateAxis1D {
 
         String units;
 
@@ -90,15 +90,15 @@ public class CoordinateVariableTest extends NetCDFBaseTest {
             final int second = 0;
             final String refTime = year
                     + "-"
-                    + (month < 10 ? ("0" + month) : month)
+                    + (month < 10 ? "0" + month : month)
                     + "-"
-                    + (day < 10 ? ("0" + day) : day)
+                    + (day < 10 ? "0" + day : day)
                     + " "
-                    + (hour < 10 ? ("0" + hour) : hour)
+                    + (hour < 10 ? "0" + hour : hour)
                     + ":"
-                    + (minute < 10 ? ("0" + minute) : minute)
+                    + (minute < 10 ? "0" + minute : minute)
                     + ":"
-                    + (second < 10 ? ("0" + second) : second);
+                    + (second < 10 ? "0" + second : second);
             // //
             // Plural form units check
             // //

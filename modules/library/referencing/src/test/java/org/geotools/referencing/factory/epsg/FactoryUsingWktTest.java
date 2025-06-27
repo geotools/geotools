@@ -78,12 +78,12 @@ public final class FactoryUsingWktTest {
     /** Tests the authority code. */
     @Test
     public void testAuthority() {
+        assertNotNull(factory);
         final Citation authority = factory.getAuthority();
         assertNotNull(authority);
         assertEquals("European Petroleum Survey Group", authority.getTitle().toString());
         assertTrue(Citations.identifierMatches(authority, "EPSG"));
         assertFalse(Citations.identifierMatches(authority, "ESRI"));
-        assertTrue(factory instanceof FactoryUsingWKT);
     }
 
     /** Tests the vendor. */

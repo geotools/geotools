@@ -87,7 +87,7 @@ public class QNameValidatingHandler implements TransformerHandler {
                     return false;
                 } else if ("xmlns".equals(localName)
                         || "xmlns".equals(qName)
-                        || (qName != null && qName.startsWith("xmlns:"))) {
+                        || qName != null && qName.startsWith("xmlns:")) {
                     checkNamespaceUri(atts.getValue(i));
                 }
             }

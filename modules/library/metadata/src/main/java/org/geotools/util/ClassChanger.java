@@ -303,7 +303,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      */
     public static Class<? extends Number> getWidestClass(final Number n1, final Number n2)
             throws IllegalArgumentException {
-        return getWidestClass((n1 != null) ? n1.getClass() : null, (n2 != null) ? n2.getClass() : null);
+        return getWidestClass(n1 != null ? n1.getClass() : null, n2 != null ? n2.getClass() : null);
     }
 
     /**

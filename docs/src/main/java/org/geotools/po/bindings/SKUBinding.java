@@ -44,6 +44,7 @@ public class SKUBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return PO.SKU;
     }
@@ -55,6 +56,7 @@ public class SKUBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -66,6 +68,7 @@ public class SKUBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String sku = (String) value;
 

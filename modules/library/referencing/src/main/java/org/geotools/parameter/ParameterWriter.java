@@ -207,7 +207,7 @@ public class ParameterWriter extends FilterWriter {
         table.nextColumn();
         table.write("Maximum"); // TODO localize
         table.nextColumn();
-        table.write(resources.getString((values == null) ? VocabularyKeys.DEFAULT_VALUE : VocabularyKeys.VALUE));
+        table.write(resources.getString(values == null ? VocabularyKeys.DEFAULT_VALUE : VocabularyKeys.VALUE));
         table.nextColumn();
         table.write("Units"); // TODO localize
         table.nextLine();
@@ -220,7 +220,7 @@ public class ParameterWriter extends FilterWriter {
          */
         List<Object> deferredGroups = null;
         final Object[] array1 = new Object[1];
-        final Collection<?> elements = (values != null) ? values.values() : group.descriptors();
+        final Collection<?> elements = values != null ? values.values() : group.descriptors();
         for (final Object element : elements) {
             final GeneralParameterValue generalValue;
             final GeneralParameterDescriptor generalDescriptor;

@@ -120,7 +120,7 @@ public class ConstantExpression implements Literal, Cloneable {
             return value.hashCode();
         }
 
-        return (value == null) ? 0 : value.toString().hashCode();
+        return value == null ? 0 : value.toString().hashCode();
     }
 
     @Override
@@ -144,7 +144,7 @@ public class ConstantExpression implements Literal, Cloneable {
             }
         }
 
-        return (value == null) ? "NULL" : value.toString();
+        return value == null ? "NULL" : value.toString();
     }
 
     /** Encode provided color as a String */

@@ -72,7 +72,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
     @Override
     public String getDescription() {
         final InternationalString remarks = descriptor.getRemarks();
-        return (remarks != null) ? remarks.toString() : null;
+        return remarks != null ? remarks.toString() : null;
     }
 
     /**

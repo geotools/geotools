@@ -69,9 +69,9 @@ public class PolygonHandler implements ShapeHandler {
             p = pointList[t];
 
             // nan test; x!=x iff x is nan
-            if ((testPoint.x == p.x)
-                    && (testPoint.y == p.y)
-                    && ((testPoint.getZ() == p.getZ()) || Double.isNaN(testPoint.getZ()))) {
+            if (testPoint.x == p.x
+                    && testPoint.y == p.y
+                    && (testPoint.getZ() == p.getZ() || Double.isNaN(testPoint.getZ()))) {
                 return true;
             }
         }
@@ -105,11 +105,11 @@ public class PolygonHandler implements ShapeHandler {
         int length;
 
         if (shapeType == ShapeType.POLYGONZ) {
-            length = 44 + (4 * nrings) + (16 * npoints) + (8 * npoints) + 16 + (8 * npoints) + 16;
+            length = 44 + 4 * nrings + 16 * npoints + 8 * npoints + 16 + 8 * npoints + 16;
         } else if (shapeType == ShapeType.POLYGONM) {
-            length = 44 + (4 * nrings) + (16 * npoints) + (8 * npoints) + 16;
+            length = 44 + 4 * nrings + 16 * npoints + 8 * npoints + 16;
         } else if (shapeType == ShapeType.POLYGON) {
-            length = 44 + (4 * nrings) + (16 * npoints);
+            length = 44 + 4 * nrings + 16 * npoints;
         } else {
             throw new IllegalStateException("Expected ShapeType of Polygon, got " + shapeType);
         }
@@ -126,7 +126,7 @@ public class PolygonHandler implements ShapeHandler {
 
         int numParts = buffer.getInt();
         int numPoints = buffer.getInt();
-        int dimensions = (shapeType == ShapeType.POLYGONZ) && !flatFeature ? 3 : 2;
+        int dimensions = shapeType == ShapeType.POLYGONZ && !flatFeature ? 3 : 2;
 
         int[] partOffsets = new int[numParts];
 
@@ -146,7 +146,7 @@ public class PolygonHandler implements ShapeHandler {
         for (int part = 0; part < numParts; part++) {
             start = partOffsets[part];
 
-            if (part == (numParts - 1)) {
+            if (part == numParts - 1) {
                 finish = numPoints;
             } else {
                 finish = partOffsets[part + 1];
@@ -154,10 +154,9 @@ public class PolygonHandler implements ShapeHandler {
 
             length = finish - start;
             int close = 0; // '1' if the ring must be closed, '0' otherwise
-            if ((coords.getOrdinate(start, CoordinateSequence.X)
-                            != coords.getOrdinate(finish - 1, CoordinateSequence.X))
-                    || (coords.getOrdinate(start, CoordinateSequence.Y)
-                            != coords.getOrdinate(finish - 1, CoordinateSequence.Y))) {
+            if (coords.getOrdinate(start, CoordinateSequence.X) != coords.getOrdinate(finish - 1, CoordinateSequence.X)
+                    || coords.getOrdinate(start, CoordinateSequence.Y)
+                            != coords.getOrdinate(finish - 1, CoordinateSequence.Y)) {
                 close = 1;
             }
             if (dimensions == 3 && !coords.hasM()) {
@@ -268,7 +267,7 @@ public class PolygonHandler implements ShapeHandler {
                 }
             }
 
-            boolean isArcZWithM = (dbuffer.remaining() >= numPoints + 2) && shapeType == ShapeType.POLYGONZ;
+            boolean isArcZWithM = dbuffer.remaining() >= numPoints + 2 && shapeType == ShapeType.POLYGONZ;
             if (isArcZWithM || shapeType == ShapeType.POLYGONM) {
                 // Handle M
                 dbuffer.position(dbuffer.position() + 2);
@@ -342,14 +341,14 @@ public class PolygonHandler implements ShapeHandler {
 
                 if (tryEnv.contains(testEnv)
                         && (RayCrossingCounter.locatePointInRing(testPt, coordList) != 2
-                                || (pointInList(testPt, coordList)))) {
+                                || pointInList(testPt, coordList))) {
                     isContained = true;
                 }
 
                 // check if this new containing ring is smaller than the current
                 // minimum ring
                 if (isContained) {
-                    if ((minShell == null) || minEnv.contains(tryEnv)) {
+                    if (minShell == null || minEnv.contains(tryEnv)) {
                         minShell = tryRing;
                     }
                 }

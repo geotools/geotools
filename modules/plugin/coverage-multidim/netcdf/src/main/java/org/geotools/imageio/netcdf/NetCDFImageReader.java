@@ -764,7 +764,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         for (int zi = 0; zi < numDstBands; zi++) {
             // final int srcBand = (srcBands == null) ? zi : srcBands[zi];
-            final int dstBand = (dstBands == null) ? zi : dstBands[zi];
+            final int dstBand = dstBands == null ? zi : dstBands[zi];
             if (multipleBands != null) {
                 try {
                     // we need to take in account the source bands parameter
@@ -1056,17 +1056,17 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                     continue;
                 case Time:
                     name = uniqueTimeAttribute ? NetCDFUtilities.TIME : name;
-                    timeAttribute += ("," + name + ":" + typeName);
+                    timeAttribute += "," + name + ":" + typeName;
                     break;
                 case Height:
                 case Pressure:
                 case RadialElevation:
                 case RadialDistance:
                 case GeoZ:
-                    elevationAttribute += ("," + name + ":" + typeName);
+                    elevationAttribute += "," + name + ":" + typeName;
                     break;
                 default:
-                    otherAttributes += ("," + name + ":" + typeName);
+                    otherAttributes += "," + name + ":" + typeName;
             }
         }
         schemaAttributes += timeAttribute + elevationAttribute + otherAttributes;

@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -62,7 +63,7 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
             return;
         }
         File schemaFile = schemaFile(schema.getTypeName());
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(schemaFile, StandardCharsets.UTF_8))) {
             BasicDBObject dbObject = FeatureTypeDBObject.convert(schema);
             writer.write(dbObject.toJson());
         }
@@ -77,7 +78,7 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
         if (!schemaFile.canRead()) {
             return null;
         }
-        BufferedReader reader = new BufferedReader(new FileReader(schemaFile));
+        BufferedReader reader = new BufferedReader(new FileReader(schemaFile, StandardCharsets.UTF_8));
         return MongoUtil.getSimpleFeatureType(reader, name);
     }
 

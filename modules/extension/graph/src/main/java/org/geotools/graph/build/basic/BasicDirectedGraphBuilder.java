@@ -42,7 +42,7 @@ public class BasicDirectedGraphBuilder extends BasicGraphBuilder {
      */
     @Override
     public Node buildNode() {
-        return (new BasicDirectedNode());
+        return new BasicDirectedNode();
     }
 
     /**
@@ -53,7 +53,7 @@ public class BasicDirectedGraphBuilder extends BasicGraphBuilder {
      */
     @Override
     public Edge buildEdge(Node nodeA, Node nodeB) {
-        return (new BasicDirectedEdge((DirectedNode) nodeA, (DirectedNode) nodeB));
+        return new BasicDirectedEdge((DirectedNode) nodeA, (DirectedNode) nodeB);
     }
 
     /**
@@ -73,6 +73,6 @@ public class BasicDirectedGraphBuilder extends BasicGraphBuilder {
     /** Creates a directed graph object. */
     @Override
     protected Graph buildGraph() {
-        return (new BasicDirectedGraph(getNodes(), getEdges()));
+        return new BasicDirectedGraph(getNodes(), getEdges());
     }
 }

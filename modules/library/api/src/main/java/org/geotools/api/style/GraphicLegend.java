@@ -18,11 +18,4 @@ package org.geotools.api.style;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-public interface GraphicLegend extends Graphic {
-
-    /**
-     * A default Graphic instance.
-     *
-     * <p>For some attributes the standard does not define a default, so a reasonable value is supplied.
-     */
-}
+public interface GraphicLegend extends Graphic {}

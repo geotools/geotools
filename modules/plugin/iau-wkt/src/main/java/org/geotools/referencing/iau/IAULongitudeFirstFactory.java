@@ -144,6 +144,6 @@ public class IAULongitudeFirstFactory extends DeferredAuthorityFactory implement
         } catch (FactoryRegistryException exception) {
             throw new FactoryException(exception);
         }
-        return new OrderedAxisCRSAuthorityFactory(factory, new Hints(hints), null);
+        return new OrderedAxisCRSAuthorityFactory(factory, new Hints(hints));
     }
 }

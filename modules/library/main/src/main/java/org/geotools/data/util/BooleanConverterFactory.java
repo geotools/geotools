@@ -92,6 +92,7 @@ public class BooleanConverterFactory implements ConverterFactory {
                 return new Converter() {
 
                     @Override
+                    @SuppressWarnings("BigDecimalEquals")
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (BigDecimal.ONE.equals(source)) {
                             return target.cast(Boolean.TRUE);

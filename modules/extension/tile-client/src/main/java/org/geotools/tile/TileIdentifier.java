@@ -117,7 +117,7 @@ public abstract class TileIdentifier {
      * @return the positive remainder
      */
     public static final int arithmeticMod(int a, int b) {
-        return (a >= 0) ? a % b : a % b + b;
+        return a >= 0 ? a % b : a % b + b;
     }
 
     @Override

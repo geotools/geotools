@@ -51,8 +51,8 @@ public class FilterFunction_startAngle extends FunctionExpressionImpl {
 
         CoordinateSequence cs = ls.getCoordinateSequence();
 
-        double dx = (cs.getX(1) - cs.getX(0));
-        double dy = (cs.getY(1) - cs.getY(0));
+        double dx = cs.getX(1) - cs.getX(0);
+        double dy = cs.getY(1) - cs.getY(0);
         return -Math.toDegrees(Math.atan2(dy, dx));
     }
 }

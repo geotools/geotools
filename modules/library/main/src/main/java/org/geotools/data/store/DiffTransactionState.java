@@ -31,7 +31,7 @@ import org.geotools.util.factory.Hints;
 
 /** Transaction state responsible for holding an in memory {@link Diff} of any modifications. */
 public class DiffTransactionState implements Transaction.State {
-    protected Diff diff;
+    protected final Diff diff;
 
     /** The transaction (ie session) associated with this state */
     protected Transaction transaction;
@@ -68,12 +68,11 @@ public class DiffTransactionState implements Transaction.State {
         return this.diff;
     }
 
-    @Override
-
     /**
      * We are already holding onto our transaction from ContentState; however this method does check that the
      * transaction is correct.
      */
+    @Override
     public synchronized void setTransaction(Transaction transaction) {
         if (this.transaction != null && transaction == null) {
             // clear ContentEntry transaction to fix GEOT-3315
@@ -81,8 +80,6 @@ public class DiffTransactionState implements Transaction.State {
         }
         this.transaction = transaction;
     }
-
-    @Override
 
     /**
      * Will apply differences to store.
@@ -98,12 +95,11 @@ public class DiffTransactionState implements Transaction.State {
      *   <li>fid|feature: where fid does not exist, represents feature being modified
      * </ul>
      *
-     * @param typeName typeName being updated
-     * @param diff differences to apply to FeatureWriter
      * @throws IOException If the entire diff cannot be writen out
-     * @t
      * @see Transaction.State#commit()
      */
+    @Override
+    @SuppressWarnings("Finally") // throws from within a finally block
     public synchronized void commit() throws IOException {
         if (diff.isEmpty()) {
             return; // nothing to do
@@ -202,16 +198,15 @@ public class DiffTransactionState implements Transaction.State {
         return writer;
     }
 
-    @Override
     /** @see Transaction.State#rollback() */
+    @Override
     public synchronized void rollback() throws IOException {
         diff.clear(); // rollback differences
         state.fireBatchFeatureEvent(false);
     }
 
-    @Override
-
     /** @see Transaction.State#addAuthorization(java.lang.String) */
+    @Override
     public synchronized void addAuthorization(String AuthID) throws IOException {
         // not required for TransactionStateDiff
     }

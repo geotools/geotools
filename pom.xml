@@ -477,7 +477,6 @@
     <mockito.version>5.15.2</mockito.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
-    <maven.javadoc.plugin.version>3.6.3</maven.javadoc.plugin.version>
     <!-- surefire configuration -->
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <allow.test.skip>true</allow.test.skip>
@@ -496,7 +495,7 @@
     <sun.java2d.d3d>true</sun.java2d.d3d>
     <test.args></test.args>
     <test.exclude.pattern>disabled</test.exclude.pattern>
-    <test.forkMode>once</test.forkMode>
+    <test.forkCount>1</test.forkCount>
     <test.maxHeapSize>256M</test.maxHeapSize>
     <test.otherJVMParams></test.otherJVMParams>
     <!-- qa configuration -->
@@ -505,10 +504,6 @@
     <checkstyle.skip>false</checkstyle.skip>
     <errorProne.version>2.31.0</errorProne.version>
     <errorProneFlags></errorProneFlags>
-    <jacoco.version>0.8.7</jacoco.version>
-    <lint>deprecation,unchecked</lint>
-    <maven.jacoco.plugin.version>0.8.10</maven.jacoco.plugin.version>
-    <maven.pmd.plugin.version>3.24.0</maven.pmd.plugin.version>
     <pmd.skip>false</pmd.skip>
     <pmd.version>7.14.0</pmd.version>
     <pom.fmt.action>sort</pom.fmt.action>
@@ -743,11 +738,19 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>${maven.jacoco.plugin.version}</version>
+          <version>0.8.13</version>
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven.javadoc.plugin.version}</version>
+          <version>3.11.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jxr-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>2.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-plugin-plugin</artifactId>
@@ -755,11 +758,11 @@
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
+          <version>3.5.3</version>
         </plugin>
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -767,7 +770,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
@@ -787,7 +790,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.5.3</version>
         </plugin>
         <plugin>
           <artifactId>maven-dependency-plugin</artifactId>
@@ -804,9 +807,78 @@
           <version>4.7.3.5</version>
         </plugin>
         <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.43.0</version>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>flatten-maven-plugin</artifactId>
           <version>1.7.0</version>
+        </plugin>
+        <plugin>
+          <groupId>com.github.ekryd.sortpom</groupId>
+          <artifactId>sortpom-maven-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.14.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>3.24.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>1.3.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.commonjava.maven.plugins</groupId>
+          <artifactId>directory-maven-plugin</artifactId>
+          <version>1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>pl.project13.maven</groupId>
+          <artifactId>git-commit-id-plugin</artifactId>
+          <version>2.2.5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.geotools.maven</groupId>
+          <artifactId>jjtree-javacc</artifactId>
+          <version>${project.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.geotools.maven</groupId>
+          <artifactId>xmlcodegen</artifactId>
+          <version>${project.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>7.1.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -816,7 +888,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.4.0</version>
         <executions>
           <execution>
             <id>remove_gt_from_modulename</id>
@@ -850,7 +921,6 @@
       <plugin>
         <groupId>org.commonjava.maven.plugins</groupId>
         <artifactId>directory-maven-plugin</artifactId>
-        <version>1.0</version>
         <executions>
           <execution>
             <id>directories</id>
@@ -871,12 +941,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
         <configuration>
-          <source>11</source>
-          <!-- The -source argument for the Java compiler. -->
-          <target>11</target>
-          <!-- The -target argument for the Java compiler. -->
+          <release>17</release>
           <debug>true</debug>
           <!-- Whether to include debugging information.   -->
           <encoding>UTF-8</encoding>
@@ -889,13 +955,46 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce</id>
+            <!-- Enforcing a minimum Maven version is crucial to ensure that:
+                 - Plugin version resolution works as expected: Different Maven versions
+                   may resolve plugin versions differently due to changes in the default
+                   lifecycle mappings, dependency resolution behavior, and plugin inheritance.
+                 - Features and bug fixes required by newer plugins are available: For example,
+                   some plugins (e.g., surefire-plugin 3.x) require Maven 3.6+ or 3.8+.
+                 - Consistent builds across environments: Without enforcing a Maven version,
+                   developers or CI/CD pipelines using different Maven versions may face
+                   unexpected build failures or inconsistencies.
+            -->
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>[3.8,4.0)</version>
+                  <message>You must use Maven 3.8 or higher to build this project.</message>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>[17,)</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- ======================================================= -->
       <!--     Resources.                                          -->
       <!-- ======================================================= -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.3.1</version>
         <inherited>false</inherited>
         <configuration>
           <encoding>UTF-8</encoding>
@@ -962,7 +1061,7 @@
           <printSummary>true</printSummary>
           <!-- Redirect the unit test standard output to a file. -->
           <redirectTestOutputToFile>false</redirectTestOutputToFile>
-          <forkMode>${test.forkMode}</forkMode>
+          <forkCount>${test.forkCount}</forkCount>
           <trimStackTrace>false</trimStackTrace>
           <!-- some test cases are making use of a geopackage dataset to run. The
                gt-geopkg implementation depends on xerial's sqlite-jdbc library to
@@ -983,7 +1082,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
         <configuration>
           <archive>
             <manifest>
@@ -1005,7 +1103,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.3.0</version>
         <inherited>true</inherited>
         <configuration>
           <attach>true</attach>
@@ -1026,7 +1123,6 @@
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
-        <version>2.2.5</version>
         <configuration>
           <prefix>build</prefix>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
@@ -1078,9 +1174,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-
         <configuration>
-          <source>11</source>
+          <release>17</release>
+          <!-- Force non-modular mode for projects without module-info.java -->
+          <legacyMode>true</legacyMode>
           <!-- JavaEE links does not use modules, remove when updating to Jakarta -->
           <detectJavaApiLink>false</detectJavaApiLink>
           <!-- Specifies whether or not the version text is included.-->
@@ -1152,7 +1249,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
 
@@ -1213,7 +1310,6 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.43.0</version>
         <configuration>
           <java>
             <palantirJavaFormat>
@@ -1239,7 +1335,6 @@
       <plugin>
         <groupId>com.github.ekryd.sortpom</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
-        <version>3.3.0</version>
         <configuration>
           <skip>${pom.fmt.skip}</skip>
           <pomFile>pom.xml</pomFile>
@@ -1270,7 +1365,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>2.0</version>
       </plugin>
 
       <!-- ======================================================= -->
@@ -1287,10 +1381,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven.javadoc.plugin.version}</version>
 
         <configuration>
-          <source>11</source>
+          <release>17</release>
+          <!-- Force non-modular mode for projects without module-info.java -->
+          <legacyMode>true</legacyMode>
           <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
           <!-- Omit qualifying package name before class names in output.-->
@@ -1359,7 +1454,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>https://docs.oracle.com/javase/11/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
             <link>https://javaee.github.io/javaee-spec/javadocs/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
@@ -1414,7 +1509,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.3.0</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -1426,25 +1520,15 @@
       </plugin>
 
       <!-- ======================================================= -->
-      <!-- Code coverage report                                    -->
-      <!-- ======================================================= -->
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${maven.jacoco.plugin.version}</version>
-      </plugin>
-
-      <!-- ======================================================= -->
       <!-- Test coverage report                                    -->
       <!-- ======================================================= -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco.version}</version>
         <configuration>
           <formats>
-            <format>html</format>
-            <format>xml</format>
+            <format>HTML</format>
+            <format>XML</format>
           </formats>
         </configuration>
       </plugin>
@@ -1531,7 +1615,6 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>7.1.1</version>
             <configuration>
               <failBuildOnCVSS>7</failBuildOnCVSS>
               <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
@@ -1561,7 +1644,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-pmd-plugin</artifactId>
-            <version>${maven.pmd.plugin.version}</version>
             <configuration>
               <skip>${pmd.skip}</skip>
               <rulesets>
@@ -1622,11 +1704,98 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.0</version>
             <configuration>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E/generated-sources/.* -Xep:BanJNDI:WARN -Xep:SelfAssertion:OFF ${errorProneFlags}</arg>
+                <arg>--should-stop=ifError=FLOW</arg>
+                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E/generated-sources/.*  \
+                -Xep:DeadException:WARN \
+                -Xep:GuardedBy:OFF \
+                -Xep:BanJNDI:WARN \
+                -Xep:AlmostJavadoc:OFF \
+                -Xep:AlreadyChecked:OFF \
+                -Xep:AssertionFailureIgnored:OFF \
+                -Xep:AssertThrowsMultipleStatements:OFF \
+                -Xep:BadImport:OFF \
+                -Xep:BadInstanceof:OFF \
+                -Xep:CatchFail:OFF \
+                -Xep:ClassInitializationDeadlock:OFF \
+                -Xep:CollectionUndefinedEquality:OFF \
+                -Xep:DateFormatConstant:OFF \
+                -Xep:DefaultCharset:OFF \
+                -Xep:DoNotCallSuggester:OFF \
+                -Xep:DoubleCheckedLocking:OFF \
+                -Xep:DuplicateDateFormatField:OFF \
+                -Xep:EmptyBlockTag:OFF \
+                -Xep:EmptyCatch:OFF \
+                -Xep:EnumOrdinal:OFF \
+                -Xep:EqualsGetClass:OFF \
+                -Xep:EqualsUnsafeCast:OFF \
+                -Xep:ExtendingJUnitAssert:OFF \
+                -Xep:FallThrough:OFF \
+                -Xep:Finalize:OFF \
+                -Xep:Finally:OFF \
+                -Xep:FloatCast:OFF \
+                -Xep:FloatingPointLiteralPrecision:OFF \
+                -Xep:FutureReturnValueIgnored:OFF \
+                -Xep:HidingField:OFF \
+                -Xep:ImmutableEnumChecker:OFF \
+                -Xep:InconsistentCapitalization:OFF \
+                -Xep:InconsistentHashCode:OFF \
+                -Xep:InlineFormatString:OFF \
+                -Xep:InlineMeSuggester:OFF \
+                -Xep:IntLongMath:OFF \
+                -Xep:InvalidBlockTag:OFF \
+                -Xep:InvalidInlineTag:OFF \
+                -Xep:InvalidLink:OFF \
+                -Xep:InvalidParam:OFF \
+                -Xep:InvalidThrows:OFF \
+                -Xep:JavaLangClash:OFF \
+                -Xep:JavaTimeDefaultTimeZone:OFF \
+                -Xep:JavaUtilDate:OFF \
+                -Xep:JdkObsolete:OFF \
+                -Xep:JUnitAmbiguousTestClass:OFF \
+                -Xep:LockOnNonEnclosingClassLiteral:OFF \
+                -Xep:LongDoubleConversion:OFF \
+                -Xep:MalformedInlineTag:OFF \
+                -Xep:MissingFail:OFF \
+                -Xep:MissingSummary:OFF \
+                -Xep:MixedMutabilityReturnType:OFF \
+                -Xep:ModifiedButNotUsed:OFF \
+                -Xep:MutablePublicArray:OFF \
+                -Xep:NarrowCalculation:OFF \
+                -Xep:NarrowingCompoundAssignment:OFF \
+                -Xep:NonApiType:OFF \
+                -Xep:NonCanonicalType:OFF \
+                -Xep:NonOverridingEquals:OFF \
+                -Xep:NotJavadoc:OFF \
+                -Xep:OperatorPrecedence:OFF \
+                -Xep:ProtectedMembersInFinalClass:OFF \
+                -Xep:ReferenceEquality:OFF \
+                -Xep:SelfAssertion:OFF \
+                -Xep:ShortCircuitBoolean:OFF \
+                -Xep:StaticAssignmentInConstructor:OFF \
+                -Xep:StringCaseLocaleUsage:OFF \
+                -Xep:StringCharset:OFF \
+                -Xep:StringSplitter:OFF \
+                -Xep:SynchronizeOnNonFinalField:OFF \
+                -Xep:ThreadLocalUsage:OFF \
+                -Xep:ThreadPriorityCheck:OFF \
+                -Xep:ThreeLetterTimeZoneID:OFF \
+                -Xep:TypeParameterShadowing:OFF \
+                -Xep:TypeParameterUnusedInFormals:OFF \
+                -Xep:UndefinedEquals:OFF \
+                -Xep:UnnecessaryAssignment:OFF \
+                -Xep:UnnecessaryParentheses:OFF \
+                -Xep:UnnecessaryStringBuilder:OFF \
+                -Xep:UnrecognisedJavadocTag:OFF \
+                -Xep:UnsynchronizedOverridesSynchronized:OFF \
+                -Xep:UnusedLabel:OFF \
+                -Xep:UnusedMethod:OFF \
+                -Xep:UnusedNestedClass:OFF \
+                -Xep:UnusedVariable:OFF \
+                -Xep:VariableNameSameAsType:OFF \
+                ${errorProneFlags}</arg>
                 <arg>-Xlint:${lint}</arg>
                 <arg>-Werror</arg>
                 <arg>-Xmaxwarns</arg>
@@ -1727,7 +1896,7 @@
             <artifactId>maven-enforcer-plugin</artifactId>
             <executions>
               <execution>
-                <id>enforce</id>
+                <id>qa-enforce</id>
                 <goals>
                   <goal>enforce</goal>
                 </goals>
@@ -1771,7 +1940,6 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${jacoco.version}</version>
             <executions>
               <execution>
                 <id>pre-unit-test</id>

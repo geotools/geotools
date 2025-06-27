@@ -49,19 +49,19 @@ public class OptEdge extends OptGraphable implements Edge {
     /** @see Edge#getNodeA() */
     @Override
     public Node getNodeA() {
-        return (m_nodeA);
+        return m_nodeA;
     }
 
     /** @see Edge#getNodeB() */
     @Override
     public Node getNodeB() {
-        return (m_nodeB);
+        return m_nodeB;
     }
 
     /** @see Edge#getOtherNode(Node) */
     @Override
     public Node getOtherNode(Node node) {
-        return (m_nodeA.equals(node) ? m_nodeB : m_nodeB.equals(node) ? m_nodeA : null);
+        return m_nodeA.equals(node) ? m_nodeB : m_nodeB.equals(node) ? m_nodeA : null;
     }
 
     /** @see Edge#reverse() */
@@ -75,18 +75,17 @@ public class OptEdge extends OptGraphable implements Edge {
     /** @see Edge#compareNodes(Edge) */
     @Override
     public int compareNodes(Edge other) {
-        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB())) return (Edge.EQUAL_NODE_ORIENTATION);
+        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB())) return Edge.EQUAL_NODE_ORIENTATION;
 
-        if (m_nodeB.equals(other.getNodeA()) && m_nodeA.equals(other.getNodeB()))
-            return (Edge.OPPOSITE_NODE_ORIENTATION);
+        if (m_nodeB.equals(other.getNodeA()) && m_nodeA.equals(other.getNodeB())) return Edge.OPPOSITE_NODE_ORIENTATION;
 
-        return (Edge.UNEQUAL_NODE_ORIENTATION);
+        return Edge.UNEQUAL_NODE_ORIENTATION;
     }
 
     /** @see org.geotools.graph.structure.Graphable#getRelated() */
     @Override
     public Iterator<Edge> getRelated() {
-        return (new RelatedIterator(this));
+        return new RelatedIterator(this);
     }
 
     public class RelatedIterator implements Iterator<Edge> {
@@ -121,12 +120,12 @@ public class OptEdge extends OptGraphable implements Edge {
 
         @Override
         public boolean hasNext() {
-            return (m_itr.hasNext());
+            return m_itr.hasNext();
         }
 
         @Override
         public Edge next() {
-            return (m_itr.next());
+            return m_itr.next();
         }
     }
 }

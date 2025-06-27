@@ -167,6 +167,10 @@ class EnvelopeReprojector {
      * @param envelope
      * @return
      */
+    @SuppressWarnings(
+            "OperatorPrecedence") // revisit: Use grouping parenthesis to make the operator precedence explicit (see
+    // https://errorprone.info/bugpattern/OperatorPrecedence)
+    // Did you mean '|| ((growth(transformed, oldTransformed, 0) < 0.01)'?
     private static GeneralBounds bisectionTransform(
             MathTransform mt, Bounds envelope, GeneralBounds transformed, int maxDepth) throws TransformException {
         if (maxDepth <= 0) {
@@ -209,7 +213,7 @@ class EnvelopeReprojector {
         // do not recurse if the envelope is not growing, or not growing enough
         if (allFalse(failures)
                 && (oldTransformed.equals(transformed)
-                        || (growth(transformed, oldTransformed, 0) < 0.01)
+                        || growth(transformed, oldTransformed, 0) < 0.01
                                 && growth(transformed, oldTransformed, 1) < 0.01)) {
             return oldTransformed;
         }
@@ -490,7 +494,7 @@ class EnvelopeReprojector {
                 Position upper = generalEnvelope.getUpperCorner();
                 Position dest = new Position2D();
                 // world spanning longitude? add points around the globe quadrants then
-                if ((maxLon - minLon) >= 360) {
+                if (maxLon - minLon >= 360) {
                     for (int lon = -180; lon <= 180; lon += 90) {
                         addLowerUpperPoints(mt, transformed, i, lower, upper, dest, lon);
                     }
@@ -516,7 +520,7 @@ class EnvelopeReprojector {
             MapProjection sourceProjection,
             GeneralBounds generalEnvelope)
             throws TransformException {
-        if (sourceProjection instanceof PolarStereographic || (sourceProjection instanceof LambertAzimuthalEqualArea)) {
+        if (sourceProjection instanceof PolarStereographic || sourceProjection instanceof LambertAzimuthalEqualArea) {
             ParameterValue<?> fe = sourceProjection
                     .getParameterValues()
                     .parameter(MapProjection.AbstractProvider.FALSE_EASTING
@@ -610,8 +614,8 @@ class EnvelopeReprojector {
                     final double max = envelope.getMaximum(i);
                     final double v1 = axis.getMinimumValue();
                     final double v2 = axis.getMaximumValue();
-                    final boolean b1 = (v1 > min && v1 < max);
-                    final boolean b2 = (v2 > min && v2 < max);
+                    final boolean b1 = v1 > min && v1 < max;
+                    final boolean b2 = v2 > min && v2 < max;
                     if (!b1 && !b2) {
                         continue;
                     }
@@ -802,8 +806,9 @@ class EnvelopeReprojector {
         envelope.add(workPoint);
     }
 
+    @SuppressWarnings("NarrowCalculation") // revisit? shouldn't it be "/ 360.0"
     private static double rollLongitude(final double x) {
-        double rolled = x - (((int) (x + Math.signum(x) * 180)) / 360) * 360.0;
+        double rolled = x - ((int) (x + Math.signum(x) * 180) / 360) * 360.0;
         return rolled;
     }
 }

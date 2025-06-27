@@ -27,7 +27,7 @@ public class LanguageXMLProcessor extends XMLProcessor {
      * @generated
      */
     public LanguageXMLProcessor() {
-        super((EPackage.Registry.INSTANCE));
+        super(EPackage.Registry.INSTANCE);
         LanguagePackage.eINSTANCE.eClass();
     }
     

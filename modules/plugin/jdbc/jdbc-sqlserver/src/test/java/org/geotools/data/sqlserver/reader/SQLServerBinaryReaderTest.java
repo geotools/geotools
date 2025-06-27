@@ -221,7 +221,7 @@ public class SQLServerBinaryReaderTest {
     }
 
     private Geometry testGeometry(String geometryBinary, String geometryWKT) throws Exception {
-        WKTReader readerWkt = new WKTReader((new GeometryFactory(new PrecisionModel(), 0)));
+        WKTReader readerWkt = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
         return testGeometry(geometryBinary, geometryWKT, readerWkt);
     }
 
@@ -236,7 +236,7 @@ public class SQLServerBinaryReaderTest {
     }
 
     private Geometry testGeometry(String geometryBinary, String geometryWKT, int srid) throws Exception {
-        WKTReader readerWkt = new WKTReader((new GeometryFactory(new PrecisionModel(), srid)));
+        WKTReader readerWkt = new WKTReader(new GeometryFactory(new PrecisionModel(), srid));
         Geometry geometry = testGeometry(geometryBinary, geometryWKT, readerWkt);
         Assert.assertEquals(srid, geometry.getSRID());
         return geometry;

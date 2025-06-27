@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -144,7 +145,7 @@ public class ElasticTestSupport {
         }
         final InputStream resource = ClassLoader.getSystemResourceAsStream(filename);
         if (resource != null) {
-            try (Scanner s = new Scanner(resource)) {
+            try (Scanner s = new Scanner(resource, StandardCharsets.UTF_8)) {
                 s.useDelimiter("\\A");
                 Map<String, Object> source = mapReader.readValue(s.next());
                 if (client.getVersion() < 7) {
@@ -171,7 +172,7 @@ public class ElasticTestSupport {
     private void indexDocuments(String status) throws IOException {
         try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(TEST_FILE)) {
             if (inputStream != null) {
-                try (Scanner scanner = new Scanner(inputStream)) {
+                try (Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8)) {
                     scanner.useDelimiter(System.lineSeparator());
                     final StringBuilder builder = new StringBuilder();
                     while (scanner.hasNext()) {

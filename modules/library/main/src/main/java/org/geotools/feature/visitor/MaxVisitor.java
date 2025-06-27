@@ -141,7 +141,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public void reset() {
-        /** Reset the count and current maximum */
+        /* Reset the count and current maximum */
         this.visited = false;
         this.maxvalue = null;
         this.countNaN = 0;

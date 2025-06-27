@@ -198,7 +198,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
 
             //       condeb("seek: "+varRow.getOffset());
         } else {
-            seek(header.getLength() + ((pos - 1) * header.getRecordSize()));
+            seek(header.getLength() + (pos - 1) * header.getRecordSize());
 
             //       condeb("seek: "+(header.getLength()+(pos-1)*header.getRecordSize()));
         }
@@ -252,7 +252,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         int counter = 0;
         VPFRow row = readRow();
 
-        while ((row != null) && (counter < rows.length)) {
+        while (row != null && counter < rows.length) {
             rows[counter++] = row;
             row = readRow();
         }
@@ -523,7 +523,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
      * @return an <code>int</code> value
      */
     public int availableRows() {
-        return (rowsReadAhead != null) ? rowsReadAhead.size() : 0;
+        return rowsReadAhead != null ? rowsReadAhead.size() : 0;
     }
 
     /**

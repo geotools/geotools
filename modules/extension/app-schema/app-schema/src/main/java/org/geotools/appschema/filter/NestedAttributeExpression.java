@@ -76,7 +76,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
             return null;
         }
 
-        return getValues(((Feature) object), rootMapping, fullSteps);
+        return getValues((Feature) object, rootMapping, fullSteps);
     }
 
     private List<Object> getValues(Feature feature, NestedAttributeMapping nestedMapping, StepList steps) {

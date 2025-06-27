@@ -40,6 +40,7 @@ import org.geotools.referencing.operation.projection.TransverseMercator;
 public class PolarStereographicHandlerFactory implements ProjectionHandlerFactory {
 
     @Override
+    @SuppressWarnings("AttemptedNegativeZero")
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps)
             throws FactoryException {

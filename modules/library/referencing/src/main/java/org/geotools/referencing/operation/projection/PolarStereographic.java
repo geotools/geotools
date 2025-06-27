@@ -122,14 +122,14 @@ public class PolarStereographic extends Stereographic {
             latitudeTrueScale = doubleValue(expected, trueScaleDescriptor, parameters);
         } else {
             // Polar A case
-            latitudeTrueScale = (latitudeOfOrigin < 0) ? -PI / 2 : PI / 2;
+            latitudeTrueScale = latitudeOfOrigin < 0 ? -PI / 2 : PI / 2;
         }
         ensureLatitudeInRange(trueScaleDescriptor, latitudeTrueScale, true);
         /*
          * Forces the "standard_parallel_1" to the appropriate hemisphere,
          * and forces the "latitude_of_origin" to ±90°.
          */
-        poleForced = (forceSouthPole != null);
+        poleForced = forceSouthPole != null;
         if (poleForced) {
             southPole = forceSouthPole.booleanValue();
             latitudeTrueScale = abs(latitudeTrueScale);
@@ -137,9 +137,9 @@ public class PolarStereographic extends Stereographic {
                 latitudeTrueScale = -latitudeTrueScale;
             }
         } else {
-            southPole = (latitudeTrueScale < 0);
+            southPole = latitudeTrueScale < 0;
         }
-        this.latitudeOfOrigin = (southPole) ? -(PI / 2) : +(PI / 2);
+        this.latitudeOfOrigin = southPole ? -(PI / 2) : +(PI / 2);
         this.standardParallel = latitudeTrueScale; // May be anything in [-90 .. +90] range.
         /*
          * Computes coefficients.
@@ -200,10 +200,10 @@ public class PolarStereographic extends Stereographic {
         double phi0 = 0;
         for (int i = MAXIMUM_ITERATIONS; ; ) {
             final double esinphi = excentricity * sin(phi0);
-            final double phi = (PI / 2) - 2.0 * atan(t * pow((1 - esinphi) / (1 + esinphi), halfe));
+            final double phi = PI / 2 - 2.0 * atan(t * pow((1 - esinphi) / (1 + esinphi), halfe));
             if (abs(phi - phi0) < ITERATION_TOLERANCE) {
-                x = (abs(rho) < EPSILON) ? 0.0 : atan2(x, -y);
-                y = (southPole) ? -phi : phi;
+                x = abs(rho) < EPSILON ? 0.0 : atan2(x, -y);
+                y = southPole ? -phi : phi;
                 break;
             }
             phi0 = phi;
@@ -222,10 +222,10 @@ public class PolarStereographic extends Stereographic {
     @Override
     public ParameterValueGroup getParameterValues() {
         final ParameterDescriptor trueScaleDescriptor = poleForced
-                ? (southPole
+                ? southPole
                         ? ProviderSouth.STANDARD_PARALLEL
                         : // forced = true,  south = true
-                        ProviderNorth.STANDARD_PARALLEL)
+                        ProviderNorth.STANDARD_PARALLEL
                 : // forced = true,  south = false
                 ProviderB.STANDARD_PARALLEL; // forced = false
         final ParameterValueGroup values = super.getParameterValues();
@@ -350,13 +350,13 @@ public class PolarStereographic extends Stereographic {
                 y = -y;
             }
             // (20-17) call atan2(x,y) to properly deal with y==0
-            x = (abs(x) < EPSILON && abs(y) < EPSILON) ? 0.0 : atan2(x, y);
+            x = abs(x) < EPSILON && abs(y) < EPSILON ? 0.0 : atan2(x, y);
             if (abs(rho) < EPSILON) {
                 y = latitudeOfOrigin;
             } else {
                 final double c = 2.0 * atan(rho / k0);
                 final double cosc = cos(c);
-                y = (southPole) ? asin(-cosc) : asin(cosc);
+                y = southPole ? asin(-cosc) : asin(cosc);
                 // (20-14) with phi1=90
             }
             assert checkInverseTransform(x, y, ptDst);
@@ -444,18 +444,19 @@ public class PolarStereographic extends Stereographic {
                 y = -y;
             }
             // The series form
-            final double t = (rho / k0)
+            final double t = rho
+                    / k0
                     * sqrt(pow(1 + excentricity, 1 + excentricity) * pow(1 - excentricity, 1 - excentricity))
                     / 2;
             final double chi = PI / 2 - 2 * atan(t);
 
-            x = (abs(rho) < EPSILON) ? 0.0 : atan2(x, -y);
+            x = abs(rho) < EPSILON ? 0.0 : atan2(x, -y);
 
             // See Snyde P. 19, "Computation of Series"
             final double sin2chi = sin(2.0 * chi);
             final double cos2chi = cos(2.0 * chi);
             y = chi + sin2chi * (A + cos2chi * (B + cos2chi * (C + D * cos2chi)));
-            y = (southPole) ? -y : y;
+            y = southPole ? -y : y;
 
             assert checkInverseTransform(x, y, ptDst);
             if (ptDst != null) {

@@ -155,6 +155,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory implements 
 
     /** Returns the coordinate reference system for the given code. */
     @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
     public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         if (code != null) {
             code = code.trim();

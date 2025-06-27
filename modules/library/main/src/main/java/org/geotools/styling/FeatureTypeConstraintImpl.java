@@ -59,7 +59,7 @@ public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneab
     }
 
     @Override
-    public void setExtents(Extent[] extents) {
+    public void setExtents(Extent... extents) {
         this.extents = extents;
     }
 
@@ -74,15 +74,15 @@ public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneab
         int result = 0;
 
         if (featureTypeName != null) {
-            result = (PRIME * result) + featureTypeName.hashCode();
+            result = PRIME * result + featureTypeName.hashCode();
         }
 
         if (filter != null) {
-            result = (PRIME * result) + filter.hashCode();
+            result = PRIME * result + filter.hashCode();
         }
 
         if (extents != null) {
-            result = (PRIME * result) + Arrays.hashCode(extents);
+            result = PRIME * result + Arrays.hashCode(extents);
         }
         return result;
     }

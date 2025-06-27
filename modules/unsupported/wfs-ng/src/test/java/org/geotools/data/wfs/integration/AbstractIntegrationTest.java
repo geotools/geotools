@@ -299,7 +299,7 @@ public abstract class AbstractIntegrationTest {
     }
 
     boolean contains(Object[] array, Object expected) {
-        if ((array == null) || (array.length == 0)) {
+        if (array == null || array.length == 0) {
             return false;
         }
 
@@ -320,7 +320,7 @@ public abstract class AbstractIntegrationTest {
      * @return true if the feature is in the feature collection, false otherwise
      */
     boolean containsFeatureCollection(SimpleFeatureCollection fc, SimpleFeature f) {
-        if ((fc == null) || fc.isEmpty()) {
+        if (fc == null || fc.isEmpty()) {
             return false;
         }
 
@@ -335,7 +335,7 @@ public abstract class AbstractIntegrationTest {
      * @return true if the feature is found, false otherwise
      */
     boolean containsFeature(Object[] array, Object expected) {
-        if ((array == null) || (array.length == 0)) {
+        if (array == null || array.length == 0) {
             return false;
         }
 
@@ -388,7 +388,7 @@ public abstract class AbstractIntegrationTest {
 
     /** Like contain but based on match rather than equals */
     boolean containsLax(SimpleFeature[] array, SimpleFeature expected) {
-        if ((array == null) || (array.length == 0)) {
+        if (array == null || array.length == 0) {
             return false;
         }
 
@@ -411,9 +411,9 @@ public abstract class AbstractIntegrationTest {
             Object av = actual.getAttribute(i);
             Object ev = expected.getAttribute(i);
 
-            if ((av == null) && (ev != null)) {
+            if (av == null && ev != null) {
                 return false;
-            } else if ((ev == null) && (av != null)) {
+            } else if (ev == null && av != null) {
                 return false;
             } else if (!av.equals(ev)) {
                 return false;

@@ -416,8 +416,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((label == null) ? 0 : label.hashCode());
-        result = prime * result + ((symbolizer == null) ? 0 : System.identityHashCode(symbolizer));
+        result = prime * result + (label == null ? 0 : label.hashCode());
+        result = prime * result + (symbolizer == null ? 0 : System.identityHashCode(symbolizer));
         return result;
     }
 

@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -112,7 +113,7 @@ public class WorldFileReader {
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
-        parseWorldFile(new BufferedReader(new FileReader(worldfile)));
+        parseWorldFile(new BufferedReader(new FileReader(worldfile, StandardCharsets.UTF_8)));
     }
 
     /**
@@ -128,7 +129,7 @@ public class WorldFileReader {
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
-        parseWorldFile(new BufferedReader(new InputStreamReader(worldfile.openStream())));
+        parseWorldFile(new BufferedReader(new InputStreamReader(worldfile.openStream(), StandardCharsets.UTF_8)));
     }
 
     /**

@@ -617,7 +617,7 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
                 + ","
                 + (missingAttribute
                         ? ""
-                        : (nullAttribute ? ("     'double': null,") : ("     'double': " + (val + 0.1) + ",")))
+                        : nullAttribute ? "     'double': null," : "     'double': " + (val + 0.1) + ",")
                 + "     'string': '"
                 + toString(val)
                 + "',"

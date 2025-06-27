@@ -315,7 +315,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
             }
 
             @Override
-            public boolean supportsSorting(SortBy[] arg0) {
+            public boolean supportsSorting(SortBy... arg0) {
                 try {
                     if (!getBaseFeatureSource().getQueryCapabilities().supportsSorting(arg0)) return false;
                     for (Generalization di : info.getGeneralizations()) {

@@ -123,6 +123,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         }
 
         /** Canonicalizes to the singleton on deserialization. */
+        @SuppressWarnings("ProtectedMembersInFinalClass")
         protected Object readResolve() throws ObjectStreamException {
             return NAME_COMPARATOR;
         }
@@ -142,6 +143,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         /** Compares the given identified objects for order. */
         @Override
         @SuppressFBWarnings("NS_DANGEROUS_NON_SHORT_CIRCUIT")
+        @SuppressWarnings("ShortCircuitBoolean")
         public int compare(final IdentifiedObject o1, final IdentifiedObject o2) {
             Collection<ReferenceIdentifier> a1 = o1.getIdentifiers();
             Collection<ReferenceIdentifier> a2 = o2.getIdentifiers();
@@ -162,6 +164,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         }
 
         /** Canonicalizes to the singleton on deserialization. */
+        @SuppressWarnings("ProtectedMembersInFinalClass")
         protected Object readResolve() throws ObjectStreamException {
             return IDENTIFIER_COMPARATOR;
         }
@@ -185,6 +188,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         }
 
         /** Canonicalizes to the singleton on deserialization. */
+        @SuppressWarnings("ProtectedMembersInFinalClass")
         protected Object readResolve() throws ObjectStreamException {
             return REMARKS_COMPARATOR;
         }
@@ -284,7 +288,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * @throws IllegalArgumentException if a property is invalid for some other reason.
      */
     public AbstractIdentifiedObject(final Map<String, ?> properties) throws IllegalArgumentException {
-        this(properties, null, null);
+        this(properties, null, (String[]) null);
     }
 
     /**
@@ -670,7 +674,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                 }
             }
         }
-        return (authority == null) ? info.getName() : null;
+        return authority == null ? info.getName() : null;
     }
 
     /**
@@ -848,7 +852,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     @Override
     public final boolean equals(final Object object) {
-        return (object instanceof AbstractIdentifiedObject) && equals((AbstractIdentifiedObject) object, true);
+        return object instanceof AbstractIdentifiedObject && equals((AbstractIdentifiedObject) object, true);
     }
 
     /**
@@ -874,6 +878,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
+    @SuppressWarnings("AmbiguousMethodReference")
     public boolean equals(final AbstractIdentifiedObject object, final boolean compareMetadata) {
         if (object != null && object.getClass().equals(getClass())) {
             if (!compareMetadata) {
@@ -898,11 +903,12 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
+    @SuppressWarnings("AmbiguousMethodReference")
     static boolean equals(
             final AbstractIdentifiedObject object1,
             final AbstractIdentifiedObject object2,
             final boolean compareMetadata) {
-        return (object1 == object2) || (object1 != null && object1.equals(object2, compareMetadata));
+        return object1 == object2 || object1 != null && object1.equals(object2, compareMetadata);
     }
 
     /**
@@ -935,7 +941,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
     protected static boolean equals(
             final IdentifiedObject[] array1, final IdentifiedObject[] array2, final boolean compareMetadata) {
         if (array1 != array2) {
-            if ((array1 == null) || (array2 == null) || (array1.length != array2.length)) {
+            if (array1 == null || array2 == null || array1.length != array2.length) {
                 return false;
             }
             for (int i = array1.length; --i >= 0; ) {
@@ -984,7 +990,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     private static <E extends Comparable<E>> int doCompare(final E c1, final E c2) {
         if (c1 == null) {
-            return (c2 == null) ? 0 : -1;
+            return c2 == null ? 0 : -1;
         }
         if (c2 == null) {
             return +1;

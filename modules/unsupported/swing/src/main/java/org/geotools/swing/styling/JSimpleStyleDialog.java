@@ -276,6 +276,8 @@ public class JSimpleStyleDialog extends JDialog {
                             dialog.getLabelField(),
                             dialog.getLabelFont());
                     break;
+                default:
+                    throw new UnsupportedOperationException("Unhandled style build for " + dialog.getGeomType());
             }
         }
 
@@ -748,6 +750,8 @@ public class JSimpleStyleDialog extends JDialog {
                 setFillOpacityItems(SLD.pointOpacity(pointSym));
                 setPointSizeItems(SLD.pointSize(pointSym));
                 setPointSymbolItems(SLD.pointWellKnownName(pointSym));
+            default:
+                throw new UnsupportedOperationException("Unhandled geometry type " + geomType);
         }
     }
 

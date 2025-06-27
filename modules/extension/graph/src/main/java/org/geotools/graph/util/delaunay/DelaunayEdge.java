@@ -52,7 +52,7 @@ public class DelaunayEdge extends BasicEdge {
     }
 
     public boolean hasEndPoint(XYNode node) {
-        return ((node.equals(this.getNodeA())) || (node.equals(this.getNodeB())));
+        return node.equals(this.getNodeA()) || node.equals(this.getNodeB());
     }
 
     public Triangle getOtherFace(Triangle t) {
@@ -94,11 +94,11 @@ public class DelaunayEdge extends BasicEdge {
 
     @Override
     public boolean equals(Object o) {
-        return ((o instanceof DelaunayEdge)
-                && ((this.getNodeA().equals(((DelaunayEdge) o).getNodeA())
-                                && (this.getNodeB().equals(((DelaunayEdge) o).getNodeB())))
-                        || (this.getNodeA().equals(((DelaunayEdge) o).getNodeB())
-                                && (this.getNodeB().equals(((DelaunayEdge) o).getNodeA())))));
+        return o instanceof DelaunayEdge
+                && (this.getNodeA().equals(((DelaunayEdge) o).getNodeA())
+                                && this.getNodeB().equals(((DelaunayEdge) o).getNodeB())
+                        || this.getNodeA().equals(((DelaunayEdge) o).getNodeB())
+                                && this.getNodeB().equals(((DelaunayEdge) o).getNodeA()));
     }
 
     @Override

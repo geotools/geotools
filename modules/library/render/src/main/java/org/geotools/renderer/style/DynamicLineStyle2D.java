@@ -78,7 +78,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         // now set up the stroke
         BasicStroke stroke2d;
 
-        if ((dashes != null) && (dashes.length > 0)) {
+        if (dashes != null && dashes.length > 0) {
             stroke2d = new BasicStroke(width, capCode, joinCode, 1, dashes, dashOffset);
         } else {
             stroke2d = new BasicStroke(width, capCode, joinCode, 1);

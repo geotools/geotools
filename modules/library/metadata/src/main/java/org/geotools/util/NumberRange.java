@@ -496,7 +496,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     public double getMinimum() {
         final Number value = getMinValue();
-        return (value != null) ? value.doubleValue() : Double.NEGATIVE_INFINITY;
+        return value != null ? value.doubleValue() : Double.NEGATIVE_INFINITY;
     }
 
     /**
@@ -522,7 +522,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     public double getMaximum() {
         final Number value = getMaxValue();
-        return (value != null) ? value.doubleValue() : Double.POSITIVE_INFINITY;
+        return value != null ? value.doubleValue() : Double.POSITIVE_INFINITY;
     }
 
     /**

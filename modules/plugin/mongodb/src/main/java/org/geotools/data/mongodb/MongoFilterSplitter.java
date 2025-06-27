@@ -58,13 +58,13 @@ public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
         Expression expression1 = filter.getExpression1();
         Expression expression2 = filter.getExpression2();
-        if ((expression1 instanceof JsonSelectFunction || expression1 instanceof JsonSelectAllFunction)) {
+        if (expression1 instanceof JsonSelectFunction || expression1 instanceof JsonSelectAllFunction) {
             if (expression2 instanceof Literal) {
                 preStack.push(filter);
             } else {
                 postStack.push(filter);
             }
-        } else if ((expression2 instanceof JsonSelectFunction || expression2 instanceof JsonSelectAllFunction)) {
+        } else if (expression2 instanceof JsonSelectFunction || expression2 instanceof JsonSelectAllFunction) {
             if (expression1 instanceof Literal) {
                 preStack.push(filter);
             } else {

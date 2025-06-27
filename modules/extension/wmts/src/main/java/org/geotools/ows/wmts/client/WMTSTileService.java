@@ -784,8 +784,8 @@ public class WMTSTileService extends TileService {
 
         double pixelSpan = WMTSTileFactory.getPixelSpan(tileMatrix);
 
-        double tileSpanY = (tileMatrix.getTileHeight() * pixelSpan);
-        double tileSpanX = (tileMatrix.getTileWidth() * pixelSpan);
+        double tileSpanY = tileMatrix.getTileHeight() * pixelSpan;
+        double tileSpanX = tileMatrix.getTileWidth() * pixelSpan;
         double tileMatrixMinX;
         double tileMatrixMaxY;
         if (tileMatrix.getCrs().getCoordinateSystem().getAxis(0).getDirection().equals(AxisDirection.EAST)) {

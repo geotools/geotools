@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -123,7 +124,8 @@ public class FootprintExtractionProcessTest {
                 }
                 // write to file
                 if (outputFile != null) {
-                    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputFile))) {
+                    try (BufferedWriter bufferedWriter =
+                            new BufferedWriter(new FileWriter(outputFile, StandardCharsets.UTF_8))) {
                         bufferedWriter.write(wkt.toString());
                     }
                 }
@@ -209,7 +211,7 @@ public class FootprintExtractionProcessTest {
     }
 
     private static Geometry wktRead(File geometryFile) throws IOException, ParseException {
-        try (FileReader fileReader = new FileReader(geometryFile)) {
+        try (FileReader fileReader = new FileReader(geometryFile, StandardCharsets.UTF_8)) {
             WKTReader wktReader = new WKTReader();
             return wktReader.read(fileReader);
         }
@@ -231,7 +233,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, false, null, true, true, null, null);
             assertEquals(1, fc.size());
 
@@ -262,7 +264,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, true, 4d, true, true, null, null);
             assertEquals(2, fc.size());
             try (FeatureIterator<SimpleFeature> iter = fc.features()) {
@@ -305,7 +307,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, false, null, false, true, null, null);
 
             SimpleFeature feature = DataUtilities.first(fc);
@@ -342,7 +344,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
 
             // Exclude pixels with luminance less than 20.
             final int referenceLuminance = 10;
@@ -396,7 +398,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(islandFile);
-            cov = reader.read(null);
+            cov = reader.read();
 
             // Test removing black areas and clouds
             List<Range<Integer>> exclusionRanges = new ArrayList<>();
@@ -432,7 +434,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             BandSelectProcess select = new BandSelectProcess();
             cov = select.execute(cov, new int[] {0}, null);
             List<Range<Integer>> exclusionRange = new ArrayList<>();
@@ -482,7 +484,7 @@ public class FootprintExtractionProcessTest {
         GridCoverage2D cov = null;
         try {
             reader = new GeoTiffReader(cloudFile);
-            cov = reader.read(null);
+            cov = reader.read();
             SimpleFeatureCollection fc = process.execute(cov, null, 10d, false, null, true, true, null, null);
             assertEquals(1, fc.size());
 
@@ -529,7 +531,7 @@ public class FootprintExtractionProcessTest {
             throws IOException {
         Utilities.ensureNonNull("writingFormat", writingFormat);
         Utilities.ensureNonNull("geometry", geometry);
-        if ((outputFile != null) && outputFile.exists()) {
+        if (outputFile != null && outputFile.exists()) {
             FileUtils.deleteQuietly(outputFile);
         }
 

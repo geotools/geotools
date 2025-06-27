@@ -38,7 +38,7 @@ public class RemoteImageReader extends AbstractGridCoverage2DReader implements G
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
         return delegate.read(parameters);
     }
 }

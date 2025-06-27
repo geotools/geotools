@@ -88,8 +88,8 @@ public class IndentedLineWriter extends FilterWriter {
             beginNewLine();
         }
         out.write(c);
-        if ((newLine = (c == '\r' || c == '\n')) == true) {
-            waitLF = (c == '\r');
+        if ((newLine = c == '\r' || c == '\n') == true) {
+            waitLF = c == '\r';
         }
     }
 

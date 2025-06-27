@@ -93,7 +93,7 @@ public class JCRSPopupMenu extends JPopupMenu {
      */
     @Override
     public void show(Component invoker, int x, int y) {
-        boolean enabled = (mapPane != null && mapPane.getMapContent() != null);
+        boolean enabled = mapPane != null && mapPane.getMapContent() != null;
         for (Component c : getComponents()) {
             if (c instanceof JMenuItem) {
                 c.setEnabled(enabled);

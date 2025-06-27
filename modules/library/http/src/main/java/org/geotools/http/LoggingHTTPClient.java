@@ -100,7 +100,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
         }
     }
 
-    private class LoggingHTTPResponse extends DelegateHTTPResponse {
+    private static class LoggingHTTPResponse extends DelegateHTTPResponse {
 
         private InputStream input;
 

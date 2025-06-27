@@ -312,7 +312,7 @@ public interface TextSymbolizer extends Symbolizer {
         SW(225),
         SE(315);
 
-        int angle;
+        final int angle;
 
         DisplacementMode(int angle) {
             this.angle = angle;

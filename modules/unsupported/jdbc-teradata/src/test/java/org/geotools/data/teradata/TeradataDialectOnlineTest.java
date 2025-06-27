@@ -99,7 +99,7 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
             if (coords > 0) {
                 geom.append(',');
             }
-            double coord = -90 + (coords % 90);
+            double coord = -90 + coords % 90;
             geom.append(' ');
             geom.append(coord);
             geom.append(' ');

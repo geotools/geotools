@@ -220,9 +220,9 @@ public class FunctionFinder {
         return null;
     }
 
-    private HashMap<Name, FunctionFactory> lookupFunctions() {
+    private Map<Name, FunctionFactory> lookupFunctions() {
         // get all filter functions via function factory
-        HashMap<Name, FunctionFactory> result = new HashMap<>();
+        Map<Name, FunctionFactory> result = new HashMap<>();
 
         Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
         for (FunctionFactory ff : functionFactories) {

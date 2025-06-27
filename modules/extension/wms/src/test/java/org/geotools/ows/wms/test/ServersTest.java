@@ -35,7 +35,6 @@ import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.response.GetMapResponse;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 @SuppressWarnings("PMD") // (not sure what's going on here...)
 public class ServersTest {
@@ -179,12 +178,6 @@ public class ServersTest {
             out.println("IOException: " + e.getMessage());
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return passed;
-        } catch (SAXException e) {
-            out.println("failed.");
-            passed = false;
-            out.println("SAXException: " + e.getMessage());
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            return passed;
         }
 
         WMSCapabilities caps = wms.getCapabilities();
@@ -302,11 +295,6 @@ public class ServersTest {
             out.println("failed.");
             passed = false;
             out.println("IOException: " + e.getMessage());
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-        } catch (SAXException e) {
-            out.println("failed.");
-            passed = false;
-            out.println("SAXException: " + e.getMessage());
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             out.println(request.getFinalURL());

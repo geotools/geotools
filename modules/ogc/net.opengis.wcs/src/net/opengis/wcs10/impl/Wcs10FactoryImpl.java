@@ -951,6 +951,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
 	 * @deprecated
 	 * @generated
 	 */
+@Deprecated
     public static Wcs10Package getPackage() {
 		return Wcs10Package.eINSTANCE;
 	}

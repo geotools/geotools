@@ -181,27 +181,27 @@ public class FeatureTypeStyleImpl implements FeatureTypeStyle, Cloneable {
         int result = 0;
 
         if (rules != null) {
-            result = (PRIME * result) + rules.hashCode();
+            result = PRIME * result + rules.hashCode();
         }
 
         if (featureInstances != null) {
-            result = (PRIME * result) + featureInstances.hashCode();
+            result = PRIME * result + featureInstances.hashCode();
         }
 
         if (semantics != null) {
-            result = (PRIME * result) + semantics.hashCode();
+            result = PRIME * result + semantics.hashCode();
         }
 
         if (featureTypeNames != null) {
-            result = (PRIME * result) + featureTypeNames.hashCode();
+            result = PRIME * result + featureTypeNames.hashCode();
         }
 
         if (name != null) {
-            result = (PRIME * result) + name.hashCode();
+            result = PRIME * result + name.hashCode();
         }
 
         if (description != null) {
-            result = (PRIME * result) + description.hashCode();
+            result = PRIME * result + description.hashCode();
         }
 
         if (options != null) {

@@ -154,7 +154,7 @@ class OGRFilterTranslator {
         filter.accept(visitor, null);
         Filter preFilter = visitor.getFilterPre();
         if (preFilter instanceof BinarySpatialOperator) {
-            BinarySpatialOperator bso = ((BinarySpatialOperator) preFilter);
+            BinarySpatialOperator bso = (BinarySpatialOperator) preFilter;
             Expression geomExpression = null;
             if (bso.getExpression1() instanceof PropertyName && bso.getExpression2() instanceof Literal) {
                 geomExpression = bso.getExpression2();

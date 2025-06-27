@@ -58,7 +58,7 @@ public class SchemaCatalog {
             throw new RuntimeException(e);
         }
         if (resolvedLocation != null) {
-            try (InputStream input = (new URL(resolvedLocation)).openStream()) {
+            try (InputStream input = new URL(resolvedLocation).openStream()) {
                 // verify existence of resource
                 // could be a file, jar resource, or other
                 // catalog hit

@@ -94,7 +94,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @param baseToDerived The transform from the base CRS to returned CRS.
      * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
      *     the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDerived} don't match the
      *     dimension of {@code base} and {@code derivedCS} respectively.
      * @since 2.5
      */
@@ -119,7 +119,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @param baseToDerived The transform from the base CRS to returned CRS.
      * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
      *     the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDerived} don't match the
      *     dimension of {@code base} and {@code derivedCS} respectively.
      * @since 2.5
      */
@@ -144,7 +144,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @param baseToDerived The transform from the base CRS to returned CRS.
      * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
      *     the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDerived} don't match the
      *     dimension of {@code base} and {@code derivedCS} respectively.
      */
     public DefaultProjectedCRS(
@@ -262,7 +262,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
                  */
                 if (param instanceof ParameterValue) {
                     final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
-                    final double expected = (name == SEMI_MINOR)
+                    final double expected = name == SEMI_MINOR
                             ? // using '==' is okay here.
                             ellipsoid.getSemiMinorAxis()
                             : ellipsoid.getSemiMajorAxis();
@@ -310,7 +310,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
                  */
                 if (param instanceof ParameterValue) {
                     final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
-                    final double expected = (SEMI_MINOR.equalsIgnoreCase(name))
+                    final double expected = SEMI_MINOR.equalsIgnoreCase(name)
                             ? // using '==' is okay here.
                             ellipsoid.getSemiMinorAxis()
                             : ellipsoid.getSemiMajorAxis();

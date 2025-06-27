@@ -42,7 +42,7 @@ final class Spheroid extends DefaultEllipsoid {
      * @param ivfDefinitive {@code true} if the inverse flattening is definitive.
      * @param unit The units of the radius value.
      */
-    protected Spheroid(Map<String, ?> properties, double radius, boolean ivfDefinitive, Unit<Length> unit) {
+    Spheroid(Map<String, ?> properties, double radius, boolean ivfDefinitive, Unit<Length> unit) {
         super(properties, check("radius", radius), radius, Double.POSITIVE_INFINITY, ivfDefinitive, unit);
     }
 

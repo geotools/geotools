@@ -49,7 +49,7 @@ public final class XMath {
         // Zero's are also a special case
         if (f == 0f) {
             final float smallestPositiveFloat = Float.intBitsToFloat(1);
-            return (positive) ? smallestPositiveFloat : -smallestPositiveFloat;
+            return positive ? smallestPositiveFloat : -smallestPositiveFloat;
         }
 
         // If entering here, d is a nonzero value.
@@ -61,7 +61,7 @@ public final class XMath {
 
         // If next float away from zero, increase magnitude.
         // Else decrease magnitude
-        if ((bits > 0) == positive) {
+        if (bits > 0 == positive) {
             if (magnitude != POSITIVEINFINITY) {
                 magnitude++;
             }

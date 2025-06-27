@@ -34,6 +34,14 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 GeoTools 34.x
 -------------
 
+Java 17 Minimum
+^^^^^^^^^^^^^^^
+
+GeoTools 34.x is the first series requiring Java 17 minimum.
+
+Javas 17 introduces additional Java Runtime Environment protections "Strongly Encapsulate JDK Internals" and "Sealed Classes". These new restrictions have resulted in several significant component upgrades (ImageN and removal of JAI Tools) outlined below.
+
+
 Migration to Eclipse ImageN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -136,6 +144,10 @@ ImageN:
 GeoTools 32.x
 -------------
 
+End Java 11 Compatibility
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+GeoTools 32.x is the final release compatible with Java 11.
 
 ImageMosaic Deserialization Validation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -364,11 +376,11 @@ For the most part these changes are method compatible, attempting common replace
 GeoTools 29.x
 -------------
 
-Java 11 as the minimum version
+Java 17 as the minimum version
 ------------------------------
 
-GeoTools 29.x requires Java 11 as the minimum version. If you are still using Java 8, you will have
-to remain on GeoTools 28.x or ealier.
+GeoTools 34.x requires Java 17 as the minimum version. If you are still using Java 11, you will have
+to remain on GeoTools 33.x or earlier.
 
 Deprecated functions removed
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -855,7 +867,7 @@ AFTER :file:`pom.xml`:
 GeoTools 21.x
 -------------
 
-GeoTools 21 is the first is compatible with Java 8 and Java 11.
+GeoTools 21 is the first release compatible with Java 8 and Java 11.
 
 Restructured Library
 ^^^^^^^^^^^^^^^^^^^^

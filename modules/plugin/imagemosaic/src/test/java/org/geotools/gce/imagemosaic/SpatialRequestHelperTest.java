@@ -186,7 +186,7 @@ public class SpatialRequestHelperTest extends Assert {
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
         assertNotNull(computedG2W);
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
-        double scale = (1000.0 / 2) / 250; // we scaled down the original image but we also use a portion of it
+        double scale = 1000.0 / 2 / 250; // we scaled down the original image but we also use a portion of it
         assertNotNull(computedResolution);
         assertEquals(scale * XAffineTransform.getScaleX0(sourceGridToWorldTransform), computedResolution[0], 1E-6);
         assertEquals(scale * XAffineTransform.getScaleY0(sourceGridToWorldTransform), computedResolution[1], 1E-6);
@@ -496,8 +496,8 @@ public class SpatialRequestHelperTest extends Assert {
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
         assertNotNull(computedG2W);
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
-        double scaleX = (1000.0 / 2) / 256; // we scaled down the original image but we also use a portion of it
-        double scaleY = (1000.0 / 2) / 256; // we scaled down the original image but we also use a portion of it
+        double scaleX = 1000.0 / 2 / 256; // we scaled down the original image but we also use a portion of it
+        double scaleY = 1000.0 / 2 / 256; // we scaled down the original image but we also use a portion of it
         assertNotNull(computedResolution);
         assertEquals(scaleX * XAffineTransform.getScaleX0(sourceGridToWorldTransform), computedResolution[0], 1E-6);
         assertEquals(scaleY * XAffineTransform.getScaleY0(sourceGridToWorldTransform), computedResolution[1], 1E-6);

@@ -64,6 +64,7 @@ import org.geotools.referencing.operation.MathTransformProvider;
  * @author Pierre Cardinal
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public final class EarthGravitationalModel extends VerticalTransform {
     /** Pre-computed values of some square roots. */
     private static final double SQRT_03 = 1.7320508075688772935274463415059,
@@ -172,7 +173,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
      * <p>Tip (used in some place in this class): {@code locatingArray(n+1)} == {@code locatingArray(n) + n + 1}.
      */
     private static int locatingArray(final int n) {
-        return ((n + 1) * n) >> 1;
+        return (n + 1) * n >> 1;
     }
 
     /**
@@ -189,7 +190,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
      * @param filename The filename (e.g. {@code "WGS84.cof"}, relative to this class directory.
      * @throws IOException if the file can't be read or has an invalid content.
      */
-    protected void load(final String filename) throws IOException {
+    void load(final String filename) throws IOException {
         try (InputStream stream = EarthGravitationalModel.class.getResourceAsStream(filename)) {
             if (stream == null) {
                 throw new FileNotFoundException(filename);
@@ -252,7 +253,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
             for (int i = 2; i < c2n.length; i++) {
                 sign *= -1;
                 esqi *= esq;
-                c2n[i] = sign * (3 * esqi) / ((2 * i + 1) * (2 * i + 3)) * (1 - i + (5 * i * c2 / esq));
+                c2n[i] = sign * (3 * esqi) / ((2 * i + 1) * (2 * i + 3)) * (1 - i + 5 * i * c2 / esq);
             }
             /* all nmax */ cnmGeopCoef[3] += c2n[1] / SQRT_05;
             /* all nmax */ cnmGeopCoef[10] += c2n[2] / 3;
@@ -274,7 +275,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
                 final int ll = locatingArray(j) + i;
                 final int n = 2 * j + 1;
                 final int ji = (j - i) * (j + i);
-                aClenshaw[ll] = Math.sqrt(n * (2 * j - 1) / (double) (ji));
+                aClenshaw[ll] = Math.sqrt(n * (2 * j - 1) / (double) ji);
                 bClenshaw[ll] = Math.sqrt(n * (j + i - 1) * (j - i - 1) / (double) (ji * (2 * j - 3)));
             }
         }
@@ -296,8 +297,8 @@ public final class EarthGravitationalModel extends VerticalTransform {
         final double rn = semiMajor / rni;
         final double t22 = (rn + height) * Math.cos(phi);
         final double x2y2 = t22 * t22;
-        final double z1 = ((rn * (1 - esq)) + height) * sin_phi;
-        final double th = (Math.PI / 2.0) - Math.atan(z1 / Math.sqrt(x2y2));
+        final double z1 = (rn * (1 - esq) + height) * sin_phi;
+        final double th = Math.PI / 2.0 - Math.atan(z1 / Math.sqrt(x2y2));
         final double y = Math.sin(th);
         final double t = Math.cos(th);
         final double f1 = semiMajor / Math.sqrt(x2y2 + z1 * z1);
@@ -314,8 +315,8 @@ public final class EarthGravitationalModel extends VerticalTransform {
         cr[0] = 1;
         cr[1] = Math.cos(rlam);
         for (int j = 2; j <= nmax; j++) {
-            sr[j] = (2.0 * cr[1] * sr[j - 1]) - sr[j - 2];
-            cr[j] = (2.0 * cr[1] * cr[j - 1]) - cr[j - 2];
+            sr[j] = 2.0 * cr[1] * sr[j - 1] - sr[j - 2];
+            cr[j] = 2.0 * cr[1] * cr[j - 1] - cr[j - 2];
         }
         double sht = 0, previousSht = 0;
         for (int i = nmax; i >= 0; i--) {
@@ -325,15 +326,15 @@ public final class EarthGravitationalModel extends VerticalTransform {
                 final int ll3 = ll2 + j + 2;
                 final double ta = aClenshaw[ll2] * f1 * t;
                 final double tb = bClenshaw[ll3] * f2;
-                s11[j] = (ta * s11[j + 1]) - (tb * s11[j + 2]) + cnmGeopCoef[ll];
-                s12[j] = (ta * s12[j + 1]) - (tb * s12[j + 2]) + snmGeopCoef[ll];
+                s11[j] = ta * s11[j + 1] - tb * s11[j + 2] + cnmGeopCoef[ll];
+                s12[j] = ta * s12[j + 1] - tb * s12[j + 2] + snmGeopCoef[ll];
             }
             previousSht = sht;
-            sht = (-as[i] * y * f1 * sht) + (s11[i] * cr[i]) + (s12[i] * sr[i]);
+            sht = -as[i] * y * f1 * sht + s11[i] * cr[i] + s12[i] * sr[i];
         }
-        return ((s11[0] + s12[0]) * f1 + (previousSht * SQRT_03 * y * f2))
+        return ((s11[0] + s12[0]) * f1 + previousSht * SQRT_03 * y * f2)
                 * rkm
-                / (semiMajor * (gravn - (height * 0.3086e-5)));
+                / (semiMajor * (gravn - height * 0.3086e-5));
     }
 
     /** Returns the parameter descriptors for this math transform. */

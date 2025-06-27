@@ -96,7 +96,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List positions = node.getChildren("pos");
 
-        if (!positions.isEmpty() && (positions.size() == 2)) {
+        if (!positions.isEmpty() && positions.size() == 2) {
             Node n1 = (Node) positions.get(0);
             Node n2 = (Node) positions.get(1);
             GeneralPosition p1 = (GeneralPosition) n1.getValue();

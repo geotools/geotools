@@ -49,6 +49,7 @@ import org.xml.sax.EntityResolver;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("BanJNDI")
 public final class GeoToolsTest {
 
     @Before

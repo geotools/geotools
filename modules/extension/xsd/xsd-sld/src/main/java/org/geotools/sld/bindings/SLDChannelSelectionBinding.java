@@ -113,7 +113,7 @@ public class SLDChannelSelectionBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        ChannelSelection cs = styleFactory.createChannelSelection(null);
+        ChannelSelection cs = styleFactory.createChannelSelection();
 
         if (node.hasChild("GrayChannel")) {
             cs.setGrayChannel((SelectedChannelType) node.getChildValue("GrayChannel"));

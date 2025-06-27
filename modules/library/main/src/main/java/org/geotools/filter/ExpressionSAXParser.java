@@ -46,7 +46,7 @@ public class ExpressionSAXParser {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExpressionSAXParser.class);
 
     /** Factory to construct filters. */
-    @SuppressWarnings("PMD.UnusedPrivateField")
+    @SuppressWarnings({"PMD.UnusedPrivateField", "UnusedVariable"})
     private FilterFactory ff;
 
     private FunctionFinder functionFinder = new FunctionFinder(null);
@@ -376,7 +376,7 @@ public class ExpressionSAXParser {
             throws IllegalFilterException {
         if (expression instanceof BinaryExpression) {
             return "leftValue";
-        } else if ((expression instanceof PropertyName) || (expression instanceof Literal)) {
+        } else if (expression instanceof PropertyName || expression instanceof Literal) {
             return "";
         } else if (expression instanceof FunctionExpression) {
             return "accumulate"; // start storing values!

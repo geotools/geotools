@@ -327,7 +327,7 @@ class DirectoryTypeCache {
      *
      * @author Administrator
      */
-    class DirectoryFilter implements FileFilter {
+    static class DirectoryFilter implements FileFilter {
 
         @Override
         public boolean accept(File pathname) {

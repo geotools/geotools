@@ -79,13 +79,13 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         }
         // over write object to be the linestring
         e.setObject(ls);
-        return (e);
+        return e;
     }
 
     @Override
     protected LineSegment alterLine(LineSegment line, Node n1, Node n2) {
-        Point c1added = ((Point) n1.getObject());
-        Point c2added = ((Point) n2.getObject());
+        Point c1added = (Point) n1.getObject();
+        Point c2added = (Point) n2.getObject();
         if (!c1added.getCoordinate().equals(line.p0) || c2added.getCoordinate().equals(line.p1)) {
             line = new LineSegment(c1added.getCoordinate(), c2added.getCoordinate());
         }
@@ -97,7 +97,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         LineString ls = (LineString) obj;
 
         // parent ecpexts a line segment
-        return (super.remove(new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
+        return super.remove(new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1)));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         LineString ls = (LineString) obj;
 
         // parent ecpexts a line segment
-        return (super.get(new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
+        return super.get(new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1)));
     }
 
     @Override

@@ -307,7 +307,7 @@ public final class FactoryRegistryTest {
             // code below was throwing ClassCastException (before java 7) prior to adding
             // isAssignableFrom() check (line 862)
             for (int i = 0; i < 2; i++) {
-                ClassLoader loader = (i == 0 ? cl1 : cl2);
+                ClassLoader loader = i == 0 ? cl1 : cl2;
                 Class dummy = loader.loadClass("org.geotools.util.factory.DummyInterface");
                 FactoryRegistry reg = new FactoryCreator(dummy);
                 reg.scanForPlugins();

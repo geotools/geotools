@@ -65,7 +65,7 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
 
     @Override
     public boolean hasNext() {
-        return (iterator != null) && iterator.hasNext();
+        return iterator != null && iterator.hasNext();
     }
 
     @Override

@@ -100,7 +100,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The underlying cache
      */
-    protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
+    CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         crsAuthority = factory;
@@ -108,14 +108,14 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
+    static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
     //
     // Utility Methods and Cache Care and Feeding
     //
-    protected String toKey(String code) {
+    String toKey(String code) {
         return ObjectCaches.toKey(getAuthority(), code);
     }
 
@@ -389,7 +389,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      * cache. This is because hundred of objects may be created during a scan while only one will be typically retained.
      * We don't want to overload the cache with every false candidates that we encounter during the scan.
      */
-    private final class Finder extends IdentifiedObjectFinder.Adapter {
+    private static final class Finder extends IdentifiedObjectFinder.Adapter {
         /** Cache used when finding */
         private ObjectCache<Object, Object> findCache;
 

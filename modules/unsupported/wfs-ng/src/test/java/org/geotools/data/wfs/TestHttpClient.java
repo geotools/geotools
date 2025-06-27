@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
@@ -58,7 +59,8 @@ public class TestHttpClient extends MockHttpClient {
         IOUtils.copy(postContent, out);
         String strippedPostContent = out.toString().replaceAll("handle=\"(.*?)\"", "");
 
-        return super.post(url, new ByteArrayInputStream(strippedPostContent.getBytes()), postContentType);
+        return super.post(
+                url, new ByteArrayInputStream(strippedPostContent.getBytes(StandardCharsets.UTF_8)), postContentType);
     }
 
     @Override

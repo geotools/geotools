@@ -686,8 +686,10 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     /**
      * On line cql interpreter
      *
-     * @deprecate use CQL.main()
+     * @deprecated use CQL.main()
      */
+    @Deprecated
+    @SuppressWarnings("all")
     public static void main(String[] args) throws ParseException {
         CQL.main(args);
     }

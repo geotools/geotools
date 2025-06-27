@@ -30,7 +30,7 @@ public class EnumerationConverterFactory implements ConverterFactory {
 
     @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
-        if ((String.class.equals(source) && target.isEnum()) || (source.isEnum() && String.class.equals(source))) {
+        if (String.class.equals(source) && target.isEnum() || source.isEnum() && String.class.equals(source)) {
             return new EnumConverter();
         } else {
             return null;

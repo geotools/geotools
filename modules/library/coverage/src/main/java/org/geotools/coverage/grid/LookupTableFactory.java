@@ -116,7 +116,7 @@ public final class LookupTableFactory {
                         return null;
                     }
                     length = 0x10000;
-                    offset = (sourceType == DataBuffer.TYPE_SHORT) ? Short.MIN_VALUE : 0;
+                    offset = sourceType == DataBuffer.TYPE_SHORT ? Short.MIN_VALUE : 0;
                     break;
                 }
             }
@@ -134,7 +134,7 @@ public final class LookupTableFactory {
                         buffer[i] = i;
                     }
                     for (int i = nbands; --i >= 0; ) {
-                        final double[] array = (i == 0) ? buffer : buffer.clone();
+                        final double[] array = i == 0 ? buffer : buffer.clone();
                         transforms[i].transform(array, 0, array, 0, array.length);
                         data[i] = array;
                     }
@@ -148,7 +148,7 @@ public final class LookupTableFactory {
                         buffer[i] = i;
                     }
                     for (int i = transforms.length; --i >= 0; ) {
-                        final float[] array = (i == 0) ? buffer : buffer.clone();
+                        final float[] array = i == 0 ? buffer : buffer.clone();
                         transforms[i].transform(array, 0, array, 0, length);
                         data[i] = array;
                     }

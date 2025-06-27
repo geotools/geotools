@@ -60,6 +60,6 @@ public class FilterFunction_pow extends FunctionExpressionImpl {
                     "Filter Function problem for function pow argument #1 - expected type double");
         }
 
-        return (Math.pow((Double) arg0, (Double) arg1));
+        return Math.pow((Double) arg0, (Double) arg1);
     }
 }

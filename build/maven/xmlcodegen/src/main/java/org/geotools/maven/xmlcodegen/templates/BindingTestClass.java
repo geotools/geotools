@@ -19,12 +19,14 @@
 package org.geotools.maven.xmlcodegen.templates;
 
 import java.io.StringWriter;
+
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -41,7 +43,7 @@ public class BindingTestClass
     return result;
   }
 
-  public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
+  public final String NL = nl == null ? System.getProperties().getProperty("line.separator") : nl;
   protected final String TEXT_1 = NL + "import org.geotools.xsd.Binding;" + NL + "" + NL + "/**" + NL + " * Binding test case for ";
   protected final String TEXT_2 = ":";
   protected final String TEXT_3 = "." + NL + " *" + NL + " * <p>" + NL + " *  <pre>" + NL + " *   <code>";

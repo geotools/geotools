@@ -65,7 +65,7 @@ public class FeatureIdVersionedImpl extends FeatureIdImpl {
 
     @Override
     public boolean equalsExact(FeatureId id) {
-        if (id instanceof FeatureId) {
+        if (id != null) {
             return fid.equals(id.getID())
                     && fid.equals(id.getRid())
                     && id.getPreviousRid() == null
@@ -83,12 +83,7 @@ public class FeatureIdVersionedImpl extends FeatureIdImpl {
 
     @Override
     public String getRid() {
-        return featureVersion == null
-                ? getID()
-                : new StringBuilder(getID())
-                        .append(VERSION_SEPARATOR)
-                        .append(featureVersion)
-                        .toString();
+        return featureVersion == null ? getID() : getID() + VERSION_SEPARATOR + featureVersion;
     }
 
     @Override

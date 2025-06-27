@@ -212,8 +212,8 @@ public class FeatureTypeRegistry {
         XSDElementDeclaration sub;
         while (substitutions.hasNext()) {
             sub = (XSDElementDeclaration) substitutions.next();
-            if (!(sub.getName().equals(elemDecl.getName()))
-                    || !(sub.getTargetNamespace().equals(elemDecl.getTargetNamespace()))) {
+            if (!sub.getName().equals(elemDecl.getName())
+                    || !sub.getTargetNamespace().equals(elemDecl.getTargetNamespace())) {
                 Name elemName = Types.typeName(sub.getTargetNamespace(), sub.getName());
                 AttributeType type = getTypeOf(sub, crs);
                 if (type != null) {

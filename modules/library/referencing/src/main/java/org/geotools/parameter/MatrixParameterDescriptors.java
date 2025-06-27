@@ -274,7 +274,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
                 Collections.singletonMap(NAME_KEY, prefix + row + separator + column),
                 Double.class,
                 null,
-                (row == column) ? 1.0 : 0.0,
+                row == column ? 1.0 : 0.0,
                 null,
                 null,
                 AbstractUnit.ONE,

@@ -19,6 +19,7 @@ package org.geotools.referencing;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.operation.TransformException;
@@ -90,7 +91,8 @@ public final class ScriptRunner extends Console {
         final String lineSeparator = System.getProperty("line.separator", "\r");
         try {
             for (final String filename : args) {
-                try (final LineNumberReader in = new LineNumberReader(new FileReader(filename))) {
+                try (final LineNumberReader in =
+                        new LineNumberReader(new FileReader(filename, StandardCharsets.UTF_8))) {
                     final ScriptRunner test = new ScriptRunner(in);
                     test.out.write("Running \"");
                     test.out.write(filename);

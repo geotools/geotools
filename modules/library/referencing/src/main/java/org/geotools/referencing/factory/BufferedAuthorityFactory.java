@@ -293,13 +293,13 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
     /** Returns the vendor responsible for creating the underlying factory implementation. */
     @Override
     public Citation getVendor() {
-        return (backingStore != null) ? backingStore.getVendor() : super.getVendor();
+        return backingStore != null ? backingStore.getVendor() : super.getVendor();
     }
 
     /** Returns the organization or party responsible for definition and maintenance of the underlying database. */
     @Override
     public Citation getAuthority() {
-        return (backingStore != null) ? backingStore.getAuthority() : null;
+        return backingStore != null ? backingStore.getAuthority() : null;
     }
 
     /**

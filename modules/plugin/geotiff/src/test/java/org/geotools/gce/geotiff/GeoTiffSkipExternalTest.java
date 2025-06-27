@@ -75,7 +75,7 @@ public class GeoTiffSkipExternalTest extends org.junit.Assert {
 
             // Check External PRJ isn't found due to SKIP external files flag
             assertFalse(CRS.equalsIgnoreMetadata(crs, crs_));
-            GridCoverage2D coverage = reader.read(null);
+            GridCoverage2D coverage = reader.read();
             assertFalse(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), crs_));
             coverage.dispose(true);
         }

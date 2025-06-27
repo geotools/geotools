@@ -60,7 +60,7 @@ class Ordinates {
     /** Adds a coordinate to this list */
     void add(double x, double y) {
         curr++;
-        if ((curr * 2 + 1) >= ordinates.length) {
+        if (curr * 2 + 1 >= ordinates.length) {
             int newSize = ordinates.length * 3 / 2;
             if (newSize < 10) {
                 newSize = 10;

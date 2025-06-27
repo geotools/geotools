@@ -74,7 +74,7 @@ public class Mercator2SP extends Mercator {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
+        Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
         }
 

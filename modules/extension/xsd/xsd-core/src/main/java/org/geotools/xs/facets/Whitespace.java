@@ -67,7 +67,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
             for (int i = 0; i < replace.length(); i++) {
                 char ch = replace.charAt(i);
 
-                if (('\t' == ch) || ('\n' == ch) || ('\r' == ch)) {
+                if ('\t' == ch || '\n' == ch || '\r' == ch) {
                     replace.setCharAt(i, ' ');
                 }
             }
@@ -93,7 +93,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
 
             for (; i < collapse.length(); i++) {
                 if (' ' == collapse.charAt(i)) {
-                    for (++i; (i < collapse.length()) && (' ' == collapse.charAt(i)); ) {
+                    for (++i; i < collapse.length() && ' ' == collapse.charAt(i); ) {
                         collapse.deleteCharAt(i);
                     }
                 }
@@ -145,7 +145,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
 
     @Override
     public boolean equals(Object other) {
-        return (other != null) && other instanceof Whitespace && (((Whitespace) other).ordinal == ordinal);
+        return other != null && other instanceof Whitespace && ((Whitespace) other).ordinal == ordinal;
     }
 
     @Override

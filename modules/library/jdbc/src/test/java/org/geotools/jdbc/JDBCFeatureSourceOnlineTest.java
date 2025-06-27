@@ -116,6 +116,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     public void testBoundsWithLimit() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setMaxFeatures(2);
+        FilterFactory ff = dataStore.getFilterFactory();
+        query.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
         ReferencedEnvelope bounds = featureSource.getBounds(query);
 
         assertEquals(0l, Math.round(bounds.getMinX()));
@@ -130,6 +132,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     public void testBoundsWithOffset() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setStartIndex(2);
+        FilterFactory ff = dataStore.getFilterFactory();
+        query.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
         ReferencedEnvelope bounds = featureSource.getBounds(query);
 
         assertEquals(2l, Math.round(bounds.getMinX()));
@@ -313,6 +317,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     public void testGetFeaturesWithMax() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setMaxFeatures(2);
+        FilterFactory ff = dataStore.getFilterFactory();
+        q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
         SimpleFeatureCollection features = featureSource.getFeatures(q);
 
         // check size
@@ -357,9 +363,10 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetFeaturesWithOffsetLimit() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
-        // no sorting, let's see if the database can use native one
         q.setStartIndex(1);
         q.setMaxFeatures(1);
+        FilterFactory ff = dataStore.getFilterFactory();
+        q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));
         SimpleFeatureCollection features = featureSource.getFeatures(q);
 
         // check size

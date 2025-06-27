@@ -3725,7 +3725,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @param query Specifies which features are to be used for the bounds computation (and in particular uses filter,
      *     start index and max features)
      */
-    protected String selectBoundsSQL(SimpleFeatureType featureType, Query query) throws SQLException {
+    protected String selectBoundsSQL(SimpleFeatureType featureType, Query query) throws SQLException, IOException {
         StringBuffer sql = new StringBuffer();
 
         boolean offsetLimit = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
@@ -3754,12 +3754,16 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // finally encode limit/offset, if necessary
         if (offsetLimit) {
+            // records caught by limit/offset are affected by sort too
+            if (query.getSortBy() != null && query.getSortBy().length > 0) {
+                sort(featureType, query.getSortBy(), null, sql);
+            }
             applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
             // build the prologue
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT ");
             buildEnvelopeAggregates(featureType, sb);
-            sb.append("FROM (");
+            sb.append(" FROM (");
             // wrap the existing query
             sql.insert(0, sb.toString());
             sql.append(")");
@@ -4000,6 +4004,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (visitorLimitOffset) {
             applyLimitOffset(sql, visitor.getStartIndex(), visitor.getMaxFeatures());
         } else if (queryLimitOffset) {
+            if (query.getSortBy() != null && query.getSortBy().length > 0) {
+                // if there is a sort by, we need to apply it before the limit/offset
+                sort(featureType, query.getSortBy(), null, sql);
+            }
             applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
         }
         boolean isUniqueCount = visitor instanceof UniqueCountVisitor;

@@ -297,6 +297,40 @@ public class RenderingTransformationTest {
     }
 
     @Test
+    public void testTransformWithConverter() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "opaqueRenderingTransformation.sld");
+        // grab the data
+        File property = new File(TestData.getResource(this, "point.properties").toURI());
+        PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
+        FeatureSource fs = ds.getFeatureSource("point");
+
+        // prepare a feature layer with a query and the rendering tx
+        FeatureLayer layer = new FeatureLayer(fs, style);
+
+        // render it
+        MapContent mc = new MapContent();
+        mc.addLayer(layer);
+        StreamingRenderer renderer = new StreamingRenderer();
+        final AtomicInteger counter = new AtomicInteger();
+        renderer.addRenderListener(new RenderListener() {
+
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                counter.incrementAndGet();
+            }
+
+            @Override
+            public void errorOccurred(Exception e) {}
+        });
+        renderer.setMapContent(mc);
+        ReferencedEnvelope re = new ReferencedEnvelope(0, 12, 0, 12, CRS.decode("EPSG:4326"));
+        RendererBaseTest.showRender("Points", renderer, TIME, re);
+
+        // if everything went fine we'll get all of the points processed (otherwise it would have been zero)
+        assertEquals(10, counter.get());
+    }
+
+    @Test
     public void testTransformReproject() throws Exception {
         // grab the style
         Style style = RendererBaseTest.loadStyle(this, "reproject-rt.sld");

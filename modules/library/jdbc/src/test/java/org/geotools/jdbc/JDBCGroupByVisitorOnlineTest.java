@@ -430,7 +430,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         return value;
     }
 
-    private List<Object[]> genericGroupByTestTest(
+    protected List<Object[]> genericGroupByTestTest(
             String tableName,
             Query query,
             Aggregate aggregateVisitor,

@@ -126,6 +126,8 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                                 String tblName = tablesRs.getString(3);
                                 if (tblName.toLowerCase().equals(tableName.toLowerCase())) {
                                     metadataTableExists = true;
+                                    // some databases are case-sensitive (SingleStore), update table name accordingly
+                                    tableName = tblName;
                                     break;
                                 }
                             }

@@ -19,6 +19,8 @@ package org.geotools.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
@@ -75,13 +77,17 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         assertTrue(fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn);
         assertTrue(fs.getPrimaryKey().getColumns().get(1) instanceof NonIncrementingPrimaryKeyColumn);
 
+        // not all databases return data in insertion order, make the test independent of that
+        Set<String> actual = new HashSet<>();
+        Set<String> expected = new HashSet<>();
         try (FeatureIterator i = fs.getFeatures().features()) {
             for (int j = 1; i.hasNext(); j++) {
                 SimpleFeature f = (SimpleFeature) i.next();
-
-                assertEquals(tname("assignedmultipk") + "." + j + "." + (j + 1), f.getID());
+                actual.add(f.getID());
+                expected.add(tname("assignedmultipk") + "." + j + "." + (j + 1));
             }
         }
+        assertEquals(expected, actual);
     }
 
     protected void addFeature(SimpleFeatureType featureType, JDBCFeatureStore features) throws Exception {

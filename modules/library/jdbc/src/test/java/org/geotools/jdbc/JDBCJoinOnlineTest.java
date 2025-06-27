@@ -44,6 +44,10 @@ import org.junit.Test;
 
 public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 
+    public JDBCJoinOnlineTest() {
+        super(1e-6);
+    }
+
     @Override
     protected abstract JDBCJoinTestSetup createTestSetup();
 

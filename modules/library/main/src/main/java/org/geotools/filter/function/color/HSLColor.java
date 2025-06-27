@@ -76,11 +76,11 @@ public class HSLColor {
         if (max == min) {
             hue = 0;
         } else if (max == r) {
-            hue = ((60 * (g - b) / (max - min)) + 360) % 360;
+            hue = (60 * (g - b) / (max - min) + 360) % 360;
         } else if (max == g) {
-            hue = (60 * (b - r) / (max - min)) + 120;
+            hue = 60 * (b - r) / (max - min) + 120;
         } else if (max == b) {
-            hue = (60 * (r - g) / (max - min)) + 240;
+            hue = 60 * (r - g) / (max - min) + 240;
         }
     }
 
@@ -128,14 +128,14 @@ public class HSLColor {
         if (lightness < 0.5) {
             q = lightness * (1 + saturation);
         } else {
-            q = (lightness + saturation) - (saturation * lightness);
+            q = lightness + saturation - saturation * lightness;
         }
 
         double p = 2 * lightness - q;
 
-        double r = Math.max(0, hueToRGB(p, q, hue / 360 + (1f / 3f)));
+        double r = Math.max(0, hueToRGB(p, q, hue / 360 + 1f / 3f));
         double g = Math.max(0, hueToRGB(p, q, hue / 360));
-        double b = Math.max(0, hueToRGB(p, q, hue / 360 - (1f / 3f)));
+        double b = Math.max(0, hueToRGB(p, q, hue / 360 - 1f / 3f));
 
         r = Math.min(r, 1.0f);
         g = Math.min(g, 1.0f);
@@ -153,7 +153,7 @@ public class HSLColor {
         }
 
         if (6 * h < 1) {
-            return p + ((q - p) * 6 * h);
+            return p + (q - p) * 6 * h;
         }
 
         if (2 * h < 1) {
@@ -161,7 +161,7 @@ public class HSLColor {
         }
 
         if (3 * h < 2) {
-            return p + ((q - p) * 6 * ((2.0f / 3.0f) - h));
+            return p + (q - p) * 6 * (2.0f / 3.0f - h);
         }
 
         return p;

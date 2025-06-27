@@ -126,7 +126,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
             final SelectedChannelType[] rgb = cs.getRGBChannels();
             final SelectedChannelType gray = cs.getGrayChannel();
             // both of them are set?
-            if ((rgb != null && rgb[0] != null && rgb[1] != null && rgb[2] != null) && (gray != null))
+            if (rgb != null && rgb[0] != null && rgb[1] != null && rgb[2] != null && gray != null)
                 throw new IllegalArgumentException(MessageFormat.format(
                         ErrorKeys.ILLEGAL_ARGUMENT_$1, "Both gray and rgb channel selection are valid!"));
             final SelectedChannelType[] sc = gray == null ? rgb : new SelectedChannelType[] {gray};
@@ -137,8 +137,8 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
             // bands
             // Notice that we also try to be as resilient as possible since
             if (sc != null
-                    && ((sc.length == 1 && sc[0] != null)
-                            || (sc.length == 3 && (sc[0] != null || sc[1] != null || sc[2] != null)))) {
+                    && (sc.length == 1 && sc[0] != null
+                            || sc.length == 3 && (sc[0] != null || sc[1] != null || sc[2] != null))) {
                 for (int i = 0; i < sc.length; i++) {
 
                     // get the channel element

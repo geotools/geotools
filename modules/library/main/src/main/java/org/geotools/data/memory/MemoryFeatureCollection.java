@@ -64,7 +64,7 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection
         return new MemoryIterator(contents.values().iterator());
     }
 
-    class MemoryIterator implements Iterator<SimpleFeature>, SimpleFeatureIterator {
+    static class MemoryIterator implements Iterator<SimpleFeature>, SimpleFeatureIterator {
         Iterator<SimpleFeature> it;
 
         MemoryIterator(Iterator<SimpleFeature> iterator) {

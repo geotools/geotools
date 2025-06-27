@@ -698,11 +698,11 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         byte[] alpha = new byte[65536];
         byte value;
         for (int i = 0; i < 65536; i++) {
-            value = (byte) ((i / 256) & 0xFF);
+            value = (byte) (i / 256 & 0xFF);
             red[i] = value;
             green[i] = value;
             blue[i] = value;
-            alpha[i] = (byte) (0xFF);
+            alpha[i] = (byte) 0xFF;
         }
         alpha[0] = 0;
 
@@ -1033,7 +1033,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue(image.getColorModel() instanceof IndexColorModel);
         iColorModel = (IndexColorModel) image.getColorModel();
         transparentColor = iColorModel.getRGB(worker.getTransparentPixel()) & 0x00ffffff;
-        assertEquals(transparentColor, (Color.WHITE.getRGB() & 0x00ffffff));
+        assertEquals(transparentColor, Color.WHITE.getRGB() & 0x00ffffff);
         assertNoData(image, null);
 
         // RGB TO RGBA
@@ -1916,7 +1916,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 null);
         RenderedImage mosaicked = iw.getRenderedImage();
         Object roiProperty = mosaicked.getProperty("ROI");
-        assertThat(roiProperty, not((instanceOf(ROI.class))));
+        assertThat(roiProperty, not(instanceOf(ROI.class)));
     }
 
     @Test

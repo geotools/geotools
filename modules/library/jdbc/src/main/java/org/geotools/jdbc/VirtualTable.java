@@ -305,14 +305,14 @@ public class VirtualTable implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((geometryTypes == null) ? 0 : geometryTypes.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((nativeSrids == null) ? 0 : nativeSrids.hashCode());
-        result = prime * result + ((dimensions == null) ? 0 : dimensions.hashCode());
-        result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
-        result = prime * result + ((primaryKeyColumns == null) ? 0 : primaryKeyColumns.hashCode());
-        result = prime * result + ((sql == null) ? 0 : sql.hashCode());
-        result = prime * result + ((escapeSql) ? 1 : 0);
+        result = prime * result + (geometryTypes == null ? 0 : geometryTypes.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (nativeSrids == null ? 0 : nativeSrids.hashCode());
+        result = prime * result + (dimensions == null ? 0 : dimensions.hashCode());
+        result = prime * result + (parameters == null ? 0 : parameters.hashCode());
+        result = prime * result + (primaryKeyColumns == null ? 0 : primaryKeyColumns.hashCode());
+        result = prime * result + (sql == null ? 0 : sql.hashCode());
+        result = prime * result + (escapeSql ? 1 : 0);
         return result;
     }
 

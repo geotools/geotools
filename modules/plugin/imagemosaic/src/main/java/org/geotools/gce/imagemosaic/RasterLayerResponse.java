@@ -67,6 +67,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;
@@ -126,7 +127,7 @@ public class RasterLayerResponse {
 
     private final SubmosaicProducerFactory submosaicProducerFactory;
 
-    class MosaicOutput {
+    static class MosaicOutput {
 
         public MosaicOutput(MosaicElement element) {
             this.image = element.source;
@@ -346,7 +347,7 @@ public class RasterLayerResponse {
             }
             if (!footprintBehavior.handleFootprints()
                     || inclusionGeometry == null
-                    || (footprintBehavior.handleFootprints() && intersects)) {
+                    || footprintBehavior.handleFootprints() && intersects) {
 
                 // find the right filter for this granule
                 boolean found = false;
@@ -701,7 +702,7 @@ public class RasterLayerResponse {
                                 .getName()),
                         bboxExtractor.getBBox()));
                 query.setMaxFeatures(1);
-                query.setSortBy(null);
+                query.setSortBy((SortBy[]) null);
                 rasterManager.getGranuleDescriptors(query, dryRunVisitor);
                 if (dryRunVisitor.granulesNumber > 0) {
                     LOGGER.fine(
@@ -821,7 +822,7 @@ public class RasterLayerResponse {
                     at.getScaleX(), at.getShearX(), at.getShearY(), at.getScaleY(), dst.getX(), dst.getY());
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
-            if ((requestRes[0] < resX || requestRes[1] < resY)) {
+            if (requestRes[0] < resX || requestRes[1] < resY) {
                 // Using the best available resolution
                 oversampledRequest = true;
             }

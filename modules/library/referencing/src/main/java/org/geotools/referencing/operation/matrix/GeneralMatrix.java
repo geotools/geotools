@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -218,7 +219,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             setElement(i, srcDim, translate);
         }
         setElement(dstDim, srcDim, 1);
-        assert (srcDim != dstDim) || isAffine() : this;
+        assert srcDim != dstDim || isAffine() : this;
     }
 
     /**
@@ -317,10 +318,10 @@ public class GeneralMatrix implements XMatrix, Serializable {
                      * value.
                      */
                     final boolean normal = srcAxe.equals(dstAxe);
-                    double scale = (normal) ? +1 : -1;
+                    double scale = normal ? +1 : -1;
                     double translate = 0;
                     if (validRegions) {
-                        translate = (normal) ? dstRegion.getMinimum(dstIndex) : dstRegion.getMaximum(dstIndex);
+                        translate = normal ? dstRegion.getMinimum(dstIndex) : dstRegion.getMaximum(dstIndex);
                         scale *= dstRegion.getSpan(dstIndex) / srcRegion.getSpan(srcIndex);
                         translate -= srcRegion.getMinimum(srcIndex) * scale;
                     }
@@ -335,7 +336,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             }
         }
         setElement(dstAxis.length, srcAxis.length, 1);
-        assert (srcAxis.length != dstAxis.length) || isAffine() : this;
+        assert srcAxis.length != dstAxis.length || isAffine() : this;
     }
 
     //
@@ -636,7 +637,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         result = prime * result + mat.numCols;
         for (double d : mat.data) {
             long bits = Double.doubleToRawLongBits(d);
-            result = prime * result + ((int) (bits ^ (bits >>> 32)));
+            result = prime * result + (int) (bits ^ bits >>> 32);
         }
         return result;
     }
@@ -713,7 +714,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @since 2.2
      */
     public static GeneralMatrix load(final File file) throws IOException {
-        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             return load(in, Locale.US);
         }
     }
@@ -761,7 +762,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             numRow++;
             assert numData % numRow == 0 : numData;
         }
-        data = (data != null) ? XArray.resize(data, numData) : new double[0];
+        data = data != null ? XArray.resize(data, numData) : new double[0];
         return new GeneralMatrix(numRow, numData / numRow, data);
     }
 

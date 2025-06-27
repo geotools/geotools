@@ -48,11 +48,11 @@ public class SampleScheme {
     public void setSampleScheme(int length, int[] sampleScheme) {
         this.sampleScheme[length - 2] = sampleScheme;
 
-        if ((minCount == -1) || (minCount > length)) {
+        if (minCount == -1 || minCount > length) {
             minCount = length;
         }
 
-        if ((maxCount == -1) || (maxCount < length)) {
+        if (maxCount == -1 || maxCount < length) {
             maxCount = length;
         }
     }

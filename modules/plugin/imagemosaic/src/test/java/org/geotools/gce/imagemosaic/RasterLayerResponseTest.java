@@ -57,7 +57,7 @@ public class RasterLayerResponseTest {
             final GeneralBounds envelope = reader.getOriginalEnvelope();
             final Dimension dim = new Dimension();
             dim.setSize(10, 20);
-            final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+            final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             GridGeometry2D gridGeometryValue = new GridGeometry2D(range, envelope);
@@ -110,7 +110,7 @@ public class RasterLayerResponseTest {
             GeneralBounds envelope = reader.getOriginalEnvelope();
             Dimension dim = new Dimension();
             dim.setSize(10, 20);
-            Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+            Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
             rasterArea.setSize(dim);
             GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, envelope));

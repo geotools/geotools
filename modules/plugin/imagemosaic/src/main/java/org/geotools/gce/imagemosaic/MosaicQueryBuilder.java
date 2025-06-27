@@ -160,8 +160,8 @@ class MosaicQueryBuilder {
         final List elevations = request.getElevation();
         final Map<String, List> additionalDomains = request.getRequestedAdditionalDomains();
         final Filter filter = request.getFilter();
-        final boolean hasTime = (times != null && !times.isEmpty());
-        final boolean hasElevation = (elevations != null && !elevations.isEmpty());
+        final boolean hasTime = times != null && !times.isEmpty();
+        final boolean hasElevation = elevations != null && !elevations.isEmpty();
         final boolean hasAdditionalDomains = !additionalDomains.isEmpty();
         final boolean hasFilter = filter != null && !Filter.INCLUDE.equals(filter);
         // prepare eventual filter for filtering granules

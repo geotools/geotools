@@ -124,7 +124,7 @@ public abstract class AbstractConsole implements Runnable {
     public Object parseObject(final String text, final Class type) throws ParseException, FactoryException {
         if (parser instanceof Preprocessor) {
             final Preprocessor parser = (Preprocessor) this.parser;
-            parser.offset = (line != null) ? Math.max(0, line.indexOf(text)) : 0;
+            parser.offset = line != null ? Math.max(0, line.indexOf(text)) : 0;
             return parser.parseObject(text, type);
         } else {
             return parser.parseObject(text);

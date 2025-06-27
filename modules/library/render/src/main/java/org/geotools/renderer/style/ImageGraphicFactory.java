@@ -47,7 +47,16 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
     /** The logger for the rendering module. */
     private static final Logger LOGGER = Logging.getLogger(ImageGraphicFactory.class);
 
-    /** Current way to load images */
+    /**
+     * Current way to load images
+     *
+     * <p>TODO: Avoid hash-based containers of java.net.URL--the containers rely on equals() and hashCode(), which cause
+     * java.net.URL to make blocking internet connections. Use
+     *
+     * <p>Use URI instead, but looks like we need a ConverterFactory to evaluate URI because
+     * Expression.evaluate(feature, URI.class) return null
+     */
+    @SuppressWarnings("URLEqualsHashCode")
     static Map<URL, BufferedImage> imageCache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
     /** Holds the of graphic formats supported by the current jdk */

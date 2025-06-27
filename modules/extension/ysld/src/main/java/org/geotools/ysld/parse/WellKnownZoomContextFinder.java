@@ -23,6 +23,7 @@ package org.geotools.ysld.parse;
  * @author Kevin Smith, Boundless
  * @deprecated Use {@link org.geotools.styling.zoom.WellKnownZoomContextFinder} instead.
  */
+@Deprecated
 public class WellKnownZoomContextFinder extends org.geotools.styling.zoom.WellKnownZoomContextFinder {
 
     private static WellKnownZoomContextFinder INSTANCE = new WellKnownZoomContextFinder();

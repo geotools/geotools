@@ -174,11 +174,11 @@ public class ExternalGraphicImpl implements Symbol, Cloneable, ExternalGraphic {
         int result = 0;
 
         if (format != null) {
-            result = (PRIME * result) + format.hashCode();
+            result = PRIME * result + format.hashCode();
         }
 
         if (uri != null) {
-            result = (PRIME * result) + uri.hashCode();
+            result = PRIME * result + uri.hashCode();
         }
 
         return result;
@@ -233,7 +233,7 @@ public class ExternalGraphicImpl implements Symbol, Cloneable, ExternalGraphic {
 
     public void setOnlineResource(OnLineResource online) {
         this.online = online;
-        this.uri = (online != null ? online.getLinkage().toString() : null);
+        this.uri = online != null ? online.getLinkage().toString() : null;
         this.location = null;
     }
 

@@ -22,6 +22,7 @@ import java.util.Set;
 
 class RecursionCheckingHelper {
 
+    @SuppressWarnings("ThreadLocalUsage") // Cannot be static as it's instance-specific
     private final ThreadLocal<Set<Object>> threadLocalSet = new ThreadLocal<>();
 
     boolean addAndCheck(Object item) {

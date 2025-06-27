@@ -85,7 +85,7 @@ public class LikeToRegexConverter {
                     tmp.append(".*");
                 }
 
-                i += (wildcardMulti.length() - 1);
+                i += wildcardMulti.length() - 1;
                 escapedMode = false;
 
                 continue;
@@ -104,7 +104,7 @@ public class LikeToRegexConverter {
                     tmp.append(".{1}");
                 }
 
-                i += (wildcardSingle.length() - 1);
+                i += wildcardSingle.length() - 1;
                 escapedMode = false;
 
                 continue;
@@ -137,18 +137,18 @@ public class LikeToRegexConverter {
      * @return is the character a special character.
      */
     private boolean isSpecial(final char chr) {
-        return ((chr == '.')
-                || (chr == '?')
-                || (chr == '*')
-                || (chr == '^')
-                || (chr == '$')
-                || (chr == '+')
-                || (chr == '[')
-                || (chr == ']')
-                || (chr == '(')
-                || (chr == ')')
-                || (chr == '|')
-                || (chr == '\\'));
+        return chr == '.'
+                || chr == '?'
+                || chr == '*'
+                || chr == '^'
+                || chr == '$'
+                || chr == '+'
+                || chr == '['
+                || chr == ']'
+                || chr == '('
+                || chr == ')'
+                || chr == '|'
+                || chr == '\\';
     }
 
     /**

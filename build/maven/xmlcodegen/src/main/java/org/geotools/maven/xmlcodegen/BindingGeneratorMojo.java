@@ -24,7 +24,6 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,9 +35,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xsd.AbstractComplexBinding;
-import org.geotools.xsd.XSD;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.Configuration;
+import org.geotools.xsd.XSD;
 
 /**
  * Generates the bindings and utility classes used to parse xml documents 
@@ -175,6 +174,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 		}
 		
 		//list of urls to use as class loading locations
+		@SuppressWarnings("URLEqualsHashCode")
 		Set<URL> urls = new HashSet<>();
 		
 		try {

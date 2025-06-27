@@ -159,7 +159,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
             if (dbfHasNext && shpHasNext) {
                 return true;
             } else if (shp != null && (dbfHasNext || shpHasNext)) {
-                throw new IOException(((shpHasNext) ? "Shp" : "Dbf") + " has extra record");
+                throw new IOException((shpHasNext ? "Shp" : "Dbf") + " has extra record");
             } else {
                 return false;
             }

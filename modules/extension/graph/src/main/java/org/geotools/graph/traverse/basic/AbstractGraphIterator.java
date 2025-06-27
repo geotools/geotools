@@ -39,7 +39,7 @@ public abstract class AbstractGraphIterator implements GraphIterator {
     /** @see GraphIterator#getTraversal() */
     @Override
     public GraphTraversal getTraversal() {
-        return (m_traversal);
+        return m_traversal;
     }
 
     /**
@@ -49,7 +49,7 @@ public abstract class AbstractGraphIterator implements GraphIterator {
      * @see Graph
      */
     public Graph getGraph() {
-        return (m_traversal.getGraph());
+        return m_traversal.getGraph();
     }
 
     /**
@@ -59,6 +59,6 @@ public abstract class AbstractGraphIterator implements GraphIterator {
      * @see GraphWalker
      */
     public GraphWalker getWalker() {
-        return (m_traversal.getWalker());
+        return m_traversal.getWalker();
     }
 }

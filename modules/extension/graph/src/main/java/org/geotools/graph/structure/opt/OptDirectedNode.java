@@ -119,7 +119,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     public Edge getEdge(Node other) {
         Edge e = getInEdge((DirectedNode) other);
         if (e == null) e = getOutEdge((DirectedNode) other);
-        return (e);
+        return e;
     }
 
     /** @see DirectedNode#getInEdge(DirectedNode) */
@@ -128,7 +128,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         for (DirectedEdge directedEdge : m_in) {
             if (directedEdge.getInNode().equals(other)) return directedEdge;
         }
-        return (null);
+        return null;
     }
 
     /** @see DirectedNode#getOutEdge(DirectedNode) */
@@ -138,7 +138,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
             if (directedEdge.getOutNode().equals(other)) return directedEdge;
         }
 
-        return (null);
+        return null;
     }
 
     /** @see Node#getEdges(Node) */
@@ -147,7 +147,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         List<Edge> l = getInEdges((DirectedNode) other);
         l.addAll(getOutEdges((DirectedNode) other));
 
-        return (l);
+        return l;
     }
 
     /** @see DirectedNode#getInEdges(DirectedNode) */
@@ -159,7 +159,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
             if (directedEdge.getInNode().equals(other)) edges.add(directedEdge);
         }
 
-        return (edges);
+        return edges;
     }
 
     /** @see DirectedNode#getOutEdges(DirectedNode) */
@@ -171,7 +171,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
             if (directedEdge.getOutNode().equals(other)) edges.add(directedEdge);
         }
 
-        return (edges);
+        return edges;
     }
 
     /** @see Node#getEdges() */
@@ -181,7 +181,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         for (DirectedEdge edge : m_in) edges.add(edge);
         for (DirectedEdge directedEdge : m_out) edges.add(directedEdge);
 
-        return (edges);
+        return edges;
     }
 
     /**
@@ -190,7 +190,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      * @return An array of in edges for the node.
      */
     public DirectedEdge[] getInEdgeArray() {
-        return (m_in);
+        return m_in;
     }
 
     /** @see DirectedNode#getInEdges() */
@@ -201,7 +201,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         for (DirectedEdge directedEdge : m_in) {
             edges.add(directedEdge);
         }
-        return (edges);
+        return edges;
     }
 
     /**
@@ -210,7 +210,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      * @return An array of out edges for the node.
      */
     public DirectedEdge[] getOutEdgeArray() {
-        return (m_out);
+        return m_out;
     }
 
     /** @see DirectedNode#getOutEdges() */
@@ -221,13 +221,13 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         for (DirectedEdge directedEdge : m_out) {
             edges.add(directedEdge);
         }
-        return (edges);
+        return edges;
     }
 
     /** @see Node#getDegree() */
     @Override
     public int getDegree() {
-        return (m_in.length + m_out.length);
+        return m_in.length + m_out.length;
     }
 
     /**
@@ -242,7 +242,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     /** @see DirectedNode#getInDegree() */
     @Override
     public int getInDegree() {
-        return (m_in.length);
+        return m_in.length;
     }
 
     /**
@@ -257,7 +257,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
     /** @see DirectedNode#getOutDegree() */
     @Override
     public int getOutDegree() {
-        return (m_out.length);
+        return m_out.length;
     }
 
     /**
@@ -267,7 +267,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      */
     @Override
     public Iterator<Node> getRelated() {
-        return (new RelatedIterator(RelatedIterator.BOTH));
+        return new RelatedIterator(RelatedIterator.BOTH);
     }
 
     /**
@@ -277,13 +277,13 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      */
     @Override
     public Iterator<Node> getInRelated() {
-        return (new RelatedIterator(RelatedIterator.IN));
+        return new RelatedIterator(RelatedIterator.IN);
     }
 
     /** This iterator iterates over the underlying out edge array of the node. */
     @Override
     public Iterator<Node> getOutRelated() {
-        return (new RelatedIterator(RelatedIterator.OUT));
+        return new RelatedIterator(RelatedIterator.OUT);
     }
 
     /**
@@ -365,15 +365,15 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
         public boolean hasNext() {
             switch (m_mode) {
                 case IN:
-                    return (m_index < m_in.length);
+                    return m_index < m_in.length;
 
                 case OUT:
-                    return (m_index < m_out.length);
+                    return m_index < m_out.length;
 
                 case BOTH:
-                    return (m_index < m_in.length + m_out.length);
+                    return m_index < m_in.length + m_out.length;
             }
-            return (false);
+            return false;
         }
 
         /** Returns the next related node. */
@@ -382,17 +382,17 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
 
             switch (m_mode) {
                 case IN:
-                    return (m_in[m_index++].getInNode());
+                    return m_in[m_index++].getInNode();
 
                 case OUT:
-                    return (m_out[m_index++].getOutNode());
+                    return m_out[m_index++].getOutNode();
 
                 case BOTH:
-                    return (m_index < m_in.length
+                    return m_index < m_in.length
                             ? m_in[m_index++].getInNode()
-                            : m_out[m_index++ - m_in.length].getOutNode());
+                            : m_out[m_index++ - m_in.length].getOutNode();
             }
-            return (null);
+            return null;
         }
     }
 }

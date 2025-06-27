@@ -29,6 +29,7 @@ import org.junit.Test;
  *
  * @author Cory Horner (Refractions Research)
  */
+@SuppressWarnings("ThreadPriorityCheck")
 public final class ObjectCacheEntryTest {
 
     DefaultObjectCache.ObjectCacheEntry<Integer> entry;

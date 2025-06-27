@@ -121,7 +121,7 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
     }
 
     private int sign(int i) {
-        return (i < 0 ? -1 : (i > 0 ? 1 : 0));
+        return i < 0 ? -1 : i > 0 ? 1 : 0;
     }
 
     private int sign(double d) {

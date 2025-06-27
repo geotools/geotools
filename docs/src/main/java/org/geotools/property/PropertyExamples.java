@@ -16,8 +16,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.FeatureReader;
@@ -25,8 +28,11 @@ import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.util.logging.Logging;
 
 public class PropertyExamples {
+
+    private static final Logger LOGGER = Logging.getLogger(PropertyExamples.class);
 
     static File directory;
 
@@ -46,7 +52,7 @@ public class PropertyExamples {
             }
             File example = new File(tmp, "example.properties");
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(example));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(example, StandardCharsets.UTF_8));
             writer.write("_=id:Integer,name:String,geom:Point");
             writer.newLine();
             writer.write("fid1=1|jody garnett|POINT(0 0)");
@@ -67,7 +73,7 @@ public class PropertyExamples {
                 System.exit(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error running example", e);
         } finally {
             if (tmp != null) {
                 File[] list = tmp.listFiles();

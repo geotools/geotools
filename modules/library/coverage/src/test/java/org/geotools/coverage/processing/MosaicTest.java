@@ -298,8 +298,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
     private GridCoverage2D getCoverageWithROI(GridCoverage2D coverage, ROI roi) {
         @SuppressWarnings("unchecked")
-        Map<String, Object> map =
-                (coverage.getProperties() != null) ? coverage.getProperties() : Collections.emptyMap();
+        Map<String, Object> map = coverage.getProperties() != null ? coverage.getProperties() : Collections.emptyMap();
         Map<String, Object> properties = new HashMap<>(map);
         CoverageUtilities.setROIProperty(properties, roi);
         GridCoverage2D coverageWithRoi = GRID_COVERAGE_FACTORY.create(

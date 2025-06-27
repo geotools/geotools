@@ -681,7 +681,7 @@ public class DB2SQLDialect extends SQLDialect {
                 sql.insert(0, "SELECT * FROM (");
                 sql.append(") WHERE ROWNUM <= " + limit);
             } else {
-                long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
+                long max = limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset;
                 sql.insert(0, "SELECT * FROM (SELECT A.*, ROWNUM RNUM FROM ( ");
                 sql.append(") A WHERE ROWNUM <= " + max + ")");
                 sql.append("WHERE RNUM > " + offset);

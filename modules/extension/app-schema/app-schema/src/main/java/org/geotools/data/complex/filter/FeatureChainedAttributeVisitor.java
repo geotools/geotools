@@ -152,7 +152,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
 
                             // new xpath
                             StepList newXPath = currentXPath.clone();
-                            int startIdx = (xpathContainsNestedType) ? nestedTypeXPath.size() : currentXPath.size();
+                            int startIdx = xpathContainsNestedType ? nestedTypeXPath.size() : currentXPath.size();
                             newXPath = newXPath.subList(startIdx, currentXPath.size());
 
                             // if nested type has simple content, XPath expression may point
@@ -370,7 +370,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
             }
             featureChain.add(chainLink);
             int size = featureChain.size();
-            String alias = (size == 1) ? "chain_root" : "chain_link_" + (size - 1);
+            String alias = size == 1 ? "chain_root" : "chain_link_" + (size - 1);
             chainLink.setAlias(alias);
             if (size > 1) {
                 FeatureChainLink previousStep = featureChain.get(size - 2);

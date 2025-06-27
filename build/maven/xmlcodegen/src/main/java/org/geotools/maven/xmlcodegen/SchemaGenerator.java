@@ -509,7 +509,7 @@ public class SchemaGenerator extends AbstractGenerator {
         AttributeType superType = null;
         XSDTypeDefinition baseType = xsdType.getBaseType();
 
-        if ((baseType != null) && !baseType.equals(xsdType)) {
+        if (baseType != null && !baseType.equals(xsdType)) {
             if (baseType.getName() != null) {
                 //ignore unamed types
                 //superType = createType((XSDSimpleTypeDefinition)baseType);

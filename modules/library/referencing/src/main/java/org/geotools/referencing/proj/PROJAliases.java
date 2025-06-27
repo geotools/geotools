@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,8 @@ public class PROJAliases {
         URL aliasURL = PROJAliases.class.getResource(ALIAS_TABLE);
 
         try {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(aliasURL.openStream()))) {
+            try (BufferedReader br =
+                    new BufferedReader(new InputStreamReader(aliasURL.openStream(), StandardCharsets.UTF_8))) {
                 String line;
                 Map<String, String> currentMap = null;
 

@@ -871,8 +871,8 @@ public abstract class TransformerBase {
                     element = parts[1];
                 } else {
                     // fallback to adding a possible static prefix and namespace
-                    ns = (prefix == null) ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
-                    qn = (prefix == null) ? element : (prefix + ":" + element);
+                    ns = prefix == null ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
+                    qn = prefix == null ? element : prefix + ":" + element;
                 }
 
                 if (ns == null) {
@@ -904,11 +904,11 @@ public abstract class TransformerBase {
 
         private void _end(String element) {
             try {
-                String ns = (prefix == null) ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
+                String ns = prefix == null ? XMLConstants.NULL_NS_URI : nsSupport.getURI(prefix);
                 if (ns == null) {
                     ns = XMLConstants.NULL_NS_URI;
                 }
-                String el = (prefix == null) ? element : (prefix + ":" + element);
+                String el = prefix == null ? element : prefix + ":" + element;
                 contentHandler.endElement(ns, element, el);
             } catch (Exception e) {
                 throw new RuntimeException("Error transforming end of element: " + element, e);
@@ -1082,7 +1082,7 @@ public abstract class TransformerBase {
 
                 String defaultNS = ns.getURI("");
 
-                if ((defaultNS != null) && (atts.getValue("xmlns:") == null)) {
+                if (defaultNS != null && atts.getValue("xmlns:") == null) {
                     atts.addAttribute(XMLNS_NAMESPACE, null, "xmlns:", "CDATA", defaultNS);
 
                     // namespaces.add(defaultNS);
@@ -1090,7 +1090,7 @@ public abstract class TransformerBase {
 
                 SchemaLocationSupport schemaLocSup = translator.getSchemaLocationSupport();
 
-                if ((schemaLocSup != null) && !schemaLocSup.getSchemaLocation().equals("")) {
+                if (schemaLocSup != null && !schemaLocSup.getSchemaLocation().equals("")) {
                     atts.addAttribute(
                             XMLNS_NAMESPACE, null, "xmlns:xsi", "CDATA", "http://www.w3.org/2001/XMLSchema-instance");
                     atts.addAttribute(null, null, "xsi:schemaLocation", null, schemaLocSup.getSchemaLocation());

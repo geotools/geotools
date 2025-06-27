@@ -96,7 +96,7 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((operators == null) ? 0 : operators.hashCode());
+        result = prime * result + (operators == null ? 0 : operators.hashCode());
         return result;
     }
 

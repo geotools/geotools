@@ -83,11 +83,11 @@ public class MultiLineHandler implements ShapeHandler {
         int numpoints = multi.getNumPoints();
 
         if (shapeType == ShapeType.ARC) {
-            length = 44 + (4 * numlines) + (numpoints * 16);
+            length = 44 + 4 * numlines + numpoints * 16;
         } else if (shapeType == ShapeType.ARCM) {
-            length = 44 + (4 * numlines) + (numpoints * 16) + 8 + 8 + (8 * numpoints);
+            length = 44 + 4 * numlines + numpoints * 16 + 8 + 8 + 8 * numpoints;
         } else if (shapeType == ShapeType.ARCZ) {
-            length = 44 + (4 * numlines) + (numpoints * 16) + 8 + 8 + (8 * numpoints) + 8 + 8 + (8 * numpoints);
+            length = 44 + 4 * numlines + numpoints * 16 + 8 + 8 + 8 * numpoints + 8 + 8 + 8 * numpoints;
         } else {
             throw new IllegalStateException("Expected ShapeType of Arc, got " + shapeType);
         }
@@ -104,7 +104,7 @@ public class MultiLineHandler implements ShapeHandler {
         if (type == ShapeType.NULL) {
             return createNull();
         }
-        int dimensions = ((shapeType == ShapeType.ARCZ || shapeType == ShapeType.ARCM) && !flatGeometry) ? 3 : 2;
+        int dimensions = (shapeType == ShapeType.ARCZ || shapeType == ShapeType.ARCM) && !flatGeometry ? 3 : 2;
         // read bounding box (not needed)
         buffer.position(buffer.position() + 4 * 8);
 
@@ -127,7 +127,7 @@ public class MultiLineHandler implements ShapeHandler {
         for (int part = 0; part < numParts; part++) {
             start = partOffsets[part];
 
-            if (part == (numParts - 1)) {
+            if (part == numParts - 1) {
                 finish = numPoints;
             } else {
                 finish = partOffsets[part + 1];
@@ -179,7 +179,7 @@ public class MultiLineHandler implements ShapeHandler {
             for (int part = 0; part < numParts; part++) {
                 start = partOffsets[part];
 
-                if (part == (numParts - 1)) {
+                if (part == numParts - 1) {
                     finish = numPoints;
                 } else {
                     finish = partOffsets[part + 1];
@@ -200,7 +200,7 @@ public class MultiLineHandler implements ShapeHandler {
                 }
             }
         }
-        boolean isArcZWithM = (doubleBuffer.remaining() >= numPoints + 2) && shapeType == ShapeType.ARCZ;
+        boolean isArcZWithM = doubleBuffer.remaining() >= numPoints + 2 && shapeType == ShapeType.ARCZ;
         if ((isArcZWithM || shapeType == ShapeType.ARCM) && !flatGeometry) {
             // M min, max
             // buffer.position(buffer.position() + 2 * 8);
@@ -211,7 +211,7 @@ public class MultiLineHandler implements ShapeHandler {
             for (int part = 0; part < numParts; part++) {
                 start = partOffsets[part];
 
-                if (part == (numParts - 1)) {
+                if (part == numParts - 1) {
                     finish = numPoints;
                 } else {
                     finish = partOffsets[part + 1];

@@ -54,7 +54,7 @@ public class FilterFunction_bufferWithSegments extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (getExpression(1).evaluate(feature, Double.class)).doubleValue();
+            arg1 = getExpression(1).evaluate(feature, Double.class).doubleValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -62,13 +62,13 @@ public class FilterFunction_bufferWithSegments extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg2 = (getExpression(2).evaluate(feature, Integer.class)).intValue();
+            arg2 = getExpression(2).evaluate(feature, Integer.class).intValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
                     "Filter Function problem for function bufferWithSegments argument #2 - expected type int");
         }
 
-        return (StaticGeometry.bufferWithSegments(arg0, arg1, arg2));
+        return StaticGeometry.bufferWithSegments(arg0, arg1, arg2);
     }
 }

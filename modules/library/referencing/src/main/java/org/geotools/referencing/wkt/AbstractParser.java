@@ -331,7 +331,7 @@ public abstract class AbstractParser extends Format {
         int stop = line.length();
         int base = errorOffset - WINDOW_WIDTH / 2;
         final int baseMax = stop - WINDOW_WIDTH;
-        final boolean hasTrailing = (Math.max(base, 0) < baseMax);
+        final boolean hasTrailing = Math.max(base, 0) < baseMax;
         if (!hasTrailing) {
             base = baseMax;
         }

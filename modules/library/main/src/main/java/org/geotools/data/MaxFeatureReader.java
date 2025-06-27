@@ -79,6 +79,6 @@ public class MaxFeatureReader<T extends FeatureType, F extends Feature> implemen
      */
     @Override
     public boolean hasNext() throws IOException {
-        return (featureReader.hasNext() && (counter < maxFeatures));
+        return featureReader.hasNext() && counter < maxFeatures;
     }
 }

@@ -37,7 +37,7 @@ public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
     @Override
     public CoverageNameCollector create(Object object, Map<String, String> map) {
         String regex = null;
-        if (map != null && map.containsKey(REGEX) && ((regex = map.get(REGEX)) != null)) {
+        if (map != null && map.containsKey(REGEX) && (regex = map.get(REGEX)) != null) {
             return new FileNameRegexBasedCoverageNameCollector(regex);
         }
         throw new IllegalArgumentException(

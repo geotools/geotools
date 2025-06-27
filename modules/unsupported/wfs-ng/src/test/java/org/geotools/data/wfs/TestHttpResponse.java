@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import org.geotools.http.HTTPResponse;
 
 /** Takes a response either as a String or the url to a file with the reponse */
@@ -49,7 +50,8 @@ public class TestHttpResponse implements HTTPResponse {
     public TestHttpResponse(String contentType, String charset, InputStream contentInputStream) {
         this.contentType = contentType;
         this.charset = charset;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(contentInputStream))) {
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(contentInputStream, StandardCharsets.UTF_8))) {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -91,7 +93,7 @@ public class TestHttpResponse implements HTTPResponse {
     @Override
     public InputStream getResponseStream() throws IOException {
         if (bodyContent != null) {
-            return new ByteArrayInputStream(this.bodyContent.getBytes());
+            return new ByteArrayInputStream(this.bodyContent.getBytes(StandardCharsets.UTF_8));
         }
         if (contentUrl != null) {
             return contentUrl.openStream();

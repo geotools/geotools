@@ -127,7 +127,7 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("surfaceMember".equals(name.getLocalPart())) {
-            if ((object instanceof MultiSurface)) {
+            if (object instanceof MultiSurface) {
                 MultiPolygon multiSurface = (MultiPolygon) object;
                 Polygon[] members = new Polygon[multiSurface.getNumGeometries()];
 

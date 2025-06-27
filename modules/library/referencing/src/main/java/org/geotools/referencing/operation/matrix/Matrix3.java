@@ -326,23 +326,23 @@ public class Matrix3 implements XMatrix, Serializable {
         result = prime * result + SIZE; // for hashCode compatibility with GeneralMatrix
         result = prime * result + SIZE;
         long bits = Double.doubleToRawLongBits(mat.a11);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a12);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a13);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a21);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a22);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a23);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a31);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a32);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         bits = Double.doubleToRawLongBits(mat.a33);
-        result = prime * result + ((int) (bits ^ (bits >>> 32)));
+        result = prime * result + (int) (bits ^ bits >>> 32);
         return result;
     }
 

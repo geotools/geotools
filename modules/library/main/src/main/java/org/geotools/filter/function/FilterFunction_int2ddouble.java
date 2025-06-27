@@ -38,7 +38,7 @@ public class FilterFunction_int2ddouble extends FunctionExpressionImpl {
         int arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = (getExpression(0).evaluate(feature, Integer.class)).intValue();
+            arg0 = getExpression(0).evaluate(feature, Integer.class).intValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

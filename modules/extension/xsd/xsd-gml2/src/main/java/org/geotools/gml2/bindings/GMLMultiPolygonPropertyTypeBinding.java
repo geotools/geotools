@@ -82,7 +82,7 @@ public class GMLMultiPolygonPropertyTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        return node.getChildValue((MultiPolygon.class));
+        return node.getChildValue(MultiPolygon.class);
     }
 
     @Override

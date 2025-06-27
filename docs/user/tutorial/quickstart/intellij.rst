@@ -14,7 +14,7 @@ Pre-Requisites
 --------------
 This guide assumes the following:
 
-* You have the latest JDK installed (8 at the time this article was written) installed. If not the `Eclipse Quickstart <./eclipse.html>`_
+* You have the latest JDK installed (17 at the time this article was written) installed. If not the `Eclipse Quickstart <./eclipse.html>`_
   provides instructions on how to do this.
 * You have IntelliJ installed. This article targets IntelliJ CE 2016; however, previous versions at least as far back as
   13 should work fine. Ultimate versions should also work fine. IntelliJ can be downloaded from JetBrains_ and generally
@@ -141,7 +141,7 @@ Maven downloads jars from public repositories on the internet where projects suc
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-#. GeoTools requires Java 11, you need to tell Maven to use the 11 source level
+#. GeoTools requires Java 17, you need to tell Maven to use the 17 source level
 
    .. literalinclude::  /../../tutorials/quickstart/pom.xml
       :language: xml

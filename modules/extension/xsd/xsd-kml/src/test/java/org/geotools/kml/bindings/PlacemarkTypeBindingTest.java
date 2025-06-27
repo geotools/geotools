@@ -48,7 +48,7 @@ public class PlacemarkTypeBindingTest extends KMLTestSupport {
         }
         @SuppressWarnings("unchecked")
         List<SimpleFeature> features = (List<SimpleFeature>) documentOrPlacemark.getAttribute("Feature");
-        assert (features.size() == 1);
+        assert features.size() == 1;
         return features.get(0);
     }
 

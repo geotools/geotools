@@ -130,7 +130,7 @@ public class GridCoverageBuilder {
 
     /** Wraps an arbitrary envelope to an object that can be stored in {@link #envelope}. */
     private static GeneralBounds wrap(final Bounds envelope) {
-        return (envelope == null || envelope instanceof GeneralBounds)
+        return envelope == null || envelope instanceof GeneralBounds
                 ? (GeneralBounds) envelope
                 : new GeneralBounds(envelope);
     }
@@ -140,7 +140,7 @@ public class GridCoverageBuilder {
      * explicitly defined}, then the default CRS is {@linkplain DefaultGeographicCRS#WGS84 WGS84}.
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        return (envelope != null) ? envelope.getCoordinateReferenceSystem() : DefaultGeographicCRS.WGS84;
+        return envelope != null ? envelope.getCoordinateReferenceSystem() : DefaultGeographicCRS.WGS84;
     }
 
     /**
@@ -243,7 +243,7 @@ public class GridCoverageBuilder {
      * the default is a range from 0 inclusive to 256 exclusive.
      */
     public NumberRange<? extends Number> getSampleRange() {
-        return (range != null) ? range : DEFAULT_RANGE;
+        return range != null ? range : DEFAULT_RANGE;
     }
 
     /** Sets the range of sample values. */

@@ -78,9 +78,9 @@ public class GMLWriterTest extends GMLTestSupport {
                 .read("GEOMETRYCOLLECTION (LINESTRING" + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry);
 
-        assertThat(doc, hasXPath("count(//gml:LineString)", (equalTo("1"))));
-        assertThat(doc, hasXPath("count(//gml:Point)", (equalTo("2"))));
-        assertThat(doc, hasXPath("count(//gml:coordinates)", (equalTo("3"))));
+        assertThat(doc, hasXPath("count(//gml:LineString)", equalTo("1")));
+        assertThat(doc, hasXPath("count(//gml:Point)", equalTo("2")));
+        assertThat(doc, hasXPath("count(//gml:coordinates)", equalTo("3")));
     }
 
     @Test

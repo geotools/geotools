@@ -121,7 +121,7 @@ public class CentroidProcess implements VectorProcess {
         public SimpleFeature next() throws NoSuchElementException {
             SimpleFeature f = delegate.next();
             for (Object attribute : f.getAttributes()) {
-                if ((attribute instanceof Geometry) && !(attribute instanceof Point)) {
+                if (attribute instanceof Geometry && !(attribute instanceof Point)) {
                     attribute = ((Geometry) attribute).getCentroid();
                 }
                 fb.add(attribute);

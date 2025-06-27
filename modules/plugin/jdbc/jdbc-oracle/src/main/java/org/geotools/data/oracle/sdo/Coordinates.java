@@ -56,7 +56,7 @@ public class Coordinates {
      */
     public static CoordinateSequence subList(
             CoordinateSequenceFactory factory, CoordinateSequence sequence, int fromIndex, int toIndex) {
-        if ((fromIndex == 0) && (toIndex == sequence.size())) {
+        if (fromIndex == 0 && toIndex == sequence.size()) {
             return sequence; // same list so just return it
         }
 

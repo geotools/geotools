@@ -250,7 +250,7 @@ public class GeodeticCalculator {
     }
 
     /**
-     * Checks the latidude validity. The argument {@code latidude} should be greater than or equal to -90 degrees and
+     * Checks the latitude validity. The argument {@code latitude} should be greater than or equal to -90 degrees and
      * less than or equal to +90 degrees.
      *
      * @param latitude The latitude value in <strong>decimal degrees</strong>.

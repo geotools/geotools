@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("BadImport")
 public class PreventLocalEntityResolverTest {
 
     @Test

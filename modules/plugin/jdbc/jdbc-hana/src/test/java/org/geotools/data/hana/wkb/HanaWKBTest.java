@@ -42,7 +42,7 @@ public class HanaWKBTest {
 
         private byte[] decodeHex(String s) {
             int l = s.length();
-            if ((l % 2) != 0) throw new IllegalArgumentException("Invalid hexstring length");
+            if (l % 2 != 0) throw new IllegalArgumentException("Invalid hexstring length");
             byte[] ret = new byte[l / 2];
             for (int i = 0; i < l; i += 2) {
                 int hi = hexToBin(s.charAt(i));

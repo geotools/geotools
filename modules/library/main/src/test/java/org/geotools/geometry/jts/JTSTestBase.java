@@ -91,7 +91,7 @@ public class JTSTestBase {
                 throw new IllegalArgumentException("arguments must not be null");
             }
 
-            return (Math.abs(c0.x - c1.x) < TOL && Math.abs(c0.y - c1.y) < TOL);
+            return Math.abs(c0.x - c1.x) < TOL && Math.abs(c0.y - c1.y) < TOL;
         }
     }
 }

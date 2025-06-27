@@ -61,7 +61,7 @@ final class HttpStaticServer {
                         response.setStatus(HttpServletResponse.SC_OK);
                         baseRequest.setHandled(true);
                         try (InputStream input =
-                                new ByteArrayInputStream(resource.getValue().getBytes())) {
+                                new ByteArrayInputStream(resource.getValue().getBytes(StandardCharsets.UTF_8))) {
                             // write the resource content to the HTTP response output stream
                             IOUtils.copy(input, response.getOutputStream());
                             // we are done

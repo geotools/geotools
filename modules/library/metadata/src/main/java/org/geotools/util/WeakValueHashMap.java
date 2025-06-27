@@ -195,7 +195,7 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
             Entry prev = null;
             Entry e = table[i];
             while (e != null) {
-                if (e == toRemove) {
+                if (e == toRemove) { // Reference equality intentional for Entry removal
                     if (prev != null) {
                         prev.next = e.next;
                     } else {
@@ -237,8 +237,8 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
         final long currentTime = System.currentTimeMillis();
         final int capacity = Math.max(Math.round(count / (LOAD_FACTOR / 2)), count + MIN_CAPACITY);
         if (augmentation
-                ? (capacity <= table.length)
-                : (capacity >= table.length || currentTime - lastRehashTime < HOLD_TIME)) {
+                ? capacity <= table.length
+                : capacity >= table.length || currentTime - lastRehashTime < HOLD_TIME) {
             return;
         }
         lastRehashTime = currentTime;

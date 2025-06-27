@@ -194,7 +194,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
                 }
                 axe = ((DefaultCoordinateSystemAxis) axe).usingUnit(SI.METRE);
             }
-            changed |= (axe != axis[i]);
+            changed |= axe != axis[i];
             axis[i] = axe;
         }
         /*

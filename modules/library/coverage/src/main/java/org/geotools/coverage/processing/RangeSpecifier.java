@@ -143,7 +143,7 @@ public class RangeSpecifier implements Serializable, Cloneable {
      * @return The current colors.
      */
     public Color[] getColors() {
-        return (colors != null) ? colors.clone() : null;
+        return colors != null ? colors.clone() : null;
     }
 
     /**
@@ -152,7 +152,7 @@ public class RangeSpecifier implements Serializable, Cloneable {
      * @param colors The new colors.
      */
     public void setColors(final Color[] colors) {
-        this.colors = (colors != null) ? colors.clone() : null;
+        this.colors = colors != null ? colors.clone() : null;
     }
 
     /**

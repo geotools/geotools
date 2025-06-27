@@ -205,7 +205,7 @@ class RasterLayerRequest {
             // //
             if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
                 if (value == null) continue;
-                readType = ((Boolean) value) ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
+                readType = (Boolean) value ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
                 continue;
             }
 
@@ -253,7 +253,7 @@ class RasterLayerRequest {
                 final String suggestedTileSize = (String) value;
 
                 // Preliminary checks on parameter value
-                if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
+                if (suggestedTileSize != null && suggestedTileSize.trim().length() > 0) {
 
                     if (suggestedTileSize.contains(JP2KFormat.TILE_SIZE_SEPARATOR)) {
                         final String[] tilesSize = suggestedTileSize.split(JP2KFormat.TILE_SIZE_SEPARATOR);
@@ -357,7 +357,7 @@ class RasterLayerRequest {
             final String suggestedTileSize = (String) param.getValue();
 
             // Preliminary checks on parameter value
-            if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
+            if (suggestedTileSize != null && suggestedTileSize.trim().length() > 0) {
 
                 if (suggestedTileSize.contains(JP2KFormat.TILE_SIZE_SEPARATOR)) {
                     final String[] tilesSize = suggestedTileSize.split(JP2KFormat.TILE_SIZE_SEPARATOR);
@@ -609,7 +609,7 @@ class RasterLayerRequest {
         // on.
         //
         computeCropBBOX();
-        if (empty || (cropBBox != null && cropBBox.isEmpty())) {
+        if (empty || cropBBox != null && cropBBox.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "RequestedBBox empty or null");
             // this means that we do not have anything to load at all!
             empty = true;
@@ -620,7 +620,7 @@ class RasterLayerRequest {
         // CROP SOURCE REGION using the refined requested envelope
         //
         computeCropRasterArea();
-        if (empty || (destinationRasterArea != null && destinationRasterArea.isEmpty())) {
+        if (empty || destinationRasterArea != null && destinationRasterArea.isEmpty()) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "CropRasterArea empty or null");
             // this means that we do not have anything to load at all!
             return;

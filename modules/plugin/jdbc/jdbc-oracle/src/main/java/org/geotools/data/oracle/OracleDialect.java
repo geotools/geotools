@@ -1324,7 +1324,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             // from (your_query) a
             // where rownum <= :M )
             // where rnum >= :N;
-            long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
+            long max = limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset;
             sql.insert(0, "SELECT * FROM (SELECT A.*, ROWNUM RNUM FROM ( ");
             sql.append(") A WHERE ROWNUM <= " + max + ")");
             sql.append("WHERE RNUM > " + offset);

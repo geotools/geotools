@@ -89,7 +89,7 @@ public class ScaleProcessTest {
         // Get a reader for the selected format
         GridCoverageReader reader = format.getReader(tiff);
         // Read the input Coverage
-        coverage = (GridCoverage2D) reader.read(null);
+        coverage = (GridCoverage2D) reader.read();
         // Coverage properties
         @SuppressWarnings("unchecked")
         Map<String, Object> properties = coverage.getProperties();

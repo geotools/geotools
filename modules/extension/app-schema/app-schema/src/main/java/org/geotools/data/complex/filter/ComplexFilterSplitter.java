@@ -320,7 +320,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             // error on attribute check
             checkAttributeFound(expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
             // encoding of filters on multiple nested attributes is not (yet) supported
-            if (fcAttrs.size() == 1 || (!fcAttrs.isEmpty() && validateNoClientProperties(fcAttrs))) {
+            if (fcAttrs.size() == 1 || !fcAttrs.isEmpty() && validateNoClientProperties(fcAttrs)) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = fcAttrs.get(0);
                 if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
                     FeatureTypeMapping featureMapping = nestedAttrDescr.getFeatureTypeOwningAttribute();
@@ -524,7 +524,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         } else {
             if (!xpath.isEmpty()) {
                 boolean isXmlAttr = xpath.get(xpath.size() - 1).isXmlAttribute();
-                expectedType = (isXmlAttr) ? Name.class : AttributeDescriptor.class;
+                expectedType = isXmlAttr ? Name.class : AttributeDescriptor.class;
             }
         }
 
@@ -548,7 +548,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                                 xpath, mappings.getTargetFeature().getName().toString()),
                         e);
             }
-            if (!(expectedType.isAssignableFrom(descr.getClass()))) {
+            if (!expectedType.isAssignableFrom(descr.getClass())) {
                 throw new IllegalArgumentException(String.format(
                         "Attribute descriptor for \"%s\" if of type \"%s\", but it should be of type \"%s\"",
                         xpath, descr.getClass().getName(), expectedType.getName()));

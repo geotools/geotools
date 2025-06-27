@@ -203,7 +203,7 @@ public class sldComplexTypes {
             ContrastEnhancement symbol = new ContrastEnhancementImpl();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -703,7 +703,7 @@ public class sldComplexTypes {
             Graphic symbol = CommonFactoryFinder.getStyleFactory().getDefaultGraphic();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 
@@ -865,7 +865,7 @@ public class sldComplexTypes {
             Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
             for (ElementValue elementValue : value) {
-                if ((elementValue == null) || elementValue.getElement() == null) {
+                if (elementValue == null || elementValue.getElement() == null) {
                     continue;
                 }
 

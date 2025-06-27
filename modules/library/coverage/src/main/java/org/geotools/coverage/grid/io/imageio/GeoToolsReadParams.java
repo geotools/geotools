@@ -127,10 +127,10 @@ public abstract class GeoToolsReadParams extends ImageReadParam {
             for (int i = 0; i < length; i += 2) {
                 Dimension min = preferredTileSizes[i];
                 Dimension max = preferredTileSizes[i + 1];
-                if ((tileWidth < min.width)
-                        || (tileWidth > max.width)
-                        || (tileHeight < min.height)
-                        || (tileHeight > max.height)) {
+                if (tileWidth < min.width
+                        || tileWidth > max.width
+                        || tileHeight < min.height
+                        || tileHeight > max.height) {
                     ok = false;
                     break;
                 }

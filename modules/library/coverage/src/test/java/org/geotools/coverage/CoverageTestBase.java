@@ -91,7 +91,7 @@ public class CoverageTestBase {
      */
     protected static double getScale(final Coverage coverage) {
         final AffineTransform gridToCRS = getAffineTransform(coverage);
-        return (gridToCRS != null) ? XAffineTransform.getScale(gridToCRS) : Double.NaN;
+        return gridToCRS != null ? XAffineTransform.getScale(gridToCRS) : Double.NaN;
     }
 
     /**

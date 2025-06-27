@@ -261,7 +261,7 @@ public final class MongoComplexUtilities {
                 return false;
             }
             return currentJsonPathPartIndex < jsonPathParts.length
-                    || (currentObject instanceof BasicDBList && collectionsIndexes.get(currentJsonPath) != null);
+                    || currentObject instanceof BasicDBList && collectionsIndexes.get(currentJsonPath) != null;
         }
 
         private boolean isAnEmptyList(Object object) {

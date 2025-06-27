@@ -65,7 +65,7 @@ public class CatalogBuilderTest extends Assert {
         }
     }
 
-    private final class CatalogBuilderListener extends ProcessingEventListener {
+    private static final class CatalogBuilderListener extends ProcessingEventListener {
 
         @Override
         public void exceptionOccurred(ExceptionEvent event) {
@@ -165,7 +165,7 @@ public class CatalogBuilderTest extends Assert {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -239,7 +239,7 @@ public class CatalogBuilderTest extends Assert {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
                 reader.getOriginalGridRange().getSpan(1) / 2.0);
-        rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));

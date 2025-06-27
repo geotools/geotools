@@ -87,7 +87,7 @@ public class MockAbstractGridCoverage2DReader extends AbstractGridCoverage2DRead
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
         return new GridCoverageBuilder().getGridCoverage2D();
     }
 

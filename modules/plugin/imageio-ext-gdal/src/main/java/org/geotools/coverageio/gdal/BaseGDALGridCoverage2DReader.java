@@ -154,7 +154,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
             if (this.crs == null) {
                 final String wkt = metadata.getProjection();
 
-                if ((wkt != null) && !(wkt.equalsIgnoreCase(""))) {
+                if (wkt != null && !wkt.equalsIgnoreCase("")) {
                     try {
                         this.crs = CRS.parseWKT(wkt);
                         if (crs != null) {
@@ -210,7 +210,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
         parseWorldFile();
         if (this.originalEnvelope == null) {
             final double[] geoTransform = metadata.getGeoTransformation();
-            if ((geoTransform != null) && (geoTransform.length == 6)) {
+            if (geoTransform != null && geoTransform.length == 6) {
                 final AffineTransform tempTransform = new AffineTransform(
                         geoTransform[1],
                         geoTransform[4],
@@ -225,7 +225,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
                         // Envelope setting
                         this.originalEnvelope = CRS.transform(
                                 ProjectiveTransform.create(tempTransform),
-                                new GeneralBounds(((GridEnvelope2D) this.originalGridRange)));
+                                new GeneralBounds((GridEnvelope2D) this.originalGridRange));
                     } catch (IllegalStateException | TransformException e) {
                         if (LOGGER.isLoggable(Level.WARNING)) {
                             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);

@@ -251,7 +251,8 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 Number[] sums = new Number[2];
                 sums[0] = (Number) sum.getResult();
                 sums[1] = (Number) resultsToAdd.getValue();
-                SumStrategy newSum = createStrategy(CalcUtil.getObject(sums).getClass());
+                SumStrategy newSum =
+                        createStrategy(CalcUtil.getObject((Object[]) sums).getClass());
                 // add the two sums
                 newSum.add(sums[0]);
                 newSum.add(sums[1]);

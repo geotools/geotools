@@ -142,7 +142,7 @@ public class CoverageProcessor {
          * a tile cache greater than the maximum heap size, tell him that he is looking
          * for serious trouble.
          */
-        if (cache.getMemoryCapacity() + (4 * 1024 * 1024) >= maxMemory) {
+        if (cache.getMemoryCapacity() + 4 * 1024 * 1024 >= maxMemory) {
             final LogRecord record =
                     Loggings.format(Level.SEVERE, LoggingKeys.EXCESSIVE_TILE_CACHE_$1, maxMemory / (1024 * 1024.0));
             record.setLoggerName(LOGGER.getName());
@@ -292,7 +292,7 @@ public class CoverageProcessor {
                     .getLogRecord(
                             OPERATION,
                             LoggingKeys.APPLIED_OPERATION_$4,
-                            getName((source != null) ? source : result, locale),
+                            getName(source != null ? source : result, locale),
                             operationName,
                             interp,
                             Integer.valueOf(fromCache ? 1 : 0));
@@ -537,7 +537,7 @@ public class CoverageProcessor {
 
         // processwith local hints
         Coverage coverage = op.doOperation(parameters, localMergeHints);
-        if (interpolations != null && (coverage instanceof GridCoverage2D) && !(coverage instanceof Interpolator2D)) {
+        if (interpolations != null && coverage instanceof GridCoverage2D && !(coverage instanceof Interpolator2D)) {
             coverage = Interpolator2D.create((GridCoverage2D) coverage, interpolations);
         }
         log(source, coverage, operationName, false);

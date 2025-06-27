@@ -41,7 +41,7 @@ import org.geotools.util.Classes;
 public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
 
     /** Immutable copy of the properties list with which we were constructed. */
-    private final Collection<PropertyDescriptor> properties;
+    private final List<PropertyDescriptor> properties;
 
     /** Map to locate properties by name. */
     private final Map<Name, PropertyDescriptor> propertyMap;

@@ -103,7 +103,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl impleme
         org.geotools.api.filter.expression.Expression leftGeometry = getExpression1();
         org.geotools.api.filter.expression.Expression rightGeometry = getExpression2();
 
-        if ((leftGeometry == null) && (rightGeometry == null)) {
+        if (leftGeometry == null && rightGeometry == null) {
             return "[ " + "null" + operator + "null" + distStr + " ]";
         } else if (leftGeometry == null) {
             return "[ " + "null" + operator + rightGeometry.toString() + distStr + " ]";
@@ -123,7 +123,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl impleme
      */
     @Override
     public boolean equals(Object oFilter) {
-        return super.equals(oFilter) && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
+        return super.equals(oFilter) && this.distance == ((CartesianDistanceFilter) oFilter).distance;
     }
 
     /**
@@ -135,17 +135,8 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl impleme
     public int hashCode() {
         int result = super.hashCode();
         long bits = Double.doubleToLongBits(distance);
-        result = (37 * result) + (int) (bits ^ (bits >>> 32));
+        result = 37 * result + (int) (bits ^ bits >>> 32);
 
         return result;
     }
-
-    /**
-     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by Filter decoders, but may
-     * also be used by any thing which needs infomration from filter structure. Implementations should always call:
-     * visitor.visit(this); It is importatant that this is not left to a parent class unless the parents API is
-     * identical.
-     *
-     * @param visitor The visitor which requires access to this filter, the method must call visitor.visit(this);
-     */
 }

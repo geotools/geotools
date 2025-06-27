@@ -68,7 +68,7 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      * @param baseToDerived The transform from the base CRS to returned CRS.
      * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
      *     the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDerived} don't match the
      *     dimension of {@code base} and {@code derivedCS} respectively.
      * @since 2.5
      */
@@ -96,7 +96,7 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      * @param baseToDerived The transform from the base CRS to returned CRS.
      * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
      *     the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDerived} don't match the
      *     dimension of {@code base} and {@code derivedCS} respectively.
      * @since 2.5
      */
@@ -121,7 +121,7 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      * @param baseToDerived The transform from the base CRS to returned CRS.
      * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
      *     the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDerived} don't match the
      *     dimension of {@code base} and {@code derivedCS} respectively.
      */
     public DefaultDerivedCRS(

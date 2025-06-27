@@ -217,6 +217,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
     public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException {
         Set<CoordinateOperation> coordops = super.createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS);
@@ -244,6 +245,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
     public CoordinateOperation createCoordinateOperation(String code)
             throws NoSuchAuthorityCodeException, FactoryException {
         CoordinateOperation coordop = super.createCoordinateOperation(code);

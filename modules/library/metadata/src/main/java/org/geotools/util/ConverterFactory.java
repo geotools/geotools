@@ -17,7 +17,6 @@
 package org.geotools.util;
 
 import org.geotools.util.factory.Hints;
-import org.geotools.util.factory.Hints.Key;
 
 /**
  * Factory used to create instances of {@link Converter}.
@@ -28,7 +27,7 @@ import org.geotools.util.factory.Hints.Key;
 public interface ConverterFactory {
 
     /** Hint which specifies if only safe conversions should be atttemped by converter implementations. */
-    static final Key SAFE_CONVERSION = new Key(Boolean.class);
+    static final Hints.Key SAFE_CONVERSION = new Hints.Key(Boolean.class);
 
     /**
      * Creates a {@link Converter} instance for converting one type of object to another.

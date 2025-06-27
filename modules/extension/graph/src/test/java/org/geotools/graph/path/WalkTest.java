@@ -106,7 +106,7 @@ public class WalkTest {
             @Override
             public int visit(Graphable element, GraphTraversal traversal) {
                 walk.add((Node) element);
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
 
             @Override
@@ -140,7 +140,7 @@ public class WalkTest {
             @Override
             public int visit(Graphable element, GraphTraversal traversal) {
                 walk.add((Node) element);
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
 
             @Override
@@ -167,7 +167,7 @@ public class WalkTest {
             @Override
             public int visit(Graphable element, GraphTraversal traversal) {
                 walk.add((Node) element);
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
 
             @Override
@@ -197,7 +197,7 @@ public class WalkTest {
             @Override
             public int visit(Graphable element, GraphTraversal traversal) {
                 walk.add((Node) element);
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
 
             @Override
@@ -227,7 +227,7 @@ public class WalkTest {
             @Override
             public int visit(Graphable element, GraphTraversal traversal) {
                 walk.add((Node) element);
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
 
             @Override
@@ -244,10 +244,10 @@ public class WalkTest {
     }
 
     protected GraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 }

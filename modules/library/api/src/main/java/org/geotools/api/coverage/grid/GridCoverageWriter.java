@@ -39,7 +39,6 @@ public interface GridCoverageWriter {
      * whole (not associated with any particular grid coverage). If no metadata is allowed, the array will be empty.
      *
      * @return The list of metadata keywords for the output destination.
-     * @throws IOException if an error occurs during reading or writing.
      * @todo This javadoc may not apply thats well in the iterator scheme.
      */
     String[] getMetadataNames();

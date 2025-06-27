@@ -56,7 +56,7 @@ public class QueryTypeBindingTest extends WFSTestSupport {
         buildDocument(resource);
 
         final Object parsed = parse(WFS.Query);
-        assertTrue((parsed == null) ? "null" : parsed.getClass().toString(), parsed instanceof QueryType);
+        assertTrue(parsed == null ? "null" : parsed.getClass().toString(), parsed instanceof QueryType);
 
         QueryType query = (QueryType) parsed;
         List typeNames = query.getTypeName();

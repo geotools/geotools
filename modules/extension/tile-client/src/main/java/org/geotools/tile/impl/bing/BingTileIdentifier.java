@@ -39,7 +39,7 @@ public class BingTileIdentifier extends TileIdentifier {
     public BingTileIdentifier getRightNeighbour() {
 
         return new BingTileIdentifier(
-                TileIdentifier.arithmeticMod((getX() + 1), getZoomLevel().getMaxTilePerRowNumber()),
+                TileIdentifier.arithmeticMod(getX() + 1, getZoomLevel().getMaxTilePerRowNumber()),
                 getY(),
                 getZoomLevel(),
                 getServiceName());
@@ -50,7 +50,7 @@ public class BingTileIdentifier extends TileIdentifier {
 
         return new BingTileIdentifier(
                 getX(),
-                TileIdentifier.arithmeticMod((getY() + 1), getZoomLevel().getMaxTilePerRowNumber()),
+                TileIdentifier.arithmeticMod(getY() + 1, getZoomLevel().getMaxTilePerRowNumber()),
                 getZoomLevel(),
                 getServiceName());
     }

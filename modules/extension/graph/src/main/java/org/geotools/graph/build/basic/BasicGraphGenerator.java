@@ -88,7 +88,7 @@ public class BasicGraphGenerator implements GraphGenerator {
 
         getGraphBuilder().addEdge(e);
 
-        return (e);
+        return e;
     }
 
     /** @see GraphGenerator#get(Object) */
@@ -98,7 +98,7 @@ public class BasicGraphGenerator implements GraphGenerator {
         Node n1 = (Node) m_obj2graphable.get(objs[0]);
         Node n2 = (Node) m_obj2graphable.get(objs[1]);
 
-        return (n1.getEdge(n2));
+        return n1.getEdge(n2);
     }
 
     /** @see GraphGenerator#remove(Object) */
@@ -112,7 +112,7 @@ public class BasicGraphGenerator implements GraphGenerator {
         Edge e = n1.getEdge(n2);
         getGraphBuilder().removeEdge(e);
 
-        return (e);
+        return e;
     }
 
     /** @see GraphGenerator#setGraphBuilder(GraphBuilder) */
@@ -124,12 +124,12 @@ public class BasicGraphGenerator implements GraphGenerator {
     /** @see GraphGenerator#getGraphBuilder() */
     @Override
     public GraphBuilder getGraphBuilder() {
-        return (m_builder);
+        return m_builder;
     }
 
     /** @see GraphGenerator#getGraph() */
     @Override
     public Graph getGraph() {
-        return (m_builder.getGraph());
+        return m_builder.getGraph();
     }
 }

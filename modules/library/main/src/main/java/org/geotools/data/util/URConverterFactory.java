@@ -53,6 +53,7 @@ public class URConverterFactory implements ConverterFactory {
                 try {
                     return target.cast(f.toURI().toURL());
                 } catch (MalformedURLException e2) {
+                    // ignore
                 }
             }
 
@@ -72,6 +73,7 @@ public class URConverterFactory implements ConverterFactory {
                 try {
                     return target.cast(f.toURI());
                 } catch (Exception e2) {
+                    // ignore
                 }
             }
 

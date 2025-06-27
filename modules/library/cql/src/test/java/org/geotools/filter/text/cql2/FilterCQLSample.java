@@ -862,7 +862,7 @@ public class FilterCQLSample {
     public static Filter getSample(final String sampleRequested) {
         Filter sample = (Filter) SAMPLES.get(sampleRequested);
 
-        assert (sample != null) : "There is not a sample for " + sampleRequested;
+        assert sample != null : "There is not a sample for " + sampleRequested;
 
         return sample;
     }

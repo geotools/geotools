@@ -232,7 +232,7 @@ public final class ParametersTest {
             parameter.setValue(i, MetricPrefix.CENTI(SI.METRE));
             assertEquals("value", Double.valueOf(i), parameter.getValue());
             assertEquals("unit", MetricPrefix.CENTI(SI.METRE), parameter.getUnit());
-            assertEquals("value", i / 100, parameter.doubleValue(SI.METRE), 0);
+            assertEquals("value", i / 100.0, parameter.doubleValue(SI.METRE), 0);
         }
         try {
             DefaultParameterDescriptor.create("Test", 3, 4, 20);
@@ -326,7 +326,7 @@ public final class ParametersTest {
 
     /** Test parameter values group. */
     @Test
-    @SuppressWarnings({"serial", "unchecked"})
+    @SuppressWarnings({"serial", "unchecked", "UnusedVariable"})
     public void testGroup() throws IOException {
         final ParameterWriter writer = new ParameterWriter(new StringWriter());
         final Integer ONE = 1;

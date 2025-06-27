@@ -99,7 +99,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         super(datum);
         ellipsoid = datum.getEllipsoid();
         primeMeridian = datum.getPrimeMeridian();
-        bursaWolf = (datum instanceof DefaultGeodeticDatum) ? ((DefaultGeodeticDatum) datum).bursaWolf : null;
+        bursaWolf = datum instanceof DefaultGeodeticDatum ? ((DefaultGeodeticDatum) datum).bursaWolf : null;
     }
 
     /**
@@ -371,7 +371,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID
-                ^ 37 * (super.hashCode() ^ 37 * (ellipsoid.hashCode() ^ 37 * (primeMeridian.hashCode())));
+                ^ 37 * (super.hashCode() ^ 37 * (ellipsoid.hashCode() ^ 37 * primeMeridian.hashCode()));
         return code;
     }
 

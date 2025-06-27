@@ -60,7 +60,7 @@ public class Srs {
         if (type == null) {
             throw new NullPointerException("type must not be null");
         }
-        if ((type == Type.GEOGRAPHIC) || (type == Type.FLAT)) {
+        if (type == Type.GEOGRAPHIC || type == Type.FLAT) {
             if (angularUom == null) {
                 throw new NullPointerException(
                         "angularUom must not be null in case of geographic or flat reference systems");
@@ -73,24 +73,24 @@ public class Srs {
                 throw new NullPointerException(
                         "majorAxis must not be null in case of geographic or flat reference systems");
             }
-            if ((minorAxis == null) && (inverseFlattening == null)) {
+            if (minorAxis == null && inverseFlattening == null) {
                 throw new NullPointerException(
                         "Either minorAxis or inverseFlattening must be given in case of geographic or flat reference systems");
             }
         }
-        if ((minorAxis != null) && (inverseFlattening != null)) {
+        if (minorAxis != null && inverseFlattening != null) {
             throw new IllegalArgumentException("Either minorAxis or inverseFlattening must be given, but not both");
         }
-        if ((majorAxis != null) && (majorAxis <= 0.0)) {
+        if (majorAxis != null && majorAxis <= 0.0) {
             throw new IllegalArgumentException("majorAxis must be greater than 0");
         }
-        if ((minorAxis != null) && (minorAxis <= 0.0)) {
+        if (minorAxis != null && minorAxis <= 0.0) {
             throw new IllegalArgumentException("minorAxis must be greater than 0");
         }
-        if ((inverseFlattening != null) && (inverseFlattening <= 0.0)) {
+        if (inverseFlattening != null && inverseFlattening <= 0.0) {
             throw new IllegalArgumentException("inverseFlattening must be greater than 0");
         }
-        if ((majorAxis == null) && ((minorAxis != null) || (inverseFlattening != null))) {
+        if (majorAxis == null && (minorAxis != null || inverseFlattening != null)) {
             throw new IllegalArgumentException(
                     "If minorAxis or inverseFlattening is given, majorAxis must be given as well");
         }

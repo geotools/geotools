@@ -233,7 +233,7 @@ public class WMSComplexTypes {
 
             for (ElementValue elementValue : value) {
                 if (sameName(elems[0], elementValue)) {
-                    service = ((Service) elementValue.getValue());
+                    service = (Service) elementValue.getValue();
                 }
 
                 if (sameName(elems[1], elementValue)) {
@@ -366,7 +366,7 @@ public class WMSComplexTypes {
 
             for (ElementValue elementValue : value) {
                 if (sameName(elems[0], elementValue)) {
-                    service = ((Service) elementValue.getValue());
+                    service = (Service) elementValue.getValue();
                 }
 
                 if (sameName(elems[1], elementValue)) {
@@ -3921,7 +3921,7 @@ public class WMSComplexTypes {
                 }
                 if (sameName(elems[0], value[i])) {
                     Object[] formObj = (Object[]) value[i].getValue();
-                    format = (formObj == null || formObj.length == 0) ? null : (String) (formObj[0]);
+                    format = formObj == null || formObj.length == 0 ? null : (String) formObj[0];
                 }
 
                 if (sameName(elems[1], value[i])) {
@@ -4052,7 +4052,7 @@ public class WMSComplexTypes {
                 throws SAXException, OperationNotSupportedException {
             String type = attrs.getValue("type").toString();
             URL url = (URL) value[1].getValue();
-            String format = (String) (((Object[]) value[0].getValue())[0]);
+            String format = (String) ((Object[]) value[0].getValue())[0];
             MetadataURL metadataURL = new MetadataURL(url, type, format);
 
             return metadataURL;

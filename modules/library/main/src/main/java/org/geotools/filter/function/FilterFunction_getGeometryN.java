@@ -48,13 +48,13 @@ public class FilterFunction_getGeometryN extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (getExpression(1).evaluate(feature, Integer.class)).intValue();
+            arg1 = getExpression(1).evaluate(feature, Integer.class).intValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
                     "Filter Function problem for function getGeometryN argument #1 - expected type int");
         }
 
-        return (StaticGeometry.getGeometryN(arg0, arg1));
+        return StaticGeometry.getGeometryN(arg0, arg1);
     }
 }

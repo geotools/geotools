@@ -125,11 +125,11 @@ public class ParallelLinesFiller {
                         // not a line crossing the bounds, does not form a repeating pattern
                         return null;
                     }
-                } else if ((equals(x1, bx1) && equals(y1, by1) && equals(x2, bx2) && equals(y2, by2))
-                        || (equals(x1, bx2) && equals(y1, by2)) && equals(x2, bx1) && equals(y2, by1)) {
+                } else if (equals(x1, bx1) && equals(y1, by1) && equals(x2, bx2) && equals(y2, by2)
+                        || equals(x1, bx2) && equals(y1, by2) && equals(x2, bx1) && equals(y2, by1)) {
                     lines.add(new Line(LineType.SLASH, 0));
-                } else if ((equals(x1, bx1) && equals(y1, by2) && equals(x2, bx2) && equals(y2, by1))
-                        || (equals(x1, bx2) && equals(y1, by1)) && equals(x2, bx1) && equals(y2, by2)) {
+                } else if (equals(x1, bx1) && equals(y1, by2) && equals(x2, bx2) && equals(y2, by1)
+                        || equals(x1, bx2) && equals(y1, by1) && equals(x2, bx1) && equals(y2, by2)) {
                     lines.add(new Line(LineType.BACKSLASH, 0));
                 } else {
                     // not a line crossing the bounds and forming a repeating pattern

@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -218,7 +219,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             // TODO: use WKB instead of WKT
             String wkt = new WKTWriter().write(g);
             if (wkt.length() > 64000) {
-                ByteArrayInputStream bin = new ByteArrayInputStream(wkt.getBytes());
+                ByteArrayInputStream bin = new ByteArrayInputStream(wkt.getBytes(StandardCharsets.UTF_8));
                 ps.setAsciiStream(column, bin, bin.available());
             } else {
                 ps.setString(column, wkt);
@@ -276,7 +277,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 return null;
             }
             try (InputStream in = clob.getAsciiStream()) {
-                return new WKTReader(factory).read(new InputStreamReader(in));
+                return new WKTReader(factory).read(new InputStreamReader(in, StandardCharsets.UTF_8));
             }
         } catch (ParseException e) {
             throw (IOException) new IOException("Error parsing geometry").initCause(e);
@@ -404,7 +405,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
                         // check for "empty" envelope, means values were not set in geometry_columns
                         // table, fall out
-                        if (env.isEmpty() || env.isNull() || (env.getWidth() == 0 && env.getMinX() == 0)) {
+                        if (env.isEmpty() || env.isNull() || env.getWidth() == 0 && env.getMinX() == 0) {
                             throw new Exception("Empty universe in geometry columns");
                         }
                         envs.add(env);
@@ -1007,7 +1008,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 sql.append(orderBy).append(" ");
             }
 
-            long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
+            long max = limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset;
             sql.append("QUALIFY row_num > ")
                     .append(offset)
                     .append(" AND row_num <= ")

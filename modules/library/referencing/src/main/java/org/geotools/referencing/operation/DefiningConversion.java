@@ -112,7 +112,7 @@ public class DefiningConversion extends DefaultConversion {
     /** Returns the parameter values. */
     @Override
     public ParameterValueGroup getParameterValues() {
-        return (parameters != null) ? parameters.clone() : super.getParameterValues();
+        return parameters != null ? parameters.clone() : super.getParameterValues();
     }
 
     /** {@inheritDoc} */

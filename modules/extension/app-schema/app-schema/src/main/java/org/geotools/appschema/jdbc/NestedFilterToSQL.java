@@ -642,7 +642,7 @@ public class NestedFilterToSQL extends FilterToSQL {
         return unrolledFilter;
     }
 
-    private class UnmappingFilterVisitorExcludingNestedMappings extends UnmappingFilterVisitor {
+    private static class UnmappingFilterVisitorExcludingNestedMappings extends UnmappingFilterVisitor {
 
         public UnmappingFilterVisitorExcludingNestedMappings(FeatureTypeMapping mappings) {
             super(mappings);

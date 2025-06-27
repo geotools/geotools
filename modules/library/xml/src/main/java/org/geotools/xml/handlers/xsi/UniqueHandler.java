@@ -47,9 +47,9 @@ public class UniqueHandler extends XSIElementHandler {
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
-                * ((id == null) ? 1 : id.hashCode())
-                * ((xpath == null) ? 1 : xpath.hashCode())
-                * ((fields == null) ? 1 : fields.hashCode());
+                * (id == null ? 1 : id.hashCode())
+                * (xpath == null ? 1 : xpath.hashCode())
+                * (fields == null ? 1 : fields.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

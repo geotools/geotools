@@ -217,7 +217,7 @@ public class FilterMockData {
     }
 
     static SpatialOperator spatialOperator(String name) {
-        return ff.spatialOperator(name, null);
+        return ff.spatialOperator(name);
     }
 
     static Element spatial(Document document, Node parent) {

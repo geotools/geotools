@@ -119,14 +119,14 @@ public class Circle {
         // begin pre-calculations for linear system reduction
         double a13 = 2 * (p1.x - p3.x);
         double b13 = 2 * (p1.y - p3.y);
-        double c13 = (p1.y * p1.y - p3.y * p3.y) + (p1.x * p1.x - p3.x * p3.x);
+        double c13 = p1.y * p1.y - p3.y * p3.y + (p1.x * p1.x - p3.x * p3.x);
         double a23 = 2 * (p2.x - p3.x);
         double b23 = 2 * (p2.y - p3.y);
-        double c23 = (p2.y * p2.y - p3.y * p3.y) + (p2.x * p2.x - p3.x * p3.x);
+        double c23 = p2.y * p2.y - p3.y * p3.y + (p2.x * p2.x - p3.x * p3.x);
         // testsuite-suite to be certain we have three distinct points passed
         double smallNumber = 0.01;
-        if ((Math.abs(a13) < smallNumber && Math.abs(b13) < smallNumber)
-                || (Math.abs(a23) < smallNumber && Math.abs(b23) < smallNumber)) {
+        if (Math.abs(a13) < smallNumber && Math.abs(b13) < smallNumber
+                || Math.abs(a23) < smallNumber && Math.abs(b23) < smallNumber) {
             // // points too close so set to default circle
             x = 0;
             y = 0;
@@ -331,7 +331,7 @@ public class Circle {
             } else if (dy > 0.0) {
                 angle = Math.PI / 2.0;
             } else {
-                angle = (Math.PI * 3.0) / 2.0;
+                angle = Math.PI * 3.0 / 2.0;
             }
         } else if (dy == 0.0) {
             if (dx > 0.0) {
@@ -343,7 +343,7 @@ public class Circle {
             if (dx < 0.0) {
                 angle = Math.atan(dy / dx) + Math.PI;
             } else if (dy < 0.0) {
-                angle = Math.atan(dy / dx) + (2 * Math.PI);
+                angle = Math.atan(dy / dx) + 2 * Math.PI;
             } else {
                 angle = Math.atan(dy / dx);
             }

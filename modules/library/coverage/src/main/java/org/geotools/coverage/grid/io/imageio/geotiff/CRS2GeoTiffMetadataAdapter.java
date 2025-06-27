@@ -137,7 +137,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         // CREATING METADATA AND SETTING BASE FIELDS FOR THEM
         //
         // model type
-        final int modelType = (crs instanceof ProjectedCRS) ? 1 : 2;
+        final int modelType = crs instanceof ProjectedCRS ? 1 : 2;
 
         // GTModelTypeGeoKey
         metadata.addGeoShortParam(GeoTiffConstants.GTModelTypeGeoKey, modelType);
@@ -223,7 +223,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         parseProjection(projectedCRS, metadata);
 
         // geographic crs
-        parseGeoGCS((DefaultGeographicCRS) (projectedCRS.getBaseCRS()), metadata);
+        parseGeoGCS((DefaultGeographicCRS) projectedCRS.getBaseCRS(), metadata);
     }
 
     /**
@@ -363,18 +363,18 @@ public final class CRS2GeoTiffMetadataAdapter {
                 if (value instanceof ParameterValue) {
                     ParameterValue<?> paramValue = (ParameterValue<?>) value;
                     if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "latitude_of_origin")) {
-                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjNatOriginLatGeoKey, (paramValue).doubleValue());
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjNatOriginLatGeoKey, paramValue.doubleValue());
                     } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "central_meridian")) {
-                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjNatOriginLongGeoKey, (paramValue).doubleValue());
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjNatOriginLongGeoKey, paramValue.doubleValue());
                     } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "scale_factor")) {
                         metadata.addGeoDoubleParam(
-                                GeoTiffPCSCodes.ProjScaleAtNatOriginGeoKey, (paramValue).doubleValue());
+                                GeoTiffPCSCodes.ProjScaleAtNatOriginGeoKey, paramValue.doubleValue());
                     } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "standard_parallel_1")) {
-                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjStdParallel1GeoKey, (paramValue).doubleValue());
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjStdParallel1GeoKey, paramValue.doubleValue());
                     } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "false_easting")) {
-                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseEastingGeoKey, (paramValue).doubleValue());
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseEastingGeoKey, paramValue.doubleValue());
                     } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "false_northing")) {
-                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey, (paramValue).doubleValue());
+                        metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey, paramValue.doubleValue());
                     }
                 }
             }
@@ -809,7 +809,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
         // angular unit
         final Unit<?> angularUnit =
-                (geographicCRS.getCoordinateSystem()).getAxis(0).getUnit();
+                geographicCRS.getCoordinateSystem().getAxis(0).getUnit();
         parseUnit(angularUnit, 0, metadata);
 
         // prime meridian

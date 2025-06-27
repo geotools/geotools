@@ -204,7 +204,7 @@ public class GML2ParsingUtils {
                 ftBuilder.crs(crs);
             }
 
-            ftBuilder.add(name, (value != null) ? value.getClass() : Object.class);
+            ftBuilder.add(name, value != null ? value.getClass() : Object.class);
         }
         ftBuilder.userData(PARSED_FROM_SCHEMA_KEY, false);
 
@@ -317,7 +317,7 @@ public class GML2ParsingUtils {
             AttributeType attType = att.getType();
             Object attValue = node.getChildValue(att.getLocalName());
 
-            if ((attValue != null) && !attType.getBinding().isAssignableFrom(attValue.getClass())) {
+            if (attValue != null && !attType.getBinding().isAssignableFrom(attValue.getClass())) {
                 // type mismatch, to try convert
                 Object converted = Converters.convert(attValue, attType.getBinding());
 
@@ -354,7 +354,7 @@ public class GML2ParsingUtils {
                 if ("http".equals(srs.getScheme())
                         && "www.opengis.net".equals(srs.getAuthority())
                         && "/gml/srs/epsg.xml".equals(srs.getPath())
-                        && (srs.getFragment() != null)) {
+                        && srs.getFragment() != null) {
                     try {
                         return CRS.decode("EPSG:" + srs.getFragment());
                     } catch (Exception e) {

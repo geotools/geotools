@@ -100,6 +100,7 @@ public class SimpleFeatureStoreExamples {
         store.setTransaction(transaction);
 
         class CommitListener implements FeatureListener {
+            @Override
             public void changed(FeatureEvent featureEvent) {
                 if (featureEvent instanceof BatchFeatureEvent) {
                     BatchFeatureEvent batchEvent = (BatchFeatureEvent) featureEvent;
@@ -154,6 +155,7 @@ public class SimpleFeatureStoreExamples {
             SimpleFeatureCollection collection = store.getFeatures(new Query(typeName, filter, Query.NO_NAMES));
             collection.accepts(
                     new FeatureVisitor() {
+                        @Override
                         public void visit(Feature feature) {
                             removed.add(feature.getIdentifier());
                         }

@@ -107,8 +107,8 @@ final class UnprefixedMap extends DerivedMap<String, String, Object> {
      * with {@code "name_"} or {@code "alias_"} are accepted as well.
      */
     private boolean isPlainKey(final String key) {
-        return (!hasName && keyMatches(IdentifiedObject.NAME_KEY, key))
-                || (!hasAlias && keyMatches(IdentifiedObject.ALIAS_KEY, key));
+        return !hasName && keyMatches(IdentifiedObject.NAME_KEY, key)
+                || !hasAlias && keyMatches(IdentifiedObject.ALIAS_KEY, key);
     }
 
     /** Returns {@code true} if the specified candidate matched the specified key name. */

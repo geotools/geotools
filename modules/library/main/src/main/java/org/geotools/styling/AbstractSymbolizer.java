@@ -130,11 +130,11 @@ public abstract class AbstractSymbolizer implements Symbolizer {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((geometry == null) ? 0 : geometry.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((unitOfMeasure == null) ? 0 : unitOfMeasure.hashCode());
-        result = prime * result + ((options == null) ? 0 : options.hashCode());
+        result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (geometry == null ? 0 : geometry.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (unitOfMeasure == null ? 0 : unitOfMeasure.hashCode());
+        result = prime * result + (options == null ? 0 : options.hashCode());
         return result;
     }
 

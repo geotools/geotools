@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class PropertyDataStoreTest {
         if (file.exists()) {
             file.delete();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=id:Integer,name:String,geom:Point");
             writer.newLine();
             writer.write("fid1=1|jody|POINT(0 0)");
@@ -115,7 +116,7 @@ public class PropertyDataStoreTest {
         if (file.exists()) {
             file.delete();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=id:Integer,name:String");
             writer.newLine();
             writer.write("fid1=1|jody");
@@ -131,7 +132,7 @@ public class PropertyDataStoreTest {
         if (file.exists()) {
             file.delete();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=id:Integer,name:String");
             writer.newLine();
             writer.write("fid1=1|jody \\");
@@ -149,7 +150,7 @@ public class PropertyDataStoreTest {
         if (file.exists()) {
             file.delete();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=description:String,name:String");
             writer.newLine();
             writer.write("GenericEntity.f004=description-f004|name-f004");
@@ -166,7 +167,7 @@ public class PropertyDataStoreTest {
         if (file.exists()) {
             file.delete();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=geom:Point:authority=IAU;srid=49900,name:String,diameter:Double");
             writer.newLine();
             writer.write("mars.1=POINT (-36.897 -27.2282)|Blunck|66.485");

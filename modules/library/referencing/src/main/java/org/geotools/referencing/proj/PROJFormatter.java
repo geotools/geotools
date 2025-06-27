@@ -92,7 +92,7 @@ public class PROJFormatter {
 
     public void append(final PROJFormattable formattable) {
         int base = buffer.length();
-        final IdentifiedObject info = (formattable instanceof IdentifiedObject) ? (IdentifiedObject) formattable : null;
+        final IdentifiedObject info = formattable instanceof IdentifiedObject ? (IdentifiedObject) formattable : null;
         if (info != null) {
             // Getting the name of a formattable object will also check the type
             // of IdentifiedObject (i.e. a datum, a primemeridian, an ellipsoid)

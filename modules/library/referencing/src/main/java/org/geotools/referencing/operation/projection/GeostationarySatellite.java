@@ -184,7 +184,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             double Vy = Math.sin(lambda) * tmp;
             double Vz = Math.sin(phi);
             /* Check visibility.*/
-            if (((radius_g - Vx) * Vx - Vy * Vy - Vz * Vz) < 0.) {
+            if ((radius_g - Vx) * Vx - Vy * Vy - Vz * Vz < 0.) {
                 throw new ProjectionException();
             }
             return transformViewVectorToCoordinates(Vx, Vy, Vz, p2d);
@@ -201,7 +201,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             /* Calculation of terms in cubic equation and determinant.*/
             double a = Vy * Vy + Vz * Vz + Vx * Vx;
             double b = 2. * radius_g * Vx;
-            double det = (b * b) - 4. * a * C;
+            double det = b * b - 4. * a * C;
             if (det < 0.) {
                 throw new ProjectionException("Det less than 0: " + det);
             }
@@ -259,7 +259,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             double Vy = r * Math.sin(lambda) * Math.cos(phi);
             double Vz = r * Math.sin(phi);
             /* Check visibility. */
-            if (((radius_g - Vx) * Vx - Vy * Vy - Vz * Vz * radius_p_inv2) < 0.) {
+            if ((radius_g - Vx) * Vx - Vy * Vy - Vz * Vz * radius_p_inv2 < 0.) {
                 throw new ProjectionException();
             }
             return transformViewVectorToCoordinates(Vx, Vy, Vz, p2d);
@@ -277,7 +277,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             double a = Vz / radius_p;
             a = Vy * Vy + a * a + Vx * Vx;
             double b = 2. * radius_g * Vx;
-            double det = (b * b) - 4. * a * C;
+            double det = b * b - 4. * a * C;
             if (det < 0.) {
                 throw new ProjectionException();
             }
@@ -346,7 +346,7 @@ public abstract class GeostationarySatellite extends MapProjection {
     public static Bounds inscribeFullDiskEstimate(CoordinateReferenceSystem geosCRS)
             throws TransformException, FactoryException {
         Bounds circumscribed = circumscribeFullDisk(geosCRS);
-        return (circumscribed == null) ? null : doInscribeFullDisk(circumscribed);
+        return circumscribed == null ? null : doInscribeFullDisk(circumscribed);
     }
 
     private static final double SQRT2 = Math.sqrt(2.);
@@ -370,7 +370,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             return false;
         }
         String code = crs.getName().getCode();
-        return ("GEOS".equals(code) || "Geostationary_Satellite".equals(code));
+        return "GEOS".equals(code) || "Geostationary_Satellite".equals(code);
     }
 
     public static class Provider extends MapProjection.AbstractProvider {

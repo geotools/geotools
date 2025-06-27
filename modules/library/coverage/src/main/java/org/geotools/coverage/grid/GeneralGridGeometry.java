@@ -608,10 +608,10 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK)) != 0) {
             throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bitmask", bitmask));
         }
-        return ((bitmask & CRS_BITMASK) == 0 || (envelope != null && envelope.getCoordinateReferenceSystem() != null))
-                && ((bitmask & ENVELOPE_BITMASK) == 0 || (envelope != null && !envelope.isNull()))
-                && ((bitmask & GRID_RANGE_BITMASK) == 0 || (gridRange != null))
-                && ((bitmask & GRID_TO_CRS_BITMASK) == 0 || (gridToCRS != null));
+        return ((bitmask & CRS_BITMASK) == 0 || envelope != null && envelope.getCoordinateReferenceSystem() != null)
+                && ((bitmask & ENVELOPE_BITMASK) == 0 || envelope != null && !envelope.isNull())
+                && ((bitmask & GRID_RANGE_BITMASK) == 0 || gridRange != null)
+                && ((bitmask & GRID_TO_CRS_BITMASK) == 0 || gridToCRS != null);
     }
 
     /**

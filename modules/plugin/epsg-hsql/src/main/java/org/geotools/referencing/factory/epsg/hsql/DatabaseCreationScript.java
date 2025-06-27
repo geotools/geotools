@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -36,14 +37,14 @@ import org.hsqldb.jdbc.JDBCDataSource;
 public class DatabaseCreationScript {
 
     public static void main(String[] args) throws Exception {
-        /**
+        /*
          * BEFORE USING THIS SCRIPT - make sure you've created modified .sql files following the instructions - update
          * ThreadedHsqlEpsgFactory.VERSION - modify the "directory" variable below to point to the folder containing the
          * SQL scripts
          */
         String inputDirectory = "./src/main/resources/org/geotools/referencing/factory/epsg/hsql";
 
-        /** The files we're interested into */
+        /* The files we're interested into */
         File directory = new File(inputDirectory);
         File propertyFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".properties");
         File databaseFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".data");
@@ -51,7 +52,7 @@ public class DatabaseCreationScript {
         File scriptFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".script");
         File zipFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".zip");
 
-        /** Preventive cleanup of the files should an old run was broken or stopped in the middle */
+        /* Preventive cleanup of the files should an old run was broken or stopped in the middle */
         propertyFile.delete();
         databaseFile.delete();
         backupFile.delete();
@@ -138,7 +139,7 @@ public class DatabaseCreationScript {
             }
         }
 
-        /** Cleanup, delete the database files */
+        /* Cleanup, delete the database files */
         System.out.println("Cleaning up the unzipped database files");
         propertyFile.delete();
         databaseFile.delete();
@@ -152,7 +153,7 @@ public class DatabaseCreationScript {
         SqlScriptReader reader = null;
         try {
             // first read in the tables
-            reader = new SqlScriptReader(new FileReader(scriptFile));
+            reader = new SqlScriptReader(new FileReader(scriptFile, StandardCharsets.UTF_8));
             while (reader.hasNext()) {
                 String sql = reader.next();
                 statement.execute(sql);

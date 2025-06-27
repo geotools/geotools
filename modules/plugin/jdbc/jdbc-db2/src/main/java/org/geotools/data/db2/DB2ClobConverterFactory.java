@@ -57,7 +57,7 @@ public class DB2ClobConverterFactory implements ConverterFactory {
         if (DB2_CLOB == null) return null;
 
         // can only convert towards String
-        if (!(String.class.equals(target))) return null;
+        if (!String.class.equals(target)) return null;
 
         // can only deal with db2 specific blob classes
         if (!DB2_CLOB.isAssignableFrom(source)) return null;
@@ -66,7 +66,7 @@ public class DB2ClobConverterFactory implements ConverterFactory {
         return converter;
     }
 
-    class DB2ClobConverter implements Converter {
+    static class DB2ClobConverter implements Converter {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

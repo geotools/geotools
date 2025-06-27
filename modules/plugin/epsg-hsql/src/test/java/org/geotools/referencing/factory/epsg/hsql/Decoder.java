@@ -28,7 +28,7 @@ import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 public class Decoder {
 
     public static void main(String[] args) throws FactoryException {
-        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null);
         final Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
 
         System.out.println("About to decode " + codes.size() + " codes");

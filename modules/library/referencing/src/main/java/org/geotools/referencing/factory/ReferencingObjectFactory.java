@@ -744,7 +744,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public CompoundCRS createCompoundCRS(Map<String, ?> properties, CoordinateReferenceSystem[] elements)
+    public CompoundCRS createCompoundCRS(Map<String, ?> properties, CoordinateReferenceSystem... elements)
             throws FactoryException {
         CompoundCRS crs;
         try {

@@ -116,7 +116,7 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
     }
 
     @Override
-    public void setLayerFeatureConstraints(FeatureTypeConstraint[] array) {
+    public void setLayerFeatureConstraints(FeatureTypeConstraint... array) {
         this.constraints.clear();
         this.constraints.addAll(Arrays.asList(array));
     }
@@ -132,7 +132,7 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
     }
 
     @Override
-    public void setUserStyles(Style[] styles) {
+    public void setUserStyles(Style... styles) {
         this.styles.clear();
         this.styles.addAll(Arrays.asList(styles));
     }

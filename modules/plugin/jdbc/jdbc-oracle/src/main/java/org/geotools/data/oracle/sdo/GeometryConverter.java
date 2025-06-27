@@ -142,7 +142,7 @@ public class GeometryConverter {
         int gtype = SDO.gType(geom);
         NUMBER SDO_GTYPE = new NUMBER(gtype);
 
-        NUMBER SDO_SRID = (srid == SDO.SRID_NULL || srid == 0) ? null : new NUMBER(srid);
+        NUMBER SDO_SRID = srid == SDO.SRID_NULL || srid == 0 ? null : new NUMBER(srid);
 
         double[] point = SDO.point(geom);
         OracleStruct SDO_POINT;

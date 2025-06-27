@@ -58,6 +58,6 @@ public class FilterFunction_strConcat extends FunctionExpressionImpl {
                     "Filter Function problem for function strConcat argument #1 - expected type String");
         }
 
-        return (StaticGeometry.strConcat(arg0, arg1));
+        return StaticGeometry.strConcat(arg0, arg1);
     }
 }

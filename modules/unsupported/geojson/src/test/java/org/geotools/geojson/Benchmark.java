@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.feature.FeatureCollection;
@@ -28,7 +29,7 @@ public class Benchmark {
     }
 
     static void benchmarkFeatureCollectionParse(File source) throws Exception {
-        BufferedReader reader = new BufferedReader(new FileReader(source));
+        BufferedReader reader = new BufferedReader(new FileReader(source, StandardCharsets.UTF_8));
         FeatureJSON fjson = new FeatureJSON();
         FeatureIterator<SimpleFeature> it = fjson.streamFeatureCollection(reader);
         int count = 0;
@@ -56,7 +57,7 @@ public class Benchmark {
     static void bencharkGeometryEncode(FeatureSource data) throws Exception {
         GeometryJSON gjson = new GeometryJSON();
         OutputStream out = System.out; /*new NullOutputStream();*/
-        Writer writer = new OutputStreamWriter(out);
+        Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
 
         FeatureCollection features = data.getFeatures();
         FeatureIterator it = features.features();

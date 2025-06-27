@@ -70,7 +70,7 @@ public class OptDirectedLineGraphGeneratorTest {
             // assertTrue(b.getX() == a.getX() + 1 && b.getY() == a.getY() + 1);
             Assert.assertEquals(b.getCoordinate(), new Coordinate(a.getCoordinate().x + 1, a.getCoordinate().y + 1));
 
-            return (0);
+            return 0;
         };
         built.visitEdges(visitor);
     }
@@ -120,16 +120,16 @@ public class OptDirectedLineGraphGeneratorTest {
             //        else assertTrue(b.getX() == a.getX() + 1 && b.getY() == a.getY() +
             // 1);
 
-            return (0);
+            return 0;
         };
         built.visitEdges(visitor);
     }
 
     protected OptDirectedLineGraphGenerator createGenerator() {
-        return (new OptDirectedLineGraphGenerator());
+        return new OptDirectedLineGraphGenerator();
     }
 
     protected OptDirectedLineGraphGenerator generator() {
-        return (m_gen);
+        return m_gen;
     }
 }

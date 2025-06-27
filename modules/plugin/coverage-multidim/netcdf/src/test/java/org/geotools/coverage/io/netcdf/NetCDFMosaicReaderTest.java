@@ -50,6 +50,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -1446,7 +1447,7 @@ public class NetCDFMosaicReaderTest {
         dim.setSize(
                 reader.getOriginalGridRange(name).getSpan(0) / 2.0,
                 reader.getOriginalGridRange(name).getSpan(1) / 2.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange(name));
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange(name);
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -1469,8 +1470,7 @@ public class NetCDFMosaicReaderTest {
             }
         }
         // Test the output coverage
-        GridCoverage2D coverage = reader.read(
-                name, new GeneralParameterValue[] {gg, bkg, NO_DEFERRED_LOADING_PARAM, sigmaValue, dateValue});
+        GridCoverage2D coverage = reader.read(name, gg, bkg, NO_DEFERRED_LOADING_PARAM, sigmaValue, dateValue);
         assertNotNull(coverage);
         reader.dispose();
     }
@@ -1663,7 +1663,7 @@ public class NetCDFMosaicReaderTest {
 
         // check that the NetCDF database has been cleaned too
         Properties props = new Properties();
-        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
+        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"), StandardCharsets.UTF_8)) {
             props.load(fr);
         }
         JDBCDataStore store = new H2DataStoreFactory().createDataStore(DataUtilities.toConnectionParameters(props));
@@ -1779,7 +1779,7 @@ public class NetCDFMosaicReaderTest {
 
         // check that the NetCDF database has been cleaned too
         Properties props = new Properties();
-        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
+        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"), StandardCharsets.UTF_8)) {
             props.load(fr);
         }
         JDBCDataStore store = new H2DataStoreFactory().createDataStore(DataUtilities.toConnectionParameters(props));

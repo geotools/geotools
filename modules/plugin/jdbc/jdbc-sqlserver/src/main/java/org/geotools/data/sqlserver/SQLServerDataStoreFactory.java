@@ -181,7 +181,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         }
 
         // we only need one or the other of these
-        return (port != null || instance != null);
+        return port != null || instance != null;
     }
 
     @Override

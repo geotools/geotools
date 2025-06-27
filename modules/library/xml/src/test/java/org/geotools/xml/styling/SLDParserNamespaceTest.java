@@ -18,6 +18,7 @@ package org.geotools.xml.styling;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsEqualTo;
@@ -83,9 +84,9 @@ public class SLDParserNamespaceTest {
         Assert.assertEquals(rules.size(), 1);
         Rule rule = rules.get(0);
         Filter filter = rule.getFilter();
-        assert (filter instanceof PropertyIsEqualTo);
+        assert filter instanceof PropertyIsEqualTo;
         Expression expr = ((PropertyIsEqualTo) filter).getExpression1();
-        assert (expr instanceof PropertyName);
+        assert expr instanceof PropertyName;
         NamespaceSupport ns = ((PropertyName) expr).getNamespaceContext();
         Assert.assertEquals(ns.getURI("xlink"), "http://www.w3.org/1999/xlink");
         Assert.assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
@@ -93,7 +94,7 @@ public class SLDParserNamespaceTest {
 
         Symbolizer s = rule.symbolizers().get(0);
         expr = s.getGeometry();
-        assert (expr instanceof PropertyName);
+        assert expr instanceof PropertyName;
         ns = ((PropertyName) expr).getNamespaceContext();
         Assert.assertNull(ns.getURI("xlink"));
         Assert.assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
@@ -101,6 +102,6 @@ public class SLDParserNamespaceTest {
     }
 
     InputStream input() {
-        return new ByteArrayInputStream(SLD.getBytes());
+        return new ByteArrayInputStream(SLD.getBytes(StandardCharsets.UTF_8));
     }
 }

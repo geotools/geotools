@@ -253,10 +253,10 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
             throws TransformException {
         int step = 0;
 
-        if ((srcPts == dstPts) && (srcOff < dstOff) && ((srcOff + (numPts * getSourceDimensions())) > dstOff)) {
+        if (srcPts == dstPts && srcOff < dstOff && srcOff + numPts * getSourceDimensions() > dstOff) {
             step = -getSourceDimensions();
-            srcOff -= ((numPts - 1) * step);
-            dstOff -= ((numPts - 1) * step);
+            srcOff -= (numPts - 1) * step;
+            dstOff -= (numPts - 1) * step;
         }
 
         while (--numPts >= 0) {
@@ -264,7 +264,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
             double y = srcPts[srcOff++];
 
             // check bounding box
-            if (((x < grid.getMinX()) || (x > grid.getMaxX())) || ((y < grid.getMinY()) || (y > grid.getMaxY()))) {
+            if (x < grid.getMinX() || x > grid.getMaxX() || y < grid.getMinY() || y > grid.getMaxY()) {
                 throw new TransformException("Point ("
                         + x
                         + " "
@@ -289,8 +289,8 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
             // returned shift values are in seconds, longitude shift values are + west
             gridShiftTransform.transform(array, 0, array, 0, 1);
 
-            dstPts[dstOff++] = x - (array[0] / SEC_2_DEG);
-            dstPts[dstOff++] = y + (array[1] / SEC_2_DEG);
+            dstPts[dstOff++] = x - array[0] / SEC_2_DEG;
+            dstPts[dstOff++] = y + array[1] / SEC_2_DEG;
             srcOff += step;
             dstOff += step;
         }
@@ -313,10 +313,10 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
             throws TransformException {
         int step = 0;
 
-        if ((srcPts == dstPts) && (srcOff < dstOff) && ((srcOff + (numPts * getSourceDimensions())) > dstOff)) {
+        if (srcPts == dstPts && srcOff < dstOff && srcOff + numPts * getSourceDimensions() > dstOff) {
             step = -getSourceDimensions();
-            srcOff -= ((numPts - 1) * step);
-            dstOff -= ((numPts - 1) * step);
+            srcOff -= (numPts - 1) * step;
+            dstOff -= (numPts - 1) * step;
         }
 
         while (--numPts >= 0) {
@@ -338,7 +338,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
                     ytemp = ytemp - ydif;
                 }
 
-                if ((Math.abs(xdif) <= TOL) && (Math.abs(ydif) <= TOL)) {
+                if (Math.abs(xdif) <= TOL && Math.abs(ydif) <= TOL) {
                     dstPts[dstOff++] = xtemp;
                     dstPts[dstOff++] = ytemp;
                     break;

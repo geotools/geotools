@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +137,7 @@ public class SchemasTest {
     void write(File f, String xsd) throws IOException {
         f.deleteOnExit();
         f.createNewFile();
-        try (FileWriter w = new FileWriter(f)) {
+        try (FileWriter w = new FileWriter(f, StandardCharsets.UTF_8)) {
             w.write(xsd);
             w.flush();
         }

@@ -54,6 +54,6 @@ public class HStore extends HashMap<String, String> {
     }
 
     private static final String doubleQuoteString(String string) {
-        return string != null ? ("\"" + string + "\"") : NULL;
+        return string != null ? "\"" + string + "\"" : NULL;
     }
 }

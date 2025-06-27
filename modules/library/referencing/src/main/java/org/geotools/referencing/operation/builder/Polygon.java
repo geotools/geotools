@@ -69,7 +69,7 @@ class Polygon implements Cloneable {
         for (int i = 0; i < vertices.length; i++) {
             wkt = wkt + vertices[i].getCoordinate()[0] + " " + vertices[i].getCoordinate()[1];
 
-            if (i != (vertices.length - 1)) {
+            if (i != vertices.length - 1) {
                 wkt = wkt + ", ";
             }
         }
@@ -104,7 +104,7 @@ class Polygon implements Cloneable {
      * @return True if the point is inside (or is the vertex of polygon, false if not.
      */
     protected boolean containsOrIsVertex(Position dp) {
-        if (generateGeneralPath(vertices).contains((Point2D) dp) || (hasVertex(dp))) {
+        if (generateGeneralPath(vertices).contains((Point2D) dp) || hasVertex(dp)) {
             return true;
         }
 
@@ -147,8 +147,8 @@ class Polygon implements Cloneable {
 
         // The homothetic transformation is made.
         for (Position vertex : vertices) {
-            vertex.getCoordinate()[0] = (scale * (vertex.getCoordinate()[0] - sumX)) + sumX;
-            vertex.getCoordinate()[1] = (scale * (vertex.getCoordinate()[1] - sumY)) + sumY;
+            vertex.getCoordinate()[0] = scale * (vertex.getCoordinate()[0] - sumX) + sumX;
+            vertex.getCoordinate()[1] = scale * (vertex.getCoordinate()[1] - sumY) + sumY;
         }
     }
 

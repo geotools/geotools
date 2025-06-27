@@ -190,7 +190,7 @@ public final class Classes {
      */
     @SuppressWarnings("unchecked")
     public static <T> Class<? extends T> getClass(final T object) {
-        return (object != null) ? (Class<? extends T>) object.getClass() : null;
+        return object != null ? (Class<? extends T>) object.getClass() : null;
     }
 
     /** Returns all classes implemented by the given set of objects. */
@@ -215,7 +215,7 @@ public final class Classes {
     public static Class<?> specializedClass(final Collection<?> objects) {
         final Set<Class<?>> types = getClasses(objects);
         final Class<?> type = removeAssignables(types);
-        return (type != null) ? type : commonSuperClass(types);
+        return type != null ? type : commonSuperClass(types);
     }
 
     /**
@@ -290,7 +290,7 @@ public final class Classes {
                 }
             }
         }
-        return (types.size() == 1) ? types.iterator().next() : null;
+        return types.size() == 1 ? types.iterator().next() : null;
     }
 
     /**
@@ -362,7 +362,7 @@ public final class Classes {
      */
     public static boolean isFloat(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
-        return (mapping != null) && mapping.isFloat;
+        return mapping != null && mapping.isFloat;
     }
 
     /**
@@ -374,7 +374,7 @@ public final class Classes {
      */
     public static boolean isInteger(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
-        return (mapping != null) && mapping.isInteger;
+        return mapping != null && mapping.isInteger;
     }
 
     /**
@@ -385,7 +385,7 @@ public final class Classes {
      */
     public static int getBitCount(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
-        return (mapping != null) ? mapping.size : 0;
+        return mapping != null ? mapping.size : 0;
     }
 
     /**
@@ -397,7 +397,7 @@ public final class Classes {
      */
     public static Class<?> primitiveToWrapper(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
-        return (mapping != null) ? mapping.wrapper : type;
+        return mapping != null ? mapping.wrapper : type;
     }
 
     /**
@@ -409,7 +409,7 @@ public final class Classes {
      */
     public static Class<?> wrapperToPrimitive(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
-        return (mapping != null) ? mapping.primitive : type;
+        return mapping != null ? mapping.primitive : type;
     }
 
     /**
@@ -422,7 +422,7 @@ public final class Classes {
      */
     public static byte getEnumConstant(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
-        return (mapping != null) ? mapping.ordinal : OTHER;
+        return mapping != null ? mapping.ordinal : OTHER;
     }
 
     /**

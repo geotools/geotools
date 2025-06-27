@@ -86,7 +86,7 @@ public class BandProcessTest {
         // Get a reader for the selected format
         GridCoverageReader reader = format.getReader(input);
         // Read the input Coverage
-        coverage1 = (GridCoverage2D) reader.read(null);
+        coverage1 = (GridCoverage2D) reader.read();
         // Reader disposal
         reader.dispose();
 
@@ -100,7 +100,7 @@ public class BandProcessTest {
         // Get a reader for the selected format
         reader = format.getReader(input2);
         // Read the input Coverage
-        coverage3 = (GridCoverage2D) reader.read(null);
+        coverage3 = (GridCoverage2D) reader.read();
         // Reader disposal
         reader.dispose();
     }

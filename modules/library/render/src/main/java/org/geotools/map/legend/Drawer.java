@@ -419,7 +419,7 @@ public class Drawer {
         double scaleY = screenSize.getHeight() / mapExtent.getHeight();
 
         double tx = -mapExtent.getMinX() * scaleX;
-        double ty = (mapExtent.getMinY() * scaleY) + screenSize.getHeight();
+        double ty = mapExtent.getMinY() * scaleY + screenSize.getHeight();
 
         AffineTransform at = new AffineTransform(scaleX, 0.0d, 0.0d, -scaleY, tx, ty);
 

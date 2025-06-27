@@ -41,7 +41,7 @@ public class OptDirectedXYNode extends OptDirectedNode implements XYNode {
      */
     @Override
     public Coordinate getCoordinate() {
-        return (new Coordinate(m_x, m_y));
+        return new Coordinate(m_x, m_y);
     }
 
     /**

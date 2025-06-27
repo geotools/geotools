@@ -72,7 +72,7 @@ public class XMLUtils {
      */
     public static String removeXMLInvalidChars(String in) {
         // sanity check
-        if (in == null || ("".equals(in))) {
+        if (in == null || "".equals(in)) {
             return in;
         }
 
@@ -121,11 +121,7 @@ public class XMLUtils {
 
     /** Returns true if the character provided is valid according to XML 1.0 */
     private static boolean isXMLValidChar(char c) {
-        return (c == 0x9)
-                || (c == 0xA)
-                || (c == 0xD)
-                || ((c >= 0x20) && (c <= 0xD7FF))
-                || ((c >= 0xE000) && (c <= 0xFFFD));
+        return c == 0x9 || c == 0xA || c == 0xD || c >= 0x20 && c <= 0xD7FF || c >= 0xE000 && c <= 0xFFFD;
         // removed as a char cannot get this high
         // || ((c >= 0x10000) && (c <= 0x10FFFF));
     }

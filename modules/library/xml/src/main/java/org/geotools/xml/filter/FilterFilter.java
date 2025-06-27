@@ -145,11 +145,11 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
 
             // in all these cases, the correct (well, defined) thing to do is to ignore the tag -
             // its never used anywhere!
-            if ((filterType == -1)
-                    && !((localName.equals("UpperBoundary"))
-                            || (localName.equals("LowerBoundary"))
-                            || (localName.equals("Distance")))) {
-                if (!(localName.endsWith("Member"))) // from CITE tests
+            if (filterType == -1
+                    && !(localName.equals("UpperBoundary")
+                            || localName.equals("LowerBoundary")
+                            || localName.equals("Distance"))) {
+                if (!localName.endsWith("Member")) // from CITE tests
                 throw new SAXException("Attempted to construct illegal filter - I dont understand the tag: "
                         + qName
                         + ".  HINT: tags are case-sensitive!");
@@ -206,7 +206,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
                         // required element, so an error would be nice.
                         // But geotools is also not supporting units at all,
                         // so I feel like it doesn't matter so much...
-                        if (("units").equals(atts.getLocalName(0))) {
+                        if ("units".equals(atts.getLocalName(0))) {
                             units = atts.getValue(0);
                             LOGGER.finest("units = " + units);
                         }

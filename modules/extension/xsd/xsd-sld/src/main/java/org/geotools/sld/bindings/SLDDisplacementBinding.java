@@ -110,7 +110,7 @@ public class SLDDisplacementBinding extends AbstractComplexBinding {
         Expression x = (Expression) node.getChildValue("DisplacementX");
         Expression y = (Expression) node.getChildValue("DisplacementY");
 
-        if ((x == null) || (y == null)) {
+        if (x == null || y == null) {
             String msg = "DisplacementX and DisplacementY required";
             throw new RuntimeException(msg);
         }

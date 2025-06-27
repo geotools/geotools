@@ -113,7 +113,7 @@ public class DataStoreConfiguration {
         final String url = URLs.fileToUrl(parentLocation).toExternalForm();
         String updatedDB;
         try {
-            updatedDB = "file:" + (new File(URLs.urlToFile(new URL(url)), database)).getPath();
+            updatedDB = "file:" + new File(URLs.urlToFile(new URL(url)), database).getPath();
             params.put("ParentLocation", url);
             params.put("database", updatedDB);
             params.put("dbtype", "h2");

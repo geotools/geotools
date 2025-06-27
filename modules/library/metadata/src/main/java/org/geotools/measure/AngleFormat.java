@@ -357,7 +357,7 @@ public class AngleFormat extends Format {
 
             if (rm == RoundingMethod.ROUND_HALF_EVEN) {
                 double d = scaledValue / 10d;
-                boolean even = ((int) ((d - (int) d) * 10)) % 2 == 0;
+                boolean even = (int) ((d - (int) d) * 10) % 2 == 0;
                 rm = even ? RoundingMethod.ROUND_HALF_DOWN : RoundingMethod.ROUND_HALF_UP;
             }
 
@@ -507,7 +507,7 @@ public class AngleFormat extends Format {
                          * code se répète, en mémorisant cette information comme largeur
                          * de ce champ.
                          */
-                        setSuffix(field - 1, (i > startPrefix) ? pattern.substring(startPrefix, i) : null);
+                        setSuffix(field - 1, i > startPrefix ? pattern.substring(startPrefix, i) : null);
                         int w = 1;
                         while (++i < length && pattern.charAt(i) == c) w++;
                         setWidth(field, w);
@@ -544,7 +544,7 @@ public class AngleFormat extends Format {
                 }
             }
         }
-        setSuffix(symbolIndex - 1, (startPrefix < length) ? pattern.substring(startPrefix) : null);
+        setSuffix(symbolIndex - 1, startPrefix < length ? pattern.substring(startPrefix) : null);
     }
 
     /**
@@ -600,6 +600,7 @@ public class AngleFormat extends Format {
      * @param angle Angle to format, in degrees.
      * @return The formatted string.
      */
+    @SuppressWarnings("JdkObsolete") // format() method requires StringBuffer
     public final String format(final double angle) {
         return format(angle, new StringBuffer(), null).toString();
     }
@@ -618,7 +619,7 @@ public class AngleFormat extends Format {
     public synchronized StringBuffer format(final double angle, StringBuffer toAppendTo, final FieldPosition pos) {
         if (Double.isNaN(angle) || Double.isInfinite(angle)) {
             return numberFormat.format(
-                    angle, toAppendTo, (pos != null) ? pos : new FieldPosition(DecimalFormat.INTEGER_FIELD));
+                    angle, toAppendTo, pos != null ? pos : new FieldPosition(DecimalFormat.INTEGER_FIELD));
         }
         double degrees = angle;
         /*
@@ -790,7 +791,7 @@ public class AngleFormat extends Format {
             numberFormat.setMinimumIntegerDigits(1);
             numberFormat.setMinimumFractionDigits(0);
             numberFormat.setMaximumFractionDigits(2);
-            return numberFormat.format(obj, toAppendTo, (pos != null) ? pos : dummy);
+            return numberFormat.format(obj, toAppendTo, pos != null ? pos : dummy);
         }
         throw new IllegalArgumentException(
                 MessageFormat.format(ErrorKeys.NOT_AN_ANGLE_OBJECT_$1, Classes.getClass(obj)));
@@ -820,7 +821,7 @@ public class AngleFormat extends Format {
                 numberFormat.setMinimumIntegerDigits(1);
                 numberFormat.setMinimumFractionDigits(0);
                 numberFormat.setMaximumFractionDigits(2);
-                return numberFormat.format(number, toAppendTo, (pos != null) ? pos : dummy);
+                return numberFormat.format(number, toAppendTo, pos != null ? pos : dummy);
             }
         }
     }
@@ -948,7 +949,7 @@ public class AngleFormat extends Format {
      *     {@code true} fait que l'angle "45 30" sera interprété comme "45°30".
      * @return L'angle lu.
      */
-    @SuppressWarnings("fallthrough")
+    @SuppressWarnings({"fallthrough", "LabelledBreakTarget"})
     private synchronized Angle parse(final String source, final ParsePosition pos, final boolean spaceAsSeparator) {
         double degrees = Double.NaN;
         double minutes = Double.NaN;
@@ -1056,7 +1057,7 @@ public class AngleFormat extends Format {
                     }
                     indexEndField = pos.getIndex();
                     minutes = fieldObject.doubleValue();
-                    switch (skipSuffix(source, pos, (width1 != 0) ? MINUTES_FIELD : PREFIX_FIELD)) {
+                    switch (skipSuffix(source, pos, width1 != 0 ? MINUTES_FIELD : PREFIX_FIELD)) {
                             /* ------------------------------------------------
                              * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
                              * ------------------------------------------------
@@ -1144,7 +1145,7 @@ public class AngleFormat extends Format {
                     }
                     indexEndField = pos.getIndex();
                     secondes = fieldObject.doubleValue();
-                    switch (skipSuffix(source, pos, (width2 != 0) ? MINUTES_FIELD : PREFIX_FIELD)) {
+                    switch (skipSuffix(source, pos, width2 != 0 ? MINUTES_FIELD : PREFIX_FIELD)) {
                             /* -------------------------------------------------
                              * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
                              * -------------------------------------------------
@@ -1358,7 +1359,7 @@ public class AngleFormat extends Format {
         if (suffix0 != null) c = c * 37 + suffix0.hashCode();
         if (suffix1 != null) c ^= c * 37 + suffix1.hashCode();
         if (suffix2 != null) c ^= c * 37 + suffix2.hashCode();
-        return c ^ (((((width0 << 8) ^ width1) << 8) ^ width2) << 8) ^ widthDecimal;
+        return c ^ ((width0 << 8 ^ width1) << 8 ^ width2) << 8 ^ widthDecimal;
     }
 
     /** Compares this format with the specified object for equality. */

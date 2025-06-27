@@ -28,7 +28,7 @@ public class CollectionExtent extends AnyJSONObject {
     TemporalExtents temporal;
 
     /** Spatial extent bboxs, each bbox xmin,ymin,xmax,ymax crs CRS84. */
-    public class SpatialExtents extends AnyJSONObject {
+    public static class SpatialExtents extends AnyJSONObject {
 
         List<List<Double>> bbox;
         String crs;
@@ -51,7 +51,7 @@ public class CollectionExtent extends AnyJSONObject {
     }
 
     /** Temporal extent intervals, each interval between two UTC times. */
-    public class TemporalExtents extends AnyJSONObject {
+    public static class TemporalExtents extends AnyJSONObject {
 
         List<List<Date>> interval;
         String trs;

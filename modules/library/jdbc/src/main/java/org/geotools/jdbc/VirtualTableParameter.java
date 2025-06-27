@@ -71,9 +71,9 @@ public class VirtualTableParameter implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((defaultValue == null) ? 0 : defaultValue.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((validator == null) ? 0 : validator.hashCode());
+        result = prime * result + (defaultValue == null ? 0 : defaultValue.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (validator == null ? 0 : validator.hashCode());
         return result;
     }
 

@@ -37,7 +37,7 @@ public class HanaColumnWoSridConstraintOnlineTest extends JDBCTestSupport {
     }
 
     private boolean supportsColumnsWoSridConstraint(HanaVersion version) {
-        return ((version.getVersion() > 2) || ((version.getVersion() == 2) && (version.getRevision() >= 60)));
+        return version.getVersion() > 2 || version.getVersion() == 2 && version.getRevision() >= 60;
     }
 
     @Test

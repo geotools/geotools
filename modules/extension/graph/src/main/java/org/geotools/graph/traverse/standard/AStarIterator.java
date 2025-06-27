@@ -106,7 +106,7 @@ public class AStarIterator extends SourceGraphIterator {
             return null;
         }
         AStarNode next = m_pqueue.remove();
-        return (next.getNode());
+        return next.getNode();
     }
 
     /**
@@ -131,7 +131,7 @@ public class AStarIterator extends SourceGraphIterator {
             if (m_nodemap.containsKey(next)) {
                 nextAsn = m_nodemap.get(next);
                 if (!nextAsn.isClosed()) {
-                    if ((currAsn.getG() + m_afuncs.cost(currAsn, nextAsn)) < nextAsn.getG()) {
+                    if (currAsn.getG() + m_afuncs.cost(currAsn, nextAsn) < nextAsn.getG()) {
                         m_pqueue.remove(nextAsn);
                         nextAsn.setG(currAsn.getG() + m_afuncs.cost(currAsn, nextAsn));
                         nextAsn.setParent(currAsn);
@@ -161,16 +161,16 @@ public class AStarIterator extends SourceGraphIterator {
     /** */
     public Node getParent(Node n) {
         AStarNode asn = m_nodemap.get(n);
-        return (asn == null
+        return asn == null
                 ? null
-                : asn.getParent() == null ? null : asn.getParent().getNode());
+                : asn.getParent() == null ? null : asn.getParent().getNode();
     }
 
     protected Iterator<?> getRelated(Graphable current) {
         if (current instanceof DirectedGraphable) {
             return ((DirectedGraphable) current).getOutRelated();
         } else {
-            return (current.getRelated());
+            return current.getRelated();
         }
     }
 
@@ -178,7 +178,7 @@ public class AStarIterator extends SourceGraphIterator {
     private static Comparator<AStarNode> comparator = (o1, o2) -> {
         AStarNode n1 = o1;
         AStarNode n2 = o2;
-        return (n1.getF() < n2.getF() ? -1 : n1.getF() > n2.getF() ? 1 : 0);
+        return n1.getF() < n2.getF() ? -1 : n1.getF() > n2.getF() ? 1 : 0;
     };
 
     /**
@@ -227,7 +227,7 @@ public class AStarIterator extends SourceGraphIterator {
         }
 
         public double getF() {
-            return (g + h);
+            return g + h;
         }
 
         public AStarNode getParent() {

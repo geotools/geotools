@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
@@ -111,7 +112,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     @Test
     public void testMultipleFeatureArrayWritesWithOutputStreamWriter() throws Exception {
         try (OutputStream outputStream = new ByteArrayOutputStream();
-                OutputStreamWriter writer = new OutputStreamWriter(outputStream)) {
+                OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
             fjson.writeFeature(featureArray(1), writer);
             writer.write(",");
             fjson.writeFeature(featureArray(2), writer);
@@ -677,7 +678,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     @Test
     public void testFeatureCollectionWithMissingAttributeRead() throws Exception {
         String collectionText = collectionText(true, true, false, true, false);
-        SimpleFeatureType ftype = fjson.readFeatureCollectionSchema((strip(collectionText)), false);
+        SimpleFeatureType ftype = fjson.readFeatureCollectionSchema(strip(collectionText), false);
 
         assertNotNull(ftype.getDescriptor("double"));
         assertEquals(Double.class, ftype.getDescriptor("double").getType().getBinding());
@@ -689,7 +690,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertNotNull(ftype.getCoordinateReferenceSystem());
 
         fjson.setFeatureType(ftype);
-        SimpleFeatureCollection fcol = (SimpleFeatureCollection) fjson.readFeatureCollection((strip(collectionText)));
+        SimpleFeatureCollection fcol = (SimpleFeatureCollection) fjson.readFeatureCollection(strip(collectionText));
 
         assertEquals(ftype, fcol.getSchema());
 
@@ -703,7 +704,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     @Test
     public void testFeatureCollectionWithNullAttributeRead() throws Exception {
         String collectionText = collectionText(true, true, false, false, true);
-        SimpleFeatureType ftype = fjson.readFeatureCollectionSchema((strip(collectionText)), true);
+        SimpleFeatureType ftype = fjson.readFeatureCollectionSchema(strip(collectionText), true);
 
         // System.out.println("type: " + ftype);
 
@@ -719,7 +720,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertNotNull(ftype.getCoordinateReferenceSystem());
 
         fjson.setFeatureType(ftype);
-        SimpleFeatureCollection fcol = (SimpleFeatureCollection) fjson.readFeatureCollection((strip(collectionText)));
+        SimpleFeatureCollection fcol = (SimpleFeatureCollection) fjson.readFeatureCollection(strip(collectionText));
 
         assertEquals(ftype, fcol.getSchema());
 
@@ -733,7 +734,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     @Test
     public void testFeatureCollectionWithNullAttributeAllFeaturesRead() throws Exception {
         String collectionText = collectionText(true, true, false, false, false, true);
-        SimpleFeatureType ftype = fjson.readFeatureCollectionSchema((strip(collectionText)), false);
+        SimpleFeatureType ftype = fjson.readFeatureCollectionSchema(strip(collectionText), false);
 
         assertNotNull(ftype.getDescriptor("double"));
         // type defaults to String as all values were null
@@ -746,7 +747,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertNotNull(ftype.getCoordinateReferenceSystem());
 
         fjson.setFeatureType(ftype);
-        SimpleFeatureCollection fcol = (SimpleFeatureCollection) fjson.readFeatureCollection((strip(collectionText)));
+        SimpleFeatureCollection fcol = (SimpleFeatureCollection) fjson.readFeatureCollection(strip(collectionText));
 
         assertEquals(ftype, fcol.getSchema());
 
@@ -1030,7 +1031,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
                 + ","
                 + (missingAttribute
                         ? ""
-                        : (nullAttribute ? ("     'double': null,") : ("     'double': " + (val + 0.1) + ",")))
+                        : nullAttribute ? "     'double': null," : "     'double': " + (val + 0.1) + ",")
                 + "     'string': '"
                 + toString(val)
                 + "'"
@@ -1063,7 +1064,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
                 + ","
                 + (missingAttribute
                         ? ""
-                        : (nullAttribute ? ("     'double': null,") : ("     'double': " + (val + 0.1) + ",")))
+                        : nullAttribute ? "     'double': null," : "     'double': " + (val + 0.1) + ",")
                 + "     'string': '"
                 + toString(val)
                 + "',"

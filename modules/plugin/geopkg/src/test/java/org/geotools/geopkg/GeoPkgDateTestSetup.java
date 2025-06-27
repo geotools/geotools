@@ -40,21 +40,21 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
                 + gmt2
                 + "',"
                 + "'"
-                + ("15:12:41")
+                + "15:12:41"
                 + "')");
 
         run("INSERT INTO dates VALUES (2,"
                 + "DATE('2009-01-15','localtime'), "
                 + "'2009-01-15T13:10:12Z',"
                 + "'"
-                + ("13:10:12")
+                + "13:10:12"
                 + "')");
 
         run("INSERT INTO dates VALUES (3,"
                 + "DATE('2009-09-29','localtime'), "
                 + "'2009-09-29T17:54:23Z',"
                 + "'"
-                + ("17:54:23")
+                + "17:54:23"
                 + "')");
         String sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
                 + "('dates', 'features', 'dates', 4326)";

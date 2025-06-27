@@ -33,6 +33,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.media.jai.Interpolation;
 import javax.media.jai.RasterFactory;
@@ -141,10 +142,10 @@ public class JGrassUtilities {
 
         double minx = activeRegion.getRectangle().getBounds2D().getMinX();
         double ewres = activeRegion.getWEResolution();
-        double snapx = minx + (Math.round((x - minx) / ewres) * ewres);
+        double snapx = minx + Math.round((x - minx) / ewres) * ewres;
         double miny = activeRegion.getRectangle().getBounds2D().getMinY();
         double nsres = activeRegion.getNSResolution();
-        double snapy = miny + (Math.round((y - miny) / nsres) * nsres);
+        double snapy = miny + Math.round((y - miny) / nsres) * nsres;
         double xmin = 0.0;
         double xmax = 0.0;
         double ymin = 0.0;
@@ -446,7 +447,7 @@ public class JGrassUtilities {
         if (!colrFile.getParentFile().exists()) {
             colrFile.getParentFile().mkdir();
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(colrFile))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(colrFile, StandardCharsets.UTF_8))) {
             if (rules.isEmpty()) {
                 throw new IllegalArgumentException("The list of colorrules can't be empty.");
             }

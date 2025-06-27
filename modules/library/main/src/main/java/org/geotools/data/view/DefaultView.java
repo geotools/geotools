@@ -143,7 +143,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @throws DataSourceException If query could not meet the restrictions of definitionQuery
      */
     protected Query makeDefinitionQuery(Query query) throws IOException {
-        if ((query == Query.ALL) || query.equals(Query.ALL)) {
+        if (query == Query.ALL || query.equals(Query.ALL)) {
             return new Query(constraintQuery);
         }
 
@@ -170,9 +170,9 @@ public class DefaultView implements SimpleFeatureSource {
                 handle = handle + "(" + constraintQuery.getHandle() + ")";
             }
 
-            Query Query = new Query(typeName, namespace, filter, maxFeatures, propNames, handle);
-            Query.setSortBy(query.getSortBy());
-            return Query;
+            Query defq = new Query(typeName, namespace, filter, maxFeatures, propNames, handle);
+            defq.setSortBy(query.getSortBy());
+            return defq;
         } catch (Exception ex) {
             throw new DataSourceException(
                     "Could not restrict the query to the definition criteria: " + ex.getMessage(), ex);

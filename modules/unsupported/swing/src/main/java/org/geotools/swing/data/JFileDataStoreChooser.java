@@ -346,7 +346,7 @@ public class JFileDataStoreChooser extends JFileChooser {
         File saveFile = new File(path);
         int number = 0;
         while (saveFile.exists()) {
-            saveFile = new File(base + (number++) + extension);
+            saveFile = new File(base + number++ + extension);
         }
         setSelectedFile(saveFile);
     }

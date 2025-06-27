@@ -313,7 +313,7 @@ class RasterManager {
         /** Set the main parameters of this coverage request, getting basic information from the reader. */
         private void setBaseParameters() {
             this.coverageEnvelope = RasterManager.this.getCoverageEnvelope().clone();
-            this.coverageRasterArea = ((GridEnvelope2D) RasterManager.this.getCoverageGridrange());
+            this.coverageRasterArea = (GridEnvelope2D) RasterManager.this.getCoverageGridrange();
             this.coverageCRS = RasterManager.this.getCoverageCRS();
             this.coverageGridToWorld2D = (MathTransform2D) RasterManager.this.getRaster2Model();
             this.coverageFullResolution = new double[2];

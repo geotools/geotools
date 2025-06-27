@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -102,7 +103,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
      * @param baseFileName file name without any path
      */
     private static String getTestDirPath(String baseFileName) {
-        return (new File(testDir, baseFileName)).getPath();
+        return new File(testDir, baseFileName).getPath();
     }
 
     /**
@@ -251,15 +252,15 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         String relativePath;
         String absolutePath = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePathIn));
-                PrintWriter writer = new PrintWriter(new FileWriter(filePathOut))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePathIn, StandardCharsets.UTF_8));
+                PrintWriter writer = new PrintWriter(new FileWriter(filePathOut, StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 // change the file path from relative to absolute
                 if (line.trim().startsWith("<value>file:")) {
                     relativePath = line.split("<value>file:|</value>")[1];
                     String resolvedPath = extendFilename(testDir.getPath(), relativePath);
-                    absolutePath = (new File(resolvedPath)).getAbsolutePath();
+                    absolutePath = new File(resolvedPath).getAbsolutePath();
                     line = line.replace(relativePath, absolutePath);
                 }
                 // in shapefile test, chosen target feature doesn't allow null entry, so we'll take

@@ -89,7 +89,7 @@ public class GeoTiffWriterTest extends Assert {
         ReferencedEnvelope envelope = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         GridCoverage2D test = factory.create("test", bi, envelope);
         GeoTiffWriter writer = new GeoTiffWriter(geotiff);
-        writer.write(test, null);
+        writer.write(test);
         writer.dispose();
 
         // read
@@ -150,7 +150,7 @@ public class GeoTiffWriterTest extends Assert {
         // Read the original coverage.
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+        GridCoverage2D gc = (GridCoverage2D) reader.read();
         if (TestData.isInteractiveTest()) {
             LOGGER.info(new StringBuilder("Coverage before: ")
                     .append("\n")
@@ -237,7 +237,7 @@ public class GeoTiffWriterTest extends Assert {
         final GridCoverageWriter writer = format.getWriter(writeFile);
 
         try {
-            writer.write(cropped, null);
+            writer.write(cropped);
         } catch (IOException e) {
         } finally {
             try {
@@ -248,7 +248,7 @@ public class GeoTiffWriterTest extends Assert {
         try {
             reader = new GeoTiffReader(writeFile, null);
             assertNotNull(reader);
-            gc = (GridCoverage2D) reader.read(null);
+            gc = (GridCoverage2D) reader.read();
             assertNotNull(gc);
             final CoordinateReferenceSystem targetCRS = gc.getCoordinateReferenceSystem2D();
             assertTrue(
@@ -293,7 +293,7 @@ public class GeoTiffWriterTest extends Assert {
         GeoTiffReader reader = new GeoTiffReader(testFile);
 
         // reading the coverage
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // check coverage and crs
         assertNotNull(coverage);
@@ -308,13 +308,13 @@ public class GeoTiffWriterTest extends Assert {
         final File mercator = new File(TestData.file(GeoTiffReaderTest.class, "."), "wms_900913.tif");
         GeoTiffWriter writer = new GeoTiffWriter(mercator);
 
-        writer.write(coverage, null);
+        writer.write(coverage);
         writer.dispose();
 
         // getting a reader
         reader = new GeoTiffReader(mercator);
         // reading the coverage
-        GridCoverage2D coverageMercator = reader.read(null);
+        GridCoverage2D coverageMercator = reader.read();
         // check coverage and crs
         assertNotNull(coverageMercator);
         assertNotNull(coverageMercator.getCoordinateReferenceSystem());
@@ -347,7 +347,7 @@ public class GeoTiffWriterTest extends Assert {
         GeoTiffReader reader = new GeoTiffReader(noCrs, hint);
 
         // reading the coverage
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // check coverage and crs
         assertNotNull(coverage);
@@ -361,7 +361,7 @@ public class GeoTiffWriterTest extends Assert {
 
         final ParameterValue<Boolean> tfw = GeoTiffFormat.WRITE_TFW.createValue();
         tfw.setValue(true);
-        writer.write(coverage, new GeneralParameterValue[] {tfw});
+        writer.write(coverage, tfw);
         writer.dispose();
         coverage.dispose(true);
 
@@ -391,7 +391,7 @@ public class GeoTiffWriterTest extends Assert {
         GeoTiffReader reader = new GeoTiffReader(input);
 
         // reading the coverage
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // check coverage and crs
         assertNotNull(coverage);
@@ -409,7 +409,7 @@ public class GeoTiffWriterTest extends Assert {
         writer.setMetadataValue(Integer.toString(BaselineTIFFTagSet.TAG_COPYRIGHT), copyrightInfo);
         writer.setMetadataValue(TagSet.BASELINE + ":" + Integer.toString(BaselineTIFFTagSet.TAG_SOFTWARE), software);
 
-        writer.write(coverage, null);
+        writer.write(coverage);
         writer.dispose();
         coverage.dispose(true);
 
@@ -439,7 +439,7 @@ public class GeoTiffWriterTest extends Assert {
         GeoTiffReader reader = new GeoTiffReader(input);
 
         // reading the coverage
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // check coverage and crs
         assertNotNull(coverage);
@@ -520,7 +520,7 @@ public class GeoTiffWriterTest extends Assert {
 
             }
         });
-        writer.write(coverage, new GeneralParameterValue[] {listener});
+        writer.write(coverage, listener);
         writer.dispose();
         coverage.dispose(true);
     }
@@ -538,7 +538,7 @@ public class GeoTiffWriterTest extends Assert {
         GeoTiffReader reader = new GeoTiffReader(input);
 
         // reading the coverage
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         // check coverage and crs
         assertNotNull(coverage);
@@ -563,13 +563,13 @@ public class GeoTiffWriterTest extends Assert {
         coverage = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints())
                 .create(coverage.getName(), coverage.getRenderedImage(), envelope);
 
-        writer.write(coverage, new GeneralParameterValue[] {value});
+        writer.write(coverage, value);
         writer.dispose();
         coverage.dispose(true);
 
         // getting a reader
         reader = new GeoTiffReader(output, null); // this way I do not impose the lonlat ordering
-        final GridCoverage2D gc = reader.read(null);
+        final GridCoverage2D gc = reader.read();
         final MathTransform g2w_ = gc.getGridGeometry().getGridToCRS();
         assertTrue(g2w_ instanceof AffineTransform2D);
         AffineTransform2D g2w = (AffineTransform2D) g2w_;
@@ -599,7 +599,7 @@ public class GeoTiffWriterTest extends Assert {
             GeoTiffReader reader = new GeoTiffReader(input);
 
             // reading the coverage
-            GridCoverage2D coverage = reader.read(null);
+            GridCoverage2D coverage = reader.read();
 
             // check coverage and crs
             assertNotNull(coverage);
@@ -615,13 +615,13 @@ public class GeoTiffWriterTest extends Assert {
             ParameterValue<GeoToolsWriteParams> value = GeoTiffFormat.GEOTOOLS_WRITE_PARAMS.createValue();
             value.setValue(params);
 
-            writer.write(coverage, new GeneralParameterValue[] {value});
+            writer.write(coverage, value);
             writer.dispose();
             coverage.dispose(true);
 
             // getting a reader
             reader = new GeoTiffReader(output);
-            RenderedImage ri = reader.read(null).getRenderedImage();
+            RenderedImage ri = reader.read().getRenderedImage();
             assertEquals(ri.getWidth(), i == 0 ? 120 : 12);
             assertEquals(ri.getHeight(), i == 0 ? 120 : 12);
             reader.dispose();
@@ -674,12 +674,12 @@ public class GeoTiffWriterTest extends Assert {
         File output = new File(outputDir, "test-azimuthal-equidistant.tif");
         GeoTiffFormat format = new GeoTiffFormat();
         GridCoverageWriter writer = format.getWriter(output);
-        writer.write(coverage, null);
+        writer.write(coverage);
         writer.dispose();
         coverage.dispose(true);
         // test that reading succeeds and that the projection name and parameters are correct
         GeoTiffReader reader = format.getReader(output);
-        GridCoverage2D readCoverage = reader.read(null);
+        GridCoverage2D readCoverage = reader.read();
         String wkt = readCoverage.getCoordinateReferenceSystem().toWKT();
         readCoverage.dispose(true);
         reader.dispose();
@@ -699,7 +699,7 @@ public class GeoTiffWriterTest extends Assert {
 
         // reading the coverage, checking it has nodata
         GeoTiffReader reader = new GeoTiffReader(input);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         Map<?, ?> props = coverage.getProperties();
 
         assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
@@ -725,7 +725,7 @@ public class GeoTiffWriterTest extends Assert {
     private void writeAndRead(GridCoverage2D coverage, Boolean writeNoDataParam, double noDataValue)
             throws IOException {
         String suffix = "outputWithNodataParam";
-        suffix += (writeNoDataParam != null ? (writeNoDataParam.toString()) : "none");
+        suffix += writeNoDataParam != null ? writeNoDataParam.toString() : "none";
         final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), suffix + ".tif");
         writeAndRead(coverage, writeNoDataParam, noDataValue, output, null);
     }
@@ -746,7 +746,7 @@ public class GeoTiffWriterTest extends Assert {
 
         // Reading it back
         GeoTiffReader reader = new GeoTiffReader(output);
-        coverage = reader.read(null);
+        coverage = reader.read();
         Map<?, ?> props = coverage.getProperties();
         if (writeNoDataParam == null) {
             writeNoDataParam = GeoTiffFormat.WRITE_NODATA.getDefaultValue();
@@ -773,7 +773,7 @@ public class GeoTiffWriterTest extends Assert {
 
         // reading the coverage, checking it has nodata
         GeoTiffReader reader = new GeoTiffReader(input);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
 
         final File geotiff = TestData.temp(this, "testfile");
 
@@ -798,12 +798,12 @@ public class GeoTiffWriterTest extends Assert {
         try {
             GeoTiffReader reader = (GeoTiffReader) format.getReader(vikingSource);
             assertNotNull(reader);
-            GridCoverage2D coverage = reader.read(null);
+            GridCoverage2D coverage = reader.read();
             reader.dispose();
 
             File testFile = new File("./target/viking-write.tiff");
             writer = new GeoTiffWriter(testFile);
-            writer.write(coverage, null);
+            writer.write(coverage);
             writer.dispose();
             coverage.dispose(true);
 

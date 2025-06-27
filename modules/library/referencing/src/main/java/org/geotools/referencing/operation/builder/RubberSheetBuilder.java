@@ -150,7 +150,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      *
      * @return The HashMap where the keys are the original triangles and values are AffineTransformation Objects.
      */
-    private HashMap<TINTriangle, Object> mapTrianglesToKey() {
+    private Map<TINTriangle, Object> mapTrianglesToKey() {
         AffineTransformBuilder calculator;
 
         @SuppressWarnings("unchecked")

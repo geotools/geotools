@@ -118,7 +118,7 @@ class GrowableOrdinateArray {
         } else {
             int currLength = data.length;
             if (length > currLength) {
-                int newLength = (currLength * 3) / 2 + 1;
+                int newLength = currLength * 3 / 2 + 1;
                 if (newLength < length) {
                     newLength = length;
                 }

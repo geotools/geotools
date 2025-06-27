@@ -170,7 +170,7 @@ class DomainCoverage {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    private class SLDSelectorComparator implements Comparator<SLDSelector> {
+    private static class SLDSelectorComparator implements Comparator<SLDSelector> {
 
         @Override
         public int compare(SLDSelector o1, SLDSelector o2) {

@@ -93,7 +93,7 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
 
         Iterator it = Schemas.getAttributeDeclarations(decl).iterator();
         while (it.hasNext()) {
-            XSDAttributeDeclaration attDecl = ((XSDAttributeDeclaration) it.next());
+            XSDAttributeDeclaration attDecl = (XSDAttributeDeclaration) it.next();
             if (attDecl.getURI()
                     .equals((name.getNamespaceURI() == null ? "" : name.getNamespaceURI())
                             + "#"

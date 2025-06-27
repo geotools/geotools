@@ -91,8 +91,8 @@ public class LiteShape implements Shape, Cloneable {
             yScale = xScale = 1;
             return;
         }
-        xScale = (float) Math.sqrt((at.getScaleX() * at.getScaleX()) + (at.getShearX() * at.getShearX()));
-        yScale = (float) Math.sqrt((at.getScaleY() * at.getScaleY()) + (at.getShearY() * at.getShearY()));
+        xScale = (float) Math.sqrt(at.getScaleX() * at.getScaleX() + at.getShearX() * at.getShearX());
+        yScale = (float) Math.sqrt(at.getScaleY() * at.getScaleY() + at.getShearY() * at.getShearY());
     }
 
     private GeometryFactory getGeometryFactory() {
@@ -314,7 +314,7 @@ public class LiteShape implements Shape, Cloneable {
 
         if (affineTransform == null) {
             combined = at;
-        } else if ((at == null) || at.isIdentity()) {
+        } else if (at == null || at.isIdentity()) {
             combined = affineTransform;
         } else {
             combined = new AffineTransform(affineTransform);

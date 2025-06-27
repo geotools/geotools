@@ -76,7 +76,7 @@ public class NoBifurcationIterator extends SourceGraphIterator {
      */
     @Override
     public Graphable next(GraphTraversal traversal) {
-        return (m_next);
+        return m_next;
     }
 
     /**

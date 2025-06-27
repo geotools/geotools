@@ -118,7 +118,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         Iterator<VPFFile> iter = featureType.getFeatureClass().getFileList().iterator();
         while (iter.hasNext()) {
             temp = iter.next();
-            if ((temp != null) && (temp.getColumn(columnName) != null)) {
+            if (temp != null && temp.getColumn(columnName) != null) {
                 result = temp;
                 break;
             }
@@ -139,7 +139,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         Iterator<VPFFile> iter = featureType.getFeatureClass().getFileList().iterator();
         while (iter.hasNext()) {
             temp = iter.next();
-            if ((temp != null) && (temp.getColumn(columnName.getLocalPart()) != null)) {
+            if (temp != null && temp.getColumn(columnName.getLocalPart()) != null) {
                 result = temp;
                 break;
             }

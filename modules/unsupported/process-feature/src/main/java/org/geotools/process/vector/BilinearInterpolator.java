@@ -105,10 +105,10 @@ public class BilinearInterpolator {
                     } else {
                         // All src cell corners have values
                         // Compute bilinear interpolation over the src cell
-                        val = (v00 * (1 - xfrac) * (1 - yfrac)
-                                + v10 * (xfrac) * (1 - yfrac)
-                                + v01 * (yfrac) * (1 - xfrac)
-                                + v11 * (xfrac * yfrac));
+                        val = v00 * (1 - xfrac) * (1 - yfrac)
+                                + v10 * xfrac * (1 - yfrac)
+                                + v01 * yfrac * (1 - xfrac)
+                                + v11 * (xfrac * yfrac);
                     }
                 } else {
                     // dest index at edge of grid
@@ -178,7 +178,7 @@ public class BilinearInterpolator {
         // interpolate across plane defined by SW triangle and values
         float dx = v10 - v00;
         float dy = v01 - v00;
-        float v = v00 + (xfrac * dx) + (yfrac * dy);
+        float v = v00 + xfrac * dx + yfrac * dy;
         return v;
     }
 }

@@ -60,7 +60,7 @@ public abstract class FunctionTestSupport {
                         Integer.valueOf(iVal[i]),
                         Double.valueOf(dVal[i]),
                         fac.createPoint(new Coordinate(iVal[i], iVal[i])),
-                        "Group" + (i % 4)
+                        "Group" + i % 4
                     },
                     "classification.t" + (i + 1));
             testFeatures[i] = feature;
@@ -107,7 +107,7 @@ public abstract class FunctionTestSupport {
                         Integer.valueOf(i + 1),
                         Integer.valueOf(iVal2[i]),
                         fac.createPoint(new Coordinate(iVal2[i], iVal2[i])),
-                        "Group" + (i % 4)
+                        "Group" + i % 4
                     },
                     "classification.t" + (i + 1));
             ((ListFeatureCollection) stddevCollection).add(feature);

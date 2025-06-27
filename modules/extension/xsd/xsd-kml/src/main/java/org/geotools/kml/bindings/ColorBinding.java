@@ -94,7 +94,7 @@ public class ColorBinding extends AbstractSimpleBinding {
             color = color.substring(1);
         }
 
-        if ((color.length() < 6) || (color.length() > 8)) {
+        if (color.length() < 6 || color.length() > 8) {
             throw new IllegalArgumentException("illegal color: " + color);
         }
 

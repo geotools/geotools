@@ -175,7 +175,7 @@ public class SchemaFactory {
 
         ClassLoader[] classLoaders;
 
-        if ((contextLoader == null) || (contextLoader == systemLoader)) {
+        if (contextLoader == null || contextLoader == systemLoader) {
             classLoaders = new ClassLoader[1];
             classLoaders[0] = systemLoader;
         } else {
@@ -274,7 +274,7 @@ public class SchemaFactory {
     private synchronized Schema getRealInstance(URI targetNamespace2, URI desiredSchema, Level level)
             throws SAXException {
         URI targetNamespace = targetNamespace2;
-        if ((targetNamespace == null) || (schemas.get(targetNamespace) == null)) {
+        if (targetNamespace == null || schemas.get(targetNamespace) == null) {
             setParser();
 
             XSISAXHandler contentHandler = getSAXHandler(desiredSchema);
@@ -292,7 +292,7 @@ public class SchemaFactory {
             }
 
             Schema schema = contentHandler.getSchema();
-            if ((targetNamespace == null) || "".equals(targetNamespace.toString())) {
+            if (targetNamespace == null || "".equals(targetNamespace.toString())) {
                 targetNamespace = schema.getTargetNamespace();
             }
 
@@ -341,10 +341,10 @@ public class SchemaFactory {
             throws SAXException {
         URI targetNamespace = targetNamespace2;
 
-        if ((targetNamespace == null) || (schemas.get(targetNamespace) == null)) {
+        if (targetNamespace == null || schemas.get(targetNamespace) == null) {
             XSISAXHandler contentHandler = parseSchema(is1, level);
 
-            if ((targetNamespace == null) || "".equals(targetNamespace.toString())) {
+            if (targetNamespace == null || "".equals(targetNamespace.toString())) {
                 targetNamespace = contentHandler.getSchema().getTargetNamespace();
             }
 
@@ -458,24 +458,23 @@ public class SchemaFactory {
          * @throws SAXException When some thing bad happens (for example merging two targetNamespaces)
          */
         public MergedSchema(Schema s1, Schema s2) throws SAXException {
-            if ((s1.getId() == null) || s1.getId().equals("")) {
+            if (s1.getId() == null || s1.getId().equals("")) {
                 id = s2.getId();
             } else {
                 id = s1.getId();
             }
 
-            if ((s1.getVersion() == null) || s1.getVersion().equals("")) {
+            if (s1.getVersion() == null || s1.getVersion().equals("")) {
                 version = s2.getVersion();
             } else {
                 version = s1.getVersion();
             }
 
-            if ((s1.getTargetNamespace() == null)
+            if (s1.getTargetNamespace() == null
                     || s1.getTargetNamespace().toString().isEmpty()) {
                 targetNamespace = s2.getTargetNamespace();
             } else {
-                if ((s2.getTargetNamespace() != null)
-                        && !s1.getTargetNamespace().equals(s2.getTargetNamespace())) {
+                if (s2.getTargetNamespace() != null && !s1.getTargetNamespace().equals(s2.getTargetNamespace())) {
                     throw new SAXException("cannot merge two target namespaces. "
                             + s1.getTargetNamespace()
                             + " "
@@ -513,7 +512,7 @@ public class SchemaFactory {
 
             Object[] obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++) attributeGroups[i] = (AttributeGroup) (obj[i]);
+            for (int i = 0; i < obj.length; i++) attributeGroups[i] = (AttributeGroup) obj[i];
 
             m = new HashMap<>();
 
@@ -539,7 +538,7 @@ public class SchemaFactory {
             attributes = new Attribute[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++) attributes[i] = (Attribute) (obj[i]);
+            for (int i = 0; i < obj.length; i++) attributes[i] = (Attribute) obj[i];
 
             block = s1.getBlockDefault() | s2.getBlockDefault();
             finaL = s1.getFinalDefault() | s2.getFinalDefault();
@@ -568,7 +567,7 @@ public class SchemaFactory {
             complexTypes = new ComplexType[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++) complexTypes[i] = (ComplexType) (obj[i]);
+            for (int i = 0; i < obj.length; i++) complexTypes[i] = (ComplexType) obj[i];
 
             m = new HashMap<>();
 
@@ -594,7 +593,7 @@ public class SchemaFactory {
             simpleTypes = new SimpleType[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++) simpleTypes[i] = (SimpleType) (obj[i]);
+            for (int i = 0; i < obj.length; i++) simpleTypes[i] = (SimpleType) obj[i];
 
             m = new HashMap<>();
 
@@ -620,7 +619,7 @@ public class SchemaFactory {
             elements = new Element[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++) elements[i] = (Element) (obj[i]);
+            for (int i = 0; i < obj.length; i++) elements[i] = (Element) obj[i];
 
             m = new HashMap<>();
 
@@ -646,7 +645,7 @@ public class SchemaFactory {
             groups = new Group[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++) groups[i] = (Group) (obj[i]);
+            for (int i = 0; i < obj.length; i++) groups[i] = (Group) obj[i];
 
             m = new HashMap<>();
 
@@ -672,7 +671,7 @@ public class SchemaFactory {
             imports = new Schema[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++) imports[i] = (Schema) (obj[i]);
+            for (int i = 0; i < obj.length; i++) imports[i] = (Schema) obj[i];
 
             URI u1 = s1.getURI();
 
@@ -688,7 +687,7 @@ public class SchemaFactory {
                 }
             }
 
-            if ((s1.getPrefix() == null) || s1.getPrefix().equals("")) {
+            if (s1.getPrefix() == null || s1.getPrefix().equals("")) {
                 prefix = s2.getPrefix();
             } else {
                 prefix = s1.getPrefix();

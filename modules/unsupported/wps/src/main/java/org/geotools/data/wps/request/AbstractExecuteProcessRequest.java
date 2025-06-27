@@ -116,7 +116,7 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest i
         request.setVersion("1.0.0"); // TODO: un-hardcode
 
         // inputs - loop through inputs and add them
-        if ((this.inputs != null) && !this.inputs.isEmpty()) {
+        if (this.inputs != null && !this.inputs.isEmpty()) {
             DataInputsType1 inputtypes = Wps10Factory.eINSTANCE.createDataInputsType1();
 
             Set<Object> keyset = this.inputs.keySet();

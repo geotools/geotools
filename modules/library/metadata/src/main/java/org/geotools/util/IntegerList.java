@@ -189,17 +189,17 @@ public class IntegerList extends AbstractList<Integer> implements RandomAccess, 
         } else
             switch (bitCount) {
                 case 1:
-                    value |= (value << 1); // Fall through
+                    value |= value << 1; // Fall through
                 case 2:
-                    value |= (value << 2); // Fall through
+                    value |= value << 2; // Fall through
                 case 4:
-                    value |= (value << 4); // Fall through
+                    value |= value << 4; // Fall through
                 case 8:
-                    value |= (value << 8); // Fall through
+                    value |= value << 8; // Fall through
                 case 16:
-                    value |= (value << 16); // Fall through
+                    value |= value << 16; // Fall through
                 case 32:
-                    p = (value & 0xFFFFFFFFL) | ((long) value << 32);
+                    p = value & 0xFFFFFFFFL | (long) value << 32;
                     break;
                 default: { // General case (unoptimized)
                     for (int i = 0; i < size; i++) {
@@ -277,7 +277,7 @@ public class IntegerList extends AbstractList<Integer> implements RandomAccess, 
         offset = VALUE_SIZE - offset;
         if (offset < bitCount) {
             final int high = (int) values[++base];
-            value |= (high << offset);
+            value |= high << offset;
         }
         value &= mask;
         return value;
@@ -331,12 +331,12 @@ public class IntegerList extends AbstractList<Integer> implements RandomAccess, 
         index *= bitCount;
         int base = index >>> BASE_SHIFT;
         int offset = index & OFFSET_MASK;
-        values[base] &= ~(((long) mask) << offset);
-        values[base] |= ((long) value) << offset;
+        values[base] &= ~((long) mask << offset);
+        values[base] |= (long) value << offset;
         offset = VALUE_SIZE - offset;
         if (offset < bitCount) {
             value >>>= offset;
-            values[++base] &= ~(((long) mask) >>> offset);
+            values[++base] &= ~((long) mask >>> offset);
             values[base] |= value;
         }
     }

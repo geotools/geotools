@@ -232,6 +232,7 @@ class CategoryRegistry {
             try {
                 REGISTERABLE_SERVICE = Class.forName("javax.imageio.spi.RegisterableService");
             } catch (ClassNotFoundException ignore) {
+                // RegisterableService not available in all Java versions
             }
         }
 

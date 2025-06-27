@@ -24,16 +24,19 @@ import org.geotools.filter.FunctionFactory;
 
 public class ExampleFunctionFactory implements FunctionFactory {
 
+    @Override
     public List<FunctionName> getFunctionNames() {
         List<FunctionName> functionList = new ArrayList<>();
         functionList.add(SnapFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
+    @Override
     public Function function(String name, List<Expression> args, Literal fallback) {
         return function(new NameImpl(name), args, fallback);
     }
 
+    @Override
     public Function function(Name name, List<Expression> args, Literal fallback) {
         if (SnapFunction.NAME.getFunctionName().equals(name)) {
             return new SnapFunction(args, fallback);

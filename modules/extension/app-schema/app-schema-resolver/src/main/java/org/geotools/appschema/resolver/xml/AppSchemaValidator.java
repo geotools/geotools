@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -226,7 +227,7 @@ public class AppSchemaValidator {
         if (bytes == null) {
             // no encoding in declaration or unsupported encoding
             // fall back to platform default
-            bytes = xml.getBytes();
+            bytes = xml.getBytes(StandardCharsets.UTF_8);
         }
         try (InputStream input = new ByteArrayInputStream(bytes)) {
             validate(input, catalog);

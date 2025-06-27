@@ -40,6 +40,7 @@ import org.geotools.referencing.NamedIdentifier;
  * which the scale is true, all other meridians and parallels are curved, and the scale distortion increases rapidly
  * with increasing distance from the central meridian.
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class CassiniSoldner extends MapProjection {
 
     /** Meridian distance at the {@code latitudeOfOrigin}. Used for calculations for the ellipsoid. */
@@ -92,7 +93,7 @@ public class CassiniSoldner extends MapProjection {
         double sinphi = Math.sin(phi);
         double cosphi = Math.cos(phi);
 
-        double n = 1.0 / (Math.sqrt(1.0 - excentricitySquared * sinphi * sinphi));
+        double n = 1.0 / Math.sqrt(1.0 - excentricitySquared * sinphi * sinphi);
         double tn = Math.tan(phi);
         double t = tn * tn;
         double a1 = lam * cosphi;
@@ -100,7 +101,7 @@ public class CassiniSoldner extends MapProjection {
         double a2 = a1 * a1;
 
         double x = n * a1 * (1.0 - a2 * t * (C1 - (8.0 - t + 8.0 * c) * a2 * C2));
-        double y = (mlfn(phi, sinphi, cosphi)) - ml0 + n * tn * a2 * (0.5 + (5.0 - t + 6.0 * c) * a2 * C3);
+        double y = mlfn(phi, sinphi, cosphi) - ml0 + n * tn * a2 * (0.5 + (5.0 - t + 6.0 * c) * a2 * C3);
 
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -112,7 +113,7 @@ public class CassiniSoldner extends MapProjection {
     /** Provides the transform equations for the spherical case of the CassiniSoldner projection. */
     private static final class Spherical extends CassiniSoldner {
 
-        protected Spherical(ParameterValueGroup values) throws ParameterNotFoundException {
+        Spherical(ParameterValueGroup values) throws ParameterNotFoundException {
             super(values);
             assert isSpherical;
         }

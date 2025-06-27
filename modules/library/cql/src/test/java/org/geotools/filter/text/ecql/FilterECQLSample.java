@@ -278,7 +278,7 @@ public final class FilterECQLSample {
     /** @return the filter expected for the predicate required */
     public static Filter getSample(final String predcateRequested) {
         Filter sample = (Filter) SAMPLES.get(predcateRequested);
-        assert (sample != null) : "There is not a sample for " + predcateRequested;
+        assert sample != null : "There is not a sample for " + predcateRequested;
 
         return sample;
     }

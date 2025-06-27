@@ -265,7 +265,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                         partContent = partContent.getResolvedElementDeclaration();
                     }
                     if (child.getName().equals(partContent.getName())
-                            && ((child.getTargetNamespace() != null && partContent.getTargetNamespace() != null)
+                            && (child.getTargetNamespace() != null && partContent.getTargetNamespace() != null
                                     ? child.getTargetNamespace().equals(partContent.getTargetNamespace())
                                     : true)) {
                         sortedProperties.add(prop);

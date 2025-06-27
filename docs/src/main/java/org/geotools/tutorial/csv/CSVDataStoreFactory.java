@@ -30,16 +30,19 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     public CSVDataStoreFactory() {}
 
     /** No implementation hints required at this time */
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
     // definition end
     // metadata start
+    @Override
     public String getDisplayName() {
         return "CSV";
     }
 
+    @Override
     public String getDescription() {
         return "Comma delimited text file.";
     }
@@ -56,6 +59,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
      *
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
      */
+    @Override
     public synchronized boolean isAvailable() {
         if (isAvailable == null) {
             try {
@@ -75,6 +79,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     public static final Param FILE_PARAM =
             new Param("file", File.class, "Comma seperated value file", true, null, new KVP(Param.EXT, "csv"));
 
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {FILE_PARAM};
     }
@@ -87,6 +92,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
      * @param params connection parameters
      * @return true for connection parameters indicating a csv file
      */
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         try {
             File file = (File) FILE_PARAM.lookUp(params);
@@ -102,6 +108,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     // canProcess end
 
     // createDataStore start
+    @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         File file = (File) FILE_PARAM.lookUp(params);
         return new CSVDataStore(file);
@@ -110,6 +117,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     // createDataStore end
 
     // createNewDataStore start
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException("CSV Datastore is read only");
     }

@@ -99,7 +99,7 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
             }
         }
 
-        return (builder.getGraph());
+        return builder.getGraph();
     }
 
     /**

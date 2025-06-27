@@ -446,7 +446,7 @@ public class BandMerge extends OperationJAI {
          * - Color model
          */
         RenderingHints hints = ImageUtilities.getRenderingHints(parameters.getSource());
-        ImageLayout layout = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
+        ImageLayout layout = hints != null ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
 
         // Selection of the Bounding Box to use if present
         ReferencedEnvelope bbox = parameters.bbox;

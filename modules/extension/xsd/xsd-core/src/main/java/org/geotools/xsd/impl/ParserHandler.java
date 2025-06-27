@@ -344,7 +344,7 @@ public class ParserHandler extends DefaultHandler2 {
         namespaces.pushContext();
 
         // create a qName object from the string
-        if ((uri == null) || uri.equals("")) {
+        if (uri == null || uri.equals("")) {
             uri = namespaces.getURI("");
         }
 
@@ -357,7 +357,7 @@ public class ParserHandler extends DefaultHandler2 {
         if (handler != null) {
             // we may have actually matched an element whose namespace does
             // not match the one passed in, update the context if so
-            if ((handler.getElementDeclaration().getTargetNamespace() != null)
+            if (handler.getElementDeclaration().getTargetNamespace() != null
                     && !handler.getElementDeclaration().getTargetNamespace().equals(uri)) {
 
                 if (!handler.getElementDeclaration().isAbstract()) {
@@ -394,7 +394,7 @@ public class ParserHandler extends DefaultHandler2 {
             // perform a lookup in the context for an element factory that create a child handler
             List handlerFactories = context.getComponentInstancesOfType(HandlerFactory.class);
 
-            for (Iterator hf = handlerFactories.iterator(); (handler == null) && hf.hasNext(); ) {
+            for (Iterator hf = handlerFactories.iterator(); handler == null && hf.hasNext(); ) {
                 HandlerFactory handlerFactory = (HandlerFactory) hf.next();
                 handler = handlerFactory.createElementHandler(qualifiedName, parent, this);
             }
@@ -532,7 +532,7 @@ public class ParserHandler extends DefaultHandler2 {
             List<XSDSchemaLocator> locators = Arrays.asList(findSchemaLocators());
             List<XSDSchemaLocationResolver> resolvers = Arrays.asList(findSchemaLocationResolvers());
 
-            if ((locations != null) && (locations.length > 0)) {
+            if (locations != null && locations.length > 0) {
                 // parse each namespace location pair into schema objects
                 schemas = new XSDSchema[locations.length / 2];
 
@@ -635,7 +635,7 @@ public class ParserHandler extends DefaultHandler2 {
                 schemas = nschemas;
             }
 
-            if ((schemas == null) || (schemas.length == 0)) {
+            if (schemas == null || schemas.length == 0) {
                 logger.warning("Could not find a schema");
 
                 if (isStrict()) {
@@ -728,7 +728,7 @@ public class ParserHandler extends DefaultHandler2 {
         }
 
         //            }
-        if (!isStrict() && (locations == null)) {
+        if (!isStrict() && locations == null) {
             // use the configuration
             logger.finer("No schemaLocation found, using '"
                     + config.getNamespaceURI()
@@ -852,7 +852,7 @@ public class ParserHandler extends DefaultHandler2 {
     protected XSDSchemaLocator[] findSchemaLocators() {
         List<XSDSchemaLocator> l = Schemas.getComponentInstancesOfType(context, XSDSchemaLocator.class);
 
-        if ((l == null) || l.isEmpty()) {
+        if (l == null || l.isEmpty()) {
             return new XSDSchemaLocator[] {};
         }
 
@@ -863,7 +863,7 @@ public class ParserHandler extends DefaultHandler2 {
         List<XSDSchemaLocationResolver> l =
                 Schemas.getComponentInstancesOfType(context, XSDSchemaLocationResolver.class);
 
-        if ((l == null) || l.isEmpty()) {
+        if (l == null || l.isEmpty()) {
             return new XSDSchemaLocationResolver[] {};
         }
 

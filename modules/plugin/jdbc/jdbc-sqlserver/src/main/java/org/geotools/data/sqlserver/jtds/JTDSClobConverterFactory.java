@@ -62,7 +62,7 @@ public class JTDSClobConverterFactory implements ConverterFactory {
         }
 
         // can only convert towards String
-        if (!(String.class.equals(target))) {
+        if (!String.class.equals(target)) {
             LOGGER.finest("Target not a string");
             return null;
         }
@@ -77,7 +77,7 @@ public class JTDSClobConverterFactory implements ConverterFactory {
         return converter;
     }
 
-    class JTDSDateConverter implements Converter {
+    static class JTDSDateConverter implements Converter {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

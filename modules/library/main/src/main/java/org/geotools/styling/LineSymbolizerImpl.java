@@ -138,8 +138,8 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((offset == null) ? 0 : offset.hashCode());
-        result = prime * result + ((stroke == null) ? 0 : stroke.hashCode());
+        result = prime * result + (offset == null ? 0 : offset.hashCode());
+        result = prime * result + (stroke == null ? 0 : stroke.hashCode());
         return result;
     }
 

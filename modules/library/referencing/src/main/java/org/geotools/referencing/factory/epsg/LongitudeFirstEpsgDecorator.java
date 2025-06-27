@@ -80,7 +80,7 @@ public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
      * @param userHints An optional set of hints, or {@code null} for the default values.
      */
     public LongitudeFirstEpsgDecorator(final Hints userHints) {
-        super(userHints, AbstractEpsgMediator.PRIORITY + relativePriority(userHints));
+        super(userHints, AbstractEpsgMediator.PRIORITY + relativePriority());
 
         // See comment in createBackingStore() method body.
         hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
@@ -104,7 +104,7 @@ public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
      * Returns the priority to use relative to the {@link ThreadedEpsgFactory} priority. The default priority should be
      * lower, except if the <code>{@value #SYSTEM_DEFAULT_KEY}</code> system property is set to {@code true}.
      */
-    private static int relativePriority(Hints userHints) {
+    private static int relativePriority() {
         try {
             if (Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
                 return +10;
@@ -159,6 +159,6 @@ public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
         } catch (FactoryRegistryException exception) {
             throw new FactoryException(exception);
         }
-        return new OrderedAxisAuthorityFactory(factory, new Hints(hints), null);
+        return new OrderedAxisAuthorityFactory(factory, new Hints(hints));
     }
 }

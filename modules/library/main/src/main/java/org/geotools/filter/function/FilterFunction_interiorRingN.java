@@ -49,13 +49,13 @@ public class FilterFunction_interiorRingN extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = (getExpression(1).evaluate(feature, Integer.class)).intValue();
+            arg1 = getExpression(1).evaluate(feature, Integer.class).intValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
                     "Filter Function problem for function interiorRingN argument #1 - expected type int");
         }
 
-        return (StaticGeometry.interiorRingN(arg0, arg1));
+        return StaticGeometry.interiorRingN(arg0, arg1);
     }
 }

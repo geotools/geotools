@@ -58,7 +58,7 @@ public final class ColorUtilities {
      *     255, inclusive.
      */
     public static int getIntFromColor(int r, int g, int b, int a) {
-        return ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
+        return (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF) << 0;
     }
 
     /**
@@ -132,17 +132,17 @@ public final class ColorUtilities {
         for (int i = lower; ; ) {
             final int C0 = colors[base + 0].getRGB();
             final int C1 = colors[base + 1].getRGB();
-            final int A0 = (C0 >>> 24) & 0xFF, A1 = ((C1 >>> 24) & 0xFF) - A0;
-            final int R0 = (C0 >>> 16) & 0xFF, R1 = ((C1 >>> 16) & 0xFF) - R0;
-            final int G0 = (C0 >>> 8) & 0xFF, G1 = ((C1 >>> 8) & 0xFF) - G0;
-            final int B0 = (C0) & 0xFF, B1 = ((C1) & 0xFF) - B0;
+            final int A0 = C0 >>> 24 & 0xFF, A1 = (C1 >>> 24 & 0xFF) - A0;
+            final int R0 = C0 >>> 16 & 0xFF, R1 = (C1 >>> 16 & 0xFF) - R0;
+            final int G0 = C0 >>> 8 & 0xFF, G1 = (C1 >>> 8 & 0xFF) - G0;
+            final int B0 = C0 & 0xFF, B1 = (C1 & 0xFF) - B0;
             final int oldBase = base;
             do {
                 final double delta = index - base;
-                ARGB[i] = (roundByte(A0 + delta * A1) << 24)
-                        | (roundByte(R0 + delta * R1) << 16)
-                        | (roundByte(G0 + delta * G1) << 8)
-                        | (roundByte(B0 + delta * B1));
+                ARGB[i] = roundByte(A0 + delta * A1) << 24
+                        | roundByte(R0 + delta * R1) << 16
+                        | roundByte(G0 + delta * G1) << 8
+                        | roundByte(B0 + delta * B1);
                 if (++i == upper) {
                     return;
                 }
@@ -187,7 +187,7 @@ public final class ColorUtilities {
         int transparent = -1;
         final int length = ARGB.length;
         for (int i = 0; i < length; i++) {
-            final int alpha = (ARGB[i] & 0xFF000000);
+            final int alpha = ARGB[i] & 0xFF000000;
             if (alpha != 0xFF000000) {
                 if (alpha == 0x00000000 && transparent < 0) {
                     transparent = i;
@@ -227,8 +227,8 @@ public final class ColorUtilities {
             count++;
             max >>= 1;
         } while (max != 0);
-        assert (1 << count) >= mapSize : mapSize;
-        assert (1 << (count - 1)) < mapSize : mapSize;
+        assert 1 << count >= mapSize : mapSize;
+        assert 1 << count - 1 < mapSize : mapSize;
         return count;
     }
 
@@ -237,7 +237,7 @@ public final class ColorUtilities {
      * {@link DataBuffer#TYPE_BYTE} or {@link DataBuffer#TYPE_USHORT}.
      */
     public static int getTransferType(final int mapSize) {
-        return (mapSize <= 256) ? DataBuffer.TYPE_BYTE : DataBuffer.TYPE_USHORT;
+        return mapSize <= 256 ? DataBuffer.TYPE_BYTE : DataBuffer.TYPE_USHORT;
     }
 
     /**
@@ -250,7 +250,7 @@ public final class ColorUtilities {
         color[2] /= 0.8249; //                    1.08883;
         for (int i = 0; i < 3; i++) {
             final float c = color[i];
-            color[i] = (float) ((c > 216 / 24389f) ? Math.pow(c, 1.0 / 3) : ((24389 / 27.0) * c + 16) / 116);
+            color[i] = (float) (c > 216 / 24389f ? Math.pow(c, 1.0 / 3) : (24389 / 27.0 * c + 16) / 116);
         }
         final float L = 116 * color[1] - 16;
         final float a = 500 * (color[0] - color[1]);
@@ -474,8 +474,8 @@ public final class ColorUtilities {
      */
     public static int findColorIndex(Color bgColor, IndexColorModel icm) {
         if (bgColor == null)
-            throw new NullPointerException((MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bgColor")));
-        if (icm == null) throw new NullPointerException((MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "icm")));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bgColor"));
+        if (icm == null) throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "icm"));
 
         final int r = bgColor.getRed();
         final int g = bgColor.getGreen();

@@ -40,6 +40,7 @@ public class GraphExamples {
 
         fc.accepts(
                 new FeatureVisitor() {
+                    @Override
                     public void visit(Feature feature) {
                         generator.add(feature);
                     }
@@ -56,6 +57,7 @@ public class GraphExamples {
                 return count;
             }
 
+            @Override
             public int visit(Graphable component) {
                 Iterator related = component.getRelated();
                 if (related.hasNext() == false) {

@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -271,7 +272,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
 
         DocumentBuilder b = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         String xml = xmlBox.getXml();
-        Document doc = b.parse(new ByteArrayInputStream(xml.getBytes()));
+        Document doc = b.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
 
         // this is a bit lax, locates the first RectifiedGrid in the GML and then
         // parses it. GDAL is doing the same.
@@ -622,7 +623,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
             coverageName = inputFile.getName();
 
             final int dotIndex = coverageName.lastIndexOf(".");
-            coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
+            coverageName = dotIndex == -1 ? coverageName : coverageName.substring(0, dotIndex);
 
             // //
             //
@@ -659,7 +660,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      * @see org.geotools.api.coverage.grid.GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
+    public GridCoverage2D read(GeneralParameterValue... params) throws IOException {
 
         if (LOGGER.isLoggable(FINE)) {
             LOGGER.fine("Reading image from " + sourceURL.toString());

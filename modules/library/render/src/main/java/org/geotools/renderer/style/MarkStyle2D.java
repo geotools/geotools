@@ -91,7 +91,7 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
         if (shape != null) {
             Rectangle2D bounds = shape.getBounds2D();
             double shapeSize =
-                    (maxMarkSizeEnabled ? Math.max(bounds.getWidth(), bounds.getHeight()) : bounds.getHeight());
+                    maxMarkSizeEnabled ? Math.max(bounds.getWidth(), bounds.getHeight()) : bounds.getHeight();
             double scale = size / shapeSize;
             TransformedShape ts = new TransformedShape();
             ts.shape = shape;

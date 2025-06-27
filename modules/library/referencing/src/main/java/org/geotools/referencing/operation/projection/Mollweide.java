@@ -116,7 +116,7 @@ public class Mollweide extends MapProjection {
             if (abs(V) < LOOP_TOL) break;
         }
         if (i == 0) {
-            phi = (phi < 0) ? -PI / 2 : PI / 2;
+            phi = phi < 0 ? -PI / 2 : PI / 2;
         } else {
             phi *= 0.5;
         }

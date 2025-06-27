@@ -58,6 +58,6 @@ public class FilterFunction_difference extends FunctionExpressionImpl {
                     "Filter Function problem for function difference argument #1 - expected type Geometry");
         }
 
-        return (StaticGeometry.difference(arg0, arg1));
+        return StaticGeometry.difference(arg0, arg1);
     }
 }

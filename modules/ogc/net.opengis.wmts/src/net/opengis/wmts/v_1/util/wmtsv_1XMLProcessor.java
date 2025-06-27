@@ -27,7 +27,7 @@ public class wmtsv_1XMLProcessor extends XMLProcessor {
      * @generated
      */
     public wmtsv_1XMLProcessor() {
-        super((EPackage.Registry.INSTANCE));
+        super(EPackage.Registry.INSTANCE);
         wmtsv_1Package.eINSTANCE.eClass();
     }
     

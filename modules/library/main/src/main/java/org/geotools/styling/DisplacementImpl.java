@@ -223,11 +223,11 @@ public class DisplacementImpl implements Cloneable, org.geotools.api.style.Displ
         int result = 17;
 
         if (displacementX != null) {
-            result = (result * PRIME) + displacementX.hashCode();
+            result = result * PRIME + displacementX.hashCode();
         }
 
         if (displacementY != null) {
-            result = (result * PRIME) + displacementY.hashCode();
+            result = result * PRIME + displacementY.hashCode();
         }
 
         return result;

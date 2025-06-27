@@ -137,7 +137,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
     public abstract Mark getTriangleMark();
 
     @Override
-    public abstract FeatureTypeStyle createFeatureTypeStyle(Rule[] rules);
+    public abstract FeatureTypeStyle createFeatureTypeStyle(Rule... rules);
 
     @Override
     public abstract LinePlacement createLinePlacement(Expression offset);

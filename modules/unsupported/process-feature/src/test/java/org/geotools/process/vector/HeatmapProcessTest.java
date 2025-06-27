@@ -81,7 +81,7 @@ public class HeatmapProcessTest {
 
         // peaks are roughly equal
         float peakDiff = Math.abs(center1 - center2);
-        assert (peakDiff < center1 / 10);
+        assert peakDiff < center1 / 10;
 
         // dip between peaks
         assertTrue(midway > center1 / 2);

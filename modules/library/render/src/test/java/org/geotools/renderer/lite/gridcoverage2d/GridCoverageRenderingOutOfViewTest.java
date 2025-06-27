@@ -90,7 +90,7 @@ public class GridCoverageRenderingOutOfViewTest {
 
         URL coverageFile = org.geotools.test.TestData.url(GridCoverageRendererTest.class, "arithmetic.tif");
         GeoTiffReader reader = new GeoTiffReader(coverageFile);
-        GridCoverage2D coverage = reader.read(null);
+        GridCoverage2D coverage = reader.read();
         CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
 
         // Setup params for a tiny bbox and oversampling
@@ -128,7 +128,7 @@ public class GridCoverageRenderingOutOfViewTest {
         WorldImageReader reader = null;
         try {
             reader = new WorldImageReader(f);
-            return reader.read(null);
+            return reader.read();
         } finally {
             if (reader != null) reader.dispose();
         }

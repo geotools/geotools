@@ -520,7 +520,7 @@ public class NetCDFProjection {
                 // -180, 180
                 value = attribute.getNumericValue().doubleValue();
                 if (netCDFattributeName.contains("meridian") || netCDFattributeName.contains("longitude")) {
-                    value = value - (360) * Math.floor(value / (360) + 0.5);
+                    value = value - 360 * Math.floor(value / 360 + 0.5);
                 }
             }
         }

@@ -872,7 +872,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public Function function(String name, Expression[] args) {
+    public Function function(String name, Expression... args) {
         Function function = functionFinder.findFunction(name, Arrays.asList(args));
         return function;
     }
@@ -1141,7 +1141,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public SpatialOperator spatialOperator(String name, GeometryOperand[] geometryOperands) {
+    public SpatialOperator spatialOperator(String name, GeometryOperand... geometryOperands) {
         return new SpatialOperatorImpl(name, geometryOperands);
     }
 
@@ -1195,12 +1195,12 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public Functions functions(FunctionName[] functionNames) {
+    public Functions functions(FunctionName... functionNames) {
         return new FunctionsImpl(functionNames);
     }
 
     @Override
-    public SpatialOperators spatialOperators(SpatialOperator[] spatialOperators) {
+    public SpatialOperators spatialOperators(SpatialOperator... spatialOperators) {
         return new SpatialOperatorsImpl(spatialOperators);
     }
 
@@ -1210,7 +1210,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public ComparisonOperators comparisonOperators(Operator[] comparisonOperators) {
+    public ComparisonOperators comparisonOperators(Operator... comparisonOperators) {
         return new ComparisonOperatorsImpl(comparisonOperators);
     }
 
@@ -1247,7 +1247,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public TemporalCapabilities temporalCapabilities(TemporalOperator[] temporalOperators) {
+    public TemporalCapabilities temporalCapabilities(TemporalOperator... temporalOperators) {
         return new TemporalCapabilitiesImpl(Arrays.asList(temporalOperators));
     }
 

@@ -50,7 +50,7 @@ public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
     }
 
     @Override
-    public void setLayerFeatureConstraints(FeatureTypeConstraint[] featureTypeConstraints) {
+    public void setLayerFeatureConstraints(FeatureTypeConstraint... featureTypeConstraints) {
         this.featureTypeConstraints.clear();
         this.featureTypeConstraints.addAll(Arrays.asList(featureTypeConstraints));
     }

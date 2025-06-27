@@ -161,6 +161,7 @@ public class GraticuleLabelPointProcess implements VectorProcess {
         return sftb.buildFeatureType();
     }
 
+    @SuppressWarnings("MissingCasesInEnumSwitch") // REVISIT: add default case to switch?
     private SimpleFeature setPoint(
             SimpleFeature feature, PreparedGeometry bounds, PositionEnum position, double offset) {
 
@@ -291,6 +292,7 @@ public class GraticuleLabelPointProcess implements VectorProcess {
         return null;
     }
 
+    @SuppressWarnings("MissingCasesInEnumSwitch") // REVISIT: add default case to switch?
     private SimpleFeature buildFeature(Point p, SimpleFeature feature, PositionEnum position, double offset) {
         log.finest("building Feature at " + p + " pos:" + position);
         Collection<Property> atts = feature.getProperties();

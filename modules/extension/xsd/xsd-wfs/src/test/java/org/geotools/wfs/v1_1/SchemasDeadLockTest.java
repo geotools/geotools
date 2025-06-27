@@ -60,7 +60,7 @@ public class SchemasDeadLockTest {
                 executorService.awaitTermination(20, TimeUnit.SECONDS));
     }
 
-    public class XSDSchemaFetcher implements Callable<XSDSchema> {
+    public static class XSDSchemaFetcher implements Callable<XSDSchema> {
 
         private XSD xsd;
         private CountDownLatch threadCreationLatch;

@@ -433,9 +433,9 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
                 // set all internal values to null equivalent.
                 // if coordinates exist, send on down the filter chain
                 // otherwise, throw an exception
-                if ((!x.isNaN()) && (!y.isNaN()) && (z.isNaN())) {
+                if (!x.isNaN() && !y.isNaN() && z.isNaN()) {
                     parent.gmlCoordinates(x.doubleValue(), y.doubleValue());
-                } else if ((!x.isNaN()) && (!y.isNaN()) && (!z.isNaN())) {
+                } else if (!x.isNaN() && !y.isNaN() && !z.isNaN()) {
                     parent.gmlCoordinates(x.doubleValue(), y.doubleValue(), z.doubleValue());
                 }
 

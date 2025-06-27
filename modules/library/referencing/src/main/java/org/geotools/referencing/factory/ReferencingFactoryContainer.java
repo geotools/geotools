@@ -322,7 +322,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
              * consecutives. Constructs the new 3D CS. If the two above-cited components are the
              * only ones, the result is returned directly. Otherwise, a new compound CRS is created.
              */
-            final boolean xyFirst = (hi < vi);
+            final boolean xyFirst = hi < vi;
             final SingleCRS single = toGeodetic3D(count == 2 ? crs : null, horizontal, vertical, xyFirst);
             if (count == 2) {
                 return single;

@@ -61,7 +61,7 @@ public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
         if (nullCheck == null) {
             return false;
         } else {
-            return (nullCheck.evaluate(feature) == null);
+            return nullCheck.evaluate(feature) == null;
         }
     }
 
@@ -98,7 +98,7 @@ public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
     @Override
     public int hashCode() {
         int result = 17;
-        result = (37 * result) + ((nullCheck == null) ? 0 : nullCheck.hashCode());
+        result = 37 * result + (nullCheck == null ? 0 : nullCheck.hashCode());
 
         return result;
     }

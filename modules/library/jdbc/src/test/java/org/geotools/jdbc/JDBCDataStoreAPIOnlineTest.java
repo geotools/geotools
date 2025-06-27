@@ -894,10 +894,10 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         assertSame(dataStore, road.getDataStore());
 
         int count = road.getCount(Query.ALL);
-        assertTrue((count == 3) || (count == -1));
+        assertTrue(count == 3 || count == -1);
 
         ReferencedEnvelope bounds = road.getBounds(Query.ALL);
-        assertTrue((bounds == null) || areReferencedEnvelopesEqual(bounds, td.roadBounds));
+        assertTrue(bounds == null || areReferencedEnvelopesEqual(bounds, td.roadBounds));
 
         SimpleFeatureCollection all = road.getFeatures();
         assertEquals(3, all.size());
@@ -1163,13 +1163,13 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             }
 
             road1.unLockFeatures(td.rd1Filter);
-            assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue)));
+            assertFalse(isLocked(tname("road"), tname("road") + "." + td.initialFidValue));
             assertTrue(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue + 1)));
             assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue + 2)));
 
             t2.addAuthorization(lockB.getAuthorization());
             road2.unLockFeatures(td.rd2Filter);
-            assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue)));
+            assertFalse(isLocked(tname("road"), tname("road") + "." + td.initialFidValue));
             assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue + 1)));
             assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue + 2)));
         }
@@ -1181,15 +1181,15 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         SimpleFeatureLocking road = (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
         road.setFeatureLock(lock);
-        assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue)));
+        assertFalse(isLocked(tname("road"), tname("road") + "." + td.initialFidValue));
 
         road.lockFeatures(td.rd1Filter);
-        assertTrue(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue)));
+        assertTrue(isLocked(tname("road"), tname("road") + "." + td.initialFidValue));
         long then = System.currentTimeMillis();
         do {
             Thread.sleep(1000);
         } while (System.currentTimeMillis() - then < 1000);
-        assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue)));
+        assertFalse(isLocked(tname("road"), tname("road") + "." + td.initialFidValue));
     }
 
     int count(String typeName) throws IOException {
@@ -1298,7 +1298,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     boolean contains(Object[] array, Object expected) {
-        if ((array == null) || (array.length == 0)) {
+        if (array == null || array.length == 0) {
             return false;
         }
 
@@ -1414,7 +1414,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     /** Like contain but based on match rather than equals */
     boolean containsLax(SimpleFeature[] array, SimpleFeature expected) {
-        if ((array == null) || (array.length == 0)) {
+        if (array == null || array.length == 0) {
             return false;
         }
 
@@ -1521,9 +1521,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             Object av = actual.getAttribute(i);
             Object ev = expected.getAttribute(i);
 
-            if ((av == null) && (ev != null)) {
+            if (av == null && ev != null) {
                 return false;
-            } else if ((ev == null) && (av != null)) {
+            } else if (ev == null && av != null) {
                 return false;
             } else if (!av.equals(ev)) {
                 return false;

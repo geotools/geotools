@@ -50,7 +50,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         assertTrue(array instanceof JSONArray);
         JSONArray jarray = (JSONArray) array;
         assertEquals(4, jarray.size());
-        assertEquals("string", (jarray.get(1)));
+        assertEquals("string", jarray.get(1));
 
         // test for literal JSONObject
         Object obj = getExpressionEvaluation(j, "circle-color");

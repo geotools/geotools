@@ -47,6 +47,6 @@ public class DepthFirstTopologicalIterator extends BreadthFirstTopologicalIterat
      */
     @Override
     protected Queue<Graphable> buildQueue(Graph graph) {
-        return (Collections.asLifoQueue(new ArrayDeque<>(graph.getNodes().size())));
+        return Collections.asLifoQueue(new ArrayDeque<>(graph.getNodes().size()));
     }
 }

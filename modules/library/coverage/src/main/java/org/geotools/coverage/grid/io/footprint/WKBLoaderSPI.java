@@ -33,7 +33,7 @@ public class WKBLoaderSPI implements FootprintLoaderSpi {
     }
 
     /** Loads WKB files */
-    public class WKBLoader implements FootprintLoader {
+    public static class WKBLoader implements FootprintLoader {
 
         @Override
         public Geometry loadFootprint(String pathNoExtension) throws Exception {

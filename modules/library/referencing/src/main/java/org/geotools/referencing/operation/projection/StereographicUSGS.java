@@ -140,7 +140,7 @@ class StereographicUSGS extends Stereographic {
         final double cosce = cos(ce);
         final double since = sin(ce);
         final boolean rhoIs0 = abs(rho) < EPSILON;
-        final double chi = rhoIs0 ? chi1 : asin(cosce * sinChi1 + (y * since * cosChi1 / rho));
+        final double chi = rhoIs0 ? chi1 : asin(cosce * sinChi1 + y * since * cosChi1 / rho);
         final double tp = tan(PI / 4.0 + chi / 2.0);
 
         // parts of (21-36) used to calculate longitude
@@ -155,7 +155,7 @@ class StereographicUSGS extends Stereographic {
             final double phi = 2 * atan(tp * pow((1 + esinphi) / (1 - esinphi), halfe)) - PI / 2;
             if (abs(phi - phi0) < ITERATION_TOLERANCE) {
                 // TODO: checking rho may be redundant
-                x = rhoIs0 || (abs(t) < EPSILON && abs(ct) < EPSILON) ? 0.0 : atan2(t, ct);
+                x = rhoIs0 || abs(t) < EPSILON && abs(ct) < EPSILON ? 0.0 : atan2(t, ct);
                 y = phi;
                 break;
             }
@@ -266,7 +266,7 @@ class StereographicUSGS extends Stereographic {
                 final double ct = rho * cosphi0 * cosc - y * sinphi0 * sinc; // (20-15)
                 final double t = x * sinc; // (20-15)
                 y = asin(cosc * sinphi0 + y * sinc * cosphi0 / rho); // (20-14)
-                x = (abs(ct) < EPSILON && abs(t) < EPSILON) ? 0.0 : atan2(t, ct);
+                x = abs(ct) < EPSILON && abs(t) < EPSILON ? 0.0 : atan2(t, ct);
             }
             assert checkInverseTransform(x, y, ptDst);
             if (ptDst != null) {

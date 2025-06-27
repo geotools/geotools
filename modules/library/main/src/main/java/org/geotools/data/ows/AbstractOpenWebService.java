@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,8 @@ import org.geotools.util.logging.Logging;
  *
  * @author Richard Gould
  */
-public abstract class AbstractOpenWebService<C extends Capabilities, R extends Object> {
+@SuppressWarnings("SynchronizeOnNonFinalField") // some methods synchronize on capabilities
+public abstract class AbstractOpenWebService<C extends Capabilities, R> {
 
     private HTTPClient httpClient;
     protected final URL serverURL;
@@ -259,7 +261,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             }
         }
 
-        while ((minClient <= test) && (test <= maxClient)) {
+        while (minClient <= test && test <= maxClient) {
             Specification tempSpecification = specs[test];
             String clientVersion = tempSpecification.getVersion();
 
@@ -370,7 +372,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
             if (test.compareTo(version) < 0) {
 
-                if ((before == null) || (before.compareTo(test) < 0)) {
+                if (before == null || before.compareTo(test) < 0) {
                     before = test;
                 }
             }
@@ -397,7 +399,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             String test = (String) o;
 
             if (test.compareTo(version) > 0) {
-                if ((after == null) || (after.compareTo(test) < 0)) {
+                if (after == null || after.compareTo(test) < 0) {
                     after = test;
                 }
             }
@@ -462,7 +464,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         InputStream in;
         if (LOGGER.isLoggable(Level.FINE)) {
             byte[] byteArray = out.toByteArray();
-            LOGGER.fine(new String(byteArray));
+            LOGGER.fine(new String(byteArray, StandardCharsets.UTF_8));
             in = new ByteArrayInputStream(byteArray);
         } else {
             in = new ByteArrayInputStream(out.toByteArray());

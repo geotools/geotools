@@ -58,6 +58,6 @@ public class FilterFunction_symDifference extends FunctionExpressionImpl {
                     "Filter Function problem for function symDifference argument #1 - expected type Geometry");
         }
 
-        return (StaticGeometry.symDifference(arg0, arg1));
+        return StaticGeometry.symDifference(arg0, arg1);
     }
 }

@@ -165,7 +165,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
         // where the CM and the SM are valid. those will be employed overriding
         // a the possibility to expand the color model.
         final boolean asPhotographicStrategy = sourceImage.getColorModel() instanceof IndexColorModel;
-        if (!(asPhotographicStrategy)) targetHints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
+        if (!asPhotographicStrategy) targetHints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
         else {
             targetHints.add(ImageUtilities.REPLACE_INDEX_COLOR_MODEL);
             layout.unsetValid(ImageLayout.COLOR_MODEL_MASK);

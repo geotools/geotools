@@ -60,7 +60,7 @@ public class PlanetaryStoreTest {
                         .map(f -> (String) f.getAttribute("s2:product_uri"))
                         .filter(u -> !uniqueProductUri.add(u))
                         .findFirst()
-                        .ifPresent((u) -> Assert.fail("Same uri reappeared: " + u));
+                        .ifPresent(u -> Assert.fail("Same uri reappeared: " + u));
 
             } finally {
                 store.dispose();

@@ -70,8 +70,8 @@ public abstract class VerticalTransform extends AbstractMathTransform {
         }
         while (--numPts >= 0) {
             final float x, y, z;
-            dstPts[dstOff + 0] = (x = srcPts[srcOff + 0]);
-            dstPts[dstOff + 1] = (y = srcPts[srcOff + 1]);
+            dstPts[dstOff + 0] = x = srcPts[srcOff + 0];
+            dstPts[dstOff + 1] = y = srcPts[srcOff + 1];
             dstPts[dstOff + 2] = (float) ((z = srcPts[srcOff + 2]) + heightOffset(x, y, z));
             srcOff += step;
             dstOff += step;
@@ -92,8 +92,8 @@ public abstract class VerticalTransform extends AbstractMathTransform {
         }
         while (--numPts >= 0) {
             final double x, y, z;
-            dstPts[dstOff + 0] = (x = srcPts[srcOff + 0]);
-            dstPts[dstOff + 1] = (y = srcPts[srcOff + 1]);
+            dstPts[dstOff + 0] = x = srcPts[srcOff + 0];
+            dstPts[dstOff + 1] = y = srcPts[srcOff + 1];
             dstPts[dstOff + 2] = (z = srcPts[srcOff + 2]) + heightOffset(x, y, z);
             srcOff += step;
             dstOff += step;

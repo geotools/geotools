@@ -197,7 +197,7 @@ public class GMLEncodingUtils {
                 // get the value
                 Object attributeValue = ((SimpleFeature) feature).getAttribute(attribute.getName());
                 if (attributeValue != null && attributeValue instanceof Geometry) {
-                    JTS.setCRS(((Geometry) attributeValue), featureType.getCoordinateReferenceSystem());
+                    JTS.setCRS((Geometry) attributeValue, featureType.getCoordinateReferenceSystem());
                 }
                 properties.add(new Object[] {particle, attributeValue});
             } else {
@@ -442,8 +442,8 @@ public class GMLEncodingUtils {
                 || name.equals(gml.qName("_Curve"))
                 || name.equals(gml.qName("AbstractCurve"))
                 || name.equals(gml.qName("MultiCurve"))
-                || (includeAbstractGeometry
-                        && (name.equals(gml.qName("_Geometry")) || name.equals(gml.qName("AbstractGeometry"))))) {
+                || includeAbstractGeometry
+                        && (name.equals(gml.qName("_Geometry")) || name.equals(gml.qName("AbstractGeometry")))) {
             // if the geometry is null, return null
             if (isEmpty(geometry) || makeEmpty) {
                 return null;

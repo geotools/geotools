@@ -53,7 +53,7 @@ public class FeatureTransformerTest extends XmlTestSupport {
     public void testRemoveInvalidXMLChars() throws Exception {
         SimpleFeatureType ft = DataUtilities.createType("invalidChars", "the_geom:Point,data:String");
         SimpleFeature feature = SimpleFeatureBuilder.build(
-                ft, new Object[] {new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"}, "123");
+                ft, new Object[] {new WKTReader().read("POINT(0 0)"), "One " + (char) 0x7 + " test"}, "123");
         SimpleFeatureCollection fc = DataUtilities.collection(feature);
 
         FeatureTransformer tx = new FeatureTransformer();

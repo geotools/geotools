@@ -106,7 +106,7 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
         if (ssx <= 1 && ssx >= source.getWidth()) return false;
         if (ssy <= 1 && ssy >= source.getHeight()) return false;
         if (alphaThreashold < 0 || alphaThreashold > 255) return false;
-        if (numColors <= 0 || (numColors > 256)) return false;
+        if (numColors <= 0 || numColors > 256) return false;
         return true;
     }
 }

@@ -55,12 +55,12 @@ public class UnionFeatureCollection implements VectorProcess {
             @DescribeParameter(name = "second", description = "Second feature collection")
                     SimpleFeatureCollection secondFeatures)
             throws ClassNotFoundException {
-        if (!(firstFeatures
+        if (!firstFeatures
                 .features()
                 .next()
                 .getDefaultGeometry()
                 .getClass()
-                .equals(secondFeatures.features().next().getDefaultGeometry().getClass()))) {
+                .equals(secondFeatures.features().next().getDefaultGeometry().getClass())) {
             throw new ProcessException("Different default geometries, cannot perform union");
         } else {
             return new UnitedFeatureCollection(firstFeatures, secondFeatures);

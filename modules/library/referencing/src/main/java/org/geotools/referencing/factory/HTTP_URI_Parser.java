@@ -52,7 +52,7 @@ final class HTTP_URI_Parser extends URI_Parser {
      * @param version the version of the resource or null if none
      * @param code the resource code
      */
-    protected HTTP_URI_Parser(String uri, URI_Type type, String authority, Version version, String code) {
+    HTTP_URI_Parser(String uri, URI_Type type, String authority, Version version, String code) {
         super(uri, type, authority, version, code);
     }
 

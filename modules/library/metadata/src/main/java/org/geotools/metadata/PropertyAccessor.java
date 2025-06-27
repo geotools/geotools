@@ -345,7 +345,7 @@ final class PropertyAccessor {
     final int indexOf(String key) {
         key = key.trim().toLowerCase(LOCALE);
         final Integer index = mapping.get(key);
-        return (index != null) ? index.intValue() : -1;
+        return index != null ? index.intValue() : -1;
     }
 
     /**
@@ -417,12 +417,12 @@ final class PropertyAccessor {
 
     /** Returns {@code true} if the property at the given index is writable. */
     final boolean isWritable(final int index) {
-        return (index >= 0) && (index < getters.length) && (setters != null) && (setters[index] != null);
+        return index >= 0 && index < getters.length && setters != null && setters[index] != null;
     }
 
     /** Returns the value for the specified metadata, or {@code null} if none. */
     final Object get(final int index, final Object metadata) {
-        return (index >= 0 && index < getters.length) ? get(getters[index], metadata) : null;
+        return index >= 0 && index < getters.length ? get(getters[index], metadata) : null;
     }
 
     /**
@@ -653,7 +653,7 @@ final class PropertyAccessor {
                 continue;
             }
             if (!Utilities.equals(value1, value2)) {
-                if (!skipNulls || (!empty1 && !empty2)) {
+                if (!skipNulls || !empty1 && !empty2) {
                     return false;
                 }
             }
@@ -770,8 +770,8 @@ final class PropertyAccessor {
     /** Returns {@code true} if the specified object is null or an empty collection, array or string. */
     static boolean isEmpty(final Object value) {
         return value == null
-                || ((value instanceof Collection) && ((Collection) value).isEmpty())
-                || ((value instanceof CharSequence) && value.toString().trim().length() == 0)
-                || (value.getClass().isArray() && Array.getLength(value) == 0);
+                || value instanceof Collection && ((Collection) value).isEmpty()
+                || value instanceof CharSequence && value.toString().trim().length() == 0
+                || value.getClass().isArray() && Array.getLength(value) == 0;
     }
 }

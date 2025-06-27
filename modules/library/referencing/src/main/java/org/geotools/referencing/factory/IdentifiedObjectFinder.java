@@ -168,7 +168,7 @@ public class IdentifiedObjectFinder {
      */
     public String findIdentifier(final IdentifiedObject object) throws FactoryException {
         final IdentifiedObject candidate = find(object);
-        return (candidate != null) ? getIdentifier(candidate) : null;
+        return candidate != null ? getIdentifier(candidate) : null;
     }
 
     /**

@@ -230,7 +230,7 @@ public class JiffleProcessTest {
 
         // grab the original coverage, compute NDVI directly from it
         GeoTiffReader reader = new GeoTiffReader(file);
-        GridCoverage2D original = reader.read(null);
+        GridCoverage2D original = reader.read();
         int[] allBands = new int[13];
         original.getRenderedImage().getData().getPixel(0, 0, allBands);
         double ndviOriginal = (allBands[7] - allBands[3]) / (double) (allBands[7] + allBands[3]);
@@ -268,7 +268,7 @@ public class JiffleProcessTest {
 
         // grab the original coverage, compute NDVI directly from it
         WorldImageReader reader = new WorldImageReader(file);
-        GridCoverage2D original = reader.read(null);
+        GridCoverage2D original = reader.read();
         int[] allBands = new int[13];
         original.getRenderedImage().getData().getPixel(0, 0, allBands);
         double ndviOriginal = (allBands[7] - allBands[3]) / (double) (allBands[7] + allBands[3]);
@@ -463,7 +463,7 @@ public class JiffleProcessTest {
     @Test
     public void testDynamicInputBands() throws Exception {
         File file = TestData.file(CropCoverageTest.class, "s2_13bands.tif");
-        GridCoverage2D coverage = new GeoTiffReader(file).read(null);
+        GridCoverage2D coverage = new GeoTiffReader(file).read();
 
         Process jiffle = Processors.createProcess(new NameImpl("ras", "Jiffle"));
         Map<String, Object> inputs = new HashMap<>();

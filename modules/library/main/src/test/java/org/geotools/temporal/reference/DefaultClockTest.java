@@ -108,7 +108,7 @@ public class DefaultClockTest {
     @Test
     public void testSetReferenceTime() {
         ClockTime result = clock1.getReferenceTime();
-        ((DefaultClock) clock1).setReferenceTime(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN, null));
+        ((DefaultClock) clock1).setReferenceTime(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN));
         assertNotEquals(clock1.getReferenceTime(), result);
     }
 
@@ -116,7 +116,7 @@ public class DefaultClockTest {
     @Test
     public void testSetUtcReference() {
         ClockTime result = clock1.getUTCReference();
-        ((DefaultClock) clock1).setUtcReference(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN, null));
+        ((DefaultClock) clock1).setUtcReference(new DefaultClockTime(clock1, IndeterminateValue.UNKNOWN));
         assertNotEquals(clock1.getUTCReference(), result);
     }
 

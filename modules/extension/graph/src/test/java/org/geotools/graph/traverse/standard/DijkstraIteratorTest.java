@@ -101,13 +101,13 @@ public class DijkstraIteratorTest {
                 if (m_mode == 0) {
                     if (element.getID() == suspend) {
                         m_mode++;
-                        return (GraphTraversal.SUSPEND);
+                        return GraphTraversal.SUSPEND;
                     }
                 } else if (m_mode == 1) {
                     Assert.assertEquals(element.getID(), suspend + 1);
                     m_mode++;
                 }
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -161,11 +161,11 @@ public class DijkstraIteratorTest {
                 if (m_mode == 0) {
                     if (element.getID() == kill) {
                         m_mode++;
-                        return (GraphTraversal.KILL_BRANCH);
+                        return GraphTraversal.KILL_BRANCH;
                     }
                 }
 
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -253,10 +253,10 @@ public class DijkstraIteratorTest {
                 if (m_mode == 0) {
                     if (element == rc) {
                         m_mode++;
-                        return (GraphTraversal.SUSPEND);
+                        return GraphTraversal.SUSPEND;
                     }
                 }
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -279,7 +279,7 @@ public class DijkstraIteratorTest {
 
         visitor = component -> {
             Assert.assertTrue(component.isVisited());
-            return (0);
+            return 0;
         };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), (int) Math.pow(2, k + 1) - 1);
@@ -311,10 +311,10 @@ public class DijkstraIteratorTest {
                 if (m_mode == 0) {
                     if (element == rc) {
                         m_mode++;
-                        return (GraphTraversal.KILL_BRANCH);
+                        return GraphTraversal.KILL_BRANCH;
                     }
                 }
-                return (GraphTraversal.CONTINUE);
+                return GraphTraversal.CONTINUE;
             }
         };
 
@@ -376,7 +376,7 @@ public class DijkstraIteratorTest {
                 Assert.assertEquals(1d, iterator.getCost(component), 0d);
             }
 
-            return (0);
+            return 0;
         };
 
         builder().getGraph().visitNodes(visitor);
@@ -384,7 +384,7 @@ public class DijkstraIteratorTest {
     }
 
     protected DijkstraIterator createIterator() {
-        return (new DijkstraIterator(e -> (1)));
+        return new DijkstraIterator(e -> 1);
     }
 
     /**
@@ -474,18 +474,18 @@ public class DijkstraIteratorTest {
     }
 
     protected GraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 
     protected GraphBuilder createDirectedBuilder() {
-        return (new BasicDirectedGraphBuilder());
+        return new BasicDirectedGraphBuilder();
     }
 
     protected GraphBuilder directedBuilder() {
-        return (m_directed_builder);
+        return m_directed_builder;
     }
 }

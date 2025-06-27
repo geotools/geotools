@@ -67,7 +67,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         }
         Comparable globalMax = (Comparable) lastBin[lastBin.length - 1];
         Classifier result;
-        if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
+        if (globalMin instanceof Number && globalMax instanceof Number) {
             result = (Classifier) calculateNumerical(bin, globalMin, globalMax);
         } else {
             result = (Classifier) calculateNonNumerical(bin, globalMin, globalMax);
@@ -162,7 +162,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
     private double[] calculatePercentages(List[] bin, int totalSize) {
         double[] percentages = new double[bin.length];
         for (int i = 0; i < bin.length; i++) {
-            percentages[i] = ((double) bin[i].size() / totalSize) * 100;
+            percentages[i] = (double) bin[i].size() / totalSize * 100;
         }
         return percentages;
     }

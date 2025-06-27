@@ -389,7 +389,7 @@ public class Mosaic extends OperationJAI {
             // Check if the output nodata value is set as parameter
             Object outputNodata = parameters.parameter(OUTNODATA_NAME).getValue();
             if (outputNodata != null && outputNodata instanceof double[]) {
-                nodata = ((double[]) outputNodata);
+                nodata = (double[]) outputNodata;
             }
             // Checking if the external alpha bands are defined
             boolean hasAlpha = alphas != null && alphas.length > 0;
@@ -491,10 +491,10 @@ public class Mosaic extends OperationJAI {
                         GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator propertyGenerator =
                                 new GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator();
                         Object property = propertyGenerator.getProperty("roi", rasters[i]);
-                        roi = (property != null && property instanceof ROI) ? (ROI) property : null;
+                        roi = property != null && property instanceof ROI ? (ROI) property : null;
                     } else {
                         Object property = rasters[i].getProperty("roi");
-                        roi = (property != null && property instanceof ROI) ? (ROI) property : null;
+                        roi = property != null && property instanceof ROI ? (ROI) property : null;
                     }
                     rois[i] = roi;
                     // Get NoData as property if present
@@ -664,7 +664,7 @@ public class Mosaic extends OperationJAI {
         // Check if the output nodata value is present
         Object outputNodata = parameters.parameter(OUTNODATA_NAME).getValue();
         if (outputNodata != null && outputNodata instanceof double[]) {
-            nodata = ((double[]) outputNodata);
+            nodata = (double[]) outputNodata;
         } else {
             nodata = CoverageUtilities.getBackgroundValues(sources[PRIMARY_SOURCE_INDEX]);
         }
@@ -753,7 +753,7 @@ public class Mosaic extends OperationJAI {
         }
 
         // Layout associated to the input RenderingHints
-        ImageLayout layoutOld = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
+        ImageLayout layoutOld = hints != null ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
         ImageLayout layout = null;
         // Check on the ImageLayout
         if (layoutOld != null) {

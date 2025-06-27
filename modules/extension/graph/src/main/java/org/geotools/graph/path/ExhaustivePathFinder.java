@@ -47,21 +47,21 @@ public class ExhaustivePathFinder {
     public Path getPath(Node from, Node to) {
         final Node dst = to;
         GraphVisitor visitor = component -> {
-            if (component.equals(dst)) return (END_PATH_AND_STOP);
-            return (CONTINUE_PATH);
+            if (component.equals(dst)) return END_PATH_AND_STOP;
+            return CONTINUE_PATH;
         };
         List paths = getPaths(from, visitor);
-        if (paths.isEmpty()) return (null);
-        return ((Path) paths.get(0));
+        if (paths.isEmpty()) return null;
+        return (Path) paths.get(0);
     }
 
     public List getPaths(Node from, Node to) {
         final Node dst = to;
         GraphVisitor visitor = component -> {
-            if (component.equals(dst)) return (END_PATH_AND_CONTINUE);
-            return (CONTINUE_PATH);
+            if (component.equals(dst)) return END_PATH_AND_CONTINUE;
+            return CONTINUE_PATH;
         };
-        return (getPaths(from, visitor));
+        return getPaths(from, visitor);
     }
 
     public List getPaths(Node from, GraphVisitor visitor) {
@@ -76,7 +76,7 @@ public class ExhaustivePathFinder {
 
         int iterations = 0;
         O:
-        while (!stack.isEmpty() && (iterations++ < m_maxitr)) {
+        while (!stack.isEmpty() && iterations++ < m_maxitr) {
             // peek the stack
             Node top = stack.peek();
 
@@ -118,6 +118,6 @@ public class ExhaustivePathFinder {
             stack.pop();
         }
 
-        return (paths);
+        return paths;
     }
 }

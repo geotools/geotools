@@ -152,7 +152,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         UNIT_CHARS_REPLACEMENTS.add(new UnitCharReplacement("1/s", "s^-1"));
     }
 
-    public class UnidataSpatialDomain extends SpatialDomain {
+    public static class UnidataSpatialDomain extends SpatialDomain {
 
         /** The spatial coordinate reference system */
         private CoordinateReferenceSystem coordinateReferenceSystem;
@@ -212,7 +212,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
     }
 
-    public class UnidataTemporalDomain extends TemporalDomain {
+    public static class UnidataTemporalDomain extends TemporalDomain {
 
         /** @param adaptee */
         UnidataTemporalDomain(CoordinateVariable<?> adaptee) {
@@ -264,7 +264,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
     }
 
-    public class UnidataVerticalDomain extends VerticalDomain {
+    public static class UnidataVerticalDomain extends VerticalDomain {
 
         final CoordinateVariable<? extends Number> adaptee;
 
@@ -318,7 +318,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /** TODO improve support for this */
-    public class UnidataAdditionalDomain extends AdditionalDomain {
+    public static class UnidataAdditionalDomain extends AdditionalDomain {
 
         /** The detailed domain extent */
         private final Set<Object> domainExtent = new TreeSet<>();

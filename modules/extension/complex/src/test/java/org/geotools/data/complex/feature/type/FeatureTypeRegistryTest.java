@@ -39,7 +39,7 @@ import org.junit.Test;
 public class FeatureTypeRegistryTest {
     private static final Name PolygonPropertyType = new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType");
 
-    private class EmptyFeatureTypeRegistryConfiguration implements FeatureTypeRegistryConfiguration {
+    private static class EmptyFeatureTypeRegistryConfiguration implements FeatureTypeRegistryConfiguration {
 
         @Override
         public Collection<Schema> getSchemas() {

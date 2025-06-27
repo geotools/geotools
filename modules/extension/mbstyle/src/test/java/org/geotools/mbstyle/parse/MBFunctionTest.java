@@ -474,7 +474,7 @@ public class MBFunctionTest {
     public void colorIntervalFunctionTest() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE", "id:\"\",numbervalue,location=4326");
         java.util.function.Function<Long, SimpleFeature> features =
-                (value) -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + value + "|POINT(0,0)");
+                value -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + value + "|POINT(0,0)");
 
         String jsonStr =
                 "{'property': 'numbervalue', 'type': 'interval', 'default': '#0F0F0F', 'stops': [[-1000, '#000000'], [-30, '#00FF00'], [0, '#0000FF'], [100, '#FFFFFF']]}";
@@ -508,7 +508,7 @@ public class MBFunctionTest {
     public void enumIntervalFunctionTest() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE", "id:\"\",numbervalue,location=4326");
         java.util.function.Function<Long, SimpleFeature> features =
-                (value) -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + value + "|POINT(0,0)");
+                value -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + value + "|POINT(0,0)");
 
         String jsonStr =
                 "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, 'INTERVAL'], [-30, 'CATEGORICAL'], [0, 'EXPONENTIAL'], [100, 'IDENTITY']]}";
@@ -541,7 +541,7 @@ public class MBFunctionTest {
     public void stringIntervalFunctionTest() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE", "id:\"\",numbervalue,location=4326");
         java.util.function.Function<Long, SimpleFeature> features =
-                (value) -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + value + "|POINT(0,0)");
+                value -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + value + "|POINT(0,0)");
 
         String jsonStr =
                 "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, 'foo'], [-30, 'bar'], [0, 'baz'], [100, 'quux']]}";
@@ -781,7 +781,7 @@ public class MBFunctionTest {
         // Test each interval
         final SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE", "id:\"\",temperature,location=4326");
         java.util.function.Function<Long, SimpleFeature> features =
-                (temp) -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + temp + "|POINT(0,0)");
+                temp -> DataUtilities.createFeature(SAMPLE, "measure1=A|" + temp + "|POINT(0,0)");
 
         // Bellow the first stop is undefined (return default value)
         assertThat(outputExpression, evaluatesTo(features.apply(-1L), Number.class, equalInt(0)));

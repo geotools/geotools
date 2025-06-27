@@ -526,7 +526,7 @@ public class DimensionFilter {
                 transform = null;
                 dimStep = dimSource;
                 dimPass = subLower;
-                dimDiff = (subLower + passThrough.subTransform.getSourceDimensions()) - subUpper;
+                dimDiff = subLower + passThrough.subTransform.getSourceDimensions() - subUpper;
             }
         }
         /*

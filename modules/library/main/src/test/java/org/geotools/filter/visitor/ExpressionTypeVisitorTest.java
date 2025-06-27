@@ -63,13 +63,13 @@ public class ExpressionTypeVisitorTest {
 
     @Test
     public void testFunction() {
-        Function func = ff.function(("abs"), ff.literal(10));
+        Function func = ff.function("abs", ff.literal(10));
         assertEquals(Integer.class, func.accept(visitor, null));
     }
 
     @Test
     public void testIfThenElse() { // special case within function
-        Function func = ff.function(("if_then_else"), ff.literal(true), ff.literal(10), ff.literal(20));
+        Function func = ff.function("if_then_else", ff.literal(true), ff.literal(10), ff.literal(20));
         assertEquals(Integer.class, func.accept(visitor, null));
     }
 

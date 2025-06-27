@@ -73,7 +73,7 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
         int numRow = getSourcePoints().length * 2;
 
         // Creates X matrix
-        for (int j = 0; j < (numRow / 2); j++) {
+        for (int j = 0; j < numRow / 2; j++) {
             A.setRow(j, new double[] {
                 getSourcePoints()[j].getCoordinate()[0], -getSourcePoints()[j].getCoordinate()[1], 1, 0
             });
@@ -81,8 +81,8 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
 
         for (int j = numRow / 2; j < numRow; j++) {
             A.setRow(j, new double[] {
-                getSourcePoints()[j - (numRow / 2)].getCoordinate()[1],
-                getSourcePoints()[j - (numRow / 2)].getCoordinate()[0],
+                getSourcePoints()[j - numRow / 2].getCoordinate()[1],
+                getSourcePoints()[j - numRow / 2].getCoordinate()[0],
                 0,
                 1
             });

@@ -208,7 +208,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
             while (features.hasNext()) {
                 feature = features.next();
                 final Geometry geometry = feature.getDefaultGeometryProperty() != null
-                        ? ((Geometry) feature.getDefaultGeometryProperty().getValue())
+                        ? (Geometry) feature.getDefaultGeometryProperty().getValue()
                         : null;
                 if (geometry != null) {
                     internal = geometry.getEnvelopeInternal();

@@ -172,7 +172,7 @@ public class GridCoverageReaderHelper {
         // cases where the calculation cannot be performed
         if (!(originalGridToWorld instanceof AffineTransform2D)
                 || levels == null
-                || (interpolation instanceof InterpolationNearest)) return paddings;
+                || interpolation instanceof InterpolationNearest) return paddings;
 
         // scale up padding factors if needed
         try {
@@ -625,7 +625,7 @@ public class GridCoverageReaderHelper {
         } else if (gg != null) {
             coverage = reader.read(new GeneralParameterValue[] {readGGParam});
         } else {
-            coverage = reader.read(null);
+            coverage = reader.read();
         }
 
         // try to crop on the requested area

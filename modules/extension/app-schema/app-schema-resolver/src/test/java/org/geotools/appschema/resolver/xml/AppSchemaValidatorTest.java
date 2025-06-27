@@ -19,6 +19,7 @@ package org.geotools.appschema.resolver.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -83,7 +84,7 @@ public class AppSchemaValidatorTest {
             byte[] bytes = new byte[input.available()];
             int count = input.read(bytes);
             Assert.assertEquals("Unexpected read underrun", bytes.length, count);
-            String xml = new String(bytes);
+            String xml = new String(bytes, StandardCharsets.UTF_8);
             AppSchemaValidator.validate(xml, null);
         } catch (IOException e) {
             throw new RuntimeException(e);

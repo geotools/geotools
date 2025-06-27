@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,7 +90,7 @@ public class WFS_2_0_0_ParsingTest {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed = parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        Object parsed = parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(parsed);
         Assert.assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
         WFSCapabilitiesType caps = (WFSCapabilitiesType) parsed;

@@ -197,6 +197,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      * <p>This method calls {@link #validateArguments()} which enforces java style argument conventions for multi valued
      * parameters. Basically enforcing that only the last argument in a function can be variable.
      */
+    @SuppressWarnings("NonApiType")
     protected LinkedHashMap<String, Object> dispatchArguments(Object obj) {
         LinkedHashMap<String, Object> prepped = new LinkedHashMap<>();
 
@@ -373,10 +374,10 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((fallbackValue == null) ? 0 : fallbackValue.hashCode());
-        result = prime * result + ((functionName == null) ? 0 : functionName.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((params == null) ? 0 : params.hashCode());
+        result = prime * result + (fallbackValue == null ? 0 : fallbackValue.hashCode());
+        result = prime * result + (functionName == null ? 0 : functionName.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (params == null ? 0 : params.hashCode());
         return result;
     }
 

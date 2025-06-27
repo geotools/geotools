@@ -442,7 +442,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             for (PropertyDescriptor descr : featureType.getDescriptors()) {
                 if (descr instanceof GeometryDescriptor) {
                     GeometryDescriptor gd1 = (GeometryDescriptor) descr;
-                    if (!(gd1.getLocalName()).equals(fe.getGeometryColumn())) {
+                    if (!gd1.getLocalName().equals(fe.getGeometryColumn())) {
                         FeatureEntry fe1 = new FeatureEntry();
                         fe1.init(fe);
                         fe1.setGeometryColumn(gd1.getLocalName());
@@ -731,7 +731,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             DataColumn dc = (DataColumn) dataColumnMaybe;
             // arrays are stored as json
             String mime = dc.getMimeType();
-            return ("application/json".equals(mime) || "text/json".equals(mime));
+            return "application/json".equals(mime) || "text/json".equals(mime);
 
             // TODO: the spec for storing arrays in GeoPackage needs to evolve to clarify
             // better the array presernce and the array contents

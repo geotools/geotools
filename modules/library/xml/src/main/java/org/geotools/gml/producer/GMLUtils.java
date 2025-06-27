@@ -177,11 +177,11 @@ final class GMLUtils {
         // if no special characters, just return
         // (for optimization. Though may be an overhead, but for most of the
         // strings, this will save time)
-        if ((inData.indexOf('&') == -1)
-                && (inData.indexOf('<') == -1)
-                && (inData.indexOf('>') == -1)
-                && (inData.indexOf('\'') == -1)
-                && (inData.indexOf('\"') == -1)) {
+        if (inData.indexOf('&') == -1
+                && inData.indexOf('<') == -1
+                && inData.indexOf('>') == -1
+                && inData.indexOf('\'') == -1
+                && inData.indexOf('\"') == -1) {
             return inData;
         }
 

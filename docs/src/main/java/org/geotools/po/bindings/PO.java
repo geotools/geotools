@@ -34,16 +34,19 @@ public final class PO extends XSD {
     /** private constructor */
     private PO() {}
 
+    @Override
     protected void addDependencies(Set dependencies) {
         // TODO: add dependencies here
     }
 
     /** Returns 'http://www.geotools.org/po'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'po.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("po.xsd").toString();
     }

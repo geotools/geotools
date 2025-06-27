@@ -131,7 +131,7 @@ public class GeometryColumnEncoder {
         sql.append(")");
 
         if (distance != null) {
-            String preserveCollapsed = (atLeast2_2_0 && !stPreserveTopologyEnabled) ? ", true" : "";
+            String preserveCollapsed = atLeast2_2_0 && !stPreserveTopologyEnabled ? ", true" : "";
             sql.append(", " + distance + preserveCollapsed + ")");
         }
     }

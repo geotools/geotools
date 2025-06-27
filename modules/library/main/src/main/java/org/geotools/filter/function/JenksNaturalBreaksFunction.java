@@ -146,12 +146,12 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
                 // remember to allow for 0 index
                 double val = data.get(i3 - 1);
                 // update running totals
-                s2 = s2 + (val * val);
+                s2 = s2 + val * val;
                 s1 += val;
                 double s0 = ii;
                 // calculate (square of) the variance
                 // (http://secure.wikimedia.org/wikipedia/en/wiki/Standard_deviation#Rapid_calculation_methods)
-                var = s2 - ((s1 * s1) / s0);
+                var = s2 - s1 * s1 / s0;
                 // System.out.println(s0+" "+s1+" "+s2);
                 // System.out.println(i+","+ii+" var "+var);
                 int ik = i3 - 1;
@@ -160,7 +160,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
                     for (int j = 2; j <= k; j++) {
                         // for each class compare current value to var + previous value
                         // System.out.println("\tis "+work[i][j]+" >= "+(var + work[ik][j - 1]));
-                        if (work[i][j] >= (var + work[ik][j - 1])) {
+                        if (work[i][j] >= var + work[ik][j - 1]) {
                             // if it is greater or equal update classification
                             iwork[i][j] = i3 - 1;
                             // System.out.println("\t\tiwork["+i+"]["+j+"] = "+i3);
@@ -175,9 +175,9 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         }
         if (logger.getLevel() == Level.FINER) {
             for (int i = 0; i < m; i++) {
-                String tmp = (i + ": " + data.get(i));
+                String tmp = i + ": " + data.get(i);
                 for (int j = 2; j <= k; j++) {
-                    tmp += ("\t" + iwork[i][j]);
+                    tmp += "\t" + iwork[i][j];
                 }
                 logger.finer(tmp);
             }
@@ -218,7 +218,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         double[] percentages = new double[classN];
         for (int i = 0; i < classN; i++) {
             double classMembers = getClassMembers(data, classifier, i);
-            percentages[i] = (classMembers / total) * 100;
+            percentages[i] = classMembers / total * 100;
         }
         classifier.setPercentages(percentages);
     }

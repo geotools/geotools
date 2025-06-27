@@ -66,7 +66,7 @@ class ShapeFileIndexer implements FileWriter {
     private ShpFiles shpFiles;
 
     public static void main(String[] args) throws IOException {
-        if ((args.length < 1) || (((args.length - 1) % 2) != 0)) {
+        if (args.length < 1 || (args.length - 1) % 2 != 0) {
             usage();
         }
 
@@ -202,7 +202,7 @@ class ShapeFileIndexer implements FileWriter {
                 tree.insert(recno, env);
                 boundsHelper.insert(recno, env);
 
-                if (verbose && ((cnt % 1_000) == 0)) {
+                if (verbose && cnt % 1_000 == 0) {
                     System.out.print('.');
                 }
                 if (cnt % 100_000 == 0) System.out.print('\n');
@@ -236,7 +236,7 @@ class ShapeFileIndexer implements FileWriter {
     }
 
     private byte resolveStorageByteOrder() throws StoreException {
-        if ((this.byteOrder == null) || this.byteOrder.equalsIgnoreCase("NM")) {
+        if (this.byteOrder == null || this.byteOrder.equalsIgnoreCase("NM")) {
             return IndexHeader.NEW_MSB_ORDER;
         }
         if (this.byteOrder.equalsIgnoreCase("NL")) {

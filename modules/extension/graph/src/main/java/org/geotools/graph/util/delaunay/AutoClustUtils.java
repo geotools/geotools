@@ -43,7 +43,7 @@ public class AutoClustUtils {
         Iterator<Node> nodesIt = nodes.iterator();
         while (nodesIt.hasNext()) {
             Node next = nodesIt.next();
-            if (!(nodesVisited.contains(next))) {
+            if (!nodesVisited.contains(next)) {
                 List<Node> componentNodes = new ArrayList<>();
                 List<Edge> componentEdges = new ArrayList<>();
                 expandComponent(next, edges, componentNodes, componentEdges);
@@ -91,7 +91,7 @@ public class AutoClustUtils {
         Iterator<Edge> it = edges.iterator();
         while (it.hasNext()) {
             Edge next = it.next();
-            if ((next.getNodeA().equals(node)) || (next.getNodeB().equals(node))) {
+            if (next.getNodeA().equals(node) || next.getNodeB().equals(node)) {
                 ret.add(next);
             }
         }
@@ -115,7 +115,7 @@ public class AutoClustUtils {
                 DelaunayNode node = new DelaunayNode();
                 node.setCoordinate(centroid.getCoordinate());
                 node.setFeature(next);
-                if (!(arrayContains(node, nodes, index))) {
+                if (!arrayContains(node, nodes, index)) {
                     nodes[index] = node;
                     index++;
                 }
@@ -133,9 +133,9 @@ public class AutoClustUtils {
         boolean ret = false;
         boolean done = false;
         int i = 0;
-        while (!(done)) {
+        while (!done) {
             if (i < index) {
-                done = ret = (nodes[i].equals(node));
+                done = ret = nodes[i].equals(node);
                 i++;
             } else {
                 done = true;

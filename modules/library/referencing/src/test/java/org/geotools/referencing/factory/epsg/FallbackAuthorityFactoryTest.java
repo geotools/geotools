@@ -102,6 +102,7 @@ public final class FallbackAuthorityFactoryTest {
      * @throws FactoryException If the CRS can't be created.
      */
     @Test
+    @SuppressWarnings("CatchFail")
     public void test00001() throws FactoryException {
         try {
             CRS.decode("EPSG:00001");

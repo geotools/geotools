@@ -163,7 +163,7 @@ public class XMLSAXHandler extends DefaultHandler {
      */
     @Override
     public void endDocument() {
-        document = ((DocumentHandler) handlers.pop());
+        document = (DocumentHandler) handlers.pop();
     }
 
     /**
@@ -203,7 +203,7 @@ public class XMLSAXHandler extends DefaultHandler {
             String text = characters.toString();
             characters.setLength(0);
 
-            if ((text != null) && !"".equals(text)) {
+            if (text != null && !"".equals(text)) {
                 handlers.peek().characters(text);
             }
         } catch (SAXException e) {
@@ -303,11 +303,11 @@ public class XMLSAXHandler extends DefaultHandler {
 
             String t = atts.getValue("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
 
-            if ((t == null) || "".equals(t)) {
+            if (t == null || "".equals(t)) {
                 t = atts.getValue("", "schemaLocation");
             }
 
-            if (!((t == null) || "".equals(t))) {
+            if (!(t == null || "".equals(t))) {
                 t = t.trim();
                 String[] targ2uri = t.split("\\s+");
 
@@ -315,8 +315,8 @@ public class XMLSAXHandler extends DefaultHandler {
                     if (targ2uri.length != 0 && targ2uri.length % 2 != 0)
                         throw new SAXException("Bad Schema location attribute: you must have an even number of terms");
 
-                    for (int i = 0; i < (targ2uri.length / 2); i++) {
-                        String uri = targ2uri[(i * 2) + 1];
+                    for (int i = 0; i < targ2uri.length / 2; i++) {
+                        String uri = targ2uri[i * 2 + 1];
                         String targ = targ2uri[i * 2];
                         String prefix = schemaProxy.get(targ);
                         URI targUri = null;
@@ -335,7 +335,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
                         if (!set) {
                             try {
-                                targUri = (instanceDocument == null) ? new URI(uri) : instanceDocument.resolve(uri);
+                                targUri = instanceDocument == null ? new URI(uri) : instanceDocument.resolve(uri);
                             } catch (URISyntaxException e1) {
                                 logger.warning(e1.toString());
                             }

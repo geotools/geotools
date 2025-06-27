@@ -94,7 +94,7 @@ public class AttributeTable {
     }
 
     /** */
-    public class CellAttribute {
+    public static class CellAttribute {
         private float low = 0f;
 
         private float range = 0f;

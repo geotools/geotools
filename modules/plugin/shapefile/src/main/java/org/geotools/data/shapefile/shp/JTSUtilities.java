@@ -65,7 +65,7 @@ public class JTSUtilities {
         for (int t = size - 1; t >= 0; t--) {
             z = cs.getOrdinate(t, 2);
 
-            if (!(Double.isNaN(z))) {
+            if (!Double.isNaN(z)) {
                 if (validZFound) {
                     if (z < zmin) {
                         zmin = z;
@@ -86,7 +86,7 @@ public class JTSUtilities {
             target[0] = zmin;
         }
         if (!Double.isNaN(zmax)) {
-            target[1] = (zmax);
+            target[1] = zmax;
         }
     }
 
@@ -179,7 +179,7 @@ public class JTSUtilities {
         for (int t = 0, tt = p.getNumInteriorRing(); t < tt; t++) {
             coords = p.getInteriorRingN(t).getCoordinates();
 
-            if (!(Orientation.isCCW(coords))) {
+            if (!Orientation.isCCW(coords)) {
                 holes[t] = reverseRing(p.getInteriorRingN(t));
             } else {
                 holes[t] = p.getInteriorRingN(t);
@@ -221,7 +221,7 @@ public class JTSUtilities {
         int dims = 2;
 
         for (int t = cs.length - 1; t >= 0; t--) {
-            if (!(Double.isNaN(cs[t].getZ()))) {
+            if (!Double.isNaN(cs[t].getZ())) {
                 dims = 4;
                 break;
             }
@@ -315,7 +315,7 @@ public class JTSUtilities {
                 default:
                     throw new ShapefileException("Too many dimensions for shapefile : " + shapeFileDimentions);
             }
-        } else if ((geom instanceof Polygon) || (geom instanceof MultiPolygon)) {
+        } else if (geom instanceof Polygon || geom instanceof MultiPolygon) {
             switch (shapeFileDimentions) {
                 case 2:
                     type = ShapeType.POLYGON;
@@ -329,7 +329,7 @@ public class JTSUtilities {
                 default:
                     throw new ShapefileException("Too many dimensions for shapefile : " + shapeFileDimentions);
             }
-        } else if ((geom instanceof LineString) || (geom instanceof MultiLineString)) {
+        } else if (geom instanceof LineString || geom instanceof MultiLineString) {
             switch (shapeFileDimentions) {
                 case 2:
                     type = ShapeType.ARC;

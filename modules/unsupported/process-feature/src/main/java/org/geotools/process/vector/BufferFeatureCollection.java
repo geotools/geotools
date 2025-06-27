@@ -126,7 +126,7 @@ public class BufferFeatureCollection implements VectorProcess {
             SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
             for (AttributeDescriptor descriptor : delegate.getSchema().getAttributeDescriptors()) {
                 if (!(descriptor.getType() instanceof GeometryTypeImpl)
-                        || (!delegate.getSchema().getGeometryDescriptor().equals(descriptor))) {
+                        || !delegate.getSchema().getGeometryDescriptor().equals(descriptor)) {
                     tb.add(descriptor);
                 } else {
                     AttributeTypeBuilder builder = new AttributeTypeBuilder();

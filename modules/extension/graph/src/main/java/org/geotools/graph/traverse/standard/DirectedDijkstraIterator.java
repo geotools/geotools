@@ -28,6 +28,6 @@ public class DirectedDijkstraIterator extends DijkstraIterator {
 
     @Override
     protected Iterator<? extends Graphable> getRelated(Graphable current) {
-        return (((DirectedGraphable) current).getOutRelated());
+        return ((DirectedGraphable) current).getOutRelated();
     }
 }

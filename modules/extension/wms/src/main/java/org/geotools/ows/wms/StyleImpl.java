@@ -107,7 +107,7 @@ public class StyleImpl {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+        result = PRIME * result + (name == null ? 0 : name.hashCode());
         return result;
     }
 

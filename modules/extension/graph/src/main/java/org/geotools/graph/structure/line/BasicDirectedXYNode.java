@@ -31,7 +31,7 @@ public class BasicDirectedXYNode extends BasicDirectedNode implements XYNode {
     /** @see XYNode#getCoordinate() */
     @Override
     public Coordinate getCoordinate() {
-        return ((Coordinate) getObject());
+        return (Coordinate) getObject();
     }
 
     /** @see XYNode#setCoordinate(Coordinate) */

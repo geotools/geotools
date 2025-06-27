@@ -76,8 +76,8 @@ public final class BingTileUtil {
      */
     public static double[] pixelXYToLonLat(int pixelX, int pixelY, int zoomLevel) {
         double mapSize = mapSize(zoomLevel);
-        double x = (clip(pixelX, 0, mapSize - 1) / mapSize) - 0.5;
-        double y = 0.5 - (clip(pixelY, 0, mapSize - 1) / mapSize);
+        double x = clip(pixelX, 0, mapSize - 1) / mapSize - 0.5;
+        double y = 0.5 - clip(pixelY, 0, mapSize - 1) / mapSize;
 
         double latitude = 90 - 360 * Math.atan(Math.exp(-y * 2 * Math.PI)) / Math.PI;
         double longitude = 360 * x;
@@ -120,7 +120,7 @@ public final class BingTileUtil {
         StringBuilder quadKey = new StringBuilder();
         for (int i = zoomLevel; i > 0; i--) {
             char digit = '0';
-            int mask = 1 << (i - 1);
+            int mask = 1 << i - 1;
             if ((tileX & mask) != 0) {
                 digit++;
             }

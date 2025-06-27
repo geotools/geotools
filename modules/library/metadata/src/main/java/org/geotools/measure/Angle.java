@@ -43,7 +43,7 @@ public class Angle implements Comparable<Angle>, Serializable {
     /** A shared instance of {@link AngleFormat}. */
     private static volatile Format format;
 
-    /** Define how angle can be converted to {@link Number} objects. */
+    /* Define how angle can be converted to {@link Number} objects. */
     static {
         ClassChanger.register(new ClassChanger<>(Angle.class, Double.class) {
             @Override
@@ -139,6 +139,7 @@ public class Angle implements Comparable<Angle>, Serializable {
 
     /** Returns a string representation of this {@code Angle} object. */
     @Override
+    @SuppressWarnings("JdkObsolete") // Format.format() requires StringBuffer
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         synchronized (Angle.class) {

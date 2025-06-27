@@ -102,7 +102,7 @@ public class GMLLinearRingTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List coordinates = node.getChildren("coord");
 
-        if (!coordinates.isEmpty() && (coordinates.size() < 4)) {
+        if (!coordinates.isEmpty() && coordinates.size() < 4) {
             throw new RuntimeException("LinearRing must have at least 4 coordinates");
         }
 

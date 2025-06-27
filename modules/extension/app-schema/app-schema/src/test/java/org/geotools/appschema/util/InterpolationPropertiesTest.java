@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.test.AppSchemaTestSupport;
@@ -144,7 +145,7 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
     @Test
     public void testReadAll() {
         String s = "line one\nline two\n";
-        InputStream input = new ByteArrayInputStream("line one\nline two\n".getBytes());
+        InputStream input = new ByteArrayInputStream("line one\nline two\n".getBytes(StandardCharsets.UTF_8));
         assertEquals(s, InterpolationProperties.readAll(input));
     }
 }

@@ -214,7 +214,7 @@ public class TableWriter extends FilterWriter {
      */
     public TableWriter(final Writer out) {
         super(out != null ? out : new StringWriter());
-        stringOnly = (out == null);
+        stringOnly = out == null;
         leftBorder = "\u2551 ";
         rightBorder = " \u2551";
         separator = " \u2502 ";
@@ -243,7 +243,7 @@ public class TableWriter extends FilterWriter {
      */
     public TableWriter(final Writer out, final String separator) {
         super(out != null ? out : new StringWriter());
-        stringOnly = (out == null);
+        stringOnly = out == null;
         final int length = separator.length();
         int lower = 0;
         int upper = length;
@@ -302,7 +302,7 @@ public class TableWriter extends FilterWriter {
          * Remplace les espaces par la ligne horizontale,
          * et les lignes verticales par une intersection.
          */
-        final int index = (horizontalBorder + 1) + (verticalBorder + 1) * 3;
+        final int index = horizontalBorder + 1 + (verticalBorder + 1) * 3;
         final int borderLength = border.length();
         for (int i = 0; i < borderLength; i++) {
             char c = border.charAt(i);
@@ -491,7 +491,7 @@ public class TableWriter extends FilterWriter {
      */
     @Override
     public void write(final String string, int offset, int length) {
-        if (offset < 0 || length < 0 || (offset + length) > string.length()) {
+        if (offset < 0 || length < 0 || offset + length > string.length()) {
             throw new IndexOutOfBoundsException();
         }
         if (length == 0) {
@@ -532,7 +532,7 @@ public class TableWriter extends FilterWriter {
                 }
                 length = upper - offset;
             }
-            skipCR = (string.charAt(offset + length - 1) == '\r');
+            skipCR = string.charAt(offset + length - 1) == '\r';
             buffer.append(string.substring(offset, offset + length));
         }
     }
@@ -557,7 +557,7 @@ public class TableWriter extends FilterWriter {
      */
     @Override
     public void write(final char[] cbuf, int offset, int length) {
-        if (offset < 0 || length < 0 || (offset + length) > cbuf.length) {
+        if (offset < 0 || length < 0 || offset + length > cbuf.length) {
             throw new IndexOutOfBoundsException();
         }
         if (length == 0) {
@@ -598,7 +598,7 @@ public class TableWriter extends FilterWriter {
                 }
                 length = upper - offset;
             }
-            skipCR = (cbuf[offset + length - 1] == '\r');
+            skipCR = cbuf[offset + length - 1] == '\r';
             buffer.append(cbuf, offset, length);
         }
     }
@@ -756,10 +756,10 @@ public class TableWriter extends FilterWriter {
              * alors cette cellule devra s'écrire sur plusieurs lignes dans la cellule
              * courante.
              */
-            while (!isEmpty(currentLine)) {
+            while (!isEmpty((Object[]) currentLine)) {
                 for (int j = 0; j < currentLine.length; j++) {
-                    final boolean isFirstColumn = (j == 0);
-                    final boolean isLastColumn = (j + 1 == currentLine.length);
+                    final boolean isFirstColumn = j == 0;
+                    final boolean isLastColumn = j + 1 == currentLine.length;
                     final Cell cell = currentLine[j];
                     final int cellWidth = width[j];
                     if (cell == null) {
@@ -773,7 +773,7 @@ public class TableWriter extends FilterWriter {
                     String cellText = cell.toString();
                     int endCR = cellText.indexOf('\r');
                     int endLF = cellText.indexOf('\n');
-                    int end = (endCR < 0) ? endLF : (endLF < 0) ? endCR : Math.min(endCR, endLF);
+                    int end = endCR < 0 ? endLF : endLF < 0 ? endCR : Math.min(endCR, endLF);
                     if (end >= 0) {
                         /*
                          * Si un retour chariot a été trouvé, n'écrit que la première
@@ -788,7 +788,7 @@ public class TableWriter extends FilterWriter {
                         while (scan < textLength && Character.isWhitespace(cellText.charAt(scan))) {
                             scan++;
                         }
-                        currentLine[j] = (scan < textLength) ? cell.substring(top) : null;
+                        currentLine[j] = scan < textLength ? cell.substring(top) : null;
                         cellText = cellText.substring(0, end);
                     } else currentLine[j] = null;
                     final int textLength = cellText.length();
@@ -818,7 +818,7 @@ public class TableWriter extends FilterWriter {
                     if (isFirstColumn) {
                         out.write(leftBorder);
                     }
-                    final Writer tabExpander = (cellText.indexOf('\t') >= 0) ? new ExpandedTabWriter(out) : out;
+                    final Writer tabExpander = cellText.indexOf('\t') >= 0 ? new ExpandedTabWriter(out) : out;
                     switch (cell.alignment) {
                         default: {
                             // Should not happen.
@@ -838,7 +838,7 @@ public class TableWriter extends FilterWriter {
                             final int rightMargin = (cellWidth - textLength) / 2;
                             repeat(tabExpander, cell.fill, rightMargin);
                             tabExpander.write(cellText);
-                            repeat(tabExpander, cell.fill, (cellWidth - rightMargin) - textLength);
+                            repeat(tabExpander, cell.fill, cellWidth - rightMargin - textLength);
                             break;
                         }
                     }

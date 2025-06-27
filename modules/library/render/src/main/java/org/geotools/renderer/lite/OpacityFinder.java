@@ -156,7 +156,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
                 } else {
                     return;
                 }
-                if ((opacity > 0.01) && (opacity < 0.99)) {
+                if (opacity > 0.01 && opacity < 0.99) {
                     this.hasOpacity = true;
                 }
             }

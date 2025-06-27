@@ -42,6 +42,7 @@ import org.geotools.referencing.NamedIdentifier;
  * @since 2.7.0
  * @author Andrea Aime
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class EckertIV extends MapProjection {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 1635471013603509976L;

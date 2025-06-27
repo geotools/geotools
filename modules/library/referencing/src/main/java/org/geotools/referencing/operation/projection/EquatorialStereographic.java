@@ -169,7 +169,7 @@ public class EquatorialStereographic extends StereographicUSGS {
                 y = asin(y * sinc / rho); // (20-14)  with phi1=0
                 final double t = x * sinc;
                 final double ct = rho * cosc;
-                x = (abs(t) < EPSILON && abs(ct) < EPSILON) ? 0.0 : atan2(t, ct);
+                x = abs(t) < EPSILON && abs(ct) < EPSILON ? 0.0 : atan2(t, ct);
             }
             assert checkInverseTransform(x, y, ptDst);
             if (ptDst != null) {

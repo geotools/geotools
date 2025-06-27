@@ -260,8 +260,8 @@ public class PointStackerProcess implements VectorProcess {
             // adding bounding box of the points staked, as string
             fb.set(ATTR_BOUNDING_BOX, boundingBoxTransformed.toString());
             if (normalize) {
-                fb.set(ATTR_NORM_COUNT, ((double) sp.getCount()) / maxCount);
-                fb.set(ATTR_NORM_COUNT_UNIQUE, ((double) sp.getCountUnique()) / maxCountUnique);
+                fb.set(ATTR_NORM_COUNT, (double) sp.getCount() / maxCount);
+                fb.set(ATTR_NORM_COUNT_UNIQUE, (double) sp.getCountUnique() / maxCountUnique);
             }
             if (sp.getCount() == 1) {
                 // Here when count is we add the attribute value to the
@@ -379,8 +379,8 @@ public class PointStackerProcess implements VectorProcess {
          */
         // Use longs to avoid possible overflow issues (e.g. for a very small
         // cell size)
-        long ix = (long) ((griddedPt.x) / cellSize);
-        long iy = (long) ((griddedPt.y) / cellSize);
+        long ix = (long) (griddedPt.x / cellSize);
+        long iy = (long) (griddedPt.y / cellSize);
 
         griddedPt.x = ix;
         griddedPt.y = iy;

@@ -44,7 +44,6 @@ public class URLs {
      *     http://www.some.org/foo/bar.shp</code>
      * @param postfix New file extension for the {@link URL} without <code>.</code>
      * @return A new {@link URL} with new extension.
-     * @throws {@link MalformedURLException} if the new {@link URL} can not be created.
      */
     public static URL changeUrlExt(URL url, String postfix) throws IllegalArgumentException {
         String a = url.toString();
@@ -120,7 +119,7 @@ public class URLs {
      * The function is supposed to be equivalent to {@link File#getParent()}. The {@link URL} is converted to a String,
      * truncated to the last / and then recreated as a new URL.
      *
-     * @throws {@link MalformedURLException} if the parent {@link URL} can not be created.
+     * @throws MalformedURLException if the parent {@link URL} can not be created.
      */
     public static URL getParentUrl(URL url) throws MalformedURLException {
         String a = url.toString();

@@ -47,10 +47,10 @@ public class Cycle extends Walk {
             // ensure first and last nodes are same
             if (isClosed()) {
                 // ensure no node repetitions except for first and last
-                return (new HashSet<>(this).size() == size() - 1);
+                return new HashSet<>(this).size() == size() - 1;
             }
         }
-        return (false);
+        return false;
     }
 
     @Override

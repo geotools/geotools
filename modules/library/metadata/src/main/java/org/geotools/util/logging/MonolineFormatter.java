@@ -222,7 +222,7 @@ public class MonolineFormatter extends Formatter {
      * @return The time pattern, or {@code null} if time is not formatted.
      */
     public synchronized String getTimeFormat() {
-        return (timeFormat != null) ? timeFormat.toPattern() : null;
+        return timeFormat != null ? timeFormat.toPattern() : null;
     }
 
     /**

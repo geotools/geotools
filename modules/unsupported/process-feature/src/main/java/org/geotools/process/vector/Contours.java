@@ -111,7 +111,7 @@ public class Contours {
         int steps = levels.length;
         for (double contourValue : levels) {
             if (progressListener != null) {
-                progressListener.progress((100 / steps) * percent);
+                progressListener.progress(100 / steps * percent);
             }
             ArrayList<LineString> lines = extractContour(primaryEdges, contourValue);
 

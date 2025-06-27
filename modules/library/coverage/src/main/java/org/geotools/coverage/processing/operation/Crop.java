@@ -411,7 +411,7 @@ public class Crop extends Operation2D {
                     cropRoi,
                     roiTolerance,
                     forceMosaic,
-                    (hints instanceof Hints) ? hints : new Hints(hints),
+                    hints instanceof Hints ? hints : new Hints(hints),
                     source,
                     sourceCornerGridToWorld);
         } else {
@@ -756,7 +756,7 @@ public class Crop extends Operation2D {
         double maxx = rt.getMaxX();
         double maxy = rt.getMaxY();
 
-        return (minx % 1 == 0) && (miny % 1 == 0) && (maxx % 1 == 0) && (maxy % 1 == 0);
+        return minx % 1 == 0 && miny % 1 == 0 && maxx % 1 == 0 && maxy % 1 == 0;
     }
 
     private static void transformGeometry(Geometry geometry) {

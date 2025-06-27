@@ -197,7 +197,7 @@ public class TransparencyStyledTest {
     public void testRGBAWithContrastEnhancementInChannelSelect()
             throws IOException, NoSuchAuthorityCodeException, FactoryException {
         GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "map.tif"));
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
 
         RenderedImage ri = gc.getRenderedImage();
         GridCoverage2D output = (GridCoverage2D) symbolizeRaster(gc, "ce_cs.sld");

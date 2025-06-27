@@ -37,7 +37,7 @@ public class SimpleContentHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((child == null) ? 1 : child.hashCode());
+        return LOCALNAME.hashCode() * (child == null ? 1 : child.hashCode());
     }
 
     /**

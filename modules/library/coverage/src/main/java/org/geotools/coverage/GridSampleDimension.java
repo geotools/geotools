@@ -324,8 +324,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         if (color == null) {
             color = ColorInterpretation.PALETTE_INDEX;
         }
-        final int nameCount = (categories != null) ? categories.length : 0;
-        final int nodataCount = (nodata != null) ? nodata.length : 0;
+        final int nameCount = categories != null ? categories.length : 0;
+        final int nodataCount = nodata != null ? nodata.length : 0;
         final List<Category> categoryList = new ArrayList<>(nameCount + nodataCount + 2);
         /*
          * STEP 1 - Add a qualitative category for each 'nodata' value.
@@ -715,7 +715,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @see #getCategoryNames
      */
     public Category getCategory(final double sample) {
-        return (categories != null) ? categories.getCategory(sample) : null;
+        return categories != null ? categories.getCategory(sample) : null;
     }
 
     /**
@@ -771,7 +771,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                                 || !Classes.isInteger(category.getRange().getElementClass())) {
                             throw new IllegalStateException(ErrorKeys.NON_INTEGER_CATEGORY);
                         }
-                        final int requiredLength = count + (upper - lower);
+                        final int requiredLength = count + upper - lower;
                         if (requiredLength > padValues.length) {
                             padValues = XArray.resize(padValues, requiredLength * 2);
                         }
@@ -851,7 +851,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *     {@link TypeMap#getSampleDimensionType} may be of some help.
      */
     public NumberRange<? extends Number> getRange() {
-        return (categories != null) ? categories.getRange() : null;
+        return categories != null ? categories.getRange() : null;
     }
 
     /**
@@ -899,7 +899,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     @Override
     public Unit<?> getUnits() {
-        return (categories != null) ? categories.getUnits() : units;
+        return categories != null ? categories.getUnits() : units;
     }
 
     /**
@@ -1027,7 +1027,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     @Override
     public int hashCode() {
-        return (categories != null) ? categories.hashCode() : (int) serialVersionUID;
+        return categories != null ? categories.hashCode() : (int) serialVersionUID;
     }
 
     /**

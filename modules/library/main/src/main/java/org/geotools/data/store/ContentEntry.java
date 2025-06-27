@@ -111,7 +111,7 @@ public class ContentEntry {
         } else {
             ContentState auto = state.get(Transaction.AUTO_COMMIT);
             ContentState copy = auto.copy();
-            Transaction t = (transaction != null ? transaction : Transaction.AUTO_COMMIT);
+            Transaction t = transaction != null ? transaction : Transaction.AUTO_COMMIT;
             copy.setTransaction(t);
             state.put(t, copy);
 

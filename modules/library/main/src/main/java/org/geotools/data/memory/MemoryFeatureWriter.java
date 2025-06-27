@@ -157,7 +157,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         if (iterator == null) {
             throw new IOException("FeatureWriter has been closed");
         }
-        return (iterator != null) && iterator.hasNext();
+        return iterator != null && iterator.hasNext();
     }
 
     @Override

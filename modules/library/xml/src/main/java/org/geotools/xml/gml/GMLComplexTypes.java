@@ -164,7 +164,7 @@ public class GMLComplexTypes {
     }
 
     static void encode(Element e, Point g, PrintHandler output) throws IOException {
-        if ((g == null) || (g.getCoordinate() == null)) {
+        if (g == null || g.getCoordinate() == null) {
             throw new IOException("Bad Point Data");
         }
 
@@ -216,7 +216,7 @@ public class GMLComplexTypes {
     }
 
     static void encode(Element e, LineString g, PrintHandler output) throws IOException {
-        if ((g == null) || (g.getNumPoints() == 0)) {
+        if (g == null || g.getNumPoints() == 0) {
             throw new IOException("Bad LineString Data");
         }
 
@@ -238,19 +238,19 @@ public class GMLComplexTypes {
     }
 
     static void encode(Element e, LinearRing g, PrintHandler output) throws IOException {
-        if ((g == null) || (g.getNumPoints() == 0)) {
+        if (g == null || g.getNumPoints() == 0) {
             throw new IOException("Bad LinearRing Data");
         }
 
         if (e == null) {
-            encode(((GMLSchema.getInstance()).getElements()[39]), (LineString) g, output);
+            encode(GMLSchema.getInstance().getElements()[39], (LineString) g, output);
         } else {
             encode(e, (LineString) g, output);
         }
     }
 
     static void encode(Element e, Polygon g, PrintHandler output) throws OperationNotSupportedException, IOException {
-        if ((g == null) || (g.getNumPoints() == 0)) {
+        if (g == null || g.getNumPoints() == 0) {
             throw new IOException("Bad Polygon Data");
         }
 
@@ -262,15 +262,17 @@ public class GMLComplexTypes {
             output.startElement(e.getNamespace(), e.getName(), ai);
         }
 
-        ((GMLSchema.getInstance()).getElements()[35])
+        GMLSchema.getInstance()
+                .getElements()[35]
                 .getType()
-                .encode((GMLSchema.getInstance()).getElements()[35], g.getExteriorRing(), output, null);
+                .encode(GMLSchema.getInstance().getElements()[35], g.getExteriorRing(), output, null);
 
         if (g.getNumInteriorRing() > 0) {
             for (int i = 0; i < g.getNumInteriorRing(); i++)
-                ((GMLSchema.getInstance()).getElements()[36])
+                GMLSchema.getInstance()
+                        .getElements()[36]
                         .getType()
-                        .encode((GMLSchema.getInstance()).getElements()[36], g.getInteriorRingN(i), output, null);
+                        .encode(GMLSchema.getInstance().getElements()[36], g.getInteriorRingN(i), output, null);
         }
 
         if (e == null) {
@@ -281,7 +283,7 @@ public class GMLComplexTypes {
     }
 
     static void encode(Element e, MultiPoint g, PrintHandler output) throws IOException {
-        if ((g == null) || (g.getNumGeometries() <= 0)) {
+        if (g == null || g.getNumGeometries() <= 0) {
             throw new IOException("Bad MultiPoint Data");
         }
 
@@ -308,7 +310,7 @@ public class GMLComplexTypes {
 
     static void encode(Element e, MultiLineString g, PrintHandler output) throws IOException {
 
-        if ((g == null) || g.getNumGeometries() <= 0) {
+        if (g == null || g.getNumGeometries() <= 0) {
             throw new IOException("Bad MultiLineString Data");
         }
 
@@ -335,7 +337,7 @@ public class GMLComplexTypes {
 
     static void encode(Element e, MultiPolygon g, PrintHandler output)
             throws OperationNotSupportedException, IOException {
-        if ((g == null) || (g.getNumGeometries() <= 0)) {
+        if (g == null || g.getNumGeometries() <= 0) {
             throw new IOException("Bad MultiPolygon Data");
         }
 
@@ -362,7 +364,7 @@ public class GMLComplexTypes {
 
     static void encode(Element e, GeometryCollection g, PrintHandler output)
             throws OperationNotSupportedException, IOException {
-        if ((g == null) || (g.getNumGeometries() <= 0)) {
+        if (g == null || g.getNumGeometries() <= 0) {
             throw new IOException("Bad GeometryCollection Data");
         }
 
@@ -408,7 +410,7 @@ public class GMLComplexTypes {
     }
 
     static void encodeCoords(Element e, CoordinateSequence coords, PrintHandler output) throws IOException {
-        if ((coords == null) || (coords.size() == 0)) {
+        if (coords == null || coords.size() == 0) {
             return;
         }
 
@@ -416,7 +418,7 @@ public class GMLComplexTypes {
     }
 
     static void encodeCoords(Element e, Coordinate[] coords, PrintHandler output) throws IOException {
-        if ((coords == null) || (coords.length == 0)) {
+        if (coords == null || coords.length == 0) {
             return;
         }
 
@@ -460,7 +462,7 @@ public class GMLComplexTypes {
     }
 
     static void encodeCoords(Element e, Envelope env, PrintHandler output) throws IOException {
-        if ((env == null)) {
+        if (env == null) {
             return;
         }
 
@@ -589,7 +591,7 @@ public class GMLComplexTypes {
         /** @see schema.ElementGrouping#findChildElement(java.lang.String) */
         @Override
         public Element findChildElement(String name) {
-            if ((elements == null) || (elements.length == 0) || (name == null)) {
+            if (elements == null || elements.length == 0 || name == null) {
                 return null;
             }
 
@@ -603,7 +605,7 @@ public class GMLComplexTypes {
 
         @Override
         public Element findChildElement(String localName, URI namespaceURI) {
-            if ((elements == null) || (elements.length == 0) || (localName == null)) {
+            if (elements == null || elements.length == 0 || localName == null) {
                 return null;
             }
 
@@ -671,7 +673,7 @@ public class GMLComplexTypes {
         /** @see schema.ElementGrouping#findChildElement(java.lang.String) */
         @Override
         public Element findChildElement(String name) {
-            if ((elements == null) || (elements.length == 0) || (name == null)) {
+            if (elements == null || elements.length == 0 || name == null) {
                 return null;
             }
 
@@ -685,7 +687,7 @@ public class GMLComplexTypes {
 
         @Override
         public Element findChildElement(String localName, URI namespaceURI) {
-            if ((elements == null) || (elements.length == 0) || (localName == null)) {
+            if (elements == null || elements.length == 0 || localName == null) {
                 return null;
             }
 
@@ -775,7 +777,7 @@ public class GMLComplexTypes {
                 // TODO have someone that knows more help.
                 String srsName = attrs.getValue("srsName");
 
-                if ((srsName != null) && !"".equals(srsName)) {
+                if (srsName != null && !"".equals(srsName)) {
                     // TODO support real coord systems here
                     //                    if(srsName.matches(".*epsg#\\d*")){
                     //                        String[] t = srsName.split(".*epsg#");
@@ -902,7 +904,7 @@ public class GMLComplexTypes {
                 // TODO have someone that knows more help.
                 String srsName = attrs.getValue("srsName");
 
-                if ((srsName != null) && !"".equals(srsName)) {
+                if (srsName != null && !"".equals(srsName)) {
                     // TODO support real coord systems here
                     //                    if(srsName.matches(".*epsg#\\d*")){
                     //                        String[] t = srsName.split(".*epsg#");
@@ -1053,7 +1055,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length == 0) || (value[0] == null)) {
+            if (value == null || value.length == 0 || value[0] == null) {
                 return null; // do nothing ... this is allowed
             }
 
@@ -1095,12 +1097,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof Geometry));
+            return t != null && value instanceof Geometry;
         }
 
         /**
@@ -1216,7 +1218,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length == 0) || (value[0] == null)) {
+            if (value == null || value.length == 0 || value[0] == null) {
                 return null; // do nothing ... this is allowed
             }
 
@@ -1259,12 +1261,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof Geometry));
+            return t != null && value instanceof Geometry;
         }
 
         /**
@@ -1380,7 +1382,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length == 0) || (value[0] == null)) {
+            if (value == null || value.length == 0 || value[0] == null) {
                 return null; // do nothing ... this is allowed
             }
 
@@ -1424,12 +1426,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof LineString));
+            return t != null && value instanceof LineString;
         }
 
         /**
@@ -1545,7 +1547,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length == 0) || (value[0] == null)) {
+            if (value == null || value.length == 0 || value[0] == null) {
                 return null; // do nothing ... this is allowed
             }
 
@@ -1590,12 +1592,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof Polygon));
+            return t != null && value instanceof Polygon;
         }
 
         /**
@@ -1711,7 +1713,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length == 0) || (value[0] == null)) {
+            if (value == null || value.length == 0 || value[0] == null) {
                 return null; // do nothing ... this is allowed
             }
 
@@ -1755,12 +1757,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof LinearRing));
+            return t != null && value instanceof LinearRing;
         }
 
         /**
@@ -1914,12 +1916,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof Point));
+            return t != null && value instanceof Point;
         }
 
         /**
@@ -2084,12 +2086,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof LineString));
+            return t != null && value instanceof LineString;
         }
 
         /**
@@ -2249,12 +2251,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof LinearRing));
+            return t != null && value instanceof LinearRing;
         }
 
         /**
@@ -2384,7 +2386,7 @@ public class GMLComplexTypes {
                 }
             } catch (ClassCastException cce) {
                 logger.warning(cce.toString());
-                logger.warning(t + ((t == null) ? "" : t.getClass().getName()));
+                logger.warning(t + (t == null ? "" : t.getClass().getName()));
                 throw cce;
             }
 
@@ -2473,7 +2475,7 @@ public class GMLComplexTypes {
             } else {
                 Geometry g = (Geometry) value;
 
-                if ((g == null) || (g.getNumPoints() == 0) || (g.getCoordinates().length == 0)) {
+                if (g == null || g.getNumPoints() == 0 || g.getCoordinates().length == 0) {
                     return;
                 }
 
@@ -2587,7 +2589,7 @@ public class GMLComplexTypes {
             GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.instance());
 
             LinearRing outerLR = null;
-            LinearRing[] innerLR = new LinearRing[(value.length > 1) ? (value.length - 1) : 0];
+            LinearRing[] innerLR = new LinearRing[value.length > 1 ? value.length - 1 : 0];
             int innerIndex = 0;
 
             for (ElementValue elementValue : value) {
@@ -2634,16 +2636,16 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this)) {
+            while (t != null && t != this) {
 
                 if (t.getParent() instanceof ComplexType) {
                     t = (ComplexType) t.getParent();
                 } else t = null;
             }
 
-            return ((t != null) && (value instanceof Polygon));
+            return t != null && value instanceof Polygon;
         }
 
         /**
@@ -2784,12 +2786,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof GeometryCollection));
+            return t != null && value instanceof GeometryCollection;
         }
 
         /**
@@ -2941,12 +2943,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof MultiPoint));
+            return t != null && value instanceof MultiPoint;
         }
 
         /**
@@ -3098,12 +3100,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof MultiLineString));
+            return t != null && value instanceof MultiLineString;
         }
 
         /**
@@ -3255,12 +3257,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof MultiPolygon));
+            return t != null && value instanceof MultiPolygon;
         }
 
         /**
@@ -3419,12 +3421,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof Coordinate));
+            return t != null && value instanceof Coordinate;
         }
 
         /**
@@ -3524,7 +3526,7 @@ public class GMLComplexTypes {
                 dec = attrs.getValue(GMLSchema.NAMESPACE.toString(), "decimal");
             }
 
-            dec = ((dec == null) || (dec == "")) ? "." : dec;
+            dec = dec == null || dec == "" ? "." : dec;
 
             String cs = attrs.getValue("", "cs");
 
@@ -3532,14 +3534,14 @@ public class GMLComplexTypes {
                 cs = attrs.getValue(GMLSchema.NAMESPACE.toString(), "cs");
             }
 
-            cs = ((cs == null) || (cs == "")) ? ",\\s*" : (cs + "\\s*");
+            cs = cs == null || cs == "" ? ",\\s*" : cs + "\\s*";
             String ts = attrs.getValue("", "ts");
 
             if (ts == null) {
                 ts = attrs.getValue(GMLSchema.NAMESPACE.toString(), "ts");
             }
 
-            ts = ((ts == null) || (ts == "") || ts.matches("\\s")) ? "\\s+" : (ts + "\\s*"); // handle whitespace
+            ts = ts == null || ts == "" || ts.matches("\\s") ? "\\s+" : ts + "\\s*"; // handle whitespace
 
             String val = (String) value[0].getValue();
 
@@ -3616,12 +3618,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof CoordinateSequence));
+            return t != null && value instanceof CoordinateSequence;
         }
 
         /**
@@ -3737,7 +3739,7 @@ public class GMLComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
 
-            if ((hints == null) || (hints.get(XMLHandlerHints.STREAM_HINT) == null)) {
+            if (hints == null || hints.get(XMLHandlerHints.STREAM_HINT) == null) {
                 return getFeature(element, value, attrs, hints, null);
             }
 
@@ -3747,7 +3749,7 @@ public class GMLComplexTypes {
 
             String nm = (String) hints.get(STREAM_FEATURE_NAME_HINT);
             SimpleFeature f;
-            if ((nm != null) && nm.equals(element.getName())) {
+            if (nm != null && nm.equals(element.getName())) {
                 f = getFeature(element, value, attrs, hints, ((FCBuffer) hints.get(XMLHandlerHints.STREAM_HINT)).ft);
                 stream(f, (FCBuffer) hints.get(XMLHandlerHints.STREAM_HINT));
 
@@ -3783,12 +3785,12 @@ public class GMLComplexTypes {
 
             String fid = attrs.getValue("", "fid");
 
-            if ((fid == null) || "".equals(fid)) {
+            if (fid == null || "".equals(fid)) {
                 fid = attrs.getValue(GMLSchema.NAMESPACE.toString(), "fid");
             }
 
             SimpleFeature rt = null;
-            if ((fid != null) || !"".equals(fid)) {
+            if (fid != null || !"".equals(fid)) {
                 try {
                     rt = SimpleFeatureBuilder.build(ft, values, fid);
                 } catch (IllegalAttributeException e) {
@@ -3868,8 +3870,8 @@ public class GMLComplexTypes {
         private int searchByName(ElementValue[] value, SimpleFeatureType ft, int i, int j) {
             for (int k = 0; k < ft.getAttributeCount() && j == -1; k++) {
                 // TODO use equals
-                if ((ft.getDescriptor(k).getLocalName() == null
-                                && value[i].getElement().getName() == null)
+                if (ft.getDescriptor(k).getLocalName() == null
+                                && value[i].getElement().getName() == null
                         || ft.getDescriptor(k)
                                 .getLocalName()
                                 .equals(value[i].getElement().getName())) j = k;
@@ -3897,7 +3899,7 @@ public class GMLComplexTypes {
                         logger.finest(
                                 "New State " + featureCollectionBuffer.state + " " + featureCollectionBuffer.getSize());
 
-                        while (featureCollectionBuffer.getSize() > (featureCollectionBuffer.getCapacity() - 1)) {
+                        while (featureCollectionBuffer.getSize() > featureCollectionBuffer.getCapacity() - 1) {
                             logger.finest("waiting for reader");
                             synchronized (featureCollectionBuffer) {
                                 try {
@@ -3954,17 +3956,17 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null)
-                    || (element == null)
+            if (value == null
+                    || element == null
                     || value instanceof FeatureCollection
                     || !(value instanceof SimpleFeature)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
             return t != null;
         }
 
@@ -3989,7 +3991,7 @@ public class GMLComplexTypes {
                 throws OperationNotSupportedException, IOException {
             AttributesImpl ai = new AttributesImpl();
 
-            if ((f.getID() != null) && !f.getID().equals("")) {
+            if (f.getID() != null && !f.getID().equals("")) {
                 ai.addAttribute("", "fid", "", "ID", f.getID());
             } else {
                 ai = null;
@@ -4018,7 +4020,7 @@ public class GMLComplexTypes {
                 throws OperationNotSupportedException, IOException {
             AttributesImpl ai = new AttributesImpl();
 
-            if ((f.getID() != null) && !f.getID().equals("")) {
+            if (f.getID() != null && !f.getID().equals("")) {
                 ai.addAttribute("", "fid", "", "ID", f.getID());
             } else {
                 ai = null;
@@ -4045,7 +4047,7 @@ public class GMLComplexTypes {
         private boolean canEncodeValue(Type type, Object value) {
             // intended to filter null geometries
             // which would otherwise cause error later on
-            boolean cantPrint = (value == null && !(type instanceof SimpleType));
+            boolean cantPrint = value == null && !(type instanceof SimpleType);
             return !cantPrint;
         }
     }
@@ -4193,7 +4195,7 @@ public class GMLComplexTypes {
         /** @see schema.Type#getValue(java.util.List) */
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints) {
-            if ((hints == null) || (hints.get(XMLHandlerHints.STREAM_HINT) == null)) {
+            if (hints == null || hints.get(XMLHandlerHints.STREAM_HINT) == null) {
                 return getCollection(attrs, value);
             }
 
@@ -4207,19 +4209,19 @@ public class GMLComplexTypes {
         /** @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element, java.util.Map) */
         @Override
         public boolean cache(Element element, Map<String, Object> hints) {
-            if ((hints == null) || (hints.get(XMLHandlerHints.STREAM_HINT) == null)) {
+            if (hints == null || hints.get(XMLHandlerHints.STREAM_HINT) == null) {
                 return true;
             }
 
-            ComplexType e = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType e = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
             while (e != null) {
-                if ((e.getName() != null)
+                if (e.getName() != null
                         && e.getName().equals(BoxType.getInstance().getName())) {
                     return true;
                 }
 
-                e = (e.getParent() instanceof ComplexType) ? (ComplexType) e.getParent() : null;
+                e = e.getParent() instanceof ComplexType ? (ComplexType) e.getParent() : null;
             }
 
             return false;
@@ -4278,14 +4280,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null)
-                    && (value instanceof FeatureCollection)
-                    && ((SimpleFeatureCollection) value).getBounds() != null);
+            return t != null
+                    && value instanceof FeatureCollection
+                    && ((SimpleFeatureCollection) value).getBounds() != null;
         }
 
         /**
@@ -4295,7 +4297,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || (!(value instanceof FeatureCollection))) {
+            if (value == null || !(value instanceof FeatureCollection)) {
                 return;
             }
 
@@ -4446,7 +4448,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -4479,12 +4481,12 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
-            return ((t != null) && (value instanceof Geometry));
+            return t != null && value instanceof Geometry;
         }
 
         /**
@@ -4605,12 +4607,12 @@ public class GMLComplexTypes {
         public SimpleFeature getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one feature " + value.length);
             }
 
             logger.finest(
-                    (value[0].getValue() == null)
+                    value[0].getValue() == null
                             ? "null"
                             : value[0].getValue().getClass().getName());
 
@@ -4647,10 +4649,10 @@ public class GMLComplexTypes {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t == this;
         }
@@ -4762,7 +4764,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -4795,14 +4797,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || (element == null) || !(value instanceof Geometry)) {
+            if (value == null || element == null || !(value instanceof Geometry)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -4918,7 +4920,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -4951,14 +4953,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || !(value instanceof Point)) {
+            if (value == null || !(value instanceof Point)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -4970,7 +4972,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof Point)) {
+            if (value == null || !(value instanceof Point)) {
                 throw new OperationNotSupportedException(
                         "Value is " + value == null ? "null" : value.getClass().getName());
             }
@@ -5063,7 +5065,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -5096,14 +5098,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || !(value instanceof Polygon)) {
+            if (value == null || !(value instanceof Polygon)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -5115,7 +5117,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof Polygon)) {
+            if (value == null || !(value instanceof Polygon)) {
                 throw new OperationNotSupportedException(
                         "Value is " + value == null ? "null" : value.getClass().getName());
             }
@@ -5208,7 +5210,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -5241,14 +5243,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || !(value instanceof LineString)) {
+            if (value == null || !(value instanceof LineString)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -5260,7 +5262,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof LineString)) {
+            if (value == null || !(value instanceof LineString)) {
                 throw new OperationNotSupportedException(
                         "Value is " + value == null ? "null" : value.getClass().getName());
             }
@@ -5353,7 +5355,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -5395,14 +5397,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || !(value instanceof MultiPoint)) {
+            if (value == null || !(value instanceof MultiPoint)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -5414,7 +5416,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof MultiPoint)) {
+            if (value == null || !(value instanceof MultiPoint)) {
                 throw new OperationNotSupportedException(
                         "Value is " + value == null ? "null" : value.getClass().getName());
             }
@@ -5507,7 +5509,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -5551,14 +5553,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || !(value instanceof MultiLineString)) {
+            if (value == null || !(value instanceof MultiLineString)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -5570,7 +5572,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof MultiLineString)) {
+            if (value == null || !(value instanceof MultiLineString)) {
                 throw new OperationNotSupportedException(
                         "Value is " + value == null ? "null" : value.getClass().getName());
             }
@@ -5663,7 +5665,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -5707,14 +5709,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || !(value instanceof MultiPolygon)) {
+            if (value == null || !(value instanceof MultiPolygon)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -5726,7 +5728,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof MultiPolygon)) {
+            if (value == null || !(value instanceof MultiPolygon)) {
                 throw new OperationNotSupportedException(
                         "Value is " + (value == null ? "null" : value.getClass().getName()));
             }
@@ -5819,7 +5821,7 @@ public class GMLComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((value == null) || (value.length != 1)) {
+            if (value == null || value.length != 1) {
                 throw new SAXException("must be one geometry");
             }
 
@@ -5862,14 +5864,14 @@ public class GMLComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            if ((value == null) || !(value instanceof GeometryCollection)) {
+            if (value == null || !(value instanceof GeometryCollection)) {
                 return false;
             }
 
-            ComplexType t = (element.getType() instanceof ComplexType) ? (ComplexType) element.getType() : null;
+            ComplexType t = element.getType() instanceof ComplexType ? (ComplexType) element.getType() : null;
 
-            while ((t != null) && (t != this))
-                t = (t.getParent() instanceof ComplexType) ? (ComplexType) t.getParent() : null;
+            while (t != null && t != this)
+                t = t.getParent() instanceof ComplexType ? (ComplexType) t.getParent() : null;
 
             return t != null;
         }
@@ -5881,7 +5883,7 @@ public class GMLComplexTypes {
         @Override
         public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof GeometryCollection)) {
+            if (value == null || !(value instanceof GeometryCollection)) {
                 throw new OperationNotSupportedException(
                         "Value is " + value == null ? "null" : value.getClass().getName());
             }
@@ -5930,7 +5932,7 @@ public class GMLComplexTypes {
             if (attr != null) {
                 build.add(attr);
 
-                if ((geometryAttribute == null) && attr instanceof GeometryDescriptor) {
+                if (geometryAttribute == null && attr instanceof GeometryDescriptor) {
                     if (!attr.getLocalName()
                             //
                             // .equalsIgnoreCase(BoxType.getInstance().getName())) {
@@ -5967,7 +5969,7 @@ public class GMLComplexTypes {
 
         GeometryDescriptor geometryAttribute = null;
 
-        ElementGrouping child = (element).getChild();
+        ElementGrouping child = element.getChild();
 
         List<AttributeDescriptor> attrs = getAttributes(element.getName(), child);
         for (AttributeDescriptor attributeDescriptor : attrs) {
@@ -5975,7 +5977,7 @@ public class GMLComplexTypes {
 
             build.add(attributeDescriptor);
 
-            if ((geometryAttribute == null) && attributeDescriptor instanceof GeometryDescriptor) {
+            if (geometryAttribute == null && attributeDescriptor instanceof GeometryDescriptor) {
                 if (!attributeDescriptor
                         .getLocalName()
                         .equalsIgnoreCase(AbstractFeatureType.getInstance()

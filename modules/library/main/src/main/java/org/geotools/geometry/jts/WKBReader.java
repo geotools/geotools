@@ -331,12 +331,12 @@ public class WKBReader {
                     List<LineString> components = cc.getComponents();
                     Coordinate start = components.get(0).getCoordinateN(0);
                     LineString lastGeom = components.get(components.size() - 1);
-                    Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
+                    Coordinate end = lastGeom.getCoordinateN(lastGeom.getNumPoints() - 1);
                     components.add(factory.createLineString(new Coordinate[] {start, end}));
                     ls = factory.createCurvedGeometry(components);
                 } else {
                     Coordinate start = ls.getCoordinateN(0);
-                    Coordinate end = ls.getCoordinateN((ls.getNumPoints() - 1));
+                    Coordinate end = ls.getCoordinateN(ls.getNumPoints() - 1);
                     // turn it into a compound and add the segment that closes it
                     LineString closer = factory.createLineString(new Coordinate[] {start, end});
                     ls = factory.createCurvedGeometry(ls, closer);

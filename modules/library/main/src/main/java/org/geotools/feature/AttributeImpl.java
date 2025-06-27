@@ -79,7 +79,7 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
      */
     @Override
     public int hashCode() {
-        return super.hashCode() + (37 * (id == null ? 0 : id.hashCode()));
+        return super.hashCode() + 37 * (id == null ? 0 : id.hashCode());
     }
 
     /**

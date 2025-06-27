@@ -214,7 +214,7 @@ public class GML3EncodingTest extends XmlTestSupport {
         SimpleFeatureType ft = DataUtilities.createType(
                 TEST.TestFeature.getNamespaceURI(), TEST.TestFeature.getLocalPart(), "the_geom:Point,data:String");
         SimpleFeature feature = SimpleFeatureBuilder.build(
-                ft, new Object[] {new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"}, "123");
+                ft, new Object[] {new WKTReader().read("POINT(0 0)"), "One " + (char) 0x7 + " test"}, "123");
 
         TestConfiguration configuration = new TestConfiguration();
         Encoder encoder = new Encoder(configuration);

@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,8 @@ import org.geotools.referencing.operation.builder.MappedPosition;
 /**
  * Reader for Mapinfo .TAB files Finds control points and CRS in .TAB file and parses them accordingly and builds a
  * mathtransform and CRS
+ *
+ * <p>GR (2025/06/04): why is this class in gt-main at all?
  *
  * @author Niels Charlier, Scitus Development
  */
@@ -383,7 +386,7 @@ public class MapInfoFileReader {
         if (!tabfile.isFile() || !tabfile.canRead()) {
             throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, tabfile));
         }
-        parseTabFile(new BufferedReader(new FileReader(tabfile)));
+        parseTabFile(new BufferedReader(new FileReader(tabfile, StandardCharsets.UTF_8)));
     }
 
     /**
@@ -396,7 +399,7 @@ public class MapInfoFileReader {
         if (tabfile == null) {
             throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
         }
-        parseTabFile(new BufferedReader(new InputStreamReader(tabfile.openStream())));
+        parseTabFile(new BufferedReader(new InputStreamReader(tabfile.openStream(), StandardCharsets.UTF_8)));
     }
 
     /**

@@ -158,7 +158,7 @@ public abstract class AbstractPosition implements Position {
         int code = 1;
         for (int i = 0; i < dimension; i++) {
             final long bits = Double.doubleToLongBits(position.getOrdinate(i));
-            code = 31 * code + ((int) (bits) ^ (int) (bits >>> 32));
+            code = 31 * code + ((int) bits ^ (int) (bits >>> 32));
         }
         final CoordinateReferenceSystem crs = position.getCoordinateReferenceSystem();
         if (crs != null) {

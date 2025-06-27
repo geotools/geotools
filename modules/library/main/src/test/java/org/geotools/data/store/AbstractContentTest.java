@@ -179,7 +179,7 @@ public abstract class AbstractContentTest {
         @Override
         public SimpleFeature next() throws IOException {
             if (index >= FEATURES.size()) {
-                newFeature = buildFeature("mock." + (++index));
+                newFeature = buildFeature("mock." + ++index);
                 return newFeature;
             }
             return FEATURES.get(index++);

@@ -59,7 +59,7 @@ public class GroupHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((name == null) ? 1 : name.hashCode())) + hashCodeOffset;
+        return LOCALNAME.hashCode() * (name == null ? 1 : name.hashCode()) + hashCodeOffset;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -147,11 +147,11 @@ public class GroupHandler extends ElementGroupingHandler {
         }
 
         // name ...
-        if ((min != null) && !"".equalsIgnoreCase(min)) {
+        if (min != null && !"".equalsIgnoreCase(min)) {
             minOccurs = Integer.parseInt(min);
         }
 
-        if ((max != null) && !"".equalsIgnoreCase(max)) {
+        if (max != null && !"".equalsIgnoreCase(max)) {
             if ("unbounded".equalsIgnoreCase(max)) {
                 maxOccurs = ElementGrouping.UNBOUNDED;
             } else {
@@ -185,11 +185,11 @@ public class GroupHandler extends ElementGroupingHandler {
         cache.namespace = parent.getTargetNamespace();
         cache.min = this.minOccurs;
         cache.max = this.maxOccurs;
-        cache.child = (this.child == null) ? null : this.child.compress(parent); // deal with all/choice/sequnce
+        cache.child = this.child == null ? null : this.child.compress(parent); // deal with all/choice/sequnce
         if (ref != null) {
             Group g = parent.lookUpGroup(ref);
             if (g != null) {
-                if ((id == null) || "".equalsIgnoreCase(id)) {
+                if (id == null || "".equalsIgnoreCase(id)) {
                     id = g.getId();
                 }
 
@@ -198,7 +198,7 @@ public class GroupHandler extends ElementGroupingHandler {
                 cache.name = g.getName();
                 cache.namespace = g.getNamespace();
 
-                cache.child = (g.getChild() == null) ? cache.child : g.getChild();
+                cache.child = g.getChild() == null ? cache.child : g.getChild();
             }
         }
 

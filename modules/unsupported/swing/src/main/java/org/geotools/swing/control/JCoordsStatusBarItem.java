@@ -97,7 +97,7 @@ public class JCoordsStatusBarItem extends StatusBarItem {
         mapPane.addMapPaneListener(new MapPaneAdapter() {
             @Override
             public void onDisplayAreaChanged(MapPaneEvent ev) {
-                setFormat(((ReferencedEnvelope) ev.getData()));
+                setFormat((ReferencedEnvelope) ev.getData());
             }
         });
 

@@ -204,6 +204,6 @@ public class BasicGraphBuilderTest {
     }
 
     private BasicGraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 }

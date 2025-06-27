@@ -46,7 +46,7 @@ public class KeyHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((name == null) ? 1 : name.hashCode());
+        return LOCALNAME.hashCode() * (id == null ? 1 : id.hashCode()) * (name == null ? 1 : name.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

@@ -301,6 +301,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     }
 
     @Override
+    @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
         if (other instanceof CompoundCurve) {
             CompoundCurve ccOther = (CompoundCurve) other;

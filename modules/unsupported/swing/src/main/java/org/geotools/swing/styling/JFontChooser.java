@@ -124,7 +124,7 @@ public class JFontChooser extends JDialog {
     public JFontChooser(JFrame owner, String title, Font initialFont) {
         super(owner, title, true);
         setResizable(false);
-        selectedFont = (initialFont == null ? sf.getDefaultFont() : initialFont);
+        selectedFont = initialFont == null ? sf.getDefaultFont() : initialFont;
 
         initFont();
         initComponents();
@@ -140,7 +140,7 @@ public class JFontChooser extends JDialog {
     public JFontChooser(JDialog owner, String title, Font initialFont) {
         super(owner, title, true);
         setResizable(false);
-        selectedFont = (initialFont == null ? sf.getDefaultFont() : initialFont);
+        selectedFont = initialFont == null ? sf.getDefaultFont() : initialFont;
 
         initFont();
         initComponents();

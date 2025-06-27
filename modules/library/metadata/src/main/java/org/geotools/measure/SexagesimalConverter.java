@@ -129,7 +129,7 @@ class SexagesimalConverter extends AbstractConverter {
                 throw new ArithmeticException("Invalid secondes: " + value);
             }
         }
-        value = ((value / 60) + min) / 60 + deg;
+        value = (value / 60 + min) / 60 + deg;
         return value;
     }
 

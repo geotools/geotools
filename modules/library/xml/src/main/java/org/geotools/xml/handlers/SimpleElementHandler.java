@@ -95,7 +95,7 @@ public class SimpleElementHandler extends XMLElementHandler {
     @Override
     public void endElement(URI namespaceURI, String localName, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
-        text = (text == null) ? null : text.trim();
+        text = text == null ? null : text.trim();
 
         ElementValue[] vals = new ElementValue[1];
         vals[0] = new DefaultElementValue(text, elem);

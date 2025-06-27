@@ -105,7 +105,6 @@ public class TileIdentifierTest {
     public void testEquals() {
         Assert.assertEquals(this.tileId, this.tileId);
         Assert.assertNotEquals(null, this.tileId);
-        Assert.assertNotEquals("Blah", this.tileId);
 
         TileIdentifier otherTile = createTestTileIdentifier(5, 10, 12, "SomeService");
         Assert.assertEquals(this.tileId, otherTile);

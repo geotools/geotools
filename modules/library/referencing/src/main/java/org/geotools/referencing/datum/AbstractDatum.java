@@ -88,7 +88,7 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     public AbstractDatum(final Datum datum) {
         super(datum);
         final Date epoch = datum.getRealizationEpoch();
-        realizationEpoch = (epoch != null) ? epoch.getTime() : Long.MIN_VALUE;
+        realizationEpoch = epoch != null ? epoch.getTime() : Long.MIN_VALUE;
         domainOfValidity = datum.getDomainOfValidity();
         scope = datum.getScope();
         anchorPoint = datum.getAnchorPoint();
@@ -144,7 +144,7 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
         final Date realizationEpoch = (Date) subProperties.get(REALIZATION_EPOCH_KEY);
         domainOfValidity = (Extent) subProperties.get(DOMAIN_OF_VALIDITY_KEY);
         scope = (InternationalString) subProperties.get(SCOPE_KEY);
-        this.realizationEpoch = (realizationEpoch != null) ? realizationEpoch.getTime() : Long.MIN_VALUE;
+        this.realizationEpoch = realizationEpoch != null ? realizationEpoch.getTime() : Long.MIN_VALUE;
     }
 
     /**
@@ -189,7 +189,7 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
      */
     @Override
     public Date getRealizationEpoch() {
-        return (realizationEpoch != Long.MIN_VALUE) ? new Date(realizationEpoch) : null;
+        return realizationEpoch != Long.MIN_VALUE ? new Date(realizationEpoch) : null;
     }
 
     /**

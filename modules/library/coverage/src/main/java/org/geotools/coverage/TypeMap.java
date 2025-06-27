@@ -245,12 +245,12 @@ public final class TypeMap {
      */
     public static SampleDimensionType getSampleDimensionType(final long min, final long max) {
         if (min >= 0) {
-            if (max < (1L << 1)) return UNSIGNED_1BIT;
-            if (max < (1L << 2)) return UNSIGNED_2BITS;
-            if (max < (1L << 4)) return UNSIGNED_4BITS;
-            if (max < (1L << 8)) return UNSIGNED_8BITS;
-            if (max < (1L << 16)) return UNSIGNED_16BITS;
-            if (max < (1L << 32)) return UNSIGNED_32BITS;
+            if (max < 1L << 1) return UNSIGNED_1BIT;
+            if (max < 1L << 2) return UNSIGNED_2BITS;
+            if (max < 1L << 4) return UNSIGNED_4BITS;
+            if (max < 1L << 8) return UNSIGNED_8BITS;
+            if (max < 1L << 16) return UNSIGNED_16BITS;
+            if (max < 1L << 32) return UNSIGNED_32BITS;
         } else {
             if (min >= Byte.MIN_VALUE && max <= Byte.MAX_VALUE) return SIGNED_8BITS;
             if (min >= Short.MIN_VALUE && max <= Short.MAX_VALUE) return SIGNED_16BITS;
@@ -464,13 +464,13 @@ public final class TypeMap {
                 if (!allowWidening) break;
                 // Fall through
             }
-            case (32 << 16): {
+            case 32 << 16: {
                 if (!allowWidening || Math.abs(value) <= Float.MAX_VALUE) {
                     return Float.valueOf((float) value);
                 }
                 // Fall through
             }
-            case (64 << 16): {
+            case 64 << 16: {
                 return Double.valueOf(value);
             }
             default: {

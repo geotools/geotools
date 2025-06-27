@@ -367,7 +367,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                 try {
                     getDataStore().update(getSchema(), innerTypes, values, preFilter, cx);
                 } catch (SQLException e) {
-                    throw (IOException) (new IOException(e.getMessage()).initCause(e));
+                    throw (IOException) new IOException(e.getMessage()).initCause(e);
                 }
 
                 if (state.hasListener()) {

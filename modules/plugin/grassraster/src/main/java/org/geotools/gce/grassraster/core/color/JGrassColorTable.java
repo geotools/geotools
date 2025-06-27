@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -92,7 +93,8 @@ public class JGrassColorTable {
             }
             return;
         }
-        try (BufferedReader rdr = new BufferedReader(new InputStreamReader(new FileInputStream(colrFile)))) {
+        try (BufferedReader rdr =
+                new BufferedReader(new InputStreamReader(new FileInputStream(colrFile), StandardCharsets.UTF_8))) {
             String line = rdr.readLine();
             if (line == null) {
                 if (colrFile.delete()) {
@@ -138,9 +140,9 @@ public class JGrassColorTable {
         float rinc = (float) (dataRange[1] - dataRange[0]) / 5;
         for (int i = 0; i < 5; i++) {
             StringBuffer rule = new StringBuffer();
-            rule.append((dataRange[0] + (i * rinc)) + ":");
+            rule.append((dataRange[0] + i * rinc) + ":");
             rule.append(rainbow[i][0] + ":" + rainbow[i][1] + ":" + rainbow[i][2] + " ");
-            rule.append((dataRange[0] + ((i + 1) * rinc)) + ":");
+            rule.append((dataRange[0] + (i + 1) * rinc) + ":");
             rule.append(rainbow[i + 1][0] + ":" + rainbow[i + 1][1] + ":" + rainbow[i + 1][2] + " " + alpha);
             rules.add(rule.toString());
         }

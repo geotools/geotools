@@ -174,6 +174,7 @@ public final class Units {
                         }
                         return false;
                     } catch (Exception e) {
+                        // Fall through to standard equals comparison if conversion fails
                     }
                 }
             }

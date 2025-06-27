@@ -106,7 +106,7 @@ public final class ErdasImgTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D gc = reader.read(null);
+        GridCoverage2D gc = reader.read();
         forceDataLoading(gc);
 
         // /////////////////////////////////////////////////////////////////////
@@ -115,12 +115,12 @@ public final class ErdasImgTest extends GDALTestCase {
         //
         // /////////////////////////////////////////////////////////////////////
         final double cropFactor = 2.0;
-        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle range = (GridEnvelope2D) reader.getOriginalGridRange();
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
         final GeneralBounds cropEnvelope = new GeneralBounds(
                 new double[] {
-                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
-                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + oldEnvelope.getSpan(0) / cropFactor,
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + oldEnvelope.getSpan(1) / cropFactor
                 },
                 new double[] {
                     oldEnvelope.getUpperCorner().getOrdinate(0),

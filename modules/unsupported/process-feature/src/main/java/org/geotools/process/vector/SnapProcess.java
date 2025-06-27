@@ -250,7 +250,7 @@ public class SnapProcess implements VectorProcess {
         double y = Math.sin(coords[1].x - coords[0].x) * Math.cos(coords[1].y);
         double x = Math.cos(coords[0].y) * Math.sin(coords[1].y)
                 - Math.sin(coords[0].y) * Math.cos(coords[1].y) * Math.cos(coords[1].x - coords[0].x);
-        double brng = ((Math.atan2(y, x) * 180.0 / Math.PI) + 360) % 360;
+        double brng = (Math.atan2(y, x) * 180.0 / Math.PI + 360) % 360;
         return brng;
     }
 }

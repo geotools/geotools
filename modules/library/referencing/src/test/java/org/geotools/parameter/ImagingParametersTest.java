@@ -93,7 +93,7 @@ public final class ImagingParametersTest {
         final ImagingParameters values = (ImagingParameters) parameters.createValue();
         for (int i = 0; i < 20; i++) {
             final ParameterValue before = values.parameter("constants");
-            if ((i % 5) == 0) {
+            if (i % 5 == 0) {
                 values.parameters.setParameter("constants", new double[] {i});
             } else {
                 values.parameter("constants").setValue(new double[] {i});

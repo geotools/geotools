@@ -49,13 +49,13 @@ public class BasicEdge extends BasicGraphable implements Edge {
     /** @see Edge#getNodeA() */
     @Override
     public Node getNodeA() {
-        return (m_nodeA);
+        return m_nodeA;
     }
 
     /** @see Edge#getNodeB() */
     @Override
     public Node getNodeB() {
-        return (m_nodeB);
+        return m_nodeB;
     }
 
     /**
@@ -65,9 +65,9 @@ public class BasicEdge extends BasicGraphable implements Edge {
      */
     @Override
     public Node getOtherNode(Node node) {
-        if (node.equals(m_nodeA)) return (m_nodeB);
-        if (node.equals(m_nodeB)) return (m_nodeA);
-        return (null);
+        if (node.equals(m_nodeA)) return m_nodeB;
+        if (node.equals(m_nodeB)) return m_nodeA;
+        return null;
     }
 
     /**
@@ -100,7 +100,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
             }
         }
 
-        return (adj.iterator());
+        return adj.iterator();
     }
 
     /** @see Edge#reverse() */
@@ -114,13 +114,13 @@ public class BasicEdge extends BasicGraphable implements Edge {
     /** @see Edge#compareNodes(Edge) */
     @Override
     public int compareNodes(Edge other) {
-        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB())) return (EQUAL_NODE_ORIENTATION);
+        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB())) return EQUAL_NODE_ORIENTATION;
 
-        if ((m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB()))
-                || (m_nodeA.equals(other.getNodeB()) && m_nodeB.equals(other.getNodeA())))
-            return (OPPOSITE_NODE_ORIENTATION);
+        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB())
+                || m_nodeA.equals(other.getNodeB()) && m_nodeB.equals(other.getNodeA()))
+            return OPPOSITE_NODE_ORIENTATION;
 
-        return (UNEQUAL_NODE_ORIENTATION);
+        return UNEQUAL_NODE_ORIENTATION;
     }
 
     /*
@@ -134,6 +134,6 @@ public class BasicEdge extends BasicGraphable implements Edge {
     /** Returns ([A node.toString()],[B node.toString()]). */
     @Override
     public String toString() {
-        return (super.toString() + " (" + m_nodeA.getID() + "," + m_nodeB.getID() + ")");
+        return super.toString() + " (" + m_nodeA.getID() + "," + m_nodeB.getID() + ")";
     }
 }

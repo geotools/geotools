@@ -138,7 +138,7 @@ public class StyledShapePainter {
                 float[] coords = new float[2];
                 PathIterator citer = getPathIterator(shape);
                 AffineTransform at = new AffineTransform(temp);
-                while (!(citer.isDone())) {
+                while (!citer.isDone()) {
                     if (citer.currentSegment(coords) != PathIterator.SEG_MOVETO) {
                         at.setTransform(temp);
 
@@ -148,7 +148,7 @@ public class StyledShapePainter {
                         at.rotate(icoStyle.getRotation());
                         at.translate(
                                 -(icon.getIconWidth() * icoStyle.getAnchorPointX()),
-                                (icon.getIconHeight() * (icoStyle.getAnchorPointY() - 1)));
+                                icon.getIconHeight() * (icoStyle.getAnchorPointY() - 1));
                         graphics.setTransform(at);
 
                         icon.paintIcon(null, graphics, 0, 0);
@@ -171,7 +171,7 @@ public class StyledShapePainter {
             MarkStyle2D ms2d = (MarkStyle2D) style;
 
             Shape transformedShape;
-            while (!(citer.isDone())) {
+            while (!citer.isDone()) {
                 if (citer.currentSegment(coords) != PathIterator.SEG_MOVETO) {
                     transformedShape = ms2d.getTransformedShape(coords[0], coords[1]);
                     if (transformedShape != null) {
@@ -204,8 +204,8 @@ public class StyledShapePainter {
 
             BufferedImage image = gs2d.getImage();
             double dx = gs2d.getDisplacementX() - gs2d.getAnchorPointX() * image.getWidth();
-            double dy = gs2d.getDisplacementY() - ((1 - gs2d.getAnchorPointY()) * image.getHeight());
-            while (!(iter.isDone())) {
+            double dy = gs2d.getDisplacementY() - (1 - gs2d.getAnchorPointY()) * image.getHeight();
+            while (!iter.isDone()) {
                 if (iter.currentSegment(coords) != PathIterator.SEG_MOVETO) {
                     renderImage(
                             graphics,
@@ -402,11 +402,11 @@ public class StyledShapePainter {
                 float opacity = legend.getOpacity().evaluate(null, Float.class);
                 AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
-                while (!(iter.isDone())) {
+                while (!iter.isDone()) {
                     iter.currentSegment(coords);
                     try {
                         BufferedImage image = ImageIOExt.readBufferedImage(uri.toURL());
-                        if ((symbolScale > 0.0) && (symbolScale != 1.0)) {
+                        if (symbolScale > 0.0 && symbolScale != 1.0) {
                             int w = (int) (image.getWidth() / symbolScale);
                             int h = (int) (image.getHeight() / symbolScale);
                             int imageType = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
@@ -462,7 +462,7 @@ public class StyledShapePainter {
     void debugShape(Shape shape) {
         float[] pt = new float[2];
         PathIterator iter = shape.getPathIterator(null);
-        while (!(iter.isDone())) {
+        while (!iter.isDone()) {
 
             int type = iter.currentSegment(pt);
             String event = "unknown";
@@ -570,22 +570,22 @@ public class StyledShapePainter {
 
                     dx = coords[0] - previous[0];
                     dy = coords[1] - previous[1];
-                    len = Math.sqrt((dx * dx) + (dy * dy)); // - imageWidth;
+                    len = Math.sqrt(dx * dx + dy * dy); // - imageWidth;
 
                     if (len < remainder) {
                         remainder -= len;
                     } else {
                         double theta = Math.atan2(dx, dy);
-                        dx = (Math.sin(theta) * imageSize);
-                        dy = (Math.cos(theta) * imageSize);
+                        dx = Math.sin(theta) * imageSize;
+                        dy = Math.cos(theta) * imageSize;
 
                         if (LOGGER.isLoggable(Level.FINEST)) {
-                            LOGGER.finest("dx = " + dx + " dy " + dy + " step = " + Math.sqrt((dx * dx) + (dy * dy)));
+                            LOGGER.finest("dx = " + dx + " dy " + dy + " step = " + Math.sqrt(dx * dx + dy * dy));
                         }
 
-                        double rotation = -(theta - (Math.PI / 2d));
-                        double x = previous[0] + (Math.sin(theta) * remainder);
-                        double y = previous[1] + (Math.cos(theta) * remainder);
+                        double rotation = -(theta - Math.PI / 2d);
+                        double x = previous[0] + Math.sin(theta) * remainder;
+                        double y = previous[1] + Math.cos(theta) * remainder;
 
                         if (LOGGER.isLoggable(Level.FINEST)) {
                             LOGGER.finest("len =" + len + " imageSize " + imageSize);
@@ -795,7 +795,7 @@ public class StyledShapePainter {
             final Shape markShape = ms2d.getShape();
             double size = ms2d.getSize();
             Rectangle2D boundsFill = markShape.getBounds2D();
-            double aspect = (boundsFill.getHeight() > 0 && boundsFill.getWidth() > 0)
+            double aspect = boundsFill.getHeight() > 0 && boundsFill.getWidth() > 0
                     ? boundsFill.getWidth() / boundsFill.getHeight()
                     : 1.0;
             stippleSize = new Rectangle2D.Double(0, 0, size * aspect, size);

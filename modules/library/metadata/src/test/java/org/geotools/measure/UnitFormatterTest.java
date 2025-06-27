@@ -113,8 +113,6 @@ public class UnitFormatterTest {
                 entry("m2", SQUARE_METRE),
                 entry("rpm", REVOLUTION_PER_MINUTE),
                 entry("m3", CUBIC_METRE));
-        List<Map.Entry<String, Unit<?>>> unitsOnlyInNewWithoutBug = new ArrayList<>(unitsOnlyInOld);
-        unitsOnlyInNewWithoutBug.removeAll(indriyaBug);
 
         assertEquals(
                 unitsOnlyInOld.size() + " names only in old: " + unitsOnlyInOld + "\n", indriyaBug, unitsOnlyInOld);
@@ -150,14 +148,14 @@ public class UnitFormatterTest {
     }
 
     @SuppressWarnings("unchecked") // reflection in use, cannot be type safe
-    private static HashMap<Unit<?>, String> getUnitToNameMap(UnitFormat instance) throws Exception {
+    private static Map<Unit<?>, String> getUnitToNameMap(UnitFormat instance) throws Exception {
         Field unitToNameField = instance.getClass().getDeclaredField("unitToName");
         unitToNameField.setAccessible(true);
         return (HashMap<Unit<?>, String>) unitToNameField.get(instance);
     }
 
     @SuppressWarnings("unchecked") // reflection in use, cannot be type safe
-    private static HashMap<String, Unit<?>> getNameToUnitMap(UnitFormat instance) throws Exception {
+    private static Map<String, Unit<?>> getNameToUnitMap(UnitFormat instance) throws Exception {
         Field nameToUnitField = instance.getClass().getDeclaredField("nameToUnit");
         nameToUnitField.setAccessible(true);
         return (HashMap<String, Unit<?>>) nameToUnitField.get(instance);

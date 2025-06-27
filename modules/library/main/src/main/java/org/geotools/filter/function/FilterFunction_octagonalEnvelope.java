@@ -58,6 +58,6 @@ public class FilterFunction_octagonalEnvelope extends FunctionExpressionImpl {
                     "Filter Function problem for function octagonal envelope argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.octagonalEnvelope(arg0));
+        return StaticGeometry.octagonalEnvelope(arg0);
     }
 }

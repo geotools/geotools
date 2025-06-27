@@ -200,6 +200,6 @@ public final class GeometryOperand implements Name, Serializable {
     /** Returns the canonical instance on deserialization. */
     private Object readResolve() throws ObjectStreamException {
         final GeometryOperand unique = POOL.get(this);
-        return (unique != null) ? unique : this;
+        return unique != null ? unique : this;
     }
 }

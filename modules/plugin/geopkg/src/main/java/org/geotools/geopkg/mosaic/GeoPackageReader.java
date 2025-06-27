@@ -189,7 +189,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters)
+    public GridCoverage2D read(String coverageName, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
         TileEntry entry = tiles.get(coverageName);
         RenderedImage image = null;
@@ -464,7 +464,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
         return read(coverageName, parameters);
     }
 
@@ -476,7 +476,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     }
 
     /** Method object returning 4 separate params */
-    private class TileBoundsCalculator {
+    private static class TileBoundsCalculator {
         private Envelope requestedEnvelope;
         private double resX;
         private double resY;
@@ -524,11 +524,11 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             topTile = (int) Math.floor((offsetY - maxY) / resY);
             rightTile = (int) Math.ceil((maxX - offsetX) / resX);
             // but check if the extra tile is completely outside, and if so, remove
-            if (offsetX + (rightTile * resX) > maxX) {
+            if (offsetX + rightTile * resX > maxX) {
                 rightTile -= 1;
             }
             bottomTile = (int) Math.ceil((offsetY - minY) / resY);
-            if (offsetY - (bottomTile * resY) < minY) {
+            if (offsetY - bottomTile * resY < minY) {
                 bottomTile -= 1;
             }
             return this;

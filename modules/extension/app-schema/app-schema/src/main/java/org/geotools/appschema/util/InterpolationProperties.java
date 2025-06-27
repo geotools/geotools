@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -205,7 +206,7 @@ public class InterpolationProperties {
      * @return a string that contains the content of input
      */
     public static String readAll(InputStream input) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         StringBuffer buffer = new StringBuffer();
         while (true) {
             String line;

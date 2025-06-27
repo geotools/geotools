@@ -396,7 +396,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory im
         Set<CoordinateOperation> operations = null;
         try {
             operations = authorityFactory.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
-            inverse = (operations == null || operations.isEmpty());
+            inverse = operations == null || operations.isEmpty();
             if (inverse) {
                 /*
                  * No operation from 'source' to 'target' available. But maybe there is an inverse

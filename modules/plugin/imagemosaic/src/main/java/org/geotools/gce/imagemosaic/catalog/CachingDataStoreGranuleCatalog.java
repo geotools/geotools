@@ -82,7 +82,7 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
             SimpleFeatureCollection granules = adaptee.getGranules(q, t);
 
             CatalogConfigurationBean configuration = adaptee.getConfigurations().getByTypeQuery(q);
-            return new BoundsFeatureCollection(granules, (sf) -> getGranuleDescriptor(configuration, sf));
+            return new BoundsFeatureCollection(granules, sf -> getGranuleDescriptor(configuration, sf));
         } else {
             return adaptee.getGranules(q, t);
         }

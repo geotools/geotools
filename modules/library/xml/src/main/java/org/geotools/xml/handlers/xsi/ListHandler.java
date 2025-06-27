@@ -42,9 +42,7 @@ public class ListHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode()
-                * ((id == null) ? 1 : id.hashCode())
-                * ((itemType == null) ? 1 : itemType.hashCode());
+        return LOCALNAME.hashCode() * (id == null ? 1 : id.hashCode()) * (itemType == null ? 1 : itemType.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

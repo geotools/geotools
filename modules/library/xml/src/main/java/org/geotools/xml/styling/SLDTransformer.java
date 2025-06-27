@@ -332,7 +332,7 @@ public class SLDTransformer extends TransformerBase {
 
         void labelContent(Expression expr) {
             if (expr instanceof Literal) {
-                Literal literalLabel = ((Literal) expr);
+                Literal literalLabel = (Literal) expr;
                 String label = literalLabel.evaluate(null, String.class);
                 if (label != null) {
                     // do we need a CDATA expansion?
@@ -486,7 +486,7 @@ public class SLDTransformer extends TransformerBase {
                 end("Label");
             }
 
-            if ((text.fonts() != null) && (!text.fonts().isEmpty())) {
+            if (text.fonts() != null && !text.fonts().isEmpty()) {
                 List<Font> fonts = text.fonts();
                 if (areFontsUniform(fonts)) {
                     // go for standard encoding, SLD 1.0 does not allow more than one
@@ -960,13 +960,13 @@ public class SLDTransformer extends TransformerBase {
             atts.addAttribute("", "version", "version", "", "1.0.0");
             start("StyledLayerDescriptor", atts);
 
-            if ((sld.getName() != null) && (sld.getName().length() > 0)) {
+            if (sld.getName() != null && sld.getName().length() > 0) {
                 element("Name", sld.getName()); // optional
             }
-            if ((sld.getTitle() != null) && (sld.getTitle().length() > 0)) {
+            if (sld.getTitle() != null && sld.getTitle().length() > 0) {
                 element("Title", sld.getTitle()); // optional
             }
-            if ((sld.getAbstract() != null) && (sld.getAbstract().length() > 0)) {
+            if (sld.getAbstract() != null && sld.getAbstract().length() > 0) {
                 element("Abstract", sld.getAbstract()); // optional
             }
 
@@ -992,7 +992,7 @@ public class SLDTransformer extends TransformerBase {
             element("Name", layer.getName());
 
             FeatureTypeConstraint[] lfc = layer.getLayerFeatureConstraints();
-            if ((lfc != null) && lfc.length > 0) {
+            if (lfc != null && lfc.length > 0) {
                 start("LayerFeatureConstraints"); // optional
                 for (FeatureTypeConstraint featureTypeConstraint : lfc) {
                     visit(featureTypeConstraint);
@@ -1013,7 +1013,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(UserLayer layer) {
             start("UserLayer");
 
-            if ((layer.getName() != null) && (layer.getName().length() > 0)) {
+            if (layer.getName() != null && layer.getName().length() > 0) {
                 element("Name", layer.getName()); // optional
             }
 
@@ -1026,7 +1026,7 @@ public class SLDTransformer extends TransformerBase {
 
             start("LayerFeatureConstraints"); // required
             FeatureTypeConstraint[] lfc = layer.getLayerFeatureConstraints();
-            if ((lfc != null) && lfc.length > 0) {
+            if (lfc != null && lfc.length > 0) {
                 for (FeatureTypeConstraint featureTypeConstraint : lfc) {
                     visit(featureTypeConstraint);
                 }
@@ -1205,7 +1205,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(FeatureTypeStyle fts) {
             start("FeatureTypeStyle");
 
-            if ((fts.getName() != null) && (fts.getName().length() > 0)) {
+            if (fts.getName() != null && fts.getName().length() > 0) {
                 element("Name", fts.getName());
             }
 
@@ -1265,7 +1265,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         void encodeGeometryProperty(String name) {
-            if ((name == null) || (name.trim().length() == 0)) {
+            if (name == null || name.trim().length() == 0) {
                 return;
             }
             // create a property name out the name and encode it
@@ -1278,7 +1278,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         void encodeGeometryExpression(Expression geom) {
-            if ((geom == null)) {
+            if (geom == null) {
                 return;
             }
 

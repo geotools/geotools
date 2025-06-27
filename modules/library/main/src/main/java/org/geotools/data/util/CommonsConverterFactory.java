@@ -54,6 +54,7 @@ public class CommonsConverterFactory implements ConverterFactory {
                 URI uri = new URI(string);
                 return target.cast(uri);
             } catch (URISyntaxException e) {
+                // ignore
             }
             return null;
         }
@@ -70,6 +71,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             try { // first try integer
                 parsed = new IntegerConverter().convert(string, Integer.class);
             } catch (Exception e) {
+                // ignore
             }
             if (parsed == null) { // try double
                 parsed = new DoubleConverter().convert(string, Double.class);
@@ -270,8 +272,9 @@ public class CommonsConverterFactory implements ConverterFactory {
 
             for (String format : formats) {
                 try {
-                    return target.cast((new SimpleDateFormat(format)).parse(string));
+                    return target.cast(new SimpleDateFormat(format).parse(string));
                 } catch (Exception ignore) {
+                    // ignore
                 }
             }
             return null;

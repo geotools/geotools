@@ -441,7 +441,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             // enough information for a reprojection
             PropertyName name;
             Expression other;
-            if ((filter.getExpression1() instanceof PropertyName)) {
+            if (filter.getExpression1() instanceof PropertyName) {
                 name = (PropertyName) filter.getExpression1();
                 other = filter.getExpression2();
             } else if (filter.getExpression2() instanceof PropertyName) {

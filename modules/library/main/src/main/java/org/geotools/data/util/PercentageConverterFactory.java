@@ -35,7 +35,7 @@ public class PercentageConverterFactory implements ConverterFactory {
         target = NumericConverterFactory.primitiveToWrapperClass(target);
 
         // check if source is a number or a string. We can't convert to a number from anything else.
-        if (!(String.class.isAssignableFrom(source))) return null;
+        if (!String.class.isAssignableFrom(source)) return null;
 
         // check if target is one of supported
         if (Double.class.equals(target) || Float.class.equals(target)) {

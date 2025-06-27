@@ -156,8 +156,8 @@ public class WMTSTileFactory extends TileFactory {
         CoordinateSystem coordinateSystem = crs.getCoordinateSystem();
 
         double pixelSpan = getPixelSpan(tileMatrix);
-        double tileSpanY = (tileMatrix.getTileHeight() * pixelSpan);
-        double tileSpanX = (tileMatrix.getTileWidth() * pixelSpan);
+        double tileSpanY = tileMatrix.getTileHeight() * pixelSpan;
+        double tileSpanX = tileMatrix.getTileWidth() * pixelSpan;
 
         double tileMatrixMinX;
         double tileMatrixMaxY;
@@ -186,6 +186,10 @@ public class WMTSTileFactory extends TileFactory {
     }
 
     /** */
+    @SuppressWarnings(
+            "EqualsIncompatibleType") // REVISIT: (if (unit.equals(NonSI.DEGREE_ANGLE))) Calling equals on incompatible
+    // types Unit<Length> and Unit<Angle>. They are incompatible because Length and Angle are incompatible. (see
+    // https://errorprone.info/bugpattern/EqualsIncompatibleType)
     static double getPixelSpan(TileMatrix tileMatrix) {
         CoordinateSystem coordinateSystem = tileMatrix.getCrs().getCoordinateSystem();
         @SuppressWarnings("unchecked")

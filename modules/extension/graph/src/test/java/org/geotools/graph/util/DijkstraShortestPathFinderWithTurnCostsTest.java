@@ -85,10 +85,10 @@ public class DijkstraShortestPathFinderWithTurnCostsTest {
     }
 
     protected DijkstraIterator.EdgeWeighter costFunction() {
-        return (e -> 1);
+        return e -> 1;
     }
 
     protected DijkstraIterator.NodeWeighter tcostFunction() {
-        return ((n, e1, e2) -> 1.0);
+        return (n, e1, e2) -> 1.0;
     }
 }

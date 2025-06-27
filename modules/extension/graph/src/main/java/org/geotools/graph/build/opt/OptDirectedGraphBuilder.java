@@ -40,7 +40,7 @@ public class OptDirectedGraphBuilder extends BasicDirectedGraphBuilder {
      */
     @Override
     public Node buildNode() {
-        return (new OptDirectedNode());
+        return new OptDirectedNode();
     }
 
     /**
@@ -51,6 +51,6 @@ public class OptDirectedGraphBuilder extends BasicDirectedGraphBuilder {
      */
     @Override
     public Edge buildEdge(Node nodeA, Node nodeB) {
-        return (new OptDirectedEdge((OptDirectedNode) nodeA, (OptDirectedNode) nodeB));
+        return new OptDirectedEdge((OptDirectedNode) nodeA, (OptDirectedNode) nodeB);
     }
 }

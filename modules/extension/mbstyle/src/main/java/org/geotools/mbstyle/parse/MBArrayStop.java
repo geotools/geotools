@@ -51,7 +51,7 @@ public class MBArrayStop {
             throw new MBFormatException("Exception parsing array function stop: stop value must be an array.");
         }
         this.json = array;
-        this.stopValueArray = ((JSONArray) json.get(1));
+        this.stopValueArray = (JSONArray) json.get(1);
     }
 
     /**

@@ -114,7 +114,7 @@ public class DashedShape implements Shape {
      *
      * @author Andrea Aime - OpenGeo
      */
-    public class DashedIterator implements PathIterator {
+    public static class DashedIterator implements PathIterator {
         static final float EPS = 1e-3f;
 
         /** The original iterator */

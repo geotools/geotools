@@ -193,7 +193,7 @@ public class ImageComparator {
 
         this.bands = image1.getSampleModel().getNumBands();
         final boolean hasAlpha = image1.getColorModel().hasAlpha();
-        if (bands > 4 || (bands == 2 && !hasAlpha) || (bands == 3 && hasAlpha)) {
+        if (bands > 4 || bands == 2 && !hasAlpha || bands == 3 && hasAlpha) {
             throw new IllegalArgumentException("Images have the wrong type, this code only supports gray, gray/alpha, "
                     + "RGB, RGBA images, or images that can be transformed in those models");
         }

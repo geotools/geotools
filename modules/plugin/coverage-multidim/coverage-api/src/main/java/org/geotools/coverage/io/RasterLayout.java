@@ -387,14 +387,14 @@ public class RasterLayout implements Cloneable {
 
         RasterLayout il = (RasterLayout) obj;
 
-        return (width == il.width)
-                && (height == il.height)
-                && (minX == il.minX)
-                && (minY == il.minY)
-                && (tileHeight == il.tileHeight)
-                && (tileWidth == il.tileWidth)
-                && (tileGridXOffset == il.tileGridXOffset)
-                && (tileGridYOffset == il.tileGridYOffset);
+        return width == il.width
+                && height == il.height
+                && minX == il.minX
+                && minY == il.minY
+                && tileHeight == il.tileHeight
+                && tileWidth == il.tileWidth
+                && tileGridXOffset == il.tileGridXOffset
+                && tileGridYOffset == il.tileGridYOffset;
     }
 
     @Override

@@ -48,7 +48,7 @@ class MapBoxTypeFunction extends FunctionExpressionImpl {
     @Override
     public Object evaluate(Object feature) {
         // loop over the arguments and ensure at least one evaluates to a JSONObject
-        String arg = (this.params.get(0).evaluate(feature, String.class));
+        String arg = this.params.get(0).evaluate(feature, String.class);
         type = type(arg);
         for (int i = 1; i <= this.params.size() - 1; i++) {
             Object evaluation = this.params.get(i).evaluate(feature);

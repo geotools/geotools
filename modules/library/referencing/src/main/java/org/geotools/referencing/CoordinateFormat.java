@@ -157,7 +157,7 @@ public class CoordinateFormat extends Format {
      * @param crs The new coordinate system.
      */
     public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) {
-        if (CRS.equalsIgnoreMetadata(this.crs, (this.crs = crs))) {
+        if (CRS.equalsIgnoreMetadata(this.crs, this.crs = crs)) {
             return;
         }
         Format numberFormat = null;
@@ -288,7 +288,7 @@ public class CoordinateFormat extends Format {
     public void setNumberPattern(final String pattern) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && (format instanceof DecimalFormat)) {
+            if (format != lastFormat && format instanceof DecimalFormat) {
                 ((DecimalFormat) format).applyPattern(pattern);
                 lastFormat = format;
             }
@@ -305,7 +305,7 @@ public class CoordinateFormat extends Format {
     public void setAnglePattern(final String pattern) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && (format instanceof AngleFormat)) {
+            if (format != lastFormat && format instanceof AngleFormat) {
                 ((AngleFormat) format).applyPattern(pattern);
                 lastFormat = format;
             }
@@ -322,7 +322,7 @@ public class CoordinateFormat extends Format {
     public void setDatePattern(final String pattern) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && (format instanceof SimpleDateFormat)) {
+            if (format != lastFormat && format instanceof SimpleDateFormat) {
                 ((SimpleDateFormat) format).applyPattern(pattern);
                 lastFormat = format;
             }
@@ -339,7 +339,7 @@ public class CoordinateFormat extends Format {
     public void setTimeZone(final TimeZone timezone) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && (format instanceof DateFormat)) {
+            if (format != lastFormat && format instanceof DateFormat) {
                 ((DateFormat) format).setTimeZone(timezone);
                 lastFormat = format;
             }

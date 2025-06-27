@@ -96,7 +96,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
         }
     }
 
-    public void writeRaster(GridCoverage2D gridCoverage2D, GeneralParameterValue[] params) throws IOException {
+    public void writeRaster(GridCoverage2D gridCoverage2D, GeneralParameterValue... params) throws IOException {
         GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;
         JGrassRegion writeRegion = null;
@@ -139,11 +139,12 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
     }
 
     @Override
-    public void write(GridCoverage coverage, GeneralParameterValue[] parameters)
+    public void write(GridCoverage coverage, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
         if (coverage instanceof GridCoverage2D) {
             GridCoverage2D gridCoverage = (GridCoverage2D) coverage;
-            if (parameters == null) {
+            // beware a call with no values mean an empty array.
+            if (parameters == null || parameters.length == 0) {
                 writeRaster(gridCoverage);
             } else {
                 writeRaster(gridCoverage, parameters);

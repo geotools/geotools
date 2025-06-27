@@ -583,8 +583,8 @@ public class FeatureTypes {
      */
     public static boolean matches(FeatureType featureType, Name name) {
         if (featureType.getName().equals(name)
-                || (name.getNamespaceURI() == null
-                        && featureType.getName().getLocalPart().equalsIgnoreCase(name.getLocalPart()))) {
+                || name.getNamespaceURI() == null
+                        && featureType.getName().getLocalPart().equalsIgnoreCase(name.getLocalPart())) {
             return true;
         }
 

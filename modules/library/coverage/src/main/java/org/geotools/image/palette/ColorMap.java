@@ -204,7 +204,7 @@ final class ColorMap implements Iterable<ColorEntry> {
 
     /** Returns index for the specified color */
     static int indexFor(int h, int length) {
-        return h & (length - 1);
+        return h & length - 1;
     }
 
     /** A optimized hash function coming from Java own hash map */
@@ -212,8 +212,8 @@ final class ColorMap implements Iterable<ColorEntry> {
         // This function ensures that hashCodes that differ only by
         // constant multiples at each bit position have a bounded
         // number of collisions (approximately 8 at default load factor).
-        color ^= (color >>> 20) ^ (color >>> 12);
-        return color ^ (color >>> 7) ^ (color >>> 4);
+        color ^= color >>> 20 ^ color >>> 12;
+        return color ^ color >>> 7 ^ color >>> 4;
     }
 
     int size() {
@@ -273,7 +273,7 @@ final class ColorMap implements Iterable<ColorEntry> {
                 + ", scans: "
                 + scanCount
                 + ", scan per access: "
-                + (scanCount * 1.0 / accessCount));
+                + scanCount * 1.0 / accessCount);
         accessCount = 0;
         scanCount = 0;
     }

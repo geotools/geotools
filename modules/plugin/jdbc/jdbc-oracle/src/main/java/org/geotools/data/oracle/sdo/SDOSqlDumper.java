@@ -125,7 +125,7 @@ public class SDOSqlDumper {
             buffer.append(",");
             buffer.append(coordinates[i].y);
 
-            if (i != (coordinates.length - 1)) {
+            if (i != coordinates.length - 1) {
                 buffer.append(",");
             }
         }
@@ -221,7 +221,7 @@ public class SDOSqlDumper {
                 buffer.append(",");
                 buffer.append(cur.y);
 
-                if (i != (size - 1)) {
+                if (i != size - 1) {
                     buffer.append(",");
                 }
             }

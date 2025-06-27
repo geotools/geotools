@@ -58,6 +58,6 @@ public class FilterFunction_minimumCircle extends FunctionExpressionImpl {
                     "Filter Function problem for function minimum bounding circle argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.minimumCircle(arg0));
+        return StaticGeometry.minimumCircle(arg0);
     }
 }

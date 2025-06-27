@@ -58,6 +58,6 @@ public class FilterFunction_strSubstringStart extends FunctionExpressionImpl {
                     "Filter Function problem for function strSubstringStart argument #1 - expected type int");
         }
 
-        return (StaticGeometry.strSubstringStart(arg0, arg1));
+        return StaticGeometry.strSubstringStart(arg0, arg1);
     }
 }

@@ -510,7 +510,7 @@ public abstract class ContentDataStore implements DataStore {
                 // do namespace-less matching if necessary
                 if (!found
                         && (tn.equals(name)
-                                || (unqualifiedSearch && tn.getLocalPart().equals(name.getLocalPart())))) {
+                                || unqualifiedSearch && tn.getLocalPart().equals(name.getLocalPart()))) {
                     name = tn;
                     found = true;
                 }

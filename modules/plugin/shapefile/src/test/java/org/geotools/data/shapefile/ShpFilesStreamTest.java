@@ -34,6 +34,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -63,7 +64,7 @@ public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.Fil
     private void writeDataToFiles() throws IOException {
         Set<Entry<ShpFileType, File>> entries = map.entrySet();
         for (Entry<ShpFileType, File> entry : entries) {
-            try (FileWriter out = new FileWriter(entry.getValue())) {
+            try (FileWriter out = new FileWriter(entry.getValue(), StandardCharsets.UTF_8)) {
                 out.write(entry.getKey().name());
             }
         }
@@ -142,7 +143,7 @@ public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.Fil
         for (ShpFileType shpFileType : types) {
             String read = "";
             try (InputStream in = files.getInputStream(shpFileType, this);
-                    InputStreamReader reader = new InputStreamReader(in)) {
+                    InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
                 assertEquals(1, files.numberOfLocks());
                 int current = reader.read();
                 while (current != -1) {
@@ -225,7 +226,7 @@ public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.Fil
             assertEquals(1, files.numberOfLocks());
             assertTrue(out instanceof FileChannel);
             ByteBuffer buffer = ByteBuffer.allocate(10);
-            buffer.put(shpFileType.name().getBytes());
+            buffer.put(shpFileType.name().getBytes(StandardCharsets.UTF_8));
             buffer.flip();
             out.write(buffer);
         }

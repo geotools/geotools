@@ -88,7 +88,7 @@ public class GMLBoxTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List coordinates = node.getChildren("coord");
 
-        if (!coordinates.isEmpty() && (coordinates.size() == 2)) {
+        if (!coordinates.isEmpty() && coordinates.size() == 2) {
             Node n1 = (Node) coordinates.get(0);
             Node n2 = (Node) coordinates.get(1);
             Coordinate c1 = (Coordinate) n1.getValue();

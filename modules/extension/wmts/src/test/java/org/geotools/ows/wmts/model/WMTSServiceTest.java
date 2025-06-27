@@ -92,10 +92,10 @@ public class WMTSServiceTest {
 
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+            if (e.getMessage() != null && e.getMessage().indexOf("timed out") > 0) {
                 LOGGER.warning("Unable to test - timed out: " + e);
             } else {
-                throw (e);
+                throw e;
             }
         }
     }

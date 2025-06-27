@@ -1169,7 +1169,7 @@ public class FilterTest {
         }
     }
 
-    private final class GeometryFunction implements Function {
+    private static final class GeometryFunction implements Function {
         final Geometry ls;
 
         public GeometryFunction(Geometry geom) throws Exception {

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import org.geotools.mbstyle.MBStyle;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -83,7 +84,7 @@ public class MBStyleParser {
      * @throws MBFormatException If MapBox Style is obviously not well formed
      */
     public MBStyle parse(InputStream json) throws ParseException, IOException, MBFormatException {
-        try (Reader reader = new InputStreamReader(json)) { // auto close
+        try (Reader reader = new InputStreamReader(json, StandardCharsets.UTF_8)) { // auto close
             Object obj = jsonParser.parse(reader);
             return MBStyle.create(obj);
         }

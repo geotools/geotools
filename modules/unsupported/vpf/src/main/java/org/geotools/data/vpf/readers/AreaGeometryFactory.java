@@ -219,7 +219,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                                 coordinate =
                                         edgeGeometry.getCoordinateSequence().getCoordinate(inx);
 
-                                if ((previousCoordinate == null) || (!coordinate.equals3D(previousCoordinate))) {
+                                if (previousCoordinate == null || !coordinate.equals3D(previousCoordinate)) {
                                     coordinates.add(coordinate);
                                     previousCoordinate = coordinate;
                                 }
@@ -229,7 +229,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                                 coordinate =
                                         edgeGeometry.getCoordinateSequence().getCoordinate(inx);
 
-                                if ((previousCoordinate == null) || (!coordinate.equals3D(previousCoordinate))) {
+                                if (previousCoordinate == null || !coordinate.equals3D(previousCoordinate)) {
                                     coordinates.add(coordinate);
                                     previousCoordinate = coordinate;
                                 }

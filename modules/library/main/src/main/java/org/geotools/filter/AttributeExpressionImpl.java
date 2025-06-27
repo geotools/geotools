@@ -274,7 +274,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
         if (obj.getClass() == this.getClass()) {
             AttributeExpressionImpl expAttr = (AttributeExpressionImpl) obj;
 
-            boolean isEqual = (Filters.getExpressionType(expAttr) == Filters.getExpressionType(this));
+            boolean isEqual = Filters.getExpressionType(expAttr) == Filters.getExpressionType(this);
             if (LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest("expression type match:"
                         + isEqual
@@ -282,15 +282,15 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
                         + Filters.getExpressionType(expAttr)
                         + "; out:"
                         + Filters.getExpressionType(this));
-            isEqual = (expAttr.attPath != null)
-                    ? (isEqual && expAttr.attPath.equals(this.attPath))
-                    : (isEqual && (this.attPath == null));
+            isEqual = expAttr.attPath != null
+                    ? isEqual && expAttr.attPath.equals(this.attPath)
+                    : isEqual && this.attPath == null;
             if (LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest(
                         "attribute match:" + isEqual + "; in:" + expAttr.getPropertyName() + "; out:" + this.attPath);
-            isEqual = (expAttr.schema != null)
-                    ? (isEqual && expAttr.schema.equals(this.schema))
-                    : (isEqual && (this.schema == null));
+            isEqual = expAttr.schema != null
+                    ? isEqual && expAttr.schema.equals(this.schema)
+                    : isEqual && this.schema == null;
             if (LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest("schema match:" + isEqual + "; in:" + expAttr.schema + "; out:" + this.schema);
 
@@ -308,8 +308,8 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
     @Override
     public int hashCode() {
         int result = 17;
-        result = (37 * result) + (attPath == null ? 0 : attPath.hashCode());
-        result = (37 * result) + (schema == null ? 0 : schema.hashCode());
+        result = 37 * result + (attPath == null ? 0 : attPath.hashCode());
+        result = 37 * result + (schema == null ? 0 : schema.hashCode());
         return result;
     }
 

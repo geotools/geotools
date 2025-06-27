@@ -207,17 +207,19 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         return false;
     }
 
+    @SuppressWarnings("EmptyCatch") // revisit, doesn't look right
     public boolean addAll(Collection<? extends SimpleFeature> collection) {
         for (SimpleFeature feature : collection) {
             try {
                 ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
                 index.insert(bounds, feature);
-            } catch (Throwable t) {
+            } catch (RuntimeException t) {
             }
         }
         return false;
     }
 
+    @SuppressWarnings("EmptyCatch") // revisit, doesn't look right
     public boolean addAll(FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> collection) {
         try (FeatureIterator<? extends SimpleFeature> iter = collection.features()) {
             while (iter.hasNext()) {
@@ -225,7 +227,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                     SimpleFeature feature = iter.next();
                     ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
                     index.insert(bounds, feature);
-                } catch (Throwable t) {
+                } catch (RuntimeException t) {
                 }
             }
         }

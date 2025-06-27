@@ -95,7 +95,7 @@ public class BinarizatorTest {
 
         assertTrue("Feature not added", added);
 
-        assertEquals((4 * 4) - 1, bin.getActiveTiles().size());
+        assertEquals(4 * 4 - 1, bin.getActiveTiles().size());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class BinarizatorTest {
 
         assertTrue("Feature not added", added);
 
-        assertEquals((4 * 4) - 1, bin.getActiveTiles().size());
+        assertEquals(4 * 4 - 1, bin.getActiveTiles().size());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class BinarizatorTest {
 
         assertTrue("Feature not added", added);
 
-        assertEquals((4 * 4) - 1, bin.getActiveTiles().size());
+        assertEquals(4 * 4 - 1, bin.getActiveTiles().size());
     }
 
     @NotNull
@@ -143,7 +143,7 @@ public class BinarizatorTest {
         boolean added = bin.add(feature);
         assertTrue("Feature not added", added);
 
-        assertEquals("Tile not removed", (4 * 4) - 1, bin.getActiveTiles().size());
+        assertEquals("Tile not removed", 4 * 4 - 1, bin.getActiveTiles().size());
 
         Polygon hidden = createBBox(10, 10, 600, 600);
         boolean addedhidden = bin.add(hidden);
@@ -159,7 +159,7 @@ public class BinarizatorTest {
         boolean added = bin.add(toRasterROI(feature));
         assertTrue("Feature not added", added);
 
-        assertEquals("Tile not removed", (4 * 4) - 1, bin.getActiveTiles().size());
+        assertEquals("Tile not removed", 4 * 4 - 1, bin.getActiveTiles().size());
 
         Polygon hidden = createBBox(10, 10, 600, 600);
         boolean addedhidden = bin.add(toRasterROI(hidden));

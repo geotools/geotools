@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -152,7 +153,7 @@ class Utils {
         }
 
         // check the gdal case and move files if necessary
-        if (!zeroLevelDirectory.exists() && (directories != null && numericDirectories.length == directories.length)) {
+        if (!zeroLevelDirectory.exists() && directories != null && numericDirectories.length == directories.length) {
             LOGGER.log(
                     Level.INFO, "Detected gdal_retile file structure, " + "moving root files to the '0' subdirectory");
             if (zeroLevelDirectory.mkdir()) {
@@ -286,7 +287,7 @@ class Utils {
         // build the .prj file if possible
         if (envelope.getCoordinateReferenceSystem() != null) {
             File prjFile = new File(directory, directory.getName() + ".prj");
-            try (PrintWriter pw = new PrintWriter(new FileOutputStream(prjFile))) {
+            try (PrintWriter pw = new PrintWriter(new FileOutputStream(prjFile), false, StandardCharsets.UTF_8)) {
                 pw.print(envelope.getCoordinateReferenceSystem().toString());
             } catch (IOException e) {
                 LOGGER.log(Level.INFO, "We could not write out the projection file " + prjFile.getPath(), e);

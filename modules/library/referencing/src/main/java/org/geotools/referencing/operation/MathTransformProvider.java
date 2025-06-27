@@ -401,7 +401,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
     protected static <T> T value(final ParameterDescriptor<T> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final ParameterValue<T> value = getParameter(param, group);
-        return (value != null) ? value.getValue() : null;
+        return value != null ? value.getValue() : null;
     }
 
     /**
@@ -418,7 +418,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
     protected static String stringValue(final ParameterDescriptor<?> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final ParameterValue<?> value = getParameter(param, group);
-        return (value != null) ? value.stringValue() : null;
+        return value != null ? value.stringValue() : null;
     }
 
     /**
@@ -435,7 +435,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
     protected static int intValue(final ParameterDescriptor<?> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final ParameterValue<?> value = getParameter(param, group);
-        return (value != null) ? value.intValue() : 0;
+        return value != null ? value.intValue() : 0;
     }
 
     /**
@@ -454,7 +454,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
             throws ParameterNotFoundException {
         final Unit<?> unit = param.getUnit();
         final ParameterValue<?> value = getParameter(param, group);
-        return (value == null) ? Double.NaN : (unit != null) ? value.doubleValue(unit) : value.doubleValue();
+        return value == null ? Double.NaN : unit != null ? value.doubleValue(unit) : value.doubleValue();
     }
 
     /**

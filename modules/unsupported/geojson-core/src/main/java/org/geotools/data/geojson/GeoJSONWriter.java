@@ -32,6 +32,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -292,7 +293,7 @@ public class GeoJSONWriter implements AutoCloseable {
             g.writeEndArray();
         } else if (Collection.class.isAssignableFrom(binding)) {
             g.writeStartArray();
-            for (Object v : ((Collection) value)) {
+            for (Object v : (Collection) value) {
                 writeValue(g, v, v == null ? null : v.getClass());
             }
             g.writeEndArray();
@@ -404,7 +405,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new String(out.toByteArray());
+        return new String(out.toByteArray(), StandardCharsets.UTF_8);
     }
 
     /** Utility encoding a @link {@link SimpleFeatureCollection}}, and returning it as a string */
@@ -421,7 +422,7 @@ public class GeoJSONWriter implements AutoCloseable {
             LOGGER.warning("Unexpected IOException converting featureCollection to GeoJSON");
             LOGGER.log(Level.FINE, "Unexpected IOException converting featureCollection to GeoJSON", e);
         }
-        return new String(out.toByteArray());
+        return new String(out.toByteArray(), StandardCharsets.UTF_8);
     }
 
     /** Set to true to encode the feature collection CRS field. Defaults to false. */

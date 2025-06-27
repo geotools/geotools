@@ -27,7 +27,7 @@ public class Ows20XMLProcessor extends XMLProcessor {
    * @generated
    */
   public Ows20XMLProcessor() {
-    super((EPackage.Registry.INSTANCE));
+    super(EPackage.Registry.INSTANCE);
     Ows20Package.eINSTANCE.eClass();
   }
   

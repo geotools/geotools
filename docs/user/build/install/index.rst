@@ -17,42 +17,42 @@ downloading now before proceeding on to the step by step install instructions.
 
 The following tools are required to build GeoTools:
 
-1. Required: Java Development Kit 11 (JDK 11)
+1. Required: Java Development Kit 17 (JDK 17)
   
    Open JDK:
   
-   * https://adoptium.net/temurin/releases/?version=11 Temurin 11 (LTS) - Recommended
+   * https://adoptium.net/temurin/releases/?version=17 Temurin 17 (LTS) - Recommended
   
-   `SDKMAN! <https://sdkman.io>`__ installation:
-   
-   .. code-block:: bash
-   
-      # list to determine latest Temurin JDK 11
-      sdk list java 11
-   
-      # Installing latest Temurin JDK 11 shown above
-      sdk install java 11.0.20.1-tem
-
-2. Optional: Java Development Kit 17 (JDK 17)
-  
-   Open JDK:
-  
-   * https://adoptium.net/temurin/releases/?version=17 Temurin 17 (LTS)
-
    `SDKMAN! <https://sdkman.io>`__ installation:
    
    .. code-block:: bash
    
       # list to determine latest Temurin JDK 17
-      sdk list java 17
+      sdk list java | grep "17.*-tem"
    
-      # Installing latest Temurin JDK 11 shown above
-      sdk install java 17.0.8.1-tem
+      # Installing latest Temurin JDK 17 shown above
+      sdk install java 17.0.15-tem
+
+2. Optional: Java Development Kit 21 (JDK 21)
+  
+   Open JDK:
+  
+   * https://adoptium.net/temurin/releases/?version=21 Temurin 21 (LTS)
+
+   `SDKMAN! <https://sdkman.io>`__ installation:
+   
+   .. code-block:: bash
+   
+      # list to determine latest Temurin JDK 21
+      sdk list java | grep "21.*-tem"
+   
+      # Installing latest Temurin JDK 21 shown above
+      sdk install java 21.0.7-tem
    
    GeoTools build process takes advantage of quality assurance tools compatible with the JDK you have installed.
-   Pull-requests are tested with both JDK 11 and JDK 17.
+   Pull-requests are tested with both JDK 17 and JDK 21.
 
-   It is recommended you have both JDK 11 and JDK 17 both on hand troubleshoot QA failures.
+   It is recommended you have both JDK 17 and JDK 21 both on hand troubleshoot QA failures.
 
 3. Apache Maven
   

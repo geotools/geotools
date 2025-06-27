@@ -98,7 +98,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
      */
     public int removeAll(final K key) {
         final List<V> values = map.remove(key);
-        return (values != null) ? values.size() : 0;
+        return values != null ? values.size() : 0;
     }
 
     /**
@@ -109,7 +109,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
      */
     public int count(final K key) {
         final List<V> values = map.get(key);
-        return (values != null) ? values.size() : 0;
+        return values != null ? values.size() : 0;
     }
 
     /**
@@ -338,6 +338,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Compares two iterators for equality, assuming that they are iterator for the same {@link KeySortedList} (this
          * is not verified). This method is used for assertions only.
          */
+        @SuppressWarnings("NonOverridingEquals") // Private method for assertions, not overriding Object.equals
         private boolean equals(final Iter that) {
             return this.key == that.key
                     && this.values == that.values

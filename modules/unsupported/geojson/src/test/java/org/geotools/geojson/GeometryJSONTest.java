@@ -123,9 +123,9 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
 
     @Test
     public void testLineRead() throws Exception {
-        assertEquals(line(), (gjson.readLine(reader(lineText()))));
+        assertEquals(line(), gjson.readLine(reader(lineText())));
         assertNull(gjson.readLine(reader(line2Text())));
-        assertEquals(line3d(), (gjson.readLine(reader(line3dText()))));
+        assertEquals(line3d(), gjson.readLine(reader(line3dText())));
         try {
             gjson.read(gjson.readLine(reader(badLineText())));
             fail("Read in bad line");
@@ -232,9 +232,9 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
 
     @Test
     public void testPolyRead() throws Exception {
-        assertEquals(polygon1(), (gjson.readPolygon(reader(polygonText1()))));
-        assertEquals(polygon2(), (gjson.readPolygon(reader(polygonText2()))));
-        assertEquals(polygon3(), (gjson.readPolygon(reader(polygonText3()))));
+        assertEquals(polygon1(), gjson.readPolygon(reader(polygonText1())));
+        assertEquals(polygon2(), gjson.readPolygon(reader(polygonText2())));
+        assertEquals(polygon3(), gjson.readPolygon(reader(polygonText3())));
         try {
             gjson.readPolygon(reader(badPolygonText1()));
             fail("Read bad polygon");

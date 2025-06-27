@@ -34,6 +34,7 @@ public class FilterXMLExamples {
         class SimpleFilterHandler extends DefaultHandler implements FilterHandler {
             public Filter filter;
 
+            @Override
             public void filter(Filter filter) {
                 this.filter = filter;
             }

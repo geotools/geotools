@@ -248,7 +248,7 @@ public class Preprocessor extends Format {
         for (Map.Entry<String, Definition> stringDefinitionEntry : definitions.entrySet()) {
             final String name = stringDefinitionEntry.getKey();
             final Definition def = stringDefinitionEntry.getValue();
-            int index = (buffer != null) ? buffer.indexOf(name) : text.indexOf(name);
+            int index = buffer != null ? buffer.indexOf(name) : text.indexOf(name);
             while (index >= 0) {
                 /*
                  * An occurence of the text to substitute was found. First, make sure
@@ -256,7 +256,7 @@ public class Preprocessor extends Format {
                  * search is "WGS84", do not accept "TOWGS84").
                  */
                 final int upper = index + name.length();
-                final CharSequence cs = (buffer != null) ? buffer : text;
+                final CharSequence cs = buffer != null ? buffer : text;
                 if ((index == 0 || !Character.isJavaIdentifierPart(cs.charAt(index - 1)))
                         && (upper == cs.length() || !Character.isJavaIdentifierPart(cs.charAt(upper)))) {
                     /*
@@ -266,7 +266,7 @@ public class Preprocessor extends Format {
                      */
                     int count = 0;
                     for (int scan = index; --scan >= 0; ) {
-                        scan = (buffer != null) ? buffer.lastIndexOf("\"", scan) : text.lastIndexOf('"', scan);
+                        scan = buffer != null ? buffer.lastIndexOf("\"", scan) : text.lastIndexOf('"', scan);
                         if (scan < 0) {
                             break;
                         }
@@ -297,10 +297,10 @@ public class Preprocessor extends Format {
                  * or was between quotes. Search the next occurence.
                  */
                 index += name.length();
-                index = (buffer != null) ? buffer.indexOf(name, index) : text.indexOf(name, index);
+                index = buffer != null ? buffer.indexOf(name, index) : text.indexOf(name, index);
             }
         }
-        return (buffer != null) ? buffer.toString() : text;
+        return buffer != null ? buffer.toString() : text;
     }
 
     /**

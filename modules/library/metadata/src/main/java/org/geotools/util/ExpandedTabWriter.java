@@ -86,7 +86,7 @@ public class ExpandedTabWriter extends FilterWriter {
      * @throws IOException If an I/O error occurs.
      */
     private void expand() throws IOException {
-        final int width = tabWidth - (column % tabWidth);
+        final int width = tabWidth - column % tabWidth;
         out.write(Utilities.spaces(width));
         column += width;
     }

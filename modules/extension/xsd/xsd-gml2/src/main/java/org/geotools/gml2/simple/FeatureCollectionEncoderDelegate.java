@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
@@ -431,7 +430,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
     final class FeatureTypeContextCache {
         FeatureTypeContext last;
 
-        Map<SimpleFeatureType, FeatureTypeContext> featureTypeContexts = new IdentityHashMap<>();
+        IdentityHashMap<SimpleFeatureType, FeatureTypeContext> featureTypeContexts = new IdentityHashMap<>();
 
         public FeatureTypeContext getFeatureTypeContext(SimpleFeature f) {
 

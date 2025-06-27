@@ -75,8 +75,8 @@ public final class PackedLineIterator extends AbstractLiteIterator {
         }
 
         this.at = at;
-        xScale = (float) Math.sqrt((at.getScaleX() * at.getScaleX()) + (at.getShearX() * at.getShearX()));
-        yScale = (float) Math.sqrt((at.getScaleY() * at.getScaleY()) + (at.getShearY() * at.getShearY()));
+        xScale = (float) Math.sqrt(at.getScaleX() * at.getScaleX() + at.getShearX() * at.getShearX());
+        yScale = (float) Math.sqrt(at.getScaleY() * at.getScaleY() + at.getShearY() * at.getShearY());
 
         coordinates = (Double) ls.getCoordinateSequence();
         coordinateCount = coordinates.size();
@@ -155,7 +155,7 @@ public final class PackedLineIterator extends AbstractLiteIterator {
             at.transform(coords, 0, coords, 0, 1);
 
             return SEG_MOVETO;
-        } else if ((currentCoord == coordinateCount) && isClosed) {
+        } else if (currentCoord == coordinateCount && isClosed) {
             return SEG_CLOSE;
         } else {
             coords[0] = (float) coordinates.getX(currentCoord);
@@ -223,7 +223,7 @@ public final class PackedLineIterator extends AbstractLiteIterator {
      */
     @Override
     public void next() {
-        if (((currentCoord == (coordinateCount - 1)) && !isClosed) || ((currentCoord == coordinateCount) && isClosed)) {
+        if (currentCoord == coordinateCount - 1 && !isClosed || currentCoord == coordinateCount && isClosed) {
             done = true;
         } else {
             if (generalize) {
@@ -246,10 +246,10 @@ public final class PackedLineIterator extends AbstractLiteIterator {
                             distx = Math.abs(x - oldX);
                             disty = Math.abs(y - oldY);
                         }
-                    } while (((distx * xScale) < maxDistance)
-                            && ((disty * yScale) < maxDistance)
-                            && ((!isClosed && (currentCoord < (coordinateCount - 1)))
-                                    || (isClosed && (currentCoord < coordinateCount))));
+                    } while (distx * xScale < maxDistance
+                            && disty * yScale < maxDistance
+                            && (!isClosed && currentCoord < coordinateCount - 1
+                                    || isClosed && currentCoord < coordinateCount));
 
                     if (currentCoord < coordinateCount) {
                         oldX = x;

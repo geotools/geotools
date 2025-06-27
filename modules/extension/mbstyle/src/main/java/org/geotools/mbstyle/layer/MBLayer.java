@@ -113,10 +113,10 @@ public abstract class MBLayer {
                 case "fill-extrusion":
                     return new FillExtrusionMBLayer(layer);
                 default:
-                    throw new MBFormatException(("\"type\" "
+                    throw new MBFormatException("\"type\" "
                             + type
                             + " is not a valid layer type. Must be one of: "
-                            + "background, fill, line, symbol, raster, circle, fill-extrusion"));
+                            + "background, fill, line, symbol, raster, circle, fill-extrusion");
             }
         }
         // technically we may be able to do this via a ref
@@ -377,7 +377,7 @@ public abstract class MBLayer {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((json == null) ? 0 : json.hashCode());
+        result = prime * result + (json == null ? 0 : json.hashCode());
         return result;
     }
 

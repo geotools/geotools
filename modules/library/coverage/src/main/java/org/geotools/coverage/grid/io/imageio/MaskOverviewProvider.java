@@ -306,7 +306,7 @@ public class MaskOverviewProvider {
 
     /** Returns the external/internal overview image index based on the initial imageindex value */
     public int getOverviewIndex(int imageIndex) {
-        if (numExternalOverviews > 0 && imageIndex >= (numInternalOverviews + 1)) {
+        if (numExternalOverviews > 0 && imageIndex >= numInternalOverviews + 1) {
             return imageIndex - numInternalOverviews - 1;
         }
         if (layout != null) {
@@ -410,7 +410,7 @@ public class MaskOverviewProvider {
             // Check if the ImageChoice is contained inside internal or external masks
             if (imageIndex < numInternalMasks) {
                 return true;
-            } else if (hasExternalMasks && imageIndex <= (numExternalMasks + numExternalMasksOverviews - 1)) {
+            } else if (hasExternalMasks && imageIndex <= numExternalMasks + numExternalMasksOverviews - 1) {
                 return true;
             }
             // Checks on the 0 level

@@ -108,7 +108,7 @@ abstract class ImageMosaicWalker<T> implements Runnable {
             eventHandler.fireEvent(
                     Level.INFO,
                     "Stopping requested at file  " + elementIndex + " of " + numElements + " files",
-                    ((elementIndex * 100.0) / numElements));
+                    elementIndex * 100.0 / numElements);
             return false;
         }
         return true;

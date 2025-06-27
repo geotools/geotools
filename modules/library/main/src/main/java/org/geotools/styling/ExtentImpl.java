@@ -65,11 +65,11 @@ public class ExtentImpl implements Extent, Cloneable {
         int result = 0;
 
         if (name != null) {
-            result = (PRIME * result) + name.hashCode();
+            result = PRIME * result + name.hashCode();
         }
 
         if (value != null) {
-            result = (PRIME * result) + value.hashCode();
+            result = PRIME * result + value.hashCode();
         }
 
         return result;

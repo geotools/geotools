@@ -411,7 +411,7 @@ public class StrokeImpl implements Stroke, Cloneable {
             StrokeImpl clone = (StrokeImpl) super.clone();
 
             if (dashArray != null) {
-                clone.setDashArray((new ArrayList<>(dashArray)));
+                clone.setDashArray(new ArrayList<>(dashArray));
             }
 
             if (fillGraphic != null && fillGraphic instanceof Cloneable) {
@@ -435,39 +435,39 @@ public class StrokeImpl implements Stroke, Cloneable {
         int result = 0;
 
         if (color != null) {
-            result = (PRIME * result) + color.hashCode();
+            result = PRIME * result + color.hashCode();
         }
 
         if (dashOffset != null) {
-            result = (PRIME * result) + dashOffset.hashCode();
+            result = PRIME * result + dashOffset.hashCode();
         }
 
         if (fillGraphic != null) {
-            result = (PRIME * result) + fillGraphic.hashCode();
+            result = PRIME * result + fillGraphic.hashCode();
         }
 
         if (strokeGraphic != null) {
-            result = (PRIME * result) + strokeGraphic.hashCode();
+            result = PRIME * result + strokeGraphic.hashCode();
         }
 
         if (lineCap != null) {
-            result = (PRIME * result) + lineCap.hashCode();
+            result = PRIME * result + lineCap.hashCode();
         }
 
         if (lineJoin != null) {
-            result = (PRIME * result) + lineJoin.hashCode();
+            result = PRIME * result + lineJoin.hashCode();
         }
 
         if (opacity != null) {
-            result = (PRIME * result) + opacity.hashCode();
+            result = PRIME * result + opacity.hashCode();
         }
 
         if (width != null) {
-            result = (PRIME * result) + width.hashCode();
+            result = PRIME * result + width.hashCode();
         }
 
         if (dashArray != null) {
-            result = (PRIME * result) + dashArray.hashCode();
+            result = PRIME * result + dashArray.hashCode();
         }
 
         return result;

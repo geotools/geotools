@@ -162,7 +162,7 @@ public abstract class TileService implements ImageLoader {
     public int getZoomLevelFromMapScale(ScaleZoomLevelMatcher zoomLevelMatcher, double scaleFactor) {
         // fallback scale-list
         double[] scaleList = getScaleList();
-        assert (scaleList != null && scaleList.length > 0);
+        assert scaleList != null && scaleList.length > 0;
 
         // during the calculations this list caches already calculated scales
         double[] tempScaleList = new double[scaleList.length];
@@ -178,7 +178,7 @@ public abstract class TileService implements ImageLoader {
             int lowerScaleIndex = zoomLevel;
 
             double deltaScale = tempScaleList[upperScaleIndex] - tempScaleList[lowerScaleIndex];
-            double rangeScale = (scaleFactor / 100d) * deltaScale;
+            double rangeScale = scaleFactor / 100d * deltaScale;
             double limitScale = tempScaleList[lowerScaleIndex] + rangeScale;
 
             if (zoomLevelMatcher.getScale() > limitScale) {
@@ -203,7 +203,7 @@ public abstract class TileService implements ImageLoader {
         int zoomLevel = -1;
 
         // check if the zoom-level is valid
-        if (!selectionAutomatic && ((zoomLevel >= getMinZoomLevel()) && (zoomLevel <= getMaxZoomLevel()))) {
+        if (!selectionAutomatic && zoomLevel >= getMinZoomLevel() && zoomLevel <= getMaxZoomLevel()) {
             // the zoom-level from the properties is valid, so let's take it
 
             return zoomLevel;
@@ -219,7 +219,7 @@ public abstract class TileService implements ImageLoader {
         double[] scaleList = getScaleList();
         int minZoomLevel = 0;
 
-        while (Double.isNaN(scaleList[minZoomLevel]) && (minZoomLevel < scaleList.length)) {
+        while (Double.isNaN(scaleList[minZoomLevel]) && minZoomLevel < scaleList.length) {
             minZoomLevel++;
         }
 
@@ -231,7 +231,7 @@ public abstract class TileService implements ImageLoader {
         double[] scaleList = getScaleList();
         int maxZoomLevel = scaleList.length - 1;
 
-        while (Double.isNaN(scaleList[maxZoomLevel]) && (maxZoomLevel >= 0)) {
+        while (Double.isNaN(scaleList[maxZoomLevel]) && maxZoomLevel >= 0) {
             maxZoomLevel--;
         }
 
@@ -413,10 +413,10 @@ public abstract class TileService implements ImageLoader {
                 || envelope.getMaxX() > bounds.getMaxX()
                 || envelope.getMinX() < bounds.getMinX()) {
 
-            double maxY = (envelope.getMaxY() > bounds.getMaxY()) ? bounds.getMaxY() : envelope.getMaxY();
-            double minY = (envelope.getMinY() < bounds.getMinY()) ? bounds.getMinY() : envelope.getMinY();
-            double maxX = (envelope.getMaxX() > bounds.getMaxX()) ? bounds.getMaxX() : envelope.getMaxX();
-            double minX = (envelope.getMinX() < bounds.getMinX()) ? bounds.getMinX() : envelope.getMinX();
+            double maxY = envelope.getMaxY() > bounds.getMaxY() ? bounds.getMaxY() : envelope.getMaxY();
+            double minY = envelope.getMinY() < bounds.getMinY() ? bounds.getMinY() : envelope.getMinY();
+            double maxX = envelope.getMaxX() > bounds.getMaxX() ? bounds.getMaxX() : envelope.getMaxX();
+            double minX = envelope.getMinX() < bounds.getMinX() ? bounds.getMinX() : envelope.getMinX();
 
             ReferencedEnvelope newEnvelope =
                     new ReferencedEnvelope(minX, maxX, minY, maxY, envelope.getCoordinateReferenceSystem());

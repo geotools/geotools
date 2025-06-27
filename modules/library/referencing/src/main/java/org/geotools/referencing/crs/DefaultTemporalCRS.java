@@ -240,7 +240,7 @@ public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS
         if (toMillis == null) {
             initializeConverter();
         }
-        return toMillis.inverse().convert(time.getTime() - origin);
+        return toMillis.inverse().convert((double) (time.getTime() - origin));
     }
 
     /**

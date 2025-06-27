@@ -30,15 +30,15 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
 import org.geotools.util.Utilities;
 import org.geotools.xsd.Schemas;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.feature.type.ComplexType;
-import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
  * Schema generator that uses subclasses of {@link AbstractLazyAttributeTypeImpl} and

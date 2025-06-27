@@ -299,9 +299,9 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
                 }
 
                 // calculate the index position we need to read
-                long bundleRow = (max_row_column - row) - bundle.baseRow;
+                long bundleRow = max_row_column - row - bundle.baseRow;
                 long indexReadOffset = INDEX_HEADER_LENGTH
-                        + (((col - bundle.baseColumn) * BUNDLE_DIMENSION) + bundleRow) * INDEX_ENTRY_LENGTH;
+                        + ((col - bundle.baseColumn) * BUNDLE_DIMENSION + bundleRow) * INDEX_ENTRY_LENGTH;
 
                 // read the tile index and get the offset to the tile data
                 long tileDataOffset = getTileDataOffset(bundle, indexReadOffset);
@@ -342,11 +342,11 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
         byte[] tileIndex = bundle.bundleIndx.read(indexReadOffset, INDEX_ENTRY_LENGTH);
 
         // convert 5-byte value into a byte-offset
-        return ((long) tileIndex[0] & 0xff)
-                | ((long) (tileIndex[1] & 0xff) << 8)
-                | ((long) (tileIndex[2] & 0xff) << 16)
-                | ((long) (tileIndex[3] & 0xff) << 24)
-                | ((long) (tileIndex[4] & 0xff) << 32);
+        return (long) tileIndex[0] & 0xff
+                | (long) (tileIndex[1] & 0xff) << 8
+                | (long) (tileIndex[2] & 0xff) << 16
+                | (long) (tileIndex[3] & 0xff) << 24
+                | (long) (tileIndex[4] & 0xff) << 32;
     }
 
     /**
@@ -383,10 +383,7 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
         byte[] dataLen = bundle.bundleData.read(tileDataOffset, DATA_LENGTH_LENGTH);
 
         // convert to an integer value
-        return (dataLen[0] & 0xff)
-                | ((dataLen[1] & 0xff) << 8)
-                | ((dataLen[2] & 0xff) << 16)
-                | ((dataLen[3] & 0xff) << 24);
+        return dataLen[0] & 0xff | (dataLen[1] & 0xff) << 8 | (dataLen[2] & 0xff) << 16 | (dataLen[3] & 0xff) << 24;
     }
 
     /**

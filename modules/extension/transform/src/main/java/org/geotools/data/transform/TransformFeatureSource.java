@@ -126,7 +126,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
             }
 
             @Override
-            public boolean supportsSorting(SortBy[] sortAttributes) {
+            public boolean supportsSorting(SortBy... sortAttributes) {
                 // we use external sorting if any of the sort attributes is computed
                 for (SortBy sortBy : sortAttributes) {
                     if (sortBy == SortBy.NATURAL_ORDER || sortBy == SortBy.REVERSE_ORDER) {

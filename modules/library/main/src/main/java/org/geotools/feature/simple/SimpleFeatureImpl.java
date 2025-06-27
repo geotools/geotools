@@ -562,7 +562,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         @Override
         public int hashCode() {
             return 37 * getDescriptor().hashCode()
-                    + (37 * (getValue() == null ? 0 : getValue().hashCode()));
+                    + 37 * (getValue() == null ? 0 : getValue().hashCode());
         }
 
         /**

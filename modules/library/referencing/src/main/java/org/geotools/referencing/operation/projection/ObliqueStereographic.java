@@ -172,10 +172,10 @@ public class ObliqueStereographic extends StereographicUSGS {
             final double sinc = sin(ce);
             final double cosc = cos(ce);
             x = atan2(x * sinc, rho * cosc0 * cosc - y * sinc0 * sinc);
-            y = (cosc * sinc0) + (y * sinc * cosc0 / rho);
+            y = cosc * sinc0 + y * sinc * cosc0 / rho;
 
             if (abs(y) >= 1.0) {
-                y = (y < 0.0) ? -PI / 2.0 : PI / 2.0;
+                y = y < 0.0 ? -PI / 2.0 : PI / 2.0;
             } else {
                 y = asin(y);
             }

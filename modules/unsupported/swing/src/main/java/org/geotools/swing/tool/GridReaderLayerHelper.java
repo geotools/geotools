@@ -53,7 +53,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
 
     @Override
     public boolean isSupportedLayer(Layer layer) {
-        return (layer instanceof GridReaderLayer);
+        return layer instanceof GridReaderLayer;
     }
 
     @Override

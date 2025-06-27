@@ -48,9 +48,9 @@ public class KeyrefHandler extends XSIElementHandler {
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
-                * ((id == null) ? 1 : id.hashCode())
-                * ((refer == null) ? 1 : refer.hashCode())
-                * ((name == null) ? 1 : name.hashCode());
+                * (id == null ? 1 : id.hashCode())
+                * (refer == null ? 1 : refer.hashCode())
+                * (name == null ? 1 : name.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

@@ -35,7 +35,7 @@ public class LoggingImagingListenerTest {
         logger.removeHandler(logHandler);
     }
 
-    @SuppressWarnings("TryFailThrowable")
+    @SuppressWarnings({"TryFailThrowable", "AssertionFailureIgnored"})
     @Test
     public void errorOccurred_EnsureNoExceptionWhenNoNativeAccel() {
         LoggingImagingListener listener = new LoggingImagingListener();

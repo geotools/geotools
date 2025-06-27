@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
@@ -77,7 +78,7 @@ public class CSVFileState {
         String prjName = FilenameUtils.getBaseName(file.getName()) + ".prj";
         File prjFile = new File(parent, prjName);
         if (prjFile.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(prjFile))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(prjFile, StandardCharsets.UTF_8))) {
                 String line;
                 StringBuffer prj = new StringBuffer();
                 while ((line = reader.readLine()) != null) {
@@ -140,7 +141,7 @@ public class CSVFileState {
 
         if (file != null) {
             LOGGER.fine("opening file: " + file + " exists? " + file.exists());
-            reader = new BufferedReader(new FileReader(file));
+            reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
         } else {
             reader = new StringReader(dataInput);
         }

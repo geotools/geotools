@@ -101,7 +101,7 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
 
     /** */
     @Override
-    public void setFeatureTypeStyles(FeatureTypeStyle[] types) {
+    public void setFeatureTypeStyles(FeatureTypeStyle... types) {
         throw new UnsupportedOperationException();
     }
 

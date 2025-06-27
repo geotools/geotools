@@ -1464,9 +1464,9 @@ public class GranuleDescriptor {
         RenderedImage renderedImage = iw.getRenderedImage();
         Object roi = renderedImage.getProperty("ROI");
         if (useFootprint
-                        && (roi instanceof ROIGeometry
-                                && ((ROIGeometry) roi).getAsGeometry().isEmpty())
-                || (roi instanceof ROI && ((ROI) roi).getBounds().isEmpty())) {
+                        && roi instanceof ROIGeometry
+                        && ((ROIGeometry) roi).getAsGeometry().isEmpty()
+                || roi instanceof ROI && ((ROI) roi).getBounds().isEmpty()) {
             // JAI not only transforms the ROI, but may also apply clipping to the image
             // boundary.  this results in an empty ROI in some edge cases
             return null;
@@ -1499,8 +1499,8 @@ public class GranuleDescriptor {
         // image sizes.
         //
         // place it in the mosaic using the coords created above;
-        double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
-        double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
+        double decimationScaleX = 1.0 * sourceArea.width / raster.getWidth();
+        double decimationScaleY = 1.0 * sourceArea.height / raster.getHeight();
         final AffineTransform decimationScaleTranform =
                 XAffineTransform.getScaleInstance(decimationScaleX, decimationScaleY);
 

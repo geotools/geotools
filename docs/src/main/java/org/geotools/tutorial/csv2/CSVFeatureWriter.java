@@ -15,6 +15,7 @@ import com.csvreader.CsvWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
@@ -74,7 +75,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         File file = ((CSVDataStore) state.getEntry().getDataStore()).file;
         File directory = file.getParentFile();
         this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "csv", directory);
-        this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
+        this.csvWriter = new CsvWriter(new FileWriter(this.temp, StandardCharsets.UTF_8), ',');
         this.delegate = new CSVFeatureReader(state, query);
         this.csvWriter.writeRecord(delegate.reader.getHeaders());
         String latField = "lat";
@@ -143,12 +144,14 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
 
     // remove start
     /** Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively removing it. */
+    @Override
     public void remove() throws IOException {
         this.currentFeature = null; // just mark it done which means it will not get written out.
     }
     // remove end
 
     // write start
+    @Override
     public void write() throws IOException {
         if (this.currentFeature == null) {
             return; // current feature has been deleted

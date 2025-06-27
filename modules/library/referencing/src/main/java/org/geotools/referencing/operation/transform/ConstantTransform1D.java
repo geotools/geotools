@@ -37,7 +37,7 @@ final class ConstantTransform1D extends LinearTransform1D {
      *
      * @param offset The {@code offset} term in the linear equation.
      */
-    protected ConstantTransform1D(final double offset) {
+    ConstantTransform1D(final double offset) {
         super(0, offset);
     }
 

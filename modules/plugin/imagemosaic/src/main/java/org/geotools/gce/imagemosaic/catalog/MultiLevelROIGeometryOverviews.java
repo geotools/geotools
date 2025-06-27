@@ -95,15 +95,15 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
         if (roiGeometry == null) {
             boolean useOverviews = imageIndex != 0 && numOverviews > 0;
             Geometry rescaled =
-                    (useOverviews ? multilevelFootprints.get(imageIndex - 1).copy() : originalFootprint.copy());
+                    useOverviews ? multilevelFootprints.get(imageIndex - 1).copy() : originalFootprint.copy();
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Using footprint's overview: " + useOverviews);
             }
             AffineTransformation geometryAT = null;
             if (useOverviews && overviewsRoiInRasterSpace) {
                 Rectangle sourceRegion = params.getSourceRegion();
-                final double xScale = (imgBounds.getWidth() / sourceRegion.getWidth() * 1.0);
-                final double yScale = (imgBounds.getHeight() / sourceRegion.getHeight() * 1.0);
+                final double xScale = imgBounds.getWidth() / sourceRegion.getWidth() * 1.0;
+                final double yScale = imgBounds.getHeight() / sourceRegion.getHeight() * 1.0;
 
                 // Need to align the Overview's geometry to the read area (sourceRegion offset)
                 geometryAT = new AffineTransformation(1, 0, -sourceRegion.x, 0, 1, -sourceRegion.y);

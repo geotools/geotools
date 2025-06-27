@@ -84,7 +84,7 @@ class InsertionClassifier {
 
     @Override
     public int hashCode() {
-        int result = (useExisting ? 1 : 0);
+        int result = useExisting ? 1 : 0;
         result = 31 * result + geometryTypes.hashCode();
         return result;
     }

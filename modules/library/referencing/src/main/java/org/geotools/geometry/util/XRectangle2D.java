@@ -233,7 +233,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
         if (!(xmin < xmax && ymin < ymax && width > 0 && height > 0)) {
             return false;
         } else {
-            return (x < xmax && y < ymax && x + width > xmin && y + height > ymin);
+            return x < xmax && y < ymax && x + width > xmin && y + height > ymin;
         }
     }
 
@@ -257,7 +257,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
             final double ymin2 = rect.getMinY();
             final double ymax2 = rect.getMaxY();
             if (!(ymax2 > ymin2)) return false;
-            return (xmin2 < xmax && ymin2 < ymax && xmax2 > xmin && ymax2 > ymin);
+            return xmin2 < xmax && ymin2 < ymax && xmax2 > xmin && ymax2 > ymin;
         }
     }
 
@@ -295,7 +295,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
         final double ymin2 = rect2.getMinY();
         final double ymax2 = rect2.getMaxY();
         if (!(ymax2 >= ymin2)) return false;
-        return (xmax2 >= xmin1 && ymax2 >= ymin1 && xmin2 <= xmax1 && ymin2 <= ymax1);
+        return xmax2 >= xmin1 && ymax2 >= ymin1 && xmin2 <= xmax1 && ymin2 <= ymax1;
     }
 
     /**
@@ -349,8 +349,8 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
 
     /** Compares the specified numbers with the specified tolerance. */
     private static boolean equalsEpsilon(final double v1, final double v2, final double eps) {
-        return (Math.abs(v1 - v2) < eps)
-                || (java.lang.Double.doubleToLongBits(v1) == java.lang.Double.doubleToLongBits(v2));
+        return Math.abs(v1 - v2) < eps
+                || java.lang.Double.doubleToLongBits(v1) == java.lang.Double.doubleToLongBits(v2);
     }
 
     /**
@@ -368,7 +368,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
         if (!(xmin < xmax && ymin < ymax && width > 0 && height > 0)) {
             return false;
         } else {
-            return (x >= xmin && y >= ymin && (x + width) <= xmax && (y + height) <= ymax);
+            return x >= xmin && y >= ymin && x + width <= xmax && y + height <= ymax;
         }
     }
 
@@ -391,7 +391,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
             final double ymin2 = rect.getMinY();
             final double ymax2 = rect.getMaxY();
             if (!(ymax2 > ymin2)) return false;
-            return (xmin2 >= xmin && ymin2 >= ymin && xmax2 <= xmax && ymax2 <= ymax);
+            return xmin2 >= xmin && ymin2 >= ymin && xmax2 <= xmax && ymax2 <= ymax;
         }
     }
 
@@ -405,7 +405,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      */
     @Override
     public boolean contains(final double x, final double y) {
-        return (x >= xmin && y >= ymin && x < xmax && y < ymax);
+        return x >= xmin && y >= ymin && x < xmax && y < ymax;
     }
 
     /**

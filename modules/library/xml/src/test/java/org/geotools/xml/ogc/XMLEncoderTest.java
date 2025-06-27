@@ -208,7 +208,7 @@ public class XMLEncoderTest {
                 child = list.item(i);
 
                 // _log.getLoggerRepository().setThreshold(Level.INFO);
-                if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
 
@@ -273,7 +273,7 @@ public class XMLEncoderTest {
                     string);
         }
         ByteArrayInputStream byteStream =
-                new ByteArrayInputStream(output.toString().getBytes());
+                new ByteArrayInputStream(output.toString().getBytes(StandardCharsets.UTF_8));
         Filter roundTrip = (Filter) DocumentFactory.getInstance(byteStream, null, Level.OFF);
         Assert.assertEquals(filter, roundTrip);
     }

@@ -231,8 +231,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     public List<GranuleDescriptor> getGranules(final BoundingBox envelope) throws IOException {
         Utilities.ensureNonNull("envelope", envelope);
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             checkIndex(lock);
             return index.query(reference(envelope));
@@ -250,8 +250,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         Utilities.ensureNonNull("envelope", envelope);
         Utilities.ensureNonNull("visitor", visitor);
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
 
             checkIndex(lock);
@@ -265,9 +265,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     @Override
     public void dispose() {
         final Lock l = rwLock.writeLock();
+        l.lock();
         try {
-            l.lock();
-
             // original index
             if (wrappedCatalogue != null) {
                 try {
@@ -292,8 +291,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         q = mergeHints(q);
         Utilities.ensureNonNull("q", q);
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
 
             // get filter and check bbox
@@ -354,8 +353,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     public void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor) throws IOException {
         Utilities.ensureNonNull("q", q);
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
 
             // get filter and check bbox
@@ -400,8 +399,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     @Override
     public BoundingBox getBounds(String typeName) {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
 
             return wrappedCatalogue.getBounds(typeName);
@@ -426,8 +425,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     @Override
     public SimpleFeatureType getType(final String typeName) throws IOException {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             return this.wrappedCatalogue.getType(typeName);
         } finally {
@@ -444,8 +443,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
         query = mergeHints(query);
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             wrappedCatalogue.computeAggregateFunction(query, function);
         } finally {
@@ -455,8 +454,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     public QueryCapabilities getQueryCapabilities() {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
 
             return wrappedCatalogue.getQueryCapabilities(typeName);
@@ -514,8 +513,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     @Override
     public void removeType(String typeName) throws IOException {
         final Lock lock = rwLock.readLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             this.wrappedCatalogue.removeType(typeName);
         } finally {
@@ -526,8 +525,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     @Override
     public void drop() throws IOException {
         final Lock lock = rwLock.writeLock();
+        lock.lock();
         try {
-            lock.lock();
             checkStore();
             this.wrappedCatalogue.drop();
         } catch (Exception e) {

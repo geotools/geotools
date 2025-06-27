@@ -72,7 +72,7 @@ public class PathAttributeList {
         return elements.get(key);
     }
 
-    public class Pair {
+    public static class Pair {
         private String xpath;
         private Attribute attribute;
 

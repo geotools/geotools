@@ -29,14 +29,14 @@ public class Coordinate2D {
     public boolean equals(Object obj) {
         if (obj instanceof Coordinate2D) {
             Coordinate2D other = (Coordinate2D) obj;
-            return (x == other.x && y == other.y);
+            return x == other.x && y == other.y;
         }
-        return (false);
+        return false;
     }
 
     @Override
     public int hashCode() {
         long v = Double.doubleToLongBits(x + y);
-        return ((int) (v ^ (v >>> 32)));
+        return (int) (v ^ v >>> 32);
     }
 }

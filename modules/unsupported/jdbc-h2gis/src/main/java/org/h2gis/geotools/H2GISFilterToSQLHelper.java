@@ -180,7 +180,7 @@ public class H2GISFilterToSQLHelper {
     private void visitDistanceSpatialOperator(
             DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
-        if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
+        if (filter instanceof DWithin && !swapped || filter instanceof Beyond && swapped) {
             out.write("ST_DWithin(");
             property.accept(filterToSQL, extraData);
             out.write(",");
@@ -189,7 +189,7 @@ public class H2GISFilterToSQLHelper {
             out.write(String.valueOf(filter.getDistance()));
             out.write(")");
         }
-        if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
+        if (filter instanceof DWithin && swapped || filter instanceof Beyond && !swapped) {
             out.write("ST_Distance(");
             property.accept(filterToSQL, extraData);
             out.write(",");

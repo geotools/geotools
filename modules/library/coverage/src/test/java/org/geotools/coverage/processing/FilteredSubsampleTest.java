@@ -135,7 +135,7 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         int h = originalImage.getHeight();
 
         // Creating a default processor.
-        final CoverageProcessor processor = (hints != null) ? CoverageProcessor.getInstance(hints) : this.processor;
+        final CoverageProcessor processor = hints != null ? CoverageProcessor.getInstance(hints) : this.processor;
 
         // Getting parameters for the FilteredSubsample operation.
         final ParameterValueGroup param =
@@ -151,8 +151,7 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         RenderedImage scaledImage = scaled.getRenderedImage();
         assertEquals(w / 2.0, scaledImage.getWidth(), EPS);
         assertEquals(h / 2.0, scaledImage.getHeight(), EPS);
-        assertTrue(
-                (interp instanceof InterpolationNearest) || !(scaledImage.getColorModel() instanceof IndexColorModel));
+        assertTrue(interp instanceof InterpolationNearest || !(scaledImage.getColorModel() instanceof IndexColorModel));
 
         isIndexed = scaledImage.getColorModel() instanceof IndexColorModel;
         w = scaledImage.getWidth();
@@ -173,7 +172,7 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         assertEquals(w / 3.0, scaledImage.getWidth(), 1.0 / 3 + EPS);
         assertEquals(h / 3.0, scaledImage.getHeight(), 1.0 / 3 + EPS);
         assertTrue(!isIndexed
-                || (interp instanceof InterpolationNearest)
+                || interp instanceof InterpolationNearest
                 || !(scaledImage.getColorModel() instanceof IndexColorModel));
         assertEnvelopeEquals(coverage, scaled);
         if (SHOW) {

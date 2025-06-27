@@ -170,6 +170,7 @@ public class AzimuthalEquidistant {
          *     java.awt.geom.Point2D)
          */
         @Override
+        @SuppressWarnings("FallThrough") // `case NORTH_POLAR` falls through `case SOUTH_POLAR`
         protected Point2D transformNormalized(double lambda, double phi, Point2D ptDst) throws ProjectionException {
             double x = 0;
             double y = 0;
@@ -195,7 +196,7 @@ public class AzimuthalEquidistant {
                         y = acos(y);
                         y /= sin(y);
                         x = y * cosphi * sin(lambda);
-                        y *= (mode == Mode.EQUATORIAL) ? sinphi : (cosph0 * sinphi - sinph0 * cosphi * coslam);
+                        y *= mode == Mode.EQUATORIAL ? sinphi : cosph0 * sinphi - sinph0 * cosphi * coslam;
                     }
                     break;
                 case NORTH_POLAR:
@@ -250,7 +251,7 @@ public class AzimuthalEquidistant {
                         y = (cosc - sinph0 * sin(phi)) * c_rh;
                         x *= sinc * cosph0;
                     }
-                    lambda = (y == 0) ? 0 : atan2(x, y);
+                    lambda = y == 0 ? 0 : atan2(x, y);
                 } else if (mode == Mode.NORTH_POLAR) {
                     phi = HALF_PI - c_rh;
                     lambda = atan2(x, -y);
@@ -324,6 +325,7 @@ public class AzimuthalEquidistant {
          *     java.awt.geom.Point2D)
          */
         @Override
+        @SuppressWarnings("FallThrough") // `case NORTH_POLAR` falls through `case SOUTH_POLAR`
         protected Point2D transformNormalized(double lambda, double phi, Point2D ptDst) throws ProjectionException {
             double x = 0;
             double y = 0;
@@ -389,8 +391,8 @@ public class AzimuthalEquidistant {
                     lambda = toRadians(g.lon2);
                     lambda -= centralMeridian;
                 } else { // Polar
-                    phi = inv_mlfn((mode == Mode.NORTH_POLAR) ? (Mp - c) : (Mp + c));
-                    lambda = atan2(x, (mode == Mode.NORTH_POLAR) ? -y : y);
+                    phi = inv_mlfn(mode == Mode.NORTH_POLAR ? Mp - c : Mp + c);
+                    lambda = atan2(x, mode == Mode.NORTH_POLAR ? -y : y);
                 }
             }
             if (ptDst == null) {

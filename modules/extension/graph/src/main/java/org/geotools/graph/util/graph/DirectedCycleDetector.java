@@ -35,6 +35,6 @@ public class DirectedCycleDetector extends CycleDetector {
 
     @Override
     protected GraphIterator createIterator() {
-        return (new DirectedBreadthFirstTopologicalIterator());
+        return new DirectedBreadthFirstTopologicalIterator();
     }
 }

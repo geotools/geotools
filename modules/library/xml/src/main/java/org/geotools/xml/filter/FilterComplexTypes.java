@@ -104,7 +104,7 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((element == null) || (value == null)) {
+            if (element == null || value == null) {
                 throw new SAXException("Parameter missing for Comparison_OperatorsType");
             }
 
@@ -194,7 +194,7 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((element == null) || (value == null)) {
+            if (element == null || value == null) {
                 throw new SAXException("Parameter missing for Comparison_OperatorsType");
             }
 
@@ -425,7 +425,7 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
-            if ((element == null) || (value == null) || (value.length != 1)) {
+            if (element == null || value == null || value.length != 1) {
                 throw new SAXException("Invalid parameters specified for Spatial_CapabilitiesType");
             }
 
@@ -489,7 +489,7 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((element == null) || (value == null)) {
+            if (element == null || value == null) {
                 throw new SAXException("Parameter missing for Filter_Capabilities Type");
             }
 
@@ -617,7 +617,7 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((element == null) || (value == null)) {
+            if (element == null || value == null) {
                 throw new SAXException("Missing paramters for Scalar_CapabilitiesType");
             }
 
@@ -716,7 +716,7 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((element == null) || (value == null) || (value.length != 1)) {
+            if (element == null || value == null || value.length != 1) {
                 throw new SAXException("Invalid parameters specified for Spatial_CapabilitiesType");
             }
 
@@ -806,7 +806,7 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((element == null) || (value == null)) {
+            if (element == null || value == null) {
                 throw new SAXException("Missing parameter for Spatial_OperatorsType");
             }
 
@@ -916,7 +916,7 @@ public class FilterComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof Expression;
         }
@@ -949,7 +949,7 @@ public class FilterComplexTypes {
                 case FUNCTION:
                     FunctionType.getInstance()
                             .encode(
-                                    (element != null)
+                                    element != null
                                             ? element
                                             : new FilterElement("Function", FunctionType.getInstance()),
                                     e,
@@ -964,9 +964,7 @@ public class FilterComplexTypes {
                 case LITERAL_STRING:
                     LiteralType.getInstance()
                             .encode(
-                                    (element != null)
-                                            ? element
-                                            : new FilterElement("Literal", LiteralType.getInstance()),
+                                    element != null ? element : new FilterElement("Literal", LiteralType.getInstance()),
                                     e,
                                     output,
                                     hints);
@@ -976,7 +974,7 @@ public class FilterComplexTypes {
                 case MATH_ADD:
                     BinaryOperatorType.getInstance()
                             .encode(
-                                    (element != null)
+                                    element != null
                                             ? element
                                             : new FilterElement("Add", BinaryOperatorType.getInstance()),
                                     e,
@@ -988,7 +986,7 @@ public class FilterComplexTypes {
                 case MATH_DIVIDE:
                     BinaryOperatorType.getInstance()
                             .encode(
-                                    (element != null)
+                                    element != null
                                             ? element
                                             : new FilterElement("Div", BinaryOperatorType.getInstance()),
                                     e,
@@ -1000,7 +998,7 @@ public class FilterComplexTypes {
                 case MATH_MULTIPLY:
                     BinaryOperatorType.getInstance()
                             .encode(
-                                    (element != null)
+                                    element != null
                                             ? element
                                             : new FilterElement("Mul", BinaryOperatorType.getInstance()),
                                     e,
@@ -1012,7 +1010,7 @@ public class FilterComplexTypes {
                 case MATH_SUBTRACT:
                     BinaryOperatorType.getInstance()
                             .encode(
-                                    (element != null)
+                                    element != null
                                             ? element
                                             : new FilterElement("Sub", BinaryOperatorType.getInstance()),
                                     e,
@@ -1110,7 +1108,7 @@ public class FilterComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof BinaryExpression;
         }
@@ -1226,7 +1224,7 @@ public class FilterComplexTypes {
                 }
             }
 
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && value instanceof FunctionExpression;
         }
@@ -1342,7 +1340,7 @@ public class FilterComplexTypes {
          */
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
-            return (element.getType() != null)
+            return element.getType() != null
                     && getName().equals(element.getType().getName())
                     && (value instanceof Literal || value instanceof String);
         }
@@ -1466,7 +1464,7 @@ public class FilterComplexTypes {
         @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return (value instanceof PropertyName || value instanceof String)
-                    && (element.getType() != null)
+                    && element.getType() != null
                     && getName().equals(element.getType().getName());
         }
 
@@ -1479,11 +1477,11 @@ public class FilterComplexTypes {
                 throws IOException, OperationNotSupportedException {
             if (!canEncode(element, value, hints)) {
                 throw new OperationNotSupportedException("Cannot encode "
-                        + ((element == null) ? "null" : element.getName())
+                        + (element == null ? "null" : element.getName())
                         + " "
-                        + ((element == null) ? "null" : element.getNamespace().toString())
+                        + (element == null ? "null" : element.getNamespace().toString())
                         + " "
-                        + ((value == null) ? null : value.getClass().getName()));
+                        + (value == null ? null : value.getClass().getName()));
             }
 
             output.startElement(element.getNamespace(), element.getName(), null);
@@ -1571,7 +1569,7 @@ public class FilterComplexTypes {
         /** @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element, java.util.Map) */
         @Override
         public boolean cache(Element element, Map<String, Object> hints) {
-            return (hints != null) && hints.containsKey(CACHE_SERVICE_EXCEPTIONS);
+            return hints != null && hints.containsKey(CACHE_SERVICE_EXCEPTIONS);
         }
 
         /**
@@ -1581,8 +1579,8 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((value == null)
-                    || (element.getType() == null)
+            if (value == null
+                    || element.getType() == null
                     || !getName().equals(element.getType().getName())) {
                 throw new SAXNotSupportedException("wrong element type for service exception");
             }
@@ -1602,7 +1600,7 @@ public class FilterComplexTypes {
             }
 
             ServiceException se = new ServiceException(
-                    (msg == null) ? "" : msg, (code == null) ? "" : code, (locator == null) ? "" : locator);
+                    msg == null ? "" : msg, code == null ? "" : code, locator == null ? "" : locator);
 
             if (cache(element, hints)) {
                 return se;
@@ -1708,8 +1706,8 @@ public class FilterComplexTypes {
         @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
-            if ((value == null)
-                    || (element.getType() == null)
+            if (value == null
+                    || element.getType() == null
                     || !getName().equals(element.getType().getName())) {
                 throw new SAXNotSupportedException("wrong element type for service exception report");
             }

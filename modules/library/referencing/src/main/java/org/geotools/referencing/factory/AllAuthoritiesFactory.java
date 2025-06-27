@@ -81,6 +81,7 @@ public class AllAuthoritiesFactory extends ManyAuthoritiesFactory {
      * last time this method has been invoked, then this method recreate the set.
      */
     @Override
+    @SuppressWarnings("UnsynchronizedOverridesSynchronized")
     Collection<AuthorityFactory> getFactories() {
         final Collection<String> authorities = ReferencingFactoryFinder.getAuthorityNames();
         if (authorities != authorityNames) {
@@ -142,7 +143,7 @@ public class AllAuthoritiesFactory extends ManyAuthoritiesFactory {
     /** A {@link IdentifiedObjectFinder} which tests every factories. */
     private static final class Finder extends ManyAuthoritiesFactory.Finder {
         /** Creates a finder for the specified type. */
-        protected Finder(final ManyAuthoritiesFactory factory, final Class<? extends IdentifiedObject> type) {
+        Finder(final ManyAuthoritiesFactory factory, final Class<? extends IdentifiedObject> type) {
             super(factory, type);
         }
 

@@ -188,8 +188,8 @@ public class LabelPainter {
         if (lines.isEmpty()) return 0;
 
         // validation checks
-        anchorY = (anchorY < 0) ? 0 : anchorY;
-        anchorY = (anchorY > 1) ? 1 : anchorY;
+        anchorY = anchorY < 0 ? 0 : anchorY;
+        anchorY = anchorY > 1 ? 1 : anchorY;
 
         if (anchorY == 0) return lines.get(getLineCount() - 1).getLineHeight();
         if (anchorY == 1) return lines.get(0).getLineHeight();
@@ -542,7 +542,7 @@ public class LabelPainter {
         Rectangle2D bounds = outline.getBounds2D().getBounds();
         double minX = bounds.getMinX();
         double maxX = bounds.getMaxX();
-        if ((Math.abs(maxX - minX) < 0.0000001)) {
+        if (Math.abs(maxX - minX) < 0.0000001) {
             // nothing to draw
             return;
         }

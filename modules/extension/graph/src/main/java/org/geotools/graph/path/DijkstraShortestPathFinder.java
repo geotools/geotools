@@ -101,9 +101,9 @@ public class DijkstraShortestPathFinder implements GraphWalker {
         Graphable parent = g;
         while ((parent = m_iterator.getParent(parent)) != null) p.add((Node) parent);
 
-        if (!p.getLast().equals(m_iterator.getSource())) return (null);
+        if (!p.getLast().equals(m_iterator.getSource())) return null;
 
-        return (p);
+        return p;
     }
 
     /**
@@ -113,15 +113,15 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      * @return The cost associated with the node.
      */
     public double getCost(Graphable g) {
-        return (m_iterator.getCost(g));
+        return m_iterator.getCost(g);
     }
 
     public DijkstraIterator getIterator() {
-        return (m_iterator);
+        return m_iterator;
     }
 
     public GraphTraversal getTraversal() {
-        return (m_traversal);
+        return m_traversal;
     }
 
     /**
@@ -131,7 +131,7 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      */
     @Override
     public int visit(Graphable element, GraphTraversal traversal) {
-        return (GraphTraversal.CONTINUE);
+        return GraphTraversal.CONTINUE;
     }
 
     /**

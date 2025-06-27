@@ -54,9 +54,9 @@ public class RedefineHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode()
-                        * ((id == null) ? 1 : id.hashCode())
-                        * ((schemaLocation == null) ? 1 : schemaLocation.hashCode()))
+        return LOCALNAME.hashCode()
+                        * (id == null ? 1 : id.hashCode())
+                        * (schemaLocation == null ? 1 : schemaLocation.hashCode())
                 + hashCodeOffset;
     }
 

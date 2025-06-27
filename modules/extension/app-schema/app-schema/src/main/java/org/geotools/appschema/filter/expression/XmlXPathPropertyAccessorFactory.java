@@ -51,7 +51,7 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
         @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             // TODO: some better check for a valid xpath expression
-            return (xpath != null) && !"".equals(xpath.trim());
+            return xpath != null && !"".equals(xpath.trim());
         }
 
         @Override

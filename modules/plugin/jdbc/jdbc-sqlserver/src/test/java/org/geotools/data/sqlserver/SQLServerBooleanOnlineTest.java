@@ -44,7 +44,7 @@ public class SQLServerBooleanOnlineTest extends JDBCBooleanOnlineTest {
             SimpleFeatureType ft = dataStore.getSchema(tname("b"));
             SimpleFeature falseFeat = DataUtilities.createFeature(ft, "id=3|false");
             FeatureStore<SimpleFeatureType, SimpleFeature> fs =
-                    (FeatureStore<SimpleFeatureType, SimpleFeature>) (dataStore.getFeatureSource("b"));
+                    (FeatureStore<SimpleFeatureType, SimpleFeature>) dataStore.getFeatureSource("b");
             List<FeatureId> featIds = fs.addFeatures(DataUtilities.collection(falseFeat));
             assertEquals(1, featIds.size());
             assertEquals("b.3", featIds.get(0).getID());

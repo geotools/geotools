@@ -96,7 +96,7 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
      * Simple store wrapper that prevents the store from being disposed. Used when the store comes from a
      * {@link Repository} that manages its lifecycle.
      */
-    private class DisposeStopWrapper extends DecoratingDataStore {
+    private static class DisposeStopWrapper extends DecoratingDataStore {
         public DisposeStopWrapper(DataStore ds) {
             super(ds);
         }

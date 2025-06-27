@@ -30,7 +30,7 @@ public class StreamingRendererDirectLayerTest {
 
     private static final Rectangle SCREEN = new Rectangle(200, 200);
 
-    private class MockLayer extends DirectLayer {
+    private static class MockLayer extends DirectLayer {
 
         /*
          * Just draws a rectangle using graphics coordinates.

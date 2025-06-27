@@ -19,6 +19,7 @@ package org.geotools.filter.text.cql2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.transform.TransformerException;
@@ -230,7 +231,7 @@ public class CQL {
         System.out.println("CQL Filter Tester");
         System.out.println("(\"quit\" to finish)");
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         FilterTransformer filterTransformer = new FilterTransformer();
         filterTransformer.setIndentation(4);
 

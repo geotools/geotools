@@ -131,7 +131,7 @@ public class IndexFile implements FileReader, AutoCloseable {
 
     private void readRecords(ReadableByteChannel channel) throws IOException {
         check();
-        int remaining = (header.getFileLength() * 2) - 100;
+        int remaining = header.getFileLength() * 2 - 100;
         ByteBuffer buffer = NIOUtilities.allocate(remaining);
         try {
             buffer.order(ByteOrder.BIG_ENDIAN);

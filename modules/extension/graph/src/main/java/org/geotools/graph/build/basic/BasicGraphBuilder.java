@@ -57,13 +57,13 @@ public class BasicGraphBuilder implements GraphBuilder {
     /** @see GraphBuilder#buildNode() */
     @Override
     public Node buildNode() {
-        return (new BasicNode());
+        return new BasicNode();
     }
 
     /** @see GraphBuilder#buildEdge(Node, Node) */
     @Override
     public Edge buildEdge(Node nodeA, Node nodeB) {
-        return (new BasicEdge(nodeA, nodeB));
+        return new BasicEdge(nodeA, nodeB);
     }
 
     /** @see GraphBuilder#addNode(Node) */
@@ -125,7 +125,7 @@ public class BasicGraphBuilder implements GraphBuilder {
     /** @see GraphBuilder#getGraph() */
     @Override
     public Graph getGraph() {
-        return (m_graph);
+        return m_graph;
     }
 
     /** @see GraphBuilder#clone(boolean) */
@@ -134,7 +134,7 @@ public class BasicGraphBuilder implements GraphBuilder {
         GraphBuilder builder = getClass().getDeclaredConstructor().newInstance();
         if (deep) builder.importGraph(getGraph());
 
-        return (builder);
+        return builder;
     }
 
     /** @see GraphBuilder#importGraph(Graph) */
@@ -151,7 +151,7 @@ public class BasicGraphBuilder implements GraphBuilder {
      * @return A collection of nodes.
      */
     public Collection<Node> getNodes() {
-        return (m_nodes);
+        return m_nodes;
     }
 
     /**
@@ -160,7 +160,7 @@ public class BasicGraphBuilder implements GraphBuilder {
      * @return A collection of edges.
      */
     public Collection<Edge> getEdges() {
-        return (m_edges);
+        return m_edges;
     }
 
     /**
@@ -169,6 +169,6 @@ public class BasicGraphBuilder implements GraphBuilder {
      * @return A Graph object.
      */
     protected Graph buildGraph() {
-        return (new BasicGraph(m_nodes, m_edges));
+        return new BasicGraph(m_nodes, m_edges);
     }
 }

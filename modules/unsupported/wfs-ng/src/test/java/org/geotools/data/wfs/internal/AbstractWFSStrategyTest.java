@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
 import org.geotools.api.filter.Filter;
@@ -142,7 +143,8 @@ public class AbstractWFSStrategyTest {
         request.setMaxFeatures(222222);
 
         try (InputStream postContents = strategy.getPostContents(request)) {
-            String postContentsString = String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
+            String postContentsString =
+                    String.join("\n", IOUtils.readLines(new InputStreamReader(postContents, StandardCharsets.UTF_8)));
             Assert.assertFalse(postContentsString.contains("startIndex"));
         }
     }
@@ -169,7 +171,8 @@ public class AbstractWFSStrategyTest {
         request.setMaxFeatures(222222);
 
         try (InputStream postContents = strategy.getPostContents(request)) {
-            String postContentsString = String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
+            String postContentsString =
+                    String.join("\n", IOUtils.readLines(new InputStreamReader(postContents, StandardCharsets.UTF_8)));
             Assert.assertTrue(postContentsString.contains("startIndex=\"100\""));
         }
     }

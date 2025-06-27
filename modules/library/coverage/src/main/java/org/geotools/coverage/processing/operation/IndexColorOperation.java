@@ -76,7 +76,7 @@ abstract class IndexColorOperation extends Operation2D {
              * transformColormap(...) method, which needs to be defined by subclasses.
              */
             GridSampleDimension band = bands[i];
-            final ColorModel candidate = (i == visibleBand) ? image.getColorModel() : band.getColorModel();
+            final ColorModel candidate = i == visibleBand ? image.getColorModel() : band.getColorModel();
             if (!(candidate instanceof IndexColorModel)) {
                 // Current implementation supports only sources that use an index color model.
                 throw new IllegalArgumentException(MessageFormat.format(
@@ -109,7 +109,7 @@ abstract class IndexColorOperation extends Operation2D {
              * color model for this band. The new color model will be given later to the
              * image operator.
              */
-            if (colorChanged && (i == visibleBand)) {
+            if (colorChanged && i == visibleBand) {
                 model = ColorUtilities.getIndexColorModel(ARGB, bands.length, visibleBand);
             }
         }

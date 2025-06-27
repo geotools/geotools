@@ -201,7 +201,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      */
     @Override
     public boolean isDataEditable() {
-        return (image instanceof WritableRenderedImage);
+        return image instanceof WritableRenderedImage;
     }
 
     /**

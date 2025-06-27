@@ -225,8 +225,8 @@ public class ElasticAttribute implements Serializable, Comparable<ElasticAttribu
             equal &= Objects.equals(validDateFormats, other.validDateFormats);
             equal &= Objects.equals(geometryType, other.geometryType);
             equal &= Objects.equals(analyzed, other.analyzed);
-            equal &= Objects.equals(stored, other.stored);
-            equal &= Objects.equals(nested, other.nested);
+            equal &= stored == other.stored;
+            equal &= nested == other.nested;
             equal &= Objects.equals(order, other.order);
             equal &= Objects.equals(customName, other.customName);
         }

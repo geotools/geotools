@@ -73,14 +73,14 @@ public class SchemaImpl implements Schema {
 
     @Override
     public AttributeType put(Name name, AttributeType type) {
-        if (!(name instanceof Name)) {
+        if (name == null) {
             throw new IllegalArgumentException("Please use a Name");
         }
         Name n = name;
-        if (!(n.toString().startsWith(uri.toString()))) {
+        if (!n.toString().startsWith(uri.toString())) {
             throw new IllegalArgumentException("Provided name was not in schema:" + uri);
         }
-        if (!(type instanceof AttributeType)) {
+        if (type == null) {
             throw new IllegalArgumentException("Please use an AttributeType");
         }
         AttributeType t = type;

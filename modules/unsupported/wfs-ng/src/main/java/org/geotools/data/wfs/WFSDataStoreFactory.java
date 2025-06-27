@@ -81,8 +81,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         {
             String user = config.getUser();
             String password = config.getPassword();
-            if (((user == null) && (password != null))
-                    || ((config.getPassword() == null) && (config.getUser() != null))) {
+            if (user == null && password != null || config.getPassword() == null && config.getUser() != null) {
                 throw new IOException("Cannot define only one of USERNAME or PASSWORD, must define both or neither");
             }
         }

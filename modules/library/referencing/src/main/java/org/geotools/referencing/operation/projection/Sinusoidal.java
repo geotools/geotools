@@ -110,7 +110,7 @@ public class Sinusoidal extends MapProjection {
                 lam = 0.;
             } else if (s < HALFPI) {
                 s = sin(phi);
-                lam = (x * sqrt(1. - excentricitySquared * s * s) / cos(phi)) % Math.PI;
+                lam = x * sqrt(1. - excentricitySquared * s * s) / cos(phi) % Math.PI;
             } else {
                 throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
                 // throw new ProjectionException("Tolerance error occurred appling inverse

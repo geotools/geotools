@@ -49,7 +49,7 @@ public class ServiceTypeBinding extends AbstractComplexEMFBinding {
         String keywords = (String) node.getChildValue("Keywords");
         if (keywords != null) {
             KeywordsType kwd = ows10Factory.createKeywordsType();
-            String[] split = (keywords).split(",");
+            String[] split = keywords.split(",");
             for (String s : split) {
                 String kw = s.trim();
                 kwd.getKeyword().add(kw);

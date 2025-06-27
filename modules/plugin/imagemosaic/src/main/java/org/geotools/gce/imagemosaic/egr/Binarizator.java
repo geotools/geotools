@@ -115,14 +115,14 @@ class Binarizator {
         }
 
         // add smaller last row and column if needed
-        if ((w % tw) != 0) {
+        if (w % tw != 0) {
             for (int row = 0; row < rownum; row++) {
                 Tile tile = new Tile(w % tw, tileHeight, colnum, row, w2s, tileWidth, tileHeight);
                 activeTiles.add(tile);
             }
         }
 
-        if ((h % th) != 0) {
+        if (h % th != 0) {
             for (int col = 0; col < colnum; col++) {
                 Tile tile = new Tile(tileWidth, h % th, col, rownum, w2s, tileWidth, tileHeight);
                 activeTiles.add(tile);
@@ -130,7 +130,7 @@ class Binarizator {
         }
 
         // add the rightmost lower cut tile
-        if (((w % tw) != 0) && ((h % th) != 0)) {
+        if (w % tw != 0 && h % th != 0) {
             Tile tile = new Tile(w % tw, h % th, colnum, rownum, w2s, tileWidth, tileHeight);
             activeTiles.add(tile);
         }
@@ -335,16 +335,10 @@ class Binarizator {
         graphics.drawRect(col * tileWidth, row * tileHeight, tileWidth - 1, tileHeight - 1);
 
         graphics.drawLine(
-                col * tileWidth,
-                row * tileHeight,
-                (col * tileWidth) + tileWidth - 1,
-                (row * tileHeight) + tileHeight - 1);
+                col * tileWidth, row * tileHeight, col * tileWidth + tileWidth - 1, row * tileHeight + tileHeight - 1);
 
         graphics.drawLine(
-                (col * tileWidth) + tileWidth - 1,
-                row * tileWidth,
-                col * tileWidth,
-                (row * tileHeight) + tileHeight - 1);
+                col * tileWidth + tileWidth - 1, row * tileWidth, col * tileWidth, row * tileHeight + tileHeight - 1);
     }
 
     private void drawChecks(Graphics2D graphics, int col, int row) {
@@ -352,7 +346,7 @@ class Binarizator {
 
         for (int y = 0; y < tileHeight; y++) {
             for (int x = y % 2; x < tileWidth; x += 2) {
-                graphics.drawRect((col * tileWidth) + x, (row * tileWidth) + y, 0, 0);
+                graphics.drawRect(col * tileWidth + x, row * tileWidth + y, 0, 0);
             }
         }
     }

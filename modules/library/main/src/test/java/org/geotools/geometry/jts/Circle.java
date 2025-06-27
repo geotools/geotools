@@ -126,6 +126,6 @@ class Circle {
         double sa = atan2(ordinates[1] - cx, ordinates[0] - cy);
         double ma = atan2(ordinates[3] - cx, ordinates[2] - cy);
         double ea = atan2(ordinates[5] - cx, ordinates[3] - cy);
-        return (sa > ma && ma > ea) || (sa < ma && sa > ea) || (ma < ea && sa > ea);
+        return sa > ma && ma > ea || sa < ma && sa > ea || ma < ea && sa > ea;
     }
 }

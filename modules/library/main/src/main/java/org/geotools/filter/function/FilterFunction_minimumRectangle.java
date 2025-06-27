@@ -59,6 +59,6 @@ public class FilterFunction_minimumRectangle extends FunctionExpressionImpl {
                     "Filter Function problem for function minimum rectangle argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.minimumRectangle(arg0));
+        return StaticGeometry.minimumRectangle(arg0);
     }
 }

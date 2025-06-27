@@ -193,9 +193,9 @@ public class AreaFunction extends FunctionExpressionImpl {
         // Calculate area of each trapezoid formed by dropping lines from
         // each pair of coordinates in exteriorRingCoordinates to the x-axis.
         // x[i]<x[i-1] will contribute a negative area
-        for (int i = 0; i < (numberOfExteriorRingCoordinates - 1); i++) {
-            area += (((exteriorRingCoordinates[i + 1].x - minx) - (exteriorRingCoordinates[i].x - minx))
-                    * (((exteriorRingCoordinates[i + 1].y - miny) + (exteriorRingCoordinates[i].y - miny)) / 2d));
+        for (int i = 0; i < numberOfExteriorRingCoordinates - 1; i++) {
+            area += (exteriorRingCoordinates[i + 1].x - minx - (exteriorRingCoordinates[i].x - minx))
+                    * ((exteriorRingCoordinates[i + 1].y - miny + (exteriorRingCoordinates[i].y - miny)) / 2d);
         }
         area = Math.abs(area);
         // Calculate area of each trapezoid formed by dropping lines
@@ -217,9 +217,9 @@ public class AreaFunction extends FunctionExpressionImpl {
                 miny = Math.min(miny, interiorRingCoordinates[j].y);
                 maxy = Math.max(maxy, interiorRingCoordinates[j].y);
             }
-            for (int j = 0; j < (numberOfInteriorRingCoordinates - 1); j++) {
-                interiorArea += (((interiorRingCoordinates[j + 1].x - minx) - (interiorRingCoordinates[j].x - minx))
-                        * (((interiorRingCoordinates[j + 1].y - miny) + (interiorRingCoordinates[j].y - miny)) / 2d));
+            for (int j = 0; j < numberOfInteriorRingCoordinates - 1; j++) {
+                interiorArea += (interiorRingCoordinates[j + 1].x - minx - (interiorRingCoordinates[j].x - minx))
+                        * ((interiorRingCoordinates[j + 1].y - miny + (interiorRingCoordinates[j].y - miny)) / 2d);
             }
             area -= Math.abs(interiorArea);
         }
@@ -268,7 +268,7 @@ public class AreaFunction extends FunctionExpressionImpl {
         double perimeter = 0.0d;
         int numberOfPoints = lineString.getNumPoints();
         Coordinate[] coordinates = lineString.getCoordinates();
-        for (int i = 0; i < (numberOfPoints - 1); i++) {
+        for (int i = 0; i < numberOfPoints - 1; i++) {
             perimeter += coordinates[i].distance(coordinates[i + 1]);
         }
         return perimeter;

@@ -98,7 +98,7 @@ public final class InternationalStringTest {
         assertEquals("CompareTo: ", 0, toTest.compareTo(toTest));
         assertEquals("Equals:", toTest, toTest);
         if (toTest instanceof CharSequence) {
-            assertEquals("CharSequence:", toTest.toString(), new StringBuilder((CharSequence) toTest).toString());
+            assertEquals("CharSequence:", toTest.toString(), toTest.toString());
         }
         /*
          * Tests serialization

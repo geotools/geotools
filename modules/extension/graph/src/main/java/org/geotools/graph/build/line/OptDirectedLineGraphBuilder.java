@@ -36,6 +36,6 @@ public class OptDirectedLineGraphBuilder extends OptDirectedGraphBuilder {
      */
     @Override
     public Node buildNode() {
-        return (new OptDirectedXYNode());
+        return new OptDirectedXYNode();
     }
 }

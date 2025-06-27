@@ -73,7 +73,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
                 assertEquals(e.getInNode().getID(), e.getID());
                 assertEquals(e.getOutNode().getID(), e.getID() + 1);
 
-                return (0);
+                return 0;
             };
             after.visitEdges(visitor);
 
@@ -88,10 +88,10 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
                     Edge in = n.getInEdges().get(0);
                     Edge out = n.getOutEdges().get(0);
 
-                    assertTrue((in.getID() == n.getID() - 1 && out.getID() == n.getID()));
+                    assertTrue(in.getID() == n.getID() - 1 && out.getID() == n.getID());
                 }
 
-                return (0);
+                return 0;
             };
             after.visitNodes(visitor);
 
@@ -177,7 +177,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
                             || parent.equals(parentid) && c1.equals(id + ".0") && c0.equals(id + ".1"));
                 }
 
-                return (0);
+                return 0;
             };
             after.visitNodes(visitor);
 
@@ -229,7 +229,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
                 else if (n.getID() == 1 || n.getID() == nnodes - 2) assertEquals(1, n.getDegree());
                 else assertEquals(2, n.getDegree());
 
-                return (0);
+                return 0;
             };
             after.visitNodes(visitor);
         } catch (Exception e) {
@@ -240,11 +240,11 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
 
     @Override
     protected GraphBuilder createBuilder() {
-        return (new BasicDirectedGraphBuilder());
+        return new BasicDirectedGraphBuilder();
     }
 
     @Override
     protected GraphBuilder createRebuilder() {
-        return (new BasicDirectedGraphBuilder());
+        return new BasicDirectedGraphBuilder();
     }
 }

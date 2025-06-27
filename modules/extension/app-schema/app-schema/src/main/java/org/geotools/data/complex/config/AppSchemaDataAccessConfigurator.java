@@ -150,7 +150,7 @@ public class AppSchemaDataAccessConfigurator {
     public static boolean isOrUnionReplacementEnabled() {
         final String orUnionReplacement =
                 AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_REPLACE_OR_UNION);
-        return (!"false".equalsIgnoreCase(orUnionReplacement));
+        return !"false".equalsIgnoreCase(orUnionReplacement);
     }
 
     /**
@@ -303,8 +303,8 @@ public class AppSchemaDataAccessConfigurator {
                 boolean usedDataAccess = false;
                 for (FeatureTypeMapping mapping : featureTypeMappings) {
                     if (mapping.getSource().getDataStore() == dataAccess
-                            || (mapping.getIndexSource() != null
-                                    && Objects.equals(mapping.getIndexSource().getDataStore(), dataAccess))) {
+                            || mapping.getIndexSource() != null
+                                    && Objects.equals(mapping.getIndexSource().getDataStore(), dataAccess)) {
                         usedDataAccess = true;
                         break;
                     }
@@ -520,14 +520,14 @@ public class AppSchemaDataAccessConfigurator {
 
             final boolean isMultiValued = attDto.isMultiple();
 
-            final Expression idExpression = (idXpath == null)
+            final Expression idExpression = idXpath == null
                     ? parseOgcCqlExpression(idExpr)
                     : new AttributeExpressionImpl(
                             idXpath, new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));
             // if the data source is a data access, the input XPath expression is the source
             // expression
 
-            final Expression sourceExpression = (inputXPath == null)
+            final Expression sourceExpression = inputXPath == null
                     ? parseOgcCqlExpression(sourceExpr)
                     : new AttributeExpressionImpl(
                             inputXPath, new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));

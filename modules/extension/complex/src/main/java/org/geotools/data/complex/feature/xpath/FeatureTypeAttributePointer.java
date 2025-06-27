@@ -127,9 +127,9 @@ public class FeatureTypeAttributePointer extends NodePointer {
                 if (nameSpace == null) nameSpace = getNamespaceResolver().getNamespaceURI("");
 
                 return new SingleFeatureTypeAttributeIterator(
-                        this, ((ComplexType) attType), Types.typeName(nameSpace, localName));
+                        this, (ComplexType) attType, Types.typeName(nameSpace, localName));
             } else {
-                return new FeatureTypeAttributeIterator(this, ((ComplexType) attType));
+                return new FeatureTypeAttributeIterator(this, (ComplexType) attType);
             }
         }
 
@@ -137,7 +137,7 @@ public class FeatureTypeAttributePointer extends NodePointer {
             NodeTypeTest nodeTypeTest = (NodeTypeTest) test;
 
             if (nodeTypeTest.getNodeType() == Compiler.NODE_TYPE_NODE) {
-                return new FeatureTypeAttributeIterator(this, ((ComplexType) attType));
+                return new FeatureTypeAttributeIterator(this, (ComplexType) attType);
             }
         }
 

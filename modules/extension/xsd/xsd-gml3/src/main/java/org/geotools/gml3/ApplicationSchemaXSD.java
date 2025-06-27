@@ -89,7 +89,7 @@ public class ApplicationSchemaXSD extends XSD {
 
                 String locationUri = null;
 
-                if ((null != schemaLocation) && !("".equals(schemaLocation))) {
+                if (null != schemaLocation && !"".equals(schemaLocation)) {
                     String schemaLocationFolder = schemaLocation;
                     int lastSlash = schemaLocation.lastIndexOf('/');
 
@@ -119,7 +119,7 @@ public class ApplicationSchemaXSD extends XSD {
                     }
                 }
 
-                if ((locationUri == null) && (location != null) && location.startsWith("http:")) {
+                if (locationUri == null && location != null && location.startsWith("http:")) {
                     locationUri = location;
                 }
 

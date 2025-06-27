@@ -58,6 +58,6 @@ public class FilterFunction_max_4 extends FunctionExpressionImpl {
                     "Filter Function problem for function max argument #1 - expected type int");
         }
 
-        return (Math.max((Integer) arg0, (Integer) arg1));
+        return Math.max((Integer) arg0, (Integer) arg1);
     }
 }

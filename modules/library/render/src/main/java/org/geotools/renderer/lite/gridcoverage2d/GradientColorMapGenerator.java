@@ -185,7 +185,7 @@ public class GradientColorMapGenerator {
             ColorMapEntry entry = new ColorMapEntryImpl();
             entry.setOpacity(filterFactory.literal(opacity));
             entry.setColor(filterFactory.literal(toHexColor(color)));
-            entry.setQuantity(filterFactory.literal(min + (Double.isNaN(range) ? 0 : (percentage * range))));
+            entry.setQuantity(filterFactory.literal(min + (Double.isNaN(range) ? 0 : percentage * range)));
             return entry;
         }
     }
@@ -293,7 +293,7 @@ public class GradientColorMapGenerator {
             String colorString = color.substring(5, color.length() - 1);
             String[] rgba = colorString.split("\\s*,\\s*");
             return new Color(Integer.parseInt(rgba[0]), Integer.parseInt(rgba[1]), Integer.parseInt(rgba[2]));
-        } else if ((color.startsWith("#") && color.length() == 7) || (color.startsWith("0x") && color.length() == 8)) {
+        } else if (color.startsWith("#") && color.length() == 7 || color.startsWith("0x") && color.length() == 8) {
             // Try to parse it as an HEX code
             return hex2Rgb(color);
         }

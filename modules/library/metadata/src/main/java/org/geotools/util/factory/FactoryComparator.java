@@ -76,7 +76,7 @@ final class FactoryComparator {
     public boolean equals(final Object object) {
         if (object instanceof FactoryComparator) {
             final FactoryComparator that = (FactoryComparator) object;
-            return (this.f1 == that.f1 && this.f2 == that.f2) || (this.f1 == that.f2 && this.f2 == that.f1);
+            return this.f1 == that.f1 && this.f2 == that.f2 || this.f1 == that.f2 && this.f2 == that.f1;
         }
         return false;
     }

@@ -99,22 +99,26 @@ public class QueryLab extends JFrame {
 
         // docs start file menu
         fileMenu.add(new SafeAction("Open shapefile...") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 connect(new ShapefileDataStoreFactory());
             }
         });
         fileMenu.add(new SafeAction("Connect to PostGIS database...") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 connect(new PostgisNGDataStoreFactory());
             }
         });
         fileMenu.add(new SafeAction("Connect to DataStore...") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 connect(null);
             }
         });
         fileMenu.addSeparator();
         fileMenu.add(new SafeAction("Exit") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 System.exit(0);
             }
@@ -123,22 +127,26 @@ public class QueryLab extends JFrame {
 
         // docs start data menu
         dataMenu.add(new SafeAction("Get features") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 filterFeatures();
             }
         });
         dataMenu.add(new SafeAction("Count") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 countFeatures();
             }
         });
         dataMenu.add(new SafeAction("Geometry") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 queryFeatures();
             }
         });
         // docs end data menu
         dataMenu.add(new SafeAction("Center") {
+            @Override
             public void action(ActionEvent e) throws Throwable {
                 centerFeatures();
             }

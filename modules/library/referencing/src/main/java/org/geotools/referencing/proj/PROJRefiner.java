@@ -42,7 +42,9 @@ class PROJRefiner {
 
     // A class to hold regex and its replacement
     private static class Refinement {
+        @SuppressWarnings("UnusedVariable")
         String regex;
+
         String replacement;
         Pattern pattern;
 
@@ -94,7 +96,7 @@ class PROJRefiner {
     }
 
     private void loadUnitRefinements() {
-        /**
+        /*
          * Unit refinements are applied to any input proj String during refinement. A typical example is converting
          * ft_survey_us to us-ft Another example is converting units=m*Value TO +units=m +to_meters=Value
          */

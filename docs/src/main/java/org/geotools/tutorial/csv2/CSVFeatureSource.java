@@ -39,12 +39,14 @@ public class CSVFeatureSource extends ContentFeatureSource {
 
     // getDataStore start
     /** Access parent CSVDataStore. */
+    @Override
     public CSVDataStore getDataStore() {
         return (CSVDataStore) super.getDataStore();
     }
     // getDataStore end
 
     // reader start
+    @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return new CSVFeatureReader(getState(), query);
     }
@@ -52,6 +54,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     // reader end
 
     // count start
+    @Override
     protected int getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
             CsvReader reader = getDataStore().read();
@@ -75,12 +78,14 @@ public class CSVFeatureSource extends ContentFeatureSource {
 
     // bounds start
     /** Implementation that generates the total bounds (many file formats record this information in the header) */
+    @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return null; // feature by feature scan required to establish bounds
     }
     // bounds end
 
     // schema start
+    @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();

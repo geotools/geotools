@@ -72,7 +72,7 @@ public class BasicFactories {
      */
     @SuppressWarnings("unchecked")
     public BasicFactories(final Map hints) {
-        this.hints = (hints != null) ? new Hints(hints) : null;
+        this.hints = hints != null ? new Hints(hints) : null;
     }
 
     /** Returns a default common factory instance. */

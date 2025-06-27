@@ -285,7 +285,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             CoordinateReferenceSystem matrixCRS = matrixSet.getCoordinateReferenceSystem();
             String matrixSRS = CRS.toSRS(matrixCRS);
             if (requestSRS.equals(matrixSRS)) { // matching SRS
-                if (links.containsKey((matrixSet.getIdentifier()))) { // and available for
+                if (links.containsKey(matrixSet.getIdentifier())) { // and available for
                     // this layer
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("selected matrix set:" + matrixSet.getIdentifier());
@@ -304,7 +304,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
                         + ") with any of the tile matrices!");
             }
             for (TileMatrixSet matrix : capabilities.getMatrixSets()) {
-                if (links.containsKey((matrix.getIdentifier()))) { // available for this layer
+                if (links.containsKey(matrix.getIdentifier())) { // available for this layer
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("defaulting matrix set:" + matrix.getIdentifier());
                     }

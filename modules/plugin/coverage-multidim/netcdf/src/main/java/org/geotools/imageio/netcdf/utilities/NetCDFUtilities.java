@@ -764,11 +764,11 @@ public class NetCDFUtilities {
                 return FileFormat.NONE;
             }
             // CDF signature at start of file
-            if ((b[0] == (byte) 0x43 && b[1] == (byte) 0x44 && b[2] == (byte) 0x46)) {
+            if (b[0] == (byte) 0x43 && b[1] == (byte) 0x44 && b[2] == (byte) 0x46) {
                 return FileFormat.CDF;
             }
             // HDF signature at start of file
-            if ((b[0] == (byte) 0x89 && b[1] == (byte) 0x48 && b[2] == (byte) 0x44)) {
+            if (b[0] == (byte) 0x89 && b[1] == (byte) 0x48 && b[2] == (byte) 0x44) {
                 return FileFormat.HDF5;
             }
             // Search for GRIB signature in first count bytes (up to GRIB_SEARCH_BYTES)
@@ -970,7 +970,7 @@ public class NetCDFUtilities {
      * @return The format for parsing values along the axis.
      */
     public static Format getAxisFormat(final AxisType type, final String prototype) {
-        if (!type.equals(AxisType.Time) && !(type.equals(AxisType.RunTime))) {
+        if (!type.equals(AxisType.Time) && !type.equals(AxisType.RunTime)) {
             return NumberFormat.getNumberInstance(Locale.ENGLISH);
         }
         char dateSeparator = '-'; // The separator used in ISO format.
@@ -1188,7 +1188,7 @@ public class NetCDFUtilities {
                         || dataType == DataType.SHORT
                         || dataType == DataType.LONG) {
                     Number noData = getNodata(var);
-                    if (noData != null && (noData.intValue() == min)) {
+                    if (noData != null && noData.intValue() == min) {
                         min++;
                     }
                 }
@@ -1239,7 +1239,7 @@ public class NetCDFUtilities {
 
     /** Return true in case that dataType refers to something which need to be handled as a Time (TimeStamp, Date) */
     public static final boolean isATime(String classDataType) {
-        return (classDataType.endsWith("Timestamp") || classDataType.endsWith("Date"));
+        return classDataType.endsWith("Timestamp") || classDataType.endsWith("Date");
     }
 
     /**

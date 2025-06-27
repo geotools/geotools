@@ -294,7 +294,7 @@ public class SLDStyleFactory {
                 sae.visit(symbolizer);
 
                 Set nameSet = sae.getAttributeNameSet();
-                boolean noAttributes = (nameSet == null) || (nameSet.isEmpty());
+                boolean noAttributes = nameSet == null || nameSet.isEmpty();
                 if (noAttributes && !sae.isUsingVolatileFunctions()) {
                     staticSymbolizers.put(key, style);
                 } else {
@@ -543,7 +543,7 @@ public class SLDStyleFactory {
                         }
                     } else {
                         if (icon.getIconHeight() != size && size != 0) {
-                            double scale = (size) / icon.getIconHeight();
+                            double scale = size / icon.getIconHeight();
                             icon = new RescaledIcon(icon, scale);
                         }
                         retval = new IconStyle2D(icon, feature);
@@ -849,7 +849,7 @@ public class SLDStyleFactory {
     // be needed during rendering
     private Style2D getGraphicStroke(
             Symbolizer symbolizer, org.geotools.api.style.Stroke stroke, Object feature, Range scaleRange) {
-        if ((stroke == null) || (stroke.getGraphicStroke() == null)) {
+        if (stroke == null || stroke.getGraphicStroke() == null) {
             return null;
         }
 
@@ -899,7 +899,7 @@ public class SLDStyleFactory {
         // now set up the stroke
         BasicStroke stroke2d;
 
-        if ((dashes != null) && (dashes.length > 0) && !allZeroes(dashes)) {
+        if (dashes != null && dashes.length > 0 && !allZeroes(dashes)) {
             stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT, dashes, dashOffset);
         } else {
             stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT);
@@ -1103,7 +1103,7 @@ public class SLDStyleFactory {
         // isometric
         // mark, simply calculate <code>height * aspectRatio</code>, where
         // height is given by getSize().
-        double shapeAspectRatio = (shapeBounds.getHeight() > 0 && shapeBounds.getWidth() > 0)
+        double shapeAspectRatio = shapeBounds.getHeight() > 0 && shapeBounds.getWidth() > 0
                 ? shapeBounds.getWidth() / shapeBounds.getHeight()
                 : 1.0;
 
@@ -1119,16 +1119,16 @@ public class SLDStyleFactory {
 
         // check if this will cause an overflow in the image creation GEOT-5878
         int repeat = 3;
-        if ((sizeX * repeat) * (sizeY * repeat) > Integer.MAX_VALUE) {
+        if (sizeX * repeat * (sizeY * repeat) > Integer.MAX_VALUE) {
             LOGGER.warning("Size of graphic (" + sizeX + " * " + sizeY + ") is too large");
             if (sizeX * sizeY > Integer.MAX_VALUE) {
                 LOGGER.severe("Size of graphic (" + sizeX + " * " + sizeY + ") is too large will not draw");
                 return new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
             } else {
                 LOGGER.fine("Size of metatiled graphic ("
-                        + (repeat * sizeX)
+                        + repeat * sizeX
                         + " * "
-                        + (repeat * sizeY)
+                        + repeat * sizeY
                         + ") is too large, not metatiling it");
                 // try without meta-tiling
                 repeat = 1;
@@ -1147,16 +1147,16 @@ public class SLDStyleFactory {
         for (int i = -1; i < 2; i++) {
             double marginX = margin[1] + 2 * margin[3];
             if (i == -1) {
-                marginX -= (margin[1] + margin[3]);
+                marginX -= margin[1] + margin[3];
             } else if (i == 1) {
-                marginX += (margin[1] + margin[3]);
+                marginX += margin[1] + margin[3];
             }
             for (int j = -1; j < 2; j++) {
                 double marginY = 2 * margin[0] + margin[2];
                 if (j == -1) {
-                    marginY -= (margin[0] + margin[2]);
+                    marginY -= margin[0] + margin[2];
                 } else if (j == 1) {
-                    marginY += (margin[0] + margin[2]);
+                    marginY += margin[0] + margin[2];
                 }
                 double tx = sizeX * (repeat / 2.0) + sizeX * i + marginX;
                 double ty = sizeY * (repeat / 2.0) + sizeY * j + marginY;
@@ -1528,20 +1528,19 @@ public class SLDStyleFactory {
 
             SymbolizerKey other = (SymbolizerKey) obj;
 
-            return (other.symbolizer == symbolizer) && (other.minScale == minScale) && (other.maxScale == maxScale);
+            return other.symbolizer == symbolizer && other.minScale == minScale && other.maxScale == maxScale;
         }
 
         /** @see java.lang.Object#hashCode() */
         @Override
         public int hashCode() {
-            return ((((17 + System.identityHashCode(symbolizer)) * 37) + doubleHash(minScale)) * 37)
-                    + doubleHash(maxScale);
+            return ((17 + System.identityHashCode(symbolizer)) * 37 + doubleHash(minScale)) * 37 + doubleHash(maxScale);
         }
 
         private int doubleHash(double value) {
             long bits = Double.doubleToLongBits(value);
 
-            return (int) (bits ^ (bits >>> 32));
+            return (int) (bits ^ bits >>> 32);
         }
     }
 

@@ -195,7 +195,7 @@ public interface DataAccessFactory extends Factory {
             }
             if (value == null) {
                 if (param.required) {
-                    return (false);
+                    return false;
                 }
             } else {
                 if (!param.type.isInstance(value)) {
@@ -421,7 +421,7 @@ public interface DataAccessFactory extends Factory {
                 return null;
             }
 
-            if (value instanceof String && (type != String.class)) {
+            if (value instanceof String && type != String.class) {
                 value = handle((String) value);
             }
 

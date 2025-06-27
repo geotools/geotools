@@ -112,7 +112,7 @@ public class URIs {
         try {
             // TODO: URLEncoder also encodes ( and ) which are considered safe chars,
             // see also http://www.w3.org/International/O-URL-code.html
-            return URLEncoder.encode(new String(value.getBytes(), valueEncoding), "UTF-8");
+            return URLEncoder.encode(new String(value.getBytes(StandardCharsets.UTF_8), valueEncoding), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("This is unexpected", e);
         }
@@ -122,7 +122,8 @@ public class URIs {
         try {
             // TODO: URLEncoder also encodes ( and ) which are considered safe chars,
             // see also http://www.w3.org/International/O-URL-code.html
-            return URLDecoder.decode(new String(value.getBytes(), StandardCharsets.UTF_8), "UTF-8");
+            return URLDecoder.decode(
+                    new String(value.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("This is unexpected", e);
         }

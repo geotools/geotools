@@ -59,7 +59,7 @@ public class SimpleContentComplexEMFBinding extends ComplexEMFBinding {
     public Element encode(Object object, Document document, Element value) throws Exception {
         EObject eobject = (EObject) object;
         if (EMFUtils.has(eobject, "value")) {
-            Object v = EMFUtils.get(((EObject) object), "value");
+            Object v = EMFUtils.get((EObject) object, "value");
             if (v != null) {
                 value.appendChild(document.createTextNode(v.toString()));
             }

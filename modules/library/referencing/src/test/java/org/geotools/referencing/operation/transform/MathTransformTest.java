@@ -450,7 +450,7 @@ public final class MathTransformTest {
 
     /** Count the number of non-linear steps in a {@link MathTransform}. */
     private static int countNonlinear(final MathTransform transform) {
-        if ((transform instanceof ExponentialTransform1D) || (transform instanceof LogarithmicTransform1D)) {
+        if (transform instanceof ExponentialTransform1D || transform instanceof LogarithmicTransform1D) {
             return 1;
         }
         if (transform instanceof ConcatenatedTransform) {
@@ -488,8 +488,8 @@ public final class MathTransformTest {
         if (transform.getTargetDimensions() != dim) {
             dim = 0;
         }
-        assertEquals("MathTransform1D", (dim == 1), (transform instanceof MathTransform1D));
-        assertEquals("MathTransform2D", (dim == 2), (transform instanceof MathTransform2D));
+        assertEquals("MathTransform1D", dim == 1, transform instanceof MathTransform1D);
+        assertEquals("MathTransform2D", dim == 2, transform instanceof MathTransform2D);
     }
 
     /**

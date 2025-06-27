@@ -15,6 +15,7 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
@@ -71,7 +72,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
-        this.csvWriter = new CSVWriter(new FileWriter(this.temp));
+        this.csvWriter = new CSVWriter(new FileWriter(this.temp, StandardCharsets.UTF_8));
         this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), false);
     }
     // docs end CSVFeatureWriter
@@ -127,12 +128,14 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
 
     // remove start
     /** Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively removing it. */
+    @Override
     public void remove() throws IOException {
         this.currentFeature = null; // just mark it done which means it will not get written out.
     }
     // remove end
 
     // write start
+    @Override
     public void write() throws IOException {
         if (this.currentFeature == null) {
             return; // current feature has been deleted

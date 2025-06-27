@@ -210,7 +210,7 @@ abstract class RangeCombiner {
                 // Right now, only PropertyIsEqualTo actually considers matchcase, all others
                 // behave as if they were case sensitive regardgless of the setting.
                 // TODO: change the logic to consider matchcase when
-                if (er.range != null && (!(op instanceof PropertyIsEqualTo) || (op.isMatchingCase()))) {
+                if (er.range != null && (!(op instanceof PropertyIsEqualTo) || op.isMatchingCase())) {
                     addRange(rangeMap, er.expression, new MultiRange<>(er.range));
                 } else {
                     otherFilters.add(f);
@@ -227,8 +227,8 @@ abstract class RangeCombiner {
 
                 // see if the sub-filter can be assimilated to a single range
                 if (!subCombiner.otherFilters.isEmpty()
-                        || (subCombiner.rangeMap.size() > 1
-                                && !subCombiner.getClass().equals(this.getClass()))) {
+                        || subCombiner.rangeMap.size() > 1
+                                && !subCombiner.getClass().equals(this.getClass())) {
                     otherFilters.add(f);
                 } else {
                     Map<Expression, MultiRange> combined = subCombiner.rangeMap;
@@ -252,7 +252,7 @@ abstract class RangeCombiner {
     private ExpressionRange getRange(BinaryComparisonOperator op) {
         Range range = null;
         Expression expression = null;
-        if (!(isStatic(op.getExpression1()))) {
+        if (!isStatic(op.getExpression1())) {
             expression = op.getExpression1();
             Class binding = getTypeIfComparable(expression);
             if (binding != null) {

@@ -120,6 +120,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
             if (isDelegate) {
                 String source = indexFeatureType.getGeometryDescriptor().getLocalName();
                 String target = getSchema().getGeometryDescriptor().getLocalName();
+                @SuppressWarnings("ArgumentSelectionDefectChecker") // REVISIT: are target,source swapped?
                 AttributeRenameVisitor renameVisitor = new AttributeRenameVisitor(target, source);
                 Filter renamedFilter = (Filter) originalFilter.accept(renameVisitor, null);
                 renamedFilter.accept(splitter, null);
@@ -364,11 +365,11 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
      */
     protected boolean isNotMandatoryIndexType(AttributeDescriptor descriptor) {
         String name = descriptor.getLocalName();
-        return (!VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT.equals(name)
+        return !VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT.equals(name)
                 && !VectorMosaicGranule.GRANULE_TYPE_NAME.equals(name)
                 && !VectorMosaicGranule.GRANULE_FILTER.equals(name)
                 && !(descriptor.getType() instanceof GeometryType)
-                && (!name.equals(VectorMosaicGranule.GRANULE_ID_FIELD)));
+                && !name.equals(VectorMosaicGranule.GRANULE_ID_FIELD);
     }
 
     /**

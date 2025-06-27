@@ -538,7 +538,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 final DefaultCoordinateSystemAxis candidate = axis1[j];
                 if (candidate != null) {
                     if (candidate.equals(direct, false, false)
-                            || (opposite != null && opposite.equals(candidate, false, false))) {
+                            || opposite != null && opposite.equals(candidate, false, false)) {
                         axis1[j] = null; // Flags as already compared.
                         continue next;
                     }

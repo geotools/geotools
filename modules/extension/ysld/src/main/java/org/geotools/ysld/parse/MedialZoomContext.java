@@ -23,4 +23,5 @@ package org.geotools.ysld.parse;
  * @author Kevin Smith, Boundless
  * @deprecated Use {@link org.geotools.styling.zoom.MedialZoomContext} instead.
  */
+@Deprecated
 public abstract class MedialZoomContext extends org.geotools.styling.zoom.MedialZoomContext {}

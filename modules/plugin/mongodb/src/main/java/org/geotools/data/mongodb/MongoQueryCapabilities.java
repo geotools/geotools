@@ -33,7 +33,7 @@ class MongoQueryCapabilities extends QueryCapabilities {
     }
 
     @Override
-    public boolean supportsSorting(SortBy[] sortAttributes) {
+    public boolean supportsSorting(SortBy... sortAttributes) {
         for (SortBy sort : sortAttributes) {
             if (!supportsPropertySorting(sort.getPropertyName())) return false;
         }
@@ -49,6 +49,6 @@ class MongoQueryCapabilities extends QueryCapabilities {
     private boolean supportsPropertySorting(PropertyName propertyName) {
         AttributeDescriptor descriptor = (AttributeDescriptor) propertyName.evaluate(source.getSchema());
         return descriptor != null
-                && !(Geometry.class.isAssignableFrom(descriptor.getType().getBinding()));
+                && !Geometry.class.isAssignableFrom(descriptor.getType().getBinding());
     }
 }

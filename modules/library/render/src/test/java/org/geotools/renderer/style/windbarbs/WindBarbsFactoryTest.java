@@ -51,7 +51,7 @@ public class WindBarbsFactoryTest extends Assert {
     /** WKT_WRITER */
     private static final WKTWriter WKT_WRITER = new WKTWriter(2);
 
-    class ShapePanel extends JPanel {
+    static class ShapePanel extends JPanel {
 
         private Shape shp;
 

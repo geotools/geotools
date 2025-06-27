@@ -222,7 +222,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
                 out.write(HanaUtil.toStringLiteral(filter.getDistanceUnits()));
             }
             out.write(")");
-            if ((filter instanceof DWithin) != swapped) {
+            if (filter instanceof DWithin != swapped) {
                 out.write(" = 1");
             } else {
                 out.write(" = 0");
@@ -243,7 +243,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
                 writeIntersectsRectArguments("ST_IntersectsRectPlanar", bbox);
             } else {
                 CoordinateReferenceSystem hcrs = getHorizontalCRS(filter.getBounds());
-                if ((hcrs instanceof GeographicCRS) && (currentSRID != null) && (currentSRID <= FLAT_OFFSET)) {
+                if (hcrs instanceof GeographicCRS && currentSRID != null && currentSRID <= FLAT_OFFSET) {
                     currentSRID += FLAT_OFFSET;
                     try {
                         String function = "ST_SRID(" + Integer.toString(currentSRID) + ").ST_IntersectsRect";

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -126,7 +127,7 @@ public class SimpleFeatureIO {
                     String strVal = (String) value;
                     List<String> values = new ArrayList<>();
                     // if bytes length is over the maximum allowed, calculate parts
-                    if (strVal.getBytes().length >= MAX_BYTES_LENGTH) {
+                    if (strVal.getBytes(StandardCharsets.UTF_8).length >= MAX_BYTES_LENGTH) {
                         values.addAll(split(strVal, 32767));
                     } else {
                         values.add(strVal);
@@ -170,7 +171,7 @@ public class SimpleFeatureIO {
         return ad.getUserData() != null
                 && ad.getUserData().containsKey(BIG_STRING)
                 && ad.getUserData().get(BIG_STRING) instanceof Boolean
-                && ((Boolean) ad.getUserData().get(BIG_STRING));
+                && (Boolean) ad.getUserData().get(BIG_STRING);
     }
 
     /** Reads the next feature form the file */
@@ -342,7 +343,7 @@ public class SimpleFeatureIO {
     /**
      * Straight OutStream implementation on top of a byte[], can reuse the one given, or allocate a larger one if needed
      */
-    private class ByteArrayOutStream implements OutStream {
+    private static class ByteArrayOutStream implements OutStream {
 
         byte[] buffer;
         int position;

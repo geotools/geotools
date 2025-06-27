@@ -145,7 +145,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         }
         // if preferred format is not supported default to first available on remote
         // if cap doc did not pass any formats, assume PNG
-        return (!formats.isEmpty()) ? formats.get(0) : "image/png";
+        return !formats.isEmpty() ? formats.get(0) : "image/png";
     }
 
     void addLayer(Layer layer) {
@@ -276,7 +276,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException {
         // try to get request params from the request
         Bounds requestedEnvelope = null;
         int width = -1;
@@ -514,7 +514,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
      *
      * @author ian
      */
-    private class LayerStyle {
+    private static class LayerStyle {
         private Layer layer;
 
         private String style = "";

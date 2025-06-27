@@ -55,6 +55,6 @@ public class FilterFunction_atan2 extends FunctionExpressionImpl {
                     "Filter Function problem for function atan2 argument #1 - expected type double");
         }
 
-        return (Math.atan2((Double) arg0, (Double) arg1));
+        return Math.atan2((Double) arg0, (Double) arg1);
     }
 }

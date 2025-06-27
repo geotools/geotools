@@ -21,7 +21,6 @@ import java.util.List;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
@@ -50,7 +49,7 @@ public class FeatureTypeImpl extends ComplexTypeImpl implements FeatureType {
         super(name, schema, true, isAbstract, restrictions, superType, description);
         this.defaultGeometry = defaultGeometry;
 
-        if (defaultGeometry != null && !(defaultGeometry.getType() instanceof GeometryType)) {
+        if (defaultGeometry != null && defaultGeometry.getType() == null) {
             throw new IllegalArgumentException("defaultGeometry must have a GeometryType");
         }
     }

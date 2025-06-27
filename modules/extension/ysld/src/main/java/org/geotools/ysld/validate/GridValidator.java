@@ -33,7 +33,7 @@ public class GridValidator extends YsldValidateHandler {
         }
     }
 
-    class ZoomContextNameValidator extends ScalarValidator {
+    static class ZoomContextNameValidator extends ScalarValidator {
 
         /** {@inheritDoc} */
         @Override

@@ -148,7 +148,7 @@ public class OperationFactoryTest {
                         "Expected Conversion but got "
                                 + Classes.getShortName(AbstractCoordinateOperation.getType(op))
                                 + ". ",
-                        (op instanceof Conversion));
+                        op instanceof Conversion);
             }
         }
         Assert.assertEquals("The coordinate operation should contains exactly 1 transformation", 1, count);

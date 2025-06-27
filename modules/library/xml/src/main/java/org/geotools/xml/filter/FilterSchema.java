@@ -476,16 +476,16 @@ public class FilterSchema implements Schema {
         /** @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String) */
         @Override
         public Element findChildElement(String name1) {
-            return (((getName() != null) && getName().equals(name1)) ? this : null);
+            return getName() != null && getName().equals(name1) ? this : null;
         }
 
         @Override
         public Element findChildElement(String localName, URI namespaceURI) {
-            return (((getName() != null)
+            return getName() != null
                             && getName().equals(localName)
-                            && getNamespace().equals(namespaceURI))
+                            && getNamespace().equals(namespaceURI)
                     ? this
-                    : null);
+                    : null;
         }
     }
 
@@ -559,7 +559,7 @@ public class FilterSchema implements Schema {
         /** @see org.geotools.xml.schema.Type#findChildElement(java.lang.String) */
         @Override
         public Element findChildElement(String name) {
-            return (getChild() == null) ? null : getChild().findChildElement(name);
+            return getChild() == null ? null : getChild().findChildElement(name);
         }
 
         /**

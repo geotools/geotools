@@ -381,7 +381,7 @@ public class Parser extends MathTransformParser {
         final double factor = element.pullDouble("factor");
         parseAuthority(element, name);
         element.close();
-        Unit<T> finalUnit = (factor != 1) ? unit.multiply(factor) : unit;
+        Unit<T> finalUnit = factor != 1 ? unit.multiply(factor) : unit;
         return Units.autoCorrect(finalUnit);
     }
 
@@ -659,7 +659,7 @@ public class Parser extends MathTransformParser {
         Ellipsoid ellipsoid = parseSpheroid(element);
         BursaWolfParameters toWGS84 = parseToWGS84(element); // Optional; may be null.
         Map<String, Object> properties = parseAuthority(element, name);
-        if (ALLOW_ORACLE_SYNTAX && (toWGS84 == null) && (element.peek() instanceof Number)) {
+        if (ALLOW_ORACLE_SYNTAX && toWGS84 == null && element.peek() instanceof Number) {
             toWGS84 = new BursaWolfParameters(DefaultGeodeticDatum.WGS84);
             toWGS84.dx = element.pullDouble("dx");
             toWGS84.dy = element.pullDouble("dy");

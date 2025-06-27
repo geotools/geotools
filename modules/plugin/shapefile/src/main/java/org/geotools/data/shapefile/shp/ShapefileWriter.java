@@ -192,7 +192,7 @@ public class ShapefileWriter implements Closeable {
         if (g == null) length = writeNullGeometry();
         else length = writeNonNullGeometry(g);
 
-        assert (length * 2 == (shapeBuffer.position() - lp) - 8);
+        assert length * 2 == shapeBuffer.position() - lp - 8;
 
         lp = shapeBuffer.position();
 
@@ -202,7 +202,7 @@ public class ShapefileWriter implements Closeable {
         offset += length + 4;
 
         drain();
-        assert (shapeBuffer.position() == 0);
+        assert shapeBuffer.position() == 0;
     }
 
     private int writeNonNullGeometry(Geometry g) {

@@ -97,7 +97,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         assertEquals(0, ge.getMinimum(1), 1d);
         assertEquals(300, ge.getSpan(0), 1d);
         assertEquals(300, ge.getSpan(0), 1d);
-        GridCoverage2D gc = wiReader.read(null);
+        GridCoverage2D gc = wiReader.read();
         ReferencedEnvelope envelope = gc.getEnvelope2D();
         assertEquals(0, envelope.getMinimum(0), 1d);
         assertEquals(0, envelope.getMinimum(1), 1d);
@@ -263,7 +263,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 64.0,
                 reader.getOriginalGridRange().getSpan(1) / 64.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        final Rectangle rasterArea = (GridEnvelope2D) reader.getOriginalGridRange();
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         GridGeometry2D gridGeometry = new GridGeometry2D(range, envelope);
@@ -287,7 +287,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         final GridCoverage2D coverage = wiReader.read(
                 policy != null ? new GeneralParameterValue[] {readGG, policy} : new GeneralParameterValue[] {readGG});
         assertNotNull(coverage);
-        assertNotNull((coverage).getRenderedImage());
+        assertNotNull(coverage.getRenderedImage());
 
         RenderedOp op = (RenderedOp) coverage.getRenderedImage();
         while (!op.getOperationName().equals("ImageRead"))
@@ -327,11 +327,11 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         assertTrue(layout.getTileWidth(null) > 0);
 
         // get the coverage
-        final GridCoverage2D coverage = wiReader.read(null);
+        final GridCoverage2D coverage = wiReader.read();
 
         // test the coverage
         assertNotNull(coverage);
-        assertNotNull((coverage).getRenderedImage());
+        assertNotNull(coverage.getRenderedImage());
         assertNotNull(coverage.getEnvelope());
 
         // log some information

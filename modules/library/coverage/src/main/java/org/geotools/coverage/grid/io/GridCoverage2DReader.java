@@ -216,7 +216,7 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * @throws IOException in case an error happen during read time.
      */
     @Override
-    GridCoverage2D read(GeneralParameterValue[] parameters) throws IOException;
+    GridCoverage2D read(GeneralParameterValue... parameters) throws IOException;
 
     /**
      * Retrieves the {@link GridEnvelope} associated to the specified coverageName for this
@@ -231,7 +231,7 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * @throws IllegalArgumentException if the specified coverageName does not exist
      */
     @Override
-    GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters) throws IOException;
+    GridCoverage2D read(String coverageName, GeneralParameterValue... parameters) throws IOException;
 
     /**
      * Return the {@link Set} of dynamic read parameters supported by this {@link GridCoverage2DReader} for the default

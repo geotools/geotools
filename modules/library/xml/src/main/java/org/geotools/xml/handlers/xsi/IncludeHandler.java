@@ -49,7 +49,7 @@ public class IncludeHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((schemaLocation == null) ? 1 : schemaLocation.hashCode())) + hashCodeOffset;
+        return LOCALNAME.hashCode() * (schemaLocation == null ? 1 : schemaLocation.hashCode()) + hashCodeOffset;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

@@ -25,6 +25,7 @@ import org.geotools.api.style.Rule;
  *
  * @deprecated Use {@link org.geotools.styling.zoom.ScaleRange} instead.
  */
+@Deprecated
 public class ScaleRange extends org.geotools.styling.zoom.ScaleRange {
     public ScaleRange(double minDenom, double maxDenom) {
         super(minDenom, maxDenom);

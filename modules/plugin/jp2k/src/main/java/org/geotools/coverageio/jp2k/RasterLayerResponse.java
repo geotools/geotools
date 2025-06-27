@@ -408,10 +408,10 @@ class RasterLayerResponse {
             final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
             final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
             final AffineTransform2D adjustments = new AffineTransform2D(
-                    (level.resolutionX / baseLevel.resolutionX) * baseReadParameters.getSourceXSubsampling(),
+                    level.resolutionX / baseLevel.resolutionX * baseReadParameters.getSourceXSubsampling(),
                     0,
                     0,
-                    (level.resolutionY / baseLevel.resolutionY) * baseReadParameters.getSourceYSubsampling(),
+                    level.resolutionY / baseLevel.resolutionY * baseReadParameters.getSourceYSubsampling(),
                     0,
                     0);
             g2w.concatenate(adjustments);

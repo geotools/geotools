@@ -27,7 +27,7 @@ public class JTSExamples {
         double distance = JTS.orthodromicDistance(start, end, crs);
         int totalmeters = (int) distance;
         int km = totalmeters / 1000;
-        int meters = totalmeters - (km * 1000);
+        int meters = totalmeters - km * 1000;
         float remaining_cm = (float) (distance - totalmeters) * 10000;
         remaining_cm = Math.round(remaining_cm);
         float cm = remaining_cm / 100;

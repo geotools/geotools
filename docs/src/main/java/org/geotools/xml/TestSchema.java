@@ -38,26 +38,32 @@ public class TestSchema {
 
     public static class TestFeature implements TestFeatureType {
 
+        @Override
         public String description() {
             return null;
         }
 
+        @Override
         public String name() {
             return null;
         }
 
+        @Override
         public Envelope boundedBy() {
             return null;
         }
 
+        @Override
         public Point pointProperty() {
             return null;
         }
 
+        @Override
         public int count() {
             return 0;
         }
 
+        @Override
         public Date date() {
             return null;
         }
@@ -68,6 +74,7 @@ public class TestSchema {
 
     public static class TestFeatureCollection implements TestFeatureCollectionType {
 
+        @Override
         public List<Feature> featureMemeber() {
             return null;
         }

@@ -245,7 +245,7 @@ public class AttributeMapping {
 
     @Override
     public int hashCode() {
-        return (37 * identifierExpression.hashCode() + 37 * sourceExpression.hashCode()) ^ targetXPath.hashCode();
+        return 37 * identifierExpression.hashCode() + 37 * sourceExpression.hashCode() ^ targetXPath.hashCode();
     }
 
     @Override

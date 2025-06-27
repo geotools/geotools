@@ -63,6 +63,6 @@ public class FilterFunction_IEEEremainder extends FunctionExpressionImpl {
                     "Filter Function problem for function IEEEremainder argument #1 - expected type double");
         }
 
-        return (Math.IEEEremainder((Double) arg0, (Double) arg1));
+        return Math.IEEEremainder((Double) arg0, (Double) arg1);
     }
 }

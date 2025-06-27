@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +122,7 @@ public abstract class TestSchema {
     public ElementInstance element(String text, QName original, String name) {
         try {
             File temp = File.createTempFile("name", "xsd");
-            try (FileWriter file = new FileWriter(temp);
+            try (FileWriter file = new FileWriter(temp, StandardCharsets.UTF_8);
                     BufferedWriter buff = new BufferedWriter(file);
                     PrintWriter print = new PrintWriter(buff)) {
                 print.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

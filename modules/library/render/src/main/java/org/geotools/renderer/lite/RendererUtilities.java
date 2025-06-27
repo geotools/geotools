@@ -286,9 +286,9 @@ public final class RendererUtilities {
         double scale = XAffineTransform.getScale(worldToScreen);
         // if it's geodetic, we're dealing with lat/lon unit measures
         if (crs instanceof GeographicCRS) {
-            return (OGC_DEGREE_TO_METERS * getDpi(hints)) / (scale * 0.0254);
+            return OGC_DEGREE_TO_METERS * getDpi(hints) / (scale * 0.0254);
         } else {
-            return (getDpi(hints)) / (scale * 0.0254);
+            return getDpi(hints) / (scale * 0.0254);
         }
     }
 
@@ -427,11 +427,11 @@ public final class RendererUtilities {
                     Geometry intersection = p.intersection(ls);
                     if (!intersection.isEmpty()) {
                         if (intersection instanceof LineString) {
-                            LineString ils = ((LineString) intersection);
+                            LineString ils = (LineString) intersection;
                             double d = getGeodeticSegmentLength(ils);
                             distance += d;
                         } else if (intersection instanceof GeometryCollection) {
-                            GeometryCollection igc = ((GeometryCollection) intersection);
+                            GeometryCollection igc = (GeometryCollection) intersection;
                             for (int k = 0; k < igc.getNumGeometries(); k++) {
                                 Geometry child = igc.getGeometryN(k);
                                 if (child instanceof LineString) {
@@ -466,12 +466,12 @@ public final class RendererUtilities {
     }
 
     protected static double rollLongitude(final double x) {
-        double rolled = x - (((int) (x + Math.signum(x) * 180)) / 360) * 360.0;
+        double rolled = x - ((int) (x + Math.signum(x) * 180) / 360) * 360.0;
         return rolled;
     }
 
     protected static double rollLatitude(final double x) {
-        double rolled = x - (((int) (x + Math.signum(x) * 90)) / 180) * 180.0;
+        double rolled = x - ((int) (x + Math.signum(x) * 90) / 180) * 180.0;
         return rolled;
     }
 
@@ -516,7 +516,7 @@ public final class RendererUtilities {
         final GridToEnvelopeMapper m = gridToEnvelopeMappers.get();
         m.setGridRange(new GridEnvelope2D(paintArea));
         m.setEnvelope(newEnvelope);
-        return (AffineTransform) (m.createTransform().inverse());
+        return (AffineTransform) m.createTransform().inverse();
     }
 
     /**
@@ -572,7 +572,7 @@ public final class RendererUtilities {
             final Icon icon = ((IconStyle2D) style).getIcon();
             return maxSize(icon.getIconWidth(), icon.getIconHeight());
         } else if (style instanceof LineStyle2D) {
-            LineStyle2D ls = ((LineStyle2D) style);
+            LineStyle2D ls = (LineStyle2D) style;
             double gsSize = getStyle2DSize(ls.getGraphicStroke());
             double strokeSize = 0;
             if (ls.getStroke() instanceof BasicStroke) {
@@ -622,7 +622,7 @@ public final class RendererUtilities {
         if (rCS != sourceCrs && sourceCrs != null) {
             // if the datastore is producing null CRS, we recode.
             // if the datastore's CRS != real CRS, then we recode
-            if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
+            if (rCS == null || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
                 // need to retag the features
                 try {
                     return new ForceCoordinateSystemFeatureResults((SimpleFeatureCollection) features, sourceCrs);

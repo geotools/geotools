@@ -27,7 +27,7 @@ public class CalcUtil {
      * @return the sum contained in the most appropriate number class
      */
     static Number sum(Number... numbers) {
-        Number newSum = (Number) getObject(numbers);
+        Number newSum = (Number) getObject((Object[]) numbers);
 
         if (newSum == null) {
             return null;
@@ -93,7 +93,7 @@ public class CalcUtil {
         both[0] = num1;
         both[1] = num2;
 
-        Number division = (Number) getObject(both);
+        Number division = (Number) getObject((Object[]) both);
 
         if (division == null) {
             return null;

@@ -971,7 +971,7 @@ public class MBFunction {
         JSONArray defaultStopValues = null;
         if (getDefault() != null) {
             Object def = getDefault();
-            if ((def instanceof JSONArray) && ((JSONArray) def).size() == dimensionCount) {
+            if (def instanceof JSONArray && ((JSONArray) def).size() == dimensionCount) {
                 defaultStopValues = (JSONArray) def;
             } else {
                 throw new MBFormatException(

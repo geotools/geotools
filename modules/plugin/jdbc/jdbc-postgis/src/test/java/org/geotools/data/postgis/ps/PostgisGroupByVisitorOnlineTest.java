@@ -40,7 +40,7 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
 
     @Test
     public void testAggregateOnNonEncodableFunction() throws Exception {
-        PostGISPSDialect sqlDialect = ((PostGISPSDialect) dataStore.getSQLDialect());
+        PostGISPSDialect sqlDialect = (PostGISPSDialect) dataStore.getSQLDialect();
         boolean oldValue = sqlDialect.isFunctionEncodingEnabled();
         sqlDialect.setFunctionEncodingEnabled(false);
         try {

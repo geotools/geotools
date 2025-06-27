@@ -38,7 +38,7 @@ public class FilterFunction_double2bool extends FunctionExpressionImpl {
         double arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = (getExpression(0).evaluate(feature, Double.class)).doubleValue();
+            arg0 = getExpression(0).evaluate(feature, Double.class).doubleValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

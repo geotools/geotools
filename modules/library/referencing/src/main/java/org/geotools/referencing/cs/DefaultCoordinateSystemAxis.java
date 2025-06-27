@@ -1116,7 +1116,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject implem
          * to compile for J2SE 1.5.
          */
         final Object type = ALIASES.get(name.trim().toLowerCase());
-        return (type != null) && (type == ALIASES.get(getName().getCode().trim().toLowerCase()));
+        return type != null && type == ALIASES.get(getName().getCode().trim().toLowerCase());
     }
 
     /**

@@ -68,8 +68,7 @@ public class ColorMapImpl implements org.geotools.api.style.ColorMap {
     /** @see org.geotools.styling.ColorMap#setType(int) */
     @Override
     public void setType(int type) {
-        if ((type < org.geotools.api.style.ColorMap.TYPE_RAMP)
-                || (type > org.geotools.api.style.ColorMap.TYPE_VALUES)) {
+        if (type < org.geotools.api.style.ColorMap.TYPE_RAMP || type > org.geotools.api.style.ColorMap.TYPE_VALUES) {
             throw new IllegalArgumentException();
         }
         this.type = type;
@@ -106,15 +105,15 @@ public class ColorMapImpl implements org.geotools.api.style.ColorMap {
         int result = 0;
 
         if (function != null) {
-            result = (PRIME * result) + function.hashCode();
+            result = PRIME * result + function.hashCode();
         }
 
         if (list != null) {
-            result = (PRIME * result) + list.hashCode();
+            result = PRIME * result + list.hashCode();
         }
 
-        result = (PRIME * result) + type;
-        result = (PRIME * result) + (extendedColors ? 1 : 0);
+        result = PRIME * result + type;
+        result = PRIME * result + (extendedColors ? 1 : 0);
 
         return result;
     }

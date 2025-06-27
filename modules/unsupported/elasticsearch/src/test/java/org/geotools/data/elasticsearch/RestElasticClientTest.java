@@ -34,6 +34,7 @@ import com.google.common.collect.ImmutableSet;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +103,7 @@ public class RestElasticClientTest {
         proxyClient = new RestElasticClient(mockRestClient, mockProxyRestClient, true, (Integer)
                 ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
 
-        InputStream inputStream = new ByteArrayInputStream("{}".getBytes());
+        InputStream inputStream = new ByteArrayInputStream("{}".getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
     }
 
@@ -123,7 +124,7 @@ public class RestElasticClientTest {
     @Test
     public void testVersionWithError() throws IOException {
         String content = "{}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         final RequestMatcher matcher = new RequestMatcher("GET", "/", null, null);
         when(mockRestClient.performRequest(argThat(matcher))).thenThrow(IOException.class);
@@ -136,7 +137,7 @@ public class RestElasticClientTest {
     public void testGetTypes() throws IOException {
         String content =
                 "{\"status_s\": {\"mappings\": " + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         when(mockRestClient.performRequest((argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
@@ -149,7 +150,7 @@ public class RestElasticClientTest {
     public void testLegacyGetTypes() throws IOException {
         String content = "{\"status_s\": {\"mappings\": "
                 + "{\"active\": {\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         mockVersion("6.0.0");
         when(mockRestClient.performRequest((argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
@@ -164,7 +165,7 @@ public class RestElasticClientTest {
     public void testGetMapping() throws IOException {
         String content =
                 "{\"status_s\": {\"mappings\":" + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         when(mockRestClient.performRequest((argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
@@ -177,7 +178,7 @@ public class RestElasticClientTest {
     public void testLegacyGetMapping() throws IOException {
         String content = "{\"status_s\": {\"mappings\": {\"active\": "
                 + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         mockVersion("6.0.0");
         when(mockRestClient.performRequest((argThat((req) -> "/status_s/_mapping/active".equals(req.getEndpoint())))))
@@ -191,7 +192,7 @@ public class RestElasticClientTest {
     public void testGetMappingWithMissingIndexAndNoAlias() throws IOException {
         String content =
                 "{\"status_s3\": {\"mappings\": " + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         when(mockRestClient.performRequest((argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
@@ -205,7 +206,7 @@ public class RestElasticClientTest {
     @Test
     public void testGetMappingMissing() throws IOException {
         String content = "{}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         when(mockRestClient.performRequest((argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
@@ -219,7 +220,7 @@ public class RestElasticClientTest {
     public void testGetMappingWithExtra() throws IOException {
         String content =
                 "{\"status_s\": {\"mappings\":" + "{\"properties\": {\"status_s\": {\"type\": \"keyword\"}}}}}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         when(mockRestClient.performRequest((argThat((req) -> "/status_s/_mapping".equals(req.getEndpoint())))))
                 .thenReturn(mockResponse);
@@ -441,12 +442,12 @@ public class RestElasticClientTest {
         String content =
                 "{\"hits\": {\"total\": 10, \"max_score\": 0.8, \"hits\": [{\"_index\": \"index_name\"}, {}]}}";
         final RequestMatcher matcher = new RequestMatcher("/status_s/_search", "{}");
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         when(mockRestClient.performRequest(argThat(matcher))).thenReturn(mockResponse);
 
         final ElasticResponse response = client.search("status_s", "active", new ElasticRequest());
-        assertEquals(10, response.getResults().getTotal().intValue());
+        assertEquals(Long.valueOf(10), response.getResults().getTotal());
         assertEquals("index_name", response.getHits().get(0).getIndex());
         assertEquals(0.8f, response.getResults().getMaxScore(), 1e-9);
     }
@@ -456,12 +457,12 @@ public class RestElasticClientTest {
         String content =
                 "{\"hits\": {\"total\": 10, \"max_score\": 0.8, \"hits\": [{\"_index\": \"index_name\"}, {}]}}";
         final RequestMatcher matcher = new RequestMatcher("POST", "/status_s/_search", "{}", "runAsTest");
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         when(mockProxyRestClient.performRequest(argThat(matcher))).thenReturn(mockResponse);
 
         final ElasticResponse response = proxyClient.search("status_s", "active", new ElasticRequest());
-        assertEquals(10, response.getResults().getTotal().intValue());
+        assertEquals(Long.valueOf(10), response.getResults().getTotal());
         assertEquals("index_name", response.getHits().get(0).getIndex());
         assertEquals(0.8f, response.getResults().getMaxScore(), 1e-9);
     }
@@ -677,7 +678,7 @@ public class RestElasticClientTest {
         when(mockStatusLine.getStatusCode()).thenReturn(200);
 
         String content = "{\"version\":{\"number\":\"" + version + "\"}}";
-        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         when(mockEntity.getContent()).thenReturn(inputStream);
         final RequestMatcher matcher = new RequestMatcher("GET", "/", null, null);
         when(mockRestClient.performRequest(argThat(matcher))).thenReturn(mockResponse);
@@ -691,7 +692,7 @@ public class RestElasticClientTest {
         return data;
     }
 
-    class RunAsHeaderMatcher implements ArgumentMatcher<BasicHeader> {
+    static class RunAsHeaderMatcher implements ArgumentMatcher<BasicHeader> {
 
         private static final String RUN_AS_HEADER_FIELD = "es-security-runas-user";
 
@@ -707,7 +708,7 @@ public class RestElasticClientTest {
         }
     }
 
-    class JsonByteArrayEntityMatcher implements ArgumentMatcher<ByteArrayEntity> {
+    static class JsonByteArrayEntityMatcher implements ArgumentMatcher<ByteArrayEntity> {
 
         private Map<String, Object> data;
 
@@ -729,7 +730,7 @@ public class RestElasticClientTest {
         }
     }
 
-    class RequestMatcher implements ArgumentMatcher<Request> {
+    static class RequestMatcher implements ArgumentMatcher<Request> {
 
         private final String method;
 
@@ -746,7 +747,8 @@ public class RestElasticClientTest {
         RequestMatcher(String method, String endpoint, String data, String user) throws IOException {
             this.method = method;
             this.endpoint = endpoint;
-            this.entityMatcher = data != null ? new JsonByteArrayEntityMatcher(data.getBytes()) : null;
+            this.entityMatcher =
+                    data != null ? new JsonByteArrayEntityMatcher(data.getBytes(StandardCharsets.UTF_8)) : null;
             this.headerMatcher = user != null ? new RunAsHeaderMatcher(user) : null;
         }
 

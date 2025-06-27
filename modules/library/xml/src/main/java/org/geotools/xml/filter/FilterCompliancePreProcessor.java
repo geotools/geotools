@@ -138,7 +138,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     private boolean requiresPostProcessing = false;
 
     public FilterCompliancePreProcessor(Integer complianceLevel) {
-        if ((complianceLevel != LOW) && (complianceLevel != MEDIUM) && (complianceLevel != HIGH)) {
+        if (complianceLevel != LOW && complianceLevel != MEDIUM && complianceLevel != HIGH) {
             throw new IllegalArgumentException(
                     "compliance level must be one of: XMLHandlerHints.VALUE_FILTER_COMPLIANCE_LOOSE "
                             + "XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM or "
@@ -538,7 +538,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             return buildNotFilter(startOfFilterStack);
         }
 
-        if (current.size() == (startOfFilterStack + 1)) {
+        if (current.size() == startOfFilterStack + 1) {
             return current.pop();
         }
 
@@ -641,7 +641,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     }
 
     private Data buildNotFilter(int startOfFilterStack) {
-        if (current.size() > (startOfFilterStack + 1)) {
+        if (current.size() > startOfFilterStack + 1) {
             throw new UnsupportedFilterException("A not filter cannot have more than one filter");
         } else {
             Data tmp = current.pop();

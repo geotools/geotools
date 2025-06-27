@@ -93,7 +93,7 @@ public class FileSystemNode extends Node {
             }
 
             buffer.goTo(offset);
-            for (int i = 0, ii = subNodes.size(); i < ((pos + 1) - ii); i++) {
+            for (int i = 0, ii = subNodes.size(); i < pos + 1 - ii; i++) {
                 subNode = readNode(pos, this, buffer);
                 this.addSubNode(subNode);
             }

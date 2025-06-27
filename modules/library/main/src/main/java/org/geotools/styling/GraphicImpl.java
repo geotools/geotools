@@ -308,19 +308,19 @@ public class GraphicImpl
         int result = 0;
 
         if (graphics != null) {
-            result = (PRIME * result) + graphics.hashCode();
+            result = PRIME * result + graphics.hashCode();
         }
 
         if (rotation != null) {
-            result = (PRIME * result) + rotation.hashCode();
+            result = PRIME * result + rotation.hashCode();
         }
 
         if (size != null) {
-            result = (PRIME * result) + size.hashCode();
+            result = PRIME * result + size.hashCode();
         }
 
         if (opacity != null) {
-            result = (PRIME * result) + opacity.hashCode();
+            result = PRIME * result + opacity.hashCode();
         }
 
         //        if (gap != null) {

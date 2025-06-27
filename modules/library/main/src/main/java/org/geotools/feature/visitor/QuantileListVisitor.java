@@ -68,7 +68,7 @@ public class QuantileListVisitor implements FeatureCalc {
         }
 
         // calculate number of items to put into each of the larger bins
-        int binPop = (int) (Math.ceil((double) count / bins));
+        int binPop = (int) Math.ceil((double) count / bins);
         // determine index of bin where the next bin has one less item
         int lastBigBin = count % bins;
         if (lastBigBin == 0) lastBigBin = bins;

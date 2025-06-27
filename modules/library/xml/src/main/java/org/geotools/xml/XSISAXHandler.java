@@ -127,7 +127,7 @@ public class XSISAXHandler extends DefaultHandler {
         }
         XSIElementHandler peek = null;
         try {
-            if ((text != null) && !"".equals(text.trim())) {
+            if (text != null && !"".equals(text.trim())) {
                 peek = handlers.peek();
                 peek.characters(text);
             }

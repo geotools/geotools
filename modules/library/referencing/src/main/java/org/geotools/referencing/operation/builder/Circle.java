@@ -115,7 +115,7 @@ class Circle {
      * @return True if the circle contais p, False if not.
      */
     protected boolean contains(Position p) {
-        if (center.distance(new Position2D(p)) < (this.radius - tolerance)) {
+        if (center.distance(new Position2D(p)) < this.radius - tolerance) {
             return true;
         } else {
             return false;

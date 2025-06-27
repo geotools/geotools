@@ -28,8 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,7 +89,7 @@ import org.xml.sax.EntityResolver;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  */
-@SuppressWarnings("ErrorProne.BanJNDI")
+@SuppressWarnings("BanJNDI")
 public final class GeoTools {
 
     /** Properties about this geotools build */
@@ -105,11 +104,9 @@ public final class GeoTools {
         InputStream stream = GeoTools.class.getResourceAsStream(resource);
         if (stream != null) {
             try (stream) {
-                try {
-                    props.load(stream);
-                } catch (IOException ignore) {
-                }
+                props.load(stream);
             } catch (IOException ignore) {
+                Logging.getLogger(GeoTools.class).log(Level.FINE, "Error loading resource " + resource, ignore);
             }
         }
 
@@ -620,6 +617,7 @@ public final class GeoTools {
                     manifest.read(content);
                 }
             } catch (IOException ignore) {
+                Logging.getLogger(GeoTools.class).log(Level.FINE, "Error loading manifest " + manifestLocation, ignore);
             }
         }
         if (manifest.getMainAttributes().isEmpty()) {
@@ -629,8 +627,9 @@ public final class GeoTools {
                 String generated = "Manifest-Version: 1.0\n" + "Project-Version: " + getVersion() + "\n";
 
                 try {
-                    manifest.read(new ByteArrayInputStream(generated.getBytes()));
+                    manifest.read(new ByteArrayInputStream(generated.getBytes(StandardCharsets.UTF_8)));
                 } catch (IOException e) {
+                    Logging.getLogger(GeoTools.class).log(Level.FINE, "Error reading manifest " + manifestLocation, e);
                 }
             }
         }
@@ -759,7 +758,7 @@ public final class GeoTools {
             for (String factoryName : CANDIDATES) {
                 try {
                     Logging.ALL.setLoggerFactory(factoryName);
-                    if (factoryName == "org.geotools.util.logging.CommonsLoggerFactory") {
+                    if ("org.geotools.util.logging.CommonsLoggerFactory".equals(factoryName)) {
                         // check if delegating to jdk14logger
                         LoggerFactory factory = Logging.ALL.getLoggerFactory();
                         if (factory != null) {
@@ -1045,16 +1044,13 @@ public final class GeoTools {
                     .append(contextFactory == null ? "" : (String) contextFactory)
                     .append("\n");
 
-            Enumeration<URL> urls = AccessController.doPrivileged(new PrivilegedAction<>() {
-                @Override
-                public Enumeration<URL> run() {
-                    try {
-                        return ClassLoader.getSystemResources(propFileName);
-                    } catch (IOException e) {
-                        return null;
-                    }
-                }
-            });
+            Enumeration<URL> urls;
+            try {
+                urls = ClassLoader.getSystemResources(propFileName);
+            } catch (IOException e1) {
+                urls = null;
+            }
+
             if (urls != null) {
                 sb.append("Or from these property files:\n");
                 while (urls.hasMoreElements()) {
@@ -1063,25 +1059,15 @@ public final class GeoTools {
                 sb.append("\n");
             }
 
-            String javaHome = AccessController.doPrivileged(new PrivilegedAction<>() {
-                @Override
-                public String run() {
-                    try {
-                        String javahome = System.getProperty("java.home");
-                        if (javahome == null) {
-                            return null;
-                        }
-                        String pathname =
-                                javahome + java.io.File.separator + "lib" + java.io.File.separator + propFileName;
-                        return pathname;
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }
-            });
+            String javaHome = System.getProperty("java.home");
+            String pathname = null;
             if (javaHome != null) {
+                pathname = javaHome + java.io.File.separator + "lib" + java.io.File.separator + propFileName;
+            }
+
+            if (pathname != null) {
                 sb.append("Or from a file specified by system property java.home:\n")
-                        .append(javaHome)
+                        .append(pathname)
                         .append("\n");
             }
             LOGGER.log(Level.WARNING, sb.toString());
@@ -1135,7 +1121,7 @@ public final class GeoTools {
      */
     @Deprecated
     public static String fixName(final Context context, final String name) {
-        return (context != null) ? fixName(context, name, null) : name;
+        return context != null ? fixName(context, name, null) : name;
     }
 
     /**
@@ -1146,6 +1132,7 @@ public final class GeoTools {
      *     but does not put any object in the contex, the downstream * application should do it if necessary instead.
      */
     @Deprecated
+    @SuppressWarnings("UnusedVariable") // hints
     private static String fixName(Context context, final String name, final Hints hints) {
         String fixed = null;
         if (name != null) {

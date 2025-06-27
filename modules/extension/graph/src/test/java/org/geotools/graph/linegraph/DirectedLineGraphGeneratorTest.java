@@ -67,14 +67,14 @@ public class DirectedLineGraphGeneratorTest {
             Coordinate c = (Coordinate) node.getObject();
 
             if (node.getDegree() == 1) {
-                Assert.assertTrue((node.getID() == 0 && node.getInDegree() == 0 && node.getOutDegree() == 1)
-                        || (node.getID() == n && node.getInDegree() == 1 && node.getOutDegree() == 0));
+                Assert.assertTrue(node.getID() == 0 && node.getInDegree() == 0 && node.getOutDegree() == 1
+                        || node.getID() == n && node.getInDegree() == 1 && node.getOutDegree() == 0);
             } else {
                 Assert.assertTrue(node.getInDegree() == 1 && node.getOutDegree() == 1);
             }
 
             Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
-            return (0);
+            return 0;
         };
         built.visitNodes(visitor);
 
@@ -87,7 +87,7 @@ public class DirectedLineGraphGeneratorTest {
 
             Assert.assertTrue(ls.p0.equals(c0) && ls.p1.equals(c1));
 
-            return (0);
+            return 0;
         };
     }
 
@@ -120,10 +120,10 @@ public class DirectedLineGraphGeneratorTest {
     }
 
     protected BasicDirectedLineGraphGenerator createGenerator() {
-        return (new BasicDirectedLineGraphGenerator());
+        return new BasicDirectedLineGraphGenerator();
     }
 
     protected BasicDirectedLineGraphGenerator generator() {
-        return (m_gen);
+        return m_gen;
     }
 }

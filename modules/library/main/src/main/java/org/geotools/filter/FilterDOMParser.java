@@ -119,7 +119,7 @@ public final class FilterDOMParser {
 
         // NodeList children = root.getChildNodes();
         // LOGGER.finest("children "+children);
-        if ((root == null) || (root.getNodeType() != Node.ELEMENT_NODE)) {
+        if (root == null || root.getNodeType() != Node.ELEMENT_NODE) {
             LOGGER.finest("bad node input ");
 
             return null;
@@ -190,7 +190,7 @@ public final class FilterDOMParser {
             for (int i = 0; i < map.getLength(); i++) {
                 Node kid = map.item(i);
 
-                if ((kid == null) || (kid.getNodeType() != Node.ELEMENT_NODE)) {
+                if (kid == null || kid.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
 
@@ -305,11 +305,11 @@ public final class FilterDOMParser {
         for (int i = 0; i < map.getLength(); i++) {
             Node kid = map.item(i);
 
-            if ((kid == null) || (kid.getNodeType() != Node.ELEMENT_NODE)) {
+            if (kid == null || kid.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
 
-            String res = (kid.getLocalName() != null) ? kid.getLocalName() : kid.getNodeName();
+            String res = kid.getLocalName() != null ? kid.getLocalName() : kid.getNodeName();
             if (res.indexOf(':') != -1) {
                 // the DOM parser wasnt properly set to handle namespaces...
                 res = res.substring(res.indexOf(':') + 1);
@@ -330,7 +330,7 @@ public final class FilterDOMParser {
             Node kid = kids.item(i);
 
             // if(kid == null || kid.getNodeType() != Node.ELEMENT_NODE) continue;
-            String res = (kid.getLocalName() != null) ? kid.getLocalName() : kid.getNodeName();
+            String res = kid.getLocalName() != null ? kid.getLocalName() : kid.getNodeName();
             if (res.indexOf(':') != -1) {
                 // the DOM parser wasnt properly set to handle namespaces...
                 res = res.substring(res.indexOf(':') + 1);
@@ -348,7 +348,7 @@ public final class FilterDOMParser {
             }
         }
 
-        if (!((wildcard == null) || (single == null) || (escape == null) || (pattern == null))) {
+        if (!(wildcard == null || single == null || escape == null || pattern == null)) {
             // LikeFilter lfilter = FILTER_FACT.createLikeFilter();
             LOGGER.finer("Building like filter "
                     + value.toString()
@@ -399,7 +399,7 @@ public final class FilterDOMParser {
         for (int i = 0; i < kids.getLength(); i++) {
             Node kid = kids.item(i);
 
-            String kidName = (kid.getLocalName() != null) ? kid.getLocalName() : kid.getNodeName();
+            String kidName = kid.getLocalName() != null ? kid.getLocalName() : kid.getNodeName();
             if (kidName.indexOf(':') != -1) {
                 // the DOM parser wasnt properly set to handle namespaces...
                 kidName = kidName.substring(kidName.indexOf(':') + 1);
@@ -477,7 +477,7 @@ public final class FilterDOMParser {
 
             LOGGER.finest("add right value -> " + value + "<-");
 
-            String valueName = (value.getLocalName() != null) ? value.getLocalName() : value.getNodeName();
+            String valueName = value.getLocalName() != null ? value.getLocalName() : value.getNodeName();
             if (valueName.indexOf(':') != -1) {
                 // the DOM parser was not properly set to handle namespaces...
                 valueName = valueName.substring(valueName.indexOf(':') + 1);

@@ -75,7 +75,7 @@ public class FileDataStoreFinder {
                     return fac.createDataStore(url);
                 }
             } catch (Throwable t) {
-                /** The logger for the filter module. */
+                /* The logger for the filter module. */
                 LOGGER.log(Level.WARNING, "Could not aquire " + fac.getDescription() + ":" + t, t);
 
                 // Protect against DataStores that don't carefully
@@ -114,7 +114,7 @@ public class FileDataStoreFinder {
                     }
                 }
             } catch (Throwable t) {
-                /** The logger for the filter module. */
+                /* The logger for the filter module. */
                 LOGGER.log(Level.WARNING, "Could not aquire " + fac.getDescription() + ":" + t, t);
 
                 // Protect against DataStores that don't carefully
@@ -154,7 +154,7 @@ public class FileDataStoreFinder {
                     extentions.add(fileExtention);
                 }
             } catch (Throwable t) {
-                /** The logger for the filter module. */
+                /* The logger for the filter module. */
                 LOGGER.log(Level.WARNING, "Could not aquire " + fac.getDescription() + ":" + t, t);
 
                 // Protect against DataStores that don't carefully

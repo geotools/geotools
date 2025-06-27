@@ -72,7 +72,7 @@ public class LineGraphGeneratorTest {
             }
 
             Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
-            return (0);
+            return 0;
         };
         built.visitNodes(visitor);
 
@@ -82,7 +82,7 @@ public class LineGraphGeneratorTest {
 
             Assert.assertTrue(line.p1.x == line.p0.x + 1 && line.p1.y == line.p0.y + 1);
 
-            return (0);
+            return 0;
         };
         built.visitEdges(visitor);
     }
@@ -119,10 +119,10 @@ public class LineGraphGeneratorTest {
     }
 
     protected BasicLineGraphGenerator createGenerator() {
-        return (new BasicLineGraphGenerator());
+        return new BasicLineGraphGenerator();
     }
 
     protected BasicLineGraphGenerator generator() {
-        return (m_gen);
+        return m_gen;
     }
 }

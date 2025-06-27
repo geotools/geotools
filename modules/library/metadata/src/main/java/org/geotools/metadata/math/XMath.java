@@ -81,7 +81,7 @@ public final class XMath {
      * @param x The exponent.
      * @return 10 raised to the given exponent.
      */
-    public static strictfp double pow10(final int x) {
+    public static double pow10(final int x) {
         if (x >= 0) {
             if (x < POW10.length) {
                 return POW10[x];
@@ -196,7 +196,7 @@ public final class XMath {
     public static double roundIfAlmostInteger(final double value, int maxULP) {
         final double target = Math.rint(value);
         if (value != target) {
-            final boolean pos = (value < target);
+            final boolean pos = value < target;
             double candidate = value;
             while (--maxULP >= 0) {
                 candidate = pos ? next(candidate) : previous(candidate);
@@ -254,7 +254,7 @@ public final class XMath {
             upper = asText.length() - 1;
             power = 0;
         }
-        while ((asText.charAt(upper)) == '0') {
+        while (asText.charAt(upper) == '0') {
             upper--;
         }
         return Math.max(upper - asText.indexOf('.') - power, 0);

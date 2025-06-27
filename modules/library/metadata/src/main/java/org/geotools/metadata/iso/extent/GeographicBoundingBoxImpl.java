@@ -127,6 +127,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements G
      * @throws TransformException if the envelope can't be transformed.
      * @since 2.2
      */
+    @SuppressWarnings("StaticAssignmentInConstructor") // Lazy initialization pattern
     public GeographicBoundingBoxImpl(final Bounds envelope) throws TransformException {
         super(true);
         if (constructor == null) {
@@ -425,7 +426,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements G
             return super.hashCode();
         }
         final Boolean inclusion = getInclusion();
-        int code = (inclusion != null) ? inclusion.hashCode() : 0;
+        int code = inclusion != null ? inclusion.hashCode() : 0;
         code += hashCode(southBoundLatitude);
         code += hashCode(northBoundLatitude);
         code += hashCode(eastBoundLongitude);

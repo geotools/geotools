@@ -44,13 +44,13 @@ public class DirectedBreadthFirstTopologicalIterator extends AbstractGraphIterat
 
             if (node.getInDegree() == 0) m_queue.add(node);
 
-            return (0);
+            return 0;
         });
     }
 
     @Override
     public Graphable next(GraphTraversal traversal) {
-        return (!m_queue.isEmpty() ? m_queue.remove() : null);
+        return !m_queue.isEmpty() ? m_queue.remove() : null;
     }
 
     @Override
@@ -73,6 +73,6 @@ public class DirectedBreadthFirstTopologicalIterator extends AbstractGraphIterat
     }
 
     protected Queue<Graphable> buildQueue(Graph graph) {
-        return (new ArrayDeque<>(graph.getNodes().size()));
+        return new ArrayDeque<>(graph.getNodes().size());
     }
 }

@@ -310,7 +310,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
         for (Coordinate p2 : pt2) {
             double z = coordZMap.get(p2);
-            boolean isEqualZ = p2.getZ() == z || (Double.isNaN(p2.getZ()) && Double.isNaN(z));
+            boolean isEqualZ = p2.getZ() == z || Double.isNaN(p2.getZ()) && Double.isNaN(z);
             if (!isEqualZ) return false;
         }
 

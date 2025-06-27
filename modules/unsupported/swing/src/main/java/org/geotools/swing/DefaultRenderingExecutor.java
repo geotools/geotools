@@ -263,7 +263,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     }
 
     private void pollTaskResult() {
-        for (TaskInfo info : currentTasks) {
+        for (TaskInfo info : List.copyOf(currentTasks)) {
             if (!info.polledDone && info.future.isDone()) {
                 info.polledDone = true;
 

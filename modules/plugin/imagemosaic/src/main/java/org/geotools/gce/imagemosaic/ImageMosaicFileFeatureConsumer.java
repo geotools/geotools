@@ -161,13 +161,13 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                         file,
                         false,
                         "Exception occurred while processing file " + file + ": " + e.getMessage(),
-                        ((elementIndex * 100.0) / numElements));
+                        elementIndex * 100.0 / numElements);
                 eventHandler.fireException(e);
                 return;
             }
             validFileName = FilenameUtils.getName(validFileName);
             eventHandler.fireEvent(
-                    Level.INFO, "Now indexing file " + validFileName, ((elementIndex * 100.0) / numElements));
+                    Level.INFO, "Now indexing file " + validFileName, elementIndex * 100.0 / numElements);
             GridCoverage2DReader coverageReader = null;
             try {
                 // Getting a coverage reader for this coverage.
@@ -184,14 +184,14 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                         format = GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
                     }
                 }
-                if ((format instanceof UnknownFormat) || format == null) {
+                if (format instanceof UnknownFormat || format == null) {
                     if (!Utils.LOG_EXCLUDES.contains(extension)) {
                         eventHandler.fireFileEvent(
                                 Level.INFO,
                                 file,
                                 false,
                                 "Skipped file " + file + ": File format is not supported.",
-                                ((elementIndex * 99.0) / numElements));
+                                elementIndex * 99.0 / numElements);
                     }
                     return;
                 }

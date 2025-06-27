@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.temporal.ClockTime;
 import org.geotools.api.temporal.TemporalReferenceSystem;
@@ -87,6 +88,6 @@ public class DefaultClockTimeTest {
     @Test
     public void testToString() {
         String result = clockTime1.toString();
-        assertNotEquals(clockTime2, result);
+        assertNotNull(result);
     }
 }

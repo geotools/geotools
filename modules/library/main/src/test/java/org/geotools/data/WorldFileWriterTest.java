@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import org.junit.Test;
 
 public class WorldFileWriterTest {
@@ -18,7 +19,7 @@ public class WorldFileWriterTest {
         File tmp = File.createTempFile("write", "wld", new File("target"));
         new WorldFileWriter(tmp, at);
 
-        try (BufferedReader r = new BufferedReader(new FileReader(tmp))) {
+        try (BufferedReader r = new BufferedReader(new FileReader(tmp, StandardCharsets.UTF_8))) {
             assertEquals(42.34, Double.parseDouble(r.readLine()), 0.1);
             assertEquals(0, Double.parseDouble(r.readLine()), 0.1);
             assertEquals(0, Double.parseDouble(r.readLine()), 0.1);

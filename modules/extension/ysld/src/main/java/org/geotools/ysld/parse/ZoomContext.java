@@ -23,4 +23,5 @@ package org.geotools.ysld.parse;
  * @author Kevin Smith, Boundless
  * @deprecated Use {@link org.geotools.styling.zoom.ZoomContext} instead.
  */
+@Deprecated
 public interface ZoomContext extends org.geotools.styling.zoom.ZoomContext {}

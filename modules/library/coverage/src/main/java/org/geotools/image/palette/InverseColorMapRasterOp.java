@@ -51,7 +51,7 @@ public final class InverseColorMapRasterOp implements RasterOp {
         hasAlpha = icm.hasAlpha();
         transparencyIndex = icm.getTransparentPixel();
         final int mapSize = icm.getMapSize();
-        final byte[][] colorMap = new byte[3][hasAlpha ? (mapSize - 1) : mapSize];
+        final byte[][] colorMap = new byte[3][hasAlpha ? mapSize - 1 : mapSize];
 
         if (hasAlpha) {
             final byte[] r = new byte[mapSize];
@@ -117,7 +117,7 @@ public final class InverseColorMapRasterOp implements RasterOp {
         final int dstMinX = src.getMinX();
         final int dstMinY = src.getMinY();
         final int numBands = src.getSampleModel().getNumBands();
-        final boolean sourceHasAlpha = (numBands % 2 == 0);
+        final boolean sourceHasAlpha = numBands % 2 == 0;
         final int alphaBand = sourceHasAlpha ? numBands - 1 : -1;
         final int[] rgba = new int[numBands];
         for (int y = srcMinY, y_ = dstMinY; y < srcMaxY; y++, y_++) {
@@ -125,7 +125,7 @@ public final class InverseColorMapRasterOp implements RasterOp {
                 src.getPixel(x, y, rgba);
                 if (!sourceHasAlpha
                         || !hasAlpha
-                        || (sourceHasAlpha && hasAlpha && rgba[alphaBand] >= this.alphaThreshold)) {
+                        || sourceHasAlpha && hasAlpha && rgba[alphaBand] >= this.alphaThreshold) {
                     int val = invCM.getIndexNearest(
                             rgba[0] & 0xff, rgba[numBands == 1 ? 0 : 1] & 0xff, rgba[numBands == 1 ? 0 : 2]);
                     if (hasAlpha && val >= transparencyIndex) val++;

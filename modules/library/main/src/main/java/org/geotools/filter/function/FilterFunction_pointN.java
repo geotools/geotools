@@ -55,6 +55,6 @@ public class FilterFunction_pointN extends FunctionExpressionImpl {
                     "Filter Function problem for function pointN argument #1 - expected type int");
         }
 
-        return (StaticGeometry.pointN(arg0, arg1));
+        return StaticGeometry.pointN(arg0, arg1);
     }
 }

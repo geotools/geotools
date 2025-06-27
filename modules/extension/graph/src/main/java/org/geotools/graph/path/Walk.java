@@ -46,7 +46,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     @Override
     public boolean isValid() {
         // if edges were calculated successfly it is a valid walk
-        return (getEdges() != null);
+        return getEdges() != null;
     }
 
     /**
@@ -61,7 +61,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
             m_edges = buildEdges();
         }
 
-        return (m_edges);
+        return m_edges;
     }
 
     /**
@@ -73,7 +73,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     @Override
     public boolean add(Node node) {
         m_edges = null;
-        return (super.add(node));
+        return super.add(node);
     }
 
     @Override
@@ -85,13 +85,13 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     @Override
     public boolean addAll(Collection<? extends Node> c) {
         m_edges = null;
-        return (super.addAll(c));
+        return super.addAll(c);
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends Node> c) {
         m_edges = null;
-        return (super.addAll(index, c));
+        return super.addAll(index, c);
     }
 
     public boolean addEdge(Edge e) {
@@ -113,7 +113,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
                 add(e.getNodeB());
             } else if (last.equals(e.getNodeB())) {
                 add(e.getNodeA());
-            } else return (false);
+            } else return false;
         }
 
         // the addition of nodes resets the internal edge list so it must be rebuilt.
@@ -126,7 +126,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
         edges.add(e);
         m_edges = edges;
 
-        return (true);
+        return true;
     }
 
     public void addEdges(Collection<Edge> edges) {
@@ -149,19 +149,19 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
     @Override
     public Node remove(int index) {
         m_edges = null;
-        return (super.remove(index));
+        return super.remove(index);
     }
 
     @Override
     public boolean remove(Object o) {
         m_edges = null;
-        return (super.remove(o));
+        return super.remove(o);
     }
 
     @Override
     public boolean removeAll(Collection c) {
         m_edges = null;
-        return (super.removeAll(c));
+        return super.removeAll(c);
     }
 
     /**
@@ -170,8 +170,8 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
      * @return True if closed, otherwise false.
      */
     public boolean isClosed() {
-        if (isEmpty() || !isValid()) return (false);
-        return (get(0).equals(get(size() - 1)));
+        if (isEmpty() || !isValid()) return false;
+        return get(0).equals(get(size() - 1));
     }
 
     /** @see NodeSequence#getFirst() */
@@ -201,10 +201,10 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
             Edge e = curr.getEdge(prev);
 
             if (e != null) edges.add(e);
-            else return (null);
+            else return null;
         }
 
-        return (edges);
+        return edges;
     }
 
     /** Reverses the path. */
@@ -229,7 +229,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
      * @return the reverse iterator.
      */
     public Iterator<Node> riterator() {
-        return (new Iterator<>() {
+        return new Iterator<>() {
             int m_index = size() - 1;
 
             @Override
@@ -239,24 +239,24 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
 
             @Override
             public boolean hasNext() {
-                return (m_index > -1);
+                return m_index > -1;
             }
 
             @Override
             public Node next() {
-                return (get(m_index--));
+                return get(m_index--);
             }
-        });
+        };
     }
 
     public Path duplicate() {
-        return (new Path(this));
+        return new Path(this);
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Walk) return (equals((Walk) other));
-        return (false);
+        if (other instanceof Walk) return equals((Walk) other);
+        return false;
     }
 
     public boolean equals(Walk other) {
@@ -269,11 +269,11 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
                 Node thisnode = thisnodes.next();
                 Node othernode = othernodes.next();
 
-                if (!thisnode.equals(othernode)) return (false);
+                if (!thisnode.equals(othernode)) return false;
             }
-            return (true);
+            return true;
         }
-        return (false);
+        return false;
     }
 
     @Override
@@ -281,6 +281,6 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
         int hash = 7;
         hash = 31 * hash + getFirst().hashCode();
         hash = 31 * hash + getLast().hashCode();
-        return (hash);
+        return hash;
     }
 }

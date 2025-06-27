@@ -76,6 +76,7 @@ public class GMLExamples {
         class InlineHandler extends XMLFilterImpl implements GMLHandlerFeature {
             List<SimpleFeature> features = new ArrayList<>();
 
+            @Override
             public void feature(SimpleFeature feature) {
                 features.add(feature);
             }
@@ -135,7 +136,7 @@ public class GMLExamples {
         transform.transform(featureCollection, xml);
         xml.close();
 
-        System.out.println(xml.toString());
+        System.out.println(xml.toString(java.nio.charset.StandardCharsets.UTF_8));
         // transformExample end
     }
 
@@ -230,6 +231,7 @@ public class GMLExamples {
                 addDependency(new org.geotools.gml2.GMLConfiguration());
             }
 
+            @Override
             protected void registerBindings(java.util.Map bindings) {
                 // we have no special bindings
             }

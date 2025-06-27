@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -189,10 +190,10 @@ public abstract class AbstractGenerator {
                     location));
 
         if (packageBase != null) {
-            out.write(("package " + packageBase + ";\n\n").getBytes());
+            out.write(("package " + packageBase + ";\n\n").getBytes(StandardCharsets.UTF_8));
         }
 
-        out.write(result.getBytes());
+        out.write(result.getBytes(StandardCharsets.UTF_8));
 
         out.flush();
         out.close();

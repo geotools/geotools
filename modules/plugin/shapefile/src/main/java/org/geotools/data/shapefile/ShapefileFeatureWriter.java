@@ -179,7 +179,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         // not sure the check for records <=0 is necessary,
         // but if records > 0 and shapeType is null there's probably
         // another problem.
-        if ((records <= 0) && (shapeType == null)) {
+        if (records <= 0 && shapeType == null) {
             GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
 
             shapeType = JTSUtilities.getShapeType(geometryDescriptor);
@@ -400,9 +400,9 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
         // file length update
         if (g != null) {
-            shapefileLength += (handler.getLength(g) + 8);
+            shapefileLength += handler.getLength(g) + 8;
         } else {
-            shapefileLength += (4 + 8);
+            shapefileLength += 4 + 8;
         }
 
         if (shapefileLength > maxShpSize) {

@@ -37,6 +37,7 @@ public class POConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(PO.Items, ItemsBinding.class);

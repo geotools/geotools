@@ -33,6 +33,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -101,7 +102,7 @@ public class WFSParsingTest {
         configuration = new org.geotools.wfs.v1_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed = parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        Object parsed = parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         assertNotNull(parsed);
         assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
         WFSCapabilitiesType caps = (WFSCapabilitiesType) parsed;
@@ -405,8 +406,8 @@ public class WFSParsingTest {
     }
 
     void copy(InputStream in, File to) throws Exception {
-        try (Writer writer = new BufferedWriter(new FileWriter(to))) {
-            InputStreamReader reader = new InputStreamReader(in);
+        try (Writer writer = new BufferedWriter(new FileWriter(to, StandardCharsets.UTF_8))) {
+            InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
 
             int b = -1;
 

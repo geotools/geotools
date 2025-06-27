@@ -48,7 +48,7 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
 
     /** Returns {@code true} if this integer represents a positive or negative infinity. */
     public boolean isInfinite() {
-        return (value == Integer.MAX_VALUE) || (value == Integer.MIN_VALUE);
+        return value == Integer.MAX_VALUE || value == Integer.MIN_VALUE;
     }
 
     /**
@@ -123,7 +123,7 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     /** Compares this number with the specified object for equality. */
     @Override
     public boolean equals(final Object object) {
-        return (object instanceof UnlimitedInteger) && ((UnlimitedInteger) object).value == value;
+        return object instanceof UnlimitedInteger && ((UnlimitedInteger) object).value == value;
     }
 
     /**

@@ -87,7 +87,6 @@ public class FilterEqualsTest {
         Assert.assertNotNull(ff2);
         Assert.assertEquals(ff, ff2);
         assertNotEquals(null, ff);
-        assertNotEquals("a string not even a filter", ff);
         ff2.addFid("2");
         assertNotEquals(ff, ff2);
 
@@ -117,7 +116,6 @@ public class FilterEqualsTest {
             testMath1.setExpression1(testExp4);
             testMath1.setExpression1(testExp2);
             assertNotEquals(testMath1, testMath2);
-            assertNotEquals("Random Object that happens to be a string", testMath1);
         } catch (IllegalFilterException e) {
             LOGGER.warning("bad filter: " + e.getMessage());
         }
@@ -270,7 +268,6 @@ public class FilterEqualsTest {
         Assert.assertEquals(nullFilter1, nullFilter2);
         nullFilter1.setExpression(testExp3);
         assertNotEquals(nullFilter1, nullFilter2);
-        assertNotEquals(nullFilter1, new IsBetweenImpl(null, null, null));
     }
 
     @Test

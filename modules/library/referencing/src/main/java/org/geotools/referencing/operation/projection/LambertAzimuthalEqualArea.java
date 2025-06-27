@@ -63,6 +63,7 @@ import org.geotools.referencing.NamedIdentifier;
  * @author Beate Stollberg
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("FloatingPointLiteralPrecision")
 public class LambertAzimuthalEqualArea extends MapProjection {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 1639914708790574760L;
@@ -216,7 +217,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                 break;
             }
             case NORTH_POLE: {
-                c = (PI / 2) + phi;
+                c = PI / 2 + phi;
                 q = qp - q;
                 if (q >= 0.0) {
                     b = sqrt(q);
@@ -228,7 +229,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                 break;
             }
             case SOUTH_POLE: {
-                c = phi - (PI / 2);
+                c = phi - PI / 2;
                 q = qp + q;
                 if (q >= 0.0) {
                     b = sqrt(q);
@@ -331,7 +332,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
+        Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
             ensureSpherical();
         }
@@ -375,7 +376,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
                         throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
                     }
-                    y = (PI / 4) - phi * 0.5;
+                    y = PI / 4 - phi * 0.5;
                     y = 2.0 * sin(y);
                     x = y * sin(lambda);
                     y *= -coslam;
@@ -385,7 +386,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
                         throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
                     }
-                    y = (PI / 4) - phi * 0.5;
+                    y = PI / 4 - phi * 0.5;
                     y = 2.0 * cos(y);
                     x = y * sin(lambda);
                     y *= +coslam;
@@ -426,7 +427,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     phi = abs(rh) <= FINE_EPSILON ? 0.0 : asin(y * sinz / rh);
                     x *= sinz;
                     y = cosz * rh;
-                    lambda = (y == 0) ? 0.0 : atan2(x, y);
+                    lambda = y == 0 ? 0.0 : atan2(x, y);
                     break;
                 }
                 case OBLIQUE: {
@@ -435,16 +436,16 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     phi = abs(rh) <= FINE_EPSILON ? latitudeOfOrigin : asin(cosz * sinb1 + y * sinz * cosb1 / rh);
                     x *= sinz * cosb1;
                     y = (cosz - sin(phi) * sinb1) * rh;
-                    lambda = (y == 0) ? 0.0 : atan2(x, y);
+                    lambda = y == 0 ? 0.0 : atan2(x, y);
                     break;
                 }
                 case NORTH_POLE: {
-                    phi = (PI / 2) - phi;
+                    phi = PI / 2 - phi;
                     lambda = atan2(x, -y);
                     break;
                 }
                 case SOUTH_POLE: {
-                    phi -= (PI / 2);
+                    phi -= PI / 2;
                     lambda = atan2(x, y);
                     break;
                 }
@@ -470,8 +471,8 @@ public class LambertAzimuthalEqualArea extends MapProjection {
     private double qsfn(final double sinphi) {
         if (excentricity >= EPSILON) {
             final double con = excentricity * sinphi;
-            return ((1.0 - excentricitySquared)
-                    * (sinphi / (1.0 - con * con) - (0.5 / excentricity) * log((1.0 - con) / (1.0 + con))));
+            return (1.0 - excentricitySquared)
+                    * (sinphi / (1.0 - con * con) - 0.5 / excentricity * log((1.0 - con) / (1.0 + con)));
         } else {
             return sinphi + sinphi;
         }

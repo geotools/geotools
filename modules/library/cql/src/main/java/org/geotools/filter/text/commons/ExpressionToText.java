@@ -151,7 +151,7 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     private void visitWithBrackets(Expression expression, StringBuilder output) {
-        boolean needsBrackets = (expression instanceof Subtract || expression instanceof Add);
+        boolean needsBrackets = expression instanceof Subtract || expression instanceof Add;
         // Make sure to include Subtract or Add expression between brackets to preserve
         // operator precedences.
         output.append(needsBrackets ? "(" : "");

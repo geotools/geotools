@@ -113,7 +113,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
             assertNotNull(names);
             assertEquals(2, names.length);
             assertEquals("ROOT/LEVEL1/V2", names[1]);
-            GridCoverage2D grid = reader.read("ROOT/LAI", null);
+            GridCoverage2D grid = reader.read("ROOT/LAI");
             assertNotNull(grid);
 
             // Checking the SampleDimension Description Fallback improvement
@@ -152,7 +152,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
             assertNotNull(names);
             assertEquals(2, names.length);
 
-            GridCoverage2D grid = reader.read("O3", null);
+            GridCoverage2D grid = reader.read("O3");
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
             float[] value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45), new float[1]);
@@ -304,7 +304,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -406,7 +406,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -512,7 +512,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -626,7 +626,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -724,7 +724,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 final Dimension dim = new Dimension();
                 GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
                 dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                final Rectangle rasterArea = (GridEnvelope2D) gridRange;
                 rasterArea.setSize(dim);
                 final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
                 gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -1010,7 +1010,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
         try {
             String[] names = reader.getGridCoverageNames();
             names = new String[] {names[0]};
-            GridCoverage2D gc = reader.read(null);
+            GridCoverage2D gc = reader.read();
             Object noData = CoverageUtilities.getNoDataProperty(gc);
             assertNotNull(noData);
             assertTrue(noData instanceof NoDataContainer);
@@ -1144,7 +1144,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
         try {
             String[] names = reader.getGridCoverageNames();
             names = new String[] {names[0]};
-            gc = reader.read(null);
+            gc = reader.read();
         } catch (Throwable t) {
             throw new RuntimeException(t);
         } finally {
@@ -1247,7 +1247,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
             final Dimension dim = new Dimension();
             GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
             dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-            final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+            final Rectangle rasterArea = (GridEnvelope2D) gridRange;
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
             gg.setValue(new GridGeometry2D(range, reducedEnvelope));
@@ -1302,7 +1302,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
     @Test
     public void testSourceUrl() throws Exception {
         NetCDFReader reader = new NetCDFReader(TestData.file(this, "O3-NO2.nc"), null);
-        GridCoverage2D coverage = reader.read("O3", new GeneralParameterValue[] {});
+        GridCoverage2D coverage = reader.read("O3");
         URL sourceUrl = (URL) coverage.getProperty(GridCoverage2DReader.SOURCE_URL_PROPERTY);
         assertNotNull(sourceUrl);
         assertEquals("file", sourceUrl.getProtocol());
@@ -1313,7 +1313,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
     @Test
     public void testPreserveUnit() throws Exception {
         NetCDFReader reader = new NetCDFReader(TestData.file(this, "sst.nc"), null);
-        GridCoverage2D coverage = reader.read(reader.getGridCoverageNames()[0], null);
+        GridCoverage2D coverage = reader.read(reader.getGridCoverageNames()[0]);
         assertEquals(SI.CELSIUS, coverage.getSampleDimension(0).getUnits());
         coverage.dispose(true);
         reader.dispose();
@@ -1378,7 +1378,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
 
             // create a reader and read coverage, should create everything
             reader = new NetCDFReader(file, null);
-            GridCoverage2D read = reader.read(reader.getGridCoverageNames()[0], null);
+            GridCoverage2D read = reader.read(reader.getGridCoverageNames()[0]);
             read.dispose(true);
 
             // check we have file and the metadata directory

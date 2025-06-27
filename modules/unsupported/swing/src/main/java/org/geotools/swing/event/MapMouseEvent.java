@@ -151,8 +151,8 @@ public final class MapMouseEvent extends MouseEvent {
             throw new IllegalArgumentException("invalid value for widthPixels: " + widthPixels);
         }
 
-        Rectangle2D screenRect = new Rectangle2D.Double(
-                getX() - (widthPixels / 2), getY() - (widthPixels / 2), widthPixels, widthPixels);
+        Rectangle2D screenRect =
+                new Rectangle2D.Double(getX() - widthPixels / 2, getY() - widthPixels / 2, widthPixels, widthPixels);
 
         MapPane pane = getSource();
         Rectangle2D worldRect = pane.getScreenToWorldTransform()

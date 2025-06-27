@@ -23,6 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.data.Query;
@@ -80,7 +81,7 @@ public class PropertyDataStore extends ContentDataStore {
         if (file.exists()) {
             throw new FileNotFoundException("Unable to create a new property file: file exists " + file);
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write("_=");
             writer.write(DataUtilities.encodeType(featureType));
             writer.flush();

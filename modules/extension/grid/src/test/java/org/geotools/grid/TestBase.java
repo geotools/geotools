@@ -38,7 +38,7 @@ public class TestBase {
     protected static final double TOL = 1.0E-8d;
 
     protected void assertEnvelope(Envelope expected, Envelope actual) {
-        assertEquals((expected == null), (actual == null));
+        assertEquals(expected == null, actual == null);
         if (expected != null) {
             assertEquals(expected.getMinX(), actual.getMinX(), TOL);
             assertEquals(expected.getMinY(), actual.getMinY(), TOL);
@@ -48,7 +48,7 @@ public class TestBase {
     }
 
     protected void assertCoordinate(Coordinate expected, Coordinate actual) {
-        assertEquals((expected == null), (actual == null));
+        assertEquals(expected == null, actual == null);
         if (expected != null) {
             assertEquals(expected.x, actual.x, TOL);
             assertEquals(expected.y, actual.y, TOL);

@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -177,7 +178,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
             request.performPostOutput(out);
 
             try (InputStream in = new ByteArrayInputStream(out.toByteArray());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
                 StringBuilder postText = new StringBuilder();
 
                 char[] cbuf = new char[1024];
@@ -663,7 +664,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         // check result correctness
         StringBuilder sb = new StringBuilder();
         assertEquals("application/arcgrid", response.getRawContentType());
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getRawResponseStream()))) {
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(response.getRawResponseStream(), StandardCharsets.UTF_8))) {
 
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -828,7 +830,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         URL dataURL = new URL(output.getReference().getHref());
         StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(dataURL.openStream()))) {
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(dataURL.openStream(), StandardCharsets.UTF_8))) {
             String line = null;
             int count = 0;
             while ((line = reader.readLine()) != null && count <= 5) {

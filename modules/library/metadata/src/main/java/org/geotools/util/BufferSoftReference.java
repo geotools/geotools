@@ -56,6 +56,7 @@ class BufferSoftReference extends SoftReference<ByteBuffer> {
     }
 
     @Override
+    @SuppressWarnings("SuperCallToObjectMethod") // Fallback when buffer is null
     public int hashCode() {
         final ByteBuffer byteBuffer = get();
         if (byteBuffer != null) {

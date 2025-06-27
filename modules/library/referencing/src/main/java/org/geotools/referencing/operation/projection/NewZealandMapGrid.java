@@ -132,7 +132,7 @@ public class NewZealandMapGrid extends MapProjection {
         double dphi_pow_i = dphi;
         double dpsi = 0;
         for (double v : TPSI) {
-            dpsi += (v * dphi_pow_i);
+            dpsi += v * dphi_pow_i;
             dphi_pow_i *= dphi;
         }
         // See implementation note in class javadoc.
@@ -194,7 +194,7 @@ public class NewZealandMapGrid extends MapProjection {
         double dphi = TPHI[0] * dpsi;
         for (int i = 1; i < TPHI.length; i++) {
             dpsi_pow_i *= dpsi;
-            dphi += (TPHI[i] * dpsi_pow_i);
+            dphi += TPHI[i] * dpsi_pow_i;
         }
         dphi = dphi / (180 / PI * 3600E-5) + latitudeOfOrigin;
         if (ptDst != null) {

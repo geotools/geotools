@@ -73,6 +73,7 @@ public class FilterFunction_strReplace extends FunctionExpressionImpl {
             arg3 = getExpression(3).evaluate(feature, Boolean.class); // extra
         } catch (Exception e) // probably a type error
         {
+            // ignored
         }
 
         if (arg3 == null) {

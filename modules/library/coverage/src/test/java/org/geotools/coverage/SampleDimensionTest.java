@@ -32,7 +32,7 @@ import org.junit.Test;
  */
 public final class SampleDimensionTest {
 
-    class WrappedGridSampleDimension extends GridSampleDimension {
+    static class WrappedGridSampleDimension extends GridSampleDimension {
 
         protected WrappedGridSampleDimension(GridSampleDimension other) {
             super(other);

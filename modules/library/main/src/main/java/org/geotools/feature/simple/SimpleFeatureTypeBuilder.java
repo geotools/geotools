@@ -575,7 +575,7 @@ public class SimpleFeatureTypeBuilder {
         // feature can be backed by another geometry model (like iso), we need
         // to remove this check
         //
-        if ((defaultGeometry != null && defaultGeometry.equals(name)) || Geometry.class.isAssignableFrom(binding)) {
+        if (defaultGeometry != null && defaultGeometry.equals(name) || Geometry.class.isAssignableFrom(binding)) {
 
             // if no crs was set, set to defaultCRS
             if (!attributeBuilder.isCRSSet()) {

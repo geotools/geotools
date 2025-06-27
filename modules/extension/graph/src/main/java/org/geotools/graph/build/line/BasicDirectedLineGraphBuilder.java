@@ -36,6 +36,6 @@ public class BasicDirectedLineGraphBuilder extends BasicDirectedGraphBuilder {
      */
     @Override
     public Node buildNode() {
-        return (new BasicDirectedXYNode());
+        return new BasicDirectedXYNode();
     }
 }

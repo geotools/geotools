@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.IOUtils;
@@ -198,7 +199,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
                 if (contentType != null && contentType.startsWith("text")) {
                     byte[] buff = new byte[1024];
                     response.getResponseStream().read(buff);
-                    Loggers.MODULE.info("Failed response snippet: " + new String(buff));
+                    Loggers.MODULE.info("Failed response snippet: " + new String(buff, StandardCharsets.UTF_8));
                 }
                 throw fnf;
             } catch (Exception ignore) {

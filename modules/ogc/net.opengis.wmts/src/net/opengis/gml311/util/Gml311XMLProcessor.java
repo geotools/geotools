@@ -27,7 +27,7 @@ public class Gml311XMLProcessor extends XMLProcessor {
      * @generated
      */
     public Gml311XMLProcessor() {
-        super((EPackage.Registry.INSTANCE));
+        super(EPackage.Registry.INSTANCE);
         Gml311Package.eINSTANCE.eClass();
     }
     

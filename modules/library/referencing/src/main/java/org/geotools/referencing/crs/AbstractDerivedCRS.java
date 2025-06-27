@@ -223,7 +223,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
                 /* targetCRS  */ this,
                 /* transform  */ baseToDerived,
                 /* method     */ method,
-                /* type       */ (this instanceof ProjectedCRS) ? Projection.class : Conversion.class);
+                /* type       */ this instanceof ProjectedCRS ? Projection.class : Conversion.class);
     }
 
     /**
@@ -234,7 +234,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      */
     private static Datum getDatum(final CoordinateReferenceSystem base) {
         ensureNonNull("base", base);
-        return (base instanceof SingleCRS) ? ((SingleCRS) base).getDatum() : null;
+        return base instanceof SingleCRS ? ((SingleCRS) base).getDatum() : null;
     }
 
     /** Checks consistency between the base CRS and the "base to derived" transform. */

@@ -48,8 +48,10 @@ public class H2MigrateConfiguration {
         if (dataStore == null) {
             // use ImageMosaic bizarre own way
             final String spiClass = (String) configuration.get("SPI");
-            DataStoreFactorySpi spi = (DataStoreFactorySpi)
-                    Class.forName(spiClass).getDeclaredConstructor().newInstance();
+            DataStoreFactorySpi spi = Class.forName(spiClass)
+                    .asSubclass(DataStoreFactorySpi.class)
+                    .getDeclaredConstructor()
+                    .newInstance();
             Map<String, Serializable> datastoreParams = Utils.filterDataStoreParams(configuration, spi);
             return spi.createDataStore(datastoreParams);
         }

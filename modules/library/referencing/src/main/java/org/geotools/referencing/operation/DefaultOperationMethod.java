@@ -248,7 +248,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
     /** Returns the set of parameters. */
     @Override
     public ParameterDescriptorGroup getParameters() {
-        return (parameters != null) ? parameters : Parameters.EMPTY_GROUP;
+        return parameters != null ? parameters : Parameters.EMPTY_GROUP;
     }
 
     /**

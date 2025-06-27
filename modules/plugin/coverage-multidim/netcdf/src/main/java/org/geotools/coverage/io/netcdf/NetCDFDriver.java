@@ -173,9 +173,9 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
 
             // get a stream
             inputStream = (ImageInputStream)
-                    ((source instanceof ImageInputStream)
+                    (source instanceof ImageInputStream
                             ? source
-                            : (source instanceof File)
+                            : source instanceof File
                                     ? new FileImageInputStreamExtImpl((File) source)
                                     : ImageIO.createImageInputStream(source));
             if (inputStream == null) {
@@ -199,7 +199,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
 
                 }
             }
-            if (source != null && (source instanceof InputStream)) {
+            if (source != null && source instanceof InputStream) {
                 try {
                     ((InputStream) source).close();
                 } catch (Exception e) {

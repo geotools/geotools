@@ -1745,7 +1745,7 @@ public class SymbolMBLayer extends MBLayer {
         Expression haloColor = textHaloColor();
         Halo halo = null;
         if (!(haloColor instanceof Literal)
-                || (haloColor.evaluate(null, Color.class).getAlpha() > 0)) {
+                || haloColor.evaluate(null, Color.class).getAlpha() > 0) {
             halo = sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
         }
         Fill fill = sf.fill(null, textColor(), textOpacity());
@@ -1878,7 +1878,7 @@ public class SymbolMBLayer extends MBLayer {
         // text-padding default value is 2 in mapbox, will override Geoserver defaults
         if (!hasIconImage()
                 || "point".equalsIgnoreCase(symbolPlacementVal.trim())
-                || (getTextPadding().doubleValue()) >= (getIconPadding().doubleValue())) {
+                || getTextPadding().doubleValue() >= getIconPadding().doubleValue()) {
             options.put("spaceAround", String.valueOf(getTextPadding()));
         }
         // halo blur
@@ -1902,7 +1902,7 @@ public class SymbolMBLayer extends MBLayer {
             // Check to see that hasTextField() is true check to see if IconPadding is greater to
             // put to spaceAround
             if (!hasTextField()
-                    || ((getIconPadding().doubleValue()) > (getTextPadding().doubleValue()))
+                    || getIconPadding().doubleValue() > getTextPadding().doubleValue()
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
                 options.put(TextSymbolizer.SPACE_AROUND_KEY, String.valueOf(getIconPadding()));
             }

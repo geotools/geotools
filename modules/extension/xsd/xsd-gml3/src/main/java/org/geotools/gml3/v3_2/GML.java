@@ -2102,7 +2102,7 @@ public final class GML extends XSD {
                                 // thus not
                                 // supported by URI.resolve()
                                 URL contextUrl = new URL(xsdSchema.getSchemaLocation());
-                                return (new URL(contextUrl, schemaLocationURI)).toString();
+                                return new URL(contextUrl, schemaLocationURI).toString();
                             } else {
                                 return contextUri.resolve(schemaLocationURI).toString();
                             }

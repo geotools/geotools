@@ -129,7 +129,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         }
     }
 
-    class ContrastEnhancementEncoder extends YsldEncodeHandler<ContrastEnhancement> {
+    static class ContrastEnhancementEncoder extends YsldEncodeHandler<ContrastEnhancement> {
         public ContrastEnhancementEncoder(ContrastEnhancement contrast) {
             super(contrast);
         }

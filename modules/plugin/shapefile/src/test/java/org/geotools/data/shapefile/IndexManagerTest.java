@@ -96,7 +96,7 @@ public class IndexManagerTest extends TestCaseSupport {
         long now = initial;
 
         final long currentLastModified = file.lastModified();
-        while (file.lastModified() == currentLastModified && (now - initial) < maxWaitNanos) {
+        while (file.lastModified() == currentLastModified && now - initial < maxWaitNanos) {
             assertTrue(indexManager.createSpatialIndex(force));
             assertTrue(shpFiles.exists(QIX));
         }

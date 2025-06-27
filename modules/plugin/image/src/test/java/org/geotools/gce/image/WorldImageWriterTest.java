@@ -100,7 +100,7 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
         WorldImageReader wiReader = new WorldImageReader(source);
 
         // reading the original coverage
-        GridCoverage2D coverage = wiReader.read(null);
+        GridCoverage2D coverage = wiReader.read();
 
         assertNotNull(coverage);
         assertNotNull(coverage.getRenderedImage());
@@ -130,7 +130,7 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
         // reading again
         assertTrue(tempFile.exists());
         wiReader = new WorldImageReader(tempFile);
-        coverage = wiReader.read(null);
+        coverage = wiReader.read();
 
         // displaying the coverage
         if (TestData.isInteractiveTest()) coverage.show();

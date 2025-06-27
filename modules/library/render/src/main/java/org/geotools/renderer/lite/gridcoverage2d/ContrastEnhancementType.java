@@ -184,7 +184,7 @@ public enum ContrastEnhancementType {
             final double correctionFactor = 100.0;
             for (int i = 1; i < lut.length; i++) {
                 lut[i] = (byte)
-                        (0.5f + normalizationFactor * Math.log((i * correctionFactor / normalizationFactor + 1.0)));
+                        (0.5f + normalizationFactor * Math.log(i * correctionFactor / normalizationFactor + 1.0));
             }
             return generateLookupTableByte(lut);
         }
@@ -212,7 +212,7 @@ public enum ContrastEnhancementType {
 
                 @Override
                 public double transform(double value) {
-                    value = normFactor * Math.log(1 + (value * correctionFactor / normFactor));
+                    value = normFactor * Math.log(1 + value * correctionFactor / normFactor);
                     return value;
                 }
             };
@@ -262,7 +262,7 @@ public enum ContrastEnhancementType {
             float sum = 0;
             for (int i = 1; i < cumulative.length; i++) {
                 sum += h.getBinSize(0, i - 1);
-                cumulative[i] = (byte) ((sum * scale + h.getLowValue(0)) + .5F);
+                cumulative[i] = (byte) (sum * scale + h.getLowValue(0) + .5F);
             }
 
             return generateLookupTableByte(cumulative);
@@ -436,7 +436,7 @@ public enum ContrastEnhancementType {
             // create the lookup table
             final byte[] lut = new byte[256];
             for (int i = 1; i < lut.length; i++) {
-                lut[i] = i < min ? (byte) MIN_BYTE : (i > max ? (byte) MAX_BYTE : ((byte) (scale * i + offset + 0.5d)));
+                lut[i] = i < min ? (byte) MIN_BYTE : i > max ? (byte) MAX_BYTE : (byte) (scale * i + offset + 0.5d);
             }
 
             return generateLookupTableByte(lut);
@@ -599,7 +599,7 @@ public enum ContrastEnhancementType {
     private static byte[] createClampingLookupTableByte(double min, double max, byte newMin, byte newMax) {
         final byte[] lut = new byte[256];
         for (int i = 1; i < lut.length; i++) {
-            lut[i] = i < min ? newMin : (i > max ? newMax : (byte) i);
+            lut[i] = i < min ? newMin : i > max ? newMax : (byte) i;
         }
         return lut;
     }

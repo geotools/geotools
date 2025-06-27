@@ -164,7 +164,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
                 return -1;
             }
 
-            if ((desired < 0)) {
+            if (desired < 0) {
                 return -1;
             }
 
@@ -208,11 +208,11 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
             long newPrediction = predictedRec + newOffset;
 
             if (newPrediction <= minRec) {
-                newPrediction = minRec + ((predictedRec - minRec) / 2);
+                newPrediction = minRec + (predictedRec - minRec) / 2;
             }
 
             if (newPrediction >= maxRec) {
-                newPrediction = predictedRec + ((maxRec - predictedRec) / 2);
+                newPrediction = predictedRec + (maxRec - predictedRec) / 2;
             }
 
             if (newPrediction == predictedRec) {
@@ -231,7 +231,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
     public void goTo(long recno) throws IOException {
         assert recno < count;
         if (readChannel instanceof FileChannel) {
-            long newPosition = IndexedFidWriter.HEADER_SIZE + (recno * IndexedFidWriter.RECORD_SIZE);
+            long newPosition = IndexedFidWriter.HEADER_SIZE + recno * IndexedFidWriter.RECORD_SIZE;
             if (newPosition >= bufferStart + buffer.limit() || newPosition < bufferStart) {
                 FileChannel fc = (FileChannel) readChannel;
                 fc.position(newPosition);

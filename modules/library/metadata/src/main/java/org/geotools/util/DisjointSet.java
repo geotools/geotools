@@ -110,7 +110,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
      */
     public DisjointSet(final boolean hasTrash) {
         map = new LinkedHashMap<>();
-        trash = (hasTrash) ? new DisjointSet<>(map) : null;
+        trash = hasTrash ? new DisjointSet<>(map) : null;
     }
 
     /**

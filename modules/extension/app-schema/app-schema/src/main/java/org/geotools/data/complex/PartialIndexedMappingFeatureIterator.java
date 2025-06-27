@@ -140,7 +140,7 @@ public class PartialIndexedMappingFeatureIterator extends IndexedMappingFeatureI
         if (sourceIterator != null && sourceIterator.hasNext()) {
             // if feature counter is bigger than limits, no more results.
             int start = query.getStartIndex() != null ? query.getStartIndex() : 0;
-            if (sourceFeaturesCounter >= (start + query.getMaxFeatures())) {
+            if (sourceFeaturesCounter >= start + query.getMaxFeatures()) {
                 return false;
             }
             // if feature counter is lower than limits, fast skip to first requested result

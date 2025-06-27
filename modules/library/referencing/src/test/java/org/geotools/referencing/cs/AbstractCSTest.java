@@ -95,7 +95,7 @@ public final class AbstractCSTest {
         final Matrix matrix = AbstractCS.swapAndScaleAxis(cs1, cs2);
         final int numRow = matrix.getNumRow();
         final int numCol = matrix.getNumCol();
-        assertEquals(expected.length, numRow * numCol);
+        assertEquals(expected.length, numRow * (long) numCol);
         final Matrix em = new GeneralMatrix(numRow, numCol, expected);
         assertEquals(em, matrix);
     }

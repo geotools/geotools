@@ -285,7 +285,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
             DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
             String comparisonOperator = ") < ";
-            if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
+            if (filter instanceof DWithin && swapped || filter instanceof Beyond && !swapped) {
                 comparisonOperator = ") > ";
             }
             out.write("db2gse.ST_Distance(");

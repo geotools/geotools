@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -266,7 +267,7 @@ public class AncillaryFileManager implements FileSetManager {
 
         // Selection of the hashcode for creating a unique directory of the auxiliary files
         MessageDigest md = MessageDigest.getInstance("SHA-1");
-        md.update(mainFilePath.getBytes());
+        md.update(mainFilePath.getBytes(StandardCharsets.UTF_8));
         String hashCode = convertToHex(md.digest());
 
         String mainName = FilenameUtils.getName(mainFilePath);
@@ -746,11 +747,10 @@ public class AncillaryFileManager implements FileSetManager {
     public static String convertToHex(byte[] data) {
         StringBuilder buf = new StringBuilder();
         for (byte b : data) {
-            int halfbyte = (b >>> 4) & 0x0F;
+            int halfbyte = b >>> 4 & 0x0F;
             int two_halfs = 0;
             do {
-                buf.append(
-                        (0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte) : (char) ('a' + (halfbyte - 10)));
+                buf.append(0 <= halfbyte && halfbyte <= 9 ? (char) ('0' + halfbyte) : (char) ('a' + halfbyte - 10));
                 halfbyte = b & 0x0F;
             } while (two_halfs++ < 1);
         }
@@ -779,8 +779,10 @@ public class AncillaryFileManager implements FileSetManager {
                     final String SPIClass = properties.getProperty("SPI");
                     try {
                         // create a datastore as instructed
-                        final DataStoreFactorySpi spi = (DataStoreFactorySpi)
-                                Class.forName(SPIClass).getDeclaredConstructor().newInstance();
+                        final DataStoreFactorySpi spi = Class.forName(SPIClass)
+                                .asSubclass(DataStoreFactorySpi.class)
+                                .getDeclaredConstructor()
+                                .newInstance();
                         Map<String, Serializable> datastoreParams = Utils.filterDataStoreParams(properties, spi);
 
                         // create a datastore configuration using the specified SPI and

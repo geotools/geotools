@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -237,7 +238,7 @@ public class TestSetup {
         SimpleFeature feature_gen = SimpleFeatureBuilder.deep(feature);
         feature_gen.setDefaultGeometry(geomNew);
         memDS.addFeature(feature_gen);
-        POINTMAP.get(distance).put(feature_gen.getID(), (geomNew.getNumPoints()));
+        POINTMAP.get(distance).put(feature_gen.getID(), geomNew.getNumPoints());
     }
 
     private static void addGeneralizedFeatureMixed(
@@ -283,7 +284,7 @@ public class TestSetup {
         File propFile = new File(propFileName);
         try (FileOutputStream out = new FileOutputStream(propFile)) {
             String line = ShapefileDataStoreFactory.URLP.key + "=" + "file:target/0/streams.shp\n";
-            out.write(line.getBytes());
+            out.write(line.getBytes(StandardCharsets.UTF_8));
         }
         // ////////
 

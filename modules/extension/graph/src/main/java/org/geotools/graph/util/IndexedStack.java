@@ -37,11 +37,11 @@ public class IndexedStack<E> extends java.util.Stack<E> {
     public E pop() {
         E value = super.pop();
         m_index.remove(value);
-        return (value);
+        return value;
     }
 
     @Override
     public boolean contains(Object elem) {
-        return (m_index.get(elem) != null);
+        return m_index.get(elem) != null;
     }
 }

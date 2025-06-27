@@ -73,8 +73,7 @@ import org.geotools.graph.traverse.basic.SourceGraphIterator;
 public class DijkstraIterator extends SourceGraphIterator {
 
     /** compares two internal nodes used by the iteration by comparing costs * */
-    private static Comparator<DijkstraNode> comparator =
-            (n1, n2) -> (n1.cost < n2.cost ? -1 : n1.cost > n2.cost ? 1 : 0);
+    private static Comparator<DijkstraNode> comparator = (n1, n2) -> n1.cost < n2.cost ? -1 : n1.cost > n2.cost ? 1 : 0;
 
     /** provides weights for edges in the graph * */
     protected EdgeWeighter weighter;
@@ -147,7 +146,7 @@ public class DijkstraIterator extends SourceGraphIterator {
      */
     @Override
     public Graphable next(GraphTraversal traversal) {
-        if (queue.isEmpty()) return (null);
+        if (queue.isEmpty()) return null;
 
         DijkstraNode next = queue.remove();
 
@@ -155,9 +154,9 @@ public class DijkstraIterator extends SourceGraphIterator {
         // because no node in the visited set ever updated the node
         // since it is at the top of the heap it means no more nodes
         // in the visited set will be visited
-        if (next.cost == Double.MAX_VALUE) return (null);
+        if (next.cost == Double.MAX_VALUE) return null;
 
-        return (next.node);
+        return next.node;
     }
 
     /**
@@ -205,7 +204,7 @@ public class DijkstraIterator extends SourceGraphIterator {
      * @return The cost associated with the component.
      */
     public double getCost(Graphable component) {
-        return (nodemap.get(component).cost);
+        return nodemap.get(component).cost;
     }
 
     /**
@@ -217,24 +216,24 @@ public class DijkstraIterator extends SourceGraphIterator {
      * @return The parent, or null if the method is supplied the source of the iteration.
      */
     public Graphable getParent(Graphable component) {
-        if (component.equals(getSource())) return (null);
+        if (component.equals(getSource())) return null;
         DijkstraNode dn = nodemap.get(component);
 
-        if (dn == null || dn.parent == null) return (null);
-        return (dn.parent.node);
+        if (dn == null || dn.parent == null) return null;
+        return dn.parent.node;
 
         // return(((DijkstraNode)m_nodemap.get(component)).parent.node);
     }
 
     protected PriorityQueue getQueue() {
-        return (queue);
+        return queue;
     }
 
     protected Iterator<? extends Graphable> getRelated(Graphable current) {
         if (current instanceof DirectedGraphable) {
             return ((DirectedGraphable) current).getOutRelated();
         } else {
-            return (current.getRelated());
+            return current.getRelated();
         }
     }
 

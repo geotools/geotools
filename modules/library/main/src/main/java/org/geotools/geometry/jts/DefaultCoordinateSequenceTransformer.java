@@ -74,7 +74,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
 
         // create a target CS so that the dimensions not contemplated in the source CS
         // are copied over (think Z or M with a 2d CRS)
-        int targetCSDim = targetDim + (sequence.getDimension() - sourceDim);
+        int targetCSDim = targetDim + sequence.getDimension() - sourceDim;
         CoordinateSequence result = JTS.createCS(csFactory, sequence.size(), targetCSDim, sequence.getMeasures());
 
         for (int i = 0; i < size; i++) {
@@ -102,7 +102,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
                  * The buffer is full, or we just copied the last coordinates.
                  * Transform the coordinates and flush to the destination array.
                  */
-                assert (ib % sourceDim) == 0;
+                assert ib % sourceDim == 0;
 
                 final int n = ib / sourceDim;
                 transform.transform(buffer, 0, buffer, 0, n);
@@ -118,7 +118,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
                     }
                     // copy over the non transformed portion
                     for (; oi < targetCSDim; oi++) {
-                        result.setOrdinate(it, oi, sequence.getOrdinate(it, oi + (targetDim - sourceDim)));
+                        result.setOrdinate(it, oi, sequence.getOrdinate(it, oi + targetDim - sourceDim));
                     }
                     // force to NaN eventual extra ordinates the sequence has (some are fixed size,
                     // wont'
@@ -130,7 +130,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
                     }
                     it++;
                 }
-                assert ib == (n * targetDim);
+                assert ib == n * targetDim;
                 ib = 0;
                 remainingBeforeFlush = Math.min(bufferCapacity, size - (i + 1));
             }

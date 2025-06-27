@@ -228,6 +228,9 @@ public final class AUTOTest {
     }
 
     @Test
+    // This fuzzy equality check is using a tolerance less than the gap to the next number (which is ~7.5e-09). You may
+    // want a less restrictive tolerance, or to assert equality
+    @SuppressWarnings("FloatingPointAssertionWithinEpsilon")
     public void test97004() throws Exception {
         ProjectedCRS crs = factory.createProjectedCRS("AUTO:97004,9001,20,0");
         assertEquals("GEOS", crs.getConversionFromBase().getMethod().getName().getCode());

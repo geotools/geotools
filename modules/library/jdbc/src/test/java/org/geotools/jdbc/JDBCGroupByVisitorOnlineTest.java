@@ -533,7 +533,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
                 "ft1_group_by", Query.ALL, Aggregate.SUM, aggProperty, expectOptimized, groupProperty);
         assertEquals(3, value.size());
         // get them in predictable order
-        value.sort(Comparator.comparing(v -> ((Geometry) v[0])));
+        value.sort(Comparator.comparing(v -> (Geometry) v[0]));
         // geometries have been parsed, sums have the expected value
         Object[] v0 = value.get(0);
         assertEquals(new WKTReader().read("POINT(0 0)"), v0[0]);
@@ -563,7 +563,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
                 genericGroupByTestTest("ft1_group_by", Query.ALL, Aggregate.SUM, aggProperty, false, groupProperty);
         assertEquals(3, value.size());
         // get them in predictable order
-        value.sort(Comparator.comparing(v -> ((Geometry) v[0])));
+        value.sort(Comparator.comparing(v -> (Geometry) v[0]));
         // geometries have been parsed, sums have the expected value
         Object[] v0 = value.get(0);
         assertEquals(new WKTReader().read("POINT(0 0)").buffer(1), v0[0]);

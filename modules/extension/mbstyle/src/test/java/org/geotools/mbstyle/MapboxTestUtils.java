@@ -95,7 +95,7 @@ public class MapboxTestUtils {
             }
         }
 
-        assert (hasData);
+        assert hasData;
         return image;
     }
 

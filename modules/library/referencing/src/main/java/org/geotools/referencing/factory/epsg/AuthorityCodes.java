@@ -142,7 +142,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     @SuppressWarnings("PMD.CloseResource")
-    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql) throws SQLException {
+    PreparedStatement validateStatement(PreparedStatement stmt, String sql) throws SQLException {
         Connection conn = null;
         if (stmt != null) {
             try {
@@ -311,7 +311,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
      * Returns a serializable copy of this set. This method is invoked automatically during serialization. The
      * serialised set of authority code is disconnected from the underlying database.
      */
-    protected Object writeReplace() throws ObjectStreamException {
+    Object writeReplace() throws ObjectStreamException {
         return new LinkedHashSet<>(this);
     }
 
@@ -321,7 +321,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
      * can be executed an arbitrary amount of times.
      */
     @Override
-    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
+    @SuppressWarnings({"deprecation", "Finalize"}) // finalize is deprecated in Java 9
     protected synchronized void finalize() throws SQLException {
         if (querySingle != null) {
             querySingle.close();
@@ -414,7 +414,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
 
         /** Closes the underlying result set. */
         @Override
-        @SuppressWarnings({"deprecation", "PMD.CloseResource"}) // finalize is deprecated in Java 9
+        @SuppressWarnings({"deprecation", "Finalize", "PMD.CloseResource"}) // finalize is deprecated in Java 9
         protected void finalize() throws SQLException {
             next = null;
             if (results != null) {

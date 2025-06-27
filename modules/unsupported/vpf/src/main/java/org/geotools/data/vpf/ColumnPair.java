@@ -64,7 +64,7 @@ class ColumnPair {
         } else {
             ColumnPair columnPair = (ColumnPair) arg0;
 
-            if ((columnPair != null)
+            if (columnPair != null
                     && columnPair.column1.equals(this.column1)
                     && columnPair.column2.equals(this.column2)) {
                 result = true;

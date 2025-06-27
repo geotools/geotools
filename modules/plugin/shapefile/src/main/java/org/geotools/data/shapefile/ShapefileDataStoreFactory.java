@@ -398,6 +398,6 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         DataStore ds = createDataStore(url);
         String[] names = ds.getTypeNames(); // should be exactly one
         ds.dispose();
-        return ((names == null || names.length == 0) ? null : names[0]);
+        return names == null || names.length == 0 ? null : names[0];
     }
 }

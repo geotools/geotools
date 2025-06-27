@@ -75,7 +75,7 @@ public class DefaultPosition implements Position {
      */
     @Override
     public TemporalPosition anyOther() {
-        return (this.position instanceof TemporalPosition) ? (TemporalPosition) position : null;
+        return this.position instanceof TemporalPosition ? (TemporalPosition) position : null;
     }
 
     /**
@@ -115,7 +115,7 @@ public class DefaultPosition implements Position {
      */
     @Override
     public Time getTime() {
-        return (this.position instanceof Time) ? (Time) position : null;
+        return this.position instanceof Time ? (Time) position : null;
     }
 
     /**

@@ -129,7 +129,7 @@ public class GridProcess implements VectorProcess {
 
         @Override
         public String getFeatureID(GridElement ge) {
-            return String.valueOf("grid." + (id++));
+            return String.valueOf("grid." + id++);
         }
 
         /**

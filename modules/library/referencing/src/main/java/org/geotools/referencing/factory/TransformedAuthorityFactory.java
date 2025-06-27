@@ -388,8 +388,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
     protected CoordinateOperation replace(final CoordinateOperation operation) throws FactoryException {
         final CoordinateReferenceSystem oldSrcCRS = operation.getSourceCRS();
         final CoordinateReferenceSystem oldTgtCRS = operation.getTargetCRS();
-        final CoordinateReferenceSystem sourceCRS = (oldSrcCRS != null) ? replace(oldSrcCRS) : null;
-        final CoordinateReferenceSystem targetCRS = (oldTgtCRS != null) ? replace(oldTgtCRS) : null;
+        final CoordinateReferenceSystem sourceCRS = oldSrcCRS != null ? replace(oldSrcCRS) : null;
+        final CoordinateReferenceSystem targetCRS = oldTgtCRS != null ? replace(oldTgtCRS) : null;
         if (Utilities.equals(oldSrcCRS, sourceCRS) && Utilities.equals(oldTgtCRS, targetCRS)) {
             return operation;
         }

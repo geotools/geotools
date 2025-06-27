@@ -111,7 +111,7 @@ public class ComplexElementHandler extends XMLElementHandler {
     @Override
     public void endElement(URI namespaceURI, String localName, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
-        text = (text == null) ? null : text.trim();
+        text = text == null ? null : text.trim();
 
         if (hints == null) {
             hints = new HashMap<>();
@@ -173,7 +173,7 @@ public class ComplexElementHandler extends XMLElementHandler {
      *
      */
     private void validateElementOrder() throws SAXException {
-        if ((elements == null) || (elements.isEmpty())) {
+        if (elements == null || elements.isEmpty()) {
             // TODO ensure we have enough elements
             return;
         }
@@ -298,7 +298,7 @@ public class ComplexElementHandler extends XMLElementHandler {
         }
 
         for (int i = 0; i < r.length; i++) {
-            if ((r[i] < elems[i].getMinOccurs()) || (r[i] > elems[i].getMaxOccurs())) {
+            if (r[i] < elems[i].getMinOccurs() || r[i] > elems[i].getMaxOccurs()) {
                 return new int[] {index, 0};
             }
         }
@@ -399,7 +399,7 @@ public class ComplexElementHandler extends XMLElementHandler {
 
         if (r == null && element.getName() == null) return new int[] {index, 0};
 
-        if (r == null && (element.getName() != null && element.getName().equalsIgnoreCase(indexHandler.getName())))
+        if (r == null && element.getName() != null && element.getName().equalsIgnoreCase(indexHandler.getName()))
             r = new int[] {index + 1, 1};
         if (r == null && element.getName() != null) {
             Element e = indexHandler.getElement();

@@ -73,7 +73,7 @@ public class MaxVisitorTest {
     }
 
     /** A MaxVisitor that set's visitied without maxvalue being set. */
-    private class PreVisitedMaxVisitor extends MaxVisitor {
+    private static class PreVisitedMaxVisitor extends MaxVisitor {
         PreVisitedMaxVisitor(String attribute) {
             super(attribute);
             this.visited = true;

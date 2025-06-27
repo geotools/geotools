@@ -31,29 +31,36 @@ public abstract class AbstractFunction implements Function {
         this.fallback = fallback;
     }
 
+    @Override
     public abstract Object evaluate(Object object);
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         Object value = evaluate(object);
         return Converters.convert(value, context);
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public String getName() {
         return name.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return name;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(params);
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }

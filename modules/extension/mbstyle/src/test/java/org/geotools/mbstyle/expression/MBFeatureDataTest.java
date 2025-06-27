@@ -55,11 +55,11 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
 
     private MultiPoint createMultiPoint(int index) throws Exception {
         // create 5 coordinates based off the supplied index
-        double d1 = (5 * index) + 10;
-        double d2 = (5 * index) + 11;
-        double d3 = (5 * index) + 12;
-        double d4 = (5 * index) + 13;
-        double d5 = (5 * index) + 14;
+        double d1 = 5 * index + 10;
+        double d2 = 5 * index + 11;
+        double d3 = 5 * index + 12;
+        double d4 = 5 * index + 13;
+        double d5 = 5 * index + 14;
         Coordinate c1 = new Coordinate(d1, d1);
         Coordinate c2 = new Coordinate(d2, d2);
         Coordinate c3 = new Coordinate(d3, d3);
@@ -70,11 +70,11 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
 
     private LineString createLineString(int index) throws Exception {
         // create 5 coordinates based off the supplied index
-        double d1 = (5 * index) + 10;
-        double d2 = (5 * index) + 11;
-        double d3 = (5 * index) + 12;
-        double d4 = (5 * index) + 13;
-        double d5 = (5 * index) + 14;
+        double d1 = 5 * index + 10;
+        double d2 = 5 * index + 11;
+        double d3 = 5 * index + 12;
+        double d4 = 5 * index + 13;
+        double d5 = 5 * index + 14;
         Coordinate c1 = new Coordinate(d1, d1);
         Coordinate c2 = new Coordinate(d2, d2);
         Coordinate c3 = new Coordinate(d3, d3);
@@ -85,8 +85,8 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
 
     private Polygon createPolygon(int index) throws Exception {
         // create 2 coordinates based off the supplied index
-        double d1 = (5 * index) + 10;
-        double d2 = (5 * index) + 11;
+        double d1 = 5 * index + 10;
+        double d2 = 5 * index + 11;
         Coordinate c1 = new Coordinate(d1, d1);
         Coordinate c2 = new Coordinate(d1, d2);
         Coordinate c3 = new Coordinate(d2, d2);

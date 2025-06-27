@@ -236,10 +236,10 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
         }
 
         // if the period contains months (2628000000 ms)
-        if ((periodDescription.indexOf('M') != -1 && (periodDescription.indexOf('T') == -1))
-                || ((periodDescription.indexOf('T') != -1)
-                        && (periodDescription.indexOf('M') < periodDescription.indexOf('T'))
-                        && ((periodDescription.indexOf('M') != -1)))) {
+        if (periodDescription.indexOf('M') != -1 && periodDescription.indexOf('T') == -1
+                || periodDescription.indexOf('T') != -1
+                        && periodDescription.indexOf('M') < periodDescription.indexOf('T')
+                        && periodDescription.indexOf('M') != -1) {
             int nbMonth = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('M')));
             response += nbMonth * monthMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('M') + 1);

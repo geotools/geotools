@@ -25,7 +25,6 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.filter.capability.FilterCapabilities;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.identity.FeatureId;
@@ -42,7 +41,7 @@ import org.locationtech.jts.geom.Envelope;
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  */
 public class AbstractCapabilitiesFilterSplitterTests {
-    public class TestAccessor implements ClientTransactionAccessor {
+    public static class TestAccessor implements ClientTransactionAccessor {
 
         private Filter updateFilter;
 
@@ -99,8 +98,7 @@ public class AbstractCapabilitiesFilterSplitterTests {
      * with an edit to the attribute being queried by filter.
      *
      * @param filter filter to process
-     * @param filterTypeMask the constant in {@link FilterCapabilities} that is equivalent to the FilterType used in
-     *     filter
+     * @param supportedCaps filter capabilities for the visitor under test
      * @param attToEdit the attribute in filter that is queried. If null then edit test is not ran.
      */
     protected void runTest(Filter filter, Capabilities supportedCaps, String attToEdit) throws SchemaException {

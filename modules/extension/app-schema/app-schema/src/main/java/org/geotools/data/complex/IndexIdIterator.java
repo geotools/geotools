@@ -138,7 +138,7 @@ public interface IndexIdIterator extends Iterator<String>, Closeable {
             } else {
                 // if next current visitor start is into bounds
                 int nextStart = currentVisitorStart + STEP_LOAD;
-                if (nextStart <= (start + max - 1)) {
+                if (nextStart <= start + max - 1) {
                     // init new visitor, next bounds
                     currentVisitorStart = nextStart;
                     currentMax = currentMax - STEP_LOAD;

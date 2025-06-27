@@ -170,7 +170,7 @@ public class Krovak extends MapProjection {
         y_scale = doubleValue(expected, BaseProvider.Y_SCALE, parameters);
         xy_plane_rotation = doubleValue(expected, BaseProvider.XY_PLANE_ROTATION, parameters);
 
-        /**
+        /*
          * Check if there are parameters for axis swapping used by ESRI - if so then set variable so the proper
          * ParameterDescriptorGroup will be returned by getParameterDescriptors()
          */
@@ -194,17 +194,17 @@ public class Krovak extends MapProjection {
         final double sinLat = sin(latitudeOfOrigin);
         final double cosLat = cos(latitudeOfOrigin);
         final double cosL2 = cosLat * cosLat;
-        alfa = sqrt(1 + ((excentricitySquared * (cosL2 * cosL2)) / (1 - excentricitySquared)));
+        alfa = sqrt(1 + excentricitySquared * (cosL2 * cosL2) / (1 - excentricitySquared));
         hae = alfa * excentricity / 2;
         final double u0 = asin(sinLat / alfa);
 
         final double g;
         final double esl = excentricity * sinLat;
-        g = pow((1 - esl) / (1 + esl), (alfa * excentricity) / 2);
+        g = pow((1 - esl) / (1 + esl), alfa * excentricity / 2);
         k1 = pow(tan(latitudeOfOrigin / 2 + s45), alfa) * g / tan(u0 / 2 + s45);
         ka = pow(1 / k1, -1 / alfa);
 
-        final double radius = sqrt(1 - excentricitySquared) / (1 - (excentricitySquared * (sinLat * sinLat)));
+        final double radius = sqrt(1 - excentricitySquared) / (1 - excentricitySquared * (sinLat * sinLat));
 
         ro0 = scaleFactor * radius / tan(pseudoStandardParallel);
         rop = ro0 * pow(tanS2, n);
@@ -216,7 +216,7 @@ public class Krovak extends MapProjection {
     }
 
     private MathTransform createAffineTransform(double x_scale, double y_scale, double xy_plane_rotation) {
-        /** calculates matrix coefficients form geometric coefficients */
+        /* calculates matrix coefficients form geometric coefficients */
         double a00 = x_scale * Math.cos(xy_plane_rotation);
         double a01 = -y_scale * Math.sin(xy_plane_rotation);
         double a10 = x_scale * Math.sin(xy_plane_rotation);
@@ -254,11 +254,11 @@ public class Krovak extends MapProjection {
     protected Point2D transformNormalized(final double lambda, final double phi, Point2D ptDst)
             throws ProjectionException {
         final double esp = excentricity * sin(phi);
-        final double gfi = pow(((1. - esp) / (1. + esp)), hae);
+        final double gfi = pow((1. - esp) / (1. + esp), hae);
         final double u = 2 * (atan(pow(tan(phi / 2 + s45), alfa) / k1 * gfi) - s45);
         final double deltav = -lambda * alfa;
         final double cosU = cos(u);
-        final double s = asin((cosAzim * sin(u)) + (sinAzim * cosU * cos(deltav)));
+        final double s = asin(cosAzim * sin(u) + sinAzim * cosU * cos(deltav));
         final double d = asin(cosU * sin(deltav) / cos(s));
         final double eps = n * d;
         final double ro = rop / pow(tan(s / 2 + s45), n);
@@ -268,7 +268,7 @@ public class Krovak extends MapProjection {
         final double x = -(ro * sin(eps));
 
         double[] result = {x, y};
-        /** swap axis if required */
+        /* swap axis if required */
         if (axisTransform != null) {
             try {
                 axisTransform.transform(new double[] {x, y}, 0, result, 0, 1);
@@ -290,7 +290,7 @@ public class Krovak extends MapProjection {
             throws ProjectionException {
         // x -> southing, y -> westing
         double[] result = {x, y};
-        /** swap axis if required */
+        /* swap axis if required */
         if (axisTransform != null) {
             try {
                 axisTransform.transform(new double[] {x, y}, 0, result, 0, 1);
@@ -304,9 +304,9 @@ public class Krovak extends MapProjection {
         final double d = eps / n;
         final double s = 2 * (atan(pow(ro0 / ro, 1 / n) * tanS2) - s45);
         final double cs = cos(s);
-        final double u = asin((cosAzim * sin(s)) - (sinAzim * cs * cos(d)));
-        final double kau = ka * pow(tan((u / 2.) + s45), 1 / alfa);
-        final double deltav = asin((cs * sin(d)) / cos(u));
+        final double u = asin(cosAzim * sin(s) - sinAzim * cs * cos(d));
+        final double kau = ka * pow(tan(u / 2. + s45), 1 / alfa);
+        final double deltav = asin(cs * sin(d) / cos(u));
         final double lambda = -deltav / alfa;
         double phi = 0;
         double fi1 = u;

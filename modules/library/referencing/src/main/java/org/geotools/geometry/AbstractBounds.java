@@ -132,7 +132,7 @@ public abstract class AbstractBounds implements Bounds {
         do {
             for (int i = 0; i < dimension; i++) {
                 final long bits = Double.doubleToLongBits(p ? getMinimum(i) : getMaximum(i));
-                code = 31 * code + ((int) (bits) ^ (int) (bits >>> 32));
+                code = 31 * code + ((int) bits ^ (int) (bits >>> 32));
             }
         } while ((p = !p) == false);
         final CoordinateReferenceSystem crs = getCoordinateReferenceSystem();

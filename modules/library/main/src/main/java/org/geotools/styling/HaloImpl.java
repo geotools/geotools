@@ -184,11 +184,11 @@ public class HaloImpl implements Halo, Cloneable {
         int result = 17;
 
         if (radius != null) {
-            result = (result * PRIME) + radius.hashCode();
+            result = result * PRIME + radius.hashCode();
         }
 
         if (fill != null) {
-            result = (result * PRIME) + fill.hashCode();
+            result = result * PRIME + fill.hashCode();
         }
 
         return result;

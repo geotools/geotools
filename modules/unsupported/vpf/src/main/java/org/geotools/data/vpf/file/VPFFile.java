@@ -334,7 +334,7 @@ public class VPFFile {
                 Number value = (Number) result.getAttribute(idName);
 
                 // Check to make sure we got a primary key match
-                if ((value == null) || (value.intValue() != id)) {
+                if (value == null || value.intValue() != id) {
                     result = null;
                 }
             }
@@ -404,9 +404,9 @@ public class VPFFile {
             int recordSize = getRecordSize();
 
             if (recordSize > 0) {
-                result = inputStream.length() >= (inputStream.getFilePointer() + recordSize);
+                result = inputStream.length() >= inputStream.getFilePointer() + recordSize;
             } else {
-                result = inputStream.length() >= (inputStream.getFilePointer() + 1);
+                result = inputStream.length() >= inputStream.getFilePointer() + 1;
             }
         } catch (IOException exc) {
             // No idea what to do if this happens
@@ -945,7 +945,7 @@ public class VPFFile {
             VariableIndexRow varRow = (VariableIndexRow) variableIndex.readRow((int) pos);
             inputStream.seek(varRow.getOffset());
         } else {
-            inputStream.seek(getAdjustedHeaderLength() + ((pos - 1) * getRecordSize()));
+            inputStream.seek(getAdjustedHeaderLength() + (pos - 1) * getRecordSize());
         }
     }
 

@@ -94,7 +94,7 @@ public class ObliqueOrthographic extends Orthographic {
         final double rho = hypot(x, y);
         double sinc = rho;
         if (sinc > 1.0) {
-            if ((sinc - 1.0) > EPSILON) {
+            if (sinc - 1.0 > EPSILON) {
                 throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
             }
             sinc = 1.0;
@@ -104,13 +104,13 @@ public class ObliqueOrthographic extends Orthographic {
             y = latitudeOfOrigin;
             x = 0.0;
         } else {
-            double phi = (cosc * sinphi0) + (y * sinc * cosphi0 / rho);
+            double phi = cosc * sinphi0 + y * sinc * cosphi0 / rho;
             y = (cosc - sinphi0 * phi) * rho; // rather clever; equivalent to part of (20-15)
             x *= sinc * cosphi0;
 
             // begin sinchk
             if (abs(phi) >= 1.0) {
-                phi = (phi < 0.0) ? -PI / 2 : PI / 2;
+                phi = phi < 0.0 ? -PI / 2 : PI / 2;
             } else {
                 phi = asin(phi);
             }
@@ -120,7 +120,7 @@ public class ObliqueOrthographic extends Orthographic {
                 if (x == 0.0) {
                     x = 0.0;
                 } else {
-                    x = (x < 0.0) ? -PI / 2 : PI / 2;
+                    x = x < 0.0 ? -PI / 2 : PI / 2;
                 }
             } else {
                 x = atan2(x, y);

@@ -119,12 +119,12 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
         Class result = (Class) expression.accept(this, null);
 
         // not a number, if a literal see if its contents can be cast to one
-        if (!(Number.class.isAssignableFrom(result)) && expression instanceof Literal) {
+        if (!Number.class.isAssignableFrom(result) && expression instanceof Literal) {
             Double value = expression.evaluate(null, Double.class);
             if (value != null) {
                 if (value.longValue() == value.doubleValue()) {
                     // integer type, keep it simple, int or long
-                    if ((value < Integer.MAX_VALUE) && value > Integer.MIN_VALUE) {
+                    if (value < Integer.MAX_VALUE && value > Integer.MIN_VALUE) {
                         result = Integer.class;
                     } else {
                         result = Long.class;

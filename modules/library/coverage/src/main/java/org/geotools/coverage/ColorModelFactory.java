@@ -152,7 +152,7 @@ final class ColorModelFactory {
          * Computes the number of entries required for the color palette.
          * We take the upper range value of the last non-NaN category.
          */
-        final int mapSize = ((int) Math.round(maximum)) + 1;
+        final int mapSize = (int) Math.round(maximum) + 1;
         final int[] ARGB = new int[mapSize];
         /*
          * Interpolates the colors in the color palette. Colors that do not fall

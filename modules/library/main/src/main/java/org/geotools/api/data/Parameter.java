@@ -390,15 +390,15 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (key == null ? 0 : key.hashCode());
         result = prime * result + maxOccurs;
-        result = prime * result + ((metadata == null) ? 0 : metadata.hashCode());
+        result = prime * result + (metadata == null ? 0 : metadata.hashCode());
         result = prime * result + minOccurs;
         result = prime * result + (required ? 1231 : 1237);
-        result = prime * result + ((sample == null) ? 0 : sample.hashCode());
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        result = prime * result + (sample == null ? 0 : sample.hashCode());
+        result = prime * result + (title == null ? 0 : title.hashCode());
+        result = prime * result + (type == null ? 0 : type.hashCode());
         return result;
     }
 

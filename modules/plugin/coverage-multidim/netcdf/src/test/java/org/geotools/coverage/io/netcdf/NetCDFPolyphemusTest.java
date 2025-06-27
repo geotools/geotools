@@ -181,10 +181,10 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                             verticalDomain.getVerticalElements(false, null);
                     final int numLevels = verticalElements.size();
                     final Iterator<? extends NumberRange<Double>> iterator = verticalElements.iterator();
-                    int step = ((numLevels / 5) > 0) ? (numLevels / 5) : 1;
+                    int step = numLevels / 5 > 0 ? numLevels / 5 : 1;
                     for (int i = 0; i < numLevels; i++) {
                         NumberRange<Double> level = iterator.next();
-                        if ((i % step) == 0) {
+                        if (i % step == 0) {
                             requestedVerticalSubset.add(level);
                         }
                     }
@@ -194,10 +194,10 @@ public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
                     SortedSet<? extends DateRange> temporalElements = temporalDomain.getTemporalElements(false, null);
                     final int numTimes = temporalElements.size();
                     Iterator<? extends DateRange> iteratorT = temporalElements.iterator();
-                    step = ((numTimes / 5) > 0) ? (numTimes / 5) : 1;
+                    step = numTimes / 5 > 0 ? numTimes / 5 : 1;
                     for (int i = 0; i < numTimes; i++) {
                         DateRange time = iteratorT.next();
-                        if ((i % step) == 0) {
+                        if (i % step == 0) {
                             requestedTemporalSubset.add(time);
                         }
                     }

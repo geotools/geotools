@@ -169,9 +169,9 @@ public class ImageTiler {
             int horizontalIndex,
             int verticalIndex) {
 
-        double envelopeStartX = (horizontalIndex * geographicTileWidth) + coverageMinX;
+        double envelopeStartX = horizontalIndex * geographicTileWidth + coverageMinX;
         double envelopeEndX = envelopeStartX + geographicTileWidth;
-        double envelopeStartY = (verticalIndex * geographicTileHeight) + coverageMinY;
+        double envelopeStartY = verticalIndex * geographicTileHeight + coverageMinY;
         double envelopeEndY = envelopeStartY + geographicTileHeight;
 
         return new ReferencedEnvelope(envelopeStartX, envelopeEndX, envelopeStartY, envelopeEndY, targetCRS);
@@ -191,7 +191,7 @@ public class ImageTiler {
         }
 
         GridCoverage2DReader gridReader = format.getReader(this.getInputFile(), hints);
-        GridCoverage2D gridCoverage = gridReader.read(null);
+        GridCoverage2D gridCoverage = gridReader.read();
         // docs end load coverage
 
         // docs start envelope
@@ -232,7 +232,7 @@ public class ImageTiler {
 
                 // use the AbstractGridFormat's writer to write out the tile
                 File tileFile = new File(tileDirectory, i + "_" + j + "." + fileExtension);
-                format.getWriter(tileFile).write(finalCoverage, null);
+                format.getWriter(tileFile).write(finalCoverage);
             }
         }
     }

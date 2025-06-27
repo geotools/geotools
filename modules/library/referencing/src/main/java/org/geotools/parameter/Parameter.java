@@ -188,8 +188,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             final Comparable<Object> minimum = (Comparable) descriptor.getMinimumValue();
             @SuppressWarnings("unchecked")
             final Comparable<Object> maximum = (Comparable) descriptor.getMaximumValue();
-            if ((minimum != null && minimum.compareTo(value) > 0)
-                    || (maximum != null && maximum.compareTo(value) < 0)) {
+            if (minimum != null && minimum.compareTo(value) > 0 || maximum != null && maximum.compareTo(value) < 0) {
                 error = MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, minimum, maximum);
             } else {
                 final Set<?> validValues = descriptor.getValidValues();

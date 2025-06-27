@@ -29,6 +29,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -156,7 +157,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      *      org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
-    public void write(final GridCoverage gc, final GeneralParameterValue[] params)
+    public void write(final GridCoverage gc, final GeneralParameterValue... params)
             throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
 
         GeoToolsWriteParams gtParams = null;
@@ -170,9 +171,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            Parameter<?> param;
             for (GeneralParameterValue generalParameterValue : params) {
-                param = (Parameter) generalParameterValue;
+                Parameter<?> param = (Parameter<?>) generalParameterValue;
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
                     gtParams = (GeoToolsWriteParams) param.getValue();
@@ -245,7 +245,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // write tfw
         //
-        if (writeTfw && (destination instanceof File)) {
+        if (writeTfw && destination instanceof File) {
             handleTFW(gc, tr);
         }
     }
@@ -262,7 +262,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         final String name = destFile.getName();
         final File tfw = new File(parentFile, name.replace("tif", "tfw"));
         final File prj = new File(parentFile, name.replace("tif", "prj"));
-        try (final BufferedWriter outW = new BufferedWriter(new FileWriter(prj))) {
+        try (final BufferedWriter outW = new BufferedWriter(new FileWriter(prj, StandardCharsets.UTF_8))) {
             new WorldFileWriter(tfw, tr); // side effect of creation writes the file
             outW.write(gc.getCoordinateReferenceSystem().toWKT());
         }

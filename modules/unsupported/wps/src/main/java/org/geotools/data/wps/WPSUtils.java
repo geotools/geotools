@@ -84,10 +84,7 @@ public class WPSUtils {
         } else {
             // is the value a literal? Do a very basic test here for common
             // literal types. TODO: figure out a more thorough test here
-            if ((obj instanceof String)
-                    || (obj instanceof Double)
-                    || (obj instanceof Float)
-                    || (obj instanceof Integer)) {
+            if (obj instanceof String || obj instanceof Double || obj instanceof Float || obj instanceof Integer) {
                 inputtype = INPUTTYPE_LITERAL;
             } else {
                 // assume complex data
@@ -177,7 +174,7 @@ public class WPSUtils {
         }
 
         EList inputs = dataInputs.getInput();
-        if ((inputs == null) || inputs.isEmpty()) {
+        if (inputs == null || inputs.isEmpty()) {
             return null;
         }
 
@@ -257,7 +254,7 @@ public class WPSUtils {
         }
 
         EList outputs = processOutputs.getOutput();
-        if ((outputs == null) || outputs.isEmpty()) {
+        if (outputs == null || outputs.isEmpty()) {
             return null;
         }
 
@@ -384,25 +381,25 @@ public class WPSUtils {
      * @return class type it maps to
      */
     private static Class getComplexType(String encoding, String mimetype, String schema) {
-        if ((encoding.toUpperCase()).contains("GML")
-                || (mimetype.toUpperCase()).contains("GML")
-                || (schema.toUpperCase()).contains("GML")) {
+        if (encoding.toUpperCase().contains("GML")
+                || mimetype.toUpperCase().contains("GML")
+                || schema.toUpperCase().contains("GML")) {
             return Geometry.class;
-        } else if ((encoding.toUpperCase()).contains("POLYGON")
-                || (mimetype.toUpperCase()).contains("POLYGON")
-                || (schema.toUpperCase()).contains("POLYGON")) {
+        } else if (encoding.toUpperCase().contains("POLYGON")
+                || mimetype.toUpperCase().contains("POLYGON")
+                || schema.toUpperCase().contains("POLYGON")) {
             return Geometry.class;
-        } else if ((encoding.toUpperCase()).contains("POINT")
-                || (mimetype.toUpperCase()).contains("POINT")
-                || (schema.toUpperCase()).contains("POINT")) {
+        } else if (encoding.toUpperCase().contains("POINT")
+                || mimetype.toUpperCase().contains("POINT")
+                || schema.toUpperCase().contains("POINT")) {
             return Geometry.class;
-        } else if ((encoding.toUpperCase()).contains("LINE")
-                || (mimetype.toUpperCase()).contains("LINE")
-                || (schema.toUpperCase()).contains("LINE")) {
+        } else if (encoding.toUpperCase().contains("LINE")
+                || mimetype.toUpperCase().contains("LINE")
+                || schema.toUpperCase().contains("LINE")) {
             return Geometry.class;
-        } else if ((encoding.toUpperCase()).contains("RING")
-                || (mimetype.toUpperCase()).contains("RING")
-                || (schema.toUpperCase()).contains("RING")) {
+        } else if (encoding.toUpperCase().contains("RING")
+                || mimetype.toUpperCase().contains("RING")
+                || schema.toUpperCase().contains("RING")) {
             return Geometry.class;
         }
 

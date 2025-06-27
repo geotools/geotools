@@ -153,7 +153,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             // if (target != Geometry.class || target != GeometryAttribute.class)
             //    return false;
 
-            return (object instanceof Feature || object instanceof FeatureType);
+            return object instanceof Feature || object instanceof FeatureType;
         }
 
         @Override

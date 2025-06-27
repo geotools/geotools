@@ -119,10 +119,10 @@ public class BaseCoverageProcessingNodeTest {
 
         // add source clean output but we also create a cycle which kills our
         // small framework
-        testedObject2.addSource((testedObject));
-        testedObject.addSink((testedObject2));
+        testedObject2.addSource(testedObject);
+        testedObject.addSink(testedObject2);
         try {
-            testedObject2.addSink((testedObject));
+            testedObject2.addSink(testedObject);
             Assert.fail();
         } catch (IllegalStateException e) {
             // TODO: handle exception

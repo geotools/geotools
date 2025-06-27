@@ -164,6 +164,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * anything about the Geotools's factory plugin system. Consequently we need to process JTS factories in a special
      * way.
      */
+    @SuppressWarnings("UnusedNestedClass") // revisit, this class is unused
     private static final class Registry extends FactoryCreator {
         /** Creates a registry for JTS factories. */
         public Registry() {

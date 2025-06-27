@@ -404,7 +404,7 @@ public class SchemaCache {
         if (directory.isDirectory() == false) {
             return false;
         }
-        if ((new File(directory, CACHE_DIRECTORY_NAME)).isDirectory()) {
+        if (new File(directory, CACHE_DIRECTORY_NAME).isDirectory()) {
             return true;
         }
         for (String subdirectory : GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES) {

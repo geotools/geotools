@@ -34,6 +34,7 @@ import org.geotools.util.SimpleInternationalString;
  * @author Touraïvane
  * @since 2.1
  */
+@SuppressWarnings("ClassInitializationDeadlock") // Static initialization of subclass instances
 public class PositionalAccuracyImpl extends ElementImpl implements PositionalAccuracy {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6043381860937480828L;

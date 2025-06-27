@@ -6,7 +6,7 @@ The GeoParquet DataStore provides read and query access to GeoParquet format dat
 `GeoParquet <https://github.com/opengeospatial/geoparquet>`_ is an open format for geospatial data that builds on the `Apache Parquet <https://parquet.apache.org/>`_ columnar storage format. GeoParquet brings the performance benefits of columnar storage to geospatial data, making it particularly well-suited for analytics and large datasets.
 
 **Maven**::
-   
+
    <dependency>
      <groupId>org.geotools</groupId>
      <artifactId>gt-geoparquet</artifactId>
@@ -57,14 +57,14 @@ Basic Example
    Map<String, Object> params = new HashMap<>();
    params.put("dbtype", "geoparquet");
    params.put("uri", "file:/path/to/data.parquet");
-   
+
    DataStore store = DataStoreFinder.getDataStore(params);
    String[] typeNames = store.getTypeNames();
    SimpleFeatureSource source = store.getFeatureSource(typeNames[0]);
-   
+
    // Read all features
    SimpleFeatureCollection features = source.getFeatures();
-   
+
    // Or apply a filter
    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
    Filter filter = ff.intersects(
@@ -81,7 +81,7 @@ Directory of GeoParquet Files
    Map<String, Object> params = new HashMap<>();
    params.put("dbtype", "geoparquet");
    params.put("uri", "file:/path/to/directory/with/parquet/files");
-   
+
    DataStore store = DataStoreFinder.getDataStore(params);
    // Each GeoParquet file will appear as a separate feature type
    String[] typeNames = store.getTypeNames();
@@ -96,7 +96,7 @@ Hive-Partitioned Dataset
    params.put("uri", "s3://my-bucket/data/year=*/month=*/day=*");
    // Optionally limit partition depth
    params.put("max_hive_depth", 2); // Only use year and month, ignore day
-   
+
    DataStore store = DataStoreFinder.getDataStore(params);
    // Each distinct partition becomes a separate feature type
    String[] typeNames = store.getTypeNames();
@@ -109,7 +109,7 @@ Remote GeoParquet File (HTTP)
    Map<String, Object> params = new HashMap<>();
    params.put("dbtype", "geoparquet");
    params.put("uri", "https://example.com/data.parquet");
-   
+
    DataStore store = DataStoreFinder.getDataStore(params);
 
 Remote GeoParquet File (S3)
@@ -119,8 +119,8 @@ Remote GeoParquet File (S3)
 
    Map<String, Object> params = new HashMap<>();
    params.put("dbtype", "geoparquet");
-   params.put("uri", "s3://my-bucket/data.parquet?region=us-west-2&access_key=AKIAIOSFODNN7EXAMPLE&secret_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY");
-   
+   params.put("uri", "s3://my-bucket/data.parquet?s3_region=us-west-2&s3_access_key_id=AKIAIOSFODNN7EXAMPLE&s3_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY&s3_session_token=FwoGZXIvYXdzEJr");
+
    DataStore store = DataStoreFinder.getDataStore(params);
 
 Parameters
@@ -212,12 +212,12 @@ Example with Time Series Data
    Map<String, Object> params = new HashMap<>();
    params.put("dbtype", "geoparquet");
    params.put("uri", "s3://my-bucket/data/year=*/month=*/day=*");
-   
+
    DataStore store = DataStoreFinder.getDataStore(params);
-   
+
    // Get all feature types (one per partition)
    String[] typeNames = store.getTypeNames();
-   
+
    // Get data for a specific day
    SimpleFeatureSource source = store.getFeatureSource("year_2023_month_02_day_01");
 
@@ -230,7 +230,7 @@ You can control how many levels of partition hierarchy are used with the ``max_h
 
    // Only use year and month, ignore day partitioning
    params.put("max_hive_depth", 2);
-   
+
    // This will produce feature types like "year_2023_month_01"
    DataStore store = DataStoreFinder.getDataStore(params);
 

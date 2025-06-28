@@ -809,6 +809,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         if (i < postStack.size()) {
             postStack.pop();
             postStack.push(filter);
+            return null;
         }
 
         preStack.pop(); // null

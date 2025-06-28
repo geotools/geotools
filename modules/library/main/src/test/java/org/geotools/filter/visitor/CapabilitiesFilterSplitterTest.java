@@ -400,4 +400,22 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(f1, visitor.getFilterPre());
         assertEquals(ff.and(f2, f3), visitor.getFilterPost());
     }
+
+    @Test
+    public void testVisitNullFilterPatchFix() throws Exception {
+        // Create a filter where a property is checked for null
+        PropertyIsNull nullFilter = ff.isNull(ff.property(nameAtt));
+
+        // Create capabilities that DO NOT support PropertyIsNull
+        Capabilities limitedCaps = new Capabilities();
+        // Note: Not adding PropertyIsNull to capabilities, meaning it's unsupported
+
+        // Run visitor on the filter
+        visitor = newVisitor(limitedCaps);
+        nullFilter.accept(visitor, null);
+
+        // The null filter should be pushed to post-processing since it is not supported
+        assertEquals("Pre-processing filter should be INCLUDE", Filter.INCLUDE, visitor.getFilterPre());
+        assertEquals("Post-processing filter should contain the original filter", nullFilter, visitor.getFilterPost());
+    }
 }

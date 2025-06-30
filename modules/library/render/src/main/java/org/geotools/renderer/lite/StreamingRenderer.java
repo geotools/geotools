@@ -158,6 +158,7 @@ import org.geotools.renderer.style.StyleAttributeExtractor;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
+import org.geotools.styling.visitor.FeatureStyleScaleStyleVisitor;
 import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
 import org.geotools.styling.visitor.RenderingSelectorStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
@@ -1869,13 +1870,8 @@ public class StreamingRenderer implements GTRenderer {
 
         LiteFeatureTypeStyle lfts;
         boolean foundComposite = false;
-
-        // check if any <VendorOption name="renderingMap">false</VendorOption>
-        // is present in the style removing style's elements not meant to be applied
-        // to the data
-        RenderingSelectorStyleVisitor selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
-        layer.getStyle().accept(selectorStyleVisitor);
-        Style style = (Style) selectorStyleVisitor.getCopy();
+        // apply the style visitors to the layer style
+        Style style = applyStyleVisitors(layer);
 
         FeatureType schema = layer.getFeatureSource().getSchema();
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
@@ -1945,6 +1941,21 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         return result;
+    }
+
+    private static Style applyStyleVisitors(Layer layer) {
+        // check if any <VendorOption name="renderingMap">false</VendorOption>
+        // is present in the style removing style's elements not meant to be applied
+        // to the data
+        RenderingSelectorStyleVisitor selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
+        layer.getStyle().accept(selectorStyleVisitor);
+        Style style = (Style) selectorStyleVisitor.getCopy();
+        // Set the max and min scale denominators from the parent feature style to the children rules
+        // if they are set on the vendor options.
+        FeatureStyleScaleStyleVisitor scaleStyleVisitor = new FeatureStyleScaleStyleVisitor();
+        style.accept(scaleStyleVisitor);
+        style = (Style) scaleStyleVisitor.getCopy();
+        return style;
     }
 
     /**

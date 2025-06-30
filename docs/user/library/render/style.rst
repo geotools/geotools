@@ -313,6 +313,10 @@ Notes on handling of features:
      // sort newer cities first, than by name  
      fts.getOptions().put( "sortBy", "year D,name A"); 
 
+* ``maxScaleDenominator``: sets the maximun scale the children ``Rule`` will use as default.
+
+* ``minScaleDenominator``: sets the minimun scale the children ``Rule`` will use as default.
+
 Rule
 ''''
 A ``FeatureTypeStyle`` contains one or more rules, these rules are considered in order with the possibility of an "else" Rule being

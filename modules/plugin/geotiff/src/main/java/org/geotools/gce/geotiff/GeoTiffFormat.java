@@ -220,7 +220,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
             //
             // do we have verything as geotiff?
             if (metadataAdapter.hasModelTrasformation()
-                    || (metadataAdapter.hasPixelScales() && metadataAdapter.hasTiePoints())) return true;
+                    || metadataAdapter.hasPixelScales() && metadataAdapter.hasTiePoints()) return true;
 
             // now look for info into a WLD file or TAB file
             MathTransform raster2Model = GeoTiffReader.parseWorldFile(o);

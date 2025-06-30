@@ -222,11 +222,11 @@ public class AnchorPointImpl implements org.geotools.api.style.AnchorPoint, Clon
         int result = 17;
 
         if (anchorPointX != null) {
-            result = (result * PRIME) + anchorPointX.hashCode();
+            result = result * PRIME + anchorPointX.hashCode();
         }
 
         if (anchorPointY != null) {
-            result = (result * PRIME) + anchorPointY.hashCode();
+            result = result * PRIME + anchorPointY.hashCode();
         }
 
         return result;

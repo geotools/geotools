@@ -16,6 +16,9 @@
  */
 package org.geotools.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,7 +36,7 @@ import org.junit.runners.Parameterized;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 @RunWith(Parameterized.class)
-public class DateTimeParserTest extends Assert {
+public class DateTimeParserTest {
 
     private static final DateTimeParser PARSER = new DateTimeParser(
             -1,
@@ -500,7 +503,7 @@ public class DateTimeParserTest extends Assert {
         Collection time = PARSER.parse(timeInterval);
         assertEquals(5, time.size());
         assertEquals(1318241472000l, getTime(time, 0));
-        assertEquals(1318241472000l + (3600 * 1000 * 4), getTime(time, time.size() - 1));
+        assertEquals(1318241472000l + 3600 * 1000 * 4, getTime(time, time.size() - 1));
     }
 
     @Test
@@ -509,7 +512,7 @@ public class DateTimeParserTest extends Assert {
         Collection time = PARSER.parse(timeInterval);
         assertEquals(3, time.size());
         assertEquals(1318241472000l, getTime(time, 0));
-        assertEquals(1318241472000l + (3600 * 1000 * 48), getTime(time, 1));
+        assertEquals(1318241472000l + 3600 * 1000 * 48, getTime(time, 1));
     }
 
     @Test

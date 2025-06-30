@@ -152,6 +152,7 @@ public class DirectoryDataStore implements DataStore {
     }
 
     @Override
+    @SuppressWarnings("EmptyCatch")
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from Directory " + cache.directory);

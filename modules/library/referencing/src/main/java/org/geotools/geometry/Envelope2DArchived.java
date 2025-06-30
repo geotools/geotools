@@ -322,7 +322,7 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             final CoordinateReferenceSystem otherCRS =
-                    (object instanceof Envelope2DArchived) ? ((Envelope2DArchived) object).crs : null;
+                    object instanceof Envelope2DArchived ? ((Envelope2DArchived) object).crs : null;
             return Utilities.equals(crs, otherCRS);
         }
         return false;
@@ -346,8 +346,8 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
     public boolean boundsEquals(final Bounds that, final int xDim, final int yDim, double eps) {
         eps *= 0.5 * (width + height);
         for (int i = 0; i < 4; i++) {
-            final int dim2D = (i & 1);
-            final int dimND = (dim2D == 0) ? xDim : yDim;
+            final int dim2D = i & 1;
+            final int dimND = dim2D == 0 ? xDim : yDim;
             final double value2D, valueND;
             if ((i & 2) == 0) {
                 value2D = this.getMinimum(dim2D);
@@ -530,6 +530,6 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      * @return true if envelope has just been constructed
      */
     private boolean isNull() {
-        return (getMinX() == 0 && getMinY() == 0 && getWidth() < 0 && getHeight() < 0);
+        return getMinX() == 0 && getMinY() == 0 && getWidth() < 0 && getHeight() < 0;
     }
 }

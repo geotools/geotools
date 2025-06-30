@@ -23,6 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -153,7 +154,7 @@ public class WorldFileWriter {
         if (buffSize <= 0)
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "buffSize", buffSize));
-        write(new BufferedWriter(new OutputStreamWriter(outLocation), buffSize), transform);
+        write(new BufferedWriter(new OutputStreamWriter(outLocation, StandardCharsets.UTF_8), buffSize), transform);
     }
 
     /**
@@ -161,12 +162,11 @@ public class WorldFileWriter {
      *
      * @param writer to use for writing the transformation.
      * @param transform is the transformation that we want to write out.
-     * @throws IOException in case something bad happens.
      */
     @SuppressWarnings("PMD.UseTryWithResources")
     private void write(BufferedWriter writer, MathTransform transform) {
         try {
-            if ((transform instanceof IdentityTransform)) {
+            if (transform instanceof IdentityTransform) {
                 writer.write("1");
                 writer.newLine();
                 writer.write("0");
@@ -181,7 +181,7 @@ public class WorldFileWriter {
                 close(writer);
                 return;
             }
-            if ((transform instanceof AffineTransform2D)) {
+            if (transform instanceof AffineTransform2D) {
                 final AffineTransform2D affine = (AffineTransform2D) transform;
                 writer.write(Double.toString(affine.getScaleX()));
                 writer.newLine();
@@ -239,7 +239,7 @@ public class WorldFileWriter {
         if (!outLocation.canWrite() || !outLocation.isFile())
             throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, outLocation));
         // create a writer
-        write(new BufferedWriter(new FileWriter(outLocation), buffSize), transform);
+        write(new BufferedWriter(new FileWriter(outLocation, StandardCharsets.UTF_8), buffSize), transform);
     }
     /**
      * Constructor.

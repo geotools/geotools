@@ -229,8 +229,8 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
             GridCoverageRendererUtilities.ensureSourceNotNull(
                     source, this.getName().toString());
             GridCoverage2D output;
-            if ((!Double.isNaN(gammaValue) && !Double.isInfinite(gammaValue) && !(Math.abs(gammaValue - 1) < 1E-6))
-                    || (type != null && type.length() > 0)) {
+            if (!Double.isNaN(gammaValue) && !Double.isInfinite(gammaValue) && !(Math.abs(gammaValue - 1) < 1E-6)
+                    || type != null && type.length() > 0) {
 
                 // /////////////////////////////////////////////////////////////////////
                 //

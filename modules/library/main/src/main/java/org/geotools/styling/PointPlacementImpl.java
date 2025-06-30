@@ -220,15 +220,15 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
         int result = 17;
 
         if (anchorPoint != null) {
-            result = (result * PRIME) + anchorPoint.hashCode();
+            result = result * PRIME + anchorPoint.hashCode();
         }
 
         if (displacement != null) {
-            result = (result * PRIME) + displacement.hashCode();
+            result = result * PRIME + displacement.hashCode();
         }
 
         if (rotation != null) {
-            result = (result * PRIME) + rotation.hashCode();
+            result = result * PRIME + rotation.hashCode();
         }
 
         return result;

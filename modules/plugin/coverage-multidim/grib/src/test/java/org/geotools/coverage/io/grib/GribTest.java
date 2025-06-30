@@ -28,7 +28,6 @@ import java.util.List;
 import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.io.FileUtils;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -207,7 +206,7 @@ public class GribTest extends Assert {
             String[] names = reader.getGridCoverageNames();
             assertNotNull(names);
             // Selections of one Coverage
-            GridCoverage2D grid = reader.read(names[0], null);
+            GridCoverage2D grid = reader.read(names[0]);
             assertNotNull(grid);
             // Selection of one coordinate from the Coverage and check if the
             // value is not a NaN
@@ -268,9 +267,8 @@ public class GribTest extends Assert {
             GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
             gg.setValue(new GridGeometry2D(gridRange, newEnvelope));
 
-            GeneralParameterValue[] values = {gg};
             // Read with the larger BBOX
-            GridCoverage2D grid = reader.read(coverageName, values);
+            GridCoverage2D grid = reader.read(coverageName, gg);
             // Check if the result is not null
             assertNotNull(grid);
         } finally {
@@ -326,16 +324,14 @@ public class GribTest extends Assert {
                     new DefaultParameterDescriptor<>("HEIGHT_ABOVE_GROUND", List.class, null, null).createValue();
             height.setValue(new ArrayList<>(Collections.singletonList(10.0)));
 
-            GeneralParameterValue[] values = {gg, time, height};
-
             // Read with 1st date
-            GridCoverage2D grid = reader.read(coverageName, values);
+            GridCoverage2D grid = reader.read(coverageName, gg, time, height);
             assertNotNull(grid);
 
             // Read with 12th date
             // 2019-10-12T15:00:00.000Z
             time.setValue(new ArrayList<>(Collections.singletonList(new Date(1570892400000L))));
-            grid = reader.read(coverageName, values);
+            grid = reader.read(coverageName, gg, time, height);
             assertNotNull(grid);
         } finally {
             // Dispose
@@ -369,7 +365,7 @@ public class GribTest extends Assert {
             assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS, crsType.getCoordinates());
             assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
             assertTrue(crs instanceof DerivedCRS);
-            DerivedCRS derivedCRS = ((DerivedCRS) crs);
+            DerivedCRS derivedCRS = (DerivedCRS) crs;
             MathTransform transform = derivedCRS.getConversionFromBase().getMathTransform();
             assertTrue(transform instanceof RotatedPole);
             RotatedPole rotatedPole = (RotatedPole) transform;

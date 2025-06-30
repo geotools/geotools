@@ -295,9 +295,9 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     /** Checks if the specified {@code SampleModel} is compatible with this {@code ColorModel}. */
     @Override
     public boolean isCompatibleSampleModel(final SampleModel sm) {
-        return (sm instanceof ComponentSampleModel)
+        return sm instanceof ComponentSampleModel
                 && sm.getTransferType() == transferType
                 && sm.getNumBands() == numBands
-                && (1 << sm.getSampleSize(visibleBand)) >= getMapSize();
+                && 1 << sm.getSampleSize(visibleBand) >= getMapSize();
     }
 }

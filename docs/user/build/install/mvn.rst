@@ -66,7 +66,7 @@ Windows manual install
 
 3. Set the following environmental variables for Maven to work (note your paths may differ based on Java or Maven revision numbers):
    
-   * ``JAVA_HOME = C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot``
+   * ``JAVA_HOME = C:\PROGRA~1\ECLIPS~1\jdk-17.0.15-hotspot``
     
      Location of your JDK installation
    
@@ -84,6 +84,6 @@ Windows manual install
     
       Apache Maven 3.9.5(84538c9988a25aec085021c365c560670ad80f63)
       Maven home: C:\devel\apache-maven-3.9.5
-      Java version: 11.0.17, vendor: Eclipse Adoptium, runtime: C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot
+      Java version: 17.0.15, vendor: Eclipse Adoptium, runtime: C:\PROGRA~1\ECLIPS~1\jdk-17.0.15-hotspot
       Default locale: it_IT, platform encoding: Cp1252
       OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"

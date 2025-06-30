@@ -210,6 +210,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     }
 
     @Override
+    @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
         if (other instanceof CompoundRing) {
             CompoundRing csOther = (CompoundRing) other;

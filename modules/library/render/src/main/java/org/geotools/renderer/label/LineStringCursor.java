@@ -127,7 +127,7 @@ public class LineStringCursor {
             // find the segment and the offset within the segment
             for (int i = 0; i < segmentLenghts.length; i++) {
                 double length = segmentLenghts[i];
-                if (ordinate <= (length + position)) {
+                if (ordinate <= length + position) {
                     segment = i;
                     offsetDistance = ordinate - position;
                     break;
@@ -151,11 +151,11 @@ public class LineStringCursor {
             // move forward until you get to the desired offset, or end up
             // into the end of the line
             while (offset > 0) {
-                if ((offsetDistance + offset) <= segmentLenghts[segment]) {
+                if (offsetDistance + offset <= segmentLenghts[segment]) {
                     // move within the current segment and we're done
                     offsetDistance += offset;
                     return true;
-                } else if (segment == (segmentLenghts.length - 1)) {
+                } else if (segment == segmentLenghts.length - 1) {
                     // ops, reached the end of the linestring
                     offsetDistance = segmentLenghts[segment];
                     return false;
@@ -170,7 +170,7 @@ public class LineStringCursor {
             // move backwards until you get to the desired offset, or end up
             // into the end of the line
             while (offset < 0.0) {
-                if ((offsetDistance + offset) >= 0.0) {
+                if (offsetDistance + offset >= 0.0) {
                     // move within the current segment and we're done
                     offsetDistance += offset;
                     return true;
@@ -217,8 +217,8 @@ public class LineStringCursor {
 
     protected double getSegmentAngle(int segmentIdx) {
         if (Double.isNaN(segmentAngles[segmentIdx])) {
-            double dx = (coords.getX(segmentIdx + 1) - coords.getX(segmentIdx));
-            double dy = (coords.getY(segmentIdx + 1) - coords.getY(segmentIdx));
+            double dx = coords.getX(segmentIdx + 1) - coords.getX(segmentIdx);
+            double dy = coords.getY(segmentIdx + 1) - coords.getY(segmentIdx);
             segmentAngles[segmentIdx] = Math.atan2(dy, dx);
         }
         return segmentAngles[segmentIdx];
@@ -226,8 +226,8 @@ public class LineStringCursor {
 
     /** Returns the current segment direction as an angle expressed in radians */
     public double getLabelOrientation() {
-        double dx = (coords.getX(segment + 1) - coords.getX(segment));
-        double dy = (coords.getY(segment + 1) - coords.getY(segment));
+        double dx = coords.getX(segment + 1) - coords.getX(segment);
+        double dy = coords.getY(segment + 1) - coords.getY(segment);
         double slope = dy / dx;
         double angle = Math.atan(slope);
         // make sure we turn PI/2 into -PI/2, we don't want some labels looking straight up
@@ -274,6 +274,7 @@ public class LineStringCursor {
      *
      * @deprecated Does not work correctly, will be removed (tried too many times to fix it)
      */
+    @Deprecated
     public double getMaxAngleChange(double startOrdinate, double endOrdinate, double step) {
         if (startOrdinate > endOrdinate)
             throw new IllegalArgumentException("Invalid arguments, endOrdinate < starOrdinate");
@@ -291,21 +292,21 @@ public class LineStringCursor {
                 // but also to cover at least "step" distance (might require more than one segment)
                 double distance = segmentLenghts[delegate.segment] - delegate.offsetDistance;
                 delegate.offsetDistance = 0;
-                while (((distance < step && ordinate + distance < endOrdinate) || delegate.segment == prevSegment)
-                        && delegate.segment < (delegate.segmentLenghts.length - 1)) {
+                while ((distance < step && ordinate + distance < endOrdinate || delegate.segment == prevSegment)
+                        && delegate.segment < delegate.segmentLenghts.length - 1) {
                     delegate.segment++;
                     distance += segmentLenghts[delegate.segment];
                 }
                 ordinate += distance;
 
-                if (delegate.segment < (delegate.segmentLenghts.length - 1)) {
+                if (delegate.segment < delegate.segmentLenghts.length - 1) {
                     double angle = getSegmentAngle(delegate.segment);
                     accumulator.accumulate(angle);
                 }
 
                 // move to next segment
                 delegate.segment++;
-            } while (ordinate < endOrdinate && (delegate.segment < (delegate.segmentLenghts.length)));
+            } while (ordinate < endOrdinate && delegate.segment < delegate.segmentLenghts.length);
         } catch (Exception e) {
             LOGGER.log(Level.INFO, "Error occurred while computing max angle change in label", e);
         }

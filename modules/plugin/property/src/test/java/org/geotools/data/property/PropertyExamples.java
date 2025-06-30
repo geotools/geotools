@@ -20,6 +20,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class PropertyExamples {
             }
             File example = new File(tmp, "example.properties");
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(example))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(example, StandardCharsets.UTF_8))) {
                 writer.write("_=id:Integer,name:String,geom:Point");
                 writer.newLine();
                 writer.write("fid1=1|jody garnett|POINT(0 0)");

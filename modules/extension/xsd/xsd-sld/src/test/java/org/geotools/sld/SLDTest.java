@@ -141,9 +141,9 @@ public class SLDTest {
         Parser parser = new Parser(config);
         StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, "UTF-8"));
 
-        Style s = ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
+        Style s = ((UserLayer) sld.layers().get(0)).getUserStyles()[0];
         TextSymbolizer symbolizer = (TextSymbolizer)
-                (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
+                s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         Font font = symbolizer.fonts().get(0);
         assertFalse(font.getFamily().isEmpty());
 

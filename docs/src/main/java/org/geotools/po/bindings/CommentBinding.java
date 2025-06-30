@@ -25,6 +25,7 @@ public class CommentBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return PO.comment;
     }
@@ -36,6 +37,7 @@ public class CommentBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -47,6 +49,7 @@ public class CommentBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String comment = (String) value;
         return comment;

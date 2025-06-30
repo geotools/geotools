@@ -61,18 +61,18 @@ public class PolygonHandler2Test extends org.geotools.data.shapefile.TestCaseSup
         int x = 10;
         int y = 10;
 
-        shells.add(copyTo(x, y, ps.width - (2 * x), ps.height - (2 * y), rectangle(precision, 0)));
+        shells.add(copyTo(x, y, ps.width - 2 * x, ps.height - 2 * y, rectangle(precision, 0)));
 
         int w = 11;
         int h = 11;
         int s = 10;
 
-        int nx = (ps.width - (2 * x)) / (w + s);
-        int ny = (ps.height - (2 * y)) / (h + s);
+        int nx = (ps.width - 2 * x) / (w + s);
+        int ny = (ps.height - 2 * y) / (h + s);
 
         for (int i = 0; i < nx; i++) {
             for (int j = 0; j < ny; j++) {
-                holes.add(copyTo(x + s + (i * (w + s)), y + s + (j * (h + s)), w, h, rectangle(precision, 0)));
+                holes.add(copyTo(x + s + i * (w + s), y + s + j * (h + s), w, h, rectangle(precision, 0)));
             }
         }
 

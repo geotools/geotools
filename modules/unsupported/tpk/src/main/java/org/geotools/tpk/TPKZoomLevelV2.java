@@ -285,9 +285,9 @@ public class TPKZoomLevelV2 implements TPKZoomLevel {
                 }
 
                 // calculate position of the tile index
-                long bundleRow = (max_row_column - row) - bundle.baseRow;
+                long bundleRow = max_row_column - row - bundle.baseRow;
                 long indexReadOffset = DATA_HEADER_LENGTH
-                        + ((bundleRow * BUNDLE_DIMENSION) + (col - bundle.baseColumn)) * INDEX_ENTRY_LENGTH;
+                        + (bundleRow * BUNDLE_DIMENSION + col - bundle.baseColumn) * INDEX_ENTRY_LENGTH;
 
                 // read the tile index and get the offset to the tile data
                 TPKTile.TileInfo ti = getTileInfo(bundle, indexReadOffset);

@@ -90,7 +90,7 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
     }
 
     private int calculateBlockSizeForBlock(int block) {
-        long offsetInFile = this.cacheBlockSize * block;
+        long offsetInFile = (long) this.cacheBlockSize * block;
         long remainingInFile = this.length - offsetInFile;
         return (int) Math.min(this.cacheBlockSize, remainingInFile);
     }

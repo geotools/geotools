@@ -209,7 +209,7 @@ public class KMLParsingTest extends KMLTestSupport {
             Object o = ud.get("UntypedExtendedData");
             // every features from the schemalessExtendedData.kml sample contain at least 1 extended
             // data attribute
-            assert (o != null && o instanceof HashMap && ((HashMap) o).keySet().size() > 1);
+            assert o != null && o instanceof HashMap && ((HashMap) o).keySet().size() > 1;
         }
     }
 

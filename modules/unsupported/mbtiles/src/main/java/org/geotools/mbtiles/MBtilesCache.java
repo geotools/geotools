@@ -304,7 +304,7 @@ class MBtilesCache {
     }
 
     /** Allows delayed conversion of java-vector-tile features into GeoTools features. */
-    private class CollectionProvider {
+    private static class CollectionProvider {
         List<VectorTileDecoder.Feature> mvtFeatures;
         volatile SimpleFeatureCollection converted;
         LayerFeatureBuilder builder;

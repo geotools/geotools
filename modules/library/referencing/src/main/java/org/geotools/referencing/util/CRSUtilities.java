@@ -286,7 +286,7 @@ public final class CRSUtilities {
      * @return The datum in the given CRS, or {@code null} if none.
      */
     public static Datum getDatum(final CoordinateReferenceSystem crs) {
-        return (crs instanceof SingleCRS) ? ((SingleCRS) crs).getDatum() : null;
+        return crs instanceof SingleCRS ? ((SingleCRS) crs).getDatum() : null;
     }
 
     /**
@@ -361,8 +361,8 @@ public final class CRSUtilities {
             P1.setOrdinate(i, c - d);
             P2.setOrdinate(i, c + d);
         }
-        P1 = transform.transform(P1, (sourceDim == targetDim) ? P1 : null);
-        P2 = transform.transform(P2, (sourceDim == targetDim) ? P2 : null);
+        P1 = transform.transform(P1, sourceDim == targetDim ? P1 : null);
+        P2 = transform.transform(P2, sourceDim == targetDim ? P2 : null);
         for (int i = 0; i < targetDim; i++) {
             P2.setOrdinate(i, P2.getOrdinate(i) - P1.getOrdinate(i));
         }

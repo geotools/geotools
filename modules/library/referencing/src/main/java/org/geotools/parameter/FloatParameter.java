@@ -71,7 +71,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
             throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, expected));
         }
         final Number value = descriptor.getDefaultValue();
-        this.value = (value != null) ? value.doubleValue() : Double.NaN;
+        this.value = value != null ? value.doubleValue() : Double.NaN;
     }
 
     /**

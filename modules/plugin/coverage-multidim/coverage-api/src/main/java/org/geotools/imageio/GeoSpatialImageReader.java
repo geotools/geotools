@@ -104,7 +104,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
             throw new IndexOutOfBoundsException("Invalid imageIndex "
                     + imageIndex
                     + ", it should "
-                    + (numImages > 0 ? ("belong the range [0," + (numImages - 1)) : "be 0"));
+                    + (numImages > 0 ? "belong the range [0," + (numImages - 1) : "be 0"));
         }
     }
 

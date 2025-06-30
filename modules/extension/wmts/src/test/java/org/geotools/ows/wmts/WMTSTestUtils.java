@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.test.TestData;
@@ -36,7 +37,7 @@ public class WMTSTestUtils {
 
         Parser parser = new Parser(new WMTSConfiguration());
 
-        Object object = parser.parse(new FileReader(getCaps));
+        Object object = parser.parse(new FileReader(getCaps, StandardCharsets.UTF_8));
         assertTrue("Capabilities failed to parse " + object.getClass(), object instanceof CapabilitiesType);
 
         WMTSCapabilities capabilities = new WMTSCapabilities((CapabilitiesType) object);

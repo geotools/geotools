@@ -15,6 +15,7 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -155,7 +156,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
             header.add(descriptor.getLocalName());
         }
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()), ',');
+        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile(), StandardCharsets.UTF_8), ',');
         try {
             writer.writeRecord(header.toArray(new String[header.size()]));
         } finally {

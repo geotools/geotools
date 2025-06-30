@@ -183,21 +183,4 @@ public interface ComplexType extends AttributeType {
      * @return true if attribute is to be considered transparent by XPath queries
      */
     boolean isInline();
-
-    /**
-     * Describes allowable content, indicating containment.
-     *
-     * <p>A collection of AttributeDescriptors (name and AttributeType) is used. We make no restrictions as to attribute
-     * order. All attributes are considered accessable by name (and order is thus insignificant).
-     *
-     * <p>If you are modling a typing system where attribute order is relevant you may make use of a List. Similarly if
-     * duplicate attributes are disallowed you may make use of a Set.
-     *
-     * <p>This method follows JavaBeans naming convention indicating this is part of our data model.
-     */
-    // Collection<AttributeDescriptor> attributes();
-
-    /** Allowable associations, indicating non containment relationships. */
-    // Collection<AssociationDescriptor> associations();
-
 }

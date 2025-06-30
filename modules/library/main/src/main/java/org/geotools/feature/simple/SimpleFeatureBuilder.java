@@ -390,7 +390,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         } else if (ATTRIBUTE_COUNT > VALUE_COUNT) {
             LOGGER.fine(String.format(
                     "%s '%s' used the first %d values, using default values for remaining %d attributes.",
-                    type.getTypeName(), id, VALUE_COUNT, (ATTRIBUTE_COUNT - VALUE_COUNT)));
+                    type.getTypeName(), id, VALUE_COUNT, ATTRIBUTE_COUNT - VALUE_COUNT));
             values = new ArrayList<>(values);
             values.addAll(Collections.nCopies(ATTRIBUTE_COUNT - VALUE_COUNT, null));
         }

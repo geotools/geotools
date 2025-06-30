@@ -132,7 +132,7 @@ public class AlbersEqualArea extends MapProjection {
         double sinphi = sin(phi1);
         double cosphi = cos(phi1);
         double n = sinphi;
-        boolean secant = (abs(phi1 - phi2) >= EPSILON);
+        boolean secant = abs(phi1 - phi2) >= EPSILON;
         if (isSpherical) {
             if (secant) {
                 n = 0.5 * (n + sin(phi2));
@@ -227,14 +227,14 @@ public class AlbersEqualArea extends MapProjection {
                 if (abs(y) <= 1.0) {
                     y = asin(y);
                 } else {
-                    y = (y < 0.0) ? -PI / 2.0 : PI / 2.0;
+                    y = y < 0.0 ? -PI / 2.0 : PI / 2.0;
                 }
             } else {
                 y = (c - y * y) / n;
                 if (abs(ec - abs(y)) > EPSILON) {
                     y = phi1(y);
                 } else {
-                    y = (y < 0.0) ? -PI / 2.0 : PI / 2.0;
+                    y = y < 0.0 ? -PI / 2.0 : PI / 2.0;
                 }
             }
         } else {
@@ -288,7 +288,7 @@ public class AlbersEqualArea extends MapProjection {
         final double one_es = 1 - excentricitySquared;
         if (excentricity >= EPSILON) {
             final double con = excentricity * sinphi;
-            return (one_es * (sinphi / (1. - con * con) - (0.5 / excentricity) * log((1. - con) / (1. + con))));
+            return one_es * (sinphi / (1. - con * con) - 0.5 / excentricity * log((1. - con) / (1. + con)));
         } else {
             return sinphi + sinphi;
         }

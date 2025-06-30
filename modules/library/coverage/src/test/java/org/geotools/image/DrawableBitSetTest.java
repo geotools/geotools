@@ -81,7 +81,7 @@ public class DrawableBitSetTest {
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 sample = raster.getSample(i, j, 0);
-                if ((i >= MIN && j >= MIN && i <= MAX && j <= MAX)) {
+                if (i >= MIN && j >= MIN && i <= MAX && j <= MAX) {
                     // Check pixels within the rectangle have been set
                     assertEquals(1, sample);
                     setPixel++;
@@ -110,7 +110,7 @@ public class DrawableBitSetTest {
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 value = bitset.get(i, j);
-                if ((i >= MIN && j >= MIN && i <= MAX && j <= MAX)) {
+                if (i >= MIN && j >= MIN && i <= MAX && j <= MAX) {
                     // Check pixels within the rectangle have been set
                     assertTrue(value);
                     setPixel++;

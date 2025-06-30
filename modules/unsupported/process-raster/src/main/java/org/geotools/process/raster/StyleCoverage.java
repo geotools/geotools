@@ -50,6 +50,6 @@ public class StyleCoverage implements RasterProcess {
 
         SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(coverage, null);
         rsh.visit(symbolizer);
-        return ((GridCoverage2D) rsh.execute());
+        return (GridCoverage2D) rsh.execute();
     }
 }

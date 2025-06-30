@@ -89,10 +89,10 @@ class CsvReader {
             }
             while (position < line.length()) {
                 char c = line.charAt(position);
-                if (!inQuotes && (c == ',')) {
+                if (!inQuotes && c == ',') {
                     break;
                 }
-                if (inQuotes && (c == '"')) {
+                if (inQuotes && c == '"') {
                     ++position;
                     if (position == line.length()) {
                         inQuotes = false;
@@ -112,7 +112,7 @@ class CsvReader {
             if (inQuotes) {
                 throw new RuntimeException("CSV-file is malformed");
             }
-            if ((position < line.length()) && (line.charAt(position) != ',')) {
+            if (position < line.length() && line.charAt(position) != ',') {
                 throw new RuntimeException("CSV-file is malformed");
             }
             return sb.toString();

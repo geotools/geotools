@@ -48,6 +48,6 @@ public class FilterFunction_endPoint extends FunctionExpressionImpl {
                     "Filter Function problem for function endPoint argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.endPoint(arg0));
+        return StaticGeometry.endPoint(arg0);
     }
 }

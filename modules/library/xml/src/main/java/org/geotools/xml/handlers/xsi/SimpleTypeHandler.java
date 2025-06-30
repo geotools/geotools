@@ -66,10 +66,10 @@ public class SimpleTypeHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode()
-                        * ((id == null) ? 1 : id.hashCode())
-                        * ((finaL == 0) ? 1 : finaL)
-                        * ((name == null) ? 1 : name.hashCode()))
+        return LOCALNAME.hashCode()
+                        * (id == null ? 1 : id.hashCode())
+                        * (finaL == 0 ? 1 : finaL)
+                        * (name == null ? 1 : name.hashCode())
                 + hashCodeOffset;
     }
 
@@ -153,7 +153,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
 
     /** translates the final attribute to an integer mask */
     public static int findFinal(String finaL) {
-        if ((finaL == null) || "".equalsIgnoreCase(finaL)) {
+        if (finaL == null || "".equalsIgnoreCase(finaL)) {
             return NONE;
         }
 
@@ -251,7 +251,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
         SimpleType[] children = new SimpleType[1];
 
         if (rest.getSimpleType() != null) {
-            children[0] = (rest.getSimpleType()).compress(parent);
+            children[0] = rest.getSimpleType().compress(parent);
         } else {
             children[0] = parent.lookUpSimpleType(rest.getItemType());
         }
@@ -280,7 +280,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
     static Facet[] getFacets(RestrictionHandler rh) {
         List constraints = rh.getConstraints();
 
-        if ((constraints == null) || (constraints.isEmpty())) {
+        if (constraints == null || constraints.isEmpty()) {
             return null;
         }
 

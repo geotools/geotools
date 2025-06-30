@@ -169,7 +169,7 @@ public enum NetCDFCoordinateReferenceSystemType {
             if (hasConcatenatedTransform(projectedCRS)) {
                 Projection projection = projectedCRS.getConversionFromBase();
                 MathTransform mt = projection.getMathTransform();
-                ConcatenatedTransform cmt = ((ConcatenatedTransform) mt);
+                ConcatenatedTransform cmt = (ConcatenatedTransform) mt;
                 crsType = extractProjectionType(cmt);
             } else {
                 crsType = getProjectionType(projectedCRS);

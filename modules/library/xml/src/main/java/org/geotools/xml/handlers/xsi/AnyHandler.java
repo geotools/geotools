@@ -59,7 +59,7 @@ public class AnyHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode())) + (minOccurs * maxOccurs);
+        return LOCALNAME.hashCode() * (id == null ? 1 : id.hashCode()) + minOccurs * maxOccurs;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -124,13 +124,13 @@ public class AnyHandler extends ElementGroupingHandler {
             throw new SAXException(e);
         }
 
-        if ((null == min) || "".equalsIgnoreCase(min)) {
+        if (null == min || "".equalsIgnoreCase(min)) {
             minOccurs = 1;
         } else {
             minOccurs = Integer.parseInt(min);
         }
 
-        if ((null == max) || "".equalsIgnoreCase(max)) {
+        if (null == max || "".equalsIgnoreCase(max)) {
             maxOccurs = 1;
         } else {
             if ("unbounded".equalsIgnoreCase(max)) {
@@ -149,7 +149,7 @@ public class AnyHandler extends ElementGroupingHandler {
 
     /** maps strings -> int constants for the 'process' attribute */
     public static int findProcess(String process) throws SAXException {
-        if ((process == null) || "".equalsIgnoreCase(process)) {
+        if (process == null || "".equalsIgnoreCase(process)) {
             return STRICT;
         }
 

@@ -16,7 +16,9 @@
  */
 package org.geotools.http;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.http.CustomHTTPClientFactory.CustomHttpClient;
@@ -95,14 +97,12 @@ public class HTTPClientFinderTest {
 
     @Test
     public void askingForNonExistingBehavior() throws Exception {
-        try {
-            HTTPClientFinder.createClient(HTTPConnectionPooling.class);
-        } catch (RuntimeException ex) {
-            Assert.assertEquals(
-                    "Exception message when asking for non existing behavior.",
-                    "Couldn't create HTTP client.\nBehaviors:HTTPConnectionPooling",
-                    ex.getMessage());
-        }
+        RuntimeException ex =
+                assertThrows(RuntimeException.class, () -> HTTPClientFinder.createClient(HTTPConnectionPooling.class));
+        assertEquals(
+                "Exception message when asking for non existing behavior.",
+                "Couldn't create HTTP client.\nBehaviors:HTTPConnectionPooling",
+                ex.getMessage());
     }
 
     /** Test that a HTTPProxy behavior is added when http.proxyhost is set. In support of GEOT-6850. */

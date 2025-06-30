@@ -43,7 +43,7 @@ public class HexBinary {
 
     /** Converts the string <code>pValue</code> into an array of hex bytes. */
     public static byte[] decode(String pValue) {
-        if ((pValue.length() % 2) != 0) {
+        if (pValue.length() % 2 != 0) {
             throw new IllegalArgumentException("A HexBinary string must have even length.");
         }
         byte[] result = new byte[pValue.length() / 2];
@@ -53,11 +53,11 @@ public class HexBinary {
             char c = pValue.charAt(i++);
             char d = pValue.charAt(i++);
             if (c >= '0' && c <= '9') {
-                b = (byte) ((c - '0') << 4);
+                b = (byte) (c - '0' << 4);
             } else if (c >= 'A' && c <= 'F') {
-                b = (byte) ((c - 'A' + 10) << 4);
+                b = (byte) (c - 'A' + 10 << 4);
             } else if (c >= 'a' && c <= 'f') {
-                b = (byte) ((c - 'a' + 10) << 4);
+                b = (byte) (c - 'a' + 10 << 4);
             } else {
                 throw new IllegalArgumentException("Invalid hex digit: " + c);
             }

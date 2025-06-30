@@ -163,7 +163,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
      *
      * @author Jody
      */
-    private class ListFeatureIterator implements SimpleFeatureIterator {
+    private static class ListFeatureIterator implements SimpleFeatureIterator {
         private Iterator<SimpleFeature> iter;
 
         public ListFeatureIterator(List<SimpleFeature> features) {

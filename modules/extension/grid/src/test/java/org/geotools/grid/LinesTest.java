@@ -87,7 +87,7 @@ public class LinesTest {
                 Coordinate c1 = coords[coords.length - 1];
 
                 // Check that this line has the target orientation
-                boolean isVertical = (Math.abs(c0.x - c1.x) < TOL);
+                boolean isVertical = Math.abs(c0.x - c1.x) < TOL;
                 if (isVertical != (lineOrientation == LineOrientation.VERTICAL)) {
                     continue;
                 }

@@ -304,7 +304,7 @@ public class ReprojectingFilterVisitorTest {
                 JTS.equals(new ReferencedEnvelope(10, 20, 15, 25, CRS.decode("EPSG:4326")), clone.getBounds(), 0.1));
     }
 
-    private final class GeometryFunction implements Function {
+    private static final class GeometryFunction implements Function {
         final LineString ls;
 
         public GeometryFunction() throws Exception {

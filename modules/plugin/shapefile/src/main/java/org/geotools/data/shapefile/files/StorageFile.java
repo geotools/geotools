@@ -154,7 +154,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
                 FileChannel out = new FileOutputStream(dest).getChannel()) {
 
             // magic number for Windows, 64Mb - 32Kb)
-            int maxCount = (64 * 1024 * 1024) - (32 * 1024);
+            int maxCount = 64 * 1024 * 1024 - 32 * 1024;
             long size = in.size();
             long position = 0;
             while (position < size) {

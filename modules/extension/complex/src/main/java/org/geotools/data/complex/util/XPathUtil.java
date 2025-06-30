@@ -526,9 +526,9 @@ public class XPathUtil {
             localName = prefixedName;
             final Name rootName = root.getName();
             // don't use default namespace for client properties (xml attribute), and FEATURE_LINK
-            final String defaultNamespace = (isXmlAttribute
+            final String defaultNamespace = isXmlAttribute
                             || localName.equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME.getLocalPart())
-                            || rootName.getNamespaceURI() == null)
+                            || rootName.getNamespaceURI() == null
                     ? XMLConstants.NULL_NS_URI
                     : namespaces.getURI("") == null ? rootName.getNamespaceURI() : namespaces.getURI("");
             namespaceUri = defaultNamespace;

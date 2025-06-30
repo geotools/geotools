@@ -304,6 +304,7 @@ public class FilterExamples {
                     // go through results and copy out the found features
                     fcResult.accepts(
                             new FeatureVisitor() {
+                                @Override
                                 public void visit(Feature feature) {
                                     found.add((SimpleFeature) feature);
                                 }
@@ -339,6 +340,7 @@ public class FilterExamples {
             List<FunctionName> functionNames = factory.getFunctionNames();
             ArrayList<FunctionName> sorted = new ArrayList<>(functionNames);
             Collections.sort(sorted, new Comparator<FunctionName>() {
+                @Override
                 public int compare(FunctionName o1, FunctionName o2) {
                     if (o1 == null && o2 == null) return 0;
                     if (o1 == null && o2 != null) return 1;
@@ -410,6 +412,7 @@ public class FilterExamples {
             List<FunctionName> functionNames = factory.getFunctionNames();
             ArrayList<FunctionName> sorted = new ArrayList<>(functionNames);
             Collections.sort(sorted, new Comparator<FunctionName>() {
+                @Override
                 public int compare(FunctionName o1, FunctionName o2) {
                     if (o1 == null && o2 == null) return 0;
                     if (o1 == null && o2 != null) return 1;
@@ -472,7 +475,7 @@ public class FilterExamples {
         arg.append(codeBlock);
         Class<?> type = argument.getType();
 
-        if (type == null || (type == Object.class && argument.isRequired())) {
+        if (type == null || type == Object.class && argument.isRequired()) {
             // nothing more is known
         } else {
             arg.append(" (" + codeBlock);

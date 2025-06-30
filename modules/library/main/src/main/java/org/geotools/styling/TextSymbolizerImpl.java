@@ -329,17 +329,17 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((abxtract == null) ? 0 : abxtract.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((fill == null) ? 0 : fill.hashCode());
-        result = prime * result + ((filterFactory == null) ? 0 : filterFactory.hashCode());
-        result = prime * result + ((fonts == null) ? 0 : fonts.hashCode());
-        result = prime * result + ((graphic == null) ? 0 : graphic.hashCode());
-        result = prime * result + ((halo == null) ? 0 : halo.hashCode());
-        result = prime * result + ((label == null) ? 0 : label.hashCode());
-        result = prime * result + ((otherText == null) ? 0 : otherText.hashCode());
-        result = prime * result + ((placement == null) ? 0 : placement.hashCode());
-        result = prime * result + ((priority == null) ? 0 : priority.hashCode());
+        result = prime * result + (abxtract == null ? 0 : abxtract.hashCode());
+        result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (fill == null ? 0 : fill.hashCode());
+        result = prime * result + (filterFactory == null ? 0 : filterFactory.hashCode());
+        result = prime * result + (fonts == null ? 0 : fonts.hashCode());
+        result = prime * result + (graphic == null ? 0 : graphic.hashCode());
+        result = prime * result + (halo == null ? 0 : halo.hashCode());
+        result = prime * result + (label == null ? 0 : label.hashCode());
+        result = prime * result + (otherText == null ? 0 : otherText.hashCode());
+        result = prime * result + (placement == null ? 0 : placement.hashCode());
+        result = prime * result + (priority == null ? 0 : priority.hashCode());
         return result;
     }
 

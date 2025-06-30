@@ -27,7 +27,7 @@ public class HanaColumnWoSridConstraintTestSetup extends HanaTestSetupPSPooling 
     protected void setUpData() throws Exception {
         try (Connection conn = getConnection()) {
             HanaVersion version = new HanaVersion(conn.getMetaData().getDatabaseProductVersion());
-            if ((version.getVersion() < 2) || ((version.getVersion() == 2) && (version.getRevision() < 60))) {
+            if (version.getVersion() < 2 || version.getVersion() == 2 && version.getRevision() < 60) {
                 // Columns without SRID constraint are supported only in HANA 2 revision 60 and
                 // later
                 return;

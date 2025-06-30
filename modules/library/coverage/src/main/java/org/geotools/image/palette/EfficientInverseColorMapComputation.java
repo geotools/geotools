@@ -51,15 +51,15 @@ public final class EfficientInverseColorMapComputation {
         bits = quantizationBits;
         truncationBits = 8 - bits;
         blueQuantizationMask = (1 << bits) - 1;
-        greenQuantizationMask = (blueQuantizationMask << bits);
-        redQuantizationMask = (greenQuantizationMask << bits);
+        greenQuantizationMask = blueQuantizationMask << bits;
+        redQuantizationMask = greenQuantizationMask << bits;
         final int maximumQuantizationValue = 1 << bits;
         final int numberOfColors = colorMap[0].length;
         mapBuf = new byte[maximumQuantizationValue * maximumQuantizationValue * maximumQuantizationValue];
         if (mapBuf.length <= 0) throw new IllegalArgumentException("Illegal number of quantization colors");
         final int[] distBuf = new int[maximumQuantizationValue * maximumQuantizationValue * maximumQuantizationValue];
 
-        final int x = (1 << truncationBits);
+        final int x = 1 << truncationBits;
         final int xsqr = x * x;
         final int txsqr = xsqr + xsqr;
 
@@ -130,9 +130,9 @@ public final class EfficientInverseColorMapComputation {
      */
     public int getIndexNearest(int red, int green, int blue) {
         return mapBuf[
-                        ((red << (2 * bits - truncationBits)) & redQuantizationMask)
-                                + ((green << (1 * bits - truncationBits)) & greenQuantizationMask)
-                                + ((blue >> (truncationBits)) & blueQuantizationMask)]
+                        (red << 2 * bits - truncationBits & redQuantizationMask)
+                                + (green << 1 * bits - truncationBits & greenQuantizationMask)
+                                + (blue >> truncationBits & blueQuantizationMask)]
                 & 0xFF;
     }
 }

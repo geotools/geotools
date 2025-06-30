@@ -75,7 +75,7 @@ public abstract class FacetHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return getHandlerType() * ((value == null) ? 1 : value.hashCode());
+        return getHandlerType() * (value == null ? 1 : value.hashCode());
     }
 
     /** Return the int mask for the facet type. */

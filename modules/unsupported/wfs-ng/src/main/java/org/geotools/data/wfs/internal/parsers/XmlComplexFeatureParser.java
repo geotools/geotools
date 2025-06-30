@@ -445,7 +445,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
         return innerAttribute.value;
     }
 
-    private class ReturnAttribute {
+    private static class ReturnAttribute {
         public final String id;
 
         public final Name name;

@@ -93,12 +93,12 @@ public class ImageGraphicFactoryTest {
         URL u = this.getClass().getResource("test-data/test.png");
         image.getIcon(null, ff.literal(u), "image/png", -1);
 
-        Assert.assertTrue(image.imageCache.containsKey(u));
-        Assert.assertNotNull(image.imageCache.get(u));
+        Assert.assertTrue(ImageGraphicFactory.imageCache.containsKey(u));
+        Assert.assertNotNull(ImageGraphicFactory.imageCache.get(u));
 
         image.clearCache();
 
-        Assert.assertTrue(image.imageCache.isEmpty());
+        Assert.assertTrue(ImageGraphicFactory.imageCache.isEmpty());
     }
 
     @Test

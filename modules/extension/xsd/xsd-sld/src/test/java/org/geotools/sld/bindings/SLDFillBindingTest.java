@@ -48,7 +48,7 @@ public class SLDFillBindingTest extends SLDTestSupport {
 
         for (int i = 0; i < hex.length(); i++) {
             int k = Integer.parseInt(hex.charAt(hex.length() - i - 1) + "");
-            integer += (k * Math.pow(16, i));
+            integer += k * Math.pow(16, i);
         }
 
         return integer;

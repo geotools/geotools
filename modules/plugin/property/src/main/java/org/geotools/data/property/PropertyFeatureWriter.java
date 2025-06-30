@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.Query;
@@ -80,7 +81,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         type = delegate.getFeatureType();
 
         // open writer
-        writer = new BufferedWriter(new FileWriter(write));
+        writer = new BufferedWriter(new FileWriter(write, StandardCharsets.UTF_8));
         // write header
         writer.write("_=");
         writer.write(DataUtilities.encodeType(type));

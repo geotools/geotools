@@ -226,8 +226,8 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
     public int hashCode() {
         int result = 17;
 
-        result = (37 * result) + ((literal == null) ? 0 : literal.hashCode());
-        result = (37 * result) + Filters.getExpressionType(this);
+        result = 37 * result + (literal == null ? 0 : literal.hashCode());
+        result = 37 * result + Filters.getExpressionType(this);
 
         return result;
     }

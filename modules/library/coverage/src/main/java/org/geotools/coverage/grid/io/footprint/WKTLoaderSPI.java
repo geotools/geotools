@@ -18,6 +18,7 @@ package org.geotools.coverage.grid.io.footprint;
 
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ public class WKTLoaderSPI implements FootprintLoaderSpi {
         public Geometry loadFootprint(String pathNoExtension) throws Exception {
             File file = new File(pathNoExtension + ".wkt");
             if (file.exists()) {
-                try (FileReader fr = new FileReader(file)) {
+                try (FileReader fr = new FileReader(file, StandardCharsets.UTF_8)) {
                     return reader.read(fr);
                 }
             }

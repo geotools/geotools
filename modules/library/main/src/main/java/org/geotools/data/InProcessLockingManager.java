@@ -51,7 +51,7 @@ import org.geotools.util.SuppressFBWarnings;
  */
 public class InProcessLockingManager implements LockingManager {
     /** lockTable access by typeName stores Transactions or MemoryLocks */
-    protected Map<String, Map<String, Lock>> lockTables = new HashMap<>();
+    protected final Map<String, Map<String, Lock>> lockTables = new HashMap<>();
 
     /**
      * Aquire lock on featureID.
@@ -241,7 +241,7 @@ public class InProcessLockingManager implements LockingManager {
         // LOGGER.info("asserting access on lock for " + typeName + ", fid: "
         //  + featureID + ", transaction: " + transaction + ", lock " + lock);
 
-        if ((lock != null) && !lock.isAuthorized(transaction)) {
+        if (lock != null && !lock.isAuthorized(transaction)) {
             throw new FeatureLockException("Transaction does not have authorization for " + typeName + ":" + featureID);
         }
     }
@@ -291,7 +291,7 @@ public class InProcessLockingManager implements LockingManager {
             throw new IllegalArgumentException("lockID required");
         }
 
-        if ((transaction == null) || (transaction == Transaction.AUTO_COMMIT)) {
+        if (transaction == null || transaction == Transaction.AUTO_COMMIT) {
             throw new IllegalArgumentException("Tansaction required (with authorization for " + authID + ")");
         }
 
@@ -336,7 +336,7 @@ public class InProcessLockingManager implements LockingManager {
             throw new IllegalArgumentException("lockID required");
         }
 
-        if ((transaction == null) || (transaction == Transaction.AUTO_COMMIT)) {
+        if (transaction == null || transaction == Transaction.AUTO_COMMIT) {
             throw new IllegalArgumentException("Tansaction required (with authorization for " + authID + ")");
         }
 
@@ -469,7 +469,7 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @author Jody Garnett, Refractions Research
      */
-    class TransactionLock implements Lock, State {
+    static class TransactionLock implements Lock, State {
         /** This will be non-null while lock is fresh */
         Transaction transaction;
 
@@ -583,7 +583,7 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @author Jody Garnett, Refractions Reasearch Inc.
      */
-    class MemoryLock implements Lock {
+    static class MemoryLock implements Lock {
         String authID;
         long duration;
         long expiry;
@@ -628,7 +628,7 @@ public class InProcessLockingManager implements LockingManager {
             //  + ((transaction != Transaction.AUTO_COMMIT)
             //  ? transaction.getAuthorizations().toString() : "autocommit"));
 
-            return (transaction != Transaction.AUTO_COMMIT)
+            return transaction != Transaction.AUTO_COMMIT
                     && transaction.getAuthorizations().contains(authID);
         }
 
@@ -639,7 +639,7 @@ public class InProcessLockingManager implements LockingManager {
             }
 
             long now = System.currentTimeMillis();
-            long delta = (expiry - now);
+            long delta = expiry - now;
             long dur = duration;
 
             return "MemoryLock(" + authID + "|" + delta + "ms|" + dur + "ms)";

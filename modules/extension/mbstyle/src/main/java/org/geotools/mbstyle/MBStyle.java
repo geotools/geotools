@@ -392,7 +392,7 @@ public class MBStyle {
                         featureTypeStyles.addAll(l.transform(this, minScaleDenominator, maxScaleDenominator));
                         i++;
                     }
-                } else if ((layer instanceof BackgroundMBLayer)) {
+                } else if (layer instanceof BackgroundMBLayer) {
                     background = (BackgroundMBLayer) layer;
                 } else {
                     featureTypeStyles.addAll(layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator));

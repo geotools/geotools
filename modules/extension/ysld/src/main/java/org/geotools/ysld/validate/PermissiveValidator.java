@@ -58,7 +58,7 @@ public class PermissiveValidator extends StatefulValidator {
             }
         } else {
             context.error(
-                    "Unexpected End of " + ((evt instanceof MappingEndEvent) ? "Mapping" : "Sequence"),
+                    "Unexpected End of " + (evt instanceof MappingEndEvent ? "Mapping" : "Sequence"),
                     evt.getStartMark());
         }
     }

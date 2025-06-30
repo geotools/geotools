@@ -111,19 +111,19 @@ public class FontImpl implements Font, Cloneable {
         int result = 0;
 
         if (fontFamily != null) {
-            result = (PRIME * result) + fontFamily.hashCode();
+            result = PRIME * result + fontFamily.hashCode();
         }
 
         if (fontSize != null) {
-            result = (PRIME * result) + fontSize.hashCode();
+            result = PRIME * result + fontSize.hashCode();
         }
 
         if (fontStyle != null) {
-            result = (PRIME * result) + fontStyle.hashCode();
+            result = PRIME * result + fontStyle.hashCode();
         }
 
         if (fontWeight != null) {
-            result = (PRIME * result) + fontWeight.hashCode();
+            result = PRIME * result + fontWeight.hashCode();
         }
 
         return result;

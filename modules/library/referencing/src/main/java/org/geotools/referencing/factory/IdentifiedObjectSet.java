@@ -217,11 +217,10 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      *     size}, then the creation of all objects is garantee successful.
      * @throws FactoryException if an {@linkplain #createObject object creation} failed.
      */
-    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void resolve(int n) throws FactoryException {
         if (n > 0)
             try {
-                for (Object o : this) {
+                for (Object unused : this) {
                     if (--n == 0) {
                         break;
                     }
@@ -304,8 +303,8 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * {@link NoSuchAuthorityCodeException}).
      */
     protected boolean isRecoverableFailure(final FactoryException exception) {
-        return (exception instanceof NoSuchIdentifierException
-                || exception.getMessage().startsWith("Could not locate grid file"));
+        return exception instanceof NoSuchIdentifierException
+                || exception.getMessage().startsWith("Could not locate grid file");
     }
 
     /**

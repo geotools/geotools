@@ -83,7 +83,7 @@ public class BasicGraphSerializerTest {
             Assert.assertEquals(e.getNodeA().getID(), e.getID());
             Assert.assertEquals(e.getNodeB().getID(), e.getID() + 1);
 
-            return (0);
+            return 0;
         };
         after.visitEdges(visitor);
 
@@ -98,11 +98,11 @@ public class BasicGraphSerializerTest {
                 Edge e0 = n.getEdges().get(0);
                 Edge e1 = n.getEdges().get(1);
 
-                Assert.assertTrue((e0.getID() == n.getID() - 1 && e1.getID() == n.getID())
-                        || (e1.getID() == n.getID() - 1 && e0.getID() == n.getID()));
+                Assert.assertTrue(e0.getID() == n.getID() - 1 && e1.getID() == n.getID()
+                        || e1.getID() == n.getID() - 1 && e0.getID() == n.getID());
             }
 
-            return (0);
+            return 0;
         };
         after.visitNodes(visitor);
     }
@@ -177,7 +177,7 @@ public class BasicGraphSerializerTest {
                             || id2.equals(parentid) && id1.equals(id + ".0") && id0.equals(id + ".1"));
                 }
 
-                return (0);
+                return 0;
             };
             after.visitNodes(visitor);
 
@@ -227,7 +227,7 @@ public class BasicGraphSerializerTest {
                 else if (n.getID() == 1 || n.getID() == nnodes - 2) Assert.assertEquals(1, n.getDegree());
                 else Assert.assertEquals(2, n.getDegree());
 
-                return (0);
+                return 0;
             };
             after.visitNodes(visitor);
         } catch (Exception e) {
@@ -250,22 +250,22 @@ public class BasicGraphSerializerTest {
     }
 
     protected GraphBuilder createBuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder createRebuilder() {
-        return (new BasicGraphBuilder());
+        return new BasicGraphBuilder();
     }
 
     protected GraphBuilder builder() {
-        return (m_builder);
+        return m_builder;
     }
 
     protected GraphBuilder rebuilder() {
-        return (m_rebuilder);
+        return m_rebuilder;
     }
 
     protected SerializedReaderWriter serializer() {
-        return (m_serializer);
+        return m_serializer;
     }
 }

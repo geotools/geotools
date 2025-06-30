@@ -164,7 +164,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
 
             while (r.hasNext()) {
                 feature = r.next();
-                final Geometry geometry = ((Geometry) feature.getDefaultGeometry());
+                final Geometry geometry = (Geometry) feature.getDefaultGeometry();
                 if (geometry != null) {
                     internal = geometry.getEnvelopeInternal();
                     newBBox.expandToInclude(internal);

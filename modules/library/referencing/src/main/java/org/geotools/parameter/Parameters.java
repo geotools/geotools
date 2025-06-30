@@ -256,7 +256,7 @@ public final class Parameters {
             if (AbstractIdentifiedObject.nameMatches(param.getDescriptor(), name)) {
                 list.add(param);
             }
-            if ((maxDepth != 0) && (param instanceof ParameterValueGroup)) {
+            if (maxDepth != 0 && param instanceof ParameterValueGroup) {
                 for (final GeneralParameterValue value : ((ParameterValueGroup) param).values()) {
                     search(value, name, maxDepth - 1, list);
                 }

@@ -489,14 +489,14 @@ public class WMSSchema implements Schema {
          */
         @Override
         public Element findChildElement(String name) {
-            return (this.name != null && this.name.equals(name)) ? this : null;
+            return this.name != null && this.name.equals(name) ? this : null;
         }
 
         @Override
         public Element findChildElement(String localName, URI namespaceURI) {
-            return (this.name != null
+            return this.name != null
                             && this.name.equals(localName)
-                            && getNamespace().equals(namespaceURI))
+                            && getNamespace().equals(namespaceURI)
                     ? this
                     : null;
         }
@@ -556,7 +556,7 @@ public class WMSSchema implements Schema {
 
         @Override
         public Element findChildElement(String name) {
-            return (getChild() == null) ? null : getChild().findChildElement(name);
+            return getChild() == null ? null : getChild().findChildElement(name);
         }
 
         protected boolean sameName(Element element, ElementValue value) {

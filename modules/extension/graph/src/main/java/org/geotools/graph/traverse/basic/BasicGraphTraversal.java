@@ -60,7 +60,7 @@ public class BasicGraphTraversal implements GraphTraversal {
     /** @see GraphTraversal#getGraph() */
     @Override
     public Graph getGraph() {
-        return (m_graph);
+        return m_graph;
     }
 
     /**
@@ -79,7 +79,7 @@ public class BasicGraphTraversal implements GraphTraversal {
     /** @see GraphTraversal#getIterator() */
     @Override
     public GraphIterator getIterator() {
-        return (m_iterator);
+        return m_iterator;
     }
 
     /** @see GraphTraversal#setWalker(GraphWalker) */
@@ -91,7 +91,7 @@ public class BasicGraphTraversal implements GraphTraversal {
     /** @see GraphTraversal#getWalker() */
     @Override
     public GraphWalker getWalker() {
-        return (m_walker);
+        return m_walker;
     }
 
     /**
@@ -105,7 +105,7 @@ public class BasicGraphTraversal implements GraphTraversal {
         m_graph.visitNodes(component -> {
             component.setVisited(false);
             component.setCount(0);
-            return (0);
+            return 0;
         });
     }
 
@@ -192,6 +192,6 @@ public class BasicGraphTraversal implements GraphTraversal {
 
     @Override
     public boolean isVisited(Graphable g) {
-        return (g.isVisited());
+        return g.isVisited();
     }
 }

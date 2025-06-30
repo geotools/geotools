@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.URLs;
 import org.junit.After;
@@ -118,7 +119,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
     /** Basic sanity checks of schema and test store to disk. */
     private void check(byte[] bytes) {
         Assert.assertTrue(bytes.length > 0);
-        String text = new String(bytes);
+        String text = new String(bytes, StandardCharsets.UTF_8);
         Assert.assertTrue(text.contains("GeoSciML"));
         Assert.assertTrue(text.contains("<schema"));
         Assert.assertTrue(text.contains("</schema>"));
@@ -145,7 +146,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertNotNull(location);
             Assert.assertTrue(location.startsWith("file:"));
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
-            Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
+            Assert.assertTrue(URLs.urlToFile(new URI(location).toURL()).exists());
         }
         // now that schema is is in the cache, should succeed even if downloading is disabled
         {
@@ -154,7 +155,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertNotNull(location);
             Assert.assertTrue(location.startsWith("file:"));
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
-            Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
+            Assert.assertTrue(URLs.urlToFile(new URI(location).toURL()).exists());
             // test that cache path is not canonical
             Assert.assertNotEquals(
                     CACHE_DIRECTORY.toString(),
@@ -162,7 +163,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             // test that resolved location is canonical, despite cache directory not being canonical
             Assert.assertEquals(
                     location,
-                    URLs.urlToFile((new URI(location)).toURL())
+                    URLs.urlToFile(new URI(location).toURL())
                             .getCanonicalFile()
                             .toURI()
                             .toString());

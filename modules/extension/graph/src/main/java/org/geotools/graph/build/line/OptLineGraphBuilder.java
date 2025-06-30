@@ -35,6 +35,6 @@ public class OptLineGraphBuilder extends OptGraphBuilder {
      */
     @Override
     public Node buildNode() {
-        return (new OptXYNode());
+        return new OptXYNode();
     }
 }

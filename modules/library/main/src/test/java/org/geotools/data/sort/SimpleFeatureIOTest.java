@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.referencing.FactoryException;
@@ -71,7 +72,7 @@ public class SimpleFeatureIOTest {
         typeBuilder.add(NAME_FIELD, String.class);
         typeBuilder.add("location", Point.class, CRS.decode("EPSG:4326"));
         SimpleFeatureType type = typeBuilder.buildFeatureType();
-        if (name.getBytes().length >= SimpleFeatureIO.MAX_BYTES_LENGTH)
+        if (name.getBytes(StandardCharsets.UTF_8).length >= SimpleFeatureIO.MAX_BYTES_LENGTH)
             type.getDescriptor(NAME_FIELD).getUserData().put(SimpleFeatureIO.BIG_STRING, Boolean.TRUE);
         // create a feature
         SimpleFeatureBuilder fbuilder = new SimpleFeatureBuilder(type);

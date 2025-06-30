@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.xsd.Binding;
@@ -139,7 +140,7 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
                         + "</ogc:PropertyIsLike></ogc:Filter>";
         Configuration configuration = new org.geotools.filter.v1_0.OGCConfiguration();
         Parser parser = new Parser(configuration);
-        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(f.getBytes()));
+        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(f.getBytes(StandardCharsets.UTF_8)));
         Document doc = encode(filter, OGC.Filter);
         // print(doc);
 
@@ -169,7 +170,7 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
                         + "</ogc:PropertyIsLike></ogc:Filter>";
         Configuration configuration = new org.geotools.filter.v1_0.OGCConfiguration();
         Parser parser = new Parser(configuration);
-        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(f.getBytes()));
+        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(f.getBytes(StandardCharsets.UTF_8)));
         Document doc = encode(filter, OGC.Filter);
         // print(doc);
 

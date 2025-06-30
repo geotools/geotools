@@ -150,7 +150,7 @@ public class WarpBuilderTest {
                 scale = -scale;
                 offset = mapExtent.getMaximum(j);
             }
-            offset -= scale * (gridRange.getLowerCorner().getOrdinate(i));
+            offset -= scale * gridRange.getLowerCorner().getOrdinate(i);
 
             matrix.setElement(j, j, 0.0);
             matrix.setElement(j, i, scale);
@@ -181,7 +181,7 @@ public class WarpBuilderTest {
 
         npoints++; // for the starting point.
 
-        final double[] coordinates = new double[(4 * npoints) * 2];
+        final double[] coordinates = new double[4 * npoints * 2];
         final double xmin = sourceEnvelope.getLowerCorner().getOrdinate(0);
         final double xmax = sourceEnvelope.getUpperCorner().getOrdinate(0);
         final double ymin = sourceEnvelope.getLowerCorner().getOrdinate(1);
@@ -253,7 +253,7 @@ public class WarpBuilderTest {
             }
         }
 
-        if (!startPointTransformed && (firstError != null)) {
+        if (!startPointTransformed && firstError != null) {
             throw firstError;
         }
     }

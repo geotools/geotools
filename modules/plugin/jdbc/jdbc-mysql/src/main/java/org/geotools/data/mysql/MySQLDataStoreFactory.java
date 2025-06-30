@@ -135,7 +135,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         try (Connection con = dataStore.getDataSource().getConnection()) {
             int major = con.getMetaData().getDatabaseMajorVersion();
             int minor = con.getMetaData().getDatabaseMinorVersion();
-            isMySQLVersion56OrAbove = major > 5 || (major == 5 && minor > 6);
+            isMySQLVersion56OrAbove = major > 5 || major == 5 && minor > 6;
         } catch (SQLException | IllegalStateException e) {
             dataStore.getLogger().warning("Unable to determine database version. Message: " + e.getLocalizedMessage());
         }
@@ -151,7 +151,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         boolean isMySQLVersion80OrAbove = false;
         try (Connection con = dataStore.getDataSource().getConnection()) {
             int major = con.getMetaData().getDatabaseMajorVersion();
-            isMySQLVersion80OrAbove = (major >= 8);
+            isMySQLVersion80OrAbove = major >= 8;
         } catch (SQLException | IllegalStateException e) {
             dataStore.getLogger().warning("Unable to determine database version. Message: " + e.getLocalizedMessage());
         }

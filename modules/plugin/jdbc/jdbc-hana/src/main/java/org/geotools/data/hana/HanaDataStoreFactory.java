@@ -160,16 +160,16 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         Boolean useSsl = (Boolean) USE_SSL.lookUp(params);
 
         HashMap<String, String> options = new HashMap<>();
-        if ((useSsl != null) && (useSsl == true)) {
+        if (useSsl != null && useSsl == true) {
             options.put("encrypt", "true");
         }
-        if ((port != null) && (port != 0)) {
+        if (port != null && port != 0) {
             return HanaConnectionParameters.forPort(host, port, options).buildUrl();
         }
         if (instance == null) {
             throw new IOException("Either a port or an instance number must be given in the connection properties");
         }
-        if ((database != null) && (!database.isEmpty())) {
+        if (database != null && !database.isEmpty()) {
             return HanaConnectionParameters.forMultiContainer(host, instance, database, options)
                     .buildUrl();
         }
@@ -181,13 +181,13 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         HanaDialect dialect = (HanaDialect) dataStore.getSQLDialect();
         Boolean encodeFunctions = (Boolean) ENCODE_FUNCTIONS.lookUp(params);
-        dialect.setFunctionEncodingEnabled((encodeFunctions != null) && encodeFunctions);
+        dialect.setFunctionEncodingEnabled(encodeFunctions != null && encodeFunctions);
         Boolean disableSimplify = (Boolean) DISABLE_SIMPLIFY.lookUp(params);
-        dialect.setSimplifyDisabled((disableSimplify != null) && disableSimplify);
+        dialect.setSimplifyDisabled(disableSimplify != null && disableSimplify);
         String selectHints = (String) SELECT_HINTS.lookUp(params);
         dialect.setSelectHints(selectHints);
         Boolean estimated = (Boolean) ESTIMATED_EXTENTS.lookUp(params);
-        dialect.setEstimatedExtentsEnabled((estimated != null) && estimated);
+        dialect.setEstimatedExtentsEnabled(estimated != null && estimated);
         return dataStore;
     }
 }

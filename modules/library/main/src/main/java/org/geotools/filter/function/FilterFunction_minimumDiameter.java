@@ -58,6 +58,6 @@ public class FilterFunction_minimumDiameter extends FunctionExpressionImpl {
                     "Filter Function problem for function minimum diameter argument #0 - expected type Geometry");
         }
 
-        return (StaticGeometry.minimumDiameter(arg0));
+        return StaticGeometry.minimumDiameter(arg0);
     }
 }

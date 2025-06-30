@@ -118,7 +118,8 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
         FootprintLoader overviewsFootprintLoader = null;
         try {
             if (footprintLoaderSpi != null) {
-                spi = (FootprintLoaderSpi) Class.forName(footprintLoaderSpi)
+                spi = Class.forName(footprintLoaderSpi)
+                        .asSubclass(FootprintLoaderSpi.class)
                         .getDeclaredConstructor()
                         .newInstance();
                 footprintLoader = spi.createLoader();
@@ -126,7 +127,8 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
 
                 if (overviewsFootprintLoaderSpi != null) {
                     // Use dedicate LoaderSPI for overviews
-                    spi = (FootprintLoaderSpi) Class.forName(overviewsFootprintLoaderSpi)
+                    spi = Class.forName(overviewsFootprintLoaderSpi)
+                            .asSubclass(FootprintLoaderSpi.class)
                             .getDeclaredConstructor()
                             .newInstance();
                     overviewsFootprintLoader = spi.createLoader();

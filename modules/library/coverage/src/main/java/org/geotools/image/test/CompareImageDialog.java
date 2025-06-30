@@ -83,7 +83,7 @@ class CompareImageDialog extends JDialog {
             this.accept = false;
             setVisible(false);
         });
-        JButton save = new JButton(("Save comparison"));
+        JButton save = new JButton("Save comparison");
         save.addActionListener(e -> {
             {
                 // File location = getStartupLocation();

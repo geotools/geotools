@@ -55,7 +55,7 @@ public class SLDInlineFeatureParser {
 
         boolean isFeatureCollection = false;
 
-        if (!(isSimple(root))) // make sure this isnt too complex to parse easily.
+        if (!isSimple(root)) // make sure this isnt too complex to parse easily.
         {
             throw new Exception("couldnt parse the SLD Inline features!"); // shouldnt get here
         }
@@ -99,7 +99,7 @@ public class SLDInlineFeatureParser {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -130,7 +130,7 @@ public class SLDInlineFeatureParser {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             return child;
@@ -152,7 +152,7 @@ public class SLDInlineFeatureParser {
         NodeList children = feature.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -178,7 +178,7 @@ public class SLDInlineFeatureParser {
 
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if ((child == null)) {
+            if (child == null) {
                 continue;
             }
             if (child.getNodeType() == Node.TEXT_NODE) {
@@ -243,18 +243,18 @@ public class SLDInlineFeatureParser {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
             if (childName == null) childName = child.getNodeName();
 
             if (childName.equalsIgnoreCase("FeatureCollection")) {
-                (foundFC)++;
+                foundFC++;
                 fcNode = child;
             } else {
                 if (featureName == null) featureName = childName;
-                if (!(childName.equalsIgnoreCase(featureName)))
+                if (!childName.equalsIgnoreCase(featureName))
                     throw new Exception(
                             "SLD inline feature parser  - it appear that there is >1 feature type present.  I got a "
                                     + childName
@@ -265,7 +265,7 @@ public class SLDInlineFeatureParser {
         }
         if (foundFC > 1)
             throw new Exception("SLD - UserLayer, inline feature parser - found >1 FeatureCollection.  Not supported");
-        if ((foundFC > 0) && (foundFeature > 0))
+        if (foundFC > 0 && foundFeature > 0)
             throw new Exception(
                     "SLD - UserLayer, inline feature parser - found  SimpleFeatureCollection and featureMembers.  Not supported");
 
@@ -280,7 +280,7 @@ public class SLDInlineFeatureParser {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -335,14 +335,14 @@ public class SLDInlineFeatureParser {
         // look for next element that's not "boundedBy"
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
             if (childName == null) {
                 childName = child.getNodeName();
             }
-            if (!(childName.equalsIgnoreCase("boundedBy"))) {
+            if (!childName.equalsIgnoreCase("boundedBy")) {
                 feature = child;
                 break;
             }
@@ -373,7 +373,7 @@ public class SLDInlineFeatureParser {
         children = feature.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();
@@ -398,7 +398,7 @@ public class SLDInlineFeatureParser {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             // we have a nested element!
@@ -414,7 +414,7 @@ public class SLDInlineFeatureParser {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
 
-            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            if (child == null || child.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             String childName = child.getLocalName();

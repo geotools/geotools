@@ -105,7 +105,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
         int count = 0;
         GridSampleDimension[] defaultSD = null;
         for (int i = 0; i < numBands; i++) {
-            GridSampleDimension sd = (src != null) ? src[i] : null;
+            GridSampleDimension sd = src != null ? src[i] : null;
             if (sd == null) {
                 /*
                  * If the user didn't provided explicitly a SampleDimension, create a default one.

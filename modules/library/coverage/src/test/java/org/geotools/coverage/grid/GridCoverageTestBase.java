@@ -130,8 +130,8 @@ public class GridCoverageTestBase extends CoverageTestBase {
          */
         final int bandN = 0; // Band to test.
         double[] bufferCov = null;
-        final double left = bounds.getMinX() + (0.5 * PIXEL_SIZE); // Includes translation to center
-        final double upper = bounds.getMaxY() - (0.5 * PIXEL_SIZE); // Includes translation to center
+        final double left = bounds.getMinX() + 0.5 * PIXEL_SIZE; // Includes translation to center
+        final double upper = bounds.getMaxY() - 0.5 * PIXEL_SIZE; // Includes translation to center
         final Point2D.Double point = new Point2D.Double(); // Will maps to pixel center.
         for (int j = raster.getHeight(); --j >= 0; ) {
             for (int i = raster.getWidth(); --i >= 0; ) {

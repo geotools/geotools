@@ -138,7 +138,7 @@ public class ZonalStatsProcess2Test extends Assert {
             for (int i = raster.getWidth(); --i >= 0; ) {
                 for (int j = raster.getHeight(); --j >= 0; ) {
                     // create a simple raster used for classification
-                    int sampleValue = (i % 2 == 0) ? 1 : 2;
+                    int sampleValue = i % 2 == 0 ? 1 : 2;
                     raster.setSample(i, j, 0, sampleValue);
                 }
             }

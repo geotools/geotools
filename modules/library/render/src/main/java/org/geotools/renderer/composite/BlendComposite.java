@@ -92,10 +92,10 @@ public class BlendComposite implements Composite {
                 int s1a = UBYTE_MAX_VALUE - sa;
                 int d1a = UBYTE_MAX_VALUE - da;
 
-                result[RED] = Math.min(255, ((sr * dr + sr * d1a + dr * s1a + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[GREEN] = Math.min(255, ((sg * dg + sg * d1a + dg * s1a + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[BLUE] = Math.min(255, ((sb * db + sb * d1a + db * s1a + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[ALPHA] = Math.min(255, (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8)));
+                result[RED] = Math.min(255, sr * dr + sr * d1a + dr * s1a + UBYTE_MAX_VALUE >> SHIFT8);
+                result[GREEN] = Math.min(255, sg * dg + sg * d1a + dg * s1a + UBYTE_MAX_VALUE >> SHIFT8);
+                result[BLUE] = Math.min(255, sb * db + sb * d1a + db * s1a + UBYTE_MAX_VALUE >> SHIFT8);
+                result[ALPHA] = Math.min(255, sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8));
             }
         },
 
@@ -105,10 +105,10 @@ public class BlendComposite implements Composite {
             public void perform(int sr, int sg, int sb, int sa, int dr, int dg, int db, int da, int[] result) {
                 // Dca' = Sca + Dca - Sca.Dca
                 // Da' = Sa + Da - Sa.Da
-                result[RED] = (sr + dr - ((sr * dr + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[GREEN] = (sg + dg - ((sg * dg + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[BLUE] = (sb + db - ((sb * db + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                result[RED] = sr + dr - (sr * dr + UBYTE_MAX_VALUE >> SHIFT8);
+                result[GREEN] = sg + dg - (sg * dg + UBYTE_MAX_VALUE >> SHIFT8);
+                result[BLUE] = sb + db - (sb * db + UBYTE_MAX_VALUE >> SHIFT8);
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
 
@@ -126,19 +126,19 @@ public class BlendComposite implements Composite {
                 int s1a = UBYTE_MAX_VALUE - sa;
                 int d1a = UBYTE_MAX_VALUE - da;
                 int sada = sa * da;
-                result[RED] = (((2 * dr < da)
+                result[RED] = (2 * dr < da
                                 ? 2 * sr * dr + sr * d1a + dr * s1a
                                 : sada - 2 * (da - dr) * (sa - sr) + sr * d1a + dr * s1a + UBYTE_MAX_VALUE)
-                        >> SHIFT8);
-                result[GREEN] = (((2 * dg < da)
+                        >> SHIFT8;
+                result[GREEN] = (2 * dg < da
                                 ? 2 * sg * dg + sg * d1a + dg * s1a
                                 : sada - 2 * (da - dg) * (sa - sg) + sg * d1a + dg * s1a + UBYTE_MAX_VALUE)
-                        >> SHIFT8);
-                result[BLUE] = (((2 * db < da)
+                        >> SHIFT8;
+                result[BLUE] = (2 * db < da
                                 ? 2 * sb * db + sb * d1a + db * s1a
                                 : sada - 2 * (da - db) * (sa - sb) + sb * d1a + db * s1a + UBYTE_MAX_VALUE)
-                        >> SHIFT8);
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                        >> SHIFT8;
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
         DARKEN("darken") {
@@ -149,10 +149,10 @@ public class BlendComposite implements Composite {
                 // Da' = Sa + Da - Sa.Da
                 int s1a = UBYTE_MAX_VALUE - sa;
                 int d1a = UBYTE_MAX_VALUE - da;
-                result[RED] = ((Math.min(sr * da, dr * sa) + sr * d1a + dr * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[GREEN] = ((Math.min(sg * da, dg * sa) + sg * d1a + dg * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[BLUE] = ((Math.min(sb * da, db * sa) + sb * d1a + db * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                result[RED] = Math.min(sr * da, dr * sa) + sr * d1a + dr * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[GREEN] = Math.min(sg * da, dg * sa) + sg * d1a + dg * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[BLUE] = Math.min(sb * da, db * sa) + sb * d1a + db * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
         LIGHTEN("lighten") {
@@ -163,10 +163,10 @@ public class BlendComposite implements Composite {
                 // Da' = Sa + Da - Sa.Da
                 int s1a = UBYTE_MAX_VALUE - sa;
                 int d1a = UBYTE_MAX_VALUE - da;
-                result[RED] = ((Math.max(sr * da, dr * sa) + sr * d1a + dr * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[GREEN] = ((Math.max(sg * da, dg * sa) + sg * d1a + dg * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[BLUE] = ((Math.max(sb * da, db * sa) + sb * d1a + db * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                result[RED] = Math.max(sr * da, dr * sa) + sr * d1a + dr * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[GREEN] = Math.max(sg * da, dg * sa) + sg * d1a + dg * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[BLUE] = Math.max(sb * da, db * sa) + sb * d1a + db * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
         COLOR_DODGE("color-dodge") {
@@ -190,19 +190,19 @@ public class BlendComposite implements Composite {
                 int sbda = sb * da;
                 int sada = sa * da;
 
-                result[RED] = ((srda + drsa >= sada)
-                        ? (sada + sr * d1a + dr * s1a + UBYTE_MAX_VALUE) >> SHIFT8
+                result[RED] = srda + drsa >= sada
+                        ? sada + sr * d1a + dr * s1a + UBYTE_MAX_VALUE >> SHIFT8
                         : drsa / (UBYTE_MAX_VALUE - (sr << SHIFT8) / sa)
-                                + ((sr * d1a + dr * s1a + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[GREEN] = ((sgda + dgsa >= sada)
-                        ? (sada + sg * d1a + dg * s1a + UBYTE_MAX_VALUE) >> SHIFT8
+                                + (sr * d1a + dr * s1a + UBYTE_MAX_VALUE >> SHIFT8);
+                result[GREEN] = sgda + dgsa >= sada
+                        ? sada + sg * d1a + dg * s1a + UBYTE_MAX_VALUE >> SHIFT8
                         : dgsa / (UBYTE_MAX_VALUE - (sg << SHIFT8) / sa)
-                                + ((sg * d1a + dg * s1a + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[BLUE] = ((sbda + dbsa >= sada)
-                        ? (sada + sb * d1a + db * s1a + UBYTE_MAX_VALUE) >> SHIFT8
+                                + (sg * d1a + dg * s1a + UBYTE_MAX_VALUE >> SHIFT8);
+                result[BLUE] = sbda + dbsa >= sada
+                        ? sada + sb * d1a + db * s1a + UBYTE_MAX_VALUE >> SHIFT8
                         : dbsa / (UBYTE_MAX_VALUE - (sb << SHIFT8) / sa)
-                                + ((sb * d1a + db * s1a + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                                + (sb * d1a + db * s1a + UBYTE_MAX_VALUE >> SHIFT8);
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
         COLOR_BURN("color-burn") {
@@ -240,19 +240,19 @@ public class BlendComposite implements Composite {
                 int sbda = sb * da;
                 int sada = sa * da;
 
-                result[RED] = (((srda + drsa <= sada)
+                result[RED] = (srda + drsa <= sada
                                 ? sr * d1a + dr * s1a
-                                : (sr > 0 ? sa * (srda + drsa - sada) / sr + sr * d1a + dr * s1a + UBYTE_MAX_VALUE : 0))
-                        >> SHIFT8);
-                result[GREEN] = (((sgda + dgsa <= sada)
+                                : sr > 0 ? sa * (srda + drsa - sada) / sr + sr * d1a + dr * s1a + UBYTE_MAX_VALUE : 0)
+                        >> SHIFT8;
+                result[GREEN] = (sgda + dgsa <= sada
                                 ? sg * d1a + dg * s1a
-                                : (sg > 0 ? sa * (sgda + dgsa - sada) / sg + sg * d1a + dg * s1a + UBYTE_MAX_VALUE : 0))
-                        >> SHIFT8);
-                result[BLUE] = (((sbda + dbsa <= sada)
+                                : sg > 0 ? sa * (sgda + dgsa - sada) / sg + sg * d1a + dg * s1a + UBYTE_MAX_VALUE : 0)
+                        >> SHIFT8;
+                result[BLUE] = (sbda + dbsa <= sada
                                 ? sb * d1a + db * s1a
-                                : (sb > 0 ? sa * (sbda + dbsa - sada) / sb + sb * d1a + db * s1a + UBYTE_MAX_VALUE : 0))
-                        >> SHIFT8);
-                result[ALPHA] = (sa + da - ((sada + UBYTE_MAX_VALUE) >> SHIFT8));
+                                : sb > 0 ? sa * (sbda + dbsa - sada) / sb + sb * d1a + db * s1a + UBYTE_MAX_VALUE : 0)
+                        >> SHIFT8;
+                result[ALPHA] = sa + da - (sada + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
         HARD_LIGHT("hard-light") {
@@ -271,19 +271,19 @@ public class BlendComposite implements Composite {
                 int d1a = UBYTE_MAX_VALUE - da;
                 int sada = sa * da;
 
-                result[RED] = (((2 * sr < sa)
+                result[RED] = (2 * sr < sa
                                 ? 2 * sr * dr + sr * d1a + dr * s1a
                                 : sada - 2 * (da - dr) * (sa - sr) + sr * d1a + dr * s1a + UBYTE_MAX_VALUE)
-                        >> SHIFT8);
-                result[GREEN] = (((2 * sg < sa)
+                        >> SHIFT8;
+                result[GREEN] = (2 * sg < sa
                                 ? 2 * sg * dg + sg * d1a + dg * s1a
                                 : sada - 2 * (da - dg) * (sa - sg) + sg * d1a + dg * s1a + UBYTE_MAX_VALUE)
-                        >> SHIFT8);
-                result[BLUE] = (((2 * sb < sa)
+                        >> SHIFT8;
+                result[BLUE] = (2 * sb < sa
                                 ? 2 * sb * db + sb * d1a + db * s1a
                                 : sada - 2 * (da - db) * (sa - sb) + sb * d1a + db * s1a + UBYTE_MAX_VALUE)
-                        >> SHIFT8);
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                        >> SHIFT8;
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
         SOFT_LIGHT("soft-light") {
@@ -318,7 +318,7 @@ public class BlendComposite implements Composite {
                     result[RED] = (int) Math.round(softLight(usr, udr, usa, uda) * UBYTE_MAX_VALUE);
                     result[GREEN] = (int) Math.round(softLight(usg, udg, usa, uda) * UBYTE_MAX_VALUE);
                     result[BLUE] = (int) Math.round(softLight(usb, udb, usa, uda) * UBYTE_MAX_VALUE);
-                    result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                    result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
                 } else {
                     result[RED] = dr;
                     result[GREEN] = dg;
@@ -336,7 +336,7 @@ public class BlendComposite implements Composite {
                             + sc * (1 - da)
                             + dc * (1 - sa);
                 } else {
-                    result = (dc * sa + (Math.sqrt(dc / da) * da - dc) * (2 * sc - sa)) + sc * (1 - da) + dc * (1 - sa);
+                    result = dc * sa + (Math.sqrt(dc / da) * da - dc) * (2 * sc - sa) + sc * (1 - da) + dc * (1 - sa);
                 }
 
                 return result;
@@ -351,10 +351,10 @@ public class BlendComposite implements Composite {
                 // Da' = Sa + Da - Sa.Da
                 // @formatter:on
 
-                result[RED] = (sr + dr - ((2 * Math.min(sr * da, dr * sa) + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[GREEN] = (sg + dg - ((2 * Math.min(sg * da, dg * sa) + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[BLUE] = (sb + db - ((2 * Math.min(sb * da, db * sa) + UBYTE_MAX_VALUE) >> SHIFT8));
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                result[RED] = sr + dr - (2 * Math.min(sr * da, dr * sa) + UBYTE_MAX_VALUE >> SHIFT8);
+                result[GREEN] = sg + dg - (2 * Math.min(sg * da, dg * sa) + UBYTE_MAX_VALUE >> SHIFT8);
+                result[BLUE] = sb + db - (2 * Math.min(sb * da, db * sa) + UBYTE_MAX_VALUE >> SHIFT8);
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         },
         EXCLUSION("exclusion") {
@@ -369,10 +369,10 @@ public class BlendComposite implements Composite {
                 int s1a = UBYTE_MAX_VALUE - sa;
                 int d1a = UBYTE_MAX_VALUE - da;
 
-                result[RED] = ((sr * da + dr * sa - 2 * sr * dr + sr * d1a + dr * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[GREEN] = ((sg * da + dg * sa - 2 * sg * dg + sg * d1a + dg * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[BLUE] = ((sb * da + db * sa - 2 * sb * db + sb * d1a + db * s1a + UBYTE_MAX_VALUE) >> SHIFT8);
-                result[ALPHA] = (sa + da - ((sa * da + UBYTE_MAX_VALUE) >> SHIFT8));
+                result[RED] = sr * da + dr * sa - 2 * sr * dr + sr * d1a + dr * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[GREEN] = sg * da + dg * sa - 2 * sg * dg + sg * d1a + dg * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[BLUE] = sb * da + db * sa - 2 * sb * db + sb * d1a + db * s1a + UBYTE_MAX_VALUE >> SHIFT8;
+                result[ALPHA] = sa + da - (sa * da + UBYTE_MAX_VALUE >> SHIFT8);
             }
         };
 

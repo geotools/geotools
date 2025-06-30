@@ -258,8 +258,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         WMTSTileService wmtsService = new WMTSTileService(templateUrl, layer, matrixSet, this.client);
 
         @SuppressWarnings("unchecked")
-        Map<String, String> extraHeaders = ((Map<String, String>)
-                (wmtsService.getExtrainfo().computeIfAbsent(WMTSTileService.EXTRA_HEADERS, extra -> new HashMap<>())));
+        Map<String, String> extraHeaders = (Map<String, String>)
+                wmtsService.getExtrainfo().computeIfAbsent(WMTSTileService.EXTRA_HEADERS, extra -> new HashMap<>());
         extraHeaders.putAll(this.headers);
 
         double scale = Math.round(RendererUtilities.calculateOGCScale(requestedBBox, requestedWidth, null));
@@ -330,7 +330,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             CoordinateReferenceSystem matrixCRS = matrixSet.getCoordinateReferenceSystem();
             String matrixSRS = CRS.toSRS(matrixCRS);
             if (requestSRS.equals(matrixSRS)) { // matching SRS
-                if (links.containsKey((matrixSet.getIdentifier()))) { // and available for
+                if (links.containsKey(matrixSet.getIdentifier())) { // and available for
                     // this layer
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("selected matrix set:" + matrixSet.getIdentifier());
@@ -351,7 +351,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                         + ") with any of the tile matrices!");
             }
             for (TileMatrixSet matrix : capabilities.getMatrixSets()) {
-                if (links.containsKey((matrix.getIdentifier()))) { // available for this layer
+                if (links.containsKey(matrix.getIdentifier())) { // available for this layer
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("defaulting matrix set:" + matrix.getIdentifier());
                     }

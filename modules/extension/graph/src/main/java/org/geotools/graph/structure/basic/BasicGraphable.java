@@ -54,7 +54,7 @@ public abstract class BasicGraphable implements Graphable, Serializable {
     /** @see Graphable#getID() */
     @Override
     public int getID() {
-        return (m_id);
+        return m_id;
     }
 
     /** @see Graphable#setID(int) */
@@ -66,7 +66,7 @@ public abstract class BasicGraphable implements Graphable, Serializable {
     /** @see Graphable#getObject() */
     @Override
     public Object getObject() {
-        return (m_obj);
+        return m_obj;
     }
 
     /** @see Graphable#setObject(Object) */
@@ -78,7 +78,7 @@ public abstract class BasicGraphable implements Graphable, Serializable {
     /** @see Graphable#isVisited() */
     @Override
     public boolean isVisited() {
-        return (m_visited);
+        return m_visited;
     }
 
     /** @see Graphable#setVisited(boolean) */
@@ -90,7 +90,7 @@ public abstract class BasicGraphable implements Graphable, Serializable {
     /** @see Graphable#getCount() */
     @Override
     public int getCount() {
-        return (m_nvisited);
+        return m_nvisited;
     }
 
     /** @see Graphable#setCount(int) */
@@ -106,6 +106,6 @@ public abstract class BasicGraphable implements Graphable, Serializable {
      */
     @Override
     public String toString() {
-        return (String.valueOf(m_id));
+        return String.valueOf(m_id);
     }
 }

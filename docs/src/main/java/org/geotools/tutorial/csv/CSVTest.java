@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,7 +56,7 @@ public class CSVTest {
         List<String> cities = new ArrayList<>();
         URL url = CSVTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
-        try (FileReader reader = new FileReader(file)) {
+        try (FileReader reader = new FileReader(file, StandardCharsets.UTF_8)) {
             CsvReader locations = new CsvReader(reader);
             locations.readHeaders();
             while (locations.readRecord()) {

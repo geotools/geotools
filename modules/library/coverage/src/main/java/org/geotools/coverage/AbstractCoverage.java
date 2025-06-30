@@ -149,14 +149,14 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @param coverage The source coverage.
      */
     protected AbstractCoverage(final CharSequence name, final Coverage coverage) {
-        super(null, (coverage instanceof PropertySource) ? (PropertySource) coverage : null);
+        super(null, coverage instanceof PropertySource ? (PropertySource) coverage : null);
         final InternationalString n = SimpleInternationalString.wrap(name);
         if (coverage instanceof AbstractCoverage) {
             final AbstractCoverage source = (AbstractCoverage) coverage;
-            this.name = (n != null) ? n : source.name;
+            this.name = n != null ? n : source.name;
             this.crs = source.crs;
         } else {
-            this.name = (n != null) ? n : new SimpleInternationalString(coverage.toString());
+            this.name = n != null ? n : new SimpleInternationalString(coverage.toString());
             this.crs = coverage.getCoordinateReferenceSystem();
         }
     }
@@ -646,7 +646,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
              * case, we really want to round toward the nearest integer.
              */
             final Rectangle2D bounds =
-                    XAffineTransform.transform(crsToGrid, (area != null) ? area.getBounds2D() : this.bounds, null);
+                    XAffineTransform.transform(crsToGrid, area != null ? area.getBounds2D() : this.bounds, null);
             final int xmin = (int) Math.round(bounds.getMinX());
             final int ymin = (int) Math.round(bounds.getMinY());
             final int xmax = (int) Math.round(bounds.getMaxX());
@@ -740,11 +740,11 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                                     }
                                     x++;
                                 } while (!iterator.nextPixelDone());
-                                assert (x == gridBounds.x + gridBounds.width);
+                                assert x == gridBounds.x + gridBounds.width;
                                 y++;
                             }
                         } while (!iterator.nextLineDone());
-                        assert (y == gridBounds.y + gridBounds.height);
+                        assert y == gridBounds.y + gridBounds.height;
                     } catch (NoninvertibleTransformException exception) {
                         throw new IllegalArgumentException(
                                 MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "context"), exception);

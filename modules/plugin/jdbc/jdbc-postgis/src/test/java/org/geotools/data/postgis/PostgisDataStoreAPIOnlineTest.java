@@ -58,7 +58,7 @@ public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
     public void testSimplificationPreserveCollapsed() throws Exception {
         Version version;
         try (Connection cx = dataStore.getDataSource().getConnection()) {
-            PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());
+            PostGISDialect dialect = (PostGISDialect) dataStore.getSQLDialect();
             version = dialect.getVersion(cx);
         }
 

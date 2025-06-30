@@ -124,17 +124,17 @@ public class TableRow implements VPFRow {
      */
     @Override
     public boolean equals(Object obj) {
-        if ((obj == null) || !(obj instanceof TableRow)) {
+        if (obj == null || !(obj instanceof TableRow)) {
             return false;
         }
 
         TableRow row = (TableRow) obj;
 
-        if ((fieldsArr == null) && (row.fieldsArr == null)) {
+        if (fieldsArr == null && row.fieldsArr == null) {
             return true;
         }
 
-        if ((fieldsArr == null) || (row.fieldsArr == null)) {
+        if (fieldsArr == null || row.fieldsArr == null) {
             return false;
         }
 
@@ -152,10 +152,11 @@ public class TableRow implements VPFRow {
     }
 
     @Override
+    @SuppressWarnings("SuperCallToObjectMethod")
     public int hashCode() {
         int code = 0;
 
-        if ((fieldsArr == null) || (fieldsArr.length == 0)) {
+        if (fieldsArr == null || fieldsArr.length == 0) {
             code = super.hashCode();
         } else {
             for (RowField rowField : fieldsArr) {

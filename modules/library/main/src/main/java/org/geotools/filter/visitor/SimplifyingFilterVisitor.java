@@ -241,8 +241,8 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         } else if (f2 instanceof Not) {
             Not not = (Not) f2;
             return f1.equals(not.getFilter());
-        } else if ((f1 instanceof PropertyIsEqualTo && f2 instanceof PropertyIsNotEqualTo)
-                || (f1 instanceof PropertyIsNotEqualTo && f2 instanceof PropertyIsEqualTo)) {
+        } else if (f1 instanceof PropertyIsEqualTo && f2 instanceof PropertyIsNotEqualTo
+                || f1 instanceof PropertyIsNotEqualTo && f2 instanceof PropertyIsEqualTo) {
             PropertyIsEqualTo e;
             PropertyIsNotEqualTo ne;
             if (f2 instanceof PropertyIsEqualTo) {
@@ -256,10 +256,10 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             if (!isSimpleFeature()) {
                 return false;
             } else {
-                return (e.getExpression1().equals(ne.getExpression1())
-                                && e.getExpression2().equals(ne.getExpression2()))
-                        || (e.getExpression2().equals(ne.getExpression1())
-                                && e.getExpression1().equals(ne.getExpression2()));
+                return e.getExpression1().equals(ne.getExpression1())
+                                && e.getExpression2().equals(ne.getExpression2())
+                        || e.getExpression2().equals(ne.getExpression1())
+                                && e.getExpression1().equals(ne.getExpression2());
             }
         }
 

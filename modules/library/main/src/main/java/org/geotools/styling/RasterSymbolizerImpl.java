@@ -74,14 +74,14 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((behavior == null) ? 0 : behavior.hashCode());
-        result = prime * result + ((channelSelection == null) ? 0 : channelSelection.hashCode());
-        result = prime * result + ((colorMap == null) ? 0 : colorMap.hashCode());
-        result = prime * result + ((contrastEnhancement == null) ? 0 : contrastEnhancement.hashCode());
-        result = prime * result + ((filterFactory == null) ? 0 : filterFactory.hashCode());
-        result = prime * result + ((opacity == null) ? 0 : opacity.hashCode());
-        result = prime * result + ((shadedRelief == null) ? 0 : shadedRelief.hashCode());
-        result = prime * result + ((symbolizer == null) ? 0 : symbolizer.hashCode());
+        result = prime * result + (behavior == null ? 0 : behavior.hashCode());
+        result = prime * result + (channelSelection == null ? 0 : channelSelection.hashCode());
+        result = prime * result + (colorMap == null ? 0 : colorMap.hashCode());
+        result = prime * result + (contrastEnhancement == null ? 0 : contrastEnhancement.hashCode());
+        result = prime * result + (filterFactory == null ? 0 : filterFactory.hashCode());
+        result = prime * result + (opacity == null ? 0 : opacity.hashCode());
+        result = prime * result + (shadedRelief == null ? 0 : shadedRelief.hashCode());
+        result = prime * result + (symbolizer == null ? 0 : symbolizer.hashCode());
         return result;
     }
 

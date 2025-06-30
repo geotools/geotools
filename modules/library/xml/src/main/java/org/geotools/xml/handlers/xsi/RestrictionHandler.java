@@ -48,7 +48,7 @@ public class RestrictionHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((base == null) ? 1 : base.hashCode());
+        return LOCALNAME.hashCode() * (id == null ? 1 : id.hashCode()) * (base == null ? 1 : base.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */

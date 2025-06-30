@@ -80,7 +80,7 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         return sequence;
     }
 
-    private class FlyWeightDirectPosition implements Position {
+    private static class FlyWeightDirectPosition implements Position {
         PackedCoordinateSequence sequence;
         int offset = 0;
         private int dimension;
@@ -137,11 +137,6 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         @Override
         public FlyWeightDirectPosition clone() {
             throw new UnsupportedOperationException();
-        }
-
-        /** @see Position */
-        public Position getPosition() {
-            return this;
         }
 
         /** @see Position */

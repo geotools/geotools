@@ -233,7 +233,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
 
     public ExecuteProcessRequest createExecuteProcessRequest() throws UnsupportedOperationException {
         ProcessOfferingsType processOfferings = getCapabilities().getProcessOfferings();
-        if ((processOfferings == null) || !processOfferings.eAllContents().hasNext()) {
+        if (processOfferings == null || !processOfferings.eAllContents().hasNext()) {
             throw new UnsupportedOperationException(
                     "Server does not specify any processes to execute. Cannot be performed.");
         }
@@ -292,7 +292,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         @Override
         public String getDescription() {
             String description = null;
-            if ((description == null) && (serverURL != null)) {
+            if (description == null && serverURL != null) {
                 description = "Web Processing Service " + serverURL;
             }
 

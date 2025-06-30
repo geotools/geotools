@@ -51,7 +51,7 @@ public class Buffer {
         }
 
         buffer[in++] = object;
-        in = (in == buffer.length) ? 0 : in;
+        in = in == buffer.length ? 0 : in;
         size++;
 
         notifyAll();
@@ -72,7 +72,7 @@ public class Buffer {
 
         Object object = buffer[out];
         buffer[out++] = null;
-        out = (out == buffer.length) ? 0 : out;
+        out = out == buffer.length ? 0 : out;
         size--;
 
         notifyAll();

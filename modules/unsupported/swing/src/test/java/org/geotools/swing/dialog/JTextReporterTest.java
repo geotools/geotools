@@ -122,6 +122,10 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
         // check dialog state
         DialogFixture df = (DialogFixture) windowFixture;
 
+        // REVISIT: This expression evaluates to 0. If this isn't an error, consider expressing it as a literal 0.
+        // (see https://errorprone.info/bugpattern/ErroneousBitwiseExpression)
+        // Did you mean 'boolean expectModal = (JTextReporter.DEFAULT_FLAGS | JTextReporter.FLAG_MODAL) > 0;'?
+        @SuppressWarnings("ErroneousBitwiseExpression")
         boolean expectModal = (JTextReporter.DEFAULT_FLAGS & JTextReporter.FLAG_MODAL) > 0;
         assertEquals(expectModal, df.target().isModal());
 

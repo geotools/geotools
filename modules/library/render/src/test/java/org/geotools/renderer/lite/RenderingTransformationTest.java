@@ -136,7 +136,7 @@ public class RenderingTransformationTest {
         GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
 
         MapContent mc = new MapContent();
-        mc.addLayer(new GridCoverageLayer(reader.read(null), style));
+        mc.addLayer(new GridCoverageLayer(reader.read(), style));
 
         StreamingRenderer renderer = new StreamingRenderer();
         Map<Object, Object> rendererParams = new HashMap<>();
@@ -166,7 +166,7 @@ public class RenderingTransformationTest {
         GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
 
         MapContent mc = new MapContent();
-        mc.addLayer(new GridCoverageLayer(reader.read(null), style));
+        mc.addLayer(new GridCoverageLayer(reader.read(), style));
 
         StreamingRenderer renderer = new StreamingRenderer();
         Map<Object, Object> rendererParams = new HashMap<>();
@@ -193,7 +193,7 @@ public class RenderingTransformationTest {
         GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
 
         MapContent mc = new MapContent();
-        mc.addLayer(new GridCoverageLayer(reader.read(null), style));
+        mc.addLayer(new GridCoverageLayer(reader.read(), style));
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
@@ -221,11 +221,10 @@ public class RenderingTransformationTest {
             }
 
             @Override
-            public GridCoverage2D read(GeneralParameterValue[] parameters)
+            public GridCoverage2D read(GeneralParameterValue... parameters)
                     throws IllegalArgumentException, IOException {
                 // we return null on purpose, simulating a reader queried outside of its
-                // area, or
-                // on a dimension value it does not have
+                // area, or on a dimension value it does not have
                 return null;
             }
         };

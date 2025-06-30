@@ -32,7 +32,7 @@ import org.junit.Test;
 
 public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest {
 
-    private class SetVariableListener implements ConnectionLifecycleListener {
+    private static class SetVariableListener implements ConnectionLifecycleListener {
 
         double value;
 

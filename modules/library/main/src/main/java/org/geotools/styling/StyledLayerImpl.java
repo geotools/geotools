@@ -33,7 +33,7 @@ public class StyledLayerImpl implements StyledLayer {
 
     @Override
     public void setName(String name) {
-        if ((name == this.name) || ((name != null) && name.equals(this.name))) {
+        if (name == this.name || name != null && name.equals(this.name)) {
             return;
         }
         this.name = name;

@@ -162,22 +162,22 @@ public class ColorBrewer {
             int[] suitability = pal.getPaletteSuitability().getSuitability(numClasses);
 
             if (isSet(PaletteSuitability.VIEWER_COLORBLIND, requiredViewers)
-                    && (suitability[PaletteSuitability.VIEWER_COLORBLIND] != PaletteSuitability.QUALITY_GOOD)) {
+                    && suitability[PaletteSuitability.VIEWER_COLORBLIND] != PaletteSuitability.QUALITY_GOOD) {
                 match = false;
             } else if (isSet(PaletteSuitability.VIEWER_CRT, requiredViewers)
-                    && (suitability[PaletteSuitability.VIEWER_CRT] != PaletteSuitability.QUALITY_GOOD)) {
+                    && suitability[PaletteSuitability.VIEWER_CRT] != PaletteSuitability.QUALITY_GOOD) {
                 match = false;
             } else if (isSet(PaletteSuitability.VIEWER_LCD, requiredViewers)
-                    && (suitability[PaletteSuitability.VIEWER_LCD] != PaletteSuitability.QUALITY_GOOD)) {
+                    && suitability[PaletteSuitability.VIEWER_LCD] != PaletteSuitability.QUALITY_GOOD) {
                 match = false;
             } else if (isSet(PaletteSuitability.VIEWER_PHOTOCOPY, requiredViewers)
-                    && (suitability[PaletteSuitability.VIEWER_PHOTOCOPY] != PaletteSuitability.QUALITY_GOOD)) {
+                    && suitability[PaletteSuitability.VIEWER_PHOTOCOPY] != PaletteSuitability.QUALITY_GOOD) {
                 match = false;
             } else if (isSet(PaletteSuitability.VIEWER_PRINT, requiredViewers)
-                    && (suitability[PaletteSuitability.VIEWER_PRINT] != PaletteSuitability.QUALITY_GOOD)) {
+                    && suitability[PaletteSuitability.VIEWER_PRINT] != PaletteSuitability.QUALITY_GOOD) {
                 match = false;
             } else if (isSet(PaletteSuitability.VIEWER_PROJECTOR, requiredViewers)
-                    && (suitability[PaletteSuitability.VIEWER_PROJECTOR] != PaletteSuitability.QUALITY_GOOD)) {
+                    && suitability[PaletteSuitability.VIEWER_PROJECTOR] != PaletteSuitability.QUALITY_GOOD) {
                 match = false;
             }
 
@@ -221,7 +221,7 @@ public class ColorBrewer {
             BrewerPalette thisPalette = palettes.get(key);
             int numColors = thisPalette.getMaxColors();
 
-            if ((numColors >= minClasses) && (numColors <= maxClasses)) {
+            if (numColors >= minClasses && numColors <= maxClasses) {
                 paletteSet.add(thisPalette.getName());
             }
         }
@@ -444,6 +444,6 @@ public class ColorBrewer {
     }
 
     public boolean isSet(int singleValue, int multipleValue) {
-        return ((singleValue & multipleValue) != 0);
+        return (singleValue & multipleValue) != 0;
     }
 }

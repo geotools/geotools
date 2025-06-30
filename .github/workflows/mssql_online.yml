@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         mssql: [2019-latest, 2022-latest, 2025-latest]
-        java: [11]
+        java: [17]
 
     steps:
     - name: Set up JDK ${{ matrix.java }}

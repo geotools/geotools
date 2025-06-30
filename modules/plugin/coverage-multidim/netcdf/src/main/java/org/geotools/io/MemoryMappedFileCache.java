@@ -708,7 +708,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
         }
     }
 
-    private class CacheFileSorter implements Comparable<CacheFileSorter> {
+    private static class CacheFileSorter implements Comparable<CacheFileSorter> {
         private final CacheElement.CacheFile cacheFile;
         private final long lastAccessed;
 

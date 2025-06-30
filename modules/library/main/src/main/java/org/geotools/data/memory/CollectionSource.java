@@ -53,6 +53,7 @@ public final class CollectionSource<T> {
         return collection;
     }
 
+    @SuppressWarnings("DoNotCallSuggester")
     public Collection<T> content(String query, String queryLanguage) {
         throw new UnsupportedOperationException("Please help me hook up the parser!");
     }

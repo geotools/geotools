@@ -71,7 +71,7 @@ public abstract class Style implements Cloneable {
      *         otherwise)
      */
     public boolean isScaleInRange(double scale) {
-        return (scale >= minScale) && (scale <= maxScale);
+        return scale >= minScale && scale <= maxScale;
     }
 
     @Override

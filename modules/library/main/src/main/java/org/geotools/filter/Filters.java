@@ -436,6 +436,7 @@ public class Filters {
             try {
                 return TYPE.cast(Double.valueOf(text));
             } catch (NumberFormatException ignore) {
+                // ignored
             }
             return TYPE.cast(Integer.decode(text));
         }
@@ -818,6 +819,7 @@ public class Filters {
      *
      * @return are belong to us
      */
+    @SuppressWarnings("NonApiType") // public method, can't return List without risking client code
     public static ArrayList<Filter> children(Filter filter) {
         return children(filter, false);
     }
@@ -843,6 +845,7 @@ public class Filters {
      * @param all true to recurse into the filter and retrieve all children; false to only return the top level children
      * @return are belong to us
      */
+    @SuppressWarnings("NonApiType") // public method, can't return List without risking client code
     public static ArrayList<Filter> children(Filter filter, boolean all) {
         final ArrayList<Filter> children = new ArrayList<>();
         if (filter == null) {

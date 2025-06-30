@@ -187,7 +187,7 @@ class H2GISTest extends H2GISTestSetup {
 
         try (ResultSet rs = st.executeQuery("SELECT ST_EXTENT(THE_GEOM) FROM LANDCOVER_LINKED")) {
             assertTrue(rs.next());
-            assertTrue(JTS.toEnvelope(((Geometry) rs.getObject(1))).boundsEquals2D(fs.getBounds(), 0.01));
+            assertTrue(JTS.toEnvelope((Geometry) rs.getObject(1)).boundsEquals2D(fs.getBounds(), 0.01));
         }
         st.execute("drop table LANDCOVER_LINKED");
     }

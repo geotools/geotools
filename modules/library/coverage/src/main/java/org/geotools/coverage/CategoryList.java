@@ -185,7 +185,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
                             }
                         }
                     }
-                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, args));
+                    throw new IllegalArgumentException(
+                            MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object[]) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {
@@ -232,7 +233,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
             }
         }
         this.main = main;
-        this.last = (main != null || categories.length == 0) ? main : categories[0];
+        this.last = main != null || categories.length == 0 ? main : categories[0];
         /*
          * Search for the fallback if {@link #getCategory(double)} is invoked with a sample
          * value greater than all ranges of sample values. This is the last category to have
@@ -293,7 +294,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
         int high = array.length - 1;
         final boolean keyIsNaN = Double.isNaN(key);
         while (low <= high) {
-            final int mid = (low + high) >> 1;
+            final int mid = low + high >> 1;
             final double midVal = array[mid];
             if (midVal < key) { // Neither val is NaN, midVal is smaller
                 low = mid + 1;
@@ -329,11 +330,11 @@ class CategoryList extends AbstractList<Category> implements Serializable {
             if (keyIsNaN) {
                 // If (mid,key)==(!NaN, NaN): mid is lower.
                 // If two NaN arguments, compare NaN bits.
-                adjustLow = (!midIsNaN || midRawBits < keyRawBits);
+                adjustLow = !midIsNaN || midRawBits < keyRawBits;
             } else {
                 // If (mid,key)==(NaN, !NaN): mid is greater.
                 // Otherwise, case for (-0.0, 0.0) and (0.0, -0.0).
-                adjustLow = (!midIsNaN && midRawBits < keyRawBits);
+                adjustLow = !midIsNaN && midRawBits < keyRawBits;
             }
             if (adjustLow) low = mid + 1;
             else high = mid - 1;
@@ -545,7 +546,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
                     // ASSERT: if 'upper.minimum' was smaller than 'value', it should has been
                     //         found by 'binarySearch'. We use '!' in order to accept NaN values.
                     assert !(upper.minimum <= sample) : sample;
-                    return (upper.minimum - sample < sample - category.maximum) ? upper : category;
+                    return upper.minimum - sample < sample - category.maximum ? upper : category;
                 }
                 return overflowFallback;
             }
@@ -663,7 +664,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
             }
             return false;
         }
-        return (overflowFallback == null) && super.equals(object);
+        return overflowFallback == null && super.equals(object);
     }
 
     @Override
@@ -677,7 +678,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
     /** Reset the {@link #last} field to a non-null value after deserialization. */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        last = (main != null || categories.length == 0) ? main : categories[0];
+        last = main != null || categories.length == 0 ? main : categories[0];
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

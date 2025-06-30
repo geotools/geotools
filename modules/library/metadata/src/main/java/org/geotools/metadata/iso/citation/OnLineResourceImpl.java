@@ -309,6 +309,6 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
     @Override
     public String getProtocol() {
         final URI linkage = this.linkage;
-        return (linkage != null) ? linkage.getScheme() : null;
+        return linkage != null ? linkage.getScheme() : null;
     }
 }

@@ -88,7 +88,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * Views of {@link #codes} for different types. Views will be constructed only when first needed. View are always up
      * to date even if entries are added or removed in the {@linkplain #definitions} map.
      */
-    private transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes = new HashMap<>();
+    private final transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes = new HashMap<>();
 
     /** A WKT parser. */
     private transient Parser parser;

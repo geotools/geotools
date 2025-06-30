@@ -223,7 +223,7 @@ public class GeometryTransformer extends TransformerBase {
             }
             String boxName = boxName();
 
-            if ((srsName == null) || srsName.equals("")) {
+            if (srsName == null || srsName.equals("")) {
                 start(boxName);
             } else {
                 AttributesImpl atts = new AttributesImpl();
@@ -310,7 +310,7 @@ public class GeometryTransformer extends TransformerBase {
         public void encode(Geometry geometry, String srsName, final int dimensions) {
             String geomName = GMLUtils.getGeometryName(geometry);
 
-            if ((srsName == null) || srsName.equals("")) {
+            if (srsName == null || srsName.equals("")) {
                 start(geomName);
             } else {
                 AttributesImpl atts = new AttributesImpl();

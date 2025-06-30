@@ -326,9 +326,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
         this(
                 gridRange,
                 anchor,
-                (gridToCRS != null)
-                                && (gridToCRS.getSourceDimensions() == 2)
-                                && (gridToCRS.getTargetDimensions() == 2)
+                gridToCRS != null
+                                && gridToCRS.getSourceDimensions() == 2
+                                && gridToCRS.getTargetDimensions() == 2
                                 && PixelOrientation.UPPER_LEFT.equals(anchor)
                         ? PixelInCell.CELL_CORNER
                         : PixelInCell.CELL_CENTER,
@@ -365,7 +365,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             // Recycles existing instance if we can (common case)
             this.gridToCRS2D = (MathTransform2D) super.gridToCRS;
         } else {
-            final int xdim = (gridDimensionX < gridDimensionY) ? 0 : 1;
+            final int xdim = gridDimensionX < gridDimensionY ? 0 : 1;
             this.gridToCRS2D = (MathTransform2D)
                     PixelTranslation.translate(gridToCRS2D, anchor, PixelOrientation.CENTER, xdim, xdim ^ 1);
         }
@@ -820,7 +820,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
     /** Computes the value to be returned by {@link #getGridToCRS2D}. */
     private MathTransform2D computeGridToCRS2D(final PixelOrientation orientation) {
-        final int xdim = (gridDimensionX < gridDimensionY) ? 0 : 1;
+        final int xdim = gridDimensionX < gridDimensionY ? 0 : 1;
         return (MathTransform2D)
                 PixelTranslation.translate(gridToCRS2D, PixelOrientation.CENTER, orientation, xdim, xdim ^ 1);
     }

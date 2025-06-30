@@ -27,6 +27,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.Warp;
@@ -254,7 +255,7 @@ public class WarpBuilder {
             // whatever makes the resulting grid be the smallest)
             if (cmax < maxx) {
                 // use the better match between adding a column and adding a pixel to the step
-                if ((cmax + stepx) < cols * (stepx + 1)) {
+                if (cmax + stepx < cols * (stepx + 1)) {
                     cmax += stepx;
                     cols++;
                 } else {
@@ -264,7 +265,7 @@ public class WarpBuilder {
             }
             if (rmax < maxy) {
                 // use the better match between adding a row and adding a pixel to the step
-                if ((rmax + stepy) < rows * (stepy + 1)) {
+                if (rmax + stepy < rows * (stepy + 1)) {
                     rmax += stepy;
                     rows++;
                 } else {
@@ -343,7 +344,7 @@ public class WarpBuilder {
 
         // check what kind of split are we going to make
         // (and try not to get fooled by symmetrical projections)
-        if ((!withinTolHorizontal && !withinTolVertical)) {
+        if (!withinTolHorizontal && !withinTolVertical) {
             // quad split
             rowDepth++;
             colDepth++;
@@ -436,7 +437,7 @@ public class WarpBuilder {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    class ExcessiveDepthException extends RuntimeException {
+    static class ExcessiveDepthException extends RuntimeException {
         private static final long serialVersionUID = -3533898904532522502L;
 
         public ExcessiveDepthException() {
@@ -462,11 +463,11 @@ public class WarpBuilder {
 
         try {
             File output = File.createTempFile(start + name, ".properties");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(output))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(output, StandardCharsets.UTF_8))) {
                 writer.write("_=geom:Point:srid=32632");
                 writer.newLine();
                 for (int i = 0; i < points.length; i += 2) {
-                    writer.write("p." + (i / 2) + "=POINT(" + points[i] + " " + points[i + 1] + ")");
+                    writer.write("p." + i / 2 + "=POINT(" + points[i] + " " + points[i + 1] + ")");
                     writer.newLine();
                 }
                 LOGGER.info(name + " dumped as " + output.getName());

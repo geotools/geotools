@@ -56,12 +56,12 @@ The following example is taken from our integration testing, this test has no ad
 
 1. Setup :file:`pom.xml` with dependencies on geotools:
 
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/commons/pom.xml
+   .. literalinclude:: /../../modules/integration/src/it/commons/pom.xml
       :language: xml
       
-2. Configure commons logging with :download:`commons-logging.properties </../../modules/library/metadata-it/src/it/commons/src/main/resources/commons-logging.properties>` added to :file:`src/main/resources`:
+2. Configure commons logging with :download:`commons-logging.properties </../../modules/integration/src/it/commons/src/main/resources/commons-logging.properties>` added to :file:`src/main/resources`:
    
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/commons/src/main/resources/commons-logging.properties
+   .. literalinclude:: /../../modules/integration/src/it/commons/src/main/resources/commons-logging.properties
       :language: xml
 
 3. During startup commons-logging will use:
@@ -83,16 +83,16 @@ The following example is taken from our integration testing, this test has no ad
 
 4. The :file:`commons-logging.properties` was setup to use ``SimpleLog``.
 
-   Configure ``SimpleLog`` using :download:`simplelog.properties </../../modules/library/metadata-it/src/it/commons/src/main/resources/simplelog.properties>` added to :file:`src/main/resources`:
+   Configure ``SimpleLog`` using :download:`simplelog.properties </../../modules/integration/src/it/commons/src/main/resources/simplelog.properties>` added to :file:`src/main/resources`:
    
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/commons/src/main/resources/simplelog.properties
+   .. literalinclude:: /../../modules/integration/src/it/commons/src/main/resources/simplelog.properties
       :language: xml
 
-4. Application :download:`CommonsIntegration.java </../../modules/library/metadata-it/src/it/commons/src/main/java/org/geotools/tutorial/logging/CommonsIntegration.java>` startup example for :file:`src/min/java`.
+4. Application :download:`CommonsIntegration.java </../../modules/integration/src/it/commons/src/main/java/org/geotools/tutorial/logging/CommonsIntegration.java>` startup example for :file:`src/min/java`.
 
    Example is taking care to call ``GeoTools.init()`` prior to logger use:
    
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/commons/src/main/java/org/geotools/tutorial/logging/CommonsIntegration.java
+   .. literalinclude:: /../../modules/integration/src/it/commons/src/main/java/org/geotools/tutorial/logging/CommonsIntegration.java
       :language: java
 
 4. An ``exec:exec`` target is provided to make this easier to test:

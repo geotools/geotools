@@ -12,22 +12,28 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>library</artifactId>
+    <artifactId>modules</artifactId>
     <version>34-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-  <artifactId>gt-metadata-it</artifactId>
+  <artifactId>gt-integration</artifactId>
   <packaging>pom</packaging>
-  <name>Geotools Metadata integration tests</name>
-  <description>Metadata logging framework integration testing</description>
+  <name>Integration tests</name>
+  <description>Integration tests, for functionality such as logging, that requires isolated enviornment.</description>
 
   <dependencies>
+    <!-- integration tests use current build as maven local repository -->
+    <!-- add dependencies here to to enforce a specific build order    -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-metadata</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.ogc</groupId>
+      <artifactId>net.opengis.ows</artifactId>
     </dependency>
   </dependencies>
 
@@ -41,22 +47,26 @@
         <configuration>
           <filesets>
             <fileset>
+              <followSymlinks>true</followSymlinks>
               <directory>src/it/commons/target</directory>
             </fileset>
             <fileset>
+              <followSymlinks>true</followSymlinks>
               <directory>src/it/log4j/target</directory>
             </fileset>
             <fileset>
+              <followSymlinks>true</followSymlinks>
               <directory>src/it/logback/target</directory>
             </fileset>
             <fileset>
+              <followSymlinks>true</followSymlinks>
               <directory>src/it/logging/target</directory>
             </fileset>
             <fileset>
+              <followSymlinks>true</followSymlinks>
               <directory>src/it/reload4j/target</directory>
             </fileset>
           </filesets>
-          <followSymlinks>true</followSymlinks>
           <failOnError>false</failOnError>
         </configuration>
       </plugin>
@@ -89,7 +99,8 @@
                 <goal>exec:exec</goal>
                 <goal>integration-test</goal>
               </goals>
-              <verifyHookScript>postbuild.bsh</verifyHookScript>
+              <skipInstallation>${skipTests}</skipInstallation>
+              <skipInvocation>${skipTests}</skipInvocation>
             </configuration>
           </execution>
         </executions>

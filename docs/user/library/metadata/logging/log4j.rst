@@ -129,12 +129,12 @@ so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFactory`` 
 
 1. Setup :file:`pom.xml` with dependencies on geotools and Log4J:
 
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/log4j/pom.xml
+   .. literalinclude:: /../../modules/integration/src/it/log4j/pom.xml
       :language: xml
       
-2. Configure log4j wtih :download:`log4j2.xml </../../modules/library/metadata-it/src/it/log4j/src/main/resources/log4j2.xml>` added to :file:`src/main/resources`:
+2. Configure log4j wtih :download:`log4j2.xml </../../modules/integration/src/it/log4j/src/main/resources/log4j2.xml>` added to :file:`src/main/resources`:
    
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/log4j/src/main/resources/log4j2.xml
+   .. literalinclude:: /../../modules/integration/src/it/log4j/src/main/resources/log4j2.xml
       :language: xml
    
    Of interest above is defining the CONFIG and FINEST custom levels.
@@ -143,11 +143,11 @@ so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFactory`` 
 
    To search for a different file on the classpath use ``-Dlog4j2.configurationFile=log4j2-production.xml``.
 
-4. Application :download:`Log4JIntegration.java </../../modules/library/metadata-it/src/it/log4j/src/main/java/org/geotools/tutorial/logging/Log4JIntegration.java>` startup example for :file:`src/min/java`.
+4. Application :download:`Log4JIntegration.java </../../modules/integration/src/it/log4j/src/main/java/org/geotools/tutorial/logging/Log4JIntegration.java>` startup example for :file:`src/min/java`.
 
    Example is taking care to call ``GeoTools.init()`` prior to logger use:
    
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/log4j/src/main/java/org/geotools/tutorial/logging/Log4JIntegration.java
+   .. literalinclude:: /../../modules/integration/src/it/log4j/src/main/java/org/geotools/tutorial/logging/Log4JIntegration.java
       :language: java
 
 5. An ``exec:exec`` target is provided to make this easier to test:
@@ -178,9 +178,9 @@ so ``GeoTools.init()` is able to unambiguously determine ``Log4JLoggerFactory`` 
            -Djava.awt.headless=true \\
            org.geotools.tutorial.logging.Log4JIntegration
    
-   This makes use of the :download:`log4j2-production.xml </../../modules/library/metadata-it/src/it/log4j/src/main/resources/log4j2-production.xml>` configuration, and sets up log4j jul bridge.
+   This makes use of the :download:`log4j2-production.xml </../../modules/integration/src/it/log4j/src/main/resources/log4j2-production.xml>` configuration, and sets up log4j jul bridge.
    
-   .. literalinclude:: /../../modules/library/metadata-it/src/it/log4j/src/main/resources/log4j2-production.xml
+   .. literalinclude:: /../../modules/integration/src/it/log4j/src/main/resources/log4j2-production.xml
       :language: xml
    
    This logging configuration reduces the levels recorded.

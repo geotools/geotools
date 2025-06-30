@@ -121,6 +121,17 @@ public interface FeatureTypeStyle {
     String RT_OVERASAMPLE = "rt-oversample";
 
     /**
+     * The minimum scale denominator for this style. This is used to determine whether the style should be applied to a
+     * given map layer, based on the current map scale.
+     */
+    String MIN_SCALE_DENOMINATOR = "minScaleDenominator";
+    /**
+     * The maximum scale denominator for this style. This is used to determine whether the style should be applied to a
+     * given map layer, based on the current map scale.
+     */
+    String MAX_SCALE_DENOMINATOR = "maxScaleDenominator";
+
+    /**
      * Returns a name for this style. This can be any string that uniquely identifies this style within a given canvas.
      * It is not meant to be human-friendly. (The "title" property is meant to be human friendly.)
      *

@@ -23,6 +23,7 @@ import org.geotools.api.data.DataStoreFinder;
 import org.geotools.jdbc.JDBCConnectionLifecycleOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.SessionCommandsListener;
 import org.junit.Test;
 
 public class OracleConnectionLifecycleOnlineTest extends JDBCConnectionLifecycleOnlineTest {
@@ -34,6 +35,7 @@ public class OracleConnectionLifecycleOnlineTest extends JDBCConnectionLifecycle
 
     @Test
     public void testLifeCycleDoubleUnwrap() {
+        System.setProperty(SessionCommandsListener.UNRESTRICTED_SQL_KEY, "true");
         try {
             // Use startup SQL when connecting so the connection is
             // doubly wrapped (adding LifeCycleConnection).
@@ -49,6 +51,8 @@ public class OracleConnectionLifecycleOnlineTest extends JDBCConnectionLifecycle
             withWrap.dispose();
         } catch (Exception e) {
             throw new RuntimeException("Connection unwrap test failed", e);
+        } finally {
+            System.clearProperty(SessionCommandsListener.UNRESTRICTED_SQL_KEY);
         }
     }
 }

@@ -4,15 +4,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.geotools.tutorial</groupId>
-  <artifactId>commons</artifactId>
+  <artifactId>reload4j</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>GeoTools Commons Integration Example</name>
+  <name>GeoTools Reload4J Integration Example</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.deploy.skip>true</maven.deploy.skip>
     <geotools.version>34-SNAPSHOT</geotools.version>
-    <logback.version>1.2.11</logback.version>
+    <reload4j.version>1.2.26</reload4j.version>
   </properties>
   <dependencies>
     <dependency>
@@ -26,25 +26,25 @@
       <version>${geotools.version}</version>
     </dependency>
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.2</version>
+      <groupId>ch.qos.reload4j</groupId>
+      <artifactId>reload4j</artifactId>
+      <version>${reload4j.version}</version>
     </dependency>
   </dependencies>
   <repositories>
     <repository>
-      <id>osgeo</id>
-      <name>OSGeo Release Repository</name>
-      <url>https://repo.osgeo.org/repository/release/</url>
-      <snapshots><enabled>false</enabled></snapshots>
-      <releases><enabled>true</enabled></releases>
+    <id>osgeo</id>
+    <name>OSGeo Release Repository</name>
+    <url>https://repo.osgeo.org/repository/release/</url>
+    <snapshots><enabled>false</enabled></snapshots>
+    <releases><enabled>true</enabled></releases>
     </repository>
     <repository>
-      <id>osgeo-snapshot</id>
-      <name>OSGeo Snapshot Repository</name>
-      <url>https://repo.osgeo.org/repository/snapshot/</url>
-      <snapshots><enabled>true</enabled></snapshots>
-      <releases><enabled>false</enabled></releases>
+    <id>osgeo-snapshot</id>
+    <name>OSGeo Snapshot Repository</name>
+    <url>https://repo.osgeo.org/repository/snapshot/</url>
+    <snapshots><enabled>true</enabled></snapshots>
+    <releases><enabled>false</enabled></releases>
     </repository>
   </repositories>
 
@@ -77,10 +77,9 @@
           <executable>java</executable>
           <arguments>
             <argument>-classpath</argument>
-            <!-- uses dependencies and build directory -->
             <classpath/>
             <argument>-Djava.awt.headless=true</argument>
-            <argument>org.geotools.tutorial.logging.CommonsIntegration</argument>
+            <argument>org.geotools.tutorial.reload.Reload4JIntegration</argument>
           </arguments>
         </configuration>
       </plugin>

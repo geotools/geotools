@@ -4,15 +4,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.geotools.tutorial</groupId>
-  <artifactId>log4j</artifactId>
+  <artifactId>commons</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>GeoTools Log4j Integration Example</name>
+  <name>GeoTools Commons Integration Example</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.deploy.skip>true</maven.deploy.skip>
     <geotools.version>34-SNAPSHOT</geotools.version>
-    <log4j2.version>2.24.1</log4j2.version>
+    <commons-logging.version>1.3.5</commons-logging.version>
   </properties>
   <dependencies>
     <dependency>
@@ -26,36 +26,10 @@
       <version>${geotools.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>${log4j2.version}</version>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons-logging.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-    <!-- java util logging logging to log4j 2 -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jul</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-    <!-- commons logging bridge to log4j 2 -->
-    <!--
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jcl</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-    -->
-    <!-- slf4j bridge to log4j 2 -->
-    <!--<dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-    -->
   </dependencies>
   <repositories>
     <repository>
@@ -106,30 +80,9 @@
             <!-- uses dependencies and build directory -->
             <classpath/>
             <argument>-Djava.awt.headless=true</argument>
-            <argument>org.geotools.tutorial.logging.Log4JIntegration</argument>
+            <argument>org.geotools.tutorial.logging.CommonsIntegration</argument>
           </arguments>
         </configuration>
-        <executions>
-          <execution>
-            <id>jul</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>java</executable>
-              <arguments>
-                <argument>-classpath</argument>
-                <!-- uses dependencies and build directory -->
-                <classpath/>
-                <argument>-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager</argument>
-                <argument>-Dlog4j2.configurationFile=log4j2-production.xml</argument>
-                <argument>-Djava.awt.headless=true</argument>
-                <argument>org.geotools.tutorial.logging.Log4JIntegration</argument>
-              </arguments>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

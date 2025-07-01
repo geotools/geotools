@@ -167,12 +167,12 @@ The following example is taken from our integration testing, this test *only* ha
 
 1. Setup :file:`pom.xml` with dependencies on geotools and Logback:
 
-   .. literalinclude:: /../../release/src/it/logback/pom.xml
+   .. literalinclude:: /../../modules/integration/src/it/logback/pom.xml
       :language: xml
       
-2. Configure logback with :download:`logback.xml </../../release/src/it/logback/src/main/resources/logback.xml>` added to :file:`src/main/resources`:
+2. Configure logback with :download:`logback.xml </../../modules/integration/src/it/logback/src/main/resources/logback.xml>` added to :file:`src/main/resources`:
    
-   .. literalinclude:: /../../release/src/it/logback/src/main/resources/logback.xml
+   .. literalinclude:: /../../modules/integration/src/it/logback/src/main/resources/logback.xml
       :language: xml
    
    Of interest above is the mapping of CONFIG and FINEST to logback markers, something not offered by ``jul-to-slf4j`` bridge.
@@ -181,11 +181,11 @@ The following example is taken from our integration testing, this test *only* ha
 
    To use a different file ``-Dlogback.configurationFile=logback-custom.xml``.
 
-4. Application :download:`LogbackJIntegration.java </../../release/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java>` startup example for :file:`src/min/java`.
+4. Application :download:`LogbackJIntegration.java </../../modules/integration/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java>` startup example for :file:`src/min/java`.
 
    Example is taking care to call ``GeoTools.init()`` prior to logger use:
    
-   .. literalinclude:: /../../release/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java
+   .. literalinclude:: /../../modules/integration/src/it/logback/src/main/java/org/geotools/tutorial/logging/LogbackIntegration.java
       :language: java
 
 4. An ``exec:exec`` target is provided to make this easier to test:

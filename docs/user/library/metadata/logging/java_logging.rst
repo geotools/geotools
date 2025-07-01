@@ -134,12 +134,12 @@ The following example is taken from our integration testing, this test has no ad
 
 1. Setup :file:`pom.xml` with dependencies on geotools:
 
-   .. literalinclude:: /../../release/src/it/logging/pom.xml
+   .. literalinclude:: /../../modules/integration/src/it/logging/pom.xml
       :language: xml
       
-2. Configure ``java.util.logging`` with :download:`logging.properties </../../release/src/it/logging/logging.properties>`:
+2. Configure ``java.util.logging`` with :download:`logging.properties </../../modules/integration/src/it/logging/logging.properties>`:
    
-   .. literalinclude:: /../../release/src/it/logging/logging.properties
+   .. literalinclude:: /../../modules/integration/src/it/logging/logging.properties
       :language: xml
    
    .. warning:: Only Loggers that are used are configured, this can be frustrating if you assume a parent logger has been setup and will provide an expected default level.
@@ -156,11 +156,11 @@ The following example is taken from our integration testing, this test has no ad
       
       -Djava.util.logging.config.file=logging.properties
 
-4. Application :download:`LogbackJIntegration.java </../../release/src/it/logging/src/main/java/org/geotools/tutorial/logging/LoggingIntegration.java>` startup example for :file:`src/min/java`.
+4. Application :download:`LogbackJIntegration.java </../../modules/integration/src/it/logging/src/main/java/org/geotools/tutorial/logging/LoggingIntegration.java>` startup example for :file:`src/min/java`.
 
    Example is taking care to call ``GeoTools.init()`` prior to logger use:
    
-   .. literalinclude:: /../../release/src/it/logging/src/main/java/org/geotools/tutorial/logging/LoggingIntegration.java
+   .. literalinclude:: /../../modules/integration/src/it/logging/src/main/java/org/geotools/tutorial/logging/LoggingIntegration.java
       :language: java
 
 4. An ``exec:exec`` target is provided to make this easier to test:

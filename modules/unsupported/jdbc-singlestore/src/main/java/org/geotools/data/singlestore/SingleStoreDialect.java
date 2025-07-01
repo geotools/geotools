@@ -105,7 +105,12 @@ public class SingleStoreDialect extends SQLDialect {
     @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx) throws SQLException, IOException {
         try {
-            Geometry geom = new WKTReader().read(rs.getString(column));
+            String wkt = rs.getString(column);
+            // If the column is null no geometry or envelope is available, return null
+            if (wkt == null) {
+                return null;
+            }
+            Geometry geom = new WKTReader().read(wkt);
             return geom.getEnvelopeInternal();
         } catch (ParseException e) {
             String msg = "Error decoding wkb for envelope";

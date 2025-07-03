@@ -200,7 +200,6 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     private static SQLiteConfig setupSQLiteConfig(Map<String, ?> params) throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
-        config.enableLoadExtension(true);
         Object readOnly = READ_ONLY.lookUp(params);
         if (Boolean.TRUE.equals(readOnly)) {
             config.setPragma(SQLiteConfig.Pragma.SYNCHRONOUS, "OFF");

@@ -20,9 +20,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 
@@ -61,45 +65,65 @@ import org.geotools.filter.function.EnvFunction;
  */
 public class SessionCommandsListener implements ConnectionLifecycleListener {
 
-    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    /** Boolean flag to enable/disable all session SQL restrictions */
+    public static final String UNRESTRICTED_SQL_KEY = "org.geotools.jdbc.unrestrictedSessionSql";
 
-    private Expression sqlOnBorrow;
+    /** Default is to enable all session SQL restrictions to mitigate SQL injection */
+    private static final String UNRESTRICTED_SQL_DEFAULT = "false";
 
-    private Expression sqlOnRelease;
+    /** Provides a comma-separated list of database types allowed to use session SQL commands */
+    public static final String ALLOWED_DBTYPES_KEY = "org.geotools.jdbc.allowedSessionSqlDbtypes";
 
+    /** Default is to limit session SQL commands to postgis databases only */
+    private static final String ALLOWED_DBTYPES_DEFAULT = "postgis";
+
+    /** Provides a regular expression that session startup SQL must match */
+    public static final String ALLOWED_STARTUP_KEY = "org.geotools.jdbc.allowedSessionStartupSql";
+
+    /**
+     * Default is to limit session startup SQL to <code>SET SESSION AUTHORIZATION ${GSUSER,geoserver}</code> allowing
+     * other default usernames or no default username
+     */
+    private static final String ALLOWED_STARTUP_DEFAULT =
+            "(?i)^SET SESSION AUTHORIZATION \\$\\{GSUSER(,[a-z_][a-z0-9_]{0,62})?\\}$";
+
+    /** Provides a regular expression that session close-up SQL must match */
+    public static final String ALLOWED_CLOSEUP_KEY = "org.geotools.jdbc.allowedSessionCloseupSql";
+
+    /** Default is to limit session close-up SQL to {@code RESET SESSION AUTHORIZATION} */
+    private static final String ALLOWED_CLOSEUP_DEFAULT = "(?i)^RESET SESSION AUTHORIZATION$";
+
+    /** Provides a regular expression that environment variable values used in session SQL commands must match */
+    public static final String ALLOWED_VALUES_KEY = "org.geotools.jdbc.allowedSessionVariableValues";
+
+    /** Default is to limit variable values to valid postgis identifiers only */
+    private static final String ALLOWED_VALUES_DEFAULT = "(?i)^[a-z_][a-z0-9_$]{0,62}$";
+
+    private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+
+    private final List<Expression> sqlOnBorrow;
+
+    private final List<Expression> sqlOnRelease;
+
+    @Deprecated(since = "34.0")
     public SessionCommandsListener(String sqlOnBorrow, String sqlOnRelease) {
+        this(null, sqlOnBorrow, sqlOnRelease);
+    }
+
+    public SessionCommandsListener(String dbtype, String sqlOnBorrow, String sqlOnRelease) {
+        validateSQL(dbtype, sqlOnBorrow, sqlOnRelease);
         this.sqlOnBorrow = expandEviromentVariables(sqlOnBorrow);
         this.sqlOnRelease = expandEviromentVariables(sqlOnRelease);
     }
 
     @Override
     public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
-        if (sqlOnBorrow != null) {
-            String command = sqlOnBorrow.evaluate(null, String.class);
-            if (!"".equals(command)) {
-                Statement st = null;
-                try {
-                    st = cx.createStatement();
-                    st.execute(command);
-                } finally {
-                    store.closeSafe(st);
-                }
-            }
-        }
+        executeSQL(cx, this.sqlOnBorrow);
     }
 
     @Override
     public void onRelease(JDBCDataStore store, Connection cx) throws SQLException {
-        if (sqlOnRelease != null) {
-            String command = sqlOnRelease.evaluate(null, String.class);
-            Statement st = null;
-            try {
-                st = cx.createStatement();
-                st.execute(command);
-            } finally {
-                store.closeSafe(st);
-            }
-        }
+        executeSQL(cx, this.sqlOnRelease);
     }
 
     @Override
@@ -118,10 +142,11 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
      * simplified to only have environment variable references instead of CQL to avoid creating a dependency cascading
      * issue (ExpressionExtractor would have to be moved to gt-cql and gt-jdbc made to depend on it.
      */
-    Expression expandEviromentVariables(String sql) {
-        if (sql == null || "".equals(sql)) {
-            return null;
+    List<Expression> expandEviromentVariables(String sql) {
+        if (StringUtils.isBlank(sql)) {
+            return List.of();
         }
+        sql = sql.trim();
 
         boolean inEnvVariable = false;
         List<Expression> expressions = new ArrayList<>();
@@ -194,16 +219,61 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
         } else if (sb.length() > 0) {
             expressions.add(ff.literal(sb.toString()));
         }
+        return expressions;
+    }
 
-        // now concatenate back all the references
-        if (expressions == null || expressions.isEmpty())
-            throw new IllegalArgumentException("The SQL command appears to be empty: " + sql);
-
-        Expression result = expressions.get(0);
-        for (int i = 1; i < expressions.size(); i++) {
-            result = ff.function("strConcat", result, expressions.get(i));
+    private static void executeSQL(Connection cx, List<Expression> expressions) throws SQLException {
+        if (expressions.isEmpty()) {
+            return;
         }
+        Pattern regex = null;
+        if (!Boolean.parseBoolean(System.getProperty(UNRESTRICTED_SQL_KEY, UNRESTRICTED_SQL_DEFAULT))) {
+            regex = Pattern.compile(System.getProperty(ALLOWED_VALUES_KEY, ALLOWED_VALUES_DEFAULT));
+        }
+        StringBuilder sql = new StringBuilder();
+        for (Expression expression : expressions) {
+            String string = expression.evaluate(null, String.class);
+            if (string != null) {
+                if (!(expression instanceof Literal)
+                        && regex != null
+                        && !regex.matcher(string).matches()) {
+                    throw new IllegalArgumentException(
+                            "Environment variable value '" + string + "' does not match allowed pattern");
+                }
+                sql.append(string);
+            }
+        }
+        if (StringUtils.isNotBlank(sql)) {
+            try (Statement st = cx.createStatement()) {
+                st.execute(sql.toString().trim());
+            }
+        }
+    }
 
-        return result;
+    private static void validateSQL(String dbtype, String sqlOnBorrow, String sqlOnRelease) {
+        if (Boolean.parseBoolean(System.getProperty(UNRESTRICTED_SQL_KEY, UNRESTRICTED_SQL_DEFAULT))) {
+            return;
+        }
+        boolean hasSql = false;
+        if (StringUtils.isNotBlank(sqlOnBorrow)) {
+            hasSql = true;
+            String regex = System.getProperty(ALLOWED_STARTUP_KEY, ALLOWED_STARTUP_DEFAULT);
+            if (!sqlOnBorrow.trim().matches(regex)) {
+                throw new IllegalArgumentException("Session startup SQL does not match allowed pattern");
+            }
+        }
+        if (StringUtils.isNotBlank(sqlOnRelease)) {
+            hasSql = true;
+            String regex = System.getProperty(ALLOWED_CLOSEUP_KEY, ALLOWED_CLOSEUP_DEFAULT);
+            if (!sqlOnRelease.trim().matches(regex)) {
+                throw new IllegalArgumentException("Session close-up SQL does not match allowed pattern");
+            }
+        }
+        if (hasSql) {
+            String dbtypes = System.getProperty(ALLOWED_DBTYPES_KEY, ALLOWED_DBTYPES_DEFAULT);
+            if (!Arrays.stream(dbtypes.split(",")).anyMatch(dbtype::equals)) {
+                throw new IllegalArgumentException("Session startup/close-up SQL not allowed for database type");
+            }
+        }
     }
 }

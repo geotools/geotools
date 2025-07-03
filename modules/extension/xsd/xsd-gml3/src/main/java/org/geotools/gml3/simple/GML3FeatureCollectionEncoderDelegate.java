@@ -109,7 +109,6 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
 
         String findGMLPrefix(Encoder encoder) {
             NamespaceSupport ns = encoder.getNamespaces();
-            @SuppressWarnings("unchecked")
             Enumeration<String> p = ns.getPrefixes();
             while (p.hasMoreElements()) {
                 String prefix = p.nextElement();

@@ -62,7 +62,7 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
     @Test
     public void testGetCommentsWithOracleOptionTrue() throws Exception {
         // explicitly turning on comment retrieval
-        try (Connection conn = dataStore.getDataSource().getConnection(); ) {
+        try (Connection conn = dataStore.getDataSource().getConnection()) {
             OracleDialect dialect = (OracleDialect) dataStore.getSQLDialect();
             dialect.setGetColumnRemarksEnabled(true);
             ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("lake"));

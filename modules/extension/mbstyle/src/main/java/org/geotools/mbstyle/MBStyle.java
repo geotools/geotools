@@ -145,7 +145,7 @@ public class MBStyle {
                 if (jsonObject.containsKey("ref")) {
                     String refLayer = jsonObject.get("ref").toString();
                     JSONObject refObject = referenceLayer(layers, refLayer);
-                    if (refObject.size() > 0) {
+                    if (!refObject.isEmpty()) {
                         // At a minimum, a type is needed to create a layer
                         applyReferenceObject(jsonObject, refObject);
                         mbLayer = MBLayer.create(jsonObject);
@@ -155,7 +155,8 @@ public class MBStyle {
                 }
                 // adjust label priority so that the labels of the last layer are painted first
                 if (mbLayer instanceof SymbolMBLayer) {
-                    ((SymbolMBLayer) mbLayer).setLabelPriority(labelPriority += DEFAULT_LABEL_PRIORITY);
+                    labelPriority += DEFAULT_LABEL_PRIORITY;
+                    ((SymbolMBLayer) mbLayer).setLabelPriority(labelPriority);
                 }
                 layersList.add(mbLayer);
             } else {
@@ -211,7 +212,7 @@ public class MBStyle {
                     String refLayer = jsonObject.get("ref").toString();
                     JSONObject refObject = referenceLayer(layers, refLayer);
 
-                    if (refObject.size() > 0) {
+                    if (!refObject.isEmpty()) {
                         applyReferenceObject(jsonObject, refObject);
 
                         MBLayer layer = MBLayer.create(jsonObject);

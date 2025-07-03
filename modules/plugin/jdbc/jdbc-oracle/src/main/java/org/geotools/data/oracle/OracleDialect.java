@@ -19,6 +19,7 @@ package org.geotools.data.oracle;
 import static java.util.Map.entry;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -126,7 +127,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * @param reportRemarks true to turn on column comments metadata
      * @throws SQLException if the connection is not valid or there is a problem setting the flag
      */
-    @SuppressWarnings("PMD.CloseResource") // connection is closed by caller
     public void setRemarksReporting(Connection cx, boolean reportRemarks) throws SQLException {
         OracleConnection ocx = unwrapConnection(cx);
         ocx.setRemarksReporting(reportRemarks);
@@ -151,6 +151,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     static final Map<String, Class> TYPES_TO_CLASSES = Map.ofEntries(
             entry("CHAR", String.class),
             entry("NCHAR", String.class),
+            entry("NCLOB", String.class),
             entry("NVARCHAR", String.class),
             entry("NVARCHAR2", String.class),
             entry("DATE", java.sql.Date.class),
@@ -433,6 +434,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     @Override
     public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
+        mappings.put("NCLOB", String.class);
 
         mappings.put("SDO_GEOMETRY", Geometry.class);
         mappings.put("MDSYS.SDO_GEOMETRY", Geometry.class);
@@ -512,7 +514,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         Geometry geom = readGeometry(rs, column, factory, cx);
         return convertGeometry(geom, descriptor, factory);
     }
-    ;
 
     Geometry convertGeometry(Geometry geom, GeometryDescriptor descriptor, GeometryFactory factory) {
         // if the geometry is null no need to convert it
@@ -547,7 +548,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return readGeometry(rs.getObject(column), factory, cx);
     }
 
-    @SuppressWarnings("PMD.CloseResource") // the connection is managed by the caller
     Geometry readGeometry(Object struct, GeometryFactory factory, Connection cx) throws IOException, SQLException {
         if (struct == null) {
             return null;
@@ -1915,5 +1915,23 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             "ZONE"
         };
         reservedWords.addAll(Arrays.asList(words));
+    }
+
+    // override setValue to support NCLOB
+    @Override
+    public void setValue(
+            Object value, Class<?> binding, AttributeDescriptor att, PreparedStatement ps, int column, Connection cx)
+            throws SQLException {
+        if (value == null) {
+            super.setValue(null, binding, att, ps, column, cx);
+            return;
+        }
+
+        if (dataStore.getMapping(binding, att) == Types.NCLOB) {
+            String string = convert(value, String.class);
+            ps.setNClob(column, new StringReader(string), string.length());
+        } else {
+            super.setValue(value, binding, att, ps, column, cx);
+        }
     }
 }

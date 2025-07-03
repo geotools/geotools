@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -52,28 +52,16 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.opengeo</groupId>
-      <artifactId>geodb</artifactId>
-      <version>0.9</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.h2database</groupId>
-          <artifactId>h2</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>net.sourceforge.hatbox</groupId>
-          <artifactId>hatbox</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.opengeo</groupId>
+      <artifactId>geodb</artifactId>
+    </dependency>
+    <dependency>
       <groupId>net.sourceforge.hatbox</groupId>
       <artifactId>hatbox</artifactId>
-      <version>1.0.b11</version>
     </dependency>
   </dependencies>
 

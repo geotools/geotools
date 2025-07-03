@@ -19,13 +19,18 @@ under the License.
 -->
 <ruleset xmlns="http://pmd.sourceforge.net/ruleset/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Default Maven PMD Plugin Ruleset" xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
   <description>
-GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_rulesets.html
+GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.html
 </description>
   <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
   <rule ref="category/java/bestpractices.xml/CheckResultSet"/>
   <!--rule ref="category/java/bestpractices.xml/UnusedFormalParameter" /-->
   <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
-  <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
+  <rule ref="category/java/bestpractices.xml/UnusedPrivateField">
+    <properties>
+      <!-- The rule ignores fields that are annotated, but we want to check those annotated only with @SuppressWarnings -->
+      <property name="reportForAnnotations" value="java.lang.SuppressWarnings" />
+    </properties>
+  </rule>
   <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
   <rule ref="category/java/bestpractices.xml/SystemPrintln"/>
   <rule ref="category/java/bestpractices.xml/ForLoopCanBeForeach" />
@@ -45,8 +50,11 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/bestpractices.xml/UseStandardCharsets" />
   <rule ref="category/java/bestpractices.xml/PrimitiveWrapperInstantiation" /> 
   <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" /> 
+  <rule ref="category/java/bestpractices.xml/UnnecessaryWarningSuppression" />
 
   <rule ref="category/java/codestyle.xml/EmptyControlStatement"/>
+  <rule ref="category/java/codestyle.xml/UnnecessarySemicolon"/>
+  <rule ref="category/java/codestyle.xml/UseExplicitTypes" />
   <rule ref="category/java/codestyle.xml/ExtendsObject"/>
   <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop"/>
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
@@ -78,8 +86,7 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
     <properties>
       <!-- When calling the store to close, PMD wants the full prefix before the call to the method to match, so let's try to use common var names for store ... -->
         <property name="closeTargets" value="releaseConnection,store.releaseConnection,closeQuietly,closeConnection,closeSafe,store.closeSafe,dataStore.closeSafe,getDataStore().closeSafe,close,closeResultSet,closeStmt"/>
-	<property name="allowedResourceTypes" value="java.io.ByteArrayOutputStream|java.io.ByteArrayInputStream|java.io.StringWriter|java.io.CharArrayWriter|java.util.stream.Stream|java.util.stream.IntStream|java.util.stream.LongStream|java.util.stream.DoubleStream|java.io.StringReader" />	    
-    </properties>
+          <property name="allowedResourceTypes" value="java.io.ByteArrayOutputStream,java.io.ByteArrayInputStream,java.io.StringWriter,java.io.CharArrayWriter,java.util.stream.Stream,java.util.stream.IntStream,java.util.stream.LongStream,java.util.stream.DoubleStream,java.io.StringReader" />    </properties>
   </rule>
 
   <rule ref="category/java/multithreading.xml/AvoidThreadGroup"/>
@@ -89,13 +96,12 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
   <rule ref="category/java/performance.xml/BigIntegerInstantiation"/>
   <rule ref="category/java/performance.xml/StringInstantiation"/>
-  <rule name="wildcards" language="java" message="No Wildcard Imports" class="net.sourceforge.pmd.lang.rule.XPathRule">
+  <rule name="wildcards" language="java" message="No Wildcard Imports" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
       Don't use wildcard imports
     </description>
     <priority>3</priority>
     <properties>
-      <property name="version" value="2.0"/>
       <property name="xpath">
         <value><![CDATA[
           //ImportDeclaration[@ImportedName=@PackageName]

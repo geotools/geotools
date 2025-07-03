@@ -20,7 +20,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GISGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected H2GISGeometrylessTestSetup(JDBCTestSetup delegate) {

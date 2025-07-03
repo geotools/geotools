@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools</groupId>
@@ -19,21 +19,27 @@
     <gdal.version>2.2.0</gdal.version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.gdal</groupId>
+        <artifactId>gdal</artifactId>
+        <version>${gdal.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-imageio-ext-gdal</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.gdal</groupId>
       <artifactId>gdal</artifactId>
-      <version>${gdal.version}</version>
     </dependency>
 
     <!-- Test dependencies -->

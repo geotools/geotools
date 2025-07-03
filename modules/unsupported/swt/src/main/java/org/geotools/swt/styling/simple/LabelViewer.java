@@ -103,15 +103,15 @@ public class LabelViewer {
     private class Listener implements SelectionListener, ModifyListener {
         public void widgetSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void widgetDefaultSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void modifyText(final ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
-        };
+        }
 
         private void sync(SelectionEvent selectionEvent) {
             try {
@@ -138,7 +138,7 @@ public class LabelViewer {
             }
             fire(selectionEvent);
         }
-    };
+    }
 
     Listener sync = new Listener();
 

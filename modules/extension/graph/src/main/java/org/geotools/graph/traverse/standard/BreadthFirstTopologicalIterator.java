@@ -89,7 +89,6 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
     @Override
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void cont(Graphable current, GraphTraversal traversal) {
         // increment the count of all adjacent nodes by one
         // if the result count is 1 less than the degree, place it into the queue

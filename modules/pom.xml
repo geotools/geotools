@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>geotools</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -39,6 +39,7 @@
   <modules>
     <module>library</module>
     <module>ogc</module>
+    <module>integration</module>
     <module>plugin</module>
     <module>extension</module>
     <module>unsupported</module>
@@ -47,12 +48,103 @@
   <!-- =========================================================== -->
   <!--     Dependencies to be inherited by all modules.            -->
   <!-- =========================================================== -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Import the GeoTools platform-dependencies BOM to get consistent dependency versions -->
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-platform-dependencies</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- Import the GeoTools BOM to have access to all artifacts without specifying the version -->
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-bom</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+    <!--
+     Adding gt-platform-dependencies and gt-bom as dependencies with type=pom and scope=provided here
+     does not change the dependency tree for the submodules at all, but forces the BOMs to be installed
+     in the local maven repository first, either when building the whole project or when a submodule is
+     built independently (e.g. mvn install -pl :gt-main -am), hence ensuring any change to the dependencies
+     is picked up.
+    -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-platform-dependencies</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-bom</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_core</artifactId>
-      <!-- The version number is specified in the parent POM. -->
+      <!-- The version number is managed through the gt-platform-dependencies BOM -->
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>enforce-managed-versions</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.geotools.maven</groupId>
+                <artifactId>gt-enforce-managed-dependencies</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <id>enforce-managed-versions</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <enforceManagedDependencies>
+                      <message>All dependency versions must be managed in gt-platform-dependencies or gt-bom. Unsupported modules may define their own dependencyManagement sections</message>
+                      <failOnViolation>true</failOnViolation>
+                      <allowSnapshots>false</allowSnapshots>
+                      <allowTestScope>true</allowTestScope>
+                      <excludes>
+                        <exclude>org.geotools:gt-platform-dependencies</exclude>
+                        <exclude>org.geotools:gt-bom</exclude>
+                      </excludes>
+                    </enforceManagedDependencies>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

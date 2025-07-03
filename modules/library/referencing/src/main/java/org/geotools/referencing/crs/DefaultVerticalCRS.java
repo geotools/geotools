@@ -143,7 +143,6 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
-    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int calculateHashCode() {
         return (int) serialVersionUID ^ super.calculateHashCode();
     }

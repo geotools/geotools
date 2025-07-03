@@ -17,7 +17,6 @@
 package org.geotools.data.shapefile.shp;
 
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.logging.Logger;
@@ -80,7 +79,7 @@ public class ShapefileHeader {
         checkMagic(strict);
 
         // skip 5 ints...
-        ((Buffer) file).position(file.position() + 20);
+        file.position(file.position() + 20);
 
         fileLength = file.getInt();
 
@@ -97,7 +96,7 @@ public class ShapefileHeader {
         // skip remaining unused bytes
         file.order(ByteOrder.BIG_ENDIAN); // well they may not be unused
         // forever...
-        ((Buffer) file).position(file.position() + 32);
+        file.position(file.position() + 32);
     }
 
     public void write(
@@ -168,7 +167,7 @@ public class ShapefileHeader {
 
     @Override
     public String toString() {
-        String res = new String("ShapeFileHeader[ size "
+        return "ShapeFileHeader[ size "
                 + fileLength
                 + " version "
                 + version
@@ -182,7 +181,6 @@ public class ShapefileHeader {
                 + maxX
                 + ","
                 + maxY
-                + " ]");
-        return res;
+                + " ]";
     }
 }

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.jdbc.EnumMapper;
+import org.geotools.jdbc.EnumMapping;
 import org.geotools.util.Converters;
 
 /** Helper class to parse and encode JSON arrays */
@@ -33,7 +33,7 @@ class JSONArrayIO {
     JsonFactory factory = new JsonFactory();
 
     /** Parses a JSON string, meant to be a JSON array, into a Java array */
-    public <T> T[] parse(String json, Class<T> type, EnumMapper mapper) {
+    public <T> T[] parse(String json, Class<T> type, EnumMapping mapping) {
         List<T> result = new ArrayList<>();
         try (JsonParser parser = factory.createParser(json)) {
             JsonToken token = parser.nextToken();
@@ -42,9 +42,9 @@ class JSONArrayIO {
             }
             while ((token = parser.nextToken()).id() != JsonTokenId.ID_END_ARRAY) {
                 if (token.isScalarValue()) {
-                    if (mapper != null) {
+                    if (mapping != null) {
                         @SuppressWarnings("unchecked")
-                        T value = (T) mapper.fromInteger(parser.getIntValue());
+                        T value = (T) mapping.fromKey(parser.getValueAsString());
                         result.add(value);
                     } else {
                         result.add(Converters.convert(parser.getText(), type));

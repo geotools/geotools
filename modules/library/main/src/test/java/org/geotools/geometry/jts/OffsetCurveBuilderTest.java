@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -75,7 +76,6 @@ public class OffsetCurveBuilderTest {
                 displayCurves(false);
             }
         }
-        ;
 
         @Override
         protected void failed(Throwable e, org.junit.runner.Description description) {
@@ -126,11 +126,9 @@ public class OffsetCurveBuilderTest {
 
             return bi;
         }
-        ;
     };
 
-    @SuppressWarnings("deprecation")
-    class ImageDisplay extends JDialog {
+    static class ImageDisplay extends JDialog {
         private static final long serialVersionUID = -8640087805737551918L;
 
         boolean accept = false;
@@ -144,8 +142,9 @@ public class OffsetCurveBuilderTest {
             topLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
             content.add(topLabel, BorderLayout.NORTH);
 
-            javax.media.jai.widget.ScrollingImagePanel imageViewer = new javax.media.jai.widget.ScrollingImagePanel(
-                    image, Math.min(400, image.getWidth()) + 100, Math.min(400, image.getHeight()) + 100);
+            ImageViewer imageViewer = new ImageViewer();
+            imageViewer.setSize(400, 400);
+            imageViewer.setImage(image);
             content.add(imageViewer);
 
             JButton close = new JButton("Close");

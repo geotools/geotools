@@ -53,7 +53,7 @@ public class GeoPkgMetadata {
         public String getSqlValue() {
             return sqlValue;
         }
-    };
+    }
 
     Long id;
     Scope scope;

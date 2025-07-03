@@ -118,7 +118,7 @@ class MergeSortDumper {
         List<SimpleFeature> features = new ArrayList<>();
         List<FeatureBlockReader> readers = new ArrayList<>();
         boolean cleanFile = true;
-        try {
+        try (reader) {
             // read and store into files as necessary
             while (reader.hasNext()) {
                 SimpleFeature f = reader.next();
@@ -153,7 +153,6 @@ class MergeSortDumper {
                 // reader based on the collection contents
                 Collections.sort(features, comparator);
 
-                @SuppressWarnings("PMD.CloseResource") // returned in wrapper
                 SimpleFeatureIterator fi = new ListFeatureCollection(schema, features).features();
                 return new DelegateSimpleFeatureReader(schema, fi);
             } else {
@@ -167,8 +166,6 @@ class MergeSortDumper {
                 io.close(true);
                 file.delete();
             }
-
-            reader.close();
         }
     }
 

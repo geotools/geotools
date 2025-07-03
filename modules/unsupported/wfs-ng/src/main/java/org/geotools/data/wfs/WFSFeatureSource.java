@@ -266,7 +266,6 @@ class WFSFeatureSource extends ContentFeatureSource {
      * @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(Query)
      */
     @Override
-    @SuppressWarnings("PMD.CloseResource") // the reader is returned and managed outside
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query localQuery) throws IOException {
 
         if (Filter.EXCLUDE.equals(localQuery.getFilter())) {

@@ -218,7 +218,7 @@ such as GeoTools publish their work.
 2. This editor allows you to describe all kinds of things; in the interest of time we are going to
    skip the long drawn out explanation and ask you to click on the :guilabel:`pom.xml` tab.
 
-3. To make use of GeoTools we are going to add three things to this ``pom.xml`` file.
+3. To make use of GeoTools we are going to add several things to this ``pom.xml`` file.
    
 4. At the top after ``moduleVersion`` add a ``properties`` element defining the version of GeoTools we
    want to use. This workbook was written for |release| although you may wish to try a different
@@ -228,29 +228,38 @@ such as GeoTools publish their work.
     
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
-        :start-after: <url>http://maven.apache.org</url>
-        :end-before: <dependencies>
+        :start-at: <properties>
+        :end-at: </properties>
    
    To make use of a nightly build set the ``geotools.version`` property to |branch|-SNAPSHOT .
 
-5. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note use of `geotools.version` defined above.
+5. We use the GeoTools Bill of Materials (BOM) to manage dependency versions. This ensures that all GeoTools modules use compatible versions:
+
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+        :language: xml
+        :start-at: <dependencyManagement>
+        :end-at: </dependencyManagement>
+
+   The BOM (Bill of Materials) pattern centralizes version management. By importing the ``gt-bom``, we don't need to specify version numbers for individual GeoTools modules.
+
+6. We add dependencies to GeoTools modules. Note that we don't specify version numbers since these are managed by the BOM:
    
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
-        :start-after: </properties>
-        :end-before: <repositories>
+        :start-after: </dependencyManagement>
+        :end-at: </dependencies>
     
-6. Finally we need to list the external *repositories* where maven can download GeoTools and 
+7. Finally we need to list the external *repositories* where maven can download GeoTools and 
    other required jars from.
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
-        :start-after: </dependencies>
-        :end-before: <build>
+        :start-at: <repositories>
+        :end-at: </repositories>
    
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
-7. GeoTools now requires Java 11 - you need to tell Maven to use the 11 source level.
+8. GeoTools now requires Java 11 - you need to tell Maven to use the 11 source level.
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml

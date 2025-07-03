@@ -319,7 +319,6 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
-    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int calculateHashCode() {
         /*
          * Do not invoke 'conversionFromBase.hashCode()' in order to avoid a never-ending loop.

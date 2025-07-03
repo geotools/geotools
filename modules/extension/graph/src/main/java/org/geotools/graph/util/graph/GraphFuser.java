@@ -93,7 +93,6 @@ public class GraphFuser {
      *
      * @return True if the fuse was successful, otherwise false.
      */
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public boolean fuse() {
         // create walker for first stage
         // if the walker sees a node of degree 2 it adds it to the current

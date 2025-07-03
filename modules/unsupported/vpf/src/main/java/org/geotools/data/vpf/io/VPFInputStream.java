@@ -49,7 +49,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
     protected String streamFile = null;
 
     /** Describe variable <code>rowsReadAhead</code> here. */
-    private List rowsReadAhead = new LinkedList();
+    private List rowsReadAhead = new LinkedList<>();
 
     /** Describe variable <code>variableIndex</code> here. */
     private VPFInputStream variableIndex = null;

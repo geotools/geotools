@@ -337,7 +337,7 @@ public final class ParametersTest {
         final ParameterDescriptor<Integer> p3 = new DefaultParameterDescriptor<>(
                 Collections.singletonMap("name", "3"), Integer.class, null, ONE, null, null, null, false);
         final ParameterDescriptor<Integer> p4 =
-                new DefaultParameterDescriptor<Integer>(
+                new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "4"), Integer.class, null, ONE, null, null, null, false) {
                     /**
                      * We are cheating here: <code>maximumOccurs</code> should always be 1 for <code>ParameterValue
@@ -697,8 +697,6 @@ public final class ParametersTest {
 
     /** Tests the storage of matrix parameters. */
     @Test
-    // code is using equals with extra parameters and semantics compared to the built-in equals
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testMatrixEdit() {
         final int size = 8;
         final Random random = new Random(47821365);

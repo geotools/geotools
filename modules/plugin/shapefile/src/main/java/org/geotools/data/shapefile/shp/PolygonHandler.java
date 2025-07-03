@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -123,7 +122,7 @@ public class PolygonHandler implements ShapeHandler {
             return createNull();
         }
         // bounds
-        ((Buffer) buffer).position(buffer.position() + 4 * 8);
+        buffer.position(buffer.position() + 4 * 8);
 
         int numParts = buffer.getInt();
         int numPoints = buffer.getInt();
@@ -368,7 +367,6 @@ public class PolygonHandler implements ShapeHandler {
         return holesForShells;
     }
 
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     private List<List<LinearRing>> getListOfLists(int size) {
         List<List<LinearRing>> holesForShells = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {

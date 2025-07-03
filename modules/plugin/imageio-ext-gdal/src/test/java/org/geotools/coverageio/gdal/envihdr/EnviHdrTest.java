@@ -60,7 +60,6 @@ public class EnviHdrTest extends GDALTestCase {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion") // envelope test with tolerance
     public void test() throws Exception {
         File file = null;
         try {

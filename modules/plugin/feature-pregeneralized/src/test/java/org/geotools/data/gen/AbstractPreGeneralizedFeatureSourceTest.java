@@ -586,10 +586,10 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
             Assert.assertEquals(4, fs.getSchema().getAttributeCount());
             Assert.assertEquals(
                     "the_geom", fs.getSchema().getGeometryDescriptor().getLocalName());
-            Assert.assertNotNull(fs.getSchema().getDescriptor("CAT_ID") != null);
-            Assert.assertNotNull(fs.getSchema().getDescriptor("the_geom") != null);
-            Assert.assertNotNull(fs.getSchema().getDescriptor("CAT_DESC") != null);
-            Assert.assertNotNull(fs.getSchema().getDescriptor("ID") != null);
+            Assert.assertNotNull(fs.getSchema().getDescriptor("CAT_ID"));
+            Assert.assertNotNull(fs.getSchema().getDescriptor("the_geom"));
+            Assert.assertNotNull(fs.getSchema().getDescriptor("CAT_DESC"));
+            Assert.assertNotNull(fs.getSchema().getDescriptor("ID"));
             ds.dispose();
 
         } catch (Exception ex) {

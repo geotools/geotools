@@ -47,7 +47,6 @@ import org.locationtech.jts.io.WKTReader;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @since 2.6
  */
-@SuppressWarnings("serial")
 public class SampleDataAccessData {
 
     /** Namespace prefix for the sample feature type. */

@@ -402,7 +402,6 @@ public class WFSFeatureCollectionEncodingTest {
 
     /** This test checks the Feature attributes are not pulled into the parent wfs:member */
     @Test
-    @SuppressWarnings("unchecked")
     public void testEncodeFeatureMemberAttributes() throws Exception {
         Map<Name, Object> attributesMap = new HashMap<>();
         attributesMap.put(new NameImpl("example"), "123");

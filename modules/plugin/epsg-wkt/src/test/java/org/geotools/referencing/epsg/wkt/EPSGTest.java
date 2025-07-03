@@ -70,7 +70,7 @@ public class EPSGTest {
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
 
         assertNotNull(codes);
-        Assert.assertEquals(6588, codes.size());
+        Assert.assertEquals(7840, codes.size());
     }
 
     /** A random CRS for fun. */
@@ -98,7 +98,7 @@ public class EPSGTest {
         CoordinateReferenceSystem crs = (CoordinateReferenceSystem) factory.createObject("EPSG:42102");
         assertNotNull(crs);
         assertNotNull(crs.getIdentifiers());
-        Assert.assertTrue(crs.getIdentifiers().size() > 0);
+        Assert.assertFalse(crs.getIdentifiers().isEmpty());
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
         Assert.assertTrue(crs.getIdentifiers().contains(expected));
     }
@@ -167,7 +167,7 @@ public class EPSGTest {
         CoordinateReferenceSystem crs = CRS.decode("epsg:42102");
         assertNotNull(crs);
         assertNotNull(crs.getIdentifiers());
-        Assert.assertTrue(crs.getIdentifiers().size() > 0);
+        Assert.assertFalse(crs.getIdentifiers().isEmpty());
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
         Assert.assertTrue(crs.getIdentifiers().contains(expected));
     }

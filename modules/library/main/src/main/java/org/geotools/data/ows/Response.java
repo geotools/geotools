@@ -49,7 +49,8 @@ public abstract class Response {
         /*
          * Intercept XML ServiceExceptions and throw them
          */
-        if (httpResponse.getContentType().toLowerCase().equals("application/vnd.ogc.se_xml")) {
+        String contentType = httpResponse.getContentType().toLowerCase();
+        if (contentType.startsWith("application/vnd.ogc.se_xml")) {
             try {
                 throw parseException(httpResponse.getResponseStream());
             } finally {
@@ -84,10 +85,8 @@ public abstract class Response {
     }
 
     protected ServiceException parseException(InputStream inputStream) throws IOException {
-        try {
+        try (inputStream) {
             return ServiceExceptionParser.parse(inputStream);
-        } finally {
-            inputStream.close();
         }
     }
 }

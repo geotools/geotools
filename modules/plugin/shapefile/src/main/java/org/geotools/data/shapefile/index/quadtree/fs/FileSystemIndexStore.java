@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -160,7 +159,8 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
      * @see org.geotools.index.quadtree.IndexStore#load()
      */
     @Override
-    @SuppressWarnings("PMD.CloseResource") // channel is managed in the returned value
+    // channel is managed in the returned value
+    @SuppressWarnings("PMD.UseTryWithResources")
     public QuadTree load(IndexFile indexfile, boolean useMemoryMapping) throws StoreException {
         boolean initialized = false;
         FileInputStream fis = null;
@@ -215,7 +215,7 @@ public class FileSystemIndexStore implements FileReader, IndexStore {
         ByteBuffer buf = ByteBuffer.allocate(8);
         buf.order(order);
         channel.read(buf);
-        ((Buffer) buf).flip();
+        buf.flip();
 
         QuadTree tree = new QuadTree(buf.getInt(), buf.getInt(), indexfile) {
             @Override

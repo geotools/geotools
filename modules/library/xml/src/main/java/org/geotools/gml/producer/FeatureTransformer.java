@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.logging.Logger;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -104,8 +103,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @todo Add support for schemaLocation
  */
 public class FeatureTransformer extends TransformerBase {
-    /** The logger for the filter module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FeatureTransformer.class);
 
     private Set<String> gmlAtts;
 
@@ -538,7 +535,6 @@ public class FeatureTransformer extends TransformerBase {
                     endFeatureCollection();
                 } else if (o instanceof FeatureReader) {
                     // THIS IS A HACK FOR QUICK USE
-                    @SuppressWarnings({"PMD.CloseResource", "unchecked"}) // the caller must close
                     FeatureReader<SimpleFeatureType, SimpleFeature> r =
                             (FeatureReader<SimpleFeatureType, SimpleFeature>) o;
 
@@ -582,7 +578,7 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         public void handleFeatureIterator(SimpleFeatureIterator iterator) throws IOException {
-            try {
+            try (iterator) {
                 while (iterator.hasNext() && running) {
                     SimpleFeature f = iterator.next();
                     handleFeature(f);
@@ -598,16 +594,11 @@ public class FeatureTransformer extends TransformerBase {
                 }
             } catch (Exception ioe) {
                 throw new RuntimeException("Error reading Features", ioe);
-            } finally {
-                if (iterator != null) {
-                    LOGGER.finer("closing reader " + iterator);
-                    iterator.close();
-                }
             }
         }
 
         public void handleFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
-            try {
+            try (reader) {
                 while (reader.hasNext() && running) {
                     SimpleFeature f = reader.next();
                     handleFeature(f);
@@ -624,11 +615,6 @@ public class FeatureTransformer extends TransformerBase {
                 }
             } catch (Exception ioe) {
                 throw new RuntimeException("Error reading Features", ioe);
-            } finally {
-                if (reader != null) {
-                    LOGGER.finer("closing reader " + reader);
-                    reader.close();
-                }
             }
         }
 

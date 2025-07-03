@@ -16,7 +16,7 @@
  */
 package org.geotools.data.elasticsearch;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -47,7 +47,7 @@ public class ElasticDataStoreFactoryIT extends ElasticTestSupport {
         ElasticDataStore dataStore = (ElasticDataStore) factory.createDataStore(params);
         try (ElasticClient elasticClient = dataStore.getClient()) {
             createIndices(elasticClient, "test2");
-            assertTrue(elasticClient.getTypes(indexName).size() > 0);
+            assertFalse(elasticClient.getTypes(indexName).isEmpty());
         } finally {
             dataStore.dispose();
         }

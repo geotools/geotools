@@ -151,7 +151,7 @@ public class ProcessFunction implements Function {
 
             // some processes have the bad habit of not throwing exceptions, but to
             // report them to the listener
-            if (listener.getExceptions().size() > 0) {
+            if (!listener.getExceptions().isEmpty()) {
                 // uh oh, an exception occurred during processing
                 Throwable t = listener.getExceptions().get(0);
                 throw new RuntimeException("Failed to evaluate process function, error is: " + t.getMessage(), t);
@@ -215,12 +215,11 @@ public class ProcessFunction implements Function {
     private Object convertParameter(String paramName, Object paramValue, Parameter<?> param) {
         Object converted;
         if (param.maxOccurs > 1) {
-            // converter will work if the have to convert the array type, but
-            // not if
-            // they have to deal with two conversions, from single to multi,
-            // from type to type
+            // converter will work if the have to convert the array type, but not if they have to deal with two
+            // conversions, from single to multi, from type to type
             if (!(paramValue instanceof Collection) && !(paramValue.getClass().isArray())) {
-                List<Object> collection = Collections.singletonList(paramValue);
+                Object convertedValue = Converters.convert(paramValue, param.type);
+                List<Object> collection = Collections.singletonList(convertedValue);
                 converted = Converters.convert(
                         collection, Array.newInstance(param.type, 0).getClass());
             } else {

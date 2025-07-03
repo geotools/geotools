@@ -52,7 +52,7 @@ public class GridProcess implements VectorProcess {
         Rectangular,
         HexagonFlat,
         HexagonAngled
-    };
+    }
 
     @DescribeResult(name = "result", description = "Generated grid cells as features")
     public SimpleFeatureCollection execute(

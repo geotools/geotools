@@ -157,7 +157,7 @@ public class DbaseFileTest extends TestCaseSupport {
         File f = new File(System.getProperty("java.io.tmpdir"), "scratchDBF.dbf");
         f.deleteOnExit();
         try (FileOutputStream fout = new FileOutputStream(f);
-                DbaseFileWriter dbf = new DbaseFileWriter(header, fout.getChannel(), Charset.defaultCharset()); ) {
+                DbaseFileWriter dbf = new DbaseFileWriter(header, fout.getChannel(), Charset.defaultCharset())) {
 
             for (int i = 0; i < header.getNumRecords(); i++) {
                 dbf.write(new Object[6]);

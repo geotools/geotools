@@ -52,7 +52,6 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -297,7 +296,7 @@ public class GeoJSONReader implements AutoCloseable {
     /** Parses and returns a feature collection from a GeoJSON */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
         try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
-            SimpleFeatureCollection features = (SimpleFeatureCollection) reader.getFeatures();
+            SimpleFeatureCollection features = reader.getFeatures();
             return features;
         } catch (IOException e) {
             throw new RuntimeException("problem parsing FeatureCollection", e);
@@ -367,6 +366,13 @@ public class GeoJSONReader implements AutoCloseable {
                 while (parser.nextToken() == JsonToken.START_OBJECT) {
                     ObjectNode node = mapper.readTree(parser);
                     JsonNode rel = node.get("rel");
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        JsonNode href = node.get("href");
+                        LOGGER.log(
+                                Level.FINE,
+                                "Found link of type " + (rel == null ? "no rel" : rel.textValue()) + " href: "
+                                        + (href == null ? "none" : href.textValue()));
+                    }
                     if (rel != null && "next".equals(rel.textValue())) {
                         next = node;
                     }
@@ -386,12 +392,13 @@ public class GeoJSONReader implements AutoCloseable {
             }
         }
         if (isSchemaChanged()) {
-            // retype the features if the schema changes
+            // retype the features if the schema changed during iteration
+            // keep features after last schema were set
             List<SimpleFeature> nFeatures = new ArrayList<>(features.size());
             for (SimpleFeature feature : features) {
                 if (feature.getFeatureType() != schema) {
-                    // do not deep copy attributes, needless expense, won't work for JsonNode
-                    SimpleFeature nFeature = DataUtilities.reType(schema, feature, false);
+                    builder.init(feature);
+                    SimpleFeature nFeature = builder.buildFeature(feature.getID());
                     nFeatures.add(nFeature);
                 } else {
                     nFeatures.add(feature);
@@ -459,7 +466,7 @@ public class GeoJSONReader implements AutoCloseable {
         while (restart) {
             restart = false;
 
-            Iterator<Entry<String, JsonNode>> fields = props.fields();
+            Iterator<Entry<String, JsonNode>> fields = props.properties().iterator();
             while (fields.hasNext()) {
                 Entry<String, JsonNode> n = fields.next();
                 AttributeDescriptor descriptor = schema.getDescriptor(n.getKey());
@@ -538,9 +545,9 @@ public class GeoJSONReader implements AutoCloseable {
             if (g != null) builder.set(GEOMETRY_NAME, g);
             String newId = getOrGenerateId(node);
             feature = builder.buildFeature(newId);
-            if (node.fields().hasNext()) {
+            if (node.properties().iterator().hasNext()) {
                 Map<String, Object> topLevelAttributes = new HashMap<>();
-                node.fields().forEachRemaining(e -> {
+                node.properties().iterator().forEachRemaining(e -> {
                     String k = e.getKey();
                     if (!"geometry".equals(k) && !"type".equals(k) && !"properties".equals(k) && !"bbox".equals(k)) {
                         topLevelAttributes.put(k, e.getValue());
@@ -629,7 +636,7 @@ public class GeoJSONReader implements AutoCloseable {
             }
         }
 
-        Iterator<Entry<String, JsonNode>> fields = props.fields();
+        Iterator<Entry<String, JsonNode>> fields = props.properties().iterator();
         while (fields.hasNext()) {
             Entry<String, JsonNode> n = fields.next();
             if (existing.contains(n.getKey())) {

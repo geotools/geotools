@@ -100,7 +100,6 @@ public class AxisOrderTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testGetFeatureWithEastNorthAxisOrderFilter() throws Exception {
         final Filter bbox = ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
 
@@ -126,7 +125,6 @@ public class AxisOrderTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testGetFeatureWithNorthEastAxisOrderFilter() throws Exception {
         TestWFSClient wfs = createWFSClient();
 
@@ -156,7 +154,6 @@ public class AxisOrderTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testGetFeatureWithCompliantAxisOrderFilter() throws Exception {
         final Filter bbox = ff.bbox("the_geom", 4623055.0, 815134.0, 4629904.0, 820740.0, "EPSG:3857");
 

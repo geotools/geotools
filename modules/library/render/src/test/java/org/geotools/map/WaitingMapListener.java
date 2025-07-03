@@ -35,7 +35,7 @@ class WaitingMapListener extends MapAdapter {
         CHANGED,
         MOVED,
         PRE_DISPOSE,
-        BOUNDS_CHANGED;
+        BOUNDS_CHANGED
     }
 
     private static final int N = Type.values().length;

@@ -196,7 +196,6 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         mfc.setUnrolledFilter(instance.baseTableQuery.getFilter());
 
         // propagate transaction to nested feature iterators
-        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         FeatureIterator featureIterator = mfc.features(transaction);
 
         if (!(featureIterator instanceof DataAccessMappingFeatureIterator)) {
@@ -244,7 +243,6 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     }
 
     /** Close the instance of this caller. */
-    @SuppressWarnings("PMD.CloseResource") // iterators are getting closed right here
     public void close(Object caller) {
         Instance instance = instances.get(caller);
         if (instance != null) {

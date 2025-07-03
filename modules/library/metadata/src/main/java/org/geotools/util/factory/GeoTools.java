@@ -100,19 +100,16 @@ public final class GeoTools {
         PROPS = loadProperites("GeoTools.properties");
     }
 
-    @SuppressWarnings("PMD.UseTryWithResources") // stream may be null
     private static Properties loadProperites(String resource) {
         Properties props = new Properties();
         InputStream stream = GeoTools.class.getResourceAsStream(resource);
         if (stream != null) {
-            try {
-                props.load(stream);
-            } catch (IOException ignore) {
-            } finally {
+            try (stream) {
                 try {
-                    stream.close();
+                    props.load(stream);
                 } catch (IOException ignore) {
                 }
+            } catch (IOException ignore) {
             }
         }
 
@@ -1048,7 +1045,7 @@ public final class GeoTools {
                     .append(contextFactory == null ? "" : (String) contextFactory)
                     .append("\n");
 
-            Enumeration<URL> urls = AccessController.doPrivileged(new PrivilegedAction<Enumeration<URL>>() {
+            Enumeration<URL> urls = AccessController.doPrivileged(new PrivilegedAction<>() {
                 @Override
                 public Enumeration<URL> run() {
                     try {
@@ -1066,7 +1063,7 @@ public final class GeoTools {
                 sb.append("\n");
             }
 
-            String javaHome = AccessController.doPrivileged(new PrivilegedAction<String>() {
+            String javaHome = AccessController.doPrivileged(new PrivilegedAction<>() {
                 @Override
                 public String run() {
                     try {

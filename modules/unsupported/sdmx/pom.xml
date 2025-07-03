@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>33-SNAPSHOT</version>
+        <version>34-SNAPSHOT</version>
     </parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-sdmx</artifactId>
@@ -22,7 +22,6 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-cql</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bancaditalia.oss</groupId>

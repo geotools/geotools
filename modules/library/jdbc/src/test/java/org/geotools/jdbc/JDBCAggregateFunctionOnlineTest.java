@@ -190,6 +190,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
 
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
@@ -251,6 +252,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
 
         assertFalse(visited);
@@ -617,6 +619,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
 
         assertFalse(visited);
@@ -676,6 +679,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
+        q.setSortBy(ff.sort(aname("doubleProperty"), ASCENDING));
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
 
         assertFalse(visited);
@@ -733,7 +737,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         // uses BigDecimal and BigInteger instead of Double and Integer.
         convertNumbers(result, new int[] {1}, new Class<?>[] {Double.class});
 
-        Set expected = new HashSet();
+        Set expected = new HashSet<>();
         addValues(expected, "zero", 0.0);
         addValues(expected, "one", 1.1);
         addValues(expected, "one_2", 1.1);
@@ -754,7 +758,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         // makes sure types of numeric values are of the same type. Eg. Oracle DB
         // uses BigDecimal and BigInteger instead of Double and Integer.
         convertNumbers(result, new int[] {0, 1}, new Class<?>[] {Integer.class, Double.class});
-        Set expected = new HashSet();
+        Set expected = new HashSet<>();
         addValues(expected, 0, 0.0);
         addValues(expected, 1, 1.1);
         addValues(expected, 2, 2.2);
@@ -774,7 +778,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         // uses BigDecimal and BigInteger instead of Double and Integer.
         convertNumbers(result, new int[] {0, 1}, new Class<?>[] {Integer.class, Double.class});
 
-        Set expected = new HashSet();
+        Set expected = new HashSet<>();
         addValues(expected, 0, 0.0, "zero");
         addValues(expected, 1, 1.1, "one");
         addValues(expected, 1, 1.1, "one_2");
@@ -785,7 +789,6 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         assertTrue(expected.containsAll(result));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testUniqueMultipleAttrOneResult() throws Exception {
         // check that when the result is a single pair the result is returned as a single entry List

@@ -48,7 +48,6 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -310,7 +309,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_ceil ceil = new FilterFunction_ceil();
-        ceil.setParameters(Collections.singletonList((Expression) ff.property(aname("flow"))));
+        ceil.setParameters(Collections.singletonList(ff.property(aname("flow"))));
 
         PropertyIsEqualTo f = ff.equals(ceil, ff.literal(5));
 
@@ -330,6 +329,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void testGetFeatureInvalidFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
@@ -437,7 +437,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             throws NoSuchElementException, IOException, IllegalAttributeException {
         SimpleFeatureType type = dataStore.getSchema(tname("road"));
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT); ) {
+                dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
             assertFalse(reader instanceof FilteringFeatureReader);
             assertEquals(type, reader.getFeatureType());
             assertEquals(td.roadFeatures.length, count(reader));
@@ -667,6 +667,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     public void testGetFeatureWriterInvalidFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
@@ -1209,7 +1210,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 reader.next();
                 count++;
@@ -1219,8 +1220,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             throw new DataSourceException("hasNext() lied to me at:" + count, e);
         } catch (IllegalAttributeException e) {
             throw new DataSourceException("next() could not understand feature at:" + count, e);
-        } finally {
-            reader.close();
         }
 
         return count;
@@ -1231,13 +1230,11 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             throws NoSuchElementException, IOException, IllegalAttributeException {
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 assertContains(features, reader.next());
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         assertEquals(features.length, count);
@@ -1327,13 +1324,11 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             throws NoSuchElementException, IOException, IllegalAttributeException {
         int count = 0;
 
-        try {
+        try (writer) {
             while (writer.hasNext()) {
                 writer.next();
                 count++;
             }
-        } finally {
-            writer.close();
         }
 
         return count;
@@ -1361,7 +1356,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -1371,8 +1366,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                 //                }
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         return count == array.length;
@@ -1384,7 +1377,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -1394,8 +1387,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                 //                }
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         return count == array.length;
@@ -1406,7 +1397,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -1416,8 +1407,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         return count == array.length;
@@ -1463,7 +1452,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             throws NoSuchElementException, IOException, IllegalAttributeException {
         SimpleFeature f;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 f = reader.next();
 
@@ -1477,8 +1466,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                     }
                 }
             }
-        } finally {
-            reader.close();
         }
 
         if (attributeName == null) {
@@ -1497,14 +1484,12 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 assertMatch(array, feature);
                 count++;
             }
-        } finally {
-            reader.close();
         }
 
         assertEquals("array not matched by reader", array.length, count);

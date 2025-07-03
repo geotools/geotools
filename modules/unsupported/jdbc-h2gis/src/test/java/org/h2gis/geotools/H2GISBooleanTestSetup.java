@@ -20,7 +20,6 @@ package org.h2gis.geotools;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCDataStore;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GISBooleanTestSetup extends JDBCBooleanTestSetup {
 
     protected H2GISBooleanTestSetup() {

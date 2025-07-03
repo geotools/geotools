@@ -102,7 +102,7 @@ Maven downloads jars from public repositories on the internet where projects suc
 #. Open up the :file:`pom.xml` file at the root of the project. You can see some of the information we entered through the wizard
    earlier.
    
-#. We're going to add three things to this file. First, at the top of the file after ``moduleVersion`` we want to add a 
+#. We're going to add several things to this file. First, at the top of the file after ``moduleVersion`` we want to add a 
    properties element defining the version of GeoTools we wish to use. This workbook was written for |release| 
    although you may wish to try a different version.
    
@@ -110,26 +110,34 @@ Maven downloads jars from public repositories on the internet where projects suc
     
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
-        :start-after: <url>http://maven.apache.org</url>
-        :end-before: <dependencies>
+        :start-at: <properties>
+        :end-at: </properties>
    
    To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
+
+#. We use the GeoTools Bill of Materials (BOM) to manage dependency versions. This ensures that all GeoTools modules use compatible versions:
+
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+        :language: xml
+        :start-at: <dependencyManagement>
+        :end-at: </dependencyManagement>
+
+   The BOM (Bill of Materials) pattern centralizes version management. By importing the ``gt-bom``, we don't need to specify version numbers for individual GeoTools modules.
         
-#. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note we
-   are making use of the ``geotools.version`` defined above.
+#. We add dependencies to GeoTools modules. Note that we don't specify version numbers since these are managed by the BOM:
    
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
-        :start-after: </properties>
-        :end-before: <repositories>
+        :start-after: </dependencyManagement>
+        :end-at: </dependencies>
     
 #. Finally we need to list the external *repositories* where maven can download GeoTools and
    other required jars from.
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
-        :start-after: </dependencies>
-        :end-before: <build>
+        :start-at: <repositories>
+        :end-at: </repositories>
 
    .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
@@ -138,7 +146,7 @@ Maven downloads jars from public repositories on the internet where projects suc
    .. literalinclude::  /../../tutorials/quickstart/pom.xml
       :language: xml
       :start-after: </repositories>
-      :end-before: <profiles>
+      :end-at: </build>
 
 #. Here is what the completed :file:`pom.xml` looks like:
 

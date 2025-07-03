@@ -51,7 +51,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * dynamically. This list must be <u>ordered</u>: subclasses must be listed before parent classes.
      */
     private static ClassChanger<?, ?>[] changers = new ClassChanger[] {
-        new ClassChanger<Date, Long>(Date.class, Long.class) {
+        new ClassChanger<>(Date.class, Long.class) {
             @Override
             protected Long convert(final Date object) {
                 return object.getTime();
@@ -337,10 +337,10 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
             if (lg >= Byte.MIN_VALUE && lg <= Byte.MAX_VALUE) return Byte.class;
             if (lg >= Short.MIN_VALUE && lg <= Short.MAX_VALUE) return Short.class;
             if (lg >= Integer.MIN_VALUE && lg <= Integer.MAX_VALUE) return Integer.class;
-            if (lg >= Long.MIN_VALUE && lg <= Long.MAX_VALUE) return Long.class;
+            return Long.class;
         }
         final float fv = (float) value;
-        if (value == (double) fv) {
+        if (value == fv) {
             return Float.class;
         }
         return Double.class;

@@ -34,7 +34,7 @@ public class WaitingRenderingExecutorListener
     public static enum Type {
         STARTED,
         COMPLETED,
-        FAILED;
+        FAILED
     }
 
     public WaitingRenderingExecutorListener() {

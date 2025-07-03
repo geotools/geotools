@@ -658,19 +658,6 @@ public class Hints extends RenderingHints {
      */
     public static final Key DECIMATION_POLICY = new Key("org.geotools.coverage.grid.io.DecimationPolicy");
 
-    /**
-     * The {@linkplain javax.media.jai.tilecodec.TileEncoder tile encoder} name (as a {@link String} value) to use
-     * during serialization of image data in a {@link org.geotools.coverage.grid.GridCoverage2D} object. This encoding
-     * is given to the {@link javax.media.jai.remote.SerializableRenderedImage} constructor. Valid values include (but
-     * is not limited to) {@code "raw"}, {@code "gzip"} and {@code "jpeg"}.
-     *
-     * <p><strong>Note:</strong> We recommend to avoid the {@code "jpeg"} codec for grid coverages.
-     *
-     * @see org.geotools.coverage.FactoryFinder#getGridCoverageFactory
-     * @since 2.3
-     */
-    public static final Key TILE_ENCODING = new Key(String.class);
-
     /** The {@link javax.media.jai.JAI} instance to use. */
     public static final Key JAI_INSTANCE = new Key("javax.media.jai.JAI");
 
@@ -1742,6 +1729,7 @@ public class Hints extends RenderingHints {
          * @param key String key which identifies the metadata in question.
          * @return Key object for the requested key
          */
+        @SuppressWarnings("PMD.DoubleCheckedLocking")
         public static ConfigurationMetadataKey get(String key) {
             ConfigurationMetadataKey ret = map.get(key);
             if (ret == null) {

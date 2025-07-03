@@ -26,12 +26,14 @@ The above example skipped running the tests (which is common when you are trying
 Publish GeoTools SNAPSHOT
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are working on GeoServer or uDig or another project that depends on the latest greatest
-GeoTools release you will need to know how to deploy a SNAPSHOT (so members of your developer
-community do not get compile errors).
+If you are working on GeoServer or another project that depends on the latest greatest
+GeoTools release you will need to know how to deploy a SNAPSHOT to ``https://repo.osgeo.org/``
+(so members of your developer community do not get compile errors). 
 
-The build server ``build.geoserver.org`` is watching the repository, and will
-build and deploy a snapshot. If you really cannot wait:
+The build server ``build.geoserver.org`` is watching the github repository, and will
+build and deploy a SNAPSHOT.
+
+If you really cannot wait:
 
 1. Update to make sure you are not missing out on anyone’s work::
      
@@ -52,7 +54,6 @@ build and deploy a snapshot. If you really cannot wait:
 4. Ensure your ``~/.m2/settings.xml`` has your webdav credentials.
    
      * ``osgeo`` - this is the same as your OSGeo credentials 
-     * ``boundlessgeo`` - ask on the developer email list
    
    The ``settings.xml`` should list both::
    
@@ -65,11 +66,6 @@ build and deploy a snapshot. If you really cannot wait:
              <username>USERID</username>
              <password>PASSWORD</password>
            </server> 
-           <server>
-             <id>boundlessgeo</id>
-             <username>USERID</username>
-             <password>PASSWOD</password>
-           </server>
           </servers>
       </settings>
 

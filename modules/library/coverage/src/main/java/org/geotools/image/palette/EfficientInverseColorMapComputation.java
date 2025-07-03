@@ -103,7 +103,8 @@ public final class EfficientInverseColorMapComputation {
             // Going to check for all the quantized space
             //
             // //
-            for (int r = 0, rxx = rinc, rgbI = 0; r < maximumQuantizationValue; rdist += rxx, ++r, rxx += txsqr) {
+            int rgbI = 0;
+            for (int r = 0, rxx = rinc; r < maximumQuantizationValue; rdist += rxx, ++r, rxx += txsqr) {
                 gdist = rdist;
                 for (int g = 0, gxx = ginc; g < maximumQuantizationValue; gdist += gxx, ++g, gxx += txsqr) {
                     bdist = gdist;

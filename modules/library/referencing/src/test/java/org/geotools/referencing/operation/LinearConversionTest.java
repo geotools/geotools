@@ -58,8 +58,6 @@ import si.uom.SI;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-// code is using equals with extra parameters and semantics compared to the built-in equals
-@SuppressWarnings("PMD.SimplifiableTestAssertion")
 public final class LinearConversionTest {
     /** Tests matrix inversion and multiplication using {@link Matrix2}. */
     @Test

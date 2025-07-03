@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools.maven</groupId>
+    <artifactId>maven</artifactId>
+    <version>34-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>gt-enforce-managed-dependencies</artifactId>
+  <name>Maven Enforcer Rule :: Enforce Managed Dependencies</name>
+  <description>Maven Enforcer Rule that ensures all dependency versions are managed by dependencyManagement sections, either inherited or in the same pom.xml file.</description>
+
+  <developers>
+    <developer>
+      <id>groldan-c2c</id>
+      <name>Gabriel Roldan</name>
+      <email>gabriel.roldan@camptocamp.com</email>
+      <organization>Camptocamp</organization>
+      <roles>
+        <role>Contributor</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <properties>
+    <maven.version>3.8.1</maven.version>
+    <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+    <plexus-utils.version>3.0.24</plexus-utils.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.enforcer</groupId>
+      <artifactId>enforcer-api</artifactId>
+      <version>${maven-enforcer-plugin.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus-utils.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Ensure Java 11 compatibility -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <release>11</release>
+          <annotationProcessorPaths>
+            <!--
+              Sisu annotation processor is required to generate META-INF/sisu/javax.inject.Named
+              index files that enable Maven's dependency injection framework to discover our
+              @Named("enforceManagedDependencies") component. Without this, Maven Enforcer Plugin
+              cannot find the rule class and fails with "Failed to create enforcer rules".
+              This is especially important when building with -Dqa since ErrorProne interferes
+              with the default annotation processing.
+            -->
+            <path>
+              <groupId>org.eclipse.sisu</groupId>
+              <artifactId>sisu-maven-plugin</artifactId>
+              <version>0.3.5</version>
+            </path>
+            <!-- ErrorProne (inherited from parent when -Dqa is used) -->
+            <path>
+              <groupId>com.google.errorprone</groupId>
+              <artifactId>error_prone_core</artifactId>
+              <version>${errorProne.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <!-- Generate a manifest for the enforcer rule -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

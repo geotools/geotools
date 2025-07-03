@@ -145,6 +145,8 @@ public class Layer implements Comparable<Layer> {
     /** Element related to the Attribution tag in the GetCapabilities */
     private Attribution attribution;
 
+    private Map<String, String> vendorParameters;
+
     /** Called to clear the internal cache of this layer; and any children. */
     public void clearCache() {
         allSRSCache = null;
@@ -573,7 +575,7 @@ public class Layer implements Comparable<Layer> {
      * @return list of children
      */
     public List<Layer> getLayerChildren() {
-        return new AbstractList<Layer>() {
+        return new AbstractList<>() {
             @Override
             public Layer get(int index) {
                 return children.get(index);
@@ -834,5 +836,13 @@ public class Layer implements Comparable<Layer> {
             return title;
         }
         return name;
+    }
+
+    public Map<String, String> getVendorParameters() {
+        return vendorParameters;
+    }
+
+    public void setVendorParameters(Map<String, String> vendorParameters) {
+        this.vendorParameters = vendorParameters;
     }
 }

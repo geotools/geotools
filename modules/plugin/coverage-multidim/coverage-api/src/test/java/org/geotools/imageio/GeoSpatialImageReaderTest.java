@@ -170,9 +170,6 @@ public class GeoSpatialImageReaderTest {
     /** A simple GeoSpatialImageReader only supporting 2 testCoverages: testCoverage1, testCoverage2 */
     public static class TestGeospatialImageReader extends GeoSpatialImageReader {
 
-        /** Default Logger * */
-        private static final Logger LOGGER = Logging.getLogger(TestGeospatialImageReader.class);
-
         protected TestGeospatialImageReader() {
             super(new TestGeospatialImageReaderSpi());
         }

@@ -722,11 +722,10 @@ public class DataUtilities {
 
         if (src instanceof Map) {
             @SuppressWarnings("unchecked")
-            Map<Object, Object> map = (Map) src;
+            Map<Object, Object> map = (Map<Object, Object>) src;
             Map<Object, Object> copy = new HashMap<>(map.size());
 
-            for (Map.Entry<Object, Object> objectObjectEntry : map.entrySet()) {
-                Map.Entry entry = (Map.Entry) objectObjectEntry;
+            for (Map.Entry<Object, Object> entry : map.entrySet()) {
                 copy.put(entry.getKey(), duplicate(entry.getValue()));
             }
 
@@ -943,7 +942,7 @@ public class DataUtilities {
             throw new IOException("Provided features where empty");
         }
 
-        return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+        return new FeatureReader<>() {
             SimpleFeature[] array = features;
 
             int offset = -1;
@@ -1531,7 +1530,7 @@ public class DataUtilities {
     public static SimpleFeatureCollection collection(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 try {
                     collection.add(reader.next());
@@ -1541,8 +1540,6 @@ public class DataUtilities {
                     throw (IOException) new IOException().initCause(e);
                 }
             }
-        } finally {
-            reader.close();
         }
         return collection;
     }
@@ -1562,7 +1559,7 @@ public class DataUtilities {
      */
     public static SimpleFeatureCollection collection(SimpleFeatureIterator reader) throws IOException {
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 try {
                     collection.add(reader.next());
@@ -1570,8 +1567,6 @@ public class DataUtilities {
                     throw (IOException) new IOException("EOF").initCause(e);
                 }
             }
-        } finally {
-            reader.close();
         }
         return collection;
     }
@@ -2571,14 +2566,12 @@ public class DataUtilities {
     public static int count(FeatureIterator<?> iterator) {
         int count = 0;
         if (iterator != null) {
-            try {
+            try (iterator) {
                 while (iterator.hasNext()) {
                     iterator.next();
                     count++;
                 }
                 return count;
-            } finally {
-                iterator.close();
             }
         }
         return count;
@@ -2611,7 +2604,7 @@ public class DataUtilities {
         if (iterator == null) {
             return null;
         }
-        try {
+        try (iterator) {
             ReferencedEnvelope bounds = null;
             while (iterator.hasNext()) {
                 Feature feature = iterator.next();
@@ -2629,8 +2622,6 @@ public class DataUtilities {
                 }
             }
             return bounds;
-        } finally {
-            iterator.close();
         }
     }
     /**

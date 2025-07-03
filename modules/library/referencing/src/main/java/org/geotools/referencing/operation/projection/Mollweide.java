@@ -58,7 +58,7 @@ public class Mollweide extends MapProjection {
         Mollweide,
         WagnerIV,
         WagnerV
-    };
+    }
 
     ParameterDescriptorGroup descriptors;
 

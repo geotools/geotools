@@ -1,7 +1,7 @@
 Upgrade
 =======
 
-With a library as old as GeoTools you will occasionally run into a project from ten years ago that
+With a library as experienced as GeoTools you will occasionally run into a project from ten years ago that
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
 fundamental changes with code examples showing how to upgrade your code.
 
@@ -31,6 +31,108 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 
 .. _update32:
 
+GeoTools 34.x
+-------------
+
+Migration to Eclipse ImageN
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The `Eclipse ImageN <https://projects.eclipse.org/projects/technology.imagen>`__ library is continuing the work of **Java Advanced Imaging** thanks to a code donation
+from Oracle. In order to provide test coverage the project has directly incorporated the JAI-Ext operators
+and improvements that have been made on behalf of the GeoTools and GeoServer projects.
+
+Migration instructions and script are provided by the new ImageN project:
+
+* `JAI Migration <https://eclipse-imagen.github.io/imagen/migration/>`__
+
+BEFORE:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>javax.media</groupId>
+     <artifactId>jai_core</artifactId>
+     <version>1.1.3</version>
+   </dependency>
+
+.. code-block:: java
+
+   import javax.media.jai.JAI;
+   import javax.media.jai.RenderedOp;
+   import com.sun.media.jai.codec.FileSeekableStream;
+   import javax.media.jai.widget.ScrollingImagePanel;
+   
+AFTER:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>org.eclipse.imagen</groupId>
+     <artifactId>imagen-legacy-all</artifactId>
+     <version>0.4-SNAPSHOT</version>
+   </dependency>
+   
+.. code-block:: java
+
+   import org.eclipse.imagen.JAI;
+   import org.eclipse.imagen.RenderedOp;
+   import org.eclipse.imagen.media.codec.FileSeekableStream;
+   import org.eclipse.imagen.widget.ScrollingImagePanel;
+
+Removal of JAI Tools
+^^^^^^^^^^^^^^^^^^^^
+
+To facilitate the migration to Eclipse ImageN the JAI Tools library is no longer available.
+
+GeoTools now uses equivalent functionality, or in the case of statistics has internally adopted
+JAI Tools code.
+
+Use of RangeLookupTable and Range
+'''''''''''''''''''''''''''''''''
+
+BEFORE:
+
+.. code-block:: java
+
+   import org.jaitools.numeric.Range;
+   import org.jaitools.media.jai.rangelookup.RangeLookupTable;
+   
+
+   Range<Double> span = Range.create(0.0,true,5.0,false);
+   Range<Float> span1 = Range.create(0.0f,true,10.0f,false);
+   Range<Float> span2 = Range.create(10.0f,true,null,true);
+   
+   RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
+   PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
+
+JAI-Ext:
+
+.. code-block:: java
+
+   import it.geosolutions.jaiext.range.Range;
+   import it.geosolutions.jaiext.range.RangeFactory;
+   import it.geosolutions.jaiext.rlookup.RangeLookupTable;
+
+   RangeDouble span1 = (RangeDouble) RangeFactory.create(0.0,true,5.0,false);
+   RangeFloat span1 = (RangeFloat) RangeFactory.create(0.0f,true,10.0f,false);
+   RangeFloat span2 = (RangeFloat) RangeFactory.create(10.0f,true,null,true);
+   RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
+   PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
+   
+ImageN:
+
+.. code-block:: java
+
+   import org.eclipse.imagen.media.range.Range;
+   import org.eclipse.imagen.media.rangerange.RangeFactory;
+   import org.eclipse.imagen.media.rlookup.RangeLookupTable;
+   
+   RangeDouble span = RangeFactory.create(0.0,true,5.0,false);
+   RangeFloat span1 = RangeFactory.create(0.0f,true,10.0f,false);
+   RangeFloat span2 = RangeFactory.create(10.0f,true,null,true);
+   RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
+   PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
+   
 GeoTools 32.x
 -------------
 
@@ -38,17 +140,21 @@ GeoTools 32.x
 ImageMosaic Deserialization Validation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools now validates class names when deserializing sample image files for ImageMosaic.
+Since GeoTools 31.4, class names are validated when deserializing sample image files for ImageMosaic.
 
 If the default allowlist of classes that image mosaic will deserialize is preventing the usage of valid
 sample image files, the ``org.geotools.gce.imagemosaic.sampleimage.allowlist`` system property can be set to
 allow additional classes whose fully-qualified class names match the provided regular expression.
 
-For example:
+Since GeoTools 32.3, certain fields of the ``javax.media.jai.remote.SerializableRenderedImage`` class are
+blocked by the default allow list to block deserializing instances of that class. GeoTools has migrated to
+the using the ``org.geotools.gce.imagemosaic.SampleImage`` class since version 16.2 (released February 2017)
+so most users will probably not be affected by this but the following example shows how to set the system
+property to allow SerializableRenderedImage instances if necessary:
 
 .. code-block:: properties
 
-   org.geotools.gce.imagemosaic.sampleimage.allowlist=^some\.package\.MyCustomColorModel$
+   org.geotools.gce.imagemosaic.sampleimage.allowlist=^java\\.(net\\.InetAddress|util\\.Hashtable)$
 
 JDBC Method signature change in PreparedStatementSQLDialect
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

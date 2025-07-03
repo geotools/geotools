@@ -315,7 +315,7 @@ public class FeatureTypeMapping {
         // i.e. a client property maps to an xml attribute, and the step list
         // could have been generated from an xpath of the form
         // @attName or propA/propB@attName
-        if (candidates.isEmpty() && propertyName.size() > 0) {
+        if (candidates.isEmpty() && !propertyName.isEmpty()) {
             XPath.Step clientPropertyStep = propertyName.get(propertyName.size() - 1);
             if (clientPropertyStep.isXmlAttribute()) {
                 Name clientPropertyName = Types.toTypeName(clientPropertyStep.getName());
@@ -346,7 +346,6 @@ public class FeatureTypeMapping {
         return expressions;
     }
 
-    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private List<Expression> getClientPropertyExpressions(
             final List<AttributeMapping> attributeMappings, final Name clientPropertyName, StepList parentPath) {
         List<Expression> clientPropertyExpressions = new ArrayList<>(attributeMappings.size());
@@ -382,7 +381,6 @@ public class FeatureTypeMapping {
 
     @Override
     // null check is needed to see if we should use target feature name or mapping name
-    @SuppressWarnings("PMD.UnusedNullCheckInEquals")
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

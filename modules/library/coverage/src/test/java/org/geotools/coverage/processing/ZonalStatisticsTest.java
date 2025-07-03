@@ -37,6 +37,7 @@ import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
 import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
@@ -46,13 +47,20 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.operation.ZonalStatistics;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.WorldFileReader;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 
 /**
  * This test-class evaluates the functionalities of the "ZonalStatistics" {@link OperationJAI}. The test is executed
@@ -69,8 +77,33 @@ public class ZonalStatisticsTest {
     /** CoverageProcessor */
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 
+    static ListFeatureCollection testPolygons;
+
+    static {
+        try {
+            WKTReader reader = new WKTReader();
+            Geometry g1 = reader.read(
+                    "POLYGON ((11.895130178020111 46.207934814601089,11.895809089115916 "
+                            + "46.207927430715209,11.895112009452415 46.207050983935503,11.895130178020111 46.207934814601089))");
+            Geometry g2 = reader.read(
+                    "POLYGON ((11.896630238926786 46.207395686643665,11.897000925691524 "
+                            + "46.207985638846736,11.897753464657697 46.20749492858355,11.896630238926786 46.207395686643665))");
+            Geometry g3 = reader.read(
+                    "POLYGON ((11.897871315022112 46.20812076814061,11.898581076580497 "
+                            + "46.208161712380381,11.898470449632523 46.207673246668122,11.897871315022112 46.20812076814061))");
+
+            SimpleFeatureType schema = DataUtilities.createType("testPolygons", "the_geom:Polygon");
+            testPolygons = new ListFeatureCollection(schema);
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g1}, "testpolygon.1"));
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g2}, "testpolygon.2"));
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g3}, "testpolygon.3"));
+        } catch (SchemaException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /** Utility class used for calculating and preparing the results */
-    private class StatisticsTool {
+    private static class StatisticsTool {
 
         /*
          * external user params
@@ -250,7 +283,7 @@ public class ZonalStatisticsTest {
 
         // Selection of the input geometries and creation of the related list.
         List<SimpleFeature> polygonList = new ArrayList<>();
-        try (FeatureIterator<SimpleFeature> featureIterator = ZonalStatsTest.testPolygons.features()) {
+        try (FeatureIterator<SimpleFeature> featureIterator = testPolygons.features()) {
             while (featureIterator.hasNext()) {
                 SimpleFeature feature = featureIterator.next();
                 polygonList.add(feature);
@@ -365,7 +398,7 @@ public class ZonalStatisticsTest {
 
         // Selection of the input geometries and creation of the related list.
         List<SimpleFeature> polygonList = new ArrayList<>();
-        try (FeatureIterator<SimpleFeature> featureIterator = ZonalStatsTest.testPolygons.features()) {
+        try (FeatureIterator<SimpleFeature> featureIterator = testPolygons.features()) {
             while (featureIterator.hasNext()) {
                 SimpleFeature feature = featureIterator.next();
                 polygonList.add(feature);

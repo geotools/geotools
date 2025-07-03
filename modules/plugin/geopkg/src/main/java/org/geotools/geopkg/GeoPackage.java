@@ -56,6 +56,7 @@ import org.geotools.api.data.SimpleFeatureWriter;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.PropertyDescriptor;
@@ -742,8 +743,8 @@ public class GeoPackage implements Closeable {
         // remove the attributes, we are going to put in new ones
         builder.setAttributes(new ArrayList<>());
 
-        for (var attribute : schema.getAttributeDescriptors()) {
-            var modifiedAttribute = new AttributeDescriptorImpl(
+        for (AttributeDescriptor attribute : schema.getAttributeDescriptors()) {
+            AttributeDescriptor modifiedAttribute = new AttributeDescriptorImpl(
                     attribute.getType(),
                     attribute.getName(),
                     attribute.getMinOccurs(),
@@ -949,7 +950,6 @@ public class GeoPackage implements Closeable {
             throws IOException {
 
         DataStore dataStore = dataStore();
-        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         FeatureWriter w = append
                 ? dataStore.getFeatureWriterAppend(entry.getTableName(), tx)
                 : dataStore.getFeatureWriter(entry.getTableName(), filter, tx);
@@ -1218,7 +1218,7 @@ public class GeoPackage implements Closeable {
             String sqlMax = "select max(srs_id) from gpkg_spatial_ref_sys";
             int srid = -1;
             try (Statement st = cx.createStatement();
-                    ResultSet rs = st.executeQuery(sqlMax); ) {
+                    ResultSet rs = st.executeQuery(sqlMax)) {
                 if (rs.next()) {
                     srid = rs.getInt(1) + 1;
                 }
@@ -1371,7 +1371,7 @@ public class GeoPackage implements Closeable {
                     .set(bounds.getMinY())
                     .set(bounds.getMaxX())
                     .set(bounds.getMaxY())
-                    .statement(); ) {
+                    .statement()) {
                 st.execute();
             }
 
@@ -1454,7 +1454,6 @@ public class GeoPackage implements Closeable {
      * @param lowRow low row boundary
      * @param highRow high row boundary
      */
-    @SuppressWarnings("PMD.CloseResource") // cx and st get into the TileReader
     public TileReader reader(
             TileEntry entry,
             Integer lowZoom,
@@ -1491,7 +1490,7 @@ public class GeoPackage implements Closeable {
     }
 
     public void addRange(String attribute, Integer low, Integer high, List<String> q) {
-        if (low != null && high != null && low.equals(high)) {
+        if (low != null && low.equals(high)) {
             q.add(attribute + " = " + low);
         } else {
             if (low != null) {

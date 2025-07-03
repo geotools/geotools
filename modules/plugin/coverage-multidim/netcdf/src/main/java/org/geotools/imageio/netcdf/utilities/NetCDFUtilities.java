@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -164,6 +165,8 @@ public class NetCDFUtilities {
     public static final String EXTERNAL_DATA_DIR;
 
     public static final String NETCDF_DATA_DIR = "NETCDF_DATA_DIR";
+    public static final String NETCDF_DATA_DIR_TREE = "NETCDF_DATA_DIR_TREE";
+    public static final String NETCDF_ROOT = "NETCDF_ROOT";
 
     public static final String FILL_VALUE = "_FillValue";
 
@@ -338,7 +341,7 @@ public class NetCDFUtilities {
         X,
         Y,
         Z,
-        T;
+        T
     }
 
     public enum CheckType {
@@ -432,18 +435,9 @@ public class NetCDFUtilities {
         VALID_TYPES.add(DataType.FLOAT);
         VALID_TYPES.add(DataType.DOUBLE);
 
-        // Didn't extracted to a separate method
-        // since we can't initialize the static fields
-        final Object externalDir = System.getProperty(NETCDF_DATA_DIR);
-        String finalDir = null;
-        if (externalDir != null) {
-            String dir = (String) externalDir;
-            final File file = new File(dir);
-            if (isValidDir(file)) {
-                finalDir = dir;
-            }
-        }
-        EXTERNAL_DATA_DIR = finalDir;
+        EXTERNAL_DATA_DIR = Optional.ofNullable(BaseDirectoryStrategy.getSystemPropertyDirectory(NETCDF_DATA_DIR))
+                .map(f -> f.getPath())
+                .orElse(null);
 
         try {
             Class.forName("ucar.nc2.grib.collection.GribIosp");
@@ -544,40 +538,6 @@ public class NetCDFUtilities {
             return ignoredSet;
         }
         return new HashSet<>();
-    }
-
-    public static boolean isValidDir(File file) {
-        String dir = file.getAbsolutePath();
-        if (!file.exists()) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("The specified "
-                        + NETCDF_DATA_DIR
-                        + " property doesn't refer "
-                        + "to an existing folder. Please check the path: "
-                        + dir);
-            }
-            return false;
-        } else if (!file.isDirectory()) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("The specified "
-                        + NETCDF_DATA_DIR
-                        + " property doesn't refer "
-                        + "to a directory. Please check the path: "
-                        + dir);
-            }
-            return false;
-        } else if (!file.canWrite()) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("The specified "
-                        + NETCDF_DATA_DIR
-                        + " property refers to "
-                        + "a directory which can't be written. Please check the path and"
-                        + " the permissions for: "
-                        + dir);
-            }
-            return false;
-        }
-        return true;
     }
 
     /** Get Z Dimension Lenght for standard CF variables */
@@ -793,6 +753,7 @@ public class NetCDFUtilities {
         return "file".equalsIgnoreCase(scheme);
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources")
     private static FileFormat getFormatFromUri(URI uri) throws IOException {
         // try binary
         try (InputStream input = uri.toURL().openStream()) {
@@ -966,7 +927,6 @@ public class NetCDFUtilities {
                 guessedFile = ImageIOUtilities.urlToFile(tempURL);
             }
         } else if (input instanceof URIImageInputStream) {
-            @SuppressWarnings("PMD.CloseResource") // not managed here
             final URIImageInputStream uriInStream = (URIImageInputStream) input;
             String uri = uriInStream.getUri().toString();
             guessedFile = new File(uri);

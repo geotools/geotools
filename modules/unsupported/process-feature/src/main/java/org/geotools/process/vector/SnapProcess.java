@@ -62,12 +62,11 @@ public class SnapProcess implements VectorProcess {
 
     private GeometryFactory geometryFactory = new GeometryFactory();
 
-    @SuppressWarnings("unchecked")
     public Map<String, Parameter<?>> getResultInfo(Map<String, Object> inputs) {
         Map<String, Parameter<?>> outputInfo = new HashMap<>();
         outputInfo.put(
                 "result",
-                new Parameter(
+                new Parameter<>(
                         "result", FeatureCollection.class, Text.text("Result"), Text.text("The nearest feature")));
         return outputInfo;
     }

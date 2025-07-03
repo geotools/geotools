@@ -354,8 +354,7 @@ public class RecyclingTileFactory extends java.util.Observable
     public void recycleTile(Raster tile) {
         DataBuffer db = tile.getDataBuffer();
 
-        Long key =
-                Long.valueOf(((long) db.getDataType() << 56) | ((long) db.getNumBanks() << 32) | (long) db.getSize());
+        Long key = Long.valueOf(((long) db.getDataType() << 56) | ((long) db.getNumBanks() << 32) | db.getSize());
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Recycling array for: " + db.getDataType() + " " + db.getNumBanks() + " " + db.getSize());

@@ -3,3 +3,4 @@ org.geotools.renderer.lite.AttributeRenameFunction
 org.geotools.renderer.lite.BufferTestFunction
 org.geotools.renderer.lite.ReprojectCollectionFunction
 org.geotools.renderer.lite.NoOpFunction
+org.geotools.renderer.lite.OpaqueTransformationFunction

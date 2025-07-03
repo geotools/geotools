@@ -715,7 +715,7 @@ public class MapContent {
         monitor.writeLock().lock();
         try {
             if (userData == null) {
-                userData = new HashMap<String, Object>() {
+                userData = new HashMap<>() {
                     private static final long serialVersionUID = 8011733882551971475L;
 
                     @Override

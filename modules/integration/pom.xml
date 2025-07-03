@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>modules</artifactId>
+    <version>34-SNAPSHOT</version>
+  </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <artifactId>gt-integration</artifactId>
+  <packaging>pom</packaging>
+  <name>Integration tests</name>
+  <description>Integration tests, for functionality such as logging, that requires isolated enviornment.</description>
+
+  <dependencies>
+    <!-- integration tests use current build as maven local repository -->
+    <!-- add dependencies here to to enforce a specific build order    -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-metadata</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.ogc</groupId>
+      <artifactId>net.opengis.ows</artifactId>
+    </dependency>
+  </dependencies>
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!-- =========================================================== -->
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <followSymlinks>true</followSymlinks>
+              <directory>src/it/commons/target</directory>
+            </fileset>
+            <fileset>
+              <followSymlinks>true</followSymlinks>
+              <directory>src/it/log4j/target</directory>
+            </fileset>
+            <fileset>
+              <followSymlinks>true</followSymlinks>
+              <directory>src/it/logback/target</directory>
+            </fileset>
+            <fileset>
+              <followSymlinks>true</followSymlinks>
+              <directory>src/it/logging/target</directory>
+            </fileset>
+            <fileset>
+              <followSymlinks>true</followSymlinks>
+              <directory>src/it/reload4j/target</directory>
+            </fileset>
+          </filesets>
+          <failOnError>false</failOnError>
+        </configuration>
+      </plugin>
+
+      <!-- integration testing to see if packages are good -->
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <parallelThreads>1C</parallelThreads>
+          <ignoreFailures>true</ignoreFailures>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <showErrors>true</showErrors>
+          <streamLogs>false</streamLogs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <!-- run exec:exec to generate output -->
+              <goal>integration-test</goal>
+              <!-- run postbuild.sh to check output -->
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <goals>
+                <goal>clean</goal>
+                <goal>compile</goal>
+                <goal>exec:exec</goal>
+                <goal>integration-test</goal>
+              </goals>
+              <skipInstallation>${skipTests}</skipInstallation>
+              <skipInvocation>${skipTests}</skipInvocation>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- no need to deploy to nexus repo -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -18,7 +18,6 @@ package org.h2gis.geotools;
 
 import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GISTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
     protected H2GISTypeNamesTestSetup() {

@@ -76,6 +76,7 @@ import org.geotools.api.referencing.crs.GeocentricCRS;
 import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.crs.ProjectedCRS;
 import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.crs.VerticalCRS;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CSAuthorityFactory;
 import org.geotools.api.referencing.cs.CSFactory;
@@ -180,6 +181,50 @@ import tech.units.indriya.AbstractUnit;
 @SuppressWarnings("PMD.CloseResource") // class implements its own PreparedStatement pool
 public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         implements CRSAuthorityFactory, CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory {
+
+    /**
+     * Allows to switch the {@link CoordinateOperation} order from the default accuracy first (GeoTools default) to area
+     * first (Proj default).
+     */
+    public enum OperationOrder {
+        AccuracyFirst("ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
+                + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
+                + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
+                + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
+                + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
+                + " CO.COORD_OP_CODE DESC"),
+        AreaFirst(" ABS(CO.DEPRECATED), "
+                + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
+                + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
+                + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
+                + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
+                + " CO.COORD_OP_ACCURACY,"
+                + " CO.COORD_OP_CODE DESC");
+
+        String order;
+
+        OperationOrder(String order) {
+            this.order = order;
+        }
+
+        public String getOrder() {
+            return order;
+        }
+    }
+
+    public static final String ORDER_KEY = "org.geotools.referencing.operation.order";
+    private static OperationOrder OPERATION_ORDER =
+            OperationOrder.valueOf(System.getProperty(ORDER_KEY, OperationOrder.AccuracyFirst.name()));
+
+    /**
+     * Allows to programmatically switch between the possible orders orders for coordinate operation priority
+     *
+     * @param order
+     */
+    public static void setOperationOrder(OperationOrder order) {
+        OPERATION_ORDER = order;
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////
     //////                                                                                 ///////
     //////   HARD CODED VALUES (other than SQL statements) RELATIVE TO THE EPSG DATABASE   ///////
@@ -892,6 +937,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 statement = connection.prepareStatement(adaptSQL(query));
                 statements.put(KEY, statement);
             }
+            identifier = remapToEnsemble(table, identifier);
             statement.setString(1, identifier);
             identifier = null;
             try (ResultSet result = statement.executeQuery()) {
@@ -902,6 +948,13 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             if (identifier == null) {
                 throw noSuchAuthorityCode(type, code);
             }
+        }
+        return identifier;
+    }
+
+    private String remapToEnsemble(String table, String identifier) {
+        if ("[Datum]".equals(table) && EnsembleDefinition.hasId(identifier)) {
+            return identifier + " ensemble";
         }
         return identifier;
     }
@@ -1085,6 +1138,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                  */
                 stmt.setString(1, epsg);
                 try (final ResultSet result = stmt.executeQuery()) {
+                    @SuppressWarnings("PMD.CheckResultSet") // return of next is checked...
                     final boolean present = result.next();
                     if (present) {
                         if (index >= 0) {
@@ -1353,16 +1407,16 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         ensureNonNull("code", code);
         Extent returnValue = null;
         try {
-            final String primaryKey = toPrimaryKey(Extent.class, code, "[Area]", "AREA_CODE", "AREA_NAME");
+            final String primaryKey = toPrimaryKey(Extent.class, code, "[Extent]", "EXTENT_CODE", "EXTENT_NAME");
             final PreparedStatement stmt = prepareStatement(
-                    "Area",
-                    "SELECT AREA_OF_USE,"
-                            + " AREA_SOUTH_BOUND_LAT,"
-                            + " AREA_NORTH_BOUND_LAT,"
-                            + " AREA_WEST_BOUND_LON,"
-                            + " AREA_EAST_BOUND_LON"
-                            + " FROM [Area]"
-                            + " WHERE AREA_CODE = ?");
+                    "Extent",
+                    "SELECT EXTENT_DESCRIPTION,"
+                            + " BBOX_SOUTH_BOUND_LAT,"
+                            + " BBOX_NORTH_BOUND_LAT,"
+                            + " BBOX_WEST_BOUND_LON,"
+                            + " BBOX_EAST_BOUND_LON"
+                            + " FROM [Extent]"
+                            + " WHERE EXTENT_CODE = ?");
             stmt.setInt(1, Integer.parseInt(primaryKey));
             try (ResultSet result = stmt.executeQuery()) {
                 while (result.next()) {
@@ -1432,7 +1486,10 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         + " FROM [Coordinate_Operation] AS CO"
                         + " INNER JOIN [Coordinate Reference System] AS CRS2"
                         + " ON CO.TARGET_CRS_CODE = CRS2.COORD_REF_SYS_CODE"
-                        + " LEFT JOIN [Area] AS AREA on CO.AREA_OF_USE_CODE = AREA.AREA_CODE"
+                        + " JOIN EPSG_USAGE U"
+                        + " ON U.OBJECT_TABLE_NAME = '[Coordinate_Operation]'"
+                        + " AND U.OBJECT_CODE = CO.COORD_OP_CODE"
+                        + " LEFT JOIN [Extent] E on U.EXTENT_CODE = E.EXTENT_CODE"
                         + " WHERE CO.COORD_OP_METHOD_CODE >= "
                         + BURSA_WOLF_MIN_CODE
                         + " AND CO.COORD_OP_METHOD_CODE <= "
@@ -1443,13 +1500,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         + " SELECT CRS1.COORD_REF_SYS_CODE " // GEOT-1129
                         + " FROM [Coordinate Reference System] AS CRS1 "
                         + " WHERE CRS1.DATUM_CODE = ?)"
-                        + " ORDER BY CRS2.DATUM_CODE,"
-                        + " ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
-                        + " (AREA_NORTH_BOUND_LAT - AREA_SOUTH_BOUND_LAT) * "
-                        + "(CASE WHEN AREA_EAST_BOUND_LON > AREA_WEST_BOUND_LON "
-                        + "     THEN (AREA_EAST_BOUND_LON - AREA_WEST_BOUND_LON) "
-                        + "     ELSE (360 - AREA_WEST_BOUND_LON - AREA_EAST_BOUND_LON) END) DESC,"
-                        + " CO.COORD_OP_CODE DESC"); // GEOT-846 fix
+                        + " ORDER BY CRS2.DATUM_CODE, " + OPERATION_ORDER.getOrder()); // GEOT-846 fix
         stmt.setInt(1, Integer.parseInt(code));
         List<Object> bwInfos = null;
         try (ResultSet result = stmt.executeQuery()) {
@@ -1459,6 +1510,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 final String datum = getString(result, 3, code);
                 if (bwInfos == null) {
                     bwInfos = new ArrayList<>();
+                }
+                if (CoordinateOperationSet.isExcludedOperation(operation)) {
+                    continue;
                 }
                 bwInfos.add(new BursaWolfInfo(operation, method, datum));
             }
@@ -1552,18 +1606,21 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             final String primaryKey = toPrimaryKey(Datum.class, code, "[Datum]", "DATUM_CODE", "DATUM_NAME");
             final PreparedStatement stmt = prepareStatement(
                     "Datum",
-                    "SELECT DATUM_CODE,"
-                            + " DATUM_NAME,"
-                            + " DATUM_TYPE,"
-                            + " ORIGIN_DESCRIPTION,"
-                            + " REALIZATION_EPOCH,"
-                            + " AREA_OF_USE_CODE,"
-                            + " DATUM_SCOPE,"
-                            + " REMARKS,"
-                            + " ELLIPSOID_CODE," // Only for geodetic type
-                            + " PRIME_MERIDIAN_CODE" // Only for geodetic type
-                            + " FROM [Datum]"
-                            + " WHERE DATUM_CODE = ?");
+                    "SELECT d.DATUM_CODE,"
+                            + " d.DATUM_NAME,"
+                            + " d.DATUM_TYPE,"
+                            + " d.ORIGIN_DESCRIPTION,"
+                            + " d.REALIZATION_EPOCH,"
+                            + " u.EXTENT_CODE,"
+                            + " d.DATUM_SCOPE,"
+                            + " d.REMARKS,"
+                            + " d.ELLIPSOID_CODE," // Only for geodetic type
+                            + " d.PRIME_MERIDIAN_CODE" // Only for geodetic type
+                            + " FROM [Datum] d "
+                            + " JOIN EPSG_USAGE u"
+                            + " ON u.OBJECT_TABLE_NAME = '[Datum]'"
+                            + " AND u.OBJECT_CODE = d.DATUM_CODE"
+                            + " WHERE d.DATUM_CODE = ?");
             stmt.setInt(1, Integer.parseInt(primaryKey));
             try (ResultSet result = stmt.executeQuery()) {
                 boolean exit = false;
@@ -1597,11 +1654,11 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                      *     'createEllipsoid' and 'createPrimeMeridian'), it must protect 'properties'
                      *     from changes.
                      *
-                     *   - Because 'createBursaWolfParameters' may invokes 'createDatum' recursively,
+                     *   - Because 'createBursaWolfParameters' may invoke 'createDatum' recursively,
                      *     we must close the result set if Bursa-Wolf parameters are found. In this
                      *     case, we lost our paranoiac check for duplication.
                      */
-                    if (type.equals("geodetic")) {
+                    if (type.equals("geodetic") || type.equals("dynamic geodetic")) {
                         properties = new HashMap<>(properties); // Protect from changes
                         final Ellipsoid ellipsoid = buffered.createEllipsoid(getString(result, 9, code));
                         final PrimeMeridian meridian = buffered.createPrimeMeridian(getString(result, 10, code));
@@ -1616,6 +1673,34 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         datum = factory.createVerticalDatum(properties, VerticalDatumType.GEOIDAL);
                     } else if (type.equals("engineering")) {
                         datum = factory.createEngineeringDatum(properties);
+                    } else if (type.equals("ensemble")) {
+                        properties = new HashMap<>(properties);
+                        Ellipsoid ellipsoid;
+                        PrimeMeridian meridian;
+                        EnsembleDefinition def = EnsembleDefinition.getEnsemble(epsg);
+                        if (def != null) {
+                            properties.put("name", def.getNameIdentifier());
+                            if (!def.isVertical()) {
+                                ellipsoid = buffered.createEllipsoid(def.getEllipsoidCode());
+                                meridian = buffered.createPrimeMeridian(def.getPrimeMeridianCode());
+                                final BursaWolfParameters[] param =
+                                        createBursaWolfParameters(def.getDatumCode(), result);
+                                if (param != null) {
+                                    exit = true;
+                                    properties.put(DefaultGeodeticDatum.BURSA_WOLF_KEY, param);
+                                }
+                                datum = factory.createGeodeticDatum(properties, ellipsoid, meridian);
+                            } else {
+                                properties.put(
+                                        "identifiers",
+                                        new NamedIdentifier(Citations.EPSG, def.getIdentifierAuthority()));
+                                datum = factory.createVerticalDatum(properties, VerticalDatumType.GEOIDAL);
+                            }
+
+                        } else {
+                            datum = null;
+                        }
+
                     } else {
                         result.close();
                         throw new FactoryException(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
@@ -1932,20 +2017,24 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             final String primaryKey = toPrimaryKeyCRS(code);
             final PreparedStatement stmt = prepareStatement(
                     "CoordinateReferenceSystem",
-                    "SELECT COORD_REF_SYS_CODE,"
-                            + " COORD_REF_SYS_NAME,"
-                            + " AREA_OF_USE_CODE,"
-                            + " CRS_SCOPE,"
-                            + " REMARKS,"
-                            + " COORD_REF_SYS_KIND,"
-                            + " COORD_SYS_CODE," // Null for CompoundCRS
-                            + " DATUM_CODE," // Null for ProjectedCRS
-                            + " SOURCE_GEOGCRS_CODE," // For ProjectedCRS
-                            + " PROJECTION_CONV_CODE," // For ProjectedCRS
-                            + " CMPD_HORIZCRS_CODE," // For CompoundCRS only
-                            + " CMPD_VERTCRS_CODE" // For CompoundCRS only
-                            + " FROM [Coordinate Reference System]"
+                    "SELECT c.COORD_REF_SYS_CODE,"
+                            + " c.COORD_REF_SYS_NAME,"
+                            + " u.EXTENT_CODE,"
+                            + " c.CRS_SCOPE,"
+                            + " c.REMARKS,"
+                            + " c.COORD_REF_SYS_KIND,"
+                            + " c.COORD_SYS_CODE," // Null for CompoundCRS
+                            + " c.DATUM_CODE," // Null for ProjectedCRS
+                            + " c.BASE_CRS_CODE," // For ProjectedCRS
+                            + " c.PROJECTION_CONV_CODE," // For ProjectedCRS
+                            + " c.CMPD_HORIZCRS_CODE," // For CompoundCRS only
+                            + " c.CMPD_VERTCRS_CODE" // For CompoundCRS only
+                            + " FROM [Coordinate Reference System] c "
+                            + " JOIN EPSG_USAGE u "
+                            + " ON u.OBJECT_TABLE_NAME = '[Coordinate Reference System]'"
+                            + " AND u.OBJECT_CODE = c.COORD_REF_SYS_CODE"
                             + " WHERE COORD_REF_SYS_CODE = ?");
+
             stmt.setInt(1, Integer.parseInt(primaryKey));
             try (ResultSet result = stmt.executeQuery()) {
                 boolean exit = false;
@@ -2011,11 +2100,27 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                      * ---------------------------------------------------------------------- */
                     else if (type.equalsIgnoreCase("vertical")) {
                         final String csCode = getString(result, 7, code);
-                        final String dmCode = getString(result, 8, code);
+                        String datumCode = result.getString(8);
                         final VerticalCS cs = buffered.createVerticalCS(csCode);
-                        final VerticalDatum datum = buffered.createVerticalDatum(dmCode);
-                        final Map<String, Object> properties = createProperties(name, epsg, area, scope, remarks);
-                        crs = factory.createVerticalCRS(properties, datum, cs);
+                        final VerticalDatum datum;
+                        if (datumCode != null) {
+                            final String dmCode = getString(result, 8, code);
+                            datum = buffered.createVerticalDatum(dmCode);
+                            final Map<String, Object> properties = createProperties(name, epsg, area, scope, remarks);
+                            crs = factory.createVerticalCRS(properties, datum, cs);
+                        } else {
+                            final String geoCode = getString(result, 9, code);
+                            result.close();
+                            // As part of the EPSG update for some vertical CRSs, they deleted datums and
+                            // added base CRS. Let's recompose it
+                            final Map<String, Object> properties = createProperties(name, epsg, area, scope, remarks);
+                            // Create the base VerticalCRS and extract the datum from there
+                            VerticalCRS baseCRS = buffered.createVerticalCRS(geoCode);
+                            datum = baseCRS.getDatum();
+                            // reassemble the VerticalCRS using datum and coordinateAxis
+                            crs = factory.createVerticalCRS(properties, datum, cs);
+                            exit = true;
+                        }
                     }
                     /* ----------------------------------------------------------------------
                      *   COMPOUND CRS
@@ -2559,19 +2664,25 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     CoordinateOperation.class, code, "[Coordinate_Operation]", "COORD_OP_CODE", "COORD_OP_NAME");
             final PreparedStatement stmt = prepareStatement(
                     "CoordinateOperation",
-                    "SELECT COORD_OP_CODE,"
-                            + " COORD_OP_NAME,"
-                            + " COORD_OP_TYPE,"
-                            + " SOURCE_CRS_CODE,"
-                            + " TARGET_CRS_CODE,"
-                            + " COORD_OP_METHOD_CODE,"
-                            + " COORD_TFM_VERSION,"
-                            + " COORD_OP_ACCURACY,"
-                            + " AREA_OF_USE_CODE,"
-                            + " COORD_OP_SCOPE,"
-                            + " REMARKS"
-                            + " FROM [Coordinate_Operation]"
-                            + " WHERE COORD_OP_CODE = ?");
+                    "SELECT CO.COORD_OP_CODE,"
+                            + " CO.COORD_OP_NAME,"
+                            + " CO.COORD_OP_TYPE,"
+                            + " CO.SOURCE_CRS_CODE,"
+                            + " CO.TARGET_CRS_CODE,"
+                            + " CO.COORD_OP_METHOD_CODE,"
+                            + " CO.COORD_TFM_VERSION,"
+                            + " CO.COORD_OP_ACCURACY,"
+                            + " U.EXTENT_CODE,"
+                            + " CO.COORD_OP_SCOPE,"
+                            + " CO.REMARKS"
+                            + " FROM [Coordinate_Operation] CO "
+                            + " JOIN EPSG_USAGE U"
+                            + " ON U.OBJECT_TABLE_NAME = '[Coordinate_Operation]'"
+                            + " AND U.OBJECT_CODE = CO.COORD_OP_CODE"
+                            + " JOIN [Extent] E on U.extent_code = E.extent_code"
+                            + " WHERE COORD_OP_CODE = ?"
+                            + " ORDER BY " + OPERATION_ORDER.getOrder() + " LIMIT 1");
+
             stmt.setInt(1, Integer.parseInt(primaryKey));
             try (ResultSet result = stmt.executeQuery()) {
                 while (hasNext(result)) {
@@ -2873,21 +2984,20 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 final String key, sql;
                 if (searchTransformations) {
                     key = "TransformationFromCRS";
-                    sql = "SELECT COORD_OP_CODE"
-                            + " FROM [Coordinate_Operation] left join [Area] on [Coordinate_Operation].area_of_use_code = [Area].area_code"
+                    sql = "SELECT CO.COORD_OP_CODE"
+                            + " FROM [Coordinate_Operation] CO"
+                            + " JOIN EPSG_USAGE U"
+                            + " ON U.OBJECT_TABLE_NAME = '[Coordinate_Operation]'"
+                            + " AND U.OBJECT_CODE = CO.COORD_OP_CODE"
+                            + " LEFT JOIN [Extent] E on U.extent_code = E.extent_code"
                             + " WHERE SOURCE_CRS_CODE = ?"
                             + " AND TARGET_CRS_CODE = ?"
-                            + " ORDER BY ABS([Coordinate_Operation].DEPRECATED), COORD_OP_ACCURACY,"
-                            + "	(AREA_NORTH_BOUND_LAT - AREA_SOUTH_BOUND_LAT) * "
-                            + " (CASE WHEN AREA_EAST_BOUND_LON > AREA_WEST_BOUND_LON "
-                            + "     THEN (AREA_EAST_BOUND_LON - AREA_WEST_BOUND_LON) "
-                            + "     ELSE (360 - AREA_WEST_BOUND_LON - AREA_EAST_BOUND_LON) END) DESC,"
-                            + " COORD_OP_CODE DESC";
+                            + " ORDER BY " + OPERATION_ORDER.getOrder();
                 } else {
                     key = "ConversionFromCRS";
                     sql = "SELECT PROJECTION_CONV_CODE"
                             + " FROM [Coordinate Reference System]"
-                            + " WHERE SOURCE_GEOGCRS_CODE = ?"
+                            + " WHERE BASE_CRS_CODE = ?"
                             + " AND COORD_REF_SYS_CODE = ?";
                 }
                 final PreparedStatement stmt = prepareStatement(key, sql);
@@ -2896,7 +3006,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 try (ResultSet result = stmt.executeQuery()) {
                     while (result.next()) {
                         final String code = getString(result, 1, pair);
-                        set.addAuthorityCode(code, searchTransformations ? null : targetKey);
+                        if (!CoordinateOperationSet.isExcludedOperation(code)) {
+                            set.addAuthorityCode(code, searchTransformations ? null : targetKey);
+                        }
                     }
                 }
             } while ((searchTransformations = !searchTransformations) == true);
@@ -3023,7 +3135,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 IdentifiedObject dependency;
                 if (object instanceof GeneralDerivedCRS) {
                     dependency = ((GeneralDerivedCRS) object).getBaseCRS();
-                    where = "SOURCE_GEOGCRS_CODE";
+                    where = "BASE_CRS_CODE";
                 } else if (object instanceof SingleCRS) {
                     dependency = ((SingleCRS) object).getDatum();
                     where = "DATUM_CODE";
@@ -3237,8 +3349,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         }
         if (!isClosed) {
             /*
-             * The above code was run inconditionnaly as a safety, even if the connection
-             * was already closed. However we will log a message only if we actually closed
+             * The above code was run unconditionally as a safety, even if the connection
+             * was already closed. However, we will log a message only if we actually closed
              * the connection, otherwise the log records are a little bit misleading.
              */
             final LogRecord record = Loggings.format(Level.FINE, LoggingKeys.CLOSED_EPSG_DATABASE);

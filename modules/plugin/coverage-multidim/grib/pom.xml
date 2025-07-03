@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-coverage-multidim</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
   <groupId>org.geotools</groupId>
   <artifactId>gt-grib</artifactId>
@@ -16,23 +16,19 @@
     <dependency>
       <groupId>edu.ucar</groupId>
       <artifactId>cdm-core</artifactId>
-      <version>${netcdf.version}</version>
     </dependency>
     <dependency>
       <groupId>edu.ucar</groupId>
       <artifactId>grib</artifactId>
-      <version>${netcdf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-netcdf</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

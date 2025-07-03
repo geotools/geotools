@@ -72,7 +72,6 @@ public final class Log4JLogger extends LoggerAdapter {
     }
 
     /** Returns the Log4J level for the given Java level. */
-    @SuppressWarnings("fallthrough")
     private static org.apache.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {

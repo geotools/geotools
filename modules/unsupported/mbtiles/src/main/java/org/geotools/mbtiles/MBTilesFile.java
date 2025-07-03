@@ -407,7 +407,7 @@ public class MBTilesFile implements AutoCloseable {
                             .set(entry.getTileRow())
                             .log(Level.FINE)
                             .statement();
-                    ResultSet rs = ps.executeQuery(); ) {
+                    ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     entry.setData(rs.getBytes(1));
                 } else {
@@ -439,7 +439,7 @@ public class MBTilesFile implements AutoCloseable {
                                 .set(entry.getTileRow())
                                 .log(Level.FINE)
                                 .statement();
-                        ResultSet rs = ps.executeQuery(); ) {
+                        ResultSet rs = ps.executeQuery()) {
 
                     if (rs.next()) {
                         entry.setGrid(rs.getBytes(1));
@@ -458,7 +458,7 @@ public class MBTilesFile implements AutoCloseable {
                                 .set(entry.getTileRow())
                                 .log(Level.FINE)
                                 .statement();
-                        ResultSet rs = ps.executeQuery(); ) {
+                        ResultSet rs = ps.executeQuery()) {
 
                     while (rs.next()) {
                         entry.setGridDataKey(rs.getString(1), rs.getString(2));
@@ -472,7 +472,6 @@ public class MBTilesFile implements AutoCloseable {
         return entry;
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles() throws SQLException {
         Connection cx = null;
         Statement st = null;
@@ -507,7 +506,6 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles(long zoomLevel) throws SQLException {
         Connection cx = null;
         PreparedStatement ps = null;
@@ -524,7 +522,6 @@ public class MBTilesFile implements AutoCloseable {
         }
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     public TileIterator tiles(long zoomLevel, long leftTile, long bottomTile, long rightTile, long topTile)
             throws SQLException {
         Connection cx = null;

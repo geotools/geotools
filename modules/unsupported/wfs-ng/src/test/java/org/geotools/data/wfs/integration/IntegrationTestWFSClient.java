@@ -146,7 +146,7 @@ public class IntegrationTestWFSClient extends WFSClient {
     }
 
     @SuppressWarnings("PMD.CloseResource") // readers are wrapped and returned in the response
-    protected Response mockGetFeature(GetFeatureRequest request) throws IOException {
+    protected Response mockGetFeature(GetFeatureRequest request) throws ServiceException, IOException {
 
         final QName typeName = request.getTypeName();
 
@@ -211,7 +211,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFilteredReader =
                 new DiffFeatureReader<>(allFeaturesReader, diff, serverFiler);
-        final GetParser<SimpleFeature> filteredParser = new GetParser<SimpleFeature>() {
+        final GetParser<SimpleFeature> filteredParser = new GetParser<>() {
 
             @Override
             public void setGeometryFactory(GeometryFactory geometryFactory) {
@@ -227,7 +227,6 @@ public class IntegrationTestWFSClient extends WFSClient {
             }
 
             @Override
-            @SuppressWarnings("PMD.CloseResource") // reaaders are from memory lists
             public int getNumberOfFeatures() {
                 if (-1 != allFeatures.getNumberOfFeatures()) {
                     // only if the original response included number of features (i.e. the
@@ -274,7 +273,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
     }
 
-    protected Response mockTransactionSuccess(TransactionRequest request) throws IOException {
+    protected Response mockTransactionSuccess(TransactionRequest request) throws ServiceException, IOException {
 
         List<String> added = new ArrayList<>();
         int deleted = 0, updated = 0;
@@ -331,7 +330,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         return request.createResponse(httpResponse);
     }
 
-    protected Response mockTransactionFailure(TransactionRequest request) throws IOException {
+    protected Response mockTransactionFailure(TransactionRequest request) throws ServiceException, IOException {
         final QName typeName = request.getTypeNames().iterator().next();
 
         String resource = "TransactionFailure_" + typeName.getLocalPart() + ".xml";
@@ -355,7 +354,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         return diff;
     }
 
-    private List<SimpleFeature> features(QName typeName) throws IOException {
+    private List<SimpleFeature> features(QName typeName) throws ServiceException, IOException {
 
         GetFeatureRequest gf = createGetFeatureRequest();
         gf.setTypeName(typeName);

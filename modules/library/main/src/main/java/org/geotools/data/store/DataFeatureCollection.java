@@ -102,7 +102,8 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     protected void fireChange(Collection coll, int type) {
         @SuppressWarnings("unchecked")
-        SimpleFeature[] features = (SimpleFeature[]) coll.toArray(new SimpleFeature[coll.size()]);
+        Collection<SimpleFeature> fcoll = coll;
+        SimpleFeature[] features = fcoll.toArray(SimpleFeature[]::new);
         fireChange(features, type);
     }
 
@@ -120,8 +121,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     public abstract ReferencedEnvelope getBounds();
 
     public abstract int getCount() throws IOException;
-    ;
-
     // public abstract SimpleFeatureCollection collection() throws IOException;
 
     //
@@ -192,6 +191,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      *
      * @return Iterator, should be closed closeIterator
      */
+    @SuppressWarnings("PMD.CloseResource")
     protected Iterator<SimpleFeature> openIterator() throws IOException {
         try {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer = writer();
@@ -221,7 +221,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
         if (close instanceof FeatureReaderIterator) {
-            @SuppressWarnings("PMD.CloseResource")
             FeatureReaderIterator<SimpleFeature> iterator = (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
         } else if (close instanceof FeatureWriterIterator) {

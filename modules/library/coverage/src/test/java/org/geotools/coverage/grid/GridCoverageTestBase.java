@@ -19,7 +19,6 @@ package org.geotools.coverage.grid;
 import static java.awt.Color.decode;
 import static org.geotools.util.NumberRange.create;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import java.awt.Color;
@@ -29,12 +28,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.AbstractList;
 import java.util.List;
 import java.util.Random;
@@ -51,7 +46,6 @@ import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
-import org.geotools.util.factory.Hints;
 import si.uom.SI;
 
 /**
@@ -121,12 +115,10 @@ public class GridCoverageTestBase extends CoverageTestBase {
             final double min = 10 * i;
             envelope.setRange(i, min, min + 5);
         }
-        final Hints hints = new Hints(Hints.TILE_ENCODING, "raw");
-        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(hints);
+        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         // The final grid coverage.
         final GridCoverage2D coverage =
                 factory.create("Test", image, envelope, new GridSampleDimension[] {band}, null, null);
-        assertEquals("raw", coverage.tileEncoding);
         /*
          * Grid coverage construction finished.  Now test it.
          */
@@ -157,7 +149,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
      * An immutable list of grid coverages to be used for testing purpose. Coverages are read when a the
      * {@code get(int)} method is invoked.
      */
-    protected static final List<GridCoverage2D> EXAMPLES = new AbstractList<GridCoverage2D>() {
+    protected static final List<GridCoverage2D> EXAMPLES = new AbstractList<>() {
         /** The coverages returned by previous invocations. */
         private final GridCoverage2D[] cached = new GridCoverage2D[6];
 
@@ -339,33 +331,4 @@ public class GridCoverageTestBase extends CoverageTestBase {
             return factory.create(filename, image, envelope, bands, null, null);
         }
     };
-
-    /**
-     * Tests the serialization of the packed and geophysics views of a grid coverage.
-     *
-     * @param coverage The coverage to serialize.
-     * @return The deserialized grid coverage as packed view.
-     * @throws IOException if an I/O operation was needed and failed.
-     * @throws ClassNotFoundException Should never happen.
-     */
-    @SuppressWarnings("BanSerializableRead")
-    protected static GridCoverage2D serialize(GridCoverage2D coverage) throws IOException, ClassNotFoundException {
-        coverage.tileEncoding = null;
-        /*
-         * The previous line is not something that we should do.
-         * But we want to test the default GridCoverage2D encoding.
-         */
-        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        try (ObjectOutputStream out = new ObjectOutputStream(buffer)) {
-            out.writeObject(coverage);
-        }
-
-        GridCoverage2D read;
-        try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()))) {
-            read = (GridCoverage2D) in.readObject();
-        }
-        assertNotSame(read, coverage);
-        coverage = read;
-        return coverage;
-    }
 }

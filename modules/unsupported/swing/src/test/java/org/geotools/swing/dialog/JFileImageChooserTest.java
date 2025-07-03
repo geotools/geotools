@@ -98,7 +98,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
 
         // Can't use base class getButton method because JFileChooser has
         // duplicate components
-        windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+        windowFixture.button(new GenericTypeMatcher<>(JButton.class) {
             @Override
             protected boolean isMatching(JButton component) {
                 return component.isVisible() && "Open".equals(component.getText());
@@ -112,7 +112,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
 
         // Can't use base class getButton method because JFileChooser has
         // duplicate components
-        windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+        windowFixture.button(new GenericTypeMatcher<>(JButton.class) {
             @Override
             protected boolean isMatching(JButton component) {
                 return component.isVisible() && "Save".equals(component.getText());
@@ -196,7 +196,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
      * @return FEST fixture for the component
      */
     private JComboBoxFixture getFileFormatComboBox() {
-        return windowFixture.comboBox(new GenericTypeMatcher<JComboBox>(JComboBox.class) {
+        return windowFixture.comboBox(new GenericTypeMatcher<>(JComboBox.class) {
             @Override
             protected boolean isMatching(JComboBox component) {
                 return component.getItemAt(0) instanceof JFileImageChooser.FormatFilter;

@@ -59,7 +59,7 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-@SuppressWarnings({"PMD.EmptyInitializer", "PMD.EmptyControlStatement"})
+@SuppressWarnings("PMD.EmptyControlStatement")
 public abstract class JDBCTestSupport extends OnlineTestSupport {
 
     static final Logger LOGGER = Logging.getLogger(JDBCTestSupport.class);
@@ -90,6 +90,21 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     /** Allows implementations to request a longitude first axis ordering for CRSs. */
     protected boolean forceLongitudeFirst = false;
 
+    protected final double COORDINATE_EPS;
+
+    public JDBCTestSupport() {
+        COORDINATE_EPS = 0;
+    }
+
+    /**
+     * Constructs the test with a target coordinate precision for geometry comparisons
+     *
+     * @param coordinateEps
+     */
+    protected JDBCTestSupport(double coordinateEps) {
+        COORDINATE_EPS = coordinateEps;
+    }
+
     @Override
     protected Properties createOfflineFixture() {
         return createTestSetup().createOfflineFixture();
@@ -106,6 +121,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     }
 
     @Override
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     protected boolean isOnline() throws Exception {
         JDBCTestSetup setup = createTestSetup();
         setup.setFixture(getFixture());
@@ -246,7 +262,6 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
         }
     }
 
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     protected void assertAttributeValuesEqual(Object expected, Object actual) {
         if (expected == null) {
             assertNull(actual);
@@ -307,7 +322,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
 
     protected <F extends Feature> void assertFeatureIterator(
             int startIndex, int numberExpected, FeatureIterator<F> iter, FeatureAssertion<F> assertion) {
-        try {
+        try (iter) {
             boolean[] loadedFeatures = new boolean[numberExpected];
             for (int j = startIndex; j < numberExpected + startIndex; j++) {
                 F feature = iter.next();
@@ -328,14 +343,12 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
             for (int i = 0; i < numberExpected; i++) {
                 assertTrue("feature " + i + " is missing", loadedFeatures[i]);
             }
-        } finally {
-            iter.close();
         }
     }
 
     protected <F extends Feature> void assertFeatureIterator(
             int startIndex, int numberExpected, final Iterator<F> iterator, FeatureAssertion<F> assertion) {
-        try (FeatureIterator<F> adapter = new FeatureIterator<F>() {
+        try (FeatureIterator<F> adapter = new FeatureIterator<>() {
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
@@ -356,7 +369,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     protected <FT extends FeatureType, F extends Feature> void assertFeatureReader(
             int startIndex, int numberExpected, final FeatureReader<FT, F> reader, FeatureAssertion<F> assertion)
             throws IOException {
-        try (FeatureIterator<F> iter = new FeatureIterator<F>() {
+        try (FeatureIterator<F> iter = new FeatureIterator<>() {
 
             @Override
             public boolean hasNext() {

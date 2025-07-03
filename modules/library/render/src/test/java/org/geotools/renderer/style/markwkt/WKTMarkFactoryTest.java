@@ -55,7 +55,6 @@ public class WKTMarkFactoryTest {
             this.addToCache(urlLib);
         }
     }
-    ;
 
     static {
         try {

@@ -238,10 +238,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         final String proxyUser = getValue(PROXY_USER, params);
         final String proxyPasswd = getValue(PROXY_PASSWD, params);
 
-        @SuppressWarnings("PMD.CloseResource") // returned as part of the store, managed there
         final RestClient client = createRestClient(params, user, passwd);
-
-        @SuppressWarnings("PMD.CloseResource") // returned as part of the store, managed there
         final RestClient proxyClient = proxyUser != null ? createRestClient(params, proxyUser, proxyPasswd) : null;
 
         return createDataStore(client, proxyClient, params);

@@ -4,39 +4,43 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
   <groupId>org.geotools</groupId>
   <artifactId>gt-flatgeobuf</artifactId>
   <packaging>jar</packaging>
   <name>FlatGeobuf DataStore</name>
   <description>A FlatGeobuf DataStore</description>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.wololo</groupId>
+        <artifactId>flatgeobuf</artifactId>
+        <version>3.26.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.wololo</groupId>
       <artifactId>flatgeobuf</artifactId>
-      <version>3.26.2</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-geojson-core</artifactId>
-      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

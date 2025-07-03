@@ -392,7 +392,7 @@ public final class Utilities {
      * @return An updated hash code value.
      */
     public static int hash(char value, int seed) {
-        return seed * PRIME_NUMBER + (int) value;
+        return seed * PRIME_NUMBER + value;
     }
 
     /**

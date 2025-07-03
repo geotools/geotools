@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.logging.Level;
 import org.geotools.api.feature.FeatureVisitor;
@@ -59,7 +60,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.Entry.DataType;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
-import org.geotools.jdbc.EnumMapper;
+import org.geotools.jdbc.EnumMapping;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
@@ -95,7 +96,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     /** Keeps track of the enumeration */
     static final String ENUM = "gpkg.enumeration";
 
-    private static final Object GPKG_ARRAY_ENUM_MAP = "gpkg.arrayEnumMapper";
+    private static final Object GPKG_ARRAY_ENUM_MAP = "gpkg.arrayEnumMapping";
 
     protected GeoPkgGeomWriter.Configuration geomWriterConfig;
     protected boolean contentsOnly = true;
@@ -251,6 +252,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         mappings.put(Float.class, Types.FLOAT);
         mappings.put(Double.class, Types.DOUBLE);
         mappings.put(Boolean.class, Types.INTEGER);
+        // SQLite has no native support for UUID datatype.
+        // Map Java UUID to varchar instead
+        mappings.put(UUID.class, Types.VARCHAR);
     }
 
     @Override
@@ -664,14 +668,14 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, value.toString());
                 break;
             case Types.TIME:
-                var time = value.toString();
+                String time = value.toString();
                 ps.setString(column, time);
                 break;
             case Types.TIMESTAMP:
                 // 2020-02-19 23:00:00.0  --> 2020-02-19T23:00:00.0Z
                 // We need the "Z" or sql lite will interpret the value as local time
                 // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-                var v = ((Timestamp) value).toInstant().toString();
+                String v = ((Timestamp) value).toInstant().toString();
                 ps.setString(column, v);
                 break;
             default:
@@ -692,20 +696,21 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
         // preserve array nature by writing it as a JSON array
         if (value.getClass().isArray()) {
-            writeArray(value, ps, columnIdx, (EnumMapper) att.getUserData().get(GPKG_ARRAY_ENUM_MAP));
+            writeArray(value, ps, columnIdx, (EnumMapping) att.getUserData().get(GPKG_ARRAY_ENUM_MAP));
         } else {
             throw new IllegalArgumentException("Cannot handle this array value: " + value);
         }
     }
 
-    private void writeArray(Object value, PreparedStatement ps, int columnIdx, EnumMapper mapper) throws SQLException {
+    private void writeArray(Object value, PreparedStatement ps, int columnIdx, EnumMapping mapping)
+            throws SQLException {
         // write as JSON
         StringBuilder sb = new StringBuilder("[");
         int length = Array.getLength(value);
         for (int i = 0; i < length; i++) {
             Object item = Array.get(value, i);
-            if (mapper != null && item instanceof String) {
-                sb.append(mapper.fromString((String) item));
+            if (mapping != null && item instanceof String) {
+                sb.append(mapping.fromValue((String) item));
             } else if (item instanceof Number) {
                 sb.append(item);
             } else {
@@ -771,17 +776,17 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                     // is applied to every entry in the array, not to the whole string, so the
                     // normal enum mapping does not apply. If a column declares a mime type, its
                     // contents are likely complex, and the enum will have to be applied to the
-                    // items inside, not to the whole, so the EnumMapper must not be created.
+                    // items inside, not to the whole, so the EnumMapping must not be created.
                     if (dataColumn.getConstraint() instanceof DataColumnConstraint.Enum) {
                         DataColumnConstraint.Enum dcc = (DataColumnConstraint.Enum) dataColumn.getConstraint();
-                        EnumMapper mapper = new EnumMapper();
+                        EnumMapping mapping = new EnumMapping();
                         for (Map.Entry<String, String> entry : dcc.getValues().entrySet()) {
-                            mapper.addMapping(Integer.valueOf(entry.getKey()), entry.getValue());
+                            mapping.addMapping(entry.getKey(), entry.getValue());
                         }
                         if (dataColumn.getMimeType() == null) {
-                            att.getUserData().put(JDBCDataStore.JDBC_ENUM_MAP, mapper);
+                            att.getUserData().put(JDBCDataStore.JDBC_ENUM_MAP, mapping);
                         } else {
-                            att.getUserData().put(GPKG_ARRAY_ENUM_MAP, mapper);
+                            att.getUserData().put(GPKG_ARRAY_ENUM_MAP, mapping);
                         }
                     }
                     att.getUserData().put(DATA_COLUMN, dataColumn);
@@ -948,7 +953,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public Object convertValue(Object value, AttributeDescriptor ad) {
         if (isArray(ad)) {
-            return jsonArrayIO.parse((String) value, ad.getType().getBinding().getComponentType(), (EnumMapper)
+            return jsonArrayIO.parse((String) value, ad.getType().getBinding().getComponentType(), (EnumMapping)
                     ad.getUserData().get(GPKG_ARRAY_ENUM_MAP));
         }
         if (ad.getType().getBinding() == Timestamp.class) {
@@ -956,7 +961,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 return null;
             }
             // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-            var strValue = (String) value;
+            String strValue = (String) value;
             // this is for support with "bad" geopkgs
             if (!strValue.endsWith("Z")) {
                 strValue += "Z";
@@ -968,7 +973,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             } catch (Exception e) {
                 // could be an old GT datetime i.e. '2024-02-27 00:13:00.0Z'
                 try {
-                    var dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     java.util.Date date = dateFormat.parse(strValue);
                     Instant dateInstant = date.toInstant();

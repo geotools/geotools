@@ -62,6 +62,20 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
 
 public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
+
+    public JDBCDataStoreOnlineTest() {
+        super();
+    }
+
+    /**
+     * Constructs the test with a target coordinate precision for geometry comparisons
+     *
+     * @param coordinateEps
+     */
+    protected JDBCDataStoreOnlineTest(double coordinateEps) {
+        super(coordinateEps);
+    }
+
     @Test
     public void testGetNames() throws IOException {
         String[] typeNames = dataStore.getTypeNames();
@@ -91,7 +105,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    @SuppressWarnings("PMD.EmptyControlStatement")
+    @SuppressWarnings({"PMD.UnusedLocalVariable"})
     public void testCreateSchema() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));
@@ -455,7 +469,8 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
                 public void check(int index, SimpleFeature feature) {
                     assertEquals(4, feature.getAttributeCount());
                     Point p = gf.createPoint(new Coordinate(index, index));
-                    assertTrue(p.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
+                    Geometry geometry = (Geometry) feature.getAttribute(aname("geometry"));
+                    assertTrue(p.equalsExact(geometry, COORDINATE_EPS));
 
                     Number ip = (Number) feature.getAttribute(aname("intProperty"));
                     assertEquals(index, ip.intValue());

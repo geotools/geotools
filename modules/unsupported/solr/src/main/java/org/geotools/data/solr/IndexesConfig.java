@@ -257,8 +257,7 @@ public final class IndexesConfig {
             return isDefault;
         }
 
-        private static GeometryConfig create( // NOPMD - Unused method
-                String attributeName, String srid, String type, String isDefault) {
+        private static GeometryConfig create(String attributeName, String srid, String type, String isDefault) {
             CoordinateReferenceSystem crs;
             try {
                 crs = CRS.decode("EPSG:" + srid);

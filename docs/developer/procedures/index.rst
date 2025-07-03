@@ -13,6 +13,7 @@ Project Procedures
    proposal
    check
    add
+   bom
    release
    supported
    stable

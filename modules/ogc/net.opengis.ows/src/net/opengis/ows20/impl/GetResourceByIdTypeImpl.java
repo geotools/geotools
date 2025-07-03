@@ -251,7 +251,6 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
-    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {

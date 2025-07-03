@@ -238,7 +238,7 @@ public class Types {
             }
         }
 
-        if (type.getRestrictions() != null && type.getRestrictions().size() > 0) {
+        if (type.getRestrictions() != null && !type.getRestrictions().isEmpty()) {
             for (Filter filter : type.getRestrictions()) {
                 if (!filter.evaluate(value)) {
                     throw new IllegalAttributeException(

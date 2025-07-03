@@ -134,7 +134,7 @@ public final class GeoToolsTest {
         Manifest commons_logging = GeoTools.getManifest(LogFactory.class);
         assertNotNull(commons_logging);
         assertFalse("manifest metadata", commons_logging.getMainAttributes().isEmpty());
-        assertEquals("1.2", commons_logging.getMainAttributes().getValue("Implementation-Version"));
+        assertEquals("1.3.5", commons_logging.getMainAttributes().getValue("Implementation-Version"));
     }
 
     /** Test version lookup */
@@ -165,7 +165,7 @@ public final class GeoToolsTest {
 
         version = GeoTools.getVersion(LogFactory.class);
         assertNotNull(version);
-        assertEquals("1.2", version.toString());
+        assertEquals("1.3.5", version.toString());
     }
     /** Tests the use of system properties. */
     @Test

@@ -158,7 +158,6 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
    * @generated
    */
-    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {

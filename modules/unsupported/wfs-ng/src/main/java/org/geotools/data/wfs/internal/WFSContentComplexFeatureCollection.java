@@ -66,7 +66,6 @@ public class WFSContentComplexFeatureCollection extends BaseFeatureCollection<Fe
     }
 
     /** Make sure to close the iterator. */
-    @SuppressWarnings("PMD.CloseResource") // wrapped and returned
     @Override
     public FeatureIterator<Feature> features() {
         try {

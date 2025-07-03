@@ -36,7 +36,7 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
     /** The default map using ANSI names. */
     private static final String[] ANSI = {
         "[Alias]", "epsg_alias",
-        "[Area]", "epsg_area",
+        "[Extent]", "epsg_extent",
         "[Coordinate Axis]", "epsg_coordinateaxis",
         "[Coordinate Axis Name]", "epsg_coordinateaxisname",
         "[Coordinate_Operation]", "epsg_coordoperation",
@@ -64,7 +64,7 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
      * <pre><table>
      *   <tr><th align="center">MS-Access name</th>            <th align="center">ANSI name</th></tr>
      *   <tr><td>[Alias]</td>                                  <td>epsg_alias</td></tr>
-     *   <tr><td>[Area]</td>                                   <td>epsg_area</td></tr>
+     *   <tr><td>[Extent]</td>                                 <td>epsg_extent</td></tr>
      *   <tr><td>[Coordinate Axis]</td>                        <td>epsg_coordinateaxis</td></tr>
      *   <tr><td>[Coordinate Axis Name]</td>                   <td>epsg_coordinateaxisname</td></tr>
      *   <tr><td>[Coordinate_Operation]</td>                   <td>epsg_coordoperation</td></tr>
@@ -166,10 +166,9 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
     @Override
     protected String adaptSQL(final String statement) {
         final StringBuilder modified = new StringBuilder(statement);
-        for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            final Map.Entry entry = (Map.Entry) stringStringEntry;
-            final String oldName = (String) entry.getKey();
-            final String newName = (String) entry.getValue();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            final String oldName = entry.getKey();
+            final String newName = entry.getValue();
             /*
              * Replaces all occurences of 'oldName' by 'newName'.
              */

@@ -109,7 +109,7 @@ import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.InFunction;
 import org.geotools.filter.spatial.BBOXImpl;
-import org.geotools.jdbc.EnumMapper;
+import org.geotools.jdbc.EnumMapping;
 import org.geotools.jdbc.EscapeSql;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinId;
@@ -285,7 +285,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * @return a string representing the filter encoded to SQL.
      */
-    @SuppressWarnings("PMD.CloseResource")
     public String encodeToString(Filter filter) throws FilterToSQLException {
         StringWriter out = new StringWriter();
         this.out = out;
@@ -313,7 +312,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * @return a string representing the filter encoded to SQL.
      */
-    @SuppressWarnings("PMD.CloseResource")
     public String encodeToString(Expression expression) throws FilterToSQLException {
         StringWriter out = new StringWriter();
         this.out = out;
@@ -512,23 +510,28 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         String pattern = LikeFilterImpl.convertToSQL92(esc, multi, single, matchCase, literal, false);
 
         try {
-            if (!matchCase) {
-                out.write(" UPPER(");
-            }
-
-            att.accept(this, extraData);
-
-            if (!matchCase) {
-                out.write(") LIKE ");
-            } else {
-                out.write(" LIKE ");
-            }
+            processLikeLeftOperand(extraData, matchCase, att, attributeType);
 
             writeLiteral(pattern);
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }
         return extraData;
+    }
+
+    protected void processLikeLeftOperand(Object extraData, boolean matchCase, Expression att, Class attributeType)
+            throws IOException {
+        if (!matchCase) {
+            out.write(" UPPER(");
+        }
+
+        att.accept(this, extraData);
+
+        if (!matchCase) {
+            out.write(") LIKE ");
+        } else {
+            out.write(" LIKE ");
+        }
     }
 
     /**
@@ -901,12 +904,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     private void encodeEnumeratedComparison(Expression right, Expression left, String type, boolean matchCase)
             throws IOException {
-        EnumMapper mapper = getEnumMapper(right);
-        if (mapper != null) {
+        EnumMapping mapping = getEnumMapping(right);
+        if (mapping != null) {
             PropertyName rightName = (PropertyName) right;
             if (left instanceof Literal) {
                 String value = left.evaluate(null, String.class);
-                Integer code = mapper.fromString(value, matchCase);
+                String code = mapping.fromValue(value, matchCase);
                 if (code == null) {
                     out.write("FALSE");
                 } else {
@@ -921,8 +924,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                     writeBinaryExpressionMember(left, Integer.class);
                     out.write(")");
                 }
-                for (Map.Entry<String, Integer> entry :
-                        mapper.getStringToInteger().entrySet()) {
+                for (Map.Entry<String, String> entry : mapping.valueToKeyMap().entrySet()) {
                     out.write("WHEN '" + entry.getKey() + "' THEN " + entry.getValue() + "\n");
                 }
                 out.write("END");
@@ -930,12 +932,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 writeEncodedField(Integer.class, rightName, (AttributeDescriptor) right.evaluate(featureType));
             }
         } else {
-            mapper = getEnumMapper(left);
+            mapping = getEnumMapping(left);
 
             PropertyName leftName = (PropertyName) left;
             if (right instanceof Literal) {
                 String value = right.evaluate(null, String.class);
-                Integer code = mapper.fromString(value, matchCase);
+                String code = mapping.fromValue(value, matchCase);
                 if (code == null) {
                     out.write("FALSE");
                 } else {
@@ -952,8 +954,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                     writeBinaryExpressionMember(right, Integer.class);
                     out.write(")");
                 }
-                for (Map.Entry<String, Integer> entry :
-                        mapper.getStringToInteger().entrySet()) {
+                for (Map.Entry<String, String> entry : mapping.valueToKeyMap().entrySet()) {
                     out.write("WHEN '" + entry.getKey() + "' THEN " + entry.getValue() + "\n");
                 }
                 out.write("END");
@@ -962,16 +963,16 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     private boolean isEnumerated(Expression ex) {
-        return getEnumMapper(ex) != null;
+        return getEnumMapping(ex) != null;
     }
 
-    private EnumMapper getEnumMapper(Expression ex) {
+    private EnumMapping getEnumMapping(Expression ex) {
         if (ex instanceof PropertyName) {
             AttributeDescriptor ad = (AttributeDescriptor) ex.evaluate(featureType);
             if (ad != null) {
                 Object o = ad.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-                if (o instanceof EnumMapper) {
-                    return (EnumMapper) o;
+                if (o instanceof EnumMapping) {
+                    return (EnumMapping) o;
                 }
             }
         }
@@ -1473,35 +1474,33 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 out.write(".");
             }
 
-            // first evaluate expression against feautre type get the attribute,
+            // first evaluate expression against feature type get the attribute,
             //  this handles xpath
             AttributeDescriptor attribute = null;
-            EnumMapper mapper = null;
+            EnumMapping mapping = null;
             try {
                 attribute = (AttributeDescriptor) expression.evaluate(featureType);
                 if (attribute != null) {
-                    mapper = (EnumMapper) attribute.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                    mapping = (EnumMapping) attribute.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
                 }
             } catch (Exception e) {
                 // just log and fall back on just encoding propertyName straight up
-                String msg = "Error occured mapping " + expression + " to feature type";
+                String msg = "Error occurred mapping " + expression + " to feature type";
                 LOGGER.log(Level.WARNING, msg, e);
             }
 
             // handle integer mapped enumerations
-            if (mapper != null) {
+            if (mapping != null) {
                 out.write("CASE ");
             }
 
             writeEncodedField(target, expression, attribute);
 
             // If we got here, it means the property is used inside some expression or function,
-            // for this case we expand the property. For comparisons instead, the literal is
-            // backmapped to an integer when possible, to allow index usage
-            if (mapper != null) {
+            // for this case we expand the property.
+            if (mapping != null) {
                 out.write("\n ");
-                for (Map.Entry<Integer, String> entry :
-                        mapper.getIntegerToString().entrySet()) {
+                for (Map.Entry<String, String> entry : mapping.keyToValueMap().entrySet()) {
                     out.write("WHEN " + entry.getKey() + " THEN '" + entry.getValue() + "'\n");
                 }
                 out.write("END");
@@ -2020,7 +2019,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         public static DefaultFieldEncoder DEFAULT_FIELD_ENCODER = new DefaultFieldEncoder();
 
         private DefaultFieldEncoder() {}
-        ;
 
         @Override
         public String encode(String s) {

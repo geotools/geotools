@@ -93,18 +93,18 @@ public class ColorRule {
         // }
         else if (diff > range) {
             return new byte[] {
-                (byte) ((int) (rmul * range) + (int) catColor[0]),
-                (byte) ((int) (gmul * range) + (int) catColor[1]),
-                (byte) ((int) (bmul * range) + (int) catColor[2]),
+                (byte) ((int) (rmul * range) + catColor[0]),
+                (byte) ((int) (gmul * range) + catColor[1]),
+                (byte) ((int) (bmul * range) + catColor[2]),
                 catColor[3]
             };
         }
 
         /* Calculate the color from the gradient */
         return new byte[] {
-            (byte) ((int) (rmul * diff) + (int) catColor[0]),
-            (byte) ((int) (gmul * diff) + (int) catColor[1]),
-            (byte) ((int) (bmul * diff) + (int) catColor[2]),
+            (byte) ((int) (rmul * diff) + catColor[0]),
+            (byte) ((int) (gmul * diff) + catColor[1]),
+            (byte) ((int) (bmul * diff) + catColor[2]),
             catColor[3]
         };
     }
@@ -146,11 +146,11 @@ public class ColorRule {
                     + ","
                     + (catColor[3] & 0xff)
                     + "]-["
-                    + ((int) (rmul * range) + (int) catColor[0])
+                    + ((int) (rmul * range) + catColor[0])
                     + ","
-                    + ((int) (gmul * range) + (int) catColor[1])
+                    + ((int) (gmul * range) + catColor[1])
                     + ","
-                    + ((int) (bmul * range) + (int) catColor[2])
+                    + ((int) (bmul * range) + catColor[2])
                     + ","
                     + (catColor[3] & 0xff)
                     + "]";

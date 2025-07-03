@@ -62,7 +62,6 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
     }
 
     @Override
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void onRegistration(ServiceRegistry registry, Class<?> category) {
         super.onRegistration(registry, category);
         Class<ImageInputStreamSpi> targetClass = ImageInputStreamSpi.class;

@@ -798,7 +798,6 @@ final class Resampler2D extends GridCoverage2D {
         return targetCoverage;
     }
 
-    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     private static void offsetUpper(int[] upper) {
         for (int i = 0; i < upper.length; i++) {
             upper[i]++; // Make them exclusive.
@@ -1007,11 +1006,11 @@ final class Resampler2D extends GridCoverage2D {
              * the actual and expected bounding boxes should be only 1 pixel.
              */
             if (actualBB != null) {
-                final double scaleX = 1 - ((double) sourceBB.width / (double) actualBB.width);
-                final double scaleY = 1 - ((double) sourceBB.height / (double) actualBB.height);
+                final double scaleX = 1 - (sourceBB.width / (double) actualBB.width);
+                final double scaleY = 1 - (sourceBB.height / (double) actualBB.height);
                 final double translateX = sourceBB.x - actualBB.x;
                 final double translateY = sourceBB.y - actualBB.y;
-                final double factor = (double) step / (double) EMPIRICAL_ADJUSTMENT_STEPS;
+                final double factor = step / (double) EMPIRICAL_ADJUSTMENT_STEPS;
                 final AffineTransform2D adjustment = new AffineTransform2D(
                         1 - scaleX * factor, 0, 0, 1 - scaleY * factor, translateX * factor, translateY * factor);
                 transform = (MathTransform2D) mtFactory.createConcatenatedTransform(allSteps2D, adjustment);

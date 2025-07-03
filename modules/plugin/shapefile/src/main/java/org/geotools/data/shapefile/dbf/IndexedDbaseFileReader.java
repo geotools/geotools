@@ -20,7 +20,6 @@
 package org.geotools.data.shapefile.dbf;
 
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
@@ -111,23 +110,23 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
                         currentOffset = fc.size() - Integer.MAX_VALUE;
                     }
                     buffer = fc.map(MapMode.READ_ONLY, currentOffset, Integer.MAX_VALUE);
-                    ((Buffer) buffer).position((int) (newPosition - currentOffset));
+                    buffer.position((int) (newPosition - currentOffset));
                 } else {
-                    ((Buffer) buffer).position((int) (newPosition - currentOffset));
+                    buffer.position((int) (newPosition - currentOffset));
                 }
             } else {
                 if (this.currentOffset <= newPosition && this.currentOffset + buffer.limit() >= newPosition) {
-                    ((Buffer) buffer).position((int) (newPosition - this.currentOffset));
+                    buffer.position((int) (newPosition - this.currentOffset));
                     // System.out.println("Hit");
                 } else {
                     // System.out.println("Jump");
                     FileChannel fc = (FileChannel) this.channel;
                     fc.position(newPosition);
                     this.currentOffset = newPosition;
-                    ((Buffer) buffer).limit(buffer.capacity());
-                    ((Buffer) buffer).position(0);
+                    buffer.limit(buffer.capacity());
+                    buffer.position(0);
                     fill(buffer, fc);
-                    ((Buffer) buffer).position(0);
+                    buffer.position(0);
                 }
             }
         } else {

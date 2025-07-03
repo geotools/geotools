@@ -203,6 +203,11 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     private static final InternationalString TRANSFORMATION_ACCURACY =
             Vocabulary.formatInternational(VocabularyKeys.TRANSFORMATION_ACCURACY);
 
+    private static final Set<String> ENSEMBLE_SET = Set.of(
+            "World Geodetic System 1984",
+            "European Terrestrial Reference System 1989",
+            "Dansk Vertikal Reference 1990");
+
     /**
      * The authority for this database. Will be created only when first needed. This authority will contains the
      * database version in the {@linkplain Citation#getEdition edition} attribute, together with the
@@ -623,6 +628,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 statement = getConnection().prepareStatement(adaptSQL(query));
                 statements.put(KEY, statement);
             }
+            identifier = remapToEnsemble(table, identifier);
             statement.setString(1, identifier);
             identifier = null;
             try (ResultSet result = statement.executeQuery()) {
@@ -633,6 +639,13 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             if (identifier == null) {
                 throw noSuchAuthorityCode(type, code);
             }
+        }
+        return identifier;
+    }
+
+    private String remapToEnsemble(String table, String identifier) {
+        if ("[Datum]".equals(table) && ENSEMBLE_SET.contains(identifier)) {
+            return identifier + " ensemble";
         }
         return identifier;
     }
@@ -759,7 +772,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *     {@link SQLException} as its cause.
      */
     @Override
-    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public synchronized IdentifiedObject generateObject(final String code) throws FactoryException {
         ensureNonNull("code", code);
         final String KEY = "IdentifiedObject";
@@ -817,6 +829,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                  */
                 stmt.setString(1, epsg);
                 try (final ResultSet result = stmt.executeQuery()) {
+                    @SuppressWarnings("PMD.CheckResultSet") // return of next is checked...
                     final boolean present = result.next();
                     if (present) {
                         if (index >= 0) {
@@ -1083,16 +1096,16 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         ensureNonNull("code", code);
         Extent returnValue = null;
         try {
-            final String primaryKey = toPrimaryKey(Extent.class, code, "[Area]", "AREA_CODE", "AREA_NAME");
+            final String primaryKey = toPrimaryKey(Extent.class, code, "[Extent]", "EXTENT_CODE", "EXTENT_NAME");
             final PreparedStatement stmt = prepareStatement(
-                    "Area",
-                    "SELECT AREA_OF_USE,"
-                            + " AREA_SOUTH_BOUND_LAT,"
-                            + " AREA_NORTH_BOUND_LAT,"
-                            + " AREA_WEST_BOUND_LON,"
-                            + " AREA_EAST_BOUND_LON"
-                            + " FROM [Area]"
-                            + " WHERE AREA_CODE = ?");
+                    "Extent",
+                    "SELECT EXTENT_DESCRIPTION,"
+                            + " BBOX_SOUTH_BOUND_LAT,"
+                            + " BBOX_NORTH_BOUND_LAT,"
+                            + " BBOX_WEST_BOUND_LON,"
+                            + " BBOX_EAST_BOUND_LON"
+                            + " FROM [Extent]"
+                            + " WHERE EXTENT_CODE = ?");
             stmt.setString(1, primaryKey);
             try (ResultSet result = stmt.executeQuery()) {
                 while (result.next()) {
@@ -1162,6 +1175,10 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         + " FROM [Coordinate_Operation] AS CO"
                         + " INNER JOIN [Coordinate Reference System] AS CRS2"
                         + " ON CO.TARGET_CRS_CODE = CRS2.COORD_REF_SYS_CODE"
+                        + " JOIN EPSG_USAGE U"
+                        + " ON U.OBJECT_TABLE_NAME = '[Coordinate_Operation]'"
+                        + " AND U.OBJECT_CODE = CO.COORD_OP_CODE"
+                        + " LEFT JOIN [Extent] E on U.EXTENT_CODE = E.EXTENT_CODE"
                         + " WHERE CO.COORD_OP_METHOD_CODE >= "
                         + BURSA_WOLF_MIN_CODE
                         + " AND CO.COORD_OP_METHOD_CODE <= "
@@ -1174,6 +1191,10 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         + " WHERE CRS1.DATUM_CODE = ?)"
                         + " ORDER BY CRS2.DATUM_CODE,"
                         + " ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
+                        + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
+                        + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
+                        + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
+                        + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
                         + " CO.COORD_OP_CODE DESC"); // GEOT-846 fix
         stmt.setString(1, code);
         List<Object> bwInfos = null;
@@ -1277,18 +1298,21 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final String primaryKey = toPrimaryKey(Datum.class, code, "[Datum]", "DATUM_CODE", "DATUM_NAME");
             final PreparedStatement stmt = prepareStatement(
                     "Datum",
-                    "SELECT DATUM_CODE,"
-                            + " DATUM_NAME,"
-                            + " DATUM_TYPE,"
-                            + " ORIGIN_DESCRIPTION,"
-                            + " REALIZATION_EPOCH,"
-                            + " AREA_OF_USE_CODE,"
-                            + " DATUM_SCOPE,"
-                            + " REMARKS,"
-                            + " ELLIPSOID_CODE," // Only for geodetic type
-                            + " PRIME_MERIDIAN_CODE" // Only for geodetic type
-                            + " FROM [Datum]"
-                            + " WHERE DATUM_CODE = ?");
+                    "SELECT d.DATUM_CODE,"
+                            + " d.DATUM_NAME,"
+                            + " d.DATUM_TYPE,"
+                            + " d.ORIGIN_DESCRIPTION,"
+                            + " d.REALIZATION_EPOCH,"
+                            + " u.EXTENT_CODE,"
+                            + " d.DATUM_SCOPE,"
+                            + " d.REMARKS,"
+                            + " d.ELLIPSOID_CODE," // Only for geodetic type
+                            + " d.PRIME_MERIDIAN_CODE" // Only for geodetic type
+                            + " FROM [Datum] d "
+                            + " JOIN EPSG_USAGE u"
+                            + " ON u.OBJECT_TABLE_NAME = '[Datum]'"
+                            + " AND u.OBJECT_CODE = d.DATUM_CODE"
+                            + " WHERE d.DATUM_CODE = ?");
             stmt.setString(1, primaryKey);
             try (ResultSet result = stmt.executeQuery()) {
                 boolean exit = false;
@@ -1326,7 +1350,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      *     we must close the result set if Bursa-Wolf parameters are found. In this
                      *     case, we lost our paranoiac check for duplication.
                      */
-                    if (type.equals("geodetic")) {
+                    if (type.equals("geodetic") || type.equals("dynamic geodetic")) {
                         properties = new HashMap<>(properties); // Protect from changes
                         final Ellipsoid ellipsoid = createEllipsoid(getString(result, 9, code));
                         final PrimeMeridian meridian = createPrimeMeridian(getString(result, 10, code));
@@ -1342,6 +1366,33 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         datum = factory.createVerticalDatum(properties, VerticalDatumType.GEOIDAL);
                     } else if (type.equals("engineering")) {
                         datum = factory.createEngineeringDatum(properties);
+                    } else if (type.equals("ensemble")) {
+                        properties = new HashMap<>(properties);
+                        Ellipsoid ellipsoid;
+                        PrimeMeridian meridian;
+                        EnsembleDefinition def = EnsembleDefinition.getEnsemble(epsg);
+                        if (def != null) {
+                            properties.put("name", def.getName());
+                            if (!def.isVertical()) {
+                                ellipsoid = createEllipsoid(def.getEllipsoidCode());
+                                meridian = createPrimeMeridian(def.getPrimeMeridianCode());
+                                final BursaWolfParameters[] param =
+                                        generateBursaWolfParameters(def.getDatumCode(), result);
+                                if (param != null) {
+                                    exit = true;
+                                    properties.put(DefaultGeodeticDatum.BURSA_WOLF_KEY, param);
+                                }
+                                datum = factory.createGeodeticDatum(properties, ellipsoid, meridian);
+                            } else {
+                                properties.put(
+                                        "identifiers",
+                                        new NamedIdentifier(Citations.EPSG, def.getIdentifierAuthority()));
+                                datum = factory.createVerticalDatum(properties, VerticalDatumType.GEOIDAL);
+                            }
+
+                        } else {
+                            datum = null;
+                        }
                     } else {
                         result.close();
                         throw new FactoryException(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
@@ -1654,19 +1705,22 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final String primaryKey = toPrimaryKeyCRS(code);
             final PreparedStatement stmt = prepareStatement(
                     "CoordinateReferenceSystem",
-                    "SELECT COORD_REF_SYS_CODE,"
-                            + " COORD_REF_SYS_NAME,"
-                            + " AREA_OF_USE_CODE,"
-                            + " CRS_SCOPE,"
-                            + " REMARKS,"
-                            + " COORD_REF_SYS_KIND,"
-                            + " COORD_SYS_CODE," // Null for CompoundCRS
-                            + " DATUM_CODE," // Null for ProjectedCRS
-                            + " SOURCE_GEOGCRS_CODE," // For ProjectedCRS
-                            + " PROJECTION_CONV_CODE," // For ProjectedCRS
-                            + " CMPD_HORIZCRS_CODE," // For CompoundCRS only
-                            + " CMPD_VERTCRS_CODE" // For CompoundCRS only
-                            + " FROM [Coordinate Reference System]"
+                    "SELECT c.COORD_REF_SYS_CODE,"
+                            + " c.COORD_REF_SYS_NAME,"
+                            + " u.EXTENT_CODE,"
+                            + " c.CRS_SCOPE,"
+                            + " c.REMARKS,"
+                            + " c.COORD_REF_SYS_KIND,"
+                            + " c.COORD_SYS_CODE," // Null for CompoundCRS
+                            + " c.DATUM_CODE," // Null for ProjectedCRS
+                            + " c.BASE_CRS_CODE," // For ProjectedCRS
+                            + " c.PROJECTION_CONV_CODE," // For ProjectedCRS
+                            + " c.CMPD_HORIZCRS_CODE," // For CompoundCRS only
+                            + " c.CMPD_VERTCRS_CODE" // For CompoundCRS only
+                            + " FROM [Coordinate Reference System] c "
+                            + " JOIN EPSG_USAGE u "
+                            + " ON u.OBJECT_TABLE_NAME = '[Coordinate Reference System]'"
+                            + " AND u.OBJECT_CODE = c.COORD_REF_SYS_CODE"
                             + " WHERE COORD_REF_SYS_CODE = ?");
             stmt.setString(1, primaryKey);
             boolean exit = false;
@@ -1884,9 +1938,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      * Now creates the parameter descriptor.
                      */
                     final Map<String, Object> properties = generateProperties(name, epsg, remarks);
-                    @SuppressWarnings("unchecked")
                     final ParameterDescriptor<?> descriptor =
-                            new DefaultParameterDescriptor(properties, type, null, null, null, null, unit, true);
+                            new DefaultParameterDescriptor<>(properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);
                 }
             }
@@ -2208,19 +2261,31 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     CoordinateOperation.class, code, "[Coordinate_Operation]", "COORD_OP_CODE", "COORD_OP_NAME");
             final PreparedStatement stmt = prepareStatement(
                     "CoordinateOperation",
-                    "SELECT COORD_OP_CODE,"
-                            + " COORD_OP_NAME,"
-                            + " COORD_OP_TYPE,"
-                            + " SOURCE_CRS_CODE,"
-                            + " TARGET_CRS_CODE,"
-                            + " COORD_OP_METHOD_CODE,"
-                            + " COORD_TFM_VERSION,"
-                            + " COORD_OP_ACCURACY,"
-                            + " AREA_OF_USE_CODE,"
-                            + " COORD_OP_SCOPE,"
-                            + " REMARKS"
-                            + " FROM [Coordinate_Operation]"
-                            + " WHERE COORD_OP_CODE = ?");
+                    "SELECT CO.COORD_OP_CODE,"
+                            + " CO.COORD_OP_NAME,"
+                            + " CO.COORD_OP_TYPE,"
+                            + " CO.SOURCE_CRS_CODE,"
+                            + " CO.TARGET_CRS_CODE,"
+                            + " CO.COORD_OP_METHOD_CODE,"
+                            + " CO.COORD_TFM_VERSION,"
+                            + " CO.COORD_OP_ACCURACY,"
+                            + " U.EXTENT_CODE,"
+                            + " CO.COORD_OP_SCOPE,"
+                            + " CO.REMARKS"
+                            + " FROM [Coordinate_Operation] CO "
+                            + " JOIN EPSG_USAGE u"
+                            + " ON u.OBJECT_TABLE_NAME = '[Coordinate_Operation]'"
+                            + " AND u.OBJECT_CODE = CO.COORD_OP_CODE"
+                            + " LEFT JOIN [Extent] E on U.extent_code = E.extent_code"
+                            + " WHERE COORD_OP_CODE = ?"
+                            + " ORDER BY ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
+                            + " (BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
+                            + "(CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
+                            + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
+                            + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
+                            + " CO.COORD_OP_CODE DESC LIMIT 1");
+            // In previous DB there was only 1 area for COORDINATE OPERATION.
+            // With EPSG 11.0.31 they can more. Let's limit o the one with bigger area
             stmt.setString(1, primaryKey);
             boolean exit = false;
             try (ResultSet result = stmt.executeQuery()) {
@@ -2515,16 +2580,25 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 final String key, sql;
                 if (searchTransformations) {
                     key = "TransformationFromCRS";
-                    sql = "SELECT COORD_OP_CODE"
-                            + " FROM [Coordinate_Operation]"
+                    sql = "SELECT CO.COORD_OP_CODE"
+                            + " FROM [Coordinate_Operation] CO"
+                            + " JOIN EPSG_USAGE U"
+                            + " ON U.OBJECT_TABLE_NAME = '[Coordinate_Operation]'"
+                            + " AND U.OBJECT_CODE = CO.COORD_OP_CODE"
+                            + " LEFT JOIN [Extent] E on U.extent_code = E.extent_code"
                             + " WHERE SOURCE_CRS_CODE = ?"
                             + " AND TARGET_CRS_CODE = ?"
-                            + " ORDER BY ABS(DEPRECATED), COORD_OP_ACCURACY";
+                            + " ORDER BY ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
+                            + "	(BBOX_NORTH_BOUND_LAT - BBOX_SOUTH_BOUND_LAT) * "
+                            + " (CASE WHEN BBOX_EAST_BOUND_LON > BBOX_WEST_BOUND_LON "
+                            + "     THEN (BBOX_EAST_BOUND_LON - BBOX_WEST_BOUND_LON) "
+                            + "     ELSE (360 - BBOX_WEST_BOUND_LON - BBOX_EAST_BOUND_LON) END) DESC,"
+                            + " COORD_OP_CODE DESC";
                 } else {
                     key = "ConversionFromCRS";
                     sql = "SELECT PROJECTION_CONV_CODE"
                             + " FROM [Coordinate Reference System]"
-                            + " WHERE SOURCE_GEOGCRS_CODE = ?"
+                            + " WHERE BASE_CRS_CODE = ?"
                             + " AND COORD_REF_SYS_CODE = ?";
                 }
                 final PreparedStatement stmt = prepareStatement(key, sql);
@@ -2639,7 +2713,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 IdentifiedObject dependency;
                 if (object instanceof GeneralDerivedCRS) {
                     dependency = ((GeneralDerivedCRS) object).getBaseCRS();
-                    where = "SOURCE_GEOGCRS_CODE";
+                    where = "BASE_CRS_CODE";
                 } else if (object instanceof SingleCRS) {
                     dependency = ((SingleCRS) object).getDatum();
                     where = "DATUM_CODE";

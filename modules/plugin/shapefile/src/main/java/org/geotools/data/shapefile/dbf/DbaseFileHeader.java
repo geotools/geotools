@@ -21,7 +21,6 @@ package org.geotools.data.shapefile.dbf;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.ReadableByteChannel;
@@ -518,10 +517,10 @@ public class DbaseFileHeader {
             in.order(ByteOrder.LITTLE_ENDIAN);
 
             // only want to read first 10 bytes...
-            ((Buffer) in).limit(10);
+            in.limit(10);
 
             read(in, channel);
-            ((Buffer) in).position(0);
+            in.position(0);
 
             // type of file.
             byte magic = in.get();
@@ -561,7 +560,7 @@ public class DbaseFileHeader {
             if (headerLength <= 10) {
                 return; // or throw an exception?
             }
-            ((Buffer) in).limit(headerLength - 10);
+            in.limit(headerLength - 10);
             in.position(0);
             read(in, channel);
             in.position(0);
@@ -771,6 +770,7 @@ public class DbaseFileHeader {
      *     java.nio.Channels.newChannel(OutputStream out).
      * @throws IOException If errors occur.
      */
+    @SuppressWarnings("PMD.EmptyControlStatement")
     public void writeHeader(WritableByteChannel out) throws IOException {
         // take care of the annoying case where no records have been added...
         if (headerLength == -1) {
@@ -841,8 +841,7 @@ public class DbaseFileHeader {
             buffer.position(0);
 
             int r = buffer.remaining();
-            while ((r -= out.write(buffer)) > 0) {
-                ; // do nothing
+            while ((r -= out.write(buffer)) > 0) { // do nothing
             }
         } finally {
             NIOUtilities.clean(buffer, false);

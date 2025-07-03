@@ -18,6 +18,7 @@
 package org.geotools.process.vector;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -25,16 +26,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.property.PropertyDataStore;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.process.vector.AggregateProcess.AggregationFunction;
 import org.geotools.process.vector.AggregateProcess.Results;
 import org.geotools.test.TestData;
+import org.geotools.util.Converters;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 
 public class AggregateProcessTest {
     DataStore bugs;
@@ -79,7 +89,7 @@ public class AggregateProcessTest {
         // we expect a group by result
         assertNotNull(result.getGroupByResult());
         // the group by result should not be empty
-        assertTrue(result.getGroupByResult().size() > 0);
+        assertFalse(result.getGroupByResult().isEmpty());
         // the size of each line result should be 2 (one group by attribute and one aggregation
         // function)
         assertEquals(2, result.getGroupByResult().get(0).length);
@@ -98,5 +108,38 @@ public class AggregateProcessTest {
         // the size of each line result should be 2 (one group by attribute and one aggregation
         // function)
         assertEquals(2, result.getGroupByResult().get(0).length);
+    }
+
+    @Test
+    public void testConvertGroupingResults() throws Exception {
+        SimpleFeatureSource source = bugs.getFeatureSource("groupedzones");
+        Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.Sum);
+        Results result =
+                AggregateProcess.process(source.getFeatures(), "cat2", functions, List.of("the_geom"), true, null);
+        // we expect a group by result
+        assertNotNull(result.getGroupByResult());
+        // it can be converted into a feature collection
+        SimpleFeatureCollection collection = Converters.convert(result, SimpleFeatureCollection.class);
+        assertNotNull(collection);
+
+        WKTReader reader = new WKTReader();
+        Map<Geometry, Double> expected = new HashMap<>();
+        expected.put(reader.read("MULTIPOLYGON (((0 0,0 10,10 10,10 0,0 0)))"), 20d);
+        expected.put(reader.read("MULTIPOLYGON (((10 0,10 10,20 10,20 0,10 0)))"), 40d);
+        expected.put(reader.read("MULTIPOLYGON (((0 10,0 20,10 20,10 10,0 10)))"), 40d);
+
+        try (SimpleFeatureIterator fi = collection.features()) {
+            while (fi.hasNext()) {
+                SimpleFeature feature = fi.next();
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                Double value = (Double) feature.getAttribute("Sum");
+                assertNotNull(value);
+                assertTrue(expected.containsKey(geom));
+                assertEquals(expected.get(geom), value, 0d);
+                expected.remove(geom);
+            }
+        }
+        // all expected geometries should have been found
+        assertTrue(expected.isEmpty());
     }
 }

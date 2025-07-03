@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage;
 
+import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -903,12 +904,14 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
         private final Frame frame;
 
         /** Displays the specified image in a window with the specified title. */
-        @SuppressWarnings("deprecation")
         public Viewer(final String title, final RenderedImage image) {
             final int width = Math.max(Math.min(image.getWidth(), 800), 24);
             final int height = Math.max(Math.min(image.getHeight(), 600), 24);
             frame = new Frame(title);
-            frame.add(new javax.media.jai.widget.ScrollingImagePanel(image, width, height));
+            ImageViewer viewer = new ImageViewer();
+            viewer.setImage(image);
+            viewer.setSize(width, height);
+            frame.add(viewer);
             frame.addWindowListener(this);
             EventQueue.invokeLater(this);
         }

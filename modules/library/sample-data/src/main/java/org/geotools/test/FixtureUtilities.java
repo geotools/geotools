@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
-import junit.framework.TestCase; // NOPMD
+import junit.framework.TestCase;
 
 /**
  * Static methods to support the implementation of tests that use fixture configuration files. See

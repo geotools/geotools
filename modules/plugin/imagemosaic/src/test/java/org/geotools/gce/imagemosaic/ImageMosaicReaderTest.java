@@ -55,6 +55,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
@@ -679,7 +680,7 @@ public class ImageMosaicReaderTest {
         store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
         store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
         try (Connection conn = store.getConnection(Transaction.AUTO_COMMIT);
-                Statement st = conn.createStatement(); ) {
+                Statement st = conn.createStatement()) {
             st.execute("alter table \"" + mosaicName + "\" rename to \"customIndex\"");
             st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'customIndex'");
         }
@@ -1081,12 +1082,12 @@ public class ImageMosaicReaderTest {
             for (ParameterDescriptor param : params) {
                 if (param.getName().getCode().equalsIgnoreCase("DATE")) {
                     @SuppressWarnings("unchecked")
-                    ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                    ParameterValue<List<String>> value = param.createValue();
                     dateValue = value;
                     dateValue.setValue(List.of(selectedDate));
                 } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                     @SuppressWarnings("unchecked")
-                    ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                    ParameterValue<List<String>> value = param.createValue();
                     waveLength = value;
                     waveLength.setValue(List.of(selectedWaveLength));
                 }
@@ -1297,7 +1298,7 @@ public class ImageMosaicReaderTest {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
         ImageMosaicReader reader = getReader(timeAdditionalDomainsRangeURL, format);
 
-        GranuleSource source = ((StructuredGridCoverage2DReader) reader).getGranules("time_domainsRanges", true);
+        GranuleSource source = reader.getGranules("time_domainsRanges", true);
         final int granules = source.getCount(null);
         final SimpleFeatureType type = source.getSchema();
         assertEquals(
@@ -1353,12 +1354,12 @@ public class ImageMosaicReaderTest {
         for (ParameterDescriptor param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DATE")) {
                 @SuppressWarnings("unchecked")
-                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                ParameterValue<List<String>> value = param.createValue();
                 dateValue = value;
                 dateValue.setValue(List.of(selectedDate));
             } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                 @SuppressWarnings("unchecked")
-                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                ParameterValue<List<String>> value = param.createValue();
                 waveLength = value;
                 waveLength.setValue(List.of(selectedWaveLength));
             }
@@ -1398,8 +1399,7 @@ public class ImageMosaicReaderTest {
     public void testDimensionsDescriptor() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
         ImageMosaicReader reader = getReader(timeAdditionalDomainsRangeURL, format);
-        List<DimensionDescriptor> descriptors =
-                ((StructuredGridCoverage2DReader) reader).getDimensionDescriptors("time_domainsRanges");
+        List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors("time_domainsRanges");
         assertNotNull(descriptors);
         assertEquals(4, descriptors.size());
 
@@ -1511,7 +1511,7 @@ public class ImageMosaicReaderTest {
         for (ParameterDescriptor param : params) {
             if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                 @SuppressWarnings("unchecked")
-                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                ParameterValue<List<String>> value = param.createValue();
                 waveLength = value;
                 waveLength.setValue(List.of(selectedWaveLength));
             }
@@ -1924,11 +1924,53 @@ public class ImageMosaicReaderTest {
             properties.store(fos, null);
         }
 
-        GridCoverage2D coverage = testMosaicHoleOn(testMosaicUrl);
+        // check the nodata is set
+        GridCoverage2D coverage = testMosaicHoleOn(testMosaicUrl, new double[] {255, 0, 0, 255});
         assertNoData(coverage, 0d);
     }
 
-    private GridCoverage2D testMosaicHoleOn(URL testMosaicUrl) throws FactoryException, IOException {
+    @Test
+    public void testRequestInHoleNoDataNoBackground() throws Exception {
+        // create the base mosaic we are going to use
+        File mosaicSource = TestData.file(this, "rgba");
+        File targetRgba = new File("target", "rgba");
+        FileUtils.deleteQuietly(targetRgba);
+        FileUtils.copyDirectory(mosaicSource, targetRgba);
+        // remove leftover files from other tests
+        Arrays.stream(targetRgba.listFiles((f, n) -> n.startsWith("rgba") || n.startsWith("sample_image")))
+                .forEach(f -> f.delete());
+        URL testMosaicUrl = fileToUrl(targetRgba);
+
+        // setup the indexer with the nodata (don't use 0 as no data value, it is the default for background values too)
+        Properties properties = new Properties();
+        properties.put(Prop.NO_DATA, "20");
+        try (FileOutputStream fos = new FileOutputStream(new File(targetRgba, "indexer.properties"))) {
+            properties.store(fos, null);
+        }
+
+        // read without setting a background value, so the no data value should be used
+        GridCoverage2D coverage = testMosaicHoleOn(testMosaicUrl, null);
+
+        // check the no data value is set
+        assertNoData(coverage, 20d);
+
+        // check the pixels in the hole are actually nodata
+        int[] pixel = new int[4];
+        Raster data = coverage.getRenderedImage().getData();
+        Rectangle bounds = data.getBounds();
+        for (int x = (int) bounds.getMinX(); x < bounds.getMaxX(); x++) {
+            for (int y = (int) bounds.getMinY(); y < bounds.getMaxY(); y++) {
+                data.getPixel(x, y, pixel);
+                assertEquals(20, pixel[0]);
+                assertEquals(20, pixel[1]);
+                assertEquals(20, pixel[2]);
+                assertEquals(20, pixel[3]);
+            }
+        }
+    }
+
+    private GridCoverage2D testMosaicHoleOn(URL testMosaicUrl, double[] backgroundValues)
+            throws FactoryException, IOException {
         final ImageMosaicReader reader = getReader(testMosaicUrl);
 
         // ask to extract an area that is inside the coverage bbox, but in a hole (no data)
@@ -1938,22 +1980,29 @@ public class ImageMosaicReaderTest {
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         ggp.setValue(gg);
 
-        // red background
-        final ParameterValue<double[]> bgp = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
-        bgp.setValue(new double[] {255, 0, 0, 255});
+        GeneralParameterValue[] params;
+        if (backgroundValues != null) {
+            final ParameterValue<double[]> bgp = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+            bgp.setValue(backgroundValues);
+            params = new GeneralParameterValue[] {ggp, bgp};
+        } else {
+            params = new GeneralParameterValue[] {ggp};
+        }
 
         // read and check we actually got a coverage in the requested area
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
+        GridCoverage2D coverage = reader.read(params);
         assertNotNull(coverage);
         assertTrue(coverage.getEnvelope2D().intersects((BoundingBox) env));
 
-        // and that the color is the expected one given the background values provided
-        int[] pixel = new int[4];
-        coverage.evaluate(new Point2D.Double(497987, 3197819), pixel);
-        assertEquals(255, pixel[0]);
-        assertEquals(0, pixel[1]);
-        assertEquals(0, pixel[2]);
-        assertEquals(255, pixel[3]);
+        if (backgroundValues != null) {
+            // and that the color is the expected one given the background values provided
+            int[] pixel = new int[4];
+            coverage.evaluate(new Point2D.Double(497987, 3197819), pixel);
+            assertEquals(255, pixel[0]);
+            assertEquals(0, pixel[1]);
+            assertEquals(0, pixel[2]);
+            assertEquals(255, pixel[3]);
+        }
 
         reader.dispose();
         return coverage;
@@ -1961,7 +2010,7 @@ public class ImageMosaicReaderTest {
 
     @Test
     public void testRequestInHole() throws Exception {
-        GridCoverage2D coverage = testMosaicHoleOn(rgbAURL);
+        GridCoverage2D coverage = testMosaicHoleOn(rgbAURL, new double[] {255, 0, 0, 255});
         assertNull(CoverageUtilities.getNoDataProperty(coverage));
     }
 
@@ -2743,7 +2792,6 @@ public class ImageMosaicReaderTest {
         private Collection<File> files;
         private URL harvestSingleURL;
         private AbstractGridFormat format;
-        private ImageMosaicReader reader;
 
         public Collection<File> getFiles() {
             return files;
@@ -5157,7 +5205,6 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGranuleFileViewSidecars() throws Exception {
         // copy the data and get the reader
         File directory = setupTestDirectory(this, this.rgbURL, "rbgFileView");
@@ -5272,7 +5319,8 @@ public class ImageMosaicReaderTest {
 
         // Having a properties file with ArcGridFormat as suggested Format
         // although images are RGBA. The bad format will not be used
-        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"), true)) {
+        // (the file might already be there and have a suggested format, so, overwriting)
+        try (FileWriter out = new FileWriter(new File(workDir, "rgba.properties"))) {
             out.write("SuggestedFormat=org.geotools.gce.arcgrid.ArcGridFormat");
             out.flush();
         }

@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import junit.framework.TestCase; // NOPMD
+import junit.framework.TestCase;
 import junit.framework.TestResult;
 import org.junit.Assume;
 
@@ -75,11 +75,6 @@ import org.junit.Assume;
  * @author Justin Deoliveira, The Open Planning Project
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
-@SuppressWarnings({
-    "PMD.JUnit4TestShouldUseBeforeAnnotation",
-    "PMD.JUnit4TestShouldUseAfterAnnotation",
-    "PMD.DisallowJUnit3"
-})
 public abstract class OnlineTestCase extends TestCase {
     /** System property set to totally disable any online tests */
     public static final String ONLINE_TEST_PROFILE = "onlineTestProfile";

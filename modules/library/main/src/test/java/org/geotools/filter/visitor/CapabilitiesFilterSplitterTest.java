@@ -28,6 +28,7 @@ import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.filter.Capabilities;
 import org.junit.Before;
@@ -37,7 +38,6 @@ import org.junit.Test;
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  */
-@SuppressWarnings("unchecked")
 public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSplitterTests {
 
     private Capabilities simpleLogicalCaps = new Capabilities();
@@ -103,7 +103,7 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
 
     @Test
     public void testMassOrFilter() throws Exception {
-        List filters = new ArrayList();
+        List<Filter> filters = new ArrayList<>();
         for (int i = 0; i < 10000; i++) {
             filters.add(ff.equals(ff.property(nameAtt), ff.literal("" + i)));
         }
@@ -153,7 +153,7 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
 
     @Test
     public void testVisitFidFilter() throws Exception {
-        HashSet ids = new HashSet();
+        HashSet<FeatureId> ids = new HashSet<>();
         ids.add(ff.featureId("david"));
         Filter filter = ff.id(ids);
         visitor = newVisitor(newCapabilities(Id.class));
@@ -166,7 +166,7 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
     @Test
     public void testVisitIdFilterWithNoIdCapabilities() throws Exception {
         // Id Filter
-        HashSet ids = new HashSet();
+        HashSet<FeatureId> ids = new HashSet<>();
         ids.add(ff.featureId("david"));
         Filter idFilter = ff.id(ids);
 
@@ -332,7 +332,7 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
             @Override
             public Filter getUpdateFilter(String attributePath) {
                 if (attributePath.equals("eventtype")) {
-                    HashSet ids = new HashSet();
+                    HashSet<FeatureId> ids = new HashSet<>();
                     ids.add(ff.featureId("fid"));
                     return ff.id(ids);
                 }
@@ -342,7 +342,7 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
 
         f.accept(visitor, null);
 
-        HashSet ids = new HashSet();
+        HashSet<FeatureId> ids = new HashSet<>();
         ids.add(ff.featureId("fid"));
 
         assertEquals(f, visitor.getFilterPost());

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://proj.org/schemas/v0.7/projjson.schema.json",
+  "type": "Transformation",
+  "name": "NAD27 to NAD83 (8)",
+  "source_crs": {
+    "type": "GeographicCRS",
+    "name": "NAD27",
+    "datum": {
+      "type": "GeodeticReferenceFrame",
+      "name": "North American Datum 1927",
+      "ellipsoid": {
+        "name": "Clarke 1866",
+        "semi_major_axis": 6378206.4,
+        "semi_minor_axis": 6356583.8
+      }
+    },
+    "coordinate_system": {
+      "type": "ellipsoidal",
+      "axes": [
+        {
+          "name": "Geodetic latitude",
+          "abbreviation": "Lat",
+          "direction": "north",
+          "unit": "degree"
+        },
+        {
+          "name": "Geodetic longitude",
+          "abbreviation": "Lon",
+          "direction": "east",
+          "unit": "degree"
+        }
+      ]
+    },
+    "id": {
+      "authority": "EPSG",
+      "code": 4267
+    }
+  },
+  "target_crs": {
+    "type": "GeographicCRS",
+    "name": "NAD83",
+    "datum": {
+      "type": "GeodeticReferenceFrame",
+      "name": "North American Datum 1983",
+      "ellipsoid": {
+        "name": "GRS 1980",
+        "semi_major_axis": 6378137,
+        "inverse_flattening": 298.257222101
+      }
+    },
+    "coordinate_system": {
+      "type": "ellipsoidal",
+      "axes": [
+        {
+          "name": "Geodetic latitude",
+          "abbreviation": "Lat",
+          "direction": "north",
+          "unit": "degree"
+        },
+        {
+          "name": "Geodetic longitude",
+          "abbreviation": "Lon",
+          "direction": "east",
+          "unit": "degree"
+        }
+      ]
+    },
+    "id": {
+      "authority": "EPSG",
+      "code": 4269
+    }
+  },
+  "method": {
+    "name": "NADCON5 (2D)",
+    "id": {
+      "authority": "EPSG",
+      "code": 1074
+    }
+  },
+  "parameters": [
+    {
+      "name": "Latitude difference file",
+      "value": "nadcon5.nad27.nad83_1986.alaska.lat.trn.20160901.b",
+      "id": {
+        "authority": "EPSG",
+        "code": 8657
+      }
+    },
+    {
+      "name": "Longitude difference file",
+      "value": "nadcon5.nad27.nad83_1986.alaska.lon.trn.20160901.b",
+      "id": {
+        "authority": "EPSG",
+        "code": 8658
+      }
+    }
+  ],
+  "accuracy": "0.5",
+  "scope": "Geodesy.",
+  "area": "United States (USA) - Alaska.",
+  "bbox": [172.42, 51.3, -129.99, 71.4],
+  "id": {
+    "authority": "EPSG",
+    "code": 8549
+  },
+  "remarks": "Uses NADCON5 method which expects longitudes positive east in range 0-360°; source and target CRSs have longitudes positive east in range -180° to +180°. Accuracy at 67% confidence level is 0.5m onshore, 5m nearshore and undetermined farther offshore."
+}
+

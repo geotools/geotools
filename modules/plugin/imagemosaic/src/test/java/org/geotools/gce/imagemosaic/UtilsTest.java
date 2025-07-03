@@ -25,6 +25,8 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.PriorityQueue;
 import javax.media.jai.Histogram;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -33,6 +35,13 @@ public class UtilsTest {
 
     @ClassRule
     public static TemporaryFolder folder = new TemporaryFolder();
+
+    @Before
+    @After
+    public void reset() {
+        System.clearProperty(Utils.SAMPLE_IMAGE_ALLOWLIST_KEY);
+        Utils.resetSampleImageAllowlist();
+    }
 
     @Test
     public void testGetHistogramValid() throws Exception {

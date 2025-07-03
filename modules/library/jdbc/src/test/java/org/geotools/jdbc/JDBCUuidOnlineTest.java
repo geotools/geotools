@@ -6,7 +6,6 @@
 package org.geotools.jdbc;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
@@ -62,7 +61,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
             uuids.add(uuid2);
             while (r.hasNext()) {
                 SimpleFeature f = r.next();
-                assertNotNull(uuids.remove(f.getAttribute(aname("uuidProperty"))));
+                assertTrue(uuids.remove(f.getAttribute(aname("uuidProperty"))));
             }
             assertTrue(uuids.isEmpty());
         }

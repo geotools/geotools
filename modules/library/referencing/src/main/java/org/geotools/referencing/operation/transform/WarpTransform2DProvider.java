@@ -18,6 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import javax.media.jai.WarpPolynomial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -45,14 +46,12 @@ public class WarpTransform2DProvider extends MathTransformProvider {
             DefaultParameterDescriptor.create("degree", 2, 1, WarpTransform2D.MAX_DEGREE);
 
     /** Descriptor for the "{@link WarpPolynomial#getXCoeffs xCoeffs}" parameter value. */
-    @SuppressWarnings("unchecked")
     public static final ParameterDescriptor<?> X_COEFFS =
-            new DefaultParameterDescriptor("xCoeffs", float[].class, null, null);
+            new DefaultParameterDescriptor<>("xCoeffs", float[].class, null, null);
 
     /** Descriptor for the "{@link WarpPolynomial#getYCoeffs yCoeffs}" parameter value. */
-    @SuppressWarnings("unchecked")
     public static final ParameterDescriptor<?> Y_COEFFS =
-            new DefaultParameterDescriptor("yCoeffs", float[].class, null, null);
+            new DefaultParameterDescriptor<>("yCoeffs", float[].class, null, null);
 
     /** Descriptor for the "{@link WarpPolynomial#getPreScaleX preScaleX}" parameter value. */
     public static final ParameterDescriptor<Float> PRE_SCALE_X;

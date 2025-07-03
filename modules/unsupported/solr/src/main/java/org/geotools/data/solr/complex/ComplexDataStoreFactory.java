@@ -103,7 +103,6 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public DataAccess<? extends FeatureType, ? extends Feature> buildDataStore(
             SourceDataStore dataStoreConfig, AppSchemaDataAccessDTO appSchemaConfig) {
         if (!(dataStoreConfig instanceof ComplexDataStoreConfig)) {
@@ -165,7 +164,6 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
      * @param typeMapping the feature type mapping
      * @return set of the attributes names found
      */
-    @SuppressWarnings("unchecked")
     private Set<String> extractAttributesNames(TypeMapping typeMapping) {
         Set<String> attributes = new HashSet<>();
         List<AttributeMapping> attributesMappings = typeMapping.getAttributeMappings();
@@ -212,7 +210,6 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         private final Set<String> attributes = new HashSet<>();
 
         @Override
-        @SuppressWarnings("unchecked")
         public Object visit(PropertyName expression, Object data) {
             attributes.add(expression.getPropertyName());
             return expression;

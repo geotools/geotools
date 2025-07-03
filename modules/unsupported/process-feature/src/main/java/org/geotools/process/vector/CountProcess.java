@@ -36,7 +36,7 @@ public class CountProcess implements VectorProcess {
         Median,
         Min,
         StdDev,
-        Sum;
+        Sum
     }
 
     @DescribeResult(name = "result", description = "Number of features")

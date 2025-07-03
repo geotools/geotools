@@ -258,7 +258,6 @@ public class ParseExecutor implements Visitor {
                     public XSDNamedComponent getDeclaration() {
                         return element;
                     }
-                    ;
                 };
 
                 for (String s : list) {
@@ -280,8 +279,7 @@ public class ParseExecutor implements Visitor {
                 // atomic
 
                 // walk through the facets and preparse as necessary
-                for (org.eclipse.xsd.XSDConstrainingFacet xsdConstrainingFacet : type.getFacets()) {
-                    XSDFacet facet = (XSDFacet) xsdConstrainingFacet;
+                for (org.eclipse.xsd.XSDConstrainingFacet facet : type.getFacets()) {
 
                     if (facet instanceof XSDWhiteSpaceFacet && !parser.isCDATA()) {
                         XSDWhiteSpaceFacet whitespace = (XSDWhiteSpaceFacet) facet;

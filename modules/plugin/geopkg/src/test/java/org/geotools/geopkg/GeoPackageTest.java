@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
@@ -109,6 +110,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.sqlite.SQLiteConfig;
 
+@SuppressWarnings("PMD.CheckResultSet")
 public class GeoPackageTest {
 
     GeoPackage geopkg;
@@ -150,7 +152,7 @@ public class GeoPackageTest {
 
     void assertDefaultSpatialReferencesExist() throws Exception {
         try (Connection cx = geopkg.getDataSource().getConnection();
-                Statement st = cx.createStatement(); ) {
+                Statement st = cx.createStatement()) {
             try (ResultSet rs = st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = -1")) {
                 assertEquals(rs.getInt(1), -1);
             }
@@ -588,7 +590,7 @@ public class GeoPackageTest {
         builder.add("float1", Float.class);
         builder.add("float2", Double.class);
 
-        var schema = builder.buildFeatureType();
+        SimpleFeatureType schema = builder.buildFeatureType();
 
         schema.getDescriptor("int1").getUserData().put(JDBC_NATIVE_TYPENAME, JDBCType.SMALLINT.getName());
         schema.getDescriptor("int1").getUserData().put(JDBC_NATIVE_TYPE, JDBCType.SMALLINT.getVendorTypeNumber());
@@ -614,8 +616,8 @@ public class GeoPackageTest {
     // metadata
     @Test
     public void testCorrectSchema() {
-        var schema = createJDBCSchema();
-        var schema2 = geopkg.correctSchema(schema);
+        SimpleFeatureType schema = createJDBCSchema();
+        SimpleFeatureType schema2 = geopkg.correctSchema(schema);
 
         // JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE are in the userdata #size() == 0 means
         // not there
@@ -634,7 +636,7 @@ public class GeoPackageTest {
     // JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE metadata are attached to the schema.
     @Test
     public void testMetadataColumns() throws IOException {
-        var schema = createJDBCSchema();
+        SimpleFeatureType schema = createJDBCSchema();
         FeatureEntry entry = new FeatureEntry();
         entry.setBounds(new ReferencedEnvelope());
         entry.setTableName(schema.getTypeName());
@@ -1089,7 +1091,6 @@ public class GeoPackageTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion")
     public void testIntegerTypes() throws Exception {
         // all types work in creation
         String typeName = "numericTypes";
@@ -1338,6 +1339,25 @@ public class GeoPackageTest {
             assertTrue(attribute instanceof Timestamp);
             Timestamp readValue = (Timestamp) attribute;
             assertEquals(timestamp, readValue);
+        }
+    }
+
+    @Test
+    public void testUUID() throws Exception {
+
+        UUID uuid = UUID.randomUUID();
+        SimpleFeatureType featureType = createFeatureTypeWithAttribute("uuid", "uuid", UUID.class);
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
+        SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, uuid);
+        SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, collection);
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            Object attribute = reader.next().getAttribute("uuid");
+            assertTrue(attribute instanceof String);
+            assertEquals(uuid.toString(), attribute);
         }
     }
 

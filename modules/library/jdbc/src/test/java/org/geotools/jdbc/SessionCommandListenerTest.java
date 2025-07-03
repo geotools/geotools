@@ -28,7 +28,6 @@ public class SessionCommandListenerTest {
             };
         }
     }
-    ;
 
     RecordingConnection conn = new RecordingConnection();
 

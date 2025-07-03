@@ -12,7 +12,7 @@ jobs:
     runs-on: [ubuntu-latest]
     strategy:
       matrix:
-        mssql: [2019-CU27-ubuntu-20.04, 2022-CU13-ubuntu-22.04]
+        mssql: [2019-latest, 2022-latest, 2025-latest]
         java: [11]
 
     steps:
@@ -34,9 +34,9 @@ jobs:
         ./build/ci/mssql/start-mssql.sh ${{ matrix.mssql }}
         ./build/ci/mssql/setup-mssql.sh
     - name: Build GeoTools dependent modules (no tests)
-      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-sqlserver -DskipTests -Dspotless.apply.skip=true -am
+      run: mvn -B clean install -T1C -Dall -pl :gt-jdbc-sqlserver -DskipTests -Dspotless.apply.skip=true -am
     - name: Test MS SQL Server data store
-      run: mvn -B clean install -T2 -Dall -pl :gt-jdbc-sqlserver -Ponline -Dspotless.apply.skip=true
+      run: mvn -B clean install -T1C -Dall -pl :gt-jdbc-sqlserver -Ponline -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

@@ -144,11 +144,9 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
 
         // if we got here and there is not typename in the list, we could not find one
-        if (this.getValidTypeNames().size() == 0) {
+        if (this.getValidTypeNames().isEmpty()) {
             throw new IllegalArgumentException("Could not find a suitable mosaic type in the store");
-        }
-
-        if (this.getValidTypeNames().size() > 0) {
+        } else {
             // pick the first valid schema found
             for (String tn : getValidTypeNames()) {
                 if (isValidMosaicSchema(tn)) {
@@ -156,15 +154,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                     break;
                 }
             }
-        } else if (typeName != null && typeName.contains(",")) {
-            String[] typeNames = typeName.split(",");
-            for (String tn : typeNames) {
-                extractBasicProperties(tn);
-            }
-        } else if (typeName != null) {
-            extractBasicProperties(typeName);
-        } else {
-            extractBasicProperties(typeName);
         }
     }
 

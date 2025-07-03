@@ -67,7 +67,6 @@ public final class ECWTest extends GDALTestCase {
     }
 
     @Test
-    @SuppressWarnings("PMD.SimplifiableTestAssertion") // envelope test with tolerance
     public void test() throws Exception {
         // Preparing an useful layout in case the image is striped.
         final ImageLayout l = new ImageLayout();

@@ -37,6 +37,14 @@ import org.junit.Test;
 
 public class WMSCoverageReaderTest {
 
+    public static final String STRING_VP = "STRING";
+    public static final String NUMBER_VP = "NUMBER";
+    public static final String LIST_VP = "LIST";
+    public static final String NUMBER_LIST_VP = "NUMBER_LIST";
+    public static final String CSV_VP = "CSV";
+    public static final String BOOLEAN_VP = "BOOLEAN";
+    public static final String ESCAPED_CHARACTERS = "ESCAPED_CHARACTERS";
+
     Map<String, String> parseParams(String query) {
 
         List<NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
@@ -47,7 +55,6 @@ public class WMSCoverageReaderTest {
         }
         return result;
     }
-    ;
 
     @Before
     public void setup() {
@@ -61,6 +68,67 @@ public class WMSCoverageReaderTest {
         System.clearProperty("org.geotools.referencing.forceXY");
         Hints.putSystemDefault(Hints.FORCE_AXIS_ORDER_HONORING, "");
         CRS.reset("all");
+    }
+
+    @Test
+    public void testWithVendorParameters() throws Exception {
+        Map<String, String> vendorParameters = Map.of(
+                STRING_VP, "5,10,20,5,1,3,1,,,,1",
+                NUMBER_VP, "-95.0",
+                NUMBER_LIST_VP, "-90.0,-180.0,90.0,180.0",
+                LIST_VP, "LIST_1,LIST_2,LIST_3,LIST_4,LIST_5,LIST_6",
+                CSV_VP, "5,10,20,5,1,3,1,,,,1",
+                BOOLEAN_VP, "TRUE",
+                ESCAPED_CHARACTERS, "POPULATION > 100000");
+
+        // prepare the responses
+        MockHttpClient client = new MockHttpClient() {
+
+            @Override
+            public HTTPResponse get(URL url) throws IOException {
+                if (url.getQuery().contains("GetCapabilities")) {
+                    URL caps130 = WMSCoverageReaderTest.class.getResource("caps130.xml");
+                    return new MockHttpResponse(caps130, "text/xml");
+                } else if (url.getQuery().contains("GetMap") && url.getQuery().contains("world4326")) {
+                    Map<String, String> params = parseParams(url.getQuery());
+
+                    // Standard checks for parameters to see if any are lost
+                    assertEquals("1.3.0", params.get("VERSION"));
+                    assertEquals("-90.0,-180.0,90.0,180.0", params.get("BBOX"));
+                    assertEquals("EPSG:4326", params.get("CRS"));
+
+                    // Checks to see if vendor parameters are passed
+                    assertEquals(vendorParameters.get(STRING_VP), params.get(STRING_VP));
+                    assertEquals(vendorParameters.get(NUMBER_VP), params.get(NUMBER_VP));
+                    assertEquals(vendorParameters.get(NUMBER_LIST_VP), params.get(NUMBER_LIST_VP));
+                    assertEquals(vendorParameters.get(LIST_VP), params.get(LIST_VP));
+                    assertEquals(vendorParameters.get(CSV_VP), params.get(CSV_VP));
+                    assertEquals(vendorParameters.get(BOOLEAN_VP), params.get(BOOLEAN_VP));
+                    assertEquals(vendorParameters.get(ESCAPED_CHARACTERS), params.get(ESCAPED_CHARACTERS));
+
+                    URL world = WMSCoverageReaderTest.class.getResource("world.png");
+                    return new MockHttpResponse(world, "image/png");
+                } else {
+                    throw new IllegalArgumentException(
+                            "Don't know how to handle a get request over " + url.toExternalForm());
+                }
+            }
+        };
+        WebMapServer server = new WebMapServer(new URL("http://geoserver.org/geoserver/wms"), client);
+        Layer layer = getLayer(server, "world4326");
+
+        // build a getmap request and check it
+        CoordinateReferenceSystem wgs84 = CRS.decode("urn:ogc:def:crs:EPSG::4326", true);
+        ReferencedEnvelope worldEnvelope = new ReferencedEnvelope(-90, 90, -180, 180, wgs84);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 180, 90), worldEnvelope);
+        final Parameter<GridGeometry2D> ggParam =
+                (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        ggParam.setValue(gg);
+
+        layer.setVendorParameters(vendorParameters);
+
+        WMSCoverageReader reader = new WMSCoverageReader(server, layer);
+        reader.read(new GeneralParameterValue[] {ggParam});
     }
 
     @Test
@@ -172,7 +240,6 @@ public class WMSCoverageReaderTest {
                             disposeCalled.set(true);
                             super.dispose();
                         }
-                        ;
                     };
                 } else {
                     throw new IllegalArgumentException(

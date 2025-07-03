@@ -178,10 +178,10 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
         try {
             MarkImpl clone = (MarkImpl) super.clone();
             if (fill != null) {
-                clone.fill = (FillImpl) ((Cloneable) fill).clone();
+                clone.fill = (FillImpl) fill.clone();
             }
             if (stroke != null && stroke instanceof Cloneable) {
-                clone.stroke = (StrokeImpl) ((Cloneable) stroke).clone();
+                clone.stroke = (StrokeImpl) stroke.clone();
             }
 
             return clone;

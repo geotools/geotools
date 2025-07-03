@@ -273,7 +273,7 @@ public class IntersectionFeatureCollectionTest {
                 Geometry expected = firstCollection.getGeometryN(i).intersection(secondCollection.getGeometryN(i));
                 SimpleFeature sf = iterator.next();
                 // geometry.equals(geometry) behaves differently than geometry.equals(object)
-                assertTrue(expected.equals((Geometry) sf.getDefaultGeometry())); // NOPMD
+                assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
             }
         }
     }

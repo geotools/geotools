@@ -136,7 +136,6 @@ public class MongoFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    @SuppressWarnings("PMD.CloseResource") // r is re-assigned, but also wrapped
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
 
         List<Filter> postFilterList = new ArrayList<>();

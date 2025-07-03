@@ -3,14 +3,11 @@ package org.geotools.wps.v2_0;
 import java.util.List;
 import net.opengis.ows20.AddressType;
 import net.opengis.ows20.ContactType;
-import net.opengis.ows20.DCPType;
 import net.opengis.ows20.HTTPType;
 import net.opengis.ows20.KeywordsType;
-import net.opengis.ows20.LanguageStringType;
 import net.opengis.ows20.LanguagesType;
 import net.opengis.ows20.OperationType;
 import net.opengis.ows20.OperationsMetadataType;
-import net.opengis.ows20.RequestMethodType;
 import net.opengis.ows20.ResponsiblePartySubsetType;
 import net.opengis.ows20.ServiceIdentificationType;
 import net.opengis.ows20.ServiceProviderType;
@@ -42,23 +39,20 @@ public class GetCapabilitiesTest extends WPSTestSupport {
         Assert.assertNotNull(si);
 
         Assert.assertEquals(1, si.getTitle().size());
-        Assert.assertEquals(
-                "MyWebProcessingService", ((LanguageStringType) si.getTitle().get(0)).getValue());
+        Assert.assertEquals("MyWebProcessingService", si.getTitle().get(0).getValue());
 
         Assert.assertEquals(1, si.getAbstract().size());
         Assert.assertEquals(
                 "A Demo Service offering typical GIS distance transform processes",
-                ((LanguageStringType) si.getAbstract().get(0)).getValue());
+                si.getAbstract().get(0).getValue());
 
         Assert.assertEquals(1, si.getKeywords().size());
-        KeywordsType kw = (KeywordsType) si.getKeywords().get(0);
+        KeywordsType kw = si.getKeywords().get(0);
 
         Assert.assertEquals(3, kw.getKeyword().size());
-        Assert.assertEquals(
-                "Geoprocessing", ((LanguageStringType) kw.getKeyword().get(0)).getValue());
-        Assert.assertEquals("Toolbox", ((LanguageStringType) kw.getKeyword().get(1)).getValue());
-        Assert.assertEquals(
-                "Distance transform", ((LanguageStringType) kw.getKeyword().get(2)).getValue());
+        Assert.assertEquals("Geoprocessing", kw.getKeyword().get(0).getValue());
+        Assert.assertEquals("Toolbox", kw.getKeyword().get(1).getValue());
+        Assert.assertEquals("Distance transform", kw.getKeyword().get(2).getValue());
 
         Assert.assertNotNull(si.getServiceType());
         Assert.assertEquals("WPS", si.getServiceType().getValue());
@@ -105,48 +99,20 @@ public class GetCapabilitiesTest extends WPSTestSupport {
 
         Assert.assertEquals(6, om.getOperation().size());
         assertOperationType(
-                (OperationType) om.getOperation().get(0),
-                "GetCapabilities",
-                "http://wps1.gis.geo.tu-dresden.de/wps",
-                true,
-                false);
+                om.getOperation().get(0), "GetCapabilities", "http://wps1.gis.geo.tu-dresden.de/wps", true, false);
         assertOperationType(
-                (OperationType) om.getOperation().get(1),
-                "DescribeProcess",
-                "http://wps1.gis.geo.tu-dresden.de/wps",
-                true,
-                true);
-        assertOperationType(
-                (OperationType) om.getOperation().get(2),
-                "Execute",
-                "http://wps1.gis.geo.tu-dresden.de/wps",
-                false,
-                true);
-        assertOperationType(
-                (OperationType) om.getOperation().get(3),
-                "GetStatus",
-                "http://wps1.gis.geo.tu-dresden.de/wps",
-                true,
-                true);
-        assertOperationType(
-                (OperationType) om.getOperation().get(4),
-                "GetResult",
-                "http://wps1.gis.geo.tu-dresden.de/wps",
-                true,
-                true);
-        assertOperationType(
-                (OperationType) om.getOperation().get(5),
-                "Dismiss",
-                "http://wps1.gis.geo.tu-dresden.de/wps",
-                true,
-                true);
+                om.getOperation().get(1), "DescribeProcess", "http://wps1.gis.geo.tu-dresden.de/wps", true, true);
+        assertOperationType(om.getOperation().get(2), "Execute", "http://wps1.gis.geo.tu-dresden.de/wps", false, true);
+        assertOperationType(om.getOperation().get(3), "GetStatus", "http://wps1.gis.geo.tu-dresden.de/wps", true, true);
+        assertOperationType(om.getOperation().get(4), "GetResult", "http://wps1.gis.geo.tu-dresden.de/wps", true, true);
+        assertOperationType(om.getOperation().get(5), "Dismiss", "http://wps1.gis.geo.tu-dresden.de/wps", true, true);
     }
 
     void assertProcessSummaries(List<ProcessSummaryType> processSummary) {
         Assert.assertNotNull(processSummary);
         Assert.assertEquals(2, processSummary.size());
 
-        ProcessSummaryType pb = (ProcessSummaryType) processSummary.get(0);
+        ProcessSummaryType pb = processSummary.get(0);
         Assert.assertNotNull(pb);
         Assert.assertNotNull(pb.getIdentifier());
         Assert.assertNotNull(
@@ -159,7 +125,7 @@ public class GetCapabilitiesTest extends WPSTestSupport {
         Assert.assertEquals("async-execute", pb.getJobControlOptions().get(1));
         Assert.assertEquals("dismiss", pb.getJobControlOptions().get(2));
 
-        pb = (ProcessSummaryType) processSummary.get(1);
+        pb = processSummary.get(1);
         Assert.assertNotNull(pb);
         Assert.assertNotNull(pb.getIdentifier());
         Assert.assertNotNull(
@@ -183,14 +149,14 @@ public class GetCapabilitiesTest extends WPSTestSupport {
         Assert.assertEquals(operationName, op.getName());
         Assert.assertEquals(1, op.getDCP().size());
 
-        HTTPType http = ((DCPType) op.getDCP().get(0)).getHTTP();
+        HTTPType http = op.getDCP().get(0).getHTTP();
         if (httpGet) {
             Assert.assertEquals(1, http.getGet().size());
-            Assert.assertEquals(href, ((RequestMethodType) http.getGet().get(0)).getHref());
+            Assert.assertEquals(href, http.getGet().get(0).getHref());
         }
         if (httpPost) {
             Assert.assertEquals(1, http.getPost().size());
-            Assert.assertEquals(href, ((RequestMethodType) http.getPost().get(0)).getHref());
+            Assert.assertEquals(href, http.getPost().get(0).getHref());
         }
     }
 }

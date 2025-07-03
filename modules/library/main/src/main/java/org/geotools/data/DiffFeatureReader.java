@@ -94,7 +94,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
         this.reader = reader;
         this.diff = diff2;
         this.filter = filter;
-        encounteredFids = new HashSet();
+        encounteredFids = new HashSet<>();
 
         if (filter instanceof Id) {
             fidFilter = true;

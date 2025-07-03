@@ -16,6 +16,7 @@
  */
 package org.geotools.coverageio.jp2k;
 
+import it.geosolutions.rendered.viewer.ImageViewer;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
@@ -32,7 +33,6 @@ import org.junit.Assert;
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Base testing class initializing JAI properties to be used during tests.
  */
-@SuppressWarnings("deprecation")
 public class BaseJP2K {
 
     protected static final double DELTA = 1.0E-6;
@@ -48,7 +48,10 @@ public class BaseJP2K {
         if (TestData.isInteractiveTest()) {
             final JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(new javax.media.jai.widget.ScrollingImagePanel(gc.getRenderedImage(), 800, 800));
+            ImageViewer viewer = new ImageViewer();
+            viewer.setImage(gc.getRenderedImage());
+            viewer.setSize(800, 800);
+            frame.getContentPane().add(viewer);
             frame.pack();
             SwingUtilities.invokeLater(() -> frame.setVisible(true));
         } else {

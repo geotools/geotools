@@ -71,7 +71,6 @@ import javax.media.jai.JAI;
 import javax.media.jai.ROI;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
-import javax.media.jai.remote.SerializableRenderedImage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -232,16 +231,7 @@ public class Utils {
 
     /** Specific classes to allow when deserializing SampleImage objects */
     private static final Class<?>[] SAMPLE_IMAGE_CLASSES = {
-        SampleImage.class,
-        Number.class,
-        String.class,
-        byte[].class,
-        float[].class,
-        int[].class,
-        short[].class,
-        java.math.BigInteger.class,
-        java.net.InetAddress.class,
-        java.util.Hashtable.class
+        SampleImage.class, Number.class, String.class, java.math.BigInteger.class
     };
 
     /** Patterns for qualified class names to allow when deserializing SampleImage objects */
@@ -250,17 +240,22 @@ public class Utils {
     };
 
     /**
+     * Regular expression to allow 1D and 2D arrays of certain primitive types (byte, double, float, integer, short)
+     * when deserializing SampleImage objects
+     */
+    private static final Pattern SAMPLE_IMAGE_PRIMITIVES = Pattern.compile("^\\[\\[?[BDFIS]$");
+
+    /**
      * System property {@code org.geotools.gce.imagemosaic.sampleimage.allowlist} used to validate sample image
      * deserialization.
      */
-    public static final String SAMPLE_IMAGE_ALLOWLIST_PROPERTY_NAME =
-            "org.geotools.gce.imagemosaic.sampleimage.allowlist";
+    public static final String SAMPLE_IMAGE_ALLOWLIST_KEY = "org.geotools.gce.imagemosaic.sampleimage.allowlist";
 
     /**
      * Regular expression provided through a system property for additional class names to allow when deserializing
      * SampleImage objects if the default allowlist is insufficient.
      */
-    private static final Pattern SAMPLE_IMAGE_ALLOWLIST = initSampleImageAllowlist();
+    private static Pattern sampleImageAllowList = resetSampleImageAllowlist();
 
     /** Check if the provided reader is a MultiCRS Reader and it can support the specified crs. */
     public static boolean isSupportedCRS(GridCoverage2DReader reader, CoordinateReferenceSystem crs)
@@ -588,10 +583,7 @@ public class Utils {
         }
 
         // check that nothing bad happened
-        if (exceptions.size() > 0) {
-            return false;
-        }
-        return true;
+        return !exceptions.isEmpty();
     }
 
     /** Simple listener collecting exceptions and logging events */
@@ -692,16 +684,19 @@ public class Utils {
         return filesFilter;
     }
 
-    private static Pattern initSampleImageAllowlist() {
-        String prop = System.getProperty(SAMPLE_IMAGE_ALLOWLIST_PROPERTY_NAME);
+    // non-private for unit testing purposes
+    protected static Pattern resetSampleImageAllowlist() {
+        Pattern temp = null;
+        String prop = System.getProperty(SAMPLE_IMAGE_ALLOWLIST_KEY);
         if (prop != null) {
             try {
-                return Pattern.compile(prop);
+                temp = Pattern.compile(prop);
             } catch (Exception e) {
                 LOGGER.log(Level.WARNING, "Error parsing sample image deserialization allowlist regular expression", e);
             }
         }
-        return null;
+        sampleImageAllowList = temp;
+        return sampleImageAllowList;
     }
 
     public static String getMessageFromException(Exception exception) {
@@ -733,9 +728,6 @@ public class Utils {
             if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Unable to load mosaic properties file");
             return null;
         }
-
-        String[] pairs = null;
-        String[] pair = null;
 
         //
         // imposed bbox is optional
@@ -1420,8 +1412,8 @@ public class Utils {
      * Load a sample image from which we can take the sample model and color model to be used to fill holes in
      * responses.
      *
-     * <p>Format of sample image is limited and may be customized using {@link #SAMPLE_IMAGE_ALLOWLIST} system property
-     * {@code org.geotools.gce.imagemosaic.sampleimage.allowlist}.
+     * <p>Format of sample image is limited and may be customized using {@link #SAMPLE_IMAGE_ALLOWLIST_KEY} system
+     * property {@code org.geotools.gce.imagemosaic.sampleimage.allowlist}.
      *
      * @param sampleImageFile the path to sample image.
      * @return a sample image from which we can take the sample model and color model to be used to fill holes in
@@ -1434,51 +1426,29 @@ public class Utils {
         if (Utils.checkFileReadable(sampleImageFile)) {
             try (ValidatingObjectInputStream oiStream = ValidatingObjectInputStream.builder()
                     .setFile(sampleImageFile)
+                    .accept(SAMPLE_IMAGE_CLASSES)
+                    .accept(SAMPLE_IMAGE_PATTERNS)
+                    .accept(SAMPLE_IMAGE_PRIMITIVES)
                     .get()) {
-                oiStream.accept(SAMPLE_IMAGE_CLASSES).accept(SAMPLE_IMAGE_PATTERNS);
-                if (SAMPLE_IMAGE_ALLOWLIST != null) {
-                    oiStream.accept(SAMPLE_IMAGE_ALLOWLIST);
+                if (sampleImageAllowList != null) {
+                    oiStream.accept(sampleImageAllowList);
                 }
                 // load the image
                 Object object = oiStream.readObject();
                 if (object instanceof SampleImage) {
                     SampleImage si = (SampleImage) object;
                     return si.toBufferedImage();
-                } else if (object instanceof SerializableRenderedImage) {
-                    SerializableRenderedImage sri = (SerializableRenderedImage) object;
-                    // SerializableRenderedImage is a finalization thread killer, try to replace
-                    // it with SampleImage on disk instead
-                    if (sampleImageFile.canWrite()) {
-                        try {
-                            storeSampleImage(sampleImageFile, sri.getSampleModel(), sri.getColorModel());
-                        } catch (Exception e) {
-                            if (LOGGER.isLoggable(Level.WARNING)) {
-                                LOGGER.log(
-                                        Level.WARNING,
-                                        "Failed to upgrade the sample image to the new storage format",
-                                        e);
-                            }
-                        }
-                    }
-                    // note, disposing the SerializableRenderedImage here is not done on purpose,
-                    // as it will hang, timeout and fail, and then on finalize
-                    // it will do it again, so there is really no point in doing that
-                    return new SampleImage(sri.getSampleModel(), sri.getColorModel()).toBufferedImage();
                 } else {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning("Unrecognized sample_image content: " + object);
-                    }
+                    LOGGER.warning(() -> "Unrecognized sample image content '"
+                            + object.getClass().getName() + "' for path " + sampleImageFile);
                     return null;
                 }
             } catch (ClassNotFoundException | IOException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, "Unable to parse sample image", e);
-                }
+                LOGGER.log(Level.WARNING, e, () -> "Unable to parse sample image for path " + sampleImageFile);
                 return null;
             }
         } else {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.warning("Unable to find sample image for path " + sampleImageFile);
+            LOGGER.warning(() -> "Unable to find sample image for path " + sampleImageFile);
             return null;
         }
     }

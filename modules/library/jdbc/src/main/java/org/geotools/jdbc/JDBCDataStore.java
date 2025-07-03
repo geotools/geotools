@@ -178,7 +178,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /** Used to specify the column alias to use when encoding a column in a select */
     public static final String JDBC_COLUMN_ALIAS = "org.geotools.jdbc.columnAlias";
 
-    /** Contains a {@link EnumMapper} to support enums mapped from integer values */
+    /** Contains a {@link EnumMapping} to support enums */
     public static final String JDBC_ENUM_MAP = "org.geotools.jdbc.enumMap";
 
     /** name of table to use to store geometries when {@link #associations} is set. */
@@ -1011,7 +1011,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         String tableName = entry.getName().getLocalPart();
                         if (virtualTables.containsKey(tableName)) {
                             VirtualTable vt = virtualTables.get(tableName);
-                            if (vt.getPrimaryKeyColumns().size() == 0) {
+                            if (vt.getPrimaryKeyColumns().isEmpty()) {
                                 pkey = new NullPrimaryKey(tableName);
                             } else {
                                 List<ColumnMetadata> metas = JDBCFeatureSource.getColumnMetadata(cx, vt, dialect, this);
@@ -1827,7 +1827,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     }
 
                     Class binding = att.getType().getBinding();
-                    EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                    EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
 
                     Object value = feature.getAttribute(colName);
                     if (value == null && !att.isNillable()) {
@@ -1842,8 +1842,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     } else if (this.dialect.isArray(att)) {
                         dialect.setArrayValue(value, att, ps, i, cx);
                     } else {
-                        if (mapper != null) {
-                            value = mapper.fromString((String) value);
+                        if (mapping != null) {
+                            value = mapping.fromValue((String) value);
                             binding = Integer.class;
                         }
 
@@ -3725,7 +3725,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @param query Specifies which features are to be used for the bounds computation (and in particular uses filter,
      *     start index and max features)
      */
-    protected String selectBoundsSQL(SimpleFeatureType featureType, Query query) throws SQLException {
+    protected String selectBoundsSQL(SimpleFeatureType featureType, Query query) throws SQLException, IOException {
         StringBuffer sql = new StringBuffer();
 
         boolean offsetLimit = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
@@ -3754,12 +3754,16 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // finally encode limit/offset, if necessary
         if (offsetLimit) {
+            // records caught by limit/offset are affected by sort too
+            if (query.getSortBy() != null && query.getSortBy().length > 0) {
+                sort(featureType, query.getSortBy(), null, sql);
+            }
             applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
             // build the prologue
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT ");
             buildEnvelopeAggregates(featureType, sb);
-            sb.append("FROM (");
+            sb.append(" FROM (");
             // wrap the existing query
             sql.insert(0, sb.toString());
             sql.append(")");
@@ -4000,6 +4004,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (visitorLimitOffset) {
             applyLimitOffset(sql, visitor.getStartIndex(), visitor.getMaxFeatures());
         } else if (queryLimitOffset) {
+            if (query.getSortBy() != null && query.getSortBy().length > 0) {
+                // if there is a sort by, we need to apply it before the limit/offset
+                sort(featureType, query.getSortBy(), null, sql);
+            }
             applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
         }
         boolean isUniqueCount = visitor instanceof UniqueCountVisitor;
@@ -4248,7 +4256,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             Class binding = att.getType().getBinding();
-            EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+            EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
 
             Object value = feature.getAttribute(colName);
 
@@ -4269,8 +4277,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         throw new RuntimeException(e);
                     }
                 } else {
-                    if (mapper != null) {
-                        value = mapper.fromString((String) value);
+                    if (mapping != null) {
+                        value = mapping.fromValue((String) value);
                         binding = Integer.class;
                     }
                     dialect.encodeValue(value, binding, sql);
@@ -4412,9 +4420,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     throw new RuntimeException(e);
                 }
             } else {
-                EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-                if (mapper != null) {
-                    value = mapper.fromString(Converters.convert(value, String.class));
+                EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                if (mapping != null) {
+                    value = mapping.fromValue(Converters.convert(value, String.class));
                     binding = Integer.class;
                 }
                 dialect.encodeValue(value, binding, sql);
@@ -4511,9 +4519,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 Geometry g = linearize(value, binding);
                 dialect.setGeometryValue(g, getDescriptorDimension(att), getDescriptorSRID(att), binding, ps, j + 1);
             } else {
-                EnumMapper mapper = (EnumMapper) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-                if (mapper != null) {
-                    value = mapper.fromString(Converters.convert(value, String.class));
+                EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                if (mapping != null) {
+                    value = mapping.fromValue(Converters.convert(value, String.class));
                     binding = Integer.class;
                 }
                 dialect.setValue(value, binding, att, ps, j + 1, cx);

@@ -4,8 +4,12 @@ Module Directory Structure
 GeoTools 2.4 and above complies to the Maven standard layout regarding nested modules; and the layout
 of source code directories.
 
-This section provides a summary of module structure and a examples how we have groupled modules
+This section provides a summary of module structure and a examples how we have grouped modules
 into library, plugin, extension, docs or unsupported.
+
+.. note::
+   As of GeoTools 34.0, the project uses the Maven Bill of Materials (BOM) pattern to manage dependencies.
+   See :doc:`../procedures/bom` for details on how dependencies are managed within modules.
 
 Module Structure
 ^^^^^^^^^^^^^^^^^

@@ -72,6 +72,7 @@ Contents
    parameter
    transform
    calculator
+   config_transformations
 
 EPSG core providers (choose only one to prevent conflict):
 

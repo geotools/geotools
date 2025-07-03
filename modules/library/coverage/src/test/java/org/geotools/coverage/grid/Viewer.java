@@ -46,7 +46,6 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-@SuppressWarnings("serial")
 public class Viewer extends JPanel {
     /** The image to display. */
     private final RenderedImage image;
@@ -217,7 +216,7 @@ public class Viewer extends JPanel {
      * @param value The number to format.
      */
     private static void format(final PrintWriter out, final byte value) {
-        format(out, ((int) value) & 0xFF);
+        format(out, value & 0xFF);
     }
 
     /**

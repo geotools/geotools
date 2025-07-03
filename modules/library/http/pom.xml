@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>34-SNAPSHOT</version>
   </parent>
   <artifactId>gt-http</artifactId>
   <name>HTTP Clients</name>
@@ -47,7 +47,6 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-metadata</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.wiremock</groupId>

@@ -11,25 +11,37 @@
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <geotools.version>33-SNAPSHOT</geotools.version>
+    <geotools.version>34-SNAPSHOT</geotools.version>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
+  
+  <dependencyManagement>
+    <dependencies>
+      <!-- Import the GeoTools BOM -->
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-bom</artifactId>
+        <version>${geotools.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shapefile</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-swing</artifactId>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-shapefile</artifactId>
-      <version>${geotools.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-swing</artifactId>
-      <version>${geotools.version}</version>
     </dependency>
   </dependencies>
   <repositories>
@@ -178,15 +190,15 @@
         </property>
       </activation>
       <properties>
-        <maven.pmd.plugin.version>3.20.0</maven.pmd.plugin.version>
-        <pmd.version>6.55.0</pmd.version>
+        <maven.pmd.plugin.version>3.24.0</maven.pmd.plugin.version>
+        <pmd.version>7.14.0</pmd.version>
         <pom.fmt.action>sort</pom.fmt.action>
       </properties>
       <build>
         <plugins>
           <plugin>
             <artifactId>maven-pmd-plugin</artifactId>
-            <version>3.14.0</version>
+            <version>${maven.pmd.plugin.version}</version>
             <executions>
               <execution>
                 <goals>

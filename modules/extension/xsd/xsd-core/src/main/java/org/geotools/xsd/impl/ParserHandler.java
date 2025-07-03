@@ -576,7 +576,7 @@ public class ParserHandler extends DefaultHandler2 {
                         // validate the schema location
                         if (isValidating()) {
                             try {
-                                Schemas.validateImportsIncludes(location, locators, resolvers);
+                                Schemas.validateImportsIncludes(location, locators, resolvers, entityResolver);
                             } catch (IOException e) {
                                 throw (SAXException) new SAXException("error validating").initCause(e);
                             }
@@ -584,7 +584,7 @@ public class ParserHandler extends DefaultHandler2 {
 
                         // parse the document
                         try {
-                            schemas[i / 2] = Schemas.parse(location, locators, resolvers, uriHandlers);
+                            schemas[i / 2] = Schemas.parse(location, locators, resolvers, uriHandlers, entityResolver);
                         } catch (Exception e) {
                             String msg =
                                     "Error loading schema for namespace: " + namespace + " at location: " + location;

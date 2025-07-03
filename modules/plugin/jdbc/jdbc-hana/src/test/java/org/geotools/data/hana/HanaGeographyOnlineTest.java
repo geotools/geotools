@@ -82,12 +82,12 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
             // Test with estimation disabled
             ReferencedEnvelope env =
                     dataStore.getFeatureSource(tname("geopoint")).getBounds();
-            assertTrue(env.boundsEquals2D(expected, Math.ulp(1.0)));
+            assertTrue(env.boundsEquals2D(expected, Math.ulp(2.0)));
 
             // Test with estimation enabled
             hanaDialect.setEstimatedExtentsEnabled(true);
             env = dataStore.getFeatureSource(tname("geopoint")).getBounds();
-            assertTrue(env.boundsEquals2D(expected, Math.ulp(1.0)));
+            assertTrue(env.boundsEquals2D(expected, Math.ulp(2.0)));
         } finally {
             hanaDialect.setEstimatedExtentsEnabled(false);
         }

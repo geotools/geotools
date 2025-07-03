@@ -146,7 +146,7 @@ public class IntegrationTestWFSClient extends WFSClient {
     }
 
     @SuppressWarnings("PMD.CloseResource") // readers are wrapped and returned in the response
-    protected Response mockGetFeature(GetFeatureRequest request) throws IOException {
+    protected Response mockGetFeature(GetFeatureRequest request) throws ServiceException, IOException {
 
         final QName typeName = request.getTypeName();
 
@@ -274,7 +274,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
     }
 
-    protected Response mockTransactionSuccess(TransactionRequest request) throws IOException {
+    protected Response mockTransactionSuccess(TransactionRequest request) throws ServiceException, IOException {
 
         List<String> added = new ArrayList<>();
         int deleted = 0, updated = 0;
@@ -331,7 +331,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         return request.createResponse(httpResponse);
     }
 
-    protected Response mockTransactionFailure(TransactionRequest request) throws IOException {
+    protected Response mockTransactionFailure(TransactionRequest request) throws ServiceException, IOException {
         final QName typeName = request.getTypeNames().iterator().next();
 
         String resource = "TransactionFailure_" + typeName.getLocalPart() + ".xml";
@@ -355,7 +355,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         return diff;
     }
 
-    private List<SimpleFeature> features(QName typeName) throws IOException {
+    private List<SimpleFeature> features(QName typeName) throws ServiceException, IOException {
 
         GetFeatureRequest gf = createGetFeatureRequest();
         gf.setTypeName(typeName);

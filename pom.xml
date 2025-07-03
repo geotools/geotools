@@ -469,19 +469,19 @@
     <javac.version>9+181-r4173-1</javac.version>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <series>stable</series>
+    <series>maintenance</series>
     <!-- dependency management -->
     <batik.version>1.17</batik.version>
     <commons-beanutils.version>1.10.1</commons-beanutils.version>
-    <db2.jdbc.version>11.5.9.0</db2.jdbc.version>
+    <db2.jdbc.version>12.1.0.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
     <hamcrest.version>3.0</hamcrest.version>
-    <imageio.ext.version>1.4.14</imageio.ext.version>
+    <imageio.ext.version>1.4.15</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson2.version>2.17.2</jackson2.version>
     <jackson2.databind.version>${jackson2.version}</jackson2.databind.version>
-    <jaiext.version>1.1.29</jaiext.version>
+    <jaiext.version>1.1.31</jaiext.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
@@ -494,8 +494,8 @@
     <mssql-jdbc.version>9.4.0.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>9.1.0</mysql-connector-java.version>
     <netcdf.version>5.5.3</netcdf.version>
-    <ojdbc8.version>19.18.0.0</ojdbc8.version>
-    <postgresql.jdbc.version>42.7.5</postgresql.jdbc.version>
+    <ojdbc11.version>23.7.0.25.01</ojdbc11.version>
+    <postgresql.jdbc.version>42.7.7</postgresql.jdbc.version>
     <reload4j.version>1.2.19</reload4j.version>
     <sl4j.version>2.0.16</sl4j.version>
     <solrj.version>8.11.3</solrj.version>
@@ -1062,8 +1062,8 @@
       <!-- ORACLE -->
       <dependency>
         <groupId>com.oracle.database.jdbc</groupId>
-        <artifactId>ojdbc8</artifactId>
-        <version>${ojdbc8.version}</version>
+        <artifactId>ojdbc11</artifactId>
+        <version>${ojdbc11.version}</version>
       </dependency>
       <!-- Older version required by imagemosaic -->
       <dependency>
@@ -1629,7 +1629,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-invoker-plugin</artifactId>
-          <version>3.6.0</version>
+          <version>3.9.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>

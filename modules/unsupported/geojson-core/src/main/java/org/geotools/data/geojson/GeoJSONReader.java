@@ -52,7 +52,6 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -367,6 +366,13 @@ public class GeoJSONReader implements AutoCloseable {
                 while (parser.nextToken() == JsonToken.START_OBJECT) {
                     ObjectNode node = mapper.readTree(parser);
                     JsonNode rel = node.get("rel");
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        JsonNode href = node.get("href");
+                        LOGGER.log(
+                                Level.FINE,
+                                "Found link of type " + (rel == null ? "no rel" : rel.textValue()) + " href: "
+                                        + (href == null ? "none" : href.textValue()));
+                    }
                     if (rel != null && "next".equals(rel.textValue())) {
                         next = node;
                     }
@@ -386,12 +392,13 @@ public class GeoJSONReader implements AutoCloseable {
             }
         }
         if (isSchemaChanged()) {
-            // retype the features if the schema changes
+            // retype the features if the schema changed during iteration
+            // keep features after last schema were set
             List<SimpleFeature> nFeatures = new ArrayList<>(features.size());
             for (SimpleFeature feature : features) {
                 if (feature.getFeatureType() != schema) {
-                    // do not deep copy attributes, needless expense, won't work for JsonNode
-                    SimpleFeature nFeature = DataUtilities.reType(schema, feature, false);
+                    builder.init(feature);
+                    SimpleFeature nFeature = builder.buildFeature(feature.getID());
                     nFeatures.add(nFeature);
                 } else {
                     nFeatures.add(feature);

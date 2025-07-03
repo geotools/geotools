@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE name [  
+<!DOCTYPE name [
   <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 			xmlns:gml="http://www.opengis.net/gml" 
 			xmlns:sf="http://www.openplans.org/spearfish" 
 			elementFormDefault="qualified" 
 			targetNamespace="http://www.openplans.org/spearfish">
   <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
   <xsd:complexType name="archsitesType">
+      <xsd:annotation>
+          <xsd:documentation>&xxe;</xsd:documentation>
+      </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="gml:AbstractFeatureType">
         <xsd:sequence>

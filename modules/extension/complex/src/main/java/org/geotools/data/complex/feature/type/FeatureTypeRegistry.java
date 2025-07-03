@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -610,7 +611,7 @@ public class FeatureTypeRegistry {
 
     /** Caches the basic types */
     private static Map<Class<? extends FeatureTypeRegistryConfiguration>, Map<Name, AttributeType>> FOUNDATION_TYPES =
-            new HashMap<>();
+            new ConcurrentHashMap<>();
 
     private void createFoundationTypes() {
         Map<Name, AttributeType> foundationTypes =

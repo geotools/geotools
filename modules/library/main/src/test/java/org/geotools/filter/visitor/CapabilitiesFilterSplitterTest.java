@@ -18,6 +18,7 @@ package org.geotools.filter.visitor;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,8 +29,10 @@ import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.feature.SchemaException;
 import org.geotools.filter.Capabilities;
 import org.junit.Before;
 import org.junit.Test;
@@ -399,5 +402,50 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         // test
         assertEquals(f1, visitor.getFilterPre());
         assertEquals(ff.and(f2, f3), visitor.getFilterPost());
+    }
+
+    @Test
+    public void testVisitNullFilterWithStackPushingExpression() {
+        class StackPushingExpression implements Expression {
+            @Override
+            public Object accept(org.geotools.api.filter.expression.ExpressionVisitor visitor, Object extraData) {
+                try {
+                    Field postStackField = visitor.getClass().getDeclaredField("postStack");
+                    postStackField.setAccessible(true);
+                    @SuppressWarnings("unchecked")
+                    java.util.Stack<Object> postStack = (java.util.Stack<Object>) postStackField.get(visitor);
+                    postStack.push(org.geotools.api.filter.Filter.EXCLUDE);
+                } catch (Exception e) {
+                    throw new RuntimeException("Could not access postStack", e);
+                }
+                return null;
+            }
+
+            @Override
+            public Object evaluate(Object object) {
+                return null;
+            }
+
+            @Override
+            public <T> T evaluate(Object object, Class<T> context) {
+                return null;
+            }
+
+            @Override
+            public String toString() {
+                return "StackPushingExpression";
+            }
+        }
+        Expression customExpr = new StackPushingExpression();
+        PropertyIsNull nullFilter = ff.isNull(customExpr);
+        Capabilities caps = new Capabilities();
+        caps.addType(PropertyIsNull.class);
+        try {
+            visitor = newVisitor(caps);
+        } catch (SchemaException e) {
+            throw new RuntimeException(e);
+        }
+        nullFilter.accept(visitor, null);
+        assertEquals(nullFilter, visitor.getFilterPost());
     }
 }

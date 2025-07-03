@@ -336,6 +336,11 @@ class HivePartitionResolver {
             // If partition information found, use it as the key
             partitionUri = String.format("%s/%s/%s", basePath, limitedPartitionParts, glob);
         }
+
+        if (filePath.contains("?")) {
+            // add query parameters if present
+            return partitionUri + filePath.substring(filePath.indexOf("?"), filePath.length());
+        }
         return partitionUri;
     }
 
@@ -387,6 +392,10 @@ class HivePartitionResolver {
             throw new IllegalArgumentException("maxDepth is negative: " + maxDepth);
         }
 
+        // Remove query parameters if present
+        if (fileUri.contains("?")) {
+            fileUri = fileUri.substring(0, fileUri.indexOf("?"));
+        }
         // Split the URI into parts
         String[] parts = fileUri.split("/");
         List<String> partitionParts = new ArrayList<>();

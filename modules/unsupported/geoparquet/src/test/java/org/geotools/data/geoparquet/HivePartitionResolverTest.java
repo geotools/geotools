@@ -61,6 +61,11 @@ public class HivePartitionResolverTest {
         testPartitionName("lines.parquet", "lines");
         testPartitionName("/data/parquet/countries.parquet", "countries");
         testPartitionName("/data/parquet/*.parquet", "parquet");
+
+        // With query parameters
+        testPartitionName(
+                "s3://some-private-bucket/theme=addresses/type=address/*?s3_region=us-west-2",
+                "theme_addresses_type_address");
     }
 
     private void testPartitionName(String partitionUri, String expectedName) {
@@ -240,6 +245,26 @@ public class HivePartitionResolverTest {
         assertEquals(expected, result);
 
         result = buildPartitionMap("s3://mybucket/**/*", files, null);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void tesBuildPartitionMapSingleS3ParquetFileWithQueryParameters() {
+        List<String> files = List.of("s3://mybucket/data/myfile.parquet?s3_region=us-west-2");
+
+        Map<String, List<String>> expected = Map.of(
+                "s3://mybucket/data/myfile.parquet?s3_region=us-west-2",
+                List.of("s3://mybucket/data/myfile.parquet?s3_region=us-west-2"));
+
+        Map<String, List<String>> result;
+
+        result = buildPartitionMap("s3://mybucket/data/myfile.parquet?s3_region=us-west-2", files, null);
+        assertEquals(expected, result);
+
+        result = buildPartitionMap("s3://mybucket/data/*?s3_region=us-west-2", files, null);
+        assertEquals(expected, result);
+
+        result = buildPartitionMap("s3://mybucket/**/*?s3_region=us-west-2", files, null);
         assertEquals(expected, result);
     }
 

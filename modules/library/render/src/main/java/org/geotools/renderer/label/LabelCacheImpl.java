@@ -1778,7 +1778,7 @@ public class LabelCacheImpl implements LabelCache {
 
         // clippedLines is a list of LineString, all clipped (hopefully) to the
         // display geometry. we choose longest one
-        if (merged.isEmpty()) return null;
+        if (merged == null || merged.isEmpty()) return null;
 
         // sort have the longest lines first
         Collections.sort(merged, new LineLengthComparator());

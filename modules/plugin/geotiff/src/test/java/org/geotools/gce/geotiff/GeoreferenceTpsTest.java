@@ -102,7 +102,7 @@ public final class GeoreferenceTpsTest {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        var outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);
@@ -119,7 +119,7 @@ public final class GeoreferenceTpsTest {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        var outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);
@@ -136,7 +136,7 @@ public final class GeoreferenceTpsTest {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        var outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);

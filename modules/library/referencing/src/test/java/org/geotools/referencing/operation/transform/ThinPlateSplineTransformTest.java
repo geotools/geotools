@@ -1,5 +1,7 @@
 package org.geotools.referencing.operation.transform;
 
+import static org.ejml.UtilEjml.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,9 +13,6 @@ import org.geotools.geometry.Position2D;
 import org.geotools.referencing.operation.builder.MappedPosition;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-
-import static org.ejml.UtilEjml.assertTrue;
-import static org.junit.Assert.*;
 
 public class ThinPlateSplineTransformTest {
     @Test

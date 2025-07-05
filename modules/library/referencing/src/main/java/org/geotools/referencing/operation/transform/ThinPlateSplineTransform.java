@@ -1,6 +1,5 @@
 package org.geotools.referencing.operation.transform;
 
-import java.util.List;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -10,6 +9,8 @@ import org.geotools.geometry.Position2D;
 import org.geotools.referencing.operation.builder.MappedPosition;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.locationtech.jts.geom.Coordinate;
+
+import java.util.List;
 
 /**
  * A 2D transformation using Thin Plate Splines (TPS) for smoothly interpolating between a set of control points. This
@@ -71,9 +72,6 @@ public class ThinPlateSplineTransform implements MathTransform {
             dst.add(new Coordinate(mp.getTarget().getOrdinate(0), mp.getTarget().getOrdinate(1)));
         }
 
-        if (src.size() != dst.size()) {
-            throw new IllegalArgumentException("Source and target point lists must be the same size.");
-        }
         this.sourcePoints = src;
         this.targetPoints = dst;
 

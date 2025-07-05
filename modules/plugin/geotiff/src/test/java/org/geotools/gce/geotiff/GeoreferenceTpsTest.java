@@ -1,19 +1,4 @@
-package org.geotools.gce.geotiff; /*
-                                   *    GeoTools - The Open Source Java GIS Toolkit
-                                   *    http://geotools.org
-                                   *
-                                   *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
-                                   *
-                                   *    This library is free software; you can redistribute it and/or
-                                   *    modify it under the terms of the GNU Lesser General Public
-                                   *    License as published by the Free Software Foundation;
-                                   *    version 2.1 of the License.
-                                   *
-                                   *    This library is distributed in the hope that it will be useful,
-                                   *    but WITHOUT ANY WARRANTY; without even the implied warranty of
-                                   *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-                                   *    Lesser General Public License for more details.
-                                   */
+package org.geotools.gce.geotiff;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -41,7 +26,7 @@ import org.geotools.referencing.operation.transform.WarpTransform2D;
 import org.junit.Before;
 import org.junit.Test;
 
-public final class GeoreferencingTesting {
+public final class GeoreferenceTpsTest {
 
     private BufferedImage imageToGeoreference;
     private CoordinateReferenceSystem BNG;
@@ -91,7 +76,8 @@ public final class GeoreferencingTesting {
         AffineTransformBuilder affineBuilder = new AffineTransformBuilder(positions);
 
         // test the different transformations
-        affineTransformation(affineBuilder.getMathTransform());
+        outputAffineTransformationGeoTiff(affineBuilder.getMathTransform());
+
 
         // first order polynomial transformation
         Point2D[] worldPoints = new Point2D[worldCoords.length];
@@ -101,13 +87,13 @@ public final class GeoreferencingTesting {
             imagePoints[i] = new Point2D.Double(imageCoords[i][0], imageCoords[i][1]);
         }
         MathTransform warpTransform = new WarpTransform2D(worldPoints, imagePoints, 1);
-        firstOrderPolynomialTransformation(warpTransform);
+        outputFirstOrderPolynomialTransformationGeoTiff(warpTransform);
 
-        // new thin plate spline transformation
-        thinPlateSplineTransformation(new ThinPlateSplineTransform(positions));
+        //the new thin plate spline transformation
+        outputThinPlateSplineTransformationGeoTiff(new ThinPlateSplineTransform(positions));
     }
 
-    private void affineTransformation(MathTransform mathTransform) throws IOException {
+    private void outputAffineTransformationGeoTiff(MathTransform mathTransform) throws IOException {
         DefaultDerivedCRS derivedCRS =
                 new DefaultDerivedCRS("imageCRS", BNG, mathTransform, DefaultCartesianCS.GENERIC_2D);
         GridCoverageFactory factory = new GridCoverageFactory();
@@ -117,14 +103,14 @@ public final class GeoreferencingTesting {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        var outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);
         outputStream.writeTo(new FileOutputStream("edinburgh-castle-affine.tif"));
     }
 
-    private void firstOrderPolynomialTransformation(MathTransform mathTransform) throws IOException {
+    private void outputFirstOrderPolynomialTransformationGeoTiff(MathTransform mathTransform) throws IOException {
         DefaultDerivedCRS derivedCRS =
                 new DefaultDerivedCRS("imageCRS", BNG, mathTransform, DefaultCartesianCS.GENERIC_2D);
         GridCoverageFactory factory = new GridCoverageFactory();
@@ -134,14 +120,14 @@ public final class GeoreferencingTesting {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        var outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);
         outputStream.writeTo(new FileOutputStream("edinburgh-castle-poly1.tif"));
     }
 
-    private void thinPlateSplineTransformation(MathTransform mathTransform) throws IOException {
+    private void outputThinPlateSplineTransformationGeoTiff(MathTransform mathTransform) throws IOException {
         DefaultDerivedCRS derivedCRS =
                 new DefaultDerivedCRS("imageCRS", BNG, mathTransform, DefaultCartesianCS.GENERIC_2D);
         GridCoverageFactory factory = new GridCoverageFactory();
@@ -151,7 +137,7 @@ public final class GeoreferencingTesting {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        var outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);

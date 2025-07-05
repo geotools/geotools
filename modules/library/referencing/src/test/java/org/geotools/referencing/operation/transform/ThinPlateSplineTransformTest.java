@@ -1,5 +1,10 @@
 package org.geotools.referencing.operation.transform;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.TransformException;
@@ -7,12 +12,6 @@ import org.geotools.geometry.Position2D;
 import org.geotools.referencing.operation.builder.MappedPosition;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class ThinPlateSplineTransformTest {
     @Test
@@ -30,7 +29,7 @@ public class ThinPlateSplineTransformTest {
     }
 
     @Test
-    public void transformArrayOfPointsReturnsCorrectCoordinatesDoubleOverload() throws  TransformException {
+    public void transformArrayOfPointsReturnsCorrectCoordinatesDoubleOverload() throws TransformException {
         List<MappedPosition> positions = new ArrayList<>();
         positions.add(new MappedPosition(new Position2D(0, 0), new Position2D(10, 10)));
         positions.add(new MappedPosition(new Position2D(1, 0), new Position2D(11, 10)));
@@ -49,7 +48,7 @@ public class ThinPlateSplineTransformTest {
     }
 
     @Test
-    public void transformArrayOfPointsReturnsCorrectCoordinatesFloatOverload() throws  TransformException {
+    public void transformArrayOfPointsReturnsCorrectCoordinatesFloatOverload() throws TransformException {
         List<MappedPosition> positions = new ArrayList<>();
         positions.add(new MappedPosition(new Position2D(0, 0), new Position2D(10, 10)));
         positions.add(new MappedPosition(new Position2D(1, 0), new Position2D(11, 10)));
@@ -68,7 +67,7 @@ public class ThinPlateSplineTransformTest {
     }
 
     @Test
-    public void transformArrayOfPointsReturnsCorrectCoordinatesSrcFloatDstDoubleOverload() throws  TransformException {
+    public void transformArrayOfPointsReturnsCorrectCoordinatesSrcFloatDstDoubleOverload() throws TransformException {
         List<MappedPosition> positions = new ArrayList<>();
         positions.add(new MappedPosition(new Position2D(0, 0), new Position2D(10, 10)));
         positions.add(new MappedPosition(new Position2D(1, 0), new Position2D(11, 10)));
@@ -87,7 +86,8 @@ public class ThinPlateSplineTransformTest {
     }
 
     @Test
-    public void transformArrayOfPointsReturnsCorrectCoordinatesSrcDoubleDstFloatDoubleOverload() throws  TransformException {
+    public void transformArrayOfPointsReturnsCorrectCoordinatesSrcDoubleDstFloatDoubleOverload()
+            throws TransformException {
         List<MappedPosition> positions = new ArrayList<>();
         positions.add(new MappedPosition(new Position2D(0, 0), new Position2D(10, 10)));
         positions.add(new MappedPosition(new Position2D(1, 0), new Position2D(11, 10)));
@@ -126,39 +126,27 @@ public class ThinPlateSplineTransformTest {
 
     @Test
     public void emptyPositionsListThrowsException() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> new ThinPlateSplineTransform(new ArrayList<>())
-        );
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class, () -> new ThinPlateSplineTransform(new ArrayList<>()));
         assertEquals("Positions list must not be null or empty.", exception.getMessage());
     }
 
     @Test
     public void nullPositionsListThrowsException() {
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> new ThinPlateSplineTransform(null)
-        );
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class, () -> new ThinPlateSplineTransform(null));
         assertEquals("Positions list must not be null or empty.", exception.getMessage());
     }
 
-
     @Test
     public void testThrowsExceptionListSizesDiffer() {
-        List<Coordinate> sourcePoints = List.of(
-                new Coordinate(0, 0),
-                new Coordinate(1, 1)
-        );
+        List<Coordinate> sourcePoints = List.of(new Coordinate(0, 0), new Coordinate(1, 1));
 
-        List<Coordinate> targetPoints = List.of(
-                new Coordinate(0, 0)
-        );
+        List<Coordinate> targetPoints = List.of(new Coordinate(0, 0));
 
         IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> new ThinPlateSplineTransform(sourcePoints, targetPoints)
-        );
+                IllegalArgumentException.class, () -> new ThinPlateSplineTransform(sourcePoints, targetPoints));
 
         assertEquals("Source and target point lists must be the same size.", exception.getMessage());
     }
@@ -177,6 +165,20 @@ public class ThinPlateSplineTransformTest {
 
         assertEquals(original.getOrdinate(0), result.getOrdinate(0), 0.1);
         assertEquals(original.getOrdinate(1), result.getOrdinate(1), 0.1);
+    }
+
+    @Test
+    public void derivativeReturnsValidJacobianMatrix() throws TransformException {
+        List<MappedPosition> positions = new ArrayList<>();
+        positions.add(new MappedPosition(new Position2D(0, 0), new Position2D(10, 10)));
+        positions.add(new MappedPosition(new Position2D(1, 0), new Position2D(11, 10)));
+        positions.add(new MappedPosition(new Position2D(0, 1), new Position2D(10, 11)));
+
+        ThinPlateSplineTransform transform = new ThinPlateSplineTransform(positions);
+        Matrix jacobian = transform.derivative(new Position2D(0.5, 0.5));
+
+        assertEquals(2, jacobian.getNumRow());
+        assertEquals(2, jacobian.getNumCol());
     }
 
     @Test
@@ -238,22 +240,8 @@ public class ThinPlateSplineTransformTest {
                 new Coordinate(0, 0), new Coordinate(0, 100), new Coordinate(100, 0), new Coordinate(100, 100));
 
         ThinPlateSplineTransform transform = new ThinPlateSplineTransform(source, target);
-        //TPS warping always warps why would you bother passing in the same source and target?
+        // TPS warping always warps why would you bother passing in the same source and target?
         assertFalse(transform.isIdentity());
-    }
-
-    @Test
-    public void derivativeReturnsValidJacobianMatrix() throws TransformException {
-        List<MappedPosition> positions = new ArrayList<>();
-        positions.add(new MappedPosition(new Position2D(0, 0), new Position2D(10, 10)));
-        positions.add(new MappedPosition(new Position2D(1, 0), new Position2D(11, 10)));
-        positions.add(new MappedPosition(new Position2D(0, 1), null));
-
-        ThinPlateSplineTransform transform = new ThinPlateSplineTransform(positions);
-        Matrix jacobian = transform.derivative(new Position2D(0.5, 0.5));
-
-        assertEquals(2, jacobian.getNumRow());
-        assertEquals(2, jacobian.getNumCol());
     }
 
     @Test
@@ -281,5 +269,4 @@ public class ThinPlateSplineTransformTest {
         // this ThinPlateSplineTransform is striclty 2D
         assertEquals(2, transform.getTargetDimensions());
     }
-
 }

@@ -78,7 +78,6 @@ public final class GeoreferenceTpsTest {
         // test the different transformations
         outputAffineTransformationGeoTiff(affineBuilder.getMathTransform());
 
-
         // first order polynomial transformation
         Point2D[] worldPoints = new Point2D[worldCoords.length];
         Point2D[] imagePoints = new Point2D[imageCoords.length];
@@ -89,7 +88,7 @@ public final class GeoreferenceTpsTest {
         MathTransform warpTransform = new WarpTransform2D(worldPoints, imagePoints, 1);
         outputFirstOrderPolynomialTransformationGeoTiff(warpTransform);
 
-        //the new thin plate spline transformation
+        // the new thin plate spline transformation
         outputThinPlateSplineTransformationGeoTiff(new ThinPlateSplineTransform(positions));
     }
 

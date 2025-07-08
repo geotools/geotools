@@ -121,11 +121,13 @@ public interface FeatureTypeStyle {
     String RT_OVERASAMPLE = "rt-oversample";
 
     /**
-     * The default minimum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an explicit value.
+     * The default minimum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an
+     * explicit value.
      */
     String MIN_SCALE_DENOMINATOR = "minScaleDenominator";
     /**
-     * The default maximum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an explicit value.
+     * The default maximum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an
+     * explicit value.
      */
     String MAX_SCALE_DENOMINATOR = "maxScaleDenominator";
 

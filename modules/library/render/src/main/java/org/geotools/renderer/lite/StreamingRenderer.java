@@ -1870,7 +1870,8 @@ public class StreamingRenderer implements GTRenderer {
 
         LiteFeatureTypeStyle lfts;
         boolean foundComposite = false;
-        // apply the style visitors to the layer style
+        // apply the rendering map selector {@MapRenderingSelectorStyleVisitor} and scale visitors
+        // {@FeatureStyleScaleStyleVisitor} to the style
         Style style = applyStyleVisitors(layer);
 
         FeatureType schema = layer.getFeatureSource().getSchema();
@@ -1943,6 +1944,15 @@ public class StreamingRenderer implements GTRenderer {
         return result;
     }
 
+    /**
+     * Applies the style visitors to the layer style, returning a new style with the modifications applied.
+     *
+     * <p>This method is used to apply the rendering map selector {@MapRenderingSelectorStyleVisitor} and scale visitors
+     * {@FeatureStyleScaleStyleVisitor} to the style.
+     *
+     * @param layer The layer whose style is to be modified.
+     * @return A new Style object with the modifications applied.
+     */
     private static Style applyStyleVisitors(Layer layer) {
         // check if any <VendorOption name="renderingMap">false</VendorOption>
         // is present in the style removing style's elements not meant to be applied

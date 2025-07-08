@@ -121,13 +121,11 @@ public interface FeatureTypeStyle {
     String RT_OVERASAMPLE = "rt-oversample";
 
     /**
-     * The minimum scale denominator for this style. This is used to determine whether the style should be applied to a
-     * given map layer, based on the current map scale.
+     * The default minimum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an explicit value.
      */
     String MIN_SCALE_DENOMINATOR = "minScaleDenominator";
     /**
-     * The maximum scale denominator for this style. This is used to determine whether the style should be applied to a
-     * given map layer, based on the current map scale.
+     * The default maximum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an explicit value.
      */
     String MAX_SCALE_DENOMINATOR = "maxScaleDenominator";
 

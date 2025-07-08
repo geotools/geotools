@@ -313,9 +313,9 @@ Notes on handling of features:
      // sort newer cities first, than by name  
      fts.getOptions().put( "sortBy", "year D,name A"); 
 
-* ``maxScaleDenominator``: sets the maximun scale the children ``Rule`` will use as default.
+* ``maxScaleDenominator``: sets the maximun scale the children ``Rule`` will use as default, unless the explicitly set a different value.
 
-* ``minScaleDenominator``: sets the minimun scale the children ``Rule`` will use as default.
+* ``minScaleDenominator``: sets the minimun scale the children ``Rule`` will use as default, unless the explicitly set a different value.
 
 Rule
 ''''

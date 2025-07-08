@@ -825,17 +825,6 @@ public class StreamingRendererTest {
         mapContent.addLayer(layer);
         StreamingRenderer gRender = new StreamingRenderer();
         gRender.setMapContent(mapContent);
-        gRender.addRenderListener(new RenderListener() {
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                features++;
-            }
-
-            @Override
-            public void errorOccurred(Exception e) {
-                errors++;
-            }
-        });
         features = 0;
         errors = 0;
         // defining the paint area and performing the rendering
@@ -1059,6 +1048,12 @@ public class StreamingRendererTest {
         gRender.setMapContent(mapContent);
         features = 0;
         errors = 0;
+        renderLayer(gRender, mapContent);
+        // checking that no features were rendered, the max/min scale denominator set on FeatureTypeStyle
+        assertEquals(0, features);
+    }
+
+    private void renderLayer(StreamingRenderer gRender, MapContent mapContent) throws FactoryException {
         gRender.addRenderListener(new RenderListener() {
             @Override
             public void featureRenderer(SimpleFeature feature) {
@@ -1070,12 +1065,6 @@ public class StreamingRendererTest {
                 errors++;
             }
         });
-        renderLayer(gRender, mapContent);
-        // checking that no features were rendered, the max/min scale denominator set on FeatureTypeStyle
-        assertEquals(0, features);
-    }
-
-    private static void renderLayer(StreamingRenderer gRender, MapContent mapContent) throws FactoryException {
         // defining the paint area and performing the rendering
         BufferedImage image = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
@@ -1092,12 +1081,9 @@ public class StreamingRendererTest {
 
     @Test
     public void testNoFeatureStyleScale() throws IOException, URISyntaxException, FactoryException {
-        Style style = RendererBaseTest.loadStyle(this, "genericLines-featurestylescale.sld");
+        Style style = RendererBaseTest.loadStyle(this, "genericLines.sld");
         assertNotNull(style);
         assertEquals(1, style.featureTypeStyles().size());
-        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
-        fts.getOptions().remove("minScaleDenominator");
-        fts.getOptions().remove("maxScaleDenominator");
         // execute rendering expecting no features being rendered dur to the max/min scale denominator set on
         // FeatureTypeStyle
         File vectorDataFile =
@@ -1111,17 +1097,6 @@ public class StreamingRendererTest {
         gRender.setMapContent(mapContent);
         features = 0;
         errors = 0;
-        gRender.addRenderListener(new RenderListener() {
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                features++;
-            }
-
-            @Override
-            public void errorOccurred(Exception e) {
-                errors++;
-            }
-        });
         // defining the paint area and performing the rendering
         renderLayer(gRender, mapContent);
         // checking that no features were rendered, the max/min scale denominator set on FeatureTypeStyle

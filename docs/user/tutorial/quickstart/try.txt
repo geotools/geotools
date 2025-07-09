@@ -56,10 +56,12 @@ Here are some additional challenges for you to try:
   
   At the time of writing |branch|-SNAPSHOT is under active development.
   
-  | <properties>
-  |   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  |   <geotools.version>|branch|-SNAPSHOT</geotools.version>
-  | </properties>
+  .. parsed-literal::
+
+    <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <geotools.version>\ |branch|\ -SNAPSHOT</geotools.version>
+    </properties>
 
   Double check your :file:`pom.xml` file to include the OSGeo snapshot repository:
   

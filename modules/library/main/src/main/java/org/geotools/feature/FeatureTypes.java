@@ -38,11 +38,14 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
-import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -169,21 +172,21 @@ public class FeatureTypes {
                     if (f == null) {
                         continue;
                     }
-                    if (f instanceof BinaryComparisonOperator cf) {
-                        if (cf.getExpression1() instanceof LengthFunction) {
-                            filterLength = cf.getExpression2().evaluate(null, Integer.class) - 1;
+                    if (f instanceof PropertyIsLessThan lessThan) {
+                        if (lessThan.getExpression1() instanceof LengthFunction) {
+                            filterLength = lessThan.getExpression2().evaluate(null, Integer.class) - 1;
                         }
-                    } else if (f instanceof BinaryComparisonOperator cf) {
-                        if (cf.getExpression1() instanceof LengthFunction) {
-                            filterLength = cf.getExpression2().evaluate(null, Integer.class);
+                    } else if (f instanceof PropertyIsLessThanOrEqualTo equalTo) {
+                        if (equalTo.getExpression1() instanceof LengthFunction) {
+                            filterLength = equalTo.getExpression2().evaluate(null, Integer.class);
                         }
-                    } else if (f instanceof BinaryComparisonOperator cf) {
-                        if (cf.getExpression2() instanceof LengthFunction) {
-                            filterLength = cf.getExpression1().evaluate(null, Integer.class) - 1;
+                    } else if (f instanceof PropertyIsGreaterThan greaterThan) {
+                        if (greaterThan.getExpression2() instanceof LengthFunction) {
+                            filterLength = greaterThan.getExpression1().evaluate(null, Integer.class) - 1;
                         }
-                    } else if (f instanceof BinaryComparisonOperator cf) {
-                        if (cf.getExpression2() instanceof LengthFunction) {
-                            filterLength = cf.getExpression1().evaluate(null, Integer.class);
+                    } else if (f instanceof PropertyIsGreaterThanOrEqualTo gtOrEqualTo) {
+                        if (gtOrEqualTo.getExpression2() instanceof LengthFunction) {
+                            filterLength = gtOrEqualTo.getExpression1().evaluate(null, Integer.class);
                         }
                     }
                 } catch (NullPointerException e) {
@@ -221,8 +224,8 @@ public class FeatureTypes {
                 if (f == null) {
                     continue;
                 }
-                if (f instanceof PropertyIsEqualTo to1) {
-                    Object value = getOption(to1);
+                if (f instanceof PropertyIsEqualTo equalTo) {
+                    Object value = getOption(equalTo);
                     if (value != null) {
                         currentOptions = Collections.singletonList(value);
                     } else {
@@ -231,8 +234,8 @@ public class FeatureTypes {
                 } else if (f instanceof Or or) {
                     currentOptions = new ArrayList<>();
                     for (Filter child : or.getChildren()) {
-                        if (child instanceof PropertyIsEqualTo to) {
-                            Object value = getOption(to);
+                        if (child instanceof PropertyIsEqualTo equalTo) {
+                            Object value = getOption(equalTo);
                             if (value != null) {
                                 currentOptions.add(value);
                             } else {

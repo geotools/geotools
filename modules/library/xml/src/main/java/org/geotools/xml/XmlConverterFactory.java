@@ -144,7 +144,7 @@ public class XmlConverterFactory implements ConverterFactory {
             if (unconvertedValue instanceof Calendar cal) {
                 textValue = DatatypeConverterImpl.getInstance().printDateTime(cal);
 
-            } else if (unconvertedValue instanceof java.sql.Date salDate) {
+            } else if (unconvertedValue instanceof java.sql.Date sqlDate) {
                 DatatypeConverterImpl converter = DatatypeConverterImpl.getInstance();
                 Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
                 Calendar cal;
@@ -153,7 +153,7 @@ public class XmlConverterFactory implements ConverterFactory {
                 } else {
                     cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
                 }
-                cal.setTimeInMillis(salDate.getTime());
+                cal.setTimeInMillis(sqlDate.getTime());
                 textValue = converter.printDate(cal);
             } else if (unconvertedValue instanceof java.util.Date date) {
                 Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));

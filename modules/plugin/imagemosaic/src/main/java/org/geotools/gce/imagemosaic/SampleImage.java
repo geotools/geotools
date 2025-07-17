@@ -28,7 +28,6 @@ import java.io.Serializable;
 import org.eclipse.imagen.RasterFactory;
 import org.eclipse.imagen.media.serialize.SerializableState;
 import org.eclipse.imagen.media.serialize.SerializerFactory;
-import java.io.Serializable;
 
 /**
  * Simple serializable class holding a sample model and a color model

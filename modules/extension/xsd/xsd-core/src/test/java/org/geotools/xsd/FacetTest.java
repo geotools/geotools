@@ -88,12 +88,6 @@ public class FacetTest {
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         String s = (String) parser.parse();
 
-        Assert.assertEquals(
-                """
-                 \sthis is a\s
-                 \snormal string\s
-                 \swith some whitespace and\s
-                 \ssome new lines""",
-                s);
+        Assert.assertEquals(" this is a \n normal string \n with some whitespace and \n some new lines", s);
     }
 }

@@ -1,12 +1,16 @@
 package org.geotools.gce.geotiff;
 
+import static org.junit.Assert.assertEquals;
+
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Interpolation;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -14,6 +18,7 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.Operations;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -33,7 +38,8 @@ public final class GeoreferenceTpsTest {
 
     @Before
     public void setUp() throws Exception {
-        imageToGeoreference = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/edinburgh-castle-1750.png"));
+        imageToGeoreference = javax.imageio.ImageIO.read(
+                getClass().getResourceAsStream("/org/geotools/gce/geotiff/test-data/ed-castle-1750.jpg"));
         BNG = CRS.decode("EPSG:27700");
     }
 
@@ -54,16 +60,16 @@ public final class GeoreferenceTpsTest {
         };
 
         double[][] imageCoords = {
-            {606.5912737396017, 191.2470499553168},
-            {699.9518358124872, 189.82896503808456},
-            {609.9965222042662, 325.9651170923865},
-            {703.6408549825404, 326.248734075833},
-            {887.3129900430419, 574.3741750309903},
-            {1066.9670184592958, 480.6613116458169},
-            {1023.4102214098165, 480.1910173707442},
-            {1249.065018696892, 314.6559031116118},
-            {1244.7255033644483, 456.33661225916615},
-            {1212.9023909265275, 413.68782736270845}
+            {303.29563686980083, 95.6235249776584},
+            {349.9759179062436, 94.91448251904228},
+            {304.9982611021331, 162.98255854619326},
+            {351.8204274912702, 163.1243670379165},
+            {443.65649502152096, 287.18708751549517},
+            {533.4835092296479, 240.33065582290846},
+            {511.70511070490827, 240.0955086853721},
+            {624.532509348446, 157.3279515558059},
+            {622.3627516822241, 228.16830612958308},
+            {606.4511954632637, 206.84391368135422}
         };
         List<MappedPosition> positions = new ArrayList<>();
         for (int i = 0; i < worldCoords.length; i++) {
@@ -89,7 +95,7 @@ public final class GeoreferenceTpsTest {
         outputFirstOrderPolynomialTransformationGeoTiff(warpTransform);
 
         // the new thin plate spline transformation
-        outputThinPlateSplineTransformationGeoTiff(new ThinPlateSplineTransform(positions));
+        assertThinPlateSplineTransformationGeoTiff(new ThinPlateSplineTransform(positions));
     }
 
     private void outputAffineTransformationGeoTiff(MathTransform mathTransform) throws IOException {
@@ -106,7 +112,14 @@ public final class GeoreferenceTpsTest {
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);
-        outputStream.writeTo(new FileOutputStream("edinburgh-castle-affine.tif"));
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
+        GeoTiffReader reader = new GeoTiffReader(iis);
+        GeneralBounds envelope = reader.getOriginalEnvelope();
+        assertEquals("Wrong envelope minX", 324807.6741454695, envelope.getMinimum(0), 0.001);
+        assertEquals("Wrong envelope minY", 673318.757108962, envelope.getMinimum(1), 0.001);
+        assertEquals("Wrong envelope maxX", 325501.4622986133, envelope.getMaximum(0), 0.001);
+        assertEquals("Wrong envelope maxY", 673631.2096537778, envelope.getMaximum(1), 0.001);
     }
 
     private void outputFirstOrderPolynomialTransformationGeoTiff(MathTransform mathTransform) throws IOException {
@@ -123,10 +136,17 @@ public final class GeoreferenceTpsTest {
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);
-        outputStream.writeTo(new FileOutputStream("edinburgh-castle-poly1.tif"));
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
+        GeoTiffReader reader = new GeoTiffReader(iis);
+        GeneralBounds envelope = reader.getOriginalEnvelope();
+        assertEquals("Wrong envelope minX", 324804.45693588257, envelope.getMinimum(0), 0.001);
+        assertEquals("Wrong envelope minY", 673288.3893161934, envelope.getMinimum(1), 0.001);
+        assertEquals("Wrong envelope maxX", 325508.2505963644, envelope.getMaximum(0), 0.001);
+        assertEquals("Wrong envelope maxY", 673667.7420926894, envelope.getMaximum(1), 0.001);
     }
 
-    private void outputThinPlateSplineTransformationGeoTiff(MathTransform mathTransform) throws IOException {
+    private void assertThinPlateSplineTransformationGeoTiff(MathTransform mathTransform) throws IOException {
         DefaultDerivedCRS derivedCRS =
                 new DefaultDerivedCRS("imageCRS", BNG, mathTransform, DefaultCartesianCS.GENERIC_2D);
         GridCoverageFactory factory = new GridCoverageFactory();
@@ -140,6 +160,13 @@ public final class GeoreferenceTpsTest {
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, null);
-        outputStream.writeTo(new FileOutputStream("edinburgh-castle-tps.tif"));
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
+        GeoTiffReader reader = new GeoTiffReader(iis);
+        GeneralBounds envelope = reader.getOriginalEnvelope();
+        assertEquals("Wrong envelope minX", 324804.22162886866, envelope.getMinimum(0), 0.001);
+        assertEquals("Wrong envelope minY", 673310.540005115, envelope.getMinimum(1), 0.001);
+        assertEquals("Wrong envelope maxX", 325498.8018434337, envelope.getMaximum(0), 0.001);
+        assertEquals("Wrong envelope maxY", 673616.8228763198, envelope.getMaximum(1), 0.001);
     }
 }

@@ -12,6 +12,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Interpolation;
+
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -33,6 +35,7 @@ import org.junit.Test;
 
 public final class GeoreferenceTpsTest {
 
+    public static final GeneralParameterValue[] NO_PARAMS = null;
     private BufferedImage imageToGeoreference;
     private CoordinateReferenceSystem BNG;
 
@@ -111,7 +114,7 @@ public final class GeoreferenceTpsTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
-        writer.write(resampled, null);
+        writer.write(resampled, NO_PARAMS);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
         ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
         GeoTiffReader reader = new GeoTiffReader(iis);
@@ -135,7 +138,7 @@ public final class GeoreferenceTpsTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
-        writer.write(resampled, null);
+        writer.write(resampled, NO_PARAMS);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
         ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
         GeoTiffReader reader = new GeoTiffReader(iis);
@@ -159,7 +162,7 @@ public final class GeoreferenceTpsTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
-        writer.write(resampled, null);
+        writer.write(resampled, NO_PARAMS);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
         ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
         GeoTiffReader reader = new GeoTiffReader(iis);

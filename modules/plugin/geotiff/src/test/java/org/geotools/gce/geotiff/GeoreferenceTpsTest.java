@@ -40,8 +40,8 @@ public final class GeoreferenceTpsTest {
 
     @Before
     public void setUp() throws Exception {
-        imageToGeoreference = javax.imageio.ImageIO.read(
-                getClass().getResourceAsStream("/org/geotools/gce/geotiff/test-data/ed-castle-1750.jpg"));
+        imageToGeoreference =
+                ImageIO.read(getClass().getResourceAsStream("/org/geotools/gce/geotiff/test-data/ed-castle-1750.jpg"));
         BNG = CRS.decode("EPSG:27700");
     }
 
@@ -110,14 +110,7 @@ public final class GeoreferenceTpsTest {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        GeoTiffWriter writer = new GeoTiffWriter(outputStream);
-
-        writer.write(resampled, NO_PARAMS);
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
-        ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
-        GeoTiffReader reader = new GeoTiffReader(iis);
-        GeneralBounds envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = getEnvelopeFromGeoTiff(resampled);
         assertEquals("Wrong envelope minX", 324807.6741454695, envelope.getMinimum(0), 0.001);
         assertEquals("Wrong envelope minY", 673318.757108962, envelope.getMinimum(1), 0.001);
         assertEquals("Wrong envelope maxX", 325501.4622986133, envelope.getMaximum(0), 0.001);
@@ -134,14 +127,7 @@ public final class GeoreferenceTpsTest {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        GeoTiffWriter writer = new GeoTiffWriter(outputStream);
-
-        writer.write(resampled, NO_PARAMS);
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
-        ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
-        GeoTiffReader reader = new GeoTiffReader(iis);
-        GeneralBounds envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = getEnvelopeFromGeoTiff(resampled);
         assertEquals("Wrong envelope minX", 324804.45693588257, envelope.getMinimum(0), 0.001);
         assertEquals("Wrong envelope minY", 673288.3893161934, envelope.getMinimum(1), 0.001);
         assertEquals("Wrong envelope maxX", 325508.2505963644, envelope.getMaximum(0), 0.001);
@@ -158,17 +144,23 @@ public final class GeoreferenceTpsTest {
         // resample
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        GeneralBounds envelope = getEnvelopeFromGeoTiff(resampled);
+        assertEquals("Wrong envelope minX", 324804.22162886866, envelope.getMinimum(0), 0.001);
+        assertEquals("Wrong envelope minY", 673310.540005115, envelope.getMinimum(1), 0.001);
+        assertEquals("Wrong envelope maxX", 325498.8018434337, envelope.getMaximum(0), 0.001);
+        assertEquals("Wrong envelope maxY", 673616.8228763198, envelope.getMaximum(1), 0.001);
+    }
+
+    private static GeneralBounds getEnvelopeFromGeoTiff(GridCoverage2D resampled) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GeoTiffWriter writer = new GeoTiffWriter(outputStream);
 
         writer.write(resampled, NO_PARAMS);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray());
-        ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream);
-        GeoTiffReader reader = new GeoTiffReader(iis);
-        GeneralBounds envelope = reader.getOriginalEnvelope();
-        assertEquals("Wrong envelope minX", 324804.22162886866, envelope.getMinimum(0), 0.001);
-        assertEquals("Wrong envelope minY", 673310.540005115, envelope.getMinimum(1), 0.001);
-        assertEquals("Wrong envelope maxX", 325498.8018434337, envelope.getMaximum(0), 0.001);
-        assertEquals("Wrong envelope maxY", 673616.8228763198, envelope.getMaximum(1), 0.001);
+        GeoTiffReader reader;
+        try (ImageInputStream iis = ImageIO.createImageInputStream(byteArrayInputStream)) {
+            reader = new GeoTiffReader(iis);
+        }
+        return reader.getOriginalEnvelope();
     }
 }

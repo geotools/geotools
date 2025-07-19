@@ -18,7 +18,6 @@ package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
 
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
@@ -69,9 +68,11 @@ public class Log extends BaseMathOperationJAI {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3622176942444895367L;
 
+    private static final String ALGEBRIC = "algebric";
+
     /** Constructs a default {@code "Log"} operation. */
     public Log() {
-        super("Log", getOperationDescriptor(JAIExt.getOperationName("Log")));
+        super("Log", getOperationDescriptor(ALGEBRIC));
     }
 
     @Override
@@ -91,14 +92,12 @@ public class Log extends BaseMathOperationJAI {
 
     @Override
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        if (JAIExt.isJAIExtOperation("algebric")) {
-            parameters.set(Operator.LOG, 0);
-            @SuppressWarnings("unchecked")
-            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>)
-                    parameters2.parameter("sources").getValue();
-            for (GridCoverage2D source : sources) {
-                handleROINoDataInternal(parameters, source, "algebric", 1, 2);
-            }
+        parameters.set(Operator.LOG, 0);
+        @SuppressWarnings("unchecked")
+        Collection<GridCoverage2D> sources =
+                (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+        for (GridCoverage2D source : sources) {
+            handleROINoDataInternal(parameters, source, "algebric", 1, 2);
         }
     }
 

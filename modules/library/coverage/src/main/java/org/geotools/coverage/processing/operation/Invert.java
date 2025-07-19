@@ -18,7 +18,6 @@ package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
 
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
@@ -82,7 +81,7 @@ public class Invert extends BaseMathOperationJAI {
 
     /** Constructs a default {@code "Invert"} operation. */
     public Invert() {
-        super(INVERT, getOperationDescriptor(JAIExt.getOperationName(INVERT)));
+        super(INVERT, getOperationDescriptor(ALGEBRIC));
     }
 
     @Override
@@ -102,14 +101,12 @@ public class Invert extends BaseMathOperationJAI {
 
     @Override
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
-            parameters.set(Operator.INVERT, 0);
-            @SuppressWarnings("unchecked")
-            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>)
-                    parameters2.parameter("sources").getValue();
-            for (GridCoverage2D source : sources) {
-                handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
-            }
+        parameters.set(Operator.INVERT, 0);
+        @SuppressWarnings("unchecked")
+        Collection<GridCoverage2D> sources =
+                (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+        for (GridCoverage2D source : sources) {
+            handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
         }
     }
 

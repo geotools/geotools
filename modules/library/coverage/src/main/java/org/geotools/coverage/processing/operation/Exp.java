@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// JAI dependencies (for javadoc)
-
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
@@ -73,7 +70,7 @@ public class Exp extends BaseMathOperationJAI {
 
     /** Constructs a default {@code "Exp"} operation. */
     public Exp() {
-        super(EXP, getOperationDescriptor(JAIExt.getOperationName(EXP)));
+        super(EXP, getOperationDescriptor(ALGEBRIC));
     }
 
     @Override
@@ -93,14 +90,12 @@ public class Exp extends BaseMathOperationJAI {
 
     @Override
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
-            parameters.set(Operator.EXP, 0);
-            @SuppressWarnings("unchecked")
-            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>)
-                    parameters2.parameter("sources").getValue();
-            for (GridCoverage2D source : sources) {
-                handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
-            }
+        parameters.set(Operator.EXP, 0);
+        @SuppressWarnings("unchecked")
+        Collection<GridCoverage2D> sources =
+                (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+        for (GridCoverage2D source : sources) {
+            handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
         }
     }
 

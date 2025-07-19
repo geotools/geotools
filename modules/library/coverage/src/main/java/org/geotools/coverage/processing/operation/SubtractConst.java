@@ -18,7 +18,6 @@ package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
 
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Map;
@@ -77,12 +76,13 @@ import org.geotools.util.NumberRange;
  *     HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.
  */
 public class SubtractConst extends OperationJAI {
+    private static final String OPERATION_CONST = "operationConst";
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 279426577290256732L;
 
     /** Constructs a default {@code "SubtractConst"} operation. */
     public SubtractConst() {
-        super("SubtractConst", getOperationDescriptor(JAIExt.getOperationName("SubtractConst")));
+        super("SubtractConst", getOperationDescriptor(OPERATION_CONST));
     }
 
     @Override
@@ -109,9 +109,7 @@ public class SubtractConst extends OperationJAI {
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source =
                 (GridCoverage2D) parameters2.parameter("source0").getValue();
-        if (JAIExt.isJAIExtOperation("operationConst")) {
-            parameters.set(Operator.SUBTRACT, 1);
-        }
+        parameters.set(Operator.SUBTRACT, 1);
         handleROINoDataInternal(parameters, source, "operationConst", 2, 3);
     }
 

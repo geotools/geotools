@@ -224,7 +224,7 @@ class RasterLayerResponse {
                     if (LOGGER.isLoggable(Level.SEVERE))
                         LOGGER.log(Level.SEVERE, "Unable to load the raster for granule " + granuleIndex, e);
                     continue;
-                } catch (ImagingException | javax.media.jai.util.ImagingException e) {
+                } catch (ImagingException e) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine(
                                 "Loading image number " + granuleIndex + " failed, original request was " + request);

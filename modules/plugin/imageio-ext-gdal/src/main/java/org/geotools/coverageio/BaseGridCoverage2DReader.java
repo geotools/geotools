@@ -16,7 +16,6 @@
  */
 package org.geotools.coverageio;
 
-import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
 import it.geosolutions.imageio.stream.AccessibleStream;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -32,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.media.jai.JAI;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.ResourceInfo;
@@ -74,15 +72,6 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
     /** Logger. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(BaseGridCoverage2DReader.class);
-
-    /** registering ImageReadMT JAI operation (for multithread ImageRead) */
-    static {
-        try {
-            ImageReadDescriptorMT.register(JAI.getDefaultInstance());
-        } catch (Throwable e) {
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-        }
-    }
 
     /**
      * The format specific world file extension. As an instance, world file related to ecw datasets have .ecw extension

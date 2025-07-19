@@ -200,7 +200,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>format</artifactId>
+        <artifactId>format</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
@@ -246,6 +246,11 @@
       <groupId>org.eclipse.imagen</groupId>
       <artifactId>imageread</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>convolve</artifactId>
+    </dependency>
+
 
     <!-- Test dependencies -->
     <dependency>

@@ -167,17 +167,6 @@
         <artifactId>jai_core</artifactId>
         <version>${jai-core.version}</version>
       </dependency>
-      <dependency>
-        <groupId>javax.media</groupId>
-        <artifactId>jai_codec</artifactId>
-        <version>${jai-codec.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.media</groupId>
-        <artifactId>jai_imageio</artifactId>
-        <version>${jai-imageio.version}</version>
-      </dependency>
-
       <!-- ImageIO-Ext -->
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
@@ -768,6 +757,11 @@
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
         <artifactId>imageread</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>convolve</artifactId>
         <version>${imagen.version}</version>
       </dependency>
 

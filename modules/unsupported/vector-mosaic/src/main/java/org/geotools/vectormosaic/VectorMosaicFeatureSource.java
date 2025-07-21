@@ -34,7 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureSource;
@@ -94,7 +94,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     public VectorMosaicFeatureSource(ContentEntry contentEntry, VectorMosaicStore store) {
         super(contentEntry, null);
         delegateStoreTypeName =
-                StringUtils.removeEnd(contentEntry.getName().getLocalPart(), VectorMosaicStore.MOSAIC_TYPE_SUFFIX);
+                Strings.CS.removeEnd(contentEntry.getName().getLocalPart(), VectorMosaicStore.MOSAIC_TYPE_SUFFIX);
         repository = store.getRepository();
         delegateStoreName = store.getDelegateStoreName();
         this.preferredSPI = store.getPreferredSPI();

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.mongodb;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.PropertyIsLike;
@@ -100,7 +100,7 @@ public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
      */
     private void processPoint(BinarySpatialOperator filter) {
         if (mongoCollectionMeta != null
-                && StringUtils.equalsAny(
+                && Strings.CS.equalsAny(
                         mongoCollectionMeta
                                 .getIndexes()
                                 .get(filter.getExpression1().toString()),

@@ -1,7 +1,7 @@
 ``DefaultFunctionFactory``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Contains 203 functions.
+Contains 204 functions.
 
 ``Area(geometry)``: returns ``area``
 ''''''''''''''''''''''''''''''''''''
@@ -2961,3 +2961,8 @@ Contains 1 functions.
 * ``tolerance`` (``double``) required
 
 * ``labelPoint`` (``Point``)
+
+``parseTime(dateString)``: returns ``date``
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``dateString`` (``String``) required. Date in ISO format, or the range in ISO duration format. Only single tokens are allowed ("P1M" or "2008-05-11T15:30:00Z" and not "P1M/P1D" or "2008-05-11T15:30:00Z/2008-05-11T18:30:00Z"). If range or list is provided only first value shall be used.

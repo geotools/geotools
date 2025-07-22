@@ -210,3 +210,4 @@ org.geotools.filter.function.OrFunction
 org.geotools.filter.function.NowFunction
 org.geotools.filter.function.BandsFunction
 org.geotools.filter.function.PointOnLineFunction
+org.geotools.filter.function.ParseTimeFunction

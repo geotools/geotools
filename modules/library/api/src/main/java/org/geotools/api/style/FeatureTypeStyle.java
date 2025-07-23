@@ -121,6 +121,17 @@ public interface FeatureTypeStyle {
     String RT_OVERASAMPLE = "rt-oversample";
 
     /**
+     * The default minimum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an
+     * explicit value.
+     */
+    String MIN_SCALE_DENOMINATOR = "minScaleDenominator";
+    /**
+     * The default maximum scale denominator for all the rules in this FeatureTypeStyle. Rules can override it with an
+     * explicit value.
+     */
+    String MAX_SCALE_DENOMINATOR = "maxScaleDenominator";
+
+    /**
      * Returns a name for this style. This can be any string that uniquely identifies this style within a given canvas.
      * It is not meant to be human-friendly. (The "title" property is meant to be human friendly.)
      *

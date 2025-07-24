@@ -472,6 +472,14 @@ public class GeoPackageTest {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            SimpleFeature feature = reader.next();
+            Object attribute = feature.getAttribute("special_ne");
+            assertTrue(attribute instanceof Boolean);
+            assertTrue((Boolean) attribute);
+        }
     }
 
     @Test

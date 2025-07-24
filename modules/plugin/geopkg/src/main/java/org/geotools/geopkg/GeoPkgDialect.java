@@ -251,7 +251,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         mappings.put(Integer.class, Types.INTEGER);
         mappings.put(Float.class, Types.FLOAT);
         mappings.put(Double.class, Types.DOUBLE);
-        mappings.put(Boolean.class, Types.INTEGER);
         // SQLite has no native support for UUID datatype.
         // Map Java UUID to varchar instead
         mappings.put(UUID.class, Types.VARCHAR);

@@ -27,8 +27,7 @@ public class IDFunctionExpression extends FunctionExpressionImpl {
 
     @Override
     public Object evaluate(Object obj) {
-        if (obj instanceof Attribute) {
-            Attribute att = (Attribute) obj;
+        if (obj instanceof Attribute att) {
             return att.getIdentifier();
         }
         return null;

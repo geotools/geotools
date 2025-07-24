@@ -16,6 +16,7 @@
  */
 package org.geotools.feature;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.feature.type.Name;
 import org.geotools.util.Utilities;
@@ -42,6 +43,7 @@ import org.geotools.util.Utilities;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
 public class NameImpl implements org.geotools.api.feature.type.Name, Serializable, Comparable<NameImpl> {
+    @Serial
     private static final long serialVersionUID = 4564070184645559899L;
 
     /** namespace / scope */
@@ -132,8 +134,7 @@ public class NameImpl implements org.geotools.api.feature.type.Name, Serializabl
     public boolean equals(Object obj) {
         if (obj == this) return true;
 
-        if (obj instanceof Name) {
-            Name other = (Name) obj;
+        if (obj instanceof Name other) {
             if (!Utilities.equals(this.namespace, other.getNamespaceURI())) {
                 return false;
             }

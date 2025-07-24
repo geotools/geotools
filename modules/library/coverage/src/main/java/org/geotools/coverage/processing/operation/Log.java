@@ -21,6 +21,7 @@ package org.geotools.coverage.processing.operation;
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
@@ -67,6 +68,7 @@ import org.geotools.util.NumberRange;
  */
 public class Log extends BaseMathOperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3622176942444895367L;
 
     /** Constructs a default {@code "Log"} operation. */

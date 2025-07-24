@@ -258,22 +258,24 @@ public class ProjectionHandlerTest {
 
     @Test
     public void testValidAreaWorldVanDerGrinten() throws Exception {
-        String wkt = "PROJCS[\"World_Van_der_Grinten_I\", \n"
-                + "  GEOGCS[\"GCS_WGS_1984\", \n"
-                + "    DATUM[\"D_WGS_1984\", \n"
-                + "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n"
-                + "    PRIMEM[\"Greenwich\", 0.0], \n"
-                + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                + "    AXIS[\"Longitude\", EAST], \n"
-                + "    AXIS[\"Latitude\", NORTH]], \n"
-                + "  PROJECTION[\"World_Van_der_Grinten_I\"], \n"
-                + "  PARAMETER[\"central_meridian\", 0.0], \n"
-                + "  PARAMETER[\"false_easting\", 0.0], \n"
-                + "  PARAMETER[\"false_northing\", 0.0], \n"
-                + "  UNIT[\"m\", 1.0], \n"
-                + "  AXIS[\"x\", EAST], \n"
-                + "  AXIS[\"y\", NORTH], \n"
-                + "  AUTHORITY[\"EPSG\",\"54029\"]]";
+        String wkt =
+                """
+                PROJCS["World_Van_der_Grinten_I",\s
+                  GEOGCS["GCS_WGS_1984",\s
+                    DATUM["D_WGS_1984",\s
+                      SPHEROID["WGS_1984", 6378137.0, 298.257223563]],\s
+                    PRIMEM["Greenwich", 0.0],\s
+                    UNIT["degree", 0.017453292519943295],\s
+                    AXIS["Longitude", EAST],\s
+                    AXIS["Latitude", NORTH]],\s
+                  PROJECTION["World_Van_der_Grinten_I"],\s
+                  PARAMETER["central_meridian", 0.0],\s
+                  PARAMETER["false_easting", 0.0],\s
+                  PARAMETER["false_northing", 0.0],\s
+                  UNIT["m", 1.0],\s
+                  AXIS["x", EAST],\s
+                  AXIS["y", NORTH],\s
+                  AUTHORITY["EPSG","54029"]]""";
 
         // check valid area for the north case
         ReferencedEnvelope envelopeWgs84 = new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
@@ -327,26 +329,28 @@ public class ProjectionHandlerTest {
 
     @Test
     public void testRobustCutting() throws Exception {
-        String wkt = "PROJCS[\"Asia_South_Lambert_Conformal_Conic\", \n"
-                + "  GEOGCS[\"GCS_WGS_1984\", \n"
-                + "    DATUM[\"WGS_1984\", \n"
-                + "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n"
-                + "    PRIMEM[\"Greenwich\", 0.0], \n"
-                + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                + "    AXIS[\"Longitude\", EAST], \n"
-                + "    AXIS[\"Latitude\", NORTH]], \n"
-                + "  PROJECTION[\"Lambert_Conformal_Conic_2SP\"], \n"
-                + "  PARAMETER[\"central_meridian\", 125.0], \n"
-                + "  PARAMETER[\"latitude_of_origin\", -15.0], \n"
-                + "  PARAMETER[\"standard_parallel_1\", 7.0], \n"
-                + "  PARAMETER[\"false_easting\", 0.0], \n"
-                + "  PARAMETER[\"false_northing\", 0.0], \n"
-                + "  PARAMETER[\"scale_factor\", 1.0], \n"
-                + "  PARAMETER[\"standard_parallel_2\", -32.0], \n"
-                + "  UNIT[\"m\", 1.0], \n"
-                + "  AXIS[\"x\", EAST], \n"
-                + "  AXIS[\"y\", NORTH], \n"
-                + "  AUTHORITY[\"EPSG\",\"102030\"]]";
+        String wkt =
+                """
+                PROJCS["Asia_South_Lambert_Conformal_Conic",\s
+                  GEOGCS["GCS_WGS_1984",\s
+                    DATUM["WGS_1984",\s
+                      SPHEROID["WGS_1984", 6378137.0, 298.257223563]],\s
+                    PRIMEM["Greenwich", 0.0],\s
+                    UNIT["degree", 0.017453292519943295],\s
+                    AXIS["Longitude", EAST],\s
+                    AXIS["Latitude", NORTH]],\s
+                  PROJECTION["Lambert_Conformal_Conic_2SP"],\s
+                  PARAMETER["central_meridian", 125.0],\s
+                  PARAMETER["latitude_of_origin", -15.0],\s
+                  PARAMETER["standard_parallel_1", 7.0],\s
+                  PARAMETER["false_easting", 0.0],\s
+                  PARAMETER["false_northing", 0.0],\s
+                  PARAMETER["scale_factor", 1.0],\s
+                  PARAMETER["standard_parallel_2", -32.0],\s
+                  UNIT["m", 1.0],\s
+                  AXIS["x", EAST],\s
+                  AXIS["y", NORTH],\s
+                  AUTHORITY["EPSG","102030"]]""";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         Geometry geom;
         try (Reader reader = new InputStreamReader(
@@ -1042,19 +1046,22 @@ public class ProjectionHandlerTest {
         // envelope (result of intersecting the valid area with the geometry own bbox, which results
         // in a "line" polygon
         // Used a BASE64 encoded WKB as WKT is not precise enough to make it happen
-        String wkb = "AAAAAAMAAAACAAAAJsBX4dme0ZBrwBBHY3zBphTAV9wm/XQjVMAN5aZ25n+AwFfRnB4QLcDACkbY\n"
-                + "u6mfgMBX0IDk68FEwAn9i4xuQADAV9LyxRH1/MAKtRmwO4KAwFfFCYjFNfzABzwNbZWeAMBXro+u\n"
-                + "Q3TIwAMozHt2zADAV5nQ8kYDGMAABfJy8QWAwFdz2+lf1Xy/9dkUVMuzAMBXK24mVt9kv9u1veRJ\n"
-                + "CADAVxApDvwLFD0wAAAAAAAAwFlKt6hdgbi+jC+LAAAAAMBZS9W86QecwAP6Pg0jSwDAWOUBPzQM\n"
-                + "OMAD1MCXZ+6AwFiD2a7LN6jABO4o20CCgMBYcM4alj+AwAVxI3rh+4DAWGFB3LdZJMAGMd3VXb+A\n"
-                + "wFhJc+py+vDACDw/gWQHAMBYO+vyzRGUwAnbp1i4wgDAWDEaWTENgMALgYeOOnuAwFgpGBGENtjA\n"
-                + "DRepG9PXAMBYIP4dLlt8wA+klG+5IADAWBwX+BP4WMARKUKeEtiAwFgXoZhXNYDAExH5Zal0QMBY\n"
-                + "GEP/ANogwBbbF0xESIDAWBN/U/McQMAYXuP5jyKAwFgKqiyQ+gTAGix578FUgMBYA1s+gKpwwBsT\n"
-                + "o7wYhYDAV/qZDD5aYMAbwu+JuyoAwFfqj6KbhxTAHIrvGplNAMBX4hOw7Jx0wBy+1+x/XkDAV9vV\n"
-                + "ZESR7MAca5H4ZYHAwFfWkK/y7sDAG3TJ1EFXgMBX1+eqod08wBrqABEuC8DAV+jS2XIy3MAYBQgf\n"
-                + "RHnAwFfslYpsZkDAFphJ8XbhQMBX6mVp0arUwBOSV/ye1QDAV+HZntGQa8AQR2N8waYUAAAABMBX\n"
-                + "4dme0ZBrwBBHY3zBphTAV+GPbx9YxMAQMbM4fB1AwFfivDEmxxzAEIAAI+c6wMBX4dme0ZBrwBBH\n"
-                + "Y3zBphQ=";
+        String wkb =
+                """
+                AAAAAAMAAAACAAAAJsBX4dme0ZBrwBBHY3zBphTAV9wm/XQjVMAN5aZ25n+AwFfRnB4QLcDACkbY
+                u6mfgMBX0IDk68FEwAn9i4xuQADAV9LyxRH1/MAKtRmwO4KAwFfFCYjFNfzABzwNbZWeAMBXro+u
+                Q3TIwAMozHt2zADAV5nQ8kYDGMAABfJy8QWAwFdz2+lf1Xy/9dkUVMuzAMBXK24mVt9kv9u1veRJ
+                CADAVxApDvwLFD0wAAAAAAAAwFlKt6hdgbi+jC+LAAAAAMBZS9W86QecwAP6Pg0jSwDAWOUBPzQM
+                OMAD1MCXZ+6AwFiD2a7LN6jABO4o20CCgMBYcM4alj+AwAVxI3rh+4DAWGFB3LdZJMAGMd3VXb+A
+                wFhJc+py+vDACDw/gWQHAMBYO+vyzRGUwAnbp1i4wgDAWDEaWTENgMALgYeOOnuAwFgpGBGENtjA
+                DRepG9PXAMBYIP4dLlt8wA+klG+5IADAWBwX+BP4WMARKUKeEtiAwFgXoZhXNYDAExH5Zal0QMBY
+                GEP/ANogwBbbF0xESIDAWBN/U/McQMAYXuP5jyKAwFgKqiyQ+gTAGix578FUgMBYA1s+gKpwwBsT
+                o7wYhYDAV/qZDD5aYMAbwu+JuyoAwFfqj6KbhxTAHIrvGplNAMBX4hOw7Jx0wBy+1+x/XkDAV9vV
+                ZESR7MAca5H4ZYHAwFfWkK/y7sDAG3TJ1EFXgMBX1+eqod08wBrqABEuC8DAV+jS2XIy3MAYBQgf
+                RHnAwFfslYpsZkDAFphJ8XbhQMBX6mVp0arUwBOSV/ye1QDAV+HZntGQa8AQR2N8waYUAAAABMBX
+                4dme0ZBrwBBHY3zBphTAV+GPbx9YxMAQMbM4fB1AwFfivDEmxxzAEIAAI+c6wMBX4dme0ZBrwBBH
+                Y3zBphQ=\
+                """;
         Geometry geometry = new WKBReader().read(Base64.decode(wkb));
 
         CoordinateReferenceSystem lambertPolar = getLambertPolar();
@@ -1070,16 +1077,18 @@ public class ProjectionHandlerTest {
     @Test
     public void testCutGeometryCrossingValidArea() throws Exception {
         // same as above, but with a different geometry and a different cause
-        String wkb = "AAAAAAMAAAABAAAAIMBX4dme0ZBrwBBHY3zBphTAV9GcHhAtwMAKRti7qZ+AwFfQgOTrwUTACf2L\n"
-                + "jG5AAMBX0vLFEfX8wAq1GbA7goDAV8UJiMU1/MAHPA1tlZ4AwFeuj65DdMjAAyjMe3bMAMBXc9vp\n"
-                + "X9V8v/XZFFTLswDAVytuJlbfZL/btb3kSQgAwFcQKQ78CxQ9MAAAAAAAAMBZSreoXYG4vowviwAA\n"
-                + "AADAWUvVvOkHnMAD+j4NI0sAwFjlAT80DDjAA9TAl2fugMBYg9muyzeowATuKNtAgoDAWGFB3LdZ\n"
-                + "JMAGMd3VXb+AwFhJc+py+vDACDw/gWQHAMBYMRpZMQ2AwAuBh446e4DAWCkYEYQ22MANF6kb09cA\n"
-                + "wFgg/h0uW3zAD6SUb7kgAMBYF6GYVzWAwBMR+WWpdEDAWBhD/wDaIMAW2xdMREiAwFgKqiyQ+gTA\n"
-                + "Gix578FUgMBYA1s+gKpwwBsTo7wYhYDAV/qZDD5aYMAbwu+JuyoAwFfqj6KbhxTAHIrvGplNAMBX\n"
-                + "4hOw7Jx0wBy+1+x/XkDAV9vVZESR7MAca5H4ZYHAwFfWkK/y7sDAG3TJ1EFXgMBX1+eqod08wBrq\n"
-                + "ABEuC8DAV+jS2XIy3MAYBQgfRHnAwFfslYpsZkDAFphJ8XbhQMBX6mVp0arUwBOSV/ye1QDAV+HZ\n"
-                + "ntGQa8AQR2N8waYU";
+        String wkb =
+                """
+                AAAAAAMAAAABAAAAIMBX4dme0ZBrwBBHY3zBphTAV9GcHhAtwMAKRti7qZ+AwFfQgOTrwUTACf2L
+                jG5AAMBX0vLFEfX8wAq1GbA7goDAV8UJiMU1/MAHPA1tlZ4AwFeuj65DdMjAAyjMe3bMAMBXc9vp
+                X9V8v/XZFFTLswDAVytuJlbfZL/btb3kSQgAwFcQKQ78CxQ9MAAAAAAAAMBZSreoXYG4vowviwAA
+                AADAWUvVvOkHnMAD+j4NI0sAwFjlAT80DDjAA9TAl2fugMBYg9muyzeowATuKNtAgoDAWGFB3LdZ
+                JMAGMd3VXb+AwFhJc+py+vDACDw/gWQHAMBYMRpZMQ2AwAuBh446e4DAWCkYEYQ22MANF6kb09cA
+                wFgg/h0uW3zAD6SUb7kgAMBYF6GYVzWAwBMR+WWpdEDAWBhD/wDaIMAW2xdMREiAwFgKqiyQ+gTA
+                Gix578FUgMBYA1s+gKpwwBsTo7wYhYDAV/qZDD5aYMAbwu+JuyoAwFfqj6KbhxTAHIrvGplNAMBX
+                4hOw7Jx0wBy+1+x/XkDAV9vVZESR7MAca5H4ZYHAwFfWkK/y7sDAG3TJ1EFXgMBX1+eqod08wBrq
+                ABEuC8DAV+jS2XIy3MAYBQgfRHnAwFfslYpsZkDAFphJ8XbhQMBX6mVp0arUwBOSV/ye1QDAV+HZ
+                ntGQa8AQR2N8waYU""";
         Geometry geometry = new WKBReader().read(Base64.decode(wkb));
 
         CoordinateReferenceSystem lambertPolar = getLambertPolar();
@@ -1220,18 +1229,20 @@ public class ProjectionHandlerTest {
 
     @Test
     public void testLargeObjectSourceInFeet() throws Exception {
-        String worldMercatorFeet = "PROJCS[\"World_Mercator\",\n"
-                + "    GEOGCS[\"GCS_WGS_1984\",\n"
-                + "        DATUM[\"WGS_1984\",\n"
-                + "            SPHEROID[\"WGS_1984\",6378137,298.257223563]],\n"
-                + "        PRIMEM[\"Greenwich\",0],\n"
-                + "        UNIT[\"Degree\",0.017453292519943295]],\n"
-                + "    PROJECTION[\"Mercator_1SP\"],\n"
-                + "    PARAMETER[\"False_Easting\",0],\n"
-                + "    PARAMETER[\"False_Northing\",0],\n"
-                + "    PARAMETER[\"Central_Meridian\",0],\n"
-                + "    UNIT[\"Foot_US\",0.3048006096012192],\n"
-                + "    AUTHORITY[\"EPSG\",\"54004\"]]";
+        String worldMercatorFeet =
+                """
+                PROJCS["World_Mercator",
+                    GEOGCS["GCS_WGS_1984",
+                        DATUM["WGS_1984",
+                            SPHEROID["WGS_1984",6378137,298.257223563]],
+                        PRIMEM["Greenwich",0],
+                        UNIT["Degree",0.017453292519943295]],
+                    PROJECTION["Mercator_1SP"],
+                    PARAMETER["False_Easting",0],
+                    PARAMETER["False_Northing",0],
+                    PARAMETER["Central_Meridian",0],
+                    UNIT["Foot_US",0.3048006096012192],
+                    AUTHORITY["EPSG","54004"]]""";
         CoordinateReferenceSystem WOLD_MERCATOR_FEET = CRS.parseWKT(worldMercatorFeet);
 
         Geometry g = new WKTReader()

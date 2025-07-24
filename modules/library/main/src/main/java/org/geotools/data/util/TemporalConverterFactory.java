@@ -72,7 +72,7 @@ public class TemporalConverterFactory implements ConverterFactory {
 
         if (hints != null) {
             Object safe = hints.get(ConverterFactory.SAFE_CONVERSION);
-            if (safe instanceof Boolean && ((Boolean) safe).booleanValue()) {
+            if (safe instanceof Boolean boolean1 && boolean1.booleanValue()) {
                 isSafeOnly = true;
             }
         }
@@ -163,9 +163,8 @@ public class TemporalConverterFactory implements ConverterFactory {
                 return new Converter() {
                     @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
-                        if (source instanceof GregorianCalendar) {
-                            return target.cast(
-                                    DatatypeFactory.newInstance().newXMLGregorianCalendar((GregorianCalendar) source));
+                        if (source instanceof GregorianCalendar calendar) {
+                            return target.cast(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
                         }
 
                         return null;

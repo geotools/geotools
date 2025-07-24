@@ -61,8 +61,8 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 return new Converter() {
                     @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
-                        if (source instanceof Date) {
-                            return target.cast(df.format((Date) source));
+                        if (source instanceof Date date) {
+                            return target.cast(df.format(date));
                         }
                         return null;
                     }
@@ -82,8 +82,8 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 return new Converter() {
                     @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
-                        if (source instanceof Calendar) {
-                            return target.cast(df.format(((Calendar) source).getTime()));
+                        if (source instanceof Calendar calendar) {
+                            return target.cast(df.format(calendar.getTime()));
                         }
                         return null;
                     }
@@ -100,8 +100,7 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 return new Converter() {
                     @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
-                        if (source instanceof XMLGregorianCalendar) {
-                            XMLGregorianCalendar xmlc = (XMLGregorianCalendar) source;
+                        if (source instanceof XMLGregorianCalendar xmlc) {
                             Date date = xmlc.toGregorianCalendar(GMT, Locale.getDefault(), null)
                                     .getTime();
                             return target.cast(df.format(date));

@@ -167,8 +167,8 @@ public class AttributeGroupHandler extends XSIElementHandler {
             while (i.hasNext()) {
                 Object o = i.next();
 
-                if (o instanceof AttributeHandler) {
-                    h.add(((AttributeHandler) o).compress(parent));
+                if (o instanceof AttributeHandler handler) {
+                    h.add(handler.compress(parent));
                 } else {
                     AttributeGroupHandler agh = (AttributeGroupHandler) o;
                     AttributeGroup ag = agh.compress(parent);

@@ -69,8 +69,8 @@ public class FeatureIdImpl implements FeatureId {
 
     @Override
     public boolean matches(Object object) {
-        if (object instanceof Feature) {
-            return matches((Feature) object);
+        if (object instanceof Feature feature) {
+            return matches(feature);
         }
         return false;
     }
@@ -82,8 +82,8 @@ public class FeatureIdImpl implements FeatureId {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof FeatureId) {
-            return fid.equals(((FeatureId) obj).getID());
+        if (obj instanceof FeatureId id) {
+            return fid.equals(id.getID());
         }
         return false;
     }

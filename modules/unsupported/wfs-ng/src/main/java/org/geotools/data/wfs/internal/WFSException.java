@@ -17,12 +17,14 @@
 package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /** A Java Exception that mirrors a WFS {@code ExceptionReport}. */
 public class WFSException extends IOException {
+    @Serial
     private static final long serialVersionUID = -2828901359361793862L;
 
     private StringBuilder msg;

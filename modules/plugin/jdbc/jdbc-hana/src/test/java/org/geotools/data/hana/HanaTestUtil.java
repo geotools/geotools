@@ -490,24 +490,19 @@ public class HanaTestUtil {
     private void addObject(StringBuilder sql, Object object) {
         if (object == null) {
             sql.append("NULL");
-        } else if (object instanceof String) {
-            addString(sql, (String) object);
-        } else if (object instanceof Integer) {
-            sql.append(Integer.toString((Integer) object));
-        } else if (object instanceof NextSequenceValue) {
-            NextSequenceValue nsv = (NextSequenceValue) object;
+        } else if (object instanceof String string) {
+            addString(sql, string);
+        } else if (object instanceof Integer integer) {
+            sql.append(Integer.toString(integer));
+        } else if (object instanceof NextSequenceValue nsv) {
             nsv.encode(sql);
-        } else if (object instanceof Geometry) {
-            Geometry g = (Geometry) object;
+        } else if (object instanceof Geometry g) {
             g.encode(sql);
-        } else if (object instanceof Double) {
-            Double d = (Double) object;
+        } else if (object instanceof Double d) {
             sql.append(Double.toString(d));
-        } else if (object instanceof Boolean) {
-            Boolean b = (Boolean) object;
+        } else if (object instanceof Boolean b) {
             sql.append(b == true ? "TRUE" : "FALSE");
-        } else if (object instanceof byte[]) {
-            byte[] bin = (byte[]) object;
+        } else if (object instanceof byte[] bin) {
             addByteArray(sql, bin);
         } else {
             throw new RuntimeException("Unsupported object type " + object.getClass());

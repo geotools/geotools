@@ -253,8 +253,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         for (int i = 0; i < dimension; i++) {
             orderedAxis[i] = replace(cs.getAxis(i));
         }
-        if (this instanceof Comparator) {
-            Arrays.sort(orderedAxis, (Comparator) this);
+        if (this instanceof Comparator comparator) {
+            Arrays.sort(orderedAxis, comparator);
         }
         for (int i = 0; i < dimension; i++) {
             if (!orderedAxis[i].equals(cs.getAxis(i))) {
@@ -301,8 +301,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         final CoordinateSystem oldCS = crs.getCoordinateSystem();
         final CoordinateSystem cs = replace(oldCS);
         final Datum oldDatum, datum;
-        if (crs instanceof SingleCRS) {
-            oldDatum = ((SingleCRS) crs).getDatum();
+        if (crs instanceof SingleCRS rS) {
+            oldDatum = rS.getDatum();
             datum = replace(oldDatum);
         } else {
             datum = oldDatum = null;
@@ -314,8 +314,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
          * authority code.
          */
         CoordinateReferenceSystem modified;
-        if (crs instanceof GeneralDerivedCRS) {
-            final GeneralDerivedCRS derivedCRS = (GeneralDerivedCRS) crs;
+        if (crs instanceof GeneralDerivedCRS derivedCRS) {
             final CoordinateReferenceSystem oldBaseCRS = derivedCRS.getBaseCRS();
             final CoordinateReferenceSystem baseCRS = replace(oldBaseCRS);
             if (sameCS && Utilities.equals(baseCRS, oldBaseCRS)) {
@@ -345,8 +344,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 modified = crsFactory.createGeographicCRS(properties, (GeodeticDatum) datum, (EllipsoidalCS) cs);
             } else if (crs instanceof GeocentricCRS) {
                 final GeodeticDatum gd = (GeodeticDatum) datum;
-                if (cs instanceof CartesianCS) {
-                    modified = crsFactory.createGeocentricCRS(properties, gd, (CartesianCS) cs);
+                if (cs instanceof CartesianCS cS) {
+                    modified = crsFactory.createGeocentricCRS(properties, gd, cS);
                 } else {
                     modified = crsFactory.createGeocentricCRS(properties, gd, (SphericalCS) cs);
                 }
@@ -358,8 +357,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 modified = crsFactory.createImageCRS(properties, (ImageDatum) datum, (AffineCS) cs);
             } else if (crs instanceof EngineeringCRS) {
                 modified = crsFactory.createEngineeringCRS(properties, (EngineeringDatum) datum, cs);
-            } else if (crs instanceof CompoundCRS) {
-                final List<CoordinateReferenceSystem> elements = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            } else if (crs instanceof CompoundCRS rS) {
+                final List<CoordinateReferenceSystem> elements = rS.getCoordinateReferenceSystems();
                 final CoordinateReferenceSystem[] m = new CoordinateReferenceSystem[elements.size()];
                 for (int i = 0; i < m.length; i++) {
                     m[i] = replace(elements.get(i));
@@ -511,8 +510,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 operation = it.next();
             } catch (BackingStoreException exception) {
                 final Throwable cause = exception.getCause();
-                if (cause instanceof FactoryException) {
-                    throw (FactoryException) cause;
+                if (cause instanceof FactoryException factoryException) {
+                    throw factoryException;
                 } else {
                     throw exception;
                 }

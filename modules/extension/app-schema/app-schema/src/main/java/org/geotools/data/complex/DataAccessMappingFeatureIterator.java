@@ -77,7 +77,6 @@ import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -279,8 +278,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected Object peekValue(Object source, Expression prop) {
         Object o = prop.evaluate(source);
-        if (o instanceof Attribute) {
-            o = ((Attribute) o).getValue();
+        if (o instanceof Attribute attribute) {
+            o = attribute.getValue();
         }
         return o;
     }
@@ -338,8 +337,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         Expression idExpression = mapping.getFeatureIdExpression();
         if (Expression.NIL.equals(idExpression) || idExpression instanceof Literal) {
             // GEOT-4554: if idExpression is not specified, should use PK
-            if (source instanceof Feature) {
-                for (Property p : ((Feature) source).getProperties()) {
+            if (source instanceof Feature feature) {
+                for (Property p : feature.getProperties()) {
                     if (p.getName().getLocalPart().startsWith(JoiningJDBCFeatureSource.PRIMARY_KEY)) {
                         ids.add(p.getValue());
                     }
@@ -374,10 +373,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         // NC - joining query
         if (query instanceof JoiningQuery) {
             JoiningJDBCFeatureSource joiningJdbcFS = null;
-            if (mappedSource instanceof JDBCFeatureSource) {
-                joiningJdbcFS = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
-            } else if (mappedSource instanceof JDBCFeatureStore) {
-                joiningJdbcFS = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
+            if (mappedSource instanceof JDBCFeatureSource source) {
+                joiningJdbcFS = new JoiningJDBCFeatureSource(source);
+            } else if (mappedSource instanceof JDBCFeatureStore featureStore) {
+                joiningJdbcFS = new JoiningJDBCFeatureSource(featureStore);
             } else {
                 throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
             }
@@ -422,11 +421,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             CoordinateReferenceSystem target;
             Object crsobject =
                     this.mapping.getTargetFeature().getType().getUserData().get("targetCrs");
-            if (crsobject instanceof CoordinateReferenceSystem) {
-                target = (CoordinateReferenceSystem) crsobject;
-            } else if (crsobject instanceof URI) {
-
-                URI uri = (URI) crsobject;
+            if (crsobject instanceof CoordinateReferenceSystem system) {
+                target = system;
+            } else if (crsobject instanceof URI uri) {
                 if (uri != null) {
                     try {
                         target = CRS.decode(uri.toString());
@@ -470,8 +467,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         // NC - joining nested atts
         for (AttributeMapping attMapping : selectedMapping) {
 
-            if (attMapping instanceof JoiningNestedAttributeMapping) {
-                ((JoiningNestedAttributeMapping) attMapping).open(this, query, mapping);
+            if (attMapping instanceof JoiningNestedAttributeMapping attributeMapping) {
+                attributeMapping.open(this, query, mapping);
             }
         }
     }
@@ -516,28 +513,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected Object getValues(boolean isMultiValued, Expression expression, Object sourceFeatureInput) {
         if (isMultiValued
-                && sourceFeatureInput instanceof FeatureImpl
-                && expression instanceof AttributeExpressionImpl) {
-            // RA: Feature Chaining
-            // complex features can have multiple nodes of the same attribute.. and if they are used
-            // as input to an app-schema data access to be nested inside another feature type of a
-            // different XML type, it has to be mapped like this:
-            // <AttributeMapping>
-            // <targetAttribute>
-            // gsml:composition
-            // </targetAttribute>
-            // <sourceExpression>
-            // <inputAttribute>mo:composition</inputAttribute>
-            // <linkElement>gsml:CompositionPart</linkElement>
-            // <linkField>gml:name</linkField>
-            // </sourceExpression>
-            // <isMultiple>true</isMultiple>
-            // </AttributeMapping>
-            // As there can be multiple nodes of mo:composition in this case, we need to retrieve
-            // all of them
-            AttributeExpressionImpl attribExpression = (AttributeExpressionImpl) expression;
+                && sourceFeatureInput instanceof ComplexAttribute sourceFeature
+                && expression instanceof AttributeExpressionImpl attribExpression) {
             String xpath = attribExpression.getPropertyName();
-            ComplexAttribute sourceFeature = (ComplexAttribute) sourceFeatureInput;
             StepList xpathSteps = XPath.steps(sourceFeature.getDescriptor(), xpath, namespaces);
             return getProperties(sourceFeature, xpathSteps);
         }
@@ -573,11 +551,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             NestedAttributeMapping nestedMapping = (NestedAttributeMapping) attMapping;
             Object mappingName = nestedMapping.getNestedFeatureType(source);
             if (mappingName != null) {
-                if (nestedMapping.isSameSource() && mappingName instanceof Name) {
+                if (nestedMapping.isSameSource() && mappingName instanceof Name name) {
                     // data type polymorphism mapping
-                    return setPolymorphicValues(
-                            (Name) mappingName, target, id, nestedMapping, source, xpath, clientPropsMappings);
-                } else if (mappingName instanceof String) {
+                    return setPolymorphicValues(name, target, id, nestedMapping, source, xpath, clientPropsMappings);
+                } else if (mappingName instanceof String string) {
                     // referential polymorphism mapping
                     if (attMapping instanceof JoiningNestedAttributeMapping) {
                         // GEOT-4417: update skipped ids when skipping with
@@ -587,8 +564,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         }
                         if (values != null) {
                             List<Object> idValues = getIdValues(source);
-                            if (values instanceof Collection) {
-                                for (Object singleVal : (Collection) values) {
+                            if (values instanceof Collection collection) {
+                                for (Object singleVal : collection) {
                                     ((JoiningNestedAttributeMapping) attMapping).skip(this, singleVal, idValues);
                                 }
                             } else {
@@ -596,17 +573,16 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                             }
                         }
                     }
-                    return setPolymorphicReference(
-                            (String) mappingName, clientPropsMappings, target, xpath, targetNodeType);
+                    return setPolymorphicReference(string, clientPropsMappings, target, xpath, targetNodeType);
                 }
             } else {
                 // polymorphism could result in null, to skip the attribute
                 return null;
             }
         }
-        if (source instanceof Feature && attMapping.isMultiValued() && attMapping.getMultipleValue() != null) {
+        if (source instanceof Feature feature && attMapping.isMultiValued() && attMapping.getMultipleValue() != null) {
             // extract the multiple value for the current multiple values attributes
-            values = extractMultipleValues((Feature) source, attMapping);
+            values = extractMultipleValues(feature, attMapping);
         } else if (values == null && source != null) {
             values = getValues(attMapping.isMultiValued(), sourceExpression, source);
         }
@@ -620,16 +596,16 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             ignoreXlinkHref = true;
         }
         if (isNestedFeature) {
-            if (values instanceof Collection) {
-                ArrayList<Attribute> nestedFeatures = new ArrayList<>(((Collection) values).size());
-                for (Object val : (Collection) values) {
-                    if (val instanceof Attribute) {
-                        val = ((Attribute) val).getValue();
-                        if (val instanceof Collection) {
-                            val = ((Collection) val).iterator().next();
+            if (values instanceof Collection collection1) {
+                ArrayList<Attribute> nestedFeatures = new ArrayList<>(collection1.size());
+                for (Object val : collection1) {
+                    if (val instanceof Attribute attribute) {
+                        val = attribute.getValue();
+                        if (val instanceof Collection collection) {
+                            val = collection.iterator().next();
                         }
                         while (val instanceof Attribute) {
-                            val = ((Attribute) val).getValue();
+                            val = attribute.getValue();
                         }
                     }
                     if (isHRefLink) {
@@ -708,16 +684,15 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 ArrayList<Object> valueList = new ArrayList<>();
                 Map<Name, Expression> clientProperties = clientPropsMappings;
                 if (!isNestedFeature) {
-                    if (singleVal instanceof Attribute) {
-                        singleVal = ((Attribute) singleVal).getValue();
+                    if (singleVal instanceof Attribute attribute) {
+                        singleVal = attribute.getValue();
                     }
                     if (singleVal instanceof Collection) {
                         @SuppressWarnings("unchecked")
                         Collection<Object> collection = (Collection) singleVal;
                         valueList.addAll(collection);
                     }
-                    if (singleVal instanceof MultiValueContainer) {
-                        MultiValueContainer multiValue = (MultiValueContainer) singleVal;
+                    if (singleVal instanceof MultiValueContainer multiValue) {
                         valueList.add(multiValue.value);
                         clientProperties = MultiValueContainer.resolve(filterFac, multiValue, clientProperties);
                     } else {
@@ -739,15 +714,15 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         ignoreXlinkHref);
             }
         } else {
-            if (values instanceof Attribute) {
+            if (values instanceof Attribute attribute) {
                 // copy client properties from input features if they're complex features
                 // wrapped in app-schema data access
-                Map<Name, Expression> newClientProps = getClientProperties((Attribute) values);
+                Map<Name, Expression> newClientProps = getClientProperties(attribute);
                 if (!newClientProps.isEmpty()) {
                     newClientProps.putAll(clientPropsMappings);
                     clientPropsMappings = newClientProps;
                 }
-                values = ((Attribute) values).getValue();
+                values = attribute.getValue();
             }
 
             instance = setAttributeContent(
@@ -901,8 +876,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             // we need to get the values from the jdbc based data source
             if (!(mappedSource instanceof JoiningJDBCFeatureSource)) {
                 // ouch, this should a jdbc based data source
-                throw new RuntimeException(String.format(
-                        "JDBC multi values only work with JDBC based data sources, got '%s'.", mappedSource.getName()));
+                throw new RuntimeException("JDBC multi values only work with JDBC based data sources, got '%s'."
+                        .formatted(mappedSource.getName()));
             }
             JoiningJDBCFeatureSource jdbcDataSource = (JoiningJDBCFeatureSource) mappedSource;
             // query the multiple values
@@ -988,9 +963,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             throws IOException {
         // process sub-type mapping
         DataAccess<FeatureType, Feature> da = DataAccessRegistry.getDataAccess(mappingName);
-        if (da instanceof AppSchemaDataAccess) {
+        if (da instanceof AppSchemaDataAccess access) {
             // why wouldn't it be? check just to be safe
-            FeatureTypeMapping fTypeMapping = ((AppSchemaDataAccess) da).getMappingByName(mappingName);
+            FeatureTypeMapping fTypeMapping = access.getMappingByName(mappingName);
             List<AttributeMapping> polymorphicMappings = fTypeMapping.getAttributeMappings();
             AttributeDescriptor attDescriptor = fTypeMapping.getTargetFeature();
             AttributeType type = attDescriptor.getType();
@@ -1181,8 +1156,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             for (Feature source : sources) {
                 Object value = getValues(attMapping.isMultiValued(), attMapping.getSourceExpression(), source);
 
-                if (value instanceof Collection) {
-                    for (Object val : (Collection) value) {
+                if (value instanceof Collection collection) {
+                    for (Object val : collection) {
                         ((JoiningNestedAttributeMapping) attMapping).skip(this, val, getIdValues(source));
                     }
                 } else {
@@ -1231,16 +1206,16 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         Collection<PropertyDescriptor> schema = new ArrayList<>();
 
         for (PropertyDescriptor descr : type.getDescriptors()) {
-            if (descr instanceof GeometryDescriptor) {
-                schema.add(reprojectGeometry((GeometryDescriptor) descr));
+            if (descr instanceof GeometryDescriptor descriptor) {
+                schema.add(reprojectGeometry(descriptor));
             } else {
                 schema.add(descr);
             }
         }
 
         FeatureType ft;
-        if (type instanceof NonFeatureTypeProxy) {
-            ft = new NonFeatureTypeProxy(((NonFeatureTypeProxy) type).getSubject(), mapping, schema);
+        if (type instanceof NonFeatureTypeProxy proxy) {
+            ft = new NonFeatureTypeProxy(proxy.getSubject(), mapping, schema);
         } else {
             ft = ftf.createFeatureType(
                     type.getName(),
@@ -1440,8 +1415,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
             List<Property> values = new ArrayList<>();
             for (Object o : collection) {
-                if (o instanceof Property) {
-                    Property p = (Property) o;
+                if (o instanceof Property p) {
                     if (hasChild(p)) {
                         values.add(p);
                         result = true;
@@ -1509,8 +1483,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
             // NC - joining nested atts
             for (AttributeMapping attMapping : selectedMapping) {
-                if (attMapping instanceof JoiningNestedAttributeMapping) {
-                    ((JoiningNestedAttributeMapping) attMapping).close(this);
+                if (attMapping instanceof JoiningNestedAttributeMapping attributeMapping) {
+                    attributeMapping.close(this);
                 }
             }
 
@@ -1527,8 +1501,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     @Override
     protected Object getValue(final Expression expression, Object sourceFeature) {
         Object value = expression.evaluate(sourceFeature);
-        if (value instanceof Attribute) {
-            value = ((Attribute) value).getValue();
+        if (value instanceof Attribute attribute) {
+            value = attribute.getValue();
         }
         return value;
     }

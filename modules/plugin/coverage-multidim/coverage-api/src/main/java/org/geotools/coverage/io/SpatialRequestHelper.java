@@ -302,7 +302,7 @@ public class SpatialRequestHelper {
             destinationToSourceTransform = null; // the CRS is basically the same
         } else {
             needsReprojection = true;
-            if (destinationToSourceTransform instanceof AffineTransform) {
+            if (destinationToSourceTransform instanceof AffineTransform transform) {
                 //
                 // k, the transformation between the various CRS is not null or the
                 // Identity, let's see if it is an affine transform, which case we
@@ -312,7 +312,7 @@ public class SpatialRequestHelper {
                 // update the requested grid to world transformation by pre concatenating the
                 // destination to source transform
                 AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
-                mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
+                mutableTransform.preConcatenate(transform);
 
                 // update the requested envelope
                 try {

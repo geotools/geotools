@@ -123,13 +123,15 @@ public class H2MigratorTest {
 
         // build the target store config file
         final File targetStoreConfiguration = new File(testDir, "target.properties");
-        final String properties = String.format(
-                "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                        + "driver=org.h2.Driver\n"
-                        + "database=%s\n"
-                        + "user=sa\n"
-                        + "password=",
-                getTargetDbForProperties(testDir));
+        final String properties =
+                """
+                SPI=org.geotools.data.h2.H2DataStoreFactory
+                driver=org.h2.Driver
+                database=%s
+                user=sa
+                password=\
+                """
+                        .formatted(getTargetDbForProperties(testDir));
         FileUtils.writeStringToFile(targetStoreConfiguration, properties, "UTF-8");
 
         File logDir = new File(testDir, "logs");
@@ -200,20 +202,26 @@ public class H2MigratorTest {
 
             // build the sourcestore config file
             final File sourceStoreConfiguration = new File(testDir, "source.properties");
-            final String sourceProperties = String.format(
-                    "SPI=org.geotools.data.h2.H2DataStoreFactory\n" + "driver=org.h2.Driver\n" + "database=%s\n",
-                    mosaicDatabasePath.replace("\\", "\\\\"));
+            final String sourceProperties =
+                    """
+                    SPI=org.geotools.data.h2.H2DataStoreFactory
+                    driver=org.h2.Driver
+                    database=%s
+                    """
+                            .formatted(mosaicDatabasePath.replace("\\", "\\\\"));
             FileUtils.writeStringToFile(sourceStoreConfiguration, sourceProperties, "UTF-8");
 
             // build the target store config file
             final File targetStoreConfiguration = new File(testDir, "target.properties");
-            final String targetProperties = String.format(
-                    "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                            + "driver=org.h2.Driver\n"
-                            + "database=%s\n"
-                            + "user=sa\n"
-                            + "password=",
-                    getTargetDbForProperties(testDir));
+            final String targetProperties =
+                    """
+                    SPI=org.geotools.data.h2.H2DataStoreFactory
+                    driver=org.h2.Driver
+                    database=%s
+                    user=sa
+                    password=\
+                    """
+                            .formatted(getTargetDbForProperties(testDir));
             FileUtils.writeStringToFile(targetStoreConfiguration, targetProperties, "UTF-8");
 
             File logDir = new File(testDir, "logs");
@@ -419,13 +427,15 @@ public class H2MigratorTest {
 
         // build the target store config file
         final File targetStoreConfiguration = new File(testDir, "target.properties");
-        final String properties = String.format(
-                "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                        + "driver=org.h2.Driver\n"
-                        + "database=%s\n"
-                        + "user=sa\n"
-                        + "password=",
-                getTargetDbForProperties(testDir));
+        final String properties =
+                """
+                SPI=org.geotools.data.h2.H2DataStoreFactory
+                driver=org.h2.Driver
+                database=%s
+                user=sa
+                password=\
+                """
+                        .formatted(getTargetDbForProperties(testDir));
         FileUtils.writeStringToFile(targetStoreConfiguration, properties, "UTF-8");
 
         File logDir = new File(testDir, "logs");

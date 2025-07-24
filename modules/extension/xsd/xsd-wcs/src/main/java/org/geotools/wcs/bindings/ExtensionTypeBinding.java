@@ -67,8 +67,8 @@ public class ExtensionTypeBinding extends AbstractComplexBinding {
             ExtensionItemType item = Wcs20Factory.eINSTANCE.createExtensionItemType();
             item.setName(name);
             item.setNamespace(namespace);
-            if (v instanceof String) {
-                item.setSimpleContent((String) v);
+            if (v instanceof String string) {
+                item.setSimpleContent(string);
             } else {
                 item.setObjectContent(v);
             }

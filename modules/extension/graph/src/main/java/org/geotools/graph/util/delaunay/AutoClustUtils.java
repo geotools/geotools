@@ -107,8 +107,8 @@ public class AutoClustUtils {
                 SimpleFeature next = iter.next();
                 Geometry geom = (Geometry) next.getDefaultGeometry();
                 Point centroid;
-                if (geom instanceof Point) {
-                    centroid = (Point) geom;
+                if (geom instanceof Point point) {
+                    centroid = point;
                 } else {
                     centroid = geom.getCentroid();
                 }

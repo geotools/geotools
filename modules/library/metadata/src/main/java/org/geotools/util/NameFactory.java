@@ -120,30 +120,28 @@ public final class NameFactory {
      * @throws ClassCastException if {@code value} can't be cast.
      */
     public static GenericName[] toArray(final Object value) throws ClassCastException {
-        if (value instanceof GenericName[]) {
-            return (GenericName[]) value;
+        if (value instanceof GenericName[] names) {
+            return names;
         }
-        if (value instanceof GenericName) {
-            return new GenericName[] {(GenericName) value};
+        if (value instanceof GenericName name) {
+            return new GenericName[] {name};
         }
         if (value instanceof CharSequence) {
             return new GenericName[] {create(value.toString())};
         }
-        if (value instanceof CharSequence[]) {
-            final CharSequence[] values = (CharSequence[]) value;
+        if (value instanceof CharSequence[] values) {
             final GenericName[] names = new GenericName[values.length];
             for (int i = 0; i < values.length; i++) {
                 final CharSequence v = values[i];
-                names[i] = v instanceof GenericName ? (GenericName) v : create(v.toString());
+                names[i] = v instanceof GenericName gn ? gn : create(v.toString());
             }
             return names;
         }
-        if (value instanceof Identifier[]) {
-            final Identifier[] values = (Identifier[]) value;
+        if (value instanceof Identifier[] values) {
             final GenericName[] names = new GenericName[values.length];
             for (int i = 0; i < values.length; i++) {
                 final Identifier v = values[i];
-                names[i] = v instanceof GenericName ? (GenericName) v : create(v.getCode());
+                names[i] = v instanceof GenericName gn ? gn : create(v.getCode());
             }
             return names;
         }

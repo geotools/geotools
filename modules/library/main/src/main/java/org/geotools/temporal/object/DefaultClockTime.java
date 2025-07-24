@@ -61,8 +61,7 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultClockTime && super.equals(object)) {
-            final DefaultClockTime that = (DefaultClockTime) object;
+        if (object instanceof DefaultClockTime that && super.equals(object)) {
 
             return Utilities.equals(this.clockTime, that.clockTime);
         }

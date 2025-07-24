@@ -411,8 +411,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof ExternalGraphic) {
-                ExternalGraphic externalGraphic = (ExternalGraphic) gs;
+            if (gs != null && gs instanceof ExternalGraphic externalGraphic) {
                 try {
                     URL location = externalGraphic.getLocation(); // Should check format is supported by SWT
                     if (location != null) {
@@ -463,8 +462,8 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                return (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
+                return mark;
             }
         }
 
@@ -522,8 +521,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                Mark mark = (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
                 String s = wellKnownName(mark);
                 if (s != null) {
                     return s;
@@ -594,8 +592,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                Mark mark = (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
 
                 Stroke stroke = mark.getStroke();
                 if (stroke == null) {
@@ -631,8 +628,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                Mark mark = (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
                 Stroke stroke = mark.getStroke();
                 if (stroke != null) {
                     Color colour = color(stroke);
@@ -666,8 +662,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                Mark mark = (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
                 Stroke stroke = mark.getStroke();
                 if (stroke != null) {
                     Expression exp = stroke.getWidth();
@@ -704,8 +699,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                Mark mark = (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
                 Stroke stroke = mark.getStroke();
                 if (stroke != null) {
                     Expression exp = stroke.getOpacity();
@@ -737,8 +731,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                Mark mark = (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
                 Fill fill = mark.getFill();
                 if (fill != null) {
                     Expression expr = fill.getOpacity();
@@ -772,8 +765,7 @@ public class SLD {
         }
 
         for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-            if (gs != null && gs instanceof Mark) {
-                Mark mark = (Mark) gs;
+            if (gs != null && gs instanceof Mark mark) {
                 Fill fill = mark.getFill();
                 if (fill != null) {
                     Color colour = color(fill.getColor());
@@ -1547,12 +1539,10 @@ public class SLD {
         List<Style> styles = new ArrayList<>();
 
         for (StyledLayer styledLayer : layers) {
-            if (styledLayer instanceof UserLayer) {
-                UserLayer layer = (UserLayer) styledLayer;
+            if (styledLayer instanceof UserLayer layer) {
                 styles.addAll(layer.userStyles());
 
-            } else if (styledLayer instanceof NamedLayer) {
-                NamedLayer layer = (NamedLayer) styledLayer;
+            } else if (styledLayer instanceof NamedLayer layer) {
                 styles.addAll(layer.styles());
             }
         }
@@ -1734,16 +1724,13 @@ public class SLD {
 
         Color color = null;
         for (Symbolizer sym : rule.symbolizers()) {
-            if (sym instanceof PolygonSymbolizer) {
-                PolygonSymbolizer symb = (PolygonSymbolizer) sym;
+            if (sym instanceof PolygonSymbolizer symb) {
                 color = polyFill(symb);
 
-            } else if (sym instanceof LineSymbolizer) {
-                LineSymbolizer symb = (LineSymbolizer) sym;
+            } else if (sym instanceof LineSymbolizer symb) {
                 color = color(symb);
 
-            } else if (sym instanceof PointSymbolizer) {
-                PointSymbolizer symb = (PointSymbolizer) sym;
+            } else if (sym instanceof PointSymbolizer symb) {
                 color = color(symb);
             }
 

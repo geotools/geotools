@@ -66,12 +66,12 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
         Object value = arg.evaluate(att);
 
         if (value != null) {
-            if (value instanceof Geometry) {
+            if (value instanceof Geometry geometry) {
                 if (value instanceof GeometryCollection) {
                     return value;
                 }
 
-                return wrap((Geometry) value);
+                return wrap(geometry);
             } else {
                 throw new IllegalArgumentException("function argument did not evaluate to " + Geometry.class);
             }
@@ -81,12 +81,12 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
     }
 
     private GeometryCollection wrap(Geometry geometry) {
-        if (geometry instanceof Point) {
-            return geometry.getFactory().createMultiPoint(new Point[] {(Point) geometry});
-        } else if (geometry instanceof LineString) {
-            return geometry.getFactory().createMultiLineString(new LineString[] {(LineString) geometry});
-        } else if (geometry instanceof Polygon) {
-            return geometry.getFactory().createMultiPolygon(new Polygon[] {(Polygon) geometry});
+        if (geometry instanceof Point point) {
+            return geometry.getFactory().createMultiPoint(new Point[] {point});
+        } else if (geometry instanceof LineString string) {
+            return geometry.getFactory().createMultiLineString(new LineString[] {string});
+        } else if (geometry instanceof Polygon polygon) {
+            return geometry.getFactory().createMultiPolygon(new Polygon[] {polygon});
         }
 
         throw new IllegalArgumentException("Unable to create multi geometry from " + geometry);

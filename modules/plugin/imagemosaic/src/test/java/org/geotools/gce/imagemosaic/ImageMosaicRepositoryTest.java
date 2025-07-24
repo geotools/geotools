@@ -402,9 +402,9 @@ public class ImageMosaicRepositoryTest {
             ab.init(ad);
             ab.setMinOccurs(0);
             AttributeDescriptor mappedDescriptor;
-            if (ad instanceof GeometryDescriptor) {
+            if (ad instanceof GeometryDescriptor descriptor) {
                 GeometryType at = ab.buildGeometryType();
-                ab.setCRS(((GeometryDescriptor) ad).getCoordinateReferenceSystem());
+                ab.setCRS(descriptor.getCoordinateReferenceSystem());
                 mappedDescriptor = ab.buildDescriptor(new NameImpl(namespaceURI, name), at);
             } else {
                 AttributeType at = ab.buildType();

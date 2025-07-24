@@ -22,6 +22,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.io.Serial;
 import java.text.MessageFormat;
 import javax.measure.Unit;
 import org.geotools.api.coverage.ColorInterpretation;
@@ -45,6 +46,7 @@ import org.geotools.util.factory.Hints;
  */
 final class RenderedSampleDimension extends GridSampleDimension {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 946331925096804779L;
 
     /** Band number for this sample dimension. */

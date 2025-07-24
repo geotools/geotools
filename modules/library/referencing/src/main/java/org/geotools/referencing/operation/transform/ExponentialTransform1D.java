@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -53,6 +54,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class ExponentialTransform1D extends AbstractMathTransform implements MathTransform1D, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5331178990358868947L;
 
     /** The base to be raised to a power. */
@@ -216,8 +218,8 @@ public class ExponentialTransform1D extends AbstractMathTransform implements Mat
                     return create(base, scale * linear.scale);
                 }
             }
-        } else if (other instanceof LogarithmicTransform1D) {
-            return concatenateLog((LogarithmicTransform1D) other, applyOtherFirst);
+        } else if (other instanceof LogarithmicTransform1D transform1D) {
+            return concatenateLog(transform1D, applyOtherFirst);
         }
         return super.concatenate(other, applyOtherFirst);
     }
@@ -284,6 +286,7 @@ public class ExponentialTransform1D extends AbstractMathTransform implements Mat
      */
     public static class Provider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -5838840021166379987L;
 
         /**

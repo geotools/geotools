@@ -92,9 +92,9 @@ class MatchFunction extends FunctionExpressionImpl {
         if (inputType == null
                 || !Number.class.isAssignableFrom(inputType.getClass())
                         && !String.class.isAssignableFrom(inputType.getClass())) {
-            throw new MBFormatException(String.format(
-                    "MBDecision \"match\" requires a number or string expression for input type, found %s",
-                    inputType != null ? inputType.getClass().getName() : null));
+            throw new MBFormatException(
+                    "MBDecision \"match\" requires a number or string expression for input type, found %s"
+                            .formatted(inputType != null ? inputType.getClass().getName() : null));
         }
         int labelIndex = 1;
         int outputIndex = 2;

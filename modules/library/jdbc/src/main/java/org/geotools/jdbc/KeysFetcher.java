@@ -466,16 +466,16 @@ abstract class KeysFetcher {
         }
 
         public static Object increment(Object value) throws IOException {
-            if (value instanceof Integer) {
-                return (Integer) value + 1;
-            } else if (value instanceof Long) {
-                return (Long) value + 1;
-            } else if (value instanceof Short) {
-                return (short) ((Short) value + 1);
-            } else if (value instanceof BigDecimal) {
-                return ((BigDecimal) value).add(BigDecimal.ONE);
-            } else if (value instanceof BigInteger) {
-                return ((BigInteger) value).add(BigInteger.ONE);
+            if (value instanceof Integer integer1) {
+                return integer1 + 1;
+            } else if (value instanceof Long long1) {
+                return long1 + 1;
+            } else if (value instanceof Short short1) {
+                return (short) (short1 + 1);
+            } else if (value instanceof BigDecimal decimal) {
+                return decimal.add(BigDecimal.ONE);
+            } else if (value instanceof BigInteger integer) {
+                return integer.add(BigInteger.ONE);
             } else {
                 throw new IOException("Don't know how to increment a number of class "
                         + value.getClass().getSimpleName());

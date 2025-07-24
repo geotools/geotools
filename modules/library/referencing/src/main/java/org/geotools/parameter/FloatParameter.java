@@ -19,6 +19,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Objects;
@@ -50,6 +51,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class FloatParameter extends AbstractParameter implements ParameterValue<Double> {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 9027797654033417816L;
 
     /** The value. */

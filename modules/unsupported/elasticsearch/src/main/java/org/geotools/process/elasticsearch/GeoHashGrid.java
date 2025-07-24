@@ -200,9 +200,7 @@ abstract class GeoHashGrid {
     }
 
     FeatureCollection unwrap(SimpleFeatureCollection features) {
-        if (features instanceof ForceCoordinateSystemFeatureResults) {
-            ForceCoordinateSystemFeatureResults forceCoordinateSystemFeatureResults =
-                    (ForceCoordinateSystemFeatureResults) features;
+        if (features instanceof ForceCoordinateSystemFeatureResults forceCoordinateSystemFeatureResults) {
             return forceCoordinateSystemFeatureResults.getOrigin();
         }
         return features;

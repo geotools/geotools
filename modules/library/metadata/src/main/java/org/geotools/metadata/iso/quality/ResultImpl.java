@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
+import java.io.Serial;
 import org.geotools.api.metadata.quality.Result;
 import org.geotools.metadata.iso.MetadataEntity;
 
@@ -32,6 +33,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class ResultImpl extends MetadataEntity implements Result {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 2961355780515174732L;
 
     /** Constructs an initially empty result. */

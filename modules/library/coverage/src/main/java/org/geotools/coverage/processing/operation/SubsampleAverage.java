@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.io.Serial;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
 
 /**
@@ -31,6 +32,7 @@ import org.geotools.coverage.processing.BaseScaleOperationJAI;
 public class SubsampleAverage extends BaseScaleOperationJAI {
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Constructs a default {@code "SubsampleAverage"} operation. */

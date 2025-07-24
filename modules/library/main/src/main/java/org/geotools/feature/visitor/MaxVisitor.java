@@ -91,8 +91,8 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return;
         }
 
-        if (attribValue instanceof Double) {
-            double doubleVal = ((Double) attribValue).doubleValue();
+        if (attribValue instanceof Double double1) {
+            double doubleVal = double1.doubleValue();
             if (Double.isNaN(doubleVal) || Double.isInfinite(doubleVal)) {
                 countNaN++; // increment the NaN count, but don't store NaN as the max
                 return;

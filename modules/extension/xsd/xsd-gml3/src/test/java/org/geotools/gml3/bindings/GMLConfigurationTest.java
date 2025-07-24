@@ -36,8 +36,7 @@ public class GMLConfigurationTest {
         Assert.assertEquals(GML.NAMESPACE, configuration.getNamespaceURI());
         Map<QName, Object> bindings = configuration.setupBindings();
         for (Object object : bindings.values()) {
-            if (object instanceof Class) {
-                Class type = (Class) object;
+            if (object instanceof Class type) {
                 if (Binding.class.isAssignableFrom(type)) {
                     Constructor c = type.getConstructors()[0];
                     Object[] params = new Object[c.getParameterTypes().length];

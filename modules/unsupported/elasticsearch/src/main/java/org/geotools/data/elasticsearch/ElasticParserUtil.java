@@ -99,26 +99,26 @@ class ElasticParserUtil {
     @SuppressWarnings("unchecked")
     public Geometry createGeometry(Object obj) {
         final Geometry geometry;
-        if (obj instanceof String) {
+        if (obj instanceof String string) {
             // geo_point by string
-            final Matcher listMatcher = GEO_POINT_PATTERN.matcher((String) obj);
+            final Matcher listMatcher = GEO_POINT_PATTERN.matcher(string);
             if (listMatcher.matches()) {
                 // coordinate
                 final double y = Double.parseDouble(listMatcher.group(1));
                 final double x = Double.parseDouble(listMatcher.group(2));
                 geometry = geometryFactory.createPoint(new Coordinate(x, y));
-            } else if (GEO_HASH_PATTERN.matcher((String) obj).matches()) {
+            } else if (GEO_HASH_PATTERN.matcher(string).matches()) {
                 // geohash
-                final LatLong latLon = GeoHash.decodeHash((String) obj);
+                final LatLong latLon = GeoHash.decodeHash(string);
                 final Coordinate geoPoint = new Coordinate(latLon.getLon(), latLon.getLat());
                 final double lat = geoPoint.y;
                 final double lon = geoPoint.x;
                 geometry = geometryFactory.createPoint(new Coordinate(lon, lat));
-            } else if (WKT_PATTERN.matcher((String) obj).matches()) {
+            } else if (WKT_PATTERN.matcher(string).matches()) {
                 // geoshape wkt
                 Geometry geom;
                 try {
-                    geom = wktReader.read((String) obj);
+                    geom = wktReader.read(string);
                 } catch (ParseException e) {
                     geom = null;
                 }
@@ -126,9 +126,7 @@ class ElasticParserUtil {
             } else {
                 geometry = null;
             }
-        } else if (obj instanceof List && ((List<?>) obj).size() == 2) {
-            // geo_point by coordinate array
-            final List<?> values = (List<?>) obj;
+        } else if (obj instanceof List<?> values && values.size() == 2) {
             if (Number.class.isAssignableFrom(values.get(0).getClass())) {
                 final double x = ((Number) values.get(0)).doubleValue();
                 final double y = ((Number) values.get(1)).doubleValue();
@@ -230,19 +228,19 @@ class ElasticParserUtil {
                 final Object lonObj = properties.get("lon");
                 if (latObj != null && lonObj != null) {
                     final Double lat;
-                    if (latObj instanceof Number) {
-                        lat = ((Number) latObj).doubleValue();
-                    } else if (latObj instanceof String) {
-                        lat = Double.parseDouble((String) latObj);
+                    if (latObj instanceof Number number) {
+                        lat = number.doubleValue();
+                    } else if (latObj instanceof String string) {
+                        lat = Double.parseDouble(string);
                     } else {
                         lat = null;
                     }
 
                     final Double lon;
-                    if (lonObj instanceof Number) {
-                        lon = ((Number) lonObj).doubleValue();
-                    } else if (lonObj instanceof String) {
-                        lon = Double.parseDouble((String) lonObj);
+                    if (lonObj instanceof Number number) {
+                        lon = number.doubleValue();
+                    } else if (lonObj instanceof String string) {
+                        lon = Double.parseDouble(string);
                     } else {
                         lon = null;
                     }

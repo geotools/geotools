@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
@@ -31,6 +32,7 @@ import org.geotools.api.referencing.operation.TransformException;
  */
 class ConcatenatedTransformDirect extends ConcatenatedTransform {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3568975979013908920L;
 
     /** Constructs a concatenated transform. */

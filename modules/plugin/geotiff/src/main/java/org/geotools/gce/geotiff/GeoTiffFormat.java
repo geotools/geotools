@@ -170,24 +170,14 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
         ImageInputStream inputStream = null;
         boolean closeMe = true;
         try {
-            if (o instanceof CogSourceSPIProvider) {
-                inputStream = ((CogSourceSPIProvider) o).getStream();
+            if (o instanceof CogSourceSPIProvider provider) {
+                inputStream = provider.getStream();
                 reader = COG_IMAGE_READER_SPI.createReaderInstance();
-            } else if (o instanceof ImageInputStream) {
+            } else if (o instanceof ImageInputStream stream) {
                 closeMe = false;
-                inputStream = (ImageInputStream) o;
+                inputStream = stream;
             } else {
-                if (o instanceof URL) {
-                    // /////////////////////////////////////////////////////////////
-                    //
-                    // URL management
-                    // In case the URL points to a file we need to get to the fie
-                    // directly and avoid caching. In case it points to http or ftp
-                    // or it is an opnen stream we have very small to do and we need
-                    // to enable caching.
-                    //
-                    // /////////////////////////////////////////////////////////////
-                    final URL url = (URL) o;
+                if (o instanceof URL url) {
                     o = URLs.urlToFile(url);
                 }
                 inputStream = ImageIO.createImageInputStream(o);
@@ -290,8 +280,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
         // source = ((CatalogEntry) source).resource();
         // }
 
-        if (source instanceof URL) {
-            URL url = (URL) source;
+        if (source instanceof URL url) {
 
             try {
                 final File file = URLs.urlToFile(url);

@@ -188,13 +188,14 @@ public class ReprojectFeatureReader implements DelegatingFeatureReader<SimpleFea
 
         try {
             for (int i = 0; i < schema.getDescriptors().size(); i++) {
-                if (schema.getDescriptor(i) instanceof GeometryDescriptor && attributes[i] instanceof Geometry) {
+                if (schema.getDescriptor(i) instanceof GeometryDescriptor
+                        && attributes[i] instanceof Geometry geometry) {
                     GeometryDescriptor descr = (GeometryDescriptor) originalType.getDescriptor(i);
                     GeometryCoordinateSequenceTransformer transformer = getTransformer(descr.getName());
                     if (transformer != null) {
-                        attributes[i] = transformer.transform((Geometry) attributes[i]);
+                        attributes[i] = transformer.transform(geometry);
                         JTS.setCRS(
-                                (Geometry) attributes[i],
+                                geometry,
                                 ((GeometryDescriptor) schema.getDescriptor(i)).getCoordinateReferenceSystem());
                     }
                 }

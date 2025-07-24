@@ -342,9 +342,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
 
     protected Expression getValue(String xpathPrefix, Expression node, AttributeMapping mapping) {
         Expression value = null;
-        if (node instanceof Function) {
-            // function
-            Function func = (Function) node;
+        if (node instanceof Function func) {
             Expression exp = getAsXpathExpression(func, mapping);
             if (exp != null) {
                 // this function must be an AsXpath
@@ -402,8 +400,8 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
             List<Expression> params = func.getParameters();
             for (int i = 0; i < params.size(); i++) {
                 Expression param = params.get(i);
-                if (param instanceof Function) {
-                    Expression expr = getAsXpathExpression((Function) param, mapping);
+                if (param instanceof Function function) {
+                    Expression expr = getAsXpathExpression(function, mapping);
                     if (expr != null) {
                         // found asXpath and returned an expression
                         // set as the new parameter

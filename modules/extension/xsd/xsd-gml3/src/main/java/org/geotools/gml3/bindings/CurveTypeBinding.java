@@ -129,8 +129,7 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("segments".equals(name.getLocalPart())) {
-            if (object instanceof CompoundCurvedGeometry<?>) {
-                CompoundCurvedGeometry<?> curve = (CompoundCurvedGeometry<?>) object;
+            if (object instanceof CompoundCurvedGeometry<?> curve) {
                 List<LineString> components = curve.getComponents();
                 return components;
             } else {

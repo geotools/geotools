@@ -78,8 +78,8 @@ public class ComplexFeatureConstants {
     /** Unpacks a value from an attribute container */
     public static Object unpack(Object value) {
 
-        if (value instanceof org.geotools.api.feature.ComplexAttribute) {
-            Property simpleContent = ((org.geotools.api.feature.ComplexAttribute) value).getProperty(SIMPLE_CONTENT);
+        if (value instanceof org.geotools.api.feature.ComplexAttribute attribute) {
+            Property simpleContent = attribute.getProperty(SIMPLE_CONTENT);
             if (simpleContent == null) {
                 return null;
             } else {
@@ -87,8 +87,8 @@ public class ComplexFeatureConstants {
             }
         }
 
-        if (value instanceof org.geotools.api.feature.Attribute) {
-            return ((org.geotools.api.feature.Attribute) value).getValue();
+        if (value instanceof org.geotools.api.feature.Attribute attribute) {
+            return attribute.getValue();
         }
 
         return value;

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -134,7 +133,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
 
         boolean debug = VPFLogger.isLoggable(Level.FINEST);
 
-        Path lhtPath = Paths.get(file.getPath());
+        Path lhtPath = Path.of(file.getPath());
         Path lhtRealPath = lhtPath.toRealPath();
         Path lhtParentPath = lhtRealPath.getParent();
 

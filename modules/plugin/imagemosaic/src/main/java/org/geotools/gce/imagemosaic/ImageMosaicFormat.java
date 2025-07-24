@@ -286,8 +286,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     @Override
     public boolean accepts(Object source, Hints hints) {
         Utilities.ensureNonNull("source", source);
-        if (source instanceof ImageMosaicDescriptor) {
-            return checkDescriptor((ImageMosaicDescriptor) source);
+        if (source instanceof ImageMosaicDescriptor descriptor) {
+            return checkDescriptor(descriptor);
         } else {
             return checkForUrl(source, hints);
         }
@@ -358,8 +358,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             if (sourceURL == null) {
                 return false;
             }
-            if (source instanceof File) {
-                File file = (File) source;
+            if (source instanceof File file) {
                 if (!file.exists()) {
                     return false; // file does not exist
                 }

@@ -760,10 +760,9 @@ public class ParserHandler extends DefaultHandler2 {
         endElementInternal(handler);
 
         // if the upper most delegating handler, then end the document
-        if (handler instanceof DelegatingHandler
+        if (handler instanceof DelegatingHandler dh
                 && !handlers.isEmpty()
                 && !(handlers.peek() instanceof DelegatingHandler)) {
-            DelegatingHandler dh = (DelegatingHandler) handler;
             dh.endDocument();
 
             // grabbed the parsed value

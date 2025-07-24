@@ -230,11 +230,11 @@ public class JSimpleStyleDialog extends JDialog {
         Style style = null;
         JSimpleStyleDialog dialog = null;
         if (parent != null) {
-            if (parent instanceof Frame) {
-                dialog = new JSimpleStyleDialog((Frame) parent, featureType, initialStyle);
+            if (parent instanceof Frame frame) {
+                dialog = new JSimpleStyleDialog(frame, featureType, initialStyle);
 
-            } else if (parent instanceof Dialog) {
-                dialog = new JSimpleStyleDialog((Dialog) parent, featureType, initialStyle);
+            } else if (parent instanceof Dialog dialog1) {
+                dialog = new JSimpleStyleDialog(dialog1, featureType, initialStyle);
             }
         }
 

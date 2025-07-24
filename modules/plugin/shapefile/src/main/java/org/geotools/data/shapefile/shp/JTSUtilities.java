@@ -245,25 +245,25 @@ public class JTSUtilities {
                 retVal = factory.createMultiPoint(pNull);
             }
         } else if (type.isLineType()) {
-            if (geom instanceof LineString) {
-                retVal = factory.createMultiLineString(new LineString[] {(LineString) geom});
+            if (geom instanceof LineString string) {
+                retVal = factory.createMultiLineString(new LineString[] {string});
             } else if (geom instanceof MultiLineString) {
                 retVal = geom;
             } else {
                 retVal = factory.createMultiLineString(null);
             }
         } else if (type.isPolygonType()) {
-            if (geom instanceof Polygon) {
-                Polygon p = makeGoodShapePolygon((Polygon) geom);
+            if (geom instanceof Polygon polygon1) {
+                Polygon p = makeGoodShapePolygon(polygon1);
                 retVal = factory.createMultiPolygon(new Polygon[] {p});
-            } else if (geom instanceof MultiPolygon) {
-                retVal = JTSUtilities.makeGoodShapeMultiPolygon((MultiPolygon) geom);
+            } else if (geom instanceof MultiPolygon polygon) {
+                retVal = JTSUtilities.makeGoodShapeMultiPolygon(polygon);
             } else {
                 retVal = factory.createMultiPolygon(null);
             }
         } else if (type.isMultiPointType()) {
-            if (geom instanceof Point) {
-                retVal = factory.createMultiPoint(new Point[] {(Point) geom});
+            if (geom instanceof Point point) {
+                retVal = factory.createMultiPoint(new Point[] {point});
             } else if (geom instanceof MultiPoint) {
                 retVal = geom;
             } else {

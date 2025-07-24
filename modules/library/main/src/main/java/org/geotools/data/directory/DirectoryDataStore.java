@@ -67,8 +67,8 @@ public class DirectoryDataStore implements DataStore {
     @Override
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
         SimpleFeatureSource fs = getDataStore(typeName).getFeatureSource(typeName);
-        if (fs instanceof SimpleFeatureLocking) {
-            return new DirectoryFeatureLocking((SimpleFeatureLocking) fs);
+        if (fs instanceof SimpleFeatureLocking locking) {
+            return new DirectoryFeatureLocking(locking);
         } else if (fs instanceof FeatureStore) {
             return new DirectoryFeatureStore((SimpleFeatureStore) fs);
         } else {

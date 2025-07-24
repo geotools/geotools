@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,6 +43,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollection<E>, Cloneable {
     /** Serial version UID for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -9014541457174735097L;
 
     /** The element type. */

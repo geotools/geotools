@@ -190,11 +190,10 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         dialect.setGetColumnRemarksEnabled(Boolean.TRUE.equals(getColumnRemarks));
 
         DataSource source = getDataSource(dataStore);
-        if (source instanceof BasicDataSource) {
+        if (source instanceof BasicDataSource basicSource) {
             Integer loginTimeout = (Integer) LOGIN_TIMEOUT.lookUp(params);
             Integer connectionTimeout = (Integer) CONNECTION_TIMEOUT.lookUp(params);
             Integer outboundConnTimeout = (Integer) OUTBOUND_CONNECTION_TIMEOUT.lookUp(params);
-            BasicDataSource basicSource = (BasicDataSource) source;
             if (loginTimeout != null) basicSource.addConnectionProperty(LOGIN_TIMEOUT_NAME, loginTimeout.toString());
             if (connectionTimeout != null)
                 basicSource.addConnectionProperty(CONN_TIMEOUT_NAME, connectionTimeout.toString());

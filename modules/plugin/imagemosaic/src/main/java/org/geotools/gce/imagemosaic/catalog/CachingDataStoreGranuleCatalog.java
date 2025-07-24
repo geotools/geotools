@@ -110,8 +110,8 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
         CatalogConfigurationBean configuration = adaptee.getConfigurations().getByTypeQuery(q);
         try (SimpleFeatureIterator fi = features.features()) {
             Object executor = q.getHints().get(Hints.EXECUTOR_SERVICE);
-            if (executor instanceof ExecutorService) {
-                parallelGranuleVisit(configuration, visitor, intersectionGeometry, fi, (ExecutorService) executor);
+            if (executor instanceof ExecutorService service) {
+                parallelGranuleVisit(configuration, visitor, intersectionGeometry, fi, service);
             } else {
                 sequentialGranuleVisit(configuration, visitor, intersectionGeometry, fi);
             }

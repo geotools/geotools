@@ -192,8 +192,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
             // register all geometry columns in the database
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                if (att instanceof GeometryDescriptor) {
-                    GeometryDescriptor gd = (GeometryDescriptor) att;
+                if (att instanceof GeometryDescriptor gd) {
 
                     if (geometryMetadataTable != null) {
                         // lookup or reverse engineer the srid

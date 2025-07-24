@@ -159,8 +159,8 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     Object toColorOrNull(Expression expr) {
         Object obj;
-        if (expr instanceof Literal) {
-            obj = ((Literal) expr).getValue();
+        if (expr instanceof Literal literal) {
+            obj = literal.getValue();
             if (obj instanceof Color) {
                 return obj;
             }
@@ -216,9 +216,8 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         StringBuilder builder = new StringBuilder();
         for (Expression subExpr : subExpressions) {
             if (!isNull(subExpr)) {
-                if (subExpr instanceof Literal) {
-                    builder.append(
-                            escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
+                if (subExpr instanceof Literal literal) {
+                    builder.append(escapeForEmbededCQL(literal.getValue().toString()));
                 } else {
                     builder.append("${")
                             .append(escapeForEmbededCQL(ECQL.toCQL(subExpr)))

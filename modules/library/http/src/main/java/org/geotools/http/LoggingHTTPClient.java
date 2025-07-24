@@ -52,7 +52,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     @Override
     public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
         final int myCount = ++counter;
-        LOGGER.info(String.format("POST Request #%d URL: %s", myCount, url));
+        LOGGER.info("POST Request #%d URL: %s".formatted(myCount, url));
         if (LOGGER.isLoggable(Level.FINEST)) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             copy(postContent, out);
@@ -67,7 +67,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     public HTTPResponse post(URL url, InputStream postContent, String postContentType, Map<String, String> headers)
             throws IOException {
         final int myCount = ++counter;
-        LOGGER.info(String.format("POST Request #%d URL with additional headers %s : %s", myCount, headers, url));
+        LOGGER.info("POST Request #%d URL with additional headers %s : %s".formatted(myCount, headers, url));
         if (LOGGER.isLoggable(Level.FINEST)) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             copy(postContent, out);
@@ -81,14 +81,14 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     @Override
     public HTTPResponse get(URL url) throws IOException {
         final int myCount = ++counter;
-        LOGGER.info(String.format("GET Request #%d URL: %s", myCount, url));
+        LOGGER.info("GET Request #%d URL: %s".formatted(myCount, url));
         return new LoggingHTTPResponse(delegate.get(url), charsetName, myCount);
     }
 
     @Override
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         final int myCount = ++counter;
-        LOGGER.info(String.format("GET Request #%d URL with additional headers %s : %s", myCount, headers, url));
+        LOGGER.info("GET Request #%d URL with additional headers %s : %s".formatted(myCount, headers, url));
         return new LoggingHTTPResponse(delegate.get(url, headers), charsetName, myCount);
     }
 
@@ -106,7 +106,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
 
         public LoggingHTTPResponse(HTTPResponse delegate, String charsetName, final int myCount) throws IOException {
             super(delegate);
-            LOGGER.info(String.format("Response #%d received.", myCount));
+            LOGGER.info("Response #%d received.".formatted(myCount));
 
             if (LOGGER.isLoggable(Level.FINEST)) {
                 ByteArrayOutputStream output = new ByteArrayOutputStream();

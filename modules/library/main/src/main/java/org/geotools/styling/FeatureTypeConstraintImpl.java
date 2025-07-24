@@ -93,8 +93,7 @@ public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneab
             return true;
         }
 
-        if (obj instanceof FeatureTypeConstraintImpl) {
-            FeatureTypeConstraintImpl other = (FeatureTypeConstraintImpl) obj;
+        if (obj instanceof FeatureTypeConstraintImpl other) {
             return Utilities.equals(featureTypeName, other.featureTypeName)
                     && Utilities.equals(filter, other.filter)
                     && Arrays.equals(extents, other.extents);

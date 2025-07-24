@@ -53,8 +53,8 @@ public final class VSIUtils {
         "hdfs",
         "webhdfs"
     };
-    private static final String VSI_PATTERN = String.format(
-            "^(/vsi(%s)/)+[\\w\\d_\\-\\.]+/[\\w\\d_\\-\\./]+$", String.join("|", Arrays.asList(VSI_TYPES)));
+    private static final String VSI_PATTERN =
+            "^(/vsi(%s)/)+[\\w\\d_\\-\\.]+/[\\w\\d_\\-\\./]+$".formatted(String.join("|", Arrays.asList(VSI_TYPES)));
 
     /**
      * Determine if an input {@link String} is a valid VSI-prefixed Virtual File System location

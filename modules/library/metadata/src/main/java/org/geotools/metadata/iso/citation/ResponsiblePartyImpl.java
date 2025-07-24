@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
 import net.opengis.ows11.ResponsiblePartySubsetType;
@@ -42,6 +43,7 @@ import org.geotools.util.logging.Logging;
  */
 public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleParty {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -2477962229031486552L;
 
     /**

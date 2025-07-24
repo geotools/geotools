@@ -21,6 +21,7 @@ package org.geotools.coverage.processing.operation;
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
@@ -69,6 +70,7 @@ public class Absolute extends BaseMathOperationJAI {
     private static final String ALGEBRIC = "algebric";
     private static final String ABSOLUTE = "Absolute";
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3723059532452772794L;
 
     /** Constructs a default {@code "Absolute"} operation. */

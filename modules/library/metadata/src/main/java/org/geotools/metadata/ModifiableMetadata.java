@@ -186,16 +186,15 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
          * CASE 1 - The object is an implementation of ModifiableMetadata. It may have
          *          its own algorithm for creating an unmodifiable view of metadata.
          */
-        if (object instanceof ModifiableMetadata) {
-            return ((ModifiableMetadata) object).unmodifiable();
+        if (object instanceof ModifiableMetadata metadata) {
+            return metadata.unmodifiable();
         }
         /*
          * CASE 2 - The object is a collection. All elements are replaced by their
          *          unmodifiable variant and stored in a new collection of similar
          *          type.
          */
-        if (object instanceof Collection) {
-            Collection<?> collection = (Collection) object;
+        if (object instanceof Collection<?> collection) {
             if (collection.isEmpty()) {
                 if (collection instanceof List) {
                     collection = Collections.emptyList();
@@ -222,8 +221,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
          * CASE 3 - The object is a map. Copies all entries in a new map and replaces all values
          *          by their unmodifiable variant. The keys are assumed already immutable.
          */
-        if (object instanceof Map) {
-            Map map = (Map) object;
+        if (object instanceof Map map) {
             if (map.isEmpty()) {
                 return Collections.emptyMap();
             }
@@ -236,8 +234,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
         /*
          * CASE 4 - The object is cloneable.
          */
-        if (object instanceof org.geotools.api.util.Cloneable) {
-            return ((org.geotools.api.util.Cloneable) object).clone();
+        if (object instanceof org.geotools.api.util.Cloneable cloneable) {
+            return cloneable.clone();
         }
         /*
          * CASE 5 - Any other case. The object is assumed immutable and returned unchanged.

@@ -92,10 +92,10 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
         this.sldAbstract = other.getAbstract();
         this.layers.clear();
         for (StyledLayer layer : other.getStyledLayers()) {
-            if (layer instanceof UserLayer) {
-                layers.add(new UserLayerBuilder().reset((UserLayer) layer));
-            } else if (layer instanceof NamedLayer) {
-                layers.add(new NamedLayerBuilder().reset((NamedLayer) layer));
+            if (layer instanceof UserLayer userLayer) {
+                layers.add(new UserLayerBuilder().reset(userLayer));
+            } else if (layer instanceof NamedLayer namedLayer) {
+                layers.add(new NamedLayerBuilder().reset(namedLayer));
             }
         }
 

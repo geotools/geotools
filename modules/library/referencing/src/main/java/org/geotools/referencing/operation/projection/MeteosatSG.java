@@ -29,6 +29,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.logging.Level;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -74,6 +75,7 @@ import org.geotools.referencing.NamedIdentifier;
 public class MeteosatSG extends MapProjection {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = -6360986801876534108L;
 
     /** Distance from Earth centre to satellite */
@@ -369,6 +371,7 @@ public class MeteosatSG extends MapProjection {
     public static class Provider extends AbstractProvider {
 
         /** serialVersionUID */
+        @Serial
         private static final long serialVersionUID = -2722451724278085168L;
 
         /** The parameters group. */

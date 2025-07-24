@@ -46,8 +46,7 @@ public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {
         /** We can handle *one* case and one case only */
         @Override
         public boolean canHandle(Object object, String xpath, Class target) {
-            if (object instanceof Property) {
-                Property property = (Property) object;
+            if (object instanceof Property property) {
                 final Name name = property.getName();
                 if (name != null) {
                     return name.getLocalPart().equals(xpath);

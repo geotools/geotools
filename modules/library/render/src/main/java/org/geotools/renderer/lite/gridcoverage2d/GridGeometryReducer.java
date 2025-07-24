@@ -165,8 +165,7 @@ class GridGeometryReducer {
     public GeneralBounds getCutEnvelope(GridGeometry2D reduced) {
         GeneralBounds result;
         MathTransform2D mt = reduced.getGridToCRS2D();
-        if (mt instanceof AffineTransform2D) {
-            AffineTransform2D at = (AffineTransform2D) mt;
+        if (mt instanceof AffineTransform2D at) {
             double scaleX = Math.abs(at.getScaleX());
             double scaleY = Math.abs(at.getScaleY());
             double step = (scaleX + scaleY) / 2. / 10.;

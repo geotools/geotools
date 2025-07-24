@@ -352,8 +352,8 @@ public class GridCoverageBuilder {
         final WritableRaster raster = image.getRaster();
         final ColorModel model = image.getColorModel();
         final int size;
-        if (model instanceof IndexColorModel) {
-            size = ((IndexColorModel) model).getMapSize();
+        if (model instanceof IndexColorModel colorModel) {
+            size = colorModel.getMapSize();
         } else {
             size = 1 << Short.SIZE;
         }

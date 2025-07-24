@@ -81,8 +81,8 @@ public class FlatBuffers {
     }
 
     public static void release(FlatBufferBuilder builder) {
-        if (builder instanceof ReleasingFlatBufferBuilder) {
-            ((ReleasingFlatBufferBuilder) builder).releaseBuffer();
+        if (builder instanceof ReleasingFlatBufferBuilder bufferBuilder) {
+            bufferBuilder.releaseBuffer();
         }
     }
 }

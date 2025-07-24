@@ -94,10 +94,10 @@ public class S3GeoTiffFormat extends GeoTiffFormat {
             S3ImageInputStreamImpl inStream;
             if (source instanceof File) {
                 throw new UnsupportedOperationException("Can't instantiate S3 with a File handle");
-            } else if (source instanceof String) {
-                inStream = new S3ImageInputStreamImpl((String) source);
-            } else if (source instanceof URL) {
-                inStream = new S3ImageInputStreamImpl((URL) source);
+            } else if (source instanceof String string) {
+                inStream = new S3ImageInputStreamImpl(string);
+            } else if (source instanceof URL rL) {
+                inStream = new S3ImageInputStreamImpl(rL);
             } else {
                 throw new IllegalArgumentException(
                         "Can't create S3ImageInputStream from input of " + "type: " + source.getClass());
@@ -116,13 +116,12 @@ public class S3GeoTiffFormat extends GeoTiffFormat {
             return false;
         } else {
             boolean accepts = false;
-            if (o instanceof String) {
-                String url = (String) o;
+            if (o instanceof String url) {
                 if (url.contains("://")) {
                     accepts = containsS3orAliasPrefix(url.split("://")[0]);
                 }
-            } else if (o instanceof URL) {
-                String protocol = ((URL) o).getProtocol();
+            } else if (o instanceof URL rL) {
+                String protocol = rL.getProtocol();
                 accepts = containsS3orAliasPrefix(protocol);
             }
             return accepts;

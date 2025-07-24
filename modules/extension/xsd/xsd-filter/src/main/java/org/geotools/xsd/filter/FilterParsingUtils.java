@@ -87,9 +87,7 @@ public class FilterParsingUtils {
         }
 
         // &lt;xsd:element maxOccurs="unbounded" ref="ogc:_Id"/&gt;
-        if (filter instanceof Id && ("_Id".equals(name) /*1.1/2.0*/ || "FeatureId".equals(name) /*1.0*/)) {
-            // unwrap
-            Id id = (Id) filter;
+        if (filter instanceof Id id && ("_Id".equals(name) /*1.1/2.0*/ || "FeatureId".equals(name) /*1.0*/)) {
 
             return id.getIdentifiers();
         }
@@ -140,8 +138,8 @@ public class FilterParsingUtils {
 
                 List<Expression> expressions = new ArrayList<>();
                 for (Object o : map.values()) {
-                    if (o instanceof Expression) {
-                        expressions.add((Expression) o);
+                    if (o instanceof Expression expression) {
+                        expressions.add(expression);
                     }
                 }
 

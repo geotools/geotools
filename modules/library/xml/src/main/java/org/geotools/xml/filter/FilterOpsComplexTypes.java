@@ -813,8 +813,7 @@ public class FilterOpsComplexTypes {
                 for (ElementValue elementValue : value) {
                     Filter value2 = (Filter) elementValue.getValue();
                     if (value2 == Filter.EXCLUDE) continue;
-                    if (value2 instanceof Id) {
-                        Id idFilter = (Id) value2;
+                    if (value2 instanceof Id idFilter) {
                         ids.addAll(idFilter.getIdentifiers());
                     } else {
                         isOnlyFids = false;
@@ -1972,10 +1971,9 @@ public class FilterOpsComplexTypes {
             try {
                 Expression geometry1 = (Expression) value[0].getValue();
                 Expression geometry2 = (Expression) value[1].getValue();
-                if (geometry2 instanceof Literal) {
-                    Object literal = ((Literal) geometry2).getValue();
-                    if (literal instanceof Geometry) {
-                        Geometry geometry = (Geometry) literal;
+                if (geometry2 instanceof Literal literal1) {
+                    Object literal = literal1.getValue();
+                    if (literal instanceof Geometry geometry) {
                         Envelope env = geometry.getEnvelopeInternal();
                         return factory.bbox(
                                 geometry1, env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY(), null);
@@ -2380,8 +2378,7 @@ public class FilterOpsComplexTypes {
                 // LogicFilter filter = factory.createLogicFilter( type );
                 for (ElementValue elementValue : value) {
                     Filter filter = (Filter) elementValue;
-                    if (filter instanceof Id) {
-                        Id id = (Id) filter;
+                    if (filter instanceof Id id) {
                         ids.addAll(id.getIdentifiers());
                     } else {
                         fidOnly = false;

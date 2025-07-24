@@ -295,13 +295,13 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             request.setMaxFeatures(null);
         }
 
-        if (supportedFilter instanceof Id) {
-            final Set<Identifier> identifiers = ((Id) supportedFilter).getIdentifiers();
+        if (supportedFilter instanceof Id id1) {
+            final Set<Identifier> identifiers = id1.getIdentifiers();
             StringBuffer idValues = new StringBuffer();
             for (Iterator<Identifier> it = identifiers.iterator(); it.hasNext(); ) {
                 Object id = it.next().getID();
-                if (id instanceof FeatureId) {
-                    idValues.append(((FeatureId) id).getRid());
+                if (id instanceof FeatureId featureId) {
+                    idValues.append(featureId.getRid());
                 } else {
                     idValues.append(String.valueOf(id));
                 }
@@ -580,8 +580,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         Set<QName> typeNames = new HashSet<>();
 
-        if (request instanceof TransactionRequest) {
-            TransactionRequest tx = (TransactionRequest) request;
+        if (request instanceof TransactionRequest tx) {
             typeNames.addAll(tx.getTypeNames());
         } else {
             QName typeName = request.getTypeName();

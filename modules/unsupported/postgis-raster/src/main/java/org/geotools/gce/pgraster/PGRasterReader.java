@@ -307,10 +307,10 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
 
             if (req.times != null) {
                 for (Object t : req.times) {
-                    if (t instanceof Date) {
-                        times.add((Date) t);
-                    } else if (t instanceof DateRange) {
-                        ranges.add((DateRange) t);
+                    if (t instanceof Date date) {
+                        times.add(date);
+                    } else if (t instanceof DateRange range) {
+                        ranges.add(range);
                     } else {
                         Date d = Converters.convert(t, Date.class);
                         if (d != null) {
@@ -498,7 +498,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
         Connection cx = config.dataSource.getConnection();
         if (config.enableDrivers != null) {
             try (Statement st = cx.createStatement()) {
-                st.execute(String.format("SET postgis.gdal_enabled_drivers = '%s'", config.enableDrivers));
+                st.execute("SET postgis.gdal_enabled_drivers = '%s'".formatted(config.enableDrivers));
             }
         }
 

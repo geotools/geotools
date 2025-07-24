@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +32,7 @@ import org.geotools.api.referencing.cs.AxisDirection;
  */
 public final class DirectionAlongMeridian implements Comparable<DirectionAlongMeridian>, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1602711631943838328L;
 
     /** For floating point comparaisons. */
@@ -257,8 +259,7 @@ public final class DirectionAlongMeridian implements Comparable<DirectionAlongMe
     /** Tests this object for equality with the specified one. This method is used mostly for assertions. */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof DirectionAlongMeridian) {
-            final DirectionAlongMeridian that = (DirectionAlongMeridian) object;
+        if (object instanceof DirectionAlongMeridian that) {
             return baseDirection.equals(that.baseDirection)
                     && Double.doubleToLongBits(meridian) == Double.doubleToLongBits(that.meridian);
         }

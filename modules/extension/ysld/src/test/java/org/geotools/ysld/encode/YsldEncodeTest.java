@@ -1689,20 +1689,22 @@ public class YsldEncodeTest {
 
     @Test
     public void testEncodeColorMapEntry() throws IOException {
-        StyledLayerDescriptor style = new YsldParser(new ByteArrayInputStream(("name:  Test\n"
-                                + "title: Test Style title\n"
-                                + "abstract: Styling of Test layer\n"
-                                + "feature-styles:\n"
-                                + "- rules:\n"
-                                + "  - title: raster\n"
-                                + "    symbolizers:\n"
-                                + "      - raster:\n"
-                                + "          opacity: 1.0\n"
-                                + "          color-map:\n"
-                                + "            type: values\n"
-                                + "            entries:\n"
-                                + "            - ['#e20374', 1.0, 1, Lorem Ipsum (magenta = covered)]")
-                        .getBytes(StandardCharsets.UTF_8)))
+        StyledLayerDescriptor style = new YsldParser(new ByteArrayInputStream(
+                        ("""
+                                name:  Test
+                                title: Test Style title
+                                abstract: Styling of Test layer
+                                feature-styles:
+                                - rules:
+                                  - title: raster
+                                    symbolizers:
+                                      - raster:
+                                          opacity: 1.0
+                                          color-map:
+                                            type: values
+                                            entries:
+                                            - ['#e20374', 1.0, 1, Lorem Ipsum (magenta = covered)]""")
+                                .getBytes(StandardCharsets.UTF_8)))
                 .parse();
 
         RasterSymbolizer symbolizer = (RasterSymbolizer) ((NamedLayer) style.getStyledLayers()[0])

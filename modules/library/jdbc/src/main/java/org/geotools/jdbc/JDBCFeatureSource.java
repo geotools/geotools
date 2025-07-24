@@ -394,8 +394,8 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
     static Filter[] splitFilter(Filter original, FeatureSource source, Hints hints) {
         JDBCFeatureSource featureSource = null;
-        if (source instanceof JDBCFeatureSource) {
-            featureSource = (JDBCFeatureSource) source;
+        if (source instanceof JDBCFeatureSource cFeatureSource) {
+            featureSource = cFeatureSource;
         } else {
             featureSource = ((JDBCFeatureStore) source).getFeatureSource();
         }
@@ -646,8 +646,8 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             // close the connection
             getDataStore().closeSafe(cx);
             // safely rethrow
-            if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof Error error) {
+                throw error;
             } else {
                 throw (IOException) new IOException().initCause(e);
             }
@@ -732,8 +732,8 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         Expression expr = nearest.getExpression();
         String attribute = null;
 
-        if (expr != null && expr instanceof PropertyName) {
-            attribute = ((PropertyName) expr).getPropertyName();
+        if (expr != null && expr instanceof PropertyName name) {
+            attribute = name.getPropertyName();
         }
         if (attribute == null) {
             return false; // optimization restricted to column evaulation

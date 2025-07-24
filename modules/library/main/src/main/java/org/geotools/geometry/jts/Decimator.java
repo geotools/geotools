@@ -185,8 +185,7 @@ public final class Decimator {
 
     public final Geometry decimateTransformGeneralize(Geometry geometry, MathTransform transform)
             throws TransformException {
-        if (geometry instanceof GeometryCollection) {
-            GeometryCollection collection = (GeometryCollection) geometry;
+        if (geometry instanceof GeometryCollection collection) {
             final int length = collection.getNumGeometries();
             boolean cloned = false;
             Class elementType = null;
@@ -231,12 +230,11 @@ public final class Decimator {
             } else {
                 return collection;
             }
-        } else if (geometry instanceof Point) {
-            LiteCoordinateSequence seq = (LiteCoordinateSequence) ((Point) geometry).getCoordinateSequence();
+        } else if (geometry instanceof Point point) {
+            LiteCoordinateSequence seq = (LiteCoordinateSequence) point.getCoordinateSequence();
             decimateTransformGeneralize(seq, transform, false, spanx, spany);
             return geometry;
-        } else if (geometry instanceof Polygon) {
-            Polygon polygon = (Polygon) geometry;
+        } else if (geometry instanceof Polygon polygon) {
             LinearRing shell = (LinearRing) decimateTransformGeneralize(polygon.getExteriorRing(), transform);
             boolean cloned = shell != polygon.getExteriorRing();
             final int length = polygon.getNumInteriorRing();
@@ -261,10 +259,9 @@ public final class Decimator {
             } else {
                 return polygon;
             }
-        } else if (geometry instanceof LineString) {
+        } else if (geometry instanceof LineString ls) {
             double spanx = this.spanx;
             double spany = this.spany;
-            LineString ls = (LineString) geometry;
             if (ls instanceof CurvedGeometry<?>) {
                 @SuppressWarnings("unchecked")
                 CurvedGeometry<LineString> curved = (CurvedGeometry<LineString>) ls;
@@ -321,25 +318,18 @@ public final class Decimator {
             // point geom
             return;
         }
-        if (geom instanceof GeometryCollection) {
-            // TODO check geometry and if its bbox is too small turn it into a
-            // 1-2 point geom
-            // takes a bit of work because the geometry will need to be
-            // recreated.
-            GeometryCollection collection = (GeometryCollection) geom;
+        if (geom instanceof GeometryCollection collection) {
             final int numGeometries = collection.getNumGeometries();
             for (int i = 0; i < numGeometries; i++) {
                 decimate(collection.getGeometryN(i));
             }
-        } else if (geom instanceof LineString) {
-            LineString line = (LineString) geom;
+        } else if (geom instanceof LineString line) {
             LiteCoordinateSequence seq = (LiteCoordinateSequence) line.getCoordinateSequence();
             if (decimateOnEnvelope(line, seq)) {
                 return;
             }
             decimate(line, seq);
-        } else if (geom instanceof Polygon) {
-            Polygon line = (Polygon) geom;
+        } else if (geom instanceof Polygon line) {
             decimate(line.getExteriorRing());
             final int numRings = line.getNumInteriorRing();
             for (int i = 0; i < numRings; i++) {

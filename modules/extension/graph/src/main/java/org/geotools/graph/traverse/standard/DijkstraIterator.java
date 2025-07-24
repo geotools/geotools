@@ -230,8 +230,8 @@ public class DijkstraIterator extends SourceGraphIterator {
     }
 
     protected Iterator<? extends Graphable> getRelated(Graphable current) {
-        if (current instanceof DirectedGraphable) {
-            return ((DirectedGraphable) current).getOutRelated();
+        if (current instanceof DirectedGraphable graphable) {
+            return graphable.getOutRelated();
         } else {
             return current.getRelated();
         }

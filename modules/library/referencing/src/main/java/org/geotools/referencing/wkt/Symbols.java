@@ -124,9 +124,8 @@ public class Symbols {
          * rounding error for the 0 value. For semi-major and semi-minor axis, we
          * often want to avoid exponential notation as well.
          */
-        if (numberFormat instanceof DecimalFormat) {
-            final char decimalSeparator =
-                    ((DecimalFormat) numberFormat).getDecimalFormatSymbols().getDecimalSeparator();
+        if (numberFormat instanceof DecimalFormat format) {
+            final char decimalSeparator = format.getDecimalFormatSymbols().getDecimalSeparator();
             if (decimalSeparator == ',') {
                 separator = ';';
             }

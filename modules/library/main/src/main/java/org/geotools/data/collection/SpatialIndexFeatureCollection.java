@@ -248,8 +248,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     @Override
     @SuppressWarnings("unchecked")
     public boolean contains(Object obj) {
-        if (obj instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) obj;
+        if (obj instanceof SimpleFeature feature) {
             ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
             for (SimpleFeature sample : (List<SimpleFeature>) index.query(bounds)) {
                 if (sample == feature) {

@@ -1172,10 +1172,10 @@ public class SLDStyleFactory {
         }
         g2d.dispose();
 
-        int iSizeX = (int) Math.floor(sizeX + margin[1] + margin[3]);
-        int iSizeY = (int) Math.floor(sizeY + margin[0] + margin[2]);
-        int upperLeftX = (int) Math.floor(sizeX + margin[1] + margin[3]);
-        int upperLeftY = (int) Math.floor(sizeY + margin[0] + margin[2]);
+        int iSizeX = (int) Math.round(sizeX + margin[1] + margin[3]);
+        int iSizeY = (int) Math.round(sizeY + margin[0] + margin[2]);
+        int upperLeftX = (int) Math.round(sizeX + margin[1] + margin[3]);
+        int upperLeftY = (int) Math.round(sizeY + margin[0] + margin[2]);
         // updated to use the new sizes
         image = image.getSubimage(upperLeftX, upperLeftY, Math.max(iSizeX, 1), Math.max(iSizeY, 1));
         return image;

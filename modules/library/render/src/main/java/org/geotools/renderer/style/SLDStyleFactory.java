@@ -1064,8 +1064,8 @@ public class SLDStyleFactory {
                     int type = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
                     BufferedImage imageWithMargin =
                             new BufferedImage(image.getWidth() + extraX, image.getHeight() + extraY, type);
-                    int tx = margin[1];
-                    int ty = margin[0];
+                    double tx = margin[1];
+                    double ty = margin[0];
                     AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
                     Graphics2D graphics = imageWithMargin.createGraphics();
                     graphics.drawRenderedImage(image, at);
@@ -1113,6 +1113,13 @@ public class SLDStyleFactory {
         // sample's width.
         final double sizeY = size;
 
+        Displacement displacement = gr.getDisplacement();
+        double offsetX = 0, offsetY = 0;
+        if (displacement != null) {
+            offsetX = evalToDouble(displacement.getDisplacementX(), feature, 0);
+            offsetY = evalToDouble(displacement.getDisplacementY(), feature, 0);
+        }
+
         // we need to paint the mark in a 3x3 grid to account for border effects
         // due to antialiasing (e.g., even if the mark is 10 pixels wide, due to the
         // antialiasing graphically it occupies 12 or so pixels)
@@ -1158,8 +1165,8 @@ public class SLDStyleFactory {
                 } else if (j == 1) {
                     marginY += (margin[0] + margin[2]);
                 }
-                double tx = sizeX * (repeat / 2.0) + sizeX * i + marginX;
-                double ty = sizeY * (repeat / 2.0) + sizeY * j + marginY;
+                double tx = sizeX * (repeat / 2.0) + sizeX * i + marginX + offsetX;
+                double ty = sizeY * (repeat / 2.0) + sizeY * j + marginY - offsetY;
                 fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
             }
         }

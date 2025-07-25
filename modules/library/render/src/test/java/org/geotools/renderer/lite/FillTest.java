@@ -147,6 +147,16 @@ public class FillTest {
     }
 
     @Test
+    public void testSlashOffsetAbove() throws Exception {
+        runSingleLayerTest("fillSlashOffsetAbove.sld");
+    }
+
+    @Test
+    public void testSlashOffsetBelow() throws Exception {
+        runSingleLayerTest("fillSlashOffsetBelow.sld");
+    }
+
+    @Test
     public void testImageFill() throws Exception {
         runSingleLayerTest("fillImage.sld");
     }

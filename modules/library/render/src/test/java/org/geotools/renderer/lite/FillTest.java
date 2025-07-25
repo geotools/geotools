@@ -157,6 +157,11 @@ public class FillTest {
     }
 
     @Test
+    public void testSlashNonInt() throws Exception {
+        runSingleLayerTest("fillSlashNonInt.sld");
+    }
+
+    @Test
     public void testImageFill() throws Exception {
         runSingleLayerTest("fillImage.sld");
     }

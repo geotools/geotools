@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2025, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2025, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,7 +15,15 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.referencing.operation.transform;
-
+/**
+ * The a {@linkplain MathTransform2D two-dimensional transform} thin plate spline transform. 
+ * 
+ * <p>
+ * References:
+ * <ul>
+ * <li><a href="https://en.wikipedia.org/wiki/Thin_plate_spline">Thin plate spline (Wikipedia)</a>
+ * </ul>
+ */
 public class ThinPlateSpline2D {
     private final double[] x;
     private final double[] y;

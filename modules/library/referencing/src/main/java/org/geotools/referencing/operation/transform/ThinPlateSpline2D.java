@@ -15,35 +15,43 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.referencing.operation.transform;
+
+import java.util.HashSet;
+import java.util.Set;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+
 /**
- * The a {@linkplain MathTransform2D two-dimensional transform} thin plate spline transform. 
- * 
- * <p>
- * References:
+ * The a {@linkplain MathTransform2D two-dimensional transform} thin plate spline transform.
+ *
+ * <p>References:
+ *
  * <ul>
- * <li><a href="https://en.wikipedia.org/wiki/Thin_plate_spline">Thin plate spline (Wikipedia)</a>
+ *   <li><a href="https://en.wikipedia.org/wiki/Thin_plate_spline">Thin plate spline (Wikipedia)</a>
  * </ul>
  */
 public class ThinPlateSpline2D {
-    private final double[] x;
-    private final double[] y;
+
+    private final CoordinateSequence sourcePoints;
     private final double[] weights;
     private final int n;
 
-    public ThinPlateSpline2D(double[] xSource, double[] ySource, double[] values) {
-
-        for (int i = 0; i < xSource.length; i++) {
-            for (int j = i + 1; j < xSource.length; j++) {
-                if (xSource[i] == xSource[j] && ySource[i] == ySource[j]) {
-                    throw new IllegalArgumentException("Duplicate control points are not allowed.");
-                }
+    public ThinPlateSpline2D(CoordinateSequence sourcePoints, double[] values) {
+        if (sourcePoints.size() != values.length) {
+            throw new IllegalArgumentException("Source points and target values must have the same length.");
+        }
+        // duplicates can calculate very inaccurate weights
+        Set<Coordinate> uniquePoints = new HashSet<>();
+        for (int i = 0; i < sourcePoints.size(); i++) {
+            Coordinate p = sourcePoints.getCoordinate(i);
+            if (!uniquePoints.add(p)) {
+                throw new IllegalArgumentException("Duplicate control points are not allowed.");
             }
         }
-
-        this.n = xSource.length;
-        this.x = xSource;
-        this.y = ySource;
-        this.weights = solveSystem(xSource, ySource, values);
+        this.n = sourcePoints.size();
+        this.sourcePoints = sourcePoints;
+        this.weights = solveSystem(sourcePoints, values);
     }
 
     private double U(double r2) {
@@ -57,8 +65,8 @@ public class ThinPlateSpline2D {
         return dx * dx + dy * dy;
     }
 
-    private double[] solveSystem(double[] x, double[] y, double[] v) {
-        int N = x.length;
+    private double[] solveSystem(CoordinateSequence sourcePoints, double[] v) {
+        int N = sourcePoints.size();
         int M = N + 3;
 
         double[][] A = new double[M][M];
@@ -67,19 +75,19 @@ public class ThinPlateSpline2D {
         // Fill K (radial basis kernel)
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                A[i][j] = U(r2(x[i], y[i], x[j], y[j]));
+                A[i][j] = U(r2(sourcePoints.getX(i), sourcePoints.getY(i), sourcePoints.getX(j), sourcePoints.getY(j)));
             }
         }
 
         // Fill P (affine part)
         for (int i = 0; i < N; i++) {
             A[i][N] = 1.0;
-            A[i][N + 1] = x[i];
-            A[i][N + 2] = y[i];
+            A[i][N + 1] = sourcePoints.getX(i);
+            A[i][N + 2] = sourcePoints.getY(i);
 
             A[N][i] = 1.0;
-            A[N + 1][i] = x[i];
-            A[N + 2][i] = y[i];
+            A[N + 1][i] = sourcePoints.getX(i);
+            A[N + 2][i] = sourcePoints.getY(i);
         }
 
         // Fill b (target values)
@@ -136,7 +144,7 @@ public class ThinPlateSpline2D {
     public double interpolate(double xVal, double yVal) {
         double sum = 0.0;
         for (int i = 0; i < n; i++) {
-            sum += weights[i] * U(r2(xVal, yVal, x[i], y[i]));
+            sum += weights[i] * U(r2(xVal, yVal, sourcePoints.getX(i), sourcePoints.getY(i)));
         }
         // Affine terms
         sum += weights[n]; // constant

@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
@@ -26,6 +27,8 @@ import org.geotools.geometry.Position2D;
 import org.geotools.referencing.operation.builder.MappedPosition;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * A 2D transformation using Thin Plate Splines (TPS) for smoothly interpolating between a set of control points. This
@@ -54,20 +57,17 @@ public class ThinPlateSplineTransform implements MathTransform {
         this.sourcePoints = sourcePoints;
         this.targetPoints = targetPoints;
 
-        double[] xSource = new double[sourcePoints.size()];
-        double[] ySource = new double[sourcePoints.size()];
         double[] xTarget = new double[targetPoints.size()];
         double[] yTarget = new double[targetPoints.size()];
 
         for (int i = 0; i < sourcePoints.size(); i++) {
-            xSource[i] = sourcePoints.get(i).x;
-            ySource[i] = sourcePoints.get(i).y;
             xTarget[i] = targetPoints.get(i).x;
             yTarget[i] = targetPoints.get(i).y;
         }
 
-        this.tpsX = new ThinPlateSpline2D(xSource, ySource, xTarget);
-        this.tpsY = new ThinPlateSpline2D(xSource, ySource, yTarget);
+        CoordinateSequence sourcePointsSeq = new CoordinateArraySequence(sourcePoints.toArray(new Coordinate[0]));
+        this.tpsX = new ThinPlateSpline2D(sourcePointsSeq, xTarget);
+        this.tpsY = new ThinPlateSpline2D(sourcePointsSeq, yTarget);
     }
 
     /**
@@ -80,8 +80,10 @@ public class ThinPlateSplineTransform implements MathTransform {
         if (positions == null || positions.isEmpty()) {
             throw new IllegalArgumentException("Positions list must not be null or empty.");
         }
-        List<Coordinate> src = new java.util.ArrayList<>(positions.size());
-        List<Coordinate> dst = new java.util.ArrayList<>(positions.size());
+
+        List<Coordinate> src = new ArrayList<>(positions.size());
+        List<Coordinate> dst = new ArrayList<>(positions.size());
+
         for (MappedPosition mp : positions) {
             src.add(new Coordinate(mp.getSource().getOrdinate(0), mp.getSource().getOrdinate(1)));
             dst.add(new Coordinate(mp.getTarget().getOrdinate(0), mp.getTarget().getOrdinate(1)));
@@ -90,20 +92,16 @@ public class ThinPlateSplineTransform implements MathTransform {
         this.sourcePoints = src;
         this.targetPoints = dst;
 
-        double[] xSource = new double[src.size()];
-        double[] ySource = new double[src.size()];
         double[] xTarget = new double[dst.size()];
         double[] yTarget = new double[dst.size()];
 
         for (int i = 0; i < src.size(); i++) {
-            xSource[i] = src.get(i).x;
-            ySource[i] = src.get(i).y;
             xTarget[i] = dst.get(i).x;
             yTarget[i] = dst.get(i).y;
         }
-
-        this.tpsX = new ThinPlateSpline2D(xSource, ySource, xTarget);
-        this.tpsY = new ThinPlateSpline2D(xSource, ySource, yTarget);
+        CoordinateSequence sourcePointsSeq = new CoordinateArraySequence(sourcePoints.toArray(new Coordinate[0]));
+        this.tpsX = new ThinPlateSpline2D(sourcePointsSeq, xTarget);
+        this.tpsY = new ThinPlateSpline2D(sourcePointsSeq, yTarget);
     }
 
     /** {@inheritDoc} */

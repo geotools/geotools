@@ -100,7 +100,7 @@ public final class GeoreferenceTpsTest {
         AffineTransformBuilder affineBuilder = new AffineTransformBuilder(positions);
 
         // test the different transformations
-        outputAffineTransformationGeoTiff(affineBuilder.getMathTransform());
+        assertAffineTransformationGeoTiff(affineBuilder.getMathTransform());
 
         // first order polynomial transformation
         Point2D[] worldPoints = new Point2D[worldCoords.length];
@@ -110,13 +110,13 @@ public final class GeoreferenceTpsTest {
             imagePoints[i] = new Point2D.Double(imageCoords[i][0], imageCoords[i][1]);
         }
         MathTransform warpTransform = new WarpTransform2D(worldPoints, imagePoints, 1);
-        outputFirstOrderPolynomialTransformationGeoTiff(warpTransform);
+        assertFirstOrderPolynomialTransformationGeoTiff(warpTransform);
 
         // the new thin plate spline transformation
         assertThinPlateSplineTransformationGeoTiff(new ThinPlateSplineTransform(positions));
     }
 
-    private void outputAffineTransformationGeoTiff(MathTransform mathTransform) throws IOException {
+    private void assertAffineTransformationGeoTiff(MathTransform mathTransform) throws IOException {
         DefaultDerivedCRS derivedCRS =
                 new DefaultDerivedCRS("imageCRS", BNG, mathTransform, DefaultCartesianCS.GENERIC_2D);
         GridCoverageFactory factory = new GridCoverageFactory();
@@ -133,7 +133,7 @@ public final class GeoreferenceTpsTest {
         assertEquals("Wrong envelope maxY", 673631.2096537778, envelope.getMaximum(1), 0.001);
     }
 
-    private void outputFirstOrderPolynomialTransformationGeoTiff(MathTransform mathTransform) throws IOException {
+    private void assertFirstOrderPolynomialTransformationGeoTiff(MathTransform mathTransform) throws IOException {
         DefaultDerivedCRS derivedCRS =
                 new DefaultDerivedCRS("imageCRS", BNG, mathTransform, DefaultCartesianCS.GENERIC_2D);
         GridCoverageFactory factory = new GridCoverageFactory();

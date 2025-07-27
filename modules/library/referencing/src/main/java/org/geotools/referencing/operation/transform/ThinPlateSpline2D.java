@@ -18,14 +18,20 @@ package org.geotools.referencing.operation.transform;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.api.referencing.operation.MathTransform2D;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 
 /**
- * The a {@linkplain MathTransform2D two-dimensional transform} thin plate spline transform.
+ * A 2D Thin Plate Spline (TPS) interpolator.
  *
- * <p>References:
+ * <p>TPS is a smooth spline-based interpolation for warping, image registration, and surface fitting. This
+ * implementation solves for the spline weights using radial basis functions and an affine component to interpolate
+ * scalar values at arbitrary 2D locations.
+ *
+ * <p>Each instance fits a surface from control points (x, y) to scalar values {@code v}. To model 2D transformations
+ * (e.g., (x, y) → (x', y')), construct two instances: one for x' and one for y'.
+ *
+ * <p>Reference:
  *
  * <ul>
  *   <li><a href="https://en.wikipedia.org/wiki/Thin_plate_spline">Thin plate spline (Wikipedia)</a>
@@ -37,6 +43,17 @@ public class ThinPlateSpline2D {
     private final double[] weights;
     private final int n;
 
+    /**
+     * Constructs a Thin Plate Spline (TPS) interpolator using the given control points and target values.
+     *
+     * <p>This class fits a smooth interpolating surface through the control points, minimizing the bending energy of
+     * the surface. The resulting function can be evaluated at arbitrary (x, y) locations to obtain interpolated values.
+     *
+     * @param sourcePoints The source control points in 2D space. Must contain at least 3 unique points.
+     * @param values The target values at each control point, of the same length as {@code sourcePoints}.
+     * @throws IllegalArgumentException if the number of source points does not match the number of values, or if there
+     *     are duplicate source coordinates.
+     */
     public ThinPlateSpline2D(CoordinateSequence sourcePoints, double[] values) {
         if (sourcePoints.size() != values.length) {
             throw new IllegalArgumentException("Source points and target values must have the same length.");
@@ -49,6 +66,11 @@ public class ThinPlateSpline2D {
                 throw new IllegalArgumentException("Duplicate control points are not allowed.");
             }
         }
+
+        if (uniquePoints.size() < 3) {
+            throw new IllegalArgumentException("At least 3 unique control points are required for TPS.");
+        }
+
         this.n = sourcePoints.size();
         this.sourcePoints = sourcePoints;
         this.weights = solveSystem(sourcePoints, values);
@@ -141,6 +163,16 @@ public class ThinPlateSpline2D {
         return x;
     }
 
+    /**
+     * Interpolates a value at the given 2D location using the thin plate spline surface.
+     *
+     * <p>The returned value is computed based on the previously fitted surface that passes through all control points.
+     * The function is smooth and differentiable, with minimum bending energy.
+     *
+     * @param xVal The x-coordinate of the input point.
+     * @param yVal The y-coordinate of the input point.
+     * @return The interpolated value at the given location.
+     */
     public double interpolate(double xVal, double yVal) {
         double sum = 0.0;
         for (int i = 0; i < n; i++) {

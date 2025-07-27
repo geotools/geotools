@@ -99,4 +99,16 @@ public class ThinPlateSpline2DTest {
                 assertThrows(IllegalArgumentException.class, () -> new ThinPlateSpline2D(duplicateSeq, v));
         assertEquals("Duplicate control points are not allowed.", exception.getMessage());
     }
+
+    @Test
+    public void testAtLeastThreePointsRequired() {
+
+        double[] v = {10, 10};
+        CoordinateSequence onlyTwoPoints =
+                new CoordinateArraySequence(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
+
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class, () -> new ThinPlateSpline2D(onlyTwoPoints, v));
+        assertEquals("At least 3 unique control points are required for TPS.", exception.getMessage());
+    }
 }

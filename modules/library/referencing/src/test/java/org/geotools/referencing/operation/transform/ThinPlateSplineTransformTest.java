@@ -238,16 +238,17 @@ public class ThinPlateSplineTransformTest {
 
     @Test
     public void testToWKTStructure() {
-        List<Coordinate> source = Arrays.asList(new Coordinate(1.0, 2.0), new Coordinate(3.0, 4.0));
-        List<Coordinate> target = Arrays.asList(new Coordinate(10.0, 20.0), new Coordinate(30.0, 40.0));
+        List<Coordinate> source =
+                Arrays.asList(new Coordinate(1.0, 2.0), new Coordinate(3.0, 4.0), new Coordinate(4.0, 5.0));
+        List<Coordinate> target =
+                Arrays.asList(new Coordinate(10.0, 20.0), new Coordinate(30.0, 40.0), new Coordinate(40.0, 50.0));
 
         ThinPlateSplineTransform transform = new ThinPlateSplineTransform(source, target);
         String wkt = transform.toWKT();
-
         assertTrue(wkt.contains("PARAM_MT[\"ThinPlateSpline\""));
         assertTrue(wkt.contains("PARAMETER[\"source_0\", [1.0, 2.0]]"));
         assertTrue(wkt.contains("PARAMETER[\"target_1\", [30.0, 40.0]]"));
-        assertTrue(wkt.contains("PARAMETER[\"num_points\", 2]"));
+        assertTrue(wkt.contains("PARAMETER[\"num_points\", 3]"));
     }
 
     @Test

@@ -16,6 +16,8 @@
  */
 package org.geotools.api.data;
 
+import java.io.Serial;
+
 /**
  * Thrown when there is an error in a datasource.
  *
@@ -23,6 +25,7 @@ package org.geotools.api.data;
  * is used to pass on problems from external services, providing the root cause is important.
  */
 public class DataSourceException extends java.io.IOException {
+    @Serial
     private static final long serialVersionUID = -602847953059978370L;
 
     /**

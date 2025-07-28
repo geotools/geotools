@@ -16,6 +16,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
@@ -57,6 +58,7 @@ import org.geotools.util.Utilities;
  */
 public class ImagingParameters extends AbstractParameter implements ParameterValueGroup {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1378692626023992530L;
 
     /**
@@ -94,9 +96,9 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      */
     public ImagingParameters(final ImagingParameterDescriptors descriptor) {
         super(descriptor);
-        if (descriptor.operation instanceof OperationDescriptor) {
+        if (descriptor.operation instanceof OperationDescriptor operationDescriptor) {
             // Parameters with sources
-            parameters = new ParameterBlockJAI((OperationDescriptor) descriptor.operation, descriptor.registryMode);
+            parameters = new ParameterBlockJAI(operationDescriptor, descriptor.registryMode);
         } else {
             // Parameters without sources
             parameters = new ParameterListImpl(descriptor.descriptor);

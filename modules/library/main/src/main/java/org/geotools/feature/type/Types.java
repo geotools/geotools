@@ -141,7 +141,7 @@ public class Types {
             }
         }
 
-        if (type instanceof ComplexType
+        if (type instanceof ComplexType complexType
                 && attribute instanceof ComplexAttribute
                 && attributeContent instanceof Collection) {
             if (!isSuper || attribute instanceof Feature) {
@@ -150,7 +150,7 @@ public class Types {
 
                 @SuppressWarnings("unchecked")
                 Collection<Attribute> attributeList = (Collection<Attribute>) attributeContent;
-                validateAll((ComplexType) type, attributeList);
+                validateAll(complexType, attributeList);
             }
         }
 
@@ -616,8 +616,7 @@ public class Types {
     public static Object parse(AttributeType type, Object content) throws IllegalArgumentException {
 
         // JD: TODO: this is pretty lame
-        if (type instanceof AttributeTypeImpl) {
-            AttributeTypeImpl hack = (AttributeTypeImpl) type;
+        if (type instanceof AttributeTypeImpl hack) {
             Object parsed = hack.parse(content);
 
             if (parsed != null) {
@@ -884,8 +883,8 @@ public class Types {
         // as a direct child definition
         if (match.isEmpty()) {
             AttributeType superType = type.getSuper();
-            if (superType instanceof ComplexType) {
-                match.addAll(descriptors((ComplexType) superType, name));
+            if (superType instanceof ComplexType complexType) {
+                match.addAll(descriptors(complexType, name));
             }
         }
         return match;
@@ -914,8 +913,8 @@ public class Types {
         // as a direct child definition
         if (match.isEmpty()) {
             AttributeType superType = type.getSuper();
-            if (superType instanceof ComplexType) {
-                List<PropertyDescriptor> superDescriptors = descriptors((ComplexType) superType, name);
+            if (superType instanceof ComplexType complexType) {
+                List<PropertyDescriptor> superDescriptors = descriptors(complexType, name);
                 match.addAll(superDescriptors);
             }
         }

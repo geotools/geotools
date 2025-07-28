@@ -200,8 +200,7 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
     /** @see Edge#compareNodes(Edge) */
     @Override
     public int compareNodes(Edge other) {
-        if (other instanceof DirectedEdge) {
-            DirectedEdge de = (DirectedEdge) other;
+        if (other instanceof DirectedEdge de) {
             if (de.getInNode().equals(m_in) && de.getOutNode().equals(m_out)) return EQUAL_NODE_ORIENTATION;
             if (de.getInNode().equals(m_out) && de.getOutNode().equals(m_in)) return OPPOSITE_NODE_ORIENTATION;
         }

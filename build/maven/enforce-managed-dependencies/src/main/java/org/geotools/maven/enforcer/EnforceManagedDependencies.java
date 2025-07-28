@@ -165,19 +165,17 @@ public class EnforceManagedDependencies extends AbstractEnforcerRule {
         if (StringUtils.isNotEmpty(dependency.getVersion())) {
             String errorMessage;
             if (managedVersion != null) {
-                errorMessage = String.format(
-                        "Dependency %s has inline version %s but is managed with version %s",
-                        dependencyKey, dependency.getVersion(), managedVersion);
+                errorMessage = "Dependency %s has inline version %s but is managed with version %s"
+                        .formatted(dependencyKey, dependency.getVersion(), managedVersion);
             } else {
-                errorMessage =
-                        String.format("Dependency %s has inline version %s", dependencyKey, dependency.getVersion());
+                errorMessage = "Dependency %s has inline version %s".formatted(dependencyKey, dependency.getVersion());
             }
             violations.add(errorMessage);
         } else {
             // Check if dependency without version is actually managed
             if (managedVersion == null) {
-                violations.add(String.format(
-                        "Dependency %s is not managed by any dependencyManagement section", dependencyKey));
+                violations.add(
+                        "Dependency %s is not managed by any dependencyManagement section".formatted(dependencyKey));
             }
         }
     }

@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.AbstractList;
@@ -36,6 +37,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class IntegerList extends AbstractList<Integer> implements RandomAccess, Serializable, Cloneable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1241962316404811189L;
 
     /** The size of the primitive type used for the {@link #values} array. */

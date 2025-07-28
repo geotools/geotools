@@ -69,8 +69,8 @@ public final class Capabilities200ServiceInfo implements WFSServiceInfo {
         // The Abstract is of Type LanguageStringType, not String.
         StringBuilder sb = new StringBuilder();
         for (Object line : serviceIdentification.getAbstract()) {
-            if (line instanceof LanguageStringType) {
-                sb.append(((LanguageStringType) line).getValue());
+            if (line instanceof LanguageStringType type) {
+                sb.append(type.getValue());
             } else {
                 sb.append(line);
             }

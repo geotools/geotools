@@ -17,6 +17,7 @@
 package org.geotools.referencing.factory.epsg;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,6 +51,7 @@ import org.geotools.util.logging.Logging;
  */
 public final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     /** For compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 7105664579449680562L;
 
     /**

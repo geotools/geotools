@@ -73,10 +73,10 @@ public class WindowActivatedListener<S, C extends Window, D extends WindowDriver
             Object source = event.getSource();
             if (windowClass.isAssignableFrom(source.getClass()) && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
 
-                if (source instanceof Frame) {
-                    fixture = (AbstractWindowFixture<S, C, D>) new FrameFixture((Frame) source);
-                } else if (source instanceof Dialog) {
-                    fixture = (AbstractWindowFixture<S, C, D>) new DialogFixture((Dialog) source);
+                if (source instanceof Frame frame) {
+                    fixture = (AbstractWindowFixture<S, C, D>) new FrameFixture(frame);
+                } else if (source instanceof Dialog dialog) {
+                    fixture = (AbstractWindowFixture<S, C, D>) new DialogFixture(dialog);
                 }
 
                 latch.countDown();

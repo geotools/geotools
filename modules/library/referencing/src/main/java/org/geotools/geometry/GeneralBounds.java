@@ -17,6 +17,7 @@
 package org.geotools.geometry;
 
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -67,6 +68,7 @@ import org.geotools.util.Utilities;
  */
 public class GeneralBounds extends AbstractBounds implements Cloneable, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1752330560227688940L;
 
     /**
@@ -171,8 +173,8 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * is already a GeneralEnvelope
      */
     public static GeneralBounds toGeneralEnvelope(final Bounds envelope) {
-        if (envelope instanceof GeneralBounds) {
-            return (GeneralBounds) envelope;
+        if (envelope instanceof GeneralBounds bounds) {
+            return bounds;
         } else {
             return new GeneralBounds(envelope);
         }
@@ -185,8 +187,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      */
     public GeneralBounds(final Bounds envelope) {
         ensureNonNull("envelope", envelope);
-        if (envelope instanceof GeneralBounds) {
-            final GeneralBounds e = (GeneralBounds) envelope;
+        if (envelope instanceof GeneralBounds e) {
             ordinates = e.ordinates.clone();
             crs = e.crs;
         } else {

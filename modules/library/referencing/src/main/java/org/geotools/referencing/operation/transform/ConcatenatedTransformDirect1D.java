@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
@@ -29,6 +30,7 @@ import org.geotools.api.referencing.operation.TransformException;
  */
 final class ConcatenatedTransformDirect1D extends ConcatenatedTransformDirect implements MathTransform1D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1064398659892864966L;
 
     /**

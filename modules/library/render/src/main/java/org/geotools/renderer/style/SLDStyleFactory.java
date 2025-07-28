@@ -309,14 +309,14 @@ public class SLDStyleFactory {
     private Style2D createStyleInternal(Object drawMe, Symbolizer symbolizer, Range scaleRange) {
         Style2D style = null;
 
-        if (symbolizer instanceof PolygonSymbolizer) {
-            style = createPolygonStyle(drawMe, (PolygonSymbolizer) symbolizer, scaleRange);
-        } else if (symbolizer instanceof LineSymbolizer) {
-            style = createLineStyle(drawMe, (LineSymbolizer) symbolizer, scaleRange);
-        } else if (symbolizer instanceof PointSymbolizer) {
-            style = createPointStyle(drawMe, (PointSymbolizer) symbolizer, scaleRange);
-        } else if (symbolizer instanceof TextSymbolizer) {
-            style = createTextStyle(drawMe, (TextSymbolizer) symbolizer, scaleRange);
+        if (symbolizer instanceof PolygonSymbolizer polygonSymbolizer) {
+            style = createPolygonStyle(drawMe, polygonSymbolizer, scaleRange);
+        } else if (symbolizer instanceof LineSymbolizer lineSymbolizer) {
+            style = createLineStyle(drawMe, lineSymbolizer, scaleRange);
+        } else if (symbolizer instanceof PointSymbolizer pointSymbolizer) {
+            style = createPointStyle(drawMe, pointSymbolizer, scaleRange);
+        } else if (symbolizer instanceof TextSymbolizer textSymbolizer) {
+            style = createTextStyle(drawMe, textSymbolizer, scaleRange);
         }
 
         return style;
@@ -334,10 +334,10 @@ public class SLDStyleFactory {
     public Style2D createDynamicStyle(SimpleFeature f, Symbolizer symbolizer, Range scaleRange) {
         Style2D style = null;
 
-        if (symbolizer instanceof PolygonSymbolizer) {
-            style = createDynamicPolygonStyle(f, (PolygonSymbolizer) symbolizer, scaleRange);
-        } else if (symbolizer instanceof LineSymbolizer) {
-            style = createDynamicLineStyle(f, (LineSymbolizer) symbolizer, scaleRange);
+        if (symbolizer instanceof PolygonSymbolizer polygonSymbolizer) {
+            style = createDynamicPolygonStyle(f, polygonSymbolizer, scaleRange);
+        } else if (symbolizer instanceof LineSymbolizer lineSymbolizer) {
+            style = createDynamicLineStyle(f, lineSymbolizer, scaleRange);
         } else {
             throw new UnsupportedOperationException("This kind of symbolizer is not yet supported");
         }
@@ -516,11 +516,11 @@ public class SLDStyleFactory {
                 LOGGER.finer("trying to render symbol " + symbol);
             }
             // try loading external graphic and creating a GraphicsStyle2D
-            if (symbol instanceof ExternalGraphic) {
+            if (symbol instanceof ExternalGraphic graphic) {
                 if (LOGGER.isLoggable(Level.FINER)) {
                     LOGGER.finer("rendering External graphic");
                 }
-                eg = (ExternalGraphic) symbol;
+                eg = graphic;
 
                 // if the icon size becomes too big we switch to vector
                 // rendering too, since
@@ -558,11 +558,11 @@ public class SLDStyleFactory {
                     }
                 }
             }
-            if (symbol instanceof Mark) {
+            if (symbol instanceof Mark mark) {
                 if (LOGGER.isLoggable(Level.FINER)) {
                     LOGGER.finer("rendering mark @ PointRenderer " + symbol.toString());
                 }
-                retval = createMarkStyle((Mark) symbol, feature, symbolizer, size);
+                retval = createMarkStyle(mark, feature, symbolizer, size);
                 break;
             }
         }
@@ -686,13 +686,10 @@ public class SLDStyleFactory {
             anchorY = 0;
         }
 
-        if (placement instanceof PointPlacement) {
+        if (placement instanceof PointPlacement p) {
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("setting pointPlacement");
             }
-
-            // compute anchor point and displacement
-            PointPlacement p = (PointPlacement) placement;
             if (p.getAnchorPoint() != null) {
                 anchorX = evalToDouble(p.getAnchorPoint().getAnchorPointX(), feature, anchorX);
                 anchorY = evalToDouble(p.getAnchorPoint().getAnchorPointY(), feature, anchorY);
@@ -712,14 +709,13 @@ public class SLDStyleFactory {
             }
 
             ts2d.setPointPlacement(true);
-        } else if (placement instanceof LinePlacement) {
+        } else if (placement instanceof LinePlacement p) {
             // this code used to really really really really suck, so I removed
             // it!
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("setting pointPlacement");
             }
             ts2d.setPointPlacement(false);
-            LinePlacement p = (LinePlacement) placement;
             int displace = evalToInt(p.getPerpendicularOffset(), feature, 0);
             ts2d.setPerpendicularOffset(displace);
         }
@@ -1020,14 +1016,13 @@ public class SLDStyleFactory {
         Mark mark = null;
         Shape shape = null;
         for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
-            if (symbol instanceof ExternalGraphic) {
-                ExternalGraphic eg = (ExternalGraphic) symbol;
+            if (symbol instanceof ExternalGraphic eg) {
                 icon = getIcon(eg, feature, graphicSize);
                 if (icon != null) {
                     break;
                 }
-            } else if (symbol instanceof Mark) {
-                mark = (Mark) symbol;
+            } else if (symbol instanceof Mark mark1) {
+                mark = mark1;
                 shape = getShape(mark, feature);
                 if (shape != null) {
                     break;
@@ -1199,8 +1194,7 @@ public class SLDStyleFactory {
         // optimization, if this is an IconImage based on a BufferedImage,
         // just return the
         // wrapped one
-        if (icon instanceof ImageIcon) {
-            ImageIcon img = (ImageIcon) icon;
+        if (icon instanceof ImageIcon img) {
             if (img.getImage() instanceof BufferedImage) {
                 // return the image as is, no border
                 BufferedImage image = (BufferedImage) img.getImage();

@@ -301,7 +301,7 @@ public class WMTSSpecification extends Specification {
             String baseUrl = getTemplateUrl();
             if (baseUrl == null) {
                 throw new IllegalStateException(
-                        String.format("ResourceUrl wasn't given for layer {%s} and format {%s}", layer, getFormat()));
+                        "ResourceUrl wasn't given for layer {%s} and format {%s}".formatted(layer, getFormat()));
             }
 
             String layerString = WMTSHelper.encodeParameter(layer.getName());

@@ -111,8 +111,8 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature> i
     public boolean endObject() throws ParseException, IOException {
         super.endObject();
 
-        if (delegate instanceof FeatureHandler) {
-            feature = ((FeatureHandler) delegate).getValue();
+        if (delegate instanceof FeatureHandler handler1) {
+            feature = handler1.getValue();
             if (feature != null) {
                 // check for a null builder, if it is null set it with the feature type
                 // from this feature
@@ -125,12 +125,12 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature> i
                     builder = new SimpleFeatureBuilder(featureType);
                 }
 
-                ((FeatureHandler) delegate).init();
+                handler1.init();
                 // we want to pause at this point
                 return false;
             }
-        } else if (delegate instanceof CRSHandler) {
-            crs = ((CRSHandler) delegate).getValue();
+        } else if (delegate instanceof CRSHandler handler) {
+            crs = handler.getValue();
             if (crs != null) {
                 delegate = NULL;
             }

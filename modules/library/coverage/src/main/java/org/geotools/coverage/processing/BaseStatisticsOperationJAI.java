@@ -20,6 +20,7 @@ import it.geosolutions.jaiext.JAIExt;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -61,6 +62,7 @@ import org.locationtech.jts.geom.Polygon;
 public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** */
+    @Serial
     private static final long serialVersionUID = 6830028735162290160L;
 
     /** {@link Logger} for this class. */
@@ -267,8 +269,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
             //
             // /////////////////////////////////////////////////////////////////////
             final Object o = parameters.parameter("roi").getValue();
-            if (o != null && o instanceof Polygon) {
-                final Polygon roiInput = (Polygon) o;
+            if (o != null && o instanceof Polygon roiInput) {
                 if (new ReferencedEnvelope(roiInput.getEnvelopeInternal(), source.getCoordinateReferenceSystem2D())
                         .intersects((Envelope) new ReferencedEnvelope(envelope))) {
                     final java.awt.Polygon shapePolygon = convertPolygon(roiInput, worldToGridTransform);

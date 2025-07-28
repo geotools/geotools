@@ -151,8 +151,8 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
             final URI_Parser parser = getParser(code);
             parser.logWarningIfTypeMismatch(this, DatumAuthorityFactory.class);
             final AuthorityFactory factory = getVersionedFactory(parser);
-            if (factory instanceof DatumAuthorityFactory) {
-                return (DatumAuthorityFactory) factory;
+            if (factory instanceof DatumAuthorityFactory authorityFactory) {
+                return authorityFactory;
             }
         }
         return super.getDatumAuthorityFactory(code);
@@ -174,8 +174,8 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
             final URI_Parser parser = getParser(code);
             parser.logWarningIfTypeMismatch(this, CSAuthorityFactory.class);
             final AuthorityFactory factory = getVersionedFactory(parser);
-            if (factory instanceof CSAuthorityFactory) {
-                return (CSAuthorityFactory) factory;
+            if (factory instanceof CSAuthorityFactory authorityFactory) {
+                return authorityFactory;
             }
         }
         return super.getCSAuthorityFactory(code);
@@ -197,8 +197,8 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
             final URI_Parser parser = getParser(code);
             parser.logWarningIfTypeMismatch(this, CRSAuthorityFactory.class);
             final AuthorityFactory factory = getVersionedFactory(parser);
-            if (factory instanceof CRSAuthorityFactory) {
-                return (CRSAuthorityFactory) factory;
+            if (factory instanceof CRSAuthorityFactory authorityFactory) {
+                return authorityFactory;
             }
         }
         return super.getCRSAuthorityFactory(code);
@@ -221,8 +221,8 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
             final URI_Parser parser = getParser(code);
             parser.logWarningIfTypeMismatch(this, CoordinateOperationAuthorityFactory.class);
             final AuthorityFactory factory = getVersionedFactory(parser);
-            if (factory instanceof CoordinateOperationAuthorityFactory) {
-                return (CoordinateOperationAuthorityFactory) factory;
+            if (factory instanceof CoordinateOperationAuthorityFactory authorityFactory) {
+                return authorityFactory;
             }
         }
         return super.getCoordinateOperationAuthorityFactory(code);

@@ -162,8 +162,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
 
     /** Extract the directory from the specified data source, or {@code null} if this information is not available. */
     private static File getDirectory(final DataSource source) {
-        if (source instanceof JDBCDataSource) {
-            String path = ((JDBCDataSource) source).getDatabase();
+        if (source instanceof JDBCDataSource dataSource) {
+            String path = dataSource.getDatabase();
             if (path != null && PREFIX.regionMatches(true, 0, path, 0, PREFIX.length())) {
                 path = path.substring(PREFIX.length());
                 return new File(path).getParentFile();

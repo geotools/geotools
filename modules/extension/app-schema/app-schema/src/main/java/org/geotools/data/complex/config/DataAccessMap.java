@@ -16,6 +16,7 @@
  */
 package org.geotools.data.complex.config;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,5 +35,6 @@ import org.geotools.api.feature.type.FeatureType;
 public class DataAccessMap extends HashMap<Map<String, Serializable>, DataAccess<FeatureType, Feature>> {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 133019722648852790L;
 }

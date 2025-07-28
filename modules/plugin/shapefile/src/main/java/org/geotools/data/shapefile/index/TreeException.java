@@ -17,10 +17,12 @@
 package org.geotools.data.shapefile.index;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /** @author Tommaso Nolli */
 public class TreeException extends IOException {
 
+    @Serial
     private static final long serialVersionUID = 1988241322009839486L;
 
     public TreeException() {

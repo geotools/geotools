@@ -374,8 +374,7 @@ public class FactoryRegistry {
                      * if the hint was not an array) will be tried using the "normal" path
                      * (oustide the loop) in order to get the error message in case of failure.
                      */
-                    if (hint instanceof Class<?>[]) {
-                        final Class<?>[] types = (Class<?>[]) hint;
+                    if (hint instanceof Class<?>[] types) {
                         final int length = types.length;
                         for (int i = 0; i < length - 1; i++) {
                             final Class<?> type = types[i];
@@ -545,8 +544,8 @@ public class FactoryRegistry {
             return false;
         }
         if (hints != null) {
-            if (candidate instanceof Factory) {
-                if (!usesAcceptableHints((Factory) candidate, hints, null)) {
+            if (candidate instanceof Factory factory) {
+                if (!usesAcceptableHints(factory, hints, null)) {
                     return false;
                 }
             }
@@ -607,12 +606,11 @@ public class FactoryRegistry {
                  * We have found a hint that matter. Check if the
                  * available factory meets the user's criterions.
                  */
-                if (expected instanceof Class<?>) {
-                    if (!((Class<?>) expected).isInstance(value)) {
+                if (expected instanceof Class<?> class1) {
+                    if (!class1.isInstance(value)) {
                         return false;
                     }
-                } else if (expected instanceof Class<?>[]) {
-                    final Class<?>[] types = (Class<?>[]) expected;
+                } else if (expected instanceof Class<?>[] types) {
                     int i = 0;
                     do if (i >= types.length) return false;
                     while (!types[i++].isInstance(value));
@@ -635,8 +633,7 @@ public class FactoryRegistry {
              * kind of dependencies than 'testingHints'. It is a "factory A depends on factory
              * B which depends on factory A" loop, which is legal.
              */
-            if (value instanceof Factory) {
-                final Factory dependency = (Factory) value;
+            if (value instanceof Factory dependency) {
                 if (alreadyDone == null) {
                     alreadyDone = new HashSet<>();
                 }

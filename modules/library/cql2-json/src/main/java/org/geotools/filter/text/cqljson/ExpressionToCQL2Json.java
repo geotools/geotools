@@ -246,8 +246,8 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
     }
 
     private ArrayNode asArrayNode(Object extraData) {
-        if (extraData instanceof ArrayNode) {
-            return (ArrayNode) extraData;
+        if (extraData instanceof ArrayNode node) {
+            return node;
         }
         return objectMapper.createArrayNode();
     }

@@ -13,6 +13,7 @@ import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.OGC_01004;
 
 import java.awt.color.ColorSpace;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -30,6 +31,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CV_PaletteInterpretation", specification = OGC_01004)
 public final class PaletteInterpretation extends CodeList<PaletteInterpretation> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -7387623392932592485L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

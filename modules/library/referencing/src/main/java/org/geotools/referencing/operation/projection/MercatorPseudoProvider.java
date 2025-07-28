@@ -18,6 +18,7 @@ package org.geotools.referencing.operation.projection;
 
 import static java.lang.Math.abs;
 
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -40,6 +41,7 @@ import si.uom.NonSI;
  */
 public class MercatorPseudoProvider extends AbstractProvider {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 118002069939741891L;
 
     /**
@@ -146,6 +148,7 @@ public class MercatorPseudoProvider extends AbstractProvider {
     /** Just like the {@link Mercator1SP.Spherical} but returning the proper parameter for the pseudo mercartor case */
     private static final class Spherical extends Mercator.Spherical {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -7583892502939355783L;
 
         /**

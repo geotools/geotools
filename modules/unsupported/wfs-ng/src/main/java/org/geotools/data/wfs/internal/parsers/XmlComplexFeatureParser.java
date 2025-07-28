@@ -425,9 +425,9 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
             } else {
                 // 3b. If the tag name doesn't belong to this type then
                 // something is wrong.
-                throw new RuntimeException(String.format(
-                        "WFS response structure unexpected. Could not find descriptor in type '%s' for '%s'.",
-                        complexType, currentTagName));
+                throw new RuntimeException(
+                        "WFS response structure unexpected. Could not find descriptor in type '%s' for '%s'."
+                                .formatted(complexType, currentTagName));
             }
         } else if (tagType == END_DOCUMENT) {
             // 2b. Close the parser if we're at the end of the document.
@@ -439,8 +439,8 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
     }
 
     private Object getValue(ReturnAttribute innerAttribute) {
-        if (innerAttribute.value instanceof AttributeImpl) {
-            return ((AttributeImpl) innerAttribute.value).getValue();
+        if (innerAttribute.value instanceof AttributeImpl impl) {
+            return impl.getValue();
         }
         return innerAttribute.value;
     }

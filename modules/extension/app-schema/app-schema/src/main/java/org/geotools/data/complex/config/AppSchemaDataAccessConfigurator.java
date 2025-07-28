@@ -442,9 +442,9 @@ public class AppSchemaDataAccessConfigurator {
                     descriptor.getDefaultValue());
             newDescriptor.getUserData().putAll(descriptor.getUserData());
         } else {
-            throw new IllegalArgumentException(String.format(
-                    "Default geometry descriptor could not be found for type \"%s\" at x-path \"%s\"",
-                    descriptor.getName().toString(), defaultGeomXPath));
+            throw new IllegalArgumentException(
+                    "Default geometry descriptor could not be found for type \"%s\" at x-path \"%s\""
+                            .formatted(descriptor.getName().toString(), defaultGeomXPath));
         }
 
         return newDescriptor;
@@ -719,8 +719,7 @@ public class AppSchemaDataAccessConfigurator {
     private Expression fixClientPropertyIfJDBCMultipleValueIsPresent(
             org.geotools.data.complex.config.AttributeMapping dto, Expression clientPropertyExpr) {
         MultipleValue multipleValue = dto.getMultipleValue();
-        if (multipleValue instanceof JdbcMultipleValue) {
-            JdbcMultipleValue jdbcMultipleValue = (JdbcMultipleValue) multipleValue;
+        if (multipleValue instanceof JdbcMultipleValue jdbcMultipleValue) {
             DuplicatingFilterVisitor duplicatingFilterVisitor = new DuplicatingFilterVisitor() {
                 @Override
                 public Object visit(PropertyName propertyName, Object extraData) {
@@ -764,8 +763,8 @@ public class AppSchemaDataAccessConfigurator {
                 "asking datastore " + sourceDataStore + " for source type " + typeName);
         Name name = Types.degloseName(typeName, namespaces);
         FeatureSource<? extends FeatureType, ? extends Feature> fSource = sourceDataStore.getFeatureSource(name);
-        if (fSource instanceof XmlFeatureSource) {
-            ((XmlFeatureSource) fSource).setNamespaces(namespaces);
+        if (fSource instanceof XmlFeatureSource source) {
+            source.setNamespaces(namespaces);
         }
         AppSchemaDataAccessConfigurator.LOGGER.fine("found feature source for " + typeName);
         return fSource;
@@ -1076,8 +1075,8 @@ public class AppSchemaDataAccessConfigurator {
         if (fSource == null) {
             throw new RuntimeException("Feature source not found '" + typeName + "'.");
         }
-        if (fSource instanceof XmlFeatureSource) {
-            ((XmlFeatureSource) fSource).setNamespaces(namespaces);
+        if (fSource instanceof XmlFeatureSource source) {
+            source.setNamespaces(namespaces);
         }
         return fSource;
     }

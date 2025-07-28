@@ -72,8 +72,7 @@ public class CentroidProcess implements VectorProcess {
         protected SimpleFeatureType buildTargetFeatureType() {
             SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
             for (AttributeDescriptor ad : delegate.getSchema().getAttributeDescriptors()) {
-                if (ad instanceof GeometryDescriptor) {
-                    GeometryDescriptor gd = (GeometryDescriptor) ad;
+                if (ad instanceof GeometryDescriptor gd) {
                     Class<?> binding = ad.getType().getBinding();
                     if (Point.class.isAssignableFrom(binding)) {
                         tb.add(ad);
@@ -121,8 +120,8 @@ public class CentroidProcess implements VectorProcess {
         public SimpleFeature next() throws NoSuchElementException {
             SimpleFeature f = delegate.next();
             for (Object attribute : f.getAttributes()) {
-                if (attribute instanceof Geometry && !(attribute instanceof Point)) {
-                    attribute = ((Geometry) attribute).getCentroid();
+                if (attribute instanceof Geometry geometry && !(attribute instanceof Point)) {
+                    attribute = geometry.getCentroid();
                 }
                 fb.add(attribute);
             }

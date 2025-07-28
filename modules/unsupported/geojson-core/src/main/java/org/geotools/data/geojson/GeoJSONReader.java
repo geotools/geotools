@@ -617,8 +617,7 @@ public class GeoJSONReader implements AutoCloseable {
             // copy the existing types to the new schema
             for (AttributeDescriptor att : schema.getAttributeDescriptors()) {
                 // in case of Geometry, see if we have mixed geometry types
-                if (att instanceof GeometryDescriptor && schema.getGeometryDescriptor() == att && g != null) {
-                    GeometryDescriptor gd = (GeometryDescriptor) att;
+                if (att instanceof GeometryDescriptor gd && schema.getGeometryDescriptor() == att && g != null) {
                     Class<?> currClass = g.getClass();
                     Class<?> prevClass = gd.getType().getBinding();
                     if (!prevClass.isAssignableFrom(currClass)) {

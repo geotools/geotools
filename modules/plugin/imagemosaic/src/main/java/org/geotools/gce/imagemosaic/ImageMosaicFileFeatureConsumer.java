@@ -58,15 +58,14 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
         String locationAttrName = runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE);
         Object locationAttrObj = Utils.getAttribute(feature, locationAttrName);
         File file = null;
-        if (locationAttrObj instanceof String) {
-            final String path = (String) locationAttrObj;
+        if (locationAttrObj instanceof String path) {
             boolean isAbsolute = Boolean.getBoolean(runConfiguration.getParameter(Utils.Prop.ABSOLUTE_PATH));
 
             file = isAbsolute
                     ? new File(path)
                     : new File(runConfiguration.getParameter(Utils.Prop.ROOT_MOSAIC_DIR), path);
-        } else if (locationAttrObj instanceof File) {
-            file = (File) locationAttrObj;
+        } else if (locationAttrObj instanceof File file1) {
+            file = file1;
         }
         return imageMosaicFileConsumer.checkElement(file, provider);
     }
@@ -78,8 +77,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
         String locationAttrName = runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE);
         Object locationAttrObj = Utils.getAttribute(feature, locationAttrName);
         File file = null;
-        if (locationAttrObj instanceof String) {
-            final String path = (String) locationAttrObj;
+        if (locationAttrObj instanceof String path) {
             if (Boolean.getBoolean(runConfiguration.getParameter(Utils.Prop.ABSOLUTE_PATH))) {
                 // absolute files
                 file = new File(path);
@@ -111,8 +109,8 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                 return;
             }
 
-        } else if (locationAttrObj instanceof File) {
-            file = (File) locationAttrObj;
+        } else if (locationAttrObj instanceof File file1) {
+            file = file1;
         } else {
             provider.getEventHandler()
                     .fireException(new IOException(

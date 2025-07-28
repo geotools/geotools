@@ -424,8 +424,8 @@ public class NestedAttributeMapping extends AttributeMapping {
                 // if null, don't encode this element
                 return null;
             }
-            if (fTypeValue instanceof Hints) {
-                return ((Hints) fTypeValue).get(ComplexFeatureConstants.STRING_KEY);
+            if (fTypeValue instanceof Hints hints) {
+                return hints.get(ComplexFeatureConstants.STRING_KEY);
             }
         } else {
             fTypeValue = nestedFeatureType.toString();
@@ -450,7 +450,7 @@ public class NestedAttributeMapping extends AttributeMapping {
         if (fSource == null) {
             return null;
         }
-        return fSource instanceof MappingFeatureSource ? ((MappingFeatureSource) fSource).getMapping() : null;
+        return fSource instanceof MappingFeatureSource mfs ? mfs.getMapping() : null;
     }
 
     public NamespaceSupport getNamespaces() {

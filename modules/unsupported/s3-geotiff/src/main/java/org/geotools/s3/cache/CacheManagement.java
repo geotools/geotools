@@ -105,8 +105,7 @@ public enum CacheManagement {
         } catch (Exception e) {
             logger().log(
                             Level.WARNING,
-                            String.format(
-                                    "Unable to configure S3 GeoTiff cache from %s, using default config", configFile),
+                            "Unable to configure S3 GeoTiff cache from %s, using default config".formatted(configFile),
                             e);
         }
         return null;

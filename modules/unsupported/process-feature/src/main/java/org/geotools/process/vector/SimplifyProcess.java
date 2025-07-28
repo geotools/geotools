@@ -110,11 +110,11 @@ public class SimplifyProcess implements VectorProcess {
         public SimpleFeature next() throws NoSuchElementException {
             SimpleFeature f = delegate.next();
             for (Object attribute : f.getAttributes()) {
-                if (attribute instanceof Geometry) {
+                if (attribute instanceof Geometry geometry) {
                     if (preserveTopology) {
-                        attribute = TopologyPreservingSimplifier.simplify((Geometry) attribute, distance);
+                        attribute = TopologyPreservingSimplifier.simplify(geometry, distance);
                     } else {
-                        attribute = DouglasPeuckerSimplifier.simplify((Geometry) attribute, distance);
+                        attribute = DouglasPeuckerSimplifier.simplify(geometry, distance);
                     }
                 }
                 fb.add(attribute);

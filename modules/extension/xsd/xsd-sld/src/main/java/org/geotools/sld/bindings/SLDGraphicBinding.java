@@ -141,8 +141,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
     /** Returns the child value of a node. If it's an empty string, <code>null</code> will be returned. */
     private Object getChildValue(Node node, String name) {
         Object value = node.getChildValue(name);
-        if (value instanceof String) {
-            String text = (String) value;
+        if (value instanceof String text) {
             if (text.isEmpty()) {
                 return null;
             }

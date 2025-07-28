@@ -1089,8 +1089,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
             // register all geometry columns in the database
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                if (att instanceof GeometryDescriptor) {
-                    GeometryDescriptor gd = (GeometryDescriptor) att;
+                if (att instanceof GeometryDescriptor gd) {
 
                     int srid = getSRIDFromDescriptor(cx, gd);
 
@@ -1333,9 +1332,9 @@ public class PostGISDialect extends BasicSQLDialect {
         if (value == null) {
             sql.append("NULL");
         } else {
-            if (value instanceof LinearRing && !(value instanceof CurvedRing)) {
+            if (value instanceof LinearRing ring && !(value instanceof CurvedRing)) {
                 // postgis does not handle linear rings, convert to just a line string
-                value = value.getFactory().createLineString(((LinearRing) value).getCoordinateSequence());
+                value = value.getFactory().createLineString(ring.getCoordinateSequence());
             }
 
             WKTWriter writer = new WKTWriter2(dimension);
@@ -1385,8 +1384,8 @@ public class PostGISDialect extends BasicSQLDialect {
         }
 
         if (BigDate.class.isAssignableFrom(type)) {
-            if (value instanceof Date) {
-                super.encodeValue(((Date) value).getTime(), Long.class, sql);
+            if (value instanceof Date date) {
+                super.encodeValue(date.getTime(), Long.class, sql);
                 return;
             }
         }
@@ -1415,7 +1414,7 @@ public class PostGISDialect extends BasicSQLDialect {
     void encodeByteArrayAsHex(byte[] input, StringBuffer sql) {
         StringBuffer sb = new StringBuffer("\\x");
         for (byte b : input) {
-            sb.append(String.format("%02x", b));
+            sb.append("%02x".formatted(b));
         }
         super.encodeValue(sb.toString(), String.class, sql);
     }
@@ -1475,8 +1474,7 @@ public class PostGISDialect extends BasicSQLDialect {
     public Version getPostgreSQLVersion(Connection conn) throws SQLException {
         if (pgsqlVersion == null) {
             DatabaseMetaData md = conn.getMetaData();
-            pgsqlVersion =
-                    new Version(String.format("%d.%d", md.getDatabaseMajorVersion(), md.getDatabaseMinorVersion()));
+            pgsqlVersion = new Version("%d.%d".formatted(md.getDatabaseMajorVersion(), md.getDatabaseMinorVersion()));
         }
         return pgsqlVersion;
     }

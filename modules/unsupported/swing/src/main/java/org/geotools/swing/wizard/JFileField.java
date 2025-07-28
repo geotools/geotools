@@ -62,12 +62,12 @@ public class JFileField extends ParamField {
     protected void browse() {
         JFileChooser dialog;
         Object format = this.parameter.metadata == null ? null : this.parameter.metadata.get(Parameter.EXT);
-        if (format instanceof FileDataStoreFactorySpi) {
-            dialog = new JFileDataStoreChooser((FileDataStoreFactorySpi) format);
-        } else if (format instanceof String) {
-            dialog = new JFileDataStoreChooser((String) format);
-        } else if (format instanceof String[]) {
-            dialog = new JFileDataStoreChooser((String[]) format);
+        if (format instanceof FileDataStoreFactorySpi spi) {
+            dialog = new JFileDataStoreChooser(spi);
+        } else if (format instanceof String string) {
+            dialog = new JFileDataStoreChooser(string);
+        } else if (format instanceof String[] strings) {
+            dialog = new JFileDataStoreChooser(strings);
         } else if (format instanceof List) {
             dialog = new JFileDataStoreChooser((List<String>) format);
         } else {
@@ -117,14 +117,12 @@ public class JFileField extends ParamField {
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof File) {
-            File file = (File) value;
+        if (value instanceof File file) {
             field.setText(file.toString());
-        } else if (value instanceof URL) {
-            URL url = (URL) value;
+        } else if (value instanceof URL url) {
             field.setText(url.toExternalForm());
-        } else if (value instanceof String) {
-            field.setText((String) value);
+        } else if (value instanceof String string) {
+            field.setText(string);
         }
     }
 

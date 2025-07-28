@@ -119,14 +119,14 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         if (!isPrepareEnabled()) return super.visit(expression, context);
 
         // evaluate the literal and store it for later
-        Object literalValue = evaluateLiteral(expression, context instanceof Class ? (Class) context : null);
+        Object literalValue = evaluateLiteral(expression, context instanceof Class c ? c : null);
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
-        descriptors.add(context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
+        descriptors.add(context instanceof AttributeDescriptor ad ? ad : null);
 
         Class clazz = null;
-        if (context instanceof Class) clazz = (Class) context;
+        if (context instanceof Class class1) clazz = class1;
         else if (literalValue != null) clazz = literalValue.getClass();
         literalTypes.add(clazz);
 

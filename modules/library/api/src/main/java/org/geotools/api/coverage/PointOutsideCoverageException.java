@@ -9,6 +9,7 @@
  */
 package org.geotools.api.coverage;
 
+import java.io.Serial;
 import org.geotools.api.geometry.Position;
 
 /**
@@ -24,6 +25,7 @@ import org.geotools.api.geometry.Position;
  */
 public class PointOutsideCoverageException extends CannotEvaluateException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8718412090539227101L;
 
     /** Represents a direct position which is outside the domain of the coverage. */

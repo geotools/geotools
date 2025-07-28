@@ -420,8 +420,7 @@ public class Schemas {
     private static void forceImport(XSDSchemaImpl schema) {
         if (schema != null) {
             for (XSDSchemaContent content : schema.getContents()) {
-                if (content instanceof XSDImportImpl) {
-                    XSDImportImpl importDirective = (XSDImportImpl) content;
+                if (content instanceof XSDImportImpl importDirective) {
                     schema.resolveSchema(importDirective.getNamespace());
                 }
             }
@@ -476,8 +475,7 @@ public class Schemas {
      */
     public static final void dispose(XSDSchema schema) {
         for (XSDSchemaContent content : schema.getContents()) {
-            if (content instanceof XSDSchemaDirective) {
-                XSDSchemaDirective directive = (XSDSchemaDirective) content;
+            if (content instanceof XSDSchemaDirective directive) {
                 XSDSchema resolvedSchema = directive.getResolvedSchema();
 
                 if (resolvedSchema != null) {
@@ -634,8 +632,8 @@ public class Schemas {
                     // look for a locator or resolver that can handle it
                     for (XSDSchemaLocator locator : locators) {
                         // check for schema locator which canHandle
-                        if (locator instanceof SchemaLocator) {
-                            if (((SchemaLocator) locator).canHandle(null, namespace, schemaLocation, null)) {
+                        if (locator instanceof SchemaLocator schemaLocator) {
+                            if (schemaLocator.canHandle(null, namespace, schemaLocation, null)) {
                                 // cool, return here and do not recurse
                                 return;
                             }
@@ -668,8 +666,8 @@ public class Schemas {
         String resolve(String namespace, String location) {
             // look for a location resolver capable of handling it
             for (XSDSchemaLocationResolver resolver : resolvers) {
-                if (resolver instanceof SchemaLocationResolver) {
-                    if (((SchemaLocationResolver) resolver).canHandle(null, namespace, location)) {
+                if (resolver instanceof SchemaLocationResolver locationResolver) {
+                    if (locationResolver.canHandle(null, namespace, location)) {
                         // can handle, actually resolve and recurse
                         String resolvedSchemaLocation = resolver.resolveSchemaLocation(null, namespace, location);
                         if (resolvedSchemaLocation != null) {
@@ -1098,8 +1096,8 @@ public class Schemas {
             XSDTypeDefinition baseType = cType.getBaseType();
 
             while (baseType != null && baseType != baseType.getBaseType()) {
-                if (baseType instanceof XSDComplexTypeDefinition) {
-                    baseTypes.addLast((XSDComplexTypeDefinition) baseType);
+                if (baseType instanceof XSDComplexTypeDefinition definition) {
+                    baseTypes.addLast(definition);
                 }
 
                 baseType = baseType.getBaseType();
@@ -1302,13 +1300,9 @@ public class Schemas {
                 for (Object value : attContent) {
                     XSDAttributeGroupContent content = (XSDAttributeGroupContent) value;
 
-                    if (content instanceof XSDAttributeUse) {
-                        // an attribute, add it to the list
-                        XSDAttributeUse use = (XSDAttributeUse) content;
+                    if (content instanceof XSDAttributeUse use) {
                         attributes.add(use.getAttributeDeclaration());
-                    } else if (content instanceof XSDAttributeGroupDefinition) {
-                        // attribute group, add all atts in group to list
-                        XSDAttributeGroupDefinition attGrp = (XSDAttributeGroupDefinition) content;
+                    } else if (content instanceof XSDAttributeGroupDefinition attGrp) {
 
                         if (attGrp.isAttributeGroupDefinitionReference()) {
                             attGrp = attGrp.getResolvedAttributeGroupDefinition();
@@ -1384,8 +1378,7 @@ public class Schemas {
             for (Object o : contents) {
                 XSDSchemaContent content = (XSDSchemaContent) o;
 
-                if (content instanceof XSDImport) {
-                    XSDImport imprt = (XSDImport) content;
+                if (content instanceof XSDImport imprt) {
 
                     if (!added.contains(imprt.getNamespace())) {
                         imports.add(imprt);
@@ -1432,8 +1425,7 @@ public class Schemas {
             for (Object o : contents) {
                 XSDSchemaContent content = (XSDSchemaContent) o;
 
-                if (content instanceof XSDInclude) {
-                    XSDInclude include = (XSDInclude) content;
+                if (content instanceof XSDInclude include) {
 
                     if (!added.contains(include.getSchemaLocation())) {
                         includes.add(include);
@@ -1627,8 +1619,8 @@ public class Schemas {
 
             @Override
             public void visitContainer(PicoContainer container) {
-                if (container instanceof MutablePicoContainer) {
-                    ((MutablePicoContainer) container).unregisterComponent(key);
+                if (container instanceof MutablePicoContainer picoContainer) {
+                    picoContainer.unregisterComponent(key);
                 }
             }
 

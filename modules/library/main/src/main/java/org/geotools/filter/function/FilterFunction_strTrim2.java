@@ -83,10 +83,10 @@ public class FilterFunction_strTrim2 extends FunctionExpressionImpl {
         }
 
         if ("both".equalsIgnoreCase(pos) || "leading".equalsIgnoreCase(pos)) {
-            str = str.replaceAll(String.format("^%s*", ch), "");
+            str = str.replaceAll("^%s*".formatted(ch), "");
         }
         if ("both".equalsIgnoreCase(pos) || "trailing".equalsIgnoreCase(pos)) {
-            str = str.replaceAll(String.format("%s*$", ch), "");
+            str = str.replaceAll("%s*$".formatted(ch), "");
         }
         return str;
     }

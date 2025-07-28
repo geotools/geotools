@@ -153,8 +153,7 @@ class OGRFilterTranslator {
                 new PostPreProcessFilterSplittingVisitor(GEOMETRY_FILTER_CAPABILITIES, schema, null);
         filter.accept(visitor, null);
         Filter preFilter = visitor.getFilterPre();
-        if (preFilter instanceof BinarySpatialOperator) {
-            BinarySpatialOperator bso = (BinarySpatialOperator) preFilter;
+        if (preFilter instanceof BinarySpatialOperator bso) {
             Expression geomExpression = null;
             if (bso.getExpression1() instanceof PropertyName && bso.getExpression2() instanceof Literal) {
                 geomExpression = bso.getExpression2();

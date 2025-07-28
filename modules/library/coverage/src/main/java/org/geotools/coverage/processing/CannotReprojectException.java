@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
+
 /**
  * Throws when a "resample" operation has been requested but the specified grid coverage can't be reprojected.
  *
@@ -25,6 +27,7 @@ package org.geotools.coverage.processing;
  */
 public class CannotReprojectException extends CoverageProcessingException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8145425848361056027L;
 
     /** Creates a new exception without detail message. */

@@ -16,11 +16,13 @@
  */
 package org.geotools.data.postgis;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HStore extends HashMap<String, String> {
 
+    @Serial
     private static final long serialVersionUID = -2696388478311744741L;
 
     public static final String TYPENAME = "hstore";

@@ -16,6 +16,7 @@
  */
 package org.geotools.api.data;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,6 +44,8 @@ import org.geotools.util.logging.Logging;
  */
 public class BatchFeatureEvent extends FeatureEvent {
     static final Logger LOGGER = Logging.getLogger(BatchFeatureEvent.class);
+
+    @Serial
     private static final long serialVersionUID = 3154238322369916486L;
 
     public BatchFeatureEvent(FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
@@ -104,8 +107,7 @@ public class BatchFeatureEvent extends FeatureEvent {
         if (filter == Filter.EXCLUDE) {
             // we are just starting out
             filter = change.getFilter();
-        } else if (filter instanceof And) {
-            And and = (And) filter;
+        } else if (filter instanceof And and) {
             List<Filter> children = new ArrayList<>(and.getChildren());
             children.add(change.getFilter());
             filter = ff.and(children);
@@ -119,8 +121,7 @@ public class BatchFeatureEvent extends FeatureEvent {
         for (Identifier id : fids) {
             if (tempFid.equals(id.getID())) {
                 // we have a match!
-                if (id instanceof FeatureIdImpl) {
-                    FeatureIdImpl featureId = (FeatureIdImpl) id;
+                if (id instanceof FeatureIdImpl featureId) {
                     // update internal structure!
                     featureId.setID(actualFid);
                 }

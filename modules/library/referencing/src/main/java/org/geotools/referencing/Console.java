@@ -172,9 +172,8 @@ public class Console extends AbstractConsole {
         numberFormat.setGroupingUsed(false);
         numberFormat.setMinimumFractionDigits(6);
         numberFormat.setMaximumFractionDigits(6);
-        if (numberFormat instanceof DecimalFormat) {
-            final char decimalSeparator =
-                    ((DecimalFormat) numberFormat).getDecimalFormatSymbols().getDecimalSeparator();
+        if (numberFormat instanceof DecimalFormat format) {
+            final char decimalSeparator = format.getDecimalFormatSymbols().getDecimalSeparator();
             if (decimalSeparator == ',') {
                 return ";";
             }
@@ -537,10 +536,9 @@ public class Console extends AbstractConsole {
             table.nextColumn();
         }
         if (position2 != null) {
-            if (crs instanceof AbstractCRS)
+            if (crs instanceof AbstractCRS rS)
                 try {
-                    final Measure distance =
-                            ((AbstractCRS) crs).distance(position1.getCoordinate(), position2.getCoordinate());
+                    final Measure distance = rS.distance(position1.getCoordinate(), position2.getCoordinate());
                     table.setAlignment(TableWriter.ALIGN_RIGHT);
                     table.write(numberFormat.format(distance.doubleValue()));
                     table.write("  ");

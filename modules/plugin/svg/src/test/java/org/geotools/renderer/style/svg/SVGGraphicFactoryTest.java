@@ -123,13 +123,13 @@ public class SVGGraphicFactoryTest {
     }
 
     private TextNode getTextNode(GraphicsNode node) {
-        if (node instanceof TextNode) {
-            return (TextNode) node;
-        } else if (node instanceof CompositeGraphicsNode) {
-            List children = ((CompositeGraphicsNode) node).getChildren();
+        if (node instanceof TextNode textNode) {
+            return textNode;
+        } else if (node instanceof CompositeGraphicsNode graphicsNode1) {
+            List children = graphicsNode1.getChildren();
             for (Object child : children) {
-                if (child instanceof GraphicsNode) {
-                    TextNode result = getTextNode((GraphicsNode) child);
+                if (child instanceof GraphicsNode graphicsNode) {
+                    TextNode result = getTextNode(graphicsNode);
                     if (result != null) {
                         return result;
                     }

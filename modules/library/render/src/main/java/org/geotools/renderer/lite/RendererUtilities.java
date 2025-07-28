@@ -426,16 +426,14 @@ public final class RendererUtilities {
                     Polygon p = gf.createPolygon(ring, null);
                     Geometry intersection = p.intersection(ls);
                     if (!intersection.isEmpty()) {
-                        if (intersection instanceof LineString) {
-                            LineString ils = (LineString) intersection;
+                        if (intersection instanceof LineString ils) {
                             double d = getGeodeticSegmentLength(ils);
                             distance += d;
-                        } else if (intersection instanceof GeometryCollection) {
-                            GeometryCollection igc = (GeometryCollection) intersection;
+                        } else if (intersection instanceof GeometryCollection igc) {
                             for (int k = 0; k < igc.getNumGeometries(); k++) {
                                 Geometry child = igc.getGeometryN(k);
-                                if (child instanceof LineString) {
-                                    double d = getGeodeticSegmentLength((LineString) child);
+                                if (child instanceof LineString string) {
+                                    double d = getGeodeticSegmentLength(string);
                                     distance += d;
                                 }
                             }
@@ -527,8 +525,7 @@ public final class RendererUtilities {
     public static Geometry getCentroid(Geometry g) {
         if (g instanceof Point || g instanceof MultiPoint) {
             return g;
-        } else if (g instanceof GeometryCollection) {
-            final GeometryCollection gc = (GeometryCollection) g;
+        } else if (g instanceof GeometryCollection gc) {
             final Coordinate[] pts = new Coordinate[gc.getNumGeometries()];
             final int length = gc.getNumGeometries();
             for (int t = 0; t < length; t++) {
@@ -565,14 +562,13 @@ public final class RendererUtilities {
     }
 
     public static double getStyle2DSize(Style2D style) {
-        if (style instanceof GraphicStyle2D) {
-            final BufferedImage image = ((GraphicStyle2D) style).getImage();
+        if (style instanceof GraphicStyle2D style2D1) {
+            final BufferedImage image = style2D1.getImage();
             return maxSize(image.getWidth(), image.getHeight());
-        } else if (style instanceof IconStyle2D) {
-            final Icon icon = ((IconStyle2D) style).getIcon();
+        } else if (style instanceof IconStyle2D style2D) {
+            final Icon icon = style2D.getIcon();
             return maxSize(icon.getIconWidth(), icon.getIconHeight());
-        } else if (style instanceof LineStyle2D) {
-            LineStyle2D ls = (LineStyle2D) style;
+        } else if (style instanceof LineStyle2D ls) {
             double gsSize = getStyle2DSize(ls.getGraphicStroke());
             double strokeSize = 0;
             if (ls.getStroke() instanceof BasicStroke) {
@@ -581,8 +577,7 @@ public final class RendererUtilities {
             double offset = ls.getPerpendicularOffset();
             double lineSize = maxSize(maxSize(gsSize, strokeSize), offset);
             // a MarkStyle2D is also a LineStyle2D, but we have to account for the symbol size
-            if (style instanceof MarkStyle2D) {
-                MarkStyle2D mark = (MarkStyle2D) style;
+            if (style instanceof MarkStyle2D mark) {
                 return mark.getSize() + lineSize;
             } else {
                 return lineSize;

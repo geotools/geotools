@@ -17,6 +17,7 @@
 package org.geotools.swing.table;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.geotools.data.util.NullProgressListener;
  * <p>
  */
 public class FeatureCollectionTableModel extends AbstractTableModel {
+    @Serial
     private static final long serialVersionUID = -7119885084300393935L;
 
     private SimpleFeatureType schema;

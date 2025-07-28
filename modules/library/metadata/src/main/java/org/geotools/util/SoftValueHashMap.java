@@ -243,8 +243,8 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
     public V put(final K key, final V value) {
         ensureNotNull(value);
         Object oldValue = hash.put((K) replaceNull(key), value);
-        if (oldValue instanceof Reference) {
-            oldValue = ((Reference) oldValue).getAndClear();
+        if (oldValue instanceof Reference reference) {
+            oldValue = reference.getAndClear();
         } else if (oldValue != null) {
             /*
              * The value was retained by hard reference, which implies that the key must be in
@@ -283,8 +283,8 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
     @Override
     public V remove(final Object key) {
         Object oldValue = hash.remove(replaceNull(key));
-        if (oldValue instanceof Reference) {
-            oldValue = ((Reference) oldValue).getAndClear();
+        if (oldValue instanceof Reference reference) {
+            oldValue = reference.getAndClear();
         } else if (oldValue != null) {
             /*
              * See the comment in the 'put' method.
@@ -301,8 +301,8 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
     @Override
     public void clear() {
         for (Object value : hash.values()) {
-            if (value instanceof Reference) {
-                ((Reference) value).getAndClear();
+            if (value instanceof Reference reference) {
+                reference.getAndClear();
             }
         }
         hash.clear();

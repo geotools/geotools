@@ -19,6 +19,7 @@ package org.geotools.jackson.datatype.geoparquet;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.io.Serial;
 import org.geotools.jackson.datatype.projjson.ProjJSONModule;
 
 /**
@@ -32,6 +33,7 @@ import org.geotools.jackson.datatype.projjson.ProjJSONModule;
  */
 public class GeoParquetModule extends SimpleModule {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Creates a new GeoParquetModule. */

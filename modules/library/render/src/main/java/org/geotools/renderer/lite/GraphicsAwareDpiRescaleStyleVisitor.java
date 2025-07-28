@@ -54,14 +54,11 @@ public class GraphicsAwareDpiRescaleStyleVisitor extends DpiRescaleStyleVisitor 
         if (size == null || size == Expression.NIL) {
             PointSymbolizer symbolizer = sf.createPointSymbolizer(gr, null);
             Style2D style = ssf.createStyle(null, symbolizer, INFINITE_RANGE);
-            if (style instanceof IconStyle2D) {
-                IconStyle2D is = (IconStyle2D) style;
+            if (style instanceof IconStyle2D is) {
                 size = ff.literal(is.getIcon().getIconHeight());
-            } else if (style instanceof GraphicStyle2D) {
-                GraphicStyle2D gs = (GraphicStyle2D) style;
+            } else if (style instanceof GraphicStyle2D gs) {
                 size = ff.literal(gs.getImage().getHeight());
-            } else if (style instanceof MarkStyle2D) {
-                MarkStyle2D ms = (MarkStyle2D) style;
+            } else if (style instanceof MarkStyle2D ms) {
                 size = ff.literal(ms.getSize());
             }
         }

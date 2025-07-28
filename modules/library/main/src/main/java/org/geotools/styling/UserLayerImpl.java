@@ -153,8 +153,7 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
             return true;
         }
 
-        if (oth instanceof UserLayerImpl) {
-            UserLayerImpl other = (UserLayerImpl) oth;
+        if (oth instanceof UserLayerImpl other) {
 
             if (!(Utilities.equals(inlineFeatureDatastore, other.inlineFeatureDatastore)
                     && Utilities.equals(inlineFeatureType, other.inlineFeatureType)

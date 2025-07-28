@@ -196,9 +196,7 @@ class Transformer {
         List<String> originalNames = new ArrayList<>();
         for (String name : names) {
             Expression ex = expressions.get(name);
-            if (ex instanceof PropertyName) {
-                // rename or pass through
-                PropertyName pn = (PropertyName) ex;
+            if (ex instanceof PropertyName pn) {
                 originalNames.add(pn.getPropertyName());
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -286,8 +284,7 @@ class Transformer {
             Expression ex = expressions.get(pname.getPropertyName());
             if (ex == null) {
                 throw new IllegalArgumentException("Attribute " + pname + " is not part of the output schema");
-            } else if (ex instanceof PropertyName) {
-                PropertyName pn = (PropertyName) ex;
+            } else if (ex instanceof PropertyName pn) {
                 transformed.add(FF.sort(pn.getPropertyName(), sort.getSortOrder()));
             } else if (!(ex instanceof Literal)) {
                 // ok, this one cannot be sent down, so we need to do sorting on our own anyways

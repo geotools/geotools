@@ -138,8 +138,8 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
             }
         }
         Function duplicate;
-        if (expression instanceof InternalFunction) {
-            duplicate = ((InternalFunction) expression).duplicate(args);
+        if (expression instanceof InternalFunction function) {
+            duplicate = function.duplicate(args);
         } else {
             duplicate = getFactory(extraData).function(expression.getName(), args);
         }

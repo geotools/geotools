@@ -21,6 +21,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Collections;
@@ -59,6 +60,7 @@ import si.uom.SI;
 @SuppressWarnings("FloatingPointLiteralPrecision")
 public class GeocentricTransform extends AbstractMathTransform implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3352045463953828140L;
 
     /**
@@ -440,6 +442,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      */
     private final class Inverse extends AbstractMathTransform.Inverse implements Serializable {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = 6942084702259211803L;
 
         /** Default constructor. */
@@ -498,6 +501,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      */
     public static class Provider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = 7043216580786030251L;
 
         /**
@@ -617,6 +621,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      */
     public static class ProviderInverse extends Provider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -7356791540110076789L;
 
         /**

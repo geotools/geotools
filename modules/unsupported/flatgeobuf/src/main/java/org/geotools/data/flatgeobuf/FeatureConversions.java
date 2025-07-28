@@ -163,41 +163,41 @@ public class FeatureConversions {
             } else if (type == ColumnType.Int) {
                 target.putInt((int) value);
             } else if (type == ColumnType.Long)
-                if (value instanceof Long) {
-                    target.putLong((long) value);
-                } else if (value instanceof BigInteger) {
-                    target.putLong(((BigInteger) value).longValue());
+                if (value instanceof Long long1) {
+                    target.putLong(long1);
+                } else if (value instanceof BigInteger integer) {
+                    target.putLong(integer.longValue());
                 } else {
                     target.putLong((long) value);
                 }
             else if (type == ColumnType.Double)
-                if (value instanceof Double) {
-                    target.putDouble((double) value);
-                } else if (value instanceof BigDecimal) {
-                    target.putDouble(((BigDecimal) value).doubleValue());
+                if (value instanceof Double double1) {
+                    target.putDouble(double1);
+                } else if (value instanceof BigDecimal decimal) {
+                    target.putDouble(decimal.doubleValue());
                 } else {
                     target.putDouble((double) value);
                 }
             else if (type == ColumnType.DateTime) {
                 String isoDateTime = "";
-                if (value instanceof LocalDateTime) {
-                    isoDateTime = ISO_LOCAL_DATE_TIME.format((LocalDateTime) value);
-                } else if (value instanceof LocalDate) {
-                    isoDateTime = ISO_LOCAL_DATE.format((LocalDate) value);
-                } else if (value instanceof LocalTime) {
-                    isoDateTime = ISO_LOCAL_TIME.format((LocalTime) value);
-                } else if (value instanceof OffsetDateTime) {
-                    isoDateTime = ISO_OFFSET_DATE_TIME.format((OffsetDateTime) value);
-                } else if (value instanceof OffsetTime) {
-                    isoDateTime = ISO_OFFSET_TIME.format((OffsetTime) value);
-                } else if (value instanceof java.sql.Date) {
-                    isoDateTime = ISO_LOCAL_DATE.format(((java.sql.Date) value).toLocalDate());
-                } else if (value instanceof java.sql.Time) {
-                    isoDateTime = ISO_LOCAL_TIME.format(((java.sql.Time) value).toLocalTime());
-                } else if (value instanceof java.sql.Timestamp) {
-                    isoDateTime = ISO_LOCAL_DATE_TIME.format(((java.sql.Timestamp) value).toLocalDateTime());
-                } else if (value instanceof java.util.Date) {
-                    isoDateTime = ISO_INSTANT.format(((java.util.Date) value).toInstant());
+                if (value instanceof LocalDateTime time4) {
+                    isoDateTime = ISO_LOCAL_DATE_TIME.format(time4);
+                } else if (value instanceof LocalDate date2) {
+                    isoDateTime = ISO_LOCAL_DATE.format(date2);
+                } else if (value instanceof LocalTime time3) {
+                    isoDateTime = ISO_LOCAL_TIME.format(time3);
+                } else if (value instanceof OffsetDateTime time2) {
+                    isoDateTime = ISO_OFFSET_DATE_TIME.format(time2);
+                } else if (value instanceof OffsetTime time1) {
+                    isoDateTime = ISO_OFFSET_TIME.format(time1);
+                } else if (value instanceof java.sql.Date date1) {
+                    isoDateTime = ISO_LOCAL_DATE.format(date1.toLocalDate());
+                } else if (value instanceof java.sql.Time time) {
+                    isoDateTime = ISO_LOCAL_TIME.format(time.toLocalTime());
+                } else if (value instanceof java.sql.Timestamp timestamp) {
+                    isoDateTime = ISO_LOCAL_DATE_TIME.format(timestamp.toLocalDateTime());
+                } else if (value instanceof java.util.Date date) {
+                    isoDateTime = ISO_INSTANT.format(date.toInstant());
                 } else {
                     throw new RuntimeException(
                             "Cannot handle datetime type " + value.getClass().getName());

@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -37,6 +38,7 @@ import org.geotools.util.UnsupportedImplementationException;
  */
 public class DefaultPassThroughOperation extends DefaultSingleOperation implements PassThroughOperation {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 4308173919747248695L;
 
     /** The operation to apply on the subset of a coordinate tuple. */

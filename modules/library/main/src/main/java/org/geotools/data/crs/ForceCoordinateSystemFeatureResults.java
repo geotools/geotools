@@ -75,11 +75,11 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
 
     private static SimpleFeatureType origionalType(FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
         while (true) {
-            if (results instanceof ReprojectFeatureResults) {
-                results = ((ReprojectFeatureResults) results).getOrigin();
+            if (results instanceof ReprojectFeatureResults featureResults) {
+                results = featureResults.getOrigin();
             }
-            if (results instanceof ForceCoordinateSystemFeatureResults) {
-                results = ((ForceCoordinateSystemFeatureResults) results).getOrigin();
+            if (results instanceof ForceCoordinateSystemFeatureResults featureResults) {
+                results = featureResults.getOrigin();
             }
             break;
         }
@@ -91,10 +91,9 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
         return new ForceCoordinateSystemIterator(results.features(), getSchema());
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     public void closeIterator(Iterator close) {
-        if (close == null) return;
-        if (close instanceof ForceCoordinateSystemIterator) {
-            ForceCoordinateSystemIterator iterator = (ForceCoordinateSystemIterator) close;
+        if (close instanceof ForceCoordinateSystemIterator iterator) {
             iterator.close();
         }
     }

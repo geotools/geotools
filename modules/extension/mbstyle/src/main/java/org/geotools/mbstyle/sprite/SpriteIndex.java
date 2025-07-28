@@ -72,8 +72,7 @@ public class SpriteIndex {
         this.icons = new HashMap<>();
 
         for (Object key : this.json.keySet()) {
-            if (key instanceof String) {
-                String iconName = (String) key;
+            if (key instanceof String iconName) {
                 try {
                     IconInfo iconInfo = parseIconInfoFromIndex(this.json, iconName);
                     icons.put(iconName, iconInfo);
@@ -199,10 +198,10 @@ public class SpriteIndex {
             Object o = json.get(k);
 
             try {
-                if (o instanceof Number) {
-                    return ((Number) o).intValue();
-                } else if (o instanceof String) {
-                    return Integer.parseInt((String) o);
+                if (o instanceof Number number) {
+                    return number.intValue();
+                } else if (o instanceof String string) {
+                    return Integer.parseInt(string);
                 } else {
                     throw new IllegalArgumentException();
                 }

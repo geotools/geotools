@@ -69,8 +69,8 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
     private static SpatialOperatorsImpl toSpatialOperatorsImpl(SpatialOperators spatialOperators) {
         if (spatialOperators == null) {
             return new SpatialOperatorsImpl();
-        } else if (spatialOperators instanceof SpatialOperatorsImpl) {
-            return (SpatialOperatorsImpl) spatialOperators;
+        } else if (spatialOperators instanceof SpatialOperatorsImpl impl) {
+            return impl;
         }
         return new SpatialOperatorsImpl(spatialOperators);
     }

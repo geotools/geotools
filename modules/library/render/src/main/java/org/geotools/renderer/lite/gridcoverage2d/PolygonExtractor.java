@@ -38,12 +38,12 @@ class PolygonExtractor {
     public List<Polygon> getPolygons(Geometry preProcessed) throws TransformException, FactoryException {
         // the pre-processing might have cut or split the geometry
         final List<Polygon> polygons = new ArrayList<>();
-        if (preProcessed instanceof Polygon) {
-            polygons.add((Polygon) preProcessed);
+        if (preProcessed instanceof Polygon polygon1) {
+            polygons.add(polygon1);
         } else {
             preProcessed.apply((GeometryComponentFilter) geom -> {
-                if (geom instanceof Polygon) {
-                    polygons.add((Polygon) geom);
+                if (geom instanceof Polygon polygon) {
+                    polygons.add(polygon);
                 }
             });
         }

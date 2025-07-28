@@ -168,7 +168,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         // Fill in geometries rather than XPath
         @SuppressWarnings("unchecked")
         Object geom(Expression expr, Object data) {
-            String propertyName = expr instanceof PropertyName ? ((PropertyName) expr).getPropertyName() : null;
+            String propertyName = expr instanceof PropertyName pn ? pn.getPropertyName() : null;
             if (propertyName != null && propertyName.trim().isEmpty()) {
                 if (data != null && data != attributeNames) {
                     this.attributeNames = (Set<String>) data;
@@ -295,8 +295,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         IndexManager indexManager = getDataStore().indexManager;
         @SuppressWarnings("PMD.CloseResource") // eventually gets returned and managed in the reader
         CloseableIterator<Data> goodRecs = null;
-        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex(false)) {
-            Id fidFilter = (Id) filter;
+        if (getDataStore().isFidIndexed() && filter instanceof Id fidFilter && indexManager.hasFidIndex(false)) {
             if (indexManager.isIndexStale(ShpFileType.FIX)) {
                 indexManager.createFidIndex();
             }
@@ -342,7 +341,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 shapeReader = sr;
             } catch (final FileNotFoundException e) {
                 final String format = "Ignoring missing shp-file and moving on: %s";
-                LOGGER.fine(() -> String.format(format, e.getMessage()));
+                LOGGER.fine(() -> format.formatted(e.getMessage()));
             }
         } else {
             LOGGER.fine("Ignoring missing shp-file and moving on.");
@@ -503,7 +502,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 shp = shpManager.openShapeReader(new GeometryFactory(), false);
             } catch (final FileNotFoundException e) {
                 final String format = "Ignoring missing shp-file and moving on: %s";
-                LOGGER.fine(() -> String.format(format, e.getMessage()));
+                LOGGER.fine(() -> format.formatted(e.getMessage()));
             }
             dbf = shpManager.openDbfReader(false);
             try {

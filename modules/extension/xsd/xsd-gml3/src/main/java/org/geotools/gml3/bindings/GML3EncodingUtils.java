@@ -81,8 +81,7 @@ public class GML3EncodingUtils {
     }
 
     static CoordinateSequence positions(LineString line) {
-        if (line instanceof SingleCurvedGeometry<?>) {
-            SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) line;
+        if (line instanceof SingleCurvedGeometry<?> curved) {
             return new LiteCoordinateSequence(curved.getControlPoints());
         } else {
             return line.getCoordinateSequence();
@@ -116,11 +115,11 @@ public class GML3EncodingUtils {
     /** Get uomLabels for the geometry if set in app-schema mapping configuration. */
     public static String getUomLabels(Geometry g) {
         Object userData = g.getUserData();
-        if (userData != null && userData instanceof Map) {
-            Object attributes = ((Map) userData).get(Attributes.class);
-            if (attributes != null && attributes instanceof Map) {
+        if (userData != null && userData instanceof Map map1) {
+            Object attributes = map1.get(Attributes.class);
+            if (attributes != null && attributes instanceof Map map) {
                 Name attribute = new NameImpl("uomLabels");
-                Object uomLabels = ((Map) attributes).get(attribute);
+                Object uomLabels = map.get(attribute);
                 if (uomLabels != null) {
                     return uomLabels.toString();
                 }
@@ -132,11 +131,11 @@ public class GML3EncodingUtils {
     /** Get axisLabels for the geometry if set in app-schema mapping configuration. */
     public static String getAxisLabels(Geometry g) {
         Object userData = g.getUserData();
-        if (userData != null && userData instanceof Map) {
-            Object attributes = ((Map) userData).get(Attributes.class);
-            if (attributes != null && attributes instanceof Map) {
+        if (userData != null && userData instanceof Map map1) {
+            Object attributes = map1.get(Attributes.class);
+            if (attributes != null && attributes instanceof Map map) {
                 Name attribute = new NameImpl("axisLabels");
-                Object axisLabels = ((Map) attributes).get(attribute);
+                Object axisLabels = map.get(attribute);
                 if (axisLabels != null) {
                     return axisLabels.toString();
                 }

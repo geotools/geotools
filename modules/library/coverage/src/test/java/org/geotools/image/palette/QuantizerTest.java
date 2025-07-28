@@ -216,8 +216,8 @@ public class QuantizerTest {
     }
 
     private BufferedImage toBufferedImage(RenderedImage ri) {
-        if (ri instanceof BufferedImage) {
-            return (BufferedImage) ri;
+        if (ri instanceof BufferedImage image) {
+            return image;
         } else {
             return PlanarImage.wrapRenderedImage(ri).getAsBufferedImage();
         }

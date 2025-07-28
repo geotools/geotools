@@ -22,11 +22,13 @@ import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
+import java.io.Serial;
 import javax.media.jai.OperationDescriptorImpl;
 import javax.media.jai.registry.RenderedRegistryMode;
 
 public class ColorInversionDescriptor extends OperationDescriptorImpl {
     /** */
+    @Serial
     private static final long serialVersionUID = -8859576263333814317L;
 
     /** Builds the internet safe paletteInverter */

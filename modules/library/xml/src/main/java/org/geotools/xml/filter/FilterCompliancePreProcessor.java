@@ -337,8 +337,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     break;
             }
         } catch (Exception e) {
-            if (e instanceof UnsupportedFilterException) {
-                throw (UnsupportedFilterException) e;
+            if (e instanceof UnsupportedFilterException exception) {
+                throw exception;
             }
             throw new UnsupportedFilterException("Exception creating filter", e);
         }
@@ -375,8 +375,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     break;
             }
         } catch (Exception e) {
-            if (e instanceof UnsupportedFilterException) {
-                throw (UnsupportedFilterException) e;
+            if (e instanceof UnsupportedFilterException exception) {
+                throw exception;
             }
             throw new UnsupportedFilterException("Exception creating filter", e);
         }
@@ -414,8 +414,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     break;
             }
         } catch (Exception e) {
-            if (e instanceof UnsupportedFilterException) {
-                throw (UnsupportedFilterException) e;
+            if (e instanceof UnsupportedFilterException exception) {
+                throw exception;
             }
             throw new UnsupportedFilterException("Exception creating filter", e);
         }
@@ -621,8 +621,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                 return Filter.EXCLUDE;
 
             case 1:
-                if (result instanceof Not) {
-                    return ((Not) result).getFilter();
+                if (result instanceof Not not) {
+                    return not.getFilter();
                 } else {
                     return ((BinaryLogicOperator) result).getChildren().get(0);
                 }

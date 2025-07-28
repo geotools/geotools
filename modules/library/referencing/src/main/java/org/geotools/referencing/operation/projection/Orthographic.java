@@ -23,6 +23,7 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
+import java.io.Serial;
 import java.util.logging.Level;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -63,6 +64,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public abstract class Orthographic extends MapProjection {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = -6489939032996419868L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -105,6 +107,7 @@ public abstract class Orthographic extends MapProjection {
      */
     public static final class Provider extends AbstractProvider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 3180410512573499562L;
 
         /** The parameters group. */

@@ -301,8 +301,8 @@ public class EnvFunction extends FunctionExpressionImpl {
         final int argCount = NAME.getArgumentCount();
         final int paramsSize = params.size();
         if (paramsSize < argCount || paramsSize > argCount + 1) {
-            throw new IllegalArgumentException(String.format(
-                    "Function %s expected %d or %d arguments but got %d", name, argCount, argCount + 1, paramsSize));
+            throw new IllegalArgumentException("Function %s expected %d or %d arguments but got %d"
+                    .formatted(name, argCount, argCount + 1, paramsSize));
         }
         this.params = new ArrayList<>(params);
     }

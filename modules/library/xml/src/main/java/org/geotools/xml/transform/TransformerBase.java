@@ -440,50 +440,50 @@ public abstract class TransformerBase {
 
         @Override
         public void comment(char[] ch, int start, int length) throws SAXException {
-            if (original instanceof LexicalHandler) {
-                ((LexicalHandler) original).comment(ch, start, length);
+            if (original instanceof LexicalHandler handler) {
+                handler.comment(ch, start, length);
             }
         }
 
         @Override
         public void startCDATA() throws SAXException {
-            if (original instanceof LexicalHandler) {
-                ((LexicalHandler) original).startCDATA();
+            if (original instanceof LexicalHandler handler) {
+                handler.startCDATA();
             }
         }
 
         @Override
         public void endCDATA() throws SAXException {
-            if (original instanceof LexicalHandler) {
-                ((LexicalHandler) original).endCDATA();
+            if (original instanceof LexicalHandler handler) {
+                handler.endCDATA();
             }
         }
 
         @Override
         public void startDTD(String name, String publicId, String systemId) throws SAXException {
-            if (original instanceof LexicalHandler) {
-                ((LexicalHandler) original).startDTD(name, publicId, systemId);
+            if (original instanceof LexicalHandler handler) {
+                handler.startDTD(name, publicId, systemId);
             }
         }
 
         @Override
         public void endDTD() throws SAXException {
-            if (original instanceof LexicalHandler) {
-                ((LexicalHandler) original).endDTD();
+            if (original instanceof LexicalHandler handler) {
+                handler.endDTD();
             }
         }
 
         @Override
         public void startEntity(String name) throws SAXException {
-            if (original instanceof LexicalHandler) {
-                ((LexicalHandler) original).startEntity(name);
+            if (original instanceof LexicalHandler handler) {
+                handler.startEntity(name);
             }
         }
 
         @Override
         public void endEntity(String name) throws SAXException {
-            if (original instanceof LexicalHandler) {
-                ((LexicalHandler) original).endEntity(name);
+            if (original instanceof LexicalHandler handler) {
+                handler.endEntity(name);
             }
         }
     }
@@ -920,8 +920,7 @@ public abstract class TransformerBase {
         }
 
         private void _cdata(String cdata) {
-            if (contentHandler instanceof LexicalHandler) {
-                LexicalHandler lexicalHandler = (LexicalHandler) contentHandler;
+            if (contentHandler instanceof LexicalHandler lexicalHandler) {
                 try {
                     lexicalHandler.startCDATA();
                     char[] carray = cdata.toCharArray();
@@ -938,8 +937,7 @@ public abstract class TransformerBase {
         }
 
         private void _comment(String comment) {
-            if (contentHandler instanceof LexicalHandler) {
-                LexicalHandler lexicalHandler = (LexicalHandler) contentHandler;
+            if (contentHandler instanceof LexicalHandler lexicalHandler) {
                 try {
                     char[] carray = comment.toCharArray();
                     lexicalHandler.comment(carray, 0, carray.length);

@@ -180,8 +180,7 @@ public class GeometryRenderer extends AbstractXYItemRenderer {
             ValueAxis domainAxis,
             ValueAxis rangeAxis) {
 
-        if (g instanceof GeometryCollection) {
-            GeometryCollection gc = (GeometryCollection) g;
+        if (g instanceof GeometryCollection gc) {
             for (int i = 0; i < gc.getNumGeometries(); i++) {
                 drawGeometry(gc.getGeometryN(i), g2, series, item, dataArea, plot, domainAxis, rangeAxis);
             }
@@ -193,8 +192,7 @@ public class GeometryRenderer extends AbstractXYItemRenderer {
 
             if (fillPolygons) {
                 Paint p = getSeriesPaint(series);
-                if (p instanceof Color) {
-                    Color c = (Color) p;
+                if (p instanceof Color c) {
                     p = new Color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, polygonFillOpacity);
                 }
                 g2.setPaint(p);

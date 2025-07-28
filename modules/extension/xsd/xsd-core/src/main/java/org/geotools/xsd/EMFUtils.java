@@ -193,8 +193,8 @@ public class EMFUtils {
             return list;
         } else if (value instanceof FeatureCollection) {
             return Collections.singletonList(value); // force singleton for FeatureCollectionType
-        } else if (value instanceof Collection) {
-            return (Collection) value;
+        } else if (value instanceof Collection collection) {
+            return collection;
         }
 
         return Collections.singletonList(value);
@@ -410,8 +410,7 @@ public class EMFUtils {
 
         for (EStructuralFeature feature : clone.eClass().getEStructuralFeatures()) {
             Object value = prototype.eGet(feature);
-            if (deep && value instanceof EObject) {
-                EObject evalue = (EObject) value;
+            if (deep && value instanceof EObject evalue) {
                 // recursively call
                 // TODO:handle cycles in reference graph
                 value = clone(evalue, evalue.eClass().getEPackage().getEFactoryInstance(), deep);

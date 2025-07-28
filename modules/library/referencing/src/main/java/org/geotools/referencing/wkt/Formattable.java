@@ -166,11 +166,11 @@ public class Formattable {
             FORMATTER.set(formatter);
         }
         try {
-            if (this instanceof GeneralParameterValue) {
+            if (this instanceof GeneralParameterValue value) {
                 // Special processing for parameter values, which is formatted
                 // directly in 'Formatter'. Note that in GeoAPI, this interface
                 // doesn't share the same parent interface than other interfaces.
-                formatter.append((GeneralParameterValue) this);
+                formatter.append(value);
             } else {
                 formatter.append(this);
             }

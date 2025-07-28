@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.builder;
 
+import java.io.Serial;
 import org.geotools.api.geometry.Position;
 import org.geotools.geometry.Position2D;
 
@@ -28,6 +29,7 @@ import org.geotools.geometry.Position2D;
  */
 class ExtendedPosition extends Position2D {
     /** */
+    @Serial
     private static final long serialVersionUID = 4400395722009854165L;
 
     /** Coordinate associated with original coordinate. */

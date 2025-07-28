@@ -255,17 +255,17 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
         org.geotools.api.filter.expression.Expression rightGeom = filter.getExpression2();
 
         Object g;
-        if (leftGeom instanceof org.geotools.api.filter.expression.Literal) {
-            g = ((org.geotools.api.filter.expression.Literal) leftGeom).getValue();
+        if (leftGeom instanceof org.geotools.api.filter.expression.Literal literal) {
+            g = literal.getValue();
         } else {
             g = ((org.geotools.api.filter.expression.Literal) rightGeom).getValue();
         }
 
         Envelope envelope = null;
-        if (g instanceof Geometry) {
-            envelope = ((Geometry) g).getEnvelopeInternal();
-        } else if (g instanceof Envelope) {
-            envelope = (Envelope) g;
+        if (g instanceof Geometry geometry) {
+            envelope = geometry.getEnvelopeInternal();
+        } else if (g instanceof Envelope envelope1) {
+            envelope = envelope1;
         }
         return envelope;
     }

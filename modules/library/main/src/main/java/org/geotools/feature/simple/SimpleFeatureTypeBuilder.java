@@ -544,8 +544,8 @@ public class SimpleFeatureTypeBuilder {
         // namespaceURI( descriptor.getName().getNamespaceURI() );
         defaultValue(descriptor.getDefaultValue());
 
-        if (descriptor instanceof GeometryDescriptor) {
-            crs(((GeometryDescriptor) descriptor).getCoordinateReferenceSystem());
+        if (descriptor instanceof GeometryDescriptor geometryDescriptor) {
+            crs(geometryDescriptor.getCoordinateReferenceSystem());
         }
 
         return this;
@@ -836,8 +836,8 @@ public class SimpleFeatureTypeBuilder {
         if (defGeom == null) {
             // none was set by name, look for first geometric type
             for (AttributeDescriptor att : attributes()) {
-                if (att instanceof GeometryDescriptor) {
-                    defGeom = (GeometryDescriptor) att;
+                if (att instanceof GeometryDescriptor descriptor) {
+                    defGeom = descriptor;
                     break;
                 }
             }
@@ -1000,8 +1000,8 @@ public class SimpleFeatureTypeBuilder {
 
         // add attributes in order
         for (AttributeDescriptor descriptor : original.getAttributeDescriptors()) {
-            if (descriptor instanceof GeometryDescriptor) {
-                GeometryDescriptor geometryDescriptor = retype(b, (GeometryDescriptor) descriptor, crs);
+            if (descriptor instanceof GeometryDescriptor geometryDescriptor1) {
+                GeometryDescriptor geometryDescriptor = retype(b, geometryDescriptor1, crs);
                 b.add(geometryDescriptor);
                 continue;
             }
@@ -1059,8 +1059,8 @@ public class SimpleFeatureTypeBuilder {
         // add attributes in order requested
         for (String localName : attributeNames) {
             AttributeDescriptor descriptor = original.getDescriptor(localName);
-            if (descriptor instanceof GeometryDescriptor) {
-                GeometryDescriptor geometryDescriptor = retype(b, (GeometryDescriptor) descriptor, crs);
+            if (descriptor instanceof GeometryDescriptor geometryDescriptor1) {
+                GeometryDescriptor geometryDescriptor = retype(b, geometryDescriptor1, crs);
                 b.add(geometryDescriptor);
                 continue;
             }

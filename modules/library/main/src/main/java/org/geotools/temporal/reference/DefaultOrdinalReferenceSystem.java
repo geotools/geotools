@@ -50,8 +50,7 @@ public class DefaultOrdinalReferenceSystem extends DefaultTemporalReferenceSyste
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultOrdinalReferenceSystem && super.equals(object)) {
-            final DefaultOrdinalReferenceSystem that = (DefaultOrdinalReferenceSystem) object;
+        if (object instanceof DefaultOrdinalReferenceSystem that && super.equals(object)) {
 
             return Utilities.equals(this.ordinalEraSequence, that.ordinalEraSequence);
         }

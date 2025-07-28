@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +63,7 @@ import si.uom.NonSI;
  */
 public class DefaultGeographicCRS extends AbstractSingleCRS implements GeographicCRS, PROJFormattable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 861224913438092335L;
 
     /**
@@ -253,8 +255,8 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
             formatter.append("proj", "longlat");
         }
 
-        if (datum instanceof PROJFormattable) {
-            formatter.append((PROJFormattable) datum);
+        if (datum instanceof PROJFormattable formattable) {
+            formatter.append(formattable);
         }
 
         formatter.append((PROJFormattable) ((GeodeticDatum) datum).getPrimeMeridian());

@@ -64,8 +64,8 @@ public class PolyLabeller {
             return null;
         }
 
-        if (geometry instanceof Polygon) {
-            return getPolyLabel_((Polygon) geometry, precision).getPosition();
+        if (geometry instanceof Polygon polygon) {
+            return getPolyLabel_(polygon, precision).getPosition();
         } else if (geometry instanceof MultiPolygon) {
             LabelPosition widest = null;
             for (int i = 0; i < geometry.getNumGeometries(); i++) {

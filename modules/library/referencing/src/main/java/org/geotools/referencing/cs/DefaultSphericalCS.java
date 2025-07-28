@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
@@ -43,6 +44,7 @@ import org.geotools.metadata.i18n.VocabularyKeys;
  */
 public class DefaultSphericalCS extends AbstractCS implements SphericalCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 196295996465774477L;
 
     /**

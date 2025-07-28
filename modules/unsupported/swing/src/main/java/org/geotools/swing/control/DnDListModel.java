@@ -16,6 +16,7 @@
  */
 package org.geotools.swing.control;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,7 +35,9 @@ import javax.swing.AbstractListModel;
  * @version $Id$
  */
 public class DnDListModel<T> extends AbstractListModel<T> {
+    @Serial
     private static final long serialVersionUID = -6110074993686576005L;
+
     List<T> items;
     private boolean notify;
 

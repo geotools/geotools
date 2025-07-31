@@ -501,7 +501,7 @@ public class SLDStyleFactory {
             // nothing to do
         }
 
-        float rotation = (float) Math.toRadians(evalToDouble(sldGraphic.getRotation(), feature, 0));
+        double rotation = Math.toRadians(evalToDouble(sldGraphic.getRotation(), feature, 0));
 
         // Extract the sequence of external graphics and symbols and process
         // them in order

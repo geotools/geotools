@@ -241,4 +241,12 @@ public class LineTest {
                 });
         assertEquals(0, errors.get());
     }
+
+    @Test
+    public void testLineMidVertical() throws Exception {
+        StreamingRenderer renderer = setupLineMap("lineMidVertical.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("MidVertical", renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("lineMidVertical"), image, 500);
+    }
 }

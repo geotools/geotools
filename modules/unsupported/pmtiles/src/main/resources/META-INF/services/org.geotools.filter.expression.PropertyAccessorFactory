@@ -1,0 +1,2 @@
+org.geotools.vectortiles.store.VectorTilesFeaturePropertyAccessorFactory
+org.geotools.vectortiles.store.RelaxedSimpleFeaturePropertyAccessorFactory

@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -43,9 +44,12 @@ public class ParseTimeFunctionTest {
 
         assertionForParsedInstance("P4D", Duration.ofDays(4));
 
-        assertionForParseLocalDateTIme("P1M", Period.ofMonths(1), ChronoUnit.HOURS);
+        // For following tests we are providing precision in days, since number of days in month/year can be different
+        // Month can have 4 days of difference (from 28 to 31 days).
+        assertionForParseLocalDateTIme("P1M", Period.ofMonths(1), 4);
 
-        assertionForParseLocalDateTIme("P1Y", Period.ofYears(1), ChronoUnit.DAYS);
+        // Year can have 1 day of difference (365 to 366 days)
+        assertionForParseLocalDateTIme("P1Y", Period.ofYears(1), 2);
     }
 
     @Test
@@ -77,14 +81,13 @@ public class ParseTimeFunctionTest {
     }
 
     private static void assertionForParseLocalDateTIme(
-            String expression, TemporalAmount timeInThePast, ChronoUnit chronoUnit) {
+            String expression, TemporalAmount timeInThePast, int daysPrecision) {
         Function parseTime = FF.function("parseTime", FF.literal(expression));
         Date date = (Date) parseTime.evaluate(null);
 
-        LocalDateTime generatedDate = LocalDateTime.now().minus(timeInThePast).truncatedTo(chronoUnit);
+        LocalDateTime generatedDate = LocalDateTime.now().minus(timeInThePast);
 
-        LocalDateTime evaluatedTime =
-                date.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime().truncatedTo(chronoUnit);
-        assertEquals(generatedDate, evaluatedTime);
+        LocalDateTime evaluatedTime = date.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime();
+        assertTrue(ChronoUnit.DAYS.between(generatedDate, evaluatedTime) < daysPrecision);
     }
 }

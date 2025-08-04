@@ -44,7 +44,7 @@ public class GeoPkgGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
         // check the geometry column entry matches the expected contents
         String tableName = tname("t" + geomClass.getSimpleName());
-        String sql = String.format("SELECT * FROM %s WHERE table_name = '%s'", GEOMETRY_COLUMNS, tableName);
+        String sql = "SELECT * FROM %s WHERE table_name = '%s'".formatted(GEOMETRY_COLUMNS, tableName);
         try (Connection cx = dataStore.getDataSource().getConnection();
                 Statement st = cx.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {

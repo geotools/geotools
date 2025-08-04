@@ -365,7 +365,7 @@ public final class GeoTools {
         final StringBuilder sb = new StringBuilder();
 
         sb.append(getEnvironmentInfo());
-        sb.append(String.format("%n"));
+        sb.append("%n".formatted());
         sb.append(getGeoToolsJarInfo());
 
         return sb.toString();
@@ -377,7 +377,7 @@ public final class GeoTools {
      * @return information as a String
      */
     public static String getEnvironmentInfo() {
-        final String newline = String.format("%n");
+        final String newline = "%n".formatted();
 
         final StringBuilder sb = new StringBuilder();
         sb.append("GeoTools version ").append(getVersion().toString());
@@ -401,7 +401,7 @@ public final class GeoTools {
      */
     public static String getGeoToolsJarInfo() {
         final StringBuilder sb = new StringBuilder();
-        final String newline = String.format("%n");
+        final String newline = "%n".formatted();
         final String indent = "    ";
 
         sb.append("GeoTools jars on classpath:");
@@ -905,10 +905,9 @@ public final class GeoTools {
             Object hint = hints.get(Hints.ENTITY_RESOLVER);
             if (hint == null) {
                 return NullEntityResolver.INSTANCE;
-            } else if (hint instanceof EntityResolver) {
-                return (EntityResolver) hint;
-            } else if (hint instanceof String) {
-                String className = (String) hint;
+            } else if (hint instanceof EntityResolver resolver) {
+                return resolver;
+            } else if (hint instanceof String className) {
                 return instantiate(className, EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
             }
         }

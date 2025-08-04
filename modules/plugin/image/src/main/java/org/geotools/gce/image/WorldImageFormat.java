@@ -184,8 +184,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     public boolean accepts(Object input, Hints hints) {
         String pathname = "";
 
-        if (input instanceof URL) {
-            final URL url = (URL) input;
+        if (input instanceof URL url) {
             final String protocol = url.getProtocol();
             if (protocol.equalsIgnoreCase("file"))
                 pathname = URLs.urlToFile(url).getPath();
@@ -206,11 +205,10 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
                     return true;
                 }
             }
-        } else if (input instanceof File) {
-            File file = (File) input;
+        } else if (input instanceof File file) {
 
             pathname = file.getAbsolutePath();
-        } else if (input instanceof String) pathname = (String) input;
+        } else if (input instanceof String string) pathname = string;
         // else if (input instanceof InputStream
         // || input instanceof ImageInputStream)
         // return true;// @ask TODO is this right?????

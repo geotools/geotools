@@ -64,8 +64,7 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof SubtractImpl) {
-            SubtractImpl other = (SubtractImpl) obj;
+        if (obj instanceof SubtractImpl other) {
 
             return Utilities.equals(getExpression1(), other.getExpression1())
                     && Utilities.equals(getExpression2(), other.getExpression2());

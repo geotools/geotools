@@ -115,8 +115,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         if (!validationErrors.isEmpty()) {
             LOGGER.severe("Validation failed, errors are: ");
             for (Object e : validationErrors) {
-                if (e instanceof SAXParseException) {
-                    SAXParseException se = (SAXParseException) e;
+                if (e instanceof SAXParseException se) {
                     LOGGER.severe("line " + se.getLineNumber() + ": " + se.getLocalizedMessage());
                 } else {
                     LOGGER.log(Level.SEVERE, "Other exception type", e);

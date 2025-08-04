@@ -119,7 +119,7 @@ public class TimeRangeVisitor extends NullFilterVisitor {
      * @return
      */
     protected boolean isTimeProperty(Expression expression) {
-        return expression instanceof PropertyName && timeProperty.equals(((PropertyName) expression).getPropertyName());
+        return expression instanceof PropertyName pn && timeProperty.equals(pn.getPropertyName());
     }
 
     private DateRange infinity() {

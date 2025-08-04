@@ -16,6 +16,8 @@
  */
 package org.geotools.data.hana.wkb;
 
+import java.io.Serial;
+
 /**
  * Exception thrown if WKB parsing fails.
  *
@@ -23,6 +25,7 @@ package org.geotools.data.hana.wkb;
  */
 public class HanaWKBParserException extends Exception {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public HanaWKBParserException(String message) {

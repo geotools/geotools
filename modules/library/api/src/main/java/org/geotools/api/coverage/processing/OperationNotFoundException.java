@@ -9,6 +9,8 @@
  */
 package org.geotools.api.coverage.processing;
 
+import java.io.Serial;
+
 /**
  * Throws if an operation name given to {@link GridCoverageProcessor} is not a know operation.
  *
@@ -31,6 +33,7 @@ package org.geotools.api.coverage.processing;
  */
 public class OperationNotFoundException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8654574655958181935L;
 
     /** Creates an exception with no message. */

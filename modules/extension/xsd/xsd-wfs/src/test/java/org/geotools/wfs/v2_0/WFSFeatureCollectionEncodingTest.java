@@ -368,8 +368,8 @@ public class WFSFeatureCollectionEncodingTest {
         List<Element> elements = new ArrayList<>();
         for (int i = 0; i < e.getChildNodes().getLength(); i++) {
             Node n = e.getChildNodes().item(i);
-            if (n instanceof Element && n.getNodeName().equals(name)) {
-                elements.add((Element) n);
+            if (n instanceof Element element && n.getNodeName().equals(name)) {
+                elements.add(element);
             }
         }
         return elements;

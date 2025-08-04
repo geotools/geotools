@@ -234,8 +234,7 @@ public class FeatureTypeStyleImpl implements FeatureTypeStyle, Cloneable {
             return true;
         }
 
-        if (oth instanceof FeatureTypeStyleImpl) {
-            FeatureTypeStyleImpl other = (FeatureTypeStyleImpl) oth;
+        if (oth instanceof FeatureTypeStyleImpl other) {
 
             return Utilities.equals(name, other.name)
                     && Utilities.equals(description, other.description)
@@ -294,8 +293,8 @@ public class FeatureTypeStyleImpl implements FeatureTypeStyle, Cloneable {
     static FeatureTypeStyleImpl cast(FeatureTypeStyle featureTypeStyle) {
         if (featureTypeStyle == null) {
             return null;
-        } else if (featureTypeStyle instanceof FeatureTypeStyleImpl) {
-            return (FeatureTypeStyleImpl) featureTypeStyle;
+        } else if (featureTypeStyle instanceof FeatureTypeStyleImpl impl) {
+            return impl;
         } else {
             FeatureTypeStyleImpl copy = new FeatureTypeStyleImpl();
             // the above is a deep copy - replace with cast if we can

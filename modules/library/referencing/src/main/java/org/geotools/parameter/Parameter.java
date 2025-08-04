@@ -20,6 +20,7 @@
 package org.geotools.parameter;
 
 import java.io.File;
+import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -58,6 +59,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class Parameter<T> extends AbstractParameter implements ParameterValue<T> {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -5837826787089486776L;
 
     /** The value. */
@@ -289,8 +291,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      */
     @Override
     public double doubleValue() throws InvalidParameterTypeException {
-        if (value instanceof Number) {
-            return ((Number) value).doubleValue();
+        if (value instanceof Number number) {
+            return number.doubleValue();
         }
         final String name = getName(descriptor);
         if (value == null) {
@@ -312,8 +314,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      */
     @Override
     public int intValue() throws InvalidParameterTypeException {
-        if (value instanceof Number) {
-            return ((Number) value).intValue();
+        if (value instanceof Number number) {
+            return number.intValue();
         }
         final String name = getName(descriptor);
         if (value == null) {
@@ -331,8 +333,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      */
     @Override
     public boolean booleanValue() throws InvalidParameterTypeException {
-        if (value instanceof Boolean) {
-            return ((Boolean) value).booleanValue();
+        if (value instanceof Boolean boolean1) {
+            return boolean1.booleanValue();
         }
         final String name = getName(descriptor);
         if (value == null) {
@@ -404,8 +406,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      */
     @Override
     public double[] doubleValueList() throws InvalidParameterTypeException {
-        if (value instanceof double[]) {
-            return (double[]) value;
+        if (value instanceof double[] doubles) {
+            return doubles;
         }
         final String name = getName(descriptor);
         if (value == null) {
@@ -425,8 +427,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      */
     @Override
     public int[] intValueList() throws InvalidParameterTypeException {
-        if (value instanceof int[]) {
-            return (int[]) value;
+        if (value instanceof int[] ints) {
+            return ints;
         }
         final String name = getName(descriptor);
         if (value == null) {
@@ -448,19 +450,19 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      */
     @Override
     public URI valueFile() throws InvalidParameterTypeException {
-        if (value instanceof URI) {
-            return (URI) value;
+        if (value instanceof URI rI) {
+            return rI;
         }
-        if (value instanceof File) {
-            return ((File) value).toURI();
+        if (value instanceof File file) {
+            return file.toURI();
         }
         Exception cause = null;
         try {
-            if (value instanceof URL) {
-                return ((URL) value).toURI();
+            if (value instanceof URL rL) {
+                return rL.toURI();
             }
-            if (value instanceof String) {
-                return new URI((String) value);
+            if (value instanceof String string) {
+                return new URI(string);
             }
         } catch (URISyntaxException exception) {
             cause = exception;

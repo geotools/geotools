@@ -38,9 +38,8 @@ class LinesExtractor implements GeometryFilter {
 
     @Override
     public void filter(Geometry geom) {
-        if (geom instanceof LineString
-                && ((LineString) geom).getCoordinateSequence().size() == 2) {
-            CoordinateSequence cs = ((LineString) geom).getCoordinateSequence();
+        if (geom instanceof LineString string && string.getCoordinateSequence().size() == 2) {
+            CoordinateSequence cs = string.getCoordinateSequence();
             lines.add(new Line2D.Double(
                     cs.getOrdinate(0, 0), cs.getOrdinate(0, 1), cs.getOrdinate(1, 0), cs.getOrdinate(1, 1)));
         } else if (!(geom instanceof GeometryCollection)) {

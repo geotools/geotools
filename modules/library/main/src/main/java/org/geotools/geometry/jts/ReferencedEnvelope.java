@@ -18,6 +18,7 @@ package org.geotools.geometry.jts;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Bounds;
@@ -67,6 +68,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
                     Double.NEGATIVE_INFINITY,
                     Double.POSITIVE_INFINITY,
                     null) {
+                @Serial
                 private static final long serialVersionUID = -3188702602373537164L;
 
                 @Override
@@ -130,8 +132,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
                     if (obj == EVERYTHING) {
                         return true;
                     }
-                    if (obj instanceof ReferencedEnvelope) {
-                        ReferencedEnvelope other = (ReferencedEnvelope) obj;
+                    if (obj instanceof ReferencedEnvelope other) {
                         if (other.crs != EVERYTHING.crs) return false;
                         if (other.getMinX() != EVERYTHING.getMinX()) return false;
                         if (other.getMinY() != EVERYTHING.getMinY()) return false;
@@ -150,6 +151,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             };
 
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -3188702602373537163L;
 
     /** The coordinate reference system, or {@code null}. */
@@ -275,8 +277,8 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         if (bbox == null) {
             throw new NullPointerException("Provided bbox envelope was null");
         }
-        if (bbox instanceof Envelope) {
-            return (Envelope) bbox;
+        if (bbox instanceof Envelope envelope) {
+            return envelope;
         }
         // safe creation if empty bounds
         return ReferencedEnvelope.create(bbox, bbox.getCoordinateReferenceSystem());
@@ -500,8 +502,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     /** Check if this bounding box intersects the provided bounds. */
     @Override
     public ReferencedEnvelope intersection(Envelope env) {
-        if (env instanceof BoundingBox) {
-            BoundingBox bbox = (BoundingBox) env;
+        if (env instanceof BoundingBox bbox) {
             ensureCompatibleReferenceSystem(bbox);
         }
         return new ReferencedEnvelope(super.intersection(env), this.getCoordinateReferenceSystem());
@@ -555,12 +556,10 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     /** Include the provided envelope, expanding as necessary. */
     @Override
     public void expandToInclude(Envelope other) {
-        if (other instanceof BoundingBox) {
+        if (other instanceof BoundingBox bbox) {
             if (other.isNull()) {
                 return;
             }
-
-            BoundingBox bbox = (BoundingBox) other;
             ensureCompatibleReferenceSystem(bbox);
 
             expandToInclude(bbox.getLowerCorner());
@@ -743,8 +742,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     @Override
     public boolean equals(final Object object) {
         if (super.equals(object)) {
-            final CoordinateReferenceSystem otherCRS =
-                    object instanceof ReferencedEnvelope ? ((ReferencedEnvelope) object).crs : null;
+            final CoordinateReferenceSystem otherCRS = object instanceof ReferencedEnvelope re ? re.crs : null;
 
             return CRS.equalsIgnoreMetadata(crs, otherCRS);
         }
@@ -898,8 +896,8 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
      */
     public static ReferencedEnvelope create(ReferencedEnvelope original) {
-        if (original instanceof ReferencedEnvelope3D) {
-            return new ReferencedEnvelope3D((ReferencedEnvelope3D) original);
+        if (original instanceof ReferencedEnvelope3D envelope3D) {
+            return new ReferencedEnvelope3D(envelope3D);
         }
         return new ReferencedEnvelope(original);
     }
@@ -1084,12 +1082,12 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         if (e == null) {
             return null;
         } else {
-            if (e instanceof ReferencedEnvelope3D) {
-                return (ReferencedEnvelope3D) e;
+            if (e instanceof ReferencedEnvelope3D envelope3D) {
+                return envelope3D;
             }
 
-            if (e instanceof ReferencedEnvelope) {
-                return (ReferencedEnvelope) e;
+            if (e instanceof ReferencedEnvelope envelope) {
+                return envelope;
             }
 
             return new ReferencedEnvelope(e, null);
@@ -1123,12 +1121,12 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             return null;
         }
 
-        if (env instanceof ReferencedEnvelope3D) {
-            return (ReferencedEnvelope3D) env;
+        if (env instanceof ReferencedEnvelope3D envelope3D) {
+            return envelope3D;
         }
 
-        if (env instanceof ReferencedEnvelope) {
-            return (ReferencedEnvelope) env;
+        if (env instanceof ReferencedEnvelope envelope) {
+            return envelope;
         }
 
         if (env.getDimension() >= 3) {

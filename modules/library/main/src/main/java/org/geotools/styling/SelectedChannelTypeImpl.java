@@ -124,8 +124,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
             return true;
         }
 
-        if (obj instanceof SelectedChannelTypeImpl) {
-            SelectedChannelTypeImpl other = (SelectedChannelTypeImpl) obj;
+        if (obj instanceof SelectedChannelTypeImpl other) {
 
             return Utilities.equals(name, other.name)
                     && Utilities.equals(contrastEnhancement, other.contrastEnhancement);

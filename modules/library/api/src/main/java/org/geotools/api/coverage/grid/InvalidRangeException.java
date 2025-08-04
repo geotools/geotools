@@ -9,6 +9,8 @@
  */
 package org.geotools.api.coverage.grid;
 
+import java.io.Serial;
+
 /**
  * Thrown when a {@linkplain GridGeometry#getGridRange grid range} is out of {@linkplain GridCoverage grid coverage}
  * bounds.
@@ -19,6 +21,7 @@ package org.geotools.api.coverage.grid;
  */
 public class InvalidRangeException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3165512862939920847L;
 
     /** Creates an exception with no message. */

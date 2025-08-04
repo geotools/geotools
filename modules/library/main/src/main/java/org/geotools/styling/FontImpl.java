@@ -145,8 +145,7 @@ public class FontImpl implements Font, Cloneable {
             return false;
         }
 
-        if (oth instanceof FontImpl) {
-            FontImpl other = (FontImpl) oth;
+        if (oth instanceof FontImpl other) {
 
             return Utilities.equals(this.fontFamily, other.fontFamily)
                     && Utilities.equals(this.fontSize, other.fontSize)
@@ -179,8 +178,8 @@ public class FontImpl implements Font, Cloneable {
     static FontImpl cast(org.geotools.api.style.Font font) {
         if (font == null) {
             return null;
-        } else if (font instanceof FontImpl) {
-            return (FontImpl) font;
+        } else if (font instanceof FontImpl impl) {
+            return impl;
         } else {
             FontImpl copy = new FontImpl();
             copy.getFamily().addAll(font.getFamily());

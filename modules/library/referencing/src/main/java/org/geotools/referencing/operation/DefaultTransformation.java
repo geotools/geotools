@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -39,6 +40,7 @@ import org.geotools.api.referencing.operation.Transformation;
  */
 public class DefaultTransformation extends DefaultOperation implements Transformation {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7486704846151648971L;
 
     /**

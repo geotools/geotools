@@ -349,7 +349,7 @@ public class Ows10PackageImpl extends EPackageImpl implements Ows10Package {
 
     // Obtain or create and register package
     Object registeredOws10Package = EPackage.Registry.INSTANCE.get(eNS_URI);
-    Ows10PackageImpl theOws10Package = registeredOws10Package instanceof Ows10PackageImpl ? (Ows10PackageImpl)registeredOws10Package : new Ows10PackageImpl();
+    Ows10PackageImpl theOws10Package = registeredOws10Package instanceof Ows10PackageImpl opi ? opi : new Ows10PackageImpl();
 
     isInited = true;
 

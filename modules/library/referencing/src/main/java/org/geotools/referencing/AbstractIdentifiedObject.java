@@ -20,6 +20,7 @@
 package org.geotools.referencing;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -77,6 +78,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class AbstractIdentifiedObject extends Formattable implements IdentifiedObject, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -5173281694258483264L;
 
     /**
@@ -114,6 +116,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     private static final class NameComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -6605097017814062198L;
 
         /** Compares the given identified objects for order. */
@@ -138,6 +141,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     private static final class IdentifierComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -7315726806679993522L;
 
         /** Compares the given identified objects for order. */
@@ -179,6 +183,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     private static final class RemarksComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -6675419613224162715L;
 
         /** Compares the given identified objects for order. */
@@ -398,8 +403,8 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                 case 1368189162: {
                     if (key.equals(IDENTIFIERS_KEY)) {
                         if (value != null) {
-                            if (value instanceof ReferenceIdentifier) {
-                                identifiers = new ReferenceIdentifier[] {(ReferenceIdentifier) value};
+                            if (value instanceof ReferenceIdentifier identifier) {
+                                identifiers = new ReferenceIdentifier[] {identifier};
                             } else {
                                 identifiers = value;
                             }
@@ -428,8 +433,8 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
              */
             if (value instanceof String) {
                 if (growable == null) {
-                    if (remarks instanceof GrowableInternationalString) {
-                        growable = (GrowableInternationalString) remarks;
+                    if (remarks instanceof GrowableInternationalString string) {
+                        growable = string;
                     } else {
                         growable = new GrowableInternationalString();
                     }
@@ -459,8 +464,8 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                         }
                         if (subGrowables[i] == null) {
                             final Object previous = subProperties.get(prefix);
-                            if (previous instanceof GrowableInternationalString) {
-                                subGrowables[i] = (GrowableInternationalString) previous;
+                            if (previous instanceof GrowableInternationalString string) {
+                                subGrowables[i] = string;
                             } else {
                                 subGrowables[i] = new GrowableInternationalString();
                             }
@@ -648,9 +653,9 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * @since 2.2
      */
     public static ReferenceIdentifier getIdentifier(final IdentifiedObject info, final Citation authority) {
-        if (info instanceof AbstractIdentifiedObject) {
+        if (info instanceof AbstractIdentifiedObject object) {
             // Gives a chances to subclasses to get their overridden method invoked.
-            return ((AbstractIdentifiedObject) info).getIdentifier(authority);
+            return object.getIdentifier(authority);
         }
         return getIdentifier0(info, authority);
     }
@@ -661,8 +666,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
             return null;
         }
         for (final Identifier candidate : info.getIdentifiers()) {
-            if (candidate instanceof ReferenceIdentifier) {
-                final ReferenceIdentifier identifier = (ReferenceIdentifier) candidate;
+            if (candidate instanceof ReferenceIdentifier identifier) {
                 if (authority == null) {
                     return identifier;
                 }
@@ -721,9 +725,9 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * @since 2.2
      */
     public static String getName(final IdentifiedObject info, final Citation authority) {
-        if (info instanceof AbstractIdentifiedObject) {
+        if (info instanceof AbstractIdentifiedObject object) {
             // Gives a chance for subclasses to get their overridden method invoked.
-            return ((AbstractIdentifiedObject) info).getName(authority);
+            return object.getName(authority);
         }
         return getName0(info, authority);
     }
@@ -741,8 +745,8 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                 name = identifier.getCode();
             } else {
                 for (final GenericName alias : info.getAlias()) {
-                    if (alias instanceof Identifier) {
-                        identifier = (Identifier) alias;
+                    if (alias instanceof Identifier identifier1) {
+                        identifier = identifier1;
                         infoAuthority = identifier.getAuthority();
                         if (infoAuthority != null) {
                             if (Citations.identifierMatches(authority, infoAuthority)) {
@@ -793,8 +797,8 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * @return {@code true} if the primary name of at least one alias matches the specified {@code name}.
      */
     public static boolean nameMatches(final IdentifiedObject object, final String name) {
-        if (object instanceof AbstractIdentifiedObject) {
-            return ((AbstractIdentifiedObject) object).nameMatches(name);
+        if (object instanceof AbstractIdentifiedObject identifiedObject) {
+            return identifiedObject.nameMatches(name);
         } else {
             return nameMatches(object, object.getAlias(), name);
         }
@@ -852,7 +856,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     @Override
     public final boolean equals(final Object object) {
-        return object instanceof AbstractIdentifiedObject && equals((AbstractIdentifiedObject) object, true);
+        return object instanceof AbstractIdentifiedObject aio && equals(aio, true);
     }
 
     /**

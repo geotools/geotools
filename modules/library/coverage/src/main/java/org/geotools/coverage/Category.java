@@ -17,6 +17,7 @@
 package org.geotools.coverage;
 
 import java.awt.Color;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -56,6 +57,7 @@ import org.geotools.util.Utilities;
  */
 public class Category implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6215962897884256696L;
 
     /** The 0 value as a byte. Used for {@link #FALSE} categories. */

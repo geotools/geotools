@@ -102,8 +102,7 @@ public class SimpleFeatureStoreExamples {
         class CommitListener implements FeatureListener {
             @Override
             public void changed(FeatureEvent featureEvent) {
-                if (featureEvent instanceof BatchFeatureEvent) {
-                    BatchFeatureEvent batchEvent = (BatchFeatureEvent) featureEvent;
+                if (featureEvent instanceof BatchFeatureEvent batchEvent) {
 
                     System.out.println("area changed:" + batchEvent.getBounds());
                     System.out.println("created fids:" + batchEvent.getCreatedFeatureIds());

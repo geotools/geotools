@@ -74,8 +74,8 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         mapping.setTargetFeature(descriptor);
         // smuggle FEATURE_LINK descriptor
         descriptors = new ArrayList<>(List.of(ComplexFeatureConstants.FEATURE_CHAINING_LINK));
-        if (subject instanceof ComplexType) {
-            descriptors.addAll(((ComplexType) subject).getDescriptors());
+        if (subject instanceof ComplexType complexType) {
+            descriptors.addAll(complexType.getDescriptors());
         }
     }
 
@@ -124,8 +124,8 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
 
     /** Return only the schema descriptors */
     public Collection<PropertyDescriptor> getTypeDescriptors() {
-        if (subject instanceof ComplexType) {
-            return ((ComplexType) subject).getDescriptors();
+        if (subject instanceof ComplexType type) {
+            return type.getDescriptors();
         } else {
             return Collections.emptyList();
         }

@@ -16,6 +16,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.net.URI;
 import java.text.MessageFormat;
 import javax.measure.Unit;
@@ -36,6 +37,7 @@ import org.geotools.util.Utilities;
  */
 final class ImagingParameter<T> extends AbstractParameter implements ParameterValue<T> {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -170895429717041733L;
 
     /** The JAI's parameter list used as the backing store for parameter values. */

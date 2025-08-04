@@ -91,7 +91,7 @@ public class LikeFilterImplTest {
         String input = "this is foo & bar geospatial";
         String pattern = "*foo & bar*";
         PropertyIsLike pil = ff.like(ff.literal(input), pattern);
-        String msg = String.format("Expecting '%s' to match '%s'.", pattern, input);
+        String msg = "Expecting '%s' to match '%s'.".formatted(pattern, input);
         assertTrue(msg, pil.evaluate(null));
 
         pil = ff.like(ff.literal(input), pattern, "*", "?", "!");

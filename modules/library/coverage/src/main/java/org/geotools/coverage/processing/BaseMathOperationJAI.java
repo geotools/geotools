@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing;
 
 import it.geosolutions.jaiext.JAIExt;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,6 +48,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class BaseMathOperationJAI extends OperationJAI {
 
+    @Serial
     private static final long serialVersionUID = 6830028735162290160L;
 
     /** {@link Logger} for this class. */

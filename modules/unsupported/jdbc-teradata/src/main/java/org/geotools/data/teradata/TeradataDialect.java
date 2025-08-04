@@ -160,9 +160,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         }
 
         // JD: for some reason this does not work if we use a prepared statement
-        String sql = String.format(
-                "SET QUERY_BAND='%s;' FOR SESSION",
-                QueryBand.APPLICATION
+        String sql = "SET QUERY_BAND='%s;' FOR SESSION"
+                .formatted(QueryBand.APPLICATION
                         + "="
                         + (application != null ? application : TeradataDataStoreFactory.APPLICATION.sample));
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -211,9 +210,9 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     public void setGeometryValue(Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
             throws SQLException {
         if (g != null) {
-            if (g instanceof LinearRing) {
+            if (g instanceof LinearRing ring) {
                 // teradata does not handle linear rings, convert to just a line string
-                g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
+                g = g.getFactory().createLineString(ring.getCoordinateSequence());
             }
 
             // TODO: use WKB instead of WKT
@@ -381,7 +380,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             //   .append(" AND ymax is NOT NULL");
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(String.format("%s;1=%s;2=%s", sql.toString(), schema, tableName));
+                LOGGER.fine("%s;1=%s;2=%s".formatted(sql.toString(), schema, tableName));
             }
 
             PreparedStatement ps = cx.prepareStatement(sql.toString());
@@ -475,8 +474,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         sql.append(" AND col.F_GEOMETRY_COLUMN = ? ");
         sql.append(" AND col.SRID = ref.SRID");
 
-        LOGGER.log(
-                Level.FINE, String.format("%s; 1=%s, 2=%s, 3=%s", sql.toString(), schemaName, tableName, columnName));
+        LOGGER.log(Level.FINE, "%s; 1=%s, 2=%s, 3=%s".formatted(sql.toString(), schemaName, tableName, columnName));
 
         PreparedStatement ps = cx.prepareStatement(sql.toString());
         try {
@@ -489,7 +487,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 if (rs.next()) {
                     return rs.getInt(1);
                 } else {
-                    LOGGER.warning(String.format("No SRID entry for %s, %s, %s", schemaName, tableName, columnName));
+                    LOGGER.warning("No SRID entry for %s, %s, %s".formatted(schemaName, tableName, columnName));
                 }
             } finally {
                 dataStore.closeSafe(rs);
@@ -584,7 +582,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         sql.append("WHERE F_TABLE_SCHEMA = ? AND F_TABLE_NAME = ? AND F_GEOMETRY_COLUMN = ?");
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(String.format("%s; 1=%s, 2=%s, 3=%s", sql.toString(), schemaName, tableName, columnName));
+            LOGGER.fine("%s; 1=%s, 2=%s, 3=%s".formatted(sql.toString(), schemaName, tableName, columnName));
         }
 
         PreparedStatement ps = cx.prepareStatement(sql.toString());
@@ -771,8 +769,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             if (tinfo != null) {
                 att.getUserData().put(TessellationInfo.KEY, tinfo);
             } else {
-                LOGGER.fine(String.format(
-                        "%s.%s.(%s) does not have tessellation entry.", schemaName, tableName, att.getLocalName()));
+                LOGGER.fine("%s.%s.(%s) does not have tessellation entry."
+                        .formatted(schemaName, tableName, att.getLocalName()));
             }
         }
     }
@@ -784,8 +782,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
         // register all geometry columns in the database
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-            if (att instanceof GeometryDescriptor) {
-                GeometryDescriptor gd = (GeometryDescriptor) att;
+            if (att instanceof GeometryDescriptor gd) {
 
                 // figure out the native db srid
                 int srid = 0;
@@ -1051,7 +1048,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         qb.append(QueryBand.PROCESS).append("=").append(process).append(";");
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(String.format("%s;1=%s", sql, qb.toString()));
+            LOGGER.fine("%s;1=%s".formatted(sql, qb.toString()));
         }
 
         PreparedStatement ps = cx.prepareStatement(sql);

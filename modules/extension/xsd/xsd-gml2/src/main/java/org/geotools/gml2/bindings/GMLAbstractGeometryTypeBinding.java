@@ -100,8 +100,7 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        if (value instanceof Geometry) {
-            Geometry geometry = (Geometry) value;
+        if (value instanceof Geometry geometry) {
 
             // &lt;attribute name="srsName" type="anyURI" use="optional"/&gt;
             if (node.hasAttribute("srsName")) {

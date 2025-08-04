@@ -18,6 +18,7 @@ package org.geotools.coverage.processing.operation;
 
 import it.geosolutions.jaiext.warp.WarpDescriptor;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
@@ -43,6 +44,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 public class Warp extends BaseScaleOperationJAI {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = -9077795909705065389L;
 
     /** Default constructor. */
@@ -83,8 +85,8 @@ public class Warp extends BaseScaleOperationJAI {
         PropertyGenerator propertyGenerator =
                 getOperationDescriptor(WARP).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
         Object roiProp = propertyGenerator.getProperty(ROI, data);
-        if (roiProp != null && roiProp instanceof ROI) {
-            CoverageUtilities.setROIProperty(properties, (ROI) roiProp);
+        if (roiProp != null && roiProp instanceof ROI oI) {
+            CoverageUtilities.setROIProperty(properties, oI);
         }
 
         return properties;

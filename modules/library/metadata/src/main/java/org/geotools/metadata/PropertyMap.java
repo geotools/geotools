@@ -68,8 +68,8 @@ final class PropertyMap extends AbstractMap<String, Object> {
      */
     @Override
     public Object get(final Object key) {
-        if (key instanceof String) {
-            final Object value = accessor.get(accessor.indexOf((String) key), metadata);
+        if (key instanceof String string) {
+            final Object value = accessor.get(accessor.indexOf(string), metadata);
             if (!PropertyAccessor.isEmpty(value)) {
                 return value;
             }
@@ -91,8 +91,8 @@ final class PropertyMap extends AbstractMap<String, Object> {
     /** Removes the mapping for a key from this map if it is present. */
     @Override
     public Object remove(final Object key) {
-        if (key instanceof String) {
-            return put((String) key, null);
+        if (key instanceof String string) {
+            return put(string, null);
         } else {
             return null;
         }
@@ -158,7 +158,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
          */
         @Override
         public boolean equals(final Object object) {
-            return object instanceof Map.Entry && equals((Map.Entry) object);
+            return object instanceof Map.Entry e && equals(e);
         }
 
         /**
@@ -263,11 +263,10 @@ final class PropertyMap extends AbstractMap<String, Object> {
         /** Returns {@code true} if this collection contains the specified element. */
         @Override
         public boolean contains(final Object object) {
-            if (object instanceof Map.Entry) {
-                final Map.Entry entry = (Map.Entry) object;
+            if (object instanceof Map.Entry entry) {
                 final Object key = entry.getKey();
-                if (key instanceof String) {
-                    return new Property((String) key).equals(entry);
+                if (key instanceof String string) {
+                    return new Property(string).equals(entry);
                 }
             }
             return false;

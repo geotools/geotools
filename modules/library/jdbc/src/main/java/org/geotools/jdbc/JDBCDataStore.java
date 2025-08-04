@@ -291,8 +291,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     public JDBCFeatureSource getAbsoluteFeatureSource(String typeName) throws IOException {
         ContentFeatureSource featureSource = getFeatureSource(typeName);
-        if (featureSource instanceof JDBCFeatureSource) {
-            return (JDBCFeatureSource) featureSource;
+        if (featureSource instanceof JDBCFeatureSource source) {
+            return source;
         }
         return ((JDBCFeatureStore) featureSource).getFeatureSource();
     }
@@ -487,10 +487,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @return The filter capabilities, never <code>null</code>.
      */
     public FilterCapabilities getFilterCapabilities() {
-        if (dialect instanceof PreparedStatementSQLDialect)
-            return ((PreparedStatementSQLDialect) dialect)
-                    .createPreparedFilterToSQL()
-                    .getCapabilities();
+        if (dialect instanceof PreparedStatementSQLDialect lDialect)
+            return lDialect.createPreparedFilterToSQL().getCapabilities();
         else return ((BasicSQLDialect) dialect).createFilterToSQL().getCapabilities();
     }
 
@@ -1255,8 +1253,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 for (int i = 1; i <= columns; i++) {
                     final Envelope envelope = dialect.decodeGeometryEnvelope(rs, i, st.getConnection());
                     if (envelope != null) {
-                        if (envelope instanceof ReferencedEnvelope) {
-                            bounds = mergeEnvelope(bounds, (ReferencedEnvelope) envelope);
+                        if (envelope instanceof ReferencedEnvelope referencedEnvelope) {
+                            bounds = mergeEnvelope(bounds, referencedEnvelope);
                         } else {
                             bounds = mergeEnvelope(bounds, new ReferencedEnvelope(envelope, flatCRS));
                         }
@@ -1378,14 +1376,13 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // In the SQL standard distinct and order by can work only if all order by attributes also
         // show up in the select
-        if (visitor instanceof UniqueVisitor && query.getSortBy() != null && query.getSortBy().length > 0) {
-            UniqueVisitor unique = (UniqueVisitor) visitor;
+        if (visitor instanceof UniqueVisitor unique && query.getSortBy() != null && query.getSortBy().length > 0) {
             if (!unique.isPreserveOrder()) {
                 // not order preserving, easy peasy, just remove the sort
                 query.setSortBy();
             } else {
                 // need to preserve the sorting, can we abide to SQL rules though?
-                if (!isSortAttributesPartOfUnique((UniqueVisitor) visitor, query)) {
+                if (!isSortAttributesPartOfUnique(unique, query)) {
                     // cannot execute this one on a database, but the visitor requires order
                     // preservation, so, fall back on in-memory execution.
                     return null;
@@ -1396,8 +1393,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         // if the visitor is limiting the result to a given start - max, we will
         // try to apply limits to the aggregate query
         LimitingVisitor limitingVisitor = null;
-        if (visitor instanceof LimitingVisitor) {
-            limitingVisitor = (LimitingVisitor) visitor;
+        if (visitor instanceof LimitingVisitor limitingVisitor1) {
+            limitingVisitor = limitingVisitor1;
         }
         // if the visitor is a group by visitor we extract the group by attributes
         List<Expression> groupByExpressions = extractGroupByExpressions(visitor);
@@ -1512,11 +1509,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         // check the known composite expressions
-        if (expression instanceof BinaryExpression) {
-            BinaryExpression be = (BinaryExpression) expression;
+        if (expression instanceof BinaryExpression be) {
             return fullySupports(be.getExpression1()) && fullySupports(be.getExpression2());
-        } else if (expression instanceof Function) {
-            Function function = (Function) expression;
+        } else if (expression instanceof Function function) {
             for (Expression fe : function.getParameters()) {
                 if (!fullySupports(fe)) {
                     return false;
@@ -1689,15 +1684,15 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     List<Expression> getExpressions(FeatureVisitor visitor) {
         if (visitor instanceof CountVisitor) return null;
         List<Expression> result = null;
-        if (visitor instanceof UniqueVisitor) {
-            result = ((UniqueVisitor) visitor).getExpressions();
+        if (visitor instanceof UniqueVisitor uniqueVisitor) {
+            result = uniqueVisitor.getExpressions();
         } else {
             try {
                 Method g = visitor.getClass().getMethod("getExpression");
                 if (g != null) {
                     Object expr = g.invoke(visitor);
-                    if (expr instanceof Expression) {
-                        result = Arrays.asList((Expression) expr);
+                    if (expr instanceof Expression expression) {
+                        result = Arrays.asList(expression);
                     }
                 }
             } catch (Exception e) {
@@ -2038,11 +2033,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             throw new IllegalArgumentException("Illegal update, must include at least one non primary key column, "
                     + "all primary key columns are ignored.");
         }
-        if (dialect instanceof PreparedStatementSQLDialect) {
+        if (dialect instanceof PreparedStatementSQLDialect lDialect) {
             try {
                 PreparedStatement ps = updateSQLPS(featureType, attributes, values, filter, pkColumnNames, cx);
                 try {
-                    ((PreparedStatementSQLDialect) dialect).onUpdate(ps, cx, featureType);
+                    lDialect.onUpdate(ps, cx, featureType);
                     ps.execute();
                 } finally {
                     closeSafe(ps);
@@ -2083,12 +2078,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         Statement st = null;
         try {
             try {
-                if (dialect instanceof PreparedStatementSQLDialect) {
+                if (dialect instanceof PreparedStatementSQLDialect lDialect) {
                     st = deleteSQLPS(featureType, filter, cx);
                     @SuppressWarnings("PMD.CloseResource") // actually being closed later
                     PreparedStatement ps = (PreparedStatement) st;
 
-                    ((PreparedStatementSQLDialect) dialect).onDelete(ps, cx, featureType);
+                    lDialect.onDelete(ps, cx, featureType);
                     ps.execute();
                 } else {
                     String sql = deleteSQL(featureType, filter);
@@ -3199,8 +3194,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     private Integer findVarcharColumnLength(AttributeDescriptor att) {
         for (Filter r : att.getType().getRestrictions()) {
-            if (r instanceof PropertyIsLessThanOrEqualTo) {
-                PropertyIsLessThanOrEqualTo c = (PropertyIsLessThanOrEqualTo) r;
+            if (r instanceof PropertyIsLessThanOrEqualTo c) {
                 if (c.getExpression1() instanceof Function
                         && ((Function) c.getExpression1())
                                 .getName()
@@ -3234,16 +3228,16 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         for (int i = 0; i < descriptors.size(); i++) {
             AttributeDescriptor ad = descriptors.get(i);
             Object nativeTypeName = ad.getUserData().get(JDBC_NATIVE_TYPENAME);
-            if (nativeTypeName instanceof String) {
-                sqlTypeNames[i] = (String) nativeTypeName;
+            if (nativeTypeName instanceof String string) {
+                sqlTypeNames[i] = string;
                 continue;
             }
 
             Class clazz = ad.getType().getBinding();
             Integer sqlType;
             Object nativeType = ad.getUserData().get(JDBC_NATIVE_TYPE);
-            if (nativeType instanceof Integer) {
-                sqlType = (Integer) nativeType;
+            if (nativeType instanceof Integer integer) {
+                sqlType = integer;
             } else {
                 sqlType = dialect.getSQLType(ad);
             }
@@ -3474,9 +3468,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 alias = (String) att.getUserData().get(JDBC_COLUMN_ALIAS);
             }
 
-            if (att instanceof GeometryDescriptor) {
+            if (att instanceof GeometryDescriptor descriptor) {
                 // encode as geometry
-                encodeGeometryColumn((GeometryDescriptor) att, prefix, sql, query.getHints());
+                encodeGeometryColumn(descriptor, prefix, sql, query.getHints());
 
                 if (alias == null) {
                     // alias it to be the name of the original geometry
@@ -4080,7 +4074,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (!(expression instanceof PropertyName)) return null;
         PropertyName pn = (PropertyName) expression;
         AttributeDescriptor ad = featureType.getDescriptor(pn.getPropertyName());
-        if (ad instanceof GeometryDescriptor) return (GeometryDescriptor) ad;
+        if (ad instanceof GeometryDescriptor descriptor) return descriptor;
         return null;
     }
 
@@ -4833,12 +4827,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public void dispose() {
         super.dispose();
-        if (dataSource != null && dataSource instanceof ManageableDataSource) {
+        if (dataSource instanceof ManageableDataSource mds) {
             try {
-                @SuppressWarnings("PMD.CloseResource") // actually closing it here
-                ManageableDataSource mds = (ManageableDataSource) dataSource;
                 mds.close();
             } catch (SQLException e) {
                 // it's ok, we did our best..

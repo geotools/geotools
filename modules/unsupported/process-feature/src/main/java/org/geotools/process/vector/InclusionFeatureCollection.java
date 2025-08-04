@@ -109,8 +109,7 @@ public class InclusionFeatureCollection implements VectorProcess {
             while (next == null && delegate.hasNext()) {
                 SimpleFeature f = delegate.next();
                 for (Object attribute : f.getAttributes()) {
-                    if (attribute instanceof Geometry) {
-                        Geometry geom = (Geometry) attribute;
+                    if (attribute instanceof Geometry geom) {
                         Filter overFilter = ff.contains(ff.property(dataGeomName), ff.literal(geom));
                         SimpleFeatureCollection subFeatureCollectionInclusion =
                                 this.secondFeatures.subCollection(overFilter);

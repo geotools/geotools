@@ -515,8 +515,8 @@ public class CssParser extends BaseParser<Object> {
                         Object firstValue = null;
                         while (value != MARKER) {
                             firstValue = value;
-                            if (value instanceof Value) {
-                                expressions.add(((Value) value).toExpression());
+                            if (value instanceof Value value1) {
+                                expressions.add(value1.toExpression());
                             }
                             value = pop();
                         }

@@ -179,8 +179,8 @@ public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
                 List CRSs = ((DefaultCompoundCRS) crs).getCoordinateReferenceSystems();
 
                 for (Object item : CRSs) {
-                    if (item instanceof TemporalCRS) {
-                        temporalCRS = (TemporalCRS) item;
+                    if (item instanceof TemporalCRS rS) {
+                        temporalCRS = rS;
                     }
                 }
             }

@@ -65,16 +65,14 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
         URL source = null;
         String regex = null;
         Properties properties = null;
-        if (o instanceof URL) {
-            source = (URL) o;
-        } else if (o instanceof File) {
-            source = URLs.fileToUrl((File) o);
-        } else if (o instanceof String) {
+        if (o instanceof URL rL) {
+            source = rL;
+        } else if (o instanceof File file) {
+            source = URLs.fileToUrl(file);
+        } else if (o instanceof String value) {
             try {
-                source = new URL((String) o);
+                source = new URL(value);
             } catch (MalformedURLException e) {
-
-                String value = (String) o;
 
                 // parameters can be in any order
                 // look for the first parameter
@@ -127,8 +125,8 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
             PropertiesCollector pc = createInternal(this, propertyNames, regex.trim());
             if (pc == null) return null;
             if (fullPath) {
-                if (pc instanceof FullPathCollector) {
-                    ((FullPathCollector) pc).setFullPath(true);
+                if (pc instanceof FullPathCollector collector) {
+                    collector.setFullPath(true);
                 } else {
                     throw new IllegalArgumentException(
                             "This collector does not support the full path option: " + pc.getSpi());

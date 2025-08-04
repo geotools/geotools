@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Iterator;
@@ -38,6 +39,7 @@ import java.util.Set;
  */
 public abstract class DerivedSet<B, E> extends AbstractSet<E> implements CheckedCollection<E>, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4662336508586424581L;
 
     /**

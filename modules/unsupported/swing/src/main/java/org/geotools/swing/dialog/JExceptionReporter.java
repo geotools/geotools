@@ -128,7 +128,7 @@ public class JExceptionReporter {
                     BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
                     BorderFactory.createEmptyBorder(MARGIN, MARGIN, MARGIN, MARGIN)));
 
-            String text = String.format("<html>%s</html>", message);
+            String text = "<html>%s</html>".formatted(message);
             int w = DEFAULT_WIDTH - 2 * MARGIN;
             Dimension dim = DialogUtils.getHtmlLabelTextExtent(text, w, true);
 

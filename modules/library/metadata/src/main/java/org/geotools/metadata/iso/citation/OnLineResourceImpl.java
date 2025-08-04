@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
 import net.opengis.ows11.OnlineResourceType;
@@ -38,6 +39,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class OnLineResourceImpl extends MetadataEntity implements OnLineResource {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5412370008274334799L;
 
     /**

@@ -117,8 +117,8 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         inProgress = new ThreadLocal<>();
         if (factories != null && !factories.isEmpty()) {
             for (final AuthorityFactory factory : factories) {
-                if (factory instanceof Factory) {
-                    hints.putAll(((Factory) factory).getImplementationHints());
+                if (factory instanceof Factory factory1) {
+                    hints.putAll(factory1.getImplementationHints());
                 }
             }
             this.factories = createFallbacks(factories);
@@ -358,8 +358,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         if (ManyAuthoritiesFactory.class.isInstance(factory)) {
             return true;
         }
-        if (factory instanceof AuthorityFactoryAdapter) {
-            final AuthorityFactoryAdapter adapter = (AuthorityFactoryAdapter) factory;
+        if (factory instanceof AuthorityFactoryAdapter adapter) {
             return exclude(adapter.crsFactory)
                     || exclude(adapter.csFactory)
                     || exclude(adapter.datumFactory)
@@ -795,9 +794,9 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
                 if (exclude(factory)) {
                     continue;
                 }
-                if (factory instanceof AbstractAuthorityFactory) {
-                    final IdentifiedObjectFinder finder = ((AbstractAuthorityFactory) factory)
-                            .getIdentifiedObjectFinder(getProxy().getType());
+                if (factory instanceof AbstractAuthorityFactory authorityFactory) {
+                    final IdentifiedObjectFinder finder = authorityFactory.getIdentifiedObjectFinder(
+                            getProxy().getType());
                     if (finder != null) {
                         finder.setFullScanAllowed(isFullScanAllowed());
                         return finder;

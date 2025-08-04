@@ -129,9 +129,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
                     && !(att.value instanceof MultiLineString)
                     && !(att.value instanceof MultiPolygon)) {
 
-                if (value instanceof GeometryCollection) {
-                    // compare the two collections
-                    GeometryCollection c1 = (GeometryCollection) value;
+                if (value instanceof GeometryCollection c1) {
                     GeometryCollection c2 = (GeometryCollection) att.value;
 
                     if (c1.getNumGeometries() != c2.getNumGeometries()) {

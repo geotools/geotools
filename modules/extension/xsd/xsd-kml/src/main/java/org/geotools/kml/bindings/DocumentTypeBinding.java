@@ -132,10 +132,9 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
             Iterator<Feature> iterator = DataUtilities.iterator(fc.features());
 
             prop[1] = iterator;
-        } else if (object instanceof Collection) {
-            prop[1] = ((Collection) object).iterator();
-        } else if (object instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) object;
+        } else if (object instanceof Collection collection) {
+            prop[1] = collection.iterator();
+        } else if (object instanceof SimpleFeature feature) {
             prop[1] = feature.getAttribute("Feature");
         }
         List<Object[]> l = new ArrayList<>();

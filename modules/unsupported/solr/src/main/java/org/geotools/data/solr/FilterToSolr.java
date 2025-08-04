@@ -517,8 +517,8 @@ public class FilterToSolr implements FilterVisitor {
      * @param extraData output to write in
      */
     protected static StringWriter asStringWriter(Object extraData) {
-        if (extraData instanceof StringWriter) {
-            return (StringWriter) extraData;
+        if (extraData instanceof StringWriter writer) {
+            return writer;
         }
         return new StringWriter();
     }
@@ -695,8 +695,8 @@ public class FilterToSolr implements FilterVisitor {
         // initialize spatial strategy
         if (filter instanceof BBOX) visitor.setSpatialStrategy(SolrSpatialStrategy.BBOX);
         AttributeDescriptor spatialAtt = (AttributeDescriptor) e1.evaluate(featureType);
-        if (spatialAtt != null && spatialAtt instanceof GeometryDescriptor) {
-            visitor.setSpatialStrategy(SolrSpatialStrategy.createStrategy((GeometryDescriptor) spatialAtt));
+        if (spatialAtt != null && spatialAtt instanceof GeometryDescriptor descriptor) {
+            visitor.setSpatialStrategy(SolrSpatialStrategy.createStrategy(descriptor));
         } else {
             LOGGER.warning("Spatial field: " + e1.toString() + " resolved to null or non-spatial");
         }

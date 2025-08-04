@@ -38,16 +38,16 @@ public class SymbolizersEncoder extends YsldEncodeHandler<Symbolizer> {
 
     @Override
     protected void encode(Symbolizer sym) {
-        if (sym instanceof PointSymbolizer) {
-            push("point").inline(new PointSymblolizerEncoder((PointSymbolizer) sym));
-        } else if (sym instanceof LineSymbolizer) {
-            push("line").inline(new LineSymbolizerEncoder((LineSymbolizer) sym));
-        } else if (sym instanceof PolygonSymbolizer) {
-            push("polygon").inline(new PolygonSymbolizerEncoder((PolygonSymbolizer) sym));
-        } else if (sym instanceof TextSymbolizer) {
-            push("text").inline(new TextSymbolizerEncoder((TextSymbolizer) sym));
-        } else if (sym instanceof RasterSymbolizer) {
-            push("raster").inline(new RasterSymbolizerEncoder((RasterSymbolizer) sym));
+        if (sym instanceof PointSymbolizer symbolizer4) {
+            push("point").inline(new PointSymblolizerEncoder(symbolizer4));
+        } else if (sym instanceof LineSymbolizer symbolizer3) {
+            push("line").inline(new LineSymbolizerEncoder(symbolizer3));
+        } else if (sym instanceof PolygonSymbolizer symbolizer2) {
+            push("polygon").inline(new PolygonSymbolizerEncoder(symbolizer2));
+        } else if (sym instanceof TextSymbolizer symbolizer1) {
+            push("text").inline(new TextSymbolizerEncoder(symbolizer1));
+        } else if (sym instanceof RasterSymbolizer symbolizer) {
+            push("raster").inline(new RasterSymbolizerEncoder(symbolizer));
         }
     }
 

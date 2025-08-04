@@ -121,7 +121,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
     }
 
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources") // complex management in close
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"}) // complex management in close
     protected boolean canConnect(URL url, Map<String, Serializable> params) {
 
         if (url == null) {
@@ -175,8 +175,8 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
             inputStream = (ImageInputStream)
                     (source instanceof ImageInputStream
                             ? source
-                            : source instanceof File
-                                    ? new FileImageInputStreamExtImpl((File) source)
+                            : source instanceof File f
+                                    ? new FileImageInputStreamExtImpl(f)
                                     : ImageIO.createImageInputStream(source));
             if (inputStream == null) {
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Unable to get an ImageInputStream");
@@ -199,9 +199,9 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
 
                 }
             }
-            if (source != null && source instanceof InputStream) {
+            if (source != null && source instanceof InputStream stream) {
                 try {
-                    ((InputStream) source).close();
+                    stream.close();
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                 }

@@ -141,7 +141,7 @@ public final class HttpConfigTest {
             return (AppSchemaDataAccess) dataAccess;
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format("Error build App-Schema data store for mappings '%s'.", mappingsName), exception);
+                    "Error build App-Schema data store for mappings '%s'.".formatted(mappingsName), exception);
         }
     }
 }

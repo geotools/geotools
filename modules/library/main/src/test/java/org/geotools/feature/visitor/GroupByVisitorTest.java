@@ -535,8 +535,8 @@ public class GroupByVisitorTest {
             if (!arrayA[i].getClass().equals(arrayB[i].getClass())) {
                 return false;
             }
-            if (arrayA[i] instanceof Double) {
-                double difference = Math.abs((double) arrayA[i] - (double) arrayB[i]);
+            if (arrayA[i] instanceof Double double1) {
+                double difference = Math.abs(double1 - (double) arrayB[i]);
                 if (difference > 0.001) {
                     return false;
                 }

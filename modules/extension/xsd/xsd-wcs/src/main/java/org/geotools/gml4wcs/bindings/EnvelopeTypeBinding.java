@@ -168,8 +168,8 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
                 List CRSs = ((DefaultCompoundCRS) crs).getCoordinateReferenceSystems();
 
                 for (Object item : CRSs) {
-                    if (item instanceof GeographicCRS) {
-                        spatialCRS = (GeographicCRS) item;
+                    if (item instanceof GeographicCRS rS) {
+                        spatialCRS = rS;
                     }
                 }
             } else {

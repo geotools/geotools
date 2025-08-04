@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,6 +58,7 @@ import org.geotools.util.UnmodifiableArrayList;
  */
 public class DefaultConcatenatedOperation extends AbstractCoordinateOperation implements ConcatenatedOperation {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 4199619838029045700L;
 
     /** The sequence of operations. */
@@ -173,10 +175,9 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation im
         for (int i = 0; i < operations.length; i++) {
             ensureNonNull("operations", operations, i);
             final CoordinateOperation op = operations[i];
-            if (op instanceof SingleOperation) {
-                target.add((SingleOperation) op);
-            } else if (op instanceof ConcatenatedOperation) {
-                final ConcatenatedOperation cop = (ConcatenatedOperation) op;
+            if (op instanceof SingleOperation operation) {
+                target.add(operation);
+            } else if (op instanceof ConcatenatedOperation cop) {
                 final List<SingleOperation> cops = cop.getOperations();
                 expand(cops.toArray(new CoordinateOperation[cops.size()]), target, factory, false);
             } else {

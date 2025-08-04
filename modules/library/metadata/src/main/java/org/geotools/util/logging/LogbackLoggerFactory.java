@@ -79,8 +79,8 @@ public class LogbackLoggerFactory extends LoggerFactory<org.slf4j.Logger> {
      */
     @Override
     protected org.slf4j.Logger unwrap(final Logger logger) {
-        if (logger instanceof LogbackLogger) {
-            return ((LogbackLogger) logger).logger;
+        if (logger instanceof LogbackLogger logbackLogger) {
+            return logbackLogger.logger;
         }
         return null;
     }

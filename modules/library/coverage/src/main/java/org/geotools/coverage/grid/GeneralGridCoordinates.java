@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.grid;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import org.geotools.api.coverage.grid.GridCoordinates;
@@ -32,6 +33,7 @@ import org.geotools.util.Classes;
  */
 public class GeneralGridCoordinates implements GridCoordinates, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 8146318677770695383L;
 
     /** The grid coordinates. */
@@ -172,8 +174,7 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
         }
         // We do not require the exact same class because we that that clones of
         // immutable grid coordinates to be equal to their original coordinates.
-        if (object instanceof GeneralGridCoordinates) {
-            final GeneralGridCoordinates that = (GeneralGridCoordinates) object;
+        if (object instanceof GeneralGridCoordinates that) {
             return Arrays.equals(this.coordinates, that.coordinates);
         }
         return false;
@@ -204,6 +205,7 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
      */
     public static final class Immutable extends GeneralGridCoordinates {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -7723383411061425866L;
 
         /**

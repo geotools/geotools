@@ -123,8 +123,7 @@ public class WMTSConfigurationTest extends XmlTestSupport {
         // Parse layers
         for (Object l : contents.getDatasetDescriptionSummary()) {
 
-            if (l instanceof LayerType) {
-                LayerType layerType = (LayerType) l;
+            if (l instanceof LayerType layerType) {
                 String id = layerType.getIdentifier().getValue();
 
                 layers.put(id, layerType);

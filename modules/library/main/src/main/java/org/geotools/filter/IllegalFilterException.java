@@ -16,6 +16,8 @@
  */
 package org.geotools.filter;
 
+import java.io.Serial;
+
 /**
  * Defines an exception for illegal filters.
  *
@@ -24,6 +26,7 @@ package org.geotools.filter;
  */
 public class IllegalFilterException extends RuntimeException {
     /** Prevent warning. */
+    @Serial
     private static final long serialVersionUID = 6991878877158220201L;
 
     /**

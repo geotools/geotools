@@ -226,7 +226,7 @@ public class SchemaCache {
                 httpResponse = httpClient.get(url);
             } catch (IOException e) {
                 // don't throw an exception if status code >= 400
-                LOGGER.warning(String.format("Unexpected response \"%s\" while downloading %s", e.getCause(), url));
+                LOGGER.warning("Unexpected response \"%s\" while downloading %s".formatted(e.getCause(), url));
                 return null;
             }
             if (httpResponse == null) {
@@ -358,16 +358,15 @@ public class SchemaCache {
         File cacheDirectory = new File(directory);
         if (cacheDirectory.exists() && cacheDirectory.isFile()) {
             // there is nothing we can do, let's abort the instantiation
-            throw new RuntimeException(String.format(
-                    "Provided schema cache directory '%s' already exists but it's a file.",
-                    cacheDirectory.getAbsolutePath()));
+            throw new RuntimeException("Provided schema cache directory '%s' already exists but it's a file."
+                    .formatted(cacheDirectory.getAbsolutePath()));
         }
         if (!cacheDirectory.exists()) {
             // create the schema cache directory
             cacheDirectory.mkdir();
         }
         // looks like we are fine
-        LOGGER.fine(String.format("Using provided schema cache directory '%s'.", cacheDirectory.getAbsolutePath()));
+        LOGGER.fine("Using provided schema cache directory '%s'.".formatted(cacheDirectory.getAbsolutePath()));
         return new SchemaCache(cacheDirectory, true, DEFAULT_KEEP_QUERY);
     }
 

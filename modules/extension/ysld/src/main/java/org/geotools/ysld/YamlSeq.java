@@ -136,8 +136,8 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
         if (obj == null) {
             return null;
         }
-        if (obj instanceof YamlMap) {
-            return (YamlMap) obj;
+        if (obj instanceof YamlMap map) {
+            return map;
         }
         return new YamlMap(obj);
     }
@@ -153,8 +153,8 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
         if (obj == null) {
             return null;
         }
-        if (obj instanceof YamlSeq) {
-            return (YamlSeq) obj;
+        if (obj instanceof YamlSeq seq) {
+            return seq;
         }
         return new YamlSeq(obj);
     }

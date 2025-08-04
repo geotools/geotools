@@ -26,6 +26,7 @@ import static org.geotools.util.Classes.SHORT;
 import static org.geotools.util.Classes.getEnumConstant;
 import static org.geotools.util.Classes.wrapperToPrimitive;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.text.MessageFormat;
@@ -57,6 +58,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
 public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range<T>>
         implements SortedSet<Range<T>>, Cloneable, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 2439002271813328080L;
 
     /**

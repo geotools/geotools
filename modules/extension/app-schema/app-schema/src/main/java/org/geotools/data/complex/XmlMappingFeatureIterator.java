@@ -269,15 +269,15 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
             Name propName = entry.getKey();
             Object propExpr = entry.getValue();
             Object propValue;
-            if (propExpr instanceof Expression) {
-                propValue = getValue(xpathPrefix == null ? "" : xpathPrefix.toString(), (Expression) propExpr, target);
+            if (propExpr instanceof Expression expression) {
+                propValue = getValue(xpathPrefix == null ? "" : xpathPrefix.toString(), expression, target);
             } else {
                 propValue = propExpr;
             }
             if (propValue != null) {
-                if (propValue instanceof Collection) {
-                    if (!((Collection) propValue).isEmpty()) {
-                        propValue = ((Collection) propValue).iterator().next();
+                if (propValue instanceof Collection collection) {
+                    if (!collection.isEmpty()) {
+                        propValue = collection.iterator().next();
                         targetAttributes.put(propName, propValue);
                     }
                 } else {

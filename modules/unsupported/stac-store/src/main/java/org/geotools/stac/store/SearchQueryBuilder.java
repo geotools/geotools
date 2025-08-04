@@ -116,15 +116,15 @@ class SearchQueryBuilder {
                     // try harder to use bbox and datetime, leaving simpler filters for CQL2
                     // as implementations out there have all sorts of weaknesses
                     Filter leftover = adapted;
-                    if (adapted instanceof And) {
+                    if (adapted instanceof And and) {
                         List<BBOX> bbox = new ArrayList<>();
                         List<BinaryTemporalOperator> time = new ArrayList<>();
                         List<Filter> other = new ArrayList<>();
-                        for (Filter filter : ((And) adapted).getChildren()) {
-                            if (filter instanceof BBOX) {
-                                bbox.add((BBOX) filter);
-                            } else if (filter instanceof BinaryTemporalOperator) {
-                                time.add((BinaryTemporalOperator) filter);
+                        for (Filter filter : and.getChildren()) {
+                            if (filter instanceof BBOX oX) {
+                                bbox.add(oX);
+                            } else if (filter instanceof BinaryTemporalOperator operator) {
+                                time.add(operator);
                             } else {
                                 other.add(filter);
                             }
@@ -249,14 +249,13 @@ class SearchQueryBuilder {
 
     private boolean encodeSimpleFilter(Filter filter, SearchQuery sq) throws FactoryException, TransformException {
 
-        if (filter instanceof BBOX) {
-            encodeBBOX((BBOX) filter, sq);
+        if (filter instanceof BBOX oX) {
+            encodeBBOX(oX, sq);
             return true;
         } else if (isTimeFilter(filter)) {
             encodeTimeFilter(filter, sq);
             return true;
-        } else if (filter instanceof And) {
-            And and = (And) filter;
+        } else if (filter instanceof And and) {
             List<Filter> children = and.getChildren();
             if (children.size() != 2) return false;
             if (children.get(0) instanceof BBOX && isTimeFilter(children.get(1))) {

@@ -16,6 +16,7 @@
  */
 package org.geotools.imageio;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.util.Utilities;
 
@@ -25,6 +26,7 @@ import org.geotools.util.Utilities;
  */
 public class Identification implements CharSequence, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 7439545624472885445L;
 
     /** The object name, or {@code null} if none. */

@@ -236,8 +236,7 @@ public class SLDTransformer extends TransformerBase {
         boolean isNull(Expression expr) {
             if (expr == null) return true;
             if (expr == Expression.NIL) return true;
-            if (expr instanceof Literal) {
-                Literal literal = (Literal) expr;
+            if (expr instanceof Literal literal) {
                 return literal.getValue() == null;
             }
             return false; // must be some other non null thing
@@ -251,8 +250,7 @@ public class SLDTransformer extends TransformerBase {
 
             if (expr == null) return false;
             if (expr == Expression.NIL) return false;
-            if (expr instanceof Literal) {
-                Literal literal = (Literal) expr;
+            if (expr instanceof Literal literal) {
                 if (defaultValue.equals(literal.getValue())) {
                     return true;
                 }
@@ -280,8 +278,7 @@ public class SLDTransformer extends TransformerBase {
 
         /** Utility method used to quickly package up the provided InternationalString. */
         void element(String element, InternationalString intString) {
-            if (intString instanceof GrowableInternationalString) {
-                GrowableInternationalString growable = (GrowableInternationalString) intString;
+            if (intString instanceof GrowableInternationalString growable) {
                 if (growable.getLocales().isEmpty()) {
                     element(element, intString.toString());
                 } else {
@@ -331,8 +328,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         void labelContent(Expression expr) {
-            if (expr instanceof Literal) {
-                Literal literalLabel = (Literal) expr;
+            if (expr instanceof Literal literalLabel) {
                 String label = literalLabel.evaluate(null, String.class);
                 if (label != null) {
                     // do we need a CDATA expansion?
@@ -342,11 +338,11 @@ public class SLDTransformer extends TransformerBase {
                         chars(label);
                     }
                 }
-            } else if (expr instanceof Function
-                    && ("strConcat".equals(((Function) expr).getName())
-                            || "concat".equals(((Function) expr).getName())
-                            || "Concatenate".equals(((Function) expr).getName()))) {
-                List<Expression> parameters = ((Function) expr).getParameters();
+            } else if (expr instanceof Function function
+                    && ("strConcat".equals(function.getName())
+                            || "concat".equals(function.getName())
+                            || "Concatenate".equals(function.getName()))) {
+                List<Expression> parameters = function.getParameters();
                 for (Expression parameter : parameters) {
                     labelContent(parameter);
                 }
@@ -645,8 +641,8 @@ public class SLDTransformer extends TransformerBase {
 
             if (raster.getOverlap() != null) {
                 Expression overlaps = raster.getOverlap();
-                if (overlaps instanceof PropertyName) {
-                    final String pn = ((PropertyName) overlaps).getPropertyName();
+                if (overlaps instanceof PropertyName name) {
+                    final String pn = name.getPropertyName();
                     if ("RANDOM".equals(pn)) {
                         start("OverlapBehavior");
                         start(pn);
@@ -934,8 +930,8 @@ public class SLDTransformer extends TransformerBase {
             start("Graphic");
 
             for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
-                if (symbol instanceof Symbol) {
-                    ((Symbol) symbol).accept(this);
+                if (symbol instanceof Symbol symbol1) {
+                    symbol1.accept(this);
                 } else {
                     throw new RuntimeException("Don't know how to visit " + symbol);
                 }
@@ -973,10 +969,10 @@ public class SLDTransformer extends TransformerBase {
             StyledLayer[] layers = sld.getStyledLayers();
 
             for (StyledLayer layer : layers) {
-                if (layer instanceof NamedLayer) {
-                    visit((NamedLayer) layer);
-                } else if (layer instanceof UserLayer) {
-                    visit((UserLayer) layer);
+                if (layer instanceof NamedLayer namedLayer) {
+                    visit(namedLayer);
+                } else if (layer instanceof UserLayer userLayer) {
+                    visit(userLayer);
                 } else {
                     throw new IllegalArgumentException(
                             "StyledLayer '" + layer.getClass().toString() + "' not found");
@@ -1379,10 +1375,10 @@ public class SLDTransformer extends TransformerBase {
 
         @Override
         public void encode(Object o) throws IllegalArgumentException {
-            if (o instanceof StyledLayerDescriptor) {
-                encode((StyledLayerDescriptor) o);
-            } else if (o instanceof Style[]) {
-                encode((Style[]) o);
+            if (o instanceof StyledLayerDescriptor descriptor) {
+                encode(descriptor);
+            } else if (o instanceof Style[] styles) {
+                encode(styles);
             } else {
                 Class<?> c = o.getClass();
 

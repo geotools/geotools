@@ -61,12 +61,12 @@ public class DescribeProcessResponse extends Response {
             }
 
             // try casting the response
-            if (object instanceof ProcessDescriptionsType) {
-                processDescs = (ProcessDescriptionsType) object;
+            if (object instanceof ProcessDescriptionsType type1) {
+                processDescs = type1;
             }
             // exception caught on server and returned
-            else if (object instanceof ExceptionReportType) {
-                excepResponse = (ExceptionReportType) object;
+            else if (object instanceof ExceptionReportType type) {
+                excepResponse = type;
             }
         }
     }

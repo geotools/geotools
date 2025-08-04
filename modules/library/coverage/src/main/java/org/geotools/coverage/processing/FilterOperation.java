@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.coverage.GridSampleDimension;
 
@@ -49,6 +50,7 @@ import org.geotools.coverage.GridSampleDimension;
  */
 public class FilterOperation extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7984379314515755769L;
 
     /**

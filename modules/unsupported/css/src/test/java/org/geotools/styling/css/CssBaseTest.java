@@ -62,9 +62,9 @@ public class CssBaseTest {
             if (ix >= 0) str = str.substring(ix + 2); // extract value part of AST node toString()
             LOGGER.info(input + " = " + str + '\n');
         }
-        if (value instanceof GraphNode) {
+        if (value instanceof GraphNode node) {
             LOGGER.info("\nAbstract Syntax Tree:\n"
-                    + GraphUtils.printTree((GraphNode) value, new ToStringFormatter<GraphNode>())
+                    + GraphUtils.printTree(node, new ToStringFormatter<GraphNode>())
                     + '\n');
         } else {
             LOGGER.info("\nParse Tree:\n" + ParseTreeUtils.printNodeTree(result) + '\n');

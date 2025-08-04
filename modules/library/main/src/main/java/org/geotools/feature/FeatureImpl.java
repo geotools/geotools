@@ -84,8 +84,8 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
 
         ReferencedEnvelope bounds = new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
         for (Property property : getValue()) {
-            if (property instanceof GeometryAttribute) {
-                bounds.include(((GeometryAttribute) property).getBounds());
+            if (property instanceof GeometryAttribute attribute) {
+                bounds.include(attribute.getBounds());
             }
         }
 
@@ -109,9 +109,9 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
 
                 if (geometryType != null) {
                     for (Property property : getValue()) {
-                        if (property instanceof GeometryAttribute) {
+                        if (property instanceof GeometryAttribute attribute) {
                             if (property.getType().equals(geometryType)) {
-                                defaultGeometry = (GeometryAttribute) property;
+                                defaultGeometry = attribute;
                                 break;
                             }
                         }

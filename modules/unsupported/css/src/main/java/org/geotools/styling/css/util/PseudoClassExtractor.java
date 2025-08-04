@@ -91,9 +91,9 @@ public class PseudoClassExtractor extends AbstractSelectorVisitor {
     public Object visit(And and) {
         boolean found = false;
         for (Selector s : and.getChildren()) {
-            if (s instanceof PseudoClass) {
+            if (s instanceof PseudoClass class1) {
                 found = true;
-                getPseudoClasses().add((PseudoClass) s);
+                getPseudoClasses().add(class1);
             }
         }
         if (!found) {

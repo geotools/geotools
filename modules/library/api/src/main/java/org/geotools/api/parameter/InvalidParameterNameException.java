@@ -9,6 +9,8 @@
  */
 package org.geotools.api.parameter;
 
+import java.io.Serial;
+
 /**
  * Thrown when an unexpected parameter was found in a {@linkplain ParameterDescriptorGroup parameter group}.
  *
@@ -18,6 +20,7 @@ package org.geotools.api.parameter;
  */
 public class InvalidParameterNameException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8473266898408204803L;
 
     /** The invalid parameter name. */

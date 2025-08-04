@@ -175,8 +175,8 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
             NodeList childNodes = root.getChildNodes();
             for (int i = 0; i < childNodes.getLength(); i++) {
                 Node n = childNodes.item(i);
-                if (n != null && n instanceof Element) {
-                    if (hasParameters((Element) n)) {
+                if (n != null && n instanceof Element element) {
+                    if (hasParameters(element)) {
                         return true;
                     }
                 }
@@ -190,8 +190,8 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
             NodeList childNodes = root.getChildNodes();
             for (int i = 0; i < childNodes.getLength(); i++) {
                 Node n = childNodes.item(i);
-                if (n != null && n instanceof Element) {
-                    replaceParameters((Element) n, parameters);
+                if (n != null && n instanceof Element element) {
+                    replaceParameters(element, parameters);
                 }
             }
         }

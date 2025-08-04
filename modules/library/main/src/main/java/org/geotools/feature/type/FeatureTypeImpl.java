@@ -63,8 +63,7 @@ public class FeatureTypeImpl extends ComplexTypeImpl implements FeatureType {
             }
             if (crs == null) {
                 for (PropertyDescriptor property : getDescriptors()) {
-                    if (property instanceof GeometryDescriptor) {
-                        GeometryDescriptor geometry = (GeometryDescriptor) property;
+                    if (property instanceof GeometryDescriptor geometry) {
                         if (geometry.getType().getCoordinateReferenceSystem() != null) {
                             crs = geometry.getType().getCoordinateReferenceSystem();
                             break;
@@ -81,8 +80,8 @@ public class FeatureTypeImpl extends ComplexTypeImpl implements FeatureType {
     public GeometryDescriptor getGeometryDescriptor() {
         if (defaultGeometry == null) {
             for (PropertyDescriptor property : getDescriptors()) {
-                if (property instanceof GeometryDescriptor) {
-                    defaultGeometry = (GeometryDescriptor) property;
+                if (property instanceof GeometryDescriptor descriptor) {
+                    defaultGeometry = descriptor;
                     break;
                 }
             }

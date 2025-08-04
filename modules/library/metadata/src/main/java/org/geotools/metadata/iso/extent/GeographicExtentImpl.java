@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.extent;
 
+import java.io.Serial;
 import org.geotools.api.metadata.extent.GeographicExtent;
 import org.geotools.metadata.iso.MetadataEntity;
 
@@ -32,6 +33,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class GeographicExtentImpl extends MetadataEntity implements GeographicExtent {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8844015895495563161L;
 
     /**

@@ -44,8 +44,8 @@ final class Adapter extends Formattable {
      */
     @Override
     protected String formatWKT(final Formatter formatter) {
-        if (object instanceof org.geotools.referencing.util.Formattable) {
-            return ((org.geotools.referencing.util.Formattable) object).formatWKT(formatter);
+        if (object instanceof org.geotools.referencing.util.Formattable formattable) {
+            return formattable.formatWKT(formatter);
         }
         final Class<?> classe = object.getClass();
         try {

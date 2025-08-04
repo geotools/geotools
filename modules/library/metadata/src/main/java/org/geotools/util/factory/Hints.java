@@ -1424,8 +1424,7 @@ public class Hints extends RenderingHints {
              * If the value is an array of classes, invokes this method recursively
              * in order to check the validity of each elements in the array.
              */
-            if (value instanceof Class<?>[]) {
-                final Class<?>[] types = (Class<?>[]) value;
+            if (value instanceof Class<?>[] types) {
                 for (Class<?> type : types) {
                     if (!isCompatibleValue(type)) {
                         return false;
@@ -1442,8 +1441,7 @@ public class Hints extends RenderingHints {
              * but sub-classe of it do. We make this relaxation in order to preserve compatibility,
              * but maybe we will make the check stricter in the future.
              */
-            if (value instanceof Class<?>) {
-                final Class<?> type = (Class<?>) value;
+            if (value instanceof Class<?> type) {
                 final Class<?> expected = getValueClass();
                 if (expected.isAssignableFrom(type)) {
                     return true;
@@ -1486,10 +1484,10 @@ public class Hints extends RenderingHints {
         @Override
         public boolean isCompatibleValue(final Object value) {
             final File file;
-            if (value instanceof File) {
-                file = (File) value;
-            } else if (value instanceof String) {
-                file = new File((String) value);
+            if (value instanceof File file1) {
+                file = file1;
+            } else if (value instanceof String string) {
+                file = new File(string);
             } else {
                 return false;
             }
@@ -1542,8 +1540,8 @@ public class Hints extends RenderingHints {
         public int toValue(final Hints hints) {
             if (hints != null) {
                 final Object value = hints.get(this);
-                if (value instanceof Number) {
-                    return ((Number) value).intValue();
+                if (value instanceof Number number1) {
+                    return number1.intValue();
                 } else if (value instanceof CharSequence) {
                     return Integer.parseInt(value.toString());
                 }
@@ -1609,8 +1607,8 @@ public class Hints extends RenderingHints {
         public double toValue(final Hints hints) {
             if (hints != null) {
                 final Object value = hints.get(this);
-                if (value instanceof Number) {
-                    return ((Number) value).doubleValue();
+                if (value instanceof Number number1) {
+                    return number1.doubleValue();
                 } else if (value instanceof CharSequence) {
                     return Double.parseDouble(value.toString());
                 }

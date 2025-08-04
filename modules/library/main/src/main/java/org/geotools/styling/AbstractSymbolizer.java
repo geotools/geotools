@@ -96,8 +96,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     @Override
     public String getGeometryPropertyName() {
-        if (geometry instanceof PropertyName) {
-            PropertyName pg = (PropertyName) geometry;
+        if (geometry instanceof PropertyName pg) {
             return pg.getPropertyName();
         }
         return null;

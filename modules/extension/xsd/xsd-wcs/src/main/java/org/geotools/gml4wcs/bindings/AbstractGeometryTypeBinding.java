@@ -85,11 +85,10 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // set the crs
-        if (value instanceof Geometry) {
+        if (value instanceof Geometry geometry) {
             CoordinateReferenceSystem crs = GML3ParsingUtils.crs(node);
 
             if (crs != null) {
-                Geometry geometry = (Geometry) value;
                 geometry.setUserData(crs);
             }
         }

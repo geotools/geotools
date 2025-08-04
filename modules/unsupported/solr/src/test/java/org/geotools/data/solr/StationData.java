@@ -16,6 +16,7 @@
  */
 package org.geotools.data.solr;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,9 @@ import org.apache.solr.common.SolrInputDocument;
 /** Station data model, for load from XML */
 @XmlRootElement
 public class StationData implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
+
     private String measurementName;
     private String measurementTime;
     private String measurementUnit;
@@ -169,7 +172,9 @@ public class StationData implements Serializable {
 
     @XmlRootElement
     public static class Stations implements Serializable {
+        @Serial
         private static final long serialVersionUID = 1L;
+
         private List<StationData> stations = new ArrayList<>();
 
         public Stations() {}

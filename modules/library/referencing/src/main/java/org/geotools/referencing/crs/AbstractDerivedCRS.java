@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Map;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -55,6 +56,7 @@ import org.geotools.referencing.wkt.Formatter;
  */
 public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDerivedCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -175151161496419854L;
 
     /**
@@ -234,7 +236,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      */
     private static Datum getDatum(final CoordinateReferenceSystem base) {
         ensureNonNull("base", base);
-        return base instanceof SingleCRS ? ((SingleCRS) base).getDatum() : null;
+        return base instanceof SingleCRS scrs ? scrs.getDatum() : null;
     }
 
     /** Checks consistency between the base CRS and the "base to derived" transform. */

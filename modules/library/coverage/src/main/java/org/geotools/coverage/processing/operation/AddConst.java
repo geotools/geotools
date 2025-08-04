@@ -21,6 +21,7 @@ package org.geotools.coverage.processing.operation;
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.AddConstDescriptor;
@@ -79,6 +80,7 @@ public class AddConst extends OperationJAI {
     private static final String OPERATION_CONST = "operationConst";
     private static final String ADD_CONST = "AddConst";
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5443686039059774671L;
 
     /** Constructs a default {@code "AddConst"} operation. */

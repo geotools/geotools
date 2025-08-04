@@ -121,10 +121,10 @@ public class MapboxTestUtils {
      */
     public static Style getStyle(StyledLayerDescriptor sld, int layerIndex) {
         StyledLayer styledLayer = sld.layers().get(layerIndex);
-        if (styledLayer instanceof UserLayer) {
-            return ((UserLayer) styledLayer).getUserStyles()[0];
-        } else if (styledLayer instanceof NamedLayer) {
-            return ((NamedLayer) styledLayer).getStyles()[0];
+        if (styledLayer instanceof UserLayer layer1) {
+            return layer1.getUserStyles()[0];
+        } else if (styledLayer instanceof NamedLayer layer) {
+            return layer.getStyles()[0];
         } else {
             throw new RuntimeException("Layer is neither a user layer nor a named layer");
         }

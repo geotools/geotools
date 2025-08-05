@@ -211,3 +211,5 @@ org.geotools.filter.function.NowFunction
 org.geotools.filter.function.BandsFunction
 org.geotools.filter.function.PointOnLineFunction
 org.geotools.filter.function.ParseTimeFunction
+org.geotools.filter.function.MidPointFunction
+org.geotools.filter.function.MidAngleFunction

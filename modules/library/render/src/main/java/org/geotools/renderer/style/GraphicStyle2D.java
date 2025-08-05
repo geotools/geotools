@@ -28,7 +28,7 @@ import java.awt.image.BufferedImage;
 public class GraphicStyle2D extends Style2D implements PointStyle2D {
     BufferedImage image;
     int border = 0;
-    float rotation;
+    double rotation;
 
     float displacementX;
 
@@ -73,7 +73,7 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
      * @return graphic rotation in radians
      */
     @Override
-    public float getRotation() {
+    public double getRotation() {
         return rotation;
     }
 
@@ -88,7 +88,7 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
      * @param radians graphic rotation
      */
     @Override
-    public void setRotation(float radians) {
+    public void setRotation(double radians) {
         rotation = radians;
     }
 

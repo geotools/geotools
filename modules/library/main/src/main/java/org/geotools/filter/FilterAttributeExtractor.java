@@ -19,14 +19,19 @@ package org.geotools.filter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.FilterFunction_property;
+import org.geotools.filter.function.GeometryFunction;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.geotools.util.logging.Logging;
 
 /**
  * A simple visitor that extracts every attribute used by a filter or an expression
@@ -48,6 +53,7 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {
 
+    static final Logger LOGGER = Logging.getLogger(FilterAttributeExtractor.class);
     static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /** Last set visited */
@@ -152,6 +158,19 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
 
             if (!foundLiteral) {
                 usingDynamicProperties = true;
+            }
+        } else if (expression instanceof GeometryFunction) {
+            if (featureType == null) {
+                LOGGER.log(
+                        Level.FINE,
+                        "\"geometry\" function cannot be evaluated without a feature type, skipping attribute extraction");
+            } else {
+                GeometryDescriptor gd = featureType.getGeometryDescriptor();
+                if (gd != null) {
+                    String geomName = gd.getLocalName();
+                    attributeNames.add(geomName);
+                    propertyNames.add(FF.property(geomName));
+                }
             }
         }
         return super.visit(expression, data);

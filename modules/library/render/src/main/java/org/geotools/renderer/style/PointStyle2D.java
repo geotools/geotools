@@ -27,7 +27,7 @@ import java.awt.Composite;
 public interface PointStyle2D {
 
     /** The point symbol rotation, in radians. */
-    public float getRotation();
+    public double getRotation();
 
     /** The point symbol x displacement */
     public float getDisplacementX();
@@ -42,7 +42,7 @@ public interface PointStyle2D {
     public float getAnchorPointY();
 
     /** Sets the point symbol rotation, in radians. */
-    public void setRotation(float rotation);
+    public void setRotation(double rotation);
 
     /** Sets the point symbol x displacement */
     public void setDisplacementX(float displacementX);

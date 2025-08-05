@@ -21,6 +21,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.geometry.jts.LineStringCursor;
 import org.locationtech.jts.geom.Coordinate;
 
 /** Process all the glyphs of label. */

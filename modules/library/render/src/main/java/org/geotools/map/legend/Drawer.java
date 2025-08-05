@@ -338,7 +338,7 @@ public class Drawer {
             } else if (tmp instanceof GraphicStyle2D) {
                 GraphicStyle2D style = (GraphicStyle2D) tmp;
 
-                float rotation = style.getRotation(); // in radians
+                double rotation = style.getRotation(); // in radians
 
                 g.setTransform(AffineTransform.getRotateInstance(rotation));
 

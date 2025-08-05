@@ -3031,8 +3031,20 @@ public class StreamingRenderer implements GTRenderer {
         } else if (geometry == null) {
             return getAttributeCRS(null, schema);
         } else {
-            StyleAttributeExtractor attExtractor = new StyleAttributeExtractor();
+            StyleAttributeExtractor attExtractor;
+            if (schema instanceof SimpleFeatureType) {
+                attExtractor = new StyleAttributeExtractor((SimpleFeatureType) schema);
+            } else {
+                attExtractor = new StyleAttributeExtractor();
+            }
             geometry.accept(attExtractor, null);
+            if (attExtractor.getDefaultGeometryUsed()) {
+                // if the default geometry is used, we can just return the CRS of the default geometry
+                GeometryDescriptor geomDesc = schema.getGeometryDescriptor();
+                if (geomDesc != null) {
+                    return geomDesc.getType().getCoordinateReferenceSystem();
+                }
+            }
             for (PropertyName name : attExtractor.getAttributes()) {
                 if (name.evaluate(schema) instanceof GeometryDescriptor) {
                     return getAttributeCRS(name, schema);

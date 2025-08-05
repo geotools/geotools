@@ -52,6 +52,7 @@ import org.geotools.api.style.TextSymbolizer.GraphicPlacement;
 import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.GeometryClipper;
+import org.geotools.geometry.jts.LineStringCursor;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.OffsetCurveBuilder;
 import org.geotools.renderer.RenderListener;

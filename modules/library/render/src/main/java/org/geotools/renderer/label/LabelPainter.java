@@ -39,6 +39,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
+import org.geotools.geometry.jts.LineStringCursor;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.TransformedShape;

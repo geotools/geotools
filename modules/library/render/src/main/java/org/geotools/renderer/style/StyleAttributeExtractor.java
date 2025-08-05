@@ -19,6 +19,7 @@ package org.geotools.renderer.style;
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -59,6 +60,7 @@ import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.style.UserLayer;
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.function.GeometryFunction;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is, those that the Style
@@ -67,6 +69,19 @@ import org.geotools.filter.FilterAttributeExtractor;
  * @author Andrea Aime - OpenGeo
  */
 public class StyleAttributeExtractor extends FilterAttributeExtractor implements StyleVisitor {
+
+    /** Default constructor, creates an empty extractor that does not check against a feature type */
+    public StyleAttributeExtractor() {
+        super();
+    }
+
+    /**
+     * Creates an extractor that leverages the provided feature type for more accurate property name extraction (e.g.,
+     * it will return the property name of the default geometry if the "geometry" function is used
+     */
+    public StyleAttributeExtractor(SimpleFeatureType featureType) {
+        super(featureType);
+    }
 
     /**
      * Returns PropertyNames rather than strings (includes namespace info)
@@ -550,5 +565,13 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     @Override
     public void visit(ShadedRelief sr) {
         sr.accept(this);
+    }
+
+    @Override
+    public Object visit(org.geotools.api.filter.expression.Function expression, Object data) {
+        if (expression instanceof GeometryFunction && featureType == null) {
+            defaultGeometryUsed = true;
+        }
+        return super.visit(expression, data);
     }
 }

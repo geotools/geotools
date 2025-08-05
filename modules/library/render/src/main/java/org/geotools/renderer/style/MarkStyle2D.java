@@ -38,7 +38,7 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
 
     double size;
 
-    float rotation;
+    double rotation;
 
     float displacementX;
 
@@ -56,7 +56,7 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
      * @return shape rotation, in radians
      */
     @Override
-    public float getRotation() {
+    public double getRotation() {
         return rotation;
     }
 
@@ -88,6 +88,20 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
      * @return a shape that can be used to draw the mark
      */
     public Shape getTransformedShape(float x, float y, float baseRotation, float rotation) {
+        return getTransformedShape(x, y, baseRotation, (double) rotation);
+    }
+
+    /**
+     * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated rotation and size
+     * (according to the current style)
+     *
+     * @param x the x coordinate where the mark will be drawn
+     * @param y the y coordinate where the mark will be drawn
+     * @param baseRotation a custom rotation that will be applied before offsets
+     * @param rotation the mark rotation
+     * @return a shape that can be used to draw the mark
+     */
+    private Shape getTransformedShape(float x, float y, double baseRotation, double rotation) {
         if (shape != null) {
             Rectangle2D bounds = shape.getBounds2D();
             double shapeSize =
@@ -128,7 +142,7 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
 
     /** Sets the shape rotation, in radians */
     @Override
-    public void setRotation(float f) {
+    public void setRotation(double f) {
         rotation = f;
     }
 

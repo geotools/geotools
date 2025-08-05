@@ -27,7 +27,7 @@ import javax.swing.Icon;
 public class IconStyle2D extends Style2D implements PointStyle2D {
     private Icon icon;
 
-    private float rotation;
+    private double rotation;
 
     private Composite composite;
 
@@ -56,7 +56,7 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
      * @return icon rotation, in radians.
      */
     @Override
-    public float getRotation() {
+    public double getRotation() {
         return rotation;
     }
 
@@ -88,7 +88,7 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
     }
 
     @Override
-    public void setRotation(float rotation) {
+    public void setRotation(double rotation) {
         this.rotation = rotation;
     }
 

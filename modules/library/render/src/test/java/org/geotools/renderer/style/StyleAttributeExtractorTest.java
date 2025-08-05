@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
@@ -16,7 +17,9 @@ import org.geotools.api.style.Graphic;
 import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.Rule;
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.SchemaException;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
@@ -58,7 +61,7 @@ public class StyleAttributeExtractorTest {
     }
 
     @Test
-    public void testPropertyFucntion() {
+    public void testPropertyFunction() {
         PointSymbolizer ps = sb.createPointSymbolizer();
         ps.setGeometry(ff.function("offset", ff.property("the_geom"), ff.property("offx"), ff.property("offy")));
         Function func = ff.function("property", ff.function("env", ff.literal("pname")));
@@ -130,5 +133,28 @@ public class StyleAttributeExtractorTest {
 
         atts = extractor.getAttributeNameSet();
         assertEquals(0, atts.size());
+    }
+
+    @Test
+    public void testGeometryFunction() throws SchemaException {
+        Function geometry = ff.function("geometry");
+        SimpleFeatureType schema = DataUtilities.createType("test", "attribute:Double,the_shape:Geometry");
+
+        LineSymbolizer lineSymbolizer = sb.createLineSymbolizer();
+        lineSymbolizer.setGeometry(geometry);
+        Rule r = sb.createRule(lineSymbolizer);
+
+        // with a reference to the schema, it can extract the attribute name
+        StyleAttributeExtractor extractor = new StyleAttributeExtractor(schema);
+        r.accept(extractor);
+        Set<String> attributes = extractor.getAttributeNameSet();
+        assertTrue(attributes.contains("the_shape"));
+        assertEquals(1, attributes.size());
+
+        // without a reference to the schema, it still figures out the default geometry is in use
+        extractor = new StyleAttributeExtractor();
+        r.accept(extractor);
+        assertTrue(extractor.getAttributeNameSet().isEmpty());
+        assertTrue(extractor.getDefaultGeometryUsed());
     }
 }

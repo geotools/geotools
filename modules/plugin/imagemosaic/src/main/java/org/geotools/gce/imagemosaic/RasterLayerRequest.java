@@ -120,6 +120,8 @@ public class RasterLayerRequest {
 
     private boolean multithreadingAllowed;
 
+    private boolean skipDuplicates;
+
     private List<?> requestedTimes;
 
     private List<?> elevation;
@@ -203,6 +205,10 @@ public class RasterLayerRequest {
 
     public boolean isUseAlternativeCRS() {
         return useAlternativeCRS;
+    }
+
+    public boolean isSkipDuplicates() {
+        return skipDuplicates;
     }
 
     public ExcessGranulePolicy getExcessGranuleRemovalPolicy() {
@@ -533,24 +539,12 @@ public class RasterLayerRequest {
                 final String suggestedTileSize = (String) value;
 
                 // Preliminary checks on parameter value
-                if (suggestedTileSize != null && suggestedTileSize.trim().length() > 0) {
-
-                    if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
-                        final String[] tilesSize = suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
-                        if (tilesSize.length == 2) {
-                            try {
-                                // Getting suggested tile size
-                                final int tileWidth = Integer.valueOf(tilesSize[0].trim());
-                                final int tileHeight = Integer.valueOf(tilesSize[1].trim());
-                                tileDimensions = new Dimension(tileWidth, tileHeight);
-                            } catch (NumberFormatException nfe) {
-                                if (LOGGER.isLoggable(Level.WARNING)) {
-                                    LOGGER.log(Level.WARNING, "Unable to parse " + "suggested tile size parameter");
-                                }
-                            }
-                        }
-                    }
+                if (suggestedTileSize != null
+                        && suggestedTileSize.trim().length() > 0
+                        && suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
+                    setupTileSize(suggestedTileSize);
                 }
+                continue;
             }
 
             if (name.equals(ImageMosaicFormat.ACCURATE_RESOLUTION.getName())) {
@@ -581,6 +575,28 @@ public class RasterLayerRequest {
                 if (value == null) continue;
                 setRoiProperty = ((Boolean) value).booleanValue();
                 continue;
+            }
+
+            if (name.equals(ImageMosaicFormat.SKIP_DUPLICATES.getName())) {
+                if (value == null) continue;
+                skipDuplicates = (Boolean) value;
+            }
+        }
+    }
+
+    private void setupTileSize(String suggestedTileSize) {
+        // Null check has been made before invoking this method
+        final String[] tilesSize = suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
+        if (tilesSize.length == 2) {
+            try {
+                // Getting suggested tile size
+                final int tileWidth = Integer.valueOf(tilesSize[0].trim());
+                final int tileHeight = Integer.valueOf(tilesSize[1].trim());
+                tileDimensions = new Dimension(tileWidth, tileHeight);
+            } catch (NumberFormatException nfe) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to parse " + "suggested tile size parameter");
+                }
             }
         }
     }
@@ -788,26 +804,12 @@ public class RasterLayerRequest {
         // //
         if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
             final String suggestedTileSize = (String) param.getValue();
-
-            // Preliminary checks on parameter value
-            if (suggestedTileSize != null && suggestedTileSize.trim().length() > 0) {
-
-                if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
-                    final String[] tilesSize = suggestedTileSize.split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
-                    if (tilesSize.length == 2) {
-                        try {
-                            // Getting suggested tile size
-                            final int tileWidth = Integer.valueOf(tilesSize[0].trim());
-                            final int tileHeight = Integer.valueOf(tilesSize[1].trim());
-                            tileDimensions = new Dimension(tileWidth, tileHeight);
-                        } catch (NumberFormatException nfe) {
-                            if (LOGGER.isLoggable(Level.WARNING)) {
-                                LOGGER.log(Level.WARNING, "Unable to parse " + "suggested tile size parameter");
-                            }
-                        }
-                    }
-                }
+            if (suggestedTileSize != null
+                    && suggestedTileSize.trim().length() > 0
+                    && suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
+                setupTileSize(suggestedTileSize);
             }
+            return;
         }
 
         // //
@@ -910,6 +912,14 @@ public class RasterLayerRequest {
 
         if (name.equals(AbstractGridFormat.RESCALE_PIXELS.getName())) {
             rescalingEnabled = Boolean.TRUE.equals(param.getValue());
+            return;
+        }
+
+        if (name.equals(ImageMosaicFormat.SKIP_DUPLICATES.getName())) {
+            skipDuplicates = Boolean.TRUE.equals(param.getValue());
+            if (skipDuplicates) {
+                LOGGER.log(Level.FINEST, "Duplicates will be skipped");
+            }
         }
     }
 

@@ -30,7 +30,11 @@ import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.color.ColorSpace;
+import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -56,6 +60,7 @@ import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
@@ -342,6 +347,31 @@ public final class VRTTest extends GDALTestCase {
         List<String> rowOnlySecondOriginal = lookupRow(rows2, rowValueOnlySecond);
         assertEquals(rowOnlySecondOriginal, rowOnlySecond);
 
+        reader.dispose();
+    }
+
+    @Test
+    public void testGDALBandSelection() throws IOException, FactoryException {
+        // setup data so that we the pam files only inside the VRTS
+        String mosaicName = "bluetopo_vrt";
+        File mosaicDirectory = new File("target", mosaicName);
+        FileUtils.deleteQuietly(mosaicDirectory);
+        FileUtils.copyDirectory(TestData.file(this, "mosaic"), mosaicDirectory);
+
+        ImageMosaicReader reader = new ImageMosaicReader(mosaicDirectory);
+        ParameterValue<int[]> bandsParam = AbstractGridFormat.BANDS.createValue();
+        bandsParam.setValue(new int[] {2}); // select band 2 only
+        GridCoverage2D readCoverage = reader.read(bandsParam);
+        RenderedImage image = readCoverage.getRenderedImage();
+        SampleModel sm = image.getSampleModel();
+        ColorModel cm = image.getColorModel();
+        ColorSpace colorSpace = cm.getColorSpace();
+        // Original image is 37*42 pixels, 3 bands
+        // Let's verify we only get one band image
+        Assert.assertEquals(1, sm.getNumBands());
+        Assert.assertEquals(1, cm.getNumComponents());
+        Assert.assertEquals(ColorSpace.TYPE_GRAY, colorSpace.getType());
+        ImageUtilities.disposeImage(image);
         reader.dispose();
     }
 

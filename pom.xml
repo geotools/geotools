@@ -477,7 +477,7 @@
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
     <hamcrest.version>3.0</hamcrest.version>
-    <imageio.ext.version>1.4.15</imageio.ext.version>
+    <imageio.ext.version>1.4.16</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson2.version>2.17.2</jackson2.version>
     <jackson2.databind.version>${jackson2.version}</jackson2.databind.version>

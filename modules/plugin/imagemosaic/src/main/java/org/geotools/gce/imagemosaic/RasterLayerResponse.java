@@ -282,6 +282,11 @@ public class RasterLayerResponse {
 
         private boolean heterogeneousCRS;
 
+        /**
+         * The set of granules already visited by this mosaic producer. only created when skipDuplicates is set to true
+         */
+        private Set<String> visitedGranules;
+
         /** Default {@link Constructor} */
         private MosaicProducer(List<SubmosaicProducer> collectors) {
             this(false, collectors);
@@ -301,6 +306,7 @@ public class RasterLayerResponse {
             this.granuleCollectors = collectors;
             this.mergeBehavior = request.getMergeBehavior();
             this.heterogeneousCRS = collectors.stream().anyMatch(c -> c.isReprojecting());
+            this.visitedGranules = request.isSkipDuplicates() ? new HashSet<>() : null;
         }
 
         /**
@@ -319,6 +325,7 @@ public class RasterLayerResponse {
             // create a granuleDescriptor loader
             final Geometry bb = JTS.toGeometry((BoundingBox) queryBBox);
             Geometry inclusionGeometry = granuleDescriptor.getFootprint();
+            String granuleUrl = granuleDescriptor.getGranuleUrl().toExternalForm();
             boolean intersects = false;
             if (inclusionGeometry != null) {
                 CoordinateReferenceSystem granuleCRS =
@@ -351,9 +358,19 @@ public class RasterLayerResponse {
 
                 // find the right filter for this granule
                 boolean found = false;
+                if (visitedGranules != null && visitedGranules.contains(granuleUrl)) {
+                    // we already have this granule, skip it
+                    if (LOGGER.isLoggable(Level.FINEST)) {
+                        LOGGER.finest("We already have this granule, skipping it: " + granuleDescriptor);
+                    }
+                    return;
+                }
                 for (SubmosaicProducer submosaicProducer : granuleCollectors) {
                     if (submosaicProducer.accept(granuleDescriptor)) {
                         granulesNumber++;
+                        if (visitedGranules != null) {
+                            visitedGranules.add(granuleUrl);
+                        }
                         found = true;
                         break;
                     }

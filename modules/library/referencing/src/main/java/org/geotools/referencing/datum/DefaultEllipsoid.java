@@ -73,7 +73,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * @since 2.2
      */
     public static final DefaultEllipsoid CLARKE_1866 =
-            createFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982, SI.METRE);
+            createFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982138982, SI.METRE);
 
     /**
      * A sphere with a radius of 6371000 {@linkplain SI#METER metres}. Spheres use a simplier algorithm for

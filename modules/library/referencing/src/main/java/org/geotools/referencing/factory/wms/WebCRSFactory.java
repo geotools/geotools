@@ -68,6 +68,11 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
         super(hints, NORMAL_PRIORITY);
     }
 
+    /** Constructs a factory for the {@code CRS} authority using the specified hints. */
+    public WebCRSFactory(final Hints hints, int priority) {
+        super(hints, priority);
+    }
+
     /**
      * Ensures that {@link #crsMap} is initialized. This method can't be invoked in the constructor because the
      * constructor is invoked while {@code FactoryFinder.scanForPlugins()} is still running. Because the {@link #add}
@@ -157,6 +162,16 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     /** Creates a coordinate reference system from the specified code. */
     @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
+        final int i = getIntegerCode(code);
+        ensureInitialized();
+        final CoordinateReferenceSystem crs = crsMap.get(i);
+        if (crs != null) {
+            return crs;
+        }
+        throw noSuchAuthorityCode(CoordinateReferenceSystem.class, code);
+    }
+
+    protected int getIntegerCode(String code) throws NoSuchAuthorityCodeException {
         String c = trimAuthority(code).toUpperCase();
         if (c.startsWith(PREFIX)) {
             c = c.substring(PREFIX.length());
@@ -170,11 +185,6 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
             e.initCause(exception);
             throw e;
         }
-        ensureInitialized();
-        final CoordinateReferenceSystem crs = crsMap.get(i);
-        if (crs != null) {
-            return crs;
-        }
-        throw noSuchAuthorityCode(CoordinateReferenceSystem.class, code);
+        return i;
     }
 }

@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -165,11 +166,15 @@ class RasterLayerRequest {
     /** An optional layout to be adopted */
     private ImageLayout layout = null;
 
+    private ImageLayout datasetLayout = null;
+
     private double[] approximateCoverageWGS84FullResolution;
 
     private double[] approximateWGS84RequestedResolution;
 
     private double[] requestedResolution;
+
+    private int[] bands;
 
     /** The associated ROI provider if any */
     private MultiLevelROI multiLevelRoi;
@@ -195,13 +200,18 @@ class RasterLayerRequest {
                 extractParameter(param, name);
             }
         }
-        setDefaultParameters();
+        setDefaultParameters(reader);
         setBaseParameters(reader);
     }
 
-    private void setDefaultParameters() {
+    private void setDefaultParameters(BaseGridCoverage2DReader reader) {
         // set the tile size
         if (layout == null) setTileSize(BaseGDALGridFormat.SUGGESTED_TILE_SIZE.createValue());
+        try {
+            datasetLayout = reader.getImageLayout();
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to extract ImageLayout from reader", e);
+        }
     }
 
     /**
@@ -293,6 +303,13 @@ class RasterLayerRequest {
         // //
         if (name.equals(BaseGDALGridFormat.SUGGESTED_TILE_SIZE.getName())) {
             setTileSize(param);
+            return;
+        }
+
+        // BANDS Selection parameter
+        if (name.equals(AbstractGridFormat.BANDS.getName())) {
+            // if the parameter is NULL no problem
+            bands = (int[]) param.getValue();
         }
     }
 
@@ -501,6 +518,12 @@ class RasterLayerRequest {
 
         if ((requestedRes[0] > fullRes[0]) || (requestedRes[1] > fullRes[1])) {
             setDecimationParameters(requestedRes, fullRes);
+        }
+
+        if (bands != null) {
+            imageReadParam.setBands(bands);
+            int[] destBands = IntStream.range(0, bands.length).toArray();
+            imageReadParam.setDestinationBands(destBands);
         }
     }
 
@@ -839,6 +862,10 @@ class RasterLayerRequest {
 
     public FootprintBehavior getFootprintBehavior() {
         return footprintBehavior;
+    }
+
+    public ImageLayout getDatasetLayout() {
+        return datasetLayout;
     }
 
     public void setReadType(ReadType readType) {

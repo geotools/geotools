@@ -110,7 +110,10 @@ import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.FileGroupProvider.FileGroup;
 import org.geotools.api.data.FileResourceInfo;
 import org.geotools.api.data.Query;
@@ -5666,5 +5669,67 @@ public class ImageMosaicReaderTest {
             if (coverage != null) coverage.dispose(true);
             reader.dispose();
         }
+    }
+
+    @Test
+    public void testSkipDuplicates() throws Exception {
+
+        final File workDir = new File(TestData.file(this, "."), "duplicates_test");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        FileUtils.copyFile(TestData.file(this, "gray/D220161A.tif"), new File(workDir, "granule.tif"));
+        final URL duplicatesUrl = TestData.url(this, "duplicates_test");
+
+        // Create the mosaic
+        final AbstractGridFormat format = TestUtils.getFormat(duplicatesUrl);
+        assertNotNull(format);
+        ImageMosaicReader imageMosaicReader = getReader(duplicatesUrl, format);
+        assertNotNull(imageMosaicReader);
+
+        // Close it.
+        imageMosaicReader.dispose();
+
+        // Edit the shapefile so that we duplicate the granule
+        final URL shapefileUrl = TestData.url(this, "duplicates_test/duplicates_test.shp");
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", shapefileUrl);
+        DataStore ds = DataStoreFinder.getDataStore(params);
+        String typeName = ds.getTypeNames()[0];
+
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        ds.getFeatureWriterAppend(typeName, Transaction.AUTO_COMMIT);
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(new Query(typeName), Transaction.AUTO_COMMIT)) {
+
+            SimpleFeature orig = reader.next();
+            SimpleFeature copy = writer.next();
+            copy.setAttributes(orig.getAttributes());
+            copy.getUserData().put("fid", "dup-" + orig.getID());
+            writer.write();
+        }
+
+        ds.dispose();
+        imageMosaicReader = getReader(duplicatesUrl, format);
+        ParameterValue<String> mergeBehaviorParam = ImageMosaicFormat.MERGE_BEHAVIOR.createValue();
+        mergeBehaviorParam.setValue("STACK");
+        GeneralParameterValue[] readParams = {mergeBehaviorParam};
+
+        // Default read with potential duplicates
+        GridCoverage2D coverage = imageMosaicReader.read(readParams);
+        RenderedImage image = coverage.getRenderedImage();
+        assertEquals(2, image.getSampleModel().getNumBands());
+        coverage.dispose(true);
+
+        // Read with skip duplicates
+        ParameterValue<Boolean> skipDuplicatesParam = ImageMosaicFormat.SKIP_DUPLICATES.createValue();
+        skipDuplicatesParam.setValue(true);
+        readParams = new GeneralParameterValue[] {skipDuplicatesParam, mergeBehaviorParam};
+        coverage = imageMosaicReader.read(readParams);
+
+        image = coverage.getRenderedImage();
+        assertEquals(1, image.getSampleModel().getNumBands());
+        coverage.dispose(true);
     }
 }

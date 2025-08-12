@@ -21,6 +21,7 @@ package org.geotools.tpk;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -125,6 +126,36 @@ public class TPKFile {
     }
 
     /**
+     * Constructor -- used for first open of a TPK file, parses the conf.xml file and builds the zoomLevelMap with the
+     * custom charset
+     *
+     * @param theFile -- the TPK file in question
+     * @param zoomLevelMap -- reference to an empty hashmap object that we will populate
+     * @param charset –- The charset to be used to decode the ZIP entry name and comment, UTF-8 is default
+     */
+    public TPKFile(File theFile, Map<Long, TPKZoomLevel> zoomLevelMap, Charset charset) {
+
+        // open the file and build the zipEntryMap
+        openTPK(theFile, charset);
+
+        // the zoom level map is "owned" by the caller and will be initialized by this
+        // constructor so it can be re-used over and over
+        this.zoomLevelMap = zoomLevelMap;
+
+        // find the "conf.xml" file
+        String xmlConf = zipEntryMap.keySet().stream()
+                .filter(s -> s.endsWith(CONFIGURATION_FILE))
+                .findFirst()
+                .orElse(null);
+
+        // extract metadata we need from the conf.xml file of the TPK
+        parseConfigurationFile(zipEntryMap.get(xmlConf));
+
+        // create a TPKZoomLevel object for each zoom level
+        loadZoomLevels();
+    }
+
+    /**
      * Constructor -- used for all subsequent opens of the TPK file (ie once the zoomLevelMap has been created)
      *
      * @param theFile -- the TPK file
@@ -134,6 +165,25 @@ public class TPKFile {
      */
     public TPKFile(File theFile, Map<Long, TPKZoomLevel> zoomLevelMap, Bounds bounds, String imageFormat) {
         openTPK(theFile);
+        this.imageFormat = imageFormat;
+        this.bounds = bounds;
+        this.zoomLevelMap = zoomLevelMap;
+        zoomLevelMap.values().forEach(zl -> zl.setTPKandEntryMap(theTPK, zipEntryMap));
+    }
+
+    /**
+     * Constructor -- used for all subsequent opens of the TPK file (ie once the zoomLevelMap has been created) with the
+     * custom charset
+     *
+     * @param theFile -- the TPK file
+     * @param zoomLevelMap -- previously constructed zoomLevelMap
+     * @param bounds -- bounds of the map
+     * @param imageFormat -- the image format being used
+     * @param charset –- The charset to be used to decode the ZIP entry name and comment, UTF-8 is default
+     */
+    public TPKFile(
+            File theFile, Map<Long, TPKZoomLevel> zoomLevelMap, Bounds bounds, String imageFormat, Charset charset) {
+        openTPK(theFile, charset);
         this.imageFormat = imageFormat;
         this.bounds = bounds;
         this.zoomLevelMap = zoomLevelMap;
@@ -303,6 +353,30 @@ public class TPKFile {
         // open the TPK file as a ZIP archive
         try {
             theTPK = new ZipFile(theFile);
+        } catch (IOException ex) {
+            throw new RuntimeException("Unable to open TPK file", ex);
+        }
+
+        // build a map of file path/name -> ZipEntry
+        Enumeration<? extends ZipEntry> zipEntries = theTPK.entries();
+        while (zipEntries.hasMoreElements()) {
+            ZipEntry entry = zipEntries.nextElement();
+            zipEntryMap.put(entry.getName(), entry);
+        }
+    }
+
+    /**
+     * Open the TPK file and map the ZIPEntries by their path/filename
+     *
+     * <p>Populates theTPK and zipEntryMap
+     *
+     * @param theFile -- TPK File
+     * @param charset –- The charset to be used to decode the ZIP entry name and comment, UTF-8 is default
+     */
+    private void openTPK(File theFile, Charset charset) {
+        // open the TPK file as a ZIP archive
+        try {
+            theTPK = new ZipFile(theFile, charset);
         } catch (IOException ex) {
             throw new RuntimeException("Unable to open TPK file", ex);
         }

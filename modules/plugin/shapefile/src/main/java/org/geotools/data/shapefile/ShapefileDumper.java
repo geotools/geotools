@@ -400,8 +400,10 @@ public class ShapefileDumper {
         try {
             sfds.createSchema(schema);
         } catch (NullPointerException e) {
-            LOGGER.warning("Error in shapefile schema. It is possible you don't have a geometry set in the output. \n"
-                    + "Please specify a <wfs:PropertyName>geom_column_name</wfs:PropertyName> in the request");
+            LOGGER.warning(
+                    """
+                    Error in shapefile schema. It is possible you don't have a geometry set in the output.\s
+                    Please specify a <wfs:PropertyName>geom_column_name</wfs:PropertyName> in the request""");
             throw new IOException(
                     "Error in shapefile schema. It is possible you don't have a geometry set in the output.");
         }

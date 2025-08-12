@@ -24,6 +24,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
+import java.io.Serial;
 import javax.media.jai.GeometricOpImage;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
@@ -45,6 +46,7 @@ import org.geotools.util.factory.Hints;
  * @author Daniele Romagnoli - GeoSolutions
  */
 public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
+    @Serial
     private static final long serialVersionUID = 6622489670499745306L;
 
     /** Constructor. */
@@ -72,8 +74,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
     public Object getProperty(String name, Object opNode) {
         validate(name, opNode);
 
-        if (opNode instanceof RenderedOp && name.equalsIgnoreCase("roi")) {
-            RenderedOp op = (RenderedOp) opNode;
+        if (opNode instanceof RenderedOp op && name.equalsIgnoreCase("roi")) {
 
             ParameterBlock pb = op.getParameterBlock();
 
@@ -96,7 +97,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             // Determine the effective source bounds.
             Rectangle srcBounds = null;
             PlanarImage dst = op.getRendering();
-            if (dst instanceof GeometricOpImage && ((GeometricOpImage) dst).getBorderExtender() == null) {
+            if (dst instanceof GeometricOpImage image && image.getBorderExtender() == null) {
                 srcBounds = new Rectangle(
                         src.getMinX() + interp.getLeftPadding(),
                         src.getMinY() + interp.getTopPadding(),

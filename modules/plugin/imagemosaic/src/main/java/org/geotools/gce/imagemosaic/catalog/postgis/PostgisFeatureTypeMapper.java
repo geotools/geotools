@@ -54,8 +54,7 @@ public class PostgisFeatureTypeMapper extends AbstractFeatureTypeMapper {
             for (Object key : keys) {
                 Object value = userData.get(key);
                 tb.userData(key, value);
-                if (key instanceof String) {
-                    String id = (String) key;
+                if (key instanceof String id) {
                     if (id.equalsIgnoreCase(JDBCDataStore.JDBC_NATIVE_SRID) && value != null) {
                         srID = (Integer) value;
                     }

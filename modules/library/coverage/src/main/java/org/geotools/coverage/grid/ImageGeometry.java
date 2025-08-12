@@ -18,6 +18,7 @@ package org.geotools.coverage.grid;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.util.Cloneable;
@@ -40,6 +41,7 @@ import org.geotools.util.Utilities;
  */
 public class ImageGeometry implements GridGeometry, Serializable, Cloneable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1985363181119389264L;
 
     /** The grid range. */

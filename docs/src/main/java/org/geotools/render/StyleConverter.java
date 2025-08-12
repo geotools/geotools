@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class StyleConverter extends JFrame {
 
     private static final String SLD_1_0 = "sld 1.0";
 
+    @Serial
     private static final long serialVersionUID = -3407373356333558440L;
 
     Style style;

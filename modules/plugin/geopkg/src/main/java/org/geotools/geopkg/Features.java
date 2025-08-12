@@ -33,8 +33,8 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 public class Features {
 
     public static SimpleFeatureReader simple(final FeatureReader r) {
-        if (r instanceof SimpleFeatureReader) {
-            return (SimpleFeatureReader) r;
+        if (r instanceof SimpleFeatureReader reader) {
+            return reader;
         }
         return new SimpleFeatureReader() {
             @Override
@@ -60,8 +60,8 @@ public class Features {
     }
 
     public static SimpleFeatureWriter simple(final FeatureWriter w) {
-        if (w instanceof SimpleFeatureWriter) {
-            return (SimpleFeatureWriter) w;
+        if (w instanceof SimpleFeatureWriter writer) {
+            return writer;
         }
 
         return new SimpleFeatureWriter() {

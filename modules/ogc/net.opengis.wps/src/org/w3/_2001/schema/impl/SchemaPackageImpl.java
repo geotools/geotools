@@ -859,7 +859,7 @@ public class SchemaPackageImpl extends EPackageImpl implements SchemaPackage {
 
 		// Obtain or create and register package
 		Object registeredSchemaPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-		SchemaPackageImpl theSchemaPackage = registeredSchemaPackage instanceof SchemaPackageImpl ? (SchemaPackageImpl)registeredSchemaPackage : new SchemaPackageImpl();
+		SchemaPackageImpl theSchemaPackage = registeredSchemaPackage instanceof SchemaPackageImpl spi ? spi : new SchemaPackageImpl();
 
 		isInited = true;
 

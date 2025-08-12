@@ -138,11 +138,13 @@ public final class CRSTest {
         // Same test than above, using a CRS created from WKT
         // --------------------------------------------------
 
-        String wkt = "GEOGCS[\"WGS 84\",\n"
-                + "  DATUM[\"WGS84\",\n"
-                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
-                + "  PRIMEM[\"Greenwich\", 0.0],\n"
-                + "  UNIT[\"degree\", 0.017453292519943295]]";
+        String wkt =
+                """
+                GEOGCS["WGS 84",
+                  DATUM["WGS84",
+                    SPHEROID["WGS 84", 6378137.0, 298.257223563]],
+                  PRIMEM["Greenwich", 0.0],
+                  UNIT["degree", 0.017453292519943295]]""";
         CoordinateReferenceSystem search = CRS.parseWKT(wkt);
         assertNotEquals("Required condition for next test.", CRS84, search);
         assertTrue("Required condition for next test.", CRS.equalsIgnoreMetadata(CRS84, search));

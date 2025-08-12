@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.datum;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import javax.measure.Unit;
@@ -42,6 +43,7 @@ import si.uom.NonSI;
  */
 public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements PrimeMeridian, PROJFormattable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 541978454643213305L;
     /** The Greenwich meridian, with angular measurements in decimal degrees. */
     public static final DefaultPrimeMeridian GREENWICH = new DefaultPrimeMeridian("Greenwich", 0, NonSI.DEGREE_ANGLE);

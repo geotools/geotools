@@ -25,6 +25,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -46,6 +47,7 @@ import org.geotools.referencing.NamedIdentifier;
 public class WorldVanDerGrintenI extends MapProjection {
 
     /** */
+    @Serial
     private static final long serialVersionUID = -4432651736803211463L;
 
     private static final double TOL = 1.e-10;
@@ -171,6 +173,7 @@ public class WorldVanDerGrintenI extends MapProjection {
 
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -4432651736803211463L;
 
         /** The parameters group. */

@@ -66,37 +66,41 @@ public class JTSTest extends JTSTestBase {
     private static final double EPS = 0.000001;
 
     /** A CRS for testing purpose. */
-    static final String UTM_ZONE_10N = "PROJCS[\"NAD_1983_UTM_Zone_10N\",\n"
-            + "  GEOGCS[\"GCS_North_American_1983\",\n"
-            + "    DATUM[\"D_North_American_1983\",\n"
-            + "      TOWGS84[0,0,0,0,0,0,0],\n"
-            + "      SPHEROID[\"GRS_1980\",6378137,298.257222101]],\n"
-            + "    PRIMEM[\"Greenwich\",0],\n"
-            + "    UNIT[\"Degree\",0.017453292519943295]],\n"
-            + "  PROJECTION[\"Transverse_Mercator\"],\n"
-            + "    PARAMETER[\"False_Easting\",500000],\n"
-            + "    PARAMETER[\"False_Northing\",0],\n"
-            + "    PARAMETER[\"Central_Meridian\",-123],\n"
-            + "    PARAMETER[\"Scale_Factor\",0.9996],\n"
-            + "    PARAMETER[\"Latitude_Of_Origin\",0],\n"
-            + "  UNIT[\"Meter\",1]]";
+    static final String UTM_ZONE_10N =
+            """
+            PROJCS["NAD_1983_UTM_Zone_10N",
+              GEOGCS["GCS_North_American_1983",
+                DATUM["D_North_American_1983",
+                  TOWGS84[0,0,0,0,0,0,0],
+                  SPHEROID["GRS_1980",6378137,298.257222101]],
+                PRIMEM["Greenwich",0],
+                UNIT["Degree",0.017453292519943295]],
+              PROJECTION["Transverse_Mercator"],
+                PARAMETER["False_Easting",500000],
+                PARAMETER["False_Northing",0],
+                PARAMETER["Central_Meridian",-123],
+                PARAMETER["Scale_Factor",0.9996],
+                PARAMETER["Latitude_Of_Origin",0],
+              UNIT["Meter",1]]""";
     /** A CRS for testing purpose. */
-    static final String NAD83_BC = "PROJCS[\"NAD83 / BC Albers\",\n"
-            + "  GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",\n"
-            + "    SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],\n"
-            + "    TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],\n"
-            + "    PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],\n"
-            + "    UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],\n"
-            + "    AUTHORITY[\"EPSG\",\"4269\"]],\n"
-            + "  PROJECTION[\"Albers_Conic_Equal_Area\"],\n"
-            + "  PARAMETER[\"standard_parallel_1\",50],\n"
-            + "  PARAMETER[\"standard_parallel_2\",58.5],\n"
-            + "  PARAMETER[\"latitude_of_center\",45],\n"
-            + "  PARAMETER[\"longitude_of_center\",-126],\n"
-            + "  PARAMETER[\"false_easting\",1000000],\n"
-            + "  PARAMETER[\"false_northing\",0],\n"
-            + "  UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],\n"
-            + "  AUTHORITY[\"EPSG\",\"3005\"]]";
+    static final String NAD83_BC =
+            """
+            PROJCS["NAD83 / BC Albers",
+              GEOGCS["NAD83",DATUM["North_American_Datum_1983",
+                SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],
+                TOWGS84[0,0,0],AUTHORITY["EPSG","6269"]],
+                PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],
+                UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],
+                AUTHORITY["EPSG","4269"]],
+              PROJECTION["Albers_Conic_Equal_Area"],
+              PARAMETER["standard_parallel_1",50],
+              PARAMETER["standard_parallel_2",58.5],
+              PARAMETER["latitude_of_center",45],
+              PARAMETER["longitude_of_center",-126],
+              PARAMETER["false_easting",1000000],
+              PARAMETER["false_northing",0],
+              UNIT["metre",1,AUTHORITY["EPSG","9001"]],
+              AUTHORITY["EPSG","3005"]]""";
 
     @Test
     public void testJTSFactory() {
@@ -366,8 +370,8 @@ public class JTSTest extends JTSTestBase {
         Envelope envelope = new Envelope(130.875825803896, 130.898939990319, -16.4491956225999, -16.4338185791628);
 
         Envelope worldBounds2 = JTS.toGeographic(envelope, gda94);
-        if (worldBounds2 instanceof BoundingBox) {
-            assertEquals(DefaultGeographicCRS.WGS84, ((BoundingBox) worldBounds2).getCoordinateReferenceSystem());
+        if (worldBounds2 instanceof BoundingBox box) {
+            assertEquals(DefaultGeographicCRS.WGS84, box.getCoordinateReferenceSystem());
         }
     }
 

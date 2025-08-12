@@ -97,15 +97,13 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
 
     /** */
     private Geometry invertGeometryCoordinates(Geometry geom) {
-        if (geom instanceof Point) {
-            Point point = (Point) geom;
+        if (geom instanceof Point point) {
             Coordinate inverted = invertCoordinate(point.getCoordinate());
             return geometryFactory.createPoint(inverted);
         } else if (geom instanceof LineString) {
             Coordinate[] inverted = invertCoordinates(geom.getCoordinates());
             return geometryFactory.createLineString(inverted);
-        } else if (geom instanceof Polygon) {
-            Polygon polygon = (Polygon) geom;
+        } else if (geom instanceof Polygon polygon) {
             Coordinate[] shellCoordinates = polygon.getExteriorRing().getCoordinates();
             LinearRing invertedShell = geometryFactory.createLinearRing(invertCoordinates(shellCoordinates));
             LinearRing[] invertedHoles = new LinearRing[polygon.getNumInteriorRing()];
@@ -117,22 +115,19 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
         } else if (geom instanceof MultiPoint) {
             return geometryFactory.createMultiPoint(
                     new CoordinateArraySequence(invertCoordinates(geom.getCoordinates())));
-        } else if (geom instanceof MultiLineString) {
-            MultiLineString multiLineString = (MultiLineString) geom;
+        } else if (geom instanceof MultiLineString multiLineString) {
             LineString[] inverted = new LineString[multiLineString.getNumGeometries()];
             for (int count = 0; count < multiLineString.getNumGeometries(); count++) {
                 inverted[count] = (LineString) invertGeometryCoordinates(multiLineString.getGeometryN(count));
             }
             return geometryFactory.createMultiLineString(inverted);
-        } else if (geom instanceof MultiPolygon) {
-            MultiPolygon multiPolygon = (MultiPolygon) geom;
+        } else if (geom instanceof MultiPolygon multiPolygon) {
             Polygon[] inverted = new Polygon[multiPolygon.getNumGeometries()];
             for (int count = 0; count < multiPolygon.getNumGeometries(); count++) {
                 inverted[count] = (Polygon) invertGeometryCoordinates(multiPolygon.getGeometryN(count));
             }
             return geometryFactory.createMultiPolygon(inverted);
-        } else if (geom instanceof GeometryCollection) {
-            GeometryCollection collection = (GeometryCollection) geom;
+        } else if (geom instanceof GeometryCollection collection) {
             Geometry[] inverted = new Geometry[collection.getNumGeometries()];
             for (int count = 0; count < collection.getNumGeometries(); count++) {
                 inverted[count] = invertGeometryCoordinates(collection.getGeometryN(count));

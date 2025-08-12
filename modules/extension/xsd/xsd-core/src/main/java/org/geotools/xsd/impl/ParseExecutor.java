@@ -117,8 +117,8 @@ public class ParseExecutor implements Visitor {
                             && (type instanceof XSDSimpleTypeDefinition
                                     || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
-                    } else if (value != null && value instanceof String) {
-                        if ("".equals(((String) value).trim())) {
+                    } else if (value != null && value instanceof String string) {
+                        if ("".equals(string.trim())) {
                             result = null;
                         } else {
                             result = value;
@@ -129,8 +129,8 @@ public class ParseExecutor implements Visitor {
                 }
             }
 
-            if (binding instanceof SimpleBinding) {
-                result = ((SimpleBinding) binding).parse(instance, result);
+            if (binding instanceof SimpleBinding simpleBinding) {
+                result = simpleBinding.parse(instance, result);
             } else {
                 result = ((ComplexBinding) binding).parse((ElementInstance) instance, node, result);
             }
@@ -281,8 +281,7 @@ public class ParseExecutor implements Visitor {
                 // walk through the facets and preparse as necessary
                 for (org.eclipse.xsd.XSDConstrainingFacet facet : type.getFacets()) {
 
-                    if (facet instanceof XSDWhiteSpaceFacet && !parser.isCDATA()) {
-                        XSDWhiteSpaceFacet whitespace = (XSDWhiteSpaceFacet) facet;
+                    if (facet instanceof XSDWhiteSpaceFacet whitespace && !parser.isCDATA()) {
 
                         if (whitespace.getValue() == XSDWhiteSpace.REPLACE_LITERAL) {
                             text = Whitespace.REPLACE.preparse(text);
@@ -330,8 +329,7 @@ public class ParseExecutor implements Visitor {
         String value = instance.getText();
 
         while (type != null) {
-            if (type instanceof XSDSimpleTypeDefinition) {
-                XSDSimpleTypeDefinition simpleType = (XSDSimpleTypeDefinition) type;
+            if (type instanceof XSDSimpleTypeDefinition simpleType) {
                 List facets = simpleType.getFacets();
 
                 for (Object o : facets) {

@@ -18,6 +18,7 @@
 package org.geotools.swing.data;
 
 import java.io.File;
+import java.io.Serial;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.geotools.util.URLs;
  * extensions they support; and any additional parameters that may be interesting etc.
  */
 public class JDataStoreWizard extends JWizard {
+    @Serial
     private static final long serialVersionUID = -3788708439279424698L;
 
     DataStoreFactorySpi format;

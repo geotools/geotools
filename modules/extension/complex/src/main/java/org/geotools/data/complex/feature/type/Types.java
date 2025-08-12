@@ -89,8 +89,8 @@ public class Types extends org.geotools.feature.type.Types {
         if (type instanceof GeometryType) {
             return true;
         }
-        if (type instanceof ComplexTypeProxy) {
-            if (((ComplexTypeProxy) type).getSubject() instanceof GeometryType) {
+        if (type instanceof ComplexTypeProxy proxy) {
+            if (proxy.getSubject() instanceof GeometryType) {
                 return true;
             }
         }
@@ -123,8 +123,7 @@ public class Types extends org.geotools.feature.type.Types {
             Map<Object, Object> userData = type.getUserData();
             if (userData != null && userData.get(XSDTypeDefinition.class) != null) {
                 XSDTypeDefinition typeDef = (XSDTypeDefinition) userData.get(XSDTypeDefinition.class);
-                if (typeDef instanceof XSDComplexTypeDefinition) {
-                    XSDComplexTypeDefinition complexTypeDef = (XSDComplexTypeDefinition) typeDef;
+                if (typeDef instanceof XSDComplexTypeDefinition complexTypeDef) {
                     XSDContentTypeCategory category = complexTypeDef.getContentTypeCategory();
                     XSDDerivationMethod derivMethod = complexTypeDef.getDerivationMethod();
 

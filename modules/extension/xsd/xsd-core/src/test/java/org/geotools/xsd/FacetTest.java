@@ -89,6 +89,11 @@ public class FacetTest {
         String s = (String) parser.parse();
 
         Assert.assertEquals(
-                " this is a \n" + " normal string \n" + " with some whitespace and \n" + " some new lines", s);
+                """
+                 this is a\s
+                 normal string\s
+                 with some whitespace and\s
+                 some new lines""",
+                s);
     }
 }

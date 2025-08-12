@@ -249,18 +249,15 @@ public class RecyclingTileFactory extends java.util.Observable
         long numBanks = 0;
         long size = 0;
 
-        if (sampleModel instanceof ComponentSampleModel) {
-            ComponentSampleModel csm = (ComponentSampleModel) sampleModel;
+        if (sampleModel instanceof ComponentSampleModel csm) {
             numBanks = getNumBanksCSM(csm);
             size = getBufferSizeCSM(csm);
-        } else if (sampleModel instanceof MultiPixelPackedSampleModel) {
-            MultiPixelPackedSampleModel mppsm = (MultiPixelPackedSampleModel) sampleModel;
+        } else if (sampleModel instanceof MultiPixelPackedSampleModel mppsm) {
             numBanks = 1;
             int dataTypeSize = DataBuffer.getDataTypeSize(type);
             size = mppsm.getScanlineStride() * mppsm.getHeight()
                     + (mppsm.getDataBitOffset() + dataTypeSize - 1) / dataTypeSize;
-        } else if (sampleModel instanceof SinglePixelPackedSampleModel) {
-            SinglePixelPackedSampleModel sppsm = (SinglePixelPackedSampleModel) sampleModel;
+        } else if (sampleModel instanceof SinglePixelPackedSampleModel sppsm) {
             numBanks = 1;
             size = sppsm.getScanlineStride() * (sppsm.getHeight() - 1) + sppsm.getWidth();
         }
@@ -419,8 +416,7 @@ public class RecyclingTileFactory extends java.util.Observable
     @Override
     public void update(java.util.Observable o, Object arg) {
         if (o.equals(tileCache)) {
-            if (arg instanceof CachedTile) {
-                CachedTile tile = (CachedTile) arg;
+            if (arg instanceof CachedTile tile) {
                 switch (tile.getAction()) {
                     case 1:
                     case 2: // REMOVE,REMOVE_FROM_FLUSH

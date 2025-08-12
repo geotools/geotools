@@ -128,10 +128,10 @@ public class XmlXpathUtilites {
             ls = new ArrayList<>(values.size());
             for (Object value : values) {
                 String unwrappedValue = "";
-                if (value instanceof org.jdom2.Attribute) {
-                    unwrappedValue = ((org.jdom2.Attribute) value).getValue();
-                } else if (value instanceof org.jdom2.Element) {
-                    unwrappedValue = ((org.jdom2.Element) value).getValue();
+                if (value instanceof org.jdom2.Attribute attribute) {
+                    unwrappedValue = attribute.getValue();
+                } else if (value instanceof org.jdom2.Element element) {
+                    unwrappedValue = element.getValue();
                 }
                 ls.add(unwrappedValue);
             }

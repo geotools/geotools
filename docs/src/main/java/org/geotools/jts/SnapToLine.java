@@ -162,7 +162,11 @@ public class SnapToLine {
         }
 
         System.out.printf(
-                "Processed %d points (%.2f points per second). \n" + "Snapped %d points.\n\n",
+                """
+                Processed %d points (%.2f points per second).\s
+                Snapped %d points.
+
+                """,
                 pointsProcessed, 1000.0 * pointsProcessed / elapsedTime, pointsSnapped);
     }
 }

@@ -46,8 +46,8 @@ public class Data extends Selector {
 
         org.geotools.api.filter.And and = FF.and(filters);
         SimplifyingFilterVisitor visitor;
-        if (ctx instanceof SimplifyingFilterVisitor) {
-            visitor = (SimplifyingFilterVisitor) ctx;
+        if (ctx instanceof SimplifyingFilterVisitor filterVisitor) {
+            visitor = filterVisitor;
         } else {
             visitor = new UnboundSimplifyingFilterVisitor();
             visitor.setFeatureType(featureType);

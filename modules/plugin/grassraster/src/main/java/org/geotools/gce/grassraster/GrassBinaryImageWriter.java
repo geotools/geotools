@@ -61,8 +61,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
     @Override
     public void setOutput(Object output) {
 
-        if (output instanceof File) {
-            final File outFile = (File) output;
+        if (output instanceof File outFile) {
             JGrassMapEnvironment tmp = new JGrassMapEnvironment(outFile);
             rasterWriter = new GrassBinaryRasterWriteHandler(tmp.getMAPSET(), tmp.getMapName(), monitor);
             try {

@@ -145,7 +145,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
 
     @Override
     public boolean equals(Object other) {
-        return other != null && other instanceof Whitespace && ((Whitespace) other).ordinal == ordinal;
+        return other != null && other instanceof Whitespace w && w.ordinal == ordinal;
     }
 
     @Override

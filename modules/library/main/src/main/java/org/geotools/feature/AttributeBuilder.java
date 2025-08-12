@@ -125,26 +125,22 @@ public class AttributeBuilder {
         descriptor = attribute.getDescriptor();
         type = attribute.getType();
 
-        if (attribute instanceof ComplexAttribute) {
-            ComplexAttribute complex = (ComplexAttribute) attribute;
+        if (attribute instanceof ComplexAttribute complex) {
             for (Property property : toPropertyCollection(complex.getValue())) {
-                if (property instanceof Attribute) {
-                    Attribute att = (Attribute) property;
+                if (property instanceof Attribute att) {
                     add(
                             att.getIdentifier() == null
                                     ? null
                                     : att.getIdentifier().toString(),
                             att.getValue(),
                             att.getName());
-                } else if (property instanceof Association) {
-                    Association assoc = (Association) property;
+                } else if (property instanceof Association assoc) {
                     associate(assoc.getValue(), assoc.getName());
                 }
             }
         }
 
-        if (attribute instanceof Feature) {
-            Feature feature = (Feature) attribute;
+        if (attribute instanceof Feature feature) {
 
             if (feature.getDefaultGeometryProperty() != null) {
                 if (crs == null) {
@@ -202,10 +198,10 @@ public class AttributeBuilder {
 
     /** @return The coordinate reference system of the feature, or null if not set. */
     public CoordinateReferenceSystem getCRS(Object geom) {
-        if (geom != null && geom instanceof Geometry) {
+        if (geom != null && geom instanceof Geometry geometry) {
             // the CRS in the geometry itself is preferred
             // to support multiple geometries/CRS
-            CoordinateReferenceSystem featureCrs = JTS.getCRS((Geometry) geom);
+            CoordinateReferenceSystem featureCrs = JTS.getCRS(geometry);
             if (featureCrs != null) {
                 return featureCrs;
             }
@@ -412,12 +408,12 @@ public class AttributeBuilder {
         // (Collection) value, descriptor, id) : attributeFactory.createFeatureCollection(
         // (Collection) value, (FeatureCollectionType) type, id);
         // } else
-        if (type instanceof FeatureType) {
+        if (type instanceof FeatureType featureType) {
             return descriptor != null
                     ? attributeFactory.createFeature(toPropertyCollection(value), descriptor, id)
-                    : attributeFactory.createFeature(toPropertyCollection(value), (FeatureType) type, id);
-        } else if (type instanceof ComplexType) {
-            return createComplexAttribute(toPropertyCollection(value), (ComplexType) type, descriptor, id);
+                    : attributeFactory.createFeature(toPropertyCollection(value), featureType, id);
+        } else if (type instanceof ComplexType complexType) {
+            return createComplexAttribute(toPropertyCollection(value), complexType, descriptor, id);
         } else if (type instanceof GeometryType) {
             return attributeFactory.createGeometryAttribute(value, (GeometryDescriptor) descriptor, id, getCRS(value));
         } else {
@@ -467,14 +463,13 @@ public class AttributeBuilder {
         // }
 
         // if feature, set crs and default geometry
-        if (built instanceof Feature) {
-            Feature feature = (Feature) built;
+        if (built instanceof Feature feature) {
             // FIXME feature.setCRS(getCRS());
             if (defaultGeometry != null) {
                 for (Property p : feature.getProperties()) {
-                    if (p instanceof GeometryAttribute) {
+                    if (p instanceof GeometryAttribute attribute) {
                         if (defaultGeometry.equals(p.getValue())) {
-                            feature.setDefaultGeometryProperty((GeometryAttribute) p);
+                            feature.setDefaultGeometryProperty(attribute);
                         }
                     }
                 }

@@ -82,8 +82,8 @@ public class DataAccessRegistry implements Repository {
     public synchronized FeatureSource<FeatureType, Feature> featureSource(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
             if (dataAccess.getNames().contains(name)) {
-                if (dataAccess instanceof AppSchemaDataAccess) {
-                    return ((AppSchemaDataAccess) dataAccess).getFeatureSourceByName(name);
+                if (dataAccess instanceof AppSchemaDataAccess access) {
+                    return access.getFeatureSourceByName(name);
                 } else {
                     return dataAccess.getFeatureSource(name);
                 }
@@ -131,8 +131,7 @@ public class DataAccessRegistry implements Repository {
     public synchronized void unregisterAccess(DataAccess<FeatureType, Feature> dataAccess) {
         registry.remove(dataAccess);
 
-        if (dataAccess instanceof AppSchemaDataAccess) {
-            AppSchemaDataAccess asda = (AppSchemaDataAccess) dataAccess;
+        if (dataAccess instanceof AppSchemaDataAccess asda) {
             // NOTE: this code assumes hidden data accesses are never removed directly by the user,
             // only by the automatic disposal algorithm, so no need to run it again
             if (!asda.hidden && asda.url != null) {
@@ -152,8 +151,7 @@ public class DataAccessRegistry implements Repository {
     private void disposeHiddenDataAccessInstances(URL url) throws IOException {
         List<DataAccess<FeatureType, Feature>> copyRegistry = new ArrayList<>(registry);
         for (DataAccess<FeatureType, Feature> da : copyRegistry) {
-            if (da instanceof AppSchemaDataAccess) {
-                AppSchemaDataAccess asda = (AppSchemaDataAccess) da;
+            if (da instanceof AppSchemaDataAccess asda) {
                 if (asda.hidden && asda.parentUrl != null && asda.parentUrl.equals(url)) {
                     asda.dispose();
                 }
@@ -197,9 +195,7 @@ public class DataAccessRegistry implements Repository {
      */
     public synchronized boolean hasAppSchemaAccessName(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess
-                    && (((AppSchemaDataAccess) dataAccess).hasName(name)
-                            || ((AppSchemaDataAccess) dataAccess).hasElement(name))) {
+            if (dataAccess instanceof AppSchemaDataAccess access && (access.hasName(name) || access.hasElement(name))) {
                 return true;
             }
         }
@@ -214,9 +210,9 @@ public class DataAccessRegistry implements Repository {
      */
     public synchronized FeatureTypeMapping mappingByName(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess) {
-                if (((AppSchemaDataAccess) dataAccess).hasName(name)) {
-                    return ((AppSchemaDataAccess) dataAccess).getMappingByName(name);
+            if (dataAccess instanceof AppSchemaDataAccess access) {
+                if (access.hasName(name)) {
+                    return access.getMappingByName(name);
                 }
             }
         }
@@ -227,9 +223,9 @@ public class DataAccessRegistry implements Repository {
 
     public synchronized FeatureTypeMapping mappingByElement(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess) {
-                if (((AppSchemaDataAccess) dataAccess).hasElement(name)) {
-                    return ((AppSchemaDataAccess) dataAccess).getMappingByNameOrElement(name);
+            if (dataAccess instanceof AppSchemaDataAccess access) {
+                if (access.hasElement(name)) {
+                    return access.getMappingByNameOrElement(name);
                 }
             }
         }
@@ -244,9 +240,8 @@ public class DataAccessRegistry implements Repository {
      */
     public synchronized boolean hasAppSchemaTargetElement(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess
-                    && Arrays.asList(((AppSchemaDataAccess) dataAccess).getTypeNames())
-                            .contains(name)) {
+            if (dataAccess instanceof AppSchemaDataAccess access
+                    && Arrays.asList(access.getTypeNames()).contains(name)) {
                 return true;
             }
         }
@@ -352,8 +347,8 @@ public class DataAccessRegistry implements Repository {
             if (Thread.currentThread().isInterrupted()) {
                 return null;
             }
-            if (dataAccess instanceof AppSchemaDataAccess) {
-                Feature feature = ((AppSchemaDataAccess) dataAccess).findFeature(id, hints);
+            if (dataAccess instanceof AppSchemaDataAccess access) {
+                Feature feature = access.findFeature(id, hints);
                 if (feature != null) {
                     return feature;
                 }

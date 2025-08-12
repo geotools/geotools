@@ -116,9 +116,8 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         boolean clippedOut = false;
         for (AttributeDescriptor ad : f.getFeatureType().getAttributeDescriptors()) {
             Object attribute = f.getAttribute(ad.getName());
-            if (ad instanceof GeometryDescriptor) {
-                attribute =
-                        clipGeometry((Geometry) attribute, ((GeometryDescriptor) ad).getCoordinateReferenceSystem());
+            if (ad instanceof GeometryDescriptor descriptor) {
+                attribute = clipGeometry((Geometry) attribute, descriptor.getCoordinateReferenceSystem());
                 if (attribute == null && f.getFeatureType().getGeometryDescriptor() == ad) {
                     // the feature has been clipped out
                     fb.reset();
@@ -330,9 +329,8 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         }
 
         public double updateDistance(double x, double y, CoordinateReferenceSystem crs) {
-            if (crs instanceof DefaultGeographicCRS) {
-                double d = ((DefaultGeographicCRS) crs)
-                        .distance(new double[] {c.x, c.y}, new double[] {x, y})
+            if (crs instanceof DefaultGeographicCRS rS) {
+                double d = rS.distance(new double[] {c.x, c.y}, new double[] {x, y})
                         .doubleValue();
                 this.squareDistance = d * d;
             } else {
@@ -362,16 +360,15 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         public LinearElevationInterpolator(Geometry original, CoordinateReferenceSystem crs) {
             originalLines = new ArrayList<>();
             original.apply((GeometryComponentFilter) geom -> {
-                if (geom instanceof LineString) {
-                    originalLines.add((LineString) geom);
+                if (geom instanceof LineString string) {
+                    originalLines.add(string);
                 }
             });
         }
 
         @Override
         public void filter(Geometry geom) {
-            if (geom instanceof LineString) {
-                LineString ls = (LineString) geom;
+            if (geom instanceof LineString ls) {
 
                 // look for the original line containing this one
                 LineString original = getOriginator(ls);

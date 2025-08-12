@@ -79,17 +79,14 @@ public final class MongoComplexUtilities {
         // try before to resolve jsonpath against the feature. If it is SimpleFeature
         // and we are on the root appSchema object there is no need to retrieve attributes
         // from the DBObject
-        if (feature instanceof SimpleFeature) {
-            SimpleFeature sf = (SimpleFeature) feature;
+        if (feature instanceof SimpleFeature sf) {
             Object value = sf.getAttribute(jsonPath);
             if (value != null) return value;
         }
 
         Feature extracted = extractFeature(feature, jsonPath);
 
-        if (extracted instanceof MongoFeature) {
-            // no a nested element mongo feature
-            MongoFeature mongoFeature = (MongoFeature) extracted;
+        if (extracted instanceof MongoFeature mongoFeature) {
 
             // if the feature is a MongoFeature then the geometry attribute
             // needs no reprojection
@@ -98,9 +95,7 @@ public final class MongoComplexUtilities {
 
             return getValue(mongoFeature.getMongoObject(), jsonPath, transformer);
         }
-        if (extracted instanceof MongoCollectionFeature) {
-            // a mongo feature in the context of a nested element
-            MongoCollectionFeature collectionFeature = (MongoCollectionFeature) extracted;
+        if (extracted instanceof MongoCollectionFeature collectionFeature) {
             MongoFeature mongoFeature = collectionFeature.getMongoFeature();
             Supplier<GeometryCoordinateSequenceTransformer> transformer = getTransformer(feature, mongoFeature);
             return getValue(
@@ -172,8 +167,8 @@ public final class MongoComplexUtilities {
 
     /** Helper method that creates an exception for when the provided object is not of the correct type. */
     static RuntimeException invalidFeature(Object feature, String jsonPath) {
-        return new RuntimeException(String.format(
-                "No possible to obtain a mongo object from '%s' to extract '%s'.", feature.getClass(), jsonPath));
+        return new RuntimeException("No possible to obtain a mongo object from '%s' to extract '%s'."
+                .formatted(feature.getClass(), jsonPath));
     }
 
     /**
@@ -276,14 +271,14 @@ public final class MongoComplexUtilities {
 
         private void next() {
             // let's walk to the next path part using the current object
-            if (currentObject instanceof List) {
+            if (currentObject instanceof List list) {
                 // the current object is a list, we need to select the current index
-                currentObject = next((List) currentObject);
-            } else if (currentObject instanceof DBObject) {
-                currentObject = next((DBObject) currentObject);
+                currentObject = next(list);
+            } else if (currentObject instanceof DBObject object) {
+                currentObject = next(object);
             } else {
-                throw new RuntimeException(String.format(
-                        "Trying to get data from a non MongoDB object, current json path is '%s'.", currentJsonPath));
+                throw new RuntimeException("Trying to get data from a non MongoDB object, current json path is '%s'."
+                        .formatted(currentJsonPath));
             }
         }
 
@@ -306,7 +301,7 @@ public final class MongoComplexUtilities {
             }
             if (rawCollectionIndex == null) {
                 throw new RuntimeException(
-                        String.format("There is no index available for collection '%s'.", currentJsonPath));
+                        "There is no index available for collection '%s'.".formatted(currentJsonPath));
             }
             // just return the list element that matches the current index
             return basicDBList.get(rawCollectionIndex);
@@ -317,9 +312,7 @@ public final class MongoComplexUtilities {
     public static Object getValues(Object object, String jsonPath) {
         // let's make sure we have a feature
         Feature feature = extractFeature(object, jsonPath);
-        if (feature instanceof MongoFeature) {
-            // no a nested element mongo feature
-            MongoFeature mongoFeature = (MongoFeature) feature;
+        if (feature instanceof MongoFeature mongoFeature) {
             return getValues(mongoFeature.getMongoObject(), jsonPath);
         }
         if (feature instanceof MongoCollectionFeature) {
@@ -368,16 +361,16 @@ public final class MongoComplexUtilities {
         // check if we reach the end of the json path
         boolean finalPath = index == jsonPathParts.length - 1;
         index++;
-        if (object instanceof List) {
+        if (object instanceof List list) {
             if (finalPath) {
                 // we reached the end of the json path and we have a list, so let's add all the
                 // elements of the list
-                for (Object value : (List) object) {
+                for (Object value : list) {
                     values.add(convertGeometry(value, transformer));
                 }
             } else {
                 // well we have a list so we need to interact over each element of the list
-                for (Object element : (List) object) {
+                for (Object element : list) {
                     getValuesHelper((DBObject) element, jsonPathParts, values, index, transformer);
                 }
             }
@@ -429,17 +422,15 @@ public final class MongoComplexUtilities {
         if (object == null) {
             return;
         }
-        if (object instanceof DBObject) {
+        if (object instanceof DBObject dbObject) {
             LOG.log(Level.INFO, "Generating mappings from object: {0}", object);
-            DBObject dbObject = (DBObject) object;
             for (String key : dbObject.keySet()) {
                 Object value = dbObject.get(key);
                 if (value == null) {
                     continue;
                 }
                 String path = concatPath(parentPath, key);
-                if (value instanceof List) {
-                    List list = (List) value;
+                if (value instanceof List list) {
                     if (!list.isEmpty()) {
                         for (Object eo : list) {
                             findMappingsHelper(eo, path, mappings);

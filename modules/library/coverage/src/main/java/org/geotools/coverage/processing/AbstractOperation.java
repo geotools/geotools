@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.processing.Operation;
@@ -40,6 +41,7 @@ import org.geotools.util.factory.Hints;
  */
 public abstract class AbstractOperation implements Operation, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1441856042779942954L;
     /** The parameters descriptor. */
     protected final ParameterDescriptorGroup descriptor;
@@ -109,12 +111,12 @@ public abstract class AbstractOperation implements Operation, Serializable {
     private static int getNumSources(final ParameterDescriptorGroup descriptor) {
         int count = 0;
         for (final GeneralParameterDescriptor candidate : descriptor.descriptors()) {
-            if (candidate instanceof ParameterDescriptorGroup) {
-                count += getNumSources((ParameterDescriptorGroup) candidate);
+            if (candidate instanceof ParameterDescriptorGroup group) {
+                count += getNumSources(group);
                 continue;
             }
-            if (candidate instanceof ParameterDescriptor) {
-                final Class type = ((ParameterDescriptor) candidate).getValueClass();
+            if (candidate instanceof ParameterDescriptor parameterDescriptor) {
+                final Class type = parameterDescriptor.getValueClass();
                 if (Coverage.class.isAssignableFrom(type)) {
                     count++;
                 }

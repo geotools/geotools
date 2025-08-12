@@ -172,7 +172,7 @@ public class DefaultGranuleAccessProvider implements GranuleAccessProvider, Gran
             try {
                 final Class<?> clazz = Class.forName(spiClass);
                 Object spiInstance = clazz.getDeclaredConstructor().newInstance();
-                if (spiInstance instanceof ImageReaderSpi) spi = (ImageReaderSpi) spiInstance;
+                if (spiInstance instanceof ImageReaderSpi readerSpi) spi = readerSpi;
                 else spi = null;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
@@ -188,7 +188,7 @@ public class DefaultGranuleAccessProvider implements GranuleAccessProvider, Gran
             try {
                 final Class<?> clazz = Class.forName(spiClass);
                 Object spiInstance = clazz.getDeclaredConstructor().newInstance();
-                if (spiInstance instanceof ImageInputStreamSpi) spi = (ImageInputStreamSpi) spiInstance;
+                if (spiInstance instanceof ImageInputStreamSpi streamSpi) spi = streamSpi;
                 else spi = null;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
@@ -204,7 +204,7 @@ public class DefaultGranuleAccessProvider implements GranuleAccessProvider, Gran
             try {
                 final Class<?> clazz = Class.forName(formatClass);
                 Object formatInstance = clazz.getDeclaredConstructor().newInstance();
-                if (formatInstance instanceof AbstractGridFormat) format = (AbstractGridFormat) formatInstance;
+                if (formatInstance instanceof AbstractGridFormat gridFormat) format = gridFormat;
                 else format = null;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);

@@ -56,13 +56,9 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
         DataStore dataStore = state.getEntry().getDataStore();
         File file;
         URL url;
-        if (dataStore instanceof FlatGeobufDirectoryDataStore) {
-            file = ((FlatGeobufDirectoryDataStore) dataStore)
-                    .getDataStore(featureType.getTypeName())
-                    .getFile();
-            url = ((FlatGeobufDirectoryDataStore) dataStore)
-                    .getDataStore(featureType.getTypeName())
-                    .getURL();
+        if (dataStore instanceof FlatGeobufDirectoryDataStore store) {
+            file = store.getDataStore(featureType.getTypeName()).getFile();
+            url = store.getDataStore(featureType.getTypeName()).getURL();
         } else {
             file = ((FlatGeobufDataStore) dataStore).getFile();
             url = ((FlatGeobufDataStore) dataStore).getURL();
@@ -90,7 +86,7 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
         Integer startIndex = q.getStartIndex();
         if (q != null && filter != null) {
             bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
-            if (filter instanceof Id) id = (Id) filter;
+            if (filter instanceof Id id1) id = id1;
         }
         if (bbox == null
                 || bbox.isNull()

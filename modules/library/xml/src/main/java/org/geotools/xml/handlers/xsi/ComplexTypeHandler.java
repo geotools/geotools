@@ -17,6 +17,7 @@
 package org.geotools.xml.handlers.xsi;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -61,6 +62,7 @@ import org.xml.sax.SAXNotSupportedException;
  * @version $Id$
  */
 public class ComplexTypeHandler extends XSIElementHandler {
+    @Serial
     private static final long serialVersionUID = -2001189506633342497L;
 
     /** 'complexType' */
@@ -256,9 +258,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
             } else if ("false".equals(abstracT1)) {
                 this.abstracT = false;
             } else {
-                throw new SAXException(String.format(
-                        "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
-                        abstracT1));
+                throw new SAXException(
+                        "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")"
+                                .formatted(abstracT1));
             }
         }
 
@@ -292,9 +294,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
             } else if ("false".equals(mixed1)) {
                 this.mixed = false;
             } else {
-                throw new SAXException(String.format(
-                        "Schema element declaration supports 'mixed' \"true\" or \"false\" only (mixed=\"%s\")",
-                        abstracT1));
+                throw new SAXException(
+                        "Schema element declaration supports 'mixed' \"true\" or \"false\" only (mixed=\"%s\")"
+                                .formatted(abstracT1));
             }
         }
 
@@ -387,10 +389,8 @@ public class ComplexTypeHandler extends XSIElementHandler {
         Set<Attribute> attr = new HashSet<>();
 
         if (child instanceof SimpleContentHandler || child instanceof ComplexContentHandler) {
-            if (child instanceof SimpleContentHandler) {
+            if (child instanceof SimpleContentHandler sch) {
                 logger.finest("SimpleContentHandler");
-
-                SimpleContentHandler sch = (SimpleContentHandler) child;
 
                 if (sch.getChild() instanceof ExtensionHandler) {
                     compressSimpleExtensionHandler(parent, dct, attr, (ExtensionHandler) sch.getChild());
@@ -427,8 +427,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 while (it.hasNext()) {
                     Object o = it.next();
 
-                    if (o instanceof AttributeHandler) {
-                        AttributeHandler ah = (AttributeHandler) o;
+                    if (o instanceof AttributeHandler ah) {
                         attr.add(ah.compress(parent));
                     } else {
                         AttributeGroupHandler agh = (AttributeGroupHandler) o;
@@ -490,8 +489,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof AttributeHandler) {
-                    AttributeHandler ah = (AttributeHandler) o;
+                if (o instanceof AttributeHandler ah) {
                     attr.add(ah.compress(parent));
                 } else {
                     AttributeGroupHandler agh = (AttributeGroupHandler) o;
@@ -531,8 +529,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof AttributeHandler) {
-                    AttributeHandler ah = (AttributeHandler) o;
+                if (o instanceof AttributeHandler ah) {
                     attr.add(ah.compress(parent));
                 } else {
                     AttributeGroupHandler agh = (AttributeGroupHandler) o;
@@ -570,8 +567,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof AttributeHandler) {
-                    AttributeHandler ah = (AttributeHandler) o;
+                if (o instanceof AttributeHandler ah) {
                     attr.add(ah.compress(parent));
                 } else {
                     AttributeGroupHandler agh = (AttributeGroupHandler) o;
@@ -603,8 +599,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
             while (it.hasNext()) {
                 Object o = it.next();
 
-                if (o instanceof AttributeHandler) {
-                    AttributeHandler ah = (AttributeHandler) o;
+                if (o instanceof AttributeHandler ah) {
                     attr.add(ah.compress(parent));
                 } else {
                     AttributeGroupHandler agh = (AttributeGroupHandler) o;
@@ -1077,11 +1072,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
             } else {
                 output.startElement(element.getNamespace(), element.getName(), null);
                 Type type = element.getType();
-                if (type instanceof SimpleType) {
-                    SimpleType simple = (SimpleType) type;
+                if (type instanceof SimpleType simple) {
                     simple.encode(element, value, output, hints);
-                } else if (type instanceof ComplexType) {
-                    ComplexType complex = (ComplexType) type;
+                } else if (type instanceof ComplexType complex) {
                     Element[] children = complex.getChildElements();
                     boolean found = false;
                     for (Element child : children) {

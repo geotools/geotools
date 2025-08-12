@@ -100,8 +100,7 @@ public class LineFeatureBuilder extends GridFeatureBuilder {
 
     @Override
     public void setAttributes(GridElement el, Map<String, Object> attributes) {
-        if (el instanceof OrthoLine) {
-            OrthoLine orthoLine = (OrthoLine) el;
+        if (el instanceof OrthoLine orthoLine) {
             attributes.put(ID_ATTRIBUTE_NAME, ++id);
             attributes.put(LEVEL_ATTRIBUTE_NAME, orthoLine.getLevel());
 

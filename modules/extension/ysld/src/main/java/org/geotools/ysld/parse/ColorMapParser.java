@@ -72,9 +72,8 @@ public abstract class ColorMapParser extends YsldParseHandler {
                     q = Tuple.of(4).parse(o);
                 } catch (IllegalArgumentException e) {
                     throw new IllegalArgumentException(
-                            String.format(
-                                    "Bad entry: '%s', must be of form [<color>,[<opacity>],[<value>],[<label>]]",
-                                    o.toString()),
+                            "Bad entry: '%s', must be of form [<color>,[<opacity>],[<value>],[<label>]]"
+                                    .formatted(o.toString()),
                             e);
                 }
 

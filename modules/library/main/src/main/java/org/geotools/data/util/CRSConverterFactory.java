@@ -77,15 +77,13 @@ public class CRSConverterFactory implements ConverterFactory {
             }
 
             // STRING TO CRS
-            if (source instanceof String && CoordinateReferenceSystem.class.isAssignableFrom(target)) {
+            if (source instanceof String input && CoordinateReferenceSystem.class.isAssignableFrom(target)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("CRSConverter: Converting object of class "
                             + source.getClass().getCanonicalName()
                             + " to "
                             + target.getCanonicalName());
                 }
-                // convert
-                String input = (String) source;
                 input = input.trim();
 
                 // try the decode first for EPSG:XXX
@@ -108,7 +106,7 @@ public class CRSConverterFactory implements ConverterFactory {
             }
 
             // CRS TO STRING
-            if (source instanceof CoordinateReferenceSystem && String.class.isAssignableFrom(target)) {
+            if (source instanceof CoordinateReferenceSystem system && String.class.isAssignableFrom(target)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("CRSConverter: Converting object of class "
                             + source.getClass().getCanonicalName()
@@ -116,7 +114,7 @@ public class CRSConverterFactory implements ConverterFactory {
                             + target.getCanonicalName());
                 }
                 try {
-                    return (T) ((CoordinateReferenceSystem) source).toWKT();
+                    return (T) system.toWKT();
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);

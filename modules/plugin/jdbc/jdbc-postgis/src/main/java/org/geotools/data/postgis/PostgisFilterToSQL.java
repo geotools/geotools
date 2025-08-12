@@ -74,9 +74,9 @@ public class PostgisFilterToSQL extends FilterToSQL {
         // evaluate the literal and store it for later
         Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
 
-        if (geom instanceof LinearRing) {
+        if (geom instanceof LinearRing ring) {
             // postgis does not handle linear rings, convert to just a line string
-            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
+            geom = geom.getFactory().createLineString(ring.getCoordinateSequence());
         }
 
         Object typename =
@@ -143,7 +143,7 @@ public class PostgisFilterToSQL extends FilterToSQL {
     @Override
     public Object visit(Literal literal, Object extraData) {
         // handle BigDate udt, encode it as a long
-        if (extraData instanceof Class && BigDate.class.isAssignableFrom((Class<?>) extraData)) {
+        if (extraData instanceof Class<?> class1 && BigDate.class.isAssignableFrom(class1)) {
             if (literal.getValue() instanceof Date) {
                 return super.visit(filterFactory.literal(((Date) literal.getValue()).getTime()), Long.class);
             }
@@ -257,8 +257,8 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     private Class getExpressionTypeIncludingLiterals(Expression expression) {
         Class result = super.getExpressionType(expression);
-        if (expression instanceof Literal) {
-            result = ((Literal) expression).getValue().getClass();
+        if (expression instanceof Literal literal) {
+            result = literal.getValue().getClass();
         }
         return result;
     }

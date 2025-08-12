@@ -23,6 +23,7 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.remote.SerializableState;
@@ -35,6 +36,7 @@ import javax.media.jai.remote.SerializerFactory;
  */
 public class SampleImage implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 6324143924454724262l;
 
     transient SampleModel sampleModel;

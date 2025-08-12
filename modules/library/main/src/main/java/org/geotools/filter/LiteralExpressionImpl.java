@@ -157,8 +157,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof LiteralExpressionImpl) {
-            LiteralExpressionImpl expLit = (LiteralExpressionImpl) obj;
+        if (obj instanceof LiteralExpressionImpl expLit) {
             // This is a problem.  The Expression with type String of "2.0"
             // should be equals to the Expression with type Integer of "2.0"
             // Same thing with doubles and integers (as noted in the javadocs)
@@ -179,8 +178,8 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
 
             // do the conversion dance
             int expressionType = getExpressionType(this);
-            if (expressionType == ExpressionType.LITERAL_GEOMETRY && this.literal instanceof Geometry) {
-                return ((Geometry) this.literal).equalsExact(expLit.evaluate(null, Geometry.class));
+            if (expressionType == ExpressionType.LITERAL_GEOMETRY && this.literal instanceof Geometry geometry) {
+                return geometry.equalsExact(expLit.evaluate(null, Geometry.class));
             } else if (expressionType == ExpressionType.LITERAL_GEOMETRY && this.literal instanceof Envelope) {
                 return this.literal.equals(expLit.evaluate(null, Envelope.class));
             } else if (expressionType == ExpressionType.LITERAL_INTEGER) {
@@ -208,9 +207,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
                 String str2 = expLit.evaluate(null, String.class);
                 return str1 != null && str1.equals(str2);
             }
-        } else if (obj instanceof Literal) {
-            // some other Literal implementation like ConstantExpression
-            Literal other = (Literal) obj;
+        } else if (obj instanceof Literal other) {
             return equals(new LiteralExpressionImpl(other.getValue()));
         } else {
             return false;

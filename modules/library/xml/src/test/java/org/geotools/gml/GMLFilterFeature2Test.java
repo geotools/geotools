@@ -52,34 +52,36 @@ public class GMLFilterFeature2Test {
         }
     }
 
-    private static final String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-            + "<wfs:FeatureCollection xmlns:wfs=\"http://www.opengis.net/wfs\"\n"
-            + "  xmlns:topp=\"http://www.openplans.org/topp\"\n"
-            + "  xmlns:gml=\"http://www.opengis.net/gml\"\n"
-            + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-            + "  xsi:schemaLocation=\"http://www.openplans.org/topp http://localhost:8080/geoserver/wfs/DescribeFeatureType?typeName=topp:states http://www.opengis.net/wfs http://localhost:8080/geoserver/data/capabilities/wfs/1.0.0/WFS-basic.xsd\">\n"
-            + "  <gml:boundedBy><gml:Box srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\">\n"
-            + "    <gml:coordinates decimal=\".\" cs=\",\" ts=\" \">-114.046463,36.988972\n"
-            + "  -102.036758,42.002377</gml:coordinates></gml:Box></gml:boundedBy>\n"
-            + "  <gml:featureMember><topp:states\n"
-            + "    fid=\"states.46\"><topp:the_geom><gml:MultiPolygon\n"
-            + "    srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\">\n"
-            + "  <gml:polygonMember><gml:Polygon><gml:outerBoundaryIs><gml:LinearRing>\n"
-            + "    <gml:coordinates decimal=\".\" cs=\",\" ts=\" \">-114.046463,38.137691\n"
-            + "  -114.044273,38.57114 -114.043449,38.679043 -114.039276,39.538742\n"
-            + "  -112.899216,36.996243 -114.043137,36.996563 -114.046448,37.598507\n"
-            + "  -114.046463,38.137691</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs>\n"
-            + "  </gml:Polygon></gml:polygonMember></gml:MultiPolygon></topp:the_geom>\n"
-            + "  <topp:STATE_NAME>Utah</topp:STATE_NAME><topp:STATE_FIPS>49</topp:STATE_FIPS>\n"
-            + "  <topp:SUB_REGION>Mtn</topp:SUB_REGION><topp:STATE_ABBR>UT</topp:STATE_ABBR>\n"
-            + "  <topp:LAND_KM>212815.546</topp:LAND_KM><topp:WATER_KM>7086.152</topp:WATER_KM>\n"
-            + "  <topp:PERSONS>1722850.0</topp:PERSONS><topp:FAMILIES>410862.0</topp:FAMILIES>\n"
-            + "  <topp:HOUSHOLD>537273.0</topp:HOUSHOLD><topp:MALE>855759.0</topp:MALE>\n"
-            + "  <topp:FEMALE>867091.0</topp:FEMALE><topp:WORKERS>564185.0</topp:WORKERS>\n"
-            + "  <topp:DRVALONE>541226.0</topp:DRVALONE><topp:CARPOOL>111197.0</topp:CARPOOL>\n"
-            + "  <topp:PUBTRANS>16971.0</topp:PUBTRANS><topp:EMPLOYED>736059.0</topp:EMPLOYED>\n"
-            + "  <topp:UNEMPLOY>41389.0</topp:UNEMPLOY><topp:SERVICE>196289.0</topp:SERVICE>\n"
-            + "  <topp:MANUAL>102232.0</topp:MANUAL><topp:P_MALE>0.497</topp:P_MALE>\n"
-            + "  <topp:P_FEMALE>0.503</topp:P_FEMALE><topp:SAMP_POP>304592.0</topp:SAMP_POP>\n"
-            + "  </topp:states></gml:featureMember></wfs:FeatureCollection>";
+    private static final String xml =
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <wfs:FeatureCollection xmlns:wfs="http://www.opengis.net/wfs"
+              xmlns:topp="http://www.openplans.org/topp"
+              xmlns:gml="http://www.opengis.net/gml"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.openplans.org/topp http://localhost:8080/geoserver/wfs/DescribeFeatureType?typeName=topp:states http://www.opengis.net/wfs http://localhost:8080/geoserver/data/capabilities/wfs/1.0.0/WFS-basic.xsd">
+              <gml:boundedBy><gml:Box srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates decimal="." cs="," ts=" ">-114.046463,36.988972
+              -102.036758,42.002377</gml:coordinates></gml:Box></gml:boundedBy>
+              <gml:featureMember><topp:states
+                fid="states.46"><topp:the_geom><gml:MultiPolygon
+                srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+              <gml:polygonMember><gml:Polygon><gml:outerBoundaryIs><gml:LinearRing>
+                <gml:coordinates decimal="." cs="," ts=" ">-114.046463,38.137691
+              -114.044273,38.57114 -114.043449,38.679043 -114.039276,39.538742
+              -112.899216,36.996243 -114.043137,36.996563 -114.046448,37.598507
+              -114.046463,38.137691</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs>
+              </gml:Polygon></gml:polygonMember></gml:MultiPolygon></topp:the_geom>
+              <topp:STATE_NAME>Utah</topp:STATE_NAME><topp:STATE_FIPS>49</topp:STATE_FIPS>
+              <topp:SUB_REGION>Mtn</topp:SUB_REGION><topp:STATE_ABBR>UT</topp:STATE_ABBR>
+              <topp:LAND_KM>212815.546</topp:LAND_KM><topp:WATER_KM>7086.152</topp:WATER_KM>
+              <topp:PERSONS>1722850.0</topp:PERSONS><topp:FAMILIES>410862.0</topp:FAMILIES>
+              <topp:HOUSHOLD>537273.0</topp:HOUSHOLD><topp:MALE>855759.0</topp:MALE>
+              <topp:FEMALE>867091.0</topp:FEMALE><topp:WORKERS>564185.0</topp:WORKERS>
+              <topp:DRVALONE>541226.0</topp:DRVALONE><topp:CARPOOL>111197.0</topp:CARPOOL>
+              <topp:PUBTRANS>16971.0</topp:PUBTRANS><topp:EMPLOYED>736059.0</topp:EMPLOYED>
+              <topp:UNEMPLOY>41389.0</topp:UNEMPLOY><topp:SERVICE>196289.0</topp:SERVICE>
+              <topp:MANUAL>102232.0</topp:MANUAL><topp:P_MALE>0.497</topp:P_MALE>
+              <topp:P_FEMALE>0.503</topp:P_FEMALE><topp:SAMP_POP>304592.0</topp:SAMP_POP>
+              </topp:states></gml:featureMember></wfs:FeatureCollection>""";
 }

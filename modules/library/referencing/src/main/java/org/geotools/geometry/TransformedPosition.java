@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
@@ -91,6 +92,7 @@ import org.geotools.util.factory.Hints;
  */
 public class TransformedPosition extends GeneralPosition {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3988283183934950437L;
 
     /** The factory to use for creating new coordinate operation. */

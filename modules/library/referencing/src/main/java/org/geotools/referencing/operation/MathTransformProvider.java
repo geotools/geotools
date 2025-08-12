@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +67,7 @@ import org.geotools.util.XArray;
  */
 public abstract class MathTransformProvider extends DefaultOperationMethod {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7530475536803158473L;
 
     /**
@@ -229,8 +231,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
         ReferenceIdentifier[] id = new ReferenceIdentifier[identifiers.length];
         GenericName[] alias = new GenericName[identifiers.length];
         for (final ReferenceIdentifier candidate : identifiers) {
-            if (candidate instanceof GenericName) {
-                alias[aliasCount++] = (GenericName) candidate;
+            if (candidate instanceof GenericName name) {
+                alias[aliasCount++] = name;
             } else {
                 id[idCount++] = candidate;
             }
@@ -332,10 +334,10 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
             final Unit<?> unit = source.getUnit();
             if (unit == null) {
                 target.setValue(v);
-            } else if (v instanceof Number) {
-                target.setValue(((Number) v).doubleValue(), unit);
-            } else if (v instanceof double[]) {
-                target.setValue((double[]) v, unit);
+            } else if (v instanceof Number number) {
+                target.setValue(number.doubleValue(), unit);
+            } else if (v instanceof double[] doubles) {
+                target.setValue(doubles, unit);
             } else {
                 throw new InvalidParameterValueException(
                         MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, v), name, v);
@@ -501,6 +503,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      */
     protected static final class Delegate extends MathTransformProxy {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -3942740060970730790L;
 
         /** The provider for the {@linkplain #transform transform}. */

@@ -211,8 +211,7 @@ public class ProcessSelectionPage extends JPage {
             public Object getChild(Object parent, int index) {
                 if (parent == root) {
                     return root.get(index);
-                } else if (parent instanceof ProcessFactory) {
-                    ProcessFactory factory = (ProcessFactory) parent;
+                } else if (parent instanceof ProcessFactory factory) {
                     return getChildren(factory).get(index);
                 }
                 return null;
@@ -222,8 +221,7 @@ public class ProcessSelectionPage extends JPage {
             public int getChildCount(Object parent) {
                 if (parent == root) {
                     return root.size();
-                } else if (parent instanceof ProcessFactory) {
-                    ProcessFactory factory = (ProcessFactory) parent;
+                } else if (parent instanceof ProcessFactory factory) {
                     return getChildren(factory).size();
                 }
                 return 0;
@@ -250,8 +248,7 @@ public class ProcessSelectionPage extends JPage {
             public int getIndexOfChild(Object parent, Object child) {
                 if (parent == root) {
                     return root.indexOf(child);
-                } else if (parent instanceof ProcessFactory) {
-                    ProcessFactory factory = (ProcessFactory) parent;
+                } else if (parent instanceof ProcessFactory factory) {
                     return getChildren(factory).indexOf(child);
                 }
                 return 0;

@@ -36,8 +36,8 @@ public class RangeBinding extends ComplexEMFBinding {
     protected void setProperty(org.eclipse.emf.ecore.EObject eObject, String property, Object value, boolean lax) {
         // trick required because rangeClouser for some unfathomable reason was declared to extend
         // NMTOKENS instead of NMTOKEN (and it's this a whitespace separated list schema wise)
-        if ("rangeClosure".equals(property) && value instanceof List) {
-            value = ((List) value).get(0);
+        if ("rangeClosure".equals(property) && value instanceof List list) {
+            value = list.get(0);
         }
         super.setProperty(eObject, property, value, lax);
     }

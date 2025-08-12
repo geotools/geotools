@@ -65,10 +65,10 @@ public class Util {
                 collectExpressions(list, param);
             }
         } else {
-            if (expr instanceof Literal) {
-                Object value = ((Literal) expr).getValue();
+            if (expr instanceof Literal literal) {
+                Object value = literal.getValue();
                 if (value == null) return;
-                if (value instanceof String && ((String) value).isEmpty()) return;
+                if (value instanceof String string && string.isEmpty()) return;
             }
             list.add(expr);
         }
@@ -138,7 +138,7 @@ public class Util {
         try {
             t = Tuple.of(2).parse(value);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(String.format("Bad anchor: '%s', must be of form (<x>,<y>)", value), e);
+            throw new IllegalArgumentException("Bad anchor: '%s', must be of form (<x>,<y>)".formatted(value), e);
         }
 
         Expression x = t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
@@ -152,8 +152,7 @@ public class Util {
         try {
             t = Tuple.of(2).parse(value);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(
-                    String.format("Bad displacement: '%s', must be of form (<x>,<y>)", value), e);
+            throw new IllegalArgumentException("Bad displacement: '%s', must be of form (<x>,<y>)".formatted(value), e);
         }
 
         Expression x = t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
@@ -169,22 +168,22 @@ public class Util {
     /** Parses a color from string representation. */
     public static Expression color(Object value, Factory factory) {
         Color color = null;
-        if (value instanceof String) {
-            Matcher m = HEX_PATTERN.matcher((String) value);
+        if (value instanceof String string) {
+            Matcher m = HEX_PATTERN.matcher(string);
             if (m.matches()) {
                 color = parseColorAsHex(m);
             }
             if (color == null) {
-                m = RGB_PATTERN.matcher((String) value);
+                m = RGB_PATTERN.matcher(string);
                 if (m.matches()) {
                     color = parseColorAsRGB(m);
                 }
             }
             if (color == null) {
-                color = Colors.get((String) value);
+                color = Colors.get(string);
             }
-        } else if (value instanceof Integer) {
-            color = new Color((int) value);
+        } else if (value instanceof Integer integer) {
+            color = new Color(integer);
         }
 
         if (value != null) value = value.toString();
@@ -318,7 +317,7 @@ public class Util {
      * @return String representation of c
      */
     public static String serializeColor(Color c) {
-        return String.format("#%06X", c.getRGB() & 0x00_FF_FF_FF);
+        return "#%06X".formatted(c.getRGB() & 0x00_FF_FF_FF);
     }
 
     /** @return The string with quotes (') stripped from the beginning and end, or null if the string was null. */

@@ -368,7 +368,7 @@ public class MonolineFormatter extends Formatter {
             if (handler.getClass().equals(ConsoleHandler.class)) {
                 foundConsoleHandler = true;
                 final Formatter formatter = handler.getFormatter();
-                if (formatter instanceof MonolineFormatter) {
+                if (formatter instanceof MonolineFormatter monolineFormatter) {
                     /*
                      * A MonolineFormatter already existed. Sets the level only for the first
                      * instance (only one instance should exists anyway) for consistency with
@@ -376,7 +376,7 @@ public class MonolineFormatter extends Formatter {
                      * configuration.
                      */
                     if (monoline == null) {
-                        monoline = (MonolineFormatter) formatter;
+                        monoline = monolineFormatter;
                         if (level != null) {
                             handler.setLevel(level);
                         }

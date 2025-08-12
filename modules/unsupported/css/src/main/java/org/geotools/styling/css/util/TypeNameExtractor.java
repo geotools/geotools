@@ -91,9 +91,9 @@ public class TypeNameExtractor extends AbstractSelectorVisitor {
     public Object visit(And and) {
         boolean found = false;
         for (Selector s : and.getChildren()) {
-            if (s instanceof TypeName) {
+            if (s instanceof TypeName name) {
                 found = true;
-                getTypeNames().add((TypeName) s);
+                getTypeNames().add(name);
             }
         }
         if (!found) {

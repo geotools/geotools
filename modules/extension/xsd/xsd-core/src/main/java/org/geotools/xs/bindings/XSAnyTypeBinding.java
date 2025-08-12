@@ -109,8 +109,8 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String text = null;
 
-        if (value != null && value instanceof String) {
-            text = (String) value;
+        if (value != null && value instanceof String string) {
+            text = string;
 
             if ("".equals(text.trim())) {
                 text = null;

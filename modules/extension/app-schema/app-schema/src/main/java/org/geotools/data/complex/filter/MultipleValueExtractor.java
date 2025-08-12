@@ -29,7 +29,7 @@ public class MultipleValueExtractor extends FilterAttributeExtractor {
 
     @Override
     public Object visit(PropertyName expression, Object data) {
-        if (expression instanceof MultipleValue) multipleValues.add((MultipleValue) expression);
+        if (expression instanceof MultipleValue value) multipleValues.add(value);
         return super.visit(expression, data);
     }
 

@@ -479,8 +479,8 @@ public class Utilities {
         if (pixInCell == PixelInCell.CELL_CENTER) return raster2Model;
 
         // we do have to change the pixel datum
-        if (raster2Model instanceof AffineTransform) {
-            final AffineTransform tr = new AffineTransform((AffineTransform) raster2Model);
+        if (raster2Model instanceof AffineTransform transform) {
+            final AffineTransform tr = new AffineTransform(transform);
             tr.concatenate(AffineTransform.getTranslateInstance(-0.5, -0.5));
             return ProjectiveTransform.create(tr);
         }
@@ -850,14 +850,13 @@ public class Utilities {
             final boolean useMultithreading)
             throws IOException {
         ImageInputStream paramInput = null;
-        if (input instanceof File) {
-            paramInput = new FileImageInputStreamExtImpl((File) input);
-        } else if (input instanceof AccessibleStream && input instanceof ImageInputStream) {
-            paramInput = (ImageInputStream) input;
-        } else if (input instanceof URIImageInputStream) {
-            paramInput = (URIImageInputStream) input;
-        } else if (input instanceof URL) {
-            final URL tempURL = (URL) input;
+        if (input instanceof File file1) {
+            paramInput = new FileImageInputStreamExtImpl(file1);
+        } else if (input instanceof AccessibleStream && input instanceof ImageInputStream stream1) {
+            paramInput = stream1;
+        } else if (input instanceof URIImageInputStream stream) {
+            paramInput = stream;
+        } else if (input instanceof URL tempURL) {
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("file")) {
                 try {

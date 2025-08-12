@@ -474,9 +474,12 @@ public class NetCDFProjection {
             Variable var, CRSParser crsParser, Map<String, Object> crsProperties) throws FactoryException {
         if (crsParser == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("No referencing attributes have been found.\n "
-                        + "Unable to parse a CF projection from this variable.\n"
-                        + "This probably means that is WGS84 or unsupported");
+                LOGGER.fine(
+                        """
+                        No referencing attributes have been found.
+                         \
+                        Unable to parse a CF projection from this variable.
+                        This probably means that is WGS84 or unsupported""");
             }
             return null;
         }

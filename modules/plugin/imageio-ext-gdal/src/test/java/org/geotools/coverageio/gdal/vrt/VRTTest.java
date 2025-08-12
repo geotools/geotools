@@ -262,10 +262,10 @@ public final class VRTTest extends GDALTestCase {
     private double getNoData(GridCoverage2D gc) {
         Object property = gc.getProperty(NoDataContainer.GC_NODATA);
         if (property != null) {
-            if (property instanceof NoDataContainer) {
-                return ((NoDataContainer) property).getAsRange().getMin().doubleValue();
-            } else if (property instanceof Double) {
-                return (Double) property;
+            if (property instanceof NoDataContainer container) {
+                return container.getAsRange().getMin().doubleValue();
+            } else if (property instanceof Double double1) {
+                return double1;
             }
         }
         fail("No data not found");

@@ -586,8 +586,8 @@ public class InterpolateFunction implements Function {
             int index = n - i;
             if (index > 1) {
                 Expression expr = parameters.get(index);
-                if (expr instanceof Literal && ((Literal) expr).getValue() instanceof String) {
-                    String value = (String) ((Literal) expr).getValue();
+                if (expr instanceof Literal literal && ((Literal) expr).getValue() instanceof String) {
+                    String value = (String) literal.getValue();
                     if (value.equalsIgnoreCase(MODE_LINEAR)) {
                         mode = Mode.LINEAR;
                         specified = true;
@@ -622,8 +622,8 @@ public class InterpolateFunction implements Function {
             int index = n - i;
             if (index > 1) {
                 Expression expr = parameters.get(index);
-                if (expr instanceof Literal && ((Literal) expr).getValue() instanceof String) {
-                    String value = (String) ((Literal) expr).getValue();
+                if (expr instanceof Literal literal && ((Literal) expr).getValue() instanceof String) {
+                    String value = (String) literal.getValue();
                     if (value.equalsIgnoreCase(METHOD_NUMERIC)) {
                         method = Method.NUMERIC;
                         specified = true;

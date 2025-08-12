@@ -444,8 +444,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                     "The provided SimpleFeatureSource is null, it's impossible to create an index!");
         }
         if (t != null && t != Transaction.AUTO_COMMIT) {
-            if (featureSource instanceof SimpleFeatureStore) {
-                ((SimpleFeatureStore) featureSource).setTransaction(t);
+            if (featureSource instanceof SimpleFeatureStore store) {
+                store.setTransaction(t);
             } else {
                 throw new IllegalArgumentException(
                         "A transaction has been specified, but the delegate tile index store is not writable");
@@ -472,8 +472,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             checkStore();
             SimpleFeatureSource fs = this.getTileIndexStore().getFeatureSource(typeName);
             if (t != null && t != Transaction.AUTO_COMMIT) {
-                if (fs instanceof SimpleFeatureStore) {
-                    ((SimpleFeatureStore) fs).setTransaction(t);
+                if (fs instanceof SimpleFeatureStore store) {
+                    store.setTransaction(t);
                 } else {
                     throw new IllegalArgumentException(
                             "A transaction has been specified, but the delegate tile index store is not writable");
@@ -579,7 +579,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         checkStore();
         SimpleFeatureSource fs = getTileIndexStore().getFeatureSource(query.getTypeName());
 
-        if (fs instanceof ContentFeatureSource) ((ContentFeatureSource) fs).accepts(query, function, null);
+        if (fs instanceof ContentFeatureSource source) source.accepts(query, function, null);
         else {
             final SimpleFeatureCollection collection = fs.getFeatures(query);
             collection.accepts(function, null);

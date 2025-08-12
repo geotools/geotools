@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.extent;
 
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
@@ -41,6 +42,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class ExtentImpl extends MetadataEntity implements Extent {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7812213837337326257L;
 
     /**
@@ -139,8 +141,8 @@ public class ExtentImpl extends MetadataEntity implements Extent {
             GeographicBoundingBoxImpl modifiable = null;
             for (final GeographicExtent element : extent.getGeographicElements()) {
                 final GeographicBoundingBox bounds;
-                if (element instanceof GeographicBoundingBox) {
-                    bounds = (GeographicBoundingBox) element;
+                if (element instanceof GeographicBoundingBox box) {
+                    bounds = box;
                 } else {
                     continue;
                 }

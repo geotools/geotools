@@ -159,9 +159,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         @Override
         @SuppressWarnings("unchecked")
         public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
-            if (object instanceof Feature) return (T) ((Feature) object).getDefaultGeometryProperty();
-            if (object instanceof FeatureType) {
-                FeatureType ft = (FeatureType) object;
+            if (object instanceof Feature feature) return (T) feature.getDefaultGeometryProperty();
+            if (object instanceof FeatureType ft) {
                 GeometryDescriptor gd = ft.getGeometryDescriptor();
                 if (gd == null) {
                     // look for any geometry descriptor
@@ -179,11 +178,10 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         @Override
         public void set(Object object, String xpath, Object value, Class target) throws IllegalAttributeException {
 
-            if (object instanceof Feature) {
-                final Feature f = (Feature) object;
+            if (object instanceof Feature f) {
                 GeometryAttribute geom;
-                if (value instanceof GeometryAttribute) {
-                    geom = (GeometryAttribute) value;
+                if (value instanceof GeometryAttribute attribute) {
+                    geom = attribute;
                     f.setDefaultGeometryProperty(geom);
                 } else if (value instanceof Geometry) {
                     geom = f.getDefaultGeometryProperty();
@@ -258,8 +256,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             List results = new ArrayList<>();
             while (it.hasNext()) {
                 Pointer pointer = (Pointer) it.next();
-                if (pointer instanceof AttributeNodePointer) {
-                    results.add(((AttributeNodePointer) pointer).getImmediateAttribute());
+                if (pointer instanceof AttributeNodePointer nodePointer) {
+                    results.add(nodePointer.getImmediateAttribute());
                 } else {
                     results.add(pointer.getValue());
                 }

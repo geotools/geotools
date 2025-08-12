@@ -65,8 +65,8 @@ public class PROJParsingTest {
                     // Get the CRS from EPSG code
                     CoordinateReferenceSystem crs = CRS.decode(epsgCodeString);
                     String projString;
-                    if (crs instanceof PROJFormattable) {
-                        projString = formatter.toPROJ((PROJFormattable) crs);
+                    if (crs instanceof PROJFormattable formattable) {
+                        projString = formatter.toPROJ(formattable);
                         writer.printf("%d,%s%n", epsgCode, projString);
                         pWriter.printf("%d=%s%n", epsgCode, projString);
                     }

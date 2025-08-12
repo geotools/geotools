@@ -63,8 +63,7 @@ public class AddImpl extends MathExpressionImpl implements Add {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof AddImpl) {
-            AddImpl other = (AddImpl) obj;
+        if (obj instanceof AddImpl other) {
 
             return Utilities.equals(getExpression1(), other.getExpression1())
                     && Utilities.equals(getExpression2(), other.getExpression2());

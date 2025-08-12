@@ -22,6 +22,7 @@ import it.geosolutions.jaiext.range.Range;
 import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ import org.geotools.util.factory.Hints;
  */
 public class OperationJAI extends Operation2D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -5974520239347639965L;
 
     /** The rendered mode for JAI operation. */
@@ -895,6 +897,7 @@ public class OperationJAI extends Operation2D {
     /** A localized name for the default implementation of {@link OperationJAI#deriveName}. */
     private static final class Name extends AbstractInternationalString implements Serializable {
         /** Serial number for cross-versions compatibility. */
+        @Serial
         private static final long serialVersionUID = -8096255331549347383L;
 
         /** The operation name. */
@@ -956,8 +959,8 @@ public class OperationJAI extends Operation2D {
     public static final JAI getJAI(final RenderingHints hints) {
         if (hints != null) {
             final Object value = hints.get(Hints.JAI_INSTANCE);
-            if (value instanceof JAI) {
-                return (JAI) value;
+            if (value instanceof JAI aI) {
+                return aI;
             }
         }
         return JAI.getDefaultInstance();
@@ -1032,8 +1035,8 @@ public class OperationJAI extends Operation2D {
             final int n = parameters.getNumSources();
             for (int i = 0; i < n; i++) {
                 final Object source = parameters.getSource(i);
-                if (source instanceof RenderedImage) {
-                    return (RenderedImage) source;
+                if (source instanceof RenderedImage image) {
+                    return image;
                 }
             }
             return null;

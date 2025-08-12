@@ -19,6 +19,7 @@ package org.geotools.coverage;
 import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ import org.geotools.util.logging.Logging;
  */
 public class GridSampleDimension implements SampleDimension, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6026936545776852758L;
 
     private static final double DELTA = 1E-10;
@@ -602,8 +604,8 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @return The given sample dimension as a {@code GridSampleDimension} instance.
      */
     public static GridSampleDimension wrap(final SampleDimension sd) {
-        if (sd instanceof GridSampleDimension) {
-            return (GridSampleDimension) sd;
+        if (sd instanceof GridSampleDimension dimension) {
+            return dimension;
         }
         return new GridSampleDimension(
                 sd.getDescription(),
@@ -1042,8 +1044,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             // Slight optimization
             return true;
         }
-        if (object instanceof GridSampleDimension) {
-            final GridSampleDimension that = (GridSampleDimension) object;
+        if (object instanceof GridSampleDimension that) {
             // two dimensions are equal if they have de same description (name)
             // and same categories lists
             return this.description.equals(that.description) && Utilities.equals(this.categories, that.categories);

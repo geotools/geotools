@@ -108,9 +108,7 @@ public class ReprojectingIterator implements Iterator<SimpleFeature> {
 
         for (int i = 0; i < attributes.size(); i++) {
             Object object = attributes.get(i);
-            if (object instanceof Geometry) {
-                // do the transformation
-                Geometry geometry = (Geometry) object;
+            if (object instanceof Geometry geometry) {
                 try {
                     attributes.set(i, tx.transform(geometry));
                 } catch (TransformException e) {

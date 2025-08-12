@@ -82,8 +82,7 @@ public class H2DataStoreFactoryTest {
             assertNotNull(source);
             final DataSource wrapped = source.unwrap(DataSource.class);
             assertNotNull(wrapped);
-            if (wrapped instanceof BasicDataSource) {
-                final BasicDataSource basicSource = (BasicDataSource) wrapped;
+            if (wrapped instanceof BasicDataSource basicSource) {
                 final String url = basicSource.getUrl();
                 assertTrue(url.contains("MVCC=true"));
             }

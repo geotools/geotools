@@ -204,8 +204,7 @@ public class DisplacementImpl implements Cloneable, org.geotools.api.style.Displ
             return true;
         }
 
-        if (obj instanceof DisplacementImpl) {
-            DisplacementImpl other = (DisplacementImpl) obj;
+        if (obj instanceof DisplacementImpl other) {
 
             return Utilities.equals(displacementX, other.displacementX)
                     && Utilities.equals(displacementY, other.displacementY);
@@ -236,8 +235,8 @@ public class DisplacementImpl implements Cloneable, org.geotools.api.style.Displ
     static DisplacementImpl cast(org.geotools.api.style.Displacement displacement) {
         if (displacement == null) {
             return null;
-        } else if (displacement instanceof DisplacementImpl) {
-            return (DisplacementImpl) displacement;
+        } else if (displacement instanceof DisplacementImpl impl) {
+            return impl;
         } else {
             DisplacementImpl copy = new DisplacementImpl();
             copy.setDisplacementX(displacement.getDisplacementX());

@@ -160,10 +160,6 @@ public final class GeoToolsTest {
         Version version = GeoTools.getVersion(Filter.class);
         assertNotNull(version);
 
-        version = GeoTools.getVersion(JAI.class);
-        assertNotNull(version);
-        assertEquals("1.1.3", version.toString());
-
         version = GeoTools.getVersion(LogFactory.class);
         assertNotNull(version);
         assertEquals("1.3.5", version.toString());

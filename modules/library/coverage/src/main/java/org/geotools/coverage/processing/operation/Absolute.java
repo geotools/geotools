@@ -37,7 +37,7 @@ import org.geotools.util.NumberRange;
  * Computes the mathematical absolute value of each sample value.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"Absolute"</CODE><br>
- * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain AbsoluteDescriptor Absolute}"</CODE><br>
+ * <STRONG>ImageN operator:</STRONG>&nbsp;<CODE>"{@linkplain Algebra/Absolute}"</CODE><br>
  * <STRONG>Parameters:</STRONG>
  *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>

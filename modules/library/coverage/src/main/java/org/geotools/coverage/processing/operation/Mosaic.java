@@ -36,7 +36,6 @@ import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
 import org.eclipse.imagen.media.mosaic.MosaicType;
 import org.eclipse.imagen.media.range.NoDataContainer;
@@ -697,18 +696,15 @@ public class Mosaic extends OperationJAI {
         // Setting of the Mosaic type as Overlay
         block.set(MosaicDescriptor.MOSAIC_TYPE_OVERLAY, MOSAIC_TYPE_PARAM);
 
-        // Check if it is a JAI-Ext operation
-        if (JAIExt.isJAIExtOperation("Mosaic")) {
-            // Get the nodata values
-            double[] nodatas = rr.getBackgrounds();
-            if (nodatas != null && rr.hasNoData()) {
-                Range[] ranges = new Range[numSources];
-                for (int i = 0; i < numSources; i++) {
-                    double value = nodatas[i];
-                    ranges[i] = RangeFactory.create(value, value);
-                }
-                block.set(ranges, NODATA_RANGE_PARAM);
+        // Get the nodata values
+        double[] nodatas = rr.getBackgrounds();
+        if (nodatas != null && rr.hasNoData()) {
+            Range[] ranges = new Range[numSources];
+            for (int i = 0; i < numSources; i++) {
+                double value = nodatas[i];
+                ranges[i] = RangeFactory.create(value, value);
             }
+            block.set(ranges, NODATA_RANGE_PARAM);
         }
 
         // Creation of the finel Parameters

@@ -37,7 +37,6 @@ import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.ROI;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.media.range.Range;
 import org.eclipse.imagen.registry.RenderedRegistryMode;
@@ -1073,25 +1072,24 @@ public class OperationJAI extends Operation2D {
             prop.putAll(properties);
         }
         // Check if the operation has been executed as JAI-EXT
-        if (JAIExt.isJAIExtOperation(operationName)) {
-            // Selection of the ROI from the input ParameterBlock
-            ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
-            // Setting of the ROI property
-            CoverageUtilities.setROIProperty(properties, roiParam);
-            // Searching for the nodata Range
-            Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
-            // Setting of the NoData parameter only if Background is defined
-            if (noDataParam != null || roiParam != null) {
-                // NoData must be set
-                // Background has been set?
-                Object background = parameters.getObjectParameter(backgroundIndex);
-                if (background != null) {
-                    if (background instanceof double[] || background instanceof Number) {
-                        CoverageUtilities.setNoDataProperty(properties, background);
-                    }
+        // Selection of the ROI from the input ParameterBlock
+        ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
+        // Setting of the ROI property
+        CoverageUtilities.setROIProperty(properties, roiParam);
+        // Searching for the nodata Range
+        Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
+        // Setting of the NoData parameter only if Background is defined
+        if (noDataParam != null || roiParam != null) {
+            // NoData must be set
+            // Background has been set?
+            Object background = parameters.getObjectParameter(backgroundIndex);
+            if (background != null) {
+                if (background instanceof double[] || background instanceof Number) {
+                    CoverageUtilities.setNoDataProperty(properties, background);
                 }
             }
         }
+
         return prop;
     }
 
@@ -1110,28 +1108,24 @@ public class OperationJAI extends Operation2D {
         // Getting the internal ROI property
         ROI innerROI = CoverageUtilities.getROIProperty(sourceCoverage);
         // Checking if it canbe set as parameter
-        if (JAIExt.isJAIExtOperation(operationName) && roiIndex >= 0) {
-            // Definition of the nwe ROI
-            ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
-            ROI newROI = null;
-            if (innerROI == null) {
-                newROI = roiParam;
-            } else {
-                newROI = roiParam != null ? innerROI.intersect(roiParam) : innerROI;
-            }
-            // Setting of the new ROI
-            parameters.set(newROI, roiIndex);
+        // Definition of the nwe ROI
+        ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
+        ROI newROI = null;
+        if (innerROI == null) {
+            newROI = roiParam;
+        } else {
+            newROI = roiParam != null ? innerROI.intersect(roiParam) : innerROI;
         }
+        // Setting of the new ROI
+        parameters.set(newROI, roiIndex);
 
         // Getting NoData propery
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
         Range innerNodata = nodataProp != null ? nodataProp.getAsRange() : null;
         // Setting the NoData Range parameter if not present
-        if (JAIExt.isJAIExtOperation(operationName) && noDataIndex >= 0) {
-            Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
-            if (noDataParam == null) {
-                parameters.set(innerNodata, noDataIndex);
-            }
+        Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
+        if (noDataParam == null) {
+            parameters.set(innerNodata, noDataIndex);
         }
     }
 

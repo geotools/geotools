@@ -18,22 +18,16 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
-import java.awt.image.renderable.RenderedImageFactory;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import javax.measure.Unit;
-import org.eclipse.imagen.JAI;
-import org.eclipse.imagen.OperationDescriptor;
-import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.media.range.Range;
 import org.eclipse.imagen.media.shadedrelief.ShadedReliefAlgorithm;
 import org.eclipse.imagen.media.shadedrelief.ShadedReliefDescriptor;
-import org.eclipse.imagen.media.shadedrelief.ShadedReliefRIF;
-import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -59,20 +53,6 @@ import si.uom.SI;
  */
 class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
         implements StyleVisitor, CoverageProcessingNode {
-
-    static {
-        // Initialize JAIExt operations
-        OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
-        OperationDescriptor op = new ShadedReliefDescriptor();
-
-        // registering the descriptor
-        registry.registerDescriptor(op);
-        String descName = op.getName();
-
-        // registering the RIF
-        RenderedImageFactory rif = new ShadedReliefRIF();
-        registry.registerFactory(RenderedRegistryMode.MODE_NAME, descName, "org.geotools.gce.processing", rif);
-    }
 
     private boolean brightnessOnly = false;
 

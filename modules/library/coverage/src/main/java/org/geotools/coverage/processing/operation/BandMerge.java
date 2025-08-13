@@ -37,7 +37,6 @@ import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.media.range.Range;
 import org.eclipse.imagen.media.range.RangeFactory;
@@ -541,11 +540,9 @@ public class BandMerge extends OperationJAI {
         }
 
         // Setting ROI and NoData if present
-        if (JAIExt.isJAIExtOperation("BandMerge")) {
-            ParameterBlockJAI pb = parameters.parameters;
-            CoverageUtilities.setROIProperty(properties, (ROI) pb.getObjectParameter(3));
-            CoverageUtilities.setNoDataProperty(properties, pb.getObjectParameter(1));
-        }
+        ParameterBlockJAI pb = parameters.parameters;
+        CoverageUtilities.setROIProperty(properties, (ROI) pb.getObjectParameter(3));
+        CoverageUtilities.setNoDataProperty(properties, pb.getObjectParameter(1));
 
         return properties;
     }
@@ -608,56 +605,54 @@ public class BandMerge extends OperationJAI {
             nodata[i] = createNoDataRange(cov, dataType);
         }
 
-        if (JAIExt.isJAIExtOperation("BandMerge")) {
-            // Setting NoData
-            block.setParameter("noData", nodata);
+        // Setting NoData
+        block.setParameter("noData", nodata);
 
-            // Setting Transformations
-            block.setParameter("transformations", tr);
+        // Setting Transformations
+        block.setParameter("transformations", tr);
 
-            // Setting ROI
-            ROI roi = null;
-            if (parameters.parameter(GEOMETRY).getValue() != null) {
-                // Creation of a ROI geometry object from the Geometry
-                roi = new ROIGeometry(
-                        JTS.transform((Geometry) parameters.parameter(GEOMETRY).getValue(), crsToGRID));
-            }
-            // Check if the coverages contains a ROI property
-            for (int i = 0; i < sources.length; i++) {
-                GridCoverage2D cov = sources[i];
-                ROI covROI = CoverageUtilities.getROIProperty(cov);
-                if (covROI != null) {
-                    ROI newROI = null;
-                    // Check if it must be transformed
-                    if (tr != null) {
-                        try {
-                            AffineTransform trans = tr.get(i).createInverse();
-                            newROI = covROI.transform(trans);
-                        } catch (NoninvertibleTransformException e) {
-                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                        }
-                    } else {
-                        newROI = covROI;
+        // Setting ROI
+        ROI roi = null;
+        if (parameters.parameter(GEOMETRY).getValue() != null) {
+            // Creation of a ROI geometry object from the Geometry
+            roi = new ROIGeometry(
+                    JTS.transform((Geometry) parameters.parameter(GEOMETRY).getValue(), crsToGRID));
+        }
+        // Check if the coverages contains a ROI property
+        for (int i = 0; i < sources.length; i++) {
+            GridCoverage2D cov = sources[i];
+            ROI covROI = CoverageUtilities.getROIProperty(cov);
+            if (covROI != null) {
+                ROI newROI = null;
+                // Check if it must be transformed
+                if (tr != null) {
+                    try {
+                        AffineTransform trans = tr.get(i).createInverse();
+                        newROI = covROI.transform(trans);
+                    } catch (NoninvertibleTransformException e) {
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
                     }
+                } else {
+                    newROI = covROI;
+                }
 
-                    if (roi == null) {
-                        roi = newROI;
-                    } else {
-                        roi = roi.intersect(newROI);
-                    }
+                if (roi == null) {
+                    roi = newROI;
+                } else {
+                    roi = roi.intersect(newROI);
                 }
             }
-
-            // Addition of the ROI to the ParameterBlock
-            if (roi != null) {
-                block.setParameter("roi", roi);
-            }
-
-            // Setting the destination No Data Value as the NoData of the principal coverage
-            // selected
-            block.setParameter(
-                    "destinationNoData", nodata[getIndex(parameters)].getMin().doubleValue());
         }
+
+        // Addition of the ROI to the ParameterBlock
+        if (roi != null) {
+            block.setParameter("roi", roi);
+        }
+
+        // Setting the destination No Data Value as the NoData of the principal coverage
+        // selected
+        block.setParameter(
+                "destinationNoData", nodata[getIndex(parameters)].getMin().doubleValue());
 
         return block;
     }

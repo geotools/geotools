@@ -30,10 +30,8 @@ import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.Warp;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.util.PropertyGeneratorImpl;
 import org.eclipse.imagen.media.utilities.ImageLayout2;
-import org.eclipse.imagen.media.warp.WarpRIF;
 import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.util.factory.Hints;
 
@@ -164,12 +162,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             il.setTileHeight(op.getTileHeight());
             localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
             // we need to use JAI-EXT own warp, the JAI one ignores the ROI
-            if (JAIExt.isJAIExtOperation("Warp")) {
-                roiImage = JAI.create("Warp", paramBlk, localHints);
-            } else {
-                // force JAI-EXT usage
-                roiImage = PlanarImage.wrapRenderedImage(new WarpRIF().create(paramBlk, localHints));
-            }
+            roiImage = JAI.create("Warp", paramBlk, localHints);
             ROI dstROI = new ROI(roiImage, 1);
 
             // If necessary, clip the warped ROI to the destination bounds.

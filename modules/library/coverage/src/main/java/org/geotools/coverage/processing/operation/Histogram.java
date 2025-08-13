@@ -25,7 +25,6 @@ import java.util.Map;
 import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.RenderedOp;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.stats.HistogramWrapper;
 import org.eclipse.imagen.media.stats.Statistics;
 import org.eclipse.imagen.media.stats.Statistics.StatsType;
@@ -78,7 +77,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
 
     /** Default constructor for the {@link Histogram} operation. */
     public Histogram() throws OperationNotFoundException {
-        super(HISTOGRAM, getOperationDescriptor(JAIExt.getOperationName(HISTOGRAM)));
+        super(HISTOGRAM, getOperationDescriptor("Stats"));
     }
 
     @Override
@@ -116,40 +115,31 @@ public class Histogram extends BaseStatisticsOperationJAI {
 
             final Map<String, Object> synthProp = new HashMap<>();
 
-            if (JAIExt.isJAIExtOperation(STATS)) {
-                // get the properties
-                Statistics[][] results = (Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY);
-                // Extracting the bins
-                int numBands = result.getNumBands();
-                int[][] bins = new int[numBands][];
+            // get the properties
+            Statistics[][] results = (Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY);
+            // Extracting the bins
+            int numBands = result.getNumBands();
+            int[][] bins = new int[numBands][];
 
-                // Cycle on the bands
-                for (int i = 0; i < results.length; i++) {
-                    Statistics stat = results[i][0];
-                    double[] binsDouble = (double[]) stat.getResult();
-                    bins[i] = new int[binsDouble.length];
-                    for (int j = 0; j < binsDouble.length; j++) {
-                        bins[i][j] = (int) binsDouble[j];
-                    }
+            // Cycle on the bands
+            for (int i = 0; i < results.length; i++) {
+                Statistics stat = results[i][0];
+                double[] binsDouble = (double[]) stat.getResult();
+                bins[i] = new int[binsDouble.length];
+                for (int j = 0; j < binsDouble.length; j++) {
+                    bins[i][j] = (int) binsDouble[j];
                 }
-                // Getting numBins, LowBounds, MaxBounds parameters
-                ParameterBlock parameterBlock = result.getParameterBlock();
-                double[] lowValues = (double[]) parameterBlock.getObjectParameter(7);
-                double[] highValues = (double[]) parameterBlock.getObjectParameter(8);
-                int[] numBins = (int[]) parameterBlock.getObjectParameter(9);
-
-                HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
-
-                // return the map
-                synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, wrapper);
-            } else {
-
-                final org.eclipse.imagen.Histogram hist =
-                        (org.eclipse.imagen.Histogram) result.getProperty(GT_SYNTHETIC_PROPERTY_HISTOGRAM);
-
-                // return the map
-                synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, hist);
             }
+            // Getting numBins, LowBounds, MaxBounds parameters
+            ParameterBlock parameterBlock = result.getParameterBlock();
+            double[] lowValues = (double[]) parameterBlock.getObjectParameter(7);
+            double[] highValues = (double[]) parameterBlock.getObjectParameter(8);
+            int[] numBins = (int[]) parameterBlock.getObjectParameter(9);
+
+            HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
+
+            // return the map
+            synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, wrapper);
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];
             CoverageUtilities.setROIProperty(synthProp, CoverageUtilities.getROIProperty(source));
@@ -165,28 +155,18 @@ public class Histogram extends BaseStatisticsOperationJAI {
         block.setParameter("lowValue", parameters.parameter("lowValue").getValue());
         block.setParameter("highValue", parameters.parameter("highValue").getValue());
         block.setParameter("numBins", parameters.parameter("numBins").getValue());
-        if (JAIExt.isJAIExtOperation(STATS)) {
-            handleJAIEXTParams(block, parameters);
+        GridCoverage2D source = (GridCoverage2D) parameters.parameter("source0").getValue();
+        // Handle ROI and NoData
+        handleROINoDataInternal(block, source, STATS, 2, 3);
+        // Setting the Statistic operation
+        block.set(new StatsType[] {StatsType.HISTOGRAM}, 6);
+        // Check on the band numnber
+        int b = source.getRenderedImage().getSampleModel().getNumBands();
+        int[] indexes = new int[b];
+        for (int i = 0; i < b; i++) {
+            indexes[i] = i;
         }
+        block.set(indexes, 5);
         return block;
-    }
-
-    @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        if (JAIExt.isJAIExtOperation(STATS)) {
-            GridCoverage2D source =
-                    (GridCoverage2D) parameters2.parameter("source0").getValue();
-            // Handle ROI and NoData
-            handleROINoDataInternal(parameters, source, STATS, 2, 3);
-            // Setting the Statistic operation
-            parameters.set(new StatsType[] {StatsType.HISTOGRAM}, 6);
-            // Check on the band numnber
-            int b = source.getRenderedImage().getSampleModel().getNumBands();
-            int[] indexes = new int[b];
-            for (int i = 0; i < b; i++) {
-                indexes[i] = i;
-            }
-            parameters.set(indexes, 5);
-        }
     }
 }

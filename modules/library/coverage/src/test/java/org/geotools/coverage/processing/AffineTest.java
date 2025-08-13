@@ -28,7 +28,6 @@ import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.range.Range;
 import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -126,8 +125,7 @@ public class AffineTest extends GridProcessingTestBase {
         param.parameter("Source").setValue(coverage);
         param.parameter("transform").setValue(new AffineTransform(0.5, 0.0, 0.0, 0.5, 0.0, 0.0));
         param.parameter("Interpolation").setValue(interp);
-        boolean jaiextAffine = JAIExt.isJAIExtOperation("Affine");
-        if (roi != null && jaiextAffine) {
+        if (roi != null) {
             param.parameter("roi").setValue(roi);
         }
 
@@ -149,7 +147,7 @@ public class AffineTest extends GridProcessingTestBase {
         // Ensure a new ROI property has been created
         @SuppressWarnings("unchecked")
         Map<String, Object> properties = scaled.getProperties();
-        if (jaiextAffine && roi != null) {
+        if (roi != null) {
             assertNotNull(properties);
             assertTrue(properties.containsKey("GC_ROI"));
             assertTrue(properties.get("GC_ROI") instanceof ROI);

@@ -28,7 +28,6 @@ import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.ROIShape;
 import org.eclipse.imagen.StatisticsOpImage;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -149,7 +148,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
      */
     public BaseStatisticsOperationJAI(String name, OperationDescriptor operationDescriptor) {
         super(
-                getOperationDescriptor(JAIExt.getOperationName(name)),
+                operationDescriptor,
                 new ExtendedImagingParameterDescriptors(
                         name, operationDescriptor, new HashSet<>(REPLACED_DESCRIPTORS)));
     }

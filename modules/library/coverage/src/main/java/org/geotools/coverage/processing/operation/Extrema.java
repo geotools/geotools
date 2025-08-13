@@ -20,13 +20,11 @@ import java.awt.Shape;
 import java.awt.image.RenderedImage;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.RenderedOp;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.stats.Statistics;
 import org.eclipse.imagen.media.stats.Statistics.StatsType;
 import org.eclipse.imagen.operator.ExtremaDescriptor;
@@ -93,7 +91,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
 
     /** Constructs a default {@code "Extrema"} operation. */
     public Extrema() throws OperationNotFoundException {
-        super(EXTREMA, getOperationDescriptor(JAIExt.getOperationName(EXTREMA)));
+        super(EXTREMA, getOperationDescriptor("Stats"));
     }
 
     @Override
@@ -129,37 +127,24 @@ public class Extrema extends BaseStatisticsOperationJAI {
             final RenderedOp result = (RenderedOp) data;
             final Map<String, Object> synthProp = new HashMap<>();
 
-            if (JAIExt.isJAIExtOperation(STATS)) {
-                // get the properties
-                Statistics[][] results = (Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY);
-                // Extracting the bins
-                int numBands = result.getNumBands();
-                double[] maximums = new double[numBands];
-                double[] minimums = new double[numBands];
+            // get the properties
+            Statistics[][] results = (Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY);
+            // Extracting the bins
+            int numBands = result.getNumBands();
+            double[] maximums = new double[numBands];
+            double[] minimums = new double[numBands];
 
-                // Cycle on the bands
-                for (int i = 0; i < results.length; i++) {
-                    Statistics stat = results[i][0];
-                    double[] binsDouble = (double[]) stat.getResult();
-                    minimums[i] = binsDouble[0];
-                    maximums[i] = binsDouble[1];
-                }
-                // return the map
-                synthProp.put(GT_SYNTHETIC_PROPERTY_MINIMUM, minimums);
-                synthProp.put(GT_SYNTHETIC_PROPERTY_MAXIMUM, maximums);
-            } else {
-                // get the properties
-                final double[] maximums = (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MAXIMUM);
-                final double[] minimums = (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MINIMUM);
-                Object property = result.getProperty(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS);
-                if (property instanceof List[]) synthProp.put(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS, property);
-                property = result.getProperty(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS);
-                if (property instanceof List[]) synthProp.put(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS, property);
-
-                // return the map
-                synthProp.put(GT_SYNTHETIC_PROPERTY_MINIMUM, minimums);
-                synthProp.put(GT_SYNTHETIC_PROPERTY_MAXIMUM, maximums);
+            // Cycle on the bands
+            for (int i = 0; i < results.length; i++) {
+                Statistics stat = results[i][0];
+                double[] binsDouble = (double[]) stat.getResult();
+                minimums[i] = binsDouble[0];
+                maximums[i] = binsDouble[1];
             }
+            // return the map
+            synthProp.put(GT_SYNTHETIC_PROPERTY_MINIMUM, minimums);
+            synthProp.put(GT_SYNTHETIC_PROPERTY_MAXIMUM, maximums);
+
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];
             CoverageUtilities.setROIProperty(synthProp, CoverageUtilities.getROIProperty(source));
@@ -171,20 +156,18 @@ public class Extrema extends BaseStatisticsOperationJAI {
 
     @Override
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        if (JAIExt.isJAIExtOperation(STATS)) {
-            GridCoverage2D source =
-                    (GridCoverage2D) parameters2.parameter("source0").getValue();
-            // Handle ROI and NoData
-            handleROINoDataInternal(parameters, source, STATS, 2, 3);
-            // Setting the Statistic operation
-            parameters.set(new StatsType[] {StatsType.EXTREMA}, 6);
-            // Check on the band numnber
-            int b = source.getRenderedImage().getSampleModel().getNumBands();
-            int[] indexes = new int[b];
-            for (int i = 0; i < b; i++) {
-                indexes[i] = i;
-            }
-            parameters.set(indexes, 5);
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
+        // Handle ROI and NoData
+        handleROINoDataInternal(parameters, source, STATS, 2, 3);
+        // Setting the Statistic operation
+        parameters.set(new StatsType[] {StatsType.EXTREMA}, 6);
+        // Check on the band numnber
+        int b = source.getRenderedImage().getSampleModel().getNumBands();
+        int[] indexes = new int[b];
+        for (int i = 0; i < b; i++) {
+            indexes[i] = i;
         }
+        parameters.set(indexes, 5);
     }
 }

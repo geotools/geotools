@@ -20,7 +20,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
@@ -34,14 +33,12 @@ import java.util.logging.Logger;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.InterpolationNearest;
 import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.Warp;
 import org.eclipse.imagen.WarpGrid;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.media.range.Range;
@@ -681,38 +678,11 @@ final class Resampler2D extends GridCoverage2D {
                  *
                  * TODO: Move the check for AffineTransform into WarpTransform2D.
                  */
-                boolean forceAdapter = false;
-                if (!JAIExt.isJAIExtOperation("Warp")) {
-                    switch (sourceImage.getSampleModel().getTransferType()) {
-                        case DataBuffer.TYPE_DOUBLE:
-                        case DataBuffer.TYPE_FLOAT: {
-                            Bounds source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
-                            Bounds target = CRS.transform(targetGG.getEnvelope(), targetCRS);
-                            source = targetGG.reduce(source);
-                            target = targetGG.reduce(target);
-                            if (!new GeneralBounds(source).contains(target, true)) {
-                                if (interpolation != null && !(interpolation instanceof InterpolationNearest)) {
-                                    hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
-                                    return reproject(sourceCoverage, targetCRS, targetGG, null, hints, background);
-                                } else {
-                                    // If we were already using nearest-neighbor interpolation,
-                                    // force usage of WarpAdapter2D instead of WarpAffine.
-                                    // The price will be a slower reprojection.
-                                    forceAdapter = true;
-                                }
-                            }
-                        }
-                    }
-                }
                 // -------- End of JAI bug workaround --------
                 final MathTransform2D transform = (MathTransform2D) allSteps2D;
                 final CharSequence name = sourceCoverage.getName();
                 operation = "Warp";
-                if (forceAdapter) {
-                    warp = new WarpBuilder(0.0).buildWarp(transform, sourceBB);
-                } else {
-                    warp = createWarp(name, sourceBB, targetBB, transform, mtFactory, hints);
-                }
+                warp = createWarp(name, sourceBB, targetBB, transform, mtFactory, hints);
                 // store the transormation in the properties, as we might want to retrieve and chain
                 // it with affine transforms down the chain
                 imageProperties.put("MathTransform", transform);

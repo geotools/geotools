@@ -17,16 +17,15 @@
  */
 package org.geotools.process.raster;
 
-import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.imagen.RenderedOp;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.rlookup.RangeLookupTable;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.Category;
@@ -135,33 +134,10 @@ public class RangeLookupProcess implements RasterProcess {
         // output values.
         // Our goal is to use the smallest possible data type that can hold the image values.
         //
-        Object lookupTable;
         final int size = classificationRanges.size();
         int transferType = ColorUtilities.getTransferType(size);
-        if (JAIExt.isJAIExtOperation("RLookup")) {
-            lookupTable =
-                    CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd, transferType);
-        } else {
-            // Builds the range lookup table
-            // final RangeLookupTable lookupTable;
-
-            switch (transferType) {
-                case DataBuffer.TYPE_BYTE:
-                    lookupTable =
-                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (byte) nd);
-                    break;
-                case DataBuffer.TYPE_USHORT:
-                    lookupTable =
-                            CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, (short) nd);
-                    break;
-                case DataBuffer.TYPE_INT:
-                    lookupTable = CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd);
-                    break;
-                default:
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classification ranges size", size));
-            }
-        }
+        RangeLookupTable lookupTable =
+                CoverageUtilities.getRangeLookupTable(classificationRanges, outputPixelValues, nd, transferType);
         worker.setROI(org.geotools.coverage.util.CoverageUtilities.getROIProperty(coverage));
         worker.setBackground(new double[] {nd});
         final RenderedOp indexedClassification = worker.rangeLookup(lookupTable).getRenderedOperation();

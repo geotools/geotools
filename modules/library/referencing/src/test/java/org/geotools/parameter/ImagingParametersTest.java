@@ -55,13 +55,13 @@ public final class ImagingParametersTest {
         final String vendor = "com.sun.media.jai";
         final String mode = RenderedRegistryMode.MODE_NAME;
         final RegistryElementDescriptor descriptor =
-                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "algebric");
+                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "scale");
         final ImagingParameterDescriptors parameters = new ImagingParameterDescriptors(descriptor);
         final GenericName alias = parameters.getAlias().iterator().next();
         /*
          * Tests the operation-wide properties.
          */
-        assertEquals("Name", "algebric", parameters.getName().getCode());
+        assertEquals("Name", "scale", parameters.getName().getCode());
         assertEquals(
                 "Authority",
                 author,
@@ -74,10 +74,10 @@ public final class ImagingParametersTest {
         /*
          * Tests the properties for a specific parameter in the parameter group.
          */
-        final ParameterDescriptor param = (ParameterDescriptor) parameters.descriptor("constants");
-        assertEquals("Name", "constants", param.getName().getCode());
-        assertEquals("Type", double[].class, param.getValueClass());
-        assertEquals("Default", 1, ((double[]) param.getDefaultValue()).length);
+        final ParameterDescriptor param = (ParameterDescriptor) parameters.descriptor("xScale");
+        assertEquals("Name", "xScale", param.getName().getCode());
+        assertEquals("Type", Float.class, param.getValueClass());
+        assertEquals("Default", 1f, param.getDefaultValue());
         assertNull("Minimum", param.getMinimumValue());
         assertNull("Maximum", param.getMaximumValue());
         assertNull("Valid values", param.getValidValues());

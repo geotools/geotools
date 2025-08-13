@@ -186,7 +186,8 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>algebra</artifactId>
+      <artifactId>scale</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <!-- Test dependencies -->

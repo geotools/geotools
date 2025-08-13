@@ -18,7 +18,6 @@ package org.geotools.coverageio.jp2k;
 
 import com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi;
 import com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi;
-import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
 import it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.util.KakaduUtilities;
@@ -28,8 +27,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
@@ -50,16 +47,6 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
     }
 
     static {
-        try {
-            new ParameterBlockJAI("ImageReadMT");
-        } catch (final Exception e) {
-            try {
-                ImageReadDescriptorMT.register(JAI.getDefaultInstance());
-            } catch (final Exception e1) {
-
-            }
-        }
-
         boolean hasKakaduSpi = false;
         boolean hasNativeJp2 = false;
         boolean hasStandardJp2 = false;

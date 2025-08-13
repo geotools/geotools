@@ -16,7 +16,6 @@
  */
 package org.geotools.coverageio.jp2k;
 
-import com.sun.media.jai.codecimpl.util.ImagingException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -43,6 +42,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.util.ImagingException;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.data.DataSourceException;
@@ -224,7 +224,7 @@ class RasterLayerResponse {
                     if (LOGGER.isLoggable(Level.SEVERE))
                         LOGGER.log(Level.SEVERE, "Unable to load the raster for granule " + granuleIndex, e);
                     continue;
-                } catch (ImagingException | javax.media.jai.util.ImagingException e) {
+                } catch (ImagingException e) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine(
                                 "Loading image number " + granuleIndex + " failed, original request was " + request);

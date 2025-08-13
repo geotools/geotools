@@ -892,12 +892,7 @@ public class Utilities {
             reader = readerSpi.createReaderInstance();
             pbjImageRead.add(reader);
 
-            // Check if to use a simple JAI ImageRead operation or a
-            // multithreaded one
-            final String jaiOperation = useMultithreading ? "ImageReadMT" : "ImageRead";
-            // final String jaiOperation = "ImageRead";
-            /** TODO: SET HINTS */
-            planarImage = JAI.create(jaiOperation, pbjImageRead, null);
+            planarImage = JAI.create("ImageRead", pbjImageRead, null);
         } else {
             reader = readerSpi.createReaderInstance();
             reader.setInput(paramInput, true, true);

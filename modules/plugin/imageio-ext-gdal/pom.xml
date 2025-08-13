@@ -152,11 +152,6 @@
       <artifactId>imageio-ext-gdalsrp</artifactId>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.imageio-ext</groupId>
-      <artifactId>imageio-ext-imagereadmt</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-    </dependency>
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
     </dependency>

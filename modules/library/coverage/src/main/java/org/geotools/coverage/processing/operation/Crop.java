@@ -174,7 +174,7 @@ public class Crop extends Operation2D {
      * <p>The parameter shall be a Polygon instance, or a GeometryCollection holding Polygons
      */
     public static final ParameterDescriptor<Geometry> CROP_ROI = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             PARAMNAME_ROI,
             Geometry.class, // Value class
             null, // Array of valid values
@@ -216,7 +216,7 @@ public class Crop extends Operation2D {
 
     /** The parameter descriptor used to tell this operation to check NoData */
     public static final ParameterDescriptor<Range> NODATA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             PARAMNAME_NODATA,
             Range.class, // Value class
             null, // Array of valid values
@@ -228,7 +228,7 @@ public class Crop extends Operation2D {
 
     /** The parameter descriptor used to tell this operation to set destinationNoData */
     public static final ParameterDescriptor<double[]> DEST_NODATA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             PARAMNAME_DEST_NODATA,
             double[].class, // Value class
             null, // Array of valid values
@@ -240,7 +240,7 @@ public class Crop extends Operation2D {
 
     /** Constructs a default {@code "Crop"} operation. */
     public Crop() {
-        super(new DefaultParameterDescriptorGroup(Citations.JAI, "CoverageCrop", new ParameterDescriptor[] {
+        super(new DefaultParameterDescriptorGroup(Citations.IMAGEN, "CoverageCrop", new ParameterDescriptor[] {
             SOURCE_0, CROP_ENVELOPE, CROP_ROI, ROI_OPTIMISATION_TOLERANCE, FORCE_MOSAIC, NODATA, DEST_NODATA
         }));
     }

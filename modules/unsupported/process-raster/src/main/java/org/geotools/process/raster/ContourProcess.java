@@ -28,7 +28,6 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
-
 import org.eclipse.imagen.media.range.RangeDouble;
 import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.api.coverage.grid.GridGeometry;
@@ -55,7 +54,6 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.NumberRange;
 import org.jaitools.media.jai.contour.ContourDescriptor;
 import org.jaitools.media.jai.contour.ContourRIF;
-import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.util.AffineTransformation;

@@ -75,10 +75,10 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * Mapping between values of the "Vendor" resource (in OperationDescriptor) and the citation for know authorities.
      */
     private static final Object[] AUTHORITIES = {
-        "com.sun.media.jai", Citations.JAI,
+        "com.sun.media.jai", Citations.IMAGEN,
         "org.geotools", Citations.GEOTOOLS,
-        "org.jaitools.media.jai", Citations.JAI,
-        "it.geosolutions.jaiext", Citations.JAI
+        "org.jaitools.media.jai", Citations.IMAGEN,
+        "it.geosolutions.jaiext", Citations.IMAGEN
     };
 
     /**
@@ -232,7 +232,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      *  </tr>
      *  <tr>
      *   <td>{@link Identifier#AUTHORITY_KEY AUTHORITY_KEY}</td>
-     *   <td>{@linkplain Citations#JAI JAI} or {@linkplain Citations#GEOTOOLS Geotools}
+     *   <td>{@linkplain Citations#IMAGEN JAI} or {@linkplain Citations#GEOTOOLS Geotools}
      *       inferred from the vendor, extented with {@code "DocURL"}
      *       {@linkplain OperationDescriptor#getResources resources} as
      *       {@linkplain ResponsibleParty#getContactInfo contact information}.</td></td>

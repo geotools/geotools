@@ -56,7 +56,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the Sources. */
     public static final ParameterDescriptor<Collection> SOURCES = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             SOURCES_NAME,
             Collection.class, // Value class (mandatory)
             null, // Array of valid values

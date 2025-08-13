@@ -51,17 +51,17 @@ public final class ImagingParametersTest {
     /** Tests {@link ImagingParameters}. */
     @Test
     public void testDescriptors() {
-        final String author = Citations.JAI.getTitle().toString();
+        final String author = Citations.IMAGEN.getTitle().toString();
         final String vendor = "com.sun.media.jai";
         final String mode = RenderedRegistryMode.MODE_NAME;
         final RegistryElementDescriptor descriptor =
-                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "AddConst");
+                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "algebric");
         final ImagingParameterDescriptors parameters = new ImagingParameterDescriptors(descriptor);
         final GenericName alias = parameters.getAlias().iterator().next();
         /*
          * Tests the operation-wide properties.
          */
-        assertEquals("Name", "AddConst", parameters.getName().getCode());
+        assertEquals("Name", "algebric", parameters.getName().getCode());
         assertEquals(
                 "Authority",
                 author,

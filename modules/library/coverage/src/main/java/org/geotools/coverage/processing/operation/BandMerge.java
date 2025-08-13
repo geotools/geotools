@@ -105,7 +105,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Sources. */
     public static final ParameterDescriptor<Collection> SOURCES = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "Sources",
             Collection.class, // Value class (mandatory)
             null, // Array of valid values
@@ -117,7 +117,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Transformation Choice. */
     public static final ParameterDescriptor<String> TRANSFORM_CHOICE_PARAM = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             TRANSFORM_CHOICE,
             String.class, // Value class (mandatory)
             null, // Array of valid values
@@ -129,7 +129,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Source index to use for selecting the Affine Transformation to use. */
     public static final ParameterDescriptor<Integer> INDEX = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             COVERAGE_INDEX,
             Integer.class, // Value class (mandatory)
             null, // Array of valid values
@@ -141,7 +141,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Transformation Choice. */
     public static final ParameterDescriptor<Geometry> GEOMETRY_PARAM = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             GEOMETRY,
             Geometry.class, // Value class (mandatory)
             null, // Array of valid values

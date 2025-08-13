@@ -177,7 +177,7 @@ public class Resample extends Operation2D {
 
     /** The parameter descriptor for the BackgroundValues. */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "BackgroundValues",
             double[].class, // Value class (mandatory)
             null, // Array of valid values

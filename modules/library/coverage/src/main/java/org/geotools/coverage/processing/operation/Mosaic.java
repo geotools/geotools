@@ -135,7 +135,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Sources. */
     public static final ParameterDescriptor<Collection> SOURCES = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             SOURCES_NAME,
             Collection.class, // Value class (mandatory)
             null, // Array of valid values
@@ -147,7 +147,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the GridGeometry to use. */
     public static final ParameterDescriptor<GridGeometry> GG = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             GEOMETRY,
             GridGeometry.class, // Value class (mandatory)
             null, // Array of valid values
@@ -159,7 +159,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the GridGeometry choosing policy. */
     public static final ParameterDescriptor<String> GEOMETRY_POLICY = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             POLICY,
             String.class, // Value class (mandatory)
             null, // Array of valid values
@@ -171,7 +171,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Transformation Choice. */
     public static final ParameterDescriptor<double[]> OUTPUT_NODATA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             OUTNODATA_NAME,
             double[].class, // Value class (mandatory)
             null, // Array of valid values
@@ -183,7 +183,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Alpha band. */
     public static final ParameterDescriptor<Collection> ALPHA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             ALPHA_NAME,
             Collection.class, // Value class (mandatory)
             null, // Array of valid values

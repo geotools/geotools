@@ -68,7 +68,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the SPATIAL_SUBSAMPLING_X */
     public static final ParameterDescriptor<Double> SPATIAL_SUBSAMPLING_X = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "xPeriod",
             Double.class, // Value class (mandatory)
             null, // Array of valid values
@@ -80,7 +80,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the SPATIAL_SUBSAMPLING_Y */
     public static final ParameterDescriptor<Double> SPATIAL_SUBSAMPLING_Y = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "yPeriod",
             Double.class, // Value class (mandatory)
             null, // Array of valid values
@@ -92,7 +92,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the Region Of Interest. */
     public static final ParameterDescriptor<Polygon> ROI = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "roi",
             Polygon.class, // Value class (mandatory)
             null, // Array of valid values

@@ -41,7 +41,7 @@ public class ExtendedImagingParameterDescriptors extends ImagingParameterDescrip
     ExtendedImagingParameterDescriptors(
             String operationName, RegistryElementDescriptor operation, Collection<ParameterDescriptor> extension) {
         super(operation, extension);
-        this.operationName = new NamedIdentifier(Citations.JAI, operationName);
+        this.operationName = new NamedIdentifier(Citations.IMAGEN, operationName);
     }
 
     @Override

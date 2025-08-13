@@ -91,9 +91,7 @@ public final class Logging {
     /** Logging configuration that apply only to GeoTools packages. */
     public static final Logging GEOTOOLS = getLogging("org.geotools");
 
-    /**
-     * Logging configuration that apply only to org.eclipse packages
-     */
+    /** Logging configuration that apply only to org.eclipse packages */
     public static final Logging ECLIPSE = getLogging("org.eclipse");
 
     /**

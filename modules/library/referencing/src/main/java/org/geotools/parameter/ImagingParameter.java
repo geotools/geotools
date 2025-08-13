@@ -94,11 +94,11 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
         final String name = getName();
         final Class type = getType();
         try {
-            if (type.equals(Float.class)) parameters.getFloatParameter(name);
-            if (type.equals(Long.class)) parameters.getLongParameter(name);
-            if (type.equals(Integer.class)) parameters.getIntParameter(name);
-            if (type.equals(Short.class)) parameters.getShortParameter(name);
-            if (type.equals(Byte.class)) parameters.getByteParameter(name);
+            if (type.equals(Float.class)) return parameters.getFloatParameter(name);
+            if (type.equals(Long.class)) return parameters.getLongParameter(name);
+            if (type.equals(Integer.class)) return parameters.getIntParameter(name);
+            if (type.equals(Short.class)) return parameters.getShortParameter(name);
+            if (type.equals(Byte.class)) return parameters.getByteParameter(name);
             return parameters.getDoubleParameter(name);
         } catch (ClassCastException exception) {
             throw invalidType(exception);

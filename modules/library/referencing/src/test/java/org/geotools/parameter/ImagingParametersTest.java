@@ -16,7 +16,6 @@
  */
 package org.geotools.parameter;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -61,7 +60,7 @@ public final class ImagingParametersTest {
         /*
          * Tests the operation-wide properties.
          */
-        assertEquals("Name", "scale", parameters.getName().getCode());
+        assertEquals("Name", "Scale", parameters.getName().getCode());
         assertEquals(
                 "Authority",
                 author,
@@ -75,10 +74,23 @@ public final class ImagingParametersTest {
          * Tests the properties for a specific parameter in the parameter group.
          */
         final ParameterDescriptor param = (ParameterDescriptor) parameters.descriptor("xScale");
+        assertEquals("Name", "Scale", parameters.getName().getCode());
+        assertEquals(
+                "Authority",
+                author,
+                parameters.getName().getAuthority().getTitle().toString());
+        assertEquals("Vendor", vendor, alias.scope().name().toString());
+        assertNotNull("Version", parameters.getName().getVersion());
+        assertLocalized("Vendor", alias.scope().name().toInternationalString());
+        assertLocalized("Remarks", parameters.getRemarks());
+        assertTrue("Remarks", parameters.getRemarks().toString().trim().length() > 0);
+        /*
+         * Tests the properties for a specific parameter in the parameter group.
+         */
         assertEquals("Name", "xScale", param.getName().getCode());
         assertEquals("Type", Float.class, param.getValueClass());
         assertEquals("Default", 1f, param.getDefaultValue());
-        assertNull("Minimum", param.getMinimumValue());
+        assertEquals("Minimum", 0f, param.getMinimumValue());
         assertNull("Maximum", param.getMaximumValue());
         assertNull("Valid values", param.getValidValues());
         assertLocalized("Remarks", param.getRemarks());
@@ -92,17 +104,15 @@ public final class ImagingParametersTest {
          */
         final ImagingParameters values = (ImagingParameters) parameters.createValue();
         for (int i = 0; i < 20; i++) {
-            final ParameterValue before = values.parameter("constants");
+            final ParameterValue before = values.parameter("xScale");
             if (i % 5 == 0) {
-                values.parameters.setParameter("constants", new double[] {i});
+                values.parameters.setParameter("xScale", (float) i);
             } else {
-                values.parameter("constants").setValue(new double[] {i});
+                values.parameter("xScale").setValue((float) i);
             }
-            assertArrayEquals(
-                    values.parameter("constants").doubleValueList(),
-                    (double[]) values.parameters.getObjectParameter("constants"),
-                    0.0);
-            assertSame(before, values.parameter("constants"));
+            assertEquals(
+                    (float) values.parameter("xScale").doubleValue(), values.parameters.getObjectParameter("xScale"));
+            assertSame(before, values.parameter("xScale"));
         }
         assertNotNull(values.toString());
         /*

@@ -28,6 +28,9 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
+
+import org.eclipse.imagen.media.range.RangeDouble;
+import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -196,7 +199,7 @@ public class ContourProcess implements RasterProcess {
                             if (catRange.getMinimum() == catRange.getMaximum()) {
                                 noDataList.add(catRange.getMinimum());
                             } else {
-                                Range<Double> noData = new Range<>(
+                                RangeDouble noData = RangeFactory.create(
                                         catRange.getMinimum(),
                                         catRange.isMinIncluded(),
                                         catRange.getMaximum(),

@@ -26,12 +26,10 @@ import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.ParameterBlockJAI;
-import org.eclipse.imagen.media.JAIExt;
 import org.eclipse.imagen.registry.RIFRegistry;
 import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
-import org.geotools.image.ImageWorker;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.logging.Logging;
@@ -102,9 +100,6 @@ public final class Registry {
                         currentState = Boolean.TRUE;
                     }
                 }
-            }
-            if (ImageWorker.isJaiExtEnabled()) {
-                JAIExt.setJAIAcceleration(operation, allowed);
             }
             if (currentState != null && currentState.booleanValue() != allowed) {
                 RIFRegistry.unsetPreference(

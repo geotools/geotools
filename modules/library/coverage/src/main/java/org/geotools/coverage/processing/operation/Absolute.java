@@ -21,6 +21,7 @@ package org.geotools.coverage.processing.operation;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
 import java.util.Map;
+import javax.media.jai.operator.AbsoluteDescriptor;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
 import org.geotools.api.parameter.ParameterValueGroup;

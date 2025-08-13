@@ -19,7 +19,7 @@ package org.geotools.coverage.processing.operation;
 import java.awt.image.RenderedImage;
 import java.util.Map;
 import org.eclipse.imagen.ParameterBlockJAI;
-import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.shadedrelief.ShadedReliefDescriptor;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -148,7 +148,7 @@ public class ShadedRelief extends OperationJAI {
     public static final String[] CUSTOMIZABLE_PARAMS = {PARAM_ALTITUDE, PARAM_AZIMUTH, PARAM_ALGORITHM};
 
     public ShadedRelief() throws OperationNotFoundException {
-        super("ShadedRelief", getOperationDescriptor(JAIExt.getOperationName("ShadedRelief")));
+        super("ShadedRelief", getOperationDescriptor("ShadedRelief"));
     }
 
     @Override

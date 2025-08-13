@@ -38,7 +38,6 @@ import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.TileCache;
-import org.eclipse.imagen.media.JAIExt;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
@@ -51,7 +50,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Interpolator2D;
-import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.LoggingKeys;
@@ -148,8 +146,6 @@ public class CoverageProcessor {
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
         }
-        boolean isJaiExtEnabled = ImageWorker.isJaiExtEnabled();
-        LOGGER.config("JAI-Ext operations are " + (isJaiExtEnabled ? "enabled" : "disabled"));
     }
 
     /**
@@ -236,30 +232,6 @@ public class CoverageProcessor {
         for (Hints key : keySet) {
             CoverageProcessor processor = processorsPool.get(key);
             processor.scanForPlugins();
-        }
-    }
-
-    /**
-     * This method is called when the user has registered another {@link OperationDescriptor} and must remove the old
-     * operation instance from the processors.
-     *
-     * @param operationName Name of the operation to remove
-     */
-    public static synchronized void removeOperationFromProcessors(String operationName) {
-        List<String> operations = JAIExt.getJAINames(operationName);
-        Set<Hints> keySet = processorsPool.keySet();
-        for (Hints key : keySet) {
-            for (String opName : operations) {
-                CoverageProcessor processor = processorsPool.get(key);
-                try {
-                    Operation op = processor.getOperation(opName);
-                    if (op != null) {
-                        processor.removeOperation(op);
-                    }
-                } catch (OperationNotFoundException e) {
-                    LOGGER.warning("Operation: " + opName + " not found in CoverageProcessor");
-                }
-            }
         }
     }
 

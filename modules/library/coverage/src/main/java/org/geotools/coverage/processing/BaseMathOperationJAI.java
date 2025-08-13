@@ -111,7 +111,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
      */
     public BaseMathOperationJAI(String name, OperationDescriptor operationDescriptor) {
         super(
-                getOperationDescriptor(name),
+                operationDescriptor,
                 new ExtendedImagingParameterDescriptors(
                         name, operationDescriptor, new HashSet<>(REPLACED_DESCRIPTORS)));
     }

@@ -17,8 +17,6 @@
 package org.geotools.coverageio;
 
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -37,9 +35,11 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;

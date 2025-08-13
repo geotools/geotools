@@ -16,28 +16,8 @@
  */
 package org.geotools.image;
 
-import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
-import com.sun.media.jai.util.ImageUtil;
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
-import it.geosolutions.jaiext.colorindexer.ColorIndexer;
-import it.geosolutions.jaiext.lookup.LookupTable;
-import it.geosolutions.jaiext.lookup.LookupTableFactory;
-import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.rlookup.RangeLookupTable;
-import it.geosolutions.jaiext.stats.HistogramWrapper;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -82,51 +62,65 @@ import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageOutputStreamSpi;
 import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.ImageOutputStream;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.ColorCube;
-import javax.media.jai.Histogram;
-import javax.media.jai.IHSColorSpace;
-import javax.media.jai.ImageFunction;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.KernelJAI;
-import javax.media.jai.LookupTableJAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.ParameterListDescriptor;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.PropertyGenerator;
-import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.TileCache;
-import javax.media.jai.Warp;
-import javax.media.jai.WarpAffine;
-import javax.media.jai.WarpGrid;
-import javax.media.jai.operator.AddDescriptor;
-import javax.media.jai.operator.BandCombineDescriptor;
-import javax.media.jai.operator.BandSelectDescriptor;
-import javax.media.jai.operator.BinarizeDescriptor;
-import javax.media.jai.operator.ColorConvertDescriptor;
-import javax.media.jai.operator.ConstantDescriptor;
-import javax.media.jai.operator.ErrorDiffusionDescriptor;
-import javax.media.jai.operator.ExtremaDescriptor;
-import javax.media.jai.operator.FormatDescriptor;
-import javax.media.jai.operator.HistogramDescriptor;
-import javax.media.jai.operator.InvertDescriptor;
-import javax.media.jai.operator.LookupDescriptor;
-import javax.media.jai.operator.MeanDescriptor;
-import javax.media.jai.operator.MosaicDescriptor;
-import javax.media.jai.operator.MosaicType;
-import javax.media.jai.operator.MultiplyConstDescriptor;
-import javax.media.jai.operator.MultiplyDescriptor;
-import javax.media.jai.operator.OrderedDitherDescriptor;
-import javax.media.jai.operator.RescaleDescriptor;
-import javax.media.jai.operator.SubtractDescriptor;
-import javax.media.jai.operator.XorConstDescriptor;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.ColorCube;
+import org.eclipse.imagen.Histogram;
+import org.eclipse.imagen.IHSColorSpace;
+import org.eclipse.imagen.ImageFunction;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.KernelJAI;
+import org.eclipse.imagen.LookupTableJAI;
+import org.eclipse.imagen.NotAColorSpace;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterListDescriptor;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.PropertyGenerator;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.TileCache;
+import org.eclipse.imagen.Warp;
+import org.eclipse.imagen.WarpAffine;
+import org.eclipse.imagen.WarpGrid;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
+import org.eclipse.imagen.media.bandcombine.BandCombineDescriptor;
+import org.eclipse.imagen.media.bandselect.BandSelectDescriptor;
+import org.eclipse.imagen.media.binarize.BinarizeDescriptor;
+import org.eclipse.imagen.media.classifier.ColorMapTransform;
+import org.eclipse.imagen.media.colorconvert.ColorConvertDescriptor;
+import org.eclipse.imagen.media.colorconvert.IHSColorSpaceJAIExt;
+import org.eclipse.imagen.media.colorindexer.ColorIndexer;
+import org.eclipse.imagen.media.errordiffusion.ErrorDiffusionDescriptor;
+import org.eclipse.imagen.media.format.FormatDescriptor;
+import org.eclipse.imagen.media.lookup.LookupDescriptor;
+import org.eclipse.imagen.media.lookup.LookupTable;
+import org.eclipse.imagen.media.lookup.LookupTableFactory;
+import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
+import org.eclipse.imagen.media.mosaic.MosaicType;
+import org.eclipse.imagen.media.orderdither.OrderedDitherDescriptor;
+import org.eclipse.imagen.media.piecewise.PiecewiseTransform1D;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.rescale.RescaleDescriptor;
+import org.eclipse.imagen.media.rlookup.RangeLookupTable;
+import org.eclipse.imagen.media.stats.HistogramWrapper;
+import org.eclipse.imagen.media.stats.Statistics;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.media.util.ImageUtil;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
+import org.eclipse.imagen.operator.ConstantDescriptor;
+import org.eclipse.imagen.operator.ExtremaDescriptor;
+import org.eclipse.imagen.operator.HistogramDescriptor;
+import org.eclipse.imagen.operator.MeanDescriptor;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -204,7 +198,7 @@ public class ImageWorker {
 
     public static final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
 
-    public static final String USE_JAI_SCALE2_KEY = "it.geosolutions.jaiext.scale2";
+    public static final String USE_JAI_SCALE2_KEY = "org.eclipse.imagen.media.scale2";
 
     public static final boolean JAIEXT_ENABLED;
 
@@ -872,7 +866,7 @@ public class ImageWorker {
     /**
      * Removes a rendering hint. Note that invoking this method is <strong>not</strong> the same than invoking <code>
      * {@linkplain #setRenderingHint setRenderingHint}(key, null)</code>. This is especially true for the
-     * {@linkplain javax.media.jai.TileCache tile cache} hint:
+     * {@linkplain org.eclipse.imagen.TileCache tile cache} hint:
      *
      * <p>
      *
@@ -973,7 +967,7 @@ public class ImageWorker {
         } else {
             final int numBands = image.getSampleModel().getNumBands();
             final ColorModel newCm = new ComponentColorModel(
-                    new BogusColorSpace(numBands),
+                    new NotAColorSpace(numBands),
                     false, // If true, supports transparency.
                     false, // If true, alpha is premultiplied.
                     Transparency.OPAQUE, // What alpha values can be represented.
@@ -4653,7 +4647,7 @@ public class ImageWorker {
         for (ROI rasterROI : rasterROIs) {
             pb.addSource(rasterROI.getAsImage());
         }
-        pb.add(javax.media.jai.operator.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+        pb.add(org.eclipse.imagen.media.mosaic.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
         pb.add(null); // alphas
         pb.add(null); // ROI (null to avoid double bit -> byte expansion of the ROI data
         pb.add(ROI_THRESHOLDS);

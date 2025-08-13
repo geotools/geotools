@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import javax.media.jai.OperationDescriptor;
+import org.eclipse.imagen.OperationDescriptor;
 import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.Utilities;
 

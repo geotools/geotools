@@ -39,7 +39,7 @@ import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.image.ImageWorker;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;

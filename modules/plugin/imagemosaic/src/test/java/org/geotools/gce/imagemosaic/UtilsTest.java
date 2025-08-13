@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.PriorityQueue;
-import javax.media.jai.Histogram;
+import org.eclipse.imagen.Histogram;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;

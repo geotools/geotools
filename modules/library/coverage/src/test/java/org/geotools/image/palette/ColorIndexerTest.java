@@ -19,14 +19,14 @@ package org.geotools.image.palette;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.colorindexer.ColorIndexer;
-import it.geosolutions.jaiext.colorindexer.Quantizer;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-import javax.media.jai.TiledImage;
+import org.eclipse.imagen.TiledImage;
+import org.eclipse.imagen.media.colorindexer.ColorIndexer;
+import org.eclipse.imagen.media.colorindexer.Quantizer;
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
 

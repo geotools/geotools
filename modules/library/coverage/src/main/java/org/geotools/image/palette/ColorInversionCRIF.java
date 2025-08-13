@@ -20,7 +20,7 @@ import java.awt.RenderingHints;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
-import javax.media.jai.CRIFImpl;
+import org.eclipse.imagen.CRIFImpl;
 
 /**
  * CRIF for the color inversion operation

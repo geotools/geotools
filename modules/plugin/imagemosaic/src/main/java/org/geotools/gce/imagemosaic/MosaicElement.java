@@ -19,8 +19,8 @@ package org.geotools.gce.imagemosaic;
 
 import it.geosolutions.imageio.pam.PAMDataset;
 import java.awt.image.RenderedImage;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
 
 /**
  * Represents the input raster element for a mosaic operation, source {@link RenderedImage}, {@link ROI} and alpha

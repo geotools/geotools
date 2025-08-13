@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
@@ -34,11 +33,12 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.TileCache;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.TileCache;
+import org.eclipse.imagen.media.JAIExt;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.coverage.processing.OperationNotFoundException;

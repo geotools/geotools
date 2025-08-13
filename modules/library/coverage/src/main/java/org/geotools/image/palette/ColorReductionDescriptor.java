@@ -20,8 +20,8 @@ package org.geotools.image.palette;
 
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
-import javax.media.jai.OperationDescriptorImpl;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.OperationDescriptorImpl;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 
 public class ColorReductionDescriptor extends OperationDescriptorImpl {
 

@@ -18,12 +18,11 @@ package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
 
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
 import java.util.Map;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.operator.MultiplyDescriptor;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;

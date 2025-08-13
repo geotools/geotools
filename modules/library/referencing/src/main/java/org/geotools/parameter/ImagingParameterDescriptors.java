@@ -28,12 +28,12 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.media.jai.EnumeratedParameter;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.ParameterListDescriptor;
-import javax.media.jai.RegistryElementDescriptor;
-import javax.media.jai.registry.RenderedRegistryMode;
-import javax.media.jai.util.Range;
+import org.eclipse.imagen.EnumeratedParameter;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.ParameterListDescriptor;
+import org.eclipse.imagen.RegistryElementDescriptor;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
+import org.eclipse.imagen.util.Range;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.metadata.citation.Citation;
@@ -75,22 +75,22 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * Mapping between values of the "Vendor" resource (in OperationDescriptor) and the citation for know authorities.
      */
     private static final Object[] AUTHORITIES = {
-        "com.sun.media.jai", Citations.IMAGEN,
+        "org.eclipse.imagen.media", Citations.IMAGEN,
         "org.geotools", Citations.GEOTOOLS,
         "org.jaitools.media.jai", Citations.IMAGEN,
-        "it.geosolutions.jaiext", Citations.IMAGEN
+        "org.eclipse.imagen.media", Citations.IMAGEN
     };
 
     /**
      * The default <cite>source type map</cite> as a (<code>{@linkplain RenderedImage}.class</code>, <code>
      * {@linkplain GridCoverage}.class</code>) key-value pair. This is the default argument for wrapping a JAI operation
-     * in the {@value javax.media.jai.registry.RenderedRegistryMode#MODE_NAME} registry mode.
+     * in the {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME} registry mode.
      */
     public static final Map<Class<?>, Class<?>> DEFAULT_SOURCE_TYPE_MAP =
             Collections.singletonMap(RenderedImage.class, GridCoverage.class);
 
     /**
-     * The registry mode, usually {@value javax.media.jai.registry.RenderedRegistryMode#MODE_NAME}. This field is
+     * The registry mode, usually {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME}. This field is
      * {@code null} if {@link #operation} is null.
      */
     protected final String registryMode;
@@ -115,7 +115,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      *
      * <p>The <cite>source type map</cite> default to a (<code>{@linkplain RenderedImage}.class
      * </code>, <code>{@linkplain GridCoverage}.class</code>) key-value pair and the <cite>registry mode</cite> default
-     * to {@value javax.media.jai.registry.RenderedRegistryMode#MODE_NAME}.
+     * to {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME}.
      *
      * @param operation The JAI's operation descriptor, usually as an instance of {@link OperationDescriptor}.
      */
@@ -137,7 +137,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      *
      * <p>The <cite>source type map</cite> default to a (<code>{@linkplain RenderedImage}.class
      * </code>, <code>{@linkplain GridCoverage}.class</code>) key-value pair and the <cite>registry mode</cite> default
-     * to {@value javax.media.jai.registry.RenderedRegistryMode#MODE_NAME}.
+     * to {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME}.
      *
      * @param operation The JAI's operation descriptor, usually as an instance of {@link OperationDescriptor}.
      * @param extension Additional parameters to put in this descriptor, or {@code null} if none. If a parameter has the
@@ -157,7 +157,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param operation The JAI's operation descriptor, usually as an instance of {@link OperationDescriptor}.
      * @param registryMode The JAI's registry mode (usually
-     *     {@value javax.media.jai.registry.RenderedRegistryMode#MODE_NAME}).
+     *     {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME}).
      * @param sourceTypeMap Mapping from JAI source type to this group source type. Typically a singleton with the (
      *     <code>{@linkplain RenderedImage}.class</code>, <code>
      *     {@linkplain GridCoverage}.class</code>) key-value pair.
@@ -248,7 +248,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * </table>
      *
      * <p>For JAI image operation (for example {@code "Add"}, the end result is fully-qualified name like
-     * {@code "JAI:Add"} and one alias like {@code "com.sun.media.jai.Add"}.
+     * {@code "JAI:Add"} and one alias like {@code "org.eclipse.imagen.media.Add"}.
      *
      * <p>This method returns a modifiable map. Users can safely changes its content in order to select for example a
      * different name.
@@ -325,7 +325,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
              * The name should be stored as a String (not as an Identifier), otherwise
              * the version and the authority would be ignored. For JAI image operation,
              * the end result is fully-qualified name like "JAI:Add" and one alias like
-             * "com.sun.media.jai.Add".
+             * "org.eclipse.imagen.media.Add".
              */
             final GenericName alias = NameFactory.create(
                     new InternationalString[] {
@@ -485,7 +485,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     }
 
     /**
-     * Creates a new instance of parameter value group. A JAI {@link javax.media.jai.ParameterList} is created for
+     * Creates a new instance of parameter value group. A JAI {@link org.eclipse.imagen.ParameterList} is created for
      * holding parameter values, and wrapped into an {@link ImagingParameters} instance.
      *
      * @return The new value initialized to the default value.

@@ -24,13 +24,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import it.geosolutions.jaiext.classifier.LinearColorMap;
-import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.imagen.media.classifier.LinearColorMap;
+import org.eclipse.imagen.media.classifier.LinearColorMapElement;
 import org.geotools.api.style.ColorMap;
 import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.FeatureTypeStyle;

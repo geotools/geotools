@@ -25,12 +25,12 @@ import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.PointOpImage;
-import javax.media.jai.operator.BandSelectDescriptor;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PointOpImage;
 import org.eclipse.imagen.media.algebra.AlgebraDescriptor;
 import org.eclipse.imagen.media.algebra.constant.OperationConstDescriptor;
+import org.eclipse.imagen.media.bandselect.BandSelectDescriptor;
 import org.geotools.image.ImageWorker;
 
 /**

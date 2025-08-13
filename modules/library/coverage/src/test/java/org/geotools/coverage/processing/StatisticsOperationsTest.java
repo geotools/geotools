@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
-import javax.media.jai.RasterFactory;
+import org.eclipse.imagen.RasterFactory;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -178,8 +178,8 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         params.parameter("roi").setValue(roi);
 
         GridCoverage2D coverage = (GridCoverage2D) op.doOperation(params, null);
-        javax.media.jai.Histogram histogram =
-                (javax.media.jai.Histogram) coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+        org.eclipse.imagen.Histogram histogram =
+                (org.eclipse.imagen.Histogram) coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
         assertEquals(0, histogram.getBinSize(0, 255));
         assertEquals(1, histogram.getBinSize(0, 60));
         /*
@@ -190,7 +190,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         params.parameter("xPeriod").setValue(7 * XAffineTransform.getScaleX0(gridToCRS));
         params.parameter("yPeriod").setValue(7 * XAffineTransform.getScaleY0(gridToCRS));
         coverage = (GridCoverage2D) op.doOperation(params, null);
-        histogram = (javax.media.jai.Histogram) coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+        histogram = (org.eclipse.imagen.Histogram) coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
         assertEquals(0, histogram.getBinSize(0, 255));
         assertEquals(0, histogram.getBinSize(0, 60));
         assertEquals(1, histogram.getBinSize(0, 56));

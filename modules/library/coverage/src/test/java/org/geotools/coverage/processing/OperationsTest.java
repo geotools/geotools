@@ -21,10 +21,10 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
-import javax.media.jai.OperationNode;
+import org.eclipse.imagen.OperationNode;
+import org.eclipse.imagen.media.JAIExt;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.test.TestData;

@@ -2,11 +2,11 @@ package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.Raster;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;

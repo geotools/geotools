@@ -26,7 +26,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ROI;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;

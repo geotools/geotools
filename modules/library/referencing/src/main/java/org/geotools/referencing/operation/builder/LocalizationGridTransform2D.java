@@ -58,8 +58,8 @@ import org.geotools.util.logging.Logging;
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)
- * @todo This class should extends {@link WarpTransform2D} and constructs a {@link javax.media.jai.WarpGrid} the first
- *     time the {@link WarpTransform2D#getWarp()} method is invoked (GEOT-522).
+ * @todo This class should extends {@link WarpTransform2D} and constructs a {@link org.eclipse.imagen.WarpGrid} the
+ *     first time the {@link WarpTransform2D#getWarp()} method is invoked (GEOT-522).
  */
 final class LocalizationGridTransform2D extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */

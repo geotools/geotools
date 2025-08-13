@@ -16,11 +16,6 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.classifier.LinearColorMap;
-import it.geosolutions.jaiext.classifier.LinearColorMapElement;
-import it.geosolutions.jaiext.piecewise.Domain1D;
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -28,7 +23,12 @@ import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.classifier.ColorMapTransform;
+import org.eclipse.imagen.media.classifier.LinearColorMap;
+import org.eclipse.imagen.media.classifier.LinearColorMapElement;
+import org.eclipse.imagen.media.piecewise.Domain1D;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.style.ColorMap;

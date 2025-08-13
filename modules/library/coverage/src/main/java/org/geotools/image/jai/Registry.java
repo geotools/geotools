@@ -16,19 +16,19 @@
  */
 package org.geotools.image.jai;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.renderable.ContextualRenderedImageFactory;
 import java.awt.image.renderable.RenderedImageFactory;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.registry.RIFRegistry;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.registry.RIFRegistry;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
 import org.geotools.image.ImageWorker;
@@ -60,12 +60,12 @@ public final class Registry {
      * uses hardware accelerated methods when available. For example, it make use of MMX instructions on Intel
      * processors. Unfortunatly, some native method crash the Java Virtual Machine under some circonstances. For example
      * on JAI 1.1.2, the {@code "Affine"} operation on an image with float data type, bilinear interpolation and an
-     * {@link javax.media.jai.ImageLayout} rendering hint cause an exception in medialib native code. Disabling the
+     * {@link org.eclipse.imagen.ImageLayout} rendering hint cause an exception in medialib native code. Disabling the
      * native acceleration (i.e using the pure Java version) is a convenient workaround until Sun fix the bug.
      *
      * <p><strong>Implementation note:</strong> the current implementation assumes that factories for native
-     * implementations are declared in the {@code com.sun.media.jai.mlib} package, while factories for pure java
-     * implementations are declared in the {@code com.sun.media.jai.opimage} package. It work for Sun's 1.1.2
+     * implementations are declared in the {@code org.eclipse.imagen.media.mlib} package, while factories for pure java
+     * implementations are declared in the {@code org.eclipse.imagen.media.opimage} package. It work for Sun's 1.1.2
      * implementation, but may change in future versions. If this method doesn't recognize the package, it does nothing.
      *
      * @param operation The operation name (e.g. {@code "Affine"}).
@@ -77,7 +77,7 @@ public final class Registry {
      */
     public static synchronized void setNativeAccelerationAllowed(
             final String operation, final boolean allowed, final JAI jai) {
-        final String product = "com.sun.media.jai";
+        final String product = "org.eclipse.imagen.media";
         final OperationRegistry registry = jai.getOperationRegistry();
 
         // TODO: Check if we can remove SuppressWarnings with a future JAI version.
@@ -90,13 +90,13 @@ public final class Registry {
             Boolean currentState = null;
             for (final RenderedImageFactory factory : factories) {
                 final String pack = factory.getClass().getPackage().getName();
-                if (pack.equals("com.sun.media.jai.mlib")) {
+                if (pack.equals("org.eclipse.imagen.media.mlib")) {
                     nativeFactory = factory;
                     if (javaFactory != null) {
                         currentState = Boolean.FALSE;
                     }
                 }
-                if (pack.equals("com.sun.media.jai.opimage")) {
+                if (pack.equals("org.eclipse.imagen.media.opimage")) {
                     javaFactory = factory;
                     if (nativeFactory != null) {
                         currentState = Boolean.TRUE;

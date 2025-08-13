@@ -16,20 +16,20 @@
  */
 package org.geotools.coverage.grid;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.BorderExtenderCopy;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.ROI;
-import javax.media.jai.iterator.RectIter;
-import javax.media.jai.iterator.RectIterFactory;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.BorderExtenderCopy;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.InterpolationNearest;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.iterator.RectIter;
+import org.eclipse.imagen.iterator.RectIterFactory;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.metadata.spatial.PixelOrientation;

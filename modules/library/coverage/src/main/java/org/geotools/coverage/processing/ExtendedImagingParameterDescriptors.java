@@ -17,7 +17,7 @@
 package org.geotools.coverage.processing;
 
 import java.util.Collection;
-import javax.media.jai.RegistryElementDescriptor;
+import org.eclipse.imagen.RegistryElementDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.metadata.iso.citation.Citations;

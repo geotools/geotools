@@ -16,20 +16,20 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.stats.HistogramWrapper;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import java.awt.Shape;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.HistogramDescriptor;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.stats.HistogramWrapper;
+import org.eclipse.imagen.media.stats.Statistics;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.operator.HistogramDescriptor;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -52,7 +52,7 @@ import org.geotools.coverage.util.CoverageUtilities;
  * <a href="http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/javax/media/jai/Histogram.html>Histogram</a>
  *
  * <p><strong>How to use this operation</strong> Here is a very simple example on how to use this operation in order to
- * get the {@link javax.media.jai.Histogram} of the source coverage. <code>
+ * get the {@link org.eclipse.imagen.Histogram} of the source coverage. <code>
  * final OperationJAI op=new OperationJAI("Histogram");
  * ParameterValueGroup params = op.getParameters();
  * params.parameter("Source").setValue(coverage);
@@ -62,7 +62,7 @@ import org.geotools.coverage.util.CoverageUtilities;
  *
  * @author Simone Giannecchini
  * @since 2.4
- * @see javax.media.jai.Histogram
+ * @see org.eclipse.imagen.Histogram
  */
 public class Histogram extends BaseStatisticsOperationJAI {
 
@@ -73,7 +73,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -4256576399698278701L;
 
-    /** {@link String} key for getting the {@link javax.media.jai.Histogram} object. */
+    /** {@link String} key for getting the {@link org.eclipse.imagen.Histogram} object. */
     public static final String GT_SYNTHETIC_PROPERTY_HISTOGRAM = "histogram";
 
     /** Default constructor for the {@link Histogram} operation. */
@@ -87,7 +87,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
     }
 
     /**
-     * Prepare the {@link javax.media.jai.Histogram} property for this histogram operation.
+     * Prepare the {@link org.eclipse.imagen.Histogram} property for this histogram operation.
      *
      * <p>See <a
      * href="http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/javax/media/jai/operator/HistogramDescriptor.html">HistogramDescriptor</a>
@@ -144,8 +144,8 @@ public class Histogram extends BaseStatisticsOperationJAI {
                 synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, wrapper);
             } else {
 
-                final javax.media.jai.Histogram hist =
-                        (javax.media.jai.Histogram) result.getProperty(GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+                final org.eclipse.imagen.Histogram hist =
+                        (org.eclipse.imagen.Histogram) result.getProperty(GT_SYNTHETIC_PROPERTY_HISTOGRAM);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, hist);

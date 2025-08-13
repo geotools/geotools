@@ -17,7 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;

@@ -95,11 +95,11 @@ public final class Logging {
     public static final Logging ECLIPSE = getLogging("org.eclipse");
 
     /**
-     * Logging configuration that apply only to javax.media.jai packages.
+     * Logging configuration that apply only to org.eclipse.imagen packages.
      *
      * <p>Used by {@link LoggingImagingListener} to route errors reported from JAI framework.
      */
-    public static final Logging IMAGEN = getLogging("javax.media.jai");
+    public static final Logging IMAGEN = getLogging("org.eclipse.imagen");
 
     /** The name of the base package. */
     final String name;
@@ -130,8 +130,8 @@ public final class Logging {
     static {
         final boolean LOGGING_TRACE = Boolean.getBoolean("LOGGING_TRACE");
         try {
-            final Class<?> JAI = Class.forName("javax.media.jai.JAI");
-            final Class<?> IMAGING_LISTENER = Class.forName("javax.media.jai.util.ImagingListener");
+            final Class<?> JAI = Class.forName("org.eclipse.imagen.JAI");
+            final Class<?> IMAGING_LISTENER = Class.forName("org.eclipse.imagen.util.ImagingListener");
             Method getDefaultInstance = JAI.getMethod("getDefaultInstance");
             Method getImagingListener = JAI.getMethod("getImagingListener");
             Method setImagingListener = JAI.getMethod("setImagingListener", IMAGING_LISTENER);
@@ -144,7 +144,7 @@ public final class Logging {
                 // Custom GeoTools ImagingListener used to ignore common warnings
                 setImagingListener.invoke(jai, new LoggingImagingListener());
                 if (LOGGING_TRACE) {
-                    System.out.println("Logging JAI messages: javax.media.jai logger redirected");
+                    System.out.println("Logging JAI messages: org.eclipse.imagen logger redirected");
                 }
             } else {
                 if (LOGGING_TRACE) {
@@ -154,7 +154,7 @@ public final class Logging {
         } catch (Throwable ignore) {
             // JAI not available so no need to redirect logging messages
             if (LOGGING_TRACE) {
-                System.out.println("Logging JAI messages: Unable to redirect to javax.media.jai");
+                System.out.println("Logging JAI messages: Unable to redirect to org.eclipse.imagen");
             }
         }
     }

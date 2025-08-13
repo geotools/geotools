@@ -17,7 +17,6 @@
  */
 package org.geotools.gce.image;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
@@ -35,8 +34,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
 import javax.imageio.stream.ImageOutputStream;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridCoverageWriter;

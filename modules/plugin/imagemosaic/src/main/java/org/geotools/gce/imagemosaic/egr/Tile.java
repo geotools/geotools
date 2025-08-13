@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.egr;
 
-import it.geosolutions.jaiext.iterators.RandomIterFactory;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -38,10 +37,11 @@ import java.util.BitSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.iterator.RandomIter;
-import javax.media.jai.iterator.WritableRandomIter;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.RasterFactory;
+import org.eclipse.imagen.iterator.RandomIter;
+import org.eclipse.imagen.iterator.WritableRandomIter;
+import org.eclipse.imagen.media.iterators.RandomIterFactory;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;

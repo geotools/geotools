@@ -16,25 +16,25 @@
  */
 package org.geotools.image;
 
-import com.sun.media.jai.util.PropertyGeneratorImpl;
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
-import it.geosolutions.jaiext.warp.WarpRIF;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
-import javax.media.jai.GeometricOpImage;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.Warp;
-import javax.media.jai.operator.ConstantDescriptor;
+import org.eclipse.imagen.GeometricOpImage;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.Warp;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.util.PropertyGeneratorImpl;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
+import org.eclipse.imagen.media.warp.WarpRIF;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.util.factory.Hints;
 
 /**

@@ -16,17 +16,17 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.util.Arrays;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.operator.MosaicDescriptor;
-import javax.media.jai.operator.MosaicType;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
+import org.eclipse.imagen.media.mosaic.MosaicType;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
 import org.geotools.image.ImageWorker;
 
 /**
@@ -199,7 +199,7 @@ public enum MergeBehavior {
             double[] backgroundValues,
             double[][] inputThreshold,
             PlanarImage[] sourceAlpha,
-            javax.media.jai.ROI[] sourceROI,
+            org.eclipse.imagen.ROI[] sourceROI,
             MosaicType mosaicType,
             RenderingHints localHints);
 

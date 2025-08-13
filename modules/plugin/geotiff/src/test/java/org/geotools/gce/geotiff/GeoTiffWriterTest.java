@@ -18,7 +18,6 @@ package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
 import it.geosolutions.io.output.adapter.OutputStreamAdapter;
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -30,7 +29,8 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
 import org.geotools.api.coverage.grid.GridEnvelope;

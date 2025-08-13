@@ -21,15 +21,15 @@ import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.PropertyGenerator;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.InterpolationNearest;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.PropertyGenerator;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -47,7 +47,7 @@ import org.geotools.image.jai.Registry;
  * @version $Id$
  * @author Simone Giannecchini
  * @since 2.3
- * @see javax.media.jai.operator.ScaleDescriptor
+ * @see org.eclipse.imagen.media.scale.ScaleDescriptor
  */
 public class Scale extends BaseScaleOperationJAI {
 

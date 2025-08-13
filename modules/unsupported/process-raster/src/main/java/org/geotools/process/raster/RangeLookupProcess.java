@@ -17,16 +17,16 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.Category;

@@ -17,8 +17,6 @@
 
 package org.geotools.gce.imagemosaic.granulecollector;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;
@@ -37,10 +35,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.jai.Histogram;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
 import org.apache.commons.io.FilenameUtils;
+import org.eclipse.imagen.Histogram;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;

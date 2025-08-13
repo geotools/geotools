@@ -658,8 +658,8 @@ public class Hints extends RenderingHints {
      */
     public static final Key DECIMATION_POLICY = new Key("org.geotools.coverage.grid.io.DecimationPolicy");
 
-    /** The {@link javax.media.jai.JAI} instance to use. */
-    public static final Key JAI_INSTANCE = new Key("javax.media.jai.JAI");
+    /** The {@link org.eclipse.imagen.JAI} instance to use. */
+    public static final Key JAI_INSTANCE = new Key("org.eclipse.imagen.JAI");
 
     /** The {@link org.geotools.api.coverage.SampleDimensionType} to use. */
     public static final Key SAMPLE_DIMENSION_TYPE = new Key("org.geotools.api.coverage.SampleDimensionType");
@@ -1224,7 +1224,7 @@ public class Hints extends RenderingHints {
                 }
                 case 1: {
                     try {
-                        type = Class.forName("javax.media.jai.JAI");
+                        type = Class.forName("org.eclipse.imagen.JAI");
                         break;
                     } catch (ClassNotFoundException | NoClassDefFoundError e) {
                         continue;

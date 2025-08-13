@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import com.sun.media.jai.operator.ImageReadDescriptor;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -27,7 +26,8 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.imageread.ImageReadDescriptor;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.MaskInfo;

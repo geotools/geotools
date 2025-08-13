@@ -16,11 +16,7 @@
  */
 package org.geotools.image.util;
 
-import com.sun.media.imageioimpl.common.BogusColorSpace;
-import com.sun.media.jai.operator.ImageReadDescriptor;
-import com.sun.media.jai.util.Rational;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -56,19 +52,23 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.BorderExtenderCopy;
-import javax.media.jai.BorderExtenderReflect;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.OpImage;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.RenderedImageAdapter;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.WritableRenderedImageAdapter;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.BorderExtenderCopy;
+import org.eclipse.imagen.BorderExtenderReflect;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.NotAColorSpace;
+import org.eclipse.imagen.OpImage;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RasterFactory;
+import org.eclipse.imagen.RenderedImageAdapter;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.WritableRenderedImageAdapter;
+import org.eclipse.imagen.media.imageread.ImageReadDescriptor;
+import org.eclipse.imagen.media.util.Rational;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.geometry.GeneralBounds;
@@ -120,7 +120,7 @@ public final class ImageUtilities {
 
             try {
                 // explicit disable
-                mediaLib = !Boolean.getBoolean("com.sun.media.jai.disableMediaLib");
+                mediaLib = !Boolean.getBoolean("org.eclipse.imagen.media.disableMediaLib");
 
                 // native libs installed
                 if (mediaLib) {
@@ -136,7 +136,7 @@ public final class ImageUtilities {
                     }
                 }
             } catch (Throwable e) {
-                // Because the property com.sun.media.jai.disableMediaLib isn't
+                // Because the property org.eclipse.imagen.media.disableMediaLib isn't
                 // defined as public, the users shouldn't know it.  In most of
                 // the cases, it isn't defined, and thus no access permission
                 // is granted to it in the policy file.  When JAI is utilized in
@@ -1330,7 +1330,7 @@ public final class ImageUtilities {
                 image.getSampleModel().getNumBands());
         layout.setSampleModel(sm);
         layout.setColorModel(new ComponentColorModel(
-                new BogusColorSpace(numBands), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE));
+                new NotAColorSpace(numBands), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE));
         localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
 
         // at least one band is getting rescaled, apply the operation

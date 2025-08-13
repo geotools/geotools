@@ -16,11 +16,11 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.jaiext.classifier.ConstantColorMapElement;
-import it.geosolutions.jaiext.classifier.LinearColorMapElement;
-import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import java.awt.Color;
 import java.text.MessageFormat;
+import org.eclipse.imagen.media.classifier.ConstantColorMapElement;
+import org.eclipse.imagen.media.classifier.LinearColorMapElement;
+import org.eclipse.imagen.media.piecewise.DefaultPiecewiseTransform1DElement;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.renderer.i18n.ErrorKeys;

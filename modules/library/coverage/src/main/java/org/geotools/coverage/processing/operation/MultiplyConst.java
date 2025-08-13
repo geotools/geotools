@@ -18,11 +18,10 @@ package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
 
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Map;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.operator.MultiplyConstDescriptor;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;

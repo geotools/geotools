@@ -16,14 +16,14 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.media.jai.Interpolation;
-import javax.media.jai.Warp;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.Warp;
+import org.eclipse.imagen.media.JAIExt;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;

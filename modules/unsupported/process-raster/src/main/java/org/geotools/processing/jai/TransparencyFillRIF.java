@@ -20,13 +20,13 @@ import static org.geotools.processing.jai.TransparencyFillDescriptor.NODATA_ARG;
 import static org.geotools.processing.jai.TransparencyFillDescriptor.TYPE_ARG;
 import static org.geotools.processing.jai.TransparencyFillDescriptor.WIDTH_ARG;
 
-import com.sun.media.jai.opimage.RIFUtil;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.awt.image.renderable.RenderedImageFactory;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.ImageLayout;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.media.opimage.RIFUtil;
 import org.geotools.processing.jai.TransparencyFillDescriptor.FillType;
 
 /** @see TransparencyFillOpImage */

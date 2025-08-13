@@ -18,12 +18,12 @@ package org.geotools.coverage.processing;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.media.jai.operator.ExtremaDescriptor;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.operator.ExtremaDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.ImageWorker;

@@ -16,18 +16,18 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeDouble;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.rlookup.RangeLookupTable;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.DataBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeDouble;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.rlookup.RangeLookupTable;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.geometry.Bounds;

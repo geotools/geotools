@@ -19,7 +19,7 @@ package org.geotools.parameter;
 import java.net.URI;
 import java.text.MessageFormat;
 import javax.measure.Unit;
-import javax.media.jai.ParameterList;
+import org.eclipse.imagen.ParameterList;
 import org.geotools.api.parameter.InvalidParameterTypeException;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterDescriptor;

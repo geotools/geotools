@@ -41,7 +41,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.imageio.ImageReadParam;
-import javax.media.jai.Interpolation;
+import org.eclipse.imagen.Interpolation;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.operation.TransformException;

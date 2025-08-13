@@ -22,7 +22,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Map;
 import java.util.Random;
-import javax.media.jai.TiledImage;
+import org.eclipse.imagen.TiledImage;
+import org.eclipse.imagen.media.utilities.ImageUtilities;
 import org.geotools.api.geometry.Position;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -33,7 +34,6 @@ import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.jaitools.imageutils.ImageUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -107,7 +107,7 @@ public class GridCoverageLayerHelperTest {
     }
 
     private static void createCoverage() {
-        TiledImage image = ImageUtils.createConstantImage(WIDTH, HEIGHT, new Integer[] {0, 0, 0});
+        TiledImage image = ImageUtilities.createConstantImage(WIDTH, HEIGHT, new Integer[] {0, 0, 0});
         for (int band = 0; band < image.getNumBands(); band++) {
             for (int y = 0; y < HEIGHT; y++) {
                 for (int x = 0; x < WIDTH; x++) {

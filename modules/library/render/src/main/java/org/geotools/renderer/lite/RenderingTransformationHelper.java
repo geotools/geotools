@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import static javax.media.jai.JAI.KEY_INTERPOLATION;
+import static org.eclipse.imagen.JAI.KEY_INTERPOLATION;
 import static org.geotools.coverage.util.FeatureUtilities.GRID_PROPERTY_NAME;
 import static org.geotools.coverage.util.FeatureUtilities.PARAMS_PROPERTY_NAME;
 
@@ -25,7 +25,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
-import javax.media.jai.Interpolation;
+import org.eclipse.imagen.Interpolation;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;

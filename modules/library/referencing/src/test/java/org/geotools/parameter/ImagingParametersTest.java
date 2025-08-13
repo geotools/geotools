@@ -27,12 +27,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.ParameterList;
-import javax.media.jai.RegistryElementDescriptor;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.ParameterList;
+import org.eclipse.imagen.RegistryElementDescriptor;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -52,7 +52,7 @@ public final class ImagingParametersTest {
     @Test
     public void testDescriptors() {
         final String author = Citations.IMAGEN.getTitle().toString();
-        final String vendor = "com.sun.media.jai";
+        final String vendor = "org.eclipse.imagen.media";
         final String mode = RenderedRegistryMode.MODE_NAME;
         final RegistryElementDescriptor descriptor =
                 JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "scale");

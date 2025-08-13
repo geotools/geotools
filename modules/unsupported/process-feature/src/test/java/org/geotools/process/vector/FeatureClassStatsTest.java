@@ -19,9 +19,9 @@ package org.geotools.process.vector;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import java.io.IOException;
 import java.util.Arrays;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;

@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
 import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
@@ -34,13 +31,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import javax.measure.Unit;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.ROI;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.JAIExt;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.InvalidParameterValueException;
@@ -348,9 +348,9 @@ public class OperationJAI extends Operation2D {
      * method. Only the two-dimensional part is reprojected (usually the spatial component of a CRS). Extra dimension
      * (if any) are left unchanged. Extra dimensions are typically time axis or depth. Note that extra dimensions are
      * <strong>not</strong> forced to a common geometry; only the two dimensions that apply to a
-     * {@link javax.media.jai.PlanarImage} are. This is because the extra dimensions don't need to be compatible for all
-     * operations. For example if a source image is a slice in a time series, a second source image could be a slice in
-     * the frequency representation of this time series.
+     * {@link org.eclipse.imagen.PlanarImage} are. This is because the extra dimensions don't need to be compatible for
+     * all operations. For example if a source image is a slice in a time series, a second source image could be a slice
+     * in the frequency representation of this time series.
      *
      * <p>Subclasses should override this method if they want to specify target {@linkplain GridGeometry2D grid
      * geometry} and {@linkplain CoordinateReferenceSystem coordinate reference system} different than the default ones.

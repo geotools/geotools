@@ -21,9 +21,9 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.SampleModel;
-import javax.media.jai.ComponentSampleModelJAI;
-import javax.media.jai.FloatDoubleColorModel;
-import javax.media.jai.iterator.RectIter;
+import org.eclipse.imagen.ComponentSampleModelJAI;
+import org.eclipse.imagen.FloatDoubleColorModel;
+import org.eclipse.imagen.iterator.RectIter;
 
 /**
  * A {@link ComponentColorModel} modified for interoperability with Java Advanced Imaging. JAI 1.1 was designed for use

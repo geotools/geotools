@@ -16,11 +16,6 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.shadedrelief.ShadedReliefAlgorithm;
-import it.geosolutions.jaiext.shadedrelief.ShadedReliefDescriptor;
-import it.geosolutions.jaiext.shadedrelief.ShadedReliefRIF;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderedImageFactory;
@@ -28,12 +23,17 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import javax.measure.Unit;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.shadedrelief.ShadedReliefAlgorithm;
+import org.eclipse.imagen.media.shadedrelief.ShadedReliefDescriptor;
+import org.eclipse.imagen.media.shadedrelief.ShadedReliefRIF;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;

@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -39,7 +39,7 @@ import org.geotools.util.logging.Logging;
 
 /**
  * This class is the root class for the Maths operations. It provides basic capabilities for management of geospatial
- * parameters like {@link javax.media.jai.ROI}s and subsampling factors.
+ * parameters like {@link org.eclipse.imagen.ROI}s and subsampling factors.
  *
  * @author Nicola Lagomarsini, GeoSolutions SAS
  * @since 14.x

@@ -92,11 +92,16 @@ public final class Logging {
     public static final Logging GEOTOOLS = getLogging("org.geotools");
 
     /**
+     * Logging configuration that apply only to org.eclipse packages
+     */
+    public static final Logging ECLIPSE = getLogging("org.eclipse");
+
+    /**
      * Logging configuration that apply only to javax.media.jai packages.
      *
      * <p>Used by {@link LoggingImagingListener} to route errors reported from JAI framework.
      */
-    public static final Logging JAI = getLogging("javax.media.jai");
+    public static final Logging IMAGEN = getLogging("javax.media.jai");
 
     /** The name of the base package. */
     final String name;

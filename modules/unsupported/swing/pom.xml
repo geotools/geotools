@@ -37,6 +37,7 @@
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
+  <!-- =========================================================== -->
   <developers>
     <developer>
       <id>jive</id>
@@ -127,10 +128,5 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-utils</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>

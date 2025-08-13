@@ -71,6 +71,10 @@
       <artifactId>gt-main</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>stats</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-shapefile</artifactId>
       <scope>test</scope>

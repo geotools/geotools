@@ -77,16 +77,12 @@
     </dependency>
 
     <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-contour</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>contour</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-vectorize</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-utils</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>vectorize</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>

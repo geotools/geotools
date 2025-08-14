@@ -334,38 +334,6 @@
         <version>${imageio.ext.version}</version>
       </dependency>
 
-      <!-- JAITools -->
-      <dependency>
-        <groupId>org.jaitools</groupId>
-        <artifactId>jt-utils</artifactId>
-        <version>${jt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jaitools</groupId>
-        <artifactId>jt-vectorbinarize</artifactId>
-        <version>${jt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jaitools</groupId>
-        <artifactId>jt-zonalstats</artifactId>
-        <version>${jt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jaitools</groupId>
-        <artifactId>jt-rangelookup</artifactId>
-        <version>${jt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jaitools</groupId>
-        <artifactId>jt-contour</artifactId>
-        <version>${jt.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jaitools</groupId>
-        <artifactId>jt-vectorize</artifactId>
-        <version>${jt.version}</version>
-      </dependency>
-
       <!-- JTS Topology Suite -->
       <dependency>
         <groupId>org.locationtech.jts</groupId>
@@ -757,6 +725,16 @@
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
         <artifactId>convolve</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>contour</artifactId>
+        <version>${imagen.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.imagen</groupId>
+        <artifactId>vectorize</artifactId>
         <version>${imagen.version}</version>
       </dependency>
 

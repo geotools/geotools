@@ -350,8 +350,10 @@ public class ZMHandlersTest {
 
         // ArcTypeZ with optional M
         assertEquals("wrong num features", 2, readAllFeatures("mzvalues/mzpolygons.shp"));
-        // ArcTypeM
+        // ArcTypeM or 3D Measured Polygon
         assertEquals("wrong num features", 2, readAllFeatures("mzvalues/mpolygons.shp"));
+        // ArcTypeM or Measured Polygon
+        assertEquals("wrong num features", 1, readAllFeatures("mzvalues/polygonm.shp"));
         // ArcTypeZ with no optional M
         assertEquals("wrong num features", 1, readAllFeatures("mzvalues/polygonz.shp"));
         assertEquals("wrong num features", 4, readAllFeatures("mzvalues/zpolygons.shp"));

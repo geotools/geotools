@@ -19,10 +19,12 @@ package org.geotools.data.shapefile.shp;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.algorithm.RayCrossingCounter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -41,7 +43,7 @@ import org.locationtech.jts.geom.Polygon;
  * @version $Id$
  */
 public class PolygonHandler implements ShapeHandler {
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PolygonHandler.class);
+    protected static final Logger LOGGER = Logging.getLogger(PolygonHandler.class);
 
     GeometryFactory geometryFactory;
 
@@ -180,6 +182,11 @@ public class PolygonHandler implements ShapeHandler {
 
             // double area = 0;
             // int sx = offset;
+            int mPosition = 0; // position of the M element of the coordinate
+            if (coords.hasM()) {
+                // As the  M element is always the last one, this allows us to look at XYM and XYMZ coordinates
+                mPosition = coords.getDimension() - 1;
+            }
             for (int i = 0; i < length; i++) {
                 csRing.setOrdinate(i, CoordinateSequence.X, coords.getOrdinate(offset, CoordinateSequence.X));
                 csRing.setOrdinate(i, CoordinateSequence.Y, coords.getOrdinate(offset, CoordinateSequence.Y));
@@ -187,11 +194,11 @@ public class PolygonHandler implements ShapeHandler {
                     csRing.setOrdinate(i, CoordinateSequence.Z, coords.getOrdinate(offset, CoordinateSequence.Z));
                 }
                 if (coords.hasM() && !flatFeature) {
-                    double m = coords.getOrdinate(offset, CoordinateSequence.M);
+                    double m = coords.getOrdinate(offset, mPosition);
                     if (m < -10e38) {
                         m = Double.NaN;
                     }
-                    csRing.setOrdinate(i, CoordinateSequence.M, m);
+                    csRing.setOrdinate(i, mPosition, m);
                 }
                 offset++;
             }
@@ -268,14 +275,23 @@ public class PolygonHandler implements ShapeHandler {
                 }
             }
 
-            boolean isArcZWithM = (dbuffer.remaining() >= numPoints + 2) && shapeType == ShapeType.POLYGONZ;
-            if (isArcZWithM || shapeType == ShapeType.POLYGONM) {
+            boolean isArcZWithM = dbuffer.remaining() >= numPoints + 2 && shapeType == ShapeType.POLYGONZ;
+            if (isArcZWithM) {
                 // Handle M
                 dbuffer.position(dbuffer.position() + 2);
                 dbuffer.get(ordinates, 0, numPoints);
 
                 for (int t = 0; t < numPoints; t++) {
                     cs.setOrdinate(t, CoordinateSequence.M, ordinates[t]);
+                }
+            } else if (shapeType == ShapeType.POLYGONM) {
+
+                // Handle M
+                dbuffer.position(dbuffer.position() + 2);
+                dbuffer.get(ordinates, 0, numPoints);
+
+                for (int t = 0; t < numPoints; t++) {
+                    cs.setOrdinate(t, 2, ordinates[t]);
                 }
             }
         }
@@ -377,7 +393,7 @@ public class PolygonHandler implements ShapeHandler {
     }
 
     private MultiPolygon createMulti(LinearRing single) {
-        return createMulti(single, java.util.Collections.emptyList());
+        return createMulti(single, Collections.emptyList());
     }
 
     private MultiPolygon createMulti(LinearRing single, List<LinearRing> holes) {

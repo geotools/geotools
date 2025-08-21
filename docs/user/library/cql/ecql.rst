@@ -214,7 +214,7 @@ Examples
       
         Expression expr = ECQL.toExpression("'hello world'");
 
-  Literal string with quote::
+  Literal string with escaped single quote::
 
         Expression expr = ECQL.toExpression("'can''t touch this'");
 

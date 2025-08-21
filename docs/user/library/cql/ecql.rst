@@ -5,7 +5,7 @@ The ECQL language is intended as an extension of CQL, thus you can write all pre
 
 References
 
-* `ECQL Parser Design <http://old.geotools.org/ECQL-Parser-Design_110493908.html>`__ (design doc with BNF, note, in addition to WKT syntax for geometries 
+* `ECQL Parser Design <https://github.com/geotools/geotools/blob/main/modules/library/cql/ECQL.md>`__ (design doc with BNF, note, in addition to WKT syntax for geometries 
   GeoTools now supports also Extended WKT, same as PostGIS, see example below)
 * `GeoServer CQL Examples <http://docs.geoserver.org/latest/en/user/tutorials/cql/cql_tutorial.html>`_ (GeoServer)
 
@@ -42,11 +42,17 @@ It allows you to try out the ECQL examples on this page; and produces the XML Fi
 
 Examples
 ''''''''
-
+  
 * Filter by Comparing Values
   
   The CQL language limited us to referencing a ``propertyName`` against
-  a more general expression.
+  a more general expression.::
+
+     ECQL.toFilter("population >= 1000");
+
+  Property names can be double quoted if they contain spaces::
+
+     ECQL.toFilter("\"population max\" >= 1000");
 
   ECQL allows you to use full expressions everywhere:
 
@@ -191,7 +197,7 @@ Examples
 
 * Filter Nulls::
   
-        Filter filter = ECQL.toFilter(" Name IS NULL");
+        Filter filter = ECQL.toFilter("Name IS NULL");
         Filter filter = ECQL.toFilter("centroid( the_geom ) IS NULL");
 
 * Property Exist Predicate::
@@ -203,6 +209,14 @@ Examples
   Expressions support is unchanged::
         
         Expression expr = ECQL.toExpression("X + 1");
+
+  Literal string::
+      
+        Expression expr = ECQL.toExpression("'hello world'");
+
+  Literal string with quote::
+
+        Expression expr = ECQL.toExpression("'can''t touch this'");
 
 * Filter list
   

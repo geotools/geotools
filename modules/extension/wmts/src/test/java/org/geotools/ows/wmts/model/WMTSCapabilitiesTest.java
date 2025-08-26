@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import org.geotools.api.metadata.citation.Address;
 import org.geotools.data.ows.OperationType;
 import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wmts.WMTSSpecification;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.util.logging.Logging;
@@ -102,6 +103,25 @@ public class WMTSCapabilitiesTest {
 
             CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("EPSG:4326");
             Assert.assertNotNull(bbox);
+
+            List<StyleImpl> styles = l0.getStyles();
+            Assert.assertNotNull(styles);
+            Assert.assertEquals(1, styles.size());
+
+            StyleImpl style0 = styles.get(0);
+            Assert.assertNull(style0.getName());
+            Assert.assertNull(style0.getTitle());
+            Assert.assertNull(style0.getAbstract());
+            Assert.assertTrue(style0.isDefault());
+
+            List<?> legendUrls = style0.getLegendURLs();
+            Assert.assertNotNull(legendUrls);
+            Assert.assertEquals(1, legendUrls.size());
+
+            Assert.assertEquals(
+                    "http://astun-desktop:8080/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=openmap-local%3AOML_Foreshore",
+                    legendUrls.get(0));
+
         } catch (Exception e) {
             Logger.getGlobal().log(Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
@@ -184,6 +204,24 @@ public class WMTSCapabilitiesTest {
                     capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator(),
                     0d);
 
+            List<StyleImpl> styles = l0.getStyles();
+            Assert.assertNotNull(styles);
+            Assert.assertEquals(1, styles.size());
+
+            StyleImpl style0 = styles.get(0);
+            Assert.assertEquals("ch.are.agglomerationen_isolierte_staedte", style0.getName());
+            Assert.assertEquals(
+                    "Agglomerationen und isolierte Städte", style0.getTitle().toString());
+            Assert.assertNull(style0.getAbstract());
+            Assert.assertFalse(style0.isDefault());
+
+            List<?> legendUrls = style0.getLegendURLs();
+            Assert.assertNotNull(legendUrls);
+            Assert.assertEquals(1, legendUrls.size());
+
+            Assert.assertEquals(
+                    "http://api3.geo.admin.ch/static/images/legends/ch.are.agglomerationen_isolierte_staedte_de.png",
+                    legendUrls.get(0));
         } catch (Exception e) {
             Logger.getGlobal().log(Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
@@ -234,6 +272,19 @@ public class WMTSCapabilitiesTest {
             CRSEnvelope bbox = layers.get(1).getBoundingBoxes().get("CRS:84");
             Assert.assertNotNull(bbox);
 
+            List<StyleImpl> styles = l0.getStyles();
+            Assert.assertNotNull(styles);
+            Assert.assertEquals(1, styles.size());
+
+            StyleImpl style0 = styles.get(0);
+            Assert.assertEquals("default", style0.getName());
+            Assert.assertEquals("default", style0.getTitle().toString());
+            Assert.assertNull(style0.getAbstract());
+            Assert.assertTrue(style0.isDefault());
+
+            List<?> legendUrls = style0.getLegendURLs();
+            Assert.assertNotNull(legendUrls);
+            Assert.assertEquals(0, legendUrls.size());
         } catch (Exception e) {
             Logger.getGlobal().log(Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
@@ -261,6 +312,22 @@ public class WMTSCapabilitiesTest {
                     "urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible",
                     matrixSets.get(0).getWellKnownScaleSet());
 
+            List<WMTSLayer> layers = capabilities.getLayerList();
+            WMTSLayer l0 = layers.get(0);
+
+            List<StyleImpl> styles = l0.getStyles();
+            Assert.assertNotNull(styles);
+            Assert.assertEquals(1, styles.size());
+
+            StyleImpl style0 = styles.get(0);
+            Assert.assertEquals("style=39", style0.getName());
+            Assert.assertEquals("Weighted point styles", style0.getTitle().toString());
+            Assert.assertNull(style0.getAbstract());
+            Assert.assertTrue(style0.isDefault());
+
+            List<?> legendUrls = style0.getLegendURLs();
+            Assert.assertNotNull(legendUrls);
+            Assert.assertEquals(0, legendUrls.size());
         } catch (Exception e) {
             // a standard catch block shared with the other tests
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
@@ -296,6 +363,19 @@ public class WMTSCapabilitiesTest {
             Assert.assertEquals("brtachtergrondkaart", l0.getName());
             Assert.assertTrue(l0.getSrs().contains("EPSG:28992")); // case
 
+            List<StyleImpl> styles = l0.getStyles();
+            Assert.assertNotNull(styles);
+            Assert.assertEquals(1, styles.size());
+
+            StyleImpl style0 = styles.get(0);
+            Assert.assertNull(style0.getName());
+            Assert.assertNull(style0.getTitle());
+            Assert.assertNull(style0.getAbstract());
+            Assert.assertTrue(style0.isDefault());
+
+            List<?> legendUrls = style0.getLegendURLs();
+            Assert.assertNotNull(legendUrls);
+            Assert.assertEquals(0, legendUrls.size());
         } catch (Exception e) {
             // a standard catch block shared with the other tests
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {

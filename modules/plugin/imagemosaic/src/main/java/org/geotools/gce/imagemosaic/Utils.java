@@ -51,6 +51,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
@@ -969,9 +970,13 @@ public class Utils {
 
         // external overview skip
         if (!ignoreSome || !ignorePropertiesSet.contains(Prop.SKIP_EXTERNAL_OVERVIEWS)) {
-            catalogConfigurationBean.setSkipExternalOverviews(Boolean.parseBoolean(properties
-                    .getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS, "false")
-                    .trim()));
+            Boolean skip = Optional.ofNullable(properties.getProperty(Prop.SKIP_EXTERNAL_OVERVIEWS))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(Boolean::parseBoolean)
+                    .orElse(null);
+
+            catalogConfigurationBean.setSkipExternalOverviews(skip);
         }
 
         // property selection

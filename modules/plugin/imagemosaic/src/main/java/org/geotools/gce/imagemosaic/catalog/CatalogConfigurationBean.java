@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public class CatalogConfigurationBean {
 
     private SourceSPIProviderFactory urlSourceSPIProvider;
 
-    private boolean skipExternalOverviews;
+    private Boolean skipExternalOverviews;
 
     /**
      * Whether the specified store should be wrapped. Only PostGis stores support this parameter. (Oracle stores are
@@ -224,11 +225,15 @@ public class CatalogConfigurationBean {
         this.urlSourceSPIProvider = urlSourceSPIProvider;
     }
 
-    public boolean isSkipExternalOverviews() {
+    public Boolean getSkipExternalOverviews() {
         return skipExternalOverviews;
     }
 
-    public void setSkipExternalOverviews(boolean skipExternalOverviews) {
+    public boolean isSkipExternalOverviews() {
+        return skipExternalOverviews == null ? ImageIOUtilities.isSkipExternalFilesLookup() : skipExternalOverviews;
+    }
+
+    public void setSkipExternalOverviews(Boolean skipExternalOverviews) {
         this.skipExternalOverviews = skipExternalOverviews;
     }
 

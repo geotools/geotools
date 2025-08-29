@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import javax.measure.MetricPrefix;
 import javax.measure.Unit;
@@ -47,6 +48,7 @@ import si.uom.SI;
  */
 public class DefaultTimeCS extends AbstractCS implements TimeCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5222911412381303989L;
 
     /**

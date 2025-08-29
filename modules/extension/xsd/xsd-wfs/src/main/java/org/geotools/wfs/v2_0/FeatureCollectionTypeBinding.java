@@ -98,9 +98,9 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
         Object result = null;
         if (!WFSParsingUtils.features((EObject) object).isEmpty()) {
             result = WFSParsingUtils.FeatureCollectionType_getProperty((EObject) object, name);
-            if (result instanceof SimpleFeatureCollection
+            if (result instanceof SimpleFeatureCollection collection
                     && encoder.getConfiguration().hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
-                return new WFS20FeatureCollectionEncoderDelegate((SimpleFeatureCollection) result, encoder);
+                return new WFS20FeatureCollectionEncoderDelegate(collection, encoder);
             }
         }
         if (result == null) {
@@ -109,8 +109,8 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
         if ("numberMatched".equals(name.getLocalPart())) {
             if (result == null || !(result instanceof Number)) {
                 return UNKNOWN;
-            } else if (result instanceof Number) {
-                long numberMatched = ((Number) result).longValue();
+            } else if (result instanceof Number number) {
+                long numberMatched = number.longValue();
                 if (numberMatched < 0) {
                     return UNKNOWN;
                 } else {

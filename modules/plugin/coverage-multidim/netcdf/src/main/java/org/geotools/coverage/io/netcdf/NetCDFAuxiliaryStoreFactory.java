@@ -113,8 +113,8 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
 
             final DataStore delegate = datastoreConfig.getDatastoreSpi().createDataStore(datastoreConfig.getParams());
             String namespace = (String) NS_PARAM.lookUp(params);
-            if (namespace != null && delegate instanceof ContentDataStore) {
-                ((ContentDataStore) delegate).setNamespaceURI(namespace);
+            if (namespace != null && delegate instanceof ContentDataStore store) {
+                store.setNamespaceURI(namespace);
             }
 
             // make read-only wrapper

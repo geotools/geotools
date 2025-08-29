@@ -160,8 +160,8 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             String crs = value == null ? null : String.valueOf(value);
             ((FeatureTypeType) eObject).setDefaultSRS(crs);
         } else if ("Keywords".equals(property)) {
-            if (value instanceof String) {
-                String[] split = ((String) value).split(",");
+            if (value instanceof String string) {
+                String[] split = string.split(",");
                 KeywordsType kwd = Ows10Factory.eINSTANCE.createKeywordsType();
                 for (String s : split) {
                     String kw = s.trim();

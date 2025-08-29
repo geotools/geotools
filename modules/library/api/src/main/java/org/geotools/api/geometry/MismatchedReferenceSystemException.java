@@ -9,6 +9,8 @@
  */
 package org.geotools.api.geometry;
 
+import java.io.Serial;
+
 /**
  * Indicates that an object cannot be constructed because of a mismatch in the
  * {@linkplain org.geotools.api.referencing.ReferenceSystem reference systems} of geometric components.
@@ -18,6 +20,7 @@ package org.geotools.api.geometry;
  */
 public class MismatchedReferenceSystemException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6222334569692693273L;
 
     /** Creates an exception with no message. */

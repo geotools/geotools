@@ -111,29 +111,31 @@ public class SLDTest {
     @Test
     public void testParserConsistency() throws ParserConfigurationException, SAXException, IOException {
         String sldText =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\" version=\"1.0.0\">\n"
-                        + "  <sld:Name>emptytag</sld:Name>\n"
-                        + "  <sld:UserLayer>\n"
-                        + "    <sld:UserStyle>\n"
-                        + "      <sld:Name>Empty tag test</sld:Name>\n"
-                        + "      <sld:FeatureTypeStyle>\n"
-                        + "        <sld:Rule>\n"
-                        + "          <sld:TextSymbolizer uom=\"http://www.opengeospatial.org/se/units/pixel\">\n"
-                        + "            <sld:Label>\n"
-                        + "              <ogc:PropertyName>NAME</ogc:PropertyName>\n"
-                        + "            </sld:Label>\n"
-                        + "            <sld:Font>\n"
-                        + "              <sld:CssParameter name=\"font-family\"/>\n"
-                        + "              <sld:CssParameter name=\"font-size\">14</sld:CssParameter>\n"
-                        + "              <sld:CssParameter name=\"font-style\">normal</sld:CssParameter>\n"
-                        + "              <sld:CssParameter name=\"font-weight\">normal</sld:CssParameter>\n"
-                        + "            </sld:Font>\n"
-                        + "          </sld:TextSymbolizer>\n"
-                        + "        </sld:Rule>\n"
-                        + "      </sld:FeatureTypeStyle>\n"
-                        + "    </sld:UserStyle>\n"
-                        + "  </sld:UserLayer>\n"
-                        + "</sld:StyledLayerDescriptor>\n";
+                """
+                <?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
+                  <sld:Name>emptytag</sld:Name>
+                  <sld:UserLayer>
+                    <sld:UserStyle>
+                      <sld:Name>Empty tag test</sld:Name>
+                      <sld:FeatureTypeStyle>
+                        <sld:Rule>
+                          <sld:TextSymbolizer uom="http://www.opengeospatial.org/se/units/pixel">
+                            <sld:Label>
+                              <ogc:PropertyName>NAME</ogc:PropertyName>
+                            </sld:Label>
+                            <sld:Font>
+                              <sld:CssParameter name="font-family"/>
+                              <sld:CssParameter name="font-size">14</sld:CssParameter>
+                              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+                              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+                            </sld:Font>
+                          </sld:TextSymbolizer>
+                        </sld:Rule>
+                      </sld:FeatureTypeStyle>
+                    </sld:UserStyle>
+                  </sld:UserLayer>
+                </sld:StyledLayerDescriptor>
+                """;
 
         // GTXML
 

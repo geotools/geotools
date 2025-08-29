@@ -129,9 +129,8 @@ public class STACFeatureSource extends ContentFeatureSource {
         // try to get the "matched" header from the GeoJSON collection, if available
         SimpleFeatureCollection fc = client.search(searchQuery, getDataStore().getSearchMode());
         // if there was a "next" link, the reader returns a paging collection
-        if (fc instanceof PagingFeatureCollection) {
-            return Optional.ofNullable(((PagingFeatureCollection) fc).getMatched())
-                    .orElse(-1);
+        if (fc instanceof PagingFeatureCollection collection) {
+            return Optional.ofNullable(collection.getMatched()).orElse(-1);
         }
         // otherwise everything is in memory
         if (fc instanceof ListFeatureCollection) {
@@ -236,13 +235,15 @@ public class STACFeatureSource extends ContentFeatureSource {
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        if (visitor instanceof MinVisitor && ((MinVisitor) visitor).getExpression() instanceof PropertyName) {
-            String pn = ((PropertyName) ((MinVisitor) visitor).getExpression()).getPropertyName();
-            ((MinVisitor) visitor).setValue(getExtremeValue(query, pn, SortOrder.ASCENDING));
+        if (visitor instanceof MinVisitor minVisitor
+                && ((MinVisitor) visitor).getExpression() instanceof PropertyName) {
+            String pn = ((PropertyName) minVisitor.getExpression()).getPropertyName();
+            minVisitor.setValue(getExtremeValue(query, pn, SortOrder.ASCENDING));
             return true;
-        } else if (visitor instanceof MaxVisitor && ((MaxVisitor) visitor).getExpression() instanceof PropertyName) {
-            String pn = ((PropertyName) ((MaxVisitor) visitor).getExpression()).getPropertyName();
-            ((MaxVisitor) visitor).setValue(getExtremeValue(query, pn, SortOrder.DESCENDING));
+        } else if (visitor instanceof MaxVisitor maxVisitor
+                && ((MaxVisitor) visitor).getExpression() instanceof PropertyName) {
+            String pn = ((PropertyName) maxVisitor.getExpression()).getPropertyName();
+            maxVisitor.setValue(getExtremeValue(query, pn, SortOrder.DESCENDING));
             return true;
         }
 

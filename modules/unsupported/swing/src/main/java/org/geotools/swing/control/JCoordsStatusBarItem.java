@@ -121,7 +121,7 @@ public class JCoordsStatusBarItem extends StatusBarItem {
      * @param p world position
      */
     private void displayCoords(Position2D p) {
-        label.setText(String.format(numFormat, p.getX(), p.getY()));
+        label.setText(numFormat.formatted(p.getX(), p.getY()));
         ensureMinLabelWidth();
     }
 

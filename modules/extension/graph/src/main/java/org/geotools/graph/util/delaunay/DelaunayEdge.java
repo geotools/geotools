@@ -94,11 +94,10 @@ public class DelaunayEdge extends BasicEdge {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof DelaunayEdge
-                && (this.getNodeA().equals(((DelaunayEdge) o).getNodeA())
-                                && this.getNodeB().equals(((DelaunayEdge) o).getNodeB())
-                        || this.getNodeA().equals(((DelaunayEdge) o).getNodeB())
-                                && this.getNodeB().equals(((DelaunayEdge) o).getNodeA()));
+        return o instanceof DelaunayEdge de
+                && (this.getNodeA().equals(de.getNodeA()) && this.getNodeB().equals(de.getNodeB())
+                        || this.getNodeA().equals(de.getNodeB())
+                                && this.getNodeB().equals(de.getNodeA()));
     }
 
     @Override

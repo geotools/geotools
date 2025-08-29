@@ -75,8 +75,7 @@ public class InProcessLockingManager implements LockingManager {
         //
         while (lock != null) {
             // we have a conflict
-            if (lock instanceof TransactionLock) {
-                TransactionLock tlock = (TransactionLock) lock;
+            if (lock instanceof TransactionLock tlock) {
 
                 if (transaction == tlock.transaction) {
                     // lock already held by this transacstion
@@ -97,8 +96,7 @@ public class InProcessLockingManager implements LockingManager {
                                 "Interupted while waiting for Transaction Lock", featureID, interupted);
                     }
                 }
-            } else if (lock instanceof MemoryLock) {
-                MemoryLock mlock = (MemoryLock) lock;
+            } else if (lock instanceof MemoryLock mlock) {
                 throw new FeatureLockException("Feature Lock is held by Authorization " + mlock.authID, featureID);
             } else {
                 throw new FeatureLockException("Lock is already held " + lock, featureID);

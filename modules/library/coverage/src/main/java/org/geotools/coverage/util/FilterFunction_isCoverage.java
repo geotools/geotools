@@ -42,8 +42,8 @@ public class FilterFunction_isCoverage extends FunctionExpressionImpl implements
 
     @Override
     public Object evaluate(Object object) {
-        if (object instanceof SimpleFeature) {
-            return evaluate((SimpleFeature) object);
+        if (object instanceof SimpleFeature feature) {
+            return evaluate(feature);
         } else {
             return Boolean.FALSE;
         }

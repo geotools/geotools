@@ -133,8 +133,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
                     final String key = field.getName();
                     try {
                         final Object ID = field.get(null);
-                        if (ID instanceof Integer) {
-                            allocatedIDs.put((Integer) ID, key);
+                        if (ID instanceof Integer integer) {
+                            allocatedIDs.put(integer, key);
                         }
                     } catch (IllegalAccessException exception) {
                         final File source = new File(classname.replace('.', '/') + ".class");
@@ -387,39 +387,45 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
         }
         try (BufferedWriter out =
                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
-            out.write("/*\n"
-                    + " *    GeoTools - The Open Source Java GIS Toolkit\n"
-                    + " *    http://geotools.org\n"
-                    + " *    \n"
-                    + " *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)\n"
-                    + " *    \n"
-                    + " *    This library is free software; you can redistribute it and/or\n"
-                    + " *    modify it under the terms of the GNU Lesser General Public\n"
-                    + " *    License as published by the Free Software Foundation;\n"
-                    + " *    version 2.1 of the License.\n"
-                    + " *    \n"
-                    + " *    This library is distributed in the hope that it will be useful,\n"
-                    + " *    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-                    + " *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"
-                    + " *    Lesser General Public License for more details.\n"
-                    + " *    \n"
-                    + " *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!\n"
-                    + " *    Generated with: org.geotools.resources.IndexedResourceCompiler\n"
-                    + " */\n");
+            out.write(
+                    """
+                    /*
+                     *    GeoTools - The Open Source Java GIS Toolkit
+                     *    http://geotools.org
+                     *   \s
+                     *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+                     *   \s
+                     *    This library is free software; you can redistribute it and/or
+                     *    modify it under the terms of the GNU Lesser General Public
+                     *    License as published by the Free Software Foundation;
+                     *    version 2.1 of the License.
+                     *   \s
+                     *    This library is distributed in the hope that it will be useful,
+                     *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                     *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+                     *    Lesser General Public License for more details.
+                     *   \s
+                     *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!
+                     *    Generated with: org.geotools.resources.IndexedResourceCompiler
+                     */
+                    """);
             out.write("package ");
             out.write(packageName);
             out.write(";\n\n\n");
-            out.write("/**\n"
-                    + " * Resource keys. This class is used when compiling sources, but\n"
-                    + " * no dependencies to {@code ResourceKeys} should appear in any\n"
-                    + " * resulting class files.  Since Java compiler inlines final integer\n"
-                    + " * values, using long identifiers will not bloat constant pools of\n"
-                    + " * classes compiled against the interface, provided that no class\n"
-                    + " * implements this interface.\n"
-                    + " *\n"
-                    + " * @see org.geotools.resources.IndexedResourceBundle\n"
-                    + " * @see org.geotools.resources.IndexedResourceCompiler\n"
-                    + " */\n");
+            out.write(
+                    """
+                    /**
+                     * Resource keys. This class is used when compiling sources, but
+                     * no dependencies to {@code ResourceKeys} should appear in any
+                     * resulting class files.  Since Java compiler inlines final integer
+                     * values, using long identifiers will not bloat constant pools of
+                     * classes compiled against the interface, provided that no class
+                     * implements this interface.
+                     *
+                     * @see org.geotools.resources.IndexedResourceBundle
+                     * @see org.geotools.resources.IndexedResourceCompiler
+                     */
+                    """);
             out.write("public final class ");
             out.write(classname);
             out.write(" {\n");
@@ -467,8 +473,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      */
     @Override
     public int compare(Object o1, Object o2) {
-        if (o1 instanceof Map.Entry) o1 = ((Map.Entry) o1).getValue();
-        if (o2 instanceof Map.Entry) o2 = ((Map.Entry) o2).getValue();
+        if (o1 instanceof Map.Entry entry) o1 = entry.getValue();
+        if (o2 instanceof Map.Entry entry) o2 = entry.getValue();
         final String key1 = (String) o1;
         final String key2 = (String) o2;
         return key1.compareTo(key2);

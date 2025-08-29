@@ -29,6 +29,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
@@ -70,6 +71,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class EquidistantConic extends MapProjection {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = 5885522933843653157L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -226,6 +228,7 @@ public class EquidistantConic extends MapProjection {
      */
     public static final class Provider extends AbstractProvider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 1995516958029802849L;
 
         /** The parameters group. */

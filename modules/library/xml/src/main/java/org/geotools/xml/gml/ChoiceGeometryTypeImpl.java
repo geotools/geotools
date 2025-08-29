@@ -21,7 +21,6 @@ import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -59,18 +58,17 @@ public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl implements C
     @Override
     public Object convert(Object obj) {
         GeometryFactory fac = new GeometryFactory();
-        if (getBinding() == MultiPolygon.class && obj instanceof Polygon) {
-            return fac.createMultiPolygon(new Polygon[] {(Polygon) obj});
+        if (getBinding() == MultiPolygon.class && obj instanceof Polygon polygon) {
+            return fac.createMultiPolygon(new Polygon[] {polygon});
         }
-        if (getBinding() == MultiPoint.class && obj instanceof Point) {
-            return fac.createMultiPoint(new Point[] {(Point) obj});
+        if (getBinding() == MultiPoint.class && obj instanceof Point point) {
+            return fac.createMultiPoint(new Point[] {point});
         }
-        if (getBinding() == MultiLineString.class && obj instanceof LineString) {
-            return fac.createMultiLineString(new LineString[] {(LineString) obj});
+        if (getBinding() == MultiLineString.class && obj instanceof LineString string) {
+            return fac.createMultiLineString(new LineString[] {string});
         }
-        if (getBinding() == GeometryCollection.class && obj instanceof Geometry) {
-            return fac.createGeometryCollection(
-                    new org.locationtech.jts.geom.Geometry[] {(org.locationtech.jts.geom.Geometry) obj});
+        if (getBinding() == GeometryCollection.class && obj instanceof org.locationtech.jts.geom.Geometry geometry) {
+            return fac.createGeometryCollection(new org.locationtech.jts.geom.Geometry[] {geometry});
         }
         return obj;
     }

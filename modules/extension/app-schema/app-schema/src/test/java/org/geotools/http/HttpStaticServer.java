@@ -88,7 +88,7 @@ final class HttpStaticServer {
             if (input == null) {
                 // we could not find the resource int he classpath
                 throw new RuntimeException(
-                        String.format("Resource '%s' with path '%s' not found.", resourceName, resourcePath));
+                        "Resource '%s' with path '%s' not found.".formatted(resourceName, resourcePath));
             }
             // read the resource from the classpath
             String resource = IOUtils.toString(input, StandardCharsets.UTF_8);
@@ -101,11 +101,10 @@ final class HttpStaticServer {
             resource = resource.replace("{port}", String.valueOf(getPort()));
             // register the resource
             resources.put(resourceName, resource);
-            LOGGER.info(String.format("Resource %s added.", buildUrl(resourceName)));
+            LOGGER.info("Resource %s added.".formatted(buildUrl(resourceName)));
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format("Error registering resource '%s' with path '%s'.", resourceName, resourcePath),
-                    exception);
+                    "Error registering resource '%s' with path '%s'.".formatted(resourceName, resourcePath), exception);
         }
     }
 
@@ -113,7 +112,7 @@ final class HttpStaticServer {
     void start() {
         try {
             server.start();
-            LOGGER.info(String.format("HTTP static server started '%s:%d'.", getHost(), getPort()));
+            LOGGER.info("HTTP static server started '%s:%d'.".formatted(getHost(), getPort()));
         } catch (Exception exception) {
             throw new RuntimeException("Error starting the HTTP server.", exception);
         }
@@ -163,7 +162,7 @@ final class HttpStaticServer {
      * associated with the provided resource name.
      */
     String buildUrl(String resourceName) {
-        return String.format("http://%s:%d/%s", getHost(), getPort(), resourceName);
+        return "http://%s:%d/%s".formatted(getHost(), getPort(), resourceName);
     }
 
     /** Helper method to let the HTTP static server run in the background, this useful for debugging. */

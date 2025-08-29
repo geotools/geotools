@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.ConicProjection;
@@ -43,6 +44,7 @@ import org.geotools.api.referencing.operation.Projection;
  */
 public class DefaultConversion extends DefaultOperation implements Conversion {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -2148164324805562793L;
 
     /**
@@ -125,8 +127,8 @@ public class DefaultConversion extends DefaultOperation implements Conversion {
             final Class<? extends Conversion> typeHint) {
         Class<? extends CoordinateOperation> type = getType(definition);
         final OperationMethod method = definition.getMethod();
-        if (method instanceof MathTransformProvider) {
-            final Class<? extends Operation> candidate = ((MathTransformProvider) method).getOperationType();
+        if (method instanceof MathTransformProvider provider) {
+            final Class<? extends Operation> candidate = provider.getOperationType();
             if (candidate != null) {
                 if (type.isAssignableFrom(candidate)) {
                     type = candidate;

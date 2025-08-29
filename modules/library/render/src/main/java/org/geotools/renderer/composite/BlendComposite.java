@@ -483,8 +483,7 @@ public class BlendComposite implements Composite {
 
         private RgbaAccessor getAccessor(Raster raster, ColorModel cm) {
             RgbaAccessor accessor;
-            if (cm instanceof DirectColorModel && cm.getTransferType() == DataBuffer.TYPE_INT) {
-                DirectColorModel dcm = (DirectColorModel) cm;
+            if (cm instanceof DirectColorModel dcm && cm.getTransferType() == DataBuffer.TYPE_INT) {
 
                 // check the RGB and BGR masks
                 if (dcm.getRedMask() == 0x00FF0000

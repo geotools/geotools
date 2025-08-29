@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import javax.measure.Unit;
 import org.geotools.api.referencing.cs.AffineCS;
@@ -45,6 +46,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class DefaultAffineCS extends AbstractCS implements AffineCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7977674229369042440L;
 
     /**

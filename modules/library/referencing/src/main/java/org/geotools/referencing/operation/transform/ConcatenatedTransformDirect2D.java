@@ -18,6 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
@@ -33,6 +34,7 @@ import org.geotools.referencing.operation.matrix.XMatrix;
  */
 final class ConcatenatedTransformDirect2D extends ConcatenatedTransformDirect implements MathTransform2D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6009454091075588885L;
 
     /**

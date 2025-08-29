@@ -9,6 +9,8 @@
  */
 package org.geotools.api.geometry;
 
+import java.io.Serial;
+
 /**
  * Indicates that an operation cannot be completed properly because of a mismatch in the dimensions of object
  * attributes.
@@ -18,6 +20,7 @@ package org.geotools.api.geometry;
  */
 public class MismatchedDimensionException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3138484331425225155L;
 
     /** Creates an exception with no message. */

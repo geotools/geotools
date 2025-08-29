@@ -110,9 +110,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     protected FallbackAuthorityFactory(final AuthorityFactory primary, final AuthorityFactory fallback) {
         super(primary, fallback);
         ensureNonNull("fallback", fallback);
-        this.fallback = fallback instanceof AbstractAuthorityFactory
-                ? (AbstractAuthorityFactory) fallback
-                : new AuthorityFactoryAdapter(fallback);
+        this.fallback = fallback instanceof AbstractAuthorityFactory aaf ? aaf : new AuthorityFactoryAdapter(fallback);
     }
 
     /**
@@ -204,8 +202,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
                      * factory (this is why we don't override sameAuthorityCodes(...) for testing
                      * the fallback). The fallback may have value, so we test it recursively.
                      */
-                    if (fallback instanceof FallbackAuthorityFactory) {
-                        fallback = ((FallbackAuthorityFactory) fallback).fallback;
+                    if (fallback instanceof FallbackAuthorityFactory factory) {
+                        fallback = factory.fallback;
                         continue;
                     }
                 }

@@ -267,8 +267,7 @@ public class RasterLayerRequest {
         // //
         if (params != null) {
             for (GeneralParameterValue gParam : params) {
-                if (gParam instanceof ParameterValue<?>) {
-                    final ParameterValue<?> param = (ParameterValue<?>) gParam;
+                if (gParam instanceof ParameterValue<?> param) {
                     final ReferenceIdentifier name = param.getDescriptor().getName();
                     extractParameter(param, name);
                 }
@@ -864,8 +863,7 @@ public class RasterLayerRequest {
             if (value == null) {
                 return;
             }
-            if (value instanceof List) {
-                List values = (List) value; // we are assuming it is a list !!!
+            if (value instanceof List values) { // we are assuming it is a list !!!
                 // remove last comma
                 requestedAdditionalDomains.put(paramName, values);
             }

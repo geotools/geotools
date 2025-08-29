@@ -264,7 +264,7 @@ public class JAboutDialog extends AbstractSimpleDialog {
 
     /** Displays all information combined. This is only called on the event dispatch thread. */
     private void showAllInfo() {
-        final String newline = String.format("%n");
+        final String newline = "%n".formatted();
         final StringBuilder sb = new StringBuilder();
 
         if (hasApplicationInfo) {

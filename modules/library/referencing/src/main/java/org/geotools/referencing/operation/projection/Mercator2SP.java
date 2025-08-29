@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -39,6 +40,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class Mercator2SP extends Mercator {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -5693375873386007245L;
 
     /**
@@ -66,6 +68,7 @@ public class Mercator2SP extends Mercator {
      */
     private static final class Spherical extends Mercator.Spherical {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 7693484746681095374L;
 
         /**
@@ -104,6 +107,7 @@ public class Mercator2SP extends Mercator {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 6356028352681135786L;
 
         /** The parameters group. */

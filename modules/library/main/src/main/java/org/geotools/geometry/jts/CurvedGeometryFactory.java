@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -44,6 +45,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public class CurvedGeometryFactory extends GeometryFactory {
 
+    @Serial
     private static final long serialVersionUID = -298811277709598383L;
 
     GeometryFactory delegate;

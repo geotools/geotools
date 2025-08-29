@@ -386,9 +386,9 @@ public class CoverageSlicesCatalog {
                 // have any state. Getting the features iterator may throw an exception
                 // by interpreting a null state as a closed transaction. Therefore
                 // we use a DefaultTransaction instance when dealing with stores.
-                if (featureSource instanceof FeatureStore) {
+                if (featureSource instanceof FeatureStore store) {
                     tx = new DefaultTransaction("getGranulesTransaction" + System.nanoTime());
-                    ((FeatureStore) featureSource).setTransaction(tx);
+                    store.setTransaction(tx);
                 }
                 String[] requestedProperties = q.getPropertyNames();
                 boolean postRetypeRequired = requestedProperties != Query.ALL_NAMES;
@@ -558,7 +558,7 @@ public class CoverageSlicesCatalog {
             checkStore();
             SimpleFeatureSource fs = slicesIndexStore.getFeatureSource(query.getTypeName());
 
-            if (fs instanceof ContentFeatureSource) ((ContentFeatureSource) fs).accepts(query, function, null);
+            if (fs instanceof ContentFeatureSource source) source.accepts(query, function, null);
             else {
                 final SimpleFeatureCollection collection = fs.getFeatures(query);
                 collection.accepts(function, null);

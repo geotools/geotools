@@ -97,9 +97,7 @@ public class MemberPropertyTypeBinding extends org.geotools.gml3.bindings.Featur
             }
         } else if (object instanceof FeatureCollectionType) {
             list.add(new Object[] {WFS.FeatureCollection, object});
-        } else if (object instanceof Attribute) {
-            // encoding a ValueCollection
-            Attribute att = (Attribute) object;
+        } else if (object instanceof Attribute att) {
             list.add(new Object[] {particle(att), att.getValue()});
         }
 

@@ -238,10 +238,7 @@ public class FeatureTypeRegistry {
                     LOGGER.finest("Creating attribute type " + typeName);
                     createType(typeName, typeDef, crs, false);
                     LOGGER.finest("Registering attribute type " + typeName);
-                } else if (attType instanceof ComplexType) {
-                    // ensure substitution groups are set for children including non lazy foundation
-                    // types
-                    ComplexType complexType = (ComplexType) attType;
+                } else if (attType instanceof ComplexType complexType) {
                     Collection<PropertyDescriptor> children = complexType.getDescriptors();
 
                     List<XSDParticle> childParticles = Schemas.getChildElementParticles(typeDef, true);
@@ -500,8 +497,7 @@ public class FeatureTypeRegistry {
             LOGGER.fine(assignedName + " has no super type");
         }
 
-        if (typeDefinition instanceof XSDComplexTypeDefinition) {
-            XSDComplexTypeDefinition complexTypeDef = (XSDComplexTypeDefinition) typeDefinition;
+        if (typeDefinition instanceof XSDComplexTypeDefinition complexTypeDef) {
             boolean includeParents = true;
             List<XSDElementDeclaration> children = Schemas.getChildElementDeclarations(typeDefinition, includeParents);
 
@@ -647,11 +643,9 @@ public class FeatureTypeRegistry {
                         + value.getClass().getName());
             } else {
                 LOGGER.finer("Importing " + key + " of type " + value.getClass().getName());
-                if (value instanceof AttributeType) {
-                    AttributeType type = (AttributeType) value;
+                if (value instanceof AttributeType type) {
                     register(type, false);
-                } else if (value instanceof AttributeDescriptor) {
-                    AttributeDescriptor descriptor = (AttributeDescriptor) value;
+                } else if (value instanceof AttributeDescriptor descriptor) {
                     register(descriptor);
                 }
             }

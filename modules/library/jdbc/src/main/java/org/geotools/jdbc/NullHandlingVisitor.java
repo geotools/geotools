@@ -185,13 +185,11 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
      * with)
      */
     private Filter guardAgainstNulls(Filter filter, Expression potentialPropertyName) {
-        if (potentialPropertyName instanceof PropertyName) {
-            PropertyName pn = (PropertyName) potentialPropertyName;
+        if (potentialPropertyName instanceof PropertyName pn) {
             String name = pn.getPropertyName();
             if (isNillable(name)) {
                 Not notNull = ff.not(ff.isNull(ff.property(name)));
-                if (filter instanceof And) {
-                    And and = (And) filter;
+                if (filter instanceof And and) {
                     List<Filter> children = new ArrayList<>(and.getChildren());
                     children.add(notNull);
                     return ff.and(children);

@@ -206,11 +206,9 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     outputList.add(roi);
                 }
 
-            } else if (o != null && o instanceof Polygon) {
+            } else if (o != null && o instanceof Polygon roiInput) {
                 // Output List definition
                 outputList = new ArrayList<>(1);
-                // Selection of the polygon associated with the ROI
-                final Polygon roiInput = (Polygon) o;
                 // If the input ROI intersects the coverage, then it is added to the list
                 if (new ReferencedEnvelope(roiInput.getEnvelopeInternal(), source.getCoordinateReferenceSystem2D())
                         .intersects((Envelope) new ReferencedEnvelope(envelope))) {
@@ -300,8 +298,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
         // minimum and maximum as the output of the extrema operation.
         //
         // /////////////////////////////////////////////////////////////////////
-        if (data instanceof RenderedOp) {
-            final RenderedOp result = (RenderedOp) data;
+        if (data instanceof RenderedOp result) {
             final Map<String, Object> synthProp = new HashMap<>();
 
             // Addition of the ROI property and NoData property

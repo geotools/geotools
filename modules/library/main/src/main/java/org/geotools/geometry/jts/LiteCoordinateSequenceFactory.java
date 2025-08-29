@@ -42,8 +42,7 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
     @Override
     public CoordinateSequence create(CoordinateSequence coordSeq) {
         /* If copying a LiteCoordinateSequence, use the copy constructor to preserve dimensionality information. */
-        if (coordSeq instanceof LiteCoordinateSequence)
-            return new LiteCoordinateSequence((LiteCoordinateSequence) coordSeq);
+        if (coordSeq instanceof LiteCoordinateSequence sequence) return new LiteCoordinateSequence(sequence);
         return new LiteCoordinateSequence(coordSeq.toCoordinateArray());
     }
 
@@ -82,8 +81,8 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
      * @return A LiteCoordinateSequence, or null if <tt>cs</tt> was null.
      */
     public static LiteCoordinateSequence lite(CoordinateSequence cs) {
-        if (cs instanceof LiteCoordinateSequence) {
-            return (LiteCoordinateSequence) cs;
+        if (cs instanceof LiteCoordinateSequence sequence) {
+            return sequence;
         } else if (cs == null) {
             return null;
         } else {

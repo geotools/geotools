@@ -29,6 +29,7 @@ import static java.lang.Math.tan;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -106,6 +107,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class Krovak extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -8359105634355342212L;
 
     /** Maximum number of iterations for iterative computations. */
@@ -349,6 +351,7 @@ public class Krovak extends MapProjection {
      */
     private abstract static class BaseProvider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -278392856661204734L;
 
         /**

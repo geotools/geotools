@@ -90,19 +90,19 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
     protected URL deriveURLFromSourceObject(Object source) throws IOException {
         if (source == null) throw new IOException("Cannot read from null");
 
-        if (source instanceof URL) return (URL) source;
+        if (source instanceof URL rL) return rL;
 
-        if (source instanceof String) {
+        if (source instanceof String string) {
             URL url = null;
-            File f = new File((String) source);
+            File f = new File(string);
             if (f.exists()) url = f.toURI().toURL();
-            else url = new URL((String) source);
+            else url = new URL(string);
 
             url = new URL(URLDecoder.decode(url.toExternalForm(), "UTF8"));
             return url;
         }
 
-        if (source instanceof URI) return ((URI) source).toURL();
+        if (source instanceof URI rI) return rI.toURL();
         return null;
     }
 

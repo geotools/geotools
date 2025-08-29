@@ -17,6 +17,7 @@
 package org.geotools.data;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Indicates a FeatureType could not be found.
@@ -24,6 +25,7 @@ import java.io.IOException;
  * @author Jody Garnett, Refractions Research
  */
 public class SchemaNotFoundException extends IOException {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     static final String NOT_FOUND = "Feature type could not be found for ";

@@ -60,16 +60,15 @@ public class Coordinates {
             return sequence; // same list so just return it
         }
 
-        if (sequence instanceof List) {
-            List sublist = ((List) sequence).subList(fromIndex, toIndex);
+        if (sequence instanceof List list) {
+            List sublist = list.subList(fromIndex, toIndex);
 
-            if (sublist instanceof CoordinateSequence) {
-                return (CoordinateSequence) sublist;
+            if (sublist instanceof CoordinateSequence coordinateSequence) {
+                return coordinateSequence;
             }
         }
 
-        if (sequence instanceof CoordinateAccess) {
-            CoordinateAccess access = (CoordinateAccess) sequence;
+        if (sequence instanceof CoordinateAccess access) {
             double[][] coordArray = access.toOrdinateArrays();
             Object[] attributeArray = access.toAttributeArrays();
 
@@ -168,8 +167,7 @@ public class Coordinates {
 
     /** Reverse provided coordinate sequence (used to correct CW vs CCW order). */
     public static CoordinateSequence reverse(CoordinateSequenceFactory factory, CoordinateSequence sequence) {
-        if (sequence instanceof CoordinateAccess) {
-            CoordinateAccess access = (CoordinateAccess) sequence;
+        if (sequence instanceof CoordinateAccess access) {
             double[][] coordArray = access.toOrdinateArrays();
             Object[] attributeArray = access.toAttributeArrays();
 
@@ -205,8 +203,7 @@ public class Coordinates {
     }
 
     public static void append(StringBuffer buf, CoordinateSequence cs, int coordinate, NumberFormat nf) {
-        if (cs instanceof CoordinateAccess) {
-            CoordinateAccess ca = (CoordinateAccess) cs;
+        if (cs instanceof CoordinateAccess ca) {
             append(buf, ca, coordinate, LEN(ca), nf);
         } else {
             append(buf, cs, coordinate, LEN(cs), nf);
@@ -251,8 +248,8 @@ public class Coordinates {
     }
 
     public static int L(CoordinateSequence cs) {
-        if (cs instanceof CoordinateAccess) {
-            return ((CoordinateAccess) cs).getNumAttributes();
+        if (cs instanceof CoordinateAccess access) {
+            return access.getNumAttributes();
         }
 
         return 0;
@@ -285,8 +282,8 @@ public class Coordinates {
     }
 
     public static void append(StringBuffer buf, CoordinateSequence cs, NumberFormat nf) {
-        if (cs instanceof CoordinateAccess) {
-            append(buf, (CoordinateAccess) cs, nf);
+        if (cs instanceof CoordinateAccess access) {
+            append(buf, access, nf);
         } else {
             int LEN = LEN(cs); // 2 or 3
 

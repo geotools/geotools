@@ -59,8 +59,7 @@ class ToColorFunction extends FunctionExpressionImpl {
             if (evaluation instanceof Color) {
                 return evaluation;
             }
-            if (evaluation instanceof JSONArray) {
-                JSONArray je = (JSONArray) evaluation;
+            if (evaluation instanceof JSONArray je) {
                 if (je.size() == 3 || je.size() == 4) {
                     Long r = (Long) je.get(0);
                     Long g = (Long) je.get(1);

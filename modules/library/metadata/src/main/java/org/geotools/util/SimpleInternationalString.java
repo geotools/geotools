@@ -19,6 +19,7 @@ package org.geotools.util;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -32,6 +33,7 @@ import java.util.Locale;
  */
 public class SimpleInternationalString extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3543963804501667578L;
 
     /**

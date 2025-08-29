@@ -285,11 +285,11 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
         if (value == null) {
             return null;
         }
-        if (value instanceof Collection) {
-            if (((Collection) value).isEmpty()) {
+        if (value instanceof Collection collection) {
+            if (collection.isEmpty()) {
                 return null;
             }
-            value = ((Collection) value).iterator().next();
+            value = collection.iterator().next();
             while (value instanceof Attribute) {
                 value = ((Attribute) value).getValue();
             }

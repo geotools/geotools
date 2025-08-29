@@ -102,8 +102,8 @@ public final class RangedClassifier extends Classifier {
     @SuppressWarnings("CompareToZero")
     private int classify(Comparable<?> val) {
         Comparable<?> value = val;
-        if (val instanceof Integer) { // convert to double as java is stupid
-            value = Double.valueOf(((Integer) val).intValue());
+        if (val instanceof Integer integer) { // convert to double as java is stupid
+            value = Double.valueOf(integer.intValue());
         }
         // check each slot and see if: min <= value < max
         int last = min.length - 1;

@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
+
 /**
  * A one dimensional, identity transform. Output values are identical to input values. This class is really a special
  * case of {@link LinearTransform1D} optimized for speed.
@@ -26,6 +28,7 @@ package org.geotools.referencing.operation.transform;
  */
 final class IdentityTransform1D extends LinearTransform1D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7378774584053573789L;
 
     /** The shared instance of the identity transform. */

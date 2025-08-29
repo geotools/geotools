@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.crs.SingleCRS;
 import org.geotools.api.referencing.cs.CoordinateSystem;
@@ -53,6 +54,7 @@ import org.geotools.referencing.wkt.Formatter;
  */
 public class AbstractSingleCRS extends AbstractCRS implements SingleCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1815712797774273L;
 
     /** The datum. */

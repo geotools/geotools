@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso;
 
+import java.io.Serial;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.metadata.citation.Citation;
 
@@ -32,6 +33,7 @@ import org.geotools.api.metadata.citation.Citation;
  */
 public class IdentifierImpl extends MetadataEntity implements Identifier {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7459062382170865919L;
 
     /** Alphanumeric value identifying an instance in the namespace. */

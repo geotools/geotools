@@ -173,8 +173,8 @@ public class MappingFeatureIteratorFactory {
             query.setFilter(Filter.INCLUDE);
             Query unrolledQuery = store.unrollQuery(query, mapping);
             unrolledQuery.setFilter(unrolledFilter);
-            if (query instanceof JoiningQuery && unrolledQuery instanceof JoiningQuery) {
-                ((JoiningQuery) unrolledQuery).setRootMapping(((JoiningQuery) query).getRootMapping());
+            if (query instanceof JoiningQuery joiningQuery && unrolledQuery instanceof JoiningQuery joiningQuery1) {
+                joiningQuery1.setRootMapping(joiningQuery.getRootMapping());
             }
             if (isSimpleType(mapping)) {
                 iterator = new MappingAttributeIterator(store, mapping, query, unrolledQuery, transaction);
@@ -287,10 +287,10 @@ public class MappingFeatureIteratorFactory {
     private static FilterCapabilities getFilterCapabilities(FeatureSource mappedSource)
             throws IllegalArgumentException {
         FilterCapabilities capabilities = null;
-        if (mappedSource instanceof JDBCFeatureSource) {
-            capabilities = ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
-        } else if (mappedSource instanceof JDBCFeatureStore) {
-            capabilities = ((JDBCFeatureStore) mappedSource).getDataStore().getFilterCapabilities();
+        if (mappedSource instanceof JDBCFeatureSource source) {
+            capabilities = source.getDataStore().getFilterCapabilities();
+        } else if (mappedSource instanceof JDBCFeatureStore store) {
+            capabilities = store.getDataStore().getFilterCapabilities();
         } else {
             throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
         }

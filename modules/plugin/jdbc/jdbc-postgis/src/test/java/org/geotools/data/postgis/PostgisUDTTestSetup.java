@@ -16,7 +16,6 @@
  */
 package org.geotools.data.postgis;
 
-import static java.lang.String.format;
 import static org.geotools.data.postgis.PostGISDialect.BIGDATE_UDT;
 
 import org.geotools.jdbc.JDBCUDTTestSetup;
@@ -92,19 +91,19 @@ public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
     }
 
     public void createDateUdtTable() throws Exception {
-        run(format("CREATE DOMAIN %s AS bigint;", BIGDATE_UDT));
-        run(format("CREATE TABLE \"date_udt\" (id serial PRIMARY KEY, bd %s, name varchar);", BIGDATE_UDT));
+        run("CREATE DOMAIN %s AS bigint;".formatted(BIGDATE_UDT));
+        run("CREATE TABLE \"date_udt\" (id serial PRIMARY KEY, bd %s, name varchar);".formatted(BIGDATE_UDT));
 
         run("INSERT INTO \"date_udt\" (bd, name) VALUES (0, 'epoch');");
         run("INSERT INTO \"date_udt\" (bd, name) VALUES (-1000, 'epoch-1');");
         run("INSERT INTO \"date_udt\" (bd, name) VALUES (1000, 'epoch+1');");
-        run(format("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'ce');", -62135769600000L));
-        run(format("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'bc');", -62135769600000L - 1));
-        run(format("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'min');", Long.MIN_VALUE));
+        run("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'ce');".formatted(-62135769600000L));
+        run("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'bc');".formatted(-62135769600000L - 1));
+        run("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'min');".formatted(Long.MIN_VALUE));
     }
 
     public void dropDateUdtTable() throws Exception {
-        runSafe(format("DROP TABLE \"date_udt\";"));
-        runSafe(format("DROP DOMAIN %s;", BIGDATE_UDT));
+        runSafe("DROP TABLE \"date_udt\";".formatted());
+        runSafe("DROP DOMAIN %s;".formatted(BIGDATE_UDT));
     }
 }

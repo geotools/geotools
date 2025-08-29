@@ -102,9 +102,9 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
                     @Override
                     public boolean test(StyledLayer styledLayer) {
                         List<Style> styles;
-                        if (styledLayer instanceof NamedLayer) styles = ((NamedLayer) styledLayer).styles();
-                        else if (styledLayer instanceof UserLayer) {
-                            styles = ((UserLayer) styledLayer).userStyles();
+                        if (styledLayer instanceof NamedLayer layer1) styles = layer1.styles();
+                        else if (styledLayer instanceof UserLayer layer) {
+                            styles = layer.userStyles();
                         } else {
                             styles = Collections.emptyList();
                         }
@@ -116,10 +116,10 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
     }
 
     protected void encode(StyledLayer layer) {
-        if (layer instanceof UserLayer) {
-            encode((UserLayer) layer);
-        } else if (layer instanceof NamedLayer) {
-            encode((NamedLayer) layer);
+        if (layer instanceof UserLayer userLayer) {
+            encode(userLayer);
+        } else if (layer instanceof NamedLayer namedLayer) {
+            encode(namedLayer);
         }
     }
 

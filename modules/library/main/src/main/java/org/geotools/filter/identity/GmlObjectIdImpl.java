@@ -42,8 +42,8 @@ public class GmlObjectIdImpl implements GmlObjectId {
 
     @Override
     public boolean matches(Object object) {
-        if (object instanceof org.geotools.api.feature.Feature) {
-            return new FeatureIdImpl(gmlId).matches((org.geotools.api.feature.Feature) object);
+        if (object instanceof org.geotools.api.feature.Feature feature) {
+            return new FeatureIdImpl(gmlId).matches(feature);
         }
 
         // TODO: geometries
@@ -57,8 +57,7 @@ public class GmlObjectIdImpl implements GmlObjectId {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GmlObjectIdImpl) {
-            GmlObjectIdImpl other = (GmlObjectIdImpl) obj;
+        if (obj instanceof GmlObjectIdImpl other) {
             return gmlId.equals(other.gmlId);
         }
 

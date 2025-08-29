@@ -9,6 +9,7 @@
  */
 package org.geotools.api.feature;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
@@ -21,6 +22,7 @@ import org.geotools.api.feature.type.Name;
  * @since GeoAPI 2.2
  */
 public class IllegalAttributeException extends IllegalArgumentException {
+    @Serial
     private static final long serialVersionUID = 3373066465585246605L;
 
     private static final AttributeDescriptor NULL_ATTRIBUTE_DESCRIPTOR = new NullAttributeDescriptor();

@@ -17,6 +17,7 @@
 
 package org.geotools.util;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
  */
 public class KVP extends LinkedHashMap<String, Object> {
     /** */
+    @Serial
     private static final long serialVersionUID = -387821381125137128L;
 
     /**

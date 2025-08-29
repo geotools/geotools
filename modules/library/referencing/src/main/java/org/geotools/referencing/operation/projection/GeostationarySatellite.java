@@ -20,6 +20,7 @@
 package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
@@ -52,6 +53,7 @@ import si.uom.SI;
  */
 public abstract class GeostationarySatellite extends MapProjection {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     final double h;
@@ -161,7 +163,9 @@ public abstract class GeostationarySatellite extends MapProjection {
 
     public static class Spherical extends GeostationarySatellite {
 
+        @Serial
         private static final long serialVersionUID = 1L;
+
         final double radius_p;
         final double radius_p2;
         final double radius_p_inv2;
@@ -222,7 +226,9 @@ public abstract class GeostationarySatellite extends MapProjection {
 
     public static class Ellipsoidal extends GeostationarySatellite {
 
+        @Serial
         private static final long serialVersionUID = 1L;
+
         final double radius_p;
         final double radius_p2;
         final double radius_p_inv2;

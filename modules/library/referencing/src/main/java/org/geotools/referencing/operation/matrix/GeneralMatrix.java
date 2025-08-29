@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.text.FieldPosition;
@@ -54,6 +55,7 @@ import org.geotools.util.XArray;
  */
 public class GeneralMatrix implements XMatrix, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8447482612423035361L;
 
     DMatrixRMaj mat;
@@ -146,8 +148,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param matrix The matrix to copy.
      */
     public GeneralMatrix(final Matrix matrix) {
-        if (matrix instanceof GeneralMatrix) {
-            mat = new DMatrixRMaj(((GeneralMatrix) matrix).mat);
+        if (matrix instanceof GeneralMatrix generalMatrix) {
+            mat = new DMatrixRMaj(generalMatrix.mat);
         } else {
             mat = new DMatrixRMaj(matrix.getNumRow(), matrix.getNumCol());
 
@@ -344,8 +346,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
     //
     /** Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDRM. */
     private DMatrixRMaj internal(Matrix matrix) {
-        if (matrix instanceof GeneralMatrix) {
-            return ((GeneralMatrix) matrix).mat;
+        if (matrix instanceof GeneralMatrix generalMatrix) {
+            return generalMatrix.mat;
         } else {
             DMatrixRMaj a = new DMatrixRMaj(matrix.getNumRow(), matrix.getNumCol());
             for (int j = 0; j < a.numRows; j++) {
@@ -383,8 +385,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @return The matrix elements.
      */
     public static double[][] getElements(final Matrix matrix) {
-        if (matrix instanceof GeneralMatrix) {
-            return ((GeneralMatrix) matrix).getElements();
+        if (matrix instanceof GeneralMatrix generalMatrix) {
+            return generalMatrix.getElements();
         }
         final int numCol = matrix.getNumCol();
         final double[][] rows = new double[matrix.getNumRow()][];
@@ -467,8 +469,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
     @Override
     public void invert(Matrix matrix) throws SingularMatrixException {
         DMatrixRMaj a;
-        if (matrix instanceof GeneralMatrix) {
-            a = new DMatrixRMaj(((GeneralMatrix) matrix).mat);
+        if (matrix instanceof GeneralMatrix generalMatrix) {
+            a = new DMatrixRMaj(generalMatrix.mat);
         } else {
             a = new DMatrixRMaj(matrix.getNumRow(), matrix.getNumCol());
             for (int j = 0; j < mat.numRows; j++) {

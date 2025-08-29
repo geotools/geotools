@@ -18,6 +18,7 @@ package org.geotools.measure;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.FieldPosition;
@@ -92,6 +93,7 @@ import org.geotools.util.Classes;
  */
 public class AngleFormat extends Format {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 4320403817210439764L;
 
     /** Caractère représentant l'hémisphère nord. Il doit obligatoirement être en majuscule. */
@@ -379,7 +381,7 @@ public class AngleFormat extends Format {
         Logger logger = Logger.getLogger(AngleFormat.class.getName());
         logger.log(
                 Level.WARNING,
-                String.format("Can't round the value %s to the given precision %d", String.valueOf(value), precision));
+                "Can't round the value %s to the given precision %d".formatted(String.valueOf(value), precision));
 
         return value;
     }
@@ -778,14 +780,14 @@ public class AngleFormat extends Format {
     @Override
     public synchronized StringBuffer format(final Object obj, StringBuffer toAppendTo, final FieldPosition pos)
             throws IllegalArgumentException {
-        if (obj instanceof Latitude) {
-            return format(((Latitude) obj).degrees(), toAppendTo, pos, NORTH, SOUTH);
+        if (obj instanceof Latitude latitude) {
+            return format(latitude.degrees(), toAppendTo, pos, NORTH, SOUTH);
         }
-        if (obj instanceof Longitude) {
-            return format(((Longitude) obj).degrees(), toAppendTo, pos, EAST, WEST);
+        if (obj instanceof Longitude longitude) {
+            return format(longitude.degrees(), toAppendTo, pos, EAST, WEST);
         }
-        if (obj instanceof Angle) {
-            return format(((Angle) obj).degrees(), toAppendTo, pos);
+        if (obj instanceof Angle angle) {
+            return format(angle.degrees(), toAppendTo, pos);
         }
         if (obj instanceof Number) {
             numberFormat.setMinimumIntegerDigits(1);

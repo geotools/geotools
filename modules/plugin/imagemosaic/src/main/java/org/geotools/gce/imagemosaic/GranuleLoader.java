@@ -70,8 +70,7 @@ public class GranuleLoader implements Callable<GranuleLoadingResult> {
             final Dimension tileDimension = request.getTileDimensions();
             if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
                 final Object layout = this.hints.get(JAI.KEY_IMAGE_LAYOUT);
-                if (layout != null && layout instanceof ImageLayout) {
-                    final ImageLayout imageLayout = (ImageLayout) layout;
+                if (layout != null && layout instanceof ImageLayout imageLayout) {
                     imageLayout.setTileHeight(tileDimension.height);
                     imageLayout.setTileWidth(tileDimension.width);
                 }

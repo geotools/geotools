@@ -140,8 +140,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
         } catch (Exception exception) {
             // something bad happen, let's abort
             throw new RuntimeException(
-                    String.format(
-                            "Error reading features from table '%s' using query '%s'.", tableName, query.toString()),
+                    "Error reading features from table '%s' using query '%s'.".formatted(tableName, query.toString()),
                     exception);
         }
     }

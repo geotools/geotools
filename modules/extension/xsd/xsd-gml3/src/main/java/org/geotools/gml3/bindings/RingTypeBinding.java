@@ -109,8 +109,7 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
     public Object getProperty(Object object, QName name) throws Exception {
         // System.out.println(name.getLocalPart());
         if ("curveMember".equals(name.getLocalPart())) {
-            if (object instanceof CompoundCurvedGeometry<?>) {
-                CompoundCurvedGeometry<?> curve = (CompoundCurvedGeometry<?>) object;
+            if (object instanceof CompoundCurvedGeometry<?> curve) {
                 List<LineString> components = curve.getComponents();
                 return components;
             } else {

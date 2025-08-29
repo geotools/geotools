@@ -17,6 +17,7 @@
 package org.geotools.api.data;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Indicates a lock contention, and attempt was made to modify or aquire with out Authroization.
@@ -24,7 +25,9 @@ import java.io.IOException;
  * @author Jody Garnett, Refractions Research
  */
 public class FeatureLockException extends IOException {
+    @Serial
     private static final long serialVersionUID = 1L;
+
     String featureID;
 
     public FeatureLockException() {

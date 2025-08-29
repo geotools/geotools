@@ -100,8 +100,8 @@ public class MBStyle {
      * @throws MBFormatException JSON content inconsistent with specification
      */
     public static MBStyle create(Object json) throws MBFormatException {
-        if (json instanceof JSONObject) {
-            return new MBStyle((JSONObject) json);
+        if (json instanceof JSONObject object) {
+            return new MBStyle(object);
         } else if (json == null) {
             throw new MBFormatException("JSONObject required: null");
         } else {
@@ -137,9 +137,7 @@ public class MBStyle {
         List<MBLayer> layersList = new ArrayList<>();
         int labelPriority = 0;
         for (Object obj : layers) {
-            if (obj instanceof JSONObject) {
-
-                JSONObject jsonObject = (JSONObject) obj;
+            if (obj instanceof JSONObject jsonObject) {
 
                 MBLayer mbLayer = null;
                 if (jsonObject.containsKey("ref")) {
@@ -151,12 +149,12 @@ public class MBStyle {
                         mbLayer = MBLayer.create(jsonObject);
                     }
                 } else {
-                    mbLayer = MBLayer.create((JSONObject) obj);
+                    mbLayer = MBLayer.create(jsonObject);
                 }
                 // adjust label priority so that the labels of the last layer are painted first
-                if (mbLayer instanceof SymbolMBLayer) {
+                if (mbLayer instanceof SymbolMBLayer layer) {
                     labelPriority += DEFAULT_LABEL_PRIORITY;
-                    ((SymbolMBLayer) mbLayer).setLabelPriority(labelPriority);
+                    layer.setLabelPriority(labelPriority);
                 }
                 layersList.add(mbLayer);
             } else {
@@ -169,9 +167,9 @@ public class MBStyle {
     private JSONObject referenceLayer(JSONArray layers, String refLayer) {
         JSONObject refObject = new JSONObject();
         for (Object check : layers) {
-            if (check instanceof JSONObject
-                    && refLayer.equalsIgnoreCase(((JSONObject) check).get("id").toString())) {
-                refObject = (JSONObject) check;
+            if (check instanceof JSONObject object
+                    && refLayer.equalsIgnoreCase(object.get("id").toString())) {
+                refObject = object;
             }
         }
         return refObject;
@@ -206,8 +204,7 @@ public class MBStyle {
         JSONArray layers = parse.getJSONArray(json, "layers");
         List<MBLayer> layersList = new ArrayList<>();
         for (Object obj : layers) {
-            if (obj instanceof JSONObject) {
-                JSONObject jsonObject = (JSONObject) obj;
+            if (obj instanceof JSONObject jsonObject) {
                 if (jsonObject.containsKey("ref")) {
                     String refLayer = jsonObject.get("ref").toString();
                     JSONObject refObject = referenceLayer(layers, refLayer);
@@ -333,8 +330,7 @@ public class MBStyle {
         Map<String, MBSource> sourceMap = new HashMap<>();
         JSONObject sources = parse.getJSONObject(json, "sources", new JSONObject());
         for (Object o : sources.keySet()) {
-            if (o instanceof String) {
-                String k = (String) o;
+            if (o instanceof String k) {
                 JSONObject j = parse.getJSONObject(sources, k);
                 MBSource s = MBSource.create(j, parse);
                 sourceMap.put(k, s);
@@ -392,8 +388,8 @@ public class MBStyle {
                         featureTypeStyles.addAll(l.transform(this, minScaleDenominator, maxScaleDenominator));
                         i++;
                     }
-                } else if (layer instanceof BackgroundMBLayer) {
-                    background = (BackgroundMBLayer) layer;
+                } else if (layer instanceof BackgroundMBLayer bLayer) {
+                    background = bLayer;
                 } else {
                     featureTypeStyles.addAll(layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator));
                 }

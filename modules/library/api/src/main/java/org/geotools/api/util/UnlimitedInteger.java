@@ -9,6 +9,8 @@
  */
 package org.geotools.api.util;
 
+import java.io.Serial;
+
 /**
  * An {@linkplain Integer integer} with associated infinite flag. This implementation uses {@link Integer#MAX_VALUE} as
  * a sentinel value for positive infinity. This approach is consistent with J2SE {@link java.util.Collection#size()}
@@ -20,6 +22,7 @@ package org.geotools.api.util;
  */
 public final class UnlimitedInteger extends Number implements Comparable<UnlimitedInteger> {
     /** For compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 4748246369364771836L;
 
     /** A constant holding the negative infinity. */
@@ -123,7 +126,7 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     /** Compares this number with the specified object for equality. */
     @Override
     public boolean equals(final Object object) {
-        return object instanceof UnlimitedInteger && ((UnlimitedInteger) object).value == value;
+        return object instanceof UnlimitedInteger ui && ui.value == value;
     }
 
     /**

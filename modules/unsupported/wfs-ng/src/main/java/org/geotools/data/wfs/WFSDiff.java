@@ -116,8 +116,8 @@ public class WFSDiff extends Diff {
                     Name propName = properties[i];
                     Object newValue = values[i];
                     old.setAttribute(propName, newValue);
-                    if (newValue instanceof Geometry) {
-                        Envelope envelope = ((Geometry) newValue).getEnvelopeInternal();
+                    if (newValue instanceof Geometry geometry) {
+                        Envelope envelope = geometry.getEnvelopeInternal();
                         bounds.expandToInclude(envelope);
                     }
                 }

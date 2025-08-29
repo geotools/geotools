@@ -40,12 +40,11 @@ public class EMFUtils {
         boolean equals = true;
         if (o1 == null && o2 != null || o1 != null && o2 == null) {
             equals = false;
-        } else if (o1 instanceof EObject) {
-            if (!emfEquals((EObject) o1, (EObject) o2)) {
+        } else if (o1 instanceof EObject object) {
+            if (!emfEquals(object, (EObject) o2)) {
                 equals = false;
             }
-        } else if (o1 instanceof EList) {
-            EList l1 = (EList) o1;
+        } else if (o1 instanceof EList l1) {
             EList l2 = (EList) o2;
             if (l1.size() != l2.size()) {
                 LOGGER.fine(

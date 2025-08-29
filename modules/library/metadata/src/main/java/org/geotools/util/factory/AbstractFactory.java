@@ -232,9 +232,9 @@ public class AbstractFactory implements Factory, RegistrableFactory {
         if (map != null) {
             for (final Map.Entry<?, ?> entry : map.entrySet()) {
                 final Object key = entry.getKey();
-                if (key instanceof RenderingHints.Key) {
+                if (key instanceof RenderingHints.Key key1) {
                     final Object value = entry.getValue();
-                    final Object old = hints.put((RenderingHints.Key) key, value);
+                    final Object old = hints.put(key1, value);
                     if (!changed && !Utilities.equals(value, old)) {
                         changed = true;
                     }
@@ -378,8 +378,8 @@ public class AbstractFactory implements Factory, RegistrableFactory {
     /** Formats a name for the specified factory. */
     private static String format(final Factory factory) {
         String name = Classes.getShortClassName(factory);
-        if (factory instanceof AuthorityFactory) {
-            name = name + "[\"" + ((AuthorityFactory) factory).getAuthority().getTitle() + "\"]";
+        if (factory instanceof AuthorityFactory authorityFactory) {
+            name = name + "[\"" + authorityFactory.getAuthority().getTitle() + "\"]";
         }
         return name;
     }
@@ -404,14 +404,14 @@ public class AbstractFactory implements Factory, RegistrableFactory {
             throws IOException {
         for (final Map.Entry<?, ?> entry : hints.entrySet()) {
             final Object k = entry.getKey();
-            String key = k instanceof RenderingHints.Key ? Hints.nameOf((RenderingHints.Key) k) : String.valueOf(k);
+            String key = k instanceof RenderingHints.Key k1 ? Hints.nameOf(k1) : String.valueOf(k);
             Object value = entry.getValue();
             table.write(indent);
             table.write(key);
             table.write("\t= ");
             Factory recursive = null;
-            if (value instanceof Factory) {
-                recursive = (Factory) value;
+            if (value instanceof Factory factory) {
+                recursive = factory;
                 value = format(recursive);
                 final String previous = done.put(recursive, key);
                 if (previous != null) {

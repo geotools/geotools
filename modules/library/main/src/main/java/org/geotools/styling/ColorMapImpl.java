@@ -124,8 +124,7 @@ public class ColorMapImpl implements org.geotools.api.style.ColorMap {
             return true;
         }
 
-        if (obj instanceof ColorMapImpl) {
-            ColorMapImpl other = (ColorMapImpl) obj;
+        if (obj instanceof ColorMapImpl other) {
 
             return Utilities.equals(function, other.function)
                     && Utilities.equals(list, other.list)
@@ -139,8 +138,8 @@ public class ColorMapImpl implements org.geotools.api.style.ColorMap {
     static ColorMapImpl cast(org.geotools.api.style.ColorMap colorMap) {
         if (colorMap == null) {
             return null;
-        } else if (colorMap instanceof ColorMapImpl) {
-            return (ColorMapImpl) colorMap;
+        } else if (colorMap instanceof ColorMapImpl impl) {
+            return impl;
         } else {
             return null; // unable to handle the translation at this time
         }

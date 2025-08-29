@@ -191,8 +191,8 @@ public class GML3ParsingUtils {
     public static CurvedGeometryFactory getCurvedGeometryFactory(
             ArcParameters arcParameters, GeometryFactory gFactory, CoordinateSequence cs) {
         CurvedGeometryFactory factory;
-        if (gFactory instanceof CurvedGeometryFactory) {
-            factory = (CurvedGeometryFactory) gFactory;
+        if (gFactory instanceof CurvedGeometryFactory geometryFactory) {
+            factory = geometryFactory;
         } else if (arcParameters != null && arcParameters.getLinearizationTolerance() != null) {
             double tolerance = Double.MAX_VALUE;
             if (cs != null) {

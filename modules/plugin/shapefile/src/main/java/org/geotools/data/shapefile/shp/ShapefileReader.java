@@ -331,8 +331,7 @@ public class ShapefileReader implements FileReader, Closeable {
     private void init(boolean strict, GeometryFactory gf) throws IOException, ShapefileException {
         geometryFactory = gf;
 
-        if (channel instanceof FileChannel && useMemoryMappedBuffer) {
-            FileChannel fc = (FileChannel) channel;
+        if (channel instanceof FileChannel fc && useMemoryMappedBuffer) {
             buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             buffer.position(0);
             this.currentOffset = 0;

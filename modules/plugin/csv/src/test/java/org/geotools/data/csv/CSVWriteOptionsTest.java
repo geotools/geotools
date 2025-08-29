@@ -361,8 +361,7 @@ public class CSVWriteOptionsTest {
         datastore.createSchema(featureType);
         String typeName = datastore.getTypeNames()[0];
         SimpleFeatureSource source = datastore.getFeatureSource(typeName);
-        if (source instanceof SimpleFeatureStore) {
-            SimpleFeatureStore outStore = (SimpleFeatureStore) source;
+        if (source instanceof SimpleFeatureStore outStore) {
             outStore.addFeatures(input.getFeatureSource().getFeatures());
         } else {
             fail("Can't write to CSVDatastore");

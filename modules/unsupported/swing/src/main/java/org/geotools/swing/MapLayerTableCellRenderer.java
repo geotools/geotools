@@ -21,6 +21,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.Serial;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -38,6 +39,7 @@ import org.geotools.map.Layer;
  * @version $Id$
  */
 public class MapLayerTableCellRenderer extends JPanel implements ListCellRenderer<Layer> {
+    @Serial
     private static final long serialVersionUID = 7907189175227502588L;
 
     /**

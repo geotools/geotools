@@ -23,6 +23,7 @@ import static org.geotools.api.metadata.spatial.PixelOrientation.UPPER_LEFT;
 import static org.geotools.api.metadata.spatial.PixelOrientation.UPPER_RIGHT;
 import static org.geotools.api.metadata.spatial.PixelOrientation.valueOf;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ import org.geotools.util.Utilities;
  */
 public final class PixelTranslation implements Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 2616596940766158984L;
 
     /**

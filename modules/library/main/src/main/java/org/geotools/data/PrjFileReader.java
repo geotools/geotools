@@ -114,8 +114,7 @@ public class PrjFileReader implements Closeable {
     private void init() throws IOException {
         // create the ByteBuffer
         // if we have a FileChannel, lets map it
-        if (channel instanceof FileChannel && USE_MEMORY_MAPPED_BUFFERS) {
-            FileChannel fc = (FileChannel) channel;
+        if (channel instanceof FileChannel fc && USE_MEMORY_MAPPED_BUFFERS) {
             buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             buffer.position((int) fc.position());
         } else {

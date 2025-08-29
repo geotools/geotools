@@ -159,11 +159,10 @@ public enum NetCDFCoordinateReferenceSystemType {
         NetCDFCoordinateReferenceSystemType crsType = null;
         if (crs instanceof DefaultGeographicCRS) {
             crsType = WGS84;
-        } else if (crs instanceof DefaultDerivedCRS
+        } else if (crs instanceof DefaultDerivedCRS rS
                 && ((DefaultDerivedCRS) crs).getConversionFromBase().getMathTransform() instanceof RotatedPole) {
             return ROTATED_POLE;
-        } else if (crs instanceof ProjectedCRS) {
-            ProjectedCRS projectedCRS = (ProjectedCRS) crs;
+        } else if (crs instanceof ProjectedCRS projectedCRS) {
             // NetCDF supports a reduced number of CRS Type (WGS84 + some projection).
             // Some ProjectedCRS may have unit of measure resulting in concatenated transforms.
             if (hasConcatenatedTransform(projectedCRS)) {
@@ -273,8 +272,7 @@ public enum NetCDFCoordinateReferenceSystemType {
             // due to a specific unit in the coordinate axis (as an instance, km
             // of classic meter).
             // Extract the unit of measure from the actual coordinate axis in that case.
-            if (crs instanceof ProjectedCRS) {
-                ProjectedCRS projectedCrs = (ProjectedCRS) crs;
+            if (crs instanceof ProjectedCRS projectedCrs) {
                 if (NetCDFCoordinateReferenceSystemType.hasConcatenatedTransform(projectedCrs)) {
                     Unit unit = crs.getCoordinateSystem().getAxis(0).getUnit();
                     NetCDFCoordinate[] newAxisCoordinates = new NetCDFCoordinate[2];

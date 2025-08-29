@@ -19,6 +19,7 @@ package org.geotools.jackson.datatype.projjson;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.io.Serial;
 import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
 
 /**
@@ -40,6 +41,7 @@ import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
  */
 public class ProjJSONModule extends SimpleModule {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Creates a new instance of the PROJJSON module with default settings. */

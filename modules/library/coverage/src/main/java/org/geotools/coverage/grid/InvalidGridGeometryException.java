@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.grid;
 
+import java.io.Serial;
+
 /**
  * Thrown by {@link GeneralGridGeometry} when a grid geometry is in an invalid state. For example this exception is
  * thrown when {@link GeneralGridGeometry#getGridRange() getGridRange()} is invoked while the grid geometry were built
@@ -27,6 +29,7 @@ package org.geotools.coverage.grid;
  */
 public class InvalidGridGeometryException extends IllegalStateException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7386283388753448743L;
 
     /** Constructs an exception with no detail message. */

@@ -16,6 +16,8 @@
  */
 package org.geotools.measure;
 
+import java.io.Serial;
+
 /**
  * A latitude angle. Positive latitudes are North, while negative latitudes are South. This class has no direct OpenGIS
  * equivalent.
@@ -28,6 +30,7 @@ package org.geotools.measure;
  */
 public final class Latitude extends Angle {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4496748683919618976L;
 
     /** Minimum legal value for latitude (-90°). */

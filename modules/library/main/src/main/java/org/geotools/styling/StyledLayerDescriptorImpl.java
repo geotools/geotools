@@ -73,8 +73,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     public Style getDefaultStyle() {
         // descend into the layers
         for (StyledLayer layer : layers) {
-            if (layer instanceof UserLayer) {
-                UserLayer userLayer = (UserLayer) layer;
+            if (layer instanceof UserLayer userLayer) {
 
                 // descend into the styles
                 Style[] styles = userLayer.getUserStyles();
@@ -188,8 +187,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
             return true;
         }
 
-        if (oth instanceof StyledLayerDescriptorImpl) {
-            StyledLayerDescriptorImpl other = (StyledLayerDescriptorImpl) oth;
+        if (oth instanceof StyledLayerDescriptorImpl other) {
 
             return Utilities.equals(abstractStr, other.abstractStr)
                     && Utilities.equals(layers, other.layers)

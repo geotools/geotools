@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.AffineTransform;
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -39,6 +40,7 @@ import org.geotools.referencing.operation.matrix.MatrixFactory;
  */
 public class IdentityTransform extends AbstractMathTransform implements LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -5339040282922138164L;
 
     /** The input and output dimension. */

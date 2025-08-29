@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -40,6 +44,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -105,6 +110,8 @@ import org.locationtech.jts.geom.Geometry;
         description =
                 "Computes a new feature collection from the input one by renaming, deleting, and computing new attributes.  Attribute values are specified as ECQL expressions in the form name=expression.")
 public class TransformProcess implements VectorProcess {
+
+    private static final Logger LOGGER = Logging.getLogger(TransformProcess.class);
     /**
      * Definition of an attribute used during transform
      *
@@ -121,6 +128,11 @@ public class TransformProcess implements VectorProcess {
 
         /** Class binding (if known) */
         public Class<?> binding;
+
+        @Override
+        public String toString() {
+            return name + " = " + expression + (binding == null ? "" : " (" + binding.getName() + ")");
+        }
     }
 
     @DescribeResult(name = "result", description = "Transformed feature collection")
@@ -168,17 +180,24 @@ public class TransformProcess implements VectorProcess {
      */
     public static List<Definition> toDefinition(String definition) {
         List<Definition> list = new ArrayList<>();
-        HashSet<String> check = new HashSet<>();
+        Set<String> check = new HashSet<>();
 
         // clean up cross platform differences of line feed
         String[] defs = splitDefinitions(definition);
 
         for (String line : defs) {
             int mark = line.indexOf("=");
-            if (mark != -1) {
-                String name = line.substring(0, mark).trim();
-                String expressionDefinition = line.substring(mark + 1).trim();
+            String name;
+            String expressionDefinition;
 
+            if (mark != -1) {
+                name = line.substring(0, mark).trim();
+                expressionDefinition = line.substring(mark + 1).trim();
+            } else {
+                name = line.trim();
+                expressionDefinition = name;
+            }
+            if (!"".equals(name)) {
                 if (check.contains(name)) {
                     throw new IllegalArgumentException("Attribute " + name + " defined more than once");
                 }
@@ -195,6 +214,12 @@ public class TransformProcess implements VectorProcess {
                 list.add(def);
                 check.add(name); // to catch duplicates!
             }
+        }
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(
+                    Level.FINE,
+                    "Transformation: "
+                            + list.stream().map(f -> "[" + f.toString() + " ]").collect(Collectors.joining(" ")));
         }
         return list;
     }
@@ -224,7 +249,9 @@ public class TransformProcess implements VectorProcess {
                 sample = iterator.next();
             }
         }
-
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Create featureType for Transform process using sample: " + sample);
+        }
         SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
         SimpleFeatureType origional = delegate.getSchema();
 
@@ -240,6 +267,10 @@ public class TransformProcess implements VectorProcess {
             if (value == null) {
                 if (expression instanceof PropertyName) {
                     AttributeDescriptor descriptor = origional.getDescriptor(name);
+                    if (descriptor == null) {
+                        throw new IllegalArgumentException(
+                                "Property name " + name + " wasn't in the original feature class.");
+                    }
                     AttributeType attributeType = descriptor.getType();
                     binding = attributeType.getBinding();
                 }

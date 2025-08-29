@@ -90,10 +90,10 @@ public class FacetTest {
 
         Assert.assertEquals(
                 """
-                 this is a\s
-                 normal string\s
-                 with some whitespace and\s
-                 some new lines""",
+                 \sthis is a\s
+                 \snormal string\s
+                 \swith some whitespace and\s
+                 \ssome new lines""",
                 s);
     }
 }

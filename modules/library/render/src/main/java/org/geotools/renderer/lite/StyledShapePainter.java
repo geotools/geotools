@@ -130,8 +130,8 @@ public class StyledShapePainter {
 
                 // the displacement to be applied to all points, centers the icon and applies the
                 // Graphic displacement as well
-                float dx = icoStyle.getDisplacementX();
-                float dy = icoStyle.getDisplacementY();
+                float dx = icoStyle.getDisplacementX() - icoStyle.getAnchorPointX() * icon.getIconWidth();
+                float dy = icoStyle.getDisplacementY() - (1 - icoStyle.getAnchorPointY()) * icon.getIconHeight();
 
                 // iterate over all points
                 float[] coords = new float[2];
@@ -141,13 +141,11 @@ public class StyledShapePainter {
                     if (citer.currentSegment(coords) != PathIterator.SEG_MOVETO) {
                         at.setTransform(temp);
 
-                        double x = coords[0] + dx;
-                        double y = coords[1] + dy;
+                        double x = coords[0];
+                        double y = coords[1];
                         at.translate(x, y);
                         at.rotate(icoStyle.getRotation());
-                        at.translate(
-                                -(icon.getIconWidth() * icoStyle.getAnchorPointX()),
-                                icon.getIconHeight() * (icoStyle.getAnchorPointY() - 1));
+                        at.translate(dx, dy);
                         graphics.setTransform(at);
 
                         icon.paintIcon(null, graphics, 0, 0);

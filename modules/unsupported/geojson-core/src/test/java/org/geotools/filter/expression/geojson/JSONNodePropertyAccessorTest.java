@@ -46,6 +46,7 @@ public class JSONNodePropertyAccessorTest {
         String jsonString =
                 new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next();
         feature = GeoJSONReader.parseFeature(jsonString);
+        type = feature.getType();
         accessor = JSONNodePropertyAccessorFactory.JSONNODEPROPERTY;
     }
 
@@ -54,6 +55,9 @@ public class JSONNodePropertyAccessorTest {
         // Root element is not an ObjectNode or ArrayNode
         Assert.assertFalse(accessor.canHandle(feature, "aString", null));
         Assert.assertTrue(accessor.canHandle(feature, "aThreeLevelObject/secondLevel", null));
+
+        Assert.assertFalse(accessor.canHandle(type, "aString", null));
+        Assert.assertTrue(accessor.canHandle(type, "aThreeLevelObject/secondLevel", null));
     }
 
     @Test

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +129,7 @@ public class TPKFileTest {
         assertEquals(0, theTPKFile.getMinRow(1));
         assertEquals(1, theTPKFile.getMaxRow(1));
 
-        // zoomlevel 2
+        // zoom level 2
         assertEquals(0, theTPKFile.getMinColumn(2));
         assertEquals(3, theTPKFile.getMaxColumn(2));
         assertEquals(0, theTPKFile.getMinRow(2));
@@ -156,6 +157,59 @@ public class TPKFileTest {
 
         tile = tiles.get(15);
         assertEquals(3, tile.col);
+        assertEquals(0, tile.row);
+        assertNotNull(tile.tileData);
+    }
+
+    @Test
+    public void testReadCompactCacheV3() {
+        Map<Long, TPKZoomLevel> zoomLevelMap = new HashMap<>();
+        File theTpk = URLs.urlToFile(getClass().getResource("sample_v3.tpk"));
+        TPKFile theTPKFile = new TPKFile(theTpk, zoomLevelMap, Charset.forName("GBK"));
+        assertEquals(1, zoomLevelMap.size());
+        assertEquals(0, theTPKFile.getMinZoomLevel());
+        assertEquals(0, theTPKFile.getMaxZoomLevel());
+
+        // get the bounds computed from highest zoom level coverage
+        Bounds bounds = theTPKFile.getBounds();
+
+        // minimum longitude
+        assertEquals(-180.0, bounds.getMinimum(0), 0.000001);
+        // maximum longitude
+        assertEquals(179.99999996018667, bounds.getMaximum(0), 0.000001);
+
+        // min latitude
+        assertEquals(-85.05112877980659, bounds.getMinimum(1), 0.00001);
+        // max latitude
+        assertEquals(85.05112877637204, bounds.getMaximum(1), 0.00001);
+
+        // sample uses png tiles
+        String imageFormat = theTPKFile.getImageFormat();
+        assertEquals("PNG", imageFormat);
+
+        // zoom level 0
+        assertEquals(0, theTPKFile.getMinColumn(0));
+        assertEquals(0, theTPKFile.getMaxColumn(0));
+        assertEquals(0, theTPKFile.getMinRow(0));
+        assertEquals(0, theTPKFile.getMaxRow(0));
+
+        List<TPKTile> tiles1 = theTPKFile.getTiles(0, 1, 0, 0, 1, imageFormat);
+        assertNotNull(tiles1);
+        assertEquals(1, tiles1.size());
+
+        // release held resources
+        theTPKFile.close();
+
+        // try our "restart" constructor
+        TPKFile newTPKFile = new TPKFile(theTpk, zoomLevelMap, bounds, imageFormat, Charset.forName("GBK"));
+        assertNotNull(newTPKFile);
+
+        List<TPKTile> tiles = newTPKFile.getTiles(0, 1, 0, 0, 1, imageFormat);
+        assertNotNull(tiles);
+        assertEquals(1, tiles.size());
+
+        TPKTile tile = tiles.get(0);
+        assertEquals(0, tile.col);
         assertEquals(0, tile.row);
         assertNotNull(tile.tileData);
     }

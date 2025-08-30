@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -961,6 +962,14 @@ public class SimpleFeatureTypeBuilder {
         return retype(original, Arrays.asList(attributes));
     }
 
+    /** Returns first AttributeDescriptor whose localName is a prefix of the provided name. */
+    private static final Optional<AttributeDescriptor> findFirstWithPrefixingName(
+            List<AttributeDescriptor> descriptors, String name) {
+        return descriptors.stream()
+                .filter(ad -> name.startsWith(ad.getLocalName()))
+                .findFirst();
+    }
+
     /**
      * Create a SimpleFeatureType containing just the attribute descriptors indicated.
      *
@@ -977,10 +986,14 @@ public class SimpleFeatureTypeBuilder {
         // clear the attributes
         b.attributes().clear();
 
-        // add attributes in order
-        for (String type : attributes) {
-            b.add(original.getDescriptor(type));
-        }
+        // add recognized attributes in order and only once
+        List<AttributeDescriptor> ads = attributes.stream()
+                .flatMap(attr -> Optional.ofNullable(original.getDescriptor(attr))
+                        .or(() -> findFirstWithPrefixingName(original.getAttributeDescriptors(), attr))
+                        .stream())
+                .distinct()
+                .toList();
+        b.addAll(ads);
 
         // handle default geometry
         GeometryDescriptor defaultGeometry = original.getGeometryDescriptor();

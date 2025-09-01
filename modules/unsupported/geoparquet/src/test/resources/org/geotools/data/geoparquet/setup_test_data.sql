@@ -57,12 +57,12 @@ WITH
     )
 SELECT 
     'PT_' || LPAD(id::VARCHAR, 6, '0') AS id,
-    ST_GeomFromText('POINT(' || x || ' ' || y || ')') AS geometry,
+    ST_GeomFromText(printf('POINT(%g %g)', x::DOUBLE, y::DOUBLE)) AS geometry,
     {'xmin': x::FLOAT, 'xmax': x::FLOAT, 'ymin': y::FLOAT, 'ymax': y::FLOAT} AS bbox,
     {
         'primary': 'Point ' || id,
         'common': MAP(
-            ['en', 'es', 'fr'], 
+            ['en', 'es', 'fr'],
             ['Point ' || id, 'Punto ' || id, 'Point ' || id]
         ),
         'rules': {'variant': 'standard'}
@@ -103,7 +103,7 @@ WITH quadrant_points AS (
             WHEN x < 0 AND y >= 0 THEN 'nw'
             ELSE 'ne'
         END AS quadrant,
-        ST_GeomFromText('POINT(' || x || ' ' || y || ')') AS point,
+        ST_GeomFromText(printf('POINT(%g %g)', x::DOUBLE, y::DOUBLE)) AS point,
         x, y
     FROM 
         -- Use a step of 5 to reduce number of points in each multipoint
@@ -114,7 +114,7 @@ SELECT
     'MP_' || quadrant AS id,
     -- Create a multipoint geometry from all points in each quadrant
     ST_GeomFromText('MULTIPOINT(' || 
-        STRING_AGG(x || ' ' || y, ',') || 
+        STRING_AGG(printf('(%g %g)', x::DOUBLE, y::DOUBLE), ',' ORDER BY x, y) ||
     ')') AS geometry,
     {
         'xmin': MIN(x)::FLOAT, 
@@ -125,7 +125,7 @@ SELECT
     {
         'primary': 'MultiPoint ' || quadrant,
         'common': MAP(
-            ['en', 'es', 'fr'], 
+            ['en', 'es', 'fr'],
             ['MultiPoint ' || quadrant, 'Multipunto ' || quadrant, 'MultiPoint ' || quadrant]
         ),
         'rules': {'variant': 'standard'}
@@ -166,14 +166,16 @@ WITH horizontal_lines AS (
         END AS quadrant,
         1000 + ROW_NUMBER() OVER (ORDER BY y) AS id,
         -- Create a horizontal line for each latitude value
-        ST_GeomFromText(
-            CASE
-                WHEN y < 0 AND quad_x < 0 THEN 'LINESTRING(-180 ' || y || ', 0 ' || y || ')'  -- SW
-                WHEN y < 0 AND quad_x >= 0 THEN 'LINESTRING(0 ' || y || ', 180 ' || y || ')' -- SE
-                WHEN y >= 0 AND quad_x < 0 THEN 'LINESTRING(-180 ' || y || ', 0 ' || y || ')' -- NW
-                ELSE 'LINESTRING(0 ' || y || ', 180 ' || y || ')' -- NE
-            END
-        ) AS geometry,
+        CASE
+		  WHEN y < 0 AND quad_x < 0
+		    THEN ST_MakeLine(ST_Point(-180::DOUBLE, y::DOUBLE), ST_Point(0::DOUBLE,   y::DOUBLE))  -- SW
+		  WHEN y < 0 AND quad_x >= 0
+		    THEN ST_MakeLine(ST_Point(  0::DOUBLE, y::DOUBLE), ST_Point(180::DOUBLE,  y::DOUBLE))  -- SE
+		  WHEN y >= 0 AND quad_x < 0
+		    THEN ST_MakeLine(ST_Point(-180::DOUBLE, y::DOUBLE), ST_Point(0::DOUBLE,   y::DOUBLE))  -- NW
+		  ELSE
+		    ST_MakeLine(ST_Point(  0::DOUBLE, y::DOUBLE), ST_Point(180::DOUBLE,  y::DOUBLE))       -- NE
+		END AS geometry,
         CASE WHEN quad_x < 0 THEN -180 ELSE 0 END AS x_min,
         CASE WHEN quad_x < 0 THEN 0 ELSE 180 END AS x_max,
         y AS y_min,
@@ -194,14 +196,16 @@ vertical_lines AS (
         END AS quadrant,
         3000 + ROW_NUMBER() OVER (ORDER BY x) AS id,
         -- Create a vertical line for each longitude value
-        ST_GeomFromText(
-            CASE
-                WHEN x < 0 AND quad_y < 0 THEN 'LINESTRING(' || x || ' -90, ' || x || ' 0)'  -- SW
-                WHEN x >= 0 AND quad_y < 0 THEN 'LINESTRING(' || x || ' -90, ' || x || ' 0)' -- SE
-                WHEN x < 0 AND quad_y >= 0 THEN 'LINESTRING(' || x || ' 0, ' || x || ' 90)' -- NW
-                ELSE 'LINESTRING(' || x || ' 0, ' || x || ' 90)' -- NE
-            END
-        ) AS geometry,
+        CASE
+		  WHEN x < 0 AND quad_y < 0
+		    THEN ST_MakeLine(ST_Point(x::DOUBLE, -90), ST_Point(x::DOUBLE, 0))
+		  WHEN x >= 0 AND quad_y < 0
+		    THEN ST_MakeLine(ST_Point(x::DOUBLE, -90), ST_Point(x::DOUBLE, 0))
+		  WHEN x < 0 AND quad_y >= 0
+		    THEN ST_MakeLine(ST_Point(x::DOUBLE, 0),   ST_Point(x::DOUBLE, 90))
+		  ELSE
+		    ST_MakeLine(ST_Point(x::DOUBLE, 0),        ST_Point(x::DOUBLE, 90))
+		END AS geometry,
         x AS x_min,
         x AS x_max,
         CASE WHEN quad_y < 0 THEN -90 ELSE 0 END AS y_min,
@@ -223,7 +227,7 @@ SELECT
     {
         'primary': 'Line ' || id,
         'common': MAP(
-            ['en', 'es', 'fr'], 
+            ['en', 'es', 'fr'],
             ['Line ' || id, 'Línea ' || id, 'Ligne ' || id]
         ),
         'rules': {'variant': 'standard'}
@@ -235,47 +239,59 @@ FROM all_lines;
 -- Add MultiLineString records (one for each quadrant)
 INSERT INTO lines
 WITH line_points AS (
-    -- Create sample points in each quadrant
-    SELECT 
-        CASE
-            WHEN x < 0 AND y < 0 THEN 'sw'
-            WHEN x >= 0 AND y < 0 THEN 'se'
-            WHEN x < 0 AND y >= 0 THEN 'nw'
-            ELSE 'ne'
-        END AS quadrant,
-        x, y
-    FROM 
-        (SELECT range * 5 AS x FROM range(-36, 37)) x_range,
-        (SELECT range * 5 AS y FROM range(-18, 19)) y_range
-    WHERE (x % 20 = 0 OR y % 20 = 0) -- Use only some points for lines
-    ORDER BY quadrant, x, y
+  SELECT
+    CASE
+      WHEN x < 0 AND y < 0 THEN 'sw'
+      WHEN x >= 0 AND y < 0 THEN 'se'
+      WHEN x < 0 AND y >= 0 THEN 'nw'
+      ELSE 'ne'
+    END AS quadrant,
+    x, y
+  FROM
+    (SELECT range * 5 AS x FROM range(-36, 37)) x_range,
+    (SELECT range * 5 AS y FROM range(-18, 19)) y_range
+  WHERE (x % 20 = 0 OR y % 20 = 0)
+),
+quad_lines AS (
+  SELECT
+    quadrant,
+    ST_MakeLine(
+      ST_Point(x::DOUBLE, y::DOUBLE),
+      ST_Point((x + 5)::DOUBLE, (y + 5)::DOUBLE)
+    ) AS geom
+  FROM line_points
+),
+collected AS (
+  SELECT
+    quadrant,
+    LIST(geom)                         AS geoms,
+    MIN(ST_XMin(geom))                 AS xmin,
+    MAX(ST_XMax(geom))                 AS xmax,
+    MIN(ST_YMin(geom))                 AS ymin,
+    MAX(ST_YMax(geom))                 AS ymax
+  FROM quad_lines
+  GROUP BY quadrant
 )
 SELECT
-    'ML_' || quadrant AS id,
-    -- Create a multilinestring with lines along grid in each quadrant
-    ST_GeomFromText(
-        'MULTILINESTRING(' || STRING_AGG( '(' || (x) || ' ' || (y) || ', ' || (x+5) || ' ' || (y+5) || ')', ',' ) ||  ')'
-    ) AS geometry,
-    {
-        'xmin': MIN(x)::FLOAT, 
-        'xmax': MAX(x+5)::FLOAT, 
-        'ymin': MIN(y)::FLOAT, 
-        'ymax': MAX(y+5)::FLOAT
-    } AS bbox,
-    {
-        'primary': 'MultiLine ' || quadrant,
-        'common': MAP(
-            ['en', 'es', 'fr'], 
-            ['MultiLine ' || quadrant, 'Multilínea ' || quadrant, 'MultiLigne ' || quadrant]
-        ),
-        'rules': {'variant': 'standard'}
-    } AS names,
-    'lines' AS theme,
-    'multiline' AS type
-FROM 
-    line_points
-GROUP BY
-    quadrant;
+  'ML_' || quadrant AS id,
+  ST_Multi(ST_Collect(geoms))          AS geometry,
+  {
+    'xmin': xmin::FLOAT,
+    'xmax': xmax::FLOAT,
+    'ymin': ymin::FLOAT,
+    'ymax': ymax::FLOAT
+  }                                     AS bbox,
+  {
+    'primary': 'MultiLine ' || quadrant,
+    'common': MAP(
+      ['en', 'es', 'fr'],
+      ['MultiLine ' || quadrant, 'Multilínea ' || quadrant, 'MultiLigne ' || quadrant]
+    ),
+    'rules': {'variant': 'standard'}
+  }                                     AS names,
+  'lines'                               AS theme,
+  'multiline'                           AS type
+FROM collected;
 
 -- Create the polygons table with square polygons
 CREATE TABLE polygons AS
@@ -292,9 +308,17 @@ WITH
             END AS quadrant,
             ROW_NUMBER() OVER (ORDER BY y, x) AS id,
             -- Create a polygon square for each grid cell
-            ST_GeomFromText(
-                'POLYGON((' || x || ' ' || y || ', ' || (x+1) || ' ' || y || ', ' || (x+1) || ' ' || (y+1) || ', ' || x || ' ' || (y+1) || ', ' || x || ' ' || y ||  '))'
-            ) AS geometry,
+            ST_MakePolygon(
+			  ST_MakeLine(
+			    LIST_VALUE(
+			      ST_Point(x::DOUBLE,       y::DOUBLE),
+			      ST_Point((x+1)::DOUBLE,   y::DOUBLE),
+			      ST_Point((x+1)::DOUBLE,  (y+1)::DOUBLE),
+			      ST_Point(x::DOUBLE,      (y+1)::DOUBLE),
+			      ST_Point(x::DOUBLE,       y::DOUBLE)
+			    )
+			  )
+			) AS geometry,
             x AS x_min,
             (x+1) AS x_max,
             y AS y_min,
@@ -326,56 +350,62 @@ FROM grid_cells;
 -- Add MultiPolygon records (one for each quadrant)
 INSERT INTO polygons
 WITH poly_points AS (
-    -- Create sample points in each quadrant for polygon creation
-    SELECT 
-        CASE
-            WHEN x < 0 AND y < 0 THEN 'sw'
-            WHEN x >= 0 AND y < 0 THEN 'se'
-            WHEN x < 0 AND y >= 0 THEN 'nw'
-            ELSE 'ne'
-        END AS quadrant,
-        x, y
-    FROM 
-        (SELECT range * 10 AS x FROM range(-18, 19)) x_range,
-        (SELECT range * 10 AS y FROM range(-9, 10)) y_range
-    WHERE (x % 30 = 0 AND y % 30 = 0) -- Use only some points for smaller multipolygon
-    ORDER BY quadrant, x, y
+  SELECT
+    CASE
+      WHEN x < 0 AND y < 0 THEN 'sw'
+      WHEN x >= 0 AND y < 0 THEN 'se'
+      WHEN x < 0 AND y >= 0 THEN 'nw'
+      ELSE 'ne'
+    END AS quadrant,
+    x, y
+  FROM
+    (SELECT range * 10 AS x FROM range(-18, 19)) x_range,
+    (SELECT range * 10 AS y FROM range(-9, 10))  y_range
+  WHERE (x % 30 = 0 AND y % 30 = 0)
+),
+squares AS (
+  SELECT
+    quadrant,
+    ST_MakePolygon(
+      ST_MakeLine(LIST_VALUE(
+        ST_Point(x::DOUBLE,       y::DOUBLE),
+        ST_Point((x+5)::DOUBLE,   y::DOUBLE),
+        ST_Point((x+5)::DOUBLE,  (y+5)::DOUBLE),
+        ST_Point(x::DOUBLE,      (y+5)::DOUBLE),
+        ST_Point(x::DOUBLE,       y::DOUBLE)
+      ))
+    ) AS poly
+  FROM poly_points
+),
+agg AS (
+  SELECT
+    quadrant,
+    LIST(poly)                          AS polys,
+    MIN(ST_XMin(poly))                  AS xmin,
+    MAX(ST_XMax(poly))                  AS xmax,
+    MIN(ST_YMin(poly))                  AS ymin,
+    MAX(ST_YMax(poly))                  AS ymax
+  FROM squares
+  GROUP BY quadrant
 )
 SELECT
-    'MPG_' || quadrant AS id,
-    -- Create a multipolygon with square polygons in each quadrant
-    ST_GeomFromText(
-        'MULTIPOLYGON(' || 
-        STRING_AGG(
-            '((' || x || ' ' || y || ', ' || 
-            (x+5) || ' ' || y || ', ' || 
-            (x+5) || ' ' || (y+5) || ', ' || 
-            x || ' ' || (y+5) || ', ' || 
-            x || ' ' || y || '))',
-            ','
-        ) || 
-        ')'
-    ) AS geometry,
-    {
-        'xmin': MIN(x)::FLOAT, 
-        'xmax': MAX(x+5)::FLOAT, 
-        'ymin': MIN(y)::FLOAT, 
-        'ymax': MAX(y+5)::FLOAT
-    } AS bbox,
-    {
-        'primary': 'MultiPolygon ' || quadrant,
-        'common': MAP(
-            ['en', 'es', 'fr'], 
-            ['MultiPolygon ' || quadrant, 'Multipolígono ' || quadrant, 'MultiPolygone ' || quadrant]
-        ),
-        'rules': {'variant': 'standard'}
-    } AS names,
-    'polygons' AS theme,
-    'multipolygon' AS type
-FROM 
-    poly_points
-GROUP BY
-    quadrant;
+  'MPG_' || quadrant AS id,
+  ST_Multi(ST_Collect(polys))           AS geometry,
+  {
+    'xmin': xmin::FLOAT, 'xmax': xmax::FLOAT,
+    'ymin': ymin::FLOAT, 'ymax': ymax::FLOAT
+  }                                   AS bbox,
+  {
+    'primary': 'MultiPolygon ' || quadrant,
+    'common': MAP(
+      ['en','es','fr'],
+      ['MultiPolygon '||quadrant, 'Multipolígono '||quadrant, 'MultiPolygone '||quadrant]
+    ),
+    'rules': {'variant':'standard'}
+  }                                   AS names,
+  'polygons'                           AS theme,
+  'multipolygon'                       AS type
+FROM agg;
 
 
 -- Verify

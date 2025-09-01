@@ -28,17 +28,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
+import org.geotools.RepositoryResolvingDataAccess;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.Parameter;
+import org.geotools.api.data.Repository;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.DataAccessMap;
+import org.geotools.data.complex.config.SourceDataStore;
 import org.geotools.data.complex.config.XMLConfigDigester;
+import org.geotools.feature.NameImpl;
+import org.geotools.util.KVP;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -69,6 +75,21 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     public static final DataAccessFactory.Param URL = new DataAccessFactory.Param(
             "url", URL.class, "URL to an application schema datastore XML configuration file", true);
 
+    public static final Param DELEGATE_STORE_NAME = new Param(
+            "delegateStoreName",
+            String.class,
+            "The name of the delegate store.  "
+                    + "The delegate store must point to vector features with the same attributes/schema.",
+            false);
+
+    public static final Param REPOSITORY_PARAM = new Param(
+            "repository",
+            Repository.class,
+            "The repository that will provide the store instances",
+            false,
+            null,
+            new KVP(Param.LEVEL, "advanced"));
+
     // marks whether data store is based on an XML include, need to handle duplicates
     public static final String IS_INCLUDE = "isInclude";
 
@@ -78,7 +99,13 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params) throws IOException {
         final Set<AppSchemaDataAccess> registeredAppSchemaStores = new HashSet<>();
         try {
-            return createDataStore(params, false, new DataAccessMap(), registeredAppSchemaStores, null);
+            Repository repository = DataAccessFactory.lookup(REPOSITORY_PARAM, params);
+            String storeName = DataAccessFactory.lookup(DELEGATE_STORE_NAME, params);
+            DataAccessMap sourceDataStoreMap = new DataAccessMap();
+            if (repository != null && StringUtils.isNotBlank(storeName)) {
+                resolveDelegateStore(params, storeName, repository, sourceDataStoreMap);
+            }
+            return createDataStore(params, false, sourceDataStoreMap, registeredAppSchemaStores, null);
         } catch (Exception ex) {
             // dispose every already registered included datasource
             for (AppSchemaDataAccess appSchemaDataAccess : registeredAppSchemaStores) {
@@ -86,6 +113,36 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
             }
             throw ex;
         }
+    }
+
+    private static void resolveDelegateStore(
+            Map<String, ?> params, String storeName, Repository repository, DataAccessMap sourceDataStoreMap)
+            throws IOException {
+        LOGGER.fine(() -> "Found repository and delegate store: " + storeName);
+        NameImpl name = parseName(storeName);
+
+        DataAccess<?, ?> dataStore = repository.access(name);
+        if (dataStore != null) {
+            XMLConfigDigester configReader = new XMLConfigDigester();
+            URL url = DataAccessFactory.lookup(URL, params);
+            AppSchemaDataAccessDTO parsedConfig = configReader.parse(url);
+            SourceDataStore sourceDataStore = parsedConfig.getSourceDataStores().get(0);
+            LOGGER.fine(() -> "Found delegate store: " + storeName);
+            DataAccess<FeatureType, Feature> wrapper = new RepositoryResolvingDataAccess<>(repository, name);
+            sourceDataStoreMap.put(sourceDataStore.getParams(), wrapper);
+        }
+        LOGGER.fine(() -> "Delegate store not found: " + storeName);
+    }
+
+    private static NameImpl parseName(String storeName) {
+        String[] split = storeName.split(":");
+        NameImpl name;
+        if (split.length > 1) {
+            name = new NameImpl(split[0], split[1]);
+        } else {
+            name = new NameImpl(storeName);
+        }
+        return name;
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(
@@ -177,7 +234,10 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     @Override
     public DataStoreFactorySpi.Param[] getParametersInfo() {
         return new DataStoreFactorySpi.Param[] {
-            AppSchemaDataAccessFactory.DBTYPE, AppSchemaDataAccessFactory.URL,
+            AppSchemaDataAccessFactory.DBTYPE,
+            AppSchemaDataAccessFactory.URL,
+            AppSchemaDataAccessFactory.DELEGATE_STORE_NAME,
+            AppSchemaDataAccessFactory.REPOSITORY_PARAM
         };
     }
 

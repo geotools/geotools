@@ -380,7 +380,7 @@ public class WMTSCapabilities extends Capabilities {
                 }
             }
 
-            if (!t.isEmpty()) {
+            if (t.length() > 0) {
                 style.setTitle(new SimpleInternationalString(t.toString()));
             }
 

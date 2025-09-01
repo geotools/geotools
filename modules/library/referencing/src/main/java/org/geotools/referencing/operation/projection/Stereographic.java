@@ -23,6 +23,7 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
+import java.io.Serial;
 import java.util.Objects;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -122,6 +123,7 @@ import org.geotools.util.Utilities;
  */
 public abstract class Stereographic extends MapProjection {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = -176731870235252852L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -196,6 +198,7 @@ public abstract class Stereographic extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 1243300263948365065L;
 
         /** The localized name for stereographic projection. */

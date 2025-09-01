@@ -344,7 +344,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
         private Comparable getComparableFromEvaluation(Feature f) {
             // In case of complex features we got the property instead of the value
             Object o = operationAttribute.evaluate(f);
-            if (o instanceof Property) o = ((Property) o).getValue();
+            if (o instanceof Property property) o = property.getValue();
             return (Comparable) o;
         }
 

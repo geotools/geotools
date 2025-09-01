@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.matrix;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -30,6 +31,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class Matrix2 implements XMatrix, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7116561372481474290L;
 
     /** The matrix size, which is {@value}. */
@@ -76,8 +78,8 @@ public class Matrix2 implements XMatrix, Serializable {
 
     /** Used to cast/copy matrix to Matrix2 */
     Matrix2 internal(Matrix matrix) {
-        if (matrix instanceof Matrix2) {
-            return (Matrix2) matrix;
+        if (matrix instanceof Matrix2 matrix2) {
+            return matrix2;
         } else {
             if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
                 throw new IllegalArgumentException(ErrorKeys.ILLEGAL_MATRIX_SIZE);

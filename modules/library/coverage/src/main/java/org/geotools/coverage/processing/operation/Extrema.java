@@ -21,6 +21,7 @@ import it.geosolutions.jaiext.stats.Statistics;
 import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import java.awt.Shape;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +76,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
     private static final String STATS = "Stats";
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7731039381590398047L;
 
     /** {@link Logger} for this class. */
@@ -125,8 +127,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
         // minimum and maximum as the output of the extrema operation.
         //
         // /////////////////////////////////////////////////////////////////////
-        if (data instanceof RenderedOp) {
-            final RenderedOp result = (RenderedOp) data;
+        if (data instanceof RenderedOp result) {
             final Map<String, Object> synthProp = new HashMap<>();
 
             if (JAIExt.isJAIExtOperation(STATS)) {

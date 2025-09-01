@@ -74,27 +74,19 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
      */
     @Override
     public RelativePosition relativePosition(TemporalPrimitive other) {
-        if (this instanceof Instant && other instanceof Instant) {
-            Instant thisInstant = (Instant) this;
-            Instant otherIstant = (Instant) other;
+        if (this instanceof Instant thisInstant && other instanceof Instant otherIstant) {
 
             return relativePosition(thisInstant, otherIstant);
         } else {
-            if (this instanceof Period && other instanceof Instant) {
-                Period thisPeriod = (Period) this;
-                Instant otherInstant = (Instant) other;
+            if (this instanceof Period thisPeriod && other instanceof Instant otherInstant) {
 
                 return relativePosition(thisPeriod, otherInstant);
             } else {
-                if (this instanceof Instant && other instanceof Period) {
-                    Instant thisIstant = (Instant) this;
-                    Period otherPeriod = (Period) other;
+                if (this instanceof Instant thisIstant && other instanceof Period otherPeriod) {
 
                     return relativePosition(thisIstant, otherPeriod);
                 } else {
-                    if (this instanceof Period && other instanceof Period) {
-                        Period thisPeriod = (Period) this;
-                        Period otherPeriod = (Period) other;
+                    if (this instanceof Period thisPeriod && other instanceof Period otherPeriod) {
 
                         return relativePosition(thisPeriod, otherPeriod);
                     } else {

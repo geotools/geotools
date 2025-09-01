@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.util.List;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -29,6 +30,7 @@ import org.locationtech.jts.geom.MultiLineString;
  */
 public class MultiCurve extends MultiLineString implements MultiCurvedGeometry<MultiLineString> {
 
+    @Serial
     private static final long serialVersionUID = -5796254063449438787L;
 
     double tolerance;
@@ -49,8 +51,7 @@ public class MultiCurve extends MultiLineString implements MultiCurvedGeometry<M
         LineString[] linearized = new LineString[numGeometries];
         for (int k = 0; k < numGeometries; k++) {
             LineString component = (LineString) getGeometryN(k);
-            if (component instanceof CurvedGeometry<?>) {
-                CurvedGeometry<?> curved = (CurvedGeometry<?>) component;
+            if (component instanceof CurvedGeometry<?> curved) {
                 linearized[k] = (LineString) curved.linearize(tolerance);
             } else {
                 linearized[k] = component;
@@ -66,8 +67,7 @@ public class MultiCurve extends MultiLineString implements MultiCurvedGeometry<M
         int numGeometries = getNumGeometries();
         for (int k = 0; k < numGeometries; k++) {
             LineString component = (LineString) getGeometryN(k);
-            if (component instanceof SingleCurvedGeometry<?>) {
-                SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
+            if (component instanceof SingleCurvedGeometry<?> curved) {
                 sb.append(curved.toCurvedText());
             } else {
                 sb.append("(");

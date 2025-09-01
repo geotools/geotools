@@ -351,8 +351,7 @@ class DomainCoverage {
     /** Turns the specified selector into a list of "standardized" SLDSelector */
     List<SLDSelector> toSLDSelectors(Selector selector, FeatureType targetFeatureType) {
         List<SLDSelector> result = new ArrayList<>();
-        if (selector instanceof Or) {
-            Or or = (Or) selector;
+        if (selector instanceof Or or) {
             for (Selector s : or.getChildren()) {
                 if (s instanceof Or) {
                     throw new IllegalArgumentException("Unexpected or selector nested inside another one, "
@@ -382,8 +381,7 @@ class DomainCoverage {
         boolean merged = false;
         for (SLDSelector existing : scaleDependentFilters) {
             if (existing.scaleRange.equals(range)) {
-                if (existing.filter instanceof org.geotools.api.filter.Or) {
-                    org.geotools.api.filter.Or or = (org.geotools.api.filter.Or) existing.filter;
+                if (existing.filter instanceof org.geotools.api.filter.Or or) {
                     List<Filter> children = new ArrayList<>(or.getChildren());
                     children.add(filter);
                     existing.filter = simplify(FF.or(children));

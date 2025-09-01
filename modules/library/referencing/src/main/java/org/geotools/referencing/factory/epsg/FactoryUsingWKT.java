@@ -140,10 +140,10 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
         if (userHints != null) {
             hint = userHints.get(Hints.CRS_AUTHORITY_EXTRA_DIRECTORY);
         }
-        if (hint instanceof File) {
-            directory = (File) hint;
-        } else if (hint instanceof String) {
-            directory = new File((String) hint);
+        if (hint instanceof File file) {
+            directory = file;
+        } else if (hint instanceof String string) {
+            directory = new File(string);
         } else {
             directory = null;
         }

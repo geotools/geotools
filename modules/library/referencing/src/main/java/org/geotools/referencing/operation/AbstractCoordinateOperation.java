@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
@@ -74,6 +75,7 @@ import si.uom.SI;
  */
 public class AbstractCoordinateOperation extends AbstractIdentifiedObject implements CoordinateOperation {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1237358357729193885L;
 
     /**
@@ -330,9 +332,9 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject implem
      * @since 2.2
      */
     public static double getAccuracy(final CoordinateOperation operation) {
-        if (operation instanceof AbstractCoordinateOperation) {
+        if (operation instanceof AbstractCoordinateOperation coordinateOperation) {
             // Maybe the user overridden this method...
-            return ((AbstractCoordinateOperation) operation).getAccuracy();
+            return coordinateOperation.getAccuracy();
         }
         return getAccuracy0(operation);
     }
@@ -348,8 +350,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject implem
             for (final PositionalAccuracy accuracy : accuracies) {
                 if (accuracy != null)
                     for (final Result result : accuracy.getResults()) {
-                        if (result instanceof QuantitativeResult) {
-                            final QuantitativeResult quantity = (QuantitativeResult) result;
+                        if (result instanceof QuantitativeResult quantity) {
                             final Collection<? extends Record> records = quantity.getValues();
                             if (records != null) {
                                 @SuppressWarnings("unchecked")
@@ -358,8 +359,8 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject implem
                                     for (final Record record : records) {
                                         for (final Object value :
                                                 record.getAttributes().values()) {
-                                            if (value instanceof Number) {
-                                                double v = ((Number) value).doubleValue();
+                                            if (value instanceof Number number) {
+                                                double v = number.doubleValue();
                                                 v = unit.getConverterTo(SI.METRE)
                                                         .convert(v);
                                                 return v;
@@ -396,8 +397,8 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject implem
          * the sum of their accuracy, skipping unknow ones.
          */
         double accuracy = Double.NaN;
-        if (operation instanceof ConcatenatedOperation) {
-            final Collection components = ((ConcatenatedOperation) operation).getOperations();
+        if (operation instanceof ConcatenatedOperation concatenatedOperation) {
+            final Collection components = concatenatedOperation.getOperations();
             for (Object component : components) {
                 final double candidate = Math.abs(getAccuracy((CoordinateOperation) component));
                 if (!Double.isNaN(candidate)) {

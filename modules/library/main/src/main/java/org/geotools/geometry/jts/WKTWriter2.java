@@ -262,13 +262,12 @@ public class WKTWriter2 extends WKTWriter {
     private void appendGeometryTaggedText(Geometry geometry, int level, Writer writer) throws IOException {
         indent(level, writer);
 
-        if (geometry instanceof Point) {
-            Point point = (Point) geometry;
+        if (geometry instanceof Point point) {
             appendPointTaggedText(point.getCoordinate(), level, writer, point.getPrecisionModel());
-        } else if (geometry instanceof CircularString) {
-            appendCircularStringTaggedText((CircularString) geometry, level, writer);
-        } else if (geometry instanceof CircularRing) {
-            appendCircularStringTaggedText((CircularRing) geometry, level, writer);
+        } else if (geometry instanceof CircularString string2) {
+            appendCircularStringTaggedText(string2, level, writer);
+        } else if (geometry instanceof CircularRing ring1) {
+            appendCircularStringTaggedText(ring1, level, writer);
         } else if (geometry instanceof CompoundCurve) {
             @SuppressWarnings("unchecked")
             CompoundCurvedGeometry<LineString> cast = (CompoundCurvedGeometry) geometry;
@@ -277,26 +276,26 @@ public class WKTWriter2 extends WKTWriter {
             @SuppressWarnings("unchecked")
             CompoundCurvedGeometry<LineString> cast = (CompoundCurvedGeometry) geometry;
             appendCompoundCurveTaggedText(cast, level, writer);
-        } else if (geometry instanceof LinearRing) {
-            appendLinearRingTaggedText((LinearRing) geometry, level, writer);
-        } else if (geometry instanceof LineString) {
-            appendLineStringTaggedText((LineString) geometry, level, writer);
-        } else if (geometry instanceof CurvePolygon) {
-            appendCurvePolygonTaggedText((CurvePolygon) geometry, level, writer);
-        } else if (geometry instanceof Polygon) {
-            appendPolygonTaggedText((Polygon) geometry, level, writer);
-        } else if (geometry instanceof MultiPoint) {
-            appendMultiPointTaggedText((MultiPoint) geometry, level, writer);
-        } else if (geometry instanceof MultiCurve) {
-            appendMultiCurveTaggedText((MultiCurve) geometry, level, writer);
-        } else if (geometry instanceof MultiLineString) {
-            appendMultiLineStringTaggedText((MultiLineString) geometry, level, writer);
-        } else if (geometry instanceof MultiSurface) {
-            appendMultiSurfaceTaggedText((MultiSurface) geometry, level, writer);
-        } else if (geometry instanceof MultiPolygon) {
-            appendMultiPolygonTaggedText((MultiPolygon) geometry, level, writer);
-        } else if (geometry instanceof GeometryCollection) {
-            appendGeometryCollectionTaggedText((GeometryCollection) geometry, level, writer);
+        } else if (geometry instanceof LinearRing ring) {
+            appendLinearRingTaggedText(ring, level, writer);
+        } else if (geometry instanceof LineString string1) {
+            appendLineStringTaggedText(string1, level, writer);
+        } else if (geometry instanceof CurvePolygon polygon2) {
+            appendCurvePolygonTaggedText(polygon2, level, writer);
+        } else if (geometry instanceof Polygon polygon1) {
+            appendPolygonTaggedText(polygon1, level, writer);
+        } else if (geometry instanceof MultiPoint point) {
+            appendMultiPointTaggedText(point, level, writer);
+        } else if (geometry instanceof MultiCurve curve) {
+            appendMultiCurveTaggedText(curve, level, writer);
+        } else if (geometry instanceof MultiLineString string) {
+            appendMultiLineStringTaggedText(string, level, writer);
+        } else if (geometry instanceof MultiSurface surface) {
+            appendMultiSurfaceTaggedText(surface, level, writer);
+        } else if (geometry instanceof MultiPolygon polygon) {
+            appendMultiPolygonTaggedText(polygon, level, writer);
+        } else if (geometry instanceof GeometryCollection collection) {
+            appendGeometryCollectionTaggedText(collection, level, writer);
         } else {
             Assert.shouldNeverReachHere("Unsupported Geometry implementation:" + geometry.getClass());
         }
@@ -650,8 +649,8 @@ public class WKTWriter2 extends WKTWriter {
 
     private void appendPotentialCurvePolygonText(Polygon component, int level, boolean doIndent, Writer writer)
             throws IOException {
-        if (component instanceof CurvePolygon) {
-            appendCurvePolygonTaggedText((CurvePolygon) component, level, writer);
+        if (component instanceof CurvePolygon polygon) {
+            appendCurvePolygonTaggedText(polygon, level, writer);
         } else {
             appendPolygonText(component, level, doIndent, writer);
         }

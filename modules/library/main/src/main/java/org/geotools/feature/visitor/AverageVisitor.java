@@ -173,8 +173,8 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
             strategy = createStrategy(type);
             strategy.add(newAverage);
             isOptimized = true;
-        } else if (newAverage instanceof Number) {
-            strategy = new FixedResultAverageStrategy((Number) newAverage);
+        } else if (newAverage instanceof Number number) {
+            strategy = new FixedResultAverageStrategy(number);
             isOptimized = true;
         } else throw new IllegalArgumentException("Cannot set the value, should be a Number or an AverageStrategy");
     }
@@ -379,10 +379,10 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         private boolean isOptimized = false;
 
         public AverageResult(Object value) {
-            if (value instanceof AverageStrategy) {
-                averageStrategy = (AverageStrategy) value;
-            } else if (value instanceof Number) {
-                averageStrategy = new FixedResultAverageStrategy((Number) value);
+            if (value instanceof AverageStrategy averageStrategy1) {
+                averageStrategy = averageStrategy1;
+            } else if (value instanceof Number number) {
+                averageStrategy = new FixedResultAverageStrategy(number);
             } else {
                 throw new IllegalArgumentException("Cannot build an AverageResult using "
                         + value
@@ -464,8 +464,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 return this;
             }
 
-            if (resultsToAdd instanceof AverageResult) {
-                AverageResult moreResults = (AverageResult) resultsToAdd;
+            if (resultsToAdd instanceof AverageResult moreResults) {
 
                 // ensure both results are NOT optimized
                 if (isOptimized || moreResults.isOptimized) {

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -152,7 +152,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
     }
 
     private String makeAbsolute(String prefix, String filePath) {
-        if (!Paths.get(filePath).isAbsolute()) {
+        if (!Path.of(filePath).isAbsolute()) {
             filePath = prefix + filePath;
         }
         return filePath;

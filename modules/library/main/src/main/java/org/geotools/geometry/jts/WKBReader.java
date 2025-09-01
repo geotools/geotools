@@ -326,8 +326,7 @@ public class WKBReader {
         LineString ls = (LineString) readGeometry();
         if (!(ls instanceof LinearRing)) {
             if (!ls.isClosed()) {
-                if (ls instanceof CompoundCurve) {
-                    CompoundCurve cc = (CompoundCurve) ls;
+                if (ls instanceof CompoundCurve cc) {
                     List<LineString> components = cc.getComponents();
                     Coordinate start = components.get(0).getCoordinateN(0);
                     LineString lastGeom = components.get(components.size() - 1);
@@ -342,10 +341,7 @@ public class WKBReader {
                     ls = factory.createCurvedGeometry(ls, closer);
                 }
             } else {
-                if (ls instanceof CompoundCurve) {
-                    // this case should never happen, but let's be robust against
-                    // alternative geometry factories not behaving as expected
-                    CompoundCurve cc = (CompoundCurve) ls;
+                if (ls instanceof CompoundCurve cc) {
                     ls = new CompoundRing(cc.getComponents(), cc.getFactory(), cc.getTolerance());
                 } else {
                     ls = new LinearRing(ls.getCoordinateSequence(), ls.getFactory());
@@ -454,8 +450,8 @@ public class WKBReader {
      */
     private CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
         CurvedGeometryFactory curvedFactory;
-        if (gf instanceof CurvedGeometryFactory) {
-            curvedFactory = (CurvedGeometryFactory) gf;
+        if (gf instanceof CurvedGeometryFactory geometryFactory) {
+            curvedFactory = geometryFactory;
         } else {
             curvedFactory = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
         }

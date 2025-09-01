@@ -441,11 +441,11 @@ final class PropertyAccessor {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
             final Throwable cause = e.getTargetException();
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
+            if (cause instanceof RuntimeException exception) {
+                throw exception;
             }
-            if (cause instanceof Error) {
-                throw (Error) cause;
+            if (cause instanceof Error error) {
+                throw error;
             }
             throw new UndeclaredThrowableException(cause);
         }
@@ -525,8 +525,8 @@ final class PropertyAccessor {
             if (Collection.class.isAssignableFrom(paramType) && !(argument instanceof Collection)) {
                 // Expected a collection but got a singleton.
                 addTo = (Collection) get(getter, metadata);
-                if (addTo instanceof CheckedCollection) {
-                    elementType = ((CheckedCollection) addTo).getElementType();
+                if (addTo instanceof CheckedCollection collection) {
+                    elementType = collection.getElementType();
                 } else {
                     Class<?> c = Classes.boundOfParameterizedAttribute(setter);
                     if (c == null) {
@@ -608,11 +608,11 @@ final class PropertyAccessor {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
             final Throwable cause = e.getTargetException();
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
+            if (cause instanceof RuntimeException exception) {
+                throw exception;
             }
-            if (cause instanceof Error) {
-                throw (Error) cause;
+            if (cause instanceof Error error) {
+                throw error;
             }
             throw new UndeclaredThrowableException(cause);
         }
@@ -770,7 +770,7 @@ final class PropertyAccessor {
     /** Returns {@code true} if the specified object is null or an empty collection, array or string. */
     static boolean isEmpty(final Object value) {
         return value == null
-                || value instanceof Collection && ((Collection) value).isEmpty()
+                || value instanceof Collection c && c.isEmpty()
                 || value instanceof CharSequence && value.toString().trim().length() == 0
                 || value.getClass().isArray() && Array.getLength(value) == 0;
     }

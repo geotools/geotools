@@ -93,8 +93,8 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
                 : feature.getAttribute(name);
         AttributeDescriptor attrDescr = featureTyp.getDescriptor(name);
         if (attrDescr == null) return null;
-        if (attrDescr instanceof GeometryDescriptor)
-            return new GeometryAttributeImpl(value, (GeometryDescriptor) attrDescr, null);
+        if (attrDescr instanceof GeometryDescriptor descriptor)
+            return new GeometryAttributeImpl(value, descriptor, null);
         else return new AttributeImpl(value, attrDescr, null);
     }
 

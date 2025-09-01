@@ -62,8 +62,8 @@ public class ArithmeticOperatorsImpl implements ArithmeticOperators {
         if (functions == null) {
             return new FunctionsImpl();
         }
-        if (functions instanceof FunctionsImpl) {
-            return (FunctionsImpl) functions;
+        if (functions instanceof FunctionsImpl impl) {
+            return impl;
         } else {
             return new FunctionsImpl(functions);
         }

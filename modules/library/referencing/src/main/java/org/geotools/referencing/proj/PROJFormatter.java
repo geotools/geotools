@@ -92,7 +92,7 @@ public class PROJFormatter {
 
     public void append(final PROJFormattable formattable) {
         int base = buffer.length();
-        final IdentifiedObject info = formattable instanceof IdentifiedObject ? (IdentifiedObject) formattable : null;
+        final IdentifiedObject info = formattable instanceof IdentifiedObject io ? io : null;
         if (info != null) {
             // Getting the name of a formattable object will also check the type
             // of IdentifiedObject (i.e. a datum, a primemeridian, an ellipsoid)
@@ -127,13 +127,12 @@ public class PROJFormatter {
      *     {@link ParameterValue}, as only these types are supported.
      */
     public void append(final GeneralParameterValue parameter) {
-        if (parameter instanceof ParameterValueGroup) {
-            for (final GeneralParameterValue param : ((ParameterValueGroup) parameter).values()) {
+        if (parameter instanceof ParameterValueGroup group) {
+            for (final GeneralParameterValue param : group.values()) {
                 append(param);
             }
         }
-        if (parameter instanceof ParameterValue) {
-            final ParameterValue<?> param = (ParameterValue) parameter;
+        if (parameter instanceof ParameterValue<?> param) {
             final ParameterDescriptor<?> descriptor = param.getDescriptor();
             final Unit<?> valueUnit = descriptor.getUnit();
             String name = getName(descriptor);
@@ -203,8 +202,8 @@ public class PROJFormatter {
             buffer.append('}');
             return;
         }
-        if (value instanceof Number) {
-            format((Number) value);
+        if (value instanceof Number number) {
+            format(number);
         } else {
             buffer.append('"').append(value).append('"');
         }
@@ -264,8 +263,7 @@ public class PROJFormatter {
                  * scope in generic name.
                  */
                 for (final GenericName alias : aliases) {
-                    if (alias instanceof Identifier) {
-                        final Identifier candidate = (Identifier) alias;
+                    if (alias instanceof Identifier candidate) {
                         if (Citations.PROJ == candidate.getAuthority()) {
                             if (info instanceof DefaultOperationMethod) {
                                 projectedCRS = true;
@@ -388,8 +386,7 @@ public class PROJFormatter {
      * @return
      */
     public String toPROJ(PROJFormattable formattable) {
-        if (formattable instanceof IdentifiedObject) {
-            IdentifiedObject identifiedObject = (IdentifiedObject) formattable;
+        if (formattable instanceof IdentifiedObject identifiedObject) {
             formattable.formatPROJ(this);
             String refinedString = PROJ_REFINER.refine(
                     buffer.toString(),

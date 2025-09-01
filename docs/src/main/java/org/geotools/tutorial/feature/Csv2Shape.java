@@ -153,8 +153,7 @@ public class Csv2Shape {
          */
         System.out.println("SHAPE:" + SHAPE_TYPE);
 
-        if (featureSource instanceof SimpleFeatureStore) {
-            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
+        if (featureSource instanceof SimpleFeatureStore featureStore) {
             /*
              * SimpleFeatureStore has a method to add features from a
              * SimpleFeatureCollection object, so we use the ListFeatureCollection

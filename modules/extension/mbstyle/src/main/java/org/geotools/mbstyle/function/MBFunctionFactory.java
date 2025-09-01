@@ -134,13 +134,11 @@ public class MBFunctionFactory implements FunctionFactory {
             f = new MapBoxFontWeightFunction();
         }
 
-        if (f instanceof FunctionImpl) {
-            FunctionImpl fi = (FunctionImpl) f;
+        if (f instanceof FunctionImpl fi) {
             fi.setParameters(args);
             fi.setFallbackValue(fallback);
             return f;
-        } else if (f instanceof FunctionExpressionImpl) {
-            FunctionExpressionImpl fei = (FunctionExpressionImpl) f;
+        } else if (f instanceof FunctionExpressionImpl fei) {
             fei.setParameters(args);
             fei.setFallbackValue(fallback);
             return f;

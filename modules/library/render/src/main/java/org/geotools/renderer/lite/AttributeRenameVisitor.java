@@ -50,8 +50,7 @@ class AttributeRenameVisitor extends DuplicatingFilterVisitor {
     public Object visit(BBOX filter, Object extraData) {
         // rename if necessary
         Expression e1 = filter.getExpression1();
-        if (e1 instanceof PropertyName) {
-            PropertyName pname = (PropertyName) e1;
+        if (e1 instanceof PropertyName pname) {
             String name = pname.getPropertyName();
             if (name != null && name.equals(source)) {
                 e1 = ff.property(target);
@@ -59,9 +58,8 @@ class AttributeRenameVisitor extends DuplicatingFilterVisitor {
         }
 
         // duplicate preserving fast bbox filters
-        if (filter instanceof FastBBOX && e1 instanceof PropertyName) {
-            FastBBOX fbox = (FastBBOX) filter;
-            return new FastBBOX((PropertyName) e1, fbox.getEnvelope(), getFactory(extraData));
+        if (filter instanceof FastBBOX fbox && e1 instanceof PropertyName name) {
+            return new FastBBOX(name, fbox.getEnvelope(), getFactory(extraData));
         } else {
             return getFactory(extraData).bbox(e1, filter.getExpression2());
         }

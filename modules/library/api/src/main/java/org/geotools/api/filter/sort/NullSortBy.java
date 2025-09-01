@@ -10,6 +10,7 @@
 package org.geotools.api.filter.sort;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.filter.expression.PropertyName;
 
@@ -21,6 +22,7 @@ import org.geotools.api.filter.expression.PropertyName;
  */
 final class NullSortBy implements SortBy, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -4846119001746135007L;
 
     /** The sort order. */
@@ -52,8 +54,8 @@ final class NullSortBy implements SortBy, Serializable {
     /** Compares this object with the specified one for equality. */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof NullSortBy) {
-            return order.equals(((NullSortBy) object).order);
+        if (object instanceof NullSortBy by) {
+            return order.equals(by.order);
         }
         return false;
     }

@@ -169,14 +169,14 @@ public class SchemaResolver {
         }
         // Fail if still not resolved.
         if (resolvedLocation == null) {
-            throw new RuntimeException(String.format("Failed to resolve %s", location));
+            throw new RuntimeException("Failed to resolve %s".formatted(location));
         }
         synchronized (this) {
             if (!resolvedLocationToOriginalLocationMap.containsKey(resolvedLocation)) {
                 resolvedLocationToOriginalLocationMap.put(resolvedLocation, location);
             }
         }
-        LOGGER.fine(String.format("Resolved %s -> %s", location, resolvedLocation));
+        LOGGER.fine("Resolved %s -> %s".formatted(location, resolvedLocation));
         return resolvedLocation;
     }
 
@@ -334,6 +334,6 @@ public class SchemaResolver {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return String.format("%032x", new BigInteger(1, md.digest(bytesOfMessage)));
+        return "%032x".formatted(new BigInteger(1, md.digest(bytesOfMessage)));
     }
 }

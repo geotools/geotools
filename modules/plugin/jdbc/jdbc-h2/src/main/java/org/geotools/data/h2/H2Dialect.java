@@ -180,8 +180,7 @@ public class H2Dialect extends SQLDialect {
             schemaName = schemaName != null ? schemaName : "PUBLIC";
             // post process the feature type and set up constraints based on geometry type
             for (PropertyDescriptor ad : featureType.getDescriptors()) {
-                if (ad instanceof GeometryDescriptor) {
-                    GeometryDescriptor gd = (GeometryDescriptor) ad;
+                if (ad instanceof GeometryDescriptor gd) {
                     @SuppressWarnings("unchecked")
                     Class<? extends Geometry> binding =
                             (Class<? extends Geometry>) ad.getType().getBinding();

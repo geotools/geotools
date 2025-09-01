@@ -113,8 +113,8 @@ public class GML32FeatureCollectionEncoderDelegate extends org.geotools.gml2.sim
 
         private int getNumDecimals(Configuration configuration) {
             org.geotools.gml3.v3_2.GMLConfiguration config;
-            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
-                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
             }
@@ -128,8 +128,8 @@ public class GML32FeatureCollectionEncoderDelegate extends org.geotools.gml2.sim
 
         private boolean getPadWithZeros(Configuration configuration) {
             org.geotools.gml3.v3_2.GMLConfiguration config;
-            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
-                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
             }
@@ -143,8 +143,8 @@ public class GML32FeatureCollectionEncoderDelegate extends org.geotools.gml2.sim
 
         private boolean getForceDecimalEncoding(Configuration configuration) {
             org.geotools.gml3.v3_2.GMLConfiguration config;
-            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
-                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
             }
@@ -158,8 +158,8 @@ public class GML32FeatureCollectionEncoderDelegate extends org.geotools.gml2.sim
 
         private boolean getEncodecoordinatesMeasures(Configuration configuration) {
             org.geotools.gml3.v3_2.GMLConfiguration config;
-            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
-                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
             }

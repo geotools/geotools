@@ -163,8 +163,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
         @Override
         @SuppressWarnings("unchecked") // target can be null, cannot use target.cast
         public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
-            if (object instanceof SimpleFeature) {
-                SimpleFeature f = (SimpleFeature) object;
+            if (object instanceof SimpleFeature f) {
                 Object defaultGeometry = f.getDefaultGeometry();
 
                 // not found? Ok, let's do a lookup then...
@@ -180,8 +179,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
                 return (T) defaultGeometry;
             }
 
-            if (object instanceof SimpleFeatureType) {
-                SimpleFeatureType ft = (SimpleFeatureType) object;
+            if (object instanceof SimpleFeatureType ft) {
                 GeometryDescriptor gd = ft.getGeometryDescriptor();
 
                 if (gd == null) {
@@ -202,8 +200,8 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
         @Override
         public void set(Object object, String xpath, Object value, Class target) throws IllegalAttributeException {
 
-            if (object instanceof SimpleFeature) {
-                ((SimpleFeature) object).setDefaultGeometry(value);
+            if (object instanceof SimpleFeature feature) {
+                feature.setDefaultGeometry(value);
             }
             if (object instanceof SimpleFeatureType) {
                 throw new IllegalAttributeException("feature type is immutable");
@@ -216,13 +214,12 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
         public boolean canHandle(Object object, String xpath, Class target) {
             String stripped = stripPrefixIndex(xpath);
 
-            if (object instanceof SimpleFeature) {
-                SimpleFeatureType type = ((SimpleFeature) object).getType();
+            if (object instanceof SimpleFeature feature) {
+                SimpleFeatureType type = feature.getType();
                 return type.indexOf(xpath) >= 0 || type.indexOf(stripped) >= 0;
             }
 
-            if (object instanceof SimpleFeatureType) {
-                SimpleFeatureType type = (SimpleFeatureType) object;
+            if (object instanceof SimpleFeatureType type) {
                 return type.indexOf(xpath) >= 0 || type.indexOf(stripped) >= 0;
             }
 
@@ -232,18 +229,17 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
         @Override
         @SuppressWarnings("unchecked") // target can be null, cannot use target.cast
         public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
-            if (object instanceof SimpleFeature) {
-                SimpleFeatureType type = ((SimpleFeature) object).getType();
+            if (object instanceof SimpleFeature feature) {
+                SimpleFeatureType type = feature.getType();
                 if (type.indexOf(xpath) >= 0) {
-                    return (T) ((SimpleFeature) object).getAttribute(xpath);
+                    return (T) feature.getAttribute(xpath);
                 } else {
                     String stripped = stripPrefixIndex(xpath);
-                    return (T) ((SimpleFeature) object).getAttribute(stripped);
+                    return (T) feature.getAttribute(stripped);
                 }
             }
 
-            if (object instanceof SimpleFeatureType) {
-                SimpleFeatureType type = (SimpleFeatureType) object;
+            if (object instanceof SimpleFeatureType type) {
                 if (type.indexOf(xpath) >= 0) {
                     return (T) type.getDescriptor(xpath);
                 } else {
@@ -259,8 +255,8 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
         public void set(Object object, String xpath, Object value, Class target) throws IllegalAttributeException {
             xpath = stripPrefixIndex(xpath);
 
-            if (object instanceof SimpleFeature) {
-                ((SimpleFeature) object).setAttribute(xpath, value);
+            if (object instanceof SimpleFeature feature) {
+                feature.setAttribute(xpath, value);
             }
 
             if (object instanceof SimpleFeatureType) {

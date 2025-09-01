@@ -44,8 +44,7 @@ public class GeometryFunction extends FunctionExpressionImpl implements Volatile
     public Object evaluate(Feature feature) {
         if (feature == null) {
             return null;
-        } else if (feature instanceof SimpleFeature) {
-            SimpleFeature sf = (SimpleFeature) feature;
+        } else if (feature instanceof SimpleFeature sf) {
             return geometry(sf.getDefaultGeometry());
         } else {
             GeometryAttribute ga = feature.getDefaultGeometryProperty();
@@ -67,8 +66,8 @@ public class GeometryFunction extends FunctionExpressionImpl implements Volatile
 
     @Override
     public Object evaluate(Object object) {
-        if (object instanceof Feature) {
-            return evaluate((Feature) object);
+        if (object instanceof Feature feature) {
+            return evaluate(feature);
         } else {
             return null;
         }

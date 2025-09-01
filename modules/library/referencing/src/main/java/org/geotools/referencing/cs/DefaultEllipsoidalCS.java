@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
@@ -51,6 +52,7 @@ import si.uom.SI;
  */
 public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1452492488902329211L;
 
     /**

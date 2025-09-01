@@ -117,8 +117,8 @@ public class DescriptionImpl implements org.geotools.api.style.Description {
     static DescriptionImpl cast(org.geotools.api.style.Description description) {
         if (description == null) {
             return null;
-        } else if (description instanceof DescriptionImpl) {
-            return (DescriptionImpl) description;
+        } else if (description instanceof DescriptionImpl impl) {
+            return impl;
         } else {
             DescriptionImpl copy = new DescriptionImpl();
             copy.setTitle(description.getTitle());

@@ -153,14 +153,14 @@ public final class Classes {
      * ambiguity). Otherwise returns {@code null}.
      */
     private static Class<?> getActualTypeArgument(Type type) {
-        if (type instanceof ParameterizedType) {
-            Type[] p = ((ParameterizedType) type).getActualTypeArguments();
+        if (type instanceof ParameterizedType parameterizedType) {
+            Type[] p = parameterizedType.getActualTypeArguments();
             while (p != null && p.length == 1) {
                 type = p[0];
-                if (type instanceof Class) {
-                    return (Class) type;
-                } else if (type instanceof WildcardType) {
-                    p = ((WildcardType) type).getUpperBounds();
+                if (type instanceof Class class1) {
+                    return class1;
+                } else if (type instanceof WildcardType wildcardType) {
+                    p = wildcardType.getUpperBounds();
                 } else {
                     break; // Unknown type.
                 }

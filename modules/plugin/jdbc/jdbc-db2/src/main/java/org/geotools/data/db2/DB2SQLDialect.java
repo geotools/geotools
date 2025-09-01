@@ -116,11 +116,14 @@ public class DB2SQLDialect extends SQLDialect {
     //    private  static String OLAPROWNUM_MESSAGE=
     //            "Using ROW_NUMBER () OVER () for paging support";
 
-    private String NOPAGESUPPORT_MESSAGE = "DB2 handles paged select statements inefficiently\n"
-            + "Try to set MySql or Oracle compatibility mode\n"
-            + "dbstop\n"
-            + "db2set DB2_COMPATIBILITY_VECTOR=MYS\n"
-            + "db2start\n";
+    private String NOPAGESUPPORT_MESSAGE =
+            """
+            DB2 handles paged select statements inefficiently
+            Try to set MySql or Oracle compatibility mode
+            dbstop
+            db2set DB2_COMPATIBILITY_VECTOR=MYS
+            db2start
+            """;
 
     private DB2DialectInfo db2DialectInfo;
     private boolean functionEncodingEnabled;
@@ -336,7 +339,7 @@ public class DB2SQLDialect extends SQLDialect {
             st = cx.createStatement();
 
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                if (att instanceof GeometryDescriptor) {
+                if (att instanceof GeometryDescriptor descriptor) {
 
                     StringBuffer sql = new StringBuffer();
                     sql.append("select min_x,min_y,max_x,max_y from db2gse.st_geometry_columns where  TABLE_SCHEMA='");
@@ -367,8 +370,7 @@ public class DB2SQLDialect extends SQLDialect {
 
                         // Either a ReferencedEnvelope or ReferencedEnvelope3D will be generated
                         // here
-                        ReferencedEnvelope env =
-                                JTS.bounds(geometry, ((GeometryDescriptor) att).getCoordinateReferenceSystem());
+                        ReferencedEnvelope env = JTS.bounds(geometry, descriptor.getCoordinateReferenceSystem());
 
                         // reproject and merge
                         if (env != null && !env.isNull()) result.add(env);
@@ -501,8 +503,7 @@ public class DB2SQLDialect extends SQLDialect {
         String columnName = featureType.getGeometryDescriptor().getName().toString();
 
         for (AttributeDescriptor attr : featureType.getAttributeDescriptors()) {
-            if (attr instanceof GeometryDescriptor) {
-                GeometryDescriptor gDescr = (GeometryDescriptor) attr;
+            if (attr instanceof GeometryDescriptor gDescr) {
                 String srsName = null;
                 Integer srsId = (Integer) gDescr.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
                 if (srsId != null) {

@@ -37,15 +37,15 @@ public class XSNonPositiveIntegerStrategyTest extends TestSchema {
 
         Object result = strategy.parse(element(text, qname), value);
 
-        if (!(result instanceof BigInteger) && result instanceof Number) {
-            result = BigInteger.valueOf(((Number) result).longValue());
+        if (!(result instanceof BigInteger) && result instanceof Number number) {
+            result = BigInteger.valueOf(number.longValue());
         }
 
         assertEquals(integer(expected), integer(result));
     }
 
     public BigInteger integer(Object value) {
-        return value instanceof BigInteger ? (BigInteger) value : BigInteger.valueOf(((Number) value).longValue());
+        return value instanceof BigInteger bi ? bi : BigInteger.valueOf(((Number) value).longValue());
     }
 
     public Number number(String number) {

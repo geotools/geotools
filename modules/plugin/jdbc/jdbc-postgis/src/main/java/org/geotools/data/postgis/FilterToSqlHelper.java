@@ -235,8 +235,8 @@ class FilterToSqlHelper {
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
-            if (filter instanceof DistanceBufferOperator) {
-                visitDistanceSpatialOperator((DistanceBufferOperator) filter, property, geometry, swapped, extraData);
+            if (filter instanceof DistanceBufferOperator operator) {
+                visitDistanceSpatialOperator(operator, property, geometry, swapped, extraData);
             } else {
                 visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
             }
@@ -286,8 +286,8 @@ class FilterToSqlHelper {
             distance = DistanceBufferUtil.getDistanceInMeters(operator);
         } else {
             // need the value in native units
-            if (delegate instanceof PostgisPSFilterToSql) {
-                distance = ((PostgisPSFilterToSql) delegate).getDistanceInNativeUnits(operator);
+            if (delegate instanceof PostgisPSFilterToSql sql) {
+                distance = sql.getDistanceInNativeUnits(operator);
             } else {
                 distance = ((PostgisFilterToSQL) delegate).getDistanceInNativeUnits(operator);
             }
@@ -321,10 +321,9 @@ class FilterToSqlHelper {
         // No, just construct a 3D geometry as your query filter, not a 3d box.
         // select count(*) from "3dfloor" where geom &&& ST_Makeline(ST_MakePoint(0,0,0),
         // ST_MakePoint(1000000,1000000,1));
-        if (filter instanceof BBOX3D) {
+        if (filter instanceof BBOX3D bbox) {
             property.accept(delegate, extraData);
             out.write(" &&& ");
-            BBOX3D bbox = (BBOX3D) filter;
             BoundingBox3D bounds = bbox.getBounds();
             out.write("ST_Makeline(ST_MakePoint(");
             out.write(bounds.getMinX() + "," + bounds.getMinY() + "," + bounds.getMinZ());
@@ -446,10 +445,10 @@ class FilterToSqlHelper {
 
     boolean isCurrentGeography() {
         AttributeDescriptor geom = null;
-        if (delegate instanceof PostgisPSFilterToSql) {
-            geom = ((PostgisPSFilterToSql) delegate).getCurrentGeometry();
-        } else if (delegate instanceof PostgisFilterToSQL) {
-            geom = ((PostgisFilterToSQL) delegate).getCurrentGeometry();
+        if (delegate instanceof PostgisPSFilterToSql sql) {
+            geom = sql.getCurrentGeometry();
+        } else if (delegate instanceof PostgisFilterToSQL qL) {
+            geom = qL.getCurrentGeometry();
         }
 
         return geom != null && "geography".equals(geom.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
@@ -477,8 +476,8 @@ class FilterToSqlHelper {
                             Geometry quadrant = JTS.toGeometry(new Envelope(lon, lon + 90, lat, lat + 90));
                             Geometry cut = sanitizePolygons(g.intersection(quadrant));
                             if (!cut.isEmpty()) {
-                                if (cut instanceof Polygon) {
-                                    polygons.add((Polygon) cut);
+                                if (cut instanceof Polygon polygon) {
+                                    polygons.add(polygon);
                                 } else {
                                     for (int i = 0; i < cut.getNumGeometries(); i++) {
                                         polygons.add((Polygon) cut.getGeometryN(i));
@@ -507,8 +506,8 @@ class FilterToSqlHelper {
         // filter out only polygonal parts
         final List<Polygon> polygons = new ArrayList<>();
         geometry.apply((GeometryComponentFilter) geom -> {
-            if (geom instanceof Polygon) {
-                polygons.add((Polygon) geom);
+            if (geom instanceof Polygon polygon) {
+                polygons.add(polygon);
             }
         });
 
@@ -703,14 +702,14 @@ class FilterToSqlHelper {
     private void encodeJsonPointer(Function jsonPointer, Object extraData) throws IOException {
         Expression json = getParameter(jsonPointer, 0, true);
         Expression pointer = getParameter(jsonPointer, 1, true);
-        if (json instanceof PropertyName && pointer instanceof Literal) {
+        if (json instanceof PropertyName && pointer instanceof Literal literal) {
             // if not a string need to cast the json attribute
             boolean needCast = extraData != null && extraData instanceof Class && !extraData.equals(String.class);
 
             if (needCast) out.write('(');
             json.accept(delegate, null);
             out.write(" ::json ");
-            String strPointer = ((Literal) pointer).getValue().toString();
+            String strPointer = literal.getValue().toString();
             List<String> pointerEl =
                     Stream.of(strPointer.split("/")).filter(p -> !p.equals("")).collect(Collectors.toList());
             for (int i = 0; i < pointerEl.size(); i++) {
@@ -755,10 +754,10 @@ class FilterToSqlHelper {
             if (getBaseType(expected).isAssignableFrom(String.class)) {
                 strExpected = '"' + strExpected + '"';
             }
-            return String.format("\"%s\": [%s]", pointers[index], strExpected);
+            return "\"%s\": [%s]".formatted(pointers[index], strExpected);
         } else {
             String jsonPointers = buildJsonFromStrPointer(pointers, index + 1, expected);
-            return String.format("\"%s\": { %s }", pointers[index], jsonPointers);
+            return "\"%s\": { %s }".formatted(pointers[index], jsonPointers);
         }
     }
 
@@ -795,14 +794,14 @@ class FilterToSqlHelper {
         Object value = ((LiteralExpressionImpl) expected).getValue();
         // Doing the explicit cast for each type because without it compiler will complain that
         // Object can not be used for %d or %f in formatter
-        if (value instanceof Integer) {
-            return String.format("(@.%s == %d)", jsonPath[lastIndex], (Integer) value);
-        } else if (value instanceof Float) {
-            return String.format("(@.%s == %f)", jsonPath[lastIndex], (Float) value);
-        } else if (value instanceof Double) {
-            return String.format("(@.%s == %f)", jsonPath[lastIndex], (Double) value);
+        if (value instanceof Integer integer) {
+            return "(@.%s == %d)".formatted(jsonPath[lastIndex], integer);
+        } else if (value instanceof Float float1) {
+            return "(@.%s == %f)".formatted(jsonPath[lastIndex], float1);
+        } else if (value instanceof Double double1) {
+            return "(@.%s == %f)".formatted(jsonPath[lastIndex], double1);
         }
-        return String.format("(@.%s == \"%s\")", jsonPath[lastIndex], value);
+        return "(@.%s == \"%s\")".formatted(jsonPath[lastIndex], value);
     }
 
     private String constructPath(String[] jsonPath) {
@@ -893,11 +892,11 @@ class FilterToSqlHelper {
             String type) {
         String leftCast = "";
         String rightCast = "";
-        if (left instanceof PropertyName) {
-            rightCast = getArrayTypeCast((PropertyName) left);
+        if (left instanceof PropertyName name) {
+            rightCast = getArrayTypeCast(name);
         }
-        if (right instanceof PropertyName) {
-            leftCast = getArrayTypeCast((PropertyName) right);
+        if (right instanceof PropertyName name) {
+            leftCast = getArrayTypeCast(name);
         }
 
         try {
@@ -1023,8 +1022,8 @@ class FilterToSqlHelper {
             out.write("(");
             e.accept(delegate, null);
             out.write(")");
-            if (context instanceof Class) {
-                tmp.write(cast(out.toString(), (Class) context));
+            if (context instanceof Class class1) {
+                tmp.write(cast(out.toString(), class1));
             } else {
                 tmp.write(out.toString());
             }
@@ -1038,8 +1037,7 @@ class FilterToSqlHelper {
         AttributeDescriptor at = pn.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
         if (at != null) {
             Object value = at.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
-            if (value instanceof String) {
-                String typeName = (String) value;
+            if (value instanceof String typeName) {
                 if (typeName.startsWith("_")) {
                     return "::" + typeName.substring(1) + "[]";
                 }
@@ -1142,8 +1140,8 @@ class FilterToSqlHelper {
 
     private Class<?> getBaseType(Expression expr) {
         Class<?> type = delegate.getExpressionType(expr);
-        if (type == null && expr instanceof Literal) {
-            Object value = delegate.evaluateLiteral((Literal) expr, Object.class);
+        if (type == null && expr instanceof Literal literal) {
+            Object value = delegate.evaluateLiteral(literal, Object.class);
             if (value != null) {
                 type = value.getClass();
             }
@@ -1237,11 +1235,11 @@ class FilterToSqlHelper {
     public InArrayFunction getInArray(PropertyIsEqualTo filter) {
         Expression expr1 = filter.getExpression1();
         Expression expr2 = filter.getExpression2();
-        if (expr2 instanceof InArrayFunction) {
-            return (InArrayFunction) expr2;
+        if (expr2 instanceof InArrayFunction function) {
+            return function;
         }
-        if (expr1 instanceof InArrayFunction) {
-            return (InArrayFunction) expr1;
+        if (expr1 instanceof InArrayFunction function) {
+            return function;
         } else {
             return null;
         }
@@ -1256,11 +1254,11 @@ class FilterToSqlHelper {
     public FilterFunction_equalTo getEqualTo(PropertyIsEqualTo filter) {
         Expression expr1 = filter.getExpression1();
         Expression expr2 = filter.getExpression2();
-        if (expr2 instanceof FilterFunction_equalTo) {
-            return (FilterFunction_equalTo) expr2;
+        if (expr2 instanceof FilterFunction_equalTo to) {
+            return to;
         }
-        if (expr1 instanceof FilterFunction_equalTo) {
-            return (FilterFunction_equalTo) expr1;
+        if (expr1 instanceof FilterFunction_equalTo to) {
+            return to;
         } else {
             return null;
         }
@@ -1281,7 +1279,7 @@ class FilterToSqlHelper {
             expr1 = expr2;
             expr2 = tmp;
         }
-        if (expr1 instanceof FilterFunction_pgNearest) {
+        if (expr1 instanceof FilterFunction_pgNearest function_pgNearest) {
             if (!(expr2 instanceof Literal)) {
                 throw new UnsupportedOperationException(
                         "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
@@ -1291,7 +1289,7 @@ class FilterToSqlHelper {
                 throw new UnsupportedOperationException(
                         "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
             }
-            return (FilterFunction_pgNearest) expr1;
+            return function_pgNearest;
         } else {
             return null;
         }
@@ -1336,8 +1334,8 @@ class FilterToSqlHelper {
         if (currentVersion != null && expectedVersion != null) {
             Comparable<?> current = currentVersion.getMajor();
             Comparable<?> expected = expectedVersion.getMajor();
-            if (current instanceof Integer && expected instanceof Integer) {
-                return (Integer) current >= (Integer) expected;
+            if (current instanceof Integer integer && expected instanceof Integer integer1) {
+                return integer >= integer1;
             }
         }
         return false;

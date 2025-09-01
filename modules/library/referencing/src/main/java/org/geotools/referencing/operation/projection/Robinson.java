@@ -27,6 +27,7 @@ import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -46,6 +47,7 @@ import org.geotools.referencing.NamedIdentifier;
 @SuppressWarnings("FloatingPointLiteralPrecision")
 public class Robinson extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 8428056162968814860L;
 
     static final class Coeff {
@@ -251,6 +253,7 @@ public class Robinson extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 3586488124601927036L;
 
         /** The parameters group. */

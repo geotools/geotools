@@ -72,8 +72,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
     public void filter(Geometry geom) {
         // this filter will receive either points, which we don't consider,
         // or lines, that we need to wrap
-        if (geom instanceof LineString) {
-            LineString ls = (LineString) geom;
+        if (geom instanceof LineString ls) {
             CoordinateSequence cs = ls.getCoordinateSequence();
             int direction = getDisconinuityDirection(cs);
             if (direction == NOWRAP) return;

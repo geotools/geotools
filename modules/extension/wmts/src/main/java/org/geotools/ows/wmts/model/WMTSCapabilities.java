@@ -104,8 +104,7 @@ public class WMTSCapabilities extends Capabilities {
         // Parse layers
         for (Object l : contents.getDatasetDescriptionSummary()) {
 
-            if (l instanceof LayerType) {
-                LayerType layerType = (LayerType) l;
+            if (l instanceof LayerType layerType) {
                 WMTSLayer layer = parseLayer(layerType);
                 layers.add(layer);
                 layerMap.put(layer.getName(), layer);
@@ -230,9 +229,8 @@ public class WMTSCapabilities extends Capabilities {
             String tmsIdentifier = tmsLink.getIdentifier();
             TileMatrixSet tms = matrixSetMap.get(tmsIdentifier);
             if (tms == null) {
-                LOGGER.info(String.format(
-                        "WMTS capabilities for layer %s specified a TileMatrixSet link %s that doesn't exist.",
-                        wmtsLayer.getName(), tmsIdentifier));
+                LOGGER.info("WMTS capabilities for layer %s specified a TileMatrixSet link %s that doesn't exist."
+                        .formatted(wmtsLayer.getName(), tmsIdentifier));
                 iterator.remove();
                 continue;
             }
@@ -336,8 +334,8 @@ public class WMTSCapabilities extends Capabilities {
         if (!layerType.getAbstract().isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (Object line : layerType.getAbstract()) {
-                if (line instanceof LanguageStringType) {
-                    sb.append(((LanguageStringType) line).getValue());
+                if (line instanceof LanguageStringType stringType) {
+                    sb.append(stringType.getValue());
                     break;
                 } else {
                     sb.append(line);

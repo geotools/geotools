@@ -113,8 +113,8 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         // create readers for different geometry types
         geometryReaders = new HashMap<>();
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-            if (att instanceof GeometryDescriptor) {
-                SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy((GeometryDescriptor) att);
+            if (att instanceof GeometryDescriptor descriptor) {
+                SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy(descriptor);
                 geometryReaders.put(att.getName(), spatialStrategy);
             }
         }
@@ -160,11 +160,10 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             for (int i = 0; i < attributeCount; i++) {
                 AttributeDescriptor type = featureType.getDescriptor(i);
                 Object value = doc.getFieldValue(type.getLocalName());
-                if (value instanceof List<?>) {
-                    value = StringUtils.join(((List) value).toArray(), ";");
+                if (value instanceof List list) {
+                    value = StringUtils.join(list.toArray(), ";");
                 }
-                if (type instanceof GeometryDescriptor) {
-                    GeometryDescriptor gatt = (GeometryDescriptor) type;
+                if (type instanceof GeometryDescriptor gatt) {
                     if (value != null) {
                         SolrSpatialStrategy spatialStrategy = geometryReaders.get(gatt.getName());
                         if (spatialStrategy == null) {

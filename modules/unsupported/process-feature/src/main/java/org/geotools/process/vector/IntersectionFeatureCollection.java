@@ -521,8 +521,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
                 //               logger.info("qui dopo check if (complete)");
                 // logger.finer("control HAS NEXT");
                 for (Object attribute : first.getAttributes()) {
-                    if (attribute instanceof Geometry && attribute.equals(first.getDefaultGeometry())) {
-                        Geometry currentGeom = (Geometry) attribute;
+                    if (attribute instanceof Geometry currentGeom && attribute.equals(first.getDefaultGeometry())) {
 
                         if (intersectedGeometries == null && !added) {
                             intersectedGeometries = filteredCollection(currentGeom, subFeatureCollection);
@@ -539,14 +538,14 @@ public class IntersectionFeatureCollection implements VectorProcess {
 
                                         GeometryFilterImpl filter = new GeometryFilterImpl(
                                                 geomType.getType().getBinding());
-                                        ((Geometry) attribute).apply(filter);
+                                        currentGeom.apply(filter);
                                         attribute = filter.getGeometry();
                                     } else if (intersectionMode == IntersectionMode.FIRST) {
                                         attribute = currentGeom;
                                     } else if (intersectionMode == IntersectionMode.SECOND) {
                                         attribute = second.getDefaultGeometry();
                                     }
-                                    if (((Geometry) attribute).getNumGeometries() > 0) {
+                                    if (currentGeom.getNumGeometries() > 0) {
                                         fb.add(attribute);
                                         fb.set("INTERSECTION_ID", id++);
                                         // add the non geometric attributes

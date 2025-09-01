@@ -141,12 +141,10 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         // map holding multiple results)
         Map<String, Parameter<?>> result = new LinkedHashMap<>();
         for (Annotation annotation : method.getAnnotations()) {
-            if (annotation instanceof DescribeResult) {
-                DescribeResult info = (DescribeResult) annotation;
+            if (annotation instanceof DescribeResult info) {
                 // see if a type has been declared, otherwise use the annotation
                 addResult(method, result, info);
-            } else if (annotation instanceof DescribeResults) {
-                DescribeResults info = (DescribeResults) annotation;
+            } else if (annotation instanceof DescribeResults info) {
                 for (DescribeResult dr : info.value()) {
                     addResult(method, result, dr);
                 }
@@ -232,8 +230,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     Parameter<?> paramInfo(Class process, int i, Class<?> type, Annotation[] paramAnnotations) {
         DescribeParameter info = null;
         for (Annotation annotation : paramAnnotations) {
-            if (annotation instanceof DescribeParameter) {
-                info = (DescribeParameter) annotation;
+            if (annotation instanceof DescribeParameter parameter) {
+                info = parameter;
                 break;
             }
         }
@@ -640,30 +638,25 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 if (monitor != null) {
                     monitor.exceptionOccurred(t);
                 }
-                if (t instanceof ProcessException) {
-                    throw (ProcessException) t;
+                if (t instanceof ProcessException exception) {
+                    throw exception;
                 } else {
                     throw new ProcessException(t);
                 }
             }
 
             // build up the result
-            if (value instanceof Object[]) {
-                // handle the case the implementor used a positional array for
-                // returning multiple outputs
-                Object[] values = (Object[]) value;
+            if (value instanceof Object[] values) {
                 Map<String, Object> result = new LinkedHashMap<>();
                 int i = 0;
                 for (Annotation annotation : method.getAnnotations()) {
                     if (i >= values.length) break; // no more values to encode
                     Object obj = values[i];
 
-                    if (annotation instanceof DescribeResult) {
-                        DescribeResult info = (DescribeResult) annotation;
+                    if (annotation instanceof DescribeResult info) {
                         addResult(result, obj, info);
                     }
-                    if (annotation instanceof DescribeResults) {
-                        DescribeResults info = (DescribeResults) annotation;
+                    if (annotation instanceof DescribeResults info) {
                         for (DescribeResult dr : info.value()) {
                             addResult(result, obj, dr);
                         }
@@ -674,15 +667,13 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 Map<String, Object> result = new LinkedHashMap<>();
                 Map<String, Object> map = (Map<String, Object>) value;
                 for (Annotation annotation : method.getAnnotations()) {
-                    if (annotation instanceof DescribeResult) {
-                        DescribeResult info = (DescribeResult) annotation;
+                    if (annotation instanceof DescribeResult info) {
                         Object resultValue = map.get(info.name());
                         if (resultValue != null) {
                             addResult(result, resultValue, info);
                         }
                     }
-                    if (annotation instanceof DescribeResults) {
-                        DescribeResults info = (DescribeResults) annotation;
+                    if (annotation instanceof DescribeResults info) {
                         for (DescribeResult dr : info.value()) {
                             Object resultValue = map.get(dr.name());
                             if (resultValue != null) {
@@ -836,8 +827,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {
                 Throwable t = e.getTargetException();
-                if (t instanceof ProcessException) {
-                    throw (ProcessException) t;
+                if (t instanceof ProcessException exception) {
+                    throw exception;
                 } else {
                     throw new ProcessException(t);
                 }
@@ -864,8 +855,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {
                 Throwable t = e.getTargetException();
-                if (t instanceof ProcessException) {
-                    throw (ProcessException) t;
+                if (t instanceof ProcessException exception) {
+                    throw exception;
                 } else {
                     throw new ProcessException(t);
                 }
@@ -891,8 +882,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {
                 Throwable t = e.getTargetException();
-                if (t instanceof ProcessException) {
-                    throw (ProcessException) t;
+                if (t instanceof ProcessException exception) {
+                    throw exception;
                 } else {
                     throw new ProcessException(t);
                 }
@@ -914,8 +905,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {
                 Throwable t = e.getTargetException();
-                if (t instanceof ProcessException) {
-                    throw (ProcessException) t;
+                if (t instanceof ProcessException exception) {
+                    throw exception;
                 } else {
                     throw new ProcessException(t);
                 }

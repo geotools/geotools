@@ -16,11 +16,13 @@
  */
 package org.geotools.data.shapefile.dbf;
 
+import java.io.Serial;
 import org.geotools.api.data.DataSourceException;
 
 /** Thrown when an error relating to the shapefile occurs. */
 public class DbaseFileException extends DataSourceException {
 
+    @Serial
     private static final long serialVersionUID = -6890880438911014652L;
 
     public DbaseFileException(String s) {

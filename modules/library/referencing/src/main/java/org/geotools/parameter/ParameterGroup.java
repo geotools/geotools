@@ -19,6 +19,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +57,7 @@ import org.geotools.util.Utilities;
  */
 public class ParameterGroup extends AbstractParameter implements ParameterValueGroup {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1985309386356545126L;
 
     /** An empty parameter value group. This group contains no parameter value. */
@@ -269,9 +271,9 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
         ensureNonNull("name", name);
         name = name.trim();
         for (final GeneralParameterValue value : values) {
-            if (value instanceof ParameterValue) {
+            if (value instanceof ParameterValue parameterValue) {
                 if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), name)) {
-                    return (ParameterValue) value;
+                    return parameterValue;
                 }
             }
         }
@@ -281,9 +283,9 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
          * and returns it.
          */
         for (final GeneralParameterDescriptor descriptor : getDescriptor().descriptors()) {
-            if (descriptor instanceof ParameterDescriptor) {
+            if (descriptor instanceof ParameterDescriptor parameterDescriptor) {
                 if (AbstractIdentifiedObject.nameMatches(descriptor, name)) {
-                    final ParameterValue value = ((ParameterDescriptor) descriptor).createValue();
+                    final ParameterValue value = parameterDescriptor.createValue();
                     values.add(value);
                     return value;
                 }
@@ -310,9 +312,9 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
         name = name.trim();
         final List<ParameterValueGroup> groups = new ArrayList<>(Math.min(values.size(), 10));
         for (final GeneralParameterValue value : values) {
-            if (value instanceof ParameterValueGroup) {
+            if (value instanceof ParameterValueGroup group) {
                 if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), name)) {
-                    groups.add((ParameterValueGroup) value);
+                    groups.add(group);
                 }
             }
         }

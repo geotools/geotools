@@ -124,8 +124,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
             }
         }
 
-        if (binding instanceof ComplexBinding) {
-            ComplexBinding complex = (ComplexBinding) binding;
+        if (binding instanceof ComplexBinding complex) {
 
             try {
                 Element element = complex.encode(object, document, encoding);
@@ -146,8 +145,8 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
             for (int i = 0; i < encoding.getChildNodes().getLength(); i++) {
                 Node node = encoding.getChildNodes().item(i);
 
-                if (node instanceof Text) {
-                    text = (Text) node;
+                if (node instanceof Text text1) {
+                    text = text1;
 
                     break;
                 }

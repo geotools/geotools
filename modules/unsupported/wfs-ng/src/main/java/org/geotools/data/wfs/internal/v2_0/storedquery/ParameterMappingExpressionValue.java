@@ -92,8 +92,8 @@ public class ParameterMappingExpressionValue implements ParameterMapping, Serial
 
         if (obj == null) {
             ret = null;
-        } else if (obj instanceof String) {
-            ret = (String) obj;
+        } else if (obj instanceof String string) {
+            ret = string;
         } else {
             ret = obj.toString();
         }

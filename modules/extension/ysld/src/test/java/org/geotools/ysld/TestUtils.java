@@ -134,8 +134,8 @@ public enum TestUtils {
             @Override
             public boolean matches(Object obj) {
                 double num;
-                if (obj instanceof Number) {
-                    num = ((Number) obj).doubleValue();
+                if (obj instanceof Number number) {
+                    num = number.doubleValue();
                 } else {
                     num = Double.parseDouble(obj.toString());
                 }
@@ -160,8 +160,8 @@ public enum TestUtils {
             @Override
             public boolean matches(Object obj) {
                 double num;
-                if (obj instanceof Number) {
-                    num = ((Number) obj).longValue();
+                if (obj instanceof Number number) {
+                    num = number.longValue();
                 } else {
                     num = Long.parseLong(obj.toString());
                 }
@@ -211,7 +211,7 @@ public enum TestUtils {
 
     @SuppressWarnings("unchecked")
     public static Matcher<Object> isColor(Color c) {
-        String hex = String.format("#%06x", c.getRGB() & 0x00FFFFFF);
+        String hex = "#%06x".formatted(c.getRGB() & 0x00FFFFFF);
         return Matchers.describedAs(
                 "is the colour %0 %1",
                 anyOf(
@@ -308,8 +308,8 @@ public enum TestUtils {
             @Override
             public boolean matches(Object obj) {
                 YamlSeq seq;
-                if (obj instanceof YamlSeq) {
-                    seq = (YamlSeq) obj;
+                if (obj instanceof YamlSeq yamlSeq) {
+                    seq = yamlSeq;
                 } else {
                     return false;
                 }
@@ -355,8 +355,7 @@ public enum TestUtils {
 
             @Override
             public boolean matches(Object obj) {
-                if (obj instanceof String) {
-                    String str = (String) obj;
+                if (obj instanceof String str) {
                     if (str.startsWith("'") && str.endsWith("'")) {
                         str = str.substring(1, str.length() - 1);
                     } else if (str.startsWith("\"") && str.endsWith("\"")) {

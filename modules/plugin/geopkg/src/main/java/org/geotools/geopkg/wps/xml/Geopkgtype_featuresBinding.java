@@ -91,11 +91,11 @@ public class Geopkgtype_featuresBinding extends LayertypeBinding {
             layer.setIndexed(indexed);
         }
         Object overviews = node.getChildValue("overviews");
-        if (overviews instanceof Overview) {
-            layer.setOverviews(Arrays.asList((Overview) overviews));
-        } else if (overviews instanceof Map) {
+        if (overviews instanceof Overview overview1) {
+            layer.setOverviews(Arrays.asList(overview1));
+        } else if (overviews instanceof Map<?, ?> map) {
             @SuppressWarnings("unchecked")
-            List<Overview> overview = (List<Overview>) ((Map<?, ?>) overviews).get("overview");
+            List<Overview> overview = (List<Overview>) map.get("overview");
             layer.setOverviews(overview);
         }
         return layer;

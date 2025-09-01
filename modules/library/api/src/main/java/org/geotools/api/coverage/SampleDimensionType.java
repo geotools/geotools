@@ -13,6 +13,7 @@ import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.OGC_01004;
 
 import java.awt.image.DataBuffer;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -29,6 +30,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CV_SampleDimensionType", specification = OGC_01004)
 public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -4153433145134818506L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

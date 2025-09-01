@@ -724,10 +724,10 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             e2 = filter.getExpression1();
         }
 
-        if (e1 instanceof PropertyName && e2 instanceof Literal) {
+        if (e1 instanceof PropertyName name && e2 instanceof Literal literal) {
             // call the "regular" method
             return visitBinarySpatialOperator(
-                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
+                    filter, name, literal, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinarySpatialOperator(filter, e1, e2, extraData);
@@ -747,10 +747,10 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             e2 = filter.getExpression1();
         }
 
-        if (e1 instanceof PropertyName && e2 instanceof Literal) {
+        if (e1 instanceof PropertyName name && e2 instanceof Literal literal) {
             // call the "regular" method
             return visitBinaryTemporalOperator(
-                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
+                    filter, name, literal, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinaryTemporalOperator();
@@ -928,8 +928,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         SimpleFeatureType featureType = this.featureType;
 
         Class<?> target = null;
-        if (extraData instanceof Class) {
-            target = (Class<?>) extraData;
+        if (extraData instanceof Class<?> class1) {
+            target = class1;
         }
 
         // first evaluate expression against feature type get the attribute,
@@ -972,8 +972,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
         // type to convert the literal to
         Class<?> target = null;
-        if (context instanceof Class) {
-            target = (Class<?>) context;
+        if (context instanceof Class<?> class1) {
+            target = class1;
         }
 
         try {
@@ -1157,10 +1157,9 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         // evaluate the literal and store it for later
         currentGeometry = (Geometry) evaluateLiteral(expression, Geometry.class);
 
-        if (currentGeometry instanceof LinearRing) {
+        if (currentGeometry instanceof LinearRing linearRing) {
             // convert LinearRing to LineString
             final GeometryFactory factory = currentGeometry.getFactory();
-            final LinearRing linearRing = (LinearRing) currentGeometry;
             final CoordinateSequence coordinates = linearRing.getCoordinateSequence();
             currentGeometry = factory.createLineString(coordinates);
         }

@@ -9,6 +9,8 @@
  */
 package org.geotools.api.referencing.operation;
 
+import java.io.Serial;
+
 /**
  * Thrown when {@link MathTransform#inverse} is invoked but the transform can't be inverted.
  *
@@ -18,6 +20,7 @@ package org.geotools.api.referencing.operation;
  */
 public class NoninvertibleTransformException extends TransformException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 9184806660368158575L;
 
     /** Construct an exception with no detail message. */

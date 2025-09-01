@@ -77,8 +77,8 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         if (scalarCapabilities == null) {
             return new ScalarCapabilitiesImpl();
         }
-        if (scalarCapabilities instanceof ScalarCapabilitiesImpl) {
-            return (ScalarCapabilitiesImpl) scalarCapabilities;
+        if (scalarCapabilities instanceof ScalarCapabilitiesImpl impl) {
+            return impl;
         }
         return new ScalarCapabilitiesImpl(scalarCapabilities);
     }
@@ -87,8 +87,8 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         if (idCapabilities == null) {
             return new IdCapabilitiesImpl();
         }
-        if (idCapabilities instanceof IdCapabilitiesImpl) {
-            return (IdCapabilitiesImpl) idCapabilities;
+        if (idCapabilities instanceof IdCapabilitiesImpl impl) {
+            return impl;
         }
         return new IdCapabilitiesImpl(idCapabilities);
     }
@@ -97,8 +97,8 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         if (spatialCapabilities == null) {
             return new SpatialCapabiltiesImpl();
         }
-        if (spatialCapabilities instanceof SpatialCapabiltiesImpl) {
-            return (SpatialCapabiltiesImpl) spatialCapabilities;
+        if (spatialCapabilities instanceof SpatialCapabiltiesImpl impl) {
+            return impl;
         }
         return new SpatialCapabiltiesImpl(spatialCapabilities);
     }
@@ -107,8 +107,8 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         if (temporalCapabilities == null) {
             return new TemporalCapabilitiesImpl();
         }
-        if (temporalCapabilities instanceof TemporalCapabilitiesImpl) {
-            return (TemporalCapabilitiesImpl) temporalCapabilities;
+        if (temporalCapabilities instanceof TemporalCapabilitiesImpl impl) {
+            return impl;
         }
         return new TemporalCapabilitiesImpl(temporalCapabilities);
     }

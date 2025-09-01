@@ -87,8 +87,7 @@ public class JExtentStatusBarItem extends StatusBarItem {
             lastExtent = EMPTY_ENV;
 
         } else {
-            label.setText(
-                    String.format(numFormat, extent.getMinX(), extent.getMaxX(), extent.getMinY(), extent.getMaxY()));
+            label.setText(numFormat.formatted(extent.getMinX(), extent.getMaxX(), extent.getMinY(), extent.getMaxY()));
 
             if (cache) {
                 lastExtent = new ReferencedEnvelope(extent);

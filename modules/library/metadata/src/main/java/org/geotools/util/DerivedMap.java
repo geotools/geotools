@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -40,6 +41,7 @@ import java.util.Set;
  */
 public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -6994867383669885934L;
 
     /**
@@ -232,6 +234,7 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
 
     /** The key set. */
     private final class KeySet extends DerivedSet<BK, K> {
+        @Serial
         private static final long serialVersionUID = -2931806200277420177L;
 
         public KeySet(final Set<BK> base) {
@@ -251,6 +254,7 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
 
     /** The entry set. */
     private final class EntrySet extends DerivedSet<Map.Entry<BK, V>, Entry<BK, K, V>> {
+        @Serial
         private static final long serialVersionUID = -2931806200277420177L;
 
         @SuppressWarnings("unchecked")

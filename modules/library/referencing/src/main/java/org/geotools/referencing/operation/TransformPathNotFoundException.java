@@ -18,6 +18,7 @@ package org.geotools.referencing.operation;
 
 // OpenGIS dependencies
 
+import java.io.Serial;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.CoordinateOperation; // For javadoc
 import org.geotools.api.referencing.operation.CoordinateOperationFactory; // For javadoc
@@ -57,6 +58,7 @@ import org.geotools.api.referencing.operation.TransformException;
  */
 public class TransformPathNotFoundException extends TransformException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5072333160296464925L;
 
     /** Constructs an exception with no detail message. */

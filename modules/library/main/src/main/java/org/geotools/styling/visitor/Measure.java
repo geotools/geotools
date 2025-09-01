@@ -58,8 +58,8 @@ class Measure {
         this.expression = unscaled;
         setDefaultUnit(defaultUnit);
         this.uom = defaultUnit;
-        if (unscaled instanceof Literal) {
-            processLiteralExpression((Literal) unscaled, defaultUnit);
+        if (unscaled instanceof Literal literal1) {
+            processLiteralExpression(literal1, defaultUnit);
         } else {
             // see if we can still optimize
             PropertyIsNull test = ff.isNull(unscaled);
@@ -68,11 +68,10 @@ class Measure {
                 // special case, the expression was nil to start with
                 this.expression = NilExpression.NIL;
                 this.uom = defaultUnit;
-            } else if (simplified instanceof PropertyIsNull) {
-                PropertyIsNull pin = (PropertyIsNull) simplified;
+            } else if (simplified instanceof PropertyIsNull pin) {
                 Expression se = pin.getExpression();
-                if (se instanceof Literal) {
-                    processLiteralExpression((Literal) se, defaultUnit);
+                if (se instanceof Literal literal) {
+                    processLiteralExpression(literal, defaultUnit);
                 } else {
                     this.expression = se;
                     this.uom = defaultUnit;

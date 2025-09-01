@@ -328,8 +328,8 @@ public final class CRS {
             }
             final Map hints = factory.getImplementationHints();
             final Object version = hints.get(Hints.VERSION);
-            if (version instanceof Version) {
-                return (Version) version;
+            if (version instanceof Version version1) {
+                return version1;
             }
             candidate = hints.get(Hints.CRS_AUTHORITY_FACTORY);
         }
@@ -619,8 +619,7 @@ public final class CRS {
             final Extent domainOfValidity = crs.getDomainOfValidity();
             if (domainOfValidity != null) {
                 for (final GeographicExtent extent : domainOfValidity.getGeographicElements()) {
-                    if (extent instanceof GeographicBoundingBox) {
-                        final GeographicBoundingBox candidate = (GeographicBoundingBox) extent;
+                    if (extent instanceof GeographicBoundingBox candidate) {
                         if (bounds == null) {
                             bounds = candidate;
                         } else {
@@ -647,7 +646,7 @@ public final class CRS {
      */
     @SuppressWarnings("LabelledBreakTarget")
     public static SingleCRS getHorizontalCRS(final CoordinateReferenceSystem crs) {
-        if (crs instanceof SingleCRS) {
+        if (crs instanceof SingleCRS rS1) {
             final CoordinateSystem cs = crs.getCoordinateSystem();
             final int dimension = cs.getDimension();
             if (dimension == 2) {
@@ -665,9 +664,9 @@ public final class CRS {
                 }
                 // cartesian are certainly valid horizontal CRS
                 if (base.getCoordinateSystem() instanceof CartesianCS) {
-                    return (SingleCRS) crs; // Really returns 'crs', not 'base'.
+                    return rS1; // Really returns 'crs', not 'base'.
                 }
-            } else if (dimension >= 3 && crs instanceof GeographicCRS) {
+            } else if (dimension >= 3 && crs instanceof GeographicCRS rS) {
                 /*
                  * For three-dimensional Geographic CRS, extracts the axis having a direction like "North", "North-East", "East", etc. If we find
                  * exactly two of them, we can build a new GeographicCRS using them.
@@ -691,7 +690,7 @@ public final class CRS {
                     }
                 }
                 if (count == 2) {
-                    final GeodeticDatum datum = ((GeographicCRS) crs).getDatum();
+                    final GeodeticDatum datum = rS.getDatum();
                     Map<String, ?> properties = CRSUtilities.changeDimensionInName(cs, "3D", "2D");
                     EllipsoidalCS horizontalCS;
                     try {
@@ -714,8 +713,7 @@ public final class CRS {
                 }
             }
         }
-        if (crs instanceof CompoundCRS) {
-            final CompoundCRS cp = (CompoundCRS) crs;
+        if (crs instanceof CompoundCRS cp) {
             for (final CoordinateReferenceSystem c : cp.getCoordinateReferenceSystems()) {
                 final SingleCRS candidate = getHorizontalCRS(c);
                 if (candidate != null) {
@@ -735,11 +733,10 @@ public final class CRS {
      * @since 2.4
      */
     public static ProjectedCRS getProjectedCRS(final CoordinateReferenceSystem crs) {
-        if (crs instanceof ProjectedCRS) {
-            return (ProjectedCRS) crs;
+        if (crs instanceof ProjectedCRS rS) {
+            return rS;
         }
-        if (crs instanceof CompoundCRS) {
-            final CompoundCRS cp = (CompoundCRS) crs;
+        if (crs instanceof CompoundCRS cp) {
             for (final CoordinateReferenceSystem c : cp.getCoordinateReferenceSystems()) {
                 final ProjectedCRS candidate = getProjectedCRS(c);
                 if (candidate != null) {
@@ -766,10 +763,9 @@ public final class CRS {
     }
 
     private static MapProjection unrollProjection(MathTransform mt) {
-        if (mt instanceof MapProjection) {
-            return (MapProjection) mt;
-        } else if (mt instanceof ConcatenatedTransform) {
-            ConcatenatedTransform ct = (ConcatenatedTransform) mt;
+        if (mt instanceof MapProjection projection) {
+            return projection;
+        } else if (mt instanceof ConcatenatedTransform ct) {
             MapProjection result = unrollProjection(ct.transform1);
             if (result == null) {
                 result = unrollProjection(ct.transform2);
@@ -789,11 +785,10 @@ public final class CRS {
      * @since 2.4
      */
     public static VerticalCRS getVerticalCRS(final CoordinateReferenceSystem crs) {
-        if (crs instanceof VerticalCRS) {
-            return (VerticalCRS) crs;
+        if (crs instanceof VerticalCRS rS) {
+            return rS;
         }
-        if (crs instanceof CompoundCRS) {
-            final CompoundCRS cp = (CompoundCRS) crs;
+        if (crs instanceof CompoundCRS cp) {
             for (final CoordinateReferenceSystem c : cp.getCoordinateReferenceSystems()) {
                 final VerticalCRS candidate = getVerticalCRS(c);
                 if (candidate != null) {
@@ -812,11 +807,10 @@ public final class CRS {
      * @since 2.4
      */
     public static TemporalCRS getTemporalCRS(final CoordinateReferenceSystem crs) {
-        if (crs instanceof TemporalCRS) {
-            return (TemporalCRS) crs;
+        if (crs instanceof TemporalCRS rS) {
+            return rS;
         }
-        if (crs instanceof CompoundCRS) {
-            final CompoundCRS cp = (CompoundCRS) crs;
+        if (crs instanceof CompoundCRS cp) {
             for (final CoordinateReferenceSystem c : cp.getCoordinateReferenceSystems()) {
                 final TemporalCRS candidate = getTemporalCRS(c);
                 if (candidate != null) {
@@ -836,11 +830,10 @@ public final class CRS {
      */
     public static Ellipsoid getEllipsoid(final CoordinateReferenceSystem crs) {
         final Datum datum = CRSUtilities.getDatum(crs);
-        if (datum instanceof GeodeticDatum) {
-            return ((GeodeticDatum) datum).getEllipsoid();
+        if (datum instanceof GeodeticDatum geodeticDatum) {
+            return geodeticDatum.getEllipsoid();
         }
-        if (crs instanceof CompoundCRS) {
-            final CompoundCRS cp = (CompoundCRS) crs;
+        if (crs instanceof CompoundCRS cp) {
             for (final CoordinateReferenceSystem c : cp.getCoordinateReferenceSystems()) {
                 final Ellipsoid candidate = getEllipsoid(c);
                 if (candidate != null) {
@@ -864,8 +857,8 @@ public final class CRS {
         if (object1 == object2) {
             return true;
         }
-        if (object1 instanceof AbstractIdentifiedObject && object2 instanceof AbstractIdentifiedObject) {
-            return ((AbstractIdentifiedObject) object1).equals((AbstractIdentifiedObject) object2, false);
+        if (object1 instanceof AbstractIdentifiedObject object && object2 instanceof AbstractIdentifiedObject object3) {
+            return object.equals(object3, false);
         }
         return object1 != null && object1.equals(object2);
     }
@@ -892,10 +885,10 @@ public final class CRS {
         }
 
         // wildcard cases
-        if (source instanceof DefaultEngineeringCRS && ((DefaultEngineeringCRS) source).isWildcard()) {
+        if (source instanceof DefaultEngineeringCRS rS && rS.isWildcard()) {
             return false;
         }
-        if (target instanceof DefaultEngineeringCRS && ((DefaultEngineeringCRS) target).isWildcard()) {
+        if (target instanceof DefaultEngineeringCRS rS && rS.isWildcard()) {
             return false;
         }
 
@@ -1226,17 +1219,17 @@ public final class CRS {
         Set<CoordinateOperation> ops = CRS.getCoordinateOperationFactory(true).findOperations(sourceCRS, targetCRS);
         Map<String, AbstractCoordinateOperation> transforms = new HashMap<>();
         for (CoordinateOperation op : ops) {
-            if (op instanceof DefaultConcatenatedOperation) {
-                for (SingleOperation opx : ((DefaultConcatenatedOperation) op).getOperations()) {
+            if (op instanceof DefaultConcatenatedOperation operation) {
+                for (SingleOperation opx : operation.getOperations()) {
                     if (opx.getClass().isAssignableFrom(DefaultTransformation.class)) {
                         for (ReferenceIdentifier id : opx.getIdentifiers()) {
-                            transforms.put(id.toString(), (DefaultConcatenatedOperation) op);
+                            transforms.put(id.toString(), operation);
                         }
                     }
                 }
-            } else if (op instanceof DefaultTransformation) {
+            } else if (op instanceof DefaultTransformation transformation) {
                 for (ReferenceIdentifier id : op.getIdentifiers()) {
-                    transforms.put(id.toString(), (DefaultTransformation) op);
+                    transforms.put(id.toString(), transformation);
                 }
             }
         }
@@ -1701,15 +1694,13 @@ public final class CRS {
     public static AxisOrder getAxisOrder(CoordinateReferenceSystem crs, boolean useBaseGeoCRS) {
         CoordinateSystem cs = null;
 
-        if (crs instanceof CompoundCRS) {
+        if (crs instanceof CompoundCRS rS) {
             // the first one should contain the EAST and NORTH if applicable
-            crs = ((CompoundCRS) crs).getCoordinateReferenceSystems().get(0);
+            crs = rS.getCoordinateReferenceSystems().get(0);
         }
 
-        if (crs instanceof ProjectedCRS) {
-            cs = !useBaseGeoCRS
-                    ? crs.getCoordinateSystem()
-                    : ((ProjectedCRS) crs).getBaseCRS().getCoordinateSystem();
+        if (crs instanceof ProjectedCRS rS) {
+            cs = !useBaseGeoCRS ? crs.getCoordinateSystem() : rS.getBaseCRS().getCoordinateSystem();
         } else if (crs instanceof GeographicCRS) {
             cs = crs.getCoordinateSystem();
         } else {

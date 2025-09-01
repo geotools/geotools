@@ -98,7 +98,7 @@ public class RuleParser extends YsldParseHandler {
                 t = Tuple.of(2).parse(value);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(
-                        String.format("Bad scale value: '%s', must be of form [<min>,<max>]", value), e);
+                        "Bad scale value: '%s', must be of form [<min>,<max>]".formatted(value), e);
             }
             double min = 0;
             double max = Double.POSITIVE_INFINITY;
@@ -127,7 +127,7 @@ public class RuleParser extends YsldParseHandler {
                 t = Tuple.of(2).parse(value);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(
-                        String.format("Bad zoom value: '%s', must be of form [<min>,<max>]", value), e);
+                        "Bad zoom value: '%s', must be of form [<min>,<max>]".formatted(value), e);
             }
             @Nullable Integer min = null;
             @Nullable Integer max = null;

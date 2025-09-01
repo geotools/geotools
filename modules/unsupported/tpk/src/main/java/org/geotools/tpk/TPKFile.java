@@ -484,7 +484,7 @@ public class TPKFile {
         for (Long levelId : zoomLevelMapping.keySet()) {
 
             // "LevelID" folder
-            String levelFolder = String.format(LEVEL_FOLDER, levelId);
+            String levelFolder = LEVEL_FOLDER.formatted(levelId);
 
             List<String> indexes = null;
 
@@ -520,7 +520,7 @@ public class TPKFile {
             }
         }
 
-        String msg = String.format("Loaded zoom levels in %d milliseconds", System.currentTimeMillis() - startLoad);
+        String msg = "Loaded zoom levels in %d milliseconds".formatted(System.currentTimeMillis() - startLoad);
         LOGGER.fine(msg);
     }
 

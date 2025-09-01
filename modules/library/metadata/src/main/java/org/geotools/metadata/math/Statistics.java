@@ -17,6 +17,7 @@
 package org.geotools.metadata.math;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 import org.geotools.api.util.Cloneable;
@@ -56,6 +57,7 @@ import org.geotools.util.TableWriter;
  */
 public class Statistics implements Cloneable, Serializable {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -22884277805533726L;
 
     /**
@@ -343,6 +345,7 @@ public class Statistics implements Cloneable, Serializable {
      */
     public static class Delta extends Statistics {
         /** Serial number for compatibility with different versions. */
+        @Serial
         private static final long serialVersionUID = 3464306833883333219L;
 
         /** Statistics about the differences between consecutive sample values. */

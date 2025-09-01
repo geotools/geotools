@@ -46,8 +46,8 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
     @Override
     public FlatGeobufDataStore getDataStore() {
         DataStore dataStore = super.getDataStore();
-        if (dataStore instanceof FlatGeobufDirectoryDataStore) {
-            return ((FlatGeobufDirectoryDataStore) dataStore).getDataStore(entry.getTypeName());
+        if (dataStore instanceof FlatGeobufDirectoryDataStore store) {
+            return store.getDataStore(entry.getTypeName());
         } else {
             return (FlatGeobufDataStore) dataStore;
         }
@@ -123,8 +123,8 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
         }
 
         // bbox filter
-        if (filter instanceof BBOX && headerMeta.indexNodeSize > 0) {
-            ReferencedEnvelope bounds = ReferencedEnvelope.reference(((BBOX) filter).getBounds());
+        if (filter instanceof BBOX oX && headerMeta.indexNodeSize > 0) {
+            ReferencedEnvelope bounds = ReferencedEnvelope.reference(oX.getBounds());
             if (bounds != null) {
                 // first check, if the file bbox is withing the query bbox, then all features match
                 Envelope headerEnvelope = headerMeta.envelope;

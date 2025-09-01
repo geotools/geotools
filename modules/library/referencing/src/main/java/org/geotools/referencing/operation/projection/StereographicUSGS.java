@@ -32,6 +32,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -55,6 +56,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 class StereographicUSGS extends Stereographic {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = 948619442800459871L;
 
     /** Maximum number of iterations for iterative computations. */
@@ -199,6 +201,7 @@ class StereographicUSGS extends Stereographic {
      */
     static final class Spherical extends StereographicUSGS {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = -8558594307755820783L;
 
         /**

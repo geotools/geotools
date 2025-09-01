@@ -85,8 +85,8 @@ class DataAccessStoreWrapper implements DataStore {
     @Override
     public SimpleFeatureType getSchema(Name name) throws IOException {
         FeatureType schema = delegate.getSchema(name);
-        if (schema instanceof SimpleFeatureType) {
-            return (SimpleFeatureType) schema;
+        if (schema instanceof SimpleFeatureType type) {
+            return type;
         } else {
             return null;
         }
@@ -129,8 +129,8 @@ class DataAccessStoreWrapper implements DataStore {
     public SimpleFeatureType getSchema(String typeName) throws IOException {
         Name name = getNameFromLocal(typeName);
         FeatureType schema = delegate.getSchema(name);
-        if (schema instanceof SimpleFeatureType) {
-            return (SimpleFeatureType) schema;
+        if (schema instanceof SimpleFeatureType type) {
+            return type;
         } else {
             return null;
         }
@@ -139,8 +139,8 @@ class DataAccessStoreWrapper implements DataStore {
     @Override
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
         // simple case, no lookups needed
-        if (delegate instanceof DataStore) {
-            return ((DataStore) delegate).getFeatureSource(typeName);
+        if (delegate instanceof DataStore store) {
+            return store.getFeatureSource(typeName);
         }
         Name name = getNameFromLocal(typeName);
         return DataUtilities.simple(delegate.getFeatureSource(name));
@@ -173,8 +173,8 @@ class DataAccessStoreWrapper implements DataStore {
         if (fs == null) {
             throw new IOException("Could not find feature type mentioned in query: '" + query.getTypeName() + "'");
         }
-        if (fs instanceof SimpleFeatureStore) {
-            ((SimpleFeatureStore) fs).setTransaction(transaction);
+        if (fs instanceof SimpleFeatureStore store) {
+            store.setTransaction(transaction);
         }
         return new DelegateFeatureReader<>(fs.getSchema(), fs.getFeatures().features());
     }

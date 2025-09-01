@@ -124,8 +124,8 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
 
         private int getNumDecimals(Configuration configuration) {
             GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
+            if (configuration instanceof GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(GMLConfiguration.class);
             }
@@ -139,8 +139,8 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
 
         private boolean getPadWithZeros(Configuration configuration) {
             GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
+            if (configuration instanceof GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(GMLConfiguration.class);
             }
@@ -154,8 +154,8 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
 
         private boolean getForceDecimalEncoding(Configuration configuration) {
             GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
+            if (configuration instanceof GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(GMLConfiguration.class);
             }
@@ -169,8 +169,8 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
 
         private boolean getEncodecoordinatesMeasures(Configuration configuration) {
             GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
+            if (configuration instanceof GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(GMLConfiguration.class);
             }

@@ -49,8 +49,7 @@ class CRSEvaluator implements ExpressionVisitor {
     @Override
     public Object visit(Literal expression, Object extraData) {
         Object value = expression.getValue();
-        if (value instanceof Geometry) {
-            Geometry g = (Geometry) value;
+        if (value instanceof Geometry g) {
             CoordinateReferenceSystem crs = JTS.getCRS(g);
             return crs;
         }
@@ -80,8 +79,8 @@ class CRSEvaluator implements ExpressionVisitor {
         if (ad == null) {
             throw new IllegalArgumentException(
                     "Original feature type does not have a property named " + expression.getPropertyName());
-        } else if (ad instanceof GeometryDescriptor) {
-            return ((GeometryDescriptor) ad).getCoordinateReferenceSystem();
+        } else if (ad instanceof GeometryDescriptor descriptor) {
+            return descriptor.getCoordinateReferenceSystem();
         }
 
         return null;

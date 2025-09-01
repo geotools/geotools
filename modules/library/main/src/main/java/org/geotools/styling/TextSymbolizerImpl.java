@@ -300,8 +300,8 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     static TextSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
-        } else if (symbolizer instanceof TextSymbolizerImpl) {
-            return (TextSymbolizerImpl) symbolizer;
+        } else if (symbolizer instanceof TextSymbolizerImpl impl) {
+            return impl;
         } else {
             org.geotools.api.style.TextSymbolizer textSymbolizer = (org.geotools.api.style.TextSymbolizer) symbolizer;
             TextSymbolizerImpl copy = new TextSymbolizerImpl();

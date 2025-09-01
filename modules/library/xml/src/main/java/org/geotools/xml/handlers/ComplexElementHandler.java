@@ -16,6 +16,7 @@
  */
 package org.geotools.xml.handlers;
 
+import java.io.Serial;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -47,6 +48,7 @@ import org.xml.sax.helpers.AttributesImpl;
 public class ComplexElementHandler extends XMLElementHandler {
 
     /** <code>serialVersionUID</code> field */
+    @Serial
     private static final long serialVersionUID = ComplexElementHandler.class.hashCode();
 
     private ComplexType type; // saves casting all over

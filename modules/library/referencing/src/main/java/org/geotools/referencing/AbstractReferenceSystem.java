@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.metadata.extent.Extent;
@@ -39,6 +40,7 @@ import org.geotools.util.Utilities;
  */
 public class AbstractReferenceSystem extends AbstractIdentifiedObject implements ReferenceSystem {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3337659819553899435L;
 
     /** List of localizable properties. To be given to {@link AbstractIdentifiedObject} constructor. */

@@ -129,8 +129,8 @@ public class MBObjectParser {
             if (paint == null) {
                 String type = get(layer, "type", "layer");
                 throw new MBFormatException(type + " paint requires JSONObject");
-            } else if (paint instanceof JSONObject) {
-                return (JSONObject) paint;
+            } else if (paint instanceof JSONObject object) {
+                return object;
             } else {
                 String type = get(layer, "type", "layer");
                 throw new MBFormatException(type + " paint requires JSONObject");
@@ -154,8 +154,8 @@ public class MBObjectParser {
             if (layout == null) {
                 String type = get(layer, "type", "layer");
                 throw new MBFormatException(type + " layout requires JSONObject");
-            } else if (layout instanceof JSONObject) {
-                return (JSONObject) layout;
+            } else if (layout instanceof JSONObject object) {
+                return object;
             } else {
                 String type = get(layer, "type", "layer");
                 throw new MBFormatException(type + " paint requires JSONObject");
@@ -276,8 +276,8 @@ public class MBObjectParser {
             if (value instanceof String || value instanceof Boolean || value instanceof Number) {
                 return value;
             }
-            if (value instanceof JSONArray) {
-                return ff.literal(MBExpression.transformExpression((JSONArray) value));
+            if (value instanceof JSONArray array) {
+                return ff.literal(MBExpression.transformExpression(array));
             }
         }
         throw new MBFormatException(context.getSimpleName() + " requires [" + index + "] string, numeric or boolean");
@@ -579,8 +579,7 @@ public class MBObjectParser {
 
         if (value == null) {
             return fallback;
-        } else if (value instanceof String) {
-            String stringVal = (String) value;
+        } else if (value instanceof String stringVal) {
             if ("".equals(stringVal.trim())) {
                 return fallback;
             }
@@ -625,8 +624,7 @@ public class MBObjectParser {
         Object value = json.get(name);
         if (value == null) {
             return constant(fallback.toString(), enumeration);
-        } else if (value instanceof String) {
-            String stringVal = (String) value;
+        } else if (value instanceof String stringVal) {
             if ("".equals(stringVal.trim())) {
                 return constant(fallback.toString(), enumeration);
             }
@@ -644,8 +642,8 @@ public class MBObjectParser {
                                 + ", falling back to default value.");
                 return constant(fallback.toString(), enumeration);
             }
-        } else if (value instanceof JSONObject) {
-            MBFunction function = new MBFunction(this, (JSONObject) value);
+        } else if (value instanceof JSONObject object) {
+            MBFunction function = new MBFunction(this, object);
             return function.enumeration(enumeration);
         } else {
             throw new MBFormatException("Conversion of \""
@@ -671,9 +669,7 @@ public class MBObjectParser {
         if (value == null) {
             return null;
         }
-        if (value instanceof String) {
-            // step 1 look up enumValue
-            String stringVal = (String) value;
+        if (value instanceof String stringVal) {
             if ("".equals(stringVal.trim())) {
                 return null;
             }
@@ -706,8 +702,8 @@ public class MBObjectParser {
      * @return JSONObject
      */
     public JSONObject jsonObject(Object obj) throws MBFormatException {
-        if (obj instanceof JSONObject) {
-            return (JSONObject) obj;
+        if (obj instanceof JSONObject object) {
+            return object;
         } else if (obj == null) {
             throw new MBFormatException("Not a JSONObject: null");
         } else {
@@ -723,8 +719,8 @@ public class MBObjectParser {
      * @return The object, cast to JSONObject
      */
     public JSONObject jsonObect(Object obj, String message) throws MBFormatException {
-        if (obj instanceof JSONObject) {
-            return (JSONObject) obj;
+        if (obj instanceof JSONObject object) {
+            return object;
         } else {
             throw new MBFormatException(message);
         }
@@ -737,8 +733,8 @@ public class MBObjectParser {
      * @return The object, cast to JSONArray
      */
     public JSONArray jsonArray(Object obj) throws MBFormatException {
-        if (obj instanceof JSONArray) {
-            return (JSONArray) obj;
+        if (obj instanceof JSONArray array) {
+            return array;
         } else if (obj == null) {
             throw new MBFormatException("Not a JSONArray: null");
         } else {
@@ -754,8 +750,8 @@ public class MBObjectParser {
      * @return The object, cast to JSONArray
      */
     public JSONArray jsonArray(Object obj, String message) throws MBFormatException {
-        if (obj instanceof JSONArray) {
-            return (JSONArray) obj;
+        if (obj instanceof JSONArray array) {
+            return array;
         } else {
             throw new MBFormatException(message);
         }
@@ -776,17 +772,16 @@ public class MBObjectParser {
     public <T> T[] array(Class<T> type, JSONObject json, String name, T[] fallback) {
         if (json.containsKey(name)) {
             Object obj = json.get(name);
-            if (obj instanceof JSONArray) {
-                JSONArray array = (JSONArray) obj;
+            if (obj instanceof JSONArray array) {
                 T[] returnArray = (T[]) Array.newInstance(type, array.size());
                 for (int i = 0; i < array.size(); i++) {
                     Object value = array.get(i);
-                    if (Number.class.isAssignableFrom(type) && value instanceof Number) {
+                    if (Number.class.isAssignableFrom(type) && value instanceof Number number) {
                         if (type == Double.class) {
-                            returnArray[i] = (T) Double.valueOf(((Number) value).doubleValue());
+                            returnArray[i] = (T) Double.valueOf(number.doubleValue());
                             continue;
                         } else if (type == Integer.class) {
-                            returnArray[i] = (T) Integer.valueOf(((Number) value).intValue());
+                            returnArray[i] = (T) Integer.valueOf(number.intValue());
                             continue;
                         }
                     }
@@ -857,11 +852,9 @@ public class MBObjectParser {
 
         if (obj == null) {
             return ff.literal(fallback);
-        } else if (obj instanceof String) {
-            String str = (String) obj;
+        } else if (obj instanceof String str) {
             return ff.literal(str);
-        } else if (obj instanceof Number) {
-            Number number = (Number) obj;
+        } else if (obj instanceof Number number) {
             return ff.literal(number);
         } else if (obj instanceof Boolean) {
             throw new MBFormatException("\""
@@ -869,12 +862,12 @@ public class MBObjectParser {
                     + "\" percentage from boolean "
                     + obj
                     + " not supported, expected value between 0 and 1");
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(this, (JSONObject) obj);
+        } else if (obj instanceof JSONObject object) {
+            MBFunction function = new MBFunction(this, object);
             return function.numeric();
-        } else if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String) {
-                return MBExpression.transformExpression((JSONArray) obj);
+        } else if (obj instanceof JSONArray array) {
+            if (array.get(0) instanceof String) {
+                return MBExpression.transformExpression(array);
             } else {
                 throw new MBFormatException(context + " number from JSONArray not supported");
             }
@@ -906,13 +899,13 @@ public class MBObjectParser {
         if (obj == null) {
             return ff.literal(fallback);
         }
-        if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(this, (JSONObject) obj);
+        if (obj instanceof JSONObject object) {
+            MBFunction function = new MBFunction(this, object);
             return function.font();
         }
-        if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String) {
-                return MBExpression.transformExpression((JSONArray) obj);
+        if (obj instanceof JSONArray array) {
+            if (array.get(0) instanceof String) {
+                return MBExpression.transformExpression(array);
             } else {
                 throw new MBFormatException(context + " font from JSONArray not supported");
             }
@@ -950,21 +943,18 @@ public class MBObjectParser {
         if (obj == null) {
             return fallback == null ? null : ff.literal(fallback);
         }
-        if (obj instanceof String) {
-            String str = (String) obj;
+        if (obj instanceof String str) {
             return ff.literal(str);
-        } else if (obj instanceof Number) {
-            Number number = (Number) obj;
+        } else if (obj instanceof Number number) {
             return ff.literal(number.toString());
-        } else if (obj instanceof Boolean) {
-            Boolean bool = (Boolean) obj;
+        } else if (obj instanceof Boolean bool) {
             throw new MBFormatException(context + " number from Boolean " + bool + " not supported");
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(this, (JSONObject) obj);
+        } else if (obj instanceof JSONObject object) {
+            MBFunction function = new MBFunction(this, object);
             return function.numeric();
-        } else if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String) {
-                return MBExpression.transformExpression((JSONArray) obj);
+        } else if (obj instanceof JSONArray array) {
+            if (array.get(0) instanceof String) {
+                return MBExpression.transformExpression(array);
             } else {
                 throw new MBFormatException(context + " number from JSONArray not supported");
             }
@@ -1047,21 +1037,18 @@ public class MBObjectParser {
     private Expression string(String context, Object obj, String fallback) {
         if (obj == null) {
             return fallback == null ? null : ff.literal(fallback);
-        } else if (obj instanceof String) {
-            String str = (String) obj;
+        } else if (obj instanceof String str) {
             return ff.literal(str);
-        } else if (obj instanceof Number) {
-            Number number = (Number) obj;
+        } else if (obj instanceof Number number) {
             return ff.literal(number.toString());
-        } else if (obj instanceof Boolean) {
-            Boolean bool = (Boolean) obj;
+        } else if (obj instanceof Boolean bool) {
             return ff.literal(bool.toString());
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(this, (JSONObject) obj);
+        } else if (obj instanceof JSONObject object) {
+            MBFunction function = new MBFunction(this, object);
             return function.function(String.class);
-        } else if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String) {
-                return MBExpression.transformExpression((JSONArray) obj);
+        } else if (obj instanceof JSONArray array) {
+            if (array.get(0) instanceof String) {
+                return MBExpression.transformExpression(array);
             } else {
                 throw new MBFormatException(context + " string from JSONArray not supported");
             }
@@ -1084,20 +1071,16 @@ public class MBObjectParser {
         Object obj = json.get(index);
         if (obj == null) {
             return ff.literal(null);
-        } else if (obj instanceof String) {
-            String str = (String) obj;
+        } else if (obj instanceof String str) {
             return ff.literal(str);
-        } else if (obj instanceof Number) {
-            Number number = (Number) obj;
+        } else if (obj instanceof Number number) {
             return ff.literal(number);
-        } else if (obj instanceof Boolean) {
-            Boolean bool = (Boolean) obj;
+        } else if (obj instanceof Boolean bool) {
             return ff.literal(bool);
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(this, (JSONObject) obj);
+        } else if (obj instanceof JSONObject object) {
+            MBFunction function = new MBFunction(this, object);
             return function.function(String.class);
-        } else if (obj instanceof JSONArray) {
-            JSONArray array = (JSONArray) obj;
+        } else if (obj instanceof JSONArray array) {
             if (isString(array, 0)) {
                 String expressionName = get(array, 0);
                 if (MBExpression.canCreate(expressionName)) {
@@ -1197,19 +1180,18 @@ public class MBObjectParser {
     private Expression color(String context, Object obj, Color fallback) {
         if (obj == null) {
             return fallback == null ? null : ff.literal(fallback);
-        } else if (obj instanceof String) {
-            String str = (String) obj;
+        } else if (obj instanceof String str) {
             return color(str);
         } else if (obj instanceof Number) {
             throw new MBFormatException(context + " color from Number not supported");
         } else if (obj instanceof Boolean) {
             throw new MBFormatException(context + "  color from Boolean not supported");
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction((JSONObject) obj);
+        } else if (obj instanceof JSONObject object) {
+            MBFunction function = new MBFunction(object);
             return function.color();
-        } else if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String) {
-                return MBExpression.transformExpression((JSONArray) obj);
+        } else if (obj instanceof JSONArray array) {
+            if (array.get(0) instanceof String) {
+                return MBExpression.transformExpression(array);
             } else {
                 throw new MBFormatException(context + " color from JSONArray not supported");
             }
@@ -1293,20 +1275,18 @@ public class MBObjectParser {
 
         Object obj = json.get(name);
 
-        if (obj instanceof String) {
-            String str = (String) obj;
+        if (obj instanceof String str) {
             return ff.literal(str);
         } else if (obj instanceof Number) {
             throw new UnsupportedOperationException("\"" + name + "\": boolean from Number not supported");
-        } else if (obj instanceof Boolean) {
-            Boolean b = (Boolean) obj;
+        } else if (obj instanceof Boolean b) {
             return ff.literal(b);
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(this, (JSONObject) obj);
+        } else if (obj instanceof JSONObject object) {
+            MBFunction function = new MBFunction(this, object);
             return function.function(Boolean.class);
-        } else if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String) {
-                return MBExpression.transformExpression((JSONArray) obj);
+        } else if (obj instanceof JSONArray array) {
+            if (array.get(0) instanceof String) {
+                return MBExpression.transformExpression(array);
             } else {
                 throw new MBFormatException(context + " boolean from JSONArray not supported");
             }
@@ -1330,12 +1310,11 @@ public class MBObjectParser {
         Object defn = json.get(name);
         if (defn == null) {
             return fallback;
-        } else if (defn instanceof JSONArray) {
-            JSONArray array = (JSONArray) defn;
+        } else if (defn instanceof JSONArray array) {
             return sf.displacement(number(array, 0, 0), number(array, 1, 0));
-        } else if (defn instanceof JSONObject) {
+        } else if (defn instanceof JSONObject object) {
             // Function case
-            MBFunction function = new MBFunction(this, (JSONObject) defn);
+            MBFunction function = new MBFunction(this, object);
             if (!function.isArrayFunction()) {
                 throw new MBFormatException(
                         "\""

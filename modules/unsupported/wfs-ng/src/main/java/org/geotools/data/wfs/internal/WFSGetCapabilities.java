@@ -48,9 +48,7 @@ public class WFSGetCapabilities extends Capabilities {
     }
 
     public static WFSGetCapabilities create(EObject capabilities, Document rawDocument) {
-        if (capabilities instanceof WFSCapabilitiesType) {
-
-            WFSCapabilitiesType caps = (WFSCapabilitiesType) capabilities;
+        if (capabilities instanceof WFSCapabilitiesType caps) {
             String version = rawDocument.getDocumentElement().getAttribute("version");
             if ("1.0.0".equals(version)) {
                 return new WFS_1_0_0(caps, rawDocument);
@@ -59,9 +57,9 @@ public class WFSGetCapabilities extends Capabilities {
                 return new WFS_1_1_0(caps, rawDocument);
             }
             throw new IllegalArgumentException("Unknown version: " + version);
-        } else if (capabilities instanceof net.opengis.wfs20.WFSCapabilitiesType) {
+        } else if (capabilities instanceof net.opengis.wfs20.WFSCapabilitiesType type) {
 
-            return new WFS_2_0_0((net.opengis.wfs20.WFSCapabilitiesType) capabilities, rawDocument);
+            return new WFS_2_0_0(type, rawDocument);
         }
         throw new IllegalArgumentException("Unrecognized capabilities object: " + capabilities);
     }

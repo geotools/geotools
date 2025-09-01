@@ -221,8 +221,7 @@ public class OrthographicProjectionHandlerFactory implements ProjectionHandlerFa
                 CoordinateReferenceSystem sourceCRS, Geometry validArea, ReferencedEnvelope renderingEnvelope)
                 throws FactoryException {
             super(sourceCRS, validArea, renderingEnvelope, true);
-            if (validArea instanceof MultiPolygon) {
-                MultiPolygon mp = (MultiPolygon) validArea;
+            if (validArea instanceof MultiPolygon mp) {
                 p1 = mp.getGeometryN(0);
                 p2 = mp.getGeometryN(1);
             }

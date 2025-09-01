@@ -142,10 +142,9 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
         if (delegate instanceof IContentHandler) {
             boolean keepGoing = delegate.endObject();
 
-            if (delegate instanceof GeometryHandler) {
-                GeometryHandler geometryHandler = (GeometryHandler) delegate;
+            if (delegate instanceof GeometryHandler geometryHandler) {
                 Geometry g = geometryHandler.getValue();
-                if (g != null || !(((GeometryHandler) delegate).getDelegate() instanceof GeometryCollectionHandler)) {
+                if (g != null || !(geometryHandler.getDelegate() instanceof GeometryCollectionHandler)) {
                     if (properties != null) {
                         // this is a regular property
                         values.add(g);
@@ -155,8 +154,8 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
                     }
                     delegate = NULL;
                 }
-            } else if (delegate instanceof CRSHandler) {
-                crs = ((CRSHandler) delegate).getValue();
+            } else if (delegate instanceof CRSHandler handler) {
+                crs = handler.getValue();
                 delegate = UNINITIALIZED;
             }
             if (!keepGoing && delegate instanceof ComplexPropertyHandler) {
@@ -183,8 +182,8 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
                 String att = properties.get(i);
                 Object val = values.get(i);
 
-                if (val instanceof String) {
-                    val = attio.parse(att, (String) val);
+                if (val instanceof String string) {
+                    val = attio.parse(att, string);
                 }
 
                 builder.set(att, val);

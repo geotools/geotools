@@ -186,13 +186,13 @@ public class BufferFeatureCollection implements VectorProcess {
             while (next == null && delegate.hasNext()) {
                 SimpleFeature f = delegate.next();
                 for (Object value : f.getAttributes()) {
-                    if (value instanceof Geometry) {
+                    if (value instanceof Geometry geometry) {
                         Double fDistance = distance;
                         if (this.attribute != null) {
                             fDistance = Converters.convert(f.getAttribute(this.attribute), Double.class);
                         }
                         if (fDistance != null && fDistance != 0.0) {
-                            value = ((Geometry) value).buffer(fDistance);
+                            value = geometry.buffer(fDistance);
                         }
                     }
                     fb.add(value);

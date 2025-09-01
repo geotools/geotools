@@ -259,8 +259,8 @@ class CategoryRegistry {
         }
 
         private void notifyRegistered(final T instance) {
-            if (instance instanceof RegistrableFactory) {
-                ((RegistrableFactory) instance).onRegistration(factoryRegistry, category);
+            if (instance instanceof RegistrableFactory factory) {
+                factory.onRegistration(factoryRegistry, category);
             }
             if (REGISTERABLE_SERVICE != null && REGISTERABLE_SERVICE.isInstance(instance)) {
                 LOGGER.warning("Migrate instances from RegisterableService to RegistrableFactory: " + instance);
@@ -297,8 +297,8 @@ class CategoryRegistry {
         }
 
         private void notifyDeregistered(final T instance) {
-            if (instance instanceof RegistrableFactory) {
-                ((RegistrableFactory) instance).onDeregistration(factoryRegistry, category);
+            if (instance instanceof RegistrableFactory factory) {
+                factory.onDeregistration(factoryRegistry, category);
             }
         }
 

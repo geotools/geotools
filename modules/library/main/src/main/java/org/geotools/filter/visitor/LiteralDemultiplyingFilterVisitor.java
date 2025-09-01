@@ -207,12 +207,11 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         Expression one = replacer.getExpression1(filter);
         Expression two = replacer.getExpression2(filter);
 
-        if (one instanceof Literal) {
-            Literal l = (Literal) one;
+        if (one instanceof Literal l) {
             Object value = l.getValue();
-            if (value instanceof Collection) { // demultiplying is necessary
+            if (value instanceof Collection collection) { // demultiplying is necessary
                 List<Filter> filters = new ArrayList<>(); // list of all filters
-                for (Object valueElement : (Collection) value) {
+                for (Object valueElement : collection) {
                     // create a single-valued new filter
                     filters.add(replacer.replaceExpressions(filter, ff.literal(valueElement), two));
                 }
@@ -248,12 +247,11 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         Expression one = replacer.getExpression1(filter);
         Expression two = replacer.getExpression2(filter);
 
-        if (two instanceof Literal) {
-            Literal l = (Literal) two;
+        if (two instanceof Literal l) {
             Object value = l.getValue();
-            if (value instanceof Collection) { // demultiplying is necessary
+            if (value instanceof Collection collection) { // demultiplying is necessary
                 List<Filter> filters = new ArrayList<>(); // list of all filters
-                for (Object valueElement : (Collection) value) {
+                for (Object valueElement : collection) {
                     // create a single-valued new filter
                     @SuppressWarnings("unchecked")
                     T cast = (T) replacer.replaceExpressions(filter, one, ff.literal(valueElement));

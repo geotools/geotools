@@ -16,6 +16,7 @@
  */
 package org.geotools.data.complex.feature.xpath;
 
+import java.io.Serial;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
@@ -34,6 +35,7 @@ import org.geotools.feature.type.Types;
 public class FeatureTypePointer extends NodePointer {
 
     /** */
+    @Serial
     private static final long serialVersionUID = 7329150854098309040L;
 
     /** The name of the node. */
@@ -90,8 +92,7 @@ public class FeatureTypePointer extends NodePointer {
 
     @Override
     public NodeIterator childIterator(NodeTest test, boolean reverse, NodePointer startWith) {
-        if (test instanceof NodeNameTest) {
-            NodeNameTest nodeNameTest = (NodeNameTest) test;
+        if (test instanceof NodeNameTest nodeNameTest) {
 
             if (!nodeNameTest.isWildcard()) {
                 String localName = nodeNameTest.getNodeName().getName();
@@ -104,8 +105,7 @@ public class FeatureTypePointer extends NodePointer {
             }
         }
 
-        if (test instanceof NodeTypeTest) {
-            NodeTypeTest nodeTypeTest = (NodeTypeTest) test;
+        if (test instanceof NodeTypeTest nodeTypeTest) {
 
             if (nodeTypeTest.getNodeType() == Compiler.NODE_TYPE_NODE) {
                 return new FeatureTypeAttributeIterator(this, featureType);

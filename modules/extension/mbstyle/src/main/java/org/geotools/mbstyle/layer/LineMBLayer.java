@@ -465,8 +465,7 @@ public class LineMBLayer extends MBLayer {
 
         if (defn == null) {
             return null;
-        } else if (defn instanceof JSONArray) {
-            JSONArray array = (JSONArray) defn;
+        } else if (defn instanceof JSONArray array) {
             List<Expression> expressionList = new ArrayList<>();
             for (int i = 0; i < array.size(); i++) {
                 expressionList.add(parse.number(array, i, 0));

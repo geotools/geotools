@@ -48,7 +48,7 @@ public class NormalizeCoverageProcess implements RasterProcess {
         boolean allZero = true;
         for (int i = 0; i < Array.getLength(max); i++) {
             Object num = Array.get(max, i);
-            boolean isZero = num instanceof Number && ((Number) num).doubleValue() == 0d;
+            boolean isZero = num instanceof Number n && n.doubleValue() == 0d;
 
             allZero = allZero && isZero;
             if (isZero) {

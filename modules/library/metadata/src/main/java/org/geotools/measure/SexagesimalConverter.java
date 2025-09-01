@@ -17,6 +17,7 @@
 package org.geotools.measure;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import javax.measure.UnitConverter;
 import tech.units.indriya.function.AbstractConverter;
 
@@ -34,6 +35,7 @@ import tech.units.indriya.function.AbstractConverter;
  */
 class SexagesimalConverter extends AbstractConverter {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -2663951106460584999L;
 
     /** Small tolerance factor for rounding errors. */
@@ -192,6 +194,7 @@ class SexagesimalConverter extends AbstractConverter {
     /** The inverse of {@link SexagesimalConverter}. */
     private static final class Inverse extends SexagesimalConverter {
         /** Serial number for compatibility with different versions. */
+        @Serial
         private static final long serialVersionUID = -7145237719599612406L;
 
         /** Constructs a converter. */

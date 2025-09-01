@@ -21,7 +21,7 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Maven repository caching
         uses: actions/cache@v4
         with:

@@ -30,6 +30,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.type.Types;
+import org.geotools.util.NumberRange;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -311,6 +312,57 @@ public class SimpleFeatureBuilderTest {
             feature = SimpleFeatureBuilder.build(featureType, new Object[] {"d"}, "ID");
             feature.validate();
             Assert.fail("this should fail because the value is not either a, b or c, but d");
+        } catch (Exception e) {
+            // good
+        }
+    }
+
+    @Test
+    public void testCreateFeatureWithRange() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("test");
+        builder.range(NumberRange.create(0, 100)).add("size", String.class);
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        // build a valid feature
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, new Object[] {100}, "ID");
+        Assert.assertNotNull(feature);
+        feature.validate();
+
+        // try an invalid one
+        try {
+            feature = SimpleFeatureBuilder.build(featureType, new Object[] {101}, "ID");
+            feature.validate();
+            Assert.fail("this should fail because the value is outside the permitted range [0,100]");
+        } catch (Exception e) {
+            // good
+        }
+    }
+
+    /**
+     * Same as {@link #testCreateFeatureWithRange()} but using an AttributeTypeBuilder directly
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testCreateFeatureWithRangeOnAttributeTypeBuilder() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("test");
+        AttributeTypeBuilder atb = new AttributeTypeBuilder();
+        atb.name("size").binding(String.class).range(NumberRange.create(0, 100));
+        builder.add(atb.buildDescriptor("size"));
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        // build a valid feature
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, new Object[] {100}, "ID");
+        Assert.assertNotNull(feature);
+        feature.validate();
+
+        // try an invalid one
+        try {
+            feature = SimpleFeatureBuilder.build(featureType, new Object[] {101}, "ID");
+            feature.validate();
+            Assert.fail("this should fail because the value is outside the permitted range [0,100]");
         } catch (Exception e) {
             // good
         }

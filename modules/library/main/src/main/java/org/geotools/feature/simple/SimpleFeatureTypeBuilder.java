@@ -45,6 +45,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.referencing.CRS;
+import org.geotools.util.NumberRange;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -422,6 +423,17 @@ public class SimpleFeatureTypeBuilder {
      */
     public SimpleFeatureTypeBuilder options(List<?> options) {
         attributeBuilder.setOptions(options);
+        return this;
+    }
+
+    /**
+     * Sets a restriction on the field value range of the next attribute added to the feature type.
+     *
+     * <p>This method is the same as adding <i>greaterOrEqual</i> and <i>lessOrEqual</i> restrictions on the value. This
+     * restriction is reset after a call to {@link #add(String, Class)}
+     */
+    public SimpleFeatureTypeBuilder range(NumberRange<? extends Number> range) {
+        attributeBuilder.setRange(range);
         return this;
     }
 

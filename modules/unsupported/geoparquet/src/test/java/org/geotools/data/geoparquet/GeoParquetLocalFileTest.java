@@ -34,14 +34,11 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 
 /** Tests for GeoParquet DataStore with local files. */
 public class GeoParquetLocalFileTest extends GeoParquetTestBase {
@@ -121,10 +118,16 @@ public class GeoParquetLocalFileTest extends GeoParquetTestBase {
         // Get total count
         int totalCount = source.getFeatures().size();
 
-        Geometry geom = JTS.toGeometry(new Envelope(-10, 0, 0, 10));
+        String geomName = source.getSchema().getGeometryDescriptor().getLocalName();
 
-        Filter filter = FF.intersects(
-                FF.property(source.getSchema().getGeometryDescriptor().getLocalName()), FF.literal(geom));
+        // Avoid using WKT (to workaround DuckDB issues when parsing with specific locale defined)
+        Filter filter = FF.bbox(
+                geomName,
+                -10,
+                0, // minx, miny
+                0,
+                10, // maxx, maxy
+                "EPSG:4326");
 
         // Get filtered features
         SimpleFeatureCollection filtered = source.getFeatures(filter);

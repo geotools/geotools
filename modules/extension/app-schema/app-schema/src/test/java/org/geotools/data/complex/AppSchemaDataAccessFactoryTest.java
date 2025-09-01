@@ -17,6 +17,8 @@
 
 package org.geotools.data.complex;
 
+import static org.geotools.data.complex.AppSchemaDataAccessFactory.DELEGATE_STORE_NAME;
+import static org.geotools.data.complex.AppSchemaDataAccessFactory.REPOSITORY_PARAM;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -24,6 +26,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,18 +41,28 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.RepositoryResolvingDataAccess;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataAccessFinder;
+import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Repository;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
+import org.geotools.data.DefaultRepository;
+import org.geotools.data.complex.config.DataAccessMap;
 import org.geotools.data.complex.feature.type.Types;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 /**
  * @author Gabriel Roldan (Axios Engineering)
@@ -53,7 +73,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
 
     AppSchemaDataAccessFactory factory;
 
-    Map<String, Serializable> params;
+    Map<String, Object> params;
 
     private static final String NSURI = "http://online.socialchange.net.au";
 
@@ -143,9 +163,11 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
     public void testGetParametersInfo() {
         DataStoreFactorySpi.Param[] params = factory.getParametersInfo();
         assertNotNull(params);
-        assertEquals(2, params.length);
+        assertEquals(4, params.length);
         assertEquals(String.class, params[0].type);
         assertEquals(URL.class, params[1].type);
+        assertEquals(String.class, params[2].type);
+        assertEquals(Repository.class, params[3].type);
     }
 
     /** Test method for 'org.geotools.data.complex.AppSchemaDataAccessFactory.canProcess(Map)' */
@@ -234,5 +256,54 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
         ds.dispose();
         ds = factory.createDataStore(params);
         assertNotNull(ds);
+    }
+
+    @Test
+    public void testRepositoryParamApplied() throws IOException {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("TestFeature");
+        builder.setNamespaceURI("http://example.com/test");
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        URL resource = getClass().getResource("/test-data/roadsegments-delegate-store.xml");
+        if (resource == null) {
+            fail("Can't find resouce /test-data/roadsegments-delegate-store.xml");
+        }
+        DefaultRepository repository = new DefaultRepository();
+
+        params.put("url", resource);
+        params.put(REPOSITORY_PARAM.getName(), repository);
+        params.put(DELEGATE_STORE_NAME.getName(), "testWorkspace:testStore");
+
+        Name name = new NameImpl("testWorkspace", "testStore");
+        Name roadSegments = new NameImpl("RoadSegments");
+
+        DataAccess mockStore = mock(DataStore.class);
+
+        FeatureSource mockSource = mock(SimpleFeatureSource.class);
+        when(mockSource.getDataStore()).thenReturn(mockStore);
+
+        // While featureType is not needed for test itself it is set just to not crash
+        when(mockSource.getSchema()).thenReturn(featureType);
+        when(mockStore.getFeatureSource(roadSegments)).thenReturn(mockSource);
+
+        repository.register(name, mockStore);
+
+        // Use spy, because the result of tested invocation is used inside of method, and is not present in returned
+        // value.
+        AppSchemaDataAccessFactory spyFactory = spy(factory);
+
+        spyFactory.createDataStore(params);
+
+        ArgumentCaptor<DataAccessMap> captor = ArgumentCaptor.forClass(DataAccessMap.class);
+        verify(spyFactory).createDataStore(anyMap(), anyBoolean(), captor.capture(), anySet(), any());
+
+        HashMap<Object, Object> keyMap = new HashMap<>();
+        keyMap.put("delegateStoreName", "testWorkspace:testStore");
+        RepositoryResolvingDataAccess dataAccess =
+                (RepositoryResolvingDataAccess) captor.getValue().get(keyMap);
+        assertNotNull(dataAccess);
+        assertEquals(repository, dataAccess.getRepository());
+        assertEquals(name, dataAccess.getStoreName());
     }
 }

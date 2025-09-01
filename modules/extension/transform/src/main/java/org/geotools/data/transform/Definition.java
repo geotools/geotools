@@ -21,6 +21,7 @@ import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
@@ -46,6 +47,10 @@ public class Definition {
     CoordinateReferenceSystem crs;
 
     InternationalString description;
+
+    boolean nillable;
+
+    List<Filter> restrictions;
 
     static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
@@ -119,6 +124,29 @@ public class Definition {
             Class binding,
             CoordinateReferenceSystem crs,
             InternationalString description) {
+        this(name, source, binding, crs, description, true, null);
+    }
+
+    /**
+     * Creates a new transformed property
+     *
+     * @param name The property name
+     * @param source The expression generating the property
+     * @param binding The property type. Optional, the store will try to figure out the type from the expression in case
+     *     it's missing
+     * @param crs The coordinate reference system of the property, to be used only for geometry properties
+     * @param description The property description
+     * @param nillable The nillable value for the property
+     * @param restrictions The restrictions to apply on the property value
+     */
+    public Definition(
+            String name,
+            Expression source,
+            Class binding,
+            CoordinateReferenceSystem crs,
+            InternationalString description,
+            boolean nillable,
+            List<Filter> restrictions) {
         this.name = name;
         if (source == null) {
             this.expression = TransformFeatureSource.FF.property(name);
@@ -128,6 +156,8 @@ public class Definition {
         this.binding = binding;
         this.crs = crs;
         this.description = description;
+        this.nillable = nillable;
+        this.restrictions = restrictions;
     }
 
     public String getName() {
@@ -219,6 +249,12 @@ public class Definition {
             ab.setDescription(description);
         }
 
+        ab.setNillable(nillable);
+
+        if (restrictions != null) {
+            restrictions.forEach(ab::addRestriction);
+        }
+
         if (binding != null) {
 
             ab.setBinding(binding);
@@ -304,6 +340,8 @@ public class Definition {
         result = prime * result + (expression == null ? 0 : expression.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (nillable ? 1231 : 1237);
+        result = prime * result + (restrictions == null ? 0 : restrictions.hashCode());
         return result;
     }
 
@@ -328,6 +366,10 @@ public class Definition {
         if (description == null) {
             if (other.description != null) return false;
         } else if (!description.equals(other.description)) return false;
+        if (nillable != other.nillable) return false;
+        if (restrictions == null) {
+            if (other.restrictions != null) return false;
+        } else if (!restrictions.equals(other.restrictions)) return false;
         return true;
     }
 
@@ -343,6 +385,10 @@ public class Definition {
                 + expression
                 + ", description="
                 + description
+                + ", nillable="
+                + nillable
+                + ", restrictions="
+                + restrictions
                 + "]";
     }
 }

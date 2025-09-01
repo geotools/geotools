@@ -61,6 +61,7 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
+import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.logging.Logging;
@@ -292,6 +293,20 @@ public class FeatureTypes {
         } else {
             return FF.or(filters);
         }
+    }
+
+    /**
+     * Creates a restriction limiting an attribute to a range.
+     *
+     * @param range
+     * @return A filter restricting the attribute to the given range
+     */
+    public static Filter createFieldRange(NumberRange<? extends Number> range) {
+        if (range == null) {
+            return null;
+        }
+        PropertyName thisProperty = FF.property(".");
+        return FF.between(thisProperty, FF.literal(range.getMinimum()), FF.literal(range.getMaximum()));
     }
 
     /**

@@ -18,6 +18,7 @@ package org.geotools.vectormosaic;
 
 import java.io.IOException;
 import java.util.Map;
+import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.Repository;
@@ -59,11 +60,11 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
-        Repository repository = lookup(REPOSITORY_PARAM, params, Repository.class);
-        String namespace = lookup(NAMESPACE, params, String.class);
-        String delegateStoreName = lookup(DELEGATE_STORE_NAME, params, String.class);
-        String preferredDataStoreSPI = lookup(PREFERRED_DATASTORE_SPI, params, String.class);
-        String connectionParameterKey = lookup(CONNECTION_PARAMETER_KEY, params, String.class);
+        Repository repository = DataAccessFactory.lookup(REPOSITORY_PARAM, params);
+        String namespace = DataAccessFactory.lookup(NAMESPACE, params);
+        String delegateStoreName = DataAccessFactory.lookup(DELEGATE_STORE_NAME, params);
+        String preferredDataStoreSPI = DataAccessFactory.lookup(PREFERRED_DATASTORE_SPI, params);
+        String connectionParameterKey = DataAccessFactory.lookup(CONNECTION_PARAMETER_KEY, params);
         VectorMosaicStore vectorMosaicStore = new VectorMosaicStore(delegateStoreName, repository);
         vectorMosaicStore.setNamespaceURI(namespace);
         if (preferredDataStoreSPI != null) {
@@ -100,15 +101,5 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
     @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException();
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T lookup(Param param, Map<String, ?> params, Class<T> target) throws IOException {
-        T result = (T) param.lookUp(params);
-        if (result == null) {
-            return (T) param.getDefaultValue();
-        } else {
-            return result;
-        }
     }
 }

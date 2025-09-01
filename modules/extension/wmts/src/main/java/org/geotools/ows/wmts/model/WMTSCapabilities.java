@@ -40,6 +40,7 @@ import net.opengis.wmts.v_1.CapabilitiesType;
 import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.DimensionType;
 import net.opengis.wmts.v_1.LayerType;
+import net.opengis.wmts.v_1.LegendURLType;
 import net.opengis.wmts.v_1.StyleType;
 import net.opengis.wmts.v_1.TileMatrixLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLimitsType;
@@ -247,8 +248,9 @@ public class WMTSCapabilities extends Capabilities {
                     wmtsLayer.getBoundingBoxes().put(srs, new CRSEnvelope(wgs84Env.transform(tmsCRS, true)));
 
                 } catch (TransformException | FactoryException e) {
-                    if (LOGGER.isLoggable(Level.INFO))
+                    if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.log(Level.INFO, "Not adding CRS " + srs + " for layer " + wmtsLayer.getName(), e);
+                    }
                 }
             }
         }
@@ -271,8 +273,9 @@ public class WMTSCapabilities extends Capabilities {
                 } catch (Exception ex) {
                     // the RE can't be projected on WGS84,
                     // so let's try another one
-                    if (LOGGER.isLoggable(Level.FINE))
+                    if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("Can't use " + tms.getIdentifier() + " for bbox: " + ex.getMessage());
+                    }
                     continue;
                 }
             }
@@ -370,13 +373,29 @@ public class WMTSCapabilities extends Capabilities {
             style.setName(styleType.getIdentifier().getValue());
             StringBuilder t = new StringBuilder();
             for (Object title1 : styleType.getTitle()) {
-                t.append(title1.toString());
+                if (title1 instanceof LanguageStringType) {
+                    t.append(((LanguageStringType) title1).getValue());
+                } else {
+                    t.append(title1.toString());
+                }
             }
-            style.setTitle(new SimpleInternationalString(t.toString()));
+
+            if (t.length() > 0) {
+                style.setTitle(new SimpleInternationalString(t.toString()));
+            }
+
             style.setDefault(styleType.isIsDefault());
             if (styleType.isIsDefault()) {
                 layer.setDefaultStyle(style);
             }
+
+            List<String> legendURLS = new ArrayList<>();
+            for (LegendURLType legendURLType : styleType.getLegendURL()) {
+                legendURLS.add(legendURLType.getHref());
+            }
+
+            style.setLegendURLs(legendURLS);
+
             sList.add(style);
         }
         layer.setStyles(sList);

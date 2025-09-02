@@ -16,8 +16,6 @@
  */
 package org.geotools.image;
 
-import com.sun.media.imageioimpl.common.PackageUtil;
-import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -202,9 +200,6 @@ public class ImageWorker {
     /** The logger to use for this class. */
     private static final Logger LOGGER = Logging.getLogger(ImageWorker.class);
 
-    /** CODEC_LIB_AVAILABLE */
-    private static final boolean CODEC_LIB_AVAILABLE = PackageUtil.isCodecLibAvailable();
-
     /** Registration of the JAI-EXT operations */
     static {
         USE_JAI_SCALE2 = Boolean.getBoolean(USE_JAI_SCALE2_KEY);
@@ -219,10 +214,10 @@ public class ImageWorker {
         try {
             Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/jpeg");
             while (writers.hasNext()) {
-                ImageWriter temp2 = writers.next();
-                if (temp2.getOriginatingProvider().getClass().getName()
+                ImageWriter writer = writers.next();
+                if (writer.getOriginatingProvider().getClass().getName()
                         == "com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi") {
-                    temp = temp2.getOriginatingProvider();
+                    temp = writer.getOriginatingProvider();
                     break;
                 }
             }
@@ -240,26 +235,14 @@ public class ImageWorker {
     static {
         ImageWriterSpi temp = null;
         try {
-            temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.gif.GIFImageWriterSpi");
-        } catch (Exception e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
-            temp = null;
-        }
-
-        // assign
-        IMAGEIO_GIF_IMAGE_WRITER_SPI = temp;
-    }
-
-    /** IMAGEIO_JPEG_IMAGE_WRITER_SPI */
-    private static final ImageWriterSpi IMAGEIO_JPEG_IMAGE_WRITER_SPI;
-
-    static {
-        ImageWriterSpi temp = null;
-        try {
-            if (PackageUtil.isCodecLibAvailable()) {
-                temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
-            } else {
-                temp = null;
+            Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/gif");
+            while (writers.hasNext()) {
+                ImageWriter writer = writers.next();
+                if (writer.getOriginatingProvider().getClass().getName()
+                        == "com.sun.imageio.plugins.gif.GIFImageWriterSpi") {
+                    temp = writer.getOriginatingProvider();
+                    break;
+                }
             }
         } catch (Exception e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
@@ -267,7 +250,7 @@ public class ImageWorker {
         }
 
         // assign
-        IMAGEIO_JPEG_IMAGE_WRITER_SPI = temp;
+        IMAGEIO_GIF_IMAGE_WRITER_SPI = temp;
     }
 
     /** IMAGEIO_EXT_TIFF_IMAGE_WRITER_SPI */
@@ -286,33 +269,19 @@ public class ImageWorker {
         IMAGEIO_EXT_TIFF_IMAGE_WRITER_SPI = temp;
     }
 
-    /** IMAGEIO_PNG_IMAGE_WRITER_SPI */
-    private static final ImageWriterSpi CLIB_PNG_IMAGE_WRITER_SPI;
-
-    static {
-        ImageWriterSpi temp = null;
-        try {
-            if (PackageUtil.isCodecLibAvailable()) {
-                temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
-            } else {
-                temp = null;
-            }
-
-        } catch (Exception e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
-            temp = null;
-        }
-
-        // assign
-        CLIB_PNG_IMAGE_WRITER_SPI = temp;
-    }
-
     static ImageWriterSpi getImageWriterSpi(String className) throws Exception {
         Iterator<ImageWriterSpi> serviceProviders = IIORegistry.lookupProviders(ImageWriterSpi.class);
         while (serviceProviders.hasNext()) {
             ImageWriterSpi serviceProvider = serviceProviders.next();
             if (serviceProvider.getClass().getName() == className) {
                 return serviceProvider;
+            }
+        }
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("GIF");
+        while (writers.hasNext()) {
+            ImageWriter writer = writers.next();
+            if (writer.getOriginatingProvider().getClass().getName() == className) {
+                return writer.getOriginatingProvider();
             }
         }
         throw new Exception("Class " + className + " not found");
@@ -3530,25 +3499,6 @@ public class ImageWorker {
             LOGGER.fine("Getting a writer");
         }
         ImageWriter writer = null;
-        ImageWriterSpi originatingProvider = null;
-        // ImageIO
-        if (nativeAcc) {
-            if (CLIB_PNG_IMAGE_WRITER_SPI != null) {
-                // let me check if the native writer can encode this image
-                if (CLIB_PNG_IMAGE_WRITER_SPI.canEncodeImage(new ImageTypeSpecifier(image))) {
-                    writer = CLIB_PNG_IMAGE_WRITER_SPI.createWriterInstance();
-                    originatingProvider = CLIB_PNG_IMAGE_WRITER_SPI;
-
-                } else {
-                    LOGGER.fine("The ImageIO PNG native encode cannot encode this image!");
-                    writer = null;
-                    originatingProvider = null;
-                }
-            } else {
-                LOGGER.fine("Unable to use Native ImageIO PNG writer.");
-            }
-        }
-
         // move on with the writer quest
         if (!nativeAcc || writer == null) {
 
@@ -3558,17 +3508,7 @@ public class ImageWorker {
             }
             while (it.hasNext()) {
                 writer = it.next();
-                originatingProvider = writer.getOriginatingProvider();
-                // check that this is not the native one
-                if (CLIB_PNG_IMAGE_WRITER_SPI != null
-                        && originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
-                    if (it.hasNext()) {
-                        writer = it.next();
-                        originatingProvider = writer.getOriginatingProvider();
-                    } else {
-                        LOGGER.fine("Unable to use PNG writer different than ImageIO CLib one");
-                    }
-                }
+                ImageWriterSpi originatingProvider = writer.getOriginatingProvider();
 
                 // let me check if the native writer can encode this image (paranoiac checks this
                 // was already performed by the ImageIO search
@@ -3578,31 +3518,11 @@ public class ImageWorker {
 
                 // clean
                 writer = null;
-                originatingProvider = null;
             }
         }
 
-        // ok, last resort use the JDK one and reformat the image
-        if (writer == null) {
-            List providers = com.sun.media.imageioimpl.common.ImageUtil.getJDKImageReaderWriterSPI(
-                    IIORegistry.getDefaultInstance(), "PNG", false);
-            if (providers == null || providers.isEmpty()) {
-                throw new IllegalStateException("Unable to find JDK Png encoder!");
-            }
-            originatingProvider = (ImageWriterSpi) providers.get(0);
-            writer = originatingProvider.createWriterInstance();
-
-            // kk, last resort reformat the image
-            forceComponentColorModel(true, true);
-            rescaleToBytes();
-            if (!originatingProvider.canEncodeImage(image)) {
-                throw new IllegalArgumentException(
-                        "Unable to find a valid PNG Encoder! And believe me, we tried hard!");
-            }
-        }
-
-        LOGGER.fine("Using ImageIO Writer with SPI: "
-                + originatingProvider.getClass().getCanonicalName());
+        if (writer == null) throw new IllegalArgumentException("Unable to find a valid PNG Encoder!");
+        LOGGER.fine("Using ImageIO Writer with SPI: " + writer.getOriginatingProvider());
 
         // Getting a stream.
         LOGGER.fine("Setting write parameters for this writer");
@@ -3612,28 +3532,14 @@ public class ImageWorker {
             if (memOutStream == null) {
                 throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
-            if (CLIB_PNG_IMAGE_WRITER_SPI != null
-                    && originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
-                // Compressing with native.
-                LOGGER.fine("Writer is native");
-                iwp = writer.getDefaultWriteParam();
-                // Define compression mode
-                iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                // best compression
-                iwp.setCompressionType(compression);
-                // we can control quality here
-                iwp.setCompressionQuality(compressionRate);
-                // destination image type
-                iwp.setDestinationType(new ImageTypeSpecifier(image.getColorModel(), image.getSampleModel()));
-            } else {
-                // Compressing with pure Java.
-                LOGGER.fine("Writer is NOT native");
 
-                // Instantiating PNGImageWriteParam
-                iwp = new PNGImageWriteParam();
-                // Define compression mode
-                iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
-            }
+            // Compressing with pure Java.
+            LOGGER.fine("Writer is NOT native");
+
+            // Instantiating PNGImageWriteParam
+            iwp = new PNGImageWriteParam();
+            // Define compression mode
+            iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
             LOGGER.fine("About to write png image");
             try {
                 writer.setOutput(memOutStream);
@@ -3730,16 +3636,6 @@ public class ImageWorker {
             LOGGER.fine("Getting a JPEG writer and configuring it.");
         }
         ImageWriter writer = null;
-        if (nativeAcc && CODEC_LIB_AVAILABLE && IMAGEIO_JPEG_IMAGE_WRITER_SPI != null) {
-            try {
-                writer = IMAGEIO_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
-            } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.log(Level.INFO, "Unable to instantiate CLIB JPEG ImageWriter", e);
-                }
-                writer = null;
-            }
-        }
         // in case we want the JDK one or in case the native one is not at hand we use the JDK one
         if (writer == null) {
             if (JDK_JPEG_IMAGE_WRITER_SPI == null) {

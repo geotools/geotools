@@ -16,7 +16,6 @@
  */
 package org.geotools.image.io;
 
-import com.sun.media.imageioimpl.common.PackageUtil;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.Timer;
@@ -135,9 +134,7 @@ public class GridCoverageProgressAdapterTest extends Assert {
             image.flush();
         }
 
-        if (!PackageUtil.isCodecLibAvailable()) {
-            assertFalse(adaptee.isCompleted());
-        }
+        assertFalse(adaptee.isCompleted());
         assertTrue(adaptee.isStarted());
         assertTrue(adaptee.isCanceled());
     }

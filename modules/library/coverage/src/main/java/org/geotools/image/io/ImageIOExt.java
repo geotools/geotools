@@ -16,7 +16,6 @@
  */
 package org.geotools.image.io;
 
-import com.sun.media.imageioimpl.common.PackageUtil;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
@@ -237,16 +236,6 @@ public class ImageIOExt {
         }
 
         return spi;
-    }
-
-    /**
-     * Tells me whether or not the native libraries for JAI/ImageIO are active or not.
-     *
-     * @return <code>false</code> in case the JAI/ImageIO native libs are not in the path, <code>
-     * true</code> otherwise.
-     */
-    public static boolean isCLibAvailable() {
-        return PackageUtil.isCodecLibAvailable();
     }
 
     /**

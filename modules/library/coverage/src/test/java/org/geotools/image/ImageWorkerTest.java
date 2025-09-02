@@ -31,7 +31,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.sun.media.imageioimpl.common.PackageUtil;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import java.awt.Color;
@@ -486,17 +485,11 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // ////////////////////////////////////////////////////////////////////
         final File outFile = TestData.temp(this, "temp.jpeg");
         ImageWorker readWorker;
-        if (PackageUtil.isCodecLibAvailable()) {
+        try {
             worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
-            readWorker = new ImageWorker(ImageIO.read(outFile));
-            show(readWorker, "Native JPEG LS");
-        } else {
-            try {
-                worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
-                fail();
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
+            fail();
+        } catch (Exception e) {
+            // TODO: handle exception
         }
 
         // /////////////////////////////////////////////////////////////////////

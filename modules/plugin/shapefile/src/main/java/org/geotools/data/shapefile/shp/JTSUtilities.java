@@ -267,19 +267,33 @@ public class JTSUtilities {
      * @throws ShapefileException If theres a problem, like a bogus Geometry.
      * @return The best ShapeType.
      */
-    public static final ShapeType getShapeType(Geometry geom, int shapeFileDimentions) throws ShapefileException {
+    public static final ShapeType getShapeType(Geometry geom) throws ShapefileException {
+
+        var coordinate = geom.getCoordinate();
+
+        var shapeFileDimentions = "xyz";
+        if (coordinate instanceof CoordinateXY) {
+            shapeFileDimentions = "xy";
+        } else if (coordinate instanceof CoordinateXYM) {
+            shapeFileDimentions = "xym";
+        } else if (coordinate instanceof CoordinateXYZM) {
+            shapeFileDimentions = "xyzm";
+        } else if (coordinate instanceof Coordinate) {
+            shapeFileDimentions = "xyz";
+        }
 
         ShapeType type = null;
 
         if (geom instanceof Point) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.POINT;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.POINTM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.POINTZ;
                     break;
                 default:
@@ -287,13 +301,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof MultiPoint) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.MULTIPOINT;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.MULTIPOINTM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.MULTIPOINTZ;
                     break;
                 default:
@@ -301,13 +316,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof Polygon || geom instanceof MultiPolygon) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.POLYGON;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.POLYGONM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.POLYGONZ;
                     break;
                 default:
@@ -315,13 +331,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof LineString || geom instanceof MultiLineString) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.ARC;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.ARCM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.ARCZ;
                     break;
                 default:

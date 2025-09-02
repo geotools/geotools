@@ -16,11 +16,11 @@ jobs:
 
     steps:
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Maven repository caching
         uses: actions/cache@v4
         with:

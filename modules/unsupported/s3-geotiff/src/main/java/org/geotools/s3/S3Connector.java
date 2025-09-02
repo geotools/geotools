@@ -19,7 +19,7 @@ package org.geotools.s3;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -114,14 +114,12 @@ public class S3Connector {
             Properties prop = readProperties(s3Alias);
 
             String endpoint = prop.getProperty(s3Alias + ".s3.endpoint");
-            AwsClientBuilder.EndpointConfiguration endpointConfiguration =
-                    new AwsClientBuilder.EndpointConfiguration(endpoint, region.getName());
 
             s3 = AmazonS3ClientBuilder.standard()
                     .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(
                             prop.getProperty(s3Alias + ".s3.user"), prop.getProperty(s3Alias + ".s3.password"))))
-                    .withEndpointConfiguration(endpointConfiguration)
                     .withPathStyleAccessEnabled(true)
+                    .withEndpointConfiguration(new EndpointConfiguration(endpoint, region.getName()))
                     .build();
 
             // aws cli client

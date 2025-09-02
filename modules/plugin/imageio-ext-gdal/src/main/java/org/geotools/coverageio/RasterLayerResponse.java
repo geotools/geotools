@@ -16,9 +16,11 @@
  */
 package org.geotools.coverageio;
 
+import it.geosolutions.imageio.gdalframework.GDALUtilities;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.ColorModel;
@@ -35,6 +37,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
+import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
@@ -413,7 +416,7 @@ class RasterLayerResponse {
             @SuppressWarnings("PMD.CloseResource") // wrapped and returned
             FileImageInputStreamExtImpl fiis = new FileImageInputStreamExtImpl(input);
             reader = readerSpi.createReaderInstance();
-
+            RenderingHints newRi = getHints(imageReadParam);
             final ParameterBlock pbjImageRead = new ParameterBlock();
             pbjImageRead.add(fiis);
             pbjImageRead.add(0);
@@ -443,5 +446,35 @@ class RasterLayerResponse {
             }
         }
         return raster;
+    }
+
+    private RenderingHints getHints(ImageReadParam imageReadParam) {
+        RenderingHints newRi = hints;
+        int[] srcBands = GDALUtilities.extractBands(imageReadParam);
+        int[] destBands = imageReadParam.getDestinationBands();
+        if (srcBands != null && destBands != null) {
+            ImageLayout layout = originatingCoverageRequest.getDatasetLayout();
+
+            if (layout != null) {
+                ColorModel cm = GDALUtilities.extractColorModel(
+                        layout.getColorModel(null), layout.getSampleModel(null), destBands.length);
+                SampleModel sm = cm.createCompatibleSampleModel(layout.getTileWidth(null), layout.getTileHeight(null));
+                final RenderingHints oldRi = hints;
+                newRi = (RenderingHints) oldRi.clone();
+                ImageLayout hintsLayout = (ImageLayout) oldRi.get(JAI.KEY_IMAGE_LAYOUT);
+
+                ImageLayout newLayout = new ImageLayout();
+                if (hintsLayout != null) {
+                    newLayout.setTileGridXOffset(hintsLayout.getTileGridXOffset(null));
+                    newLayout.setTileGridYOffset(hintsLayout.getTileGridYOffset(null));
+                    newLayout.setTileWidth(hintsLayout.getTileWidth(null));
+                    newLayout.setTileHeight(hintsLayout.getTileHeight(null));
+                }
+                newLayout.setColorModel(cm);
+                newLayout.setSampleModel(sm);
+                newRi.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, newLayout));
+            }
+        }
+        return newRi;
     }
 }

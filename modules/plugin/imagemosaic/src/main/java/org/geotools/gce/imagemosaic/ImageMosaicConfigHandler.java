@@ -344,9 +344,10 @@ public class ImageMosaicConfigHandler {
             catalogConfig.setName(name);
         }
         String skipExtOverviews = runConfiguration.getParameter(Prop.SKIP_EXTERNAL_OVERVIEWS);
-        if ("true".equalsIgnoreCase(skipExtOverviews)) {
-            catalogConfig.setSkipExternalOverviews(true);
+        if (skipExtOverviews != null && !skipExtOverviews.trim().isEmpty()) {
+            catalogConfig.setSkipExternalOverviews(Boolean.parseBoolean(skipExtOverviews));
         }
+
         String wrapStore = runConfiguration.getParameter(Prop.WRAP_STORE);
         if ("true".equalsIgnoreCase(wrapStore)) {
             catalogConfig.setWrapStore(true);
@@ -1218,7 +1219,7 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Prop.NO_DATA, String.valueOf(mosaicConfiguration.getNoData()));
         }
 
-        if (catalogConfigurationBean.isSkipExternalOverviews()) {
+        if (catalogConfigurationBean.getSkipExternalOverviews() != null) {
             properties.setProperty(
                     Prop.SKIP_EXTERNAL_OVERVIEWS, String.valueOf(catalogConfigurationBean.isSkipExternalOverviews()));
         }
@@ -1416,8 +1417,11 @@ public class ImageMosaicConfigHandler {
             } else {
                 catalogConfigurationBean.setTypeName(targetCoverageName);
             }
-            catalogConfigurationBean.setSkipExternalOverviews(
-                    IndexerUtils.getParameterAsBoolean(Prop.SKIP_EXTERNAL_OVERVIEWS, indexer));
+            String skipExternalOverviews = IndexerUtils.getParameter(Prop.SKIP_EXTERNAL_OVERVIEWS, indexer);
+            if (skipExternalOverviews != null) {
+                catalogConfigurationBean.setSkipExternalOverviews(
+                        IndexerUtils.getParameterAsBoolean(Prop.SKIP_EXTERNAL_OVERVIEWS, indexer));
+            }
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(
                     IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));

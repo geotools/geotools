@@ -16,7 +16,7 @@
       <dependency>
         <groupId>org.wololo</groupId>
         <artifactId>flatgeobuf</artifactId>
-        <version>3.26.2</version>
+        <version>3.28.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -89,6 +89,7 @@ import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -759,6 +760,30 @@ public class GeoPackage implements Closeable {
         return builder.buildFeatureType();
     }
 
+    public void setupZM(FeatureEntry entry, SimpleFeatureType schema) {
+        var geomDescriptor = schema.getGeometryDescriptor();
+        if (geomDescriptor == null
+                || geomDescriptor.getUserData() == null
+                || !geomDescriptor.getUserData().containsKey(Hints.COORDINATE_DIMENSION)) {
+            return; // nothing to do
+        }
+        var dims = (Integer) geomDescriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
+        if (dims == null || dims < 0 || dims > 4) {
+            return; // nothing to do
+        }
+        if (dims == 2) {
+            return; // default is 2 (xy)
+        }
+        if (dims == 3) {
+            entry.setZ(true); // assume 3rd is Z
+            return;
+        }
+        if (dims == 4) {
+            entry.setZ(true); // assume 3rd is Z
+            entry.setM(true); // assume 4th is M
+        }
+    }
+
     /**
      * Creates a new feature entry in the geopackage.
      *
@@ -785,6 +810,7 @@ public class GeoPackage implements Closeable {
         } else {
             e.setGeometryColumn(findGeometryColumn(schema));
         }
+        setupZM(e, schema);
 
         if (e.getIdentifier() == null) {
             e.setIdentifier(schema.getTypeName());

@@ -364,7 +364,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         if (guessShapeType) {
             try {
                 if (g != null) {
-                    int dims = JTSUtilities.guessCoorinateDims(g.getCoordinates());
+                    int dims = JTSUtilities.guessCoordinateDims(g.getCoordinates());
                     shapeType = JTSUtilities.getShapeType(g, dims);
                 } else {
                     shapeType =

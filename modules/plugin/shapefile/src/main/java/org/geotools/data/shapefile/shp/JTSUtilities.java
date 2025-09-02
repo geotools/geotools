@@ -20,18 +20,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFactory;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.*;
 
 /**
  * A collection of utility methods for use with JTS and the shapefile package.
@@ -211,23 +200,18 @@ public class JTSUtilities {
     /**
      * Returns: <br>
      * 2 for 2d (default) <br>
-     * 4 for 3d - one of the oordinates has a non-NaN z value <br>
-     * (3 is for x,y,m but thats not supported yet) <br>
+     * 3 for 3d - has a 3rd dimension (either z or measure) <br>
+     * 4 for 4d - has both Z and M <br>
+     * This is done by looking at one of the coordinates. See {Coordinates}.
      *
      * @param cs The array of Coordinates to search.
      * @return The dimension.
      */
-    public static final int guessCoorinateDims(final Coordinate[] cs) {
-        int dims = 2;
-
-        for (int t = cs.length - 1; t >= 0; t--) {
-            if (!Double.isNaN(cs[t].getZ())) {
-                dims = 4;
-                break;
-            }
+    public static int guessCoordinateDims(final Coordinate[] cs) {
+        if (cs == null || cs.length == 0) {
+            return 2;
         }
-
-        return dims;
+        return Coordinates.dimension(cs[0]);
     }
 
     public static Geometry convertToCollection(Geometry geom, ShapeType type) {

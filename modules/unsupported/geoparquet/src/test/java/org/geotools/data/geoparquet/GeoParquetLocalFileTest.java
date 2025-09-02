@@ -175,7 +175,7 @@ public class GeoParquetLocalFileTest extends GeoParquetTestBase {
 
         // Create a query with the bounding box
         Query query = new Query(source.getSchema().getTypeName());
-        query.setFilter(FF.bbox(FF.property("geometry"), -0.5, -0.5, 0.5, 0.5, null));
+        query.setFilter(FF.bbox(FF.property("geometry"), -0.5, -0.5, 0.5, 0.5, "EPSG:4326"));
 
         // Get filtered features
         SimpleFeatureCollection filtered = source.getFeatures(query);

@@ -35,6 +35,7 @@ import java.awt.image.SampleModel;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -237,7 +238,12 @@ public class Utils {
 
     /** Patterns for qualified class names to allow when deserializing SampleImage objects */
     private static final String[] SAMPLE_IMAGE_PATTERNS = {
-        "com.sun.imageio.*", "com.sun.media.*", "java.awt.*", "org.eclipse.imagen.*", "sun.awt.image.*"
+        "com.sun.imageio.*",
+        "com.sun.media.*",
+        "java.awt.*",
+        "javax.media.jai.*",
+        "org.eclipse.imagen.*",
+        "sun.awt.image.*"
     };
 
     /**
@@ -1431,15 +1437,16 @@ public class Utils {
         // serialize it
         // do we have the sample image??
         if (Utils.checkFileReadable(sampleImageFile)) {
-            try (ValidatingObjectInputStream oiStream = ValidatingObjectInputStream.builder()
-                    .setFile(sampleImageFile)
-                    .accept(SAMPLE_IMAGE_CLASSES)
-                    .accept(SAMPLE_IMAGE_PATTERNS)
-                    .accept(SAMPLE_IMAGE_PRIMITIVES)
-                    .get()) {
-                if (sampleImageAllowList != null) {
-                    oiStream.accept(sampleImageAllowList);
-                }
+            try (FileInputStream fis = new FileInputStream(sampleImageFile);
+                    RemappingFilteringObjectInputStream oiStream = RemappingFilteringObjectInputStream.builder()
+                            .input(fis)
+                            .accept(SAMPLE_IMAGE_CLASSES)
+                            .acceptPattern(SAMPLE_IMAGE_PATTERNS)
+                            .accept(SAMPLE_IMAGE_PRIMITIVES)
+                            .accept(sampleImageAllowList)
+                            .remapPackage("javax.media.jai", "org.eclipse.imagen")
+                            .remapPackage("com.sun.media.jai.rmi", "org.eclipse.imagen.media.serialize")
+                            .build()) {
                 // load the image
                 Object object = oiStream.readObject();
                 if (object instanceof SampleImage) {

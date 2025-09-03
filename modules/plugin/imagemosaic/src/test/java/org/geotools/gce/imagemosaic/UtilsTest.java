@@ -16,15 +16,19 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.PriorityQueue;
+import org.eclipse.imagen.ComponentSampleModelJAI;
 import org.eclipse.imagen.Histogram;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -78,5 +82,13 @@ public class UtilsTest {
             out.writeObject(new PriorityQueue<>());
         }
         assertNull(Utils.loadSampleImage(file));
+    }
+
+    @Test
+    public void testMigrateSampleImage() throws Exception {
+        // path to a sample image still containing JAI references, to test migration (package rebasing in the loader)
+        File oldSampleImage = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/old_sample_image");
+        RenderedImage renderedImage = Utils.loadSampleImage(oldSampleImage);
+        assertThat(renderedImage.getSampleModel(), CoreMatchers.instanceOf(ComponentSampleModelJAI.class));
     }
 }

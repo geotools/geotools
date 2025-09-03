@@ -20,7 +20,22 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateXY;
+import org.locationtech.jts.geom.CoordinateXYM;
+import org.locationtech.jts.geom.CoordinateXYZM;
+import org.locationtech.jts.geom.Coordinates;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * A collection of utility methods for use with JTS and the shapefile package.
@@ -263,15 +278,13 @@ public class JTSUtilities {
      * Determine the best ShapeType for a geometry with the given dimension.
      *
      * @param geom The Geometry to examine.
-     * @param shapeFileDimentions The dimension 2,3 or 4.
      * @throws ShapefileException If theres a problem, like a bogus Geometry.
      * @return The best ShapeType.
      */
     public static final ShapeType getShapeType(Geometry geom) throws ShapefileException {
+        Coordinate coordinate = geom.getCoordinate();
 
-        var coordinate = geom.getCoordinate();
-
-        var shapeFileDimentions = "xyz";
+        String shapeFileDimentions = "xyz";
         if (coordinate instanceof CoordinateXY) {
             shapeFileDimentions = "xy";
         } else if (coordinate instanceof CoordinateXYM) {

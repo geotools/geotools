@@ -333,6 +333,11 @@
         <artifactId>imageio-ext-turbojpeg</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-raw</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>
 
       <!-- JTS Topology Suite -->
       <dependency>

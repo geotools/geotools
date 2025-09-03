@@ -761,13 +761,13 @@ public class GeoPackage implements Closeable {
     }
 
     public void setupZM(FeatureEntry entry, SimpleFeatureType schema) {
-        var geomDescriptor = schema.getGeometryDescriptor();
+        GeometryDescriptor geomDescriptor = schema.getGeometryDescriptor();
         if (geomDescriptor == null
                 || geomDescriptor.getUserData() == null
                 || !geomDescriptor.getUserData().containsKey(Hints.COORDINATE_DIMENSION)) {
             return; // nothing to do
         }
-        var dims = (Integer) geomDescriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
+        Integer dims = (Integer) geomDescriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
         if (dims == null || dims < 0 || dims > 4) {
             return; // nothing to do
         }

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.filter.Filter;
@@ -34,11 +35,14 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /** Tests for GeoParquet DataStore with local files. */
 public class GeoParquetLocalFileTest extends GeoParquetTestBase {
@@ -118,16 +122,10 @@ public class GeoParquetLocalFileTest extends GeoParquetTestBase {
         // Get total count
         int totalCount = source.getFeatures().size();
 
-        String geomName = source.getSchema().getGeometryDescriptor().getLocalName();
-
-        // Avoid using WKT (to workaround DuckDB issues when parsing with specific locale defined)
-        Filter filter = FF.bbox(
-                geomName,
-                -10,
-                0, // minx, miny
-                0,
-                10, // maxx, maxy
-                "EPSG:4326");
+        Envelope env = new Envelope(-10, 0, -10, 0);
+        Geometry bbox = JTS.toGeometry(env);
+        bbox.setSRID(4326);
+        Filter filter = FF.bbox(FF.property("geometry"), FF.literal(bbox));
 
         // Get filtered features
         SimpleFeatureCollection filtered = source.getFeatures(filter);
@@ -174,8 +172,12 @@ public class GeoParquetLocalFileTest extends GeoParquetTestBase {
         assertFalse(bounds.isEmpty());
 
         // Create a query with the bounding box
+        Envelope env = new Envelope(-0.5, 0.5, -0.5, 0.5);
+        Geometry bbox = JTS.toGeometry(env);
+        bbox.setSRID(4326);
         Query query = new Query(source.getSchema().getTypeName());
-        query.setFilter(FF.bbox(FF.property("geometry"), -0.5, -0.5, 0.5, 0.5, "EPSG:4326"));
+        Filter filter = FF.bbox(FF.property("geometry"), FF.literal(bbox));
+        query.setFilter(filter);
 
         // Get filtered features
         SimpleFeatureCollection filtered = source.getFeatures(query);

@@ -80,17 +80,8 @@ public class PointHandler implements ShapeHandler {
         }
 
         Coordinate c;
-        if (shapeType == ShapeType.POINTZ && !flatGeometry) {
-
-            c = new CoordinateXYZM();
-        } else if (shapeType == ShapeType.POINTM && !flatGeometry) {
-            c = new CoordinateXYM();
-        } else {
-            c = new CoordinateXY();
-        }
-        c.setX(buffer.getDouble());
-        c.setY(buffer.getDouble());
-
+        double x = buffer.getDouble();
+        double y = buffer.getDouble();
         if (shapeType == ShapeType.POINTM && !flatGeometry) {
             double m = buffer.getDouble();
             // Page 2 of the spec says that values less than 10E-38 are
@@ -98,14 +89,24 @@ public class PointHandler implements ShapeHandler {
             if (m < -10e38) {
                 m = Double.NaN;
             }
-            c.setM(m);
+            c = new CoordinateXYM(x, y, m);
+            return geometryFactory.createPoint(c);
         }
-
         if (shapeType == ShapeType.POINTZ && !flatGeometry) {
-            c.setZ(buffer.getDouble());
-            if (buffer.hasRemaining()) c.setM(buffer.getDouble());
+            double z = buffer.getDouble();
+            if (buffer.hasRemaining()) {
+                double m = buffer.getDouble();
+                c = new CoordinateXYZM(x, y, z, m);
+                return geometryFactory.createPoint(c);
+            }
+            else {
+                c = new Coordinate(x, y, z);
+                return geometryFactory.createPoint(c);
+            }
         }
 
+        // Fallthrough to POINT or flatGeometry
+        c = new CoordinateXY(x,y);
         return geometryFactory.createPoint(c);
     }
 

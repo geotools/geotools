@@ -24,10 +24,13 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.net.URL;
 import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -40,9 +43,26 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
+import wiremock.org.eclipse.jetty.security.IdentityService;
 
 /** @author ian */
 public class ZMHandlersTest {
+
+    protected void checkDimensions( SimpleFeatureType schema, int dimensions, int measures ) {
+        GeometryDescriptor descriptor = schema.getGeometryDescriptor();
+        assertNotNull(descriptor);
+        assertEquals("dimension", dimensions, descriptor.getUserData().get(Hints.COORDINATE_DIMENSION));
+        assertEquals("measure", measures, descriptor.getUserData().get(Hints.COORDINATE_MEASURE));
+    }
+    protected void checkDimensions( Geometry geometry, int dimensions, int measures ) {
+        if (geometry == null) {
+            return;
+        }
+        Coordinate[] coordinates = geometry.getCoordinates();
+
+        assertEquals("dimension", dimensions, JTSUtilities.coordinateDimension(coordinates));
+        assertEquals("measure", measures, JTSUtilities.coordinateMeasures(coordinates));
+    }
 
     /**
      * Test method for {@link org.geotools.data.shapefile.shp.PointHandler#read(java.nio.ByteBuffer,
@@ -52,8 +72,12 @@ public class ZMHandlersTest {
     public void testReadMZPoints() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/zmpoints.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
+        checkDimensions(store.getSchema(), 4, 1);
+
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
         Geometry geom = (Geometry) feature.getDefaultGeometry();
+        checkDimensions(geom, 4, 1);
+
         assertEquals("wrong x", 10, geom.getCoordinate().getX(), 0.00001);
         assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
         assertEquals("wrong z", 1, geom.getCoordinate().getZ(), 0.00001);
@@ -65,8 +89,12 @@ public class ZMHandlersTest {
     public void testReadMPoints() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mpoints.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
+        checkDimensions(store.getSchema(), 3, 1);
+
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
         Geometry geom = (Geometry) feature.getDefaultGeometry();
+        checkDimensions(geom, 3, 1);
+
         assertEquals("wrong x", 10, geom.getCoordinate().getX(), 0.00001);
         assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
 
@@ -79,13 +107,19 @@ public class ZMHandlersTest {
         // tests that Point with Z and without optional M are correctly parsed
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/pointZ.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
+        checkDimensions(store.getSchema(), 3, 0);
+
         Query q = new Query(store.getTypeNames()[0]);
         q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 SimpleFeature f = reader.next();
-                assertNotNull(f.getDefaultGeometry());
+                Geometry geometry = (Geometry) f.getDefaultGeometry();
+                assertNotNull(geometry);
+
+                // Confirm "flat geometry" is 2D
+                checkDimensions(geometry, 2, 0);
             }
         }
         store.dispose();
@@ -96,6 +130,7 @@ public class ZMHandlersTest {
         // tests that tasmainia roads (a LineStringZ) file reads correctly
         URL url = TestData.url(ShapefileDataStore.class, "taz_shapes/tasmania_roads.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
+        checkDimensions(store.getSchema(), 3, 0);
         Query q = new Query(store.getTypeNames()[0]);
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
@@ -103,6 +138,7 @@ public class ZMHandlersTest {
             reader.hasNext();
             SimpleFeature f = reader.next();
             Geometry geom = (Geometry) f.getDefaultGeometry();
+            checkDimensions(geom, 3, 0);
             assertNotNull(geom);
             Coordinate coord = geom.getCoordinates()[0];
             assertEquals("wrong x", coord.getX(), 146.468582, 0.00001);
@@ -162,6 +198,9 @@ public class ZMHandlersTest {
         // test line with type ArcTypeZ and optional M is parsed
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mzlines.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
+        // In this case we need to check geometry, as shape type allows for optional M
+        checkDimensions(store.getSchema(), 4, 1);
+
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
         MultiLineString geom = (MultiLineString) feature.getDefaultGeometry();
         Coordinate coordinate = geom.getCoordinates()[0];
@@ -177,6 +216,8 @@ public class ZMHandlersTest {
     public void testReadMLine() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/mlines.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
+        checkDimensions(store.getSchema(), 4, 1);
+
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
         MultiLineString geom = (MultiLineString) feature.getDefaultGeometry();
         Coordinate coordinate = geom.getCoordinates()[0];
@@ -440,6 +481,7 @@ public class ZMHandlersTest {
     public void testGeot6599() throws ShapefileException, IOException {
         URL url = TestData.url(ShapefileDataStore.class, "mzvalues/building.shp");
         ShapefileDataStore store = new ShapefileDataStore(url);
+        checkDimensions(store.getSchema(), 4, 1);
         SimpleFeature feature = DataUtilities.first(store.getFeatureSource().getFeatures());
 
         Double[][] expected = {

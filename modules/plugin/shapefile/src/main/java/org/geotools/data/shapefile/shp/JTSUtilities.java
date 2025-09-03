@@ -20,18 +20,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.algorithm.Orientation;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.CoordinateSequenceFactory;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.*;
 
 /**
  * A collection of utility methods for use with JTS and the shapefile package.
@@ -217,6 +206,7 @@ public class JTSUtilities {
      * @param cs The array of Coordinates to search.
      * @return The dimension.
      */
+    @Deprecated
     public static final int guessCoorinateDims(final Coordinate[] cs) {
         int dims = 2;
 
@@ -228,6 +218,125 @@ public class JTSUtilities {
         }
 
         return dims;
+    }
+
+    /**
+     * Guess JTS CoordianteSequence dimension based on the provided ShapeType.
+     *
+     * For 2 dimensional POINT, ARC, POLYGON, MULTIPOINT, and
+     * 2 dimensional with measure POINTM, ARCM, POLYGONM, MULTIPOINTM
+     * this is {@code 2}.
+     *
+     * For 3 dimensional POINTZ, ARCZ, POLYGONZ, MULTIPOINTZ we assume {@code 3},
+     * although it could be 4 if optional measure is included in Geometry.
+     *
+     * @param shapeType
+     * @return JTS CoordinateSequence dimensions (2, 3 or 4).
+     */
+    public static int guessCoordinateDimension(ShapeType shapeType) {
+        if (shapeType == null) {
+            return 3;
+        }
+        switch (shapeType) {
+            case POINT:
+            case ARC:
+            case POLYGON:
+            case MULTIPOINT:
+                return 2;
+            case POINTM:
+            case ARCM:
+            case POLYGONM:
+            case MULTIPOINTM:
+                return 3;
+            case POINTZ:
+            case ARCZ:
+            case POLYGONZ:
+            case MULTIPOINTZ:
+                // assume Z only as the more common case
+                return 3;
+            default:
+                return 2;
+        }
+    }
+    /**
+     * Use a sample Geometry check Coordinate dimensions.
+     *
+     * Returns: <br>
+     * 2 for 2d (default) <br>
+     * 3 for 3d - has a 3rd dimension (either z or measure) <br>
+     * 4 for 4d - has both Z and M <br>
+     *
+     * This is done by review at geometry coordinates. See {@link Coordinates#dimension(Coordinate)}.
+     *
+     * @param cs The array of Coordinates to search.
+     * @return The dimension.
+     */
+    public static int coordinateDimension(final Coordinate[] cs) {
+        if (cs == null || cs.length == 0) {
+            return 2;
+        }
+        int dims = 1;
+        for (int t = cs.length - 1; t >= 0; t--) {
+            if (cs[t] != null) {
+                dims = Math.max(dims, Coordinates.dimension(cs[t]));
+            }
+        }
+        return dims;
+    }
+
+    /**
+     * Use geometry Coordinates to check if Coordinate has Z dimension.
+     *
+     * Returns: <br>
+     * false for 2d (default) <br>
+     * true  for 3d - has a 3rd dimension<br>
+     * false for 2d with mesure<br>
+     * true for 4d - has both Z and M <br>
+     *
+     * This is done by review at geometry coordinates. See {@link Coordinates#dimension(Coordinate)}.
+     *
+     * @param cs The array of Coordinates to search.
+     * @return The dimension.
+     */
+    public static boolean coordinateHasM(final Coordinate[] cs) {
+        if (cs == null || cs.length == 0) {
+            return false;
+        }
+        for (int t = cs.length - 1; t >= 0; t--) {
+            if (cs[t] != null && Coordinates.hasZ(cs[t])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+     * Use a sample Geometry check Coordinate measures.
+     *
+     * Returns: <br>
+     * 0 for 2d (default) <br>
+     * 0 for 3d - has a 3rd dimension<br>
+     * 1 for XYM - has a 2d with measure<br>
+     * 1 for XYZM - has 3d with measure<br>
+     *
+     * This is done by looking at geometry coordinates. See {@link Coordinates#measures(Coordinate)}.
+     *
+     * @param cs The array of Coordinates to search.
+     * @return The dimension.
+     */
+    public static int coordinateMeasures(final Coordinate[] cs) {
+        if (cs == null || cs.length == 0) {
+            return 0;
+        }
+        int measures = 0;
+        for (int t = cs.length - 1; t >= 0; t--) {
+            if (cs[t] != null) {
+                measures = Math.max(measures, Coordinates.measures(cs[t]));
+            }
+        }
+        return measures;
     }
 
     public static Geometry convertToCollection(Geometry geom, ShapeType type) {
@@ -283,19 +392,33 @@ public class JTSUtilities {
      * @throws ShapefileException If theres a problem, like a bogus Geometry.
      * @return The best ShapeType.
      */
-    public static final ShapeType getShapeType(Geometry geom, int shapeFileDimentions) throws ShapefileException {
+    public static final ShapeType getShapeType(Geometry geom) throws ShapefileException {
+
+        var coordinate = geom.getCoordinate();
+
+        var shapeFileDimentions = "xyz";
+        if (coordinate instanceof CoordinateXY) {
+            shapeFileDimentions = "xy";
+        } else if (coordinate instanceof CoordinateXYM) {
+            shapeFileDimentions = "xym";
+        } else if (coordinate instanceof CoordinateXYZM) {
+            shapeFileDimentions = "xyzm";
+        } else if (coordinate instanceof Coordinate) {
+            shapeFileDimentions = "xyz";
+        }
 
         ShapeType type = null;
 
         if (geom instanceof Point) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.POINT;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.POINTM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.POINTZ;
                     break;
                 default:
@@ -303,13 +426,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof MultiPoint) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.MULTIPOINT;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.MULTIPOINTM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.MULTIPOINTZ;
                     break;
                 default:
@@ -317,13 +441,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof Polygon || geom instanceof MultiPolygon) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.POLYGON;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.POLYGONM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.POLYGONZ;
                     break;
                 default:
@@ -331,13 +456,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof LineString || geom instanceof MultiLineString) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.ARC;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.ARCM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.ARCZ;
                     break;
                 default:
@@ -396,4 +522,5 @@ public class JTSUtilities {
         throw new ShapefileException(
                 "Cannot handle geometry class : " + (featureClass == null ? "null" : featureClass.getName()));
     }
+
 }

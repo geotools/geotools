@@ -69,6 +69,7 @@ import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.TreeException;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.JTSUtilities;
+import org.geotools.data.shapefile.shp.ShapeType;
 import org.geotools.data.shapefile.shp.ShapefileHeader;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.store.ContentEntry;
@@ -520,15 +521,55 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             }
             Set<String> usedNames = new HashSet<>(); // record names in case of duplicates
             if (shp != null) {
-                Class<? extends Geometry> geometryClass =
-                        JTSUtilities.findBestGeometryClass(shp.getHeader().getShapeType());
+                ShapeType shapeType = shp.getHeader().getShapeType();
+
+                Class<? extends Geometry> geometryClass = JTSUtilities.findBestGeometryClass(shapeType);
                 build.setName(Classes.getShortName(geometryClass));
                 build.setNillable(true);
                 build.setCRS(crs);
                 build.setBinding(geometryClass);
 
                 GeometryType geometryType = build.buildGeometryType();
-                attributes.add(build.buildDescriptor(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType));
+                GeometryDescriptor geometryDescriptor = build.buildDescriptor(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType);
+
+                if (shapeType.isTypeZ()) {
+                    // Check first non-null empty shp record to see if geometry has M values
+                    if (LOGGER.isLoggable(Level.FINER)) {
+                        LOGGER.log(
+                                Level.FINEST,
+                                "Scan Geometry Coordinates to determine Dimension and Measure for shapeType: {0}",
+                                shapeType);
+                    }
+                    while (shp.hasNext()){
+                        ShapefileReader.Record record = shp.nextRecord();
+                        Object shape = record.shape();
+                        if (shape != null && !(shape instanceof Geometry && ((Geometry)shape).isEmpty())) {
+                            Geometry geom = (Geometry) shape;
+
+                            int dimension = JTSUtilities.coordinateDimension( geom.getCoordinates() );
+                            geometryDescriptor.getUserData().put(Hints.COORDINATE_DIMENSION,dimension);
+
+                            int measure = JTSUtilities.coordinateMeasures( geom.getCoordinates() );
+                            geometryDescriptor.getUserData().put(Hints.COORDINATE_MEASURE, measure);
+
+                            break;
+                        }
+                    }
+                }
+                else {
+                    if (LOGGER.isLoggable(Level.FINER)) {
+                        LOGGER.log(
+                                Level.FINEST,
+                                "Determine Coordinate Dimension and Measure using shapeType: {0}",
+                                shapeType);
+                    }
+                    // Guess coordinate dimension from shape type
+                    geometryDescriptor.getUserData().put(Hints.COORDINATE_DIMENSION, JTSUtilities.guessCoordinateDimension(shapeType));
+                    geometryDescriptor.getUserData().put(Hints.COORDINATE_MEASURE, shapeType.isTypeM() ? 1 : 0);
+                }
+
+
+                attributes.add(geometryDescriptor);
                 usedNames.add(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME);
             }
 

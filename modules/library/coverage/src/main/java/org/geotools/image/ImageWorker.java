@@ -3433,6 +3433,18 @@ public class ImageWorker {
         return this;
     }
 
+    /** Native acceleration is no longer supported. */
+    @Deprecated
+    public final void writePNG(
+            final Object destination,
+            final String compression,
+            final float compressionRate,
+            final boolean nativeAcc,
+            final boolean paletted)
+            throws IOException {
+        writePNG(destination, compression, compressionRate, paletted);
+    }
+
     /**
      * Writes outs the image contained into this {@link ImageWorker} as a PNG using the provided destination,
      * compression and compression rate.
@@ -3443,7 +3455,6 @@ public class ImageWorker {
      * @param destination where to write the internal {@link #image} as a PNG.
      * @param compression algorithm.
      * @param compressionRate percentage of compression.
-     * @param nativeAcc should we use native acceleration.
      * @param paletted should we write the png as 8 bits?
      * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
      *     eoncding process.
@@ -3451,11 +3462,7 @@ public class ImageWorker {
     // Current code doesn't check if the writer already accepts the provided destination. It
     // wraps it in a ImageOutputStream inconditionnaly.
     public final void writePNG(
-            final Object destination,
-            final String compression,
-            final float compressionRate,
-            final boolean nativeAcc,
-            final boolean paletted)
+            final Object destination, final String compression, final float compressionRate, final boolean paletted)
             throws IOException {
         // Reformatting this image for PNG.
         final boolean hasPalette = image.getColorModel() instanceof IndexColorModel;
@@ -3500,7 +3507,7 @@ public class ImageWorker {
         }
         ImageWriter writer = null;
         // move on with the writer quest
-        if (!nativeAcc || writer == null) {
+        if (writer == null) {
 
             final Iterator<ImageWriter> it = ImageIO.getImageWriters(new ImageTypeSpecifier(image), "PNG");
             if (!it.hasNext()) {
@@ -3593,6 +3600,14 @@ public class ImageWorker {
         return this;
     }
 
+    /** Native acceleration is no longer supported. */
+    @Deprecated
+    public final void writeJPEG(
+            final Object destination, final String compression, final float compressionRate, final boolean nativeAcc)
+            throws IOException {
+        writeJPEG(destination, compression, compressionRate);
+    }
+
     /**
      * Writes outs the image contained into this {@link ImageWorker} as a JPEG using the provided destination ,
      * compression and compression rate.
@@ -3603,12 +3618,10 @@ public class ImageWorker {
      * @param destination where to write the internal {@link #image} as a JPEG.
      * @param compression algorithm.
      * @param compressionRate percentage of compression.
-     * @param nativeAcc should we use native acceleration.
      * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
      *     eoncding process.
      */
-    public final void writeJPEG(
-            final Object destination, final String compression, final float compressionRate, final boolean nativeAcc)
+    public final void writeJPEG(final Object destination, final String compression, final float compressionRate)
             throws IOException {
         // Reformatting this image for jpeg.
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -3674,9 +3687,7 @@ public class ImageWorker {
 
                 writer.setOutput(outStream);
                 // the JDK writer has problems with images that do not start at minx==miny==0
-                // while the clib writer has issues with tiled images
-                if (!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0)
-                        || nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1)) {
+                if ((image.getMinX() != 0 || image.getMinY() != 0)) {
                     final BufferedImage finalImage = new BufferedImage(
                             image.getColorModel(),
                             ((WritableRaster) image.getData()).createWritableTranslatedChild(0, 0),

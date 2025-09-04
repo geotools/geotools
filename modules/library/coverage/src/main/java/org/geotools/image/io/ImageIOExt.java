@@ -142,20 +142,8 @@ public class ImageIOExt {
         ImageIOExt.filesystemThreshold = filesystemThreshold;
     }
 
-    /**
-     * Allows or disallows native acceleration for the specified image format. By default, the image I/O extension for
-     * JAI provides native acceleration for PNG and JPEG. Unfortunatly, those native codec has bug in their 1.0 version.
-     * Invoking this method will force the use of standard codec provided in J2SE 1.4.
-     *
-     * <p><strong>Implementation note:</strong> the current implementation assume that JAI codec class name start with
-     * "CLib". It work for Sun's 1.0 implementation, but may change in future versions. If this method doesn't recognize
-     * the class name, it does nothing.
-     *
-     * @param format The format name (e.g. "png").
-     * @param category {@code ImageReaderSpi.class} to set the reader, or {@code ImageWriterSpi.class} to set the
-     *     writer.
-     * @param allowed {@code false} to disallow native acceleration.
-     */
+    /** Native acceleration is no longer supported, please stop using this method */
+    @Deprecated
     public static synchronized <T extends ImageReaderWriterSpi> void allowNativeCodec(
             final String format, final Class<T> category, final boolean allowed) {
         T standard = null;

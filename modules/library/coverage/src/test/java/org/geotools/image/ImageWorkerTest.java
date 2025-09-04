@@ -29,7 +29,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
@@ -479,32 +478,14 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // get the image of the world with transparency
         final ImageWorker worker = new ImageWorker(getSyntheticRGB(true));
         show(worker, "Input JPEG");
-
-        // /////////////////////////////////////////////////////////////////////
-        // nativeJPEG  with compression JPEG-LS
-        // ////////////////////////////////////////////////////////////////////
         final File outFile = TestData.temp(this, "temp.jpeg");
-        ImageWorker readWorker;
-        try {
-            worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
-            fail();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-
-        // /////////////////////////////////////////////////////////////////////
-        // native JPEG compression
-        // /////////////////////////////////////////////////////////////////////
-        worker.setImage(worldImage);
-        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
-        readWorker = new ImageWorker(ImageIO.read(outFile));
-        show(readWorker, "native JPEG");
 
         // /////////////////////////////////////////////////////////////////////
         // pure java JPEG compression
         // /////////////////////////////////////////////////////////////////////
         worker.setImage(worldImage);
-        worker.writeJPEG(outFile, "JPEG", 0.75f, false);
+        worker.writeJPEG(outFile, "JPEG", 0.75f);
+        ImageWorker readWorker = new ImageWorker();
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Pure Java JPEG");
         outFile.delete();
@@ -514,12 +495,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // /////////////////////////////////////////////////////////////////////
         worker.setImage(getIndexedRGBNodata());
         worker.forceIndexColorModel(false);
-        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
-        // with the native imageIO, an exception would have been thrown by now.
-        // with non-native, writing the alpha channel to JPEG will work
-        // as well as reading it (!), but this is not generally supported
-        // and will confuse other image readers,
-        // so alpha should be removed for JPEG
+        worker.writeJPEG(outFile, "JPEG", 0.75f);
         BufferedImage image = ImageIO.read(outFile);
         assertFalse(image.getColorModel().hasAlpha());
     }
@@ -535,44 +511,21 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Get the image of the world with transparency.
         final ImageWorker worker = new ImageWorker(worldImage);
         show(worker, "Input file");
-
-        // /////////////////////////////////////////////////////////////////////
-        // native png filtered compression 24 bits
-        // /////////////////////////////////////////////////////////////////////
         final File outFile = TestData.temp(this, "temp.png");
-        worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
-        final ImageWorker readWorker = new ImageWorker(ImageIO.read(outFile));
-        show(readWorker, "Native PNG24");
-
-        // /////////////////////////////////////////////////////////////////////
-        // native png filtered compression 8 bits
-        // /////////////////////////////////////////////////////////////////////
-        worker.setImage(worldImage);
-        worker.writePNG(outFile, "FILTERED", 0.75f, true, true);
-        readWorker.setImage(ImageIO.read(outFile));
-        show(readWorker, "native PNG8");
-
-        // /////////////////////////////////////////////////////////////////////
-        // pure java png 24
-        // /////////////////////////////////////////////////////////////////////
-        worker.setImage(worldImage);
-        worker.writePNG(outFile, "FILTERED", 0.75f, false, false);
-        readWorker.setImage(ImageIO.read(outFile));
-        show(readWorker, "Pure  PNG24");
 
         // /////////////////////////////////////////////////////////////////////
         // pure java png 8
         // /////////////////////////////////////////////////////////////////////
         worker.setImage(worldImage);
-        worker.writePNG(outFile, "FILTERED", 0.75f, false, true);
-        readWorker.setImage(ImageIO.read(outFile));
+        worker.writePNG(outFile, "FILTERED", 0.75f, true);
+        final ImageWorker readWorker = new ImageWorker(ImageIO.read(outFile));
         show(readWorker, "Pure  PNG8");
         outFile.delete();
 
         // Check we are not expanding to RGB a paletted image
         worker.setImage(sstImage);
         assertTrue(sstImage.getColorModel() instanceof IndexColorModel);
-        worker.writePNG(outFile, "FILTERED", 0.75f, false, false);
+        worker.writePNG(outFile, "FILTERED", 0.75f, false);
         readWorker.setImage(ImageIO.read(outFile));
         assertTrue(readWorker.getRenderedImage().getColorModel() instanceof IndexColorModel);
     }
@@ -634,7 +587,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
             final File outFile = TestData.temp(this, "temp.png");
             ImageWorker worker = new ImageWorker(bi);
-            worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
+            worker.writePNG(outFile, "FILTERED", 0.75f, false);
             worker.dispose();
 
             // make sure we can read it
@@ -646,7 +599,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
             // now ask to write paletted
             worker = new ImageWorker(bi);
-            worker.writePNG(outFile, "FILTERED", 0.75f, true, true);
+            worker.writePNG(outFile, "FILTERED", 0.75f, true);
             worker.dispose();
 
             // make sure we can read it

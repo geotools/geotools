@@ -34,9 +34,11 @@ import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -53,6 +55,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.WKTReader;
 
@@ -955,5 +958,14 @@ public class FlatGeobufDataStoreTest {
         DataStore store = DataStoreFinder.getDataStore(params);
         file.delete();
         store.removeSchema(new NameImpl("points"));
+    }
+
+    @Test
+    public void readHeterogeneous() throws IOException, FactoryException {
+        SimpleFeatureSource featureSource = getFeatureSource("heterogeneous");
+        SimpleFeatureType schema = featureSource.getSchema();
+        // mixed geometries, used to have a weird binding (not a JTS class)
+        GeometryDescriptor geometryDescriptor = schema.getGeometryDescriptor();
+        assertEquals(Geometry.class, geometryDescriptor.getType().getBinding());
     }
 }

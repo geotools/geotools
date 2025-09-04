@@ -428,7 +428,7 @@ class RasterLayerResponse {
             pbjImageRead.add(imageReadParam);
             pbjImageRead.add(reader);
 
-            raster = JAI.create(GridCoverageUtilities.IMAGEREAD, pbjImageRead, hints);
+            raster = JAI.create(GridCoverageUtilities.IMAGEREAD, pbjImageRead, newRi);
         } else {
             reader = readerSpi.createReaderInstance();
             try (FileImageInputStreamExtImpl fiis = new FileImageInputStreamExtImpl(input)) {

@@ -35,18 +35,6 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  */
 public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 
-    private static final String GDAL_JP2ECW_SPI = "it.geosolutions.imageio.plugins.jp2ecw.JP2GDALEcwImageReaderSpi";
-
-    private static final String GDAL_JP2KAKADU_SPI =
-            "it.geosolutions.imageio.plugins.jp2kakadu.JP2GDALKakaduImageReaderSpi";
-
-    private static final String GDAL_JP2MrSID_SPI =
-            "it.geosolutions.imageio.plugins.jp2mrsid.JP2GDALMrSidImageReaderSpi";
-
-    private static final String GDAL_SPI = "it.geosolutions.imageio.gdalframework.GDALImageReaderSpi";
-
-    private static final String KAKADU_SPI = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi";
-
     /** Logger. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicFormatFactory.class);
 

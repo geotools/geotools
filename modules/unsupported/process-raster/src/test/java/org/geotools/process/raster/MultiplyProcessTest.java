@@ -26,34 +26,6 @@ public class MultiplyProcessTest {
         covFactory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
     }
 
-    private void doTestMultiply() {
-
-        float[][] grid = {
-            {1, 2, 3, 4},
-            {5, 6, 8, 9},
-            {10, 11, 12, 13},
-            {14, 15, 16, 17},
-        };
-
-        Map<String, Object> properties = new HashMap<>();
-        CoverageUtilities.setNoDataProperty(properties, new NoDataContainer(2));
-        GridCoverage2D cov =
-                covFactory.create("test", grid, new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
-        GridCoverage2D coverageNoData = covFactory.create(
-                "nodata", cov.getRenderedImage(), cov.getEnvelope(), cov.getSampleDimensions(), null, properties);
-
-        MultiplyCoveragesProcess p = new MultiplyCoveragesProcess();
-        GridCoverage2D norm = p.execute(cov, cov, null);
-
-        float[] data = data(norm);
-        for (int i = 0; i < data.length; i++) {
-            assertEquals(Math.pow(grid[i / grid.length][i % grid.length], 2.), data[i], 1E-9);
-        }
-
-        GridCoverage2D nodataResult = p.execute(cov, coverageNoData, null);
-        assertEquals(0., data(nodataResult)[1], 1E-9);
-    }
-
     /** @throws Exception */
     @Test
     public void testMultiply() throws Exception {

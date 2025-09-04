@@ -66,9 +66,6 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
         setInfo();
     }
 
-    /** The {@code String} representing the parameter to customize multithreading use */
-    private static final String USE_MT = "USE_MULTITHREADING";
-
     /** Base Parameter Descriptor */
     protected static final GeneralParameterDescriptor[] PARAM_DESCRIPTOR = {
         READ_GRIDGEOMETRY2D, USE_JAI_IMAGEREAD, SUGGESTED_TILE_SIZE, FOOTPRINT_BEHAVIOR, BANDS

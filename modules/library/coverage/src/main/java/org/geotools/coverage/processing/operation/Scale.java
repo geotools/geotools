@@ -77,6 +77,7 @@ public class Scale extends BaseScaleOperationJAI {
         }
         final int transferType = source.getSampleModel().getDataType();
 
+        @SuppressWarnings("PMD.CloseResource")
         final JAI processor = OperationJAI.getJAI(hints);
         PlanarImage image;
         if (interpolation != null

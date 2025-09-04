@@ -703,7 +703,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // encode as png
         ImageWorker worker = new ImageWorker(bi);
         final File outFile = TestData.temp(this, "temp4.png");
-        worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
+        worker.writePNG(outFile, "FILTERED", 0.75f, false);
         worker.dispose();
 
         // make sure we can read it

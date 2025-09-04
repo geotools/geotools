@@ -2931,12 +2931,8 @@ public class ImageWorker {
             if (maskValue) {
                 pb = new ParameterBlock();
                 pb.setSource(mask, 0);
-                if (true) {
-                    prepareAlgebricOperation(Operator.NOT, pb, roi, null, false);
-                    mask = JAI.create(ALGEBRIC_OP_NAME, pb, renderingHints);
-                } else {
-                    mask = JAI.create("Not", pb, renderingHints);
-                }
+                prepareAlgebricOperation(Operator.NOT, pb, roi, null, false);
+                mask = JAI.create(ALGEBRIC_OP_NAME, pb, renderingHints);
             }
             // and with the image to zero the interested pixels
             tileCacheEnabled(false);

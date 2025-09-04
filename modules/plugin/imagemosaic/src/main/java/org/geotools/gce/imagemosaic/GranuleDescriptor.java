@@ -1438,6 +1438,7 @@ public class GranuleDescriptor {
         if (cache != null) {
             localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
         }
+        @SuppressWarnings("PMD.CloseResource")
         final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
         if (scheduler != null) {
             localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
@@ -1622,6 +1623,7 @@ public class GranuleDescriptor {
     private void updateLocalHints(Hints hints, RenderingHints localHints) {
         final TileCache cache = Utils.getTileCacheHint(hints);
         if (cache != null) localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
+        @SuppressWarnings("PMD.CloseResource")
         final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
         if (scheduler != null) localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
     }

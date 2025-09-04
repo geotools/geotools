@@ -501,7 +501,7 @@ public class CoverageUtilities {
                     double max = category.getRange().getMaximum();
                     if (!Double.isNaN(min) && !Double.isNaN(max)) {
                         // we have to filter those out
-                        RangeDouble novalueRange = (RangeDouble) RangeFactory.create(min, true, max, true);
+                        RangeDouble novalueRange = RangeFactory.create(min, true, max, true);
                         noDataValueRangeList = new ArrayList<>();
                         noDataValueRangeList.add(novalueRange);
                     }

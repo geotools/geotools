@@ -2032,6 +2032,7 @@ public class Utils {
             }
 
             // TileScheduler
+            @SuppressWarnings("PMD.CloseResource")
             TileScheduler tileScheduler = Utils.getTileSchedulerHint(inputHints);
             if (tileScheduler != null) {
                 hints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, tileScheduler));

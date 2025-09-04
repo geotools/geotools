@@ -37,6 +37,7 @@ import org.geotools.referencing.CRS;
 import org.wololo.flatgeobuf.ColumnMeta;
 import org.wololo.flatgeobuf.GeometryConversions;
 import org.wololo.flatgeobuf.HeaderMeta;
+import org.wololo.flatgeobuf.generated.Geometry;
 
 public class FlatGeobufDataStore extends ContentDataStore {
     final URL url;
@@ -114,7 +115,9 @@ public class FlatGeobufDataStore extends ContentDataStore {
                 throw new IOException(e);
             }
             ftb.setCRS(crs);
-            ftb.add("geom", GeometryConversions.getGeometryClass(headerMeta.geometryType));
+            Class<?> geometryClass = GeometryConversions.getGeometryClass(headerMeta.geometryType);
+            if (Geometry.class.equals(geometryClass)) geometryClass = org.locationtech.jts.geom.Geometry.class;
+            ftb.add("geom", geometryClass);
             for (ColumnMeta columnMeta : headerMeta.columns) ftb.add(columnMeta.name, columnMeta.getBinding());
             SimpleFeatureType featureType = ftb.buildFeatureType();
             return featureType;

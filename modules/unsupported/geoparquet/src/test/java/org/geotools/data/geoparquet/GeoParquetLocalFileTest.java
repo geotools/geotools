@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.filter.Filter;
@@ -121,10 +122,10 @@ public class GeoParquetLocalFileTest extends GeoParquetTestBase {
         // Get total count
         int totalCount = source.getFeatures().size();
 
-        Geometry geom = JTS.toGeometry(new Envelope(-10, 0, 0, 10));
-
-        Filter filter = FF.intersects(
-                FF.property(source.getSchema().getGeometryDescriptor().getLocalName()), FF.literal(geom));
+        Envelope env = new Envelope(-10, 0, -10, 0);
+        Geometry bbox = JTS.toGeometry(env);
+        bbox.setSRID(4326);
+        Filter filter = FF.bbox(FF.property("geometry"), FF.literal(bbox));
 
         // Get filtered features
         SimpleFeatureCollection filtered = source.getFeatures(filter);
@@ -171,8 +172,12 @@ public class GeoParquetLocalFileTest extends GeoParquetTestBase {
         assertFalse(bounds.isEmpty());
 
         // Create a query with the bounding box
+        Envelope env = new Envelope(-0.5, 0.5, -0.5, 0.5);
+        Geometry bbox = JTS.toGeometry(env);
+        bbox.setSRID(4326);
         Query query = new Query(source.getSchema().getTypeName());
-        query.setFilter(FF.bbox(FF.property("geometry"), -0.5, -0.5, 0.5, 0.5, null));
+        Filter filter = FF.bbox(FF.property("geometry"), FF.literal(bbox));
+        query.setFilter(filter);
 
         // Get filtered features
         SimpleFeatureCollection filtered = source.getFeatures(query);

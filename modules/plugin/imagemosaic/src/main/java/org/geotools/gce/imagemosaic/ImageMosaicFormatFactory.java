@@ -16,14 +16,9 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.spi.ImageReaderSpi;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
@@ -34,33 +29,6 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * @since 2.3
  */
 public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
-
-    /** Logger. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicFormatFactory.class);
-
-    static {
-        replaceTIFF();
-    }
-
-    private static void replaceTIFF() {
-        try {
-            // check if our tiff plugin is in the path
-            final String customTiffName = it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi.class.getName();
-            Class.forName(customTiffName);
-
-            // imageio tiff reader
-            final String imageioTiffName = TIFFImageReaderSpi.class.getName();
-
-            final boolean succeeded =
-                    ImageIOUtilities.replaceProvider(ImageReaderSpi.class, customTiffName, imageioTiffName, "tiff");
-            if (!succeeded)
-                if (LOGGER.isLoggable(Level.WARNING)) LOGGER.warning("Unable to set ordering between tiff readers spi");
-
-        } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, "Unable to load specific TIFF reader spi", e);
-        }
-    }
 
     /** @see GridFormatFactorySpi#createFormat(). */
     @Override

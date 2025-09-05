@@ -98,16 +98,16 @@ public class FeatureCollectionConversions {
         return it;
     }
 
-    private static int getTreeSize(HeaderMeta headerMeta) {
-        int treeSize = headerMeta.featuresCount > 0 && headerMeta.indexNodeSize > 0
-                ? (int) PackedRTree.calcSize((int) headerMeta.featuresCount, headerMeta.indexNodeSize)
+    private static long getTreeSize(HeaderMeta headerMeta) {
+        long treeSize = headerMeta.featuresCount > 0 && headerMeta.indexNodeSize > 0
+                ? PackedRTree.calcSize((int) headerMeta.featuresCount, headerMeta.indexNodeSize)
                 : 0;
         return treeSize;
     }
 
     public static Iterable<SimpleFeature> deserialize(InputStream stream, HeaderMeta headerMeta, SimpleFeatureType ft)
             throws IOException {
-        int treeSize = getTreeSize(headerMeta);
+        long treeSize = getTreeSize(headerMeta);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
 
@@ -120,7 +120,7 @@ public class FeatureCollectionConversions {
 
     public static Iterable<SimpleFeature> deserialize(
             InputStream stream, HeaderMeta headerMeta, SimpleFeatureType ft, int startIndex) throws IOException {
-        int treeSize = getTreeSize(headerMeta);
+        long treeSize = getTreeSize(headerMeta);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
         if (treeSize > 0) {
@@ -136,15 +136,15 @@ public class FeatureCollectionConversions {
 
     public static Iterable<SimpleFeature> deserialize(
             InputStream stream, HeaderMeta headerMeta, SimpleFeatureType ft, Envelope rect) throws IOException {
-        int treeSize = getTreeSize(headerMeta);
-        int featuresOffset = headerMeta.offset + treeSize;
+        long treeSize = getTreeSize(headerMeta);
+        long featuresOffset = headerMeta.offset + treeSize;
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
         Iterable<SimpleFeature> iterable;
         if (headerMeta.indexNodeSize > 1) {
             SearchResult result = PackedRTree.search(
                     data, headerMeta.offset, (int) headerMeta.featuresCount, headerMeta.indexNodeSize, rect);
-            int skip = treeSize - result.pos;
+            long skip = treeSize - result.pos;
             if (skip > 0) FlatGeobufFeatureReader.skipNBytes(data, treeSize - result.pos);
             iterable = new ReadHitsIterable(fb, result.hits, headerMeta, featuresOffset, data);
         } else {

@@ -1,7 +1,5 @@
 package org.geotools.data.flatgeobuf;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,27 +8,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Iterator;
+
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.test.TestData;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 
 public class FeatureCollectionConversionsTest {
-
-    /*@Test
-    public void funkyTest() throws IOException, URISyntaxException {
-        File file = new File("/home/bjorn/code/fgbtest/output.fgb");
-        try (InputStream stream = new FileInputStream(file)) {
-            Iterator<SimpleFeature> it =
-                    FeatureCollectionConversions.deserialize(stream).iterator();
-            int count = 0;
-            while (it.hasNext()) {
-                it.next();
-                count++;
-            }
-            assertEquals(179, count);
-        }
-    }*/
 
     @Test
     public void countriesTest() throws IOException, URISyntaxException {

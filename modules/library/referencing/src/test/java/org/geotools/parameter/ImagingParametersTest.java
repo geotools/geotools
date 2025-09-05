@@ -54,7 +54,7 @@ public final class ImagingParametersTest {
         final String vendor = "org.eclipse.imagen.media";
         final String mode = RenderedRegistryMode.MODE_NAME;
         final RegistryElementDescriptor descriptor =
-                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "scale");
+                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "Scale");
         final ImagingParameterDescriptors parameters = new ImagingParameterDescriptors(descriptor);
         final GenericName alias = parameters.getAlias().iterator().next();
         /*

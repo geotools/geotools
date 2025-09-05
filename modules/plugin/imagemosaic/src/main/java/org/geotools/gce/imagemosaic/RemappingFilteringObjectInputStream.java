@@ -33,12 +33,34 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+/**
+ * An ObjectInputStream that supports:
+ *
+ * <ul>
+ *   <li>validation of class names (exact, primitive, regex) before deserialization;
+ *   <li>remapping of class names (exact or package prefix) during deserialization; and
+ *   <li>optionally replacing the stream's class descriptor with the local one when a class is remapped, avoiding
+ *       InvalidClassException due to mismatched SUIDs.
+ * </ul>
+ *
+ * <p>The validation step is performed first, on the original class name from the stream. If validation fails, an
+ * InvalidClassException is thrown. If validation passes, remapping is applied (if any) and the (possibly remapped)
+ * class is loaded.
+ *
+ * <p>Array types are supported, including multidimensional arrays and arrays of primitives. Array types are validated
+ * and remapped based on their element type.
+ *
+ * <p>This class also supports chaining with a JEP 290 ObjectInputFilter for additional filtering.
+ *
+ * <p>This class is NOT thread-safe; use a separate instance per thread.
+ */
 public final class RemappingFilteringObjectInputStream extends ObjectInputStream {
     private final Map<String, String> remap; // exact class name -> new name
     private final List<PackageRule> pkgRules; // ordered prefix remaps
     private final Predicate<String> validator;
     private final ClassLoader loader;
 
+    /** A package remapping rule (old prefix -> new prefix). */
     private static final class PackageRule {
         final String oldPrefix; // e.g., "old.pkg.images"
         final String newPrefix; // e.g., "new.pkg.images"
@@ -81,8 +103,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         }
     }
 
-    /* ---------- name mapping (exact > package; array-aware) ---------- */
-
+    /** Map a non-array class name using exact and package rules. */
     private String mapNonArray(String name) {
         // exact class remap first
         String exact = remap.get(name);
@@ -98,6 +119,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         return name;
     }
 
+    /** Map any class name (array or non-array) using exact and package rules. */
     private String mapAny(String original) {
         if (!original.startsWith("[")) {
             // regular or inner class (inners have $ in the name)
@@ -121,6 +143,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         return sb.toString();
     }
 
+    /** Load a class, after validating and remapping its name as needed. */
     @Override
     protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
         String original = desc.getName(); // binary name (e.g., a.b.Outer$Inner)
@@ -129,6 +152,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         return load(mapped);
     }
 
+    /** Load a dynamic proxy class, after validating and remapping its interfaces as needed. */
     @Override
     @SuppressWarnings("deprecation")
     protected Class<?> resolveProxyClass(String[] interfaces) throws IOException, ClassNotFoundException {
@@ -146,7 +170,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         }
     }
 
-    // helper: did mapping change? (non-array only)
+    /** Return true if the given class name (non-array) will be remapped. */
     private boolean isRemappedNonArray(String name) {
         if (name.startsWith("[")) return false;
         if (remap.containsKey(name)) return true;
@@ -157,6 +181,10 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         return false;
     }
 
+    /**
+     * During deserialization, the stream's class descriptor is read first. If the class is remapped, we attempt to
+     * replace the stream's descriptor with the local one, avoiding InvalidClassException due to mismatched SUIDs.
+     */
     @Override
     protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
         ObjectStreamClass streamDesc = super.readClassDescriptor();
@@ -181,12 +209,12 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         return streamDesc;
     }
 
-    /* -------------------------- Builder -------------------------- */
-
+    /** Create a builder for RemappingFilteringObjectInputStream. */
     public static Builder builder() {
         return new Builder();
     }
 
+    /** Builder for RemappingFilteringObjectInputStream. */
     public static final class Builder {
         private InputStream in;
         private final Set<String> allowedNames = new HashSet<>();
@@ -202,7 +230,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return this;
         }
 
-        // Validation (same as before)
+        /** Accept exact class names (binary names, e.g., "a.b.Outer$Inner"). */
         public Builder accept(String... names) {
             if (names == null || names.length == 0) return this;
 
@@ -210,6 +238,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return this;
         }
 
+        /** Accept exact classes (including primitives). */
         public Builder accept(Class<?>... classes) {
             if (classes == null || classes.length == 0) return this;
 
@@ -220,6 +249,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return this;
         }
 
+        /** Accept class names matching the given regex pattern. */
         public Builder accept(Pattern pattern) {
             if (pattern == null) return this;
 
@@ -227,6 +257,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return this;
         }
 
+        /** Accept class names matching any of the given regex patterns. */
         public Builder acceptPattern(String... regexes) {
             if (regexes == null || regexes.length == 0) return this;
 
@@ -234,12 +265,13 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return this;
         }
 
+        /** Accept primitive types by name (e.g., "int", "double"). */
         public Builder acceptPrimitives(String... prims) {
             Collections.addAll(this.allowedPrimitives, prims);
             return this;
         }
 
-        // Remapping
+        /** Remap an exact class name (binary name, e.g., "old.pkg.images.MyClass"). */
         public Builder remap(String oldName, String newName) {
             remap.put(oldName, newName);
             return this;
@@ -250,11 +282,13 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return this;
         }
 
+        /** Set a JEP 290 ObjectInputFilter for additional filtering. */
         public Builder objectInputFilter(ObjectInputFilter f) {
             this.jep290Filter = f;
             return this;
         }
 
+        /** Build the validator predicate from the accepted names, patterns, and primitives. */
         private Predicate<String> buildValidator() {
             Predicate<String> p = allowedNames::contains;
             p = p.or(allowedPrimitives::contains);
@@ -280,6 +314,12 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return p;
         }
 
+        /**
+         * Build the RemappingFilteringObjectInputStream.
+         *
+         * @throws IllegalStateException if input stream is not set
+         * @throws IOException if an I/O error occurs
+         */
         public RemappingFilteringObjectInputStream build() throws IOException {
             if (in == null) throw new IllegalStateException("input(InputStream) is required");
             return new RemappingFilteringObjectInputStream(in, remap, pkgRules, buildValidator(), jep290Filter);

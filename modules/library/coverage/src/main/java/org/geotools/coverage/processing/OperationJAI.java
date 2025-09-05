@@ -1107,25 +1107,29 @@ public class OperationJAI extends Operation2D {
             int noDataIndex) {
         // Getting the internal ROI property
         ROI innerROI = CoverageUtilities.getROIProperty(sourceCoverage);
-        // Checking if it canbe set as parameter
-        // Definition of the nwe ROI
-        ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
-        ROI newROI = null;
-        if (innerROI == null) {
-            newROI = roiParam;
-        } else {
-            newROI = roiParam != null ? innerROI.intersect(roiParam) : innerROI;
+        // Checking if it can be set as parameter
+        if (roiIndex >= 0) {
+            // Definition of the nwe ROI
+            ROI roiParam = (ROI) parameters.getObjectParameter(roiIndex);
+            ROI newROI = null;
+            if (innerROI == null) {
+                newROI = roiParam;
+            } else {
+                newROI = roiParam != null ? innerROI.intersect(roiParam) : innerROI;
+            }
+            // Setting of the new ROI
+            parameters.set(newROI, roiIndex);
         }
-        // Setting of the new ROI
-        parameters.set(newROI, roiIndex);
 
         // Getting NoData propery
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
         Range innerNodata = nodataProp != null ? nodataProp.getAsRange() : null;
         // Setting the NoData Range parameter if not present
-        Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
-        if (noDataParam == null) {
-            parameters.set(innerNodata, noDataIndex);
+        if (noDataIndex >= 0) {
+            Range noDataParam = (Range) parameters.getObjectParameter(noDataIndex);
+            if (noDataParam == null) {
+                parameters.set(innerNodata, noDataIndex);
+            }
         }
     }
 

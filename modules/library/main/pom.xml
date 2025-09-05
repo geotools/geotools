@@ -265,6 +265,7 @@
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
       <artifactId>rendered-image-browser</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

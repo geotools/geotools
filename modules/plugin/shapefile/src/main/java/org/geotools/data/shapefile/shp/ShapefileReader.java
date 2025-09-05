@@ -744,6 +744,11 @@ public class ShapefileReader implements FileReader, Closeable {
         return getClass().getName();
     }
 
+    /**
+     * Force the reader to create flat geometries (with no Z or M values).
+     *
+     * @param flatGeometry
+     */
     public void setFlatGeometry(boolean flatGeometry) {
         this.flatGeometry = flatGeometry;
     }

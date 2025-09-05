@@ -19,7 +19,7 @@ package org.geotools.coverage.grid;
 import java.awt.Color;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
-import javax.media.jai.RasterFactory;
+import org.eclipse.imagen.RasterFactory;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.coverage.CoverageFactoryFinder;

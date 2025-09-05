@@ -668,16 +668,16 @@ public final class GeoTools {
      *
      * <ul>
      *   <li>If <A HREF="https://logback.qos.ch/">Logback</A> is available, then messages in {@code org.geotools} and
-     *       {@code javax.media.jai} namespace sent to {@linkplain java.util.logging.Logger logger} are redirected to
+     *       {@code org.eclipse.imagen} namespace sent to {@linkplain java.util.logging.Logger logger} are redirected to
      *       SL4J API used by logback.
      *   <li>Otherwise if <A HREF="http://logging.apache.org/log4j">Log4J</A> is available, then messages in
-     *       {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
+     *       {@code org.geotools} and {@code org.eclipse.imagen} namespace sent to Java
      *       {@linkplain java.util.logging.Logger logger} are redirected to Log4J API.
      *   <li>Otherwise if <A HREF="http://logging.apache.org/log4j">Reload4J</A> is available, then messages in
-     *       {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
+     *       {@code org.geotools} and {@code org.eclipse.imagen} namespace sent to Java
      *       {@linkplain java.util.logging.Logger logger} are redirected to Log4J 1 API used by Reload4J.
      *   <li>finally if <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> is available, then
-     *       messages in {@code org.geotools} and {@code javax.media.jai} namespaces sent to the Java
+     *       messages in {@code org.geotools} and {@code org.eclipse.imagen} namespaces sent to the Java
      *       {@linkplain java.util.logging.Logger logger} are redirected to Commons-logging.
      *   <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for console output is
      *       replaced by a {@linkplain org.geotools.util.logging.MonolineFormatter monoline formatter}.
@@ -720,16 +720,16 @@ public final class GeoTools {
      * <ul>
      *   <li>If Logging.ALL has already been configured no further work is required.
      *   <li>Otherwise if <A HREF="https://logback.qos.ch/">Logback</A> is available, then messages in
-     *       {@code org.geotools} and {@code javax.media.jai} namespace sent to {@linkplain java.util.logging.Logger
+     *       {@code org.geotools} and {@code org.eclipse.imagen} namespace sent to {@linkplain java.util.logging.Logger
      *       logger} are redirected to SL4J API used by logback.
      *   <li>Otherwise if <A HREF="http://logging.apache.org/log4j">Log4J</A> is available, then messages in
-     *       {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
+     *       {@code org.geotools} and {@code org.eclipse.imagen} namespace sent to Java
      *       {@linkplain java.util.logging.Logger logger} are redirected to Log4J API.
      *   <li>Otherwise if <A HREF="http://logging.apache.org/log4j">Reload4J</A> is available, then messages in
-     *       {@code org.geotools} and {@code javax.media.jai} namespace sent to Java
+     *       {@code org.geotools} and {@code org.eclipse.imagen} namespace sent to Java
      *       {@linkplain java.util.logging.Logger logger} are redirected to Log4J 1 API used by Reload4J.
      *   <li>Otherwise if <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> is available, then
-     *       messages in {@code org.geotools} and {@code javax.media.jai} namespaces sent to the Java
+     *       messages in {@code org.geotools} and {@code org.eclipse.imagen} namespaces sent to the Java
      *       {@linkplain java.util.logging.Logger logger} are redirected to Commons-logging.
      *   <li>Otherwise, the Java logging {@linkplain java.util.logging.Formatter formatter} for console output is
      *       replaced by a {@linkplain org.geotools.util.logging.MonolineFormatter monoline formatter}.

@@ -16,8 +16,8 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import javax.media.jai.operator.MedianFilterDescriptor;
-import javax.media.jai.operator.MedianFilterShape;
+import org.eclipse.imagen.operator.MedianFilterDescriptor;
+import org.eclipse.imagen.operator.MedianFilterShape;
 import org.geotools.coverage.processing.OperationJAI;
 
 /**

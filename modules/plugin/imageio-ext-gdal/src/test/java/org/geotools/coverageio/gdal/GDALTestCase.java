@@ -16,16 +16,16 @@
  */
 package org.geotools.coverageio.gdal;
 
-import it.geosolutions.rendered.viewer.ImageViewer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.media.viewer.ImageViewer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.test.TestData;

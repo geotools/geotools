@@ -21,7 +21,7 @@ import org.geotools.api.coverage.Coverage;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  * @see RenderedImage
- * @see javax.media.jai.PixelAccessor
+ * @see org.eclipse.imagen.PixelAccessor
  */
 public interface GridCoverage extends Coverage {
     /**

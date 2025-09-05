@@ -24,14 +24,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.spi.ImageReaderSpi;
 import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
-import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.factory.Hints;
@@ -69,21 +66,9 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
         setInfo();
     }
 
-    /** The {@code String} representing the parameter to customize multithreading use */
-    private static final String USE_MT = "USE_MULTITHREADING";
-
-    /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
-     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify to use multithreading when
-     * leveraging on a JAI ImageRead operation. This will be achieved with the use of the ImageReadMT operation of the
-     * ImageIO-Ext.
-     */
-    public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING = new DefaultParameterDescriptor<>(
-            USE_MT, Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
-
     /** Base Parameter Descriptor */
     protected static final GeneralParameterDescriptor[] PARAM_DESCRIPTOR = {
-        READ_GRIDGEOMETRY2D, USE_JAI_IMAGEREAD, USE_MULTITHREADING, SUGGESTED_TILE_SIZE, FOOTPRINT_BEHAVIOR, BANDS
+        READ_GRIDGEOMETRY2D, USE_JAI_IMAGEREAD, SUGGESTED_TILE_SIZE, FOOTPRINT_BEHAVIOR, BANDS
     };
 
     /** Each plugin needs to implement this method defining format specific properties */

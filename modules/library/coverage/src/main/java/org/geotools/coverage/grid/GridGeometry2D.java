@@ -1184,7 +1184,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * in an exception to be thrown.
      *
      * <p>Note that a succesful check at construction time may fails later if the image is part of a JAI chain (i.e. is
-     * a {@link javax.media.jai.RenderedOp}) and its bounds has been edited (i.e the image node as been re-rendered).
+     * a {@link org.eclipse.imagen.RenderedOp}) and its bounds has been edited (i.e the image node as been re-rendered).
      * Since {@code GridCoverage2D} are immutable by design, we are not allowed to propagate the image change here. The
      * {@link #getGridGeometry} method will thrown an {@link IllegalStateException} in this case.
      */

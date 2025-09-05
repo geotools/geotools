@@ -30,7 +30,7 @@ import org.geotools.api.geometry.Position;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  * @see java.awt.geom.AffineTransform
- * @see javax.media.jai.PerspectiveTransform
+ * @see org.eclipse.imagen.PerspectiveTransform
  * @see MathTransformFactory
  * @see CoordinateOperation#getMathTransform
  */

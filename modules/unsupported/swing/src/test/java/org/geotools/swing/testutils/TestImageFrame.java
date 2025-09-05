@@ -23,7 +23,7 @@ import java.awt.image.RenderedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.SwingUtilities;
-import org.jaitools.swing.ImageFrame;
+import org.eclipse.imagen.media.swing.ImageFrame;
 
 /**
  * Wraps a JAITools {@linkplain ImageFrame} and a {@linkplain CountDownLatch} to enable test methods to display the

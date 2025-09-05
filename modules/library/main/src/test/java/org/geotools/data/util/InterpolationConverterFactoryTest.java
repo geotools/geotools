@@ -17,11 +17,11 @@
 package org.geotools.data.util;
 
 import java.util.Set;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationBicubic;
-import javax.media.jai.InterpolationBicubic2;
-import javax.media.jai.InterpolationBilinear;
-import javax.media.jai.InterpolationNearest;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.InterpolationBicubic;
+import org.eclipse.imagen.InterpolationBicubic2;
+import org.eclipse.imagen.InterpolationBilinear;
+import org.eclipse.imagen.InterpolationNearest;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.junit.Assert;

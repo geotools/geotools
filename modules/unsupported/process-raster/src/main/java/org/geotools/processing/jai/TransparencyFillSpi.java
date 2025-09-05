@@ -17,14 +17,14 @@
 package org.geotools.processing.jai;
 
 import java.awt.image.renderable.RenderedImageFactory;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.OperationRegistrySpi;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.OperationRegistrySpi;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 
 public class TransparencyFillSpi implements OperationRegistrySpi {
 
     /** The name of the product to which these operations belong. */
-    private String productName = "it.geosolutions.jaiext";
+    private String productName = "org.eclipse.imagen.media";
 
     /** Default constructor. */
     public TransparencyFillSpi() {}

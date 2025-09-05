@@ -20,7 +20,7 @@ import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.io.IOException;
 import java.util.Map;
-import javax.media.jai.ImageLayout;
+import org.eclipse.imagen.ImageLayout;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 
 /**

@@ -16,11 +16,7 @@
  */
 package org.geotools.coverageio.jp2k;
 
-import com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi;
-import com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi;
-import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
 import it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.util.KakaduUtilities;
 import java.awt.RenderingHints;
 import java.util.Collections;
@@ -28,8 +24,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
@@ -50,47 +44,11 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
     }
 
     static {
-        try {
-            new ParameterBlockJAI("ImageReadMT");
-        } catch (final Exception e) {
-            try {
-                ImageReadDescriptorMT.register(JAI.getDefaultInstance());
-            } catch (final Exception e1) {
-
-            }
-        }
-
         boolean hasKakaduSpi = false;
-        boolean hasNativeJp2 = false;
-        boolean hasStandardJp2 = false;
-        String kakaduJp2Name = null;
-        String standardJp2Name = null;
-        String jp2CodecLibName = null;
         try {
             // check if our jp2k plugin is in the path
             Class.forName("it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi");
-            kakaduJp2Name = it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi.class.getName();
             hasKakaduSpi = true;
-        } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi", e);
-        }
-
-        try {
-            Class.forName("com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi");
-            standardJp2Name = com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi.class.getName();
-            hasStandardJp2 = true;
-
-        } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi", e);
-        }
-
-        try {
-            Class.forName("com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi");
-            jp2CodecLibName = com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi.class.getName();
-            hasNativeJp2 = true;
-
         } catch (ClassNotFoundException e) {
             if (LOGGER.isLoggable(Level.WARNING))
                 LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi", e);
@@ -98,12 +56,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 
         if (hasKakaduSpi && KakaduUtilities.isKakaduAvailable()) {
             cachedSpi = new JP2KKakaduImageReaderSpi();
-            if (hasStandardJp2)
-                ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakaduJp2Name, standardJp2Name, "JPEG2000");
-            if (hasNativeJp2)
-                ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakaduJp2Name, jp2CodecLibName, "JPEG2000");
-        } else if (hasStandardJp2) cachedSpi = new J2KImageReaderSpi();
-        else cachedSpi = new J2KImageReaderCodecLibSpi();
+        }
     }
 
     /**
@@ -118,8 +71,8 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
         // if these classes are here, then the runtime environment has
         // access to JAI and the JAI ImageI/O toolbox.
         try {
-            Class.forName("javax.media.jai.JAI");
-            Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
+            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
             if (cachedSpi != null) available = true;
             //
             // Class.forName("it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi");

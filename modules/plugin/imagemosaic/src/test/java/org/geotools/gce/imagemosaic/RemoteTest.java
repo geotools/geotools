@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.TestData;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.parameter.ParameterValue;

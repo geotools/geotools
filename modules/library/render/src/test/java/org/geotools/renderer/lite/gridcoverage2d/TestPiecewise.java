@@ -21,18 +21,6 @@ import static org.junit.Assert.assertEquals;
 import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageReader;
 import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.piecewise.DefaultConstantPiecewiseTransformElement;
-import it.geosolutions.jaiext.piecewise.DefaultLinearPiecewiseTransform1DElement;
-import it.geosolutions.jaiext.piecewise.DefaultPassthroughPiecewiseTransform1DElement;
-import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1D;
-import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
-import it.geosolutions.jaiext.piecewise.GenericPiecewiseOpImage;
-import it.geosolutions.jaiext.piecewise.MathTransformation;
-import it.geosolutions.jaiext.piecewise.PiecewiseUtilities;
-import it.geosolutions.jaiext.piecewise.Position;
-import it.geosolutions.jaiext.piecewise.SingleDimensionTransformation;
-import it.geosolutions.jaiext.piecewise.TransformationException;
-import it.geosolutions.jaiext.range.RangeFactory;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -45,11 +33,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.stream.FileImageInputStream;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.ROI;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RasterFactory;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.piecewise.DefaultConstantPiecewiseTransformElement;
+import org.eclipse.imagen.media.piecewise.DefaultLinearPiecewiseTransform1DElement;
+import org.eclipse.imagen.media.piecewise.DefaultPassthroughPiecewiseTransform1DElement;
+import org.eclipse.imagen.media.piecewise.DefaultPiecewiseTransform1D;
+import org.eclipse.imagen.media.piecewise.DefaultPiecewiseTransform1DElement;
+import org.eclipse.imagen.media.piecewise.GenericPiecewiseOpImage;
+import org.eclipse.imagen.media.piecewise.MathTransformation;
+import org.eclipse.imagen.media.piecewise.PiecewiseUtilities;
+import org.eclipse.imagen.media.piecewise.Position;
+import org.eclipse.imagen.media.piecewise.SingleDimensionTransformation;
+import org.eclipse.imagen.media.piecewise.TransformationException;
+import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.TestData;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
@@ -125,12 +125,12 @@ public class TestPiecewise {
     /**
      * Testing {@link DefaultConstantPiecewiseTransformElement}.
      *
-     * @throws it.geosolutions.jaiext.piecewise.NoninvertibleTransformException
+     * @throws org.eclipse.imagen.media.piecewise.NoninvertibleTransformException
      */
     @Test
     @SuppressWarnings("SelfEquals")
     public void constantTransform()
-            throws IOException, TransformException, it.geosolutions.jaiext.piecewise.NoninvertibleTransformException,
+            throws IOException, TransformException, org.eclipse.imagen.media.piecewise.NoninvertibleTransformException,
                     TransformationException {
 
         // /////////////////////////////////////////////////////////////////////

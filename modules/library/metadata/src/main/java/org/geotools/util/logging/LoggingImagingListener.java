@@ -19,13 +19,13 @@ package org.geotools.util.logging;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.util.ImagingListener;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.util.ImagingListener;
 
 /**
- * Listens to JAI events, redirecting logging to javax.media.jai loggers.
+ * Listens to JAI events, redirecting logging to org.eclipse.imagen loggers.
  *
- * <p>Logger is determined from {@code where} parameter allowing fine-grain control of javax.media.jai logging.
+ * <p>Logger is determined from {@code where} parameter allowing fine-grain control of org.eclipse.imagen logging.
  */
 final class LoggingImagingListener implements ImagingListener {
     @Override
@@ -33,7 +33,7 @@ final class LoggingImagingListener implements ImagingListener {
             throws RuntimeException {
         Logger log;
         if (where == null) {
-            log = Logging.getLogger("javax.media.jai");
+            log = Logging.getLogger("org.eclipse.imagen");
         } else {
             Class classe = where instanceof Class ? (Class) where : where.getClass();
             log = Logging.getLogger(classe);

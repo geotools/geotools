@@ -17,18 +17,6 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.jiffle.Jiffle;
-import it.geosolutions.jaiext.jiffle.JiffleException;
-import it.geosolutions.jaiext.jiffle.parser.node.Band;
-import it.geosolutions.jaiext.jiffle.parser.node.Expression;
-import it.geosolutions.jaiext.jiffle.parser.node.GetSourceValue;
-import it.geosolutions.jaiext.jiffle.parser.node.ScalarLiteral;
-import it.geosolutions.jaiext.jiffle.runtime.BandTransform;
-import it.geosolutions.jaiext.jiffleop.JiffleDescriptor;
-import it.geosolutions.jaiext.jiffleop.JiffleRIF;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.Range.DataType;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.util.ArrayList;
@@ -41,10 +29,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.jiffle.Jiffle;
+import org.eclipse.imagen.media.jiffle.JiffleException;
+import org.eclipse.imagen.media.jiffle.parser.node.Band;
+import org.eclipse.imagen.media.jiffle.parser.node.Expression;
+import org.eclipse.imagen.media.jiffle.parser.node.GetSourceValue;
+import org.eclipse.imagen.media.jiffle.parser.node.ScalarLiteral;
+import org.eclipse.imagen.media.jiffle.runtime.BandTransform;
+import org.eclipse.imagen.media.jiffleop.JiffleDescriptor;
+import org.eclipse.imagen.media.jiffleop.JiffleRIF;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.Range.DataType;
 import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -73,7 +73,7 @@ public class JiffleProcess implements RasterProcess {
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(), new JiffleDescriptor(), new JiffleRIF(), "it.geosolutions.jaiext");
+                JAI.getDefaultInstance(), new JiffleDescriptor(), new JiffleRIF(), "org.eclipse.imagen.media");
     }
 
     static final Logger LOGGER = Logging.getLogger(JiffleProcess.class);

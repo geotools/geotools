@@ -30,9 +30,9 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.RenderedOp;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 
@@ -166,80 +166,6 @@ enum ReadType {
                 layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
                 raster = JAI.create("ImageRead", pbjImageRead, new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
             } else raster = JAI.create("ImageRead", pbjImageRead);
-            // force rendering (a-la JAI)
-            if (raster != null) raster.getWidth();
-            return raster;
-        }
-    },
-
-    JAI_IMAGEREAD_MT {
-        @Override
-        RenderedImage read(
-                final ImageReadParam readP,
-                final int imageIndex,
-                final File rasterFile,
-                final Rectangle readDimension,
-                final Dimension tileDimension,
-                final ImageReaderSpi spi)
-                throws IOException {
-
-            ///
-            // Using ImageReader to load the data directly
-            //
-            ImageReader reader = null;
-            try (ImageInputStream inStream = Utils.getInputStream(rasterFile)) {
-                // get stream
-                if (inStream == null) return null;
-                // get a reader
-                reader = spi.createReaderInstance();
-                if (reader == null) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning("Unable to get reader for file " + rasterFile.getAbsolutePath());
-                    return null;
-                }
-
-                inStream.reset();
-                reader.setInput(inStream);
-
-                // check source region
-                if (CoverageUtilities.checkEmptySourceRegion(readP, readDimension)) return null;
-
-            } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(
-                            Level.WARNING, "Unable to compute source area for file " + rasterFile.getAbsolutePath(), e);
-                return null;
-            } finally {
-                // close everything
-                try {
-                    // reader
-                    if (reader != null) reader.dispose();
-                } catch (Throwable t) {
-                    // swallow the exception, we are just trying to close as much stuff as possible
-                }
-
-                // instream
-                // swallow the exception, we are just trying to close as much stuff as possible
-            }
-
-            // read data
-            final ParameterBlock pbjImageRead = new ParameterBlock();
-            pbjImageRead.add(rasterFile);
-            pbjImageRead.add(imageIndex);
-            pbjImageRead.add(false);
-            pbjImageRead.add(false);
-            pbjImageRead.add(false);
-            pbjImageRead.add(null);
-            pbjImageRead.add(null);
-            pbjImageRead.add(readP);
-            pbjImageRead.add(spi.createReaderInstance());
-            final RenderedOp raster;
-            if (tileDimension != null) {
-                // build a proper layout
-                final ImageLayout layout = new ImageLayout();
-                layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
-                raster = JAI.create("ImageReadMT", pbjImageRead, new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-            } else raster = JAI.create("ImageReadMT", pbjImageRead);
             // force rendering (a-la JAI)
             if (raster != null) raster.getWidth();
             return raster;

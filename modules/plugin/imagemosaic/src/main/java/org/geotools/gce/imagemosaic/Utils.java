@@ -20,7 +20,6 @@ import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -36,6 +35,7 @@ import java.awt.image.SampleModel;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -65,13 +65,6 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.Histogram;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.ROI;
-import javax.media.jai.TileCache;
-import javax.media.jai.TileScheduler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -81,6 +74,14 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.Histogram;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.TileCache;
+import org.eclipse.imagen.TileScheduler;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.data.DataAccessFactory.Param;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -237,7 +238,12 @@ public class Utils {
 
     /** Patterns for qualified class names to allow when deserializing SampleImage objects */
     private static final String[] SAMPLE_IMAGE_PATTERNS = {
-        "com.sun.imageio.*", "com.sun.media.*", "java.awt.*", "javax.media.jai.*", "sun.awt.image.*"
+        "com.sun.imageio.*",
+        "com.sun.media.*",
+        "java.awt.*",
+        "javax.media.jai.*",
+        "org.eclipse.imagen.*",
+        "sun.awt.image.*"
     };
 
     /**
@@ -1431,15 +1437,16 @@ public class Utils {
         // serialize it
         // do we have the sample image??
         if (Utils.checkFileReadable(sampleImageFile)) {
-            try (ValidatingObjectInputStream oiStream = ValidatingObjectInputStream.builder()
-                    .setFile(sampleImageFile)
-                    .accept(SAMPLE_IMAGE_CLASSES)
-                    .accept(SAMPLE_IMAGE_PATTERNS)
-                    .accept(SAMPLE_IMAGE_PRIMITIVES)
-                    .get()) {
-                if (sampleImageAllowList != null) {
-                    oiStream.accept(sampleImageAllowList);
-                }
+            try (FileInputStream fis = new FileInputStream(sampleImageFile);
+                    RemappingFilteringObjectInputStream oiStream = RemappingFilteringObjectInputStream.builder()
+                            .input(fis)
+                            .accept(SAMPLE_IMAGE_CLASSES)
+                            .acceptPattern(SAMPLE_IMAGE_PATTERNS)
+                            .accept(SAMPLE_IMAGE_PRIMITIVES)
+                            .accept(sampleImageAllowList)
+                            .remapPackage("javax.media.jai", "org.eclipse.imagen")
+                            .remapPackage("com.sun.media.jai.rmi", "org.eclipse.imagen.media.serialize")
+                            .build()) {
                 // load the image
                 Object object = oiStream.readObject();
                 if (object instanceof SampleImage) {
@@ -2025,6 +2032,7 @@ public class Utils {
             }
 
             // TileScheduler
+            @SuppressWarnings("PMD.CloseResource")
             TileScheduler tileScheduler = Utils.getTileSchedulerHint(inputHints);
             if (tileScheduler != null) {
                 hints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, tileScheduler));

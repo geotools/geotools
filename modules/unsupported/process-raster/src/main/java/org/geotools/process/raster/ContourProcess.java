@@ -17,17 +17,21 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.InterpolationNearest;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.contour.ContourDescriptor;
+import org.eclipse.imagen.media.contour.ContourRIF;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.RangeDouble;
+import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -50,9 +54,6 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.NumberRange;
-import org.jaitools.media.jai.contour.ContourDescriptor;
-import org.jaitools.media.jai.contour.ContourRIF;
-import org.jaitools.numeric.Range;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.util.AffineTransformation;
@@ -196,7 +197,7 @@ public class ContourProcess implements RasterProcess {
                             if (catRange.getMinimum() == catRange.getMaximum()) {
                                 noDataList.add(catRange.getMinimum());
                             } else {
-                                Range<Double> noData = new Range<>(
+                                RangeDouble noData = RangeFactory.create(
                                         catRange.getMinimum(),
                                         catRange.isMinIncluded(),
                                         catRange.getMaximum(),

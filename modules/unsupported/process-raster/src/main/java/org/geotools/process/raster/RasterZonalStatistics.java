@@ -17,20 +17,20 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeDouble;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
-import it.geosolutions.jaiext.zonal.ZoneGeometry;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeDouble;
+import org.eclipse.imagen.media.stats.Statistics;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.media.zonal.ZonalStatsDescriptor;
+import org.eclipse.imagen.media.zonal.ZoneGeometry;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;

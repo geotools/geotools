@@ -33,7 +33,7 @@ public interface ParameterValueGroup extends GeneralParameterValue {
      *     override the {@linkplain GeneralParameterValue#getDescriptor generic method provided in the parent
      *     interface}. The "descriptor" name make more apparent that this method returns an abstract definition of
      *     parameters - not their actual values - and is consistent with usage in other Java libraries like
-     *     {@link javax.media.jai.ParameterList#getParameterListDescriptor ParameterList}.
+     *     {@link org.eclipse.imagen.ParameterList#getParameterListDescriptor ParameterList}.
      */
     @Override
     ParameterDescriptorGroup getDescriptor();

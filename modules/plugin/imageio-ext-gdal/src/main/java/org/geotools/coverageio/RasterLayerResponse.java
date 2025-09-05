@@ -18,8 +18,6 @@ package org.geotools.coverageio;
 
 import it.geosolutions.imageio.gdalframework.GDALUtilities;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -39,10 +37,12 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -165,10 +165,9 @@ class RasterLayerResponse {
         } else {
             final ImageReadParam imageReadParam = originatingCoverageRequest.getImageReadParam();
             final File input = originatingCoverageRequest.getInput();
-            final boolean useMultithreading = originatingCoverageRequest.useMultithreading();
             final boolean newTransform = originatingCoverageRequest.isAdjustGridToWorldSet();
             final boolean useJAI = originatingCoverageRequest.useJAI();
-            gridCoverage = createCoverage(input, imageReadParam, useJAI, useMultithreading, newTransform);
+            gridCoverage = createCoverage(input, imageReadParam, useJAI, newTransform);
         }
     }
 
@@ -178,24 +177,18 @@ class RasterLayerResponse {
      *
      * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead operation or a simple
      *     direct call to the {@code read} method of a proper {@code ImageReader}.
-     * @param useMultithreading specify if the underlying read process should use multithreading when a JAI ImageRead
-     *     operation is requested
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */
     private GridCoverage createCoverage(
-            File input,
-            ImageReadParam imageReadParam,
-            final boolean useJAI,
-            final boolean useMultithreading,
-            final boolean adjustGridToWorld)
+            File input, ImageReadParam imageReadParam, final boolean useJAI, final boolean adjustGridToWorld)
             throws IOException {
         // ////////////////////////////////////////////////////////////////////
         //
         // Doing an image read for reading the coverage.
         //
         // ////////////////////////////////////////////////////////////////////
-        PlanarImage raster = readRaster(input, useJAI, imageReadParam, useMultithreading);
+        PlanarImage raster = readRaster(input, useJAI, imageReadParam);
 
         final boolean useFootprint =
                 multiLevelRoi != null && footprintBehavior != null && footprintBehavior.handleFootprints();
@@ -411,16 +404,11 @@ class RasterLayerResponse {
      * @param input a File input to be used for reading the image.
      * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we need a simple direct
      *     {@code ImageReader.read(...)} call.
-     * @param imageReadParam an {@code ImageReadParam} specifying the read parameters
-     * @param useMultithreading {@code true} if a JAI ImageRead operation is requested with support for multithreading.
-     *     This parameter will be ignored if requesting a direct read operation.
+     * @param imageReadParam an {@code ImageReadParam} specifying the read parameters This parameter will be ignored if
+     *     requesting a direct read operation.
      * @return the read {@code PlanarImage}
      */
-    protected PlanarImage readRaster(
-            final File input,
-            final boolean useJAI,
-            final ImageReadParam imageReadParam,
-            final boolean useMultithreading)
+    protected PlanarImage readRaster(final File input, final boolean useJAI, final ImageReadParam imageReadParam)
             throws IOException {
         PlanarImage raster;
         final ImageReader reader;
@@ -440,11 +428,7 @@ class RasterLayerResponse {
             pbjImageRead.add(imageReadParam);
             pbjImageRead.add(reader);
 
-            // Check if to use a simple JAI ImageRead operation or a
-            // multithreaded one
-            final String jaiOperation =
-                    useMultithreading ? GridCoverageUtilities.IMAGEREADMT : GridCoverageUtilities.IMAGEREAD;
-            raster = JAI.create(jaiOperation, pbjImageRead, newRi);
+            raster = JAI.create(GridCoverageUtilities.IMAGEREAD, pbjImageRead, newRi);
         } else {
             reader = readerSpi.createReaderInstance();
             try (FileImageInputStreamExtImpl fiis = new FileImageInputStreamExtImpl(input)) {

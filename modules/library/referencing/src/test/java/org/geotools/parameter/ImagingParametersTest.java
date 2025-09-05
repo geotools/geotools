@@ -16,7 +16,6 @@
  */
 package org.geotools.parameter;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -27,12 +26,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.ParameterList;
-import javax.media.jai.RegistryElementDescriptor;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.ParameterList;
+import org.eclipse.imagen.RegistryElementDescriptor;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -51,17 +50,17 @@ public final class ImagingParametersTest {
     /** Tests {@link ImagingParameters}. */
     @Test
     public void testDescriptors() {
-        final String author = Citations.JAI.getTitle().toString();
-        final String vendor = "com.sun.media.jai";
+        final String author = Citations.IMAGEN.getTitle().toString();
+        final String vendor = "org.eclipse.imagen.media";
         final String mode = RenderedRegistryMode.MODE_NAME;
         final RegistryElementDescriptor descriptor =
-                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "AddConst");
+                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "Scale");
         final ImagingParameterDescriptors parameters = new ImagingParameterDescriptors(descriptor);
         final GenericName alias = parameters.getAlias().iterator().next();
         /*
          * Tests the operation-wide properties.
          */
-        assertEquals("Name", "AddConst", parameters.getName().getCode());
+        assertEquals("Name", "Scale", parameters.getName().getCode());
         assertEquals(
                 "Authority",
                 author,
@@ -74,11 +73,24 @@ public final class ImagingParametersTest {
         /*
          * Tests the properties for a specific parameter in the parameter group.
          */
-        final ParameterDescriptor param = (ParameterDescriptor) parameters.descriptor("constants");
-        assertEquals("Name", "constants", param.getName().getCode());
-        assertEquals("Type", double[].class, param.getValueClass());
-        assertEquals("Default", 1, ((double[]) param.getDefaultValue()).length);
-        assertNull("Minimum", param.getMinimumValue());
+        final ParameterDescriptor param = (ParameterDescriptor) parameters.descriptor("xScale");
+        assertEquals("Name", "Scale", parameters.getName().getCode());
+        assertEquals(
+                "Authority",
+                author,
+                parameters.getName().getAuthority().getTitle().toString());
+        assertEquals("Vendor", vendor, alias.scope().name().toString());
+        assertNotNull("Version", parameters.getName().getVersion());
+        assertLocalized("Vendor", alias.scope().name().toInternationalString());
+        assertLocalized("Remarks", parameters.getRemarks());
+        assertTrue("Remarks", parameters.getRemarks().toString().trim().length() > 0);
+        /*
+         * Tests the properties for a specific parameter in the parameter group.
+         */
+        assertEquals("Name", "xScale", param.getName().getCode());
+        assertEquals("Type", Float.class, param.getValueClass());
+        assertEquals("Default", 1f, param.getDefaultValue());
+        assertEquals("Minimum", 0f, param.getMinimumValue());
         assertNull("Maximum", param.getMaximumValue());
         assertNull("Valid values", param.getValidValues());
         assertLocalized("Remarks", param.getRemarks());
@@ -92,17 +104,15 @@ public final class ImagingParametersTest {
          */
         final ImagingParameters values = (ImagingParameters) parameters.createValue();
         for (int i = 0; i < 20; i++) {
-            final ParameterValue before = values.parameter("constants");
+            final ParameterValue before = values.parameter("xScale");
             if (i % 5 == 0) {
-                values.parameters.setParameter("constants", new double[] {i});
+                values.parameters.setParameter("xScale", (float) i);
             } else {
-                values.parameter("constants").setValue(new double[] {i});
+                values.parameter("xScale").setValue((float) i);
             }
-            assertArrayEquals(
-                    values.parameter("constants").doubleValueList(),
-                    (double[]) values.parameters.getObjectParameter("constants"),
-                    0.0);
-            assertSame(before, values.parameter("constants"));
+            assertEquals(
+                    (float) values.parameter("xScale").doubleValue(), values.parameters.getObjectParameter("xScale"));
+            assertSame(before, values.parameter("xScale"));
         }
         assertNotNull(values.toString());
         /*

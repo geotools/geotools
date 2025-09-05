@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.RenderedOp;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;

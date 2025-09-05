@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-import com.sun.media.jai.operator.ImageReadDescriptor;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import java.awt.image.RenderedImage;
@@ -29,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import org.eclipse.imagen.media.imageread.ImageReadDescriptor;
 import org.geotools.TestData;
 import org.geotools.coverage.processing.MosaicTest;
 import org.geotools.image.util.ImageUtilities;

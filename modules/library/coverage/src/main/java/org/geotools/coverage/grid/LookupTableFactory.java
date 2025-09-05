@@ -23,7 +23,7 @@ import static java.lang.Math.round;
 import java.awt.image.DataBuffer;
 import java.util.Arrays;
 import java.util.Map;
-import javax.media.jai.LookupTableJAI;
+import org.eclipse.imagen.LookupTableJAI;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.util.WeakValueHashMap;

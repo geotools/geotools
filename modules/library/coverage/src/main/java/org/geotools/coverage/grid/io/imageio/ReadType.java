@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.grid.io.imageio;
 
-import com.sun.media.jai.operator.ImageReadDescriptor;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -27,7 +26,8 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.imageread.ImageReadDescriptor;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.factory.Hints;

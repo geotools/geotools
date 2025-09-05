@@ -17,7 +17,7 @@
 package org.geotools.coverage.processing;
 
 import java.util.Arrays;
-import javax.media.jai.operator.BinarizeDescriptor;
+import org.eclipse.imagen.media.binarize.BinarizeDescriptor;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;

@@ -137,15 +137,15 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
 
     /**
      * The online resources for <A HREF="http://java.sun.com/">Sun Microsystems</A>. This online resources point to the
-     * Java developper site.
+     * Eclipse site.
      *
-     * @since 2.2
+     * @since 34.x
      */
-    public static final OnLineResource SUN_MICROSYSTEMS;
+    public static final OnLineResource ECLIPSE;
 
     static {
         final OnLineResourceImpl r;
-        SUN_MICROSYSTEMS = r = new OnLineResourceImpl("http://java.sun.com");
+        ECLIPSE = r = new OnLineResourceImpl("https://www.eclipse.org/");
         r.freeze();
     }
 

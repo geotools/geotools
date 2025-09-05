@@ -16,19 +16,19 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.classifier.ColorMapTransformElement;
-import it.geosolutions.jaiext.classifier.LinearColorMap;
-import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
-import it.geosolutions.jaiext.classifier.LinearColorMapElement;
-import it.geosolutions.jaiext.piecewise.PiecewiseUtilities;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
 import java.awt.Color;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
+import org.eclipse.imagen.media.classifier.ColorMapTransform;
+import org.eclipse.imagen.media.classifier.ColorMapTransformElement;
+import org.eclipse.imagen.media.classifier.LinearColorMap;
+import org.eclipse.imagen.media.classifier.LinearColorMap.LinearColorMapType;
+import org.eclipse.imagen.media.classifier.LinearColorMapElement;
+import org.eclipse.imagen.media.piecewise.PiecewiseUtilities;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.ColorMap;

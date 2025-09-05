@@ -55,7 +55,7 @@ public final class JP2KTest extends BaseJP2K {
     public JP2KTest() {}
 
     @Test
-    public void testTiledImageReadMT() throws Exception {
+    public void testTiledImageRead() throws Exception {
         if (!testingEnabled()) {
             return;
         }
@@ -70,14 +70,12 @@ public final class JP2KTest extends BaseJP2K {
         final Hints hints = new Hints(Hints.OVERVIEW_POLICY, OverviewPolicy.getDefaultPolicy());
         final JP2KReader reader = new JP2KReader(file, hints);
         final ParameterValue<GridGeometry2D> gg = JP2KFormat.READ_GRIDGEOMETRY2D.createValue();
-        final ParameterValue<Boolean> useMT = JP2KFormat.USE_MULTITHREADING.createValue();
         final ParameterValue<Boolean> useJAI = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
         final ParameterValue<String> tileSize = JP2KFormat.SUGGESTED_TILE_SIZE.createValue();
         final ParameterValue<Color> transparentColor = JP2KFormat.INPUT_TRANSPARENT_COLOR.createValue();
         transparentColor.setValue(new Color(0, 0, 0));
         tileSize.setValue("128,128");
 
-        useMT.setValue(false);
         useJAI.setValue(true);
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), oldEnvelope));
@@ -87,8 +85,7 @@ public final class JP2KTest extends BaseJP2K {
         // Reading
         //
         // //
-        final GridCoverage2D gc =
-                reader.read(new GeneralParameterValue[] {gg, useJAI, useMT, tileSize, transparentColor});
+        final GridCoverage2D gc = reader.read(new GeneralParameterValue[] {gg, useJAI, tileSize, transparentColor});
         assertNotNull(gc);
         forceDataLoading(gc);
 

@@ -17,9 +17,9 @@
 package org.geotools.image.test;
 
 import java.awt.image.RenderedImage;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.iterator.RandomIter;
-import javax.media.jai.iterator.RandomIterFactory;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.iterator.RandomIter;
+import org.eclipse.imagen.iterator.RandomIterFactory;
 import org.geotools.image.ImageWorker;
 
 /**

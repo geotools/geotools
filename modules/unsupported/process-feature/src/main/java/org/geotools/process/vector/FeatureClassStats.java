@@ -16,11 +16,6 @@
  */
 package org.geotools.process.vector;
 
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.stats.StatsFactory;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -31,6 +26,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.stats.Statistics;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.media.stats.StatsFactory;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.FilterFactory;

@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -34,10 +33,11 @@ import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.ConstantDescriptor;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -762,7 +762,7 @@ public final class CropTest extends GridProcessingTestBase {
     public void testCropWithROIHalfPixel() throws TransformException, InterruptedException, FactoryException {
         // Disable MediaLib for this test
         // Getting initial value
-        String disableMediaLibKey = "com.sun.media.jai.disableMediaLib";
+        String disableMediaLibKey = "org.eclipse.imagen.media.disableMediaLib";
         String oldDisableMediaLib = System.getProperty(disableMediaLibKey, "false");
         Registry.setNativeAccelerationAllowed("Mosaic", false);
         // getting CoverageProcessor

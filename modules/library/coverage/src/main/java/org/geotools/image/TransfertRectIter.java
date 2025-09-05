@@ -17,8 +17,8 @@
 package org.geotools.image;
 
 import java.awt.image.RasterFormatException;
-import javax.media.jai.iterator.RectIter;
-import javax.media.jai.iterator.WritableRectIter;
+import org.eclipse.imagen.iterator.RectIter;
+import org.eclipse.imagen.iterator.WritableRectIter;
 
 /**
  * A {@linkplain WritableRectIter writable iterator} that read pixel values from an image, and write pixel values to a

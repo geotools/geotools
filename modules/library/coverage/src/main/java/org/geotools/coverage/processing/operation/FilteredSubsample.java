@@ -25,7 +25,7 @@ import org.geotools.coverage.processing.BaseScaleOperationJAI;
  * @version $Id$
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
- * @see javax.media.jai.operator.FilteredSubsampleDescriptor
+ * @see org.eclipse.imagen.operator.FilteredSubsampleDescriptor
  */
 public class FilteredSubsample extends BaseScaleOperationJAI {
     /** Serial number for cross-version compatibility. */

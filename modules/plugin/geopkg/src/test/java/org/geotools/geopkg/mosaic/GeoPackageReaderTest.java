@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
-import javax.media.jai.Interpolation;
+import org.eclipse.imagen.Interpolation;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;

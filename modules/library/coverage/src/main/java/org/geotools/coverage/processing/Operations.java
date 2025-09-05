@@ -16,14 +16,13 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.media.jai.Interpolation;
-import javax.media.jai.Warp;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.Warp;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;
@@ -892,7 +891,7 @@ public class Operations {
 
     private void addSources(
             final String operationName, final ParameterValueGroup parameters, final Coverage... sources) {
-        if (JAIExt.getOperationName(operationName).equalsIgnoreCase("algebric")) {
+        if (operationName.equalsIgnoreCase("algebric")) {
             ArrayList<Coverage> sourceList = new ArrayList<>();
             sourceList.addAll(Arrays.asList(sources));
             parameters.parameter("Sources").setValue(sourceList);

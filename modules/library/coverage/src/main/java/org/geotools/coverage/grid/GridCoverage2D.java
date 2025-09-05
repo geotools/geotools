@@ -28,9 +28,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import javax.measure.Unit;
-import javax.media.jai.Interpolation;
-import javax.media.jai.OperationNode;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.OperationNode;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.SampleDimension;
@@ -113,7 +113,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * {@linkplain CoordinateReferenceSystem coordinate reference system}) is inferred from the grid geometry.
      *
      * <p>This constructor accepts an optional set of properties. Keys are {@link String} objects
-     * ({@link javax.media.jai.util.CaselessStringKey} are accepted as well), while values may be any {@link Object}.
+     * ({@link org.eclipse.imagen.util.CaselessStringKey} are accepted as well), while values may be any {@link Object}.
      *
      * @param name The grid coverage name.
      * @param image The image.
@@ -279,7 +279,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
 
     /**
      * Returns the interpolation used for all {@code evaluate(...)} methods. The default implementation returns
-     * {@link javax.media.jai.InterpolationNearest}.
+     * {@link org.eclipse.imagen.InterpolationNearest}.
      *
      * @return The interpolation.
      */

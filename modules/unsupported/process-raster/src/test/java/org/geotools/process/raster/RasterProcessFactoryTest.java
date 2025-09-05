@@ -6,11 +6,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.range.Range;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.data.Parameter;
 import org.geotools.api.feature.type.Name;
 import org.geotools.feature.NameImpl;

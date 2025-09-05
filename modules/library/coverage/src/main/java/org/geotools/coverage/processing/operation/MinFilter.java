@@ -16,8 +16,8 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import javax.media.jai.operator.MinFilterDescriptor;
-import javax.media.jai.operator.MinFilterShape;
+import org.eclipse.imagen.operator.MinFilterDescriptor;
+import org.eclipse.imagen.operator.MinFilterShape;
 import org.geotools.coverage.processing.OperationJAI;
 
 /**

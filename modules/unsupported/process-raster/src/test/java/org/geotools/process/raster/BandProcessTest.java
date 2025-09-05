@@ -19,7 +19,6 @@ package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Rectangle;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.Raster;
@@ -29,8 +28,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.spatial.PixelOrientation;
@@ -76,7 +76,7 @@ public class BandProcessTest {
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException, NoninvertibleTransformException {
         // Disable medialib
-        System.setProperty("com.sun.media.jai.disableMediaLib", "true");
+        System.setProperty("org.eclipse.imagen.media.disableMediaLib", "true");
         // Disable bandmerge and mosaic native operation
         Registry.setNativeAccelerationAllowed("BandMerge", false);
         Registry.setNativeAccelerationAllowed("Mosaic", false);
@@ -108,7 +108,7 @@ public class BandProcessTest {
     @AfterClass
     public static void afterClass() {
         // Enable medialib
-        System.setProperty("com.sun.media.jai.disableMediaLib", "false");
+        System.setProperty("org.eclipse.imagen.media.disableMediaLib", "false");
         // Enable bandmerge and mosaic native operation
         Registry.setNativeAccelerationAllowed("BandMerge", true);
         Registry.setNativeAccelerationAllowed("Mosaic", true);

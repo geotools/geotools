@@ -18,8 +18,6 @@ package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -28,7 +26,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.imageio.ImageIO;
-import javax.media.jai.TiledImage;
+import org.eclipse.imagen.TiledImage;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.media.utilities.ImageUtilities;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.datum.PixelInCell;
@@ -46,7 +47,6 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.datum.DefaultEngineeringDatum;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.jaitools.imageutils.ImageUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -158,7 +158,7 @@ public class CoverageClassStatsTest {
     }
 
     static GridCoverage2D createCoverage() {
-        TiledImage img = ImageUtils.createImageFromArray(
+        TiledImage img = ImageUtilities.createImageFromArray(
                 new Number[] {1, 1, 2, 3, 3, 8, 8, 9, 11, 14, 16, 24, 26, 26, 45, 53}, 4, 4);
 
         AffineTransform2D tx = new AffineTransform2D(new AffineTransform(1, 0, 0, -1, -0.5, -0.5));

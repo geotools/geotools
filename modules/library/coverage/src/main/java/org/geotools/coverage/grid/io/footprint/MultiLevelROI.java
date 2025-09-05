@@ -19,7 +19,7 @@ package org.geotools.coverage.grid.io.footprint;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import javax.imageio.ImageReadParam;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ROI;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.locationtech.jts.geom.Geometry;
 

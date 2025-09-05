@@ -25,8 +25,8 @@ import org.geotools.metadata.i18n.ErrorKeys;
  * A range between a minimum and maximum comparable. The minimum/maximum may be included, excluded or unbounded. The
  * later case is indicated by {@code null} values on one or both ends.
  *
- * <p>This class is a method compatible replacement for the {@link javax.media.jai.util.Range} class with the following
- * differences:
+ * <p>This class is a method compatible replacement for the {@link org.eclipse.imagen.util.Range} class with the
+ * following differences:
  *
  * <ul>
  *   <li>
@@ -49,7 +49,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux
- * @see javax.media.jai.util.Range
+ * @see org.eclipse.imagen.util.Range
  */
 public class Range<T extends Comparable<? super T>> implements Serializable {
     /** For cross-version compatibility. */
@@ -165,7 +165,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * Returns the class of elements in this range. The element class extends {@link Comparable}.
      *
      * @return The class of elements in this range.
-     * @see javax.media.jai.util.Range#getElementClass
+     * @see org.eclipse.imagen.util.Range#getElementClass
      */
     public Class<T> getElementClass() {
         return elementClass;
@@ -176,7 +176,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * value is considered included in the set. Otherwise it is considered excluded.
      *
      * @return The minimal value.
-     * @see javax.media.jai.util.Range#getMinValue
+     * @see org.eclipse.imagen.util.Range#getMinValue
      */
     public T getMinValue() {
         return minValue;
@@ -186,7 +186,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * Indicates if {@link #getMinValue} is included in the range.
      *
      * @return {@code true} if the minimal value is inclusive.
-     * @see javax.media.jai.util.Range#isMinIncluded
+     * @see org.eclipse.imagen.util.Range#isMinIncluded
      */
     public boolean isMinIncluded() {
         return isMinIncluded;
@@ -197,7 +197,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * value is considered included in the set. Otherwise it is considered excluded.
      *
      * @return The maximal value.
-     * @see javax.media.jai.util.Range#getMaxValue
+     * @see org.eclipse.imagen.util.Range#getMaxValue
      */
     public T getMaxValue() {
         return maxValue;
@@ -207,7 +207,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * Indicates if {@link #getMaxValue} is included in the range.
      *
      * @return {@code true} if the maximal value is inclusive.
-     * @see javax.media.jai.util.Range#isMaxIncluded
+     * @see org.eclipse.imagen.util.Range#isMaxIncluded
      */
     public boolean isMaxIncluded() {
         return isMaxIncluded;
@@ -219,7 +219,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * exclusive.
      *
      * @return {@code true} if this range is empty.
-     * @see javax.media.jai.util.Range#isEmpty
+     * @see org.eclipse.imagen.util.Range#isEmpty
      */
     public boolean isEmpty() {
         if (minValue == null || maxValue == null) {
@@ -305,7 +305,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * @return {@code true} if the given range intersects this range.
      * @throws IllegalArgumentException is the given range can not be converted to a valid type through widening
      *     conversion.
-     * @see javax.media.jai.util.Range#intersects
+     * @see org.eclipse.imagen.util.Range#intersects
      */
     public boolean intersects(final Range<?> range) throws IllegalArgumentException {
         return intersectsNC(ensureCompatible(range));
@@ -329,7 +329,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * @return The intersection of this range with the provided range.
      * @throws IllegalArgumentException is the given range can not be converted to a valid type through widening
      *     conversion.
-     * @see javax.media.jai.util.Range#intersect
+     * @see org.eclipse.imagen.util.Range#intersect
      */
     public Range<?> intersect(final Range<?> range) throws IllegalArgumentException {
         return intersectNC(ensureCompatible(range));
@@ -369,7 +369,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * @return This range without the given range.
      * @throws IllegalArgumentException is the given range can not be converted to a valid type through widening
      *     conversion.
-     * @see javax.media.jai.util.Range#subtract
+     * @see org.eclipse.imagen.util.Range#subtract
      */
     public Range<?>[] subtract(final Range<?> range) throws IllegalArgumentException {
         return subtractNC(ensureCompatible(range));
@@ -417,7 +417,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * @return The union of this range with the given range.
      * @throws IllegalArgumentException is the given range can not be converted to a valid type through widening
      *     conversion.
-     * @see javax.media.jai.util.Range#union
+     * @see org.eclipse.imagen.util.Range#union
      */
     public Range<?> union(final Range<?> range) throws IllegalArgumentException {
         return unionNC(ensureCompatible(range));

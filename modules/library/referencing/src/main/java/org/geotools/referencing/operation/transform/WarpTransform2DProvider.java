@@ -18,7 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import javax.media.jai.WarpPolynomial;
+import org.eclipse.imagen.WarpPolynomial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -112,7 +112,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
             switch (degree) {
                 case 1:
                     warp = createWarp(
-                            "javax.media.jai.WarpAffine",
+                            "org.eclipse.imagen.WarpAffine",
                             xCoeffs,
                             yCoeffs,
                             preScaleX,
@@ -122,7 +122,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
                     break;
                 case 2:
                     warp = createWarp(
-                            "javax.media.jai.WarpQuadratic",
+                            "org.eclipse.imagen.WarpQuadratic",
                             xCoeffs,
                             yCoeffs,
                             preScaleX,
@@ -132,7 +132,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
                     break;
                 case 3:
                     warp = createWarp(
-                            "javax.media.jai.WarpCubic",
+                            "org.eclipse.imagen.WarpCubic",
                             xCoeffs,
                             yCoeffs,
                             preScaleX,
@@ -142,7 +142,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
                     break;
                 default:
                     warp = createWarp(
-                            "javax.media.jai.WarpGeneralPolynomial",
+                            "org.eclipse.imagen.WarpGeneralPolynomial",
                             xCoeffs,
                             yCoeffs,
                             preScaleX,
@@ -153,7 +153,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
             }
             Class<? extends MathTransform> transformClass = (Class<? extends MathTransform>)
                     Class.forName("org.geotools.referencing.operation.transform.WarpTransform2D");
-            Class warpClass = Class.forName("javax.media.jai.Warp");
+            Class warpClass = Class.forName("org.eclipse.imagen.Warp");
 
             Constructor<? extends MathTransform> createTransform =
                     transformClass.getConstructor(new Class[] {warpClass, warpClass});

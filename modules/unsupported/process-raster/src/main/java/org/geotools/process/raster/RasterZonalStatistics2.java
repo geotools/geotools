@@ -16,16 +16,16 @@
  */
 package org.geotools.process.raster;
 
-import com.sun.media.jai.util.SunTileCache;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
-import it.geosolutions.jaiext.zonal.ZoneGeometry;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.util.List;
-import javax.media.jai.JAI;
-import javax.media.jai.operator.NullDescriptor;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.media.nullop.NullDescriptor;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.media.util.SunTileCache;
+import org.eclipse.imagen.media.zonal.ZonalStatsDescriptor;
+import org.eclipse.imagen.media.zonal.ZoneGeometry;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.GridSampleDimension;

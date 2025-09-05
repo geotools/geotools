@@ -18,11 +18,11 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.classifier.LinearColorMap;
-import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
-import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.imagen.media.classifier.LinearColorMap;
+import org.eclipse.imagen.media.classifier.LinearColorMap.LinearColorMapType;
+import org.eclipse.imagen.media.classifier.LinearColorMapElement;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.style.ColorMapEntry;
 import org.geotools.factory.CommonFactoryFinder;

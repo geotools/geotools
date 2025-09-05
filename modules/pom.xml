@@ -94,9 +94,8 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_core</artifactId>
-      <!-- The version number is managed through the gt-platform-dependencies BOM -->
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>imagen-core</artifactId>
     </dependency>
   </dependencies>
 

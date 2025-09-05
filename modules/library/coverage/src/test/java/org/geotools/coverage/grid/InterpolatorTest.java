@@ -18,8 +18,6 @@ package org.geotools.coverage.grid;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -27,10 +25,12 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.Interpolation;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROIShape;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.coverage.CoverageFactoryFinder;

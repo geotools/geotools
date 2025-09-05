@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage;
 
-import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -46,15 +45,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-import javax.media.jai.ImageFunction;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.PropertySource;
-import javax.media.jai.PropertySourceImpl;
-import javax.media.jai.TiledImage;
-import javax.media.jai.iterator.RectIterFactory;
-import javax.media.jai.iterator.WritableRectIter;
+import org.eclipse.imagen.ImageFunction;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.PropertySource;
+import org.eclipse.imagen.PropertySourceImpl;
+import org.eclipse.imagen.TiledImage;
+import org.eclipse.imagen.iterator.RectIterFactory;
+import org.eclipse.imagen.iterator.WritableRectIter;
+import org.eclipse.imagen.media.viewer.ImageViewer;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.PointOutsideCoverageException;
@@ -126,7 +126,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @param propertySource The source for this coverage, or {@code null} if none. Source may be (but is not limited
      *     to) a {@link PlanarImage} or an other {@code AbstractCoverage} object.
      * @param properties The set of properties for this coverage, or {@code null} if there is none. Keys are
-     *     {@link String} objects ({@link javax.media.jai.util.CaselessStringKey} are accepted as well), while values
+     *     {@link String} objects ({@link org.eclipse.imagen.util.CaselessStringKey} are accepted as well), while values
      *     may be any {@link Object}.
      */
     protected AbstractCoverage(
@@ -280,7 +280,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * Returns a sequence of boolean values for a given point in the coverage. A value for each
      * {@linkplain SampleDimension sample dimension} is included in the sequence. The default interpolation type used
      * when accessing grid values for points which fall between grid cells is
-     * {@linkplain javax.media.jai.InterpolationNearest nearest neighbor}, but it can be changed by some
+     * {@linkplain org.eclipse.imagen.InterpolationNearest nearest neighbor}, but it can be changed by some
      * {@linkplain org.geotools.coverage.grid.Interpolator2D subclasses}. The CRS of the point is the same as the grid
      * coverage {@linkplain #getCoordinateReferenceSystem coordinate reference system}.
      *
@@ -313,9 +313,9 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
     /**
      * Returns a sequence of byte values for a given point in the coverage. A value for each {@linkplain SampleDimension
      * sample dimension} is included in the sequence. The default interpolation type used when accessing grid values for
-     * points which fall between grid cells is {@linkplain javax.media.jai.InterpolationNearest nearest neighbor}, but
-     * it can be changed by some {@linkplain org.geotools.coverage.grid.Interpolator2D subclasses}. The CRS of the point
-     * is the same as the grid coverage {@linkplain #getCoordinateReferenceSystem coordinate reference system}.
+     * points which fall between grid cells is {@linkplain org.eclipse.imagen.InterpolationNearest nearest neighbor},
+     * but it can be changed by some {@linkplain org.geotools.coverage.grid.Interpolator2D subclasses}. The CRS of the
+     * point is the same as the grid coverage {@linkplain #getCoordinateReferenceSystem coordinate reference system}.
      *
      * @param coord The coordinate point where to evaluate.
      * @param dest An array in which to store values, or {@code null} to create a new array.
@@ -347,7 +347,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * Returns a sequence of integer values for a given point in the coverage. A value for each
      * {@linkplain SampleDimension sample dimension} is included in the sequence. The default interpolation type used
      * when accessing grid values for points which fall between grid cells is
-     * {@linkplain javax.media.jai.InterpolationNearest nearest neighbor}, but it can be changed by some
+     * {@linkplain org.eclipse.imagen.InterpolationNearest nearest neighbor}, but it can be changed by some
      * {@linkplain org.geotools.coverage.grid.Interpolator2D subclasses}. The CRS of the point is the same as the grid
      * coverage {@linkplain #getCoordinateReferenceSystem coordinate reference system}.
      *
@@ -381,7 +381,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * Returns a sequence of float values for a given point in the coverage. A value for each
      * {@linkplain SampleDimension sample dimension} is included in the sequence. The default interpolation type used
      * when accessing grid values for points which fall between grid cells is
-     * {@linkplain javax.media.jai.InterpolationNearest nearest neighbor}, but it can be changed by some
+     * {@linkplain org.eclipse.imagen.InterpolationNearest nearest neighbor}, but it can be changed by some
      * {@linkplain org.geotools.coverage.grid.Interpolator2D subclasses}. The CRS of the point is the same as the grid
      * coverage {@linkplain #getCoordinateReferenceSystem coordinate reference system}.
      *
@@ -415,7 +415,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * Returns a sequence of double values for a given point in the coverage. A value for each
      * {@linkplain SampleDimension sample dimension} is included in the sequence. The default interpolation type used
      * when accessing grid values for points which fall between grid cells is
-     * {@linkplain javax.media.jai.InterpolationNearest nearest neighbor}, but it can be changed by some
+     * {@linkplain org.eclipse.imagen.InterpolationNearest nearest neighbor}, but it can be changed by some
      * {@linkplain org.geotools.coverage.grid.Interpolator2D subclasses}. The CRS of the point is the same as the grid
      * coverage {@linkplain #getCoordinateReferenceSystem coordinate reference system}.
      *

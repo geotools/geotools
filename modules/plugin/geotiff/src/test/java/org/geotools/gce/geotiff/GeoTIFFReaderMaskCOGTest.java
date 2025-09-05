@@ -32,7 +32,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ROI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.test.wiremock.FileRangeResponseTransformer;
 import org.junit.AfterClass;

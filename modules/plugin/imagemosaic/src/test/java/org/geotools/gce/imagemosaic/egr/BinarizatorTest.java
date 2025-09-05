@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.util.logging.Logger;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.util.logging.Logging;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;

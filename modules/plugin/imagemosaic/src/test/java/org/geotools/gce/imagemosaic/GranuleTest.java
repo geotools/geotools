@@ -17,7 +17,6 @@
 package org.geotools.gce.imagemosaic;
 
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -28,8 +27,9 @@ import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageReadParam;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;

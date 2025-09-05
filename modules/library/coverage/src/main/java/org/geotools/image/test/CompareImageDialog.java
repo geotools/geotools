@@ -16,7 +16,6 @@
  */
 package org.geotools.image.test;
 
-import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -36,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
+import org.eclipse.imagen.media.viewer.ImageViewer;
 import org.geotools.util.logging.Logging;
 
 class CompareImageDialog extends JDialog {

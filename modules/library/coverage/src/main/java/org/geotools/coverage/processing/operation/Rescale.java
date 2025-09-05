@@ -18,7 +18,7 @@ package org.geotools.coverage.processing.operation;
 
 import java.awt.image.RenderedImage;
 import java.util.Map;
-import javax.media.jai.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockJAI;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -43,7 +43,7 @@ import org.geotools.util.NumberRange;
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"Rescale"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>
- * "{@linkplain javax.media.jai.operator.RescaleDescriptor Rescale}"</CODE><br>
+ * "{@linkplain org.eclipse.imagen.media.rescale.RescaleDescriptor Rescale}"</CODE><br>
  * <STRONG>Parameters:</STRONG>
  *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
@@ -81,7 +81,7 @@ import org.geotools.util.NumberRange;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see org.geotools.coverage.processing.Operations#rescale
- * @see javax.media.jai.operator.RescaleDescriptor
+ * @see org.eclipse.imagen.media.rescale.RescaleDescriptor
  * @todo Should operates on {@code sampleToGeophysics} transform when possible. See <A
  *     HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.
  */

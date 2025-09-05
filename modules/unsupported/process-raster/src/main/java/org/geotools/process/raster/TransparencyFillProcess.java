@@ -16,12 +16,12 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.range.Range;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.ExtremaDescriptor;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.operator.ExtremaDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;

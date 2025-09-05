@@ -116,18 +116,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_imageio</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-property</artifactId>
       <scope>test</scope>
@@ -206,7 +194,7 @@
         <configuration>
           <systemPropertyVariables>
             <!-- settings these properties on Test's code won't work due to order of initialization -->
-            <it.geosolutions.jaiext.scale2>true</it.geosolutions.jaiext.scale2>
+            <org.eclipse.imagen.media.scale2>true</org.eclipse.imagen.media.scale2>
             <buildDirectory>${project.build.directory}</buildDirectory>
           </systemPropertyVariables>
         </configuration>

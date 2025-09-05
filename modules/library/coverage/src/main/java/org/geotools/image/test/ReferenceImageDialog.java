@@ -16,7 +16,6 @@
  */
 package org.geotools.image.test;
 
-import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -25,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.eclipse.imagen.media.viewer.ImageViewer;
 
 class ReferenceImageDialog extends JDialog {
     private static final long serialVersionUID = -8640087805737551918L;

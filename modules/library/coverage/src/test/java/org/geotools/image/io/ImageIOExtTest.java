@@ -31,7 +31,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
-import javax.media.jai.operator.ConstantDescriptor;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.image.ImageWorker;
 import org.junit.After;
 import org.junit.Before;

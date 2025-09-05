@@ -17,7 +17,7 @@
 package org.geotools.coverage.processing.operation;
 
 import java.lang.reflect.Array;
-import javax.media.jai.Interpolation;
+import org.eclipse.imagen.Interpolation;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -38,9 +38,9 @@ import org.geotools.util.factory.Hints;
  *
  * <p><strong>Geotools extension:</strong><br>
  * The Geotools implementation provides two extensions to OpenGIS specification: First, it accepts also an
- * {@link javax.media.jai.Interpolation} argument type, for interoperability with <A
+ * {@link org.eclipse.imagen.Interpolation} argument type, for interoperability with <A
  * HREF="http://java.sun.com/products/java-media/jai/">Java Advanced Imaging</A>. Second, it accepts also an array of
- * {@link java.lang.String} or {@link javax.media.jai.Interpolation} objects. When an array is specified, the first
+ * {@link java.lang.String} or {@link org.eclipse.imagen.Interpolation} objects. When an array is specified, the first
  * interpolation in the array is applied. If this interpolation returns a {@code NaN} value, then the second
  * interpolation is tried as a fallback. If the second interpolation returns also a {@code NaN} value, then the third
  * one is tried and so on until an interpolation returns a real number or until we reach the end of interpolation list.

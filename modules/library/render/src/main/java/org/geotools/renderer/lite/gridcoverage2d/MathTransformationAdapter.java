@@ -16,9 +16,9 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.jaiext.piecewise.MathTransformation;
-import it.geosolutions.jaiext.piecewise.Position;
 import java.text.MessageFormat;
+import org.eclipse.imagen.media.piecewise.MathTransformation;
+import org.eclipse.imagen.media.piecewise.Position;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.renderer.i18n.ErrorKeys;

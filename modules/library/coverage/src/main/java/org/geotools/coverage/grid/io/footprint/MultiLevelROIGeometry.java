@@ -16,13 +16,13 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import javax.imageio.ImageReadParam;
-import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.util.SoftValueHashMap;

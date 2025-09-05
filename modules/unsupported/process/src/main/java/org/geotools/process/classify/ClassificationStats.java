@@ -16,9 +16,9 @@
  */
 package org.geotools.process.classify;
 
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import java.util.Set;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
 
 /** A classification of data into classes, with a count and statistics for each class. */
 public interface ClassificationStats {

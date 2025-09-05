@@ -16,16 +16,16 @@
  */
 package org.geotools.processing.jai;
 
-import com.sun.media.jai.util.AreaOpPropertyGenerator;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
-import javax.media.jai.EnumeratedParameter;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptorImpl;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PropertyGenerator;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.EnumeratedParameter;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptorImpl;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.PropertyGenerator;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.util.AreaOpPropertyGenerator;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 
 @SuppressWarnings({"serial", "deprecation"})
 public class TransparencyFillDescriptor extends OperationDescriptorImpl {
@@ -53,7 +53,7 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     private static final String[][] resources = {
         {"GlobalName", "TransparencyFill"},
         {"LocalName", "TransparencyFill"},
-        {"Vendor", "it.geosolutions.jaiext"},
+        {"Vendor", "org.eclipse.imagen.media"},
         {"Description", "Transparency pixels Filler"},
         {"DocURL", ""},
         {"Version", "1.0"},

@@ -242,16 +242,16 @@ public final class Citations {
      * {@linkplain Citation#getAlternateTitles alternate title} for this citation is "JAI" (according ISO 19115,
      * alternate titles often contain abreviations).
      *
-     * @see ResponsiblePartyImpl#SUN_MICROSYSTEMS
+     * @see ResponsiblePartyImpl#ECLIPSE
      */
-    public static final Citation JAI;
+    public static final Citation IMAGEN;
 
     static {
-        final CitationImpl c = new CitationImpl("Java Advanced Imaging");
-        c.getAlternateTitles().add(new SimpleInternationalString("JAI"));
-        c.getCitedResponsibleParties().add(ResponsiblePartyImpl.SUN_MICROSYSTEMS);
+        final CitationImpl c = new CitationImpl("Eclipse ImageN");
+        c.getAlternateTitles().add(new SimpleInternationalString("ImageN"));
+        c.getCitedResponsibleParties().add(ResponsiblePartyImpl.ECLIPSE);
         c.freeze();
-        JAI = c;
+        IMAGEN = c;
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -459,7 +459,7 @@ public final class Citations {
 
     /** List of citations declared in this class. */
     private static final Citation[] AUTHORITIES = {
-        OGC, OPEN_GIS, ESRI, ORACLE, GEOTOOLS, WMS, GEOTIFF, JAI, EPSG, AUTO, AUTO2, CRS, IAU, PROJ
+        OGC, OPEN_GIS, ESRI, ORACLE, GEOTOOLS, WMS, GEOTIFF, IMAGEN, EPSG, AUTO, AUTO2, CRS, IAU, PROJ
     };
 
     /**

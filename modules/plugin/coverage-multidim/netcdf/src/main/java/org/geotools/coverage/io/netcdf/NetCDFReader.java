@@ -41,7 +41,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.jai.ImageLayout;
+import org.eclipse.imagen.ImageLayout;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridEnvelope;

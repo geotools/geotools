@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.remote.SerializableState;
-import javax.media.jai.remote.SerializerFactory;
+import org.eclipse.imagen.RasterFactory;
+import org.eclipse.imagen.media.serialize.SerializableState;
+import org.eclipse.imagen.media.serialize.SerializerFactory;
 
 /**
  * Simple serializable class holding a sample model and a color model

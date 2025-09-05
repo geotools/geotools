@@ -57,8 +57,8 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
         // access to JAI and the JAI ImageI/O toolbox.
 
         try {
-            Class.forName("javax.media.jai.JAI");
-            Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
+            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
         } catch (ClassNotFoundException e) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             available = false;

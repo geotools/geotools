@@ -19,10 +19,10 @@ package org.geotools.gce.imagemosaic.egr;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.geometry.jts.JTS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;

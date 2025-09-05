@@ -160,17 +160,17 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
-     * Contact informations for <A HREF="http://www.sun.com/">Sun Microsystems</A>.
+     * Contact informations for <A HREF="http://www.sun.com/">Eclipse</A>.
      *
-     * @see OnLineResourceImpl#SUN_MICROSYSTEMS
-     * @since 2.2
+     * @see OnLineResourceImpl#ECLIPSE
+     * @since 34.x
      */
-    public static final Contact SUN_MICROSYSTEMS;
+    public static final Contact ECLIPSE;
 
     static {
-        final ContactImpl c = new ContactImpl(OnLineResourceImpl.SUN_MICROSYSTEMS);
+        final ContactImpl c = new ContactImpl(OnLineResourceImpl.ECLIPSE);
         c.freeze();
-        SUN_MICROSYSTEMS = c;
+        ECLIPSE = c;
     }
 
     /**

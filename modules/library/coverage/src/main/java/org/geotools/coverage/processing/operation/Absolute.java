@@ -18,13 +18,11 @@ package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Collection;
 import java.util.Map;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.operator.AbsoluteDescriptor;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -39,7 +37,7 @@ import org.geotools.util.NumberRange;
  * Computes the mathematical absolute value of each sample value.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"Absolute"</CODE><br>
- * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain AbsoluteDescriptor Absolute}"</CODE><br>
+ * <STRONG>ImageN operator:</STRONG>&nbsp;<CODE>"{@linkplain Algebra/Absolute}"</CODE><br>
  * <STRONG>Parameters:</STRONG>
  *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
@@ -73,7 +71,7 @@ public class Absolute extends BaseMathOperationJAI {
 
     /** Constructs a default {@code "Absolute"} operation. */
     public Absolute() {
-        super(ABSOLUTE, getOperationDescriptor(JAIExt.getOperationName(ABSOLUTE)));
+        super(ABSOLUTE, getOperationDescriptor(ALGEBRIC));
     }
 
     @Override
@@ -93,14 +91,12 @@ public class Absolute extends BaseMathOperationJAI {
 
     @Override
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
-            parameters.set(Operator.ABSOLUTE, 0);
-            @SuppressWarnings("unchecked")
-            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>)
-                    parameters2.parameter("sources").getValue();
-            for (GridCoverage2D source : sources) {
-                handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
-            }
+        parameters.set(Operator.ABSOLUTE, 0);
+        @SuppressWarnings("unchecked")
+        Collection<GridCoverage2D> sources =
+                (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+        for (GridCoverage2D source : sources) {
+            handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
         }
     }
 

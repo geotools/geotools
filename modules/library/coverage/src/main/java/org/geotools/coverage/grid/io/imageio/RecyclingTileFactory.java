@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.grid.io.imageio;
 
-import com.sun.media.jai.util.DataBufferUtils;
 import java.awt.Point;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
@@ -34,10 +33,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.jai.CachedTile;
-import javax.media.jai.TileCache;
-import javax.media.jai.TileFactory;
-import javax.media.jai.TileRecycler;
+import org.eclipse.imagen.CachedTile;
+import org.eclipse.imagen.TileCache;
+import org.eclipse.imagen.TileFactory;
+import org.eclipse.imagen.TileRecycler;
+import org.eclipse.imagen.media.util.DataBufferUtils;
 import org.geotools.util.logging.Logging;
 
 /**

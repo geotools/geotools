@@ -19,7 +19,7 @@ package org.geotools.image.palette;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
-import javax.media.jai.CRIFImpl;
+import org.eclipse.imagen.CRIFImpl;
 
 public class ColorReductionCRIF extends CRIFImpl {
 

@@ -59,7 +59,7 @@ import si.uom.NonSI;
  * size. Point coordinates must have a dimension equals to <code>
  * {@linkplain Matrix#getNumCol}-1</code>. For example, for square matrix of size 4&times;4, coordinate points are
  * three-dimensional. The transformed points <code>(x',y',z')</code> are computed as below (note that this computation
- * is similar to {@link javax.media.jai.PerspectiveTransform} in <cite>Java Advanced Imaging</cite>):
+ * is similar to {@link org.eclipse.imagen.PerspectiveTransform} in <cite>Java Advanced Imaging</cite>):
  *
  * <blockquote>
  *
@@ -82,7 +82,7 @@ import si.uom.NonSI;
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @see javax.media.jai.PerspectiveTransform
+ * @see org.eclipse.imagen.PerspectiveTransform
  * @see java.awt.geom.AffineTransform
  * @see <A HREF="http://mathworld.wolfram.com/AffineTransformation.html">Affine transformation on MathWorld</A>
  */

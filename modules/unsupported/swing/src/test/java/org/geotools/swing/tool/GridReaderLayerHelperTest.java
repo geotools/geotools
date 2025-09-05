@@ -23,7 +23,8 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.util.Map;
 import java.util.Random;
-import javax.media.jai.TiledImage;
+import org.eclipse.imagen.TiledImage;
+import org.eclipse.imagen.media.utilities.ImageUtilities;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -39,7 +40,6 @@ import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.jaitools.imageutils.ImageUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -132,7 +132,7 @@ public class GridReaderLayerHelperTest {
     }
 
     private static void createImageAndReader() throws Exception {
-        image = ImageUtils.createConstantImage(WIDTH, HEIGHT, new Integer[] {0, 0, 0});
+        image = ImageUtilities.createConstantImage(WIDTH, HEIGHT, new Integer[] {0, 0, 0});
         for (int band = 0; band < image.getNumBands(); band++) {
             for (int y = 0; y < HEIGHT; y++) {
                 for (int x = 0; x < WIDTH; x++) {

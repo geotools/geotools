@@ -247,17 +247,17 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     /**
      * The <A HREF="http://www.sun.com/">Sun Microsystems</A> party.
      *
-     * @see ContactImpl#SUN_MICROSYSTEMS
-     * @since 2.2
+     * @see ContactImpl#ECLIPSE
+     * @since 34.x
      */
-    public static ResponsibleParty SUN_MICROSYSTEMS;
+    public static ResponsibleParty ECLIPSE;
 
     static {
         final ResponsiblePartyImpl r = new ResponsiblePartyImpl(Role.PRINCIPAL_INVESTIGATOR);
-        r.setOrganisationName(new SimpleInternationalString("Sun Microsystems"));
-        r.setContactInfo(ContactImpl.SUN_MICROSYSTEMS);
+        r.setOrganisationName(new SimpleInternationalString("Eclipse"));
+        r.setContactInfo(ContactImpl.ECLIPSE);
         r.freeze();
-        SUN_MICROSYSTEMS = r;
+        ECLIPSE = r;
     }
 
     /**

@@ -16,10 +16,10 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.RenderedImage;
 import java.util.Map;
-import javax.media.jai.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.media.shadedrelief.ShadedReliefDescriptor;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -55,14 +55,14 @@ import org.geotools.coverage.processing.OperationJAI;
  *   </tr>
  *   <tr>
  *     <td>{@code "roi"}</td>
- *     <td>{@code javax.media.jai.ROI}</td>
+ *     <td>{@code org.eclipse.imagen.ROI}</td>
  *     <td align="center"></td>
  *     <td align="center">N/A</td>
  *     <td align="center"></td>
  *   </tr>
  *   <tr>
  *     <td>{@code "srcNoData"}</td>
- *     <td>{@code it.geosolutions.jaiext.range.Range}</td>
+ *     <td>{@code org.eclipse.imagen.media.range.Range}</td>
  *     <td align="center"></td>
  *     <td align="center"></td>
  *     <td align="center"></td>
@@ -118,7 +118,7 @@ import org.geotools.coverage.processing.OperationJAI;
  *   </tr>
  *   <tr>
  *     <td>{@code "algorithm"}</td>
- *     <td>{@code it.geosolutions.jaiext.shadedrelief.ShadedReliefAlgorithm}</td>
+ *     <td>{@code org.eclipse.imagen.media.shadedrelief.ShadedReliefAlgorithm}</td>
  *     <td align="center">COMBINED</td>
  *     <td align="center">ZEVENBERGEN_THORNE, ZEVENBERGEN_THORNE_COMBINED, COMBINED</td>
  *     <td align="center">JAI-EXT.shadedrelief.algorithm</td>
@@ -148,7 +148,7 @@ public class ShadedRelief extends OperationJAI {
     public static final String[] CUSTOMIZABLE_PARAMS = {PARAM_ALTITUDE, PARAM_AZIMUTH, PARAM_ALGORITHM};
 
     public ShadedRelief() throws OperationNotFoundException {
-        super("ShadedRelief", getOperationDescriptor(JAIExt.getOperationName("ShadedRelief")));
+        super("ShadedRelief", getOperationDescriptor("ShadedRelief"));
     }
 
     @Override

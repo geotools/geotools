@@ -18,9 +18,9 @@ package org.geotools.coverage.processing.operation;
 
 import java.awt.Dimension;
 import java.text.MessageFormat;
-import javax.media.jai.Interpolation;
-import javax.media.jai.operator.AffineDescriptor;
-import javax.media.jai.operator.WarpDescriptor;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.media.affine.AffineDescriptor;
+import org.eclipse.imagen.media.warp.WarpDescriptor;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
@@ -177,7 +177,7 @@ public class Resample extends Operation2D {
 
     /** The parameter descriptor for the BackgroundValues. */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "BackgroundValues",
             double[].class, // Value class (mandatory)
             null, // Array of valid values

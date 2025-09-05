@@ -231,7 +231,7 @@ public abstract class Tile implements ImageLoader {
      * prevent multiple threads from creating the SWT image more times than needed synchronized (SWTLock) { // if the
      * SWTImage is created once the lock is gained, exit if (swtImage != null && !swtImage.isDisposed()) { return; } //
      * otherwise try creating the SWTImage now try { BufferedImage buffImage = getBufferedImage(); swtImage =
-     * AWTSWTImageUtils.createSWTImage(buffImage, false); } catch (Exception ex) {
+     * AWTSWTImageUtilities.createSWTImage(buffImage, false); } catch (Exception ex) {
      * java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex); } } }
      */
 

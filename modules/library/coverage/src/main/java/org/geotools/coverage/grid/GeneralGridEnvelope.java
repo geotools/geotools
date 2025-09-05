@@ -233,7 +233,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * units the image {@linkplain RenderedImage#getWidth width} or {@linkplain RenderedImage#getHeight height}. For
      * example the range {@code [-0.25 ... 99.75]} (which is exactly 101 units wide) would be casted to {@code [-1 ...
      * 100]}, which is 102 units wide. This leads to unexpected results when using grid envelope with image operations
-     * like "{@link javax.media.jai.operator.AffineDescriptor Affine}". For avoiding such changes in size, it is
+     * like "{@link org.eclipse.imagen.media.affine.AffineDescriptor Affine}". For avoiding such changes in size, it is
      * necessary to use the same rounding mode for both minimal and maximal values. The selected rounding mode is
      * {@linkplain Math#round nearest integer} in this implementation.
      *

@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import javax.media.jai.operator.ConvolveDescriptor;
+import org.eclipse.imagen.media.convolve.ConvolveDescriptor;
 import org.geotools.coverage.processing.OperationJAI;
 
 /**
@@ -44,7 +44,7 @@ import org.geotools.coverage.processing.OperationJAI;
  *   </tr>
  *   <tr>
  *     <td>{@code "kernel"}</td>
- *     <td>{@link javax.media.jai.KernelJAI}</td>
+ *     <td>{@link org.eclipse.imagen.KernelJAI}</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>

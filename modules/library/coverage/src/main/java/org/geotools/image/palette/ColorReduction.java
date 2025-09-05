@@ -25,11 +25,12 @@ import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.PointOpImage;
-import javax.media.jai.operator.BandSelectDescriptor;
-import javax.media.jai.operator.MultiplyConstDescriptor;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PointOpImage;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor;
+import org.eclipse.imagen.media.algebra.constant.OperationConstDescriptor;
+import org.eclipse.imagen.media.bandselect.BandSelectDescriptor;
 import org.geotools.image.ImageWorker;
 
 /**
@@ -59,7 +60,14 @@ public class ColorReduction extends PointOpImage {
         if (image.getColorModel().hasAlpha()) {
             RenderedImage alpha = BandSelectDescriptor.create(
                     image, new int[] {image.getSampleModel().getNumBands() - 1}, null);
-            alpha = MultiplyConstDescriptor.create(alpha, new double[] {alphaThreshold}, null);
+            alpha = OperationConstDescriptor.create(
+                    alpha,
+                    new double[] {alphaThreshold},
+                    AlgebraDescriptor.Operator.MULTIPLY,
+                    null,
+                    null,
+                    Double.NaN,
+                    null);
             image = BandSelectDescriptor.create(image, new int[] {0, 1, 2}, null);
 
             final ImageLayout layout = new ImageLayout();

@@ -16,15 +16,6 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.classbreaks.ClassBreaksDescriptor;
-import it.geosolutions.jaiext.classbreaks.ClassBreaksRIF;
-import it.geosolutions.jaiext.classbreaks.Classification;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
-import it.geosolutions.jaiext.zonal.ZoneGeometry;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.IOException;
@@ -35,7 +26,16 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.media.jai.operator.BandSelectDescriptor;
+import org.eclipse.imagen.media.bandselect.BandSelectDescriptor;
+import org.eclipse.imagen.media.classbreaks.ClassBreaksDescriptor;
+import org.eclipse.imagen.media.classbreaks.ClassBreaksRIF;
+import org.eclipse.imagen.media.classbreaks.Classification;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.stats.Statistics;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.media.zonal.ZonalStatsDescriptor;
+import org.eclipse.imagen.media.zonal.ZoneGeometry;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -212,11 +212,11 @@ public class CoverageClassStats implements RasterProcess {
         }
     }
 
-    private it.geosolutions.jaiext.classbreaks.ClassificationMethod toJAIExtMethod(ClassificationMethod method) {
+    private org.eclipse.imagen.media.classbreaks.ClassificationMethod toJAIExtMethod(ClassificationMethod method) {
         if (method == null) {
             return null;
         }
-        return it.geosolutions.jaiext.classbreaks.ClassificationMethod.valueOf(method.name());
+        return org.eclipse.imagen.media.classbreaks.ClassificationMethod.valueOf(method.name());
     }
 
     public static class Results implements ClassificationStats {

@@ -19,9 +19,9 @@ package org.geotools.coverage.processing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import it.geosolutions.jaiext.shadedrelief.ShadedReliefAlgorithm;
 import java.awt.image.RenderedImage;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.media.shadedrelief.ShadedReliefAlgorithm;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterNotFoundException;

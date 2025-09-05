@@ -17,7 +17,6 @@
  */
 package org.geotools.gce.image;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
@@ -34,9 +33,11 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
@@ -360,12 +361,14 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         // }
 
         /** write using JAI encoders */
-        final ParameterBlockJAI pbjImageWrite = new ParameterBlockJAI("ImageWrite");
-        pbjImageWrite.addSource(image);
-        pbjImageWrite.setParameter("Output", outstream);
-        pbjImageWrite.setParameter("VerifyOutput", Boolean.FALSE);
-        pbjImageWrite.setParameter("Format", extension);
-        JAI.create("ImageWrite", pbjImageWrite);
+        ImageTypeSpecifier specifier = ImageTypeSpecifier.createFromRenderedImage(image);
+        Iterator<ImageWriter> writers = ImageIO.getImageWriters(specifier, extension);
+        if (!writers.hasNext()) {
+            throw new IllegalArgumentException("Could not find a writer for format " + extension + " and image ");
+        }
+        ImageWriter writer = writers.next();
+        writer.setOutput(outstream);
+        writer.write(image);
         outstream.flush();
         outstream.close();
     }

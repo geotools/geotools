@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import javax.media.jai.operator.BandSelectDescriptor; // For javadoc
+import org.eclipse.imagen.media.bandselect.BandSelectDescriptor; // For javadoc
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;

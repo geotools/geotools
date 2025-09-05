@@ -69,7 +69,7 @@ public abstract class Operation2D extends AbstractOperation {
     static {
         final Map<String, Object> properties = new HashMap<>(4);
         properties.put(IdentifiedObject.NAME_KEY, new NamedIdentifier(Citations.OGC, "Source"));
-        properties.put(IdentifiedObject.ALIAS_KEY, new NamedIdentifier(Citations.JAI, "source0"));
+        properties.put(IdentifiedObject.ALIAS_KEY, new NamedIdentifier(Citations.IMAGEN, "source0"));
         SOURCE_0 =
                 new DefaultParameterDescriptor<>(properties, GridCoverage2D.class, null, null, null, null, null, true);
     }

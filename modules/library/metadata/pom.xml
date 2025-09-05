@@ -97,9 +97,8 @@
       <artifactId>unit-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_core</artifactId>
-      <!-- The version number is specified in the parent POM. -->
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>imagen-core</artifactId>
     </dependency>
     <dependency>
       <!--

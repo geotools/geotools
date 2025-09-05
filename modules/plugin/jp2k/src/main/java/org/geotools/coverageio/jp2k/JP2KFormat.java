@@ -26,15 +26,12 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
-import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.factory.Hints;
@@ -52,18 +49,6 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
 
     /** Logger. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
-
-    /** The {@code String} representing the parameter to customize multithreading use */
-    private static final String USE_MT = "USE_MULTITHREADING";
-
-    /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
-     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify to use multithreading when
-     * leveraging on a JAI ImageRead operation. This will be achieved with the use of the ImageReadMT operation of the
-     * ImageIO-Ext.
-     */
-    public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING = new DefaultParameterDescriptor<>(
-            USE_MT, Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
 
     /** Creates an instance and sets the metadata. */
     public JP2KFormat() {
@@ -87,11 +72,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
         writeParameters = null;
         readParameters =
                 new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
-                    READ_GRIDGEOMETRY2D,
-                    INPUT_TRANSPARENT_COLOR,
-                    USE_JAI_IMAGEREAD,
-                    USE_MULTITHREADING,
-                    SUGGESTED_TILE_SIZE,
+                    READ_GRIDGEOMETRY2D, INPUT_TRANSPARENT_COLOR, USE_JAI_IMAGEREAD, SUGGESTED_TILE_SIZE,
                 }));
     }
 

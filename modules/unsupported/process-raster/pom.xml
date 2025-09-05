@@ -77,34 +77,20 @@
     </dependency>
 
     <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-contour</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>contour</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-vectorize</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>vectorize</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jaitools</groupId>
-      <artifactId>jt-utils</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>jiffle-op</artifactId>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.jaiext.jiffle</groupId>
-      <artifactId>jt-jiffle-op</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.vividsolutions</groupId>
-          <artifactId>jts</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>it.geosolutions.jaiext.classbreaks</groupId>
-      <artifactId>jt-classbreaks</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>it.geosolutions.jaiext.stats</groupId>
-      <artifactId>jt-stats</artifactId>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>classbreaks</artifactId>
     </dependency>
 
     <!-- Test dependencies -->

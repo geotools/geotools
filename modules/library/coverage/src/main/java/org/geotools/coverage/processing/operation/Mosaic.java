@@ -16,11 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
@@ -35,14 +30,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
-import javax.media.jai.operator.MosaicDescriptor;
-import javax.media.jai.operator.MosaicType;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
+import org.eclipse.imagen.media.mosaic.MosaicType;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.metadata.spatial.PixelOrientation;
@@ -135,7 +134,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Sources. */
     public static final ParameterDescriptor<Collection> SOURCES = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             SOURCES_NAME,
             Collection.class, // Value class (mandatory)
             null, // Array of valid values
@@ -147,7 +146,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the GridGeometry to use. */
     public static final ParameterDescriptor<GridGeometry> GG = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             GEOMETRY,
             GridGeometry.class, // Value class (mandatory)
             null, // Array of valid values
@@ -159,7 +158,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the GridGeometry choosing policy. */
     public static final ParameterDescriptor<String> GEOMETRY_POLICY = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             POLICY,
             String.class, // Value class (mandatory)
             null, // Array of valid values
@@ -171,7 +170,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Transformation Choice. */
     public static final ParameterDescriptor<double[]> OUTPUT_NODATA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             OUTNODATA_NAME,
             double[].class, // Value class (mandatory)
             null, // Array of valid values
@@ -183,7 +182,7 @@ public class Mosaic extends OperationJAI {
 
     /** The parameter descriptor for the Alpha band. */
     public static final ParameterDescriptor<Collection> ALPHA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             ALPHA_NAME,
             Collection.class, // Value class (mandatory)
             null, // Array of valid values
@@ -697,18 +696,15 @@ public class Mosaic extends OperationJAI {
         // Setting of the Mosaic type as Overlay
         block.set(MosaicDescriptor.MOSAIC_TYPE_OVERLAY, MOSAIC_TYPE_PARAM);
 
-        // Check if it is a JAI-Ext operation
-        if (JAIExt.isJAIExtOperation("Mosaic")) {
-            // Get the nodata values
-            double[] nodatas = rr.getBackgrounds();
-            if (nodatas != null && rr.hasNoData()) {
-                Range[] ranges = new Range[numSources];
-                for (int i = 0; i < numSources; i++) {
-                    double value = nodatas[i];
-                    ranges[i] = RangeFactory.create(value, value);
-                }
-                block.set(ranges, NODATA_RANGE_PARAM);
+        // Get the nodata values
+        double[] nodatas = rr.getBackgrounds();
+        if (nodatas != null && rr.hasNoData()) {
+            Range[] ranges = new Range[numSources];
+            for (int i = 0; i < numSources; i++) {
+                double value = nodatas[i];
+                ranges[i] = RangeFactory.create(value, value);
             }
+            block.set(ranges, NODATA_RANGE_PARAM);
         }
 
         // Creation of the finel Parameters

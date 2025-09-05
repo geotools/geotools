@@ -59,14 +59,14 @@ final class ReadHitsIterable implements Iterable<SimpleFeature> {
     private final SimpleFeatureBuilder fb;
     private final ArrayList<SearchHit> hits;
     private final HeaderMeta headerMeta;
-    private final int featuresOffset;
+    private final long featuresOffset;
     private final LittleEndianDataInputStream data;
 
     ReadHitsIterable(
             SimpleFeatureBuilder fb,
             ArrayList<SearchHit> hits,
             HeaderMeta headerMeta,
-            int featuresOffset,
+            long featuresOffset,
             LittleEndianDataInputStream data) {
         this.fb = fb;
         this.hits = hits;

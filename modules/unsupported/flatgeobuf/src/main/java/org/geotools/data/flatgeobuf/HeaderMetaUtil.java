@@ -98,7 +98,6 @@ public class HeaderMetaUtil {
 
         HeaderMeta headerMeta = new HeaderMeta();
         headerMeta.featuresCount = featuresCount;
-        headerMeta.geometryType = geometryType;
         headerMeta.columns = columns;
 
         if (geometryDescriptor != null) {
@@ -114,6 +113,8 @@ public class HeaderMetaUtil {
                 }
             }
         }
+
+        headerMeta.geometryType = geometryType;
 
         return headerMeta;
     }

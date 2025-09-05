@@ -154,59 +154,58 @@ public class FeatureConversions {
             Object value = feature.getAttribute(column.name);
             if (value == null) continue;
             target.putShort(i);
-            if (type == ColumnType.Bool) {
-                target.put((byte) ((boolean) value ? 1 : 0));
-            } else if (type == ColumnType.Byte) {
-                target.put((byte) value);
-            } else if (type == ColumnType.Short) {
-                target.putShort((short) value);
-            } else if (type == ColumnType.Int) {
-                target.putInt((int) value);
-            } else if (type == ColumnType.Long)
-                if (value instanceof Long) {
-                    target.putLong((long) value);
-                } else if (value instanceof BigInteger) {
-                    target.putLong(((BigInteger) value).longValue());
-                } else {
-                    target.putLong((long) value);
+            switch (type) {
+                case ColumnType.Bool -> target.put((byte) ((boolean) value ? 1 : 0));
+                case ColumnType.Byte -> target.put((byte) value);
+                case ColumnType.Short -> target.putShort((short) value);
+                case ColumnType.Int -> target.putInt((int) value);
+                case ColumnType.Long -> {
+                    if (value instanceof Long) {
+                        target.putLong((long) value);
+                    } else if (value instanceof BigInteger bigInteger) {
+                        target.putLong(bigInteger.longValue());
+                    } else {
+                        target.putLong((long) value);
+                    }
                 }
-            else if (type == ColumnType.Double)
-                if (value instanceof Double) {
-                    target.putDouble((double) value);
-                } else if (value instanceof BigDecimal) {
-                    target.putDouble(((BigDecimal) value).doubleValue());
-                } else {
-                    target.putDouble((double) value);
+                case ColumnType.Double -> {
+                    if (value instanceof Double) {
+                        target.putDouble((double) value);
+                    } else if (value instanceof BigDecimal bigDecimal) {
+                        target.putDouble(bigDecimal.doubleValue());
+                    } else {
+                        target.putDouble((double) value);
+                    }
                 }
-            else if (type == ColumnType.DateTime) {
-                String isoDateTime = "";
-                if (value instanceof LocalDateTime) {
-                    isoDateTime = ISO_LOCAL_DATE_TIME.format((LocalDateTime) value);
-                } else if (value instanceof LocalDate) {
-                    isoDateTime = ISO_LOCAL_DATE.format((LocalDate) value);
-                } else if (value instanceof LocalTime) {
-                    isoDateTime = ISO_LOCAL_TIME.format((LocalTime) value);
-                } else if (value instanceof OffsetDateTime) {
-                    isoDateTime = ISO_OFFSET_DATE_TIME.format((OffsetDateTime) value);
-                } else if (value instanceof OffsetTime) {
-                    isoDateTime = ISO_OFFSET_TIME.format((OffsetTime) value);
-                } else if (value instanceof java.sql.Date) {
-                    isoDateTime = ISO_LOCAL_DATE.format(((java.sql.Date) value).toLocalDate());
-                } else if (value instanceof java.sql.Time) {
-                    isoDateTime = ISO_LOCAL_TIME.format(((java.sql.Time) value).toLocalTime());
-                } else if (value instanceof java.sql.Timestamp) {
-                    isoDateTime = ISO_LOCAL_DATE_TIME.format(((java.sql.Timestamp) value).toLocalDateTime());
-                } else if (value instanceof java.util.Date) {
-                    isoDateTime = ISO_INSTANT.format(((java.util.Date) value).toInstant());
-                } else {
-                    throw new RuntimeException(
-                            "Cannot handle datetime type " + value.getClass().getName());
+                case ColumnType.DateTime -> {
+                    String isoDateTime = "";
+                    if (value instanceof LocalDateTime localDateTime) {
+                        isoDateTime = ISO_LOCAL_DATE_TIME.format(localDateTime);
+                    } else if (value instanceof LocalDate localDate) {
+                        isoDateTime = ISO_LOCAL_DATE.format(localDate);
+                    } else if (value instanceof LocalTime localTime) {
+                        isoDateTime = ISO_LOCAL_TIME.format(localTime);
+                    } else if (value instanceof OffsetDateTime offsetDateTime) {
+                        isoDateTime = ISO_OFFSET_DATE_TIME.format(offsetDateTime);
+                    } else if (value instanceof OffsetTime offsetTime) {
+                        isoDateTime = ISO_OFFSET_TIME.format(offsetTime);
+                    } else if (value instanceof java.sql.Date date) {
+                        isoDateTime = ISO_LOCAL_DATE.format(date.toLocalDate());
+                    } else if (value instanceof java.sql.Time time) {
+                        isoDateTime = ISO_LOCAL_TIME.format(time.toLocalTime());
+                    } else if (value instanceof java.sql.Timestamp timestamp) {
+                        isoDateTime = ISO_LOCAL_DATE_TIME.format(timestamp.toLocalDateTime());
+                    } else if (value instanceof java.util.Date date) {
+                        isoDateTime = ISO_INSTANT.format(date.toInstant());
+                    } else {
+                        throw new RuntimeException("Cannot handle datetime type "
+                                + value.getClass().getName());
+                    }
+                    writeString(target, isoDateTime);
                 }
-                writeString(target, isoDateTime);
-            } else if (type == ColumnType.String) {
-                writeString(target, (String) value);
-            } else {
-                throw new RuntimeException(
+
+                case ColumnType.String -> writeString(target, (String) value);
+                default -> throw new RuntimeException(
                         "Cannot handle type " + value.getClass().getName());
             }
         }
@@ -255,15 +254,17 @@ public class FeatureConversions {
                 ColumnMeta columnMeta = headerMeta.columns.get(i);
                 String name = columnMeta.name;
                 byte type = columnMeta.type;
-                if (type == ColumnType.Bool) fb.set(name, bb.get() > 0 ? true : false);
-                else if (type == ColumnType.Byte) fb.set(name, bb.get());
-                else if (type == ColumnType.Short) fb.set(name, bb.getShort());
-                else if (type == ColumnType.Int) fb.set(name, bb.getInt());
-                else if (type == ColumnType.Long) fb.set(name, bb.getLong());
-                else if (type == ColumnType.Double) fb.set(name, bb.getDouble());
-                else if (type == ColumnType.DateTime) fb.set(name, readString(bb, name));
-                else if (type == ColumnType.String) fb.set(name, readString(bb, name));
-                else throw new RuntimeException("Unknown type");
+                switch (type) {
+                    case ColumnType.Bool -> fb.set(name, (bb.get() > 0));
+                    case ColumnType.Byte -> fb.set(name, bb.get());
+                    case ColumnType.Short -> fb.set(name, bb.getShort());
+                    case ColumnType.Int -> fb.set(name, bb.getInt());
+                    case ColumnType.Long -> fb.set(name, bb.getLong());
+                    case ColumnType.Double -> fb.set(name, bb.getDouble());
+                    case ColumnType.DateTime -> fb.set(name, readString(bb, name));
+                    case ColumnType.String -> fb.set(name, readString(bb, name));
+                    default -> throw new RuntimeException("Unknown type");
+                }
             }
         }
         SimpleFeature f = fb.buildFeature(fb.getFeatureType().getTypeName() + "." + fid);

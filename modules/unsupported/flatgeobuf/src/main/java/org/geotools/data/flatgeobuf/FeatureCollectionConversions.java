@@ -144,6 +144,7 @@ public class FeatureCollectionConversions {
         if (headerMeta.indexNodeSize > 1) {
             SearchResult result = PackedRTree.search(
                     data, headerMeta.offset, (int) headerMeta.featuresCount, headerMeta.indexNodeSize, rect);
+            long skip = treeSize - result.pos;
             if (skip > 0) FlatGeobufFeatureReader.skipNBytes(data, skip);
             iterable = new ReadHitsIterable(fb, result.hits, headerMeta, featuresOffset, data);
         } else {

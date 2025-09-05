@@ -34,9 +34,9 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 
 public class FlatGeobufFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
-    private ContentState state;
+    private final ContentState state;
 
-    private File temp;
+    private final File temp;
 
     private FlatGeobufFeatureReader delegate;
 
@@ -46,22 +46,22 @@ public class FlatGeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
 
     private int nextRow = 0;
 
-    private File file;
+    private final File file;
 
     private FlatGeobufWriter writer;
 
-    private OutputStream outputStream;
+    private final OutputStream outputStream;
 
-    private FlatBufferBuilder builder;
+    private final FlatBufferBuilder builder;
 
-    private FlatGeobufDataStore flatGeobufDataStore;
+    private final FlatGeobufDataStore flatGeobufDataStore;
 
     public FlatGeobufFeatureWriter(ContentState state, Query query) throws IOException {
         this.state = state;
         String typeName = query.getTypeName();
         DataStore dataStore = state.getEntry().getDataStore();
-        if (dataStore instanceof FlatGeobufDirectoryDataStore) {
-            this.flatGeobufDataStore = ((FlatGeobufDirectoryDataStore) dataStore).getDataStore(typeName);
+        if (dataStore instanceof FlatGeobufDirectoryDataStore flatGeobufDirectoryDataStore) {
+            this.flatGeobufDataStore = flatGeobufDirectoryDataStore.getDataStore(typeName);
             this.file = flatGeobufDataStore.getFile();
         } else {
             this.flatGeobufDataStore = (FlatGeobufDataStore) dataStore;
@@ -136,18 +136,19 @@ public class FlatGeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
 
     @Override
     public void close() throws IOException {
-        if (this.writer == null) {
-            throw new IOException("Writer alread closed");
+        try (this.outputStream) {
+            if (this.writer == null) {
+                throw new IOException("Writer alread closed");
+            }
+            if (this.currentFeature != null) {
+                this.write();
+            }
+            while (hasNext()) {
+                next();
+                write();
+            }
+            this.outputStream.flush();
         }
-        if (this.currentFeature != null) {
-            this.write();
-        }
-        while (hasNext()) {
-            next();
-            write();
-        }
-        this.outputStream.flush();
-        this.outputStream.close();
         this.writer = null;
         FlatBuffers.release(this.builder);
         if (delegate != null) {

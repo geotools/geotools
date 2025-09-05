@@ -64,7 +64,7 @@ public class FlatBuffers {
 
     private static class ReleasingFlatBufferBuilder extends FlatBufferBuilder {
 
-        private ReleasingByteBufferFactory factory;
+        private final ReleasingByteBufferFactory factory;
 
         public ReleasingFlatBufferBuilder(int initialSize, ReleasingByteBufferFactory factory) {
             super(initialSize, factory);
@@ -81,8 +81,8 @@ public class FlatBuffers {
     }
 
     public static void release(FlatBufferBuilder builder) {
-        if (builder instanceof ReleasingFlatBufferBuilder) {
-            ((ReleasingFlatBufferBuilder) builder).releaseBuffer();
+        if (builder instanceof ReleasingFlatBufferBuilder releasingFlatBufferBuilder) {
+            releasingFlatBufferBuilder.releaseBuffer();
         }
     }
 }

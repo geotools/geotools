@@ -16,6 +16,22 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 
 public class FeatureCollectionConversionsTest {
+
+    /*@Test
+    public void funkyTest() throws IOException, URISyntaxException {
+        File file = new File("/home/bjorn/code/fgbtest/output.fgb");
+        try (InputStream stream = new FileInputStream(file)) {
+            Iterator<SimpleFeature> it =
+                    FeatureCollectionConversions.deserialize(stream).iterator();
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(179, count);
+        }
+    }*/
+
     @Test
     public void countriesTest() throws IOException, URISyntaxException {
         URL url = TestData.url(FlatGeobufDataStore.class, "countries.fgb");

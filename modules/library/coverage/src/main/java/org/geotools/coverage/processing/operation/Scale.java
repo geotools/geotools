@@ -38,7 +38,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.image.jai.Registry;
 
 /**
  * This operation is simply a wrapper for the JAI scale operation which allows me to arbitrarily scale and translate a
@@ -53,9 +52,6 @@ public class Scale extends BaseScaleOperationJAI {
 
     /** Serial number for cross-version compatibility. */
     private static final long serialVersionUID = -3212656385631097713L;
-
-    /** Lock for unsetting native acceleration. */
-    private static final int[] lock = new int[1];
 
     /** Default constructor. */
     public Scale() {
@@ -83,24 +79,7 @@ public class Scale extends BaseScaleOperationJAI {
         if (interpolation != null
                 && !(interpolation instanceof InterpolationNearest)
                 && (transferType == DataBuffer.TYPE_FLOAT || transferType == DataBuffer.TYPE_DOUBLE)) {
-
-            synchronized (lock) {
-
-                /**
-                 * Disables the native acceleration for the "Scale" operation. In JAI 1.1.2, the "Scale" operation on
-                 * TYPE_FLOAT datatype with INTERP_BILINEAR interpolation cause an exception in the native code of
-                 * medialib, which halt the Java Virtual Machine. Using the pure Java implementation instead resolve the
-                 * problem.
-                 *
-                 * @todo Remove this hack when Sun will fix the medialib bug. See
-                 *     http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4906854
-                 */
-                Registry.setNativeAccelerationAllowed(getName(), false);
-                image = processor.createNS(getName(), parameters, hints).getRendering();
-
-                /** see above */
-                Registry.setNativeAccelerationAllowed(getName(), true);
-            }
+            image = processor.createNS(getName(), parameters, hints).getRendering();
 
         } else image = processor.createNS(getName(), parameters, hints);
 

@@ -58,7 +58,6 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.jai.Registry;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -760,11 +759,6 @@ public final class CropTest extends GridProcessingTestBase {
     /** Tests the "Crop" operation with a ROI set, clipping at half pixel. */
     @Test
     public void testCropWithROIHalfPixel() throws TransformException, InterruptedException, FactoryException {
-        // Disable MediaLib for this test
-        // Getting initial value
-        String disableMediaLibKey = "org.eclipse.imagen.media.disableMediaLib";
-        String oldDisableMediaLib = System.getProperty(disableMediaLibKey, "false");
-        Registry.setNativeAccelerationAllowed("Mosaic", false);
         // getting CoverageProcessor
         final CoverageProcessor processor = CoverageProcessor.getInstance();
 
@@ -817,9 +811,6 @@ public final class CropTest extends GridProcessingTestBase {
         assertEquals((byte) red[0], result[0]);
         assertEquals((byte) red[1], result[1]);
         assertEquals((byte) red[2], result[2]);
-
-        // Setting old acceleration value for Mosaic
-        Registry.setNativeAccelerationAllowed("Mosaic", Boolean.valueOf(oldDisableMediaLib));
     }
 
     /** Tests the "Crop" with a topologically invalid ROI */

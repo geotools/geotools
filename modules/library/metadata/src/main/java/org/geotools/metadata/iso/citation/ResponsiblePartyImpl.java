@@ -123,7 +123,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://www.opengis.org">OpenGIS consortium</A> responsible party. "OpenGIS consortium" is the old
+     * The <A HREF="https://www.opengis.net">OpenGIS consortium</A> responsible party. "OpenGIS consortium" is the old
      * name for "Open Geospatial consortium".
      *
      * @see ContactImpl#OPEN_GIS
@@ -139,7 +139,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://www.epsg.org">European Petroleum Survey Group</A> responsible party.
+     * The <A HREF="https://www.epsg.org">European Petroleum Survey Group</A> responsible party.
      *
      * @see ContactImpl#EPSG
      */
@@ -154,7 +154,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://www.remotesensing.org/geotiff/geotiff.html">GeoTIFF</A> responsible party.
+     * The <A HREF="https://www.ogc.org/standards/geotiff/">GeoTIFF</A> responsible party.
      *
      * @see ContactImpl#GEOTIFF
      */
@@ -169,7 +169,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://www.esri.com">ESRI</A> responsible party.
+     * The <A HREF="https://www.esri.com">ESRI</A> responsible party.
      *
      * @see ContactImpl#ESRI
      */
@@ -199,7 +199,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://www.oracle.com">Oracle</A> responsible party.
+     * The <A HREF="https://www.oracle.com">Oracle</A> responsible party.
      *
      * @see ContactImpl#ORACLE
      */
@@ -214,7 +214,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://postgis.refractions.net">PostGIS</A> responsible party.
+     * The <A HREF="https://postgis.net">PostGIS</A> responsible party.
      *
      * @see ContactImpl#POSTGIS
      * @since 2.4
@@ -245,7 +245,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://www.sun.com/">Sun Microsystems</A> party.
+     * The <A HREF="http://eclipse.org">Eclipse Foundation</A> party.
      *
      * @see ContactImpl#ECLIPSE
      * @since 34.x
@@ -261,7 +261,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
-     * The <A HREF="http://www.geotools.org">Geotools</A> project.
+     * The <A HREF="https://www.geotools.org">GeoTools</A> project.
      *
      * @see ContactImpl#GEOTOOLS
      */

@@ -238,9 +238,9 @@ public final class Citations {
     }
 
     /**
-     * The <A HREF="http://java.sun.com/products/java-media/jai">Java Advanced Imaging</A> library. An
-     * {@linkplain Citation#getAlternateTitles alternate title} for this citation is "JAI" (according ISO 19115,
-     * alternate titles often contain abreviations).
+     * The <A HREF="https://projects.eclipse.org/projects/technology.imagen">JEclipse ImageN</A> library. An
+     * {@linkplain Citation#getAlternateTitles alternate title} for this citation is "ImageN" (according ISO 19115,
+     * alternate titles often contain abbreviations).
      *
      * @see ResponsiblePartyImpl#ECLIPSE
      */

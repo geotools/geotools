@@ -195,30 +195,28 @@ public class SimpleTypeBuilderTest {
         Assert.assertEquals(0, result.getAttributeCount());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testRetypeWithNonexistentAttribute() throws Exception {
         SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
-        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(
+        SimpleFeatureTypeBuilder.retype(
                 ft,
                 Stream.concat(
                                 Stream.of("<nonexistent>"),
                                 Stream.of(attributeNames(ft).toArray(String[]::new)))
                         .toList());
-        Assert.assertEquals(ft.getAttributeDescriptors(), result.getAttributeDescriptors());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testRetypeWithOnlyNonexistentAttribute() throws Exception {
         SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
-        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of("<nonexistent>"));
-        Assert.assertEquals(0, result.getAttributeCount());
+        SimpleFeatureTypeBuilder.retype(ft, List.of("<nonexistent>"));
     }
 
     @Test
     public void testRetypeWithPrefixingAttribute() throws Exception {
         SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
         AttributeDescriptor ad = ft.getAttributeDescriptors().get(0);
-        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of(ad.getLocalName() + "suffix"));
+        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of(ad.getLocalName() + "/suffix"));
         Assert.assertEquals(List.of(ad), result.getAttributeDescriptors());
     }
 
@@ -228,11 +226,11 @@ public class SimpleTypeBuilderTest {
         AttributeDescriptor ad = ft.getAttributeDescriptors().get(0);
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
         b.init(ft);
-        b.add(ad.getLocalName() + "suffix", ad.getType().getBinding());
+        b.add(ad.getLocalName() + "/suffix", ad.getType().getBinding());
         ft = b.buildFeatureType();
 
-        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of(ad.getLocalName() + "suffix"));
-        Assert.assertEquals(List.of(ft.getDescriptor(ad.getLocalName() + "suffix")), result.getAttributeDescriptors());
+        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of(ad.getLocalName() + "/suffix"));
+        Assert.assertEquals(List.of(ft.getDescriptor(ad.getLocalName() + "/suffix")), result.getAttributeDescriptors());
     }
 
     @Test
@@ -245,15 +243,14 @@ public class SimpleTypeBuilderTest {
         Assert.assertEquals(ads, attributeNames(result));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testRetypeNoDuplicates() throws Exception {
         SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
 
-        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(
+        SimpleFeatureTypeBuilder.retype(
                 ft,
                 Stream.concat(attributeNames(ft).stream(), attributeNames(ft).stream())
                         .toList());
-        Assert.assertEquals(ft.getAttributeDescriptors(), result.getAttributeDescriptors());
     }
 
     @Test

@@ -43,7 +43,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.jai.Registry;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -75,11 +74,7 @@ public class BandProcessTest {
 
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException, NoninvertibleTransformException {
-        // Disable medialib
-        System.setProperty("org.eclipse.imagen.media.disableMediaLib", "true");
-        // Disable bandmerge and mosaic native operation
-        Registry.setNativeAccelerationAllowed("BandMerge", false);
-        Registry.setNativeAccelerationAllowed("Mosaic", false);
+
         // First file selection
         File input = TestData.file(BandProcessTest.class, "sample.tif");
         AbstractGridFormat format = GridFormatFinder.findFormat(input);
@@ -103,15 +98,6 @@ public class BandProcessTest {
         coverage3 = (GridCoverage2D) reader.read();
         // Reader disposal
         reader.dispose();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        // Enable medialib
-        System.setProperty("org.eclipse.imagen.media.disableMediaLib", "false");
-        // Enable bandmerge and mosaic native operation
-        Registry.setNativeAccelerationAllowed("BandMerge", true);
-        Registry.setNativeAccelerationAllowed("Mosaic", true);
     }
 
     // Ensure that the merging and selecting two equal images returns the same images

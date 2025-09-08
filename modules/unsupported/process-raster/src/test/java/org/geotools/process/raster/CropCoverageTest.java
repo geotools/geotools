@@ -29,7 +29,6 @@ import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.image.jai.Registry;
 import org.geotools.test.TestData;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,11 +43,6 @@ public class CropCoverageTest {
     @BeforeClass
     public static void readCoverages() throws Exception {
         // read a simple 1 band gray image, no ROI, no NODATA
-        // Disable medialib
-        System.setProperty("org.eclipse.imagen.media.disableMediaLib", "true");
-        // Disable bandmerge and mosaic native operation
-        Registry.setNativeAccelerationAllowed("BandMerge", false);
-        Registry.setNativeAccelerationAllowed("Mosaic", false);
         // First file selection
         gray = readCoverage(TestData.file(CropCoverageTest.class, "sample.tif"));
         current = readCoverage(TestData.file(CropCoverageTest.class, "current.tif"));

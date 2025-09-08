@@ -1,5 +1,7 @@
 package org.geotools.data.flatgeobuf;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,10 +10,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Iterator;
-
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.test.TestData;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 

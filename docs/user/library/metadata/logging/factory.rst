@@ -38,7 +38,7 @@ This method configures:
 
 * ``Logging.ALL``
 * ``Logging.GEOTOOLS``
-* ``Logging.JAI``
+* ``Logging.ECLIPSE``
 
 This is the the most flexible way to set up logging, allowing users of your application to choose
 the logging system based on configuration files and jars supplied at runtime.
@@ -104,14 +104,14 @@ If you know the LoggerFactory you wish to use there is a method to pass in the i
 .. note:: You can create your own ``LoggerFactory`` if you wish to bridge GeoTools logging to your own tracking facilities. As an example an OSGi application could check bundle trace settings "trace" settings to determine appropriate level of detail to log.
 
 
-JAI Logging
-'''''''''''
+ImageN Logging
+'''''''''''''''
 
-GeoTools Logging will listen to ``JAI`` errors and log them appropriately. It does this by first checking if your application has registered an ``ImagingListener``, and if not it will register a ``LoggingImagingListener`` to redirect JAI warnings. Common ``JAI`` errors (such as "Continuing in pure Java mode") are logged as ``Level.TRACE`` messages, all other errors are logged as ``Level.INFO``.
+GeoTools Logging will listen to ``JAI`` errors and log them appropriately. It does this by first checking if your application has registered an ``ImagingListener``, and if not it will register a ``LoggingImagingListener`` to redirect ImageN warnings. Common errors (such as "Continuing in pure Java mode") are logged as ``Level.TRACE`` messages, all other errors are logged as ``Level.INFO``.
 
 If you would like to check this bootstrapping process use the system property `-DLOGGING_TRACE=true`.
 
-To completely filter JAI messages from your application set `javax.media.jai` group to ``Level.WARNING``::
+To completely filter ImageN messages from your application set `org.eclipse.imagen` group to ``Level.WARNING``::
    
    Logging.getLogger("javax.media.jai").setLevel(Level.WARNING);
 

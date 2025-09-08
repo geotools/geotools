@@ -97,7 +97,7 @@ public final class Logging {
     /**
      * Logging configuration that apply only to org.eclipse.imagen packages.
      *
-     * <p>Used by {@link LoggingImagingListener} to route errors reported from JAI framework.
+     * <p>Used by {@link LoggingImagingListener} to route errors reported from ImageN framework.
      */
     public static final Logging IMAGEN = getLogging("org.eclipse.imagen");
 
@@ -126,7 +126,7 @@ public final class Logging {
      */
     private static boolean sameLoggerFactory = true;
 
-    // Register LoggingImagingListener if JAI is available
+    // Register LoggingImagingListener if ImageN is available
     static {
         final boolean LOGGING_TRACE = Boolean.getBoolean("LOGGING_TRACE");
         try {
@@ -144,17 +144,17 @@ public final class Logging {
                 // Custom GeoTools ImagingListener used to ignore common warnings
                 setImagingListener.invoke(jai, new LoggingImagingListener());
                 if (LOGGING_TRACE) {
-                    System.out.println("Logging JAI messages: org.eclipse.imagen logger redirected");
+                    System.out.println("Logging ImageN messages: org.eclipse.imagen logger redirected");
                 }
             } else {
                 if (LOGGING_TRACE) {
-                    System.out.println("Logging JAI messages: ImagingListener already in use: " + imagingListener);
+                    System.out.println("Logging ImageN messages: ImagingListener already in use: " + imagingListener);
                 }
             }
         } catch (Throwable ignore) {
-            // JAI not available so no need to redirect logging messages
+            // ImageN not available so no need to redirect logging messages
             if (LOGGING_TRACE) {
-                System.out.println("Logging JAI messages: Unable to redirect to org.eclipse.imagen");
+                System.out.println("Logging ImageN messages: Unable to redirect to org.eclipse.imagen");
             }
         }
     }

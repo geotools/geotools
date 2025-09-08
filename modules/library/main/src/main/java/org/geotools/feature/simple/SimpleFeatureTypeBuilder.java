@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -962,14 +961,6 @@ public class SimpleFeatureTypeBuilder {
         return retype(original, Arrays.asList(attributes));
     }
 
-    /** Returns first AttributeDescriptor whose localName is a prefix of the provided name. */
-    private static final Optional<AttributeDescriptor> findFirstWithPrefixingName(
-            List<AttributeDescriptor> descriptors, String name) {
-        return descriptors.stream()
-                .filter(ad -> name.startsWith(ad.getLocalName()))
-                .findFirst();
-    }
-
     /**
      * Create a SimpleFeatureType containing just the attribute descriptors indicated.
      *
@@ -987,13 +978,22 @@ public class SimpleFeatureTypeBuilder {
         b.attributes().clear();
 
         // add recognized attributes in order and only once
-        List<AttributeDescriptor> ads = attributes.stream()
-                .flatMap(attr -> Optional.ofNullable(original.getDescriptor(attr))
-                        .or(() -> findFirstWithPrefixingName(original.getAttributeDescriptors(), attr))
-                        .stream())
-                .distinct()
-                .toList();
-        b.addAll(ads);
+        for (String type : attributes) {
+            AttributeDescriptor found = original.getDescriptor(type);
+            if (found == null && type.contains("/")) {
+                // requested attribute seems to be xpath, so include its root
+                found = original.getDescriptor(type.substring(0, type.indexOf('/')));
+            }
+            if (found == null) {
+                throw new IllegalArgumentException("Attribute '" + type + "' not found");
+            }
+            if (!b.attributes().contains(found)) {
+                // attribute not yet included, so add it
+                b.add(found);
+            } else if (attributes.size() != new HashSet<String>(attributes).size()) {
+                throw new IllegalArgumentException("Attribute '" + type + "' specified more than once");
+            }
+        }
 
         // handle default geometry
         GeometryDescriptor defaultGeometry = original.getGeometryDescriptor();

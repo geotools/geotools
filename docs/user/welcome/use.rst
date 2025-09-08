@@ -28,8 +28,7 @@ Download:
    
    1. Dump everything from a binary distribution of GeoTools into your IDE
    2. Remove all the jars that say ``epsg`` in them - except for the ``gt2-epsg jar``.
-   3. Ensure your JRE has JAI and ImageIO if you are doing raster work
-   4. Ignore the rest of this page   
+   3. Ignore the rest of this page   
    
    For detailed step-by-step instructions review the Eclipse quickstart and
    Netbeans quickstart. Instructions for downloading and selecting jars

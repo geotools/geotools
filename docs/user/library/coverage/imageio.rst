@@ -159,7 +159,7 @@ parameters:
   
   // /////////////////////////////////////////////////////////////////////
   //
-  // Read ignoring overviews with subsampling and crop, using Jai,
+  // Read ignoring overviews with subsampling and crop, using ImageN,
   // multithreading and customized tilesize
   //
   // /////////////////////////////////////////////////////////////////////
@@ -187,7 +187,7 @@ parameters:
   
   // //
   //
-  // Setting read type: use JAI ImageRead
+  // Setting read type: use ImageRead
   //
   // //
   final ParameterValue useJaiRead = (ParameterValue) ((BaseGDALGridFormat) reader

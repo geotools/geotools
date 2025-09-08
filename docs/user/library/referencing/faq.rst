@@ -57,28 +57,43 @@ Q: What Jars does gt-referencing need?
 
 As an example to use ``gt-epsg-hsql`` you will need::
     
-    C:\geotools\trunk\modules\plugin\epsg-hsql>mvn dependency:tree
+    C:\geotools\trunk\modules\plugin\epsg-hsql>mvn dependency:tree -Dscope=compile
     ...
-    ------------------------------------------------------------------------
-    Building EPSG Authority Service using HSQL database
-       task-segment: [dependency:tree]
-    ------------------------------------------------------------------------
-    [dependency:tree]
-    org.geotools:gt2-epsg-hsql:jar:2.5-SNAPSHOT
-    +- junit:junit:jar:3.8.1:test
-    +- javax.media:jai_core:jar:1.1.3:provided
-    +- org.geotools:gt2-referencing:jar:2.5-SNAPSHOT:compile
-    |  +- java3d:vecmath:jar:1.3.1:compile
-    |  +- commons-pool:commons-pool:jar:1.3:compile
-    |  \- org.geotools:gt2-metadata:jar:2.5-SNAPSHOT:compile
-    |     +- org.geotools.api:geoapi:jar:2.2-SNAPSHOT:compile
-    |     +- javax.units:jsr108:jar:0.01:compile
-    |     \- edu.oswego:concurrent:jar:1.3.4:compile
-    +- org.geotools:gt2-sample-data:jar:2.5-SNAPSHOT:test
-    +- hsqldb:hsqldb:jar:1.8.0.7:compile
-    +- net.sourceforge.groboutils:groboutils-core:jar:5:test
-    \- commons-dbcp:commons-dbcp:jar:1.2.2:test
-    ------------------------------------------------------------------------
+     ---------------------< org.geotools:gt-epsg-hsql >----------------------
+     Building EPSG Authority Service using HSQL database 34-SNAPSHOT
+       from pom.xml
+     --------------------------------[ jar ]---------------------------------
+     
+     --- dependency:3.6.0:tree (default-cli) @ gt-epsg-hsql ---
+     org.geotools:gt-epsg-hsql:jar:34-SNAPSHOT
+     +- org.geotools:gt-referencing:jar:34-SNAPSHOT:compile
+     |  +- org.ejml:ejml-ddense:jar:0.41:compile
+     |  |  \- org.ejml:ejml-core:jar:0.41:compile
+     |  +- commons-pool:commons-pool:jar:1.5.4:compile
+     |  +- org.geotools:gt-metadata:jar:34-SNAPSHOT:compile
+     |  |  +- org.geotools:gt-api:jar:34-SNAPSHOT:compile
+     |  |  |  +- systems.uom:systems-common:jar:2.1:compile
+     |  |  |  |  +- si.uom:si-quantity:jar:2.1:compile
+     |  |  |  |  \- si.uom:si-units:jar:2.1:compile
+     |  |  |  |     \- jakarta.annotation:jakarta.annotation-api:jar:1.3.4:compile
+     |  |  |  +- tech.units:indriya:jar:2.2:compile
+     |  |  |  |  +- tech.uom.lib:uom-lib-common:jar:2.2:compile
+     |  |  |  |  +- jakarta.inject:jakarta.inject-api:jar:2.0.1:compile
+     |  |  |  |  \- org.apiguardian:apiguardian-api:jar:1.1.2:compile
+     |  |  |  \- org.locationtech.jts:jts-core:jar:1.20.0:compile
+     |  |  +- org.apache.commons:commons-lang3:jar:3.18.0:compile
+     |  |  \- org.geotools.ogc:net.opengis.ows:jar:34-SNAPSHOT:compile
+     |  |     +- org.geotools.ogc:org.w3.xlink:jar:34-SNAPSHOT:compile
+     |  |     +- org.eclipse.emf:org.eclipse.emf.common:jar:2.15.0:compile
+     |  |     +- org.eclipse.emf:org.eclipse.emf.ecore:jar:2.15.0:compile
+     |  |     \- org.eclipse.emf:org.eclipse.emf.ecore.xmi:jar:2.15.0:compile
+     |  +- javax.measure:unit-api:jar:2.2:compile
+     |  +- it.geosolutions.jgridshift:jgridshift-core:jar:1.3:compile
+     |  \- net.sf.geographiclib:GeographicLib-Java:jar:1.49:compile
+     +- org.hsqldb:hsqldb:jar:2.7.2:compile
+     +- org.geotools:gt-platform-dependencies:pom:34-SNAPSHOT:provided
+     +- org.geotools:gt-bom:pom:34-SNAPSHOT:provided
+     \- org.eclipse.imagen:imagen-core:jar:0.4-SNAPSHOT:compile
 
 Q: Bursa-Wolf Parameters Required?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

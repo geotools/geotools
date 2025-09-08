@@ -36,7 +36,7 @@ world coordinates. They do not store any coordinate reference system
 information for the coordinates.
 
 The gt-image plugin depends on Java to read the image file; so depending
-on how you have JAI / Image IO configured the following should be
+on how you have ImageN / Image IO configured the following should be
 supported:
 
 ============= ==============================  ==============================

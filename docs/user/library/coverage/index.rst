@@ -12,7 +12,7 @@ that found in NetCDF format files.
 The gt-coverage module is responsible for:
 
 * implementation of the coverage interfaces from :doc:`gt-api <../api/index>` such as GridCoverage2D and Format
-* Bridging between Java Advanced Imaging, JAI Image IO and Java Image facilities and the geospatial idea of a GridCoverage
+* Bridging between Eclipse ImageN, JAI Image IO and Java Image facilities and the geospatial idea of a GridCoverage
 * Recognizing additional formats available on the CLASSPATH using **GridFormatFinder**
   
 The module supports the use of coverage information (i.e. raster) from a range of sources.

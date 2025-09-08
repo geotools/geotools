@@ -31,50 +31,27 @@ Java Install
 
 .. sidebar:: Lab
 
-   If you are following this workbook in a lab setting you will find installers on the DVD.
+   If you are following this workbook in a lab setting the instructor may have already downloaded the files.
    
 We are going to be making use of Java, so if you don't have a Java Development Kit installed now is
-the time to do so. Even if you have Java installed already check out the optional Java Advanced
-Imaging and Java Image IO section.
+the time to do so.
    
-#. Download the latest Java Development Kit (JDK) from the Oracle website:
+#. Download OpenJDK for your enviornment, GeoTools uses Java 17.
 
-   http://www.oracle.com/technetwork/java/javase/downloads/
+   * The Utility http://sdkman.io is very useful downloading and changing between different
+     Java environnments.
    
-#. At the time of writing the latest was JDK 8. Choose a download for your platform, for example:
+   * Linux users may wish to obtain OpenJDK from their distribution package manager:
    
-   `jdk-8u66-windows-i586.exe`
+     https://openjdk.org
+
    
-   For Windows 32bit platforms.
+   * Mac and Windows users may prefer an installer, such as provided by Temurin:
    
+     https://adoptium.net/en-GB/temurin/releases?version=17&os=any&arch=any
+      
 #. Click through the installer. You will need to accept a license agreement, choose a directory
    and so forth.
-   
-   By default this will install to:     
-   
-   ``C:\\Program Files\\Java\\jdk1.8.0\\``
-     
-#. **Optional**: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
-   performance will be improved:   
-   
-   http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html
-   
-   Both a JDK and JRE installer are available:
-   
-   * ``jai-1_1_3-lib-windows-i586-jdk.exe``
-   * ``jai-1_1_3-lib-windows-i586-jre.exe``
-     
-#. **Optional**: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
-   ImageIO library:
-   
-  https://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html
-   
-   Both a JDK and JRE installer are available:   
-   
-   * ``jai_imageio-1_1-lib-windows-i586-jdk.exe``
-   * ``jai_imageio-1_1-lib-windows-i586-jre.exe``
-   
-For more details of how to install these packages see `this page <http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions>`_
 
 Eclipse
 =======

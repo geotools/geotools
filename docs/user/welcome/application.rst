@@ -246,34 +246,3 @@ bundle in your system.
 Thus, you should really follow the bundle-per-JAR approach and OSGi each third-party dependency
 into a separate bundle. Actually, there is no need to do all the work on your own: The Spring Source
 Enterprise Bundle Repository provides converted versions of many popular Java libraries.
-
-Eclipse-Buddy Policy: ext
-''''''''''''''''''''''''''
-
-The GeoTools library makes use of Java Advanced Imaging - which is a Java extension. Just as OSGi
-is very careful about dependencies between bundles; it is also careful to ensure you do not
-accidentally depend on a Java extension that may not be present.
-
-A normal application works like this:
-
-1. Java Classes - like String
-2. Java Extension Classes - like JAI
-3. Classpath - system environmental variable, or ``-cp`` command line option 
-   default: ``.;bin\..\classes;bin\..\lib\classes.zip``
-
-OSGi takes over and forces you to choose what you are doing:
-
-1. Java Classes - like String
-2. Everything that is "published" by the bundles you depends on
-   
-If you add the following to your plugin ``manifest.mf``::
-
-    Eclipse-BuddyPolicy: ext
-
-OSGi will start you up with the following:
-
-1. Java Classes - like String
-2. Java Extension Classes - like JAI
-3. Everything that is "published" by the bundles you depends on
-
-Which will enable GeoTools code to work (yeah!).

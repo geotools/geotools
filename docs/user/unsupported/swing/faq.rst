@@ -30,7 +30,7 @@ The ``gt-renderer`` is optimized for memory use; it does not loading your data i
 (it is drawing from disk, or database, each time). You can experiment with loading your data
 into memory (specifically into a spatial index) if you want faster performance out of it.
 
-For raster rendering you have a great deal of control over performance using JAI TileCache settings
+For raster rendering you have a great deal of control over performance using ImageN TileCache settings
 in addition to converting your rasters into an efficient format (anything is better than JPEG).
 
 References:

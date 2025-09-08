@@ -64,7 +64,7 @@ Advanced
 
 The coverage module provides some powerful methods to use the different
 views of the grid coverage. Many of these uses are backed by the
-standard JAI mechanisms behind the scenes, sometimes combined with the
+standard ImageN mechanisms behind the scenes, sometimes combined with the
 georeferencing operations of the referencing module.
 
 The GeoTools coverage module provides **Operations** for convenience, this class bundles up the sophisticated and powerful internal mechanism of the processing package. The package summary in javadocs begins the explanation of the internal mechanism. This documentation page will need to be expanded with a better explanation of the coverage module operation system.
@@ -125,7 +125,7 @@ interpolate
 
 Similarly, we can interpolate an image using the Operations class. In this case we need to pick the interpolation method we will use.::
   
-  javax.media.jai.Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
+  Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
   GridCoverage2D covinterpol =  (GridCoverage2D) Operations.DEFAULT.interpolate(scicov, interp);
   RenderedImage ri = covinterpol.getRenderedImage();
 

@@ -71,7 +71,7 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
                         }
                     } else if (object instanceof SimpleFeatureType type) {
                         AttributeDescriptor ad = type.getDescriptor(parts[0]);
-                        return ad != null && ad.getType().getBinding().equals(Object.class);
+                        return ad != null && ad.getType().getBinding().equals(JsonNode.class);
                     }
                 }
             } catch (IllegalArgumentException e) {

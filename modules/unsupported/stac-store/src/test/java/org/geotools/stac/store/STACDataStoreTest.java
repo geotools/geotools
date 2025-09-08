@@ -19,6 +19,7 @@ package org.geotools.stac.store;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.Arrays;
 import java.util.Date;
@@ -68,7 +69,7 @@ public class STACDataStoreTest extends AbstractSTACStoreTest {
         assertEquals(String.class, getBinding(schema, "platform"));
         assertEquals(List.class, getBinding(schema, "instruments"));
         assertEquals(Double.class, getBinding(schema, "gsd"));
-        assertEquals(Object.class, getBinding(schema, "processing:software"));
+        assertEquals(JsonNode.class, getBinding(schema, "processing:software"));
         assertEquals(String.class, getBinding(schema, "sar:frequency_band"));
         assertEquals(ObjectNode.class, getBinding(schema, "assets"));
     }

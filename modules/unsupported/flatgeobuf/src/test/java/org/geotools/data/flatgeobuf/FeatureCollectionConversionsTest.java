@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 
 public class FeatureCollectionConversionsTest {
+
     @Test
     public void countriesTest() throws IOException, URISyntaxException {
         URL url = TestData.url(FlatGeobufDataStore.class, "countries.fgb");

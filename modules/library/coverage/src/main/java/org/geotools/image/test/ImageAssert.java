@@ -92,7 +92,7 @@ public class ImageAssert {
                         throw new AssertionError(
                                 "Could not create directory that will contain :" + expectedFile.getParent());
                     }
-                    new ImageWorker(actualImage).writePNG(expectedFile, "FILTERED", 0.9f, false, false);
+                    new ImageWorker(actualImage).writePNG(expectedFile, "FILTERED", 0.9f, false);
                 } catch (IOException e) {
                     throw (Error) new AssertionError("Failed to write the image to disk").initCause(e);
                 }

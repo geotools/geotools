@@ -602,7 +602,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      *     thrown an {@link InvalidGridGeometryException}).
      * @throws IllegalArgumentException if the specified bitmask is not a combination of known masks.
      * @since 2.2
-     * @see javax.media.jai.ImageLayout#isValid
+     * @see org.eclipse.imagen.ImageLayout#isValid
      */
     public boolean isDefined(final int bitmask) throws IllegalArgumentException {
         if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK)) != 0) {

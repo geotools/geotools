@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;

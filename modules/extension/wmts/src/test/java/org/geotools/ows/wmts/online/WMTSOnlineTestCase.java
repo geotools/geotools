@@ -5,7 +5,7 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
-import javax.media.jai.Interpolation;
+import org.eclipse.imagen.Interpolation;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridEnvelope2D;

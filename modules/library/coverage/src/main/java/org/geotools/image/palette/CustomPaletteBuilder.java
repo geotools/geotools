@@ -26,7 +26,7 @@ import java.awt.image.WritableRaster;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageTypeSpecifier;
-import javax.media.jai.ImageLayout;
+import org.eclipse.imagen.ImageLayout;
 import org.geotools.util.logging.Logging;
 
 /**

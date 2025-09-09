@@ -19,7 +19,7 @@ package org.geotools.referencing.operation.transform;
 import java.awt.geom.Point2D;
 import java.text.MessageFormat;
 import java.util.Arrays;
-import javax.media.jai.Warp;
+import org.eclipse.imagen.Warp;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.metadata.i18n.ErrorKeys;

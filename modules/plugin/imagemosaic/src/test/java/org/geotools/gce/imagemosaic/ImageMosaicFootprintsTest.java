@@ -25,8 +25,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Transparency;
@@ -47,10 +45,12 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
+import org.eclipse.imagen.media.viewer.RenderedImageBrowser;
 import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -358,8 +358,8 @@ public class ImageMosaicFootprintsTest {
     /** Test the GeometryMask parameter with applied buffering, combined with granules footprint */
     @Test
     @Ignore
-    //    java.lang.ClassCastException: javax.media.jai.ROI cannot be cast to
-    // it.geosolutions.jaiext.vectorbin.ROIGeometry
+    //    java.lang.ClassCastException: org.eclipse.imagen.ROI cannot be cast to
+    // org.eclipse.imagen.media.vectorbin.ROIGeometry
     //
     //    at
     // org.geotools.gce.imagemosaic.ImageMosaicFootprintsTest.maskCoverage(ImageMosaicFootprintsTest.java:498)

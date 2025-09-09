@@ -23,7 +23,7 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.TransformException;

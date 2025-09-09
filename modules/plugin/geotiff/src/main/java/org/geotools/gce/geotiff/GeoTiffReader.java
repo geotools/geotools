@@ -43,7 +43,6 @@ import it.geosolutions.imageioimpl.plugins.cog.CogImageInputStreamSpi;
 import it.geosolutions.imageioimpl.plugins.cog.CogSourceSPIProvider;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -64,6 +63,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,11 +76,12 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
@@ -129,6 +130,7 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 
 /**
  * this class is responsible for exposing the data and the Georeferencing metadata available to the Geotools library.
@@ -140,10 +142,53 @@ import org.geotools.util.factory.Hints;
  */
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
+    /** Logger for the {@link GeoTiffReader} class. */
+    private static final Logger LOGGER = Logging.getLogger(GeoTiffReader.class);
+
     private static final String DEFAULT_COVERAGE_NAME = "geotiff_coverage";
 
-    /** Logger for the {@link GeoTiffReader} class. */
-    private Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class);
+    static {
+        // TIFF reader initialization is placed here to ensure that it is done before any coverage reading code
+        // can kick in and start using the JDK TIFF reader instead
+        replaceTIFF();
+    }
+
+    private static void replaceTIFF() {
+        try {
+            // check if our tiff plugin is in the path
+            final String customTiffName = it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi.class.getName();
+            Class.forName(customTiffName);
+
+            // imageio tiff reader
+            Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("tiff");
+            List<String> jdkReaderSpiNames = new ArrayList<>();
+            while (readers.hasNext()) {
+                final ImageReader reader = readers.next();
+
+                // if it's already the first, nothing to do
+                String originatingProviderName =
+                        reader.getOriginatingProvider().getClass().getName();
+                if (originatingProviderName.startsWith("com.sun") || originatingProviderName.startsWith("javax")) {
+                    jdkReaderSpiNames.add(originatingProviderName);
+                    break;
+                }
+            }
+            if (jdkReaderSpiNames.isEmpty()) {
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("No JDK TIFF reader found, skipping replacement");
+            } else {
+                for (String jdkReaderSpiName : jdkReaderSpiNames) {
+                    final boolean succeeded = ImageIOUtilities.replaceProvider(
+                            ImageReaderSpi.class, customTiffName, jdkReaderSpiName, "tiff");
+                    if (!succeeded)
+                        if (LOGGER.isLoggable(Level.WARNING))
+                            LOGGER.warning("Unable to set ordering between tiff readers spi");
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            if (LOGGER.isLoggable(Level.WARNING))
+                LOGGER.log(Level.WARNING, "Unable to load specific TIFF reader spi", e);
+        }
+    }
 
     /**
      * With this java switch I can control whether or not an external PRJ files takes precedence over the internal CRS

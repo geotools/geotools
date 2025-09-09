@@ -92,13 +92,6 @@ class RasterLayerRequest {
     /** The region of the destination area */
     private Rectangle destinationRasterArea;
 
-    /** Requesting a multithreading read */
-    private boolean useMultithreading;
-
-    public boolean isUseMultithreading() {
-        return useMultithreading;
-    }
-
     /**
      * Set to {@code true} if this request will produce an empty result, and the coverageResponse will produce a
      * {@code null} coverage.
@@ -211,17 +204,6 @@ class RasterLayerRequest {
 
             // //
             //
-            // Use Multithreading parameter
-            //
-            // //
-            if (name.equals(JP2KFormat.USE_MULTITHREADING.getName())) {
-                if (value == null) continue;
-                useMultithreading = ((Boolean) value).booleanValue();
-                continue;
-            }
-
-            // //
-            //
             // Overview Policy parameter
             //
             // //
@@ -299,16 +281,6 @@ class RasterLayerRequest {
             requestedBBox = new ReferencedEnvelope((Bounds) gg.getEnvelope2D());
             requestedRasterArea = gg.getGridRange2D().getBounds();
             requestedGridToWorld = (AffineTransform) gg.getGridToCRS2D();
-            return;
-        }
-
-        // //
-        //
-        // Use Multithreading parameter
-        //
-        // //
-        if (name.equals(JP2KFormat.USE_MULTITHREADING.getName())) {
-            useMultithreading = param.booleanValue();
             return;
         }
 
@@ -464,19 +436,6 @@ class RasterLayerRequest {
      * need to be performed or {@code false} if a simple read operation is needed.
      */
     private void checkReadType() {
-        // //
-        //
-        // First of all check if the ReadType was already set as part the
-        // request parameters
-        //
-        // //
-        if (readType != ReadType.UNSPECIFIED) {
-            if (readType == ReadType.JAI_IMAGEREAD && useMultithreading) {
-                readType = ReadType.JAI_IMAGEREAD_MT;
-            }
-            return;
-        }
-
         // //
         //
         // Ok, the request did not explicitly set the read type, let's check the

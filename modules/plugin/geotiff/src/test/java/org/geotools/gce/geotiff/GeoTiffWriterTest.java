@@ -18,7 +18,6 @@ package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
 import it.geosolutions.io.output.adapter.OutputStreamAdapter;
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -30,7 +29,8 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
 import org.geotools.api.coverage.grid.GridEnvelope;
@@ -215,13 +215,6 @@ public class GeoTiffWriterTest extends Assert {
                 expectedEnvelope.equals(
                         croppedEnvelope, XAffineTransform.getScale((AffineTransform) croppedG2W) / 2.0, false));
 
-        // release things
-        cropped.dispose(true);
-        gc.dispose(true);
-        try {
-            if (reader != null) reader.dispose();
-        } catch (Throwable e) {
-        }
         // /////////////////////////////////////////////////////////////////////
         //
         //
@@ -266,6 +259,14 @@ public class GeoTiffWriterTest extends Assert {
                 else PlanarImage.wrapRenderedImage(gc.getRenderedImage()).getTiles();
             }
         } finally {
+            // release things
+            cropped.dispose(true);
+            gc.dispose(true);
+            try {
+                if (reader != null) reader.dispose();
+            } catch (Throwable e) {
+            }
+
             try {
                 if (reader != null) reader.dispose();
             } catch (Throwable e) {
@@ -700,26 +701,30 @@ public class GeoTiffWriterTest extends Assert {
         // reading the coverage, checking it has nodata
         GeoTiffReader reader = new GeoTiffReader(input);
         GridCoverage2D coverage = reader.read();
-        Map<?, ?> props = coverage.getProperties();
+        try {
+            Map<?, ?> props = coverage.getProperties();
 
-        assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
-        NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
-        assertEquals(noDataValue, nodata.getAsSingleValue(), 1e-6);
-        reader.dispose();
+            assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
+            NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
+            assertEquals(noDataValue, nodata.getAsSingleValue(), 1e-6);
+            reader.dispose();
 
-        // Writing it, including noData
-        writeAndRead(coverage, Boolean.TRUE, noDataValue);
+            // Writing it, including noData
+            writeAndRead(coverage, Boolean.TRUE, noDataValue);
 
-        // Writing it again, excluding noData this time
-        writeAndRead(coverage, Boolean.FALSE, noDataValue);
+            // Writing it again, excluding noData this time
+            writeAndRead(coverage, Boolean.FALSE, noDataValue);
 
-        // Writing with no using the default value of true
-        System.setProperty("geotiff.writenodata", "true");
-        writeAndRead(coverage, null, noDataValue);
-        // Writing with no using the default value of false
-        System.setProperty("geotiff.writenodata", "false");
-        writeAndRead(coverage, null, noDataValue);
-        System.clearProperty("geotiff.writenodata");
+            // Writing with no using the default value of true
+            System.setProperty("geotiff.writenodata", "true");
+            writeAndRead(coverage, null, noDataValue);
+            // Writing with no using the default value of false
+            System.setProperty("geotiff.writenodata", "false");
+            writeAndRead(coverage, null, noDataValue);
+            System.clearProperty("geotiff.writenodata");
+        } finally {
+            coverage.dispose(true);
+        }
     }
 
     private void writeAndRead(GridCoverage2D coverage, Boolean writeNoDataParam, double noDataValue)
@@ -742,7 +747,8 @@ public class GeoTiffWriterTest extends Assert {
         }
         writer.write(coverage, writeParams);
         writer.dispose();
-        coverage.dispose(true);
+        // do not dispose the coverage here as it is reused
+        // coverage.dispose(true);
 
         // Reading it back
         GeoTiffReader reader = new GeoTiffReader(output);

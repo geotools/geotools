@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.measure.MetricPrefix;
-import javax.media.jai.RasterFactory;
+import org.eclipse.imagen.RasterFactory;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.Category;

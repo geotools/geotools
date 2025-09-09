@@ -18,12 +18,10 @@ package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import java.awt.image.RenderedImage;
 import java.util.Map;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.operator.AddConstDescriptor;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -83,7 +81,7 @@ public class AddConst extends OperationJAI {
 
     /** Constructs a default {@code "AddConst"} operation. */
     public AddConst() {
-        super(ADD_CONST, getOperationDescriptor(JAIExt.getOperationName(ADD_CONST)));
+        super(ADD_CONST, getOperationDescriptor(OPERATION_CONST));
     }
 
     @Override
@@ -110,9 +108,7 @@ public class AddConst extends OperationJAI {
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source =
                 (GridCoverage2D) parameters2.parameter("source0").getValue();
-        if (JAIExt.isJAIExtOperation(OPERATION_CONST)) {
-            parameters.set(Operator.SUM, 1);
-        }
+        parameters.set(Operator.SUM, 1);
         handleROINoDataInternal(parameters, source, OPERATION_CONST, 2, 3);
     }
 

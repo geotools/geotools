@@ -25,9 +25,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import javax.media.jai.JAI;
-import javax.media.jai.Warp;
-import javax.media.jai.WarpPolynomial;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.Warp;
+import org.eclipse.imagen.WarpPolynomial;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -63,8 +63,8 @@ import org.geotools.util.XArray;
  * @author Alessio Fabiani
  * @see LocalizationGrid#getPolynomialTransform(int)
  * @see Warp
- * @see javax.media.jai.WarpOpImage
- * @see javax.media.jai.operator.WarpDescriptor
+ * @see org.eclipse.imagen.WarpOpImage
+ * @see org.eclipse.imagen.media.warp.WarpDescriptor
  */
 public class WarpTransform2D extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
@@ -358,7 +358,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
     /**
      * Returns a {@linkplain Warp image warp} for the specified transform. The {@link Warp#warpPoint(int,int,float[])
      * Warp.warpPoint} method transforms coordinates from source to target CRS. Note that JAI's
-     * {@linkplain javax.media.jai.operator.WarpDescriptor warp operation} needs a warp object with the opposite
+     * {@linkplain org.eclipse.imagen.media.warp.WarpDescriptor warp operation} needs a warp object with the opposite
      * semantic (i.e. the image warp must transforms coordinates from target to source CRS). Consequently, consider
      * invoking {@code getWarp(transform.inverse())} if the warp object is going to be used in an image reprojection.
      *
@@ -389,7 +389,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
     /**
      * Returns {@linkplain Warp image warp} wrapped by this transform. The {@link Warp#warpPoint(int,int,float[])
      * Warp.warpPoint} method transforms coordinates from source to target CRS. Note that JAI's
-     * {@linkplain javax.media.jai.operator.WarpDescriptor warp operation} needs a warp object with the opposite
+     * {@linkplain org.eclipse.imagen.media.warp.WarpDescriptor warp operation} needs a warp object with the opposite
      * semantic (i.e. the image warp must transforms coordinates from target to source CRS). Consequently, consider
      * invoking <code>
      * {@linkplain #inverse}.getWarp()</code> if the warp object is going to be used in an image reprojection.

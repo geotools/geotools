@@ -42,10 +42,10 @@ import javax.imageio.stream.ImageInputStream;
 import javax.measure.Quantity;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.data.DataSourceException;
@@ -892,12 +892,7 @@ public class Utilities {
             reader = readerSpi.createReaderInstance();
             pbjImageRead.add(reader);
 
-            // Check if to use a simple JAI ImageRead operation or a
-            // multithreaded one
-            final String jaiOperation = useMultithreading ? "ImageReadMT" : "ImageRead";
-            // final String jaiOperation = "ImageRead";
-            /** TODO: SET HINTS */
-            planarImage = JAI.create(jaiOperation, pbjImageRead, null);
+            planarImage = JAI.create("ImageRead", pbjImageRead, null);
         } else {
             reader = readerSpi.createReaderInstance();
             reader.setInput(paramInput, true, true);

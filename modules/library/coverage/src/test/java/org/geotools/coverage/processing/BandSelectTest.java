@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;

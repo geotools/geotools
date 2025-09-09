@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.util;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
@@ -33,8 +31,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import javax.imageio.ImageReadParam;
-import javax.media.jai.PropertySource;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.PropertySource;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.geometry.MismatchedDimensionException;

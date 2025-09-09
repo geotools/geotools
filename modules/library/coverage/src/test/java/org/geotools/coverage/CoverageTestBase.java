@@ -23,8 +23,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
-import javax.media.jai.iterator.RectIter;
-import javax.media.jai.iterator.RectIterFactory;
+import org.eclipse.imagen.iterator.RectIter;
+import org.eclipse.imagen.iterator.RectIterFactory;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;

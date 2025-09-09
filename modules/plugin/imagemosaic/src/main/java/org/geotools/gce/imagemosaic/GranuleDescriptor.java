@@ -24,10 +24,6 @@ import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
-import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -56,18 +52,22 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.TileCache;
-import javax.media.jai.TileScheduler;
 import org.apache.commons.beanutils.MethodUtils;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.InterpolationNearest;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.TileCache;
+import org.eclipse.imagen.TileScheduler;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
+import org.eclipse.imagen.media.vectorbin.VectorBinarizeDescriptor;
+import org.eclipse.imagen.media.vectorbin.VectorBinarizeRIF;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -1438,6 +1438,7 @@ public class GranuleDescriptor {
         if (cache != null) {
             localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
         }
+        @SuppressWarnings("PMD.CloseResource")
         final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
         if (scheduler != null) {
             localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
@@ -1622,6 +1623,7 @@ public class GranuleDescriptor {
     private void updateLocalHints(Hints hints, RenderingHints localHints) {
         final TileCache cache = Utils.getTileCacheHint(hints);
         if (cache != null) localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
+        @SuppressWarnings("PMD.CloseResource")
         final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
         if (scheduler != null) localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
     }

@@ -29,17 +29,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import com.sun.media.imageioimpl.common.PackageUtil;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.jaiext.lookup.LookupTable;
-import it.geosolutions.jaiext.lookup.LookupTableFactory;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
@@ -75,20 +67,26 @@ import java.util.zip.GZIPInputStream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.Histogram;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.TiledImage;
-import javax.media.jai.Warp;
-import javax.media.jai.WarpAffine;
-import javax.media.jai.operator.ConstantDescriptor;
-import javax.media.jai.operator.MosaicDescriptor;
+import org.eclipse.imagen.Histogram;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.RasterFactory;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.TiledImage;
+import org.eclipse.imagen.Warp;
+import org.eclipse.imagen.WarpAffine;
+import org.eclipse.imagen.media.lookup.LookupTable;
+import org.eclipse.imagen.media.lookup.LookupTableFactory;
+import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.TestData;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -480,38 +478,14 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // get the image of the world with transparency
         final ImageWorker worker = new ImageWorker(getSyntheticRGB(true));
         show(worker, "Input JPEG");
-
-        // /////////////////////////////////////////////////////////////////////
-        // nativeJPEG  with compression JPEG-LS
-        // ////////////////////////////////////////////////////////////////////
         final File outFile = TestData.temp(this, "temp.jpeg");
-        ImageWorker readWorker;
-        if (PackageUtil.isCodecLibAvailable()) {
-            worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
-            readWorker = new ImageWorker(ImageIO.read(outFile));
-            show(readWorker, "Native JPEG LS");
-        } else {
-            try {
-                worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
-                fail();
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-        }
-
-        // /////////////////////////////////////////////////////////////////////
-        // native JPEG compression
-        // /////////////////////////////////////////////////////////////////////
-        worker.setImage(worldImage);
-        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
-        readWorker = new ImageWorker(ImageIO.read(outFile));
-        show(readWorker, "native JPEG");
 
         // /////////////////////////////////////////////////////////////////////
         // pure java JPEG compression
         // /////////////////////////////////////////////////////////////////////
         worker.setImage(worldImage);
-        worker.writeJPEG(outFile, "JPEG", 0.75f, false);
+        worker.writeJPEG(outFile, "JPEG", 0.75f);
+        ImageWorker readWorker = new ImageWorker();
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Pure Java JPEG");
         outFile.delete();
@@ -521,12 +495,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // /////////////////////////////////////////////////////////////////////
         worker.setImage(getIndexedRGBNodata());
         worker.forceIndexColorModel(false);
-        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
-        // with the native imageIO, an exception would have been thrown by now.
-        // with non-native, writing the alpha channel to JPEG will work
-        // as well as reading it (!), but this is not generally supported
-        // and will confuse other image readers,
-        // so alpha should be removed for JPEG
+        worker.writeJPEG(outFile, "JPEG", 0.75f);
         BufferedImage image = ImageIO.read(outFile);
         assertFalse(image.getColorModel().hasAlpha());
     }
@@ -542,44 +511,21 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Get the image of the world with transparency.
         final ImageWorker worker = new ImageWorker(worldImage);
         show(worker, "Input file");
-
-        // /////////////////////////////////////////////////////////////////////
-        // native png filtered compression 24 bits
-        // /////////////////////////////////////////////////////////////////////
         final File outFile = TestData.temp(this, "temp.png");
-        worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
-        final ImageWorker readWorker = new ImageWorker(ImageIO.read(outFile));
-        show(readWorker, "Native PNG24");
-
-        // /////////////////////////////////////////////////////////////////////
-        // native png filtered compression 8 bits
-        // /////////////////////////////////////////////////////////////////////
-        worker.setImage(worldImage);
-        worker.writePNG(outFile, "FILTERED", 0.75f, true, true);
-        readWorker.setImage(ImageIO.read(outFile));
-        show(readWorker, "native PNG8");
-
-        // /////////////////////////////////////////////////////////////////////
-        // pure java png 24
-        // /////////////////////////////////////////////////////////////////////
-        worker.setImage(worldImage);
-        worker.writePNG(outFile, "FILTERED", 0.75f, false, false);
-        readWorker.setImage(ImageIO.read(outFile));
-        show(readWorker, "Pure  PNG24");
 
         // /////////////////////////////////////////////////////////////////////
         // pure java png 8
         // /////////////////////////////////////////////////////////////////////
         worker.setImage(worldImage);
-        worker.writePNG(outFile, "FILTERED", 0.75f, false, true);
-        readWorker.setImage(ImageIO.read(outFile));
+        worker.writePNG(outFile, "FILTERED", 0.75f, true);
+        final ImageWorker readWorker = new ImageWorker(ImageIO.read(outFile));
         show(readWorker, "Pure  PNG8");
         outFile.delete();
 
         // Check we are not expanding to RGB a paletted image
         worker.setImage(sstImage);
         assertTrue(sstImage.getColorModel() instanceof IndexColorModel);
-        worker.writePNG(outFile, "FILTERED", 0.75f, false, false);
+        worker.writePNG(outFile, "FILTERED", 0.75f, false);
         readWorker.setImage(ImageIO.read(outFile));
         assertTrue(readWorker.getRenderedImage().getColorModel() instanceof IndexColorModel);
     }
@@ -641,7 +587,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
             final File outFile = TestData.temp(this, "temp.png");
             ImageWorker worker = new ImageWorker(bi);
-            worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
+            worker.writePNG(outFile, "FILTERED", 0.75f, false);
             worker.dispose();
 
             // make sure we can read it
@@ -653,7 +599,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
             // now ask to write paletted
             worker = new ImageWorker(bi);
-            worker.writePNG(outFile, "FILTERED", 0.75f, true, true);
+            worker.writePNG(outFile, "FILTERED", 0.75f, true);
             worker.dispose();
 
             // make sure we can read it
@@ -738,7 +684,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(16, icm.getMapSize());
 
         // create random data
-        WritableRaster data = com.sun.media.jai.codecimpl.util.RasterFactory.createWritableRaster(
+        WritableRaster data = org.eclipse.imagen.RasterFactory.createWritableRaster(
                 icm.createCompatibleSampleModel(32, 32), new Point(0, 0));
         for (int x = data.getMinX(); x < data.getMinX() + data.getWidth(); x++) {
             for (int y = data.getMinY(); y < data.getMinY() + data.getHeight(); y++) {
@@ -757,7 +703,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // encode as png
         ImageWorker worker = new ImageWorker(bi);
         final File outFile = TestData.temp(this, "temp4.png");
-        worker.writePNG(outFile, "FILTERED", 0.75f, true, false);
+        worker.writePNG(outFile, "FILTERED", 0.75f, false);
         worker.dispose();
 
         // make sure we can read it

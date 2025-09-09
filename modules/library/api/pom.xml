@@ -179,13 +179,6 @@
     </dependency>
 
     <!-- Test dependencies -->
-    <dependency>
-      <!-- Required for ImageParameterDescriptor test. -->
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 
 </project>

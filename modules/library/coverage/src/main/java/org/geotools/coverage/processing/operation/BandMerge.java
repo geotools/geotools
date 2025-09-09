@@ -17,12 +17,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -38,11 +32,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.spatial.PixelOrientation;
@@ -105,7 +104,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Sources. */
     public static final ParameterDescriptor<Collection> SOURCES = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "Sources",
             Collection.class, // Value class (mandatory)
             null, // Array of valid values
@@ -117,7 +116,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Transformation Choice. */
     public static final ParameterDescriptor<String> TRANSFORM_CHOICE_PARAM = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             TRANSFORM_CHOICE,
             String.class, // Value class (mandatory)
             null, // Array of valid values
@@ -129,7 +128,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Source index to use for selecting the Affine Transformation to use. */
     public static final ParameterDescriptor<Integer> INDEX = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             COVERAGE_INDEX,
             Integer.class, // Value class (mandatory)
             null, // Array of valid values
@@ -141,7 +140,7 @@ public class BandMerge extends OperationJAI {
 
     /** The parameter descriptor for the Transformation Choice. */
     public static final ParameterDescriptor<Geometry> GEOMETRY_PARAM = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             GEOMETRY,
             Geometry.class, // Value class (mandatory)
             null, // Array of valid values
@@ -541,11 +540,9 @@ public class BandMerge extends OperationJAI {
         }
 
         // Setting ROI and NoData if present
-        if (JAIExt.isJAIExtOperation("BandMerge")) {
-            ParameterBlockJAI pb = parameters.parameters;
-            CoverageUtilities.setROIProperty(properties, (ROI) pb.getObjectParameter(3));
-            CoverageUtilities.setNoDataProperty(properties, pb.getObjectParameter(1));
-        }
+        ParameterBlockJAI pb = parameters.parameters;
+        CoverageUtilities.setROIProperty(properties, (ROI) pb.getObjectParameter(3));
+        CoverageUtilities.setNoDataProperty(properties, pb.getObjectParameter(1));
 
         return properties;
     }
@@ -608,56 +605,54 @@ public class BandMerge extends OperationJAI {
             nodata[i] = createNoDataRange(cov, dataType);
         }
 
-        if (JAIExt.isJAIExtOperation("BandMerge")) {
-            // Setting NoData
-            block.setParameter("noData", nodata);
+        // Setting NoData
+        block.setParameter("noData", nodata);
 
-            // Setting Transformations
-            block.setParameter("transformations", tr);
+        // Setting Transformations
+        block.setParameter("transformations", tr);
 
-            // Setting ROI
-            ROI roi = null;
-            if (parameters.parameter(GEOMETRY).getValue() != null) {
-                // Creation of a ROI geometry object from the Geometry
-                roi = new ROIGeometry(
-                        JTS.transform((Geometry) parameters.parameter(GEOMETRY).getValue(), crsToGRID));
-            }
-            // Check if the coverages contains a ROI property
-            for (int i = 0; i < sources.length; i++) {
-                GridCoverage2D cov = sources[i];
-                ROI covROI = CoverageUtilities.getROIProperty(cov);
-                if (covROI != null) {
-                    ROI newROI = null;
-                    // Check if it must be transformed
-                    if (tr != null) {
-                        try {
-                            AffineTransform trans = tr.get(i).createInverse();
-                            newROI = covROI.transform(trans);
-                        } catch (NoninvertibleTransformException e) {
-                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                        }
-                    } else {
-                        newROI = covROI;
+        // Setting ROI
+        ROI roi = null;
+        if (parameters.parameter(GEOMETRY).getValue() != null) {
+            // Creation of a ROI geometry object from the Geometry
+            roi = new ROIGeometry(
+                    JTS.transform((Geometry) parameters.parameter(GEOMETRY).getValue(), crsToGRID));
+        }
+        // Check if the coverages contains a ROI property
+        for (int i = 0; i < sources.length; i++) {
+            GridCoverage2D cov = sources[i];
+            ROI covROI = CoverageUtilities.getROIProperty(cov);
+            if (covROI != null) {
+                ROI newROI = null;
+                // Check if it must be transformed
+                if (tr != null) {
+                    try {
+                        AffineTransform trans = tr.get(i).createInverse();
+                        newROI = covROI.transform(trans);
+                    } catch (NoninvertibleTransformException e) {
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
                     }
+                } else {
+                    newROI = covROI;
+                }
 
-                    if (roi == null) {
-                        roi = newROI;
-                    } else {
-                        roi = roi.intersect(newROI);
-                    }
+                if (roi == null) {
+                    roi = newROI;
+                } else {
+                    roi = roi.intersect(newROI);
                 }
             }
-
-            // Addition of the ROI to the ParameterBlock
-            if (roi != null) {
-                block.setParameter("roi", roi);
-            }
-
-            // Setting the destination No Data Value as the NoData of the principal coverage
-            // selected
-            block.setParameter(
-                    "destinationNoData", nodata[getIndex(parameters)].getMin().doubleValue());
         }
+
+        // Addition of the ROI to the ParameterBlock
+        if (roi != null) {
+            block.setParameter("roi", roi);
+        }
+
+        // Setting the destination No Data Value as the NoData of the principal coverage
+        // selected
+        block.setParameter(
+                "destinationNoData", nodata[getIndex(parameters)].getMin().doubleValue());
 
         return block;
     }

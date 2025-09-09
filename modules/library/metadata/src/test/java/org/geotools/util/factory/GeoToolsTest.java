@@ -28,10 +28,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.Manifest;
-import javax.media.jai.JAI;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.imagen.JAI;
 import org.geotools.api.filter.Filter;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
@@ -159,10 +159,6 @@ public final class GeoToolsTest {
 
         Version version = GeoTools.getVersion(Filter.class);
         assertNotNull(version);
-
-        version = GeoTools.getVersion(JAI.class);
-        assertNotNull(version);
-        assertEquals("1.1.3", version.toString());
 
         version = GeoTools.getVersion(LogFactory.class);
         assertNotNull(version);

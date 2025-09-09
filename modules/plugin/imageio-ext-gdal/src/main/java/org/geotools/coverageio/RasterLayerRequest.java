@@ -28,8 +28,8 @@ import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Bounds;
@@ -125,14 +125,8 @@ class RasterLayerRequest {
     private Hints hints;
 
     /**
-     * Specify if a JAI ImageRead operation should use multithreading or not. Note that multithreading is supported
-     * using a special JAI ImageReadMT operation
-     */
-    private boolean useMultithreading = false;
-
-    /**
-     * The imageRead parameters involved in the coverage request (source region, subsampling factors) which will be used
-     * by a coverageResponse to read data.
+     * /** The imageRead parameters involved in the coverage request (source region, subsampling factors) which will be
+     * used by a coverageResponse to read data.
      */
     private EnhancedImageReadParam imageReadParam = null;
 
@@ -249,20 +243,6 @@ class RasterLayerRequest {
                 return;
             }
             readType = param.booleanValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
-            return;
-        }
-
-        // //
-        //
-        // Use Multithreading parameter
-        //
-        // //
-        if (name.equals(BaseGDALGridFormat.USE_MULTITHREADING.getName())) {
-            Object value = param.getValue();
-            if (value == null) {
-                return;
-            }
-            useMultithreading = param.booleanValue();
             return;
         }
 
@@ -793,11 +773,6 @@ class RasterLayerRequest {
     /** @uml.property name="hints" */
     public Hints getHints() {
         return hints;
-    }
-
-    /** @uml.property name="useMultithreading" */
-    public boolean useMultithreading() {
-        return useMultithreading;
     }
 
     /** @uml.property name="imageReadParam" */

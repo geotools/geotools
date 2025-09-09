@@ -22,8 +22,8 @@ import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
-import javax.media.jai.OperationDescriptorImpl;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.OperationDescriptorImpl;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 
 public class ColorInversionDescriptor extends OperationDescriptorImpl {
     /** */

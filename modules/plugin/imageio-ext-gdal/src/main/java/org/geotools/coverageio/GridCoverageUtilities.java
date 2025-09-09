@@ -43,8 +43,6 @@ class GridCoverageUtilities {
 
     static final String IMAGEREAD = "ImageRead";
 
-    static final String IMAGEREADMT = "ImageReadMT";
-
     /** Utility class. */
     private GridCoverageUtilities() {}
 

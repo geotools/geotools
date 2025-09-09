@@ -16,14 +16,14 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.warp.WarpDescriptor;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PropertyGenerator;
-import javax.media.jai.ROI;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.PropertyGenerator;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.warp.WarpDescriptor;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;

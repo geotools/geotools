@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
@@ -24,12 +23,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.media.jai.JAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.ROIShape;
-import javax.media.jai.StatisticsOpImage;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.StatisticsOpImage;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -53,7 +52,7 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * This class is the root class for the Statistics operations based on {@link JAI}'s {@link StatisticsOpImage} like
  * Extrema and Histogram. It provides basic capabilities for management of geospatial parameters like
- * {@link javax.media.jai.ROI}s and subsampling factors.
+ * {@link org.eclipse.imagen.ROI}s and subsampling factors.
  *
  * @author Simone Giannecchini
  * @since 2.4.x
@@ -68,7 +67,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the SPATIAL_SUBSAMPLING_X */
     public static final ParameterDescriptor<Double> SPATIAL_SUBSAMPLING_X = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "xPeriod",
             Double.class, // Value class (mandatory)
             null, // Array of valid values
@@ -80,7 +79,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the SPATIAL_SUBSAMPLING_Y */
     public static final ParameterDescriptor<Double> SPATIAL_SUBSAMPLING_Y = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "yPeriod",
             Double.class, // Value class (mandatory)
             null, // Array of valid values
@@ -92,7 +91,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
     /** The parameter descriptor for the Region Of Interest. */
     public static final ParameterDescriptor<Polygon> ROI = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             "roi",
             Polygon.class, // Value class (mandatory)
             null, // Array of valid values
@@ -149,7 +148,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
      */
     public BaseStatisticsOperationJAI(String name, OperationDescriptor operationDescriptor) {
         super(
-                getOperationDescriptor(JAIExt.getOperationName(name)),
+                operationDescriptor,
                 new ExtendedImagingParameterDescriptors(
                         name, operationDescriptor, new HashSet<>(REPLACED_DESCRIPTORS)));
     }

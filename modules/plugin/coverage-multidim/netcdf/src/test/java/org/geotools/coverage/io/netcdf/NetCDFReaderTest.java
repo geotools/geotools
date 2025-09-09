@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
@@ -36,10 +35,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
-import javax.media.jai.PlanarImage;
 import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.data.CloseableIterator;

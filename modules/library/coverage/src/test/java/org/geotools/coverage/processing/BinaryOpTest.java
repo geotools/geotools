@@ -18,12 +18,11 @@ package org.geotools.coverage.processing;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.media.jai.operator.ExtremaDescriptor;
+import org.eclipse.imagen.operator.ExtremaDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.ImageWorker;
@@ -86,15 +85,10 @@ public class BinaryOpTest extends GridProcessingTestBase {
 
         // Getting parameters for doing a scale.
         final ParameterValueGroup param = processor.getOperation(operationName).getParameters();
-        if (JAIExt.isJAIExtOperation(JAIExt.getOperationName(operationName))) {
-            List<GridCoverage2D> sources = new ArrayList<>();
-            sources.add(coverage0);
-            sources.add(coverage1);
-            param.parameter("Sources").setValue(sources);
-        } else {
-            param.parameter("Source0").setValue(coverage0);
-            param.parameter("Source1").setValue(coverage1);
-        }
+        List<GridCoverage2D> sources = new ArrayList<>();
+        sources.add(coverage0);
+        sources.add(coverage1);
+        param.parameter("Sources").setValue(sources);
 
         // Doing a first scale.
         GridCoverage2D result = (GridCoverage2D) processor.doOperation(param);

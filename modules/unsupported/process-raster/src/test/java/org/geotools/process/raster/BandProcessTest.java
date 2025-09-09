@@ -19,7 +19,6 @@ package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Rectangle;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.Raster;
@@ -29,8 +28,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.spatial.PixelOrientation;
@@ -43,9 +43,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.jai.Registry;
 import org.geotools.test.TestData;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -75,11 +73,7 @@ public class BandProcessTest {
 
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException, NoninvertibleTransformException {
-        // Disable medialib
-        System.setProperty("com.sun.media.jai.disableMediaLib", "true");
-        // Disable bandmerge and mosaic native operation
-        Registry.setNativeAccelerationAllowed("BandMerge", false);
-        Registry.setNativeAccelerationAllowed("Mosaic", false);
+
         // First file selection
         File input = TestData.file(BandProcessTest.class, "sample.tif");
         AbstractGridFormat format = GridFormatFinder.findFormat(input);
@@ -103,15 +97,6 @@ public class BandProcessTest {
         coverage3 = (GridCoverage2D) reader.read();
         // Reader disposal
         reader.dispose();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        // Enable medialib
-        System.setProperty("com.sun.media.jai.disableMediaLib", "false");
-        // Enable bandmerge and mosaic native operation
-        Registry.setNativeAccelerationAllowed("BandMerge", true);
-        Registry.setNativeAccelerationAllowed("Mosaic", true);
     }
 
     // Ensure that the merging and selecting two equal images returns the same images

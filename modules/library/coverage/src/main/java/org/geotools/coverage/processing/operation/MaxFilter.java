@@ -16,8 +16,8 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import javax.media.jai.operator.MaxFilterDescriptor;
-import javax.media.jai.operator.MaxFilterShape;
+import org.eclipse.imagen.operator.MaxFilterDescriptor;
+import org.eclipse.imagen.operator.MaxFilterShape;
 import org.geotools.coverage.processing.OperationJAI;
 
 /**

@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
-import javax.media.jai.PlanarImage;
+import org.eclipse.imagen.PlanarImage;
 import org.gdal.gdal.Driver;
 import org.gdal.gdal.gdal;
 import org.geotools.api.parameter.GeneralParameterValue;

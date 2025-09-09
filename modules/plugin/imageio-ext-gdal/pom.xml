@@ -152,11 +152,6 @@
       <artifactId>imageio-ext-gdalsrp</artifactId>
     </dependency>
     <dependency>
-      <groupId>it.geosolutions.imageio-ext</groupId>
-      <artifactId>imageio-ext-imagereadmt</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-    </dependency>
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
     </dependency>
@@ -171,19 +166,6 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-imagemosaic</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_imageio</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-      <!-- Users should execute JAI installer. -->
     </dependency>
   </dependencies>
 

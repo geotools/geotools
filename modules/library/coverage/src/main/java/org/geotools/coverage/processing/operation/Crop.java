@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -30,12 +28,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.operator.MosaicDescriptor;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.geometry.Bounds;
@@ -122,7 +122,7 @@ import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
  * @author Simone Giannecchini (GeoSolutions)
  * @author Emanuele Tajariol (GeoSolutions)
  * @since 2.3
- * @see javax.media.jai.operator.CropDescriptor
+ * @see org.eclipse.imagen.media.crop.CropDescriptor
  */
 public class Crop extends Operation2D {
     /** Serial number for cross-version compatibility. */
@@ -174,7 +174,7 @@ public class Crop extends Operation2D {
      * <p>The parameter shall be a Polygon instance, or a GeometryCollection holding Polygons
      */
     public static final ParameterDescriptor<Geometry> CROP_ROI = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             PARAMNAME_ROI,
             Geometry.class, // Value class
             null, // Array of valid values
@@ -216,7 +216,7 @@ public class Crop extends Operation2D {
 
     /** The parameter descriptor used to tell this operation to check NoData */
     public static final ParameterDescriptor<Range> NODATA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             PARAMNAME_NODATA,
             Range.class, // Value class
             null, // Array of valid values
@@ -228,7 +228,7 @@ public class Crop extends Operation2D {
 
     /** The parameter descriptor used to tell this operation to set destinationNoData */
     public static final ParameterDescriptor<double[]> DEST_NODATA = new DefaultParameterDescriptor<>(
-            Citations.JAI,
+            Citations.IMAGEN,
             PARAMNAME_DEST_NODATA,
             double[].class, // Value class
             null, // Array of valid values
@@ -240,7 +240,7 @@ public class Crop extends Operation2D {
 
     /** Constructs a default {@code "Crop"} operation. */
     public Crop() {
-        super(new DefaultParameterDescriptorGroup(Citations.JAI, "CoverageCrop", new ParameterDescriptor[] {
+        super(new DefaultParameterDescriptorGroup(Citations.IMAGEN, "CoverageCrop", new ParameterDescriptor[] {
             SOURCE_0, CROP_ENVELOPE, CROP_ROI, ROI_OPTIMISATION_TOLERANCE, FORCE_MOSAIC, NODATA, DEST_NODATA
         }));
     }

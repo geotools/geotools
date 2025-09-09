@@ -2,11 +2,10 @@ package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.Raster;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -27,7 +26,9 @@ public class MultiplyProcessTest {
         covFactory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
     }
 
-    private void doTestMultiply() {
+    /** @throws Exception */
+    @Test
+    public void testMultiply() throws Exception {
 
         float[][] grid = {
             {1, 2, 3, 4},
@@ -52,18 +53,7 @@ public class MultiplyProcessTest {
         }
 
         GridCoverage2D nodataResult = p.execute(cov, coverageNoData, null);
-        if (JAIExt.isJAIExtOperation("algebric")) {
-            // Only jai EXT takes nodata into account
-            assertEquals(0., data(nodataResult)[1], 1E-9);
-        } else {
-            assertEquals(4., data(nodataResult)[1], 1E-9);
-        }
-    }
-
-    /** @throws Exception */
-    @Test
-    public void testMultiplyJAIExt() throws Exception {
-        doTestMultiply();
+        assertEquals(0., data(nodataResult)[1], 1E-9);
     }
 
     float[] data(GridCoverage2D cov) {

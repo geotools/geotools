@@ -3,7 +3,6 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.rendered.viewer.ImageViewer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -15,6 +14,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import org.eclipse.imagen.media.viewer.ImageViewer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.MapContent;

@@ -17,7 +17,7 @@
 package org.geotools.coverage.processing;
 
 import java.util.Collection;
-import javax.media.jai.RegistryElementDescriptor;
+import org.eclipse.imagen.RegistryElementDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.metadata.iso.citation.Citations;
@@ -41,7 +41,7 @@ public class ExtendedImagingParameterDescriptors extends ImagingParameterDescrip
     ExtendedImagingParameterDescriptors(
             String operationName, RegistryElementDescriptor operation, Collection<ParameterDescriptor> extension) {
         super(operation, extension);
-        this.operationName = new NamedIdentifier(Citations.JAI, operationName);
+        this.operationName = new NamedIdentifier(Citations.IMAGEN, operationName);
     }
 
     @Override

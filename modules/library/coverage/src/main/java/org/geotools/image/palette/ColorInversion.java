@@ -20,8 +20,8 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.util.Vector;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.PointOpImage;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.PointOpImage;
 
 /**
  * {@link PointOpImage} to perform an efficient color inversion given a certain palette.

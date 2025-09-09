@@ -21,10 +21,9 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
-import javax.media.jai.OperationNode;
+import org.eclipse.imagen.OperationNode;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.test.TestData;
@@ -88,7 +87,7 @@ public final class OperationsTest extends GridProcessingTestBase {
         assertEquals(sourceRaster.getHeight(), targetRaster.getHeight());
         assertEquals(0, sourceRaster.getMinX());
         assertEquals(0, sourceRaster.getMinY());
-        assertEquals(JAIExt.getOperationName("SubtractConst"), ((OperationNode) targetImage).getOperationName());
+        assertEquals("operationConst", ((OperationNode) targetImage).getOperationName());
 
         final boolean medialib = TestData.isMediaLibAvailable();
         float difference;

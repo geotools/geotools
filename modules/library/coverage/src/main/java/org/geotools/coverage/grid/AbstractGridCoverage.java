@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.media.jai.PropertySource;
+import org.eclipse.imagen.PropertySource;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.geometry.Position;
@@ -64,9 +64,9 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @param crs The coordinate reference system. This specifies the coordinate system used when accessing a coverage
      *     or grid coverage with the {@code evaluate(...)} methods.
      * @param propertySource The source for this coverage, or {@code null} if none. Source may be (but is not limited
-     *     to) a {@link javax.media.jai.PlanarImage} or an other {@code AbstractGridCoverage} object.
+     *     to) a {@link org.eclipse.imagen.PlanarImage} or an other {@code AbstractGridCoverage} object.
      * @param properties The set of properties for this coverage, or {@code null} if there is none. Keys are
-     *     {@link String} objects ({@link javax.media.jai.util.CaselessStringKey} are accepted as well), while values
+     *     {@link String} objects ({@link org.eclipse.imagen.util.CaselessStringKey} are accepted as well), while values
      *     may be any {@link Object}.
      */
     protected AbstractGridCoverage(

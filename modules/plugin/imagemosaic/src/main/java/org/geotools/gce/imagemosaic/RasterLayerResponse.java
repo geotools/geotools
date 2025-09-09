@@ -16,13 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import com.sun.media.imageioimpl.common.BogusColorSpace;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -48,14 +43,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.measure.Unit;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.ConstantDescriptor;
-import javax.media.jai.operator.MosaicDescriptor;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.NotAColorSpace;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.SampleDimension;
 import org.geotools.api.coverage.SampleDimensionType;
@@ -962,7 +962,7 @@ public class RasterLayerResponse {
                     cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
                     break;
                 default:
-                    cs = new BogusColorSpace(nBands);
+                    cs = new NotAColorSpace(nBands);
             }
             cm = new ComponentColorModel(
                     cs, cm.hasAlpha(), cm.isAlphaPremultiplied(), cm.getTransparency(), cm.getTransferType());

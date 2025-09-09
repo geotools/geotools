@@ -17,14 +17,14 @@
 
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.ConstantDescriptor;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;

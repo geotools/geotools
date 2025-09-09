@@ -10,7 +10,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import javax.media.jai.JAI;
+import org.eclipse.imagen.JAI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class LoggingImagingListenerTest {
 
     @Before
     public void setupTest() {
-        logger = Logging.getLogger("javax.media.jai");
+        logger = Logging.getLogger("org.eclipse.imagen");
         logger.setLevel(Level.ALL);
         logHandler = new TestLogHandler();
         logger.addHandler(logHandler);

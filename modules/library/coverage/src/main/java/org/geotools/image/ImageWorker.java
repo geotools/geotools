@@ -16,28 +16,6 @@
  */
 package org.geotools.image;
 
-import com.sun.media.imageioimpl.common.BogusColorSpace;
-import com.sun.media.imageioimpl.common.PackageUtil;
-import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
-import com.sun.media.jai.util.ImageUtil;
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
-import it.geosolutions.jaiext.colorindexer.ColorIndexer;
-import it.geosolutions.jaiext.lookup.LookupTable;
-import it.geosolutions.jaiext.lookup.LookupTableFactory;
-import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.rlookup.RangeLookupTable;
-import it.geosolutions.jaiext.stats.HistogramWrapper;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -82,51 +60,64 @@ import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageOutputStreamSpi;
 import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.ImageOutputStream;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.ColorCube;
-import javax.media.jai.Histogram;
-import javax.media.jai.IHSColorSpace;
-import javax.media.jai.ImageFunction;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.KernelJAI;
-import javax.media.jai.LookupTableJAI;
-import javax.media.jai.OperationDescriptor;
-import javax.media.jai.OperationRegistry;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.ParameterListDescriptor;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.PropertyGenerator;
-import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.TileCache;
-import javax.media.jai.Warp;
-import javax.media.jai.WarpAffine;
-import javax.media.jai.WarpGrid;
-import javax.media.jai.operator.AddDescriptor;
-import javax.media.jai.operator.BandCombineDescriptor;
-import javax.media.jai.operator.BandSelectDescriptor;
-import javax.media.jai.operator.BinarizeDescriptor;
-import javax.media.jai.operator.ColorConvertDescriptor;
-import javax.media.jai.operator.ConstantDescriptor;
-import javax.media.jai.operator.ErrorDiffusionDescriptor;
-import javax.media.jai.operator.ExtremaDescriptor;
-import javax.media.jai.operator.FormatDescriptor;
-import javax.media.jai.operator.HistogramDescriptor;
-import javax.media.jai.operator.InvertDescriptor;
-import javax.media.jai.operator.LookupDescriptor;
-import javax.media.jai.operator.MeanDescriptor;
-import javax.media.jai.operator.MosaicDescriptor;
-import javax.media.jai.operator.MosaicType;
-import javax.media.jai.operator.MultiplyConstDescriptor;
-import javax.media.jai.operator.MultiplyDescriptor;
-import javax.media.jai.operator.OrderedDitherDescriptor;
-import javax.media.jai.operator.RescaleDescriptor;
-import javax.media.jai.operator.SubtractDescriptor;
-import javax.media.jai.operator.XorConstDescriptor;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.ColorCube;
+import org.eclipse.imagen.Histogram;
+import org.eclipse.imagen.IHSColorSpace;
+import org.eclipse.imagen.ImageFunction;
+import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.KernelJAI;
+import org.eclipse.imagen.LookupTableJAI;
+import org.eclipse.imagen.NotAColorSpace;
+import org.eclipse.imagen.OperationDescriptor;
+import org.eclipse.imagen.OperationRegistry;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterListDescriptor;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.PropertyGenerator;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.ROIShape;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.TileCache;
+import org.eclipse.imagen.Warp;
+import org.eclipse.imagen.WarpAffine;
+import org.eclipse.imagen.WarpGrid;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor;
+import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
+import org.eclipse.imagen.media.bandcombine.BandCombineDescriptor;
+import org.eclipse.imagen.media.bandselect.BandSelectDescriptor;
+import org.eclipse.imagen.media.binarize.BinarizeDescriptor;
+import org.eclipse.imagen.media.classifier.ColorMapTransform;
+import org.eclipse.imagen.media.colorconvert.ColorConvertDescriptor;
+import org.eclipse.imagen.media.colorconvert.IHSColorSpaceJAIExt;
+import org.eclipse.imagen.media.colorindexer.ColorIndexer;
+import org.eclipse.imagen.media.errordiffusion.ErrorDiffusionDescriptor;
+import org.eclipse.imagen.media.format.FormatDescriptor;
+import org.eclipse.imagen.media.lookup.LookupDescriptor;
+import org.eclipse.imagen.media.lookup.LookupTable;
+import org.eclipse.imagen.media.lookup.LookupTableFactory;
+import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
+import org.eclipse.imagen.media.mosaic.MosaicType;
+import org.eclipse.imagen.media.orderdither.OrderedDitherDescriptor;
+import org.eclipse.imagen.media.piecewise.PiecewiseTransform1D;
+import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.media.range.Range;
+import org.eclipse.imagen.media.range.RangeFactory;
+import org.eclipse.imagen.media.rescale.RescaleDescriptor;
+import org.eclipse.imagen.media.rlookup.RangeLookupTable;
+import org.eclipse.imagen.media.stats.HistogramWrapper;
+import org.eclipse.imagen.media.stats.Statistics;
+import org.eclipse.imagen.media.stats.Statistics.StatsType;
+import org.eclipse.imagen.media.util.ImageUtil;
+import org.eclipse.imagen.media.utilities.ImageLayout2;
+import org.eclipse.imagen.media.vectorbin.ROIGeometry;
+import org.eclipse.imagen.operator.ConstantDescriptor;
+import org.eclipse.imagen.operator.ExtremaDescriptor;
+import org.eclipse.imagen.operator.HistogramDescriptor;
+import org.eclipse.imagen.operator.MeanDescriptor;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -202,29 +193,16 @@ public class ImageWorker {
 
     public static final String SCALE_OP_NAME;
 
-    public static final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
-
-    public static final String USE_JAI_SCALE2_KEY = "it.geosolutions.jaiext.scale2";
-
-    public static final boolean JAIEXT_ENABLED;
+    public static final String USE_JAI_SCALE2_KEY = "org.eclipse.imagen.media.scale2";
 
     public static final boolean USE_JAI_SCALE2;
-
-    public static boolean isJaiExtEnabled() {
-        return JAIEXT_ENABLED;
-    }
 
     /** The logger to use for this class. */
     private static final Logger LOGGER = Logging.getLogger(ImageWorker.class);
 
-    /** CODEC_LIB_AVAILABLE */
-    private static final boolean CODEC_LIB_AVAILABLE = PackageUtil.isCodecLibAvailable();
-
     /** Registration of the JAI-EXT operations */
     static {
-        JAIEXT_ENABLED = Boolean.valueOf(System.getProperty(JAIEXT_ENABLED_KEY, "true"));
-        JAIExt.initJAIEXT(JAIEXT_ENABLED);
-        USE_JAI_SCALE2 = Boolean.getBoolean(USE_JAI_SCALE2_KEY) && JAIEXT_ENABLED;
+        USE_JAI_SCALE2 = Boolean.getBoolean(USE_JAI_SCALE2_KEY);
         SCALE_OP_NAME = USE_JAI_SCALE2 ? SCALE2_NAME : SCALE_NAME;
     }
 
@@ -236,10 +214,10 @@ public class ImageWorker {
         try {
             Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/jpeg");
             while (writers.hasNext()) {
-                ImageWriter temp2 = writers.next();
-                if (temp2.getOriginatingProvider().getClass().getName()
+                ImageWriter writer = writers.next();
+                if (writer.getOriginatingProvider().getClass().getName()
                         == "com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi") {
-                    temp = temp2.getOriginatingProvider();
+                    temp = writer.getOriginatingProvider();
                     break;
                 }
             }
@@ -257,26 +235,14 @@ public class ImageWorker {
     static {
         ImageWriterSpi temp = null;
         try {
-            temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.gif.GIFImageWriterSpi");
-        } catch (Exception e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
-            temp = null;
-        }
-
-        // assign
-        IMAGEIO_GIF_IMAGE_WRITER_SPI = temp;
-    }
-
-    /** IMAGEIO_JPEG_IMAGE_WRITER_SPI */
-    private static final ImageWriterSpi IMAGEIO_JPEG_IMAGE_WRITER_SPI;
-
-    static {
-        ImageWriterSpi temp = null;
-        try {
-            if (PackageUtil.isCodecLibAvailable()) {
-                temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
-            } else {
-                temp = null;
+            Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/gif");
+            while (writers.hasNext()) {
+                ImageWriter writer = writers.next();
+                if (writer.getOriginatingProvider().getClass().getName()
+                        == "com.sun.imageio.plugins.gif.GIFImageWriterSpi") {
+                    temp = writer.getOriginatingProvider();
+                    break;
+                }
             }
         } catch (Exception e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
@@ -284,7 +250,7 @@ public class ImageWorker {
         }
 
         // assign
-        IMAGEIO_JPEG_IMAGE_WRITER_SPI = temp;
+        IMAGEIO_GIF_IMAGE_WRITER_SPI = temp;
     }
 
     /** IMAGEIO_EXT_TIFF_IMAGE_WRITER_SPI */
@@ -303,33 +269,19 @@ public class ImageWorker {
         IMAGEIO_EXT_TIFF_IMAGE_WRITER_SPI = temp;
     }
 
-    /** IMAGEIO_PNG_IMAGE_WRITER_SPI */
-    private static final ImageWriterSpi CLIB_PNG_IMAGE_WRITER_SPI;
-
-    static {
-        ImageWriterSpi temp = null;
-        try {
-            if (PackageUtil.isCodecLibAvailable()) {
-                temp = getImageWriterSpi("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
-            } else {
-                temp = null;
-            }
-
-        } catch (Exception e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
-            temp = null;
-        }
-
-        // assign
-        CLIB_PNG_IMAGE_WRITER_SPI = temp;
-    }
-
     static ImageWriterSpi getImageWriterSpi(String className) throws Exception {
         Iterator<ImageWriterSpi> serviceProviders = IIORegistry.lookupProviders(ImageWriterSpi.class);
         while (serviceProviders.hasNext()) {
             ImageWriterSpi serviceProvider = serviceProviders.next();
             if (serviceProvider.getClass().getName() == className) {
                 return serviceProvider;
+            }
+        }
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("GIF");
+        while (writers.hasNext()) {
+            ImageWriter writer = writers.next();
+            if (writer.getOriginatingProvider().getClass().getName() == className) {
+                return writer.getOriginatingProvider();
             }
         }
         throw new Exception("Class " + className + " not found");
@@ -872,7 +824,7 @@ public class ImageWorker {
     /**
      * Removes a rendering hint. Note that invoking this method is <strong>not</strong> the same than invoking <code>
      * {@linkplain #setRenderingHint setRenderingHint}(key, null)</code>. This is especially true for the
-     * {@linkplain javax.media.jai.TileCache tile cache} hint:
+     * {@linkplain org.eclipse.imagen.TileCache tile cache} hint:
      *
      * <p>
      *
@@ -973,7 +925,7 @@ public class ImageWorker {
         } else {
             final int numBands = image.getSampleModel().getNumBands();
             final ColorModel newCm = new ComponentColorModel(
-                    new BogusColorSpace(numBands),
+                    new NotAColorSpace(numBands),
                     false, // If true, supports transparency.
                     false, // If true, alpha is premultiplied.
                     Transparency.OPAQUE, // What alpha values can be represented.
@@ -1062,46 +1014,39 @@ public class ImageWorker {
             // Create the parameterBlock
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0);
-            if (JAIExt.isJAIExtOperation("Stats")) {
-                StatsType[] stats = {StatsType.EXTREMA};
-                // Band definition
-                int numBands = getNumBands();
-                int[] bands = new int[numBands];
-                for (int i = 0; i < numBands; i++) {
-                    bands[i] = i;
-                }
-
-                // Image parameters
-                pb.set(xPeriod, 0); // xPeriod
-                pb.set(yPeriod, 1); // yPeriod
-                pb.set(roi, 2); // ROI
-                pb.set(nodata, 3); // NoData
-                pb.set(bands, 5); // band indexes
-                pb.set(stats, 6); // statistic operation
-                image = JAI.create("Stats", pb, getRenderingHints());
-                // Retrieving the statistics
-                Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
-                double[][] ext = new double[2][numBands];
-                for (int i = 0; i < numBands; i++) {
-                    double[] extBand = (double[]) results[i][0].getResult();
-                    ext[0][i] = extBand[0];
-                    ext[1][i] = extBand[1];
-                }
-                // Setting the property
-                if (image instanceof PlanarImage) {
-                    ((PlanarImage) image).setProperty(EXTREMA, ext);
-                } else {
-                    PlanarImage p = getPlanarImage();
-                    p.setProperty(EXTREMA, ext);
-                    image = p;
-                }
-            } else {
-                pb.set(roi, 0); // The region of the image to scan. Default to all.
-                pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
-                pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
-                pb.set(ONE, 4); // Maximum number of run length codes to store. Default to 1.
-                image = JAI.create("Extrema", pb, getRenderingHints());
+            StatsType[] stats = {StatsType.EXTREMA};
+            // Band definition
+            int numBands = getNumBands();
+            int[] bands = new int[numBands];
+            for (int i = 0; i < numBands; i++) {
+                bands[i] = i;
             }
+
+            // Image parameters
+            pb.set(xPeriod, 0); // xPeriod
+            pb.set(yPeriod, 1); // yPeriod
+            pb.set(roi, 2); // ROI
+            pb.set(nodata, 3); // NoData
+            pb.set(bands, 5); // band indexes
+            pb.set(stats, 6); // statistic operation
+            image = JAI.create("Stats", pb, getRenderingHints());
+            // Retrieving the statistics
+            Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+            double[][] ext = new double[2][numBands];
+            for (int i = 0; i < numBands; i++) {
+                double[] extBand = (double[]) results[i][0].getResult();
+                ext[0][i] = extBand[0];
+                ext[1][i] = extBand[1];
+            }
+            // Setting the property
+            if (image instanceof PlanarImage) {
+                ((PlanarImage) image).setProperty(EXTREMA, ext);
+            } else {
+                PlanarImage p = getPlanarImage();
+                p.setProperty(EXTREMA, ext);
+                image = p;
+            }
+
             extrema = getComputedProperty(EXTREMA);
         }
         return (double[][]) extrema;
@@ -1125,67 +1070,58 @@ public class ImageWorker {
         // Create the parameterBlock
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
-        if (JAIExt.isJAIExtOperation("Stats")) {
-            StatsType[] stats = {StatsType.HISTOGRAM};
-            // Band definition
-            int numBands = getNumBands();
-            int[] bands = new int[numBands];
-            for (int i = 0; i < numBands; i++) {
-                bands[i] = i;
-            }
-
-            // Image parameters
-            pb.set(xPeriod, 0); // xPeriod
-            pb.set(yPeriod, 1); // yPeriod
-            pb.set(roi, 2); // ROI
-            pb.set(nodata, 3); // NoData
-            pb.set(bands, 5); // band indexes
-            pb.set(stats, 6); // statistic operation
-            pb.set(numBins, 9); // Bin number.
-            pb.set(lowValues, 7); // Lower values per band.
-            pb.set(highValues, 8); // Higher values per band.
-            image = JAI.create("Stats", pb, getRenderingHints());
-            // Retrieving the statistics
-            Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
-            int[][] bins = new int[numBands][];
-
-            // Cycle on the bands
-            for (int i = 0; i < results.length; i++) {
-                Statistics stat = results[i][0];
-                double[] binsDouble = (double[]) stat.getResult();
-                bins[i] = new int[binsDouble.length];
-                for (int j = 0; j < binsDouble.length; j++) {
-                    bins[i][j] = (int) binsDouble[j];
-                }
-            }
-            ParameterBlock parameterBlock = getRenderedOperation().getParameterBlock();
-            if (numBins == null) {
-                numBins = (int[]) parameterBlock.getObjectParameter(9);
-            }
-            if (lowValues == null) {
-                lowValues = (double[]) parameterBlock.getObjectParameter(7);
-            }
-            if (highValues == null) {
-                highValues = (double[]) parameterBlock.getObjectParameter(8);
-            }
-            HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
-            // Setting the property
-            if (image instanceof PlanarImage) {
-                ((PlanarImage) image).setProperty(HISTOGRAM, wrapper);
-            } else {
-                PlanarImage p = getPlanarImage();
-                p.setProperty(HISTOGRAM, wrapper);
-                image = p;
-            }
-        } else {
-            pb.set(roi, 0); // The region of the image to scan. Default to all.
-            pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
-            pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
-            pb.set(numBins, 3); // Bin number.
-            pb.set(lowValues, 4); // Lower values per band.
-            pb.set(highValues, 5); // Higher values per band.
-            image = JAI.create("Histogram", pb, getRenderingHints());
+        StatsType[] stats = {StatsType.HISTOGRAM};
+        // Band definition
+        int numBands = getNumBands();
+        int[] bands = new int[numBands];
+        for (int i = 0; i < numBands; i++) {
+            bands[i] = i;
         }
+
+        // Image parameters
+        pb.set(xPeriod, 0); // xPeriod
+        pb.set(yPeriod, 1); // yPeriod
+        pb.set(roi, 2); // ROI
+        pb.set(nodata, 3); // NoData
+        pb.set(bands, 5); // band indexes
+        pb.set(stats, 6); // statistic operation
+        pb.set(numBins, 9); // Bin number.
+        pb.set(lowValues, 7); // Lower values per band.
+        pb.set(highValues, 8); // Higher values per band.
+        image = JAI.create("Stats", pb, getRenderingHints());
+        // Retrieving the statistics
+        Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+        int[][] bins = new int[numBands][];
+
+        // Cycle on the bands
+        for (int i = 0; i < results.length; i++) {
+            Statistics stat = results[i][0];
+            double[] binsDouble = (double[]) stat.getResult();
+            bins[i] = new int[binsDouble.length];
+            for (int j = 0; j < binsDouble.length; j++) {
+                bins[i][j] = (int) binsDouble[j];
+            }
+        }
+        ParameterBlock parameterBlock = getRenderedOperation().getParameterBlock();
+        if (numBins == null) {
+            numBins = (int[]) parameterBlock.getObjectParameter(9);
+        }
+        if (lowValues == null) {
+            lowValues = (double[]) parameterBlock.getObjectParameter(7);
+        }
+        if (highValues == null) {
+            highValues = (double[]) parameterBlock.getObjectParameter(8);
+        }
+        HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
+        // Setting the property
+        if (image instanceof PlanarImage) {
+            ((PlanarImage) image).setProperty(HISTOGRAM, wrapper);
+        } else {
+            PlanarImage p = getPlanarImage();
+            p.setProperty(HISTOGRAM, wrapper);
+            image = p;
+        }
+
         histogram = getComputedProperty(HISTOGRAM);
         return (Histogram) histogram;
     }
@@ -1200,43 +1136,37 @@ public class ImageWorker {
             // Create the parameterBlock
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0);
-            if (JAIExt.isJAIExtOperation("Stats")) {
-                StatsType[] stats = {StatsType.MEAN};
-                // Band definition
-                int numBands = getNumBands();
-                int[] bands = new int[numBands];
-                for (int i = 0; i < numBands; i++) {
-                    bands[i] = i;
-                }
-
-                // Image parameters
-                pb.set(xPeriod, 0); // xPeriod
-                pb.set(yPeriod, 1); // yPeriod
-                pb.set(roi, 2); // ROI
-                pb.set(nodata, 3); // NoData
-                pb.set(bands, 5); // band indexes
-                pb.set(stats, 6); // statistic operation
-                image = JAI.create("Stats", pb, getRenderingHints());
-                // Retrieving the statistics
-                Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
-                double[] meanBands = new double[numBands];
-                for (int i = 0; i < numBands; i++) {
-                    meanBands[i] = (double) results[i][0].getResult();
-                }
-                // Setting the property
-                if (image instanceof PlanarImage) {
-                    ((PlanarImage) image).setProperty(MEAN, meanBands);
-                } else {
-                    PlanarImage p = getPlanarImage();
-                    p.setProperty(MEAN, meanBands);
-                    image = p;
-                }
-            } else {
-                pb.set(roi, 0); // The region of the image to scan. Default to all.
-                pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
-                pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
-                image = JAI.create("Mean", pb, getRenderingHints());
+            StatsType[] stats = {StatsType.MEAN};
+            // Band definition
+            int numBands = getNumBands();
+            int[] bands = new int[numBands];
+            for (int i = 0; i < numBands; i++) {
+                bands[i] = i;
             }
+
+            // Image parameters
+            pb.set(xPeriod, 0); // xPeriod
+            pb.set(yPeriod, 1); // yPeriod
+            pb.set(roi, 2); // ROI
+            pb.set(nodata, 3); // NoData
+            pb.set(bands, 5); // band indexes
+            pb.set(stats, 6); // statistic operation
+            image = JAI.create("Stats", pb, getRenderingHints());
+            // Retrieving the statistics
+            Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
+            double[] meanBands = new double[numBands];
+            for (int i = 0; i < numBands; i++) {
+                meanBands[i] = (double) results[i][0].getResult();
+            }
+            // Setting the property
+            if (image instanceof PlanarImage) {
+                ((PlanarImage) image).setProperty(MEAN, meanBands);
+            } else {
+                PlanarImage p = getPlanarImage();
+                p.setProperty(MEAN, meanBands);
+                image = p;
+            }
+
             mean = getComputedProperty(MEAN);
         }
         return (double[]) mean;
@@ -2125,7 +2055,7 @@ public class ImageWorker {
             forceComponentColorModel();
 
             // Create a ColorModel to convert the image to IHS.
-            final ColorSpace ihs = isJaiExtEnabled() ? IHSColorSpaceJAIExt.getInstance() : IHSColorSpace.getInstance();
+            final ColorSpace ihs = IHSColorSpaceJAIExt.getInstance();
             final int numBits = image.getColorModel().getComponentSize(0);
             final ColorModel ihsColorModel = new ComponentColorModel(
                     ihs,
@@ -2903,29 +2833,21 @@ public class ImageWorker {
         return this;
     }
 
-    /**
-     * Inverts the pixel values of the {@linkplain #image}.
-     *
-     * @see InvertDescriptor
-     */
+    /** Inverts the pixel values of the {@linkplain #image}. */
     public final ImageWorker invert() {
         // ParameterBlock creation
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
-        if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
-            pb.set(AlgebraDescriptor.Operator.INVERT, 0);
-            pb.set(roi, 1);
-            pb.set(nodata, 2);
-            if (isNoDataNeeded()) {
-                if (background != null && background.length > 0) {
-                    double dest = background[0];
-                    pb.set(dest, 3);
-                }
+        pb.set(AlgebraDescriptor.Operator.INVERT, 0);
+        pb.set(roi, 1);
+        pb.set(nodata, 2);
+        if (isNoDataNeeded()) {
+            if (background != null && background.length > 0) {
+                double dest = background[0];
+                pb.set(dest, 3);
             }
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-        } else {
-            image = JAI.create("Invert", pb, getRenderingHints());
         }
+        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
@@ -2989,12 +2911,8 @@ public class ImageWorker {
             pb = new ParameterBlock();
             pb.setSource(image, 0);
             pb.setSource(mask, 1);
-            if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
-                prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
-                image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-            } else {
-                image = JAI.create("Add", pb, getRenderingHints());
-            }
+            prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
+            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AddDescriptor.create(image, mask, getRenderingHints());
             tileCacheEnabled(true);
             invalidateStatistics();
@@ -3006,8 +2924,6 @@ public class ImageWorker {
             if (!isBinary()) binarize();
 
             // Split between JAI and JAI-EXT operations
-            boolean algebricJAIExt = JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME);
-            boolean opConstJAIExt = JAIExt.isJAIExtOperation(OPERATION_CONST_OP_NAME);
 
             ParameterBlock pb;
             // now if we mask with 1 we have to invert the mask
@@ -3015,47 +2931,31 @@ public class ImageWorker {
             if (maskValue) {
                 pb = new ParameterBlock();
                 pb.setSource(mask, 0);
-                if (algebricJAIExt) {
-                    prepareAlgebricOperation(Operator.NOT, pb, roi, null, false);
-                    mask = JAI.create(ALGEBRIC_OP_NAME, pb, renderingHints);
-                } else {
-                    mask = JAI.create("Not", pb, renderingHints);
-                }
+                prepareAlgebricOperation(Operator.NOT, pb, roi, null, false);
+                mask = JAI.create(ALGEBRIC_OP_NAME, pb, renderingHints);
             }
             // and with the image to zero the interested pixels
             tileCacheEnabled(false);
             pb = new ParameterBlock();
             pb.setSource(mask, 0);
             pb.setSource(image, 1);
-            if (algebricJAIExt) {
-                prepareAlgebricOperation(Operator.AND, pb, roi, nodata, true);
-                image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-            } else {
-                image = JAI.create("And", pb, getRenderingHints());
-            }
+            prepareAlgebricOperation(Operator.AND, pb, roi, nodata, true);
+            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AndDescriptor.create(mask, image, getRenderingHints());
 
             // add the new value to the mask
             pb = new ParameterBlock();
             pb.setSource(mask, 0);
-            if (opConstJAIExt) {
-                prepareOpConstOperation(Operator.SUM, new double[] {newValue}, pb, roi, null, false);
-                image = JAI.create(OPERATION_CONST_OP_NAME, pb, renderingHints);
-            } else {
-                image = JAI.create("AddConst", pb, renderingHints);
-            }
+            prepareOpConstOperation(Operator.SUM, new double[] {newValue}, pb, roi, null, false);
+            image = JAI.create(OPERATION_CONST_OP_NAME, pb, renderingHints);
             // mask = AddConstDescriptor.create(mask, new double[] { newValue }, renderingHints);
 
             // add the mask to the image to mask with the new value
             pb = new ParameterBlock();
             pb.setSource(mask, 0);
             pb.setSource(image, 1);
-            if (algebricJAIExt) {
-                prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
-                image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-            } else {
-                image = JAI.create("Add", pb, getRenderingHints());
-            }
+            prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
+            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AddDescriptor.create(mask, image, getRenderingHints());
             tileCacheEnabled(true);
             invalidateStatistics();
@@ -3122,45 +3022,36 @@ public class ImageWorker {
 
     /**
      * Takes two rendered or renderable source images, and adds every pair of pixels, one from each source image of the
-     * corresponding position and band. See JAI {@link AddDescriptor} for details.
+     * corresponding position and band. See ImageN {@link AlgebraDescriptor} for details.
      *
      * @param renderedImage the {@link RenderedImage} to be added to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
-     * @see AddDescriptor
+     * @see AlgebraDescriptor
      */
     public final ImageWorker addImage(final RenderedImage renderedImage) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
-        if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
-            prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-        } else {
-            image = JAI.create("Add", pb, getRenderingHints());
-        }
-        // image = AddDescriptor.create(image, renderedImage, getRenderingHints());
+        prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
+        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
 
     /**
      * Takes one rendered or renderable image and an array of double constants, and multiplies every pixel of the same
-     * band of the source by the constant from the corresponding array entry. See JAI {@link MultiplyConstDescriptor}
-     * for details.
+     * band of the source by the constant from the corresponding array entry. See JAI {@link ConstantDescriptor} for
+     * details.
      *
      * @param inValues The constants to be multiplied.
      * @return this {@link ImageWorker}.
-     * @see MultiplyConstDescriptor
+     * @see ConstantDescriptor
      */
     public final ImageWorker multiplyConst(double[] inValues) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
-        if (JAIExt.isJAIExtOperation(OPERATION_CONST_OP_NAME)) {
-            prepareOpConstOperation(Operator.MULTIPLY, inValues, pb, roi, nodata, true);
-            image = JAI.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
-        } else {
-            image = JAI.create("MultiplyConst", pb, getRenderingHints());
-        }
+        prepareOpConstOperation(Operator.MULTIPLY, inValues, pb, roi, nodata, true);
+        image = JAI.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
         // image = MultiplyConstDescriptor.create(image, inValues, getRenderingHints());
         invalidateStatistics();
         return this;
@@ -3168,93 +3059,73 @@ public class ImageWorker {
 
     /**
      * Takes two rendered or renderable source images, and myltiply form each pixel the related value of the second
-     * image, each one from each source image of the corresponding position and band. See JAI {@link MultiplyDescriptor}
+     * image, each one from each source image of the corresponding position and band. See JAI {@link AlgebraDescriptor}
      * for details.
      *
      * @param renderedImage the {@link RenderedImage} to be multiplied to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
-     * @see MultiplyDescriptor
+     * @see AlgebraDescriptor
      */
     public final ImageWorker multiply(RenderedImage renderedImage) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
-        if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
-            prepareAlgebricOperation(Operator.MULTIPLY, pb, roi, nodata, true);
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-        } else {
-            image = JAI.create("Multiply", pb, getRenderingHints());
-        }
+        prepareAlgebricOperation(Operator.MULTIPLY, pb, roi, nodata, true);
+        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
 
     /**
      * Takes one rendered or renderable image and an array of integer constants, and performs a bit-wise logical "xor"
-     * between every pixel in the same band of the source and the constant from the corresponding array entry. See JAI
-     * {@link XorConstDescriptor} for details.
-     *
-     * @see XorConstDescriptor
+     * between every pixel in the same band of the source and the constant from the corresponding array entry. See
+     * ImageN {@link AlgebraDescriptor} for details.
      */
     public final ImageWorker xorConst(int[] values) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
-        if (JAIExt.isJAIExtOperation(OPERATION_CONST_OP_NAME)) {
-            double[] valuesD = new double[values.length];
-            for (int i = 0; i < values.length; i++) {
-                valuesD[i] = values[i];
-            }
-            prepareOpConstOperation(Operator.XOR, valuesD, pb, roi, nodata, true);
-            image = JAI.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
-        } else {
-            image = JAI.create("XorConst", pb, getRenderingHints());
+        double[] valuesD = new double[values.length];
+        for (int i = 0; i < values.length; i++) {
+            valuesD[i] = values[i];
         }
-        // image = XorConstDescriptor.create(image, values, getRenderingHints());
+        prepareOpConstOperation(Operator.XOR, valuesD, pb, roi, nodata, true);
+        image = JAI.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
 
     /**
      * Takes two rendered or renderable source images, and subtract form each pixel the related value of the second
-     * image, each one from each source image of the corresponding position and band. See JAI {@link AddDescriptor} for
-     * details.
+     * image, each one from each source image of the corresponding position and band. See JAI {@link AlgebraDescriptor}
+     * for details.
      *
      * @param renderedImage the {@link RenderedImage} to be subtracted to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
-     * @see SubtractDescriptor
      */
     public final ImageWorker subtract(final RenderedImage renderedImage) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
-        if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
-            prepareAlgebricOperation(Operator.SUBTRACT, pb, roi, nodata, true);
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-        } else {
-            image = JAI.create("Subtract", pb, getRenderingHints());
-        }
+        prepareAlgebricOperation(Operator.SUBTRACT, pb, roi, nodata, true);
+        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
 
     /**
      * Takes two rendered or renderable source images, and do an OR for each pixel images, each one from each source
-     * image of the corresponding position and band. See JAI {@link AddDescriptor} for details.
+     * image of the corresponding position and band. See JAI {@link AlgebraDescriptor} for details.
      *
      * @param renderedImage the {@link RenderedImage} to be subtracted to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
-     * @see SubtractDescriptor
+     * @see AlgebraDescriptor
      */
     public final ImageWorker or(final RenderedImage renderedImage) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
-        if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
-            prepareAlgebricOperation(Operator.OR, pb, roi, nodata, true);
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
-        } else {
-            image = JAI.create("Or", pb, getRenderingHints());
-        }
+        prepareAlgebricOperation(Operator.OR, pb, roi, nodata, true);
+        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
@@ -3558,6 +3429,18 @@ public class ImageWorker {
         return this;
     }
 
+    /** Native acceleration is no longer supported. */
+    @Deprecated
+    public final void writePNG(
+            final Object destination,
+            final String compression,
+            final float compressionRate,
+            final boolean nativeAcc,
+            final boolean paletted)
+            throws IOException {
+        writePNG(destination, compression, compressionRate, paletted);
+    }
+
     /**
      * Writes outs the image contained into this {@link ImageWorker} as a PNG using the provided destination,
      * compression and compression rate.
@@ -3568,7 +3451,6 @@ public class ImageWorker {
      * @param destination where to write the internal {@link #image} as a PNG.
      * @param compression algorithm.
      * @param compressionRate percentage of compression.
-     * @param nativeAcc should we use native acceleration.
      * @param paletted should we write the png as 8 bits?
      * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
      *     eoncding process.
@@ -3576,11 +3458,7 @@ public class ImageWorker {
     // Current code doesn't check if the writer already accepts the provided destination. It
     // wraps it in a ImageOutputStream inconditionnaly.
     public final void writePNG(
-            final Object destination,
-            final String compression,
-            final float compressionRate,
-            final boolean nativeAcc,
-            final boolean paletted)
+            final Object destination, final String compression, final float compressionRate, final boolean paletted)
             throws IOException {
         // Reformatting this image for PNG.
         final boolean hasPalette = image.getColorModel() instanceof IndexColorModel;
@@ -3624,27 +3502,8 @@ public class ImageWorker {
             LOGGER.fine("Getting a writer");
         }
         ImageWriter writer = null;
-        ImageWriterSpi originatingProvider = null;
-        // ImageIO
-        if (nativeAcc) {
-            if (CLIB_PNG_IMAGE_WRITER_SPI != null) {
-                // let me check if the native writer can encode this image
-                if (CLIB_PNG_IMAGE_WRITER_SPI.canEncodeImage(new ImageTypeSpecifier(image))) {
-                    writer = CLIB_PNG_IMAGE_WRITER_SPI.createWriterInstance();
-                    originatingProvider = CLIB_PNG_IMAGE_WRITER_SPI;
-
-                } else {
-                    LOGGER.fine("The ImageIO PNG native encode cannot encode this image!");
-                    writer = null;
-                    originatingProvider = null;
-                }
-            } else {
-                LOGGER.fine("Unable to use Native ImageIO PNG writer.");
-            }
-        }
-
         // move on with the writer quest
-        if (!nativeAcc || writer == null) {
+        if (writer == null) {
 
             final Iterator<ImageWriter> it = ImageIO.getImageWriters(new ImageTypeSpecifier(image), "PNG");
             if (!it.hasNext()) {
@@ -3652,17 +3511,7 @@ public class ImageWorker {
             }
             while (it.hasNext()) {
                 writer = it.next();
-                originatingProvider = writer.getOriginatingProvider();
-                // check that this is not the native one
-                if (CLIB_PNG_IMAGE_WRITER_SPI != null
-                        && originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
-                    if (it.hasNext()) {
-                        writer = it.next();
-                        originatingProvider = writer.getOriginatingProvider();
-                    } else {
-                        LOGGER.fine("Unable to use PNG writer different than ImageIO CLib one");
-                    }
-                }
+                ImageWriterSpi originatingProvider = writer.getOriginatingProvider();
 
                 // let me check if the native writer can encode this image (paranoiac checks this
                 // was already performed by the ImageIO search
@@ -3672,31 +3521,11 @@ public class ImageWorker {
 
                 // clean
                 writer = null;
-                originatingProvider = null;
             }
         }
 
-        // ok, last resort use the JDK one and reformat the image
-        if (writer == null) {
-            List providers = com.sun.media.imageioimpl.common.ImageUtil.getJDKImageReaderWriterSPI(
-                    IIORegistry.getDefaultInstance(), "PNG", false);
-            if (providers == null || providers.isEmpty()) {
-                throw new IllegalStateException("Unable to find JDK Png encoder!");
-            }
-            originatingProvider = (ImageWriterSpi) providers.get(0);
-            writer = originatingProvider.createWriterInstance();
-
-            // kk, last resort reformat the image
-            forceComponentColorModel(true, true);
-            rescaleToBytes();
-            if (!originatingProvider.canEncodeImage(image)) {
-                throw new IllegalArgumentException(
-                        "Unable to find a valid PNG Encoder! And believe me, we tried hard!");
-            }
-        }
-
-        LOGGER.fine("Using ImageIO Writer with SPI: "
-                + originatingProvider.getClass().getCanonicalName());
+        if (writer == null) throw new IllegalArgumentException("Unable to find a valid PNG Encoder!");
+        LOGGER.fine("Using ImageIO Writer with SPI: " + writer.getOriginatingProvider());
 
         // Getting a stream.
         LOGGER.fine("Setting write parameters for this writer");
@@ -3706,28 +3535,14 @@ public class ImageWorker {
             if (memOutStream == null) {
                 throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
-            if (CLIB_PNG_IMAGE_WRITER_SPI != null
-                    && originatingProvider.getClass().equals(CLIB_PNG_IMAGE_WRITER_SPI.getClass())) {
-                // Compressing with native.
-                LOGGER.fine("Writer is native");
-                iwp = writer.getDefaultWriteParam();
-                // Define compression mode
-                iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                // best compression
-                iwp.setCompressionType(compression);
-                // we can control quality here
-                iwp.setCompressionQuality(compressionRate);
-                // destination image type
-                iwp.setDestinationType(new ImageTypeSpecifier(image.getColorModel(), image.getSampleModel()));
-            } else {
-                // Compressing with pure Java.
-                LOGGER.fine("Writer is NOT native");
 
-                // Instantiating PNGImageWriteParam
-                iwp = new PNGImageWriteParam();
-                // Define compression mode
-                iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
-            }
+            // Compressing with pure Java.
+            LOGGER.fine("Writer is NOT native");
+
+            // Instantiating PNGImageWriteParam
+            iwp = new PNGImageWriteParam();
+            // Define compression mode
+            iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
             LOGGER.fine("About to write png image");
             try {
                 writer.setOutput(memOutStream);
@@ -3781,6 +3596,14 @@ public class ImageWorker {
         return this;
     }
 
+    /** Native acceleration is no longer supported. */
+    @Deprecated
+    public final void writeJPEG(
+            final Object destination, final String compression, final float compressionRate, final boolean nativeAcc)
+            throws IOException {
+        writeJPEG(destination, compression, compressionRate);
+    }
+
     /**
      * Writes outs the image contained into this {@link ImageWorker} as a JPEG using the provided destination ,
      * compression and compression rate.
@@ -3791,12 +3614,10 @@ public class ImageWorker {
      * @param destination where to write the internal {@link #image} as a JPEG.
      * @param compression algorithm.
      * @param compressionRate percentage of compression.
-     * @param nativeAcc should we use native acceleration.
      * @throws IOException In case an error occurs during the search for an {@link ImageOutputStream} or during the
      *     eoncding process.
      */
-    public final void writeJPEG(
-            final Object destination, final String compression, final float compressionRate, final boolean nativeAcc)
+    public final void writeJPEG(final Object destination, final String compression, final float compressionRate)
             throws IOException {
         // Reformatting this image for jpeg.
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -3824,16 +3645,6 @@ public class ImageWorker {
             LOGGER.fine("Getting a JPEG writer and configuring it.");
         }
         ImageWriter writer = null;
-        if (nativeAcc && CODEC_LIB_AVAILABLE && IMAGEIO_JPEG_IMAGE_WRITER_SPI != null) {
-            try {
-                writer = IMAGEIO_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
-            } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.log(Level.INFO, "Unable to instantiate CLIB JPEG ImageWriter", e);
-                }
-                writer = null;
-            }
-        }
         // in case we want the JDK one or in case the native one is not at hand we use the JDK one
         if (writer == null) {
             if (JDK_JPEG_IMAGE_WRITER_SPI == null) {
@@ -3872,9 +3683,7 @@ public class ImageWorker {
 
                 writer.setOutput(outStream);
                 // the JDK writer has problems with images that do not start at minx==miny==0
-                // while the clib writer has issues with tiled images
-                if (!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0)
-                        || nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1)) {
+                if ((image.getMinX() != 0 || image.getMinY() != 0)) {
                     final BufferedImage finalImage = new BufferedImage(
                             image.getColorModel(),
                             ((WritableRaster) image.getData()).createWritableTranslatedChild(0, 0),
@@ -4653,7 +4462,7 @@ public class ImageWorker {
         for (ROI rasterROI : rasterROIs) {
             pb.addSource(rasterROI.getAsImage());
         }
-        pb.add(javax.media.jai.operator.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+        pb.add(org.eclipse.imagen.media.mosaic.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
         pb.add(null); // alphas
         pb.add(null); // ROI (null to avoid double bit -> byte expansion of the ROI data
         pb.add(ROI_THRESHOLDS);
@@ -4892,11 +4701,7 @@ public class ImageWorker {
                 setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
-        if (JAIExt.isJAIExtOperation("RLookup")) {
-            image = JAI.create("RLookup", pb, getRenderingHints());
-        } else {
-            image = JAI.create("RangeLookup", pb, getRenderingHints());
-        }
+        image = JAI.create("RLookup", pb, getRenderingHints());
 
         return this;
     }

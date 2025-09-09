@@ -23,9 +23,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.operator.ConstantDescriptor;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.metadata.spatial.PixelOrientation;

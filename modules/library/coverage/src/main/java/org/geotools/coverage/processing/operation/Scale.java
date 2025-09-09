@@ -21,15 +21,15 @@ import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.PropertyGenerator;
-import javax.media.jai.ROI;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.registry.RenderedRegistryMode;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.InterpolationNearest;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.PlanarImage;
+import org.eclipse.imagen.PropertyGenerator;
+import org.eclipse.imagen.ROI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -38,7 +38,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.image.jai.Registry;
 
 /**
  * This operation is simply a wrapper for the JAI scale operation which allows me to arbitrarily scale and translate a
@@ -47,15 +46,12 @@ import org.geotools.image.jai.Registry;
  * @version $Id$
  * @author Simone Giannecchini
  * @since 2.3
- * @see javax.media.jai.operator.ScaleDescriptor
+ * @see org.eclipse.imagen.media.scale.ScaleDescriptor
  */
 public class Scale extends BaseScaleOperationJAI {
 
     /** Serial number for cross-version compatibility. */
     private static final long serialVersionUID = -3212656385631097713L;
-
-    /** Lock for unsetting native acceleration. */
-    private static final int[] lock = new int[1];
 
     /** Default constructor. */
     public Scale() {
@@ -77,29 +73,13 @@ public class Scale extends BaseScaleOperationJAI {
         }
         final int transferType = source.getSampleModel().getDataType();
 
+        @SuppressWarnings("PMD.CloseResource")
         final JAI processor = OperationJAI.getJAI(hints);
         PlanarImage image;
         if (interpolation != null
                 && !(interpolation instanceof InterpolationNearest)
                 && (transferType == DataBuffer.TYPE_FLOAT || transferType == DataBuffer.TYPE_DOUBLE)) {
-
-            synchronized (lock) {
-
-                /**
-                 * Disables the native acceleration for the "Scale" operation. In JAI 1.1.2, the "Scale" operation on
-                 * TYPE_FLOAT datatype with INTERP_BILINEAR interpolation cause an exception in the native code of
-                 * medialib, which halt the Java Virtual Machine. Using the pure Java implementation instead resolve the
-                 * problem.
-                 *
-                 * @todo Remove this hack when Sun will fix the medialib bug. See
-                 *     http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4906854
-                 */
-                Registry.setNativeAccelerationAllowed(getName(), false);
-                image = processor.createNS(getName(), parameters, hints).getRendering();
-
-                /** see above */
-                Registry.setNativeAccelerationAllowed(getName(), true);
-            }
+            image = processor.createNS(getName(), parameters, hints).getRendering();
 
         } else image = processor.createNS(getName(), parameters, hints);
 

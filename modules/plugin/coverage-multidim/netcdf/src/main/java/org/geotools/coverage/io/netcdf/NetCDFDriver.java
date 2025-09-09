@@ -110,8 +110,8 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
         // access to JAI and the JAI ImageI/O toolbox.
         try {
 
-            Class.forName("javax.media.jai.JAI");
-            Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
+            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("NetCDFDriver is available.");
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("NetCDFDriver is not available.");

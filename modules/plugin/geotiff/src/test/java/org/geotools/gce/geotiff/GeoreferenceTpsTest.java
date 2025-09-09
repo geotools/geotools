@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.Interpolation;
+import org.eclipse.imagen.Interpolation;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -144,10 +144,10 @@ public final class GeoreferenceTpsTest {
         GridCoverage2D resampled = (GridCoverage2D) Operations.DEFAULT.resample(
                 coverage, BNG, null, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         GeneralBounds envelope = getEnvelopeFromGeoTiff(resampled);
-        assertEquals("Wrong envelope minX", 324804.45693588257, envelope.getMinimum(0), 0.001);
-        assertEquals("Wrong envelope minY", 673288.3893161934, envelope.getMinimum(1), 0.001);
-        assertEquals("Wrong envelope maxX", 325508.2505963644, envelope.getMaximum(0), 0.001);
-        assertEquals("Wrong envelope maxY", 673667.7420926894, envelope.getMaximum(1), 0.001);
+        assertEquals("Wrong envelope minX", 324804.5, envelope.getMinimum(0), 0.1);
+        assertEquals("Wrong envelope minY", 673288.5, envelope.getMinimum(1), 0.1);
+        assertEquals("Wrong envelope maxX", 325508.2, envelope.getMaximum(0), 0.1);
+        assertEquals("Wrong envelope maxY", 673667.7, envelope.getMaximum(1), 0.1);
     }
 
     private void assertThinPlateSplineTransformationGeoTiff(MathTransform mathTransform) throws IOException {

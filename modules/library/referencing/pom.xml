@@ -184,18 +184,16 @@
       <groupId>net.sf.geographiclib</groupId>
       <artifactId>GeographicLib-Java</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>scale</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <!-- Required for ImageParameterDescriptor test. -->
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-      <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>
     </dependency>
     <dependency>

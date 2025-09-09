@@ -17,15 +17,15 @@
  */
 package org.geotools.process.raster;
 
-import it.geosolutions.jaiext.range.Range;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.util.ProgressListener;
@@ -51,9 +51,9 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  * {@code Polygon} as its default geometry ("the_geom") and the value of the raster region cells as an attribute
  * ("value").
  *
- * <p>Optionally, a list of classification ranges ({@linkplain org.jaitools.numeric.Range} objects) can be provided to
- * pre-classify the input coverage values into intervals. Vectorizing can also be restricted to a sub-area of the
- * coverage and/or a subset of raster values (by defining values to treat as no-data).
+ * <p>Optionally, a list of classification ranges ({@linkplain org.eclipse.imagen.media.range.Range} objects) can be
+ * provided to pre-classify the input coverage values into intervals. Vectorizing can also be restricted to a sub-area
+ * of the coverage and/or a subset of raster values (by defining values to treat as no-data).
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 8.0
@@ -120,7 +120,7 @@ public class PolygonExtractionProcess implements RasterProcess {
                                     "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.",
                             collectionType = Range.class,
                             min = 0)
-                    List<it.geosolutions.jaiext.range.Range> classificationRanges,
+                    List<org.eclipse.imagen.media.range.Range> classificationRanges,
             ProgressListener progressListener)
             throws ProcessException {
 

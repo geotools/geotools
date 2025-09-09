@@ -17,8 +17,8 @@
 package org.geotools.ows.wmts.map;
 
 import java.awt.Color;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.InterpolationNearest;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;

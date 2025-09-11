@@ -21,8 +21,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.NullOpImage;
-import org.eclipse.imagen.OpImage;
+import org.eclipse.imagen.media.nullop.NullOpImage;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.SampleDimension;
 import org.geotools.api.coverage.grid.GridCoverage;
@@ -122,7 +121,7 @@ abstract class IndexColorOperation extends Operation2D {
          * unmodified (except for the ColorModel given in the layout in this case).
          */
         final ImageLayout layout = new ImageLayout().setColorModel(model);
-        final RenderedImage newImage = new NullOpImage(image, layout, null, OpImage.OP_COMPUTE_BOUND);
+        final RenderedImage newImage = new NullOpImage(image, layout, null);
         final GridCoverage2D target = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints())
                 .create(
                         visual.getName(),

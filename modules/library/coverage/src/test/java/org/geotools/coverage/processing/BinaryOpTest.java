@@ -22,7 +22,6 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.imagen.operator.ExtremaDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.ImageWorker;
@@ -68,10 +67,11 @@ public class BinaryOpTest extends GridProcessingTestBase {
         final GridCoverage2D floatCoverage = EXAMPLES.get(4);
         final GridCoverage2D result = doOp("Multiply", shortCoverage, floatCoverage);
         final RenderedImage image = result.getRenderedImage();
-        final RenderedImage extrema = ExtremaDescriptor.create(image, null, 1, 1, false, 1, null);
-        double[][] minMax = (double[][]) extrema.getProperty("Extrema");
-        assertEquals(minMax[0][0], 0.0, DELTA);
-        assertEquals(minMax[1][0], 6.5272192E7, DELTA);
+        final ImageWorker w = new ImageWorker(image);
+        double[] min = w.getMinimums();
+        double[] max = w.getMaximums();
+        assertEquals(min[0], 0.0, DELTA);
+        assertEquals(max[0], 6.5272192E7, DELTA);
     }
 
     /**

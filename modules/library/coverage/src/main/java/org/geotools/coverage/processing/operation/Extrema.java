@@ -27,7 +27,6 @@ import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.stats.Statistics;
 import org.eclipse.imagen.media.stats.Statistics.StatsType;
-import org.eclipse.imagen.operator.ExtremaDescriptor;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -39,8 +38,8 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.logging.Logging;
 
 /**
- * This operation simply wraps JAI Extrema operations described by {@link ExtremaDescriptor} inside a GeoTools operation
- * in order to make it spatial-aware.
+ * This operation simply wraps ImageN Stats operation (Extrema) inside a GeoTools operation in order to make it
+ * spatial-aware.
  *
  * <p>For the moment this is a very simple wrap. Plans on the 2.4 and successive versions of this operation are to add
  * the ability to use spatial ROIs and to specific Spatial subsampling. As of now, ROI has to be a Java2D {@link Shape}
@@ -101,10 +100,6 @@ public class Extrema extends BaseStatisticsOperationJAI {
 
     /**
      * Prepare the minimum and maximum properties for this extream operation.
-     *
-     * <p>See <a
-     * href="http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/javax/media/jai/operator/ExtremaDescriptor.html">ExtremaDescriptor</a>
-     * for more info.
      *
      * @see OperationJAI#getProperties(RenderedImage, CoordinateReferenceSystem, InternationalString, MathTransform,
      *     GridCoverage2D[], org.geotools.coverage.processing.OperationJAI.Parameters),

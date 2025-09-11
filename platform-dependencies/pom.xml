@@ -68,7 +68,7 @@
     <mysql-connector-java.version>9.1.0</mysql-connector-java.version>
     <mongodb-driver-legacy.version>4.0.6</mongodb-driver-legacy.version>
     <netcdf.version>5.5.3</netcdf.version>
-    <ojdbc11.version>23.7.0.25.01</ojdbc11.version>
+    <ojdbc17.version>23.7.0.25.01</ojdbc17.version>
     <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
     <opencsv.version>5.0</opencsv.version>
     <opendap.version>2.1</opendap.version>
@@ -359,8 +359,8 @@
       </dependency>
       <dependency>
         <groupId>com.oracle.database.jdbc</groupId>
-        <artifactId>ojdbc11</artifactId>
-        <version>${ojdbc11.version}</version>
+        <artifactId>ojdbc17</artifactId>
+        <version>${ojdbc17.version}</version>
       </dependency>
       <dependency>
         <groupId>com.mysql</groupId>

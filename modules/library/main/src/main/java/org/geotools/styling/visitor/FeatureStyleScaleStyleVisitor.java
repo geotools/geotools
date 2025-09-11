@@ -36,6 +36,10 @@ public class FeatureStyleScaleStyleVisitor extends DuplicatingStyleVisitor {
 
     private FeatureTypeStyle currentFeatureTypeStyle;
 
+    // allows to parse once
+    private Double cachedMaxFromVendor;
+    private Double cachedMinFromVendor;
+
     public FeatureStyleScaleStyleVisitor() {
         super();
     }
@@ -43,7 +47,16 @@ public class FeatureStyleScaleStyleVisitor extends DuplicatingStyleVisitor {
     @Override
     public void visit(FeatureTypeStyle fts) {
         this.currentFeatureTypeStyle = fts;
+
+        this.cachedMaxFromVendor =
+                readScaleDenominator(FeatureTypeStyle.MAX_SCALE_DENOMINATOR, Double.POSITIVE_INFINITY);
+        this.cachedMinFromVendor = readScaleDenominator(FeatureTypeStyle.MIN_SCALE_DENOMINATOR, 0d);
         super.visit(fts);
+
+        // Cleanup
+        this.currentFeatureTypeStyle = null;
+        this.cachedMaxFromVendor = null;
+        this.cachedMinFromVendor = null;
     }
 
     @Override
@@ -51,31 +64,43 @@ public class FeatureStyleScaleStyleVisitor extends DuplicatingStyleVisitor {
         super.visit(rule);
         Rule copy = (Rule) pages.peek();
         if (copy.getMaxScaleDenominator() == Double.POSITIVE_INFINITY) {
-            copy.setMaxScaleDenominator(getMaxScaleDenominator());
+            copy.setMaxScaleDenominator(cachedMaxFromVendor);
         }
         if (copy.getMinScaleDenominator() == 0d) {
-            copy.setMinScaleDenominator(getMinScaleDenominator());
+            copy.setMinScaleDenominator(cachedMinFromVendor);
         }
     }
 
-    private Double getScaleDenominator(String optionKey, double defaultValue) {
-        if (currentFeatureTypeStyle != null) {
-            String sdStr = currentFeatureTypeStyle.getOptions().get(optionKey);
-            Double scaleDenominator = Converters.convert(sdStr, Double.class);
-            if (scaleDenominator != null) {
-                return scaleDenominator;
-            } else if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, optionKey + " value not valid in FeatureTypeStyle options: {0}", sdStr);
-            }
+    /**
+     * Returns the parsed denominator if the option is present and valid. If the option is missing or blank, returns
+     * default without logging. If present but invalid, logs a warning once and returns default.
+     */
+    private Double readScaleDenominator(String optionKey, double defaultValue) {
+        if (currentFeatureTypeStyle == null) {
+            return defaultValue;
         }
+        String sdStr = currentFeatureTypeStyle.getOptions().get(optionKey);
+        if (sdStr == null) {
+            // Option not provided: not an error, do not log.
+            return defaultValue;
+        }
+        sdStr = sdStr.trim();
+        if (sdStr.isEmpty()) {
+            // Treat empty as not specified: not an error, do not log.
+            return defaultValue;
+        }
+        Double scaleDenominator = Converters.convert(sdStr, Double.class);
+        if (scaleDenominator != null) {
+            return scaleDenominator;
+        }
+
+        if (LOGGER.isLoggable(Level.WARNING)) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "{0} option present but invalid in FeatureTypeStyle options: \"{1}\". Using default {2}.",
+                    new Object[] {optionKey, sdStr, defaultValue});
+        }
+
         return defaultValue;
-    }
-
-    private Double getMaxScaleDenominator() {
-        return getScaleDenominator(FeatureTypeStyle.MAX_SCALE_DENOMINATOR, Double.POSITIVE_INFINITY);
-    }
-
-    private Double getMinScaleDenominator() {
-        return getScaleDenominator(FeatureTypeStyle.MIN_SCALE_DENOMINATOR, 0d);
     }
 }

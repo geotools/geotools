@@ -19,9 +19,7 @@ package org.geotools.process.raster;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.text.MessageFormat;
-import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.range.Range;
-import org.eclipse.imagen.operator.ExtremaDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -82,9 +80,9 @@ public class TransparencyFillProcess implements RasterProcess {
         if (numBands == 4 || numBands == 2) {
             // Looking for statistics on alpha channel
             renderingHints = ImageUtilities.getRenderingHints(ri);
-            RenderedOp extremaOp = ExtremaDescriptor.create(ri, null, 1, 1, false, 1, renderingHints);
-            double[][] extrema = (double[][]) extremaOp.getProperty("Extrema");
-            double[] mins = extrema[0];
+            ImageWorker worker = new ImageWorker(ri);
+            worker.setRenderingHints(renderingHints);
+            double[] mins = worker.getMinimums();
             // check if alpha is 255 on every pixel (fully opaque)
             hasTransparency = !(mins[mins.length - 1] == 255); // fully opaque
         }

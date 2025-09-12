@@ -33,8 +33,6 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.eclipse.imagen.PlanarImage;
-import org.eclipse.imagen.RenderedOp;
-import org.eclipse.imagen.operator.ExtremaDescriptor;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
@@ -54,6 +52,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormatFactory;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
@@ -126,9 +125,9 @@ public class TransparencyStyledTest {
         GridCoverage2D gc = readCoverage(mosaicDirectory, FootprintBehavior.Transparent, null);
 
         RenderedImage ri = gc.getRenderedImage();
-        RenderedOp extrema = ExtremaDescriptor.create(ri, null, 1, 1, false, 1, null);
-        double[] minimum = (double[]) extrema.getProperty("minimum");
-        double[] maximum = (double[]) extrema.getProperty("maximum");
+        ImageWorker iw = new ImageWorker(ri);
+        double[] minimum = iw.getMinimums();
+        double[] maximum = iw.getMaximums();
 
         // read values, not stretched, alpha is present
         assertArrayEquals(new double[] {0, 0, 0, 0}, minimum, 1E-6);
@@ -140,16 +139,16 @@ public class TransparencyStyledTest {
         // Assert the alpha band has been preserved, even with a CS+CE SLD in place
         assertHasAlpha(ri);
 
-        extrema = ExtremaDescriptor.create(ri, null, 1, 1, false, 1, null);
-        minimum = (double[]) extrema.getProperty("minimum");
-        maximum = (double[]) extrema.getProperty("maximum");
+        iw = new ImageWorker(ri);
+        minimum = iw.getMinimums();
+        maximum = iw.getMaximums();
 
         // values are stretched
         assertArrayEquals(new double[] {0, 0, 0, 0}, minimum, 1E-6);
         assertArrayEquals(new double[] {255, 255, 255, 255}, maximum, 1E-6);
 
         disposeCoverage(output);
-        ImageUtilities.disposePlanarImageChain(extrema);
+        ImageUtilities.disposeImage(ri);
     }
 
     /**
@@ -163,9 +162,9 @@ public class TransparencyStyledTest {
         GridCoverage2D gc = readCoverage(mosaicDirectory, FootprintBehavior.None, Color.BLACK);
 
         RenderedImage ri = gc.getRenderedImage();
-        RenderedOp extrema = ExtremaDescriptor.create(ri, null, 1, 1, false, 1, null);
-        double[] minimum = (double[]) extrema.getProperty("minimum");
-        double[] maximum = (double[]) extrema.getProperty("maximum");
+        ImageWorker iw = new ImageWorker(ri);
+        double[] minimum = iw.getMinimums();
+        double[] maximum = iw.getMaximums();
 
         // read values, not stretched, alpha is present
         assertArrayEquals(new double[] {0, 0, 0, 0}, minimum, 1E-6);
@@ -177,16 +176,16 @@ public class TransparencyStyledTest {
         // Assert the alpha band has been preserved, even with a CS+CE SLD in place
         assertHasAlpha(ri);
 
-        extrema = ExtremaDescriptor.create(ri, null, 1, 1, false, 1, null);
-        minimum = (double[]) extrema.getProperty("minimum");
-        maximum = (double[]) extrema.getProperty("maximum");
+        iw = new ImageWorker(ri);
+        minimum = iw.getMinimums();
+        maximum = iw.getMaximums();
 
         // values are stretched
         assertArrayEquals(new double[] {0, 0, 0, 0}, minimum, 1E-6);
         assertArrayEquals(new double[] {255, 255, 255, 255}, maximum, 1E-6);
 
         disposeCoverage(output);
-        ImageUtilities.disposePlanarImageChain(extrema);
+        ImageUtilities.disposeImage(ri);
     }
 
     /**

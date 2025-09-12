@@ -264,6 +264,10 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
+      <artifactId>imagen-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.imagen</groupId>
       <artifactId>rendered-image-browser</artifactId>
       <scope>test</scope>
     </dependency>

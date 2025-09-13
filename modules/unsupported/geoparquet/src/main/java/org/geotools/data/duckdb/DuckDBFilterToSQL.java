@@ -18,6 +18,7 @@ package org.geotools.data.duckdb;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Locale;
 import org.geotools.api.filter.NativeFilter;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -35,7 +36,6 @@ import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Overlaps;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
-import org.geotools.api.geometry.BoundingBox;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LengthFunction;
@@ -63,16 +63,78 @@ import org.geotools.filter.function.math.FilterFunction_abs_3;
 import org.geotools.filter.function.math.FilterFunction_abs_4;
 import org.geotools.filter.function.math.FilterFunction_ceil;
 import org.geotools.filter.function.math.FilterFunction_floor;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.SQLDialect;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
 
 /**
- * Base FilterToSQL class for DuckDB with spatial support. Handles conversion of GeoTools filters to DuckDB SQL spatial
- * functions.
+ * FilterToSQL implementation for DuckDB with comprehensive spatial support.
+ *
+ * <p>This class handles conversion of GeoTools filters to DuckDB-compatible SQL spatial functions and provides
+ * locale-independent geometry literal encoding to avoid parsing issues in different system locales.
+ *
+ * <h2>Features:</h2>
+ *
+ * <ul>
+ *   <li><strong>Spatial Operations:</strong> Supports all standard spatial predicates including BBOX, Contains,
+ *       Crosses, Disjoint, Equals, Intersects, Overlaps, Touches, Within, DWithin, and Beyond
+ *   <li><strong>Locale Independence:</strong> Uses WKB (Well-Known Binary) encoding for geometry literals to avoid
+ *       locale-specific decimal separator parsing issues (e.g., comma vs dot)
+ *   <li><strong>DuckDB Compatibility:</strong> Leverages DuckDB's {@code ST_GeomFromHEXEWKB} function for reliable
+ *       geometry deserialization
+ *   <li><strong>Function Support:</strong> Extensible support for string, math, date, array, and geometry functions
+ * </ul>
+ *
+ * <h2>Locale Handling:</h2>
+ *
+ * <p>Traditional WKT (Well-Known Text) geometry encoding can fail in locales that use comma as the decimal separator
+ * (e.g., Italian, German, French) because DuckDB may misinterpret coordinate separators in strings like
+ * {@literal "POLYGON ((-10 0, 0 0, ...))"} where "0, 0" could be parsed as "0,0" (zero with decimal comma). This
+ * implementation avoids this issue entirely by using binary WKB encoding with hexadecimal representation.
+ *
+ * @see DuckDBDialect
+ * @see FilterToSQL
  */
 public class DuckDBFilterToSQL extends FilterToSQL {
+    /**
+     * Converts a geometry literal to DuckDB SQL using locale-independent WKB encoding.
+     *
+     * <p>This method uses DuckDB's {@code ST_GeomFromHEXEWKB} function with hexadecimal-encoded WKB (Well-Known Binary)
+     * data instead of the traditional WKT (Well-Known Text) approach. This ensures consistent behavior across different
+     * system locales that may use different decimal separators.
+     *
+     * <p>In locales such as Italian (it_IT), German (de_DE), or French (fr_FR), the decimal separator is a comma
+     * instead of a dot. When using WKT encoding like:
+     *
+     * <pre>{@code POLYGON ((-10 0, 0 0, 0 10, -10 10, -10 0))}</pre>
+     *
+     * DuckDB's parser may misinterpret the coordinate separator "0, 0" as a decimal number "0,0" with a decimal comma,
+     * causing parsing errors like:
+     *
+     * <pre>Invalid Input Error: Expected character: ')' at position '17' near: 'POLYGON ((-10 0, 0'</pre>
+     *
+     * <strong>WKB Solution:</strong>
+     *
+     * <p>Using WKB encoding completely bypasses text parsing of coordinates since the geometry is represented as binary
+     * data. The hexadecimal representation is locale-independent and works consistently across all systems.
+     *
+     * @param expression the geometry literal expression to convert
+     * @throws IOException if there's an error writing to the output stream
+     * @see <a href="https://duckdb.org/docs/extensions/spatial.html#st_geomfromhexewkb">DuckDB ST_GeomFromHEXEWKB</a>
+     */
+    @Override
+    protected void visitLiteralGeometry(Literal expression) throws IOException {
+        Geometry g = (Geometry) evaluateLiteral(expression, Geometry.class);
+        if (g instanceof LinearRing ring) {
+            // DuckDB doesn't support LinearRing geometry type - convert to LineString
+            g = g.getFactory().createLineString(ring.getCoordinateSequence());
+        }
+        // Use WKB (Well-Known Binary) format to avoid locale-specific text parsing issues
+        // ST_GeomFromHEXEWKB is locale-independent and works with binary data
+        write("ST_GeomFromHEXEWKB('");
+        HexWKBEncoder.encode(g, out);
+        write("')");
+    }
 
     static FilterCapabilities createFilterCapabilities(FilterCapabilities caps, boolean encodeFunctions) {
         caps.addAll(SQLDialect.BASE_DBMS_CAPABILITIES);
@@ -145,24 +207,6 @@ public class DuckDBFilterToSQL extends FilterToSQL {
     }
 
     @Override
-    protected void visitLiteralGeometry(Literal expression) throws IOException {
-        Geometry g = (Geometry) evaluateLiteral(expression, Geometry.class);
-        visitLiteralGeometry(g);
-    }
-
-    protected void visitLiteralGeometry(Geometry g) throws IOException {
-        if (g instanceof LinearRing ring) {
-            // DuckDB doesn't support LinearRing type
-            g = g.getFactory().createLineString(ring.getCoordinateSequence());
-        }
-        write("ST_GeomFromText('%s')", g.toText());
-    }
-
-    protected void visitLiteralBoundingBox(BoundingBox bounds) throws IOException {
-        visitLiteralGeometry(JTS.toGeometry(bounds));
-    }
-
-    @Override
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
@@ -173,11 +217,11 @@ public class DuckDBFilterToSQL extends FilterToSQL {
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, Expression leftExp, Expression rightExpt, Object extraData) {
 
-        if (filter instanceof DistanceBufferOperator operator) {
-            return visitDistanceBufferOperator(operator, leftExp, rightExpt, extraData);
+        if (filter instanceof DistanceBufferOperator dbo) {
+            return visitDistanceBufferOperator(dbo, leftExp, rightExpt, extraData);
         }
-        if (filter instanceof BBOX oX) {
-            return visitBBOX(oX, leftExp, rightExpt, extraData);
+        if (filter instanceof BBOX bbox) {
+            return visitBBOX(bbox, leftExp, rightExpt, extraData);
         }
         String stFunction;
         if (filter instanceof Contains) {
@@ -240,7 +284,9 @@ public class DuckDBFilterToSQL extends FilterToSQL {
     @SuppressWarnings("AnnotateFormatMethod")
     protected void write(String fmt, Object... args) {
         try {
-            out.write(fmt.formatted(args));
+            // Beware we shall pass Locale.ENGLISH or Duckdb will use the current locale and get confused with decimal
+            // separators
+            out.write(String.format(Locale.ENGLISH, fmt, args));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

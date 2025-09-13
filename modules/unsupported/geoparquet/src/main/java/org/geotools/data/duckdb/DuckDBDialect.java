@@ -53,7 +53,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.InputStreamInStream;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKBReader;
-import org.locationtech.jts.io.WKTWriter;
 
 /**
  * Base SQL Dialect for DuckDB-based datastores. Provides common DuckDB SQL functionality including spatial support.
@@ -390,12 +389,11 @@ public class DuckDBDialect extends BasicSQLDialect {
 
     @Override
     public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql) throws IOException {
+        // Use WKB encoding to avoid locale-specific decimal parsing issues in geometry literals
         if (value != null && !value.isEmpty()) {
-            sql.append("ST_GeomFromText('");
-            sql.append(new WKTWriter().write(value));
-            sql.append("', ");
-            sql.append(srid);
-            sql.append(")");
+            sql.append("ST_GeomFromHEXEWKB('");
+            HexWKBEncoder.encode(value, sql);
+            sql.append("')");
         } else {
             sql.append("NULL");
         }

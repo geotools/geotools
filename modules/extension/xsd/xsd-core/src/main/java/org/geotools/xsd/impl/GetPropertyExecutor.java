@@ -58,8 +58,7 @@ public class GetPropertyExecutor implements BindingWalker.Visitor {
             return;
         }
 
-        if (binding instanceof ComplexBinding) {
-            ComplexBinding complex = (ComplexBinding) binding;
+        if (binding instanceof ComplexBinding complex) {
 
             if (binding.getType() == null) {
                 LOGGER.warning("Binding for: " + binding.getTarget() + " does not declare type");

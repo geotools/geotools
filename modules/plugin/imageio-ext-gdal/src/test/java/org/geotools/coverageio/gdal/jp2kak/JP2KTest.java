@@ -57,10 +57,13 @@ public final class JP2KTest extends GDALTestCase {
     public void test() throws Exception {
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
-            LOGGER.info("===================================================================\n"
-                    + " Warning! No valid test File has been yet specified.\n"
-                    + " Please provide a valid sample in the source code and repeat this test!\n"
-                    + "========================================================================");
+            LOGGER.info(
+                    """
+                    ===================================================================
+                     Warning! No valid test File has been yet specified.
+                     Please provide a valid sample in the source code and repeat this test!
+                    ========================================================================\
+                    """);
 
             return;
         }

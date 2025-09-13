@@ -127,6 +127,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     /** enum support */
     EnumMapping[] enumMappings;
 
+    @SuppressWarnings("PMD.CloseResource")
     public JDBCFeatureReader(
             String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query)
             throws SQLException {
@@ -138,10 +139,11 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         st.setFetchSize(featureSource.getDataStore().getFetchSize());
 
         SQLDialect sqlDialect = featureSource.getDataStore().getSQLDialect();
-        if (sqlDialect instanceof BasicSQLDialect) {
-            ((BasicSQLDialect) sqlDialect).onSelect(st, cx, featureType);
-        } else if (sqlDialect instanceof PreparedStatementSQLDialect && st instanceof PreparedStatement) {
-            ((PreparedStatementSQLDialect) sqlDialect).onSelect((PreparedStatement) st, cx, featureType);
+        if (sqlDialect instanceof BasicSQLDialect dialect1) {
+            dialect1.onSelect(st, cx, featureType);
+        } else if (sqlDialect instanceof PreparedStatementSQLDialect dialect
+                && st instanceof PreparedStatement statement) {
+            dialect.onSelect(statement, cx, featureType);
         }
 
         runQuery(() -> st.executeQuery(sql), st);
@@ -359,8 +361,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 Object value = null;
 
                 // is this a geometry?
-                if (type instanceof GeometryDescriptor) {
-                    GeometryDescriptor gatt = (GeometryDescriptor) type;
+                if (type instanceof GeometryDescriptor gatt) {
 
                     // read the geometry
                     try {
@@ -724,8 +725,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                             // to read it
 
                             AttributeDescriptor att = featureType.getDescriptor(index);
-                            if (att instanceof GeometryDescriptor) {
-                                GeometryDescriptor gatt = (GeometryDescriptor) att;
+                            if (att instanceof GeometryDescriptor gatt) {
                                 values[index] = dataStore
                                         .getSQLDialect()
                                         .decodeGeometryValue(
@@ -841,8 +841,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         @Override
         public BoundingBox getBounds() {
             Object obj = getDefaultGeometry();
-            if (obj instanceof Geometry) {
-                Geometry geometry = (Geometry) obj;
+            if (obj instanceof Geometry geometry) {
                 return ReferencedEnvelope.envelope(
                         geometry.getEnvelopeInternal(), featureType.getCoordinateReferenceSystem());
             }

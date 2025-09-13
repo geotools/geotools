@@ -133,8 +133,8 @@ public final class CRSUtilities {
 
     /** Returns the components of the specified CRS, or {@code null} if none. */
     private static List<CoordinateReferenceSystem> getComponents(CoordinateReferenceSystem crs) {
-        if (crs instanceof CompoundCRS) {
-            final List<CoordinateReferenceSystem> components = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+        if (crs instanceof CompoundCRS rS) {
+            final List<CoordinateReferenceSystem> components = rS.getCoordinateReferenceSystems();
             if (!components.isEmpty()) {
                 return components;
             }
@@ -286,7 +286,7 @@ public final class CRSUtilities {
      * @return The datum in the given CRS, or {@code null} if none.
      */
     public static Datum getDatum(final CoordinateReferenceSystem crs) {
-        return crs instanceof SingleCRS ? ((SingleCRS) crs).getDatum() : null;
+        return crs instanceof SingleCRS scrs ? scrs.getDatum() : null;
     }
 
     /**
@@ -330,9 +330,9 @@ public final class CRSUtilities {
         if (geoDatum.getPrimeMeridian().getGreenwichLongitude() != 0) {
             geoDatum = new DefaultGeodeticDatum(
                     geoDatum.getName().getCode(), geoDatum.getEllipsoid(), DefaultPrimeMeridian.GREENWICH);
-        } else if (crs instanceof GeographicCRS) {
+        } else if (crs instanceof GeographicCRS rS) {
             if (CRS.equalsIgnoreMetadata(DefaultEllipsoidalCS.GEODETIC_2D, crs.getCoordinateSystem())) {
-                return (GeographicCRS) crs;
+                return rS;
             }
         }
         return new DefaultGeographicCRS(crs.getName().getCode(), geoDatum, DefaultEllipsoidalCS.GEODETIC_2D);
@@ -384,8 +384,8 @@ public final class CRSUtilities {
     public static Point2D deltaTransform(
             final MathTransform2D transform, final Point2D origin, final Point2D source, Point2D dest)
             throws TransformException {
-        if (transform instanceof AffineTransform) {
-            return ((AffineTransform) transform).deltaTransform(source, dest);
+        if (transform instanceof AffineTransform affineTransform) {
+            return affineTransform.deltaTransform(source, dest);
         }
         final double ox = origin.getX();
         final double oy = origin.getY();

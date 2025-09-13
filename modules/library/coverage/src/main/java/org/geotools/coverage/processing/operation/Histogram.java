@@ -19,6 +19,7 @@ package org.geotools.coverage.processing.operation;
 import java.awt.Shape;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
+import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
     private static final String HISTOGRAM = "Histogram";
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4256576399698278701L;
 
     /** {@link String} key for getting the {@link org.eclipse.imagen.Histogram} object. */
@@ -104,9 +106,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
         // histogram as the output of the histogram operation.
         //
         // /////////////////////////////////////////////////////////////////////
-        if (data instanceof RenderedOp) {
-            // XXX remove me with 1.5
-            final RenderedOp result = (RenderedOp) data;
+        if (data instanceof RenderedOp result) {
 
             final Map<String, Object> synthProp = new HashMap<>();
 

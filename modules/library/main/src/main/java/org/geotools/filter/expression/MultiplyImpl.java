@@ -63,8 +63,7 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MultiplyImpl) {
-            MultiplyImpl other = (MultiplyImpl) obj;
+        if (obj instanceof MultiplyImpl other) {
 
             return Utilities.equals(getExpression1(), other.getExpression1())
                     && Utilities.equals(getExpression2(), other.getExpression2());

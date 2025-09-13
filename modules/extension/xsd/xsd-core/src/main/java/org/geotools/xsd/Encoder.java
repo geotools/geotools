@@ -829,13 +829,12 @@ public class Encoder {
                         // may have a collection or array, unwrap it
                         Iterator iterator = null;
 
-                        if (obj instanceof Iterator) {
-                            iterator = (Iterator) obj;
+                        if (obj instanceof Iterator iterator1) {
+                            iterator = iterator1;
                         } else if (obj != null && obj.getClass().isArray()) {
                             Object[] array = (Object[]) obj;
                             iterator = Arrays.asList(array).iterator();
-                        } else if (obj instanceof Collection) {
-                            Collection collection = (Collection) obj;
+                        } else if (obj instanceof Collection collection) {
                             iterator = collection.iterator();
                         } else if (obj instanceof FeatureCollection) {
                             @SuppressWarnings("unchecked")
@@ -981,16 +980,16 @@ public class Encoder {
             Object next = itr.next();
 
             // here we check for instanceof EncoderDelegate
-            if (next instanceof EncoderDelegate) {
+            if (next instanceof EncoderDelegate delegate) {
                 // do not add entry to the stack, just delegate to encode
                 try {
-                    ((EncoderDelegate) next).encode(handler);
+                    delegate.encode(handler);
                 } catch (Exception e) {
                     throw new RuntimeException("Error encoding object to xml-element", e);
                 }
             } else {
-                if (next instanceof ComplexAttribute && relaxed && isNonStripedNestedElement(next, element)) {
-                    for (Property property : ((ComplexAttribute) next).getProperties()) {
+                if (next instanceof ComplexAttribute attribute && relaxed && isNonStripedNestedElement(next, element)) {
+                    for (Property property : attribute.getProperties()) {
                         // add object sub properties, i.e. nested complex features
                         encoded.push(new EncodingEntry(property, element, entry));
                     }
@@ -1132,12 +1131,10 @@ public class Encoder {
     }
 
     protected Node encode(Object object, XSDNamedComponent component, XSDTypeDefinition container) {
-        if (component instanceof XSDElementDeclaration) {
-            XSDElementDeclaration element = (XSDElementDeclaration) component;
+        if (component instanceof XSDElementDeclaration element) {
 
             return encoder.encode(object, element, doc, container);
-        } else if (component instanceof XSDAttributeDeclaration) {
-            XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) component;
+        } else if (component instanceof XSDAttributeDeclaration attribute) {
 
             return encoder.encode(object, attribute, doc, container);
         }
@@ -1183,8 +1180,8 @@ public class Encoder {
         for (int i = 0; i < element.getChildNodes().getLength(); i++) {
             Node node = element.getChildNodes().item(i);
 
-            if (node instanceof Text) {
-                String data = XMLUtils.removeXMLInvalidChars(((Text) node).getData());
+            if (node instanceof Text text) {
+                String data = XMLUtils.removeXMLInvalidChars(text.getData());
                 char[] ch = data.toCharArray();
                 serializer.characters(ch, 0, ch.length);
             }
@@ -1194,8 +1191,7 @@ public class Encoder {
         for (int i = 0; i < element.getChildNodes().getLength(); i++) {
             Node node = element.getChildNodes().item(i);
 
-            if (node instanceof Element) {
-                Element child = (Element) node;
+            if (node instanceof Element child) {
                 QName childName = new QName(child.getNamespaceURI(), child.getNodeName());
                 XSDElementDeclaration childDecl =
                         declaration != null ? Schemas.getChildElementDeclaration(declaration, childName) : null;
@@ -1222,13 +1218,13 @@ public class Encoder {
     }
 
     protected void comment(Element element) throws SAXException, IOException {
-        if (serializer instanceof LexicalHandler) {
+        if (serializer instanceof LexicalHandler handler) {
             NodeList children = element.getChildNodes();
 
             for (int i = 0; i < children.getLength(); i++) {
                 Node text = children.item(i);
                 String str = text.getNodeValue();
-                ((LexicalHandler) serializer).comment(str.toCharArray(), 0, str.length());
+                handler.comment(str.toCharArray(), 0, str.length());
             }
         }
     }
@@ -1494,12 +1490,12 @@ public class Encoder {
             }
 
             // use binding comparability
-            if (b1 instanceof Comparable) {
-                return ((Comparable) b1).compareTo(b2);
+            if (b1 instanceof Comparable comparable) {
+                return comparable.compareTo(b2);
             }
 
-            if (b2 instanceof Comparable) {
-                return -1 * ((Comparable) b2).compareTo(b1);
+            if (b2 instanceof Comparable comparable) {
+                return -1 * comparable.compareTo(b1);
             }
 
             return 0;

@@ -27,7 +27,6 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import org.junit.Test;
 
 /**
@@ -151,7 +150,7 @@ public final class UtilitiesTest {
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable() throws IOException {
-        Utilities.assertNotZipSlipVulnarable(new File("../testfile"), Paths.get("./target"));
+        Utilities.assertNotZipSlipVulnarable(new File("../testfile"), Path.of("./target"));
     }
 
     /**
@@ -160,7 +159,7 @@ public final class UtilitiesTest {
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable2() throws IOException {
-        Utilities.assertNotZipSlipVulnarable(new File("./target/../../testfile"), Paths.get("./target"));
+        Utilities.assertNotZipSlipVulnarable(new File("./target/../../testfile"), Path.of("./target"));
     }
 
     /**
@@ -169,7 +168,7 @@ public final class UtilitiesTest {
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable3() throws IOException {
-        Utilities.assertNotZipSlipVulnarable(new File("../target/../testfile"), Paths.get("../target"));
+        Utilities.assertNotZipSlipVulnarable(new File("../target/../testfile"), Path.of("../target"));
     }
 
     /**
@@ -179,7 +178,7 @@ public final class UtilitiesTest {
     @Test
     public void testAssertNotZipSlipVulnarableNotVulnerable() throws IOException {
         try {
-            Utilities.assertNotZipSlipVulnarable(new File("/../testfile"), Paths.get("/"));
+            Utilities.assertNotZipSlipVulnarable(new File("/../testfile"), Path.of("/"));
         } catch (IOException io) {
             fail("zip slip check should not have failed for this case: " + io.getLocalizedMessage());
         }
@@ -192,7 +191,7 @@ public final class UtilitiesTest {
     @Test
     public void testAssertNotZipSlipVulnarableNotVulnerable2() throws IOException {
         try {
-            Utilities.assertNotZipSlipVulnarable(new File("../target/testfile"), Paths.get("../target"));
+            Utilities.assertNotZipSlipVulnarable(new File("../target/testfile"), Path.of("../target"));
         } catch (IOException io) {
             fail("zip slip check should not have failed for this case: " + io.getLocalizedMessage());
         }

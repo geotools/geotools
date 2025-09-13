@@ -18,7 +18,8 @@ package org.geotools.referencing.factory;
 
 // J2SE direct dependencies
 
-import java.io.IOException; // For javadoc
+import java.io.IOException;
+import java.io.Serial;
 import java.sql.SQLException; // For javadoc
 
 /**
@@ -32,6 +33,7 @@ import java.sql.SQLException; // For javadoc
  */
 public class BackingStoreException extends RuntimeException {
     /** Serial version UID allowing cross compiler use of {@code BackingStoreException}. */
+    @Serial
     private static final long serialVersionUID = 4257200758051575441L;
 
     /** Constructs a new exception with no detail message. */

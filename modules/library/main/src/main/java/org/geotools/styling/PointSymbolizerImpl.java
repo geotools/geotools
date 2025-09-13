@@ -132,11 +132,9 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
     static PointSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
-        } else if (symbolizer instanceof PointSymbolizerImpl) {
-            return (PointSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.geotools.api.style.PointSymbolizer) {
-            org.geotools.api.style.PointSymbolizer pointSymbolizer =
-                    (org.geotools.api.style.PointSymbolizer) symbolizer;
+        } else if (symbolizer instanceof PointSymbolizerImpl impl) {
+            return impl;
+        } else if (symbolizer instanceof org.geotools.api.style.PointSymbolizer pointSymbolizer) {
             PointSymbolizerImpl copy = new PointSymbolizerImpl();
             copy.setDescription(pointSymbolizer.getDescription());
             copy.setGeometryPropertyName(pointSymbolizer.getGeometryPropertyName());

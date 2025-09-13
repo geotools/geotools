@@ -235,9 +235,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         //
         // //
         // if it is an URL pointing to a File I convert it to a file.
-        if (input instanceof URL) {
-            // URL that point to a file
-            final URL sourceURL = (URL) input;
+        if (input instanceof URL sourceURL) {
             this.source = sourceURL;
 
             if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
@@ -248,12 +246,10 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             }
         }
 
-        if (input instanceof AccessibleStream) {
+        if (input instanceof AccessibleStream accessible) {
             if (source == null) {
                 source = input;
             }
-
-            AccessibleStream accessible = (AccessibleStream) input;
             if (accessible.getTarget() instanceof File) {
                 inputFile = (File) accessible.getTarget();
                 input = inputFile;
@@ -261,9 +257,9 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         }
 
         // string to file conversion attempt (other readers do it too)
-        if (input instanceof String) {
+        if (input instanceof String string) {
             try {
-                final File sourceFile = new File((String) input);
+                final File sourceFile = new File(string);
                 if (sourceFile.exists()) {
                     input = sourceFile;
                 } else {
@@ -280,8 +276,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         // File
         //
         // //
-        if (input instanceof File) {
-            final File sourceFile = (File) input;
+        if (input instanceof File sourceFile) {
 
             if (source == null) {
                 source = sourceFile;
@@ -456,16 +451,14 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         serviceInfo = localInfo;
         localInfo.setDescription(source.toString());
 
-        if (source instanceof URL) {
-            URL url = (URL) source;
+        if (source instanceof URL url) {
             localInfo.setTitle(url.getFile());
 
             try {
                 localInfo.setSource(url.toURI());
             } catch (URISyntaxException e) {
             }
-        } else if (source instanceof File) {
-            File file = (File) source;
+        } else if (source instanceof File file) {
             String filename = file.getName();
 
             if (filename == null || filename.length() == 0) {

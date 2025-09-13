@@ -233,8 +233,8 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
 
         if (insideAttribute) {
             LOGGER.info("raw att = " + rawAttribute);
-            if (tempValue instanceof StringBuffer) {
-                ((StringBuffer) tempValue).append(" " + rawAttribute);
+            if (tempValue instanceof StringBuffer buffer) {
+                buffer.append(" " + rawAttribute);
             } else {
                 tempValue = new StringBuffer(rawAttribute);
             }

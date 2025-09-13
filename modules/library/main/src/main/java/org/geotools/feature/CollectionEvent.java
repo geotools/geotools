@@ -16,6 +16,7 @@
  */
 package org.geotools.feature;
 
+import java.io.Serial;
 import java.util.EventObject;
 import org.geotools.api.data.FeatureEvent;
 import org.geotools.api.feature.Feature;
@@ -24,6 +25,7 @@ import org.geotools.api.feature.type.FeatureType;
 
 /** A simple event object to represent all events triggered by FeatureCollection instances (typically change events). */
 public class CollectionEvent extends EventObject {
+    @Serial
     private static final long serialVersionUID = -1864190177730929948L;
 
     /*

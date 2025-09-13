@@ -19,6 +19,7 @@ package org.geotools.coverage.processing.operation;
 // JAI dependencies (for javadoc)
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
@@ -78,6 +79,7 @@ public class DivideByConst extends OperationJAI {
     private static final String OPERATION_CONST = "operationConst";
     private static final String DIVIDE_BY_CONST = "DivideByConst";
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3723238033407316564L;
 
     /** Constructs a default {@code "DivideByConst"} operation. */

@@ -123,12 +123,12 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     private ReferencedEnvelope bbox(Object data) {
         if (data == null) {
             return null;
-        } else if (data instanceof ReferencedEnvelope) {
-            return (ReferencedEnvelope) data;
-        } else if (data instanceof Envelope) {
-            return new ReferencedEnvelope((Envelope) data, null);
-        } else if (data instanceof CoordinateReferenceSystem) {
-            return new ReferencedEnvelope((CoordinateReferenceSystem) data);
+        } else if (data instanceof ReferencedEnvelope envelope1) {
+            return envelope1;
+        } else if (data instanceof Envelope envelope) {
+            return new ReferencedEnvelope(envelope, null);
+        } else if (data instanceof CoordinateReferenceSystem system) {
+            return new ReferencedEnvelope(system);
         }
         throw new ClassCastException("Could not cast data to ReferencedEnvelope");
     }
@@ -173,9 +173,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         ReferencedEnvelope bbox = bbox(data);
 
         Object value = expression.getValue();
-        if (value instanceof Geometry) {
-
-            Geometry geometry = (Geometry) value;
+        if (value instanceof Geometry geometry) {
             Envelope bounds = geometry.getEnvelopeInternal();
 
             if (bbox != null) {
@@ -184,8 +182,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
             } else {
                 return bbox(bounds);
             }
-        } else if (value instanceof Envelope) {
-            Envelope bounds = (Envelope) value;
+        } else if (value instanceof Envelope bounds) {
             if (bbox != null) {
                 bbox.expandToInclude(bounds);
                 return bbox;

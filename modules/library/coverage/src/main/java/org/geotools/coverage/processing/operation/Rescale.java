@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing.operation;
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -87,6 +88,7 @@ import org.geotools.util.NumberRange;
  */
 public class Rescale extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -9150531690336265741L;
 
     /** Constructs a default {@code "Rescale"} operation. */

@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.datum;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ import org.geotools.referencing.wkt.Formatter;
  */
 public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum, PROJFormattable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8832100095648302943L;
 
     /** The default WGS 1984 datum. */
@@ -99,7 +101,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         super(datum);
         ellipsoid = datum.getEllipsoid();
         primeMeridian = datum.getPrimeMeridian();
-        bursaWolf = datum instanceof DefaultGeodeticDatum ? ((DefaultGeodeticDatum) datum).bursaWolf : null;
+        bursaWolf = datum instanceof DefaultGeodeticDatum dgd ? dgd.bursaWolf : null;
     }
 
     /**
@@ -146,8 +148,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         ensureNonNull("primeMeridian", primeMeridian);
         BursaWolfParameters[] bursaWolf;
         final Object object = properties.get(BURSA_WOLF_KEY);
-        if (object instanceof BursaWolfParameters) {
-            bursaWolf = new BursaWolfParameters[] {((BursaWolfParameters) object).clone()};
+        if (object instanceof BursaWolfParameters parameters) {
+            bursaWolf = new BursaWolfParameters[] {parameters.clone()};
         } else {
             bursaWolf = (BursaWolfParameters[]) object;
             if (bursaWolf != null) {
@@ -235,8 +237,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
             final GeodeticDatum source, final GeodeticDatum target, Set<GeodeticDatum> exclusion) {
         ensureNonNull("source", source);
         ensureNonNull("target", target);
-        if (source instanceof DefaultGeodeticDatum) {
-            final BursaWolfParameters[] bursaWolf = ((DefaultGeodeticDatum) source).bursaWolf;
+        if (source instanceof DefaultGeodeticDatum datum) {
+            final BursaWolfParameters[] bursaWolf = datum.bursaWolf;
             if (bursaWolf != null) {
                 for (final BursaWolfParameters transformation : bursaWolf) {
                     if (equals(target, transformation.targetDatum, false)) {
@@ -249,8 +251,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
          * No transformation found to the specified target datum.
          * Search if a transform exists in the opposite direction.
          */
-        if (target instanceof DefaultGeodeticDatum) {
-            final BursaWolfParameters[] bursaWolf = ((DefaultGeodeticDatum) target).bursaWolf;
+        if (target instanceof DefaultGeodeticDatum datum) {
+            final BursaWolfParameters[] bursaWolf = datum.bursaWolf;
             if (bursaWolf != null) {
                 for (final BursaWolfParameters transformation : bursaWolf) {
                     if (equals(source, transformation.targetDatum, false)) {
@@ -269,9 +271,9 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
          *
          *    source   -->   [common datum]   -->   target
          */
-        if (source instanceof DefaultGeodeticDatum && target instanceof DefaultGeodeticDatum) {
-            final BursaWolfParameters[] sourceParam = ((DefaultGeodeticDatum) source).bursaWolf;
-            final BursaWolfParameters[] targetParam = ((DefaultGeodeticDatum) target).bursaWolf;
+        if (source instanceof DefaultGeodeticDatum datum && target instanceof DefaultGeodeticDatum datum1) {
+            final BursaWolfParameters[] sourceParam = datum.bursaWolf;
+            final BursaWolfParameters[] targetParam = datum1.bursaWolf;
             if (sourceParam != null && targetParam != null) {
                 GeodeticDatum sourceStep;
                 GeodeticDatum targetStep;
@@ -319,8 +321,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
      * because it come from an other implementation).
      */
     public static boolean isWGS84(final Datum datum) {
-        if (datum instanceof AbstractIdentifiedObject) {
-            return WGS84.equals((AbstractIdentifiedObject) datum, false);
+        if (datum instanceof AbstractIdentifiedObject object) {
+            return WGS84.equals(object, false);
         }
         // Maybe the specified object has its own test...
         return datum != null && datum.equals(WGS84);
@@ -401,8 +403,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
 
     @Override
     public String formatPROJ(final PROJFormatter formatter) {
-        if (ellipsoid instanceof PROJFormattable && !formatter.isDatumProvided()) {
-            formatter.append((PROJFormattable) ellipsoid);
+        if (ellipsoid instanceof PROJFormattable formattable && !formatter.isDatumProvided()) {
+            formatter.append(formattable);
         }
         return formatter.isDatumProvided() ? "+datum=" : PROJFormatter.NO_KEYWORD;
     }

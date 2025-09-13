@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing.operation;
 
 import java.awt.Dimension;
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.media.affine.AffineDescriptor;
@@ -136,6 +137,7 @@ import org.geotools.util.logging.Logging;
  */
 public class Resample extends Operation2D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -2022393087647420577L;
 
     /** The parameter descriptor for the interpolation type. */

@@ -99,8 +99,7 @@ public class BandMergeProcess implements RasterProcess {
 
             Object crsGeo = geo.getUserData();
 
-            if (crsGeo != null && crsGeo instanceof CoordinateReferenceSystem) {
-                CoordinateReferenceSystem geoCRS = (CoordinateReferenceSystem) crsGeo;
+            if (crsGeo != null && crsGeo instanceof CoordinateReferenceSystem geoCRS) {
                 GridCoverage2D cov = coverages.iterator().next();
                 // CRS Check
                 BaseCoverageAlgebraProcess.checkCompatibleCRS(geoCRS, cov.getCoordinateReferenceSystem());

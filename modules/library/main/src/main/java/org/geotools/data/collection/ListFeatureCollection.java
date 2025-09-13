@@ -171,9 +171,10 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
         }
 
         @Override
+        @SuppressWarnings("PMD.CloseResource")
         public void close() {
-            if (iter instanceof FeatureIterator) {
-                ((FeatureIterator<?>) iter).close();
+            if (iter instanceof FeatureIterator<?> iterator) {
+                iterator.close();
             }
         }
 

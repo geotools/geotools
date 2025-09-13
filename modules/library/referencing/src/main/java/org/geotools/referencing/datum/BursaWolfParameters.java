@@ -21,6 +21,7 @@ package org.geotools.referencing.datum;
 
 import static java.lang.Double.doubleToLongBits;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.api.referencing.operation.Matrix;
@@ -46,6 +47,7 @@ import org.geotools.util.Utilities;
  */
 public class BursaWolfParameters extends Formattable implements Cloneable, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 754825592343010900L;
 
     /** Bursa Wolf shift in meters. */
@@ -229,8 +231,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof BursaWolfParameters) {
-            final BursaWolfParameters that = (BursaWolfParameters) object;
+        if (object instanceof BursaWolfParameters that) {
             return Utilities.equals(this.dx, that.dx)
                     && Utilities.equals(this.dy, that.dy)
                     && Utilities.equals(this.dz, that.dz)

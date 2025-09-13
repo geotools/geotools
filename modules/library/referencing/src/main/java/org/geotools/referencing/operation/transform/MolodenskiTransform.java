@@ -25,6 +25,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -83,6 +84,7 @@ import si.uom.SI;
  */
 public class MolodenskiTransform extends AbstractMathTransform implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7536566033885338422L;
 
     /** The tolerance error for assertions, in decimal degrees. */
@@ -500,6 +502,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
      */
     private static final class As2D extends MolodenskiTransform implements MathTransform2D {
         /** Serial number for compatibility with different versions. */
+        @Serial
         private static final long serialVersionUID = 8098439371246167474L;
 
         /** Constructs a 2D transform using Molodenski formulas. */
@@ -547,6 +550,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
      */
     public static class Provider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -5332126871499059030L;
 
         /** The default value for source and target geographic dimensions, which is 2. */
@@ -755,6 +759,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
      */
     public static class ProviderAbridged extends Provider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = 9148242601566635131L;
 
         /** The parameters group. */

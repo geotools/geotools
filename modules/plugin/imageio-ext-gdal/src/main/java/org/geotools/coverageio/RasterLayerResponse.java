@@ -257,8 +257,8 @@ class RasterLayerResponse {
                         imageReadParam,
                         originatingCoverageRequest.getReadType());
                 // Check for vectorial ROI
-                if (transformed instanceof ROIGeometry
-                        && ((ROIGeometry) transformed).getAsGeometry().isEmpty()) {
+                if (transformed instanceof ROIGeometry geometry
+                        && geometry.getAsGeometry().isEmpty()) {
                     // inset might have killed the geometry fully
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("The transformed geometry became empty, maybe due to inset having "

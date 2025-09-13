@@ -16,20 +16,22 @@ import org.junit.Test;
 public class ExecuteBindingTest extends WPSTestSupport {
     @Test
     public void testParseCData() throws Exception {
-        String body = "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\"\n"
-                + "  outputFormat=\"GML2\"\n"
-                + "  xmlns:topp=\"http://www.openplans.org/topp\"\n"
-                + "  xmlns:wfs=\"http://www.opengis.net/wfs\"\n"
-                + "  xmlns:ogc=\"http://www.opengis.net/ogc\"\n"
-                + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-                + "  xsi:schemaLocation=\"http://www.opengis.net/wfs\n"
-                + "                      http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd\">\n"
-                + "  <wfs:Query typeName=\"topp:states\">\n"
-                + "    <ogc:Filter>\n"
-                + "       <ogc:FeatureId fid=\"states.1\"/>\n"
-                + "    </ogc:Filter>\n"
-                + "    </wfs:Query>\n"
-                + "</wfs:GetFeature>";
+        String body =
+                """
+                <wfs:GetFeature service="WFS" version="1.0.0"
+                  outputFormat="GML2"
+                  xmlns:topp="http://www.openplans.org/topp"
+                  xmlns:wfs="http://www.opengis.net/wfs"
+                  xmlns:ogc="http://www.opengis.net/ogc"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.opengis.net/wfs
+                                      http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd">
+                  <wfs:Query typeName="topp:states">
+                    <ogc:Filter>
+                       <ogc:FeatureId fid="states.1"/>
+                    </ogc:Filter>
+                    </wfs:Query>
+                </wfs:GetFeature>""";
 
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<wps:Execute version=\"1.0.0\" service=\"WPS\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.opengis.net/wps/1.0.0\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:wcs=\"http://www.opengis.net/wcs/1.1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd\">\n"
@@ -73,20 +75,22 @@ public class ExecuteBindingTest extends WPSTestSupport {
 
     @Test
     public void testParseFull() throws Exception {
-        String body = "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\"\n"
-                + "  outputFormat=\"GML2\"\n"
-                + "  xmlns:topp=\"http://www.openplans.org/topp\"\n"
-                + "  xmlns:wfs=\"http://www.opengis.net/wfs\"\n"
-                + "  xmlns:ogc=\"http://www.opengis.net/ogc\"\n"
-                + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-                + "  xsi:schemaLocation=\"http://www.opengis.net/wfs\n"
-                + "                      http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd\">\n"
-                + "  <wfs:Query typeName=\"topp:states\">\n"
-                + "    <ogc:Filter>\n"
-                + "       <ogc:FeatureId fid=\"states.1\"/>\n"
-                + "    </ogc:Filter>\n"
-                + "    </wfs:Query>\n"
-                + "</wfs:GetFeature>";
+        String body =
+                """
+                <wfs:GetFeature service="WFS" version="1.0.0"
+                  outputFormat="GML2"
+                  xmlns:topp="http://www.openplans.org/topp"
+                  xmlns:wfs="http://www.opengis.net/wfs"
+                  xmlns:ogc="http://www.opengis.net/ogc"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.opengis.net/wfs
+                                      http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd">
+                  <wfs:Query typeName="topp:states">
+                    <ogc:Filter>
+                       <ogc:FeatureId fid="states.1"/>
+                    </ogc:Filter>
+                    </wfs:Query>
+                </wfs:GetFeature>""";
 
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<wps:Execute version=\"1.0.0\" service=\"WPS\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.opengis.net/wps/1.0.0\" xmlns:wfs=\"http://www.opengis.net/wfs\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:wcs=\"http://www.opengis.net/wcs/1.1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd\">\n"

@@ -16,6 +16,8 @@
  */
 package org.geotools.util.factory;
 
+import java.io.Serial;
+
 /**
  * Thrown when a factory can't be found in the registery.
  *
@@ -25,6 +27,7 @@ package org.geotools.util.factory;
  */
 public class FactoryNotFoundException extends FactoryRegistryException {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 7555229653402417318L;
 
     /** Creates a new exception with the specified detail message. */

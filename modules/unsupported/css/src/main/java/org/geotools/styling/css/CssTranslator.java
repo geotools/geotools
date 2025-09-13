@@ -387,7 +387,7 @@ public class CssTranslator {
             int ruleNbr = 0;
             for (FeatureTypeStyle ftStyle : translated.featureTypeStyles()) {
                 for (Rule rule : ftStyle.rules()) {
-                    rule.setName(String.format("%d", ruleNbr++));
+                    rule.setName("%d".formatted(ruleNbr++));
                 }
             }
         }
@@ -1263,8 +1263,7 @@ public class CssTranslator {
             // special handling for label, we allow multi-valued and treat as concatenation
             Value labelValue = getValue(values, "label", i);
             Expression labelExpression;
-            if (labelValue instanceof MultiValue) {
-                MultiValue m = (MultiValue) labelValue;
+            if (labelValue instanceof MultiValue m) {
                 List<Expression> parts = new ArrayList<>();
                 for (Value mv : m.values) {
                     parts.add(mv.toExpression());
@@ -1768,8 +1767,7 @@ public class CssTranslator {
             if (dasharray != null) {
                 strokeBuilder.dashArray(dasharray);
             }
-        } else if (dasharrayValue instanceof MultiValue) {
-            MultiValue mv = (MultiValue) dasharrayValue;
+        } else if (dasharrayValue instanceof MultiValue mv) {
             List<Expression> expressions = new ArrayList<>();
             for (Value v : mv.values) {
                 expressions.add(v.toExpression());
@@ -1791,8 +1789,7 @@ public class CssTranslator {
     private boolean isLiterals(Value value) {
         if (value instanceof Literal) {
             return true;
-        } else if (value instanceof MultiValue) {
-            MultiValue mv = (MultiValue) value;
+        } else if (value instanceof MultiValue mv) {
             for (Value v : mv.values) {
                 if (!(v instanceof Literal)) {
                     return false;
@@ -1885,8 +1882,8 @@ public class CssTranslator {
         if (v == null) {
             return null;
         } else {
-            if (v instanceof MultiValue) {
-                return ((MultiValue) v).values.get(0).toExpression();
+            if (v instanceof MultiValue value) {
+                return value.values.get(0).toExpression();
             } else {
                 return v.toExpression();
             }
@@ -1937,8 +1934,8 @@ public class CssTranslator {
 
     private List<Value> getMultiValue(Map<String, List<Value>> valueMap, String name, int i) {
         Value value = getValue(valueMap, name, i);
-        if (value instanceof MultiValue) {
-            return ((MultiValue) value).values;
+        if (value instanceof MultiValue multiValue) {
+            return multiValue.values;
         } else if (value == null) {
             return Collections.emptyList();
         } else {
@@ -1999,8 +1996,7 @@ public class CssTranslator {
         if (v == null) {
             return null;
         }
-        if (v instanceof MultiValue) {
-            MultiValue m = (MultiValue) v;
+        if (v instanceof MultiValue m) {
             if (m.values.isEmpty()) {
                 return null;
             }
@@ -2028,8 +2024,7 @@ public class CssTranslator {
         if (v == null) {
             return null;
         }
-        if (v instanceof MultiValue) {
-            MultiValue m = (MultiValue) v;
+        if (v instanceof MultiValue m) {
             if (m.values.isEmpty()) {
                 return null;
             }
@@ -2050,8 +2045,7 @@ public class CssTranslator {
         if (v == null) {
             return null;
         }
-        if (v instanceof MultiValue) {
-            MultiValue m = (MultiValue) v;
+        if (v instanceof MultiValue m) {
             if (m.values.isEmpty()) {
                 return null;
             }

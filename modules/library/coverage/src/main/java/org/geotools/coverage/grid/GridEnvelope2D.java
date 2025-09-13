@@ -18,6 +18,7 @@ package org.geotools.coverage.grid;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.datum.PixelInCell;
@@ -40,6 +41,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  */
 public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable {
     /** For cross-version interoperability. */
+    @Serial
     private static final long serialVersionUID = -3370515914148690059L;
 
     /** Creates an initially empty grid envelope. */

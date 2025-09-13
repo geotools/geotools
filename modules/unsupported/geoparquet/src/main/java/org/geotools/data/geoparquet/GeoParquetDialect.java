@@ -16,7 +16,6 @@
  */
 package org.geotools.data.geoparquet;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
@@ -270,8 +269,8 @@ public class GeoParquetDialect extends DuckDBDialect {
     public GeoparquetDatasetMetadata loadGeoparquetMetadata(String viewName, Connection cx) {
 
         String lookUpUri = viewManager.getVieUri(viewName);
-        String sql = format(
-                "SELECT file_name, decode(value) AS value FROM parquet_kv_metadata('%s') WHERE key = 'geo'", lookUpUri);
+        String sql = "SELECT file_name, decode(value) AS value FROM parquet_kv_metadata('%s') WHERE key = 'geo'"
+                .formatted(lookUpUri);
 
         Map<String, GeoParquetMetadata> parquetMetadataByFileName = new HashMap<>();
         try (Statement st = cx.createStatement();
@@ -311,10 +310,8 @@ public class GeoParquetDialect extends DuckDBDialect {
             try {
                 return GeoParquetMetadata.readValue(geoMetadata);
             } catch (IOException e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        e,
-                        () -> format("Error parsing geoparquet metadata. File: %s, geo: %s", fileName, geoMetadata));
+                LOGGER.log(Level.SEVERE, e, () -> "Error parsing geoparquet metadata. File: %s, geo: %s"
+                        .formatted(fileName, geoMetadata));
             }
         }
         return null;
@@ -399,9 +396,9 @@ public class GeoParquetDialect extends DuckDBDialect {
     ReferencedEnvelope computeBoundsFromBboxColumn(SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
 
-        String sql = format(
-                "SELECT ST_AsWKB(ST_MakeEnvelope(MIN(bbox.xmin), MIN(bbox.ymin), MAX(bbox.xmax), MAX(bbox.ymax))::GEOMETRY)::BLOB FROM %s",
-                escapeName(featureType.getTypeName()));
+        String sql =
+                "SELECT ST_AsWKB(ST_MakeEnvelope(MIN(bbox.xmin), MIN(bbox.ymin), MAX(bbox.xmax), MAX(bbox.ymax))::GEOMETRY)::BLOB FROM %s"
+                        .formatted(escapeName(featureType.getTypeName()));
 
         try (PreparedStatement ps = cx.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {

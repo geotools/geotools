@@ -107,8 +107,8 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
         PropertyName propertyName = node.getChildValue(PropertyName.class);
         Envelope box = node.getChildValue(Envelope.class);
 
-        if (box instanceof ReferencedEnvelope) {
-            return factory.bbox(propertyName == null ? factory.property("") : propertyName, (ReferencedEnvelope) box);
+        if (box instanceof ReferencedEnvelope envelope) {
+            return factory.bbox(propertyName == null ? factory.property("") : propertyName, envelope);
         } else {
             String name = null;
             if (propertyName != null) {

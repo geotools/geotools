@@ -273,17 +273,15 @@ public class ProjectionBuilder {
         OperationMethod method = conversionFromBase.getMethod();
         if (!(method instanceof MathTransformProvider)) {
             OperationMethod opMethod = mtFactory.getLastMethodUsed();
-            if (opMethod instanceof MathTransformProvider) {
+            if (opMethod instanceof MathTransformProvider provider) {
                 final Map<String, Object> copy = new HashMap<>(props);
-                copy.put(
-                        DefaultProjectedCRS.CONVERSION_TYPE_KEY, ((MathTransformProvider) opMethod).getOperationType());
+                copy.put(DefaultProjectedCRS.CONVERSION_TYPE_KEY, provider.getOperationType());
                 props = copy;
             }
         }
 
-        if (derivedCS instanceof DefaultCartesianCS) {
-            return ProjectionBuilder.createProjectedCRS(
-                    props, baseCRS, conversionFromBase, transform, (CartesianCS) derivedCS);
+        if (derivedCS instanceof CartesianCS cS) {
+            return ProjectionBuilder.createProjectedCRS(props, baseCRS, conversionFromBase, transform, cS);
         } else {
             CoordinateSystemAxis axis1 = new DefaultCoordinateSystemAxis(
                     new SimpleInternationalString(name + " axis 0"), "0", AxisDirection.OTHER, AbstractUnit.ONE);

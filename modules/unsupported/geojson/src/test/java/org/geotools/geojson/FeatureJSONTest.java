@@ -1267,22 +1267,25 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
 
     @Test
     public void testParseCrsAttribute() throws Exception {
-        String json = strip("{\n"
-                + "  \"type\": \"Feature\",\n"
-                + "  \"geometry\": {\n"
-                + "      \"type\":\"Polygon\",\n"
-                + "      \"coordinates\":[[[-180,-90],[180,-90],[180,90],[-180,90],[-180, -90]]]\n"
-                + "  },\n"
-                + "  \"properties\": {\n"
-                + "    \"eop:identifier\" : \"S2A_OPER_MSI_L1C_TL_SGS__20180101T000000_A006640_T32TPP_N02.04\",\n"
-                + "    \"timeStart\" : \"2018-01-01T00:00:00Z\",\n"
-                + "    \"timeEnd\" : \"2018-01-01T00:00:00Z\",\n"
-                + "    \"originalPackageLocation\" : \"/var/data/sentinel2/2017/04/23/S2A_OPER_MSI_L1C_TL_SGS__20180101T000000_A006640_T32TPP_N02.04.zip\",\n"
-                + "    \"thumbnailURL\" : null,\n"
-                + "    \"quicklookURL\" : null,\n"
-                + "    \"crs\" : \"EPSG:32632\",\n"
-                + "  }\n"
-                + "}");
+        String json = strip(
+                """
+                {
+                  "type": "Feature",
+                  "geometry": {
+                      "type":"Polygon",
+                      "coordinates":[[[-180,-90],[180,-90],[180,90],[-180,90],[-180, -90]]]
+                  },
+                  "properties": {
+                    "eop:identifier" : "S2A_OPER_MSI_L1C_TL_SGS__20180101T000000_A006640_T32TPP_N02.04",
+                    "timeStart" : "2018-01-01T00:00:00Z",
+                    "timeEnd" : "2018-01-01T00:00:00Z",
+                    "originalPackageLocation" : "/var/data/sentinel2/2017/04/23/S2A_OPER_MSI_L1C_TL_SGS__20180101T000000_A006640_T32TPP_N02.04.zip",
+                    "thumbnailURL" : null,
+                    "quicklookURL" : null,
+                    "crs" : "EPSG:32632",
+                  }
+                }\
+                """);
         SimpleFeature sf = fjson.readFeature(json);
         assertNotNull(sf);
         assertEquals("EPSG:32632", sf.getAttribute("crs"));

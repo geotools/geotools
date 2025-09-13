@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -43,6 +44,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneable {
     /** Serial version UID for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -7777695267921872849L;
 
     /** The class type for keys. */

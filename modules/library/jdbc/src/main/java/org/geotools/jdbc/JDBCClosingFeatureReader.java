@@ -64,8 +64,7 @@ public class JDBCClosingFeatureReader implements DelegatingFeatureReader<SimpleF
             r = ((DelegatingFeatureReader) r).getDelegate();
         }
 
-        if (r instanceof JDBCFeatureReader) {
-            JDBCFeatureReader jdbcReader = (JDBCFeatureReader) r;
+        if (r instanceof JDBCFeatureReader jdbcReader) {
             JDBCFeatureSource fs = jdbcReader.featureSource;
             Connection cx = jdbcReader.cx;
 

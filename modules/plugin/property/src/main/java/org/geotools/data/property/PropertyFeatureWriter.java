@@ -147,14 +147,11 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         writer.write(position == 0 ? "=" : "|");
         if (attribute == null) {
             writer.write("<null>"); // nothing!
-        } else if (attribute instanceof String) {
-            // encode newlines
-            String txt = (String) attribute;
+        } else if (attribute instanceof String txt) {
             txt = txt.replace("\n", "\\n");
             txt = txt.replace("\r", "\\r");
             writer.write(txt);
-        } else if (attribute instanceof Geometry) {
-            Geometry geometry = (Geometry) attribute;
+        } else if (attribute instanceof Geometry geometry) {
             wktWriter.write(geometry, writer);
         } else {
             String txt = Converters.convert(attribute, String.class);

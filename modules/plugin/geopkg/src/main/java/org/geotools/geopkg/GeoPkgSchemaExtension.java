@@ -192,7 +192,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
             }
         }
 
-        String dataColumnSql = format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?)", GeoPackage.DATA_COLUMNS);
+        String dataColumnSql = "INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?)".formatted(GeoPackage.DATA_COLUMNS);
         try (PreparedStatement ps = cx.prepareStatement(dataColumnSql)) {
             ps.setString(1, tableName);
             ps.setString(2, dataColumn.getColumnName());
@@ -205,7 +205,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
         }
 
         // declare the extension
-        String extensionSql = format("INSERT INTO %s VALUES(?, ?, ?, ?, ?)", GeoPackage.EXTENSIONS);
+        String extensionSql = "INSERT INTO %s VALUES(?, ?, ?, ?, ?)".formatted(GeoPackage.EXTENSIONS);
         try (PreparedStatement ps = cx.prepareStatement(extensionSql)) {
             ps.setString(1, tableName);
             ps.setString(2, dataColumn.getColumnName());
@@ -224,9 +224,8 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
 
     public void addConstraint(Connection cx, DataColumnConstraint constraint) throws SQLException {
         String constraintName = constraint.getName();
-        String sql = format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?, ?)", GeoPackage.DATA_COLUMN_CONSTRAINTS);
-        if (constraint instanceof DataColumnConstraint.Enum) {
-            DataColumnConstraint.Enum cEnum = (DataColumnConstraint.Enum) constraint;
+        String sql = "INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?, ?)".formatted(GeoPackage.DATA_COLUMN_CONSTRAINTS);
+        if (constraint instanceof DataColumnConstraint.Enum cEnum) {
             for (Map.Entry<String, String> entry : cEnum.getValues().entrySet()) {
                 try (PreparedStatement ps = cx.prepareStatement(sql)) {
                     ps.setString(1, constraintName);
@@ -240,11 +239,11 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
                     ps.executeUpdate();
                 }
             }
-        } else if (constraint instanceof DataColumnConstraint.Glob) {
+        } else if (constraint instanceof DataColumnConstraint.Glob glob) {
             try (PreparedStatement ps = cx.prepareStatement(sql)) {
                 ps.setString(1, constraintName);
                 ps.setString(2, "glob");
-                ps.setString(3, ((DataColumnConstraint.Glob) constraint).getGlob());
+                ps.setString(3, glob.getGlob());
                 ps.setObject(4, null);
                 ps.setObject(5, null);
                 ps.setObject(6, null);
@@ -252,8 +251,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
                 ps.setString(8, null);
                 ps.executeUpdate();
             }
-        } else if (constraint instanceof DataColumnConstraint.Range) {
-            DataColumnConstraint.Range rangeConstraint = (DataColumnConstraint.Range) constraint;
+        } else if (constraint instanceof DataColumnConstraint.Range rangeConstraint) {
             NumberRange range = rangeConstraint.getRange();
             try (PreparedStatement ps = cx.prepareStatement(sql)) {
                 ps.setString(1, constraintName);

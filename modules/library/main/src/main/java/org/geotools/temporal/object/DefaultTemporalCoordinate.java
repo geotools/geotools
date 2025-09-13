@@ -60,8 +60,7 @@ public class DefaultTemporalCoordinate extends DefaultTemporalPosition implement
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultTemporalCoordinate && super.equals(object)) {
-            final DefaultTemporalCoordinate that = (DefaultTemporalCoordinate) object;
+        if (object instanceof DefaultTemporalCoordinate that && super.equals(object)) {
 
             return Utilities.equals(this.coordinateValue, that.coordinateValue);
         }

@@ -12,6 +12,7 @@ package org.geotools.api.metadata.spatial;
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -30,6 +31,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "MD_PixelOrientationCode", specification = ISO_19115)
 public final class PixelOrientation extends CodeList<PixelOrientation> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 7885677198357949308L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

@@ -230,10 +230,9 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
     @SuppressWarnings("PMD.CloseResource") // FileChannel managed as a field
     public void goTo(long recno) throws IOException {
         assert recno < count;
-        if (readChannel instanceof FileChannel) {
+        if (readChannel instanceof FileChannel fc) {
             long newPosition = IndexedFidWriter.HEADER_SIZE + recno * IndexedFidWriter.RECORD_SIZE;
             if (newPosition >= bufferStart + buffer.limit() || newPosition < bufferStart) {
-                FileChannel fc = (FileChannel) readChannel;
                 fc.position(newPosition);
                 buffer.limit(buffer.capacity());
                 buffer.position(buffer.limit());

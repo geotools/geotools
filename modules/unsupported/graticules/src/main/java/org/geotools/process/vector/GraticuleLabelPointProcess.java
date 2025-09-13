@@ -143,11 +143,8 @@ public class GraticuleLabelPointProcess implements VectorProcess {
         SimpleFeatureTypeBuilder sftb = new SimpleFeatureTypeBuilder();
         sftb.setName(schema.getName().toString() + "-label");
         for (AttributeDescriptor descriptor : schema.getAttributeDescriptors()) {
-            if (descriptor instanceof GeometryDescriptor) {
-                sftb.add(
-                        descriptor.getLocalName(),
-                        Point.class,
-                        ((GeometryDescriptor) descriptor).getCoordinateReferenceSystem());
+            if (descriptor instanceof GeometryDescriptor geometryDescriptor) {
+                sftb.add(descriptor.getLocalName(), Point.class, geometryDescriptor.getCoordinateReferenceSystem());
             } else {
                 sftb.add(descriptor);
             }

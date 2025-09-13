@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -49,6 +50,7 @@ import si.uom.SI;
  */
 public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3000119849197222007L;
 
     /**

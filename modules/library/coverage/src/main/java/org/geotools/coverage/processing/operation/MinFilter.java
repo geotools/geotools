@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.io.Serial;
 import org.eclipse.imagen.operator.MinFilterDescriptor;
 import org.eclipse.imagen.operator.MinFilterShape;
 import org.geotools.coverage.processing.OperationJAI;
@@ -64,6 +65,7 @@ import org.geotools.coverage.processing.OperationJAI;
  */
 public class MinFilter extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -45487721305059086L;
 
     /** Constructs a default {@code "MinFilter"} operation. */

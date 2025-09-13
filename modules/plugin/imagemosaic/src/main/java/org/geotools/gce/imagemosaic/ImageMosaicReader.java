@@ -173,11 +173,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         //
         if (this.hints.containsKey(Hints.EXECUTOR_SERVICE)) {
             final Object executor = uHints.get(Hints.EXECUTOR_SERVICE);
-            if (executor != null && executor instanceof ExecutorService) {
-                multiThreadedLoader = (ExecutorService) executor;
+            if (executor != null && executor instanceof ExecutorService service) {
+                multiThreadedLoader = service;
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    if (multiThreadedLoader instanceof ThreadPoolExecutor) {
-                        final ThreadPoolExecutor tpe = (ThreadPoolExecutor) multiThreadedLoader;
+                    if (multiThreadedLoader instanceof ThreadPoolExecutor tpe) {
                         LOGGER.fine("Using ThreadPoolExecutor with the following settings: "
                                 + "core pool size = "
                                 + tpe.getCorePoolSize()
@@ -197,8 +196,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         //
         // Check source
         //
-        if (source instanceof ImageMosaicDescriptor) {
-            initReaderFromDescriptor((ImageMosaicDescriptor) source, uHints);
+        if (source instanceof ImageMosaicDescriptor descriptor) {
+            initReaderFromDescriptor(descriptor, uHints);
         } else {
             try {
 
@@ -844,8 +843,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         GranuleSource source = null;
         if (manager != null) {
             source = manager.getGranuleSource(readOnly, getHints());
-            if (source instanceof GranuleStore) {
-                source = new PurgingGranuleStore((GranuleStore) source, manager);
+            if (source instanceof GranuleStore store) {
+                source = new PurgingGranuleStore(store, manager);
             }
         }
         return source;
@@ -987,7 +986,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         if (resource == null) {
             result.add(new DefaultHarvestedSource(source, false, "Unrecognized source type"));
             return result;
-        } else if (source instanceof File && !((File) source).exists()
+        } else if (source instanceof File file && !file.exists()
                 || HarvestedResource.FILE_COLLECTION == resource && singleFileList(source)) {
             result.add(new DefaultHarvestedSource(source, false, "Specified file path does not exist"));
             return result;
@@ -1019,8 +1018,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
     /** Simple method used for checking if the list contains a single object and it is a file */
     private boolean singleFileList(Object source) {
-        if (source instanceof Collection<?>) {
-            Collection<?> collection = (Collection<?>) source;
+        if (source instanceof Collection<?> collection) {
             if (collection.size() == 1) {
                 // Selection of the single file
                 File file = (File) collection.iterator().next();

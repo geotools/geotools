@@ -128,8 +128,8 @@ public abstract class CoordinateVariable<T> {
                 throw new IllegalStateException(ioe);
             }
 
-            if (data instanceof ArrayChar) {
-                StringIterator it = ((ArrayChar) data).getStringIterator();
+            if (data instanceof ArrayChar char1) {
+                StringIterator it = char1.getStringIterator();
                 while (it.hasNext()) {
                     String val = it.next();
                     if (val != null && !val.isEmpty()) {
@@ -328,8 +328,8 @@ public abstract class CoordinateVariable<T> {
     }
 
     protected boolean isMissing(Object val) {
-        if (val instanceof Number) {
-            return coordinateAxis.isMissing(((Number) val).doubleValue());
+        if (val instanceof Number number) {
+            return coordinateAxis.isMissing(number.doubleValue());
         } else {
             return val == null;
         }
@@ -360,7 +360,7 @@ public abstract class CoordinateVariable<T> {
     }
 
     public boolean isRegular() {
-        return coordinateAxis instanceof CoordinateAxis1D && ((CoordinateAxis1D) coordinateAxis).isRegular();
+        return coordinateAxis instanceof CoordinateAxis1D cad && cad.isRegular();
     }
 
     public double getIncrement() {

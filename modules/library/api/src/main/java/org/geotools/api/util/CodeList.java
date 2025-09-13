@@ -11,6 +11,7 @@ package org.geotools.api.util;
 
 import java.io.InvalidObjectException;
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -33,6 +34,7 @@ import org.geotools.api.annotation.UML;
  */
 public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, Serializable {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 5655809691319522885L;
 
     /** The values for each code list. */

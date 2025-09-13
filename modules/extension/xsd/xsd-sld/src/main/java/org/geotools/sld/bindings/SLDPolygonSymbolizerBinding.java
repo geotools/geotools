@@ -121,8 +121,7 @@ public class SLDPolygonSymbolizerBinding extends AbstractComplexBinding {
         // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
         if (node.hasChild("Geometry")) {
             Expression geometry = (Expression) node.getChildValue("Geometry");
-            if (geometry instanceof PropertyName) {
-                PropertyName propertyName = (PropertyName) geometry;
+            if (geometry instanceof PropertyName propertyName) {
                 ps.setGeometryPropertyName(propertyName.getPropertyName());
             } else {
                 ps.setGeometry(geometry);

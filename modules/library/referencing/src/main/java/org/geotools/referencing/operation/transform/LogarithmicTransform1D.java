@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -51,6 +52,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class LogarithmicTransform1D extends AbstractMathTransform implements MathTransform1D, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1535101265352133948L;
 
     /** Tolerance value for floating point comparaison. */
@@ -204,6 +206,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform implements Mat
     /** Special case for base 10 taking advantage of extra precision provided by {@link Math#log10}. */
     private static final class Base10 extends LogarithmicTransform1D {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -5435804027536647558L;
 
         /** Constructs the inverse of the supplied exponentional transform. */
@@ -278,8 +281,8 @@ public class LogarithmicTransform1D extends AbstractMathTransform implements Mat
                     return create(newBase, linear.scale * offset + linear.offset);
                 }
             }
-        } else if (other instanceof ExponentialTransform1D) {
-            return ((ExponentialTransform1D) other).concatenateLog(this, !applyOtherFirst);
+        } else if (other instanceof ExponentialTransform1D transform1D) {
+            return transform1D.concatenateLog(this, !applyOtherFirst);
         }
         return super.concatenate(other, applyOtherFirst);
     }
@@ -319,6 +322,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform implements Mat
      */
     public static class Provider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -7235097164208708484L;
 
         /**

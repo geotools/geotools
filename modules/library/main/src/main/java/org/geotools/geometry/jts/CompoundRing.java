@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -40,6 +41,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<LinearRing>, CurvedRing {
 
+    @Serial
     private static final long serialVersionUID = -5796254063449438787L;
 
     CompoundCurve delegate;
@@ -202,8 +204,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
 
     @Override
     public boolean equalsExact(Geometry other, double tolerance) {
-        if (other instanceof CompoundRing) {
-            CompoundRing csOther = (CompoundRing) other;
+        if (other instanceof CompoundRing csOther) {
             return delegate.equalsExact(csOther.delegate, tolerance);
         }
         return linearize(tolerance).equalsExact(other, tolerance);
@@ -212,8 +213,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     @Override
     @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
-        if (other instanceof CompoundRing) {
-            CompoundRing csOther = (CompoundRing) other;
+        if (other instanceof CompoundRing csOther) {
             return delegate.equals(csOther.delegate);
         }
         return linearize().equals(other);
@@ -221,8 +221,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
 
     @Override
     public boolean equalsTopo(Geometry other) {
-        if (other instanceof CompoundRing) {
-            CompoundRing csOther = (CompoundRing) other;
+        if (other instanceof CompoundRing csOther) {
             return delegate.equalsTopo(csOther.delegate);
         }
         return linearize().equalsTopo(other);
@@ -230,8 +229,8 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Geometry) {
-            return equals((Geometry) o);
+        if (o instanceof Geometry geometry) {
+            return equals(geometry);
         } else {
             return false;
         }

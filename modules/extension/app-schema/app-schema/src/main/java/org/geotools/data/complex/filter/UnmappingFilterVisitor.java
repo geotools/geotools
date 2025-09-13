@@ -299,8 +299,7 @@ public class UnmappingFilterVisitor implements org.geotools.api.filter.FilterVis
             return filter;
         }
 
-        if (fidExpression instanceof Function) {
-            Function fe = (Function) fidExpression;
+        if (fidExpression instanceof Function fe) {
             if ("getID".equalsIgnoreCase(fe.getName())) {
                 LOGGER.finest("Fid mapping points to same ID as source");
                 return filter;

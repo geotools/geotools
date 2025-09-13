@@ -264,16 +264,19 @@ public class ImageMosaicReaderTest {
 
     private URL imposedEnvelopeURL;
 
-    static final String H2_SAMPLE_PROPERTIES = "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-            + "dbtype=h2\n"
-            + "Loose\\ bbox=true #important for performances\n"
-            + "Estimated\\ extends=false #important for performances\n"
-            + "user=gs\n"
-            + "passwd=gs\n"
-            + "validate \\connections=true #important for avoiding errors\n"
-            + "Connection\\ timeout=3600\n"
-            + "max \\connections=10 #important for performances, internal pooling\n"
-            + "min \\connections=5  #important for performances, internal pooling\n";
+    static final String H2_SAMPLE_PROPERTIES =
+            """
+            SPI=org.geotools.data.h2.H2DataStoreFactory
+            dbtype=h2
+            Loose\\ bbox=true #important for performances
+            Estimated\\ extends=false #important for performances
+            user=gs
+            passwd=gs
+            validate \\connections=true #important for avoiding errors
+            Connection\\ timeout=3600
+            max \\connections=10 #important for performances, internal pooling
+            min \\connections=5  #important for performances, internal pooling
+            """;
 
     private URL timeFormatURL;
 
@@ -4526,15 +4529,14 @@ public class ImageMosaicReaderTest {
     }
 
     private int getSourceGranules(RenderedImage ri) {
-        if (ri instanceof RenderedOp) {
-            RenderedOp ro = (RenderedOp) ri;
+        if (ri instanceof RenderedOp ro) {
             if (ro.getOperationName().startsWith("ImageRead")) {
                 return 1;
             }
 
             int count = 0;
             for (int i = 0; i < ro.getNumSources(); i++) {
-                count += getSourceGranules(((RenderedOp) ri).getSourceImage(i));
+                count += getSourceGranules(ro.getSourceImage(i));
             }
             return count;
         }

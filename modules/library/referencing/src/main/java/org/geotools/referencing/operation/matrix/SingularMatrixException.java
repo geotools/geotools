@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.NoninvertibleTransformException;
+import java.io.Serial;
 
 /**
  * Matrix is singular, and thus an inverse is not available.
@@ -27,6 +28,7 @@ import java.awt.geom.NoninvertibleTransformException;
  * @author jody
  */
 public class SingularMatrixException extends RuntimeException {
+    @Serial
     private static final long serialVersionUID = 7539276472682701858L;
 
     /** Matrix is singular (often indicating an inverse is not available) */

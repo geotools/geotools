@@ -186,8 +186,7 @@ final class ColorModelFactory {
         if (other == this) {
             return true;
         }
-        if (other instanceof ColorModelFactory) {
-            final ColorModelFactory that = (ColorModelFactory) other;
+        if (other instanceof ColorModelFactory that) {
             return this.numBands == that.numBands
                     && this.visibleBand == that.visibleBand
                     && this.type == that.type

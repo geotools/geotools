@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.datum;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.referencing.datum.ImageDatum;
@@ -37,6 +38,7 @@ import org.geotools.util.Utilities;
  */
 public class DefaultImageDatum extends AbstractDatum implements ImageDatum {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4304193511244150936L;
 
     /** Specification of the way the image grid is associated with the image data attributes. */

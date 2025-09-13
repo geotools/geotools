@@ -140,13 +140,13 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
      */
     public static int coordinateDimension(Geometry g) {
         // common fast cases
-        if (g instanceof CurvedGeometry<?>) {
-            return ((CurvedGeometry<?>) g).getCoordinatesDimension();
+        if (g instanceof CurvedGeometry<?> geometry) {
+            return geometry.getCoordinatesDimension();
         }
-        if (g instanceof Point) return coordinateDimension(((Point) g).getCoordinateSequence());
-        if (g instanceof LineString) return coordinateDimension(((LineString) g).getCoordinateSequence());
-        if (g instanceof Polygon)
-            return coordinateDimension(((Polygon) g).getExteriorRing().getCoordinateSequence());
+        if (g instanceof Point point) return coordinateDimension(point.getCoordinateSequence());
+        if (g instanceof LineString string) return coordinateDimension(string.getCoordinateSequence());
+        if (g instanceof Polygon polygon)
+            return coordinateDimension(polygon.getExteriorRing().getCoordinateSequence());
 
         // dig down to find a CS
         CoordinateSequence cs = CoordinateSequenceFinder.find(g);

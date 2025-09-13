@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import org.eclipse.imagen.Warp;
@@ -35,6 +36,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 final class WarpAdapter extends Warp {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -8679060848877065181L;
 
     /** The coverage name. Used for formatting error message. */

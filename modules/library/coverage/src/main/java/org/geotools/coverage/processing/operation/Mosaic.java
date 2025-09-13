@@ -387,8 +387,8 @@ public class Mosaic extends OperationJAI {
 
             // Check if the output nodata value is set as parameter
             Object outputNodata = parameters.parameter(OUTNODATA_NAME).getValue();
-            if (outputNodata != null && outputNodata instanceof double[]) {
-                nodata = (double[]) outputNodata;
+            if (outputNodata != null && outputNodata instanceof double[] doubles) {
+                nodata = doubles;
             }
             // Checking if the external alpha bands are defined
             boolean hasAlpha = alphas != null && alphas.length > 0;
@@ -490,10 +490,10 @@ public class Mosaic extends OperationJAI {
                         GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator propertyGenerator =
                                 new GridCoverage2DRIA.GridCoverage2DRIAPropertyGenerator();
                         Object property = propertyGenerator.getProperty("roi", rasters[i]);
-                        roi = property != null && property instanceof ROI ? (ROI) property : null;
+                        roi = property != null && property instanceof ROI roi1 ? roi1 : null;
                     } else {
                         Object property = rasters[i].getProperty("roi");
-                        roi = property != null && property instanceof ROI ? (ROI) property : null;
+                        roi = property != null && property instanceof ROI roi1 ? roi1 : null;
                     }
                     rois[i] = roi;
                     // Get NoData as property if present
@@ -599,14 +599,14 @@ public class Mosaic extends OperationJAI {
         // Check if the External GridGeometry is present
         Object externalGG = parameters.parameter(GEOMETRY).getValue();
         GridGeometry2D gg = null;
-        if (externalGG != null && externalGG instanceof GridGeometry2D) {
-            gg = (GridGeometry2D) externalGG;
+        if (externalGG != null && externalGG instanceof GridGeometry2D geometry2D) {
+            gg = geometry2D;
             policy = GridGeometryPolicy.EXTERNAL;
         } else {
             // Check if the GridGeometry selection policy is present
             Object ggPolicy = parameters.parameter(POLICY).getValue();
-            if (ggPolicy != null && ggPolicy instanceof String) {
-                policy = GridGeometryPolicy.getPolicyFromString((String) ggPolicy);
+            if (ggPolicy != null && ggPolicy instanceof String string) {
+                policy = GridGeometryPolicy.getPolicyFromString(string);
             }
         }
         // No policy defined, the first GridCoverage is used.
@@ -662,8 +662,8 @@ public class Mosaic extends OperationJAI {
         double[] nodata = null;
         // Check if the output nodata value is present
         Object outputNodata = parameters.parameter(OUTNODATA_NAME).getValue();
-        if (outputNodata != null && outputNodata instanceof double[]) {
-            nodata = (double[]) outputNodata;
+        if (outputNodata != null && outputNodata instanceof double[] doubles) {
+            nodata = doubles;
         } else {
             nodata = CoverageUtilities.getBackgroundValues(sources[PRIMARY_SOURCE_INDEX]);
         }
@@ -995,8 +995,8 @@ public class Mosaic extends OperationJAI {
             final int n = parameters.getNumSources();
             for (int i = 0; i < n; i++) {
                 final Object source = parameters.getSource(i);
-                if (source instanceof RenderedImage) {
-                    return (RenderedImage) source;
+                if (source instanceof RenderedImage image) {
+                    return image;
                 }
             }
             return null;

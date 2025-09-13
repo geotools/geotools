@@ -77,12 +77,12 @@ public class ConfigurationTemplate
 
       for (Object o : components) {
           XSDNamedComponent component = (XSDNamedComponent) o;
-          if (component instanceof XSDTypeDefinition) {
-              types.add((XSDTypeDefinition) component);
-          } else if (component instanceof XSDTypeDefinition) {
-              elements.add((XSDTypeDefinition) component);
-          } else if (component instanceof XSDAttributeDeclaration) {
-              attributes.add((XSDAttributeDeclaration) component);
+          if (component instanceof XSDTypeDefinition definition1) {
+              types.add(definition1);
+          } else if (component instanceof XSDTypeDefinition definition) {
+              elements.add(definition);
+          } else if (component instanceof XSDAttributeDeclaration declaration) {
+              attributes.add(declaration);
           }
       }
 

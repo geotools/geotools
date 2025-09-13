@@ -16,6 +16,7 @@
  */
 package org.geotools.data.elasticsearch;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 /** Describes an Elasticsearch layer configuration as set of {@link ElasticAttribute} */
 public class ElasticLayerConfiguration implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1838874365349725912L;
 
     /** Key to identify the Elasticsearch layer configuration. */

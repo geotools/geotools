@@ -127,8 +127,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     @Override
     public boolean accepts(Object input, Hints hints) {
         // Directories aren't accepted
-        if (input != null && input instanceof File) {
-            final File directory = (File) input;
+        if (input != null && input instanceof File directory) {
             if (!directory.exists() || directory.isDirectory()) return false;
         }
         try (ImageInputStream stream = ImageIO.createImageInputStream(input)) {

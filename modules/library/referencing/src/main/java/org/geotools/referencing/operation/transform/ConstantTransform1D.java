@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 /**
@@ -30,6 +31,7 @@ import java.util.Arrays;
  */
 final class ConstantTransform1D extends LinearTransform1D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1583675681650985947L;
 
     /**

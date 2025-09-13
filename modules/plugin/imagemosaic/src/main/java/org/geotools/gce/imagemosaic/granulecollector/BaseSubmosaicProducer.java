@@ -391,8 +391,8 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         SimpleFeature originator = granuleDescriptor.getOriginator();
         Object imageIndex = originator != null ? originator.getAttribute("imageindex") : null;
 
-        if (imageIndex != null && imageIndex instanceof Integer) {
-            rasterLayerResponse.setImageChoice((Integer) imageIndex);
+        if (imageIndex != null && imageIndex instanceof Integer integer) {
+            rasterLayerResponse.setImageChoice(integer);
         }
 
         final GranuleLoader loader = new GranuleLoader(

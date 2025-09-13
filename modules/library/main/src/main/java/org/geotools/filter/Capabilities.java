@@ -244,8 +244,8 @@ public class Capabilities {
     }
 
     public Capabilities(FilterCapabilities contents) {
-        if (contents instanceof FilterCapabilitiesImpl) {
-            this.contents = (FilterCapabilitiesImpl) contents;
+        if (contents instanceof FilterCapabilitiesImpl impl) {
+            this.contents = impl;
         } else {
             this.contents = new FilterCapabilitiesImpl(contents);
         }

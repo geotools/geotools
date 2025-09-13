@@ -235,18 +235,16 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     /** Two filters are dual if the are the negation of each other (range based logic is handled separately) */
     private boolean dualFilters(Filter f1, Filter f2) {
-        if (f1 instanceof Not) {
-            Not not = (Not) f1;
+        if (f1 instanceof Not not) {
             return f2.equals(not.getFilter());
-        } else if (f2 instanceof Not) {
-            Not not = (Not) f2;
+        } else if (f2 instanceof Not not) {
             return f1.equals(not.getFilter());
         } else if (f1 instanceof PropertyIsEqualTo && f2 instanceof PropertyIsNotEqualTo
                 || f1 instanceof PropertyIsNotEqualTo && f2 instanceof PropertyIsEqualTo) {
             PropertyIsEqualTo e;
             PropertyIsNotEqualTo ne;
-            if (f2 instanceof PropertyIsEqualTo) {
-                e = (PropertyIsEqualTo) f2;
+            if (f2 instanceof PropertyIsEqualTo to) {
+                e = to;
                 ne = (PropertyIsNotEqualTo) f1;
             } else {
                 e = (PropertyIsEqualTo) f1;
@@ -378,22 +376,16 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     public Object visit(Not filter, Object extraData) {
         FilterFactory ff = getFactory(extraData);
         Filter inner = filter.getFilter();
-        if (inner instanceof Not) {
-            // simplify out double negation
-            Not innerNot = (Not) inner;
+        if (inner instanceof Not innerNot) {
             return innerNot.getFilter().accept(this, extraData);
-        } else if (inner instanceof And) {
-            // De Morgan
-            And and = (And) inner;
+        } else if (inner instanceof And and) {
             List<Filter> children = and.getChildren();
             List<Filter> negatedChildren = new ArrayList<>();
             for (Filter child : children) {
                 negatedChildren.add((Filter) ff.not(child).accept(this, extraData));
             }
             return ff.or(negatedChildren);
-        } else if (inner instanceof Or) {
-            // De Morgan
-            Or or = (Or) inner;
+        } else if (inner instanceof Or or) {
             List<Filter> children = or.getChildren();
             List<Filter> negatedChildren = new ArrayList<>();
             for (Filter child : children) {
@@ -406,9 +398,8 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 return Filter.EXCLUDE;
             } else if (simplified == Filter.EXCLUDE) {
                 return Filter.INCLUDE;
-            } else if (simplified instanceof PropertyIsBetween) {
+            } else if (simplified instanceof PropertyIsBetween pb) {
                 List<Filter> orFilters = new ArrayList<>();
-                PropertyIsBetween pb = (PropertyIsBetween) simplified;
                 Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
                 Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
                 orFilters.add(lt);
@@ -420,23 +411,17 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                     orFilters.add(ff.isNull(pb.getExpression()));
                 }
                 return ff.or(orFilters);
-            } else if (simplified instanceof PropertyIsEqualTo) {
-                PropertyIsEqualTo pe = (PropertyIsEqualTo) simplified;
+            } else if (simplified instanceof PropertyIsEqualTo pe) {
                 return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-            } else if (simplified instanceof PropertyIsNotEqualTo) {
-                PropertyIsNotEqualTo pe = (PropertyIsNotEqualTo) simplified;
+            } else if (simplified instanceof PropertyIsNotEqualTo pe) {
                 return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-            } else if (simplified instanceof PropertyIsGreaterThan) {
-                PropertyIsGreaterThan pg = (PropertyIsGreaterThan) simplified;
+            } else if (simplified instanceof PropertyIsGreaterThan pg) {
                 return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-            } else if (simplified instanceof PropertyIsGreaterThanOrEqualTo) {
-                PropertyIsGreaterThanOrEqualTo pg = (PropertyIsGreaterThanOrEqualTo) simplified;
+            } else if (simplified instanceof PropertyIsGreaterThanOrEqualTo pg) {
                 return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-            } else if (simplified instanceof PropertyIsLessThan) {
-                PropertyIsLessThan pl = (PropertyIsLessThan) simplified;
+            } else if (simplified instanceof PropertyIsLessThan pl) {
                 return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
-            } else if (simplified instanceof PropertyIsLessThanOrEqualTo) {
-                PropertyIsLessThanOrEqualTo pl = (PropertyIsLessThanOrEqualTo) simplified;
+            } else if (simplified instanceof PropertyIsLessThanOrEqualTo pl) {
                 return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
             }
         }
@@ -474,8 +459,8 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         Object result = super.visit(function, extraData);
 
         // past that, we can try to ask the function to simplify itself
-        if (result instanceof SimplifiableFunction) {
-            return ((SimplifiableFunction) result).simplify(ff, featureType);
+        if (result instanceof SimplifiableFunction simplifiableFunction) {
+            return simplifiableFunction.simplify(ff, featureType);
         }
 
         return result;

@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
+import java.io.Serial;
 import org.geotools.api.metadata.quality.EvaluationMethodType;
 import org.geotools.api.metadata.quality.PositionalAccuracy;
 import org.geotools.api.metadata.quality.Result;
@@ -37,6 +38,7 @@ import org.geotools.util.SimpleInternationalString;
 @SuppressWarnings("ClassInitializationDeadlock") // Static initialization of subclass instances
 public class PositionalAccuracyImpl extends ElementImpl implements PositionalAccuracy {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6043381860937480828L;
 
     /**

@@ -12,6 +12,7 @@ package org.geotools.api.coverage;
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19123;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -47,6 +48,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CV_InterpolationMethod", specification = ISO_19123)
 public class InterpolationMethod extends CodeList<InterpolationMethod> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -4289541167757079847L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

@@ -450,9 +450,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             String columnName = att.getLocalName();
             if (pkColumnNames.contains(columnName)) continue;
 
-            if (att instanceof GeometryDescriptor) {
+            if (att instanceof GeometryDescriptor descriptor) {
                 // encode as geometry
-                encodeGeometryColumn((GeometryDescriptor) att, featureType.getTypeName(), sql, query.getHints());
+                encodeGeometryColumn(descriptor, featureType.getTypeName(), sql, query.getHints());
 
                 // alias it to be the name of the original geometry
                 getDataStore().dialect.encodeColumnAlias(columnName, sql);
@@ -624,8 +624,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             }
         }
 
-        if (toSQLref != null && toSQL instanceof PreparedFilterToSQL) {
-            toSQLref.set((PreparedFilterToSQL) toSQL);
+        if (toSQLref != null && toSQL instanceof PreparedFilterToSQL qL) {
+            toSQLref.set(qL);
         }
 
         return sql.toString();
@@ -1013,8 +1013,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             @Override
             public Object visit(PropertyName propertyName, Object extraData) {
                 // preserve the JoinPropertyName
-                if (propertyName instanceof JoinPropertyName) {
-                    JoinPropertyName joinPropertyName = (JoinPropertyName) propertyName;
+                if (propertyName instanceof JoinPropertyName joinPropertyName) {
                     return new JoinPropertyName(
                             joinPropertyName.getFeatureType(),
                             joinPropertyName.getAlias(),
@@ -1260,8 +1259,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
-        if (query instanceof JoiningQuery) {
-            return getJoiningReaderInternal((JoiningQuery) query);
+        if (query instanceof JoiningQuery joiningQuery) {
+            return getJoiningReaderInternal(joiningQuery);
         } else {
             return super.getReaderInternal(query);
         }
@@ -1280,12 +1279,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     protected Query joinQuery(Query query) {
         if (this.query == null) {
             return query;
-        } else if (query instanceof JoiningQuery) {
+        } else if (query instanceof JoiningQuery joiningQuery) {
             JoiningQuery jQuery = new JoiningQuery(super.joinQuery(query));
-            for (String id : ((JoiningQuery) query).getIds()) {
+            for (String id : joiningQuery.getIds()) {
                 jQuery.addId(id);
             }
-            jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
+            jQuery.setQueryJoins(joiningQuery.getQueryJoins());
             return jQuery;
         } else {
             return super.joinQuery(query);
@@ -1415,7 +1414,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             countSQL.append(" ");
             FilterToSQL toSql = createFilterToSQL(querySchema);
             countSQL.append(toSql.encodeToString(query.getFilter()));
-            if (toSql instanceof PreparedFilterToSQL) toSQLRef.set((PreparedFilterToSQL) toSql);
+            if (toSql instanceof PreparedFilterToSQL qL) toSQLRef.set(qL);
         }
         countSQL.append(")");
         dialect.encodeTableName(DISTINCT_TABLE_ALIAS, countSQL);

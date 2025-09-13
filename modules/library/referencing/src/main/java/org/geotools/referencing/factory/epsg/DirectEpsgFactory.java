@@ -758,8 +758,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         final String primaryKey = trimAuthority(code);
         for (TableInfo tableInfo : TABLES_INFO) {
             final Set<String> codes = getAuthorityCodes0(tableInfo.type);
-            if (codes instanceof AuthorityCodes) {
-                final String text = ((AuthorityCodes) codes).asMap().get(primaryKey);
+            if (codes instanceof AuthorityCodes authorityCodes1) {
+                final String text = authorityCodes1.asMap().get(primaryKey);
                 if (text != null) {
                     return new SimpleInternationalString(text);
                 }
@@ -770,8 +770,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
          * methods with a value for the supplied code.
          */
         final Identifier identifier = createObject(code).getName();
-        if (identifier instanceof GenericName) {
-            return ((GenericName) identifier).toInternationalString();
+        if (identifier instanceof GenericName name) {
+            return name.toInternationalString();
         }
         return new SimpleInternationalString(identifier.getCode());
     }
@@ -2088,9 +2088,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         final CartesianCS cs = buffered.createCartesianCS(csCode);
                         final GeographicCRS baseCRS = buffered.createGeographicCRS(geoCode);
                         final CoordinateOperation op = buffered.createCoordinateOperation(opCode);
-                        if (op instanceof Conversion) {
+                        if (op instanceof Conversion conversion) {
                             final Map<String, Object> properties = createProperties(name, epsg, area, scope, remarks);
-                            crs = factory.createProjectedCRS(properties, baseCRS, (Conversion) op, cs);
+                            crs = factory.createProjectedCRS(properties, baseCRS, conversion, cs);
                         } else {
                             throw noSuchAuthorityCode(Projection.class, opCode);
                         }
@@ -2156,10 +2156,10 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         final CoordinateSystem cs = buffered.createCoordinateSystem(csCode);
                         final GeodeticDatum datum = buffered.createGeodeticDatum(dmCode);
                         final Map<String, Object> properties = createProperties(name, epsg, area, scope, remarks);
-                        if (cs instanceof CartesianCS) {
-                            crs = factory.createGeocentricCRS(properties, datum, (CartesianCS) cs);
-                        } else if (cs instanceof SphericalCS) {
-                            crs = factory.createGeocentricCRS(properties, datum, (SphericalCS) cs);
+                        if (cs instanceof CartesianCS cS1) {
+                            crs = factory.createGeocentricCRS(properties, datum, cS1);
+                        } else if (cs instanceof SphericalCS cS) {
+                            crs = factory.createGeocentricCRS(properties, datum, cS);
                         } else {
                             result.close();
                             throw new FactoryException(MessageFormat.format(
@@ -2584,7 +2584,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
 
         @Override
         public boolean equals(final Object object) { // MUST ignore 'occurences'.
-            return object instanceof Dimensions && ((Dimensions) object).encoded == encoded;
+            return object instanceof Dimensions d && d.encoded == encoded;
         }
 
         @Override
@@ -3119,8 +3119,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             String from = "[Coordinate Reference System]";
             String where, code;
             String sql;
-            if (object instanceof Ellipsoid) {
-                final double semiMajorAxis = ((Ellipsoid) object).getSemiMajorAxis();
+            if (object instanceof Ellipsoid ellipsoid) {
+                final double semiMajorAxis = ellipsoid.getSemiMajorAxis();
                 double tol = getTolerance();
                 // consider tolerance
                 final double min = semiMajorAxis - semiMajorAxis * tol;
@@ -3134,14 +3134,14 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                 + " ORDER BY ABS(DEPRECATED)";
             } else {
                 IdentifiedObject dependency;
-                if (object instanceof GeneralDerivedCRS) {
-                    dependency = ((GeneralDerivedCRS) object).getBaseCRS();
+                if (object instanceof GeneralDerivedCRS rS1) {
+                    dependency = rS1.getBaseCRS();
                     where = "BASE_CRS_CODE";
-                } else if (object instanceof SingleCRS) {
-                    dependency = ((SingleCRS) object).getDatum();
+                } else if (object instanceof SingleCRS rS) {
+                    dependency = rS.getDatum();
                     where = "DATUM_CODE";
-                } else if (object instanceof GeodeticDatum) {
-                    dependency = ((GeodeticDatum) object).getEllipsoid();
+                } else if (object instanceof GeodeticDatum datum) {
+                    dependency = datum.getEllipsoid();
                     select = "DATUM_CODE";
                     from = "[Datum]";
                     where = "ELLIPSOID_CODE";
@@ -3296,7 +3296,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
              * to get more chances to be garbage-collected before the next disposal cycle.
              */
             can = false;
-            if (reference instanceof SoftReference) {
+            if (reference instanceof SoftReference softReference) {
                 // Each reference appears twice (once with the type key, and once under the SQL
                 // statement as key). So we need to manage a pool of references for avoiding
                 // duplication.
@@ -3306,7 +3306,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 WeakReference<AuthorityCodes> weak = pool.get(reference);
                 if (weak == null) {
                     weak = new WeakReference<>(codes);
-                    pool.put((SoftReference) reference, weak);
+                    pool.put(softReference, weak);
                 }
                 entry.setValue(weak);
             }

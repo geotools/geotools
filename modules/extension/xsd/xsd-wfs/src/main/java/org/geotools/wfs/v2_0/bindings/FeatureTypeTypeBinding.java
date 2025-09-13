@@ -55,8 +55,8 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
     protected void setProperty(EObject object, String property, Object value, boolean lax) {
         if ("OtherCRS".equals(property)) {
             String stringValue = null;
-            if (value instanceof String) {
-                stringValue = (String) value;
+            if (value instanceof String string) {
+                stringValue = string;
             } else if (value instanceof URI) {
                 stringValue = value.toString();
             }
@@ -82,8 +82,8 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 }
             }
         } else if ("Keywords".equals(property)) {
-            if (value instanceof String) {
-                String[] split = ((String) value).split(",");
+            if (value instanceof String string) {
+                String[] split = string.split(",");
                 KeywordsType kwd = Ows11Factory.eINSTANCE.createKeywordsType();
                 for (String s : split) {
                     String kw = s.trim();

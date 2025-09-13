@@ -155,20 +155,18 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     /** For {@link FallbackAuthorityFactory} constructor only. */
     AuthorityFactoryAdapter(final AuthorityFactory factory, final AuthorityFactory fallback) {
         this(
-                factory instanceof CRSAuthorityFactory
-                        ? (CRSAuthorityFactory) factory
-                        : fallback instanceof CRSAuthorityFactory ? (CRSAuthorityFactory) fallback : null,
-                factory instanceof CSAuthorityFactory
-                        ? (CSAuthorityFactory) factory
-                        : fallback instanceof CSAuthorityFactory ? (CSAuthorityFactory) fallback : null,
-                factory instanceof DatumAuthorityFactory
-                        ? (DatumAuthorityFactory) factory
-                        : fallback instanceof DatumAuthorityFactory ? (DatumAuthorityFactory) fallback : null,
-                factory instanceof CoordinateOperationAuthorityFactory
-                        ? (CoordinateOperationAuthorityFactory) factory
-                        : fallback instanceof CoordinateOperationAuthorityFactory
-                                ? (CoordinateOperationAuthorityFactory) fallback
-                                : null);
+                factory instanceof CRSAuthorityFactory crsaf
+                        ? crsaf
+                        : fallback instanceof CRSAuthorityFactory crsaf ? crsaf : null,
+                factory instanceof CSAuthorityFactory csaf
+                        ? csaf
+                        : fallback instanceof CSAuthorityFactory csaf ? csaf : null,
+                factory instanceof DatumAuthorityFactory daf
+                        ? daf
+                        : fallback instanceof DatumAuthorityFactory daf ? daf : null,
+                factory instanceof CoordinateOperationAuthorityFactory coaf
+                        ? coaf
+                        : fallback instanceof CoordinateOperationAuthorityFactory coaf ? coaf : null);
     }
 
     /**
@@ -211,7 +209,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
 
     /** Returns the priority of the specified factory, or {@link #NORMAL_PRIORITY} if unknown. */
     private static int getPriority(final AuthorityFactory factory) {
-        return factory instanceof AbstractFactory ? ((AbstractFactory) factory).getPriority() : NORMAL_PRIORITY;
+        return factory instanceof AbstractFactory af ? af.getPriority() : NORMAL_PRIORITY;
     }
 
     /** Adds the specified factory to the set of hints, if non null. */
@@ -299,8 +297,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
 
     /** Adds all hints from the specified factory into the specified set of hints. */
     private static void addAll(final AuthorityFactory factory, final Hints hints) {
-        if (factory instanceof Factory) {
-            hints.putAll(((Factory) factory).getImplementationHints());
+        if (factory instanceof Factory factory1) {
+            hints.putAll(factory1.getImplementationHints());
         }
     }
 
@@ -363,8 +361,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
      * the need of the above-cited implementations.
      */
     static boolean sameAuthorityCodes(final AuthorityFactory backingStore, final AuthorityFactory factory) {
-        if (backingStore instanceof AbstractAuthorityFactory) {
-            if (((AbstractAuthorityFactory) backingStore).sameAuthorityCodes(factory)) {
+        if (backingStore instanceof AbstractAuthorityFactory authorityFactory) {
+            if (authorityFactory.sameAuthorityCodes(factory)) {
                 return true;
             }
         }
@@ -440,20 +438,20 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
 
     /** Delegates the work to an appropriate {@code replace} method for the given object. */
     private IdentifiedObject replaceObject(final IdentifiedObject object) throws FactoryException {
-        if (object instanceof CoordinateReferenceSystem) {
-            return replace((CoordinateReferenceSystem) object);
+        if (object instanceof CoordinateReferenceSystem system) {
+            return replace(system);
         }
-        if (object instanceof CoordinateSystem) {
-            return replace((CoordinateSystem) object);
+        if (object instanceof CoordinateSystem system) {
+            return replace(system);
         }
-        if (object instanceof CoordinateSystemAxis) {
-            return replace((CoordinateSystemAxis) object);
+        if (object instanceof CoordinateSystemAxis axis) {
+            return replace(axis);
         }
-        if (object instanceof Datum) {
-            return replace((Datum) object);
+        if (object instanceof Datum datum) {
+            return replace(datum);
         }
-        if (object instanceof CoordinateOperation) {
-            return replace((CoordinateOperation) object);
+        if (object instanceof CoordinateOperation operation) {
+            return replace(operation);
         }
         return object;
     }
@@ -465,8 +463,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     private AbstractAuthorityFactory getGeotoolsFactory(final String caller, final String code)
             throws FactoryException {
         final AuthorityFactory candidate = getAuthorityFactory(code);
-        if (candidate instanceof AbstractAuthorityFactory) {
-            return (AbstractAuthorityFactory) candidate;
+        if (candidate instanceof AbstractAuthorityFactory factory) {
+            return factory;
         }
         if (caller == null) {
             return null;
@@ -921,9 +919,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
             final CRSAuthorityFactory factory,
             final CoordinateReferenceSystem crs) {
         if (crs != null && LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(String.format(
-                    "CRS for code:%s found by factory:%s",
-                    code, factory.getClass().getName()));
+            LOGGER.fine("CRS for code:%s found by factory:%s"
+                    .formatted(code, factory.getClass().getName()));
         }
     }
 
@@ -1112,12 +1109,11 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
      * coordinate operation authority factory, or will returns the default one if no explicit factory were found.
      */
     final CoordinateOperationFactory getCoordinateOperationFactory() throws FactoryException {
-        if (operationFactory instanceof Factory) {
-            final Factory factory = (Factory) operationFactory;
+        if (operationFactory instanceof Factory factory) {
             final Map hints = factory.getImplementationHints();
             final Object candidate = hints.get(Hints.COORDINATE_OPERATION_FACTORY);
-            if (candidate instanceof CoordinateOperationFactory) {
-                return (CoordinateOperationFactory) candidate;
+            if (candidate instanceof CoordinateOperationFactory coordinateOperationFactory) {
+                return coordinateOperationFactory;
             }
         }
         return ReferencingFactoryFinder.getCoordinateOperationFactory(hints());
@@ -1136,8 +1132,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
         } else {
             factory = csFactory;
         }
-        if (factory instanceof DirectAuthorityFactory) {
-            return ((DirectAuthorityFactory) factory).factories;
+        if (factory instanceof DirectAuthorityFactory authorityFactory) {
+            return authorityFactory.factories;
         }
         // No predefined factory group. Create one.
         if (factories == null) {
@@ -1191,8 +1187,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     }
 
     private void disposeAbstractAuthorityFactory(Object factory) throws FactoryException {
-        if (factory instanceof AbstractAuthorityFactory) {
-            ((AbstractAuthorityFactory) factory).dispose();
+        if (factory instanceof AbstractAuthorityFactory authorityFactory) {
+            authorityFactory.dispose();
         }
     }
 }

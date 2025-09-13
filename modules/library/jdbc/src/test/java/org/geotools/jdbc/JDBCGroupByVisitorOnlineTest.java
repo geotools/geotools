@@ -462,8 +462,8 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
                 return false;
             }
             for (int i = 0; i < result.length; i++) {
-                if (result[i] instanceof Number) {
-                    double r = ((Number) result[i]).doubleValue();
+                if (result[i] instanceof Number number) {
+                    double r = number.doubleValue();
                     double e = Double.parseDouble(expectedResult[i]);
                     return Math.abs(r - e) <= tolerance;
                 } else if (!result[i].toString().equals(expectedResult[i])) {

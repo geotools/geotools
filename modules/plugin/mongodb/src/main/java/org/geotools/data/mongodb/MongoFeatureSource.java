@@ -168,8 +168,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
             return false;
         }
 
-        if (visitor instanceof MinVisitor) {
-            MinVisitor minVisitor = (MinVisitor) visitor;
+        if (visitor instanceof MinVisitor minVisitor) {
             List<Expression> expressions = minVisitor.getExpressions();
             if (expressions.size() != 1 || !(expressions.get(0) instanceof PropertyName)) {
                 return false;
@@ -191,8 +190,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
                     minVisitor.setValue(propertyName.evaluate(reader.next()));
                 }
             }
-        } else if (visitor instanceof MaxVisitor) {
-            MaxVisitor maxVisitor = (MaxVisitor) visitor;
+        } else if (visitor instanceof MaxVisitor maxVisitor) {
             List<Expression> expressions = maxVisitor.getExpressions();
             if (expressions.size() != 1 || !(expressions.get(0) instanceof PropertyName)) {
                 return false;
@@ -278,12 +276,12 @@ public class MongoFeatureSource extends ContentFeatureSource {
                 keys.put(mapper.getGeometryPath(), 1);
             }
             if (LOG.isLoggable(Level.FINE)) {
-                LOG.fine(String.format("find(%s, %s)", query, keys));
+                LOG.fine("find(%s, %s)".formatted(query, keys));
             }
             c = collection.find(query, keys);
         } else {
             if (LOG.isLoggable(Level.FINE)) {
-                LOG.fine(String.format("find(%s)", query));
+                LOG.fine("find(%s)".formatted(query));
             }
             c = collection.find(query);
         }

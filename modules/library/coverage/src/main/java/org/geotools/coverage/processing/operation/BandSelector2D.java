@@ -20,6 +20,7 @@ import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.JAI;
@@ -48,6 +49,7 @@ import org.geotools.util.factory.Hints;
 final class BandSelector2D extends GridCoverage2D {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = -2833594454437021628L;
     /** The mapping to bands in the source grid coverage. May be {@code null} if all bands were keept. */
     private final int[] bandIndices;
@@ -190,14 +192,8 @@ final class BandSelector2D extends GridCoverage2D {
         }
         if (visibleBand != null || !layout.isValid(ImageLayout.COLOR_MODEL_MASK)) {
             ColorModel colors = sourceImage.getColorModel();
-            if (colors instanceof IndexColorModel
+            if (colors instanceof IndexColorModel indexed
                     && sourceBands[visibleSourceBand].equals(targetBands[visibleTargetBand])) {
-                /*
-                 * If the source color model was an instance of  IndexColorModel,  reuse
-                 * its color mapping. It may not matches the category colors if the user
-                 * provided its own color model. We are better to use what the user said.
-                 */
-                final IndexColorModel indexed = (IndexColorModel) colors;
                 final int[] ARGB = new int[indexed.getMapSize()];
                 indexed.getRGBs(ARGB);
                 colors = ColorUtilities.getIndexColorModel(ARGB, targetBands.length, visibleTargetBand);

@@ -323,8 +323,8 @@ public class GranuleDescriptor {
                 GranuleDescriptor granuleDescriptor) {
             this.loadedImage = loadedImage;
             Object roi = loadedImage.getProperty("ROI");
-            if (roi instanceof ROI) {
-                this.footprint = (ROI) roi;
+            if (roi instanceof ROI oI) {
+                this.footprint = oI;
             }
             this.granuleUrl = granuleUrl;
             this.doFiltering = doFiltering;
@@ -415,8 +415,8 @@ public class GranuleDescriptor {
                 this.granuleBBOX = ReferencedEnvelope.reference(gcReader.getOriginalEnvelope());
             }
 
-            if (granuleAccessProvider instanceof GranuleDescriptorModifier) {
-                ((GranuleDescriptorModifier) granuleAccessProvider).update(this, hints);
+            if (granuleAccessProvider instanceof GranuleDescriptorModifier modifier) {
+                modifier.update(this, hints);
             }
 
             // get a stream
@@ -438,8 +438,8 @@ public class GranuleDescriptor {
             }
             imageReader = granuleAccessProvider.getImageReader();
             boolean ignoreMetadata = false;
-            if (imageReader instanceof InitializingReader) {
-                ignoreMetadata = ((InitializingReader) imageReader).init(hints);
+            if (imageReader instanceof InitializingReader reader) {
+                ignoreMetadata = reader.init(hints);
             }
             imageReader.setInput(inStream, false, ignoreMetadata);
             // get selected level and base level dimensions
@@ -573,14 +573,13 @@ public class GranuleDescriptor {
         int index = 0;
         if (originator != null) {
             Object imageIndex = originator.getAttribute("imageindex");
-            if (imageIndex instanceof Integer) {
-                index = (Integer) imageIndex;
+            if (imageIndex instanceof Integer integer) {
+                index = integer;
             }
         }
         try {
             IIOMetadata metadata = reader.getImageMetadata(index);
-            if (metadata instanceof CoreCommonImageMetadata) {
-                CoreCommonImageMetadata ccm = (CoreCommonImageMetadata) metadata;
+            if (metadata instanceof CoreCommonImageMetadata ccm) {
 
                 double[] noDataArray = null;
                 if (ccm.getNoDataValues() != null) {
@@ -592,8 +591,7 @@ public class GranuleDescriptor {
                 this.scales = ccm.getScales();
                 this.offsets = ccm.getOffsets();
             }
-            if (readPam && this.pamDataset == null && metadata instanceof TIFFImageMetadata) {
-                TIFFImageMetadata tiffMetadata = (TIFFImageMetadata) metadata;
+            if (readPam && this.pamDataset == null && metadata instanceof TIFFImageMetadata tiffMetadata) {
                 this.pamDataset = AbstractGridCoverage2DReader.getPamDataset(tiffMetadata);
             }
         } catch (UnsupportedOperationException e) {
@@ -905,9 +903,8 @@ public class GranuleDescriptor {
                 (GranuleAccessProvider) Utils.getHintIfAvailable(hints, GranuleAccessProvider.GRANULE_ACCESS_PROVIDER);
 
         URL rasterGranule = null;
-        if (accessProvider instanceof CogGranuleAccessProvider) {
+        if (accessProvider instanceof CogGranuleAccessProvider cap) {
             try {
-                CogGranuleAccessProvider cap = (CogGranuleAccessProvider) accessProvider;
                 CogGranuleAccessProvider copy = (CogGranuleAccessProvider) cap.copyProviders();
                 copy.setGranuleInput(granuleLocation);
                 rasterGranule = copy.getInputURL();
@@ -1045,8 +1042,7 @@ public class GranuleDescriptor {
                         overviewsController,
                         virtualNativeResolution);
 
-                if (imageReadParameters instanceof EnhancedImageReadParam) {
-                    EnhancedImageReadParam erp = (EnhancedImageReadParam) imageReadParameters;
+                if (imageReadParameters instanceof EnhancedImageReadParam erp) {
                     if (erp.getBands() != null) ((EnhancedImageReadParam) readParameters).setBands(erp.getBands());
                 }
             } else {
@@ -1081,8 +1077,8 @@ public class GranuleDescriptor {
                 }
                 // set input
                 boolean ignoreMetadata = false;
-                if (reader instanceof InitializingReader) {
-                    ignoreMetadata = ((InitializingReader) reader).init(hints);
+                if (reader instanceof InitializingReader initializingReader) {
+                    ignoreMetadata = initializingReader.init(hints);
                 }
                 reader.setInput(inStream, false, ignoreMetadata);
                 // External Overview index
@@ -1117,8 +1113,8 @@ public class GranuleDescriptor {
                 }
             }
             // set input
-            if (reader instanceof InitializingReader) {
-                ((InitializingReader) reader).init(hints);
+            if (reader instanceof InitializingReader initializingReader) {
+                initializingReader.init(hints);
             }
             reader.setInput(inStream);
 
@@ -1205,18 +1201,17 @@ public class GranuleDescriptor {
             final boolean expandToRGB = request.getRasterManager().isExpandMe();
             if (expandToRGB
                     && getRawColorModel(reader, ovrIndex) instanceof IndexColorModel
-                    && readParameters instanceof EnhancedImageReadParam) {
-                EnhancedImageReadParam erp = (EnhancedImageReadParam) readParameters;
+                    && readParameters instanceof EnhancedImageReadParam erp) {
                 erp.setBands(null);
             }
 
             // deferred loading needs a target image type to work, otherwise it's going
             // to use the native image number of bands
             if (nativeBandSelection
-                    && readParameters instanceof EnhancedImageReadParam
-                    && ((EnhancedImageReadParam) readParameters).getBands() != null
+                    && readParameters instanceof EnhancedImageReadParam param
+                    && param.getBands() != null
                     && request.getReadType() == ReadType.JAI_IMAGEREAD) {
-                int[] bands = ((EnhancedImageReadParam) readParameters).getBands();
+                int[] bands = param.getBands();
                 ImageTypeSpecifier selected = ImageIOUtilities.getBandSelectedType(bands.length, sampleModel);
                 readParameters.setDestinationType(selected);
             }
@@ -1288,8 +1283,8 @@ public class GranuleDescriptor {
                             readParameters,
                             request.getReadType());
                     // Check for vectorial ROI
-                    if (transformed instanceof ROIGeometry
-                            && ((ROIGeometry) transformed).getAsGeometry().isEmpty()) {
+                    if (transformed instanceof ROIGeometry geometry
+                            && geometry.getAsGeometry().isEmpty()) {
                         // inset might have killed the geometry fully
                         return null;
                     }
@@ -1308,10 +1303,10 @@ public class GranuleDescriptor {
                         return null;
                     }
                     pi.setProperty("ROI", transformed);
-                    if (pi instanceof RenderedOp) {
+                    if (pi instanceof RenderedOp op) {
                         // For some reason the "ROI" property is sometime lost
                         // when getting the rendering
-                        PlanarImage theImage = ((RenderedOp) pi).getRendering();
+                        PlanarImage theImage = op.getRendering();
                         theImage.setProperty("ROI", transformed);
                     }
                     raster = pi;
@@ -1465,8 +1460,8 @@ public class GranuleDescriptor {
         RenderedImage renderedImage = iw.getRenderedImage();
         Object roi = renderedImage.getProperty("ROI");
         if (useFootprint
-                        && roi instanceof ROIGeometry
-                        && ((ROIGeometry) roi).getAsGeometry().isEmpty()
+                        && roi instanceof ROIGeometry geometry
+                        && geometry.getAsGeometry().isEmpty()
                 || roi instanceof ROI && ((ROI) roi).getBounds().isEmpty()) {
             // JAI not only transforms the ROI, but may also apply clipping to the image
             // boundary.  this results in an empty ROI in some edge cases

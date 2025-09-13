@@ -36,16 +36,14 @@ import org.locationtech.jts.geom.GeometryFactory;
 public class EdgeData extends HashMap<Object, Object> {
     @Override
     public Object put(Object key, Object value) {
-        if (key instanceof String) {
+        if (key instanceof String key_s) {
             GeometryFactory geofactory = new GeometryFactory();
-            String key_s = (String) key;
 
             if (key_s.equals("coordinates")) {
                 Coordinate[] c = null;
-                if (value instanceof RowField) {
-                    value = ((RowField) value).getValue();
-                    if (value instanceof Position[]) {
-                        Position[] coords = (Position[]) value;
+                if (value instanceof RowField field) {
+                    value = field.getValue();
+                    if (value instanceof Position[] coords) {
                         c = new Coordinate[coords.length];
                         double[] c_pair = null;
                         for (int i = 0; i < coords.length; i++) {

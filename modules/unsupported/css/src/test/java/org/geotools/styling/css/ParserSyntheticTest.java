@@ -657,9 +657,9 @@ public class ParserSyntheticTest extends CssBaseTest {
 
     @Test
     public void testCommentMultiline() {
-        String commentInternal = "* @title The title\n"
-                + //
-                "  * @abstract The abstract";
+        String commentInternal = """
+                * @title The title
+                  * @abstract The abstract""";
         String comment = "/*\n"
                 + //
                 commentInternal

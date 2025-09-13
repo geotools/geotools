@@ -24,6 +24,7 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRenderedImage;
 import java.awt.image.renderable.RenderableImage;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -67,6 +68,7 @@ import org.geotools.util.factory.Hints;
  */
 public class GridCoverage2D extends AbstractGridCoverage {
     /** For compatibility during cross-version serialization. */
+    @Serial
     private static final long serialVersionUID = 667472989475027853L;
 
     /**
@@ -645,6 +647,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      */
     protected class Renderable extends AbstractCoverage.Renderable {
         /** For compatibility during cross-version serialization. */
+        @Serial
         private static final long serialVersionUID = 4544636336787905450L;
 
         /** Constructs a renderable image. */
@@ -732,10 +735,8 @@ public class GridCoverage2D extends AbstractGridCoverage {
         final StringBuilder buffer = new StringBuilder(super.toString());
         final String lineSeparator = System.getProperty("line.separator", "\n");
         buffer.append("\u2514 Image=").append(Classes.getShortClassName(image)).append('[');
-        if (image instanceof OperationNode) {
-            buffer.append('"')
-                    .append(((OperationNode) image).getOperationName())
-                    .append('"');
+        if (image instanceof OperationNode node) {
+            buffer.append('"').append(node.getOperationName()).append('"');
         }
         buffer.append(']');
         return buffer.append(lineSeparator).toString();

@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.io.Serial;
+
 /**
  * Thrown by {@link MapProjection} when a map projection failed because the point is outside the envelope of validity.
  * Bounds are usually 90°S to 90°N and 180°W to 180°E.
@@ -26,6 +28,7 @@ package org.geotools.referencing.operation.projection;
  */
 public class PointOutsideEnvelopeException extends ProjectionException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4384490413772200352L;
 
     /** Constructs a new exception with no detail message. */

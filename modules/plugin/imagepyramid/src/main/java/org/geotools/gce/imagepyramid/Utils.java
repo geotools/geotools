@@ -61,17 +61,15 @@ class Utils {
         //
         // if it is a URL or a String let's try to see if we can get a file to
         // check if we have to build the index
-        if (source instanceof File) {
-            sourceFile = (File) source;
+        if (source instanceof File file) {
+            sourceFile = file;
             sourceURL = URLs.fileToUrl(sourceFile);
-        } else if (source instanceof URL) {
-            sourceURL = (URL) source;
+        } else if (source instanceof URL rL) {
+            sourceURL = rL;
             if (sourceURL.getProtocol().equals("file")) {
                 sourceFile = URLs.urlToFile(sourceURL);
             }
-        } else if (source instanceof String) {
-            // is it a File?
-            final String tempSource = (String) source;
+        } else if (source instanceof String tempSource) {
             File tempFile = new File(tempSource);
             if (!tempFile.exists()) {
                 // is it a URL

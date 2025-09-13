@@ -91,14 +91,14 @@ public class ResourceIdTypeBinding extends AbstractComplexBinding {
         if ("previousRid".equals(localName)) {
             return fid.getPreviousRid();
         }
-        if ("version".equals(localName) && fid instanceof ResourceId) {
-            return ((ResourceId) fid).getVersion();
+        if ("version".equals(localName) && fid instanceof ResourceId id) {
+            return id.getVersion();
         }
-        if ("startDate".equals(localName) && fid instanceof ResourceId) {
-            return ((ResourceId) fid).getStartTime();
+        if ("startDate".equals(localName) && fid instanceof ResourceId id) {
+            return id.getStartTime();
         }
-        if ("endDate".equals(localName) && fid instanceof ResourceId) {
-            return ((ResourceId) fid).getEndTime();
+        if ("endDate".equals(localName) && fid instanceof ResourceId id) {
+            return id.getEndTime();
         }
 
         return null;

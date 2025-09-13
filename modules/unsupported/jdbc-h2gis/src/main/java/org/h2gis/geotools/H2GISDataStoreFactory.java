@@ -246,8 +246,8 @@ public class H2GISDataStoreFactory extends JDBCDataStoreFactory {
         // setup loose bbox
         SQLDialect genericDialect = dataStore.getSQLDialect();
         H2GISDialect dialect;
-        if (genericDialect instanceof H2GISPSDialect) {
-            dialect = ((H2GISPSDialect) genericDialect).getDelegate();
+        if (genericDialect instanceof H2GISPSDialect sDialect) {
+            dialect = sDialect.getDelegate();
         } else {
             dialect = (H2GISDialect) dataStore.getSQLDialect();
         }

@@ -16,6 +16,7 @@
  */
 package org.geotools.process.raster;
 
+import java.io.Serial;
 import org.eclipse.imagen.JAI;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.image.jai.Registry;
@@ -24,6 +25,7 @@ import org.geotools.processing.jai.TransparencyFillRIF;
 
 public class TransparencyFill extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3368109980974496342L;
 
     static {

@@ -339,8 +339,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final IdentifiedObject object;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof IdentifiedObject) {
-            object = (IdentifiedObject) cached;
+        if (cached instanceof IdentifiedObject identifiedObject) {
+            object = identifiedObject;
         } else {
             object = getBackingStore().createObject(code);
         }
@@ -354,8 +354,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final Datum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof Datum) {
-            datum = (Datum) cached;
+        if (cached instanceof Datum datum1) {
+            datum = datum1;
         } else {
             datum = getBackingStore().createDatum(code);
         }
@@ -369,8 +369,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final EngineeringDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof EngineeringDatum) {
-            datum = (EngineeringDatum) cached;
+        if (cached instanceof EngineeringDatum engineeringDatum) {
+            datum = engineeringDatum;
         } else {
             datum = getBackingStore().createEngineeringDatum(code);
         }
@@ -384,8 +384,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final ImageDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof ImageDatum) {
-            datum = (ImageDatum) cached;
+        if (cached instanceof ImageDatum imageDatum) {
+            datum = imageDatum;
         } else {
             datum = getBackingStore().createImageDatum(code);
         }
@@ -399,8 +399,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final VerticalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof VerticalDatum) {
-            datum = (VerticalDatum) cached;
+        if (cached instanceof VerticalDatum verticalDatum) {
+            datum = verticalDatum;
         } else {
             datum = getBackingStore().createVerticalDatum(code);
         }
@@ -414,8 +414,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final TemporalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof TemporalDatum) {
-            datum = (TemporalDatum) cached;
+        if (cached instanceof TemporalDatum temporalDatum) {
+            datum = temporalDatum;
         } else {
             datum = getBackingStore().createTemporalDatum(code);
         }
@@ -429,8 +429,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final GeodeticDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof GeodeticDatum) {
-            datum = (GeodeticDatum) cached;
+        if (cached instanceof GeodeticDatum geodeticDatum) {
+            datum = geodeticDatum;
         } else {
             datum = getBackingStore().createGeodeticDatum(code);
         }
@@ -444,8 +444,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final Ellipsoid ellipsoid;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof Ellipsoid) {
-            ellipsoid = (Ellipsoid) cached;
+        if (cached instanceof Ellipsoid ellipsoid1) {
+            ellipsoid = ellipsoid1;
         } else {
             ellipsoid = getBackingStore().createEllipsoid(code);
         }
@@ -459,8 +459,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final PrimeMeridian meridian;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof PrimeMeridian) {
-            meridian = (PrimeMeridian) cached;
+        if (cached instanceof PrimeMeridian primeMeridian) {
+            meridian = primeMeridian;
         } else {
             meridian = getBackingStore().createPrimeMeridian(code);
         }
@@ -474,8 +474,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final Extent extent;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof Extent) {
-            extent = (Extent) cached;
+        if (cached instanceof Extent extent1) {
+            extent = extent1;
         } else {
             extent = getBackingStore().createExtent(code);
         }
@@ -489,8 +489,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final CoordinateSystem cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof CoordinateSystem) {
-            cs = (CoordinateSystem) cached;
+        if (cached instanceof CoordinateSystem system) {
+            cs = system;
         } else {
             cs = getBackingStore().createCoordinateSystem(code);
         }
@@ -504,8 +504,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final CartesianCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof CartesianCS) {
-            cs = (CartesianCS) cached;
+        if (cached instanceof CartesianCS cS) {
+            cs = cS;
         } else {
             cs = getBackingStore().createCartesianCS(code);
         }
@@ -519,8 +519,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final PolarCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof PolarCS) {
-            cs = (PolarCS) cached;
+        if (cached instanceof PolarCS cS) {
+            cs = cS;
         } else {
             cs = getBackingStore().createPolarCS(code);
         }
@@ -534,8 +534,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final CylindricalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof CylindricalCS) {
-            cs = (CylindricalCS) cached;
+        if (cached instanceof CylindricalCS cS) {
+            cs = cS;
         } else {
             cs = getBackingStore().createCylindricalCS(code);
         }
@@ -549,8 +549,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final SphericalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof SphericalCS) {
-            cs = (SphericalCS) cached;
+        if (cached instanceof SphericalCS cS) {
+            cs = cS;
         } else {
             cs = getBackingStore().createSphericalCS(code);
         }
@@ -564,8 +564,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final EllipsoidalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof EllipsoidalCS) {
-            cs = (EllipsoidalCS) cached;
+        if (cached instanceof EllipsoidalCS cS) {
+            cs = cS;
         } else {
             cs = getBackingStore().createEllipsoidalCS(code);
         }
@@ -579,8 +579,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final VerticalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof VerticalCS) {
-            cs = (VerticalCS) cached;
+        if (cached instanceof VerticalCS cS) {
+            cs = cS;
         } else {
             cs = getBackingStore().createVerticalCS(code);
         }
@@ -594,8 +594,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final TimeCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof TimeCS) {
-            cs = (TimeCS) cached;
+        if (cached instanceof TimeCS cS) {
+            cs = cS;
         } else {
             cs = getBackingStore().createTimeCS(code);
         }
@@ -609,8 +609,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final CoordinateSystemAxis axis;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof CoordinateSystemAxis) {
-            axis = (CoordinateSystemAxis) cached;
+        if (cached instanceof CoordinateSystemAxis systemAxis) {
+            axis = systemAxis;
         } else {
             axis = getBackingStore().createCoordinateSystemAxis(code);
         }
@@ -624,8 +624,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final Unit<?> unit;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof Unit) {
-            unit = (Unit) cached;
+        if (cached instanceof Unit unit1) {
+            unit = unit1;
         } else {
             unit = getBackingStore().createUnit(code);
         }
@@ -640,8 +640,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final CoordinateReferenceSystem crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof CoordinateReferenceSystem) {
-            crs = (CoordinateReferenceSystem) cached;
+        if (cached instanceof CoordinateReferenceSystem system) {
+            crs = system;
         } else {
             crs = getBackingStore().createCoordinateReferenceSystem(code);
             if (LOGGER.isLoggable(Level.FINER)) {
@@ -659,8 +659,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final CompoundCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof CompoundCRS) {
-            crs = (CompoundCRS) cached;
+        if (cached instanceof CompoundCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createCompoundCRS(code);
         }
@@ -674,8 +674,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final DerivedCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof DerivedCRS) {
-            crs = (DerivedCRS) cached;
+        if (cached instanceof DerivedCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createDerivedCRS(code);
         }
@@ -689,8 +689,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final EngineeringCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof EngineeringCRS) {
-            crs = (EngineeringCRS) cached;
+        if (cached instanceof EngineeringCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createEngineeringCRS(code);
         }
@@ -704,8 +704,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final GeographicCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof GeographicCRS) {
-            crs = (GeographicCRS) cached;
+        if (cached instanceof GeographicCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createGeographicCRS(code);
         }
@@ -719,8 +719,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final GeocentricCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof GeocentricCRS) {
-            crs = (GeocentricCRS) cached;
+        if (cached instanceof GeocentricCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createGeocentricCRS(code);
         }
@@ -734,8 +734,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final ImageCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof ImageCRS) {
-            crs = (ImageCRS) cached;
+        if (cached instanceof ImageCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createImageCRS(code);
         }
@@ -749,8 +749,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final ProjectedCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof ProjectedCRS) {
-            crs = (ProjectedCRS) cached;
+        if (cached instanceof ProjectedCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createProjectedCRS(code);
         }
@@ -764,8 +764,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final TemporalCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof TemporalCRS) {
-            crs = (TemporalCRS) cached;
+        if (cached instanceof TemporalCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createTemporalCRS(code);
         }
@@ -779,8 +779,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final VerticalCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof VerticalCRS) {
-            crs = (VerticalCRS) cached;
+        if (cached instanceof VerticalCRS rS) {
+            crs = rS;
         } else {
             crs = getBackingStore().createVerticalCRS(code);
         }
@@ -794,8 +794,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final ParameterDescriptor parameter;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof ParameterDescriptor) {
-            parameter = (ParameterDescriptor) cached;
+        if (cached instanceof ParameterDescriptor descriptor) {
+            parameter = descriptor;
         } else {
             parameter = getBackingStore().createParameterDescriptor(code);
         }
@@ -809,8 +809,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final OperationMethod method;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof OperationMethod) {
-            method = (OperationMethod) cached;
+        if (cached instanceof OperationMethod operationMethod) {
+            method = operationMethod;
         } else {
             method = getBackingStore().createOperationMethod(code);
         }
@@ -824,8 +824,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         final CoordinateOperation operation;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
-        if (cached instanceof CoordinateOperation) {
-            operation = (CoordinateOperation) cached;
+        if (cached instanceof CoordinateOperation coordinateOperation) {
+            operation = coordinateOperation;
         } else {
             operation = getBackingStore().createCoordinateOperation(code);
         }
@@ -870,8 +870,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
         @Override
         public boolean equals(final Object other) {
-            if (other instanceof CodePair) {
-                final CodePair that = (CodePair) other;
+            if (other instanceof CodePair that) {
                 return Utilities.equals(this.source, that.source) && Utilities.equals(this.target, that.target);
             }
             return false;

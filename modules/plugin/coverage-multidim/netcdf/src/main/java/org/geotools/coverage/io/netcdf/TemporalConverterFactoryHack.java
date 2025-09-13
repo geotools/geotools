@@ -61,8 +61,8 @@ class TemporalConverterFactoryHack implements ConverterFactory {
         @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if (source instanceof Date) {
-                return (T) getDateFormat().format((Date) source);
+            if (source instanceof Date date) {
+                return (T) getDateFormat().format(date);
             }
             return null;
         }
@@ -72,8 +72,8 @@ class TemporalConverterFactoryHack implements ConverterFactory {
         @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if (source instanceof Calendar) {
-                return (T) getDateFormat().format(((Calendar) source).getTime());
+            if (source instanceof Calendar calendar) {
+                return (T) getDateFormat().format(calendar.getTime());
             }
             return null;
         }
@@ -83,9 +83,9 @@ class TemporalConverterFactoryHack implements ConverterFactory {
         @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if (source instanceof XMLGregorianCalendar) {
-                GregorianCalendar date = ((XMLGregorianCalendar) source)
-                        .toGregorianCalendar(TimeZone.getTimeZone("GMT"), Locale.getDefault(), null);
+            if (source instanceof XMLGregorianCalendar calendar) {
+                GregorianCalendar date =
+                        calendar.toGregorianCalendar(TimeZone.getTimeZone("GMT"), Locale.getDefault(), null);
                 return (T) getDateFormat().format(date.getTime());
             }
             return null;

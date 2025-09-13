@@ -173,8 +173,8 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
         }
         // Heuristic here... the feature CRS is more likely to be correct than the geometry srid,
         // which cannot carry an authority to begin with
-        if (feature instanceof Feature) {
-            sorceCRS = ((Feature) feature).getType().getCoordinateReferenceSystem();
+        if (feature instanceof Feature feature1) {
+            sorceCRS = feature1.getType().getCoordinateReferenceSystem();
         }
         if (sorceCRS == null && point.getSRID() > 0) {
             try {
@@ -204,8 +204,7 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
             return false;
         }
 
-        if (crs instanceof ProjectedCRS) {
-            ProjectedCRS projected = (ProjectedCRS) crs;
+        if (crs instanceof ProjectedCRS projected) {
             MathTransform mt = projected.getConversionFromBase().getMathTransform();
             if (isNorthUpProjection(mt)) return false;
         }
@@ -251,8 +250,7 @@ public class NorthFix extends FunctionExpressionImpl implements SimplifiableFunc
         } else if (featureType != null && parameters.get(2) instanceof PropertyName) {
             // otherwise, see if we can lookup the source CRS by looking up a geometry descriptor
             PropertyDescriptor pd = parameters.get(1).evaluate(featureType, PropertyDescriptor.class);
-            if (pd instanceof GeometryDescriptor) {
-                GeometryDescriptor gd = (GeometryDescriptor) pd;
+            if (pd instanceof GeometryDescriptor gd) {
                 CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();
                 // found it, force it to be an explicit literal to avoid further lookups
                 if (crs != null) {

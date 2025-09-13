@@ -105,8 +105,7 @@ public abstract class RendererBaseTest {
 
     /** responsible for actually rendering. */
     private static void render(Object obj, Graphics g, Rectangle rect, ReferencedEnvelope bounds) {
-        if (obj instanceof GTRenderer) {
-            GTRenderer renderer = (GTRenderer) obj;
+        if (obj instanceof GTRenderer renderer) {
 
             if (bounds == null) {
                 renderer.paint((Graphics2D) g, rect, new AffineTransform());

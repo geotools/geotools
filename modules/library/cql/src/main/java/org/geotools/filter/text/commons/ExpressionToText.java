@@ -82,8 +82,8 @@ public class ExpressionToText implements ExpressionVisitor {
     }
 
     private static StringBuilder asStringBuilder(Object extraData) {
-        if (extraData instanceof StringBuilder) {
-            return (StringBuilder) extraData;
+        if (extraData instanceof StringBuilder builder) {
+            return builder;
         }
         return new StringBuilder();
     }
@@ -191,8 +191,7 @@ public class ExpressionToText implements ExpressionVisitor {
         StringBuilder output = asStringBuilder(extraData);
 
         Object literal = expression.getValue();
-        if (literal instanceof Geometry) {
-            Geometry geometry = (Geometry) literal;
+        if (literal instanceof Geometry geometry) {
             if (geometry.getUserData() instanceof CoordinateReferenceSystem && encodeEWKT) {
                 CoordinateReferenceSystem crs = (CoordinateReferenceSystem) geometry.getUserData();
                 try {
@@ -215,11 +214,10 @@ public class ExpressionToText implements ExpressionVisitor {
             if (date != null) {
                 return dateToText(date, output);
             }
-        } else if (literal instanceof Period) {
+        } else if (literal instanceof Period period) {
 
-            return periodToText((Period) literal, output);
-        } else if (literal instanceof Color) {
-            Color color = (Color) literal;
+            return periodToText(period, output);
+        } else if (literal instanceof Color color) {
 
             String redCode = Integer.toHexString(color.getRed());
             String greenCode = Integer.toHexString(color.getGreen());

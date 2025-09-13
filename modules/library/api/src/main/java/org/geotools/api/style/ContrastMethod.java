@@ -9,6 +9,7 @@
  */
 package org.geotools.api.style;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.util.CodeList;
@@ -31,6 +32,7 @@ import org.geotools.api.util.CodeList;
  */
 public final class ContrastMethod extends CodeList<ContrastMethod> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -7328502367911363577L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

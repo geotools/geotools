@@ -1043,8 +1043,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                     Object o = sourceFeature.getAttributes().get(k);
 
                     // Check that the geometry was transformed correctly
-                    if (o instanceof Geometry) {
-                        Geometry sourceGeometry = (Geometry) o;
+                    if (o instanceof Geometry sourceGeometry) {
                         Geometry transformedGeometry =
                                 (Geometry) transformedFeature.getAttributes().get(k);
 

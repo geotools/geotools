@@ -31,8 +31,8 @@ public class STACFilterSerializer extends JsonSerializer<Filter> {
             throws IOException {
         FilterLang lang = null;
         Object container = jsonGenerator.currentValue();
-        if (container instanceof SearchQuery) {
-            lang = ((SearchQuery) container).getFilterLang();
+        if (container instanceof SearchQuery query) {
+            lang = query.getFilterLang();
         }
         if (lang == null) lang = FilterLang.CQL2_JSON;
 

@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Map;
 import javax.measure.IncommensurableException;
@@ -55,6 +56,7 @@ import org.geotools.metadata.i18n.VocabularyKeys;
  */
 public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -6182037957705712945L;
 
     /**

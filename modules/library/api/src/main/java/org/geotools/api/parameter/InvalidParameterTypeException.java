@@ -9,6 +9,8 @@
  */
 package org.geotools.api.parameter;
 
+import java.io.Serial;
+
 /**
  * Thrown when a parameter can't be cast to the requested type. For example this exception is thrown when
  * {@link ParameterValue#doubleValue} is invoked but the value is not convertible to a {@code double}.
@@ -24,6 +26,7 @@ package org.geotools.api.parameter;
  */
 public class InvalidParameterTypeException extends IllegalStateException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 2740762597003093176L;
 
     /** The invalid parameter name. */

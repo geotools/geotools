@@ -16,11 +16,13 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.io.Serial;
 import org.geotools.api.data.DataSourceException;
 
 /** Thrown when an error relating to the shapefile occures */
 public class ShapefileException extends DataSourceException {
 
+    @Serial
     private static final long serialVersionUID = -6523799964553991364L;
 
     public ShapefileException(String s) {

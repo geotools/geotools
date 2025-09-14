@@ -19665,8 +19665,8 @@ public class GMDSchema extends SchemaImpl {
      */
     private void put(AttributeType type) {
         type.getSuper();
-        if (type instanceof ComplexType) {
-            ((ComplexType) type).getDescriptors();
+        if (type instanceof ComplexType complexType) {
+            complexType.getDescriptors();
         }
         put(type.getName(), type);
     }

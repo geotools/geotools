@@ -61,8 +61,8 @@ public abstract class MediaMBSource extends MBSource {
         } else {
             List<Point2D.Double> coords = new ArrayList<>();
             for (Object o : arr) {
-                if (o instanceof JSONArray) {
-                    coords.add(parsePoint((JSONArray) o));
+                if (o instanceof JSONArray array) {
+                    coords.add(parsePoint(array));
                 } else {
                     throw new MBFormatException("image/video/canvas source \"coordinates\" values must be JSONArrays");
                 }
@@ -72,10 +72,10 @@ public abstract class MediaMBSource extends MBSource {
     }
 
     private Double parseDouble(Object o) {
-        if (o instanceof Number) {
-            return ((Number) o).doubleValue();
-        } else if (o instanceof String) {
-            return Double.valueOf((String) o);
+        if (o instanceof Number number) {
+            return number.doubleValue();
+        } else if (o instanceof String string) {
+            return Double.valueOf(string);
         } else {
             throw new MBFormatException("image/video/canvas source \"coordinates\" tags must contain Numbers");
         }

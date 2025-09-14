@@ -56,9 +56,7 @@ public class CurvedGeometries {
         if (!(geom instanceof CircularRing) && !(geom instanceof CompoundRing)) {
             return false;
         }
-        if (geom instanceof CircularRing) {
-            // check that all arcs have the same center and radius
-            CircularRing curved = (CircularRing) geom;
+        if (geom instanceof CircularRing curved) {
             CircularArc first = curved.getArcN(0);
             double radius = first.getRadius();
             if (radius == Double.POSITIVE_INFINITY) {
@@ -161,8 +159,7 @@ public class CurvedGeometries {
      */
     public static CurvedGeometryFactory getFactory(CurvedGeometry<?> curved) {
         GeometryFactory factory = ((Geometry) curved).getFactory();
-        if (factory instanceof CurvedGeometryFactory) {
-            CurvedGeometryFactory cf = (CurvedGeometryFactory) factory;
+        if (factory instanceof CurvedGeometryFactory cf) {
             if (cf.getTolerance() == curved.getTolerance()) {
                 return cf;
             }

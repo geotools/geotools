@@ -255,7 +255,7 @@ public class Walk extends ArrayList<Node> implements NodeSequence {
 
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Walk) return equals((Walk) other);
+        if (other instanceof Walk walk) return equals(walk);
         return false;
     }
 

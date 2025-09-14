@@ -175,9 +175,9 @@ public final class Parameters {
                     return false;
                 }
             }
-        } else if (value instanceof Collection) {
+        } else if (value instanceof Collection collection) {
             // handle checking elements in a collection
-            for (final Object element : (Collection) value) {
+            for (final Object element : collection) {
                 if (!isValidValue(element, descriptor)) {
                     return false;
                 }
@@ -256,8 +256,8 @@ public final class Parameters {
             if (AbstractIdentifiedObject.nameMatches(param.getDescriptor(), name)) {
                 list.add(param);
             }
-            if (maxDepth != 0 && param instanceof ParameterValueGroup) {
-                for (final GeneralParameterValue value : ((ParameterValueGroup) param).values()) {
+            if (maxDepth != 0 && param instanceof ParameterValueGroup group) {
+                for (final GeneralParameterValue value : group.values()) {
                     search(value, name, maxDepth - 1, list);
                 }
             }
@@ -276,8 +276,8 @@ public final class Parameters {
     public static void copy(final ParameterValueGroup source, final ParameterValueGroup target) {
         for (final GeneralParameterValue param : source.values()) {
             final String name = param.getDescriptor().getName().getCode();
-            if (param instanceof ParameterValueGroup) {
-                copy((ParameterValueGroup) param, target.addGroup(name));
+            if (param instanceof ParameterValueGroup group) {
+                copy(group, target.addGroup(name));
             } else {
                 target.parameter(name).setValue(((ParameterValue) param).getValue());
             }
@@ -299,8 +299,7 @@ public final class Parameters {
         if (destination == null) {
             destination = new LinkedHashMap<>();
         }
-        if (parameters instanceof ParameterValue) {
-            final ParameterValue param = (ParameterValue) parameters;
+        if (parameters instanceof ParameterValue param) {
             final Object value = param.getValue();
             final Object old = destination.put(param.getDescriptor().getName().getCode(), value);
             if (old != null && !old.equals(value)) {
@@ -309,8 +308,7 @@ public final class Parameters {
                 throw new IllegalArgumentException("Inconsistent value"); // TODO: localize.
             }
         }
-        if (parameters instanceof ParameterValueGroup) {
-            final ParameterValueGroup group = (ParameterValueGroup) parameters;
+        if (parameters instanceof ParameterValueGroup group) {
             for (final GeneralParameterValue value : group.values()) {
                 destination = toNameValueMap(value, destination);
             }

@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
 
@@ -30,6 +31,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class UnsupportedImplementationException extends UnsupportedOperationException {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -649050339146622730L;
 
     /**

@@ -138,8 +138,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
         if (node.hasChild("FeatureTypeName")) {
             // sld 1.0 FTN is a String, in SE 1.1 it is a QName
             Object ftn = node.getChildValue("FeatureTypeName");
-            if (ftn instanceof QName) {
-                QName qn = (QName) ftn;
+            if (ftn instanceof QName qn) {
                 ftn = qn.getPrefix() != null && !"".equals(qn.getPrefix().trim())
                         ? qn.getPrefix() + ":" + qn.getLocalPart()
                         : qn.getLocalPart();

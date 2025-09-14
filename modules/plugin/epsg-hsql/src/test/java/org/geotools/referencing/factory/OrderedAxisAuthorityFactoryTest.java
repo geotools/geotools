@@ -338,13 +338,15 @@ public class OrderedAxisAuthorityFactoryTest {
          * because the later is itself backed by EPSG factory and IdentifiedObjectFinder
          * should queries CRS from both.
          */
-        final String wkt = "GEOGCS[\"WGS 84\",\n"
-                + "  DATUM[\"WGS84\",\n"
-                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
-                + "  PRIMEM[\"Greenwich\", 0.0],\n"
-                + "  UNIT[\"degree\", 0.017453292519943295],\n"
-                + "  AXIS[\"Geodetic latitude\", NORTH],\n"
-                + "  AXIS[\"Geodetic longitude\", EAST]]";
+        final String wkt =
+                """
+                GEOGCS["WGS 84",
+                  DATUM["WGS84",
+                    SPHEROID["WGS 84", 6378137.0, 298.257223563]],
+                  PRIMEM["Greenwich", 0.0],
+                  UNIT["degree", 0.017453292519943295],
+                  AXIS["Geodetic latitude", NORTH],
+                  AXIS["Geodetic longitude", EAST]]""";
         final CoordinateReferenceSystem search = CRS.parseWKT(wkt);
         final CoordinateReferenceSystem standard = CRS.decode("EPSG:4326", false);
         Assert.assertTrue(CRS.equalsIgnoreMetadata(search, standard));

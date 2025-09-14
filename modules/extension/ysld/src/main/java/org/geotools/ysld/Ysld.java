@@ -68,15 +68,14 @@ public class Ysld {
      * @throws java.lang.IllegalArgumentException If the input object can not be converted.
      */
     static YsldInput reader(Object input) throws IOException {
-        if (input instanceof Reader) {
-            return new YsldInput((Reader) input);
-        } else if (input instanceof InputStream) {
-            return new YsldInput(
-                    new BufferedReader(new InputStreamReader((InputStream) input, StandardCharsets.UTF_8)));
-        } else if (input instanceof File) {
-            return new YsldInput(new BufferedReader(new FileReader((File) input, StandardCharsets.UTF_8)));
-        } else if (input instanceof String) {
-            return new YsldInput(new StringReader((String) input));
+        if (input instanceof Reader reader) {
+            return new YsldInput(reader);
+        } else if (input instanceof InputStream stream) {
+            return new YsldInput(new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)));
+        } else if (input instanceof File file) {
+            return new YsldInput(new BufferedReader(new FileReader(file, StandardCharsets.UTF_8)));
+        } else if (input instanceof String string) {
+            return new YsldInput(new StringReader(string));
         } else {
             throw new IllegalArgumentException("Unable to turn " + input + " into reader");
         }
@@ -97,12 +96,12 @@ public class Ysld {
      * @throws java.lang.IllegalArgumentException If the output object can not be converted.
      */
     static Writer writer(Object output) throws IOException {
-        if (output instanceof Writer) {
-            return (Writer) output;
-        } else if (output instanceof OutputStream) {
-            return new BufferedWriter(new OutputStreamWriter((OutputStream) output, StandardCharsets.UTF_8));
-        } else if (output instanceof File) {
-            return new BufferedWriter(new FileWriter((File) output, StandardCharsets.UTF_8));
+        if (output instanceof Writer writer) {
+            return writer;
+        } else if (output instanceof OutputStream stream) {
+            return new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8));
+        } else if (output instanceof File file) {
+            return new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
         } else {
             throw new IllegalArgumentException("Unable to turn " + output + " into writer");
         }

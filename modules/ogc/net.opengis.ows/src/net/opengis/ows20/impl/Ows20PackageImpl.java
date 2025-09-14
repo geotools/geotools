@@ -672,7 +672,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
 
     // Obtain or create and register package
     Object registeredOws20Package = EPackage.Registry.INSTANCE.get(eNS_URI);
-    Ows20PackageImpl theOws20Package = registeredOws20Package instanceof Ows20PackageImpl ? (Ows20PackageImpl)registeredOws20Package : new Ows20PackageImpl();
+    Ows20PackageImpl theOws20Package = registeredOws20Package instanceof Ows20PackageImpl opi ? opi : new Ows20PackageImpl();
 
     isInited = true;
 

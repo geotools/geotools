@@ -181,10 +181,11 @@ class PGRasterConfig implements Closeable {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // PGRasterDataSource is closed, PMD just doesn't see it
     public void close() {
-        if (dataSource instanceof PGRasterDataSource) {
+        if (dataSource instanceof PGRasterDataSource source) {
             try {
-                ((PGRasterDataSource) dataSource).close();
+                source.close();
             } catch (SQLException e) {
                 LOG.log(Level.WARNING, "Error closing data source", e);
             }

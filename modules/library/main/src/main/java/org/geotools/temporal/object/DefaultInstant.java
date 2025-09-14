@@ -91,8 +91,7 @@ public class DefaultInstant extends DefaultTemporalGeometricPrimitive implements
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultInstant) {
-            final DefaultInstant that = (DefaultInstant) object;
+        if (object instanceof DefaultInstant that) {
 
             return Utilities.equals(this.position, that.position)
                     && Utilities.equals(this.begunBy, that.begunBy)

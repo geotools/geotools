@@ -33,6 +33,7 @@ import static java.lang.Math.tan;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
@@ -86,6 +87,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public abstract class LambertConformal extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1275881689637308614L;
 
     /** Maximum difference allowed when comparing real numbers. */

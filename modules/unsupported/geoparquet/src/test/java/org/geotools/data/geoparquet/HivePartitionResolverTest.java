@@ -121,9 +121,7 @@ public class HivePartitionResolverTest {
         String actual = toNCName(input);
 
         assertEquals(
-                String.format("Input '%s' should convert to '%s' but got '%s'", input, expected, actual),
-                expected,
-                actual);
+                "Input '%s' should convert to '%s' but got '%s'".formatted(input, expected, actual), expected, actual);
     }
 
     @Test

@@ -563,8 +563,8 @@ public class DateTimeParserTest {
             date = time.stream().skip(i).findFirst().get();
         }
 
-        if (date != null && date instanceof Date) {
-            return ((Date) date).getTime();
+        if (date != null && date instanceof Date date1) {
+            return date1.getTime();
         }
         throw new IllegalArgumentException("time isn't a collection of Date");
     }

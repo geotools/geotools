@@ -393,10 +393,10 @@ public class GeostationarySatelliteTest {
     private <T extends Exception> void expectException(Class<T> clazz, Testable testable) {
         try {
             testable.test();
-            fail(String.format("Expected exception, %s, but not thrown", clazz));
+            fail("Expected exception, %s, but not thrown".formatted(clazz));
         } catch (Exception e) {
             if (!clazz.isInstance(e)) {
-                fail(String.format("Expected exception of %s but got %s", clazz, e.getClass()));
+                fail("Expected exception of %s but got %s".formatted(clazz, e.getClass()));
             }
         }
     }

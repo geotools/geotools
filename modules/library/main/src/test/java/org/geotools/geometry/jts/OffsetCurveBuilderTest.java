@@ -371,8 +371,7 @@ public class OffsetCurveBuilderTest {
         assertTrue(offset.getLength() > 0);
         assertEquals(abs(offsetDistance), offset.distance(geom), EPS * abs(offsetDistance));
         offset.apply((GeometryComponentFilter) geom1 -> {
-            if (geom1 instanceof LineString) {
-                LineString ls = (LineString) geom1;
+            if (geom1 instanceof LineString ls) {
                 CoordinateSequence cs = ls.getCoordinateSequence();
                 if (cs.size() < 2) {
                     return;

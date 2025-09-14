@@ -139,10 +139,10 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         symbols.clear();
         for (GraphicalSymbol symbol : graphic.graphicalSymbols()) {
             final Builder<? extends Symbol> builder;
-            if (symbol instanceof Mark) {
-                builder = new MarkBuilder(this).reset((Mark) symbol);
-            } else if (symbol instanceof ExternalGraphic) {
-                builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
+            if (symbol instanceof Mark mark) {
+                builder = new MarkBuilder(this).reset(mark);
+            } else if (symbol instanceof ExternalGraphic externalGraphic) {
+                builder = new ExternalGraphicBuilder(this).reset(externalGraphic);
             } else {
                 throw new IllegalArgumentException("Unrecognized symbol type: " + symbol.getClass());
             }

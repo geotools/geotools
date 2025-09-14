@@ -198,8 +198,7 @@ public class ExternalGraphicImpl implements Symbol, Cloneable, ExternalGraphic {
             return true;
         }
 
-        if (oth instanceof ExternalGraphicImpl) {
-            ExternalGraphicImpl other = (ExternalGraphicImpl) oth;
+        if (oth instanceof ExternalGraphicImpl other) {
 
             return Utilities.equals(uri, other.uri) && Utilities.equals(format, other.format);
         }
@@ -260,8 +259,7 @@ public class ExternalGraphicImpl implements Symbol, Cloneable, ExternalGraphic {
             return null;
         } else if (item instanceof ExternalGraphicImpl) {
             return item;
-        } else if (item instanceof ExternalGraphic) {
-            ExternalGraphic graphic = (ExternalGraphic) item;
+        } else if (item instanceof ExternalGraphic graphic) {
             ExternalGraphicImpl copy = new ExternalGraphicImpl();
             copy.colorReplacements().addAll(graphic.getColorReplacements());
             copy.setFormat(graphic.getFormat());

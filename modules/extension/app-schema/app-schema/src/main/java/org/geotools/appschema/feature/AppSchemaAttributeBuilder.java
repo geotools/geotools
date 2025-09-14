@@ -81,9 +81,9 @@ public class AppSchemaAttributeBuilder extends AttributeBuilder {
             boolean nillable = descriptor.isNillable();
             // TODO: handle default value
             Object defaultValue = null;
-            if (type instanceof GeometryType) {
-                descriptor = new GeometryDescriptorImpl(
-                        (GeometryType) type, name, minOccurs, maxOccurs, nillable, defaultValue);
+            if (type instanceof GeometryType geometryType) {
+                descriptor =
+                        new GeometryDescriptorImpl(geometryType, name, minOccurs, maxOccurs, nillable, defaultValue);
             } else {
                 descriptor = new AttributeDescriptorImpl(type, name, minOccurs, maxOccurs, nillable, defaultValue);
             }

@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs.internal;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import java.util.List;
 public final class ExceptionDetails implements Serializable {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 7073282354241139071L;
 
     private String code;

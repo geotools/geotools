@@ -81,8 +81,7 @@ public class DefaultCalendarDate extends DefaultTemporalPosition implements Cale
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultCalendarDate && super.equals(object)) {
-            final DefaultCalendarDate that = (DefaultCalendarDate) object;
+        if (object instanceof DefaultCalendarDate that && super.equals(object)) {
 
             return Utilities.equals(this.calendarDate, that.calendarDate)
                     && Utilities.equals(this.calendarEraName, that.calendarEraName);

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
+import java.io.Serial;
 import org.geotools.jackson.datatype.projjson.model.BoundCRS;
 import org.geotools.jackson.datatype.projjson.model.CompoundCRS;
 import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
@@ -38,6 +39,7 @@ import org.geotools.jackson.datatype.projjson.model.Transformation;
  */
 public class CoordinateReferenceSystemDeserializer extends StdDeserializer<CoordinateReferenceSystem> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Creates a new deserializer instance. */

@@ -122,8 +122,8 @@ public class MathTransformParser extends AbstractParser {
         lastMethod = null;
         classification = null;
         final Object key = element.peek();
-        if (key instanceof Element) {
-            final String keyword = ((Element) key).keyword.trim().toUpperCase(symbols.locale);
+        if (key instanceof Element element1) {
+            final String keyword = element1.keyword.trim().toUpperCase(symbols.locale);
             if ("PARAM_MT".equals(keyword)) return parseParamMT(element);
             if ("CONCAT_MT".equals(keyword)) return parseConcatMT(element);
             if ("INVERSE_MT".equals(keyword)) return parseInverseMT(element);

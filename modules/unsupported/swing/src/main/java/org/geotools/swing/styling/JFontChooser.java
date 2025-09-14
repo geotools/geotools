@@ -18,6 +18,7 @@ package org.geotools.swing.styling;
 
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
+import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -47,6 +48,7 @@ import org.geotools.factory.CommonFactoryFinder;
 public class JFontChooser extends JDialog {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = -1543116265293436599L;
 
     private static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
@@ -58,10 +60,12 @@ public class JFontChooser extends JDialog {
     private static final String[] weights = {"Normal", "Bold"};
     private static final Integer[] sizes = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 48, 72};
 
-    private static final String sampleText = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\n"
-            + "abcdefghijklmnopqrstuvwxyz\n"
-            + "0123456789\n"
-            + "The quick brown fox jumped over the lazy dog";
+    private static final String sampleText =
+            """
+            ABCDEFGHIJKLMNOPQRSTUVWXYZ
+            abcdefghijklmnopqrstuvwxyz
+            0123456789
+            The quick brown fox jumped over the lazy dog""";
     private static final int sampleTextLines = 4;
 
     private JComboBox<String> familyCBox;

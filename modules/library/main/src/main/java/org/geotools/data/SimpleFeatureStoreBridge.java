@@ -64,8 +64,8 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
 
     @Override
     public void modifyFeatures(String name, Object attributeValue, Filter filter) throws IOException {
-        if (delegate instanceof SimpleFeatureStore) {
-            ((SimpleFeatureStore) delegate).modifyFeatures(name, attributeValue, filter);
+        if (delegate instanceof SimpleFeatureStore store) {
+            store.modifyFeatures(name, attributeValue, filter);
         } else {
             modifyFeatures(
                     new Name[] {
@@ -80,8 +80,8 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
 
     @Override
     public void modifyFeatures(String[] names, Object[] values, Filter filter) throws IOException {
-        if (delegate instanceof SimpleFeatureStore) {
-            ((SimpleFeatureStore) delegate).modifyFeatures(names, values, filter);
+        if (delegate instanceof SimpleFeatureStore store) {
+            store.modifyFeatures(names, values, filter);
         } else {
             Name[] attributeNames = new Name[names.length];
             for (int i = 0; i < names.length; i++) {

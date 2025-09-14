@@ -151,94 +151,94 @@ public class QNameValidatingHandler implements TransformerHandler {
 
     @Override
     public void comment(char[] ch, int start, int length) throws SAXException {
-        if (original instanceof LexicalHandler) {
-            ((LexicalHandler) original).comment(ch, start, length);
+        if (original instanceof LexicalHandler handler) {
+            handler.comment(ch, start, length);
         }
     }
 
     @Override
     public void startCDATA() throws SAXException {
-        if (original instanceof LexicalHandler) {
-            ((LexicalHandler) original).startCDATA();
+        if (original instanceof LexicalHandler handler) {
+            handler.startCDATA();
         }
     }
 
     @Override
     public void endCDATA() throws SAXException {
-        if (original instanceof LexicalHandler) {
-            ((LexicalHandler) original).endCDATA();
+        if (original instanceof LexicalHandler handler) {
+            handler.endCDATA();
         }
     }
 
     @Override
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
-        if (original instanceof LexicalHandler) {
-            ((LexicalHandler) original).startDTD(name, publicId, systemId);
+        if (original instanceof LexicalHandler handler) {
+            handler.startDTD(name, publicId, systemId);
         }
     }
 
     @Override
     public void endDTD() throws SAXException {
-        if (original instanceof LexicalHandler) {
-            ((LexicalHandler) original).endDTD();
+        if (original instanceof LexicalHandler handler) {
+            handler.endDTD();
         }
     }
 
     @Override
     public void startEntity(String name) throws SAXException {
-        if (original instanceof LexicalHandler) {
-            ((LexicalHandler) original).startEntity(name);
+        if (original instanceof LexicalHandler handler) {
+            handler.startEntity(name);
         }
     }
 
     @Override
     public void endEntity(String name) throws SAXException {
-        if (original instanceof LexicalHandler) {
-            ((LexicalHandler) original).endEntity(name);
+        if (original instanceof LexicalHandler handler) {
+            handler.endEntity(name);
         }
     }
 
     @Override
     public void notationDecl(String name, String publicId, String systemId) throws SAXException {
-        if (original instanceof DTDHandler) {
-            ((DTDHandler) original).notationDecl(name, publicId, systemId);
+        if (original instanceof DTDHandler handler) {
+            handler.notationDecl(name, publicId, systemId);
         }
     }
 
     @Override
     public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
             throws SAXException {
-        if (original instanceof DTDHandler) {
-            ((DTDHandler) original).notationDecl(name, publicId, systemId);
+        if (original instanceof DTDHandler handler) {
+            handler.notationDecl(name, publicId, systemId);
         }
     }
 
     @Override
     public void setResult(Result result) throws IllegalArgumentException {
-        if (original instanceof TransformerHandler) {
-            ((TransformerHandler) original).setResult(result);
+        if (original instanceof TransformerHandler handler) {
+            handler.setResult(result);
         }
     }
 
     @Override
     public void setSystemId(String systemID) {
-        if (original instanceof TransformerHandler) {
-            ((TransformerHandler) original).setSystemId(systemID);
+        if (original instanceof TransformerHandler handler) {
+            handler.setSystemId(systemID);
         }
     }
 
     @Override
     public String getSystemId() {
-        if (original instanceof TransformerHandler) {
-            return ((TransformerHandler) original).getSystemId();
+        if (original instanceof TransformerHandler handler) {
+            return handler.getSystemId();
         }
         return null;
     }
 
     @Override
     public Transformer getTransformer() {
-        if (original instanceof TransformerHandler) {
-            return ((TransformerHandler) original).getTransformer();
+        if (original instanceof TransformerHandler handler) {
+            return handler.getTransformer();
         }
         return null;
     }

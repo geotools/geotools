@@ -18,6 +18,7 @@ package org.geotools.referencing.factory;
 
 // OpenGIS dependencies
 
+import java.io.Serial;
 import org.geotools.api.referencing.FactoryException;
 
 /**
@@ -30,6 +31,7 @@ import org.geotools.api.referencing.FactoryException;
  */
 public class FactoryNotFoundException extends FactoryException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -661925454228937249L;
 
     /** Construct an exception with no detail message. */

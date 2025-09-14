@@ -42,8 +42,8 @@ public class BufferFeatureCollectionProcess extends FeatureToFeatureProcess {
         Geometry g = (Geometry) feature.getDefaultGeometry();
         g = g.buffer(buffer);
 
-        if (g instanceof Polygon) {
-            g = g.getFactory().createMultiPolygon(new Polygon[] {(Polygon) g});
+        if (g instanceof Polygon polygon) {
+            g = g.getFactory().createMultiPolygon(new Polygon[] {polygon});
         }
 
         feature.setDefaultGeometry(g);

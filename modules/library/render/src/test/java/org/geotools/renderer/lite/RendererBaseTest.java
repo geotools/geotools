@@ -258,11 +258,9 @@ public abstract class RendererBaseTest {
             for (int i = 0; i < sld.getStyledLayers().length; i++) {
                 Style[] styles = null;
 
-                if (sld.getStyledLayers()[i] instanceof NamedLayer) {
-                    NamedLayer layer = (NamedLayer) sld.getStyledLayers()[i];
+                if (sld.getStyledLayers()[i] instanceof NamedLayer layer) {
                     styles = layer.getStyles();
-                } else if (sld.getStyledLayers()[i] instanceof UserLayer) {
-                    UserLayer layer = (UserLayer) sld.getStyledLayers()[i];
+                } else if (sld.getStyledLayers()[i] instanceof UserLayer layer) {
                     styles = layer.getUserStyles();
                 }
 
@@ -278,7 +276,7 @@ public abstract class RendererBaseTest {
             return null;
 
         } catch (Exception e) {
-            if (e instanceof IOException) throw (IOException) e;
+            if (e instanceof IOException exception) throw exception;
             throw (IOException) new IOException().initCause(e);
         }
     }

@@ -193,13 +193,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      * @param input the input object.
      * @return the dataset or <code>null</code>.
      */
+    @SuppressWarnings("PMD.CloseResource") // URIImageInputStream
     private NetcdfDataset extractDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
-        if (input instanceof URIImageInputStream) {
-            URIImageInputStream uriInStream = (URIImageInputStream) input;
+        if (input instanceof URIImageInputStream uriInStream) {
             dataset = NetCDFUtilities.acquireDataset(uriInStream.getUri());
-        } else if (input instanceof URL) {
-            final URL tempURL = (URL) input;
+        } else if (input instanceof URL tempURL) {
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {
                 try {
@@ -279,14 +278,15 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // ImageInputStream
     public void setInput(Object input, boolean seekForwardOnly, boolean ignoreMetadata) {
         super.setInput(input, seekForwardOnly, ignoreMetadata);
         if (dataset != null) {
             reset();
         }
 
-        if (input instanceof ImageInputStream) {
-            this.imageInputStream = (ImageInputStream) input;
+        if (input instanceof ImageInputStream stream) {
+            this.imageInputStream = stream;
         }
         try {
             dataset = extractDataset(input);
@@ -318,8 +318,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
                 // cycle on all variables to get parse them
                 for (final Variable var_ : variables) {
-                    if (var_ != null && var_ instanceof VariableDS) {
-                        final VariableDS variable = (VariableDS) var_;
+                    if (var_ != null && var_ instanceof VariableDS variable) {
 
                         // get the name
                         // check if it is filtered or not
@@ -620,8 +619,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         // let's see if we have some extra parameters
         int[] bands = null;
-        if (param instanceof EnhancedImageReadParam) {
-            bands = ((EnhancedImageReadParam) param).getBands();
+        if (param instanceof EnhancedImageReadParam readParam) {
+            bands = readParam.getBands();
         }
 
         /*

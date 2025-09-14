@@ -139,8 +139,7 @@ public class DefaultPosition implements Position {
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultPosition) {
-            final DefaultPosition that = (DefaultPosition) object;
+        if (object instanceof DefaultPosition that) {
             return Utilities.equals(this.position, that.position);
         }
         return false;

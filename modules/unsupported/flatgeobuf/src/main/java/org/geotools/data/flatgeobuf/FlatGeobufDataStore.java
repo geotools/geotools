@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.api.data.Query;
@@ -56,7 +56,7 @@ public class FlatGeobufDataStore extends ContentDataStore {
     static File getFile(URL url) {
         if (url.getProtocol().equals("file")) {
             try {
-                return Paths.get(url.toURI()).toFile();
+                return Path.of(url.toURI()).toFile();
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }

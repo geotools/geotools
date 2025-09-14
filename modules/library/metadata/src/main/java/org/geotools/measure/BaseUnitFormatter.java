@@ -288,10 +288,9 @@ public class BaseUnitFormatter implements UnitFormatter {
         // Searches label database.
         String label = unitToName.get(unit);
         if (label != null) return label;
-        if (unit instanceof BaseUnit) return ((BaseUnit<?>) unit).getSymbol();
-        if (unit instanceof AlternateUnit) return ((AlternateUnit<?>) unit).getSymbol();
-        if (unit instanceof TransformedUnit) {
-            TransformedUnit<?> tfmUnit = (TransformedUnit<?>) unit;
+        if (unit instanceof BaseUnit<?> baseUnit) return baseUnit.getSymbol();
+        if (unit instanceof AlternateUnit<?> alternateUnit) return alternateUnit.getSymbol();
+        if (unit instanceof TransformedUnit<?> tfmUnit) {
             if (tfmUnit.getSymbol() != null) {
                 return tfmUnit.getSymbol();
             }
@@ -316,14 +315,12 @@ public class BaseUnitFormatter implements UnitFormatter {
             if (prefix != null) {
                 result.insert(0, prefix);
             } else {
-                if (cvtr instanceof AddConverter) {
+                if (cvtr instanceof AddConverter converter1) {
                     result.append('+');
-                    result.append(((AddConverter) cvtr).getOffset());
-                } else if (cvtr instanceof MultiplyConverter) {
-                    Number scaleFactor = ((MultiplyConverter) cvtr).getFactor();
-                    if (scaleFactor instanceof RationalNumber) {
-
-                        RationalNumber rational = (RationalNumber) scaleFactor;
+                    result.append(converter1.getOffset());
+                } else if (cvtr instanceof MultiplyConverter converter) {
+                    Number scaleFactor = converter.getFactor();
+                    if (scaleFactor instanceof RationalNumber rational) {
                         RationalNumber reciprocal = rational.reciprocal();
                         if (reciprocal.isInteger()) {
                             result.append('/');
@@ -344,8 +341,7 @@ public class BaseUnitFormatter implements UnitFormatter {
             }
             return result.toString();
         }
-        if (unit instanceof AnnotatedUnit<?>) {
-            AnnotatedUnit<?> annotatedUnit = (AnnotatedUnit<?>) unit;
+        if (unit instanceof AnnotatedUnit<?> annotatedUnit) {
             final StringBuilder annotable = new StringBuilder(nameFor(annotatedUnit.getActualUnit()));
             if (annotatedUnit.getAnnotation() != null) {
                 annotable.append('{'); // TODO maybe also configure this one similar to mix delimiter

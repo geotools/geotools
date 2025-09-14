@@ -262,8 +262,7 @@ public class FilterToCQL2Json implements FilterVisitor {
         }
         Expression left = null;
         for (Filter child : filter.getChildren()) {
-            if (child instanceof PropertyIsEqualTo) {
-                PropertyIsEqualTo equal = (PropertyIsEqualTo) child;
+            if (child instanceof PropertyIsEqualTo equal) {
                 if (left == null) {
                     left = equal.getExpression1();
                 } else if (!left.equals(equal.getExpression1())) {
@@ -307,8 +306,7 @@ public class FilterToCQL2Json implements FilterVisitor {
             Function function = (Function) filter.getExpression1();
             List<Expression> parameters = function.getParameters();
             Expression param3 = parameters.get(2);
-            if (param3 instanceof Literal) {
-                Literal literal = (Literal) param3;
+            if (param3 instanceof Literal literal) {
                 Object value = literal.getValue();
                 if (!(value instanceof String)) {
                     return false; // not a relate
@@ -517,8 +515,8 @@ public class FilterToCQL2Json implements FilterVisitor {
     }
 
     private ObjectNode asObjectNode(Object extraData) {
-        if (extraData instanceof ObjectNode) {
-            return (ObjectNode) extraData;
+        if (extraData instanceof ObjectNode node) {
+            return node;
         }
         return objectMapper.createObjectNode();
     }

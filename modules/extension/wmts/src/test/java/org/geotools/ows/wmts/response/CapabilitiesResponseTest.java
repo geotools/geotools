@@ -25,12 +25,14 @@ public class CapabilitiesResponseTest {
 
     @Test
     public void testServiceExceptionWithoutContentType() throws Exception {
-        String exception = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\" ?>\n"
-                + "<ServiceExceptionReport version=\"1.1.0\">\n"
-                + "<ServiceException>"
-                + "Gatekeeper logon denied."
-                + "</ServiceException>\n"
-                + "</ServiceExceptionReport>";
+        String exception =
+                """
+                <?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+                <ServiceExceptionReport version="1.1.0">
+                <ServiceException>\
+                Gatekeeper logon denied.\
+                </ServiceException>
+                </ServiceExceptionReport>""";
         String contentType = "application/xml";
 
         HTTPResponse resp = new MockHttpResponse(exception, contentType);

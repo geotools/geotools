@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
+
 /**
  * Throws when a "scale" operation has been requested but the specified grid coverage can't be scaled.
  *
@@ -25,6 +27,7 @@ package org.geotools.coverage.processing;
  */
 public class CannotScaleException extends CoverageProcessingException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8644771885589352455L;
 
     /** Creates a new exception without detail message. */

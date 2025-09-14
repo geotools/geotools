@@ -306,7 +306,7 @@ public class Mosaicker {
                 localHints);
 
         Object property = mosaic.getProperty("ROI");
-        ROI overallROI = property instanceof ROI ? (ROI) property : null;
+        ROI overallROI = property instanceof ROI roi ? roi : null;
 
         if (rasterMask != null) {
             if (overallROI == null) {

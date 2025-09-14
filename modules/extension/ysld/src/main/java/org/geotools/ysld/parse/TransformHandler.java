@@ -110,8 +110,8 @@ public class TransformHandler extends YsldParseHandler {
 
                 Parameter<?> p = processInfo.get(key);
                 if (p != null) {
-                    if (val instanceof String) {
-                        Expression expr = Util.expression((String) val, true, factory);
+                    if (val instanceof String string) {
+                        Expression expr = Util.expression(string, true, factory);
                         if (expr != null) {
                             valueArgs.add(expr);
                         }
@@ -121,7 +121,7 @@ public class TransformHandler extends YsldParseHandler {
                         convertAndAdd(val, p, valueArgs);
                     }
                 } else {
-                    LOG.warning(String.format("unknown transform parameter: %s", key));
+                    LOG.warning("unknown transform parameter: %s".formatted(key));
                 }
 
                 if (valueArgs.isEmpty()) {
@@ -172,13 +172,13 @@ public class TransformHandler extends YsldParseHandler {
 
     void convertAndAdd(Object val, Parameter<?> p, List<Expression> valueArgs) {
         // handle collection case
-        if (p.getMaxOccurs() > 1 && val instanceof Collection) {
-            for (Object o : (Collection<?>) val) {
+        if (p.getMaxOccurs() > 1 && val instanceof Collection<?> collection) {
+            for (Object o : collection) {
                 // just add directly
                 valueArgs.add(factory.filter.literal(o));
             }
-        } else if (val instanceof Map) {
-            YamlMap map = YamlMap.<Map<?, ?>>create((Map<?, ?>) val).map();
+        } else if (val instanceof Map<?, ?> map1) {
+            YamlMap map = YamlMap.<Map<?, ?>>create(map1).map();
             valueArgs.add(process(map));
         } else {
             // just add directly

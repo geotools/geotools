@@ -83,8 +83,8 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
      */
     @Override
     protected Log unwrap(final Logger logger) {
-        if (logger instanceof CommonsLogger) {
-            return ((CommonsLogger) logger).logger;
+        if (logger instanceof CommonsLogger commonsLogger) {
+            return commonsLogger.logger;
         }
         return null;
     }

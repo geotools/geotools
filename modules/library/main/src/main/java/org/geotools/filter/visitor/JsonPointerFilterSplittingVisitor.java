@@ -48,8 +48,8 @@ public class JsonPointerFilterSplittingVisitor extends PostPreProcessFilterSplit
 
     @Override
     protected boolean supports(Object value) {
-        if (value instanceof JsonPointerFunction) {
-            Expression param = ((Function) value).getParameters().get(1);
+        if (value instanceof JsonPointerFunction function) {
+            Expression param = function.getParameters().get(1);
             return param instanceof Literal;
         } else return super.supports(value);
     }

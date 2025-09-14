@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
@@ -45,6 +46,7 @@ import org.locationtech.jts.geom.Envelope;
 public class ReferencedEnvelope3D extends ReferencedEnvelope implements BoundingBox3D {
 
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -3188702602373537163L;
 
     /**
@@ -152,9 +154,9 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     @Override
     public void init(Envelope env) {
         super.init(env);
-        if (env instanceof BoundingBox3D) {
-            this.minz = ((BoundingBox3D) env).getMinZ();
-            this.maxz = ((BoundingBox3D) env).getMaxZ();
+        if (env instanceof BoundingBox3D box3D) {
+            this.minz = box3D.getMinZ();
+            this.maxz = box3D.getMaxZ();
         }
     }
 
@@ -500,6 +502,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                     Double.NEGATIVE_INFINITY,
                     Double.POSITIVE_INFINITY,
                     null) {
+                @Serial
                 private static final long serialVersionUID = -3188702602373537164L;
 
                 @Override
@@ -564,8 +567,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                     if (obj == EVERYTHING) {
                         return true;
                     }
-                    if (obj instanceof ReferencedEnvelope3D) {
-                        ReferencedEnvelope3D other = (ReferencedEnvelope3D) obj;
+                    if (obj instanceof ReferencedEnvelope3D other) {
                         if (other.crs != EVERYTHING.crs) return false;
                         if (other.getMinX() != EVERYTHING.getMinX()) return false;
                         if (other.getMinY() != EVERYTHING.getMinY()) return false;
@@ -670,9 +672,9 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     public ReferencedEnvelope3D(final Envelope envelope, final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException {
         super(envelope, crs);
-        if (envelope instanceof ReferencedEnvelope3D) {
-            this.minz = ((ReferencedEnvelope3D) envelope).getMinZ();
-            this.maxz = ((ReferencedEnvelope3D) envelope).getMaxZ();
+        if (envelope instanceof ReferencedEnvelope3D envelope3D) {
+            this.minz = envelope3D.getMinZ();
+            this.maxz = envelope3D.getMaxZ();
         }
     }
 
@@ -730,8 +732,8 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
         if (bbox == null) {
             throw new NullPointerException("Provided bbox envelope was null");
         }
-        if (bbox instanceof ReferencedEnvelope3D) {
-            return (ReferencedEnvelope3D) bbox;
+        if (bbox instanceof ReferencedEnvelope3D envelope3D) {
+            return envelope3D;
         }
         return new ReferencedEnvelope3D(bbox);
     }
@@ -1066,8 +1068,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
             return otherEnvelope.isNull();
         }
         if (super.equals(other) && minz == otherEnvelope.getMinZ() && maxz == otherEnvelope.getMaxZ()) {
-            final CoordinateReferenceSystem otherCRS =
-                    other instanceof ReferencedEnvelope3D ? ((ReferencedEnvelope3D) other).crs : null;
+            final CoordinateReferenceSystem otherCRS = other instanceof ReferencedEnvelope3D red ? red.crs : null;
 
             return CRS.equalsIgnoreMetadata(crs, otherCRS);
         }

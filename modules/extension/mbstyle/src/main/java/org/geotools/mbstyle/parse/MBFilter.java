@@ -246,8 +246,7 @@ public class MBFilter {
             Set<SemanticType> semanticTypes = new HashSet<>();
             List<?> types = array.subList(2, array.size());
             for (Object type : types) {
-                if (type instanceof String) {
-                    String jsonText = (String) type;
+                if (type instanceof String jsonText) {
                     SemanticType semanticType = translateSemanticType(jsonText);
                     semanticTypes.add(semanticType);
                 } else {
@@ -264,8 +263,7 @@ public class MBFilter {
             Set<SemanticType> semanticTypes = new HashSet<>(Arrays.asList(SemanticType.values()));
             List<?> types = array.subList(2, array.size());
             for (Object type : types) {
-                if (type instanceof String) {
-                    String jsonText = (String) type;
+                if (type instanceof String jsonText) {
                     SemanticType semanticType = translateSemanticType(jsonText);
                     semanticTypes.remove(semanticType);
                 } else {
@@ -476,8 +474,7 @@ public class MBFilter {
     private Filter filterByFeatureIdentifier(JSONArray array, String operator) {
         Set<FeatureId> fids = new HashSet<>();
         for (Object value : array.subList(2, array.size())) {
-            if (value instanceof String) {
-                String fid = (String) value;
+            if (value instanceof String fid) {
                 fids.add(ff.featureId(fid));
             }
         }
@@ -495,8 +492,8 @@ public class MBFilter {
         List<?> types = json.subList(2, json.size());
         for (Object type : types) {
             Filter typeFilter = null;
-            if (type instanceof String) {
-                typeFilter = translateType((String) type);
+            if (type instanceof String string) {
+                typeFilter = translateType(string);
             }
             if (typeFilter == null) {
                 throw new MBFormatException("\"$type\" limited to Point, LineString, Polygon: " + type);
@@ -594,7 +591,7 @@ public class MBFilter {
 
     private void throwUnexpectedArgumentCount(String expression, int argCount) throws MBFormatException {
         throw new MBFormatException(
-                String.format("Expression \"%s\" should have exactly %d argument(s)", expression, argCount));
+                "Expression \"%s\" should have exactly %d argument(s)".formatted(expression, argCount));
     }
 
     /**

@@ -112,10 +112,10 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         }
 
         SQLDialect dialect = dataStore.getSQLDialect();
-        if (dialect instanceof MySQLDialectBasic) {
-            ((MySQLDialectBasic) dialect).setStorageEngine(storageEngine);
-            ((MySQLDialectBasic) dialect).setUsePreciseSpatialOps(enhancedSpatialSupport);
-            ((MySQLDialectBasic) dialect).setMySqlVersion80OrAbove(this.isMySqlVersion80OrAbove(dataStore));
+        if (dialect instanceof MySQLDialectBasic basic) {
+            basic.setStorageEngine(storageEngine);
+            basic.setUsePreciseSpatialOps(enhancedSpatialSupport);
+            basic.setMySqlVersion80OrAbove(this.isMySqlVersion80OrAbove(dataStore));
         } else {
             ((MySQLDialectPrepared) dialect).setStorageEngine(storageEngine);
             ((MySQLDialectPrepared) dialect).setUsePreciseSpatialOps(enhancedSpatialSupport);

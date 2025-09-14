@@ -291,8 +291,8 @@ public class BandMerge extends OperationJAI {
             } else {
                 tr = gg2D.getCRSToGrid2D(PixelOrientation.UPPER_LEFT);
             }
-            if (tr instanceof AffineTransform2D) {
-                return (AffineTransform2D) tr;
+            if (tr instanceof AffineTransform2D transform2D) {
+                return transform2D;
             } else {
                 throw new IllegalArgumentException(tr.toString() + " is not an AffineTransform");
             }
@@ -374,8 +374,8 @@ public class BandMerge extends OperationJAI {
     private int getIndex(ParameterValueGroup parameters) {
         // Get the index parameter from the parameter group
         Object idx = parameters.parameter(COVERAGE_INDEX).getValue();
-        if (idx != null && idx instanceof Integer) {
-            return ((Integer) idx).intValue();
+        if (idx != null && idx instanceof Integer integer) {
+            return integer.intValue();
         }
         // If nothing is found, then the index for the first coverage is returned
         return 0;
@@ -719,8 +719,8 @@ public class BandMerge extends OperationJAI {
             final int n = parameters.getNumSources();
             for (int i = 0; i < n; i++) {
                 final Object source = parameters.getSource(i);
-                if (source instanceof RenderedImage) {
-                    return (RenderedImage) source;
+                if (source instanceof RenderedImage image) {
+                    return image;
                 }
             }
             return null;

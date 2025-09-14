@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.util.Arrays;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -41,6 +42,7 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
  */
 public class CircularRing extends LinearRing implements SingleCurvedGeometry<LinearRing>, CurvedRing {
 
+    @Serial
     private static final long serialVersionUID = -5796254063449438787L;
 
     /** This sequence is used as a fake to trick the constructor */
@@ -257,8 +259,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
 
     @Override
     public boolean equalsExact(Geometry other, double tolerance) {
-        if (other instanceof CircularRing) {
-            CircularRing csOther = (CircularRing) other;
+        if (other instanceof CircularRing csOther) {
             if (Arrays.equals(delegate.controlPoints, csOther.delegate.controlPoints)) {
                 return true;
             }
@@ -269,8 +270,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     @Override
     @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
-        if (other instanceof CircularRing) {
-            CircularRing csOther = (CircularRing) other;
+        if (other instanceof CircularRing csOther) {
             if (Arrays.equals(delegate.controlPoints, csOther.delegate.controlPoints)) {
                 return true;
             }
@@ -280,8 +280,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
 
     @Override
     public boolean equalsTopo(Geometry other) {
-        if (other instanceof CircularRing) {
-            CircularRing csOther = (CircularRing) other;
+        if (other instanceof CircularRing csOther) {
             if (Arrays.equals(delegate.controlPoints, csOther.delegate.controlPoints)) {
                 return true;
             }
@@ -291,8 +290,8 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Geometry) {
-            return equals((Geometry) o);
+        if (o instanceof Geometry geometry) {
+            return equals(geometry);
         } else {
             return false;
         }

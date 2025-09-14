@@ -81,8 +81,8 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
      * be wrapped within a caching proxy
      */
     public MemoryFilterOptimizer(FeatureType schema, Set<Object> memoizeCandidates) {
-        if (schema instanceof SimpleFeatureType) {
-            this.simpleFeatureType = (SimpleFeatureType) schema;
+        if (schema instanceof SimpleFeatureType type) {
+            this.simpleFeatureType = type;
         }
         this.memoizeCandidates = memoizeCandidates;
     }
@@ -337,8 +337,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
 
         @Override
         public <T> T evaluate(Object object, Class<T> context) {
-            if (object instanceof SimpleFeature) {
-                SimpleFeature sf = (SimpleFeature) object;
+            if (object instanceof SimpleFeature sf) {
                 SimpleFeatureType other = sf.getFeatureType();
                 if (other == schema || other.getDescriptor(index).equals(descriptor)) {
                     // ContentFeatureSource/ContentFeatureCollection return a SimpleFeatureType

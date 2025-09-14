@@ -318,8 +318,7 @@ public class VectorToRasterProcess implements VectorProcess {
             throws VectorToRasterException {
 
         // check the attribute argument
-        if (attribute instanceof String) {
-            String propName = (String) attribute;
+        if (attribute instanceof String propName) {
             AttributeDescriptor attDesc = features.getSchema().getDescriptor(propName);
             if (attDesc == null) {
                 throw new VectorToRasterException(propName + " not found");
@@ -349,11 +348,11 @@ public class VectorToRasterProcess implements VectorProcess {
 
             valueSource = ValueSource.PROPERTY_NAME;
 
-        } else if (attribute instanceof Expression) {
+        } else if (attribute instanceof Expression expression) {
             valueSource = ValueSource.EXPRESSION;
 
             SimpleFeature feature = DataUtilities.first(features);
-            Object value = ((Expression) attribute).evaluate(feature);
+            Object value = expression.evaluate(feature);
 
             // if the expression evaluates to a string check if the
             // value can be cast to a Number

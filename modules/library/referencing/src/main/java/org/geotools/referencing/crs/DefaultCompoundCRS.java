@@ -21,6 +21,7 @@ package org.geotools.referencing.crs;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +53,7 @@ import org.geotools.util.UnmodifiableArrayList;
  */
 public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -2656710314586929286L;
 
     /** The coordinate reference systems in this compound CRS. May actually be a list of {@link SingleCRS}. */
@@ -74,8 +76,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      */
     public DefaultCompoundCRS(final CompoundCRS crs) {
         super(crs);
-        if (crs instanceof DefaultCompoundCRS) {
-            final DefaultCompoundCRS that = (DefaultCompoundCRS) crs;
+        if (crs instanceof DefaultCompoundCRS that) {
             this.crs = that.crs;
             this.singles = that.singles;
         } else {
@@ -171,10 +172,10 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      */
     public static List<SingleCRS> getSingleCRS(final CoordinateReferenceSystem crs) {
         final List<SingleCRS> singles;
-        if (crs instanceof DefaultCompoundCRS) {
-            singles = ((DefaultCompoundCRS) crs).getSingleCRS();
-        } else if (crs instanceof CompoundCRS) {
-            final List<CoordinateReferenceSystem> elements = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+        if (crs instanceof DefaultCompoundCRS rS1) {
+            singles = rS1.getSingleCRS();
+        } else if (crs instanceof CompoundCRS rS) {
+            final List<CoordinateReferenceSystem> elements = rS.getCoordinateReferenceSystems();
             singles = new ArrayList<>(elements.size());
             getSingleCRS(elements, singles);
         } else {
@@ -192,8 +193,8 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
             final List<? extends CoordinateReferenceSystem> source, final List<SingleCRS> target) {
         boolean identical = true;
         for (final CoordinateReferenceSystem candidate : source) {
-            if (candidate instanceof CompoundCRS) {
-                getSingleCRS(((CompoundCRS) candidate).getCoordinateReferenceSystems(), target);
+            if (candidate instanceof CompoundCRS rS) {
+                getSingleCRS(rS.getCoordinateReferenceSystems(), target);
                 identical = false;
             } else {
                 target.add((SingleCRS) candidate);
@@ -216,8 +217,8 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
     @SuppressWarnings("unchecked")
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        if (crs instanceof CheckedCollection) {
-            final Class<?> type = ((CheckedCollection) crs).getElementType();
+        if (crs instanceof CheckedCollection collection) {
+            final Class<?> type = collection.getElementType();
             if (SingleCRS.class.isAssignableFrom(type)) {
                 singles = (List) crs;
                 return;

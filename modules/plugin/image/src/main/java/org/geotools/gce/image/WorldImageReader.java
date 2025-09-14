@@ -143,8 +143,8 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
         // GridCoverageFactory initialization
         if (this.hints.containsKey(Hints.GRID_COVERAGE_FACTORY)) {
             final Object factory = this.hints.get(Hints.GRID_COVERAGE_FACTORY);
-            if (factory != null && factory instanceof GridCoverageFactory) {
-                this.coverageFactory = (GridCoverageFactory) factory;
+            if (factory != null && factory instanceof GridCoverageFactory gridCoverageFactory) {
+                this.coverageFactory = gridCoverageFactory;
             }
         }
         if (this.coverageFactory == null) {
@@ -160,9 +160,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
             // Source management
             //
             // /////////////////////////////////////////////////////////////////////
-            if (input instanceof URL) {
-                // URL that point to a file
-                final URL sourceURL = (URL) input;
+            if (input instanceof URL sourceURL) {
                 if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
                     String auth = sourceURL.getAuthority();
                     String path = sourceURL.getPath();
@@ -188,8 +186,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
             // Name, path, etc...
             //
             // //
-            if (input instanceof File) {
-                final File sourceFile = (File) input;
+            if (input instanceof File sourceFile) {
                 final String filename = sourceFile.getName();
                 final int i = filename.lastIndexOf('.');
                 final int length = filename.length();
@@ -200,7 +197,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
                 this.coverageName = filename;
                 final int dotIndex = coverageName.lastIndexOf(".");
                 coverageName = dotIndex == -1 ? coverageName : coverageName.substring(0, dotIndex);
-            } else if (input instanceof URL) input = ((URL) input).openStream();
+            } else if (input instanceof URL rL) input = rL.openStream();
             // //
             //
             // Get a stream in order to read from it for getting the basic
@@ -453,11 +450,10 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
      */
     private boolean WMSRequest(Object input) {
         // TODO do we need the requested envelope?
-        if (input instanceof URL && ((URL) input).getProtocol().equalsIgnoreCase("http")) {
+        if (input instanceof URL rL && rL.getProtocol().equalsIgnoreCase("http")) {
             try {
                 // getting the query
-                final String query =
-                        java.net.URLDecoder.decode(((URL) input).getQuery().intern(), "UTF-8");
+                final String query = java.net.URLDecoder.decode(rL.getQuery().intern(), "UTF-8");
 
                 // should we proceed? Let's look for a getmap WMS request
                 if (query.intern().indexOf("GetMap") == -1) {
@@ -513,12 +509,12 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
     private void readCRS() throws IOException {
 
         // check to see if there is a projection file
-        if (source instanceof File || source instanceof URL && ((URL) source).getProtocol() == "file") {
+        if (source instanceof File || source instanceof URL rL && rL.getProtocol() == "file") {
             // getting name for the prj file
             final String sourceAsString;
 
-            if (source instanceof File) {
-                sourceAsString = ((File) source).getAbsolutePath();
+            if (source instanceof File file) {
+                sourceAsString = file.getAbsolutePath();
             } else {
                 String auth = ((URL) source).getAuthority();
                 String path = ((URL) source).getPath();

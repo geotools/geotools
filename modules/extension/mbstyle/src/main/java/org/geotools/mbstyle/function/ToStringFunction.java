@@ -64,8 +64,7 @@ class ToStringFunction extends FunctionExpressionImpl {
         if (arg0 instanceof Number) {
             return String.valueOf(arg0);
         }
-        if (arg0 instanceof Color) {
-            Color c = (Color) arg0;
+        if (arg0 instanceof Color c) {
             return "rgba(" + c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "," + c.getAlpha() / 255d + ")";
         }
         if (arg0 instanceof String) {

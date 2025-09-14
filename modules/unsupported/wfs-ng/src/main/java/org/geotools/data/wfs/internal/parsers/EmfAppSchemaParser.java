@@ -269,8 +269,8 @@ public class EmfAppSchemaParser {
             }
             return featureType;
         } catch (Exception e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
+            if (e instanceof IOException exception) {
+                throw exception;
             }
             String msg = "Error parsing feature type for " + featureName + " from " + schemaLocation.toExternalForm();
             throw (IOException) new IOException(msg).initCause(e);

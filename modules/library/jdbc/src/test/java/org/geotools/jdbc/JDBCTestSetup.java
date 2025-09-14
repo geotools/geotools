@@ -91,22 +91,21 @@ public abstract class JDBCTestSetup {
 
     protected void setUpDataStore(JDBCDataStore dataStore) {}
 
+    @SuppressWarnings("PMD.CloseResource")
     public void tearDown() throws Exception {
         final String leakMessage = "Expected no active connection, either there is a connection leak "
                 + "or you forgot to close some object holding onto connections in the tests (e.g., a reader, an iterator)";
-        if (dataSource instanceof BasicDataSource) {
-            BasicDataSource bds = (BasicDataSource) dataSource;
+        if (dataSource instanceof BasicDataSource bds) {
             assertEquals(leakMessage, 0, bds.getNumActive());
-        } else if (dataSource instanceof DBCPDataSource) {
-            BasicDataSource bds = (BasicDataSource) ((DBCPDataSource) dataSource).getWrapped();
+        } else if (dataSource instanceof DBCPDataSource source) {
+            BasicDataSource bds = (BasicDataSource) source.getWrapped();
             assertEquals(leakMessage, 0, bds.getNumActive());
         }
 
-        if (dataSource instanceof BasicDataSource) {
-            BasicDataSource bds = (BasicDataSource) dataSource;
+        if (dataSource instanceof BasicDataSource bds) {
             bds.close();
-        } else if (dataSource instanceof ManageableDataSource) {
-            ((ManageableDataSource) dataSource).close();
+        } else if (dataSource instanceof ManageableDataSource source) {
+            source.close();
         }
     }
 

@@ -10,6 +10,7 @@
 package org.geotools.api.filter;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -31,6 +32,7 @@ import java.io.Serializable;
  */
 public final class IncludeFilter implements Filter, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -8429407144421087160L;
 
     /** Not extensible. */

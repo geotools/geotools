@@ -43,7 +43,7 @@ public class ConformanceTest9OnlineTest extends ATSOnlineTest {
 
     private static Filter toFilter(String p1, String p2, String p3, String p4) throws CQLException {
         String template = "(NOT (%s) AND %s) OR (%s and %s) or not (%s OR %s)";
-        return CQL2.toFilter(String.format(template, p2, p1, p3, p4, p1, p4));
+        return CQL2.toFilter(template.formatted(p2, p1, p3, p4, p1, p4));
     }
 
     @Parameterized.Parameters(name = "{index} {0} {1} {2} {3}")

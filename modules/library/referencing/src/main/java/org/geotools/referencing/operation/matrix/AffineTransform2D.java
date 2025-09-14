@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -41,6 +42,7 @@ import org.geotools.util.Utilities;
  */
 public class AffineTransform2D extends AffineTransform implements Matrix {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -9104194268576601386L;
 
     /** The matrix size, which is {@value}. */

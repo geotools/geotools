@@ -16,6 +16,8 @@
  */
 package org.geotools.data.shapefile.index;
 
+import java.io.Serial;
+
 /**
  * This exception is thrown when we are asked to use a filter that does not contain a geometry literal (or anything else
  * we can guess a bounds for).
@@ -23,6 +25,7 @@ package org.geotools.data.shapefile.index;
  * @author Tommaso Nolli
  */
 public class UnsupportedFilterException extends Exception {
+    @Serial
     private static final long serialVersionUID = 3292904738782996000L;
 
     /** */

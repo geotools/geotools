@@ -17,6 +17,7 @@
 package org.geotools.parameter;
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
@@ -69,6 +70,7 @@ import org.geotools.util.XArray;
  */
 public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 2127050865911951239L;
 
     /**
@@ -256,15 +258,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     public static Map<String, Object> properties(final RegistryElementDescriptor operation) {
         String name = operation.getName();
         final Map<String, Object> properties = new HashMap<>();
-        if (operation instanceof OperationDescriptor) {
-            /*
-             * Gets the vendor name (if available) using US locale in order to get something as
-             * close as possible to a kind of "locale-independent" string.  This string will be
-             * used in order to remove the prefix (if any) from the global name, for example in
-             * "org.geotools.Combine" operation name.  We can remove the prefix because it will
-             * appears in the GenericName's scope below (as an alias).
-             */
-            final OperationDescriptor op = (OperationDescriptor) operation;
+        if (operation instanceof OperationDescriptor op) {
             final ResourceBundle bundle = op.getResourceBundle(Locale.getDefault());
             String vendor = op.getResourceBundle(Locale.US).getString("Vendor");
             Citation authority = null;
@@ -378,8 +372,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
         final int numParameters = descriptor.getNumParameters();
         final Map<String, CharSequence> properties = new HashMap<>();
         ParameterDescriptor[] desc;
-        if (operation instanceof OperationDescriptor) {
-            final OperationDescriptor op = (OperationDescriptor) operation;
+        if (operation instanceof OperationDescriptor op) {
             final String[] names = op.getSourceNames();
             final Class<?>[] types = op.getSourceClasses(registryMode);
             numSources = op.getNumSources();
@@ -462,9 +455,8 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
             }
             properties.clear();
             properties.put(NAME_KEY, name);
-            if (operation instanceof OperationDescriptor) {
-                final ImagingParameterDescription remark =
-                        new ImagingParameterDescription((OperationDescriptor) operation, i);
+            if (operation instanceof OperationDescriptor operationDescriptor) {
+                final ImagingParameterDescription remark = new ImagingParameterDescription(operationDescriptor, i);
                 if (remark.exists()) {
                     properties.put(REMARKS_KEY, remark);
                 }

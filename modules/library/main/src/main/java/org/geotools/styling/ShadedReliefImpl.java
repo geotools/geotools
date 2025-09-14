@@ -118,8 +118,7 @@ public class ShadedReliefImpl implements ShadedRelief {
             return true;
         }
 
-        if (obj instanceof ShadedReliefImpl) {
-            ShadedReliefImpl other = (ShadedReliefImpl) obj;
+        if (obj instanceof ShadedReliefImpl other) {
 
             return Utilities.equals(reliefFactor, other.reliefFactor) && Utilities.equals(brightness, other.brightness);
         }
@@ -130,8 +129,8 @@ public class ShadedReliefImpl implements ShadedRelief {
     static ShadedReliefImpl cast(org.geotools.api.style.ShadedRelief shadedRelief) {
         if (shadedRelief == null) {
             return null;
-        } else if (shadedRelief instanceof ShadedReliefImpl) {
-            return (ShadedReliefImpl) shadedRelief;
+        } else if (shadedRelief instanceof ShadedReliefImpl impl) {
+            return impl;
         } else {
             ShadedReliefImpl copy = new ShadedReliefImpl();
             copy.setBrightnessOnly(shadedRelief.isBrightnessOnly());

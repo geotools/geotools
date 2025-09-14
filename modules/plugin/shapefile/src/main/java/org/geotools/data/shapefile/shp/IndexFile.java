@@ -69,8 +69,8 @@ public class IndexFile implements FileReader, AutoCloseable {
         streamLogger.open();
         ReadableByteChannel byteChannel = shpFiles.getReadChannel(ShpFileType.SHX, this);
         try {
-            if (byteChannel instanceof FileChannel) {
-                this.channel = (FileChannel) byteChannel;
+            if (byteChannel instanceof FileChannel fileChannel) {
+                this.channel = fileChannel;
                 if (useMemoryMappedBuffer) {
                     LOGGER.finest("Memory mapping file...");
                     this.buf = this.channel.map(FileChannel.MapMode.READ_ONLY, 0, this.channel.size());

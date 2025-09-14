@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.matrix;
 
+import java.io.Serial;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 
@@ -29,6 +30,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class Matrix4 extends GeneralMatrix implements XMatrix {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5685762518066856311L;
 
     /** The matrix size, which is {@value}. */

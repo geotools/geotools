@@ -26,7 +26,7 @@ import static org.mockito.Mockito.times;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import org.gdal.gdal.Dataset;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public final class VSIDatasetTest {
     public void testStringInput() {
         final String fileName = "layer.tif";
         final String location = "/vsiswift/container/" + fileName;
-        final File file = Paths.get(TEMP_DIR, "layer.tif.vrt").toFile();
+        final File file = Path.of(TEMP_DIR, "layer.tif.vrt").toFile();
 
         try (MockedStatic<VSIUtils> utils = mockStatic(VSIUtils.class)) {
             utils.when(() -> VSIUtils.isVSILocation(eq(location))).thenReturn(true);
@@ -74,7 +74,7 @@ public final class VSIDatasetTest {
     public void testWhenFileExists() throws IOException {
         final String fileName = "layer.tif";
         final String location = "/vsiswift/container/" + fileName;
-        final File file = Paths.get(TEMP_DIR, "layer.tif.vrt").toFile();
+        final File file = Path.of(TEMP_DIR, "layer.tif.vrt").toFile();
 
         file.createNewFile();
 
@@ -97,7 +97,7 @@ public final class VSIDatasetTest {
     public void testFromObjectString() {
         final String fileName = "layer.tif";
         final String location = "/vsiswift/container/" + fileName;
-        final File file = Paths.get(TEMP_DIR, "layer.tif.vrt").toFile();
+        final File file = Path.of(TEMP_DIR, "layer.tif.vrt").toFile();
 
         try (MockedStatic<VSIUtils> utils = mockStatic(VSIUtils.class)) {
             utils.when(() -> VSIUtils.isVSILocation(eq(location))).thenReturn(true);

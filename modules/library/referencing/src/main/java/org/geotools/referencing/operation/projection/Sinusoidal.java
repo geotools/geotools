@@ -25,6 +25,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -44,6 +45,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class Sinusoidal extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 7528023862968814860L;
 
     private static final double EPS10 = 1e-10;
@@ -144,6 +146,7 @@ public class Sinusoidal extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 8374488793001927036L;
 
         /** The parameters group. */

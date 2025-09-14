@@ -12,6 +12,7 @@ package org.geotools.api.metadata.citation;
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -28,6 +29,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CI_RoleCode", specification = ISO_19115)
 public final class Role extends CodeList<Role> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -7763516018565534103L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

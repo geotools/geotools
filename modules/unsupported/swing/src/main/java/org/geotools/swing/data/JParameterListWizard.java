@@ -18,6 +18,7 @@
 package org.geotools.swing.data;
 
 import java.io.File;
+import java.io.Serial;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ import org.geotools.util.URLs;
  * </pre></code>
  */
 public class JParameterListWizard extends JWizard {
+    @Serial
     private static final long serialVersionUID = -3961250234483352643L;
 
     /** Initial page of user focused options */

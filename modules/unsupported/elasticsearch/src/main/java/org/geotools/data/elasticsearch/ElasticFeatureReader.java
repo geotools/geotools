@@ -159,12 +159,12 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
             } else if (values != null
                     && Date.class.isAssignableFrom(descriptor.getType().getBinding())) {
                 Object dataVal = values.get(0);
-                if (dataVal instanceof Double) {
-                    builder.set(name, new Date(Math.round((Double) dataVal)));
-                } else if (dataVal instanceof Integer) {
-                    builder.set(name, new Date(((Integer) dataVal).longValue()));
-                } else if (dataVal instanceof Long) {
-                    builder.set(name, new Date((long) dataVal));
+                if (dataVal instanceof Double double1) {
+                    builder.set(name, new Date(Math.round(double1)));
+                } else if (dataVal instanceof Integer integer) {
+                    builder.set(name, new Date(integer.longValue()));
+                } else if (dataVal instanceof Long long1) {
+                    builder.set(name, new Date(long1));
                 } else {
                     @SuppressWarnings("unchecked")
                     final List<String> validFormats =

@@ -97,8 +97,7 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
 
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof DefaultTemporalReferenceSystem) {
-            final DefaultTemporalReferenceSystem that = (DefaultTemporalReferenceSystem) object;
+        if (object instanceof DefaultTemporalReferenceSystem that) {
 
             return Utilities.equals(this.domainOfValidity, that.domainOfValidity)
                     && Utilities.equals(this.name, that.name)

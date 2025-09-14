@@ -16,6 +16,8 @@
  */
 package org.geotools.metadata;
 
+import java.io.Serial;
+
 /**
  * Thrown when a {@linkplain org.geotools.metadata.iso.MetadataEntity metadata entity} is in a invalid state, usually
  * because a mandatory attribute is missing.
@@ -26,6 +28,7 @@ package org.geotools.metadata;
  */
 public class InvalidMetadataException extends IllegalStateException {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 3219759595538181102L;
 
     /**

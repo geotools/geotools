@@ -329,13 +329,13 @@ public class PullParser {
             super(config);
             Collection<PullParserHandler> handlers = new ArrayList<>(handlerSpecs.length);
             for (Object spec : handlerSpecs) {
-                if (spec instanceof Class) {
-                    handlers.add(new TypePullParserHandler((Class<?>) spec, config));
-                } else if (spec instanceof QName) {
+                if (spec instanceof Class<?> class1) {
+                    handlers.add(new TypePullParserHandler(class1, config));
+                } else if (spec instanceof QName name) {
                     // TODO ignoring the namespace
-                    handlers.add(new ElementIgnoringNamespacePullParserHandler((QName) spec, config));
-                } else if (spec instanceof PullParserHandler) {
-                    handlers.add((PullParserHandler) spec);
+                    handlers.add(new ElementIgnoringNamespacePullParserHandler(name, config));
+                } else if (spec instanceof PullParserHandler parserHandler) {
+                    handlers.add(parserHandler);
                 } else {
                     throw new IllegalArgumentException(
                             "Unknown element: " + spec.toString() + " of type: " + spec.getClass());

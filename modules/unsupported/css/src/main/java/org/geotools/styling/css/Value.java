@@ -442,8 +442,7 @@ abstract class Value {
             List<org.geotools.api.filter.expression.Expression> paramArgs = new ArrayList<>();
             // the param name
             paramArgs.add(FF.literal(key));
-            if (v instanceof MultiValue) {
-                MultiValue mv = (MultiValue) v;
+            if (v instanceof MultiValue mv) {
                 for (Value cv : mv.values) {
                     final org.geotools.api.filter.expression.Expression ex = cv.toExpression();
                     paramArgs.add(ex);

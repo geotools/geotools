@@ -79,8 +79,9 @@ public class CSWCapabilitiesTest extends XmlTestSupport {
         ServiceIdentificationType si = caps.getServiceIdentification();
         assertEquals("con terra GmbH Catalogue Server", si.getTitle());
         assertEquals(
-                "terraCatalog 2.1 - Web based Catalogue Service \n"
-                        + "        (CS-W 2.0.0/AP ISO19115/19 0.9.3 (DE-Profil 1.0.1)) for service, datasets and applications",
+                """
+                terraCatalog 2.1 - Web based Catalogue Service\s
+                        (CS-W 2.0.0/AP ISO19115/19 0.9.3 (DE-Profil 1.0.1)) for service, datasets and applications""",
                 si.getAbstract());
         KeywordsType keywords = si.getKeywords().get(0);
         assertEquals("CS-W", keywords.getKeyword().get(0));

@@ -110,7 +110,7 @@ public final class StationsSetup {
             Unmarshaller unmarshaller = context.createUnmarshaller();
             return (T) unmarshaller.unmarshal(input);
         } catch (Exception exception) {
-            throw new RuntimeException(String.format("Error parsing resource '%s'.", resource), exception);
+            throw new RuntimeException("Error parsing resource '%s'.".formatted(resource), exception);
         }
     }
 
@@ -138,7 +138,7 @@ public final class StationsSetup {
     /** Helper method that just replace placeholders ${...} in a text using the provided context. */
     private static String replace(String text, Map<String, String> context) {
         for (Map.Entry<String, String> entry : context.entrySet()) {
-            String key = String.format("\\$\\{%s}", entry.getKey());
+            String key = "\\$\\{%s}".formatted(entry.getKey());
             // replace all the placeholders occurrences
             text = text.replaceAll(key, entry.getValue());
         }

@@ -304,7 +304,7 @@ public class Formatter {
         appendSeparator(true);
         int base = buffer.length();
         buffer.append(symbols.open);
-        final IdentifiedObject info = formattable instanceof IdentifiedObject ? (IdentifiedObject) formattable : null;
+        final IdentifiedObject info = formattable instanceof IdentifiedObject io ? io : null;
         if (info != null) {
             final String c = getNameColor(info);
             if (c != null) {
@@ -395,8 +395,8 @@ public class Formatter {
      * @param info The info object to append to the WKT.
      */
     public void append(final IdentifiedObject info) {
-        if (info instanceof Formattable) {
-            append((Formattable) info);
+        if (info instanceof Formattable formattable) {
+            append(formattable);
         } else {
             append(new Adapter(info));
         }
@@ -408,8 +408,8 @@ public class Formatter {
      * @param transform The transform object to append to the WKT.
      */
     public void append(final MathTransform transform) {
-        if (transform instanceof Formattable) {
-            append((Formattable) transform);
+        if (transform instanceof Formattable formattable) {
+            append(formattable);
         } else {
             append(new Adapter(transform));
         }
@@ -445,13 +445,12 @@ public class Formatter {
      * @param parameter The parameter to format.
      */
     public void append(final GeneralParameterValue parameter) {
-        if (parameter instanceof ParameterValueGroup) {
-            for (final GeneralParameterValue param : ((ParameterValueGroup) parameter).values()) {
+        if (parameter instanceof ParameterValueGroup group) {
+            for (final GeneralParameterValue param : group.values()) {
                 append(param);
             }
         }
-        if (parameter instanceof ParameterValue) {
-            final ParameterValue<?> param = (ParameterValue) parameter;
+        if (parameter instanceof ParameterValue<?> param) {
             final ParameterDescriptor<?> descriptor = param.getDescriptor();
             final Unit<?> valueUnit = descriptor.getUnit();
             Unit<?> unit = valueUnit;
@@ -517,8 +516,8 @@ public class Formatter {
             buffer.append(symbols.closeArray);
             return;
         }
-        if (value instanceof Number) {
-            format((Number) value);
+        if (value instanceof Number number) {
+            format(number);
         } else {
             buffer.append(symbols.quote).append(value).append(symbols.quote);
         }
@@ -701,8 +700,7 @@ public class Formatter {
                  * scope in generic name.
                  */
                 for (final GenericName alias : aliases) {
-                    if (alias instanceof Identifier) {
-                        final Identifier candidate = (Identifier) alias;
+                    if (alias instanceof Identifier candidate) {
                         if (authorityMatches(candidate.getAuthority())) {
                             return candidate.getCode();
                         }

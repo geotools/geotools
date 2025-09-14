@@ -113,8 +113,8 @@ public class AnchorPointImpl implements org.geotools.api.style.AnchorPoint, Clon
     static AnchorPointImpl cast(org.geotools.api.style.AnchorPoint anchor) {
         if (anchor == null) {
             return null;
-        } else if (anchor instanceof AnchorPointImpl) {
-            return (AnchorPointImpl) anchor;
+        } else if (anchor instanceof AnchorPointImpl impl) {
+            return impl;
         } else {
             AnchorPointImpl copy = new AnchorPointImpl();
             copy.setAnchorPointX(anchor.getAnchorPointX());
@@ -203,8 +203,7 @@ public class AnchorPointImpl implements org.geotools.api.style.AnchorPoint, Clon
             return true;
         }
 
-        if (obj instanceof AnchorPointImpl) {
-            AnchorPointImpl other = (AnchorPointImpl) obj;
+        if (obj instanceof AnchorPointImpl other) {
 
             return Utilities.equals(this.anchorPointX, other.anchorPointX)
                     && Utilities.equals(this.anchorPointY, other.anchorPointY);

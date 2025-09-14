@@ -200,9 +200,9 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
 
     Envelope getEnvelope(Filter filter) {
         Envelope result = new Envelope();
-        if (filter instanceof And) {
+        if (filter instanceof And and) {
             Envelope bounds = new Envelope();
-            for (Filter f : ((And) filter).getChildren()) {
+            for (Filter f : and.getChildren()) {
                 Envelope e = getEnvelope(f);
                 if (e == null) {
                     return null;
@@ -211,18 +211,17 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
                 }
             }
             result = bounds;
-        } else if (filter instanceof BinarySpatialOperator) {
-            BinarySpatialOperator gf = (BinarySpatialOperator) filter;
+        } else if (filter instanceof BinarySpatialOperator gf) {
             if (supportedFilterTypes.contains(gf.getClass())) {
                 Expression lg = gf.getExpression1();
                 Expression rg = gf.getExpression2();
-                if (lg instanceof Literal) {
-                    Geometry g = (Geometry) ((Literal) lg).getValue();
+                if (lg instanceof Literal literal1) {
+                    Geometry g = (Geometry) literal1.getValue();
                     if (rg instanceof PropertyName) {
                         result = g.getEnvelopeInternal();
                     }
-                } else if (rg instanceof Literal) {
-                    Geometry g = (Geometry) ((Literal) rg).getValue();
+                } else if (rg instanceof Literal literal) {
+                    Geometry g = (Geometry) literal.getValue();
                     if (lg instanceof PropertyName) {
                         result = g.getEnvelopeInternal();
                     }

@@ -257,8 +257,7 @@ public class CycleSchemaClassTemplate
     stringBuffer.append(superType);
     stringBuffer.append(TEXT_34);
     
-            if (type instanceof ComplexType && !typeBindings.containsKey(name)) {
-                ComplexType cType = (ComplexType)type;
+            if (type instanceof ComplexType cType && !typeBindings.containsKey(name)) {
 
     stringBuffer.append(TEXT_35);
     

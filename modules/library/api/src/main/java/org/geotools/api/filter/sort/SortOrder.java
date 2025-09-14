@@ -12,6 +12,7 @@ package org.geotools.api.filter.sort;
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.OGC_02059;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -26,6 +27,7 @@ import org.geotools.api.util.CodeList;
  */
 public final class SortOrder extends CodeList<SortOrder> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 7840334200112859571L;
 
     /** The list of enumeration available in this virtual machine. <strong>Must be declared first!</strong>. */

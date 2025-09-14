@@ -62,8 +62,7 @@ public class AbstractCalcResult implements CalcResult {
     @Override
     public int toInt() {
         Object value = getValue();
-        if (value instanceof Number) {
-            Number number = (Number) value;
+        if (value instanceof Number number) {
             return number.intValue();
         } else {
             return 0;
@@ -73,8 +72,7 @@ public class AbstractCalcResult implements CalcResult {
     @Override
     public double toDouble() {
         Object value = getValue();
-        if (value instanceof Number) {
-            Number number = (Number) value;
+        if (value instanceof Number number) {
             return number.doubleValue();
         } else {
             return 0;
@@ -84,8 +82,7 @@ public class AbstractCalcResult implements CalcResult {
     @Override
     public long toLong() {
         Object value = getValue();
-        if (value instanceof Number) {
-            Number number = (Number) value;
+        if (value instanceof Number number) {
             return number.longValue();
         } else {
             return 0;
@@ -95,8 +92,7 @@ public class AbstractCalcResult implements CalcResult {
     @Override
     public float toFloat() {
         Object value = getValue();
-        if (value instanceof Number) {
-            Number number = (Number) value;
+        if (value instanceof Number number) {
             return number.floatValue();
         } else {
             return 0f;
@@ -113,7 +109,7 @@ public class AbstractCalcResult implements CalcResult {
     @Override
     public Envelope toEnvelope() {
         Object value = getValue();
-        if (value instanceof Envelope) return (Envelope) value;
+        if (value instanceof Envelope envelope) return envelope;
         else return null;
     }
 
@@ -131,8 +127,7 @@ public class AbstractCalcResult implements CalcResult {
             return null;
         }
 
-        if (value instanceof Set) {
-            Set set = (Set) value;
+        if (value instanceof Set set) {
 
             return set;
         }

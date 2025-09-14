@@ -209,8 +209,8 @@ public class FeatureTypeTransformer extends TransformerBase {
          */
         @Override
         public void encode(Object o) throws IllegalArgumentException {
-            if (o instanceof SimpleFeatureType) {
-                encode((SimpleFeatureType) o);
+            if (o instanceof SimpleFeatureType type) {
+                encode(type);
             } else {
                 throw new IllegalArgumentException("Translator does not know how to translate "
                         + o.getClass().getName());

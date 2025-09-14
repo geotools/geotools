@@ -214,7 +214,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         namespaceAwareFilterFactory = new FilterFactoryImplNamespaceAware(namespaces);
 
         Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS);
-        includeMandatory = includeProps instanceof Boolean && ((Boolean) includeProps).booleanValue();
+        includeMandatory = includeProps instanceof Boolean b && b.booleanValue();
 
         if (mapping.isDenormalised()) {
             // we need to disable the max number of features retrieved so we can
@@ -242,8 +242,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
 
         if (unrolledQuery == null) {
             unrolledQuery = getUnrolledQuery(query);
-            if (query instanceof JoiningQuery && unrolledQuery instanceof JoiningQuery) {
-                ((JoiningQuery) unrolledQuery).setRootMapping(((JoiningQuery) query).getRootMapping());
+            if (query instanceof JoiningQuery source && unrolledQuery instanceof JoiningQuery target) {
+                target.setRootMapping(source.getRootMapping());
             }
         }
 
@@ -279,8 +279,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 if (includeMandatory) {
                     PropertyName targetProp = namespaceAwareFilterFactory.property(targetSteps.toString());
                     Object descr = targetProp.evaluate(targetDescriptor.getType());
-                    if (descr instanceof PropertyDescriptor) {
-                        if (((PropertyDescriptor) descr).getMinOccurs() >= 1) {
+                    if (descr instanceof PropertyDescriptor descriptor) {
+                        if (descriptor.getMinOccurs() >= 1) {
                             selectedMapping.add(attMapping);
                             selectedProperties.put(attMapping, new ArrayList<>());
                             alreadyAdded = true;
@@ -576,15 +576,15 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             Name propName = entry.getKey();
             Object propExpr = entry.getValue();
             Object propValue;
-            if (propExpr instanceof Expression) {
-                propValue = getValue((Expression) propExpr, source);
+            if (propExpr instanceof Expression expression) {
+                propValue = getValue(expression, source);
             } else {
                 propValue = propExpr;
             }
             if (propValue != null) {
-                if (propValue instanceof Collection) {
-                    if (!((Collection) propValue).isEmpty()) {
-                        propValue = ((Collection) propValue).iterator().next();
+                if (propValue instanceof Collection collection) {
+                    if (!collection.isEmpty()) {
+                        propValue = collection.iterator().next();
                         targetAttributes.put(propName, propValue);
                     }
                 } else {

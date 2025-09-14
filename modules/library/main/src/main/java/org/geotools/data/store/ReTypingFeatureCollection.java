@@ -78,10 +78,10 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
      * if it's a count visitor accessing no properties at all
      */
     public static boolean isTypeCompatible(FeatureVisitor visitor, SimpleFeatureType featureType) {
-        if (visitor instanceof FeatureAttributeVisitor) {
+        if (visitor instanceof FeatureAttributeVisitor attributeVisitor) {
             // pass through if the target schema contains all the necessary attributes
             FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
-            for (Expression e : ((FeatureAttributeVisitor) visitor).getExpressions()) {
+            for (Expression e : attributeVisitor.getExpressions()) {
                 e.accept(extractor, null);
             }
 

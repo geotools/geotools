@@ -45,7 +45,7 @@ public class YsldParser extends YamlParser {
         try {
             return new URL(uri);
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("'%s' is not a valid URI", uri), e);
+            throw new IllegalArgumentException("'%s' is not a valid URI".formatted(uri), e);
         }
     };
 

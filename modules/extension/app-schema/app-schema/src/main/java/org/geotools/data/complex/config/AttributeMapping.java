@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex.config;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import java.util.Map;
  * @since 2.4
  */
 public class AttributeMapping implements Serializable {
+    @Serial
     private static final long serialVersionUID = 3624951889528331592L;
 
     /** XPath expression addressing the target attribute in a target FeatureType. */

@@ -19,6 +19,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,6 +51,7 @@ import org.geotools.util.UnmodifiableArrayList;
  */
 public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor implements ParameterDescriptorGroup {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4613190550542423839L;
 
     /** The maximum number of times that values for this parameter group or parameter are required. */
@@ -180,6 +182,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      */
     private static final class AsList extends UnmodifiableArrayList<GeneralParameterDescriptor> {
         /** For compatibility with different versions. */
+        @Serial
         private static final long serialVersionUID = -2116304004367396735L;
 
         /** The element as a set. Will be constructed only when first needed. */
@@ -246,12 +249,12 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
                     if (nameMatches(param, name)) {
                         return param;
                     }
-                } else if (param instanceof DefaultParameterDescriptorGroup) {
+                } else if (param instanceof DefaultParameterDescriptorGroup group) {
                     if (subgroups == null) {
                         subgroups = new LinkedList<>();
                     }
                     assert !subgroups.contains(param) : param;
-                    subgroups.add((DefaultParameterDescriptorGroup) param);
+                    subgroups.add(group);
                 }
             }
             /*

@@ -249,8 +249,7 @@ public class JTSFactoryFinder extends FactoryFinder {
              * If hint is only a class instead of an actual implementation,
              * accepts instances of this class or any subclasses.
              */
-            if (actual != null && requested instanceof Class) {
-                Class<?> cast = (Class<?>) requested;
+            if (actual != null && requested instanceof Class<?> cast) {
                 return cast.isAssignableFrom(actual.getClass());
             }
             return false;

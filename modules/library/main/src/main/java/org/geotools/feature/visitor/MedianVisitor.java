@@ -90,8 +90,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return; // skip
         }
 
-        if (result instanceof Comparable) {
-            Comparable value = (Comparable) result;
+        if (result instanceof Comparable value) {
             list.add(value);
         } else {
             throw new IllegalStateException("Expression is not comparable!");
@@ -198,8 +197,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 return this;
             }
 
-            if (resultsToAdd instanceof MedianResult) {
-                MedianResult moreResults = (MedianResult) resultsToAdd;
+            if (resultsToAdd instanceof MedianResult moreResults) {
                 // ensure both MedianResults are NOT optimized
                 if (isOptimized() || moreResults.isOptimized()) {
                     throw new IllegalArgumentException("Optimized median results cannot be merged.");
@@ -251,9 +249,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
             Object input1 = list.get(index - 1);
             Object input2 = list.get(index);
 
-            if (input1 instanceof Number && input2 instanceof Number) {
-                Number num1 = (Number) input1;
-                Number num2 = (Number) input2;
+            if (input1 instanceof Number num1 && input2 instanceof Number num2) {
                 Number[] numbers = new Number[2];
                 numbers[0] = num1;
                 numbers[1] = num2;

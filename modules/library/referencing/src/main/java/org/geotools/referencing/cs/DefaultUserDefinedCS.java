@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.api.referencing.cs.UserDefinedCS;
@@ -36,6 +37,7 @@ import org.geotools.api.referencing.cs.UserDefinedCS;
  */
 public class DefaultUserDefinedCS extends AbstractCS implements UserDefinedCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4904091898305706316L;
 
     /**

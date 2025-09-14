@@ -274,14 +274,12 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
 
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if (object instanceof FeatureCollection) {
-            FeatureCollection features = (FeatureCollection) object;
+        if (object instanceof FeatureCollection features) {
             if ("id".equals(name.getLocalPart())) {
                 return features.getID();
             }
         }
-        if (object instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) object;
+        if (object instanceof SimpleFeature feature) {
 
             if ("id".equals(name.getLocalPart())) {
                 return feature.getID();

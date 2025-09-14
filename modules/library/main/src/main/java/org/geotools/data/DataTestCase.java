@@ -94,8 +94,7 @@ public abstract class DataTestCase {
     public DataTestCase() {}
 
     protected int expected(Filter filter) {
-        if (filter instanceof Id) {
-            Id id = (Id) filter;
+        if (filter instanceof Id id) {
             return id.getIDs().size();
         }
         return -1;

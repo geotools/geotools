@@ -18,7 +18,7 @@ package org.geotools.vsi;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 import org.gdal.gdal.Dataset;
 
@@ -56,8 +56,8 @@ public class VSIDataset {
      * @return {@link VSIDataset} representation of the input
      */
     public static VSIDataset fromObject(Object input) {
-        if (input instanceof String) {
-            return new VSIDataset((String) input);
+        if (input instanceof String string) {
+            return new VSIDataset(string);
         }
 
         throw new RuntimeException("input object must be a String type");
@@ -80,7 +80,7 @@ public class VSIDataset {
     private File getTempFile() {
         final String fileName = VSIUtils.getFileName(location) + ".vrt";
         final String tempDir = System.getProperty("java.io.tmpdir");
-        final File temp = Paths.get(tempDir, fileName).toFile();
+        final File temp = Path.of(tempDir, fileName).toFile();
 
         temp.deleteOnExit();
 

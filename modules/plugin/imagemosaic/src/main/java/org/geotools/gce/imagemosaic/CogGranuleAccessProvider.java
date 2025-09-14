@@ -54,8 +54,8 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider imple
         // A Cog Provider will always have at least a streamSpi and an ImageReaderSpi
         this(getHints(bean));
         SourceSPIProviderFactory urlSourceSpiProvider = bean.getUrlSourceSPIProvider();
-        if (urlSourceSpiProvider instanceof CogConfiguration) {
-            cogConfig = (CogConfiguration) urlSourceSpiProvider;
+        if (urlSourceSpiProvider instanceof CogConfiguration configuration) {
+            cogConfig = configuration;
         } else {
             throw new RuntimeException("This access provider needs a URL Source SPI Provider of "
                     + "type CogConfiguration whilst "

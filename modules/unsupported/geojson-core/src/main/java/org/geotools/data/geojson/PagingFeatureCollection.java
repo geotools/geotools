@@ -99,11 +99,9 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
                     // call the reader again, but do not delegate to avoid creating a series of
                     // nested objects (the next collection might contain another and so on)
                     SimpleFeatureCollection features = readNext(nextPage);
-                    if (features instanceof PagingFeatureCollection) {
-                        this.nextPage = ((PagingFeatureCollection) features).getNext();
-                        this.delegate = ((PagingFeatureCollection) features)
-                                .getFirstCollection()
-                                .features();
+                    if (features instanceof PagingFeatureCollection collection) {
+                        this.nextPage = collection.getNext();
+                        this.delegate = collection.getFirstCollection().features();
                     } else {
                         this.nextPage = null;
                         this.delegate = features.features();

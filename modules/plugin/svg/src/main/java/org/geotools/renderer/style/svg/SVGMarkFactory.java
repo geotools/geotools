@@ -65,10 +65,9 @@ public class SVGMarkFactory implements MarkFactory {
             return null;
         }
         Shape result = null;
-        if (node instanceof ShapeNode) {
-            result = ((ShapeNode) node).getShape();
-        } else if (node instanceof CompositeGraphicsNode) {
-            CompositeGraphicsNode composite = (CompositeGraphicsNode) node;
+        if (node instanceof ShapeNode shapeNode) {
+            result = shapeNode.getShape();
+        } else if (node instanceof CompositeGraphicsNode composite) {
             for (Object object : composite.getChildren()) {
                 Shape subShape = getShape((GraphicsNode) object);
                 if (subShape != null) {

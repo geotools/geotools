@@ -372,8 +372,8 @@ public class Preprocessor extends Format {
             table.nextColumn();
             table.write(Classes.getShortClassName(object));
             table.nextColumn();
-            if (object instanceof IdentifiedObject) {
-                table.write(((IdentifiedObject) object).getName().getCode());
+            if (object instanceof IdentifiedObject identifiedObject) {
+                table.write(identifiedObject.getName().getCode());
             }
             table.nextLine();
         }

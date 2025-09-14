@@ -276,8 +276,8 @@ public class WMTSCoverageReaderTest {
         } catch (SAXException | ParserConfigurationException | IOException e) {
             throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
         }
-        if (object instanceof ServiceException) {
-            throw (ServiceException) object;
+        if (object instanceof ServiceException exception) {
+            throw exception;
         }
 
         return new WMTSCapabilities((CapabilitiesType) object);

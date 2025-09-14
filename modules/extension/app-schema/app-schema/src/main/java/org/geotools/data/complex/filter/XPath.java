@@ -254,14 +254,14 @@ public class XPath extends XPathUtil {
                         int minOccurs = actualDescriptor.getMinOccurs();
                         int maxOccurs = actualDescriptor.getMaxOccurs();
                         boolean nillable = actualDescriptor.isNillable();
-                        if (actualDescriptor instanceof GeometryDescriptor) {
+                        if (actualDescriptor instanceof GeometryDescriptor descriptor) {
                             // important to maintain CRS information encoding
                             if (Geometry.class.isAssignableFrom(targetNodeType.getBinding())) {
                                 if (!(targetNodeType instanceof GeometryType)) {
                                     targetNodeType = new GeometryTypeImpl(
                                             targetNodeType.getName(),
                                             targetNodeType.getBinding(),
-                                            ((GeometryDescriptor) actualDescriptor).getCoordinateReferenceSystem(),
+                                            descriptor.getCoordinateReferenceSystem(),
                                             targetNodeType.isIdentified(),
                                             targetNodeType.isAbstract(),
                                             targetNodeType.getRestrictions(),
@@ -340,8 +340,8 @@ public class XPath extends XPathUtil {
      */
     private Attribute setSimpleContentValue(Attribute attribute, Object value) {
         Property simpleContent = null;
-        if (attribute instanceof ComplexAttribute) {
-            simpleContent = ((ComplexAttribute) attribute).getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
+        if (attribute instanceof ComplexAttribute complexAttribute) {
+            simpleContent = complexAttribute.getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
         }
         if (simpleContent == null) {
             simpleContent = buildSimpleContent(attribute.getType(), value);
@@ -404,8 +404,8 @@ public class XPath extends XPathUtil {
 
         final Name attributeName = descriptor.getName();
 
-        Attribute leafAttribute = parent instanceof ComplexAttribute
-                ? findLeafAttribute((ComplexAttribute) parent, attributeName, index, isXlinkRef, convertedValue)
+        Attribute leafAttribute = parent instanceof ComplexAttribute ca
+                ? findLeafAttribute(ca, attributeName, index, isXlinkRef, convertedValue)
                 : null;
 
         // Build a new leaf if either:
@@ -435,7 +435,7 @@ public class XPath extends XPathUtil {
                     leafAttribute = builder.add(id, convertedValue, attributeName, targetNodeType);
                 }
             } else if (descriptor.getType().getName().equals(XSSchema.ANYTYPE_TYPE.getName())
-                    && (value == null || value instanceof Collection && ((Collection) value).isEmpty())) {
+                    && (value == null || value instanceof Collection collection && collection.isEmpty())) {
                 // casting anyType as a complex attribute so we can set xlink:href
                 leafAttribute = builder.addComplexAnyTypeAttribute(convertedValue, descriptor, id);
             } else {
@@ -459,8 +459,8 @@ public class XPath extends XPathUtil {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private void addProperty(final Attribute parent, Attribute attribute) {
-        if (parent instanceof ComplexAttributeImpl) {
-            ((ComplexAttributeImpl) parent).addValue(attribute);
+        if (parent instanceof ComplexAttributeImpl impl) {
+            impl.addValue(attribute);
         } else {
             Collection currValue = (Collection) parent.getValue();
             List newValue = new ArrayList<>(currValue);
@@ -480,9 +480,9 @@ public class XPath extends XPathUtil {
             return null;
         }
 
-        if (parent instanceof ComplexAttributeImpl) {
+        if (parent instanceof ComplexAttributeImpl impl) {
             // faster than parent.getProperties(attributeName)
-            if (((ComplexAttributeImpl) parent).findLast(attributeName).isEmpty()) {
+            if (impl.findLast(attributeName).isEmpty()) {
                 return null;
             }
         } else if (parent.getProperties(attributeName).isEmpty()) {
@@ -538,11 +538,10 @@ public class XPath extends XPathUtil {
 
         // try to avoid calling parent.getProperties(attributeName) because it's a performance
         // killer
-        if (parent instanceof ComplexAttributeImpl) {
+        if (parent instanceof ComplexAttributeImpl impl) {
             Predicate<Property> nameFilter = p -> attributeName.equals(p.getName());
             Predicate<Property> attFilter = p -> Attribute.class.isInstance(p);
-            found = ((ComplexAttributeImpl) parent)
-                    .findAll(attFilter.and(nameFilter))
+            found = impl.findAll(attFilter.and(nameFilter))
                     .map(Attribute.class::cast)
                     .filter(filter)
                     .findFirst();
@@ -561,9 +560,9 @@ public class XPath extends XPathUtil {
             int valueIndex = 1;
             if (attributeName.equals(stepValue.getName())) {
                 Object mappedIndex;
-                if (stepValue instanceof PropertyImpl) {
+                if (stepValue instanceof PropertyImpl impl) {
                     // non-api method
-                    mappedIndex = ((PropertyImpl) stepValue).getUserData(MAPPED_ATTRIBUTE_INDEX);
+                    mappedIndex = impl.getUserData(MAPPED_ATTRIBUTE_INDEX);
                 } else {
                     mappedIndex = stepValue.getUserData().get(MAPPED_ATTRIBUTE_INDEX);
                 }
@@ -588,11 +587,8 @@ public class XPath extends XPathUtil {
 
     private Attribute getLastAttribute(ComplexAttribute parent, Name attributeName) {
         // try to avoid parent.getProperties(Name), performance killer
-        if (parent instanceof ComplexAttributeImpl) {
-            return ((ComplexAttributeImpl) parent)
-                    .findLast(attributeName)
-                    .map(Attribute.class::cast)
-                    .orElse(null);
+        if (parent instanceof ComplexAttributeImpl impl) {
+            return impl.findLast(attributeName).map(Attribute.class::cast).orElse(null);
         }
         final List<Attribute> values = getAttributes(parent, attributeName);
         return values.isEmpty() ? null : values.get(values.size() - 1);
@@ -604,8 +600,8 @@ public class XPath extends XPathUtil {
         if (currStepValue.isEmpty()) {
             return List.of();
         }
-        if (currStepValue instanceof List) {
-            return (List) currStepValue;
+        if (currStepValue instanceof List list) {
+            return list;
         }
         return new ArrayList<>((Collection) currStepValue);
     }
@@ -690,11 +686,11 @@ public class XPath extends XPathUtil {
      */
     private boolean isFeatureChainedSimpleContent(AttributeDescriptor descriptor, Object value) {
         boolean isFeatureChainedSimpleContent = false;
-        if (value instanceof Collection && !isEmpty(value)) {
-            Object f = ((Collection<?>) value).iterator().next();
-            if (f instanceof Feature) {
-                Name featureName = ((Feature) f).getDescriptor().getName();
-                if (((Feature) f).getProperty(featureName) != null) {
+        if (value instanceof Collection<?> collection && !isEmpty(value)) {
+            Object f = collection.iterator().next();
+            if (f instanceof Feature feature) {
+                Name featureName = feature.getDescriptor().getName();
+                if (feature.getProperty(featureName) != null) {
                     isFeatureChainedSimpleContent = true;
                 }
             }
@@ -706,8 +702,8 @@ public class XPath extends XPathUtil {
         if (convertedValue == null) {
             return true;
         }
-        if (convertedValue instanceof Collection) {
-            return ((Collection<?>) convertedValue).isEmpty();
+        if (convertedValue instanceof Collection<?> collection) {
+            return collection.isEmpty();
         }
         return false;
     }
@@ -722,15 +718,14 @@ public class XPath extends XPathUtil {
             final boolean isSimpleContent = Types.isSimpleContentType(type);
             final boolean canHaveTextContent = Types.canHaveTextContent(type);
 
-            if (value instanceof Collection) {
-                Collection<?> values = (Collection<?>) value;
+            if (value instanceof Collection<?> values) {
                 if (!isSimpleContent && !canHaveTextContent) {
                     return value; // no conversion required
                 }
                 return values.stream()
                         .map(v -> {
-                            if (v instanceof Property) {
-                                return (Property) v;
+                            if (v instanceof Property property) {
+                                return property;
                             } else if (isSimpleContent) {
                                 return buildSimpleContent(type, v);
                             } else if (canHaveTextContent) {
@@ -757,8 +752,7 @@ public class XPath extends XPathUtil {
             String collectionString = value.toString();
             return collectionString.substring(1, collectionString.length() - 1);
         }
-        if (value instanceof Literal) {
-            final Literal literal = (Literal) value;
+        if (value instanceof Literal literal) {
             return literal.evaluate(literal.getValue(), binding);
         }
         return FF.literal(value).evaluate(value, binding);

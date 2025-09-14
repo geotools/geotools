@@ -305,9 +305,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             Filter filter = updatedQuery.getFilter();
 
             // TODO: Improve this check since it may contain multiple filters
-            if (!"location".equalsIgnoreCase(locationAttributeName) && filter instanceof LikeFilterImpl) {
-                // Rewrap the filter to update the file search
-                LikeFilterImpl likeFilter = (LikeFilterImpl) filter;
+            if (!"location".equalsIgnoreCase(locationAttributeName) && filter instanceof LikeFilterImpl likeFilter) {
                 AttributeExpressionImpl impl = (AttributeExpressionImpl) likeFilter.getExpression();
                 String attribute = impl.getPropertyName();
                 String value = likeFilter.getLiteral();

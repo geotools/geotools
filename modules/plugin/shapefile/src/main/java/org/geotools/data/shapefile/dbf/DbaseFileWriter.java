@@ -216,8 +216,8 @@ public class DbaseFileWriter implements Closeable {
                 break;
             case 'L':
             case 'l':
-                if (obj instanceof Boolean) {
-                    o = ((Boolean) obj).booleanValue() ? "T" : "F";
+                if (obj instanceof Boolean boolean1) {
+                    o = boolean1.booleanValue() ? "T" : "F";
                 } else {
                     o = "?";
                 }
@@ -239,8 +239,8 @@ public class DbaseFileWriter implements Closeable {
                 break;
             case 'D':
             case 'd':
-                if (obj instanceof java.util.Calendar) {
-                    o = formatter.getFieldString(((Calendar) obj).getTime());
+                if (obj instanceof Calendar calendar) {
+                    o = formatter.getFieldString(calendar.getTime());
 
                 } else {
                     o = formatter.getFieldString((Date) obj);

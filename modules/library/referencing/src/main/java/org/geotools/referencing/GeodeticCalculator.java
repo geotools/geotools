@@ -218,20 +218,20 @@ public class GeodeticCalculator {
 
     /** Returns the first two-dimensional geographic CRS using standard axis, creating one if needed. */
     private static GeographicCRS getGeographicCRS(final CoordinateReferenceSystem crs) {
-        if (crs instanceof GeographicCRS) {
+        if (crs instanceof GeographicCRS rS) {
             final CoordinateSystem cs = crs.getCoordinateSystem();
             if (cs.getDimension() == 2
                     && isStandard(cs.getAxis(0), AxisDirection.EAST)
                     && isStandard(cs.getAxis(1), AxisDirection.NORTH)) {
-                return (GeographicCRS) crs;
+                return rS;
             }
         }
         final Datum datum = CRSUtilities.getDatum(crs);
-        if (datum instanceof GeodeticDatum) {
-            return new DefaultGeographicCRS("Geodetic", (GeodeticDatum) datum, DefaultEllipsoidalCS.GEODETIC_2D);
+        if (datum instanceof GeodeticDatum geodeticDatum) {
+            return new DefaultGeographicCRS("Geodetic", geodeticDatum, DefaultEllipsoidalCS.GEODETIC_2D);
         }
-        if (crs instanceof CompoundCRS) {
-            for (final CoordinateReferenceSystem component : ((CompoundCRS) crs).getCoordinateReferenceSystems()) {
+        if (crs instanceof CompoundCRS rS) {
+            for (final CoordinateReferenceSystem component : rS.getCoordinateReferenceSystems()) {
                 final GeographicCRS candidate = getGeographicCRS(component);
                 if (candidate != null) {
                     return candidate;

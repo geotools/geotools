@@ -20,6 +20,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.ImageLayout;
@@ -58,6 +59,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
     public static final String ROI = "roi";
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

@@ -73,9 +73,9 @@ public interface Request {
      * (containin the response data), this method must return an appropriate Response object.
      */
     default Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-        throw new UnsupportedOperationException(String.format(
-                "%s doesn't implement createResponse with org.geotools.http.HTTPResponse.",
-                this.getClass().getName()));
+        throw new UnsupportedOperationException(
+                "%s doesn't implement createResponse with org.geotools.http.HTTPResponse."
+                        .formatted(this.getClass().getName()));
     }
 
     /**

@@ -99,8 +99,7 @@ public class DefaultDateAndTime extends DefaultTemporalPosition implements DateA
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultDateAndTime && super.equals(object)) {
-            final DefaultDateAndTime that = (DefaultDateAndTime) object;
+        if (object instanceof DefaultDateAndTime that && super.equals(object)) {
 
             return Utilities.equals(this.calendarDate, that.calendarDate)
                     && Utilities.equals(this.calendarEraName, that.calendarEraName)

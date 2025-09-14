@@ -90,13 +90,13 @@ public class WPSProcess extends AbstractProcess {
                 // if our value is some sort of collection, then created multiple
                 // dataTypes for this inputdescriptiontype.
                 List<EObject> list = new ArrayList<>();
-                if (inputValue instanceof Map) {
-                    for (Object inVal : ((Map) inputValue).values()) {
+                if (inputValue instanceof Map map) {
+                    for (Object inVal : map.values()) {
                         DataType createdInput = WPSUtils.createInputDataType(inVal, idt);
                         list.add(createdInput);
                     }
-                } else if (inputValue instanceof Collection) {
-                    for (Object inVal : (Collection) inputValue) {
+                } else if (inputValue instanceof Collection collection) {
+                    for (Object inVal : collection) {
                         DataType createdInput = WPSUtils.createInputDataType(inVal, idt);
                         list.add(createdInput);
                     }

@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.extent;
 
+import java.io.Serial;
 import java.util.Date;
 import org.geotools.api.metadata.extent.TemporalExtent;
 import org.geotools.api.temporal.TemporalPrimitive;
@@ -35,6 +36,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class TemporalExtentImpl extends MetadataEntity implements TemporalExtent {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3668140516657118045L;
 
     /**

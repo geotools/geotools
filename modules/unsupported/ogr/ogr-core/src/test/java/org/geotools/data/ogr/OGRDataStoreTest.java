@@ -260,8 +260,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
             assertEquals(ad1.isNillable(), ad2.isNillable());
             assertEquals(ad1.getMinOccurs(), ad2.getMinOccurs());
             assertEquals(ad1.getMaxOccurs(), ad2.getMaxOccurs());
-            if (ad1 instanceof GeometryDescriptor) {
-                GeometryDescriptor gd1 = (GeometryDescriptor) ad1;
+            if (ad1 instanceof GeometryDescriptor gd1) {
                 GeometryDescriptor gd2 = (GeometryDescriptor) ad2;
                 assertTrue(CRS.equalsIgnoreMetadata(
                         gd1.getCoordinateReferenceSystem(), gd2.getCoordinateReferenceSystem()));

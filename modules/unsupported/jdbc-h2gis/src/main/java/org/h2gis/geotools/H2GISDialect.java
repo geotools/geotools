@@ -545,8 +545,7 @@ public class H2GISDialect extends BasicSQLDialect {
 
             // register all geometry columns in the database
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                if (att instanceof GeometryDescriptor) {
-                    GeometryDescriptor gd = (GeometryDescriptor) att;
+                if (att instanceof GeometryDescriptor gd) {
                     // lookup or reverse engineer the srid
                     int srid = 0;
                     if (gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID) != null) {

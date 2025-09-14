@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
@@ -42,6 +43,7 @@ import org.geotools.api.referencing.cs.PolarCS;
  */
 public class DefaultPolarCS extends AbstractCS implements PolarCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3960197260975470951L;
 
     /**

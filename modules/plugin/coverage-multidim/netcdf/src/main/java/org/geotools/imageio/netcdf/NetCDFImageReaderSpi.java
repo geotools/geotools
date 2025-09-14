@@ -156,19 +156,20 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // FileImageInputStreamExtImpl
     public boolean canDecodeInput(Object source) throws IOException {
         URI input = null;
-        if (source instanceof URI) {
-            input = (URI) source;
-        } else if (source instanceof File) {
-            input = ((File) source).toURI();
-        } else if (source instanceof FileImageInputStreamExtImpl) {
-            input = ((FileImageInputStreamExtImpl) source).getFile().toURI();
+        if (source instanceof URI rI) {
+            input = rI;
+        } else if (source instanceof File file) {
+            input = file.toURI();
+        } else if (source instanceof FileImageInputStreamExtImpl impl) {
+            input = impl.getFile().toURI();
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Found a valid FileImageInputStream");
             }
-        } else if (source instanceof URIImageInputStream) {
-            input = ((URIImageInputStream) source).getUri();
+        } else if (source instanceof URIImageInputStream stream) {
+            input = stream.getUri();
         }
 
         if (input != null) {

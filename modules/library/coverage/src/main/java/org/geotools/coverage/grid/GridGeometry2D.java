@@ -22,6 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
@@ -69,6 +70,7 @@ import org.geotools.util.factory.Hints;
  */
 public class GridGeometry2D extends GeneralGridGeometry {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3989363771504614419L;
 
     /** Helpers methods for 2D CRS creation. Will be constructed only when first needed. */
@@ -175,8 +177,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public GridGeometry2D(final GridGeometry other) {
         super(other);
-        if (other instanceof GridGeometry2D) {
-            final GridGeometry2D gg = (GridGeometry2D) other;
+        if (other instanceof GridGeometry2D gg) {
             gridToCRS2D = gg.gridToCRS2D;
             gridFromCRS2D = gg.gridFromCRS2D;
             gridDimensionX = gg.gridDimensionX;
@@ -458,8 +459,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public GridGeometry2D(final Rectangle gridRange, final Rectangle2D userRange) {
         this(
-                gridRange instanceof GridEnvelope2D ? (GridEnvelope2D) gridRange : new GridEnvelope2D(gridRange),
-                userRange instanceof Bounds ? (Bounds) userRange : ReferencedEnvelope.create(userRange, null));
+                gridRange instanceof GridEnvelope2D ged ? ged : new GridEnvelope2D(gridRange),
+                userRange instanceof Bounds b ? b : ReferencedEnvelope.create(userRange, null));
     }
 
     /**
@@ -1098,8 +1099,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
             throw new MismatchedDimensionException(MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, arg0, 2));
         }
 
-        if (point instanceof Point2D) {
-            return (Point2D) point;
+        if (point instanceof Point2D point2D) {
+            return point2D;
         }
         assert axisDimensionX < axisDimensionY;
         return new Point2D.Double(point.getOrdinate(axisDimensionX), point.getOrdinate(axisDimensionY));

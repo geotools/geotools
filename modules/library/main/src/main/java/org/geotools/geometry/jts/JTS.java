@@ -829,8 +829,7 @@ public final class JTS {
                     new Coordinate(envelope.getMinX(), envelope.getMinY())
                 }),
                 null);
-        if (envelope instanceof ReferencedEnvelope) {
-            ReferencedEnvelope refEnv = (ReferencedEnvelope) envelope;
+        if (envelope instanceof ReferencedEnvelope refEnv) {
             setCRS(polygon, refEnv.getCoordinateReferenceSystem());
         }
         return polygon;
@@ -849,14 +848,14 @@ public final class JTS {
         }
         String srsName = null;
         Object userData = geom.getUserData();
-        if (userData != null && userData instanceof String) {
-            srsName = (String) userData;
+        if (userData != null && userData instanceof String string) {
+            srsName = string;
         } else if (geom.getSRID() > 0) {
             srsName = "EPSG:" + geom.getSRID();
         }
         CoordinateReferenceSystem crs = null;
-        if (userData != null && userData instanceof CoordinateReferenceSystem) {
-            crs = (CoordinateReferenceSystem) userData;
+        if (userData != null && userData instanceof CoordinateReferenceSystem system) {
+            crs = system;
         } else if (srsName != null) {
             try {
                 crs = CRS.decode(srsName);
@@ -1123,9 +1122,9 @@ public final class JTS {
     private static Geometry smoothLineString(
             GeometryFactory factory, GeometrySmoother smoother, Geometry geom, double fit) {
 
-        if (geom instanceof LinearRing) {
+        if (geom instanceof LinearRing ring) {
             // Treat as a Polygon
-            Polygon poly = factory.createPolygon((LinearRing) geom, null);
+            Polygon poly = factory.createPolygon(ring, null);
             Polygon smoothed = smoother.smooth(poly, fit);
             return smoothed.getExteriorRing();
 
@@ -1352,12 +1351,11 @@ public final class JTS {
         if (g == null) {
             throw new NullPointerException("The provided Geometry is null");
         }
-        if (g instanceof LineString) {
-            return removeCollinearVertices((LineString) g);
-        } else if (g instanceof Polygon) {
-            return removeCollinearVertices((Polygon) g);
-        } else if (g instanceof MultiPolygon) {
-            MultiPolygon mp = (MultiPolygon) g;
+        if (g instanceof LineString string) {
+            return removeCollinearVertices(string);
+        } else if (g instanceof Polygon polygon) {
+            return removeCollinearVertices(polygon);
+        } else if (g instanceof MultiPolygon mp) {
             Polygon[] parts = new Polygon[mp.getNumGeometries()];
             for (int i = 0; i < mp.getNumGeometries(); i++) {
                 Polygon part = (Polygon) mp.getGeometryN(i);
@@ -1390,12 +1388,11 @@ public final class JTS {
             return geometry;
         }
 
-        if (geometry instanceof LineString) {
-            return removeCollinearVertices((LineString) geometry);
-        } else if (geometry instanceof Polygon) {
-            return removeCollinearVertices((Polygon) geometry);
-        } else if (geometry instanceof MultiPolygon) {
-            MultiPolygon mp = (MultiPolygon) geometry;
+        if (geometry instanceof LineString string) {
+            return removeCollinearVertices(string);
+        } else if (geometry instanceof Polygon polygon) {
+            return removeCollinearVertices(polygon);
+        } else if (geometry instanceof MultiPolygon mp) {
             Polygon[] parts = new Polygon[mp.getNumGeometries()];
             for (int i = 0; i < mp.getNumGeometries(); i++) {
                 Polygon part = (Polygon) mp.getGeometryN(i);
@@ -1535,9 +1532,7 @@ public final class JTS {
                 && CRS.equalsIgnoreMetadata(a.getCoordinateReferenceSystem(), b.getCoordinateReferenceSystem());
         if (!flatEqual) return false;
 
-        if (a instanceof BoundingBox3D && b instanceof BoundingBox3D) {
-            BoundingBox3D a3 = (BoundingBox3D) a;
-            BoundingBox3D b3 = (BoundingBox3D) b;
+        if (a instanceof BoundingBox3D a3 && b instanceof BoundingBox3D b3) {
             return Math.abs(a3.getMinZ() - b3.getMinZ()) <= tolerance
                     && Math.abs(a3.getMaxZ() - b3.getMaxZ()) <= tolerance;
         } else if (a instanceof BoundingBox3D && !(b instanceof BoundingBox3D)
@@ -1557,10 +1552,9 @@ public final class JTS {
      */
     public static CoordinateReferenceSystem getCRS(Geometry geometry) {
         Object userData = geometry.getUserData();
-        if (userData != null && userData instanceof CoordinateReferenceSystem) {
-            return (CoordinateReferenceSystem) userData;
-        } else if (userData instanceof Map) {
-            Map<?, ?> userDataMap = (Map<?, ?>) userData;
+        if (userData != null && userData instanceof CoordinateReferenceSystem system) {
+            return system;
+        } else if (userData instanceof Map<?, ?> userDataMap) {
             CoordinateReferenceSystem crs =
                     (CoordinateReferenceSystem) userDataMap.get(CoordinateReferenceSystem.class);
             if (crs != null) {

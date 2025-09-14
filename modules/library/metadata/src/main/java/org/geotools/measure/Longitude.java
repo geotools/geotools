@@ -16,6 +16,8 @@
  */
 package org.geotools.measure;
 
+import java.io.Serial;
+
 /**
  * A longitude angle. Positive longitudes are East, while negative longitudes are West.
  *
@@ -27,6 +29,7 @@ package org.geotools.measure;
  */
 public final class Longitude extends Angle {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8614900608052762636L;
 
     /** Minimum legal value for longitude (-180°). */

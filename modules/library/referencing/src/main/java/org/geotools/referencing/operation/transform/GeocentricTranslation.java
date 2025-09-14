@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collections;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -72,6 +73,7 @@ import si.uom.SI;
  */
 public class GeocentricTranslation extends ProjectiveTransform {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -168669443433018655L;
 
     /** The parameter descriptor group. */
@@ -167,6 +169,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
      */
     public static class Provider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -7160250630666911608L;
 
         /**
@@ -401,6 +404,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
      */
     public static class ProviderSevenParam extends Provider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -6398226638364450229L;
 
         /** The maximal value for a rotation, in arc-second. */
@@ -516,6 +520,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
      */
     public static class ProviderFrameRotation extends ProviderSevenParam {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = 5513675854809530038L;
 
         /** The parameters group. */

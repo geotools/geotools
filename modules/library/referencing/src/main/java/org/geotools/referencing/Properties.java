@@ -63,8 +63,8 @@ final class Properties extends AbstractMap<String, Object> {
      */
     @Override
     public Object get(final Object key) {
-        if (key instanceof String) {
-            final String s = ((String) key).trim();
+        if (key instanceof String string) {
+            final String s = string.trim();
             for (int i = 0; i < KEYS.length; i++) {
                 if (KEYS[i].equalsIgnoreCase(s)) {
                     return get(i);
@@ -89,34 +89,34 @@ final class Properties extends AbstractMap<String, Object> {
             case 3:
                 return info.getRemarks();
             case 4: {
-                if (info instanceof ReferenceSystem) {
-                    return ((ReferenceSystem) info).getScope();
-                } else if (info instanceof Datum) {
-                    return ((Datum) info).getScope();
-                } else if (info instanceof CoordinateOperation) {
-                    return ((CoordinateOperation) info).getScope();
+                if (info instanceof ReferenceSystem system) {
+                    return system.getScope();
+                } else if (info instanceof Datum datum) {
+                    return datum.getScope();
+                } else if (info instanceof CoordinateOperation operation) {
+                    return operation.getScope();
                 }
                 break;
             }
             case 5: {
-                if (info instanceof ReferenceSystem) {
-                    return ((ReferenceSystem) info).getDomainOfValidity();
-                } else if (info instanceof Datum) {
-                    return ((Datum) info).getDomainOfValidity();
-                } else if (info instanceof CoordinateOperation) {
-                    return ((CoordinateOperation) info).getDomainOfValidity();
+                if (info instanceof ReferenceSystem system) {
+                    return system.getDomainOfValidity();
+                } else if (info instanceof Datum datum) {
+                    return datum.getDomainOfValidity();
+                } else if (info instanceof CoordinateOperation operation) {
+                    return operation.getDomainOfValidity();
                 }
                 break;
             }
             case 6: {
-                if (info instanceof CoordinateOperation) {
-                    return ((CoordinateOperation) info).getOperationVersion();
+                if (info instanceof CoordinateOperation operation) {
+                    return operation.getOperationVersion();
                 }
                 break;
             }
             case 7: {
-                if (info instanceof CoordinateOperation) {
-                    return ((CoordinateOperation) info)
+                if (info instanceof CoordinateOperation operation) {
+                    return operation
                             .getCoordinateOperationAccuracy()
                             .toArray(AbstractCoordinateOperation.EMPTY_ACCURACY_ARRAY);
                 }

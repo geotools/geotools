@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite;
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import org.eclipse.imagen.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.util.ImageUtilities;
@@ -31,6 +32,7 @@ import org.geotools.image.util.ImageUtilities;
 class DisposableGridCoverage extends GridCoverage2D {
 
     /** */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** A custom propertySource allowing to redefine properties (since getProperties return a clone) */
@@ -62,8 +64,8 @@ class DisposableGridCoverage extends GridCoverage2D {
         try {
             delegate.dispose(force);
             final RenderedImage image = delegate.getRenderedImage();
-            if (image instanceof PlanarImage) {
-                ImageUtilities.disposePlanarImageChain((PlanarImage) image);
+            if (image instanceof PlanarImage planarImage) {
+                ImageUtilities.disposePlanarImageChain(planarImage);
             }
         } finally {
             disposed = super.dispose(force);

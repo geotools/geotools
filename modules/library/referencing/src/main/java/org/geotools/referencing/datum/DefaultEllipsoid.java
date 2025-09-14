@@ -17,6 +17,7 @@
 package org.geotools.referencing.datum;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Map;
@@ -50,6 +51,7 @@ import si.uom.SI;
  */
 public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellipsoid, PROJFormattable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1149451543954764081L;
 
     /**

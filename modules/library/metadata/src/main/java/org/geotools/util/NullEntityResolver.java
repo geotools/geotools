@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -33,6 +34,7 @@ import org.xml.sax.ext.EntityResolver2;
 public class NullEntityResolver implements EntityResolver2, Serializable {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 1440071882791317708L;
 
     /** Singleton instance of PreventLocalEntityResolver */

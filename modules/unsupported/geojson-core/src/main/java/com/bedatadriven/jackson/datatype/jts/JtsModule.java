@@ -31,6 +31,7 @@ import com.bedatadriven.jackson.datatype.jts.serialization.GeometryDeserializer;
 import com.bedatadriven.jackson.datatype.jts.serialization.GeometrySerializer;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.io.Serial;
 import java.math.RoundingMode;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -45,6 +46,7 @@ import org.locationtech.jts.geom.Polygon;
 public class JtsModule extends SimpleModule {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 3387512874441967803L;
 
     public static int DEFAULT_MAX_DECIMALS = 6;

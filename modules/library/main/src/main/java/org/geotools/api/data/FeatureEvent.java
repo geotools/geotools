@@ -16,6 +16,7 @@
  */
 package org.geotools.api.data;
 
+import java.io.Serial;
 import java.util.EventObject;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
@@ -37,6 +38,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * @since GeoTools 2.0
  */
 public class FeatureEvent extends EventObject {
+    @Serial
     private static final long serialVersionUID = 3154238322369916485L;
 
     /**
@@ -212,8 +214,8 @@ public class FeatureEvent extends EventObject {
         this.type = type;
         this.bounds = bounds;
         this.filter = filter;
-        if (source instanceof FeatureSource) {
-            this.featureSource = (FeatureSource) source;
+        if (source instanceof FeatureSource featureSource1) {
+            this.featureSource = featureSource1;
         }
     }
 

@@ -624,8 +624,8 @@ public class NestedFilterToSQL extends FilterToSQL {
         filter.accept(extractor, null);
         Set<PropertyName> propertyNames = extractor.getPropertyNameSet();
         for (PropertyName property : propertyNames) {
-            if (property instanceof NestedAttributeExpression) {
-                return (NestedAttributeExpression) property;
+            if (property instanceof NestedAttributeExpression expression) {
+                return expression;
             }
         }
         return null;

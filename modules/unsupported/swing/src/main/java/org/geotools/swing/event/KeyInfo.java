@@ -56,7 +56,7 @@ public class KeyInfo {
         this.modifiers = modifiers;
 
         if (desc == null || desc.trim().length() == 0) {
-            this.desc = String.format("KeyInfo(%d, %d)", keyCode, modifiers);
+            this.desc = "KeyInfo(%d, %d)".formatted(keyCode, modifiers);
         } else {
             this.desc = desc;
         }

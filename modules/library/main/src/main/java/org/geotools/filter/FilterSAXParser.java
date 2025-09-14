@@ -291,11 +291,9 @@ public class FilterSAXParser {
                     ((LikeFilterImpl) curFilter).setMatchingCase(Boolean.parseBoolean(matchCase));
                 }
 
-                if (expression instanceof Literal) {
-                    Literal literal = (Literal) expression;
+                if (expression instanceof Literal literal) {
                     Object value = literal.getValue();
-                    if (value != null && value instanceof String) {
-                        String pattern = (String) value;
+                    if (value != null && value instanceof String pattern) {
 
                         ((LikeFilterImpl) curFilter).setLiteral(pattern);
                         ((LikeFilterImpl) curFilter).setWildCard(wildcard);

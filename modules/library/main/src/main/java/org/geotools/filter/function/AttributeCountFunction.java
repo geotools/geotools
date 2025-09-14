@@ -46,8 +46,8 @@ public class AttributeCountFunction extends FunctionExpressionImpl {
         Object value = ae.evaluate(feature);
         if (value == null) {
             return 0;
-        } else if (value instanceof Collection) {
-            return ((Collection<?>) value).size();
+        } else if (value instanceof Collection<?> collection) {
+            return collection.size();
         } else {
             return 1;
         }

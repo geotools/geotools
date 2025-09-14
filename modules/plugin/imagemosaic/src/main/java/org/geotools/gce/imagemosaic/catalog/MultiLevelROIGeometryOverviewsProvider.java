@@ -128,7 +128,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
             footprintOverviews = new ArrayList<>(nOverviews);
             for (int i = 0; i < nOverviews; i++) {
                 // Setting up the path of the overview's footprint file
-                String pathOverview = baseFullName + String.format(overviewSuffixFormat, i + 1);
+                String pathOverview = baseFullName + overviewSuffixFormat.formatted(i + 1);
                 Geometry overviewFootprint = loadFootprint(pathOverview, true);
                 footprintOverviews.add(overviewFootprint);
             }
@@ -160,8 +160,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
             path = baseFile.getAbsolutePath();
         } else {
             Object value = sf.getAttribute("location");
-            if (value != null && value instanceof String) {
-                String strValue = (String) value;
+            if (value != null && value instanceof String strValue) {
                 File file = Utils.getFile(strValue, baseFile);
                 path = file.getAbsolutePath();
             }
@@ -201,7 +200,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
         result.addAll(loadFootprintFiles(baseFullName, false));
         for (int i = 0; i < numOverviews; i++) {
             // Setting up the path of the overview's footprint file
-            String pathOverview = baseFullName + String.format(overviewSuffixFormat, i + 1);
+            String pathOverview = baseFullName + overviewSuffixFormat.formatted(i + 1);
             result.addAll(loadFootprintFiles(pathOverview, true));
         }
 

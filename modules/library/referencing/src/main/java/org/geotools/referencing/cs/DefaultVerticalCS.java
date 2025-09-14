@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.cs.AxisDirection;
@@ -45,6 +46,7 @@ import org.geotools.measure.Measure;
  */
 public class DefaultVerticalCS extends AbstractCS implements VerticalCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 1201155778896630499L;
     /**
      * A one-dimensional vertical CS with <var>{@linkplain DefaultCoordinateSystemAxis#GRAVITY_RELATED_HEIGHT

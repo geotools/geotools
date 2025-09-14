@@ -68,7 +68,7 @@ public class DocumentHandler extends XMLElementHandler {
         }
         if (hints != null && hints.containsKey(DEFAULT_NAMESPACE_HINT_KEY)) {
             Object t = hints.get(DEFAULT_NAMESPACE_HINT_KEY);
-            if (t instanceof Schema) ehf.startPrefixMapping("", (Schema) t);
+            if (t instanceof Schema schema) ehf.startPrefixMapping("", schema);
             else ehf.startPrefixMapping("", t.toString());
         }
         xeh = ehf.createElementHandler(namespaceURI, localName);

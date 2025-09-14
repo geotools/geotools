@@ -16,6 +16,7 @@
  */
 package org.geotools.map;
 
+import java.io.Serial;
 import java.util.EnumSet;
 import java.util.EventObject;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -27,6 +28,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * @author wolf
  */
 public class MapBoundsEvent extends EventObject {
+    @Serial
     private static final long serialVersionUID = -2063712912599101999L;
 
     /** Area of interest changed, mask used by {@link Type#BOUNDS} */

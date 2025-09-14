@@ -160,8 +160,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
             Object value = property.getValue();
             if (value == null) {
                 this.csvWriter.write("");
-            } else if (value instanceof Point) {
-                Point point = (Point) value;
+            } else if (value instanceof Point point) {
                 if (latlon && latIndex <= lngIndex) {
                     this.csvWriter.write(Double.toString(point.getX()));
                     this.csvWriter.write(Double.toString(point.getY()));

@@ -356,8 +356,8 @@ public class CssRule {
                 }
                 List<Value> values = property.getValues();
                 for (Value value : values) {
-                    if (value instanceof Value.Literal) {
-                        String body = ((Value.Literal) value).body;
+                    if (value instanceof Value.Literal literal) {
+                        String body = literal.body;
                         Integer zIndex = Converters.convert(body, Integer.class);
                         if (zIndex == null) {
                             throw new IllegalArgumentException(

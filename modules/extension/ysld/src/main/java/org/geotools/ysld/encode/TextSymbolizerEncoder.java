@@ -52,11 +52,10 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         @Override
         protected void encode(LabelPlacement placement) {
             // push("placement");
-            if (placement instanceof LinePlacement) {
+            if (placement instanceof LinePlacement linePlacement) {
                 put("placement", "line");
-                put("offset", ((LinePlacement) placement).getPerpendicularOffset());
-            } else if (placement instanceof PointPlacement) {
-                PointPlacement pp = (PointPlacement) placement;
+                put("offset", linePlacement.getPerpendicularOffset());
+            } else if (placement instanceof PointPlacement pp) {
                 put("placement", "point");
 
                 inline(new AnchorPointEncoder(pp.getAnchorPoint()));

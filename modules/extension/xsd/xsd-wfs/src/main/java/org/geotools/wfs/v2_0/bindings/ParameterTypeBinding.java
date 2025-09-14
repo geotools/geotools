@@ -46,8 +46,8 @@ public class ParameterTypeBinding extends AbstractComplexEMFBinding {
         Element element = super.encode(object, document, value);
 
         Object parameterValue = ((ParameterType) object).getValue();
-        if (parameterValue instanceof String) {
-            element.setTextContent((String) parameterValue);
+        if (parameterValue instanceof String string) {
+            element.setTextContent(string);
         }
 
         return element;

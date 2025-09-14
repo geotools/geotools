@@ -21,6 +21,7 @@ package org.geotools.referencing;
 
 import static org.geotools.api.referencing.IdentifiedObject.REMARKS_KEY;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -70,6 +71,7 @@ import org.geotools.util.logging.Logging;
 @SuppressWarnings("ComparableType") // comparable of different type than implementation
 public class NamedIdentifier implements ReferenceIdentifier, GenericName, Comparable<GenericName>, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8474731565582774497L;
 
     /**
@@ -298,8 +300,8 @@ public class NamedIdentifier implements ReferenceIdentifier, GenericName, Compar
              */
             if (standalone && value instanceof String) {
                 if (growable == null) {
-                    if (remarks instanceof GrowableInternationalString) {
-                        growable = (GrowableInternationalString) remarks;
+                    if (remarks instanceof GrowableInternationalString string) {
+                        growable = string;
                     } else {
                         growable = new GrowableInternationalString();
                     }
@@ -326,8 +328,8 @@ public class NamedIdentifier implements ReferenceIdentifier, GenericName, Compar
          * Completes the code space if it was not explicitly set. We take the first
          * identifier if there is any, otherwise we take the shortest title.
          */
-        if (codespace == null && authority instanceof Citation) {
-            codespace = getCodeSpace((Citation) authority);
+        if (codespace == null && authority instanceof Citation citation) {
+            codespace = getCodeSpace(citation);
         }
         /*
          * Stores the definitive reference to the attributes. Note that casts are performed only

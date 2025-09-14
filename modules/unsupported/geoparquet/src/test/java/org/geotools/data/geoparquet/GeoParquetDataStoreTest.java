@@ -115,7 +115,7 @@ public class GeoParquetDataStoreTest {
 
         worldgridPartitionedParams = new HashMap<>();
         File worldgridPartitionedDir = support.getWorldgridPartitionedDir();
-        String globbingUrl = String.format("%s/**/*", worldgridPartitionedDir.getAbsolutePath());
+        String globbingUrl = "%s/**/*".formatted(worldgridPartitionedDir.getAbsolutePath());
 
         worldgridPartitionedParams.put(GeoParquetDataStoreFactory.DBTYPE.key, "geoparquet");
         worldgridPartitionedParams.put(GeoParquetDataStoreFactory.URI_PARAM.key, globbingUrl);
@@ -272,9 +272,8 @@ public class GeoParquetDataStoreTest {
                         // Verify we got the expected type names
                         Set<String> actualTypeNames = new HashSet<>(Arrays.asList(typeNames));
                         if (!expectedTypeNames.equals(actualTypeNames)) {
-                            String errorMsg = String.format(
-                                    "Thread %d, iteration %d: Expected type names %s but got %s",
-                                    threadId, j, expectedTypeNames, actualTypeNames);
+                            String errorMsg = "Thread %d, iteration %d: Expected type names %s but got %s"
+                                    .formatted(threadId, j, expectedTypeNames, actualTypeNames);
                             LOGGER.warning(errorMsg);
                             synchronized (errorMessages) {
                                 errorMessages.add(errorMsg);
@@ -285,9 +284,8 @@ public class GeoParquetDataStoreTest {
                             // Successfully got expected type names
                             successCount.incrementAndGet();
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.fine(String.format(
-                                        "Thread %d, iteration %d: Successfully got type names %s",
-                                        threadId, j, actualTypeNames));
+                                LOGGER.fine("Thread %d, iteration %d: Successfully got type names %s"
+                                        .formatted(threadId, j, actualTypeNames));
                             }
                         }
                         for (String typeName : actualTypeNames) {
@@ -297,7 +295,7 @@ public class GeoParquetDataStoreTest {
                         }
                     }
                 } catch (Exception e) {
-                    String errorMsg = String.format("Thread %d failed with exception: %s", threadId, e.getMessage());
+                    String errorMsg = "Thread %d failed with exception: %s".formatted(threadId, e.getMessage());
                     LOGGER.log(Level.SEVERE, errorMsg, e);
                     synchronized (errorMessages) {
                         errorMessages.add(errorMsg);
@@ -321,9 +319,8 @@ public class GeoParquetDataStoreTest {
         // Log success stats
         int expectedTotal = threadCount * iterationsPerThread;
         int actualSuccess = successCount.get();
-        LOGGER.info(String.format(
-                "Test completed: %d/%d successful iterations (%.2f%%)",
-                actualSuccess, expectedTotal, 100.0 * actualSuccess / expectedTotal));
+        LOGGER.info("Test completed: %d/%d successful iterations (%.2f%%)"
+                .formatted(actualSuccess, expectedTotal, 100.0 * actualSuccess / expectedTotal));
 
         // Check for any errors
         if (errors.get()) {

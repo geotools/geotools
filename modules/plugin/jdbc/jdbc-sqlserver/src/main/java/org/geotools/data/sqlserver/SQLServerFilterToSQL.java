@@ -64,9 +64,9 @@ public class SQLServerFilterToSQL extends FilterToSQL {
     @Override
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         Geometry g = (Geometry) evaluateLiteral(expression, Geometry.class);
-        if (g instanceof LinearRing) {
+        if (g instanceof LinearRing ring) {
             // WKT does not support linear rings
-            g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
+            g = g.getFactory().createLineString(ring.getCoordinateSequence());
         }
         out.write("geometry::STGeomFromText('" + g.toText() + "', " + currentSRID + ")");
     }
@@ -104,7 +104,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
                 return extraData;
             }
 
-            if (filter instanceof DistanceBufferOperator) {
+            if (filter instanceof DistanceBufferOperator operator) {
                 e1.accept(this, extraData);
                 out.write(".STDistance(");
                 e2.accept(this, extraData);
@@ -118,7 +118,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
                     throw new RuntimeException("Unknown distance operator.");
                 }
 
-                out.write(Double.toString(((DistanceBufferOperator) filter).getDistance()));
+                out.write(Double.toString(operator.getDistance()));
             } else {
 
                 if (swapped) {
@@ -168,8 +168,8 @@ public class SQLServerFilterToSQL extends FilterToSQL {
         if (literal instanceof Date) {
             SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             out.write("'" + DATETIME_FORMAT.format(literal) + "'");
-        } else if (literal instanceof Boolean) {
-            out.write(String.valueOf((Boolean) literal ? 1 : 0));
+        } else if (literal instanceof Boolean boolean1) {
+            out.write(String.valueOf(boolean1 ? 1 : 0));
         } else {
             super.writeLiteral(literal);
         }

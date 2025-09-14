@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +43,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class CheckedArrayList<E> extends ArrayList<E> implements CheckedCollection<E>, Cloneable {
     /** Serial version UID for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -587331971085094268L;
 
     /** The element type. */

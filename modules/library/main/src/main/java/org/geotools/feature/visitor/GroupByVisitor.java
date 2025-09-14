@@ -235,9 +235,9 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
         public CalcResult merge(CalcResult newResult) {
             if (!isCompatible(newResult)) {
                 // not compatible results
-                throw new IllegalArgumentException(String.format(
-                        "Feature calculation result '%s' is not compatible it this result '%s'.",
-                        newResult.getClass().getSimpleName(), GroupByResult.class.getSimpleName()));
+                throw new IllegalArgumentException(
+                        "Feature calculation result '%s' is not compatible it this result '%s'."
+                                .formatted(newResult.getClass().getSimpleName(), GroupByResult.class.getSimpleName()));
             }
             if (newResult == CalcResult.NULL_RESULT) {
                 // if the new result is a NULL result we simply return a copy of this result

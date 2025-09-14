@@ -9,6 +9,8 @@
  */
 package org.geotools.api.referencing.operation;
 
+import java.io.Serial;
+
 /**
  * Thrown when an operation is applied in a manner inconsistent with one or both of two particular CRS objects.
  *
@@ -17,6 +19,7 @@ package org.geotools.api.referencing.operation;
  */
 public class IncompatibleOperationException extends Exception {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3197174832430350656L;
 
     /** The invalid Operation name. */

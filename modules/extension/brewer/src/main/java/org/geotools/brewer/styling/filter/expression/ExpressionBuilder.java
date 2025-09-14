@@ -131,20 +131,20 @@ public class ExpressionBuilder implements Builder<Expression> {
             return unset();
         }
         this.unset = false;
-        if (original instanceof Literal) {
-            delegate = new LiteralBuilder((Literal) original);
-        } else if (original instanceof PropertyName) {
-            delegate = new PropertyNameBuilder((PropertyName) original);
-        } else if (original instanceof Function) {
-            delegate = new FunctionBuilder((Function) original);
-        } else if (original instanceof Add) {
-            delegate = new AddBuilder((Add) original);
-        } else if (original instanceof Divide) {
-            delegate = new DivideBuilder((Divide) original);
-        } else if (original instanceof Multiply) {
-            delegate = new MultiplyBuilder((Multiply) original);
-        } else if (original instanceof Subtract) {
-            delegate = new SubtractBuilder((Subtract) original);
+        if (original instanceof Literal literal) {
+            delegate = new LiteralBuilder(literal);
+        } else if (original instanceof PropertyName name) {
+            delegate = new PropertyNameBuilder(name);
+        } else if (original instanceof Function function) {
+            delegate = new FunctionBuilder(function);
+        } else if (original instanceof Add add) {
+            delegate = new AddBuilder(add);
+        } else if (original instanceof Divide divide) {
+            delegate = new DivideBuilder(divide);
+        } else if (original instanceof Multiply multiply) {
+            delegate = new MultiplyBuilder(multiply);
+        } else if (original instanceof Subtract subtract) {
+            delegate = new SubtractBuilder(subtract);
         } else {
             this.delegate = new NilBuilder();
         }

@@ -178,8 +178,8 @@ public final class IndexesConfig {
             if (solrAttribute == null) {
                 LOGGER.log(
                         Level.WARNING,
-                        String.format(
-                                "Could not find attribute '%s' in Solar index '%s' schema.", attributeName, indexName));
+                        "Could not find attribute '%s' in Solar index '%s' schema."
+                                .formatted(attributeName, indexName));
                 return null;
             }
             AttributeDescriptor attribute = buildAttributeDescriptor(solrAttribute, searchGeometry(attributeName));
@@ -262,7 +262,7 @@ public final class IndexesConfig {
             try {
                 crs = CRS.decode("EPSG:" + srid);
             } catch (Exception exception) {
-                throw new RuntimeException(String.format("Error decoding CRS 'EPSG:%s'.", srid), exception);
+                throw new RuntimeException("Error decoding CRS 'EPSG:%s'.".formatted(srid), exception);
             }
             return new GeometryConfig(attributeName, crs, matchGeometryType(type), Boolean.parseBoolean(isDefault));
         }

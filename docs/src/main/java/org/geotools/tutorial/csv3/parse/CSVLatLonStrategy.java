@@ -228,8 +228,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
             Object value = property.getValue();
             if (value == null) {
                 csvRecord.add("");
-            } else if (value instanceof Point) {
-                Point point = (Point) value;
+            } else if (value instanceof Point point) {
                 if (lngIndex < latIndex) {
                     csvRecord.add(Double.toString(point.getY()));
                     csvRecord.add(Double.toString(point.getX()));

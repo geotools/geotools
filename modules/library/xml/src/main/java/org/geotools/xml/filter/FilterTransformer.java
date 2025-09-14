@@ -329,8 +329,7 @@ public class FilterTransformer extends TransformerBase {
             final String type = "BBOX";
             start(type);
             left.accept(this, extraData);
-            if (right instanceof Literal) {
-                Literal literal = (Literal) right;
+            if (right instanceof Literal literal) {
                 Envelope bbox = literal.evaluate(null, Envelope.class);
                 if (bbox != null) {
                     geometryEncoder.encode(bbox);
@@ -495,11 +494,9 @@ public class FilterTransformer extends TransformerBase {
 
         @Override
         public void encode(Object o) throws IllegalArgumentException {
-            if (o instanceof Filter) {
-                Filter filter = (Filter) o;
+            if (o instanceof Filter filter) {
                 filter.accept(this, null);
-            } else if (o instanceof Expression) {
-                Expression expression = (Expression) o;
+            } else if (o instanceof Expression expression) {
                 expression.accept(this, null);
             } else {
                 throw new IllegalArgumentException("Cannot encode "
@@ -555,8 +552,8 @@ public class FilterTransformer extends TransformerBase {
             Object value = expression.getValue();
             if (value == null) {
                 element("Literal", "");
-            } else if (value instanceof Geometry) {
-                geometryEncoder.encode((Geometry) value);
+            } else if (value instanceof Geometry geometry) {
+                geometryEncoder.encode(geometry);
             } else {
                 String txt = expression.evaluate(null, String.class);
                 if (txt == null) {

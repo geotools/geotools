@@ -58,28 +58,24 @@ public class InfoToolHelperUtils {
     public static Number[] asNumberArray(Object objArray) {
         Number[] numbers = null;
 
-        if (objArray instanceof byte[]) {
-            byte[] values = (byte[]) objArray;
+        if (objArray instanceof byte[] values) {
             numbers = new Number[values.length];
             for (int i = 0; i < values.length; i++) {
                 numbers[i] = values[i] & 0xff;
             }
 
-        } else if (objArray instanceof int[]) {
-            int[] values = (int[]) objArray;
+        } else if (objArray instanceof int[] values) {
             numbers = new Number[values.length];
             for (int i = 0; i < values.length; i++) {
                 numbers[i] = values[i];
             }
 
-        } else if (objArray instanceof float[]) {
-            float[] values = (float[]) objArray;
+        } else if (objArray instanceof float[] values) {
             numbers = new Number[values.length];
             for (int i = 0; i < values.length; i++) {
                 numbers[i] = values[i];
             }
-        } else if (objArray instanceof double[]) {
-            double[] values = (double[]) objArray;
+        } else if (objArray instanceof double[] values) {
             numbers = new Number[values.length];
             for (int i = 0; i < values.length; i++) {
                 numbers[i] = values[i];

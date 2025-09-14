@@ -161,9 +161,9 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
             return true;
         }
 
-        if (delegate instanceof FeatureHandler) {
+        if (delegate instanceof FeatureHandler handler) {
             // obtain a type from the first feature
-            SimpleFeature feature = ((FeatureHandler) delegate).getValue();
+            SimpleFeature feature = handler.getValue();
             if (feature != null) {
                 geom = feature.getFeatureType().getGeometryDescriptor();
                 List<AttributeDescriptor> attributeDescriptors =
@@ -257,8 +257,8 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
             return true;
         }
 
-        if (delegate != null && delegate instanceof CRSHandler) {
-            crs = ((CRSHandler) delegate).getValue();
+        if (delegate != null && delegate instanceof CRSHandler handler) {
+            crs = handler.getValue();
             if (crs != null) {
                 delegate = NULL;
             }

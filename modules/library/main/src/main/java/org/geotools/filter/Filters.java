@@ -148,15 +148,13 @@ public class Filters {
      */
     public static Filter and(org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<>(2);
-        if (filter1 instanceof And) {
-            And some = (And) filter1;
+        if (filter1 instanceof And some) {
             list.addAll(some.getChildren());
         } else if (filter1 != null) {
             list.add(filter1);
         }
 
-        if (filter2 instanceof And) {
-            And more = (And) filter2;
+        if (filter2 instanceof And more) {
             list.addAll(more.getChildren());
         } else if (filter2 != null) {
             list.add(filter2);
@@ -195,15 +193,13 @@ public class Filters {
      */
     public static Filter or(org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<>();
-        if (filter1 instanceof Or) {
-            Or some = (Or) filter1;
+        if (filter1 instanceof Or some) {
             list.addAll(some.getChildren());
         } else if (filter1 != null) {
             list.add(filter1);
         }
 
-        if (filter2 instanceof Or) {
-            Or more = (Or) filter2;
+        if (filter2 instanceof Or more) {
             list.addAll(more.getChildren());
         } else if (filter2 != null) {
             list.add(filter2);
@@ -250,8 +246,7 @@ public class Filters {
         if (experssion == null) return 0;
         else if (experssion instanceof PropertyName) return ExpressionType.ATTRIBUTE;
         else if (experssion instanceof Function) return ExpressionType.FUNCTION;
-        else if (experssion instanceof Literal) {
-            Literal literal = (Literal) experssion;
+        else if (experssion instanceof Literal literal) {
             Object value = literal.getValue();
             if (value == null) {
                 return ExpressionType.LITERAL_UNDECLARED;
@@ -379,12 +374,10 @@ public class Filters {
      */
     public static double number(Object value) {
         if (value == null) return Double.NaN;
-        if (value instanceof Number) {
-            Number number = (Number) value;
+        if (value instanceof Number number) {
             return number.doubleValue();
         }
-        if (value instanceof String) {
-            String text = (String) value;
+        if (value instanceof String text) {
             try {
                 Number number = gets(text, Number.class);
                 return number.doubleValue();
@@ -494,15 +487,13 @@ public class Filters {
         if (obj == null) {
             return null;
         }
-        if (obj instanceof String) {
-            return (String) obj;
+        if (obj instanceof String string) {
+            return string;
         }
-        if (obj instanceof Color) {
-            Color color = (Color) obj;
+        if (obj instanceof Color color) {
             return puts(color);
         }
-        if (obj instanceof Number) {
-            Number number = (Number) obj;
+        if (obj instanceof Number number) {
             return puts(number.doubleValue());
         }
         String text = Converters.convert(obj, String.class);
@@ -894,14 +885,12 @@ public class Filters {
                     },
                     null);
         } else {
-            if (filter instanceof Not) {
-                Not not = (Not) filter;
+            if (filter instanceof Not not) {
                 if (not.getFilter() != null) {
                     children.add(not.getFilter());
                 }
             }
-            if (filter instanceof BinaryLogicOperator) {
-                BinaryLogicOperator parent = (BinaryLogicOperator) filter;
+            if (filter instanceof BinaryLogicOperator parent) {
                 List<Filter> reviewChildren = parent.getChildren();
                 if (reviewChildren != null) {
                     for (Filter child : reviewChildren) {

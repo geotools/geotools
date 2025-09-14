@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -44,6 +45,7 @@ import org.geotools.util.Utilities;
  */
 public class PassThroughTransform extends AbstractMathTransform implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1673997634240223449L;
 
     /** Index of the first affected ordinate. */
@@ -83,8 +85,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numTrailingOrdinates", numTrailingOrdinates));
         }
-        if (subTransform instanceof PassThroughTransform) {
-            final PassThroughTransform passThrough = (PassThroughTransform) subTransform;
+        if (subTransform instanceof PassThroughTransform passThrough) {
             this.firstAffectedOrdinate = passThrough.firstAffectedOrdinate + firstAffectedOrdinate;
             this.numTrailingOrdinates = passThrough.numTrailingOrdinates + numTrailingOrdinates;
             this.subTransform = passThrough.subTransform;
@@ -138,8 +139,8 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
          * new matrix for such transform, instead of wrapping the sub-transform into a
          * PassThroughTransform object. It is faster and easier to concatenate.
          */
-        if (subTransform instanceof LinearTransform) {
-            GeneralMatrix matrix = toGMatrix(((LinearTransform) subTransform).getMatrix());
+        if (subTransform instanceof LinearTransform transform) {
+            GeneralMatrix matrix = toGMatrix(transform.getMatrix());
             matrix = PassThroughTransform.expand(matrix, firstAffectedOrdinate, numTrailingOrdinates, 1);
             return ProjectiveTransform.create(matrix);
         }

@@ -232,23 +232,25 @@ public class NetCDFCRSTest {
             assertEquals(
                     54.0, values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(), DELTA);
 
-            String wkt = "FITTED_CS[\"rotated_latitude_longitude\", \n"
-                    + "  INVERSE_MT[PARAM_MT[\"Rotated_Pole\", \n"
-                    + "      PARAMETER[\"semi_major\", 6371229.0], \n"
-                    + "      PARAMETER[\"semi_minor\", 6371229.0], \n"
-                    + "      PARAMETER[\"central_meridian\", -106.0], \n"
-                    + "      PARAMETER[\"latitude_of_origin\", 54.0], \n"
-                    + "      PARAMETER[\"scale_factor\", 1.0], \n"
-                    + "      PARAMETER[\"false_easting\", 0.0], \n"
-                    + "      PARAMETER[\"false_northing\", 0.0]]], \n"
-                    + "  GEOGCS[\"unknown\", \n"
-                    + "    DATUM[\"unknown\", \n"
-                    + "      SPHEROID[\"unknown\", 6371229.0, 0.0]], \n"
-                    + "    PRIMEM[\"Greenwich\", 0.0], \n"
-                    + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                    + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                    + "    AXIS[\"Geodetic latitude\", NORTH]], \n"
-                    + "  AUTHORITY[\"EPSG\",\"971806\"]]";
+            String wkt =
+                    """
+                    FITTED_CS["rotated_latitude_longitude",\s
+                      INVERSE_MT[PARAM_MT["Rotated_Pole",\s
+                          PARAMETER["semi_major", 6371229.0],\s
+                          PARAMETER["semi_minor", 6371229.0],\s
+                          PARAMETER["central_meridian", -106.0],\s
+                          PARAMETER["latitude_of_origin", 54.0],\s
+                          PARAMETER["scale_factor", 1.0],\s
+                          PARAMETER["false_easting", 0.0],\s
+                          PARAMETER["false_northing", 0.0]]],\s
+                      GEOGCS["unknown",\s
+                        DATUM["unknown",\s
+                          SPHEROID["unknown", 6371229.0, 0.0]],\s
+                        PRIMEM["Greenwich", 0.0],\s
+                        UNIT["degree", 0.017453292519943295],\s
+                        AXIS["Geodetic longitude", EAST],\s
+                        AXIS["Geodetic latitude", NORTH]],\s
+                      AUTHORITY["EPSG","971806"]]""";
             CoordinateReferenceSystem wktCRS = CRS.parseWKT(wkt);
             assertTrue(CRS.equalsIgnoreMetadata(wktCRS, crs));
         } finally {

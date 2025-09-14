@@ -17,6 +17,7 @@
 package org.geotools.coverage.grid;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -45,6 +46,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class AbstractGridCoverage extends AbstractCoverage implements GridCoverage {
     /** For compatibility during cross-version serialization. */
+    @Serial
     private static final long serialVersionUID = 6476934258101450793L;
 
     /** The logger for grid coverage operations. */

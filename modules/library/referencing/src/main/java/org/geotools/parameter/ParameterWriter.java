@@ -263,8 +263,7 @@ public class ParameterWriter extends FilterWriter {
              * over the descriptors rather than values, then the "value" column will be
              * filled with the default value specified in descriptors.
              */
-            if (generalDescriptor instanceof ParameterDescriptor) {
-                final ParameterDescriptor descriptor = (ParameterDescriptor) generalDescriptor;
+            if (generalDescriptor instanceof ParameterDescriptor descriptor) {
                 table.write(Classes.getShortName(descriptor.getValueClass()));
                 table.nextColumn();
                 table.setAlignment(TableWriter.ALIGN_RIGHT);
@@ -323,8 +322,8 @@ public class ParameterWriter extends FilterWriter {
             for (final Object element : deferredGroups) {
                 final ParameterValueGroup value;
                 final ParameterDescriptorGroup descriptor;
-                if (element instanceof ParameterValueGroup) {
-                    value = (ParameterValueGroup) element;
+                if (element instanceof ParameterValueGroup valueGroup) {
+                    value = valueGroup;
                     descriptor = value.getDescriptor();
                 } else {
                     value = null;
@@ -477,8 +476,8 @@ public class ParameterWriter extends FilterWriter {
                 final String title;
                 if (element == null) {
                     title = "Identifier"; // TODO: localize
-                } else if (element instanceof String) {
-                    title = (String) element;
+                } else if (element instanceof String string) {
+                    title = string;
                 } else {
                     title = "Alias " + element; // TODO: localize
                 }

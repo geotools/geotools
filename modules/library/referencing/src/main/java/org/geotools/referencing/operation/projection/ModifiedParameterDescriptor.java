@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -36,6 +37,7 @@ import org.geotools.referencing.operation.MathTransformProvider; // For javadoc
  */
 final class ModifiedParameterDescriptor extends DefaultParameterDescriptor<Double> {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = -616587615222354457L;
 
     /** The original parameter descriptor. Used for comparaisons purpose only. */
@@ -64,12 +66,12 @@ final class ModifiedParameterDescriptor extends DefaultParameterDescriptor<Doubl
      * {@code set.contains(descriptor)}, so it should be invoked only if the former fails.
      */
     public static boolean contains(final Collection<GeneralParameterDescriptor> set, ParameterDescriptor descriptor) {
-        if (descriptor instanceof ModifiedParameterDescriptor) {
-            descriptor = ((ModifiedParameterDescriptor) descriptor).original;
+        if (descriptor instanceof ModifiedParameterDescriptor parameterDescriptor) {
+            descriptor = parameterDescriptor.original;
         }
         for (GeneralParameterDescriptor candidate : set) {
-            if (candidate instanceof ModifiedParameterDescriptor) {
-                candidate = ((ModifiedParameterDescriptor) candidate).original;
+            if (candidate instanceof ModifiedParameterDescriptor parameterDescriptor) {
+                candidate = parameterDescriptor.original;
             }
             if (descriptor.equals(candidate)) {
                 return true;

@@ -224,8 +224,8 @@ public class ImageMosaicEventHandlers {
         /** Run the event launcher */
         @Override
         public void run() {
-            if (event instanceof ExceptionEvent)
-                for (Object o : listeners) ((ProcessingEventListener) o).exceptionOccurred((ExceptionEvent) this.event);
+            if (event instanceof ExceptionEvent exceptionEvent)
+                for (Object o : listeners) ((ProcessingEventListener) o).exceptionOccurred(exceptionEvent);
             else for (Object listener : listeners) ((ProcessingEventListener) listener).getNotification(this.event);
         }
     }

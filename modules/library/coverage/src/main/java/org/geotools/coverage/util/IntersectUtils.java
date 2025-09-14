@@ -45,14 +45,14 @@ public class IntersectUtils {
         Utilities.ensureNonNull("g1", g1);
         Utilities.ensureNonNull("g2", g2);
         if (g1 instanceof GeometryCollection) {
-            if (g2 instanceof GeometryCollection) {
-                return intersects((GeometryCollection) g1, (GeometryCollection) g2);
+            if (g2 instanceof GeometryCollection collection) {
+                return intersects((GeometryCollection) g1, collection);
             } else {
                 return intersects((GeometryCollection) g1, g2);
             }
         } else {
-            if (g2 instanceof GeometryCollection) {
-                return intersects((GeometryCollection) g2, g1);
+            if (g2 instanceof GeometryCollection collection) {
+                return intersects(collection, g1);
             } else {
                 return g1.intersects(g2);
             }
@@ -88,15 +88,15 @@ public class IntersectUtils {
      */
     public static Geometry intersection(Geometry g1, Geometry g2) {
         if (g1 instanceof GeometryCollection) {
-            if (g2 instanceof GeometryCollection) {
-                return intersection((GeometryCollection) g1, (GeometryCollection) g2);
+            if (g2 instanceof GeometryCollection collection) {
+                return intersection((GeometryCollection) g1, collection);
             } else {
                 List<Geometry> ret = intersection((GeometryCollection) g1, g2);
                 return g1.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(ret));
             }
         } else {
-            if (g2 instanceof GeometryCollection) {
-                List<Geometry> ret = intersection((GeometryCollection) g2, g1);
+            if (g2 instanceof GeometryCollection collection) {
+                List<Geometry> ret = intersection(collection, g1);
                 return g1.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(ret));
             } else {
                 return g1.intersection(g2);
@@ -136,8 +136,7 @@ public class IntersectUtils {
      * @param collector the Collection where the Geometries will be added into
      */
     private static void collect(Geometry g, List<Geometry> collector) {
-        if (g instanceof GeometryCollection) {
-            GeometryCollection gc = (GeometryCollection) g;
+        if (g instanceof GeometryCollection gc) {
             for (int i = 0; i < gc.getNumGeometries(); i++) {
                 Geometry loop = gc.getGeometryN(i);
                 if (!loop.isEmpty()) collector.add(loop);
@@ -168,21 +167,17 @@ public class IntersectUtils {
         if (geometry instanceof org.locationtech.jts.geom.Polygon) {
             return geometry;
 
-        } else if (geometry instanceof MultiPolygon) {
-
-            MultiPolygon mp = (MultiPolygon) geometry;
+        } else if (geometry instanceof MultiPolygon mp) {
             return geometry.getFactory().createMultiPolygon(unrollGeometries(mp).toArray(new Polygon[0]));
 
-        } else if (geometry instanceof GeometryCollection) {
+        } else if (geometry instanceof GeometryCollection gc) {
             List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<>();
-
-            GeometryCollection gc = (GeometryCollection) geometry;
             for (int i = 0; i < gc.getNumGeometries(); i++) {
                 Geometry g = gc.getGeometryN(i);
-                if (g instanceof org.locationtech.jts.geom.Polygon) {
-                    ret.add((org.locationtech.jts.geom.Polygon) g);
-                } else if (g instanceof MultiPolygon) {
-                    ret.addAll(unrollGeometries((MultiPolygon) g));
+                if (g instanceof org.locationtech.jts.geom.Polygon polygon1) {
+                    ret.add(polygon1);
+                } else if (g instanceof MultiPolygon polygon) {
+                    ret.addAll(unrollGeometries(polygon));
                 } else {
                     throw new IllegalArgumentException(g.getClass().toString());
                 }

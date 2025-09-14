@@ -38,8 +38,8 @@ public class ByteArrayImageInputStreamSpi extends ImageInputStreamSpi {
     @Override
     public ImageInputStream createInputStreamInstance(Object input, boolean useCache, File cacheDir)
             throws IOException {
-        if (input instanceof byte[]) {
-            return new MemoryCacheImageInputStream(new ByteArrayInputStream((byte[]) input));
+        if (input instanceof byte[] bytes) {
+            return new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
         }
         return null;
     }

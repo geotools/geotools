@@ -21,6 +21,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -88,6 +89,7 @@ import si.uom.NonSI;
  */
 public class ProjectiveTransform extends AbstractMathTransform implements LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -2104496465933824935L;
 
     /** The number of rows. */
@@ -515,6 +517,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
      */
     public static final class ProviderAffine extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = 649555815622129472L;
 
         /** The set of predefined providers. */
@@ -606,6 +609,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
      */
     public static final class ProviderLongitudeRotation extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -2104496465933824935L;
 
         /** The longitude offset. */

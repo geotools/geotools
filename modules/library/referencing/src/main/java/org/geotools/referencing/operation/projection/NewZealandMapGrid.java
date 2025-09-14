@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.PI;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -48,6 +49,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class NewZealandMapGrid extends MapProjection {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = 8394817836243729133L;
 
     /** Coefficients for forward and inverse projection. */
@@ -223,6 +225,7 @@ public class NewZealandMapGrid extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = -7716733400419275656L;
 
         /** The parameters group. */

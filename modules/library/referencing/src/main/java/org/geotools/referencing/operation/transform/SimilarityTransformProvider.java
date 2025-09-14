@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -38,6 +39,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class SimilarityTransformProvider extends MathTransformProvider {
 
+    @Serial
     private static final long serialVersionUID = -7413519919588731455L;
 
     // TODO: TRANSLATION_1 and TRANSLATION_2 should be expressed in "target CRS units", not

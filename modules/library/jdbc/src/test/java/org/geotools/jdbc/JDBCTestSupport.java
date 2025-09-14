@@ -268,8 +268,8 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
             return;
         }
 
-        if (expected instanceof Geometry) {
-            assertTrue(((Geometry) expected).equals((Geometry) actual));
+        if (expected instanceof Geometry geometry) {
+            assertTrue(geometry.equals((Geometry) actual));
             return;
         }
 
@@ -281,7 +281,7 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
      * {@link #forceLongitudeFirst} setting.
      */
     protected CoordinateReferenceSystem decodeEPSG(int epsgCode) throws FactoryException {
-        return CRS.decode(String.format("EPSG:%d", epsgCode), forceLongitudeFirst);
+        return CRS.decode("EPSG:%d".formatted(epsgCode), forceLongitudeFirst);
     }
 
     protected boolean areCRSEqual(CoordinateReferenceSystem crs1, CoordinateReferenceSystem crs2) {

@@ -579,12 +579,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void encodePostColumnCreateTable(AttributeDescriptor att, StringBuffer sql) {
-        if (att instanceof GeometryDescriptor) {
-            // HANA expects the SRID right after the type, e.g. ST_Geometry(4326).
-            // Unfortunately, the data store might already have inserted column constraints like
-            // "NOT NULL". Therefore, we have to find the type string and insert the SRID right
-            // behind it.
-            GeometryDescriptor gd = (GeometryDescriptor) att;
+        if (att instanceof GeometryDescriptor gd) {
             Integer srid = (Integer) gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
             if (srid == null) {
                 srid = getSridFromCRS(gd);

@@ -57,8 +57,7 @@ public class DefaultOrdinalPosition extends DefaultTemporalPosition implements O
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultOrdinalPosition && super.equals(object)) {
-            final DefaultOrdinalPosition that = (DefaultOrdinalPosition) object;
+        if (object instanceof DefaultOrdinalPosition that && super.equals(object)) {
 
             return Utilities.equals(this.ordinalPosition, that.ordinalPosition);
         }

@@ -16,8 +16,6 @@
  */
 package org.geotools.io;
 
-import static java.lang.String.format;
-
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -136,7 +134,7 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
     @Override
     public int read() throws IOException {
         bufferCheck(1);
-        if (filePosition < 0) throw new IOException(format("Negative file position %d for %s", filePosition, this));
+        if (filePosition < 0) throw new IOException("Negative file position %d for %s".formatted(filePosition, this));
         if (filePosition < dataEnd) {
             filePosition++;
             return mappedByteBuffer.get() & 0xff;
@@ -169,7 +167,8 @@ public class MemoryMappedRandomAccessFile extends RandomAccessFile {
         if (endOfFile) return -1;
         length = (int) Math.min(length, dataEnd - filePosition);
         if (length > 0) {
-            if (filePosition < 0) throw new IOException(format("Negative file position %d for %s", filePosition, this));
+            if (filePosition < 0)
+                throw new IOException("Negative file position %d for %s".formatted(filePosition, this));
             bufferCheck(length);
             mappedByteBuffer.get(dst, offset, length);
             filePosition += length;

@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
+
 /**
  * Special subclass of {@link CannotCropException} reporting that the raster space intersection between the crop area
  * and the coverage one was found to be empty
@@ -24,6 +26,7 @@ package org.geotools.coverage.processing;
  */
 public class EmptyIntersectionException extends CannotCropException {
 
+    @Serial
     private static final long serialVersionUID = -6145066452614446783L;
 
     public EmptyIntersectionException() {

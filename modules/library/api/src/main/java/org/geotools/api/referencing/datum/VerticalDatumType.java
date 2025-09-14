@@ -13,6 +13,7 @@ import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19111;
 import static org.geotools.api.annotation.Specification.OGC_01009;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -28,6 +29,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CD_VerticalDatumType", specification = ISO_19111)
 public final class VerticalDatumType extends CodeList<VerticalDatumType> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -8161084528823937553L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

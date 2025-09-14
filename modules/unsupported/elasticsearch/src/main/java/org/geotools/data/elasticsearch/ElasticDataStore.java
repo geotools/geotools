@@ -418,7 +418,7 @@ public class ElasticDataStore extends ContentDataStore {
         final int status = response.getStatusLine().getStatusCode();
         if (status >= 400) {
             final String reason = response.getStatusLine().getReasonPhrase();
-            throw new IOException(String.format("Unexpected response from Elasticsearch: %d %s", status, reason));
+            throw new IOException("Unexpected response from Elasticsearch: %d %s".formatted(status, reason));
         }
     }
 

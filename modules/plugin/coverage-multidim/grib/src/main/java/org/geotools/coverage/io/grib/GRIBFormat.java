@@ -68,10 +68,10 @@ public class GRIBFormat extends NetCDFFormat {
     @Override
     public boolean accepts(Object source, Hints hints) {
         File file = null;
-        if (source instanceof URL) {
-            file = URLs.urlToFile((URL) source);
-        } else if (source instanceof File) {
-            file = (File) source;
+        if (source instanceof URL rL) {
+            file = URLs.urlToFile(rL);
+        } else if (source instanceof File file1) {
+            file = file1;
         }
         if (file != null) {
             if (file.isDirectory()) {

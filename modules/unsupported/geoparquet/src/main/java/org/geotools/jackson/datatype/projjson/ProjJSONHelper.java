@@ -73,8 +73,7 @@ public class ProjJSONHelper {
             org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem modelCrs) {
 
         // First check for common cases we can handle directly
-        if (modelCrs instanceof GeographicCRS) {
-            GeographicCRS geographicCRS = (GeographicCRS) modelCrs;
+        if (modelCrs instanceof GeographicCRS geographicCRS) {
             String name = geographicCRS.getName();
 
             // Check for common geographic CRSs
@@ -85,9 +84,7 @@ public class ProjJSONHelper {
 
         // For more complex CRSs, we might need to use the EPSG code if available
         Object id = modelCrs.getId();
-        if (id instanceof org.geotools.jackson.datatype.projjson.model.Identifier) {
-            org.geotools.jackson.datatype.projjson.model.Identifier identifier =
-                    (org.geotools.jackson.datatype.projjson.model.Identifier) id;
+        if (id instanceof org.geotools.jackson.datatype.projjson.model.Identifier identifier) {
 
             if ("EPSG".equals(identifier.getAuthority())) {
                 try {

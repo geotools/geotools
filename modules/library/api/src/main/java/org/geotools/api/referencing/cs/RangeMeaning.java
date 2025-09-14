@@ -12,6 +12,7 @@ package org.geotools.api.referencing.cs;
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19111;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -29,6 +30,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CS_RangeMeaning", specification = ISO_19111)
 public final class RangeMeaning extends CodeList<RangeMeaning> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -3525560558294789416L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

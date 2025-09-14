@@ -79,26 +79,26 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
     public void writeGeometry(JsonGenerator jgen, Geometry value) throws IOException {
 
-        if (value instanceof Polygon) {
-            writePolygon(jgen, (Polygon) value);
+        if (value instanceof Polygon polygon1) {
+            writePolygon(jgen, polygon1);
 
-        } else if (value instanceof Point) {
-            writePoint(jgen, (Point) value);
+        } else if (value instanceof Point point1) {
+            writePoint(jgen, point1);
 
-        } else if (value instanceof MultiPoint) {
-            writeMultiPoint(jgen, (MultiPoint) value);
+        } else if (value instanceof MultiPoint point) {
+            writeMultiPoint(jgen, point);
 
-        } else if (value instanceof MultiPolygon) {
-            writeMultiPolygon(jgen, (MultiPolygon) value);
+        } else if (value instanceof MultiPolygon polygon) {
+            writeMultiPolygon(jgen, polygon);
 
-        } else if (value instanceof LineString) {
-            writeLineString(jgen, (LineString) value);
+        } else if (value instanceof LineString string1) {
+            writeLineString(jgen, string1);
 
-        } else if (value instanceof MultiLineString) {
-            writeMultiLineString(jgen, (MultiLineString) value);
+        } else if (value instanceof MultiLineString string) {
+            writeMultiLineString(jgen, string);
 
-        } else if (value instanceof GeometryCollection) {
-            writeGeometryCollection(jgen, (GeometryCollection) value);
+        } else if (value instanceof GeometryCollection collection) {
+            writeGeometryCollection(jgen, collection);
 
         } else {
             throw new JsonMappingException(

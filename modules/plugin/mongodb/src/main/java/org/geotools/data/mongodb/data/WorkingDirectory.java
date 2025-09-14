@@ -17,7 +17,7 @@
 package org.geotools.data.mongodb.data;
 
 import java.io.File;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 /**
  * @author ImranR
@@ -30,7 +30,7 @@ public class WorkingDirectory implements SchemaStoreDirectory {
     private String name = "gt_mongodb_schemas";
 
     public WorkingDirectory() {
-        schemaDirectory = Paths.get("").toFile();
+        schemaDirectory = Path.of("").toFile();
     }
 
     @Override

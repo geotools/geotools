@@ -525,8 +525,8 @@ public class GridToEnvelopeMapper {
      */
     public AffineTransform createAffineTransform() throws IllegalStateException {
         final MathTransform transform = createTransform();
-        if (transform instanceof AffineTransform) {
-            return (AffineTransform) transform;
+        if (transform instanceof AffineTransform affineTransform) {
+            return affineTransform;
         }
         throw new IllegalStateException(ErrorKeys.NOT_AN_AFFINE_TRANSFORM);
     }

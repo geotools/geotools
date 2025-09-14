@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Exception thrown by the writer when the maximum size of the shapefile or dbf is reached. If the client has a direct
@@ -26,6 +27,7 @@ import java.io.IOException;
  * @author Andrea Aime - GeoSolutions
  */
 public class ShapefileSizeException extends IOException {
+    @Serial
     private static final long serialVersionUID = 6539095903426714802L;
 
     public ShapefileSizeException(String message) {

@@ -176,8 +176,7 @@ public abstract class AbstractPosition implements Position {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof Position) {
-            final Position that = (Position) object;
+        if (object instanceof Position that) {
             final int dimension = getDimension();
             if (dimension == that.getDimension()) {
                 for (int i = 0; i < dimension; i++) {

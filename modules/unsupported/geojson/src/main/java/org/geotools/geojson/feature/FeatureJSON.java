@@ -581,12 +581,12 @@ public class FeatureJSON {
                 attributesWritten = true;
 
                 // handle special types separately, everything else as a string or literal
-                if (value instanceof Envelope) {
-                    array(ad.getLocalName(), gjson.toString((Envelope) value), sb);
-                } else if (value instanceof BoundingBox) {
-                    array(ad.getLocalName(), gjson.toString((BoundingBox) value), sb);
-                } else if (value instanceof Geometry) {
-                    string(ad.getLocalName(), sb).append(":").append(gjson.toString((Geometry) value));
+                if (value instanceof Envelope envelope) {
+                    array(ad.getLocalName(), gjson.toString(envelope), sb);
+                } else if (value instanceof BoundingBox box) {
+                    array(ad.getLocalName(), gjson.toString(box), sb);
+                } else if (value instanceof Geometry geometry) {
+                    string(ad.getLocalName(), sb).append(":").append(gjson.toString(geometry));
                 } else {
                     entry(ad.getLocalName(), value, sb);
                 }

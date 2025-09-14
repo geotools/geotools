@@ -261,8 +261,7 @@ public class XMLSAXHandler extends DefaultHandler {
             handlers.pop(); // we must do this or leak memory
             if (handler != null && !handlers.isEmpty()) {
                 XMLElementHandler parent = handlers.peek();
-                if (parent instanceof ComplexElementHandler) {
-                    ComplexElementHandler complexParent = (ComplexElementHandler) parent;
+                if (parent instanceof ComplexElementHandler complexParent) {
                     String typename = complexParent.getType().getClass().getName();
                     // TODO: HACK The required Type is not in this Module
                     if (typename.equals("org.geotools.xml.wfs.WFSBasicComplexTypes$FeatureCollectionType")) {
@@ -274,7 +273,7 @@ public class XMLSAXHandler extends DefaultHandler {
     }
 
     private void processException(Exception e) {
-        if (e instanceof RuntimeException) throw (RuntimeException) e;
+        if (e instanceof RuntimeException exception) throw exception;
         StringBuffer msg = new StringBuffer(e.getLocalizedMessage());
         StackTraceElement[] trace = e.getStackTrace();
 

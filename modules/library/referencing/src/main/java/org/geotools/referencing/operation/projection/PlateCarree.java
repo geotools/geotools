@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -41,6 +42,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class PlateCarree extends EquidistantCylindrical {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = -6041146276958636165L;
 
     /**
@@ -101,6 +103,7 @@ public class PlateCarree extends EquidistantCylindrical {
      */
     public static class Provider extends AbstractProvider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 8535645757318203345L;
 
         /** The parameters group. */

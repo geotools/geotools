@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -34,6 +35,7 @@ import org.geotools.api.util.Cloneable;
  */
 public class Position1D extends AbstractPosition implements Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3235094562875693710L;
 
     /** The coordinate reference system for this position; */

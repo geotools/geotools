@@ -151,9 +151,9 @@ public class DuckDBFilterToSQL extends FilterToSQL {
     }
 
     protected void visitLiteralGeometry(Geometry g) throws IOException {
-        if (g instanceof LinearRing) {
+        if (g instanceof LinearRing ring) {
             // DuckDB doesn't support LinearRing type
-            g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
+            g = g.getFactory().createLineString(ring.getCoordinateSequence());
         }
         write("ST_GeomFromText('%s')", g.toText());
     }
@@ -173,11 +173,11 @@ public class DuckDBFilterToSQL extends FilterToSQL {
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, Expression leftExp, Expression rightExpt, Object extraData) {
 
-        if (filter instanceof DistanceBufferOperator) {
-            return visitDistanceBufferOperator((DistanceBufferOperator) filter, leftExp, rightExpt, extraData);
+        if (filter instanceof DistanceBufferOperator operator) {
+            return visitDistanceBufferOperator(operator, leftExp, rightExpt, extraData);
         }
-        if (filter instanceof BBOX) {
-            return visitBBOX((BBOX) filter, leftExp, rightExpt, extraData);
+        if (filter instanceof BBOX oX) {
+            return visitBBOX(oX, leftExp, rightExpt, extraData);
         }
         String stFunction;
         if (filter instanceof Contains) {
@@ -240,7 +240,7 @@ public class DuckDBFilterToSQL extends FilterToSQL {
     @SuppressWarnings("AnnotateFormatMethod")
     protected void write(String fmt, Object... args) {
         try {
-            out.write(String.format(fmt, args));
+            out.write(fmt.formatted(args));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

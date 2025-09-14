@@ -16,6 +16,7 @@
  */
 package org.geotools.data.vpf.io;
 
+import java.io.Serial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.vpf.VPFLogger;
@@ -33,6 +34,7 @@ import org.geotools.util.logging.Logging;
  */
 public class TripletId extends Number {
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = -3584133713173893007L;
     /** The raw data that can be decomposed into as many as three separate numbers */
     private byte[] rawData = null;

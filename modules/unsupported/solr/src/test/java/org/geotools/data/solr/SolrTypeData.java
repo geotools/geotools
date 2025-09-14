@@ -16,6 +16,7 @@
  */
 package org.geotools.data.solr;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,7 +24,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 /** Apache Solr Type data model, for load type definition from XML */
 @XmlRootElement
 public class SolrTypeData implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
+
     private String name;
     private String type;
     private Boolean multi;
@@ -56,7 +59,9 @@ public class SolrTypeData implements Serializable {
 
     @XmlRootElement
     public static class SolrTypes implements Serializable {
+        @Serial
         private static final long serialVersionUID = 1L;
+
         private List<SolrTypeData> types;
 
         public SolrTypes() {}

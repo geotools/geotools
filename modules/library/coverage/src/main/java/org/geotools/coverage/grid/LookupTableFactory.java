@@ -228,8 +228,7 @@ public final class LookupTableFactory {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other instanceof LookupTableFactory) {
-            final LookupTableFactory that = (LookupTableFactory) other;
+        if (other instanceof LookupTableFactory that) {
             return this.sourceType == that.sourceType
                     && this.targetType == that.targetType
                     && Arrays.equals(this.transforms, that.transforms);

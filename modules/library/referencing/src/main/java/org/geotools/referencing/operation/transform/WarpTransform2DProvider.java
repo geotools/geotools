@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.imagen.WarpPolynomial;
@@ -39,6 +40,7 @@ import org.geotools.referencing.operation.MathTransformProvider;
  */
 public class WarpTransform2DProvider extends MathTransformProvider {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7949539694656719923L;
 
     /** Descriptor for the "{@link WarpPolynomial#getDegree degree}" parameter value. */

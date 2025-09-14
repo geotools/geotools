@@ -64,8 +64,8 @@ public class DefaultHttpResponse implements HTTPResponse {
             responseStream = null;
         }
         if (connection != null) {
-            if (connection instanceof HttpURLConnection) {
-                ((HttpURLConnection) connection).disconnect();
+            if (connection instanceof HttpURLConnection lConnection) {
+                lConnection.disconnect();
             }
             connection = null;
         }

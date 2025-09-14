@@ -16,6 +16,7 @@
  */
 package org.geotools.metadata.math;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.util.Cloneable;
 
@@ -35,6 +36,7 @@ import org.geotools.api.util.Cloneable;
  */
 public final class Complex implements Cloneable, Serializable {
     /** For compatibility with previous versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = -8143196508298758583L;
 
     /** The real part of the complex number. */
@@ -242,7 +244,7 @@ public final class Complex implements Cloneable, Serializable {
     /** Compares this complex with the specified object for equality. */
     @Override
     public boolean equals(final Object c) {
-        return c instanceof Complex && equals((Complex) c);
+        return c instanceof Complex c1 && equals(c1);
     }
 
     /** Returns a hash value for this complex number. */

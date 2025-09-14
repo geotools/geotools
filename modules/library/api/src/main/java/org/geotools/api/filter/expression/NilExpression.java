@@ -10,6 +10,7 @@
 package org.geotools.api.filter.expression;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,7 @@ import java.io.Serializable;
  */
 public final class NilExpression implements Expression, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 4999313240542653655L;
 
     /** Not extensible. */

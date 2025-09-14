@@ -92,9 +92,9 @@ public abstract class GranuleCatalogFactory {
         }
 
         // locking wrappers
-        if (store instanceof Wrapper) {
+        if (store instanceof Wrapper wrapper) {
             try {
-                store = Optional.ofNullable((DataStore) ((Wrapper) store).unwrap(JDBCDataStore.class))
+                store = Optional.ofNullable((DataStore) wrapper.unwrap(JDBCDataStore.class))
                         .orElse(store);
             } catch (IllegalArgumentException e) {
                 LOGGER.log(

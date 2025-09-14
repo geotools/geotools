@@ -180,10 +180,10 @@ final class Command {
             table.write(identifiers.next().getCode());
             table.nextColumn();
             table.write(authority.getTitle().toString().trim());
-            if (factory instanceof AbstractAuthorityFactory) {
+            if (factory instanceof AbstractAuthorityFactory authorityFactory) {
                 String description;
                 try {
-                    description = ((AbstractAuthorityFactory) factory).getBackingStoreDescription();
+                    description = authorityFactory.getBackingStoreDescription();
                 } catch (FactoryException e) {
                     description = e.getLocalizedMessage();
                 }
@@ -229,11 +229,11 @@ final class Command {
         table.writeHorizontalSeparator();
         for (String arg : args) {
             IdentifiedObject object = factory.createObject(arg);
-            if (object instanceof CoordinateReferenceSystem) {
-                object = CRSUtilities.getDatum((CoordinateReferenceSystem) object);
+            if (object instanceof CoordinateReferenceSystem system) {
+                object = CRSUtilities.getDatum(system);
             }
-            if (object instanceof DefaultGeodeticDatum) {
-                final BursaWolfParameters[] params = ((DefaultGeodeticDatum) object).getBursaWolfParameters();
+            if (object instanceof DefaultGeodeticDatum datum) {
+                final BursaWolfParameters[] params = datum.getBursaWolfParameters();
                 for (final BursaWolfParameters p : params) {
                     table.setAlignment(TableWriter.ALIGN_LEFT);
                     table.write(p.targetDatum.getName().getCode());
@@ -344,8 +344,8 @@ final class Command {
 
     /** Dispose the factory. */
     private void dispose() throws FactoryException {
-        if (factory instanceof AbstractAuthorityFactory) {
-            ((AbstractAuthorityFactory) factory).dispose();
+        if (factory instanceof AbstractAuthorityFactory authorityFactory) {
+            authorityFactory.dispose();
         }
     }
 

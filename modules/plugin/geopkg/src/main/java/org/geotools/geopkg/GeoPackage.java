@@ -416,16 +416,17 @@ public class GeoPackage implements Closeable {
      * <p>The application should always call this method when done with a geopackage to prevent connection leakage.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public void close() {
         if (dataStore != null) {
             dataStore.dispose();
         }
 
         try {
-            if (connPool instanceof BasicDataSource) {
-                ((BasicDataSource) connPool).close();
-            } else if (connPool instanceof ManageableDataSource) {
-                ((ManageableDataSource) connPool).close();
+            if (connPool instanceof BasicDataSource source1) {
+                source1.close();
+            } else if (connPool instanceof ManageableDataSource source) {
+                source.close();
             }
 
         } catch (SQLException e) {
@@ -492,7 +493,7 @@ public class GeoPackage implements Closeable {
             throws IOException {
         try {
             try (PreparedStatement ps =
-                            cx.prepareStatement(format("SELECT srs_id FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
+                            cx.prepareStatement("SELECT srs_id FROM %s WHERE srs_id = ?".formatted(SPATIAL_REF_SYS));
                     ResultSet rs =
                             prepare(ps).set(srid).log(Level.FINE).statement().executeQuery()) {
                 if (rs.next()) {
@@ -545,7 +546,7 @@ public class GeoPackage implements Closeable {
 
     private boolean hasCRS(Connection cx, int srid) {
         try (PreparedStatement ps =
-                cx.prepareStatement(format("SELECT count(*) FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS))) {
+                cx.prepareStatement("SELECT count(*) FROM %s WHERE srs_id = ?".formatted(SPATIAL_REF_SYS))) {
             try (ResultSet rs =
                     prepare(ps).set(srid).log(Level.FINE).statement().executeQuery()) {
                 if (rs.next()) {
@@ -564,7 +565,7 @@ public class GeoPackage implements Closeable {
             try (Connection cx = connPool.getConnection()) {
 
                 try (PreparedStatement ps =
-                        cx.prepareStatement(format("SELECT definition FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS))) {
+                        cx.prepareStatement("SELECT definition FROM %s WHERE srs_id = ?".formatted(SPATIAL_REF_SYS))) {
 
                     try (ResultSet rs =
                             prepare(ps).set(srid).log(Level.FINE).statement().executeQuery()) {
@@ -780,7 +781,7 @@ public class GeoPackage implements Closeable {
             // check it
             if (schema.getDescriptor(e.getGeometryColumn()) == null) {
                 throw new IllegalArgumentException(
-                        format("Geometry column %s does not exist in schema", e.getGeometryColumn()));
+                        "Geometry column %s does not exist in schema".formatted(e.getGeometryColumn()));
             }
         } else {
             e.setGeometryColumn(findGeometryColumn(schema));
@@ -1002,8 +1003,8 @@ public class GeoPackage implements Closeable {
         GeometryDescriptor gd = schema.getGeometryDescriptor();
         if (gd == null) {
             for (PropertyDescriptor pd : schema.getDescriptors()) {
-                if (pd instanceof GeometryDescriptor) {
-                    return (GeometryDescriptor) pd;
+                if (pd instanceof GeometryDescriptor descriptor) {
+                    return descriptor;
                 }
             }
         }
@@ -1051,7 +1052,7 @@ public class GeoPackage implements Closeable {
             StringBuilder sb = new StringBuilder();
             StringBuilder vals = new StringBuilder();
 
-            sb.append(format("INSERT INTO %s (table_name, data_type, identifier", GEOPACKAGE_CONTENTS));
+            sb.append("INSERT INTO %s (table_name, data_type, identifier".formatted(GEOPACKAGE_CONTENTS));
             vals.append("VALUES (?,?,?");
 
             if (e.getDescription() != null) {
@@ -1130,7 +1131,7 @@ public class GeoPackage implements Closeable {
     }
 
     void deleteGeoPackageContentsEntry(Entry e) throws IOException {
-        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOPACKAGE_CONTENTS);
+        String sql = "DELETE FROM %s WHERE table_name = ?".formatted(GEOPACKAGE_CONTENTS);
         try (Connection cx = connPool.getConnection();
                 PreparedStatement ps =
                         prepare(cx, sql).set(e.getTableName()).log(Level.FINE).statement()) {
@@ -1145,7 +1146,7 @@ public class GeoPackage implements Closeable {
         if (e.getGeometryColumn() == null || e.getGeometryColumn().isEmpty()) {
             return;
         }
-        String sql = format("INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?);", GEOMETRY_COLUMNS);
+        String sql = "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?);".formatted(GEOMETRY_COLUMNS);
 
         try (PreparedStatement ps = prepare(cx, sql)
                 .set(e.getTableName())
@@ -1163,7 +1164,7 @@ public class GeoPackage implements Closeable {
     }
 
     void deleteGeometryColumnsEntry(FeatureEntry e) throws IOException {
-        String sql = format("DELETE FROM %s WHERE table_name = ?", GEOMETRY_COLUMNS);
+        String sql = "DELETE FROM %s WHERE table_name = ?".formatted(GEOMETRY_COLUMNS);
         try (Connection cx = connPool.getConnection();
                 PreparedStatement ps =
                         prepare(cx, sql).set(e.getTableName()).log(Level.FINE).statement()) {
@@ -1364,7 +1365,7 @@ public class GeoPackage implements Closeable {
             if (bounds == null) {
                 bounds = e.getBounds();
             }
-            try (PreparedStatement st = prepare(cx, format("INSERT INTO %s VALUES (?,?,?,?,?,?)", TILE_MATRIX_SET))
+            try (PreparedStatement st = prepare(cx, "INSERT INTO %s VALUES (?,?,?,?,?,?)".formatted(TILE_MATRIX_SET))
                     .set(e.getTableName())
                     .set(e.getSrid())
                     .set(bounds.getMinX())
@@ -1377,7 +1378,7 @@ public class GeoPackage implements Closeable {
 
             // create the tile_matrix_metadata entries
             try (PreparedStatement st = prepare(
-                            cx, format("INSERT INTO %s VALUES (?,?,?,?,?,?,?,?)", TILE_MATRIX_METADATA))
+                            cx, "INSERT INTO %s VALUES (?,?,?,?,?,?,?,?)".formatted(TILE_MATRIX_METADATA))
                     .statement()) {
                 for (TileMatrix m : e.getTileMatricies()) {
                     prepare(st)
@@ -1588,9 +1589,8 @@ public class GeoPackage implements Closeable {
      */
     public int getTileBound(TileEntry entry, int zoom, boolean isMax, boolean isRow) throws IOException {
         try {
-            String sql = format(
-                    "SELECT %s(%s) FROM \"%s\" WHERE zoom_level == ?",
-                    isMax ? "MAX" : "MIN", isRow ? "tile_row" : "tile_column", entry.getTableName());
+            String sql = "SELECT %s(%s) FROM \"%s\" WHERE zoom_level == ?"
+                    .formatted(isMax ? "MAX" : "MIN", isRow ? "tile_row" : "tile_column", entry.getTableName());
 
             try (Connection cx = connPool.getConnection();
                     PreparedStatement st = prepare(cx, sql).set(zoom).statement();

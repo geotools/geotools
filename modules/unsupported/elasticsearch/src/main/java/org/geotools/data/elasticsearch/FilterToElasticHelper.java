@@ -85,8 +85,8 @@ class FilterToElasticHelper {
     Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
-        if (filter instanceof DistanceBufferOperator) {
-            visitDistanceSpatialOperator((DistanceBufferOperator) filter, property, geometry, swapped, extraData);
+        if (filter instanceof DistanceBufferOperator operator) {
+            visitDistanceSpatialOperator(operator, property, geometry, swapped, extraData);
         } else {
             visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
         }
@@ -222,11 +222,10 @@ class FilterToElasticHelper {
 
         final Geometry geometry = delegate.currentGeometry;
 
-        if (geometry instanceof Polygon
+        if (geometry instanceof Polygon polygon
                 && ((!swapped && filter instanceof Within)
                         || (swapped && filter instanceof Contains)
                         || filter instanceof Intersects)) {
-            final Polygon polygon = (Polygon) geometry;
             final List<List<Double>> points = new ArrayList<>();
             for (final Coordinate coordinate : polygon.getCoordinates()) {
                 points.add(ImmutableList.of(coordinate.x, coordinate.y));
@@ -238,8 +237,8 @@ class FilterToElasticHelper {
                             MATCH_ALL,
                             "filter",
                             ImmutableMap.of("geo_polygon", ImmutableMap.of(key, ImmutableMap.of("points", points)))));
-        } else if (filter instanceof BBOX) {
-            final BoundingBox envelope = ((BBOX) filter).getBounds();
+        } else if (filter instanceof BBOX oX) {
+            final BoundingBox envelope = oX.getBounds();
             final double minY = clipLat(envelope.getMinY());
             final double maxY = clipLat(envelope.getMaxY());
             final double minX, maxX;

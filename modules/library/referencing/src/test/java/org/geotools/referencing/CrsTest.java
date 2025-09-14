@@ -77,20 +77,22 @@ public final class CrsTest {
     @Test
     @Ignore
     public void testESRICode() throws Exception {
-        String wkt = "PROJCS[\"Albers_Conic_Equal_Area\",\n"
-                + "  GEOGCS[\"GCS_North_American_1983\",\n"
-                + "    DATUM[\"D_North_American_1983\",\n"
-                + "    SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],\n"
-                + "    PRIMEM[\"Greenwich\",0.0],\n"
-                + "    UNIT[\"Degree\",0.0174532925199433]],\n"
-                + "  PROJECTION[\"Equidistant_Conic\"],\n"
-                + "  PARAMETER[\"False_Easting\",0.0],\n"
-                + "  PARAMETER[\"False_Northing\",0.0],\n"
-                + "  PARAMETER[\"Central_Meridian\",-96.0],\n"
-                + "  PARAMETER[\"Standard_Parallel_1\",33.0],\n"
-                + "  PARAMETER[\"Standard_Parallel_2\",45.0],\n"
-                + "  PARAMETER[\"Latitude_Of_Origin\",39.0],\n"
-                + "  UNIT[\"Meter\",1.0]]";
+        String wkt =
+                """
+                PROJCS["Albers_Conic_Equal_Area",
+                  GEOGCS["GCS_North_American_1983",
+                    DATUM["D_North_American_1983",
+                    SPHEROID["GRS_1980",6378137.0,298.257222101]],
+                    PRIMEM["Greenwich",0.0],
+                    UNIT["Degree",0.0174532925199433]],
+                  PROJECTION["Equidistant_Conic"],
+                  PARAMETER["False_Easting",0.0],
+                  PARAMETER["False_Northing",0.0],
+                  PARAMETER["Central_Meridian",-96.0],
+                  PARAMETER["Standard_Parallel_1",33.0],
+                  PARAMETER["Standard_Parallel_2",45.0],
+                  PARAMETER["Latitude_Of_Origin",39.0],
+                  UNIT["Meter",1.0]]""";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         final CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
         final MathTransform crsTransform = CRS.findMathTransform(WGS84, crs, true);
@@ -225,27 +227,29 @@ public final class CrsTest {
                 "Popular Visualisation Pseudo Mercator",
                 esriCrs.getConversionFromBase().getMethod().getName().getCode());
 
-        String wkt3857 = "PROJCS[\"WGS 84 / Pseudo-Mercator\", \n"
-                + "  GEOGCS[\"WGS 84\", \n"
-                + "    DATUM[\"World Geodetic System 1984\", \n"
-                + "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                + "      AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-                + "    AUTHORITY[\"EPSG\",\"4326\"]], \n"
-                + "  PROJECTION[\"Popular Visualisation Pseudo Mercator\", AUTHORITY[\"EPSG\",\"1024\"]], \n"
-                + "  PARAMETER[\"semi_minor\", 6378137.0], \n"
-                + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
-                + "  PARAMETER[\"central_meridian\", 0.0], \n"
-                + "  PARAMETER[\"scale_factor\", 1.0], \n"
-                + "  PARAMETER[\"false_easting\", 0.0], \n"
-                + "  PARAMETER[\"false_northing\", 0.0], \n"
-                + "  UNIT[\"m\", 1.0], \n"
-                + "  AXIS[\"Easting\", EAST], \n"
-                + "  AXIS[\"Northing\", NORTH], \n"
-                + "  AUTHORITY[\"EPSG\",\"3857\"]]";
+        String wkt3857 =
+                """
+                PROJCS["WGS 84 / Pseudo-Mercator",\s
+                  GEOGCS["WGS 84",\s
+                    DATUM["World Geodetic System 1984",\s
+                      SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],\s
+                      AUTHORITY["EPSG","6326"]],\s
+                    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                    UNIT["degree", 0.017453292519943295],\s
+                    AXIS["Geodetic longitude", EAST],\s
+                    AXIS["Geodetic latitude", NORTH],\s
+                    AUTHORITY["EPSG","4326"]],\s
+                  PROJECTION["Popular Visualisation Pseudo Mercator", AUTHORITY["EPSG","1024"]],\s
+                  PARAMETER["semi_minor", 6378137.0],\s
+                  PARAMETER["latitude_of_origin", 0.0],\s
+                  PARAMETER["central_meridian", 0.0],\s
+                  PARAMETER["scale_factor", 1.0],\s
+                  PARAMETER["false_easting", 0.0],\s
+                  PARAMETER["false_northing", 0.0],\s
+                  UNIT["m", 1.0],\s
+                  AXIS["Easting", EAST],\s
+                  AXIS["Northing", NORTH],\s
+                  AUTHORITY["EPSG","3857"]]""";
         CoordinateReferenceSystem epsg3857 = CRS.parseWKT(wkt3857);
 
         assertTrue(CRS.equalsIgnoreMetadata(esriCrs, epsg3857));
@@ -269,25 +273,27 @@ public final class CrsTest {
     public void reprojectEnvelopeRotatedPole() throws Exception {
         try {
             MapProjection.SKIP_SANITY_CHECKS = true;
-            String wkt = "PROJCS[\"WGS 84 / North Pole LAEA Alaska\", \n"
-                    + "  GEOGCS[\"WGS 84\", \n"
-                    + "    DATUM[\"World Geodetic System 1984\", \n"
-                    + "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                    + "      AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                    + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                    + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                    + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-                    + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                    + "    AUTHORITY[\"EPSG\",\"4326\"]], \n"
-                    + "  PROJECTION[\"Lambert_Azimuthal_Equal_Area\", AUTHORITY[\"EPSG\",\"9820\"]], \n"
-                    + "  PARAMETER[\"latitude_of_center\", 90.0], \n"
-                    + "  PARAMETER[\"longitude_of_center\", -150.0], \n"
-                    + "  PARAMETER[\"false_easting\", 0.0], \n"
-                    + "  PARAMETER[\"false_northing\", 0.0], \n"
-                    + "  UNIT[\"m\", 1.0], \n"
-                    + "  AXIS[\"Easting\", \"South along 60 deg West\"], \n"
-                    + "  AXIS[\"Northing\", \"South along 30 deg East\"], \n"
-                    + "  AUTHORITY[\"EPSG\",\"3572\"]]";
+            String wkt =
+                    """
+                    PROJCS["WGS 84 / North Pole LAEA Alaska",\s
+                      GEOGCS["WGS 84",\s
+                        DATUM["World Geodetic System 1984",\s
+                          SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],\s
+                          AUTHORITY["EPSG","6326"]],\s
+                        PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                        UNIT["degree", 0.017453292519943295],\s
+                        AXIS["Geodetic latitude", NORTH],\s
+                        AXIS["Geodetic longitude", EAST],\s
+                        AUTHORITY["EPSG","4326"]],\s
+                      PROJECTION["Lambert_Azimuthal_Equal_Area", AUTHORITY["EPSG","9820"]],\s
+                      PARAMETER["latitude_of_center", 90.0],\s
+                      PARAMETER["longitude_of_center", -150.0],\s
+                      PARAMETER["false_easting", 0.0],\s
+                      PARAMETER["false_northing", 0.0],\s
+                      UNIT["m", 1.0],\s
+                      AXIS["Easting", "South along 60 deg West"],\s
+                      AXIS["Northing", "South along 30 deg East"],\s
+                      AUTHORITY["EPSG","3572"]]""";
 
             CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
             // a legit originalEnvelope in rotated pole
@@ -319,54 +325,58 @@ public final class CrsTest {
 
     @Test
     public void testReprojectionRequiredDatumAxisSwap() throws Exception {
-        CoordinateReferenceSystem lonLatWebMercator = CRS.parseWKT("PROJCS[\"WGS 84 / "
-                + "Pseudo-Mercator\", \n"
-                + "  GEOGCS[\"WGS 84\", \n"
-                + "    DATUM[\"World Geodetic System 1984\", \n"
-                + "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\","
-                + "\"7030\"]], \n"
-                + "      AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-                + "    AUTHORITY[\"EPSG\",\"4326\"]], \n"
-                + "  PROJECTION[\"Popular Visualisation Pseudo Mercator\", AUTHORITY[\"EPSG\","
-                + "\"1024\"]], \n"
-                + "  PARAMETER[\"semi_minor\", 6378137.0], \n"
-                + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
-                + "  PARAMETER[\"central_meridian\", 0.0], \n"
-                + "  PARAMETER[\"scale_factor\", 1.0], \n"
-                + "  PARAMETER[\"false_easting\", 0.0], \n"
-                + "  PARAMETER[\"false_northing\", 0.0], \n"
-                + "  UNIT[\"m\", 1.0], \n"
-                + "  AXIS[\"Easting\", EAST], \n"
-                + "  AXIS[\"Northing\", NORTH], \n"
-                + "  AUTHORITY[\"EPSG\",\"3857\"]]");
-        CoordinateReferenceSystem latLonWebMercator = CRS.parseWKT("PROJCS[\"WGS 84 / "
-                + "Pseudo-Mercator\", \n"
-                + "  GEOGCS[\"WGS 84\", \n"
-                + "    DATUM[\"World Geodetic System 1984\", \n"
-                + "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\","
-                + "\"7030\"]], \n"
-                + "      AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-                + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                + "    AUTHORITY[\"EPSG\",\"4326\"]], \n"
-                + "  PROJECTION[\"Popular Visualisation Pseudo Mercator\", AUTHORITY[\"EPSG\","
-                + "\"1024\"]], \n"
-                + "  PARAMETER[\"semi_minor\", 6378137.0], \n"
-                + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
-                + "  PARAMETER[\"central_meridian\", 0.0], \n"
-                + "  PARAMETER[\"scale_factor\", 1.0], \n"
-                + "  PARAMETER[\"false_easting\", 0.0], \n"
-                + "  PARAMETER[\"false_northing\", 0.0], \n"
-                + "  UNIT[\"m\", 1.0], \n"
-                + "  AXIS[\"Easting\", EAST], \n"
-                + "  AXIS[\"Northing\", NORTH], \n"
-                + "  AUTHORITY[\"EPSG\",\"3857\"]]");
+        CoordinateReferenceSystem lonLatWebMercator = CRS.parseWKT(
+                """
+                PROJCS["WGS 84 / \
+                Pseudo-Mercator",\s
+                  GEOGCS["WGS 84",\s
+                    DATUM["World Geodetic System 1984",\s
+                      SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG",\
+                "7030"]],\s
+                      AUTHORITY["EPSG","6326"]],\s
+                    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                    UNIT["degree", 0.017453292519943295],\s
+                    AXIS["Geodetic longitude", EAST],\s
+                    AXIS["Geodetic latitude", NORTH],\s
+                    AUTHORITY["EPSG","4326"]],\s
+                  PROJECTION["Popular Visualisation Pseudo Mercator", AUTHORITY["EPSG",\
+                "1024"]],\s
+                  PARAMETER["semi_minor", 6378137.0],\s
+                  PARAMETER["latitude_of_origin", 0.0],\s
+                  PARAMETER["central_meridian", 0.0],\s
+                  PARAMETER["scale_factor", 1.0],\s
+                  PARAMETER["false_easting", 0.0],\s
+                  PARAMETER["false_northing", 0.0],\s
+                  UNIT["m", 1.0],\s
+                  AXIS["Easting", EAST],\s
+                  AXIS["Northing", NORTH],\s
+                  AUTHORITY["EPSG","3857"]]""");
+        CoordinateReferenceSystem latLonWebMercator = CRS.parseWKT(
+                """
+                PROJCS["WGS 84 / \
+                Pseudo-Mercator",\s
+                  GEOGCS["WGS 84",\s
+                    DATUM["World Geodetic System 1984",\s
+                      SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG",\
+                "7030"]],\s
+                      AUTHORITY["EPSG","6326"]],\s
+                    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                    UNIT["degree", 0.017453292519943295],\s
+                    AXIS["Geodetic latitude", NORTH],\s
+                    AXIS["Geodetic longitude", EAST],\s
+                    AUTHORITY["EPSG","4326"]],\s
+                  PROJECTION["Popular Visualisation Pseudo Mercator", AUTHORITY["EPSG",\
+                "1024"]],\s
+                  PARAMETER["semi_minor", 6378137.0],\s
+                  PARAMETER["latitude_of_origin", 0.0],\s
+                  PARAMETER["central_meridian", 0.0],\s
+                  PARAMETER["scale_factor", 1.0],\s
+                  PARAMETER["false_easting", 0.0],\s
+                  PARAMETER["false_northing", 0.0],\s
+                  UNIT["m", 1.0],\s
+                  AXIS["Easting", EAST],\s
+                  AXIS["Northing", NORTH],\s
+                  AUTHORITY["EPSG","3857"]]""");
 
         // the projected ordinates are the same, no need to actually run a transformation
         assertFalse(CRS.isTransformationRequired(lonLatWebMercator, latLonWebMercator));

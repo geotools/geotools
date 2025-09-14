@@ -54,12 +54,12 @@ public class AttributeNodePointerFactory implements NodePointerFactory {
          * Do not handle SimpleFeature, which should be handled by FeatureNodeFactory, registered by
          * XPathPropertyAccessorFactory in gt-xsd-core. See GEOS-3525.
          */
-        if (object instanceof Attribute && !(object instanceof SimpleFeature)) {
-            return new AttributeNodePointer(null, (Attribute) object, name);
+        if (object instanceof Attribute attribute && !(object instanceof SimpleFeature)) {
+            return new AttributeNodePointer(null, attribute, name);
         }
 
-        if (object instanceof ComplexType && !(object instanceof SimpleFeatureType)) {
-            return new FeatureTypePointer(null, (ComplexType) object, name);
+        if (object instanceof ComplexType type && !(object instanceof SimpleFeatureType)) {
+            return new FeatureTypePointer(null, type, name);
         }
 
         return null;
@@ -72,12 +72,12 @@ public class AttributeNodePointerFactory implements NodePointerFactory {
          * Do not handle SimpleFeature, which should be handled by FeatureNodeFactory, registered by
          * XPathPropertyAccessorFactory in gt-xsd-core. See GEOS-3525.
          */
-        if (object instanceof Attribute && !(object instanceof SimpleFeature)) {
-            return new AttributeNodePointer(parent, (Attribute) object, name);
+        if (object instanceof Attribute attribute && !(object instanceof SimpleFeature)) {
+            return new AttributeNodePointer(parent, attribute, name);
         }
 
-        if (object instanceof ComplexType && !(object instanceof SimpleFeatureType)) {
-            return new FeatureTypePointer(null, (ComplexType) object, name);
+        if (object instanceof ComplexType type && !(object instanceof SimpleFeatureType)) {
+            return new FeatureTypePointer(null, type, name);
         }
 
         return null;

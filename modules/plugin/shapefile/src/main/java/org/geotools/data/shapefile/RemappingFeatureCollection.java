@@ -121,8 +121,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(schema.getName());
         for (AttributeDescriptor attDesc : schema.getAttributeDescriptors()) {
-            if (attDesc instanceof GeometryDescriptor) {
-                GeometryDescriptor geoDesc = (GeometryDescriptor) attDesc;
+            if (attDesc instanceof GeometryDescriptor geoDesc) {
                 builder.add(
                         attributesMapping.get(attDesc.getLocalName()),
                         attDesc.getType().getBinding(),

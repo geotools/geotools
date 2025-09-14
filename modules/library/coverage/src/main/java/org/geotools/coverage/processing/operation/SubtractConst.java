@@ -19,6 +19,7 @@ package org.geotools.coverage.processing.operation;
 // JAI dependencies (for javadoc)
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
@@ -77,6 +78,7 @@ import org.geotools.util.NumberRange;
 public class SubtractConst extends OperationJAI {
     private static final String OPERATION_CONST = "operationConst";
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 279426577290256732L;
 
     /** Constructs a default {@code "SubtractConst"} operation. */

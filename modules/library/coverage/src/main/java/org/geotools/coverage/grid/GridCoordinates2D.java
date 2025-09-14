@@ -17,6 +17,7 @@
 package org.geotools.coverage.grid;
 
 import java.awt.Point;
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -32,6 +33,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class GridCoordinates2D extends Point implements GridCoordinates {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -4583333545268906740L;
 
     /** Creates an initially empty grid coordinates. */

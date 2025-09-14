@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing;
 
 import java.awt.Color;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
@@ -43,6 +44,7 @@ import org.geotools.util.Utilities;
  */
 public class RangeSpecifier implements Serializable, Cloneable {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 8436500582161136302L;
 
     /** The target range, or {@code null} if none. */

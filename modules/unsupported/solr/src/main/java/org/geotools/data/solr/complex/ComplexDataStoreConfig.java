@@ -80,7 +80,7 @@ public class ComplexDataStoreConfig extends SourceDataStore {
         try {
             this.url = new URL(url);
         } catch (Exception exception) {
-            throw new RuntimeException(String.format("Error parsing URL '%s'.", url), exception);
+            throw new RuntimeException("Error parsing URL '%s'.".formatted(url), exception);
         }
     }
 }

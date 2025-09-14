@@ -54,7 +54,7 @@ public class MBTilesMetadata {
             return Arrays.stream(t_type.values())
                     .filter(t -> t.identifier.equalsIgnoreCase(s))
                     .findAny()
-                    .orElseThrow(() -> new IllegalArgumentException(String.format("Unknown mbtiles type '%s'", s)));
+                    .orElseThrow(() -> new IllegalArgumentException("Unknown mbtiles type '%s'".formatted(s)));
         }
     }
 
@@ -212,10 +212,8 @@ public class MBTilesMetadata {
             setType(null);
         } else {
             if (typeStr.equalsIgnoreCase("BASE_LAYER")) {
-                LOGGER.log(
-                        Level.WARNING,
-                        () -> String.format(
-                                "MBTiles file has invalid type '%s', using '%s' instead", typeStr, t_type.BASE_LAYER));
+                LOGGER.log(Level.WARNING, () -> "MBTiles file has invalid type '%s', using '%s' instead"
+                        .formatted(typeStr, t_type.BASE_LAYER));
                 setType(t_type.BASE_LAYER);
             } else {
                 setType(t_type.lookUp(typeStr));

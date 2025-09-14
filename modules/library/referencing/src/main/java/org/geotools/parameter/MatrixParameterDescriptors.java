@@ -16,6 +16,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +66,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7386537348359343836L;
 
     /** The default matrix size for the {@linkplain #MatrixParameterDescriptors(Map) one-argument constructor}. */
@@ -341,9 +343,9 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
      * @throws InvalidParameterNameException if a parameter name was not recognized.
      */
     public Matrix getMatrix(final ParameterValueGroup parameters) throws InvalidParameterNameException {
-        if (parameters instanceof MatrixParameters) {
+        if (parameters instanceof MatrixParameters matrixParameters) {
             // More efficient implementation
-            return ((MatrixParameters) parameters).getMatrix();
+            return matrixParameters.getMatrix();
         }
         // Fallback on the general case (others implementations)
         final ParameterValue numRowParam = parameters.parameter(numRow.getName().toString());

@@ -60,9 +60,9 @@ class ToNumberFunction extends FunctionExpressionImpl {
                     return 1L;
                 }
             }
-            if (evaluation instanceof String) {
+            if (evaluation instanceof String string) {
                 try {
-                    return Double.valueOf((String) evaluation);
+                    return Double.valueOf(string);
                 } catch (Exception e) {
                     // skip to next
                 }

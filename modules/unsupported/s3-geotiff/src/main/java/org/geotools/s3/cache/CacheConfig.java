@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,7 +115,7 @@ public class CacheConfig {
         if (System.getProperty(S3_CACHING_DISK_PATH) != null) {
             try {
                 String diskPath = System.getProperty(S3_CACHING_DISK_PATH);
-                Path cachePath = Paths.get(diskPath);
+                Path cachePath = Path.of(diskPath);
                 config.setCacheDirectory(cachePath);
             } catch (InvalidPathException e) {
                 LOGGER.log(Level.FINER, "Can't parse disk cache path", e);

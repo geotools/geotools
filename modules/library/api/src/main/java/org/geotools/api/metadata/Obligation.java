@@ -11,6 +11,7 @@ package org.geotools.api.metadata;
 
 import static org.geotools.api.annotation.Specification.ISO_19115;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -26,6 +27,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "MD_ObligationCode", specification = ISO_19115)
 public final class Obligation extends CodeList<Obligation> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -2135167450448770693L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

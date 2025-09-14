@@ -90,8 +90,7 @@ public final class JdbcMultipleValueEncoder extends DuplicatingFilterVisitor {
                     output.write(expression);
                 } catch (Exception exception) {
                     throw new RuntimeException(
-                            String.format("Error writing multiple value expression '%s' to output.", expression),
-                            exception);
+                            "Error writing multiple value expression '%s' to output.".formatted(expression), exception);
                 }
             }
             return null;

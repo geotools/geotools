@@ -78,24 +78,24 @@ public class GeoJSONUtil {
      * @return A reader.
      */
     public static Reader toReader(Object input) throws IOException {
-        if (input instanceof BufferedReader) {
-            return (BufferedReader) input;
+        if (input instanceof BufferedReader reader) {
+            return reader;
         }
 
-        if (input instanceof Reader) {
-            return new BufferedReader((Reader) input);
+        if (input instanceof Reader reader) {
+            return new BufferedReader(reader);
         }
 
-        if (input instanceof InputStream) {
-            return new BufferedReader(new InputStreamReader((InputStream) input, StandardCharsets.UTF_8));
+        if (input instanceof InputStream stream) {
+            return new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
         }
 
-        if (input instanceof File) {
-            return new BufferedReader(new FileReader((File) input, StandardCharsets.UTF_8));
+        if (input instanceof File file) {
+            return new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
         }
 
-        if (input instanceof String) {
-            return new StringReader((String) input);
+        if (input instanceof String string) {
+            return new StringReader(string);
         }
 
         throw new IllegalArgumentException("Unable to turn " + input + " into a reader");
@@ -118,11 +118,12 @@ public class GeoJSONUtil {
      * @param output The output object.
      * @return A writer.
      */
+    @SuppressWarnings("PMD.CloseResource")
     public static Writer toWriter(Object output) throws IOException {
         // If the user passed in an OutputStreamWriter, we'll trust them to close it themselves.
-        if (output instanceof OutputStreamWriter) {
+        if (output instanceof OutputStreamWriter streamWriter) {
             return new Writer() {
-                Writer writer = new BufferedWriter((Writer) output);
+                Writer writer = new BufferedWriter(streamWriter);
 
                 @Override
                 public void write(char[] cbuf, int off, int len) throws IOException {
@@ -139,24 +140,24 @@ public class GeoJSONUtil {
             };
         }
 
-        if (output instanceof BufferedWriter) {
-            return (BufferedWriter) output;
+        if (output instanceof BufferedWriter writer) {
+            return writer;
         }
 
-        if (output instanceof Writer) {
-            return new BufferedWriter((Writer) output);
+        if (output instanceof Writer writer) {
+            return new BufferedWriter(writer);
         }
 
-        if (output instanceof OutputStream) {
-            return new BufferedWriter(new OutputStreamWriter((OutputStream) output, StandardCharsets.UTF_8));
+        if (output instanceof OutputStream stream) {
+            return new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8));
         }
 
-        if (output instanceof File) {
-            return new BufferedWriter(new FileWriter((File) output, StandardCharsets.UTF_8));
+        if (output instanceof File file) {
+            return new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
         }
 
-        if (output instanceof String) {
-            return new BufferedWriter(new FileWriter((String) output, StandardCharsets.UTF_8));
+        if (output instanceof String string) {
+            return new BufferedWriter(new FileWriter(string, StandardCharsets.UTF_8));
         }
 
         throw new IllegalArgumentException("Unable to turn " + output + " into a writer");
@@ -181,10 +182,10 @@ public class GeoJSONUtil {
     private static void value(Object value, StringBuilder sb) {
         if (value == null) {
             nul(sb);
-        } else if (value instanceof List) {
+        } else if (value instanceof List list) {
             sb.append('[');
             boolean firstValue = true;
-            for (Object member : (List) value) {
+            for (Object member : list) {
                 if (firstValue) {
                     firstValue = false;
                 } else {
@@ -194,10 +195,10 @@ public class GeoJSONUtil {
                 value(member, sb);
             }
             sb.append(']');
-        } else if (value instanceof Map) {
+        } else if (value instanceof Map<?, ?> map) {
             sb.append('{');
             boolean firstEntry = true;
-            for (Map.Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
                 if (firstEntry) {
                     firstEntry = false;
                 } else {
@@ -234,8 +235,8 @@ public class GeoJSONUtil {
 
     static StringBuilder literal(Object value, StringBuilder sb) {
         // handle date as special case special case
-        if (value instanceof Date) {
-            return string(dateFormatter.format((Date) value), sb);
+        if (value instanceof Date date) {
+            return string(dateFormatter.format(date), sb);
         }
 
         return sb.append(value);
@@ -322,8 +323,7 @@ public class GeoJSONUtil {
     }
 
     public static Object replaceGeometry(Object justAdded) throws ParseException, IOException {
-        if (justAdded instanceof Map) {
-            Map map = (Map) justAdded;
+        if (justAdded instanceof Map map) {
             if (map.size() == 2
                     && map.containsKey("type")
                     && (map.containsKey("coordinates") || map.containsKey("geometries"))) {
@@ -352,10 +352,10 @@ public class GeoJSONUtil {
     }
 
     private static void replayObject(Object object, ContentHandler handler) throws ParseException, IOException {
-        if (object instanceof Map) {
-            replayMap((Map) object, handler);
-        } else if (object instanceof List) {
-            replayList((List) object, handler);
+        if (object instanceof Map map) {
+            replayMap(map, handler);
+        } else if (object instanceof List list) {
+            replayList(list, handler);
         } else {
             handler.primitive(object);
         }

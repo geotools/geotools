@@ -147,8 +147,8 @@ public class FactoryCreator extends FactoryRegistry {
             if (hint == null) {
                 types = null;
             } else {
-                if (hint instanceof Class<?>[]) {
-                    types = (Class<?>[]) hint;
+                if (hint instanceof Class<?>[] class1s) {
+                    types = class1s;
                 } else {
                     types = new Class<?>[] {(Class<?>) hint};
                     // Should not fails, since non-class argument should
@@ -287,8 +287,8 @@ public class FactoryCreator extends FactoryRegistry {
         } // The class is abstract
         catch (InvocationTargetException exception) {
             cause = exception.getCause(); // Exception in constructor
-            if (cause instanceof FactoryRegistryException) {
-                throw (FactoryRegistryException) cause;
+            if (cause instanceof FactoryRegistryException registryException) {
+                throw registryException;
             }
         }
         throw new FactoryRegistryException(

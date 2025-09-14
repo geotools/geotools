@@ -414,8 +414,8 @@ public class Descriptors {
             }
         }
         AttributeType superType = schema.getSuper();
-        if (superType instanceof ComplexType) {
-            return node((ComplexType) superType, name);
+        if (superType instanceof ComplexType type) {
+            return node(type, name);
         }
         return null;
     }
@@ -565,8 +565,8 @@ public class Descriptors {
 
         ArrayList list = new ArrayList<>();
 
-        if (type instanceof ComplexType) {
-            list = new ArrayList<>(((ComplexType) type).getDescriptors());
+        if (type instanceof ComplexType complexType) {
+            list = new ArrayList<>(complexType.getDescriptors());
         }
 
         return list;

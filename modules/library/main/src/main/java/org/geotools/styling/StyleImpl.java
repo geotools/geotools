@@ -170,8 +170,7 @@ public class StyleImpl implements Style, Cloneable {
             return true;
         }
 
-        if (oth instanceof StyleImpl) {
-            StyleImpl other = (StyleImpl) oth;
+        if (oth instanceof StyleImpl other) {
 
             return Utilities.equals(name, other.name)
                     && Utilities.equals(description, other.description)

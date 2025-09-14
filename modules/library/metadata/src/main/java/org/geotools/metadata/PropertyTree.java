@@ -98,12 +98,12 @@ final class PropertyTree {
      * value(s) for that property.
      */
     private void append(final DefaultMutableTreeNode branch, final Object value) {
-        if (value instanceof Map) {
-            appendMap(branch, (Map) value);
+        if (value instanceof Map map) {
+            appendMap(branch, map);
             return;
         }
-        if (value instanceof AbstractMetadata) {
-            appendMap(branch, ((AbstractMetadata) value).asMap());
+        if (value instanceof AbstractMetadata metadata) {
+            appendMap(branch, metadata.asMap());
             return;
         }
         if (value != null) {
@@ -113,8 +113,8 @@ final class PropertyTree {
                 return;
             }
         }
-        if (value instanceof Collection) {
-            for (final Object element : (Collection) value) {
+        if (value instanceof Collection collection) {
+            for (final Object element : collection) {
                 if (!PropertyAccessor.isEmpty(element)) {
                     append(branch, element);
                 }
@@ -122,14 +122,14 @@ final class PropertyTree {
             return;
         }
         final String asText;
-        if (value instanceof CodeList) {
-            asText = localize((CodeList) value);
-        } else if (value instanceof Date) {
-            asText = format((Date) value);
-        } else if (value instanceof Number) {
-            asText = format((Number) value);
-        } else if (value instanceof InternationalString) {
-            asText = ((InternationalString) value).toString(locale);
+        if (value instanceof CodeList list) {
+            asText = localize(list);
+        } else if (value instanceof Date date) {
+            asText = format(date);
+        } else if (value instanceof Number number) {
+            asText = format(number);
+        } else if (value instanceof InternationalString string) {
+            asText = string.toString(locale);
         } else {
             asText = String.valueOf(value);
         }

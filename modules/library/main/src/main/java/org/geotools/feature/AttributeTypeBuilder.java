@@ -221,8 +221,8 @@ public class AttributeTypeBuilder {
         binding = type.getBinding();
         superType = type.getSuper();
 
-        if (type instanceof GeometryType) {
-            crs = ((GeometryType) type).getCoordinateReferenceSystem();
+        if (type instanceof GeometryType geometryType) {
+            crs = geometryType.getCoordinateReferenceSystem();
         }
         return this;
     }

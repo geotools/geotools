@@ -150,18 +150,17 @@ public class DB2WKBWriter {
     public void write(Geometry geom, OutStream os) throws IOException {
         outputDimension = guessCoordinateDimension(geom);
 
-        if (geom instanceof Point) writePoint((Point) geom, os);
+        if (geom instanceof Point point1) writePoint(point1, os);
         // LinearRings will be written as LineStrings
-        else if (geom instanceof LineString) writeLineString((LineString) geom, os);
-        else if (geom instanceof Polygon) writePolygon((Polygon) geom, os);
-        else if (geom instanceof MultiPoint)
-            writeGeometryCollection(DB2WKBConstants.wkbMultiPoint2D, (MultiPoint) geom, os);
-        else if (geom instanceof MultiLineString)
-            writeGeometryCollection(DB2WKBConstants.wkbMultiLineString2D, (MultiLineString) geom, os);
-        else if (geom instanceof MultiPolygon)
-            writeGeometryCollection(DB2WKBConstants.wkbMultiPolygon2D, (MultiPolygon) geom, os);
-        else if (geom instanceof GeometryCollection)
-            writeGeometryCollection(DB2WKBConstants.wkbGeomCollection2D, (GeometryCollection) geom, os);
+        else if (geom instanceof LineString string1) writeLineString(string1, os);
+        else if (geom instanceof Polygon polygon1) writePolygon(polygon1, os);
+        else if (geom instanceof MultiPoint point) writeGeometryCollection(DB2WKBConstants.wkbMultiPoint2D, point, os);
+        else if (geom instanceof MultiLineString string)
+            writeGeometryCollection(DB2WKBConstants.wkbMultiLineString2D, string, os);
+        else if (geom instanceof MultiPolygon polygon)
+            writeGeometryCollection(DB2WKBConstants.wkbMultiPolygon2D, polygon, os);
+        else if (geom instanceof GeometryCollection collection)
+            writeGeometryCollection(DB2WKBConstants.wkbGeomCollection2D, collection, os);
         else {
             Assert.shouldNeverReachHere("Unknown Geometry type");
         }

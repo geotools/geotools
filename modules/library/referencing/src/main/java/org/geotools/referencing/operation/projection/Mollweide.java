@@ -27,6 +27,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -47,6 +48,7 @@ import org.geotools.util.SuppressFBWarnings;
  */
 public class Mollweide extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -737778661392950540L;
 
     private static final int MAX_ITER = 10;
@@ -172,6 +174,7 @@ public class Mollweide extends MapProjection {
      */
     public static class MollweideProvider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -2616680275771881688L;
 
         /** The parameters group. */
@@ -215,6 +218,7 @@ public class Mollweide extends MapProjection {
      */
     public static class WagnerIVProvider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 1079407274370647753L;
 
         /** The parameters group. */
@@ -255,6 +259,7 @@ public class Mollweide extends MapProjection {
      */
     public static class WagnerVProvider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -3583284443974045930L;
 
         /** The parameters group. */

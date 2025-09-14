@@ -9,6 +9,8 @@
  */
 package org.geotools.api.referencing;
 
+import java.io.Serial;
+
 /**
  * Thrown when an {@linkplain AuthorityFactory authority factory} can't find the requested authority code.
  *
@@ -19,6 +21,7 @@ package org.geotools.api.referencing;
  */
 public class NoSuchAuthorityCodeException extends FactoryException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1573748311981746573L;
 
     /** The authority. */

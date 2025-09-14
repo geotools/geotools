@@ -163,9 +163,9 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             } else if ("false".equals(abstracT1)) {
                 this.abstracT = false;
             } else {
-                throw new SAXException(String.format(
-                        "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
-                        abstracT1));
+                throw new SAXException(
+                        "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")"
+                                .formatted(abstracT1));
             }
         }
 
@@ -344,8 +344,8 @@ public class ElementTypeHandler extends ElementGroupingHandler {
 
         if (child == null) {
             cache.type = parent.lookUpType(type);
-        } else if (child instanceof SimpleTypeHandler) {
-            cache.type = ((SimpleTypeHandler) child).compress(parent);
+        } else if (child instanceof SimpleTypeHandler handler) {
+            cache.type = handler.compress(parent);
         } else {
             cache.type = ((ComplexTypeHandler) child).compress(parent);
         }

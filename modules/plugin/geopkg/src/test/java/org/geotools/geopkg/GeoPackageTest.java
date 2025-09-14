@@ -188,7 +188,7 @@ public class GeoPackageTest {
     void assertTableExists(String table) throws Exception {
         try (Connection cx = geopkg.getDataSource().getConnection();
                 Statement st = cx.createStatement()) {
-            st.execute(String.format("SELECT count(*) FROM \"%s\";", table));
+            st.execute("SELECT count(*) FROM \"%s\";".formatted(table));
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -206,7 +206,7 @@ public class GeoPackageTest {
         try (Connection cx = geopkg.getDataSource().getConnection();
                 Statement st = cx.createStatement();
                 ResultSet rs =
-                        st.executeQuery(String.format("SELECT last_change FROM %s;", GeoPackage.GEOPACKAGE_CONTENTS))) {
+                        st.executeQuery("SELECT last_change FROM %s;".formatted(GeoPackage.GEOPACKAGE_CONTENTS))) {
 
             if (rs.next()) {
                 final String dateString = rs.getString(1);
@@ -223,7 +223,7 @@ public class GeoPackageTest {
     boolean doesEntryExists(String table, Entry entry) throws Exception {
         boolean exists = false;
         try (Connection cx = geopkg.getDataSource().getConnection()) {
-            String sql = String.format("SELECT * FROM %s WHERE table_name = ?", table);
+            String sql = "SELECT * FROM %s WHERE table_name = ?".formatted(table);
             SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(entry.getTableName());
             try (PreparedStatement ps = psb.log(Level.FINE).statement()) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -249,7 +249,7 @@ public class GeoPackageTest {
 
         try (Connection cx = geopkg.getDataSource().getConnection()) {
             geopkg.addGeoPackageContentsEntry(entry, cx);
-            String sql = String.format("SELECT srs_name FROM %s WHERE srs_id = ?", GeoPackage.SPATIAL_REF_SYS);
+            String sql = "SELECT srs_name FROM %s WHERE srs_id = ?".formatted(GeoPackage.SPATIAL_REF_SYS);
             SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(2000);
             try (PreparedStatement ps = psb.log(Level.FINE).statement()) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -1035,8 +1035,8 @@ public class GeoPackageTest {
             Object e = expected.getAttribute(d.getLocalName());
             Object a = actual.getAttribute(d.getLocalName());
 
-            if (e instanceof Number) {
-                assertEquals(((Number) e).intValue(), ((Number) a).intValue());
+            if (e instanceof Number number) {
+                assertEquals(number.intValue(), ((Number) a).intValue());
             } else {
                 assertEquals(e, a);
             }
@@ -1266,15 +1266,17 @@ public class GeoPackageTest {
     public void testForceXYAlreadyXY() throws Exception {
 
         // standard EPSG:4326 in EAST_NORTH format (XY)
-        String wkt_xy = "GEOGCS[\"WGS 84\", \n"
-                + "  DATUM[\"World Geodetic System 1984\", \n"
-                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                + "  UNIT[\"degree\", 0.017453292519943295], \n"
-                + "  AXIS[\"Geodetic latitude\", EAST], \n"
-                + "  AXIS[\"Geodetic longitude\", NORTH], \n"
-                + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+        String wkt_xy =
+                """
+                GEOGCS["WGS 84",\s
+                  DATUM["World Geodetic System 1984",\s
+                    SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],\s
+                    AUTHORITY["EPSG","6326"]],\s
+                  PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                  UNIT["degree", 0.017453292519943295],\s
+                  AXIS["Geodetic latitude", EAST],\s
+                  AXIS["Geodetic longitude", NORTH],\s
+                  AUTHORITY["EPSG","4326"]]""";
 
         CoordinateReferenceSystem crs_yx = CRS.parseWKT(wkt_xy);
         assertEquals(CRS.getAxisOrder(crs_yx), CRS.AxisOrder.EAST_NORTH);
@@ -1297,15 +1299,17 @@ public class GeoPackageTest {
     public void testForceXYSimpleFlip() throws Exception {
         // create a FeatureCollection that is advertised as YX
         // standard EPSG:4326 in NORTH_EAST format (YX)
-        String wkt_yx = "GEOGCS[\"WGS 84\", \n"
-                + "  DATUM[\"World Geodetic System 1984\", \n"
-                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                + "  UNIT[\"degree\", 0.017453292519943295], \n"
-                + "  AXIS[\"Geodetic longitude\", NORTH], \n"
-                + "  AXIS[\"Geodetic latitude\", EAST], \n"
-                + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+        String wkt_yx =
+                """
+                GEOGCS["WGS 84",\s
+                  DATUM["World Geodetic System 1984",\s
+                    SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],\s
+                    AUTHORITY["EPSG","6326"]],\s
+                  PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                  UNIT["degree", 0.017453292519943295],\s
+                  AXIS["Geodetic longitude", NORTH],\s
+                  AXIS["Geodetic latitude", EAST],\s
+                  AUTHORITY["EPSG","4326"]]""";
         CoordinateReferenceSystem crs_yx = CRS.parseWKT(wkt_yx);
         assertEquals(CRS.getAxisOrder(crs_yx), CRS.AxisOrder.NORTH_EAST);
 

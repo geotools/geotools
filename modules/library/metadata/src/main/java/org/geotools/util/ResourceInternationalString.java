@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -52,6 +53,7 @@ import java.util.ResourceBundle;
  */
 public class ResourceInternationalString extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6339944890723487336L;
 
     /** The name of the resource bundle from which to fetch the string. */

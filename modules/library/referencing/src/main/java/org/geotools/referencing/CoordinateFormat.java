@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing;
 
+import java.io.Serial;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
@@ -73,6 +74,7 @@ import si.uom.SI;
  */
 public class CoordinateFormat extends Format {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8235685097881260737L;
 
     /** The output coordinate reference system. May be {@code null}. */
@@ -229,13 +231,13 @@ public class CoordinateFormat extends Format {
                 Unit<Time> timeUnit = (Unit<Time>) unit;
 
                 final Datum datum = CRSUtilities.getDatum(CRSUtilities.getSubCRS(crs, i, i + 1));
-                if (datum instanceof TemporalDatum) {
+                if (datum instanceof TemporalDatum temporalDatum) {
                     if (toMillis == null) {
                         toMillis = new UnitConverter[formats.length];
                         epochs = new long[formats.length];
                     }
                     toMillis[i] = timeUnit.getConverterTo(DefaultTemporalCRS.MILLISECOND);
-                    epochs[i] = ((TemporalDatum) datum).getOrigin().getTime();
+                    epochs[i] = temporalDatum.getOrigin().getTime();
                     if (dateFormat == null) {
                         dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
                     }
@@ -288,8 +290,8 @@ public class CoordinateFormat extends Format {
     public void setNumberPattern(final String pattern) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && format instanceof DecimalFormat) {
-                ((DecimalFormat) format).applyPattern(pattern);
+            if (format != lastFormat && format instanceof DecimalFormat decimalFormat) {
+                decimalFormat.applyPattern(pattern);
                 lastFormat = format;
             }
         }
@@ -305,8 +307,8 @@ public class CoordinateFormat extends Format {
     public void setAnglePattern(final String pattern) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && format instanceof AngleFormat) {
-                ((AngleFormat) format).applyPattern(pattern);
+            if (format != lastFormat && format instanceof AngleFormat angleFormat) {
+                angleFormat.applyPattern(pattern);
                 lastFormat = format;
             }
         }
@@ -322,8 +324,8 @@ public class CoordinateFormat extends Format {
     public void setDatePattern(final String pattern) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && format instanceof SimpleDateFormat) {
-                ((SimpleDateFormat) format).applyPattern(pattern);
+            if (format != lastFormat && format instanceof SimpleDateFormat dateFormat) {
+                dateFormat.applyPattern(pattern);
                 lastFormat = format;
             }
         }
@@ -339,8 +341,8 @@ public class CoordinateFormat extends Format {
     public void setTimeZone(final TimeZone timezone) {
         Format lastFormat = null;
         for (final Format format : formats) {
-            if (format != lastFormat && format instanceof DateFormat) {
-                ((DateFormat) format).setTimeZone(timezone);
+            if (format != lastFormat && format instanceof DateFormat dateFormat) {
+                dateFormat.setTimeZone(timezone);
                 lastFormat = format;
             }
         }
@@ -461,8 +463,8 @@ public class CoordinateFormat extends Format {
     @Override
     public StringBuffer format(final Object object, final StringBuffer toAppendTo, final FieldPosition position)
             throws IllegalArgumentException {
-        if (object instanceof Position) {
-            return format((Position) object, toAppendTo, position);
+        if (object instanceof Position position1) {
+            return format(position1, toAppendTo, position);
         } else {
             throw new IllegalArgumentException(String.valueOf(object));
         }

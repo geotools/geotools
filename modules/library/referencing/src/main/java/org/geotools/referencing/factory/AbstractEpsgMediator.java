@@ -68,10 +68,9 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
      */
     static DataSource lookupDataSource(Hints hints) throws FactoryException {
         Object hint = hints.get(Hints.EPSG_DATA_SOURCE);
-        if (hint instanceof DataSource) {
-            return (DataSource) hint;
-        } else if (hint instanceof String) {
-            String name = (String) hint;
+        if (hint instanceof DataSource source) {
+            return source;
+        } else if (hint instanceof String name) {
             try {
                 return (DataSource) GeoTools.jndiLookup(name);
             } catch (Exception e) {
@@ -135,8 +134,8 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         IdentifiedObject identifiedObject = createObject(code);
         final Identifier identifier = identifiedObject.getName();
-        if (identifier instanceof GenericName) {
-            return ((GenericName) identifier).toInternationalString();
+        if (identifier instanceof GenericName name) {
+            return name.toInternationalString();
         }
         return new SimpleInternationalString(identifier.getCode());
     }

@@ -136,8 +136,8 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
     }
 
     protected BasicDBObject asDBObject(Object extraData) {
-        if (extraData instanceof BasicDBObject) {
-            return (BasicDBObject) extraData;
+        if (extraData instanceof BasicDBObject object) {
+            return object;
         }
         return new BasicDBObject();
     }
@@ -156,8 +156,8 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
     @Override
     public Object visit(Literal expression, Object extraData) {
         Class<?> targetType = null;
-        if (extraData != null && extraData instanceof Class) {
-            targetType = (Class<?>) extraData;
+        if (extraData != null && extraData instanceof Class<?> class1) {
+            targetType = class1;
         }
 
         return encodeLiteral(expression.getValue(), targetType);
@@ -325,9 +325,9 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
     protected Class<?> getValueType(Expression e) {
 
         Class<?> ret = getValueTypeInternal(e);
-        if (ret == null && e instanceof Function)
+        if (ret == null && e instanceof Function function)
             // get the value type from the function return type
-            ret = getFunctionReturnType((Function) e);
+            ret = getFunctionReturnType(function);
         return ret;
     }
 
@@ -656,11 +656,11 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
 
     @Override
     public Object visit(Function function, Object extraData) {
-        if (function instanceof JsonSelectFunction) {
-            return ((JsonSelectFunction) function).getJsonPath();
+        if (function instanceof JsonSelectFunction selectFunction) {
+            return selectFunction.getJsonPath();
         }
-        if (function instanceof JsonSelectAllFunction) {
-            return ((JsonSelectAllFunction) function).getJsonPath();
+        if (function instanceof JsonSelectAllFunction allFunction) {
+            return allFunction.getJsonPath();
         }
         throw new UnsupportedOperationException();
     }
@@ -751,21 +751,21 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
     }
 
     Object encodeLiteral(Object literal, Class<?> targetType) {
-        if (literal instanceof Envelope) {
-            return geometryBuilder.toObject((Envelope) literal);
-        } else if (literal instanceof Geometry) {
-            return geometryBuilder.toObject((Geometry) literal);
-        } else if (literal instanceof Date) {
+        if (literal instanceof Envelope envelope) {
+            return geometryBuilder.toObject(envelope);
+        } else if (literal instanceof Geometry geometry) {
+            return geometryBuilder.toObject(geometry);
+        } else if (literal instanceof Date date) {
             if (targetType != null && Date.class.isAssignableFrom(targetType)) {
                 // return date object as is, will be correctly encoded by BasicDBObject
                 return literal;
             }
             // by default, convert date to ISO-8601 string
-            return DateTimeFormatter.ISO_DATE_TIME.format(((Date) literal).toInstant());
-        } else if (literal instanceof String) {
+            return DateTimeFormatter.ISO_DATE_TIME.format(date.toInstant());
+        } else if (literal instanceof String string) {
             if (targetType != null && Date.class.isAssignableFrom(targetType)) {
                 // try parse string assuming it's ISO-8601 formatted
-                return Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) literal)));
+                return Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse(string)));
             }
             // try to convert to the expected type
             return convertLiteral(literal, targetType);

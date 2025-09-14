@@ -87,16 +87,16 @@ public class CLASS
 	XSDSchema schema = named.getSchema();
 	XSDTypeDefinition type = null;
 	String desc = null;
-	if (named instanceof XSDTypeDefinition) {
-		type = (XSDTypeDefinition)named;
+	if (named instanceof XSDTypeDefinition definition) {
+		type = definition;
 		desc = "type";
 	}
-	if (named instanceof XSDElementDeclaration) {
-		type = ((XSDElementDeclaration)named).getTypeDefinition();
+	if (named instanceof XSDElementDeclaration declaration) {
+		type = declaration.getTypeDefinition();
 		desc = "element";
 	}
-	if (named instanceof XSDAttributeDeclaration) {
-		type = ((XSDAttributeDeclaration)named).getTypeDefinition();
+	if (named instanceof XSDAttributeDeclaration declaration) {
+		type = declaration.getTypeDefinition();
 		desc = "attribute";
 	}
 	

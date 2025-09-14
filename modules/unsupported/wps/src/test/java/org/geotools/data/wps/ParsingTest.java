@@ -156,8 +156,8 @@ public class ParsingTest {
 
             // try casting the response
             ExecuteResponseType exeResponse = null;
-            if (object instanceof ExecuteResponseType) {
-                exeResponse = (ExecuteResponseType) object;
+            if (object instanceof ExecuteResponseType type) {
+                exeResponse = type;
             }
 
             // try to get the output datatype

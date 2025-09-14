@@ -16,6 +16,7 @@
  */
 package org.geotools.gml2.simple;
 
+import java.io.Serial;
 import javax.xml.namespace.QName;
 
 /**
@@ -25,6 +26,7 @@ import javax.xml.namespace.QName;
  * @author Andrea Aime - GeoSolutions
  */
 public class QualifiedName extends QName {
+    @Serial
     private static final long serialVersionUID = -132059274810468074L;
 
     String qualifiedName;

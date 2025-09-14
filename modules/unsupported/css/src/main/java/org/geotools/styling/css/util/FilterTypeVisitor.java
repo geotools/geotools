@@ -81,8 +81,7 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
     }
 
     String getPropertyName(Expression ex) {
-        if (ex instanceof PropertyName) {
-            PropertyName pn = (PropertyName) ex;
+        if (ex instanceof PropertyName pn) {
             return pn.getPropertyName();
         }
 

@@ -86,8 +86,7 @@ public class PropertyTypeBinding_1_1 extends AbstractComplexEMFBinding {
                 Object value = ((PropertyType) object).getValue();
 
                 output.startElement(org.geotools.wfs.WFS.NAMESPACE, VALUE, "wfs:" + VALUE, new AttributesImpl());
-                if (value instanceof Geometry) {
-                    Geometry geometry = (Geometry) value;
+                if (value instanceof Geometry geometry) {
 
                     GMLWriter handler = new GMLWriter(
                             output,

@@ -67,16 +67,11 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     /** see {@link org.geotools.filter.AttributeExpressionImpl#evaluate(Object)} */
     @Override
     public Object evaluate(Object object) {
-        if (object == null) {
-            return null;
-        }
-
         // only simple/complex features are supported
-        if (!(object instanceof Feature)) {
-            return null;
+        if (object instanceof Feature feature) {
+            return getValues(feature, rootMapping, fullSteps);
         }
-
-        return getValues((Feature) object, rootMapping, fullSteps);
+        return null;
     }
 
     private List<Object> getValues(Feature feature, NestedAttributeMapping nestedMapping, StepList steps) {
@@ -95,12 +90,11 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
             throw new UnsupportedOperationException(
                     "FeatureTypeMapping not found for " + attPath + ". Please revise PropertyName in your filter!");
         }
-        List<Feature> nestedFeatures = new ArrayList<>();
+        final List<Feature> nestedFeatures;
         if (nestedMapping.isSameSource()) {
             // same root/database row, different mappings, used in
             // polymorphism
-            nestedFeatures = new ArrayList<>();
-            nestedFeatures.add(feature);
+            nestedFeatures = List.of(feature);
         } else {
             // get nested features
             try {

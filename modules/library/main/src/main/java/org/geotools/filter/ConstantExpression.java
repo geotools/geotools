@@ -98,9 +98,8 @@ public class ConstantExpression implements Literal, Cloneable {
         }
 
         if (value instanceof Number) {
-            if (otherLiteral instanceof Number) {
+            if (otherLiteral instanceof Number otherNumber) {
                 Number myNumber = (Number) value;
-                Number otherNumber = (Number) otherLiteral;
 
                 return myNumber.doubleValue() == otherNumber.doubleValue();
             }
@@ -125,8 +124,7 @@ public class ConstantExpression implements Literal, Cloneable {
 
     @Override
     public String toString() {
-        if (value instanceof Color) {
-            Color color = (Color) value;
+        if (value instanceof Color color) {
             String redCode = Integer.toHexString(color.getRed());
             String greenCode = Integer.toHexString(color.getGreen());
             String blueCode = Integer.toHexString(color.getBlue());

@@ -632,10 +632,10 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 
         int i = postStack.size();
         int j = preStack.size();
-        if (filter instanceof Not) {
+        if (filter instanceof Not not) {
 
-            if (((Not) filter).getFilter() != null) {
-                Filter next = ((Not) filter).getFilter();
+            if (not.getFilter() != null) {
+                Filter next = not.getFilter();
                 next.accept(this, null);
 
                 if (i < postStack.size()) {
@@ -653,11 +653,11 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
                 }
             }
         } else {
-            if (filter instanceof Or) {
+            if (filter instanceof Or or) {
                 Filter orReplacement;
 
                 try {
-                    orReplacement = translateOr((Or) filter);
+                    orReplacement = translateOr(or);
                     orReplacement.accept(this, null);
                 } catch (IllegalFilterException e) {
                     popToSize(preStack, j);
@@ -924,9 +924,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         while (i.hasNext()) {
             Filter f = i.next();
 
-            if (f instanceof Not) {
-                // simplify it
-                Not logic = (Not) f;
+            if (f instanceof Not logic) {
                 Filter next = logic.getFilter();
                 translated.add(next);
             } else {
@@ -1059,10 +1057,10 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 
     protected boolean supports(Object value) {
         boolean supports = false;
-        if (value instanceof Class) supports = fcs.supports((Class) value);
-        else if (value instanceof Filter) supports = fcs.supports((Filter) value);
+        if (value instanceof Class class1) supports = fcs.supports(class1);
+        else if (value instanceof Filter filter) supports = fcs.supports(filter);
         else if (value instanceof Expression) supports = fcs.supports(value.getClass());
-        else if (value instanceof FilterCapabilities) supports = fcs.supports((FilterCapabilities) value);
+        else if (value instanceof FilterCapabilities capabilities) supports = fcs.supports(capabilities);
 
         return supports;
     }

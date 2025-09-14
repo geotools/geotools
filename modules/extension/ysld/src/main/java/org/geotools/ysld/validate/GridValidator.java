@@ -45,7 +45,7 @@ public class GridValidator extends YsldValidateHandler {
                     context.zCtxt = namedZoomContext;
                     return null;
                 }
-                return String.format("Unknown Grid: %s", value);
+                return "Unknown Grid: %s".formatted(value);
             } catch (IllegalArgumentException ex) {
                 return ex.getMessage();
             }

@@ -94,9 +94,8 @@ public class ProcessFunctionFactory implements FunctionFactory {
             // wrap the process
             org.geotools.process.Process process = Processors.createProcess(processName);
             Map<String, Parameter<?>> parameters = Processors.getParameterInfo(processName);
-            if (process instanceof RenderingProcess) {
-                return new RenderingProcessFunction(
-                        processName, args, parameters, (RenderingProcess) process, fallback);
+            if (process instanceof RenderingProcess renderingProcess) {
+                return new RenderingProcessFunction(processName, args, parameters, renderingProcess, fallback);
             } else {
                 return new ProcessFunction(processName, args, parameters, process, fallback);
             }

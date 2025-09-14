@@ -291,11 +291,13 @@ public class MBFilterTest {
 
     @Test
     public void nestedAllSemanticIdentifiers() throws ParseException {
-        JSONArray json = array("[\n"
-                + "        'all',\n"
-                + "        ['==', '$type', 'LineString'],\n"
-                + "        ['all', ['==', 'brunnel', 'tunnel'], ['==', 'class', 'path']]\n"
-                + "      ]");
+        JSONArray json = array(
+                """
+                [
+                        'all',
+                        ['==', '$type', 'LineString'],
+                        ['all', ['==', 'brunnel', 'tunnel'], ['==', 'class', 'path']]
+                      ]""");
         MBFilter mbfilter = new MBFilter(json);
         // used to go in infinite recursion
         Set<SemanticType> identifiers = mbfilter.semanticTypeIdentifiers();

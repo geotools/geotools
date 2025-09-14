@@ -1486,8 +1486,8 @@ public class FilterComplexTypes {
 
             output.startElement(element.getNamespace(), element.getName(), null);
 
-            if (value instanceof String) {
-                output.characters((String) value);
+            if (value instanceof String string) {
+                output.characters(string);
             } else {
                 PropertyName name = (PropertyName) value;
                 output.characters(name.getPropertyName());

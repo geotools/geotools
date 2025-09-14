@@ -19,6 +19,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ import org.geotools.util.Utilities;
  */
 public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor implements ParameterDescriptor<T> {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -295668622297737705L;
 
     /**

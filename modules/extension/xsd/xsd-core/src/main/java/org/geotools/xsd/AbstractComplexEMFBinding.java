@@ -298,8 +298,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
      */
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if (object instanceof EObject) {
-            EObject eObject = (EObject) object;
+        if (object instanceof EObject eObject) {
 
             if (EMFUtils.has(eObject, name.getLocalPart())) {
                 return EMFUtils.get(eObject, name.getLocalPart());

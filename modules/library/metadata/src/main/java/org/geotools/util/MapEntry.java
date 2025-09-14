@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import java.util.Map;
  */
 public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 8627698052283756776L;
 
     /** The key. */
@@ -80,8 +82,7 @@ public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof Map.Entry) {
-            final Map.Entry that = (Map.Entry) object;
+        if (object instanceof Map.Entry that) {
             return Utilities.equals(this.getKey(), that.getKey()) && Utilities.equals(this.getValue(), that.getValue());
         }
         return false;

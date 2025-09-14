@@ -130,16 +130,14 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest i
                 while (iterator2.hasNext()) {
                     // identifier
                     EObject oInput = iterator2.next();
-                    if (oInput instanceof DataType) {
-                        DataType dt = (DataType) oInput;
+                    if (oInput instanceof DataType dt) {
                         InputType input = Wps10Factory.eINSTANCE.createInputType();
                         CodeType ct = Ows11Factory.eINSTANCE.createCodeType();
                         ct.setValue((String) key);
                         input.setIdentifier(ct);
                         input.setData(dt);
                         inputtypes.getInput().add(input);
-                    } else if (oInput instanceof InputReferenceType) {
-                        InputReferenceType rt = (InputReferenceType) oInput;
+                    } else if (oInput instanceof InputReferenceType rt) {
                         InputType input = Wps10Factory.eINSTANCE.createInputType();
                         CodeType ct = Ows11Factory.eINSTANCE.createCodeType();
                         ct.setValue((String) key);

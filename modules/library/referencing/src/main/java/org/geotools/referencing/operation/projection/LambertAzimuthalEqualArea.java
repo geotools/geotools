@@ -31,6 +31,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -66,6 +67,7 @@ import org.geotools.referencing.NamedIdentifier;
 @SuppressWarnings("FloatingPointLiteralPrecision")
 public class LambertAzimuthalEqualArea extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1639914708790574760L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -324,6 +326,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
      */
     private static final class Spherical extends LambertAzimuthalEqualArea {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 2091431369806844342L;
 
         /**
@@ -503,6 +506,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 3877793025552244132L;
 
         /** The parameters group. */

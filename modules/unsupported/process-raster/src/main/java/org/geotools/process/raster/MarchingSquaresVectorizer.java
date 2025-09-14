@@ -329,8 +329,8 @@ public final class MarchingSquaresVectorizer {
         RenderingHints localHints = hints != null ? (RenderingHints) hints.clone() : null;
         if (localHints != null && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
             Object l = localHints.get(JAI.KEY_IMAGE_LAYOUT);
-            if (l != null && l instanceof ImageLayout) {
-                final ImageLayout layout = (ImageLayout) ((ImageLayout) l).clone();
+            if (l != null && l instanceof ImageLayout imageLayout) {
+                final ImageLayout layout = (ImageLayout) imageLayout.clone();
                 localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
             }
         }
@@ -362,8 +362,8 @@ public final class MarchingSquaresVectorizer {
         RenderingHints localHints = hints != null ? (RenderingHints) hints.clone() : null;
         if (localHints != null && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
             Object l = localHints.get(JAI.KEY_IMAGE_LAYOUT);
-            if (l != null && l instanceof ImageLayout) {
-                final ImageLayout layout = (ImageLayout) ((ImageLayout) l).clone();
+            if (l != null && l instanceof ImageLayout imageLayout) {
+                final ImageLayout layout = (ImageLayout) imageLayout.clone();
                 localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
             }
         }
@@ -987,8 +987,8 @@ public final class MarchingSquaresVectorizer {
 
         int initialValue = value(iter, initialX, initialY, sampleDataType, false);
         if (initialValue == 0) {
-            throw new IllegalArgumentException(String.format(
-                    "Supplied initial coordinates (%d, %d) do not lie on a perimeter.", initialX, initialY));
+            throw new IllegalArgumentException(
+                    "Supplied initial coordinates (%d, %d) do not lie on a perimeter.".formatted(initialX, initialY));
         }
         if (initialValue == 15) {
             // not a border pixel

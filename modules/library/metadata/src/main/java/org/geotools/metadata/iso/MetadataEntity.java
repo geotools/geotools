@@ -16,6 +16,7 @@
  */
 package org.geotools.metadata.iso;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import org.geotools.metadata.InvalidMetadataException;
@@ -34,6 +35,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class MetadataEntity extends ModifiableMetadata implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5730550742604669102L;
 
     /** Constructs an initially empty metadata entity. */

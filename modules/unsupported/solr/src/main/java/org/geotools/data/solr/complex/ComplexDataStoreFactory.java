@@ -95,9 +95,8 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             return new DataAccessMappingFeatureIterator(store, featureTypeMapping, query, false, true);
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format(
-                            "Error creating iterator for feature type mapping '%s'.",
-                            featureTypeMapping.getMappingName()),
+                    "Error creating iterator for feature type mapping '%s'."
+                            .formatted(featureTypeMapping.getMappingName()),
                     exception);
         }
     }
@@ -255,8 +254,8 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
      * @return an expression obtained from the provided value
      */
     private Expression parseExpression(Object value) {
-        if (value instanceof Expression) {
-            return (Expression) value;
+        if (value instanceof Expression expression) {
+            return expression;
         }
         return parseExpression(Converters.convert(value, String.class));
     }
@@ -271,7 +270,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         try {
             return AppSchemaDataAccessConfigurator.parseOgcCqlExpression(expression, filterFactory);
         } catch (Exception exception) {
-            throw new RuntimeException(String.format("Error parsing expression '%s'.", expression), exception);
+            throw new RuntimeException("Error parsing expression '%s'.".formatted(expression), exception);
         }
     }
 

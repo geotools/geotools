@@ -90,8 +90,8 @@ public class PolygonHandler implements ShapeHandler {
     public int getLength(Object geometry) {
         MultiPolygon multi;
 
-        if (geometry instanceof MultiPolygon) {
-            multi = (MultiPolygon) geometry;
+        if (geometry instanceof MultiPolygon polygon) {
+            multi = polygon;
         } else {
             multi = geometryFactory.createMultiPolygon(new Polygon[] {(Polygon) geometry});
         }
@@ -407,8 +407,8 @@ public class PolygonHandler implements ShapeHandler {
     public void write(ByteBuffer buffer, Object geometry) {
         MultiPolygon multi;
 
-        if (geometry instanceof MultiPolygon) {
-            multi = (MultiPolygon) geometry;
+        if (geometry instanceof MultiPolygon polygon) {
+            multi = polygon;
         } else {
             multi = geometryFactory.createMultiPolygon(new Polygon[] {(Polygon) geometry});
         }

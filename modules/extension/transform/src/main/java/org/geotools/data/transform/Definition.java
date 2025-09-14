@@ -155,8 +155,7 @@ public class Definition {
      *     case is missing
      */
     public List<Definition> inverse() {
-        if (expression instanceof PropertyName) {
-            PropertyName pn = (PropertyName) expression;
+        if (expression instanceof PropertyName pn) {
             return Arrays.asList(new Definition(pn.getPropertyName(), FF.property(name)));
         }
 
@@ -237,8 +236,7 @@ public class Definition {
         } else {
 
             // see if we are just passing a property trough
-            if (expression instanceof PropertyName) {
-                PropertyName pn = (PropertyName) expression;
+            if (expression instanceof PropertyName pn) {
                 AttributeDescriptor descriptor = originalSchema.getDescriptor(pn.getPropertyName());
 
                 if (descriptor == null) {

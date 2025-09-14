@@ -338,12 +338,12 @@ public class GML2ParsingUtils {
             URI srs = null;
             Object raw = node.getAttributeValue("srsName");
 
-            if (raw instanceof URI) {
-                srs = (URI) raw;
-            } else if (raw instanceof String) {
+            if (raw instanceof URI rI) {
+                srs = rI;
+            } else if (raw instanceof String string) {
                 // try to parse into a uri
                 try {
-                    srs = new URI((String) raw);
+                    srs = new URI(string);
                 } catch (URISyntaxException e) {
                     // failed, continue on
                 }

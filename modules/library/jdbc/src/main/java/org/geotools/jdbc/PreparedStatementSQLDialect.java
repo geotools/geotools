@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import static java.lang.String.format;
 import static java.lang.reflect.Array.getLength;
 
 import java.io.StringReader;
@@ -226,9 +225,8 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
         if (sqlTypeNames.isEmpty()) {
             throw new SQLException("Failed to find a SQL type for " + componentType);
         } else if (sqlTypeNames.size() > 1) {
-            throw new SQLException(String.format(
-                    "Found multiple SQL type candidates %s for the Java type %s",
-                    sqlTypeNames, componentType.getName()));
+            throw new SQLException("Found multiple SQL type candidates %s for the Java type %s"
+                    .formatted(sqlTypeNames, componentType.getName()));
         }
         return sqlTypeNames.get(0);
     }
@@ -268,7 +266,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
     protected Object convertArrayElement(Object value, Class<?> target) throws SQLException {
         Object converted = Converters.convert(value, target);
         if (converted == null) {
-            String message = format("Failed to convert array element %s to target type %s", value, target);
+            String message = "Failed to convert array element %s to target type %s".formatted(value, target);
             throw new SQLException(message);
         }
         return converted;

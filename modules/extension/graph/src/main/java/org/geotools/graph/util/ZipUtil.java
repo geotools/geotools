@@ -22,7 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -76,7 +76,7 @@ public class ZipUtil {
 
                 for (String filename : filenames) {
                     if (entry.getName().equals(filename)) {
-                        Utilities.assertNotZipSlipVulnarable(new File(outdir, filename), Paths.get(outdir));
+                        Utilities.assertNotZipSlipVulnarable(new File(outdir, filename), Path.of(outdir));
                         byte[] buffer = new byte[1024];
                         int len;
 
@@ -105,7 +105,7 @@ public class ZipUtil {
 
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
-                Utilities.assertNotZipSlipVulnarable(new File(outdir, entry.getName()), Paths.get(outdir));
+                Utilities.assertNotZipSlipVulnarable(new File(outdir, entry.getName()), Path.of(outdir));
                 byte[] buffer = new byte[1024];
                 int len;
 

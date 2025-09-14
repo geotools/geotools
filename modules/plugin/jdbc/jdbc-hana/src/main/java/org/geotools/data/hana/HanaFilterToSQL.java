@@ -180,11 +180,10 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
     @Override
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
-        if (filter instanceof DistanceBufferOperator) {
-            return visitDistanceSpatialOperator(
-                    (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
-        } else if (filter instanceof BBOX) {
-            return visitBBOXSpatialOperator((BBOX) filter, property, geometry, extraData);
+        if (filter instanceof DistanceBufferOperator operator) {
+            return visitDistanceSpatialOperator(operator, property, geometry, swapped, extraData);
+        } else if (filter instanceof BBOX oX) {
+            return visitBBOXSpatialOperator(oX, property, geometry, extraData);
         } else {
             return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
         }
@@ -257,8 +256,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
                     writeIntersectsRectArguments("ST_IntersectsRect", bbox);
                 }
             }
-            if (filter instanceof BBOX3D) {
-                BBOX3D filter3d = (BBOX3D) filter;
+            if (filter instanceof BBOX3D filter3d) {
                 BoundingBox3D bbox3d = filter3d.getBounds();
                 double minz = bbox3d.getMinZ();
                 double maxz = bbox3d.getMaxZ();

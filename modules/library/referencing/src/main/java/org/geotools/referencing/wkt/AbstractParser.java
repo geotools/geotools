@@ -75,8 +75,7 @@ public abstract class AbstractParser extends Format {
     public AbstractParser(final Symbols symbols) {
         this.symbols = symbols;
         this.numberFormat = (NumberFormat) symbols.numberFormat.clone();
-        if (SCIENTIFIC_NOTATION && numberFormat instanceof DecimalFormat) {
-            final DecimalFormat numberFormat = (DecimalFormat) this.numberFormat;
+        if (SCIENTIFIC_NOTATION && numberFormat instanceof DecimalFormat numberFormat) {
             String pattern = numberFormat.toPattern();
             if (pattern.indexOf("E0") < 0) {
                 final int split = pattern.indexOf(';');
@@ -248,13 +247,13 @@ public abstract class AbstractParser extends Format {
             formatter.clear();
             formatter.buffer = toAppendTo;
             formatter.bufferBase = toAppendTo.length();
-            if (object instanceof MathTransform) {
-                formatter.append((MathTransform) object);
-            } else if (object instanceof GeneralParameterValue) {
+            if (object instanceof MathTransform transform) {
+                formatter.append(transform);
+            } else if (object instanceof GeneralParameterValue value) {
                 // Special processing for parameter values, which is formatted
                 // directly in 'Formatter'. Note that in GeoAPI, this interface
                 // doesn't share the same parent interface than other interfaces.
-                formatter.append((GeneralParameterValue) object);
+                formatter.append(value);
             } else {
                 formatter.append((IdentifiedObject) object);
             }

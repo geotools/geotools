@@ -503,8 +503,7 @@ public class GridCoverageReaderHelper {
                     if (gParam != null
                             && name.equalsIgnoreCase(
                                     gParam.getDescriptor().getName().toString())) {
-                        if (gParam instanceof ParameterValue<?>) {
-                            final ParameterValue<?> param = (ParameterValue<?>) gParam;
+                        if (gParam instanceof ParameterValue<?> param) {
                             final Object value = param.getValue();
                             if (value != null) {
                                 accurateResolution = (Boolean) value;

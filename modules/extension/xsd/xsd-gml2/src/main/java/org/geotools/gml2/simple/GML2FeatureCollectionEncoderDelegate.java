@@ -107,8 +107,8 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         private GMLConfiguration getGMLConfiguration(Configuration configuration) {
             GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
+            if (configuration instanceof GMLConfiguration lConfiguration) {
+                config = lConfiguration;
             } else {
                 config = configuration.getDependency(GMLConfiguration.class);
             }

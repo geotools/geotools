@@ -416,8 +416,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
                  */
                 throw new FactoryException(exception);
             }
-            if (transform instanceof MathTransformProvider.Delegate) {
-                final MathTransformProvider.Delegate delegate = (MathTransformProvider.Delegate) transform;
+            if (transform instanceof MathTransformProvider.Delegate delegate) {
                 method = delegate.method;
                 transform = delegate.transform;
             }
@@ -536,8 +535,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
             return parser.parseMathTransform(text);
         } catch (ParseException exception) {
             final Throwable cause = exception.getCause();
-            if (cause instanceof FactoryException) {
-                throw (FactoryException) cause;
+            if (cause instanceof FactoryException factoryException) {
+                throw factoryException;
             }
             throw new FactoryException(exception);
         }

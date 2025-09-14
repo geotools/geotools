@@ -19,6 +19,7 @@ package org.geotools.coverage.processing.operation;
 // JAI dependencies (for javadoc)
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Map;
 import org.eclipse.imagen.ParameterBlockJAI;
@@ -65,6 +66,7 @@ import org.geotools.util.NumberRange;
  */
 public class Log extends BaseMathOperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3622176942444895367L;
 
     private static final String ALGEBRIC = "algebric";

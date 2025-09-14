@@ -604,8 +604,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         // nothing to be post-filtered
         assertEquals(filters[1], Filter.INCLUDE);
         SQLDialect dialect = featureSource.getDataStore().getSQLDialect();
-        if (dialect instanceof BasicSQLDialect) {
-            FilterToSQL filterToSQL = ((BasicSQLDialect) dialect).createFilterToSQL();
+        if (dialect instanceof BasicSQLDialect lDialect1) {
+            FilterToSQL filterToSQL = lDialect1.createFilterToSQL();
             String sql = filterToSQL.encodeToString(filters[0]);
             String escapedProperty = filterToSQL.escapeName(property);
             assertEquals(
@@ -615,8 +615,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                             + escapedProperty
                             + " IS NOT NULL )",
                     sql);
-        } else if (dialect instanceof PreparedStatementSQLDialect) {
-            PreparedFilterToSQL filterToSQL = ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+        } else if (dialect instanceof PreparedStatementSQLDialect lDialect) {
+            PreparedFilterToSQL filterToSQL = lDialect.createPreparedFilterToSQL();
             filterToSQL.setFeatureType(featureSource.getSchema());
             String sql = filterToSQL.encodeToString(filters[0]);
             String escapedProperty = filterToSQL.escapeName(property);
@@ -652,8 +652,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         // nothing to be post-filtered
         assertEquals(filters[1], Filter.INCLUDE);
         SQLDialect dialect = featureSource.getDataStore().getSQLDialect();
-        if (dialect instanceof BasicSQLDialect) {
-            FilterToSQL filterToSQL = ((BasicSQLDialect) dialect).createFilterToSQL();
+        if (dialect instanceof BasicSQLDialect lDialect1) {
+            FilterToSQL filterToSQL = lDialect1.createFilterToSQL();
             String sql = filterToSQL.encodeToString(filters[0]);
             String spe = filterToSQL.escapeName(sp);
             String ipe = filterToSQL.escapeName(ip);
@@ -675,8 +675,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                             + dpe
                             + " IS NOT NULL ))",
                     sql);
-        } else if (dialect instanceof PreparedStatementSQLDialect) {
-            PreparedFilterToSQL filterToSQL = ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+        } else if (dialect instanceof PreparedStatementSQLDialect lDialect) {
+            PreparedFilterToSQL filterToSQL = lDialect.createPreparedFilterToSQL();
             // some dialects actually need the feature type to work, JDBCDataStore code
             // always set its up, mimic that behavior in the test
             filterToSQL.setFeatureType(featureSource.getSchema());

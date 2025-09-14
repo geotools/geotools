@@ -125,8 +125,8 @@ public class SimpleFeatureImpl implements SimpleFeature {
     @SuppressWarnings("unchecked")
     private static Map<String, Integer> index(SimpleFeatureType featureType) {
         // in the most common case reuse the map cached in the feature type
-        if (featureType instanceof SimpleFeatureTypeImpl) {
-            return ((SimpleFeatureTypeImpl) featureType).index;
+        if (featureType instanceof SimpleFeatureTypeImpl impl) {
+            return impl.index;
         } else {
             synchronized (featureType) {
                 // if we're not lucky, rebuild the index completely...
@@ -262,8 +262,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         Envelope bounds = ReferencedEnvelope.create(crs);
 
         for (Object o : values) {
-            if (o instanceof Geometry) {
-                Geometry g = (Geometry) o;
+            if (o instanceof Geometry g) {
                 // TODO: check userData for crs... and ensure its of the same
                 // crs as the feature type
                 if (bounds.isNull()) {
@@ -329,8 +328,8 @@ public class SimpleFeatureImpl implements SimpleFeature {
         } else {
             int index = idx.intValue();
             AttributeDescriptor descriptor = featureType.getDescriptor(index);
-            if (descriptor instanceof GeometryDescriptor) {
-                return new GeometryAttributeImpl(values[index], (GeometryDescriptor) descriptor, null);
+            if (descriptor instanceof GeometryDescriptor geometryDescriptor) {
+                return new GeometryAttributeImpl(values[index], geometryDescriptor, null);
             } else {
                 return new Attribute(index);
             }
@@ -445,10 +444,10 @@ public class SimpleFeatureImpl implements SimpleFeature {
                     return false;
                 }
             } else {
-                if (values[i] instanceof Geometry) {
+                if (values[i] instanceof Geometry geometry) {
                     if (!(otherAtt instanceof Geometry)) {
                         return false;
-                    } else if (!CoordinateSequences.equalsND((Geometry) values[i], (Geometry) otherAtt)) {
+                    } else if (!CoordinateSequences.equalsND(geometry, (Geometry) otherAtt)) {
                         return false;
                     }
                 } else if (!values[i].equals(otherAtt)) {
@@ -638,8 +637,8 @@ public class SimpleFeatureImpl implements SimpleFeature {
         public BoundingBox getBounds() {
             ReferencedEnvelope bounds = new ReferencedEnvelope(featureType.getCoordinateReferenceSystem());
             Object value = getAttribute(index);
-            if (value instanceof Geometry) {
-                bounds.init(((Geometry) value).getEnvelopeInternal());
+            if (value instanceof Geometry geometry) {
+                bounds.init(geometry.getEnvelopeInternal());
             }
             return bounds;
         }

@@ -112,8 +112,7 @@ public class DefaultCalendarEra implements CalendarEra {
 
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof DefaultCalendarEra) {
-            final DefaultCalendarEra that = (DefaultCalendarEra) object;
+        if (object instanceof DefaultCalendarEra that) {
 
             return Utilities.equals(this.epochOfUse, that.epochOfUse)
                     && Utilities.equals(this.julianReference, that.julianReference)

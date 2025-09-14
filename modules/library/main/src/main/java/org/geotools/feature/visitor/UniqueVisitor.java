@@ -229,8 +229,8 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     private String getPropertyName(Expression e) {
         String name = null;
-        if (e instanceof PropertyName) {
-            name = ((PropertyName) e).getPropertyName();
+        if (e instanceof PropertyName propertyName) {
+            name = propertyName.getPropertyName();
         } else {
             FilterAttributeExtractor extractor = new FilterAttributeExtractor();
             e.accept(extractor, null);

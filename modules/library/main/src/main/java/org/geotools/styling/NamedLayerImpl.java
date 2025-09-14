@@ -81,8 +81,7 @@ public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
             return true;
         }
 
-        if (oth instanceof NamedLayerImpl) {
-            NamedLayerImpl other = (NamedLayerImpl) oth;
+        if (oth instanceof NamedLayerImpl other) {
 
             if (!Utilities.equals(styles, other.styles)) return false;
 

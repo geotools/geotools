@@ -487,8 +487,8 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory im
          * operations, and we need to stay consistent with that). Instead, we prepend to the first
          * single operation and append to the last single operation.
          */
-        if (operation instanceof ConcatenatedOperation) {
-            final List<SingleOperation> c = ((ConcatenatedOperation) operation).getOperations();
+        if (operation instanceof ConcatenatedOperation concatenatedOperation) {
+            final List<SingleOperation> c = concatenatedOperation.getOperations();
             final CoordinateOperation[] op = c.toArray(new CoordinateOperation[c.size()]);
             if (op.length != 0) {
                 final CoordinateOperation first = op[0];
@@ -516,8 +516,8 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory im
         assert !transform.equals(operation.getMathTransform()) : transform;
         final Class<? extends CoordinateOperation> type = AbstractCoordinateOperation.getType(operation);
         OperationMethod method = null;
-        if (operation instanceof Operation) {
-            method = ((Operation) operation).getMethod();
+        if (operation instanceof Operation operation1) {
+            method = operation1.getMethod();
             if (method != null) {
                 final int sourceDimensions = transform.getSourceDimensions();
                 final int targetDimensions = transform.getTargetDimensions();
@@ -567,8 +567,8 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory im
     public boolean isAvailable() {
         try {
             final CoordinateOperationAuthorityFactory authorityFactory = getAuthorityFactory();
-            if (authorityFactory instanceof OptionalFactory) {
-                return ((OptionalFactory) authorityFactory).isAvailable();
+            if (authorityFactory instanceof OptionalFactory factory) {
+                return factory.isAvailable();
             }
             return true;
         } catch (FactoryRegistryException exception) {

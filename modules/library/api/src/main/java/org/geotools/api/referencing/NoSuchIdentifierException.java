@@ -9,6 +9,8 @@
  */
 package org.geotools.api.referencing;
 
+import java.io.Serial;
+
 /**
  * Thrown when a {@linkplain org.geotools.api.referencing.operation.MathTransform math transform} as been requested with
  * an unknow {@linkplain org.geotools.api.referencing.operation.OperationMethod operation method} identifier.
@@ -19,6 +21,7 @@ package org.geotools.api.referencing;
  */
 public class NoSuchIdentifierException extends FactoryException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -6846799994429345902L;
 
     /** The {@linkplain Identifier#getCode identifier code}. */

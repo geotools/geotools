@@ -10,6 +10,7 @@
 package org.geotools.api.filter.capability;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,7 @@ import org.geotools.api.feature.type.Name;
  */
 public final class GeometryOperand implements Name, Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -9006169053542932716L;
 
     /** The pool of operands created up to date. */
@@ -184,8 +186,7 @@ public final class GeometryOperand implements Name, Serializable {
     /** Compares this operand with the specified value for equality. */
     @Override
     public boolean equals(final Object other) {
-        if (other != null && other instanceof Name) {
-            final Name that = (Name) other;
+        if (other != null && other instanceof Name that) {
             return namespaceURI.equals(that.getNamespaceURI()) && name.equals(that.getLocalPart());
         }
         return false;

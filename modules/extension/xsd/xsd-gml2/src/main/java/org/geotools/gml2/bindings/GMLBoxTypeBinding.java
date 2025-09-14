@@ -122,8 +122,8 @@ public class GMLBoxTypeBinding extends AbstractComplexBinding {
         if (GML.coord.equals(name)) {
             return new Coordinate[] {new Coordinate(e.getMinX(), e.getMinY()), new Coordinate(e.getMaxX(), e.getMaxY())
             };
-        } else if ("srsName".equals(name.getLocalPart()) && e instanceof ReferencedEnvelope) {
-            return GML2EncodingUtils.toURI(((ReferencedEnvelope) e).getCoordinateReferenceSystem());
+        } else if ("srsName".equals(name.getLocalPart()) && e instanceof ReferencedEnvelope envelope) {
+            return GML2EncodingUtils.toURI(envelope.getCoordinateReferenceSystem());
         }
 
         return null;

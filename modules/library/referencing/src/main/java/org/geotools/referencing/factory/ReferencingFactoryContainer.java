@@ -139,9 +139,9 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     private static Factory extract(final Map<?, ?> reduced, final Hints.Key key) {
         if (reduced != null) {
             final Object candidate = reduced.get(key);
-            if (candidate instanceof Factory) {
+            if (candidate instanceof Factory factory) {
                 reduced.remove(key);
-                return (Factory) candidate;
+                return factory;
             }
         }
         return null;
@@ -295,9 +295,9 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
         int hi = 0, vi = 0;
         for (int i = 0; i < count; i++) {
             final SingleCRS candidate = components.get(i);
-            if (candidate instanceof VerticalCRS) {
+            if (candidate instanceof VerticalCRS rS) {
                 if (vertical == null) {
-                    vertical = (VerticalCRS) candidate;
+                    vertical = rS;
                     if (VerticalDatumType.ELLIPSOIDAL.equals(vertical.getDatum().getVerticalDatumType())) {
                         vi = i;
                         continue;
@@ -373,25 +373,11 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
         }
         final CSFactory csFactory = getCSFactory();
         final CRSFactory crsFactory = getCRSFactory();
-        if (horizontal instanceof GeographicCRS) {
-            /*
-             * Merges a 2D geographic CRS with the vertical CRS. This is the easiest
-             * part - we just give the 3 axis all together to a new GeographicCRS.
-             */
-            final GeographicCRS sourceCRS = (GeographicCRS) horizontal;
+        if (horizontal instanceof GeographicCRS sourceCRS) {
             final EllipsoidalCS targetCS = csFactory.createEllipsoidalCS(csName, axis[0], axis[1], axis[2]);
             return crsFactory.createGeographicCRS(crsName, sourceCRS.getDatum(), targetCS);
         }
-        if (horizontal instanceof ProjectedCRS) {
-            /*
-             * Merges a 2D projected CRS with the vertical CRS. This part is more tricky,
-             * since we need a defining conversion which does not include axis swapping or
-             * unit conversions. We revert them with concatenation of "CS to standardCS"
-             * transform. The axis swapping will be added back by createProjectedCRS(...)
-             * but not in the same place (they will be performed sooner than they would be
-             * otherwise).
-             */
-            final ProjectedCRS sourceCRS = (ProjectedCRS) horizontal;
+        if (horizontal instanceof ProjectedCRS sourceCRS) {
             final CartesianCS targetCS = csFactory.createCartesianCS(csName, axis[0], axis[1], axis[2]);
             final GeographicCRS base2D = sourceCRS.getBaseCRS();
             final GeographicCRS base3D = (GeographicCRS) toGeodetic3D(null, base2D, vertical, xyFirst);
@@ -449,9 +435,9 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          * For each component, we search the sub-array of 'dimensions' that apply
          * to this component and invoke 'separate' recursively.
          */
-        if (crs instanceof CompoundCRS) {
+        if (crs instanceof CompoundCRS rS) {
             int count = 0, lowerDimension = 0, lowerIndex = 0;
-            final List<CoordinateReferenceSystem> sources = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final List<CoordinateReferenceSystem> sources = rS.getCoordinateReferenceSystems();
             final CoordinateReferenceSystem[] targets = new CoordinateReferenceSystem[sources.size()];
             search:
             for (final CoordinateReferenceSystem source : sources) {

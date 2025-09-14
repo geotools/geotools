@@ -57,9 +57,9 @@ public class TransformFactory {
      */
     public static SimpleFeatureSource transform(SimpleFeatureSource source, Name name, List<Definition> definitions)
             throws IOException {
-        if (source instanceof SimpleFeatureLocking) {
+        if (source instanceof SimpleFeatureLocking locking) {
             try {
-                return new TransformFeatureLocking((SimpleFeatureLocking) source, name, definitions);
+                return new TransformFeatureLocking(locking, name, definitions);
             } catch (IllegalArgumentException e) {
                 LOGGER.log(
                         Level.FINEST,
@@ -69,9 +69,9 @@ public class TransformFactory {
                         e);
             }
         }
-        if (source instanceof SimpleFeatureStore) {
+        if (source instanceof SimpleFeatureStore store) {
             try {
-                return new TransformFeatureStore((SimpleFeatureStore) source, name, definitions);
+                return new TransformFeatureStore(store, name, definitions);
             } catch (IllegalArgumentException e) {
                 LOGGER.log(
                         Level.FINEST,

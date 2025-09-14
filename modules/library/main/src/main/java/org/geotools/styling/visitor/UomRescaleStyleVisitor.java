@@ -163,8 +163,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
             if (graphic.graphicalSymbols() != null) {
                 for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
-                    if (gs instanceof Mark) {
-                        Mark mark = (Mark) gs;
+                    if (gs instanceof Mark mark) {
                         rescaleStroke(mark.getStroke(), unit);
                         rescaleFill(mark.getFill(), unit);
                     }
@@ -216,18 +215,14 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         // rescales label placement
         LabelPlacement placement = copy.getLabelPlacement();
-        if (placement instanceof PointPlacement) {
-            // rescales point label placement
-            PointPlacement pointPlacement = (PointPlacement) placement;
+        if (placement instanceof PointPlacement pointPlacement) {
             Displacement disp = pointPlacement.getDisplacement();
             if (disp != null) {
                 disp.setDisplacementX(rescale(disp.getDisplacementX(), uom));
                 disp.setDisplacementY(rescale(disp.getDisplacementY(), uom));
                 pointPlacement.setDisplacement(disp);
             }
-        } else if (placement instanceof LinePlacement) {
-            // rescales line label placement
-            LinePlacement linePlacement = (LinePlacement) placement;
+        } else if (placement instanceof LinePlacement linePlacement) {
             linePlacement.setGap(rescale(linePlacement.getGap(), uom));
             linePlacement.setInitialGap(rescale(linePlacement.getInitialGap(), uom));
             linePlacement.setPerpendicularOffset(rescale(linePlacement.getPerpendicularOffset(), uom));

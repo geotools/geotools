@@ -157,8 +157,8 @@ public final class ISOTest {
                 Class<?> type = accessor.type(i);
                 if (Collection.class.isAssignableFrom(type)) {
                     final Object example = accessor.get(i, dummyInstance);
-                    if (example instanceof CheckedCollection) {
-                        type = ((CheckedCollection) example).getElementType();
+                    if (example instanceof CheckedCollection collection) {
+                        type = collection.getElementType();
                     }
                 }
                 final Class<?> impl = getImplementation(type);

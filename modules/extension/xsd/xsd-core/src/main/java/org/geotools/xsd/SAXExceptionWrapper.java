@@ -9,9 +9,11 @@
  */
 package org.geotools.xsd;
 
+import java.io.Serial;
 import org.xml.sax.SAXException;
 
 class SAXExceptionWrapper extends RuntimeException {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public SAXExceptionWrapper(String message, SAXException cause) {

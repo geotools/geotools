@@ -32,6 +32,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
@@ -81,6 +82,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class AlbersEqualArea extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -3024658742514888646L;
 
     /** Maximum number of iterations for iterative computations. */
@@ -337,6 +339,7 @@ public class AlbersEqualArea extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -7489679528438418778L;
 
         /** The parameters group. */

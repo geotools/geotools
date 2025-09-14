@@ -81,8 +81,8 @@ public class QueryTypeBinding extends ComplexEMFBinding {
         } else if ("typeNames".equalsIgnoreCase(name.getLocalPart())) {
             StringBuilder s = new StringBuilder();
             for (Object typeName : ((QueryType) object).getTypeNames()) {
-                if (typeName instanceof Collection) {
-                    typeName = ((Collection) typeName).iterator().next();
+                if (typeName instanceof Collection collection) {
+                    typeName = collection.iterator().next();
                 }
                 s.append(Converters.convert(typeName, String.class));
                 s.append(",");

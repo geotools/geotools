@@ -19,6 +19,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.api.util.GenericName;
@@ -37,6 +38,7 @@ import org.geotools.api.util.ScopedName;
  */
 public class LocalName extends org.geotools.util.GenericName implements org.geotools.api.util.LocalName {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -5627125375582385822L;
 
     /** The view of this object as a scoped name. */
@@ -189,9 +191,9 @@ public class LocalName extends org.geotools.util.GenericName implements org.geot
     @Override
     public String toString() {
         if (asString == null) {
-            if (name instanceof InternationalString) {
+            if (name instanceof InternationalString string) {
                 // We really want the 'null' locale, not the system default one.
-                asString = ((InternationalString) name).toString(null);
+                asString = string.toString(null);
             } else {
                 asString = name.toString();
             }
@@ -203,8 +205,8 @@ public class LocalName extends org.geotools.util.GenericName implements org.geot
     @Override
     public InternationalString toInternationalString() {
         if (asInternationalString == null) {
-            if (name instanceof InternationalString) {
-                asInternationalString = (InternationalString) name;
+            if (name instanceof InternationalString string) {
+                asInternationalString = string;
             } else {
                 asInternationalString = new SimpleInternationalString(name.toString());
             }

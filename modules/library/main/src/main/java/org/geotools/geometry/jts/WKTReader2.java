@@ -91,8 +91,8 @@ public class WKTReader2 extends WKTReader {
      * @param geometryFactory the factory used to create <code>Geometry</code>s.
      */
     public WKTReader2(GeometryFactory geometryFactory) {
-        if (geometryFactory instanceof CurvedGeometryFactory) {
-            this.geometryFactory = (CurvedGeometryFactory) geometryFactory;
+        if (geometryFactory instanceof CurvedGeometryFactory factory) {
+            this.geometryFactory = factory;
         } else {
             this.geometryFactory = new CurvedGeometryFactory(geometryFactory, Double.MAX_VALUE);
         }

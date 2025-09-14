@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import javax.measure.Unit;
@@ -65,6 +66,7 @@ import org.geotools.util.SuppressFBWarnings;
  */
 public class DefaultProjectedCRS extends AbstractDerivedCRS implements ProjectedCRS, PROJFormattable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4502680112031773028L;
 
     /** Name of the {@value} projection parameter, which is handled specially during WKT formatting. */
@@ -260,8 +262,8 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
                  * informations are provided in the ellipsoid. An exception to this rule occurs if
                  * the lengths are different from the ones declared in the datum.
                  */
-                if (param instanceof ParameterValue) {
-                    final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
+                if (param instanceof ParameterValue<?> parameterValue) {
+                    final double value = parameterValue.doubleValue(axisUnit);
                     final double expected = name == SEMI_MINOR
                             ? // using '==' is okay here.
                             ellipsoid.getSemiMinorAxis()
@@ -297,7 +299,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
             throw new IllegalArgumentException("Conversion Operation Method is not PROJFormattable:" + method);
         }
         formatter.append((PROJFormattable) method);
-        if (baseCRS instanceof PROJFormattable) formatter.append((PROJFormattable) baseCRS);
+        if (baseCRS instanceof PROJFormattable formattable) formatter.append(formattable);
         for (final GeneralParameterValue param :
                 conversionFromBase.getParameterValues().values()) {
             final GeneralParameterDescriptor desc = param.getDescriptor();
@@ -308,8 +310,8 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
                  * information is provided in the ellipsoid. An exception to this rule occurs if
                  * the lengths are different from the ones declared in the datum.
                  */
-                if (param instanceof ParameterValue) {
-                    final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
+                if (param instanceof ParameterValue<?> parameterValue) {
+                    final double value = parameterValue.doubleValue(axisUnit);
                     final double expected = SEMI_MINOR.equalsIgnoreCase(name)
                             ? // using '==' is okay here.
                             ellipsoid.getSemiMinorAxis()

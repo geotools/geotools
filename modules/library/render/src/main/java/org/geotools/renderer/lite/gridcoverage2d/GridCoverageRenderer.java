@@ -708,10 +708,10 @@ public final class GridCoverageRenderer {
         } else {
             if (advancedProjectionHandlingEnabled) {
                 handler = ProjectionHandlerFinder.getHandler(rh.getReadEnvelope(), sourceCRS, wrapEnabled);
-                if (handler instanceof WrappingProjectionHandler) {
+                if (handler instanceof WrappingProjectionHandler projectionHandler) {
                     // raster data is monolithic and can cover the whole world, disable
                     // the geometry wrapping heuristic
-                    ((WrappingProjectionHandler) handler).setDatelineWrappingCheckEnabled(false);
+                    projectionHandler.setDatelineWrappingCheckEnabled(false);
                 }
             }
             coverages = rh.readCoverages(readParams, handler, gridCoverageFactory);
@@ -723,8 +723,7 @@ public final class GridCoverageRenderer {
         // If coverage is out of view area, coverages has size 1 but the first element is null
         if (!coverages.isEmpty() && coverages.get(0) != null) {
             ColorModel cm = coverages.get(0).getRenderedImage().getColorModel();
-            if (cm instanceof IndexColorModel && background != null) {
-                IndexColorModel icm = (IndexColorModel) cm;
+            if (cm instanceof IndexColorModel icm && background != null) {
                 int idx = ColorUtilities.findColorIndex(background, icm);
                 if (idx < 0) {
                     // not found, we have to expand
@@ -956,8 +955,8 @@ public final class GridCoverageRenderer {
             try {
                 paintImage(graphics, finalImage, symbolizer);
             } finally {
-                if (finalImage instanceof PlanarImage) {
-                    ImageUtilities.disposePlanarImageChain((PlanarImage) finalImage);
+                if (finalImage instanceof PlanarImage image) {
+                    ImageUtilities.disposePlanarImageChain(image);
                 }
             }
         }
@@ -1140,9 +1139,8 @@ public final class GridCoverageRenderer {
     /** Check whether this source GridCoverage comes with a {@link Compositing} object which need to be applied. */
     private GridCoverage2D lookForCompositing(GridCoverage2D source) {
         Object compositing = source.getProperty(KEY_COMPOSITING);
-        if (compositing != null && compositing instanceof Compositing) {
-            return ((Compositing) compositing)
-                    .composeGridCoverage(source, CoverageFactoryFinder.getGridCoverageFactory(hints));
+        if (compositing != null && compositing instanceof Compositing compositing1) {
+            return compositing1.composeGridCoverage(source, CoverageFactoryFinder.getGridCoverageFactory(hints));
         }
         return source;
     }

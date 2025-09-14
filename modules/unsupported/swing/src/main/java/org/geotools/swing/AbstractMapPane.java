@@ -481,8 +481,8 @@ public abstract class AbstractMapPane extends JPanel
             if (mapContent != null) {
                 mapContent.removeMapLayerListListener(this);
                 for (Layer layer : mapContent.layers()) {
-                    if (layer instanceof ComponentListener) {
-                        removeComponentListener((ComponentListener) layer);
+                    if (layer instanceof ComponentListener listener) {
+                        removeComponentListener(listener);
                     }
                 }
             }
@@ -505,8 +505,8 @@ public abstract class AbstractMapPane extends JPanel
                     for (Layer layer : mapContent.layers()) {
                         layer.setSelected(true);
 
-                        if (layer instanceof ComponentListener) {
-                            addComponentListener((ComponentListener) layer);
+                        if (layer instanceof ComponentListener listener) {
+                            addComponentListener(listener);
                         }
                     }
 
@@ -716,8 +716,8 @@ public abstract class AbstractMapPane extends JPanel
         try {
             Layer layer = event.getLayer();
 
-            if (layer instanceof ComponentListener) {
-                addComponentListener((ComponentListener) layer);
+            if (layer instanceof ComponentListener listener) {
+                addComponentListener(listener);
             }
 
             setFullExtent();
@@ -741,8 +741,8 @@ public abstract class AbstractMapPane extends JPanel
         try {
             Layer layer = event.getLayer();
 
-            if (layer instanceof ComponentListener) {
-                removeComponentListener((ComponentListener) layer);
+            if (layer instanceof ComponentListener listener) {
+                removeComponentListener(listener);
             }
 
             if (mapContent.layers().isEmpty()) {

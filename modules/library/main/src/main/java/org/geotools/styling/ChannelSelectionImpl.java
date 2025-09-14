@@ -128,8 +128,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
             return true;
         }
 
-        if (obj instanceof ChannelSelectionImpl) {
-            ChannelSelectionImpl other = (ChannelSelectionImpl) obj;
+        if (obj instanceof ChannelSelectionImpl other) {
 
             return Utilities.equals(gray, other.gray)
                     && Utilities.equals(red, other.red)
@@ -143,8 +142,8 @@ public class ChannelSelectionImpl implements ChannelSelection {
     static ChannelSelectionImpl cast(org.geotools.api.style.ChannelSelection channel) {
         if (channel == null) {
             return null;
-        } else if (channel instanceof ChannelSelectionImpl) {
-            return (ChannelSelectionImpl) channel;
+        } else if (channel instanceof ChannelSelectionImpl impl) {
+            return impl;
         } else {
             ChannelSelectionImpl copy = new ChannelSelectionImpl();
             if (channel.getGrayChannel() != null) {

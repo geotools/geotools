@@ -161,25 +161,28 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
     public void testUnitConversion() throws Exception {
         // NOTE: TOWGS84[0,0,0,0,0,0,0] is used here as a hack for
         //       avoiding datum shift. Shifts will be tested later.
-        final CoordinateReferenceSystem targetCRS = crsFactory.createFromWKT("PROJCS[\"TransverseMercator\",\n"
-                + "  GEOGCS[\"Sphere\",\n"
-                + "    DATUM[\"Sphere\",\n"
-                + "      SPHEROID[\"Sphere\", 6370997.0, 0.0],\n"
-                + "      TOWGS84[0,0,0,0,0,0,0]],\n"
-                + "    PRIMEM[\"Greenwich\", 0.0],\n"
-                + "    UNIT[\"degree\", 0.017453292519943295],\n"
-                + "    AXIS[\"Longitude\", EAST],\n"
-                + "    AXIS[\"Latitude\", NORTH]],\n"
-                + "  PROJECTION[\"Transverse_Mercator\",\n"
-                + "    AUTHORITY[\"OGC\",\"Transverse_Mercator\"]],\n"
-                + "  PARAMETER[\"central_meridian\", 170.0],\n"
-                + "  PARAMETER[\"latitude_of_origin\", 50.0],\n"
-                + "  PARAMETER[\"scale_factor\", 0.95],\n"
-                + "  PARAMETER[\"false_easting\", 0.0],\n"
-                + "  PARAMETER[\"false_northing\", 0.0],\n"
-                + "  UNIT[\"feet\", 0.304800609601219],\n"
-                + "  AXIS[\"x\", EAST],\n"
-                + "  AXIS[\"y\", NORTH]]\n");
+        final CoordinateReferenceSystem targetCRS = crsFactory.createFromWKT(
+                """
+                PROJCS["TransverseMercator",
+                  GEOGCS["Sphere",
+                    DATUM["Sphere",
+                      SPHEROID["Sphere", 6370997.0, 0.0],
+                      TOWGS84[0,0,0,0,0,0,0]],
+                    PRIMEM["Greenwich", 0.0],
+                    UNIT["degree", 0.017453292519943295],
+                    AXIS["Longitude", EAST],
+                    AXIS["Latitude", NORTH]],
+                  PROJECTION["Transverse_Mercator",
+                    AUTHORITY["OGC","Transverse_Mercator"]],
+                  PARAMETER["central_meridian", 170.0],
+                  PARAMETER["latitude_of_origin", 50.0],
+                  PARAMETER["scale_factor", 0.95],
+                  PARAMETER["false_easting", 0.0],
+                  PARAMETER["false_northing", 0.0],
+                  UNIT["feet", 0.304800609601219],
+                  AXIS["x", EAST],
+                  AXIS["y", NORTH]]
+                """);
 
         final CoordinateReferenceSystem sourceCRS = crsFactory.createFromWKT(WKT.SPHERE);
         final CoordinateOperation operation = opFactory.createOperation(sourceCRS, targetCRS);
@@ -214,13 +217,15 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
     @Test
     public void testEllipsoidShift() throws Exception {
         final CoordinateReferenceSystem sourceCRS = crsFactory.createFromWKT(WKT.NAD83);
-        final CoordinateReferenceSystem targetCRS = crsFactory.createFromWKT("GEOGCS[\"GCS_WGS_1984\",\n"
-                + "  DATUM[\"D_WGS_1984\",\n"
-                + "    SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]],\n"
-                + "  PRIMEM[\"Greenwich\", 0.0],\n"
-                + "  UNIT[\"degree\", 0.017453292519943295],\n"
-                + "  AXIS[\"Lon\", EAST],\n"
-                + "  AXIS[\"Lat\", NORTH]]");
+        final CoordinateReferenceSystem targetCRS = crsFactory.createFromWKT(
+                """
+                GEOGCS["GCS_WGS_1984",
+                  DATUM["D_WGS_1984",
+                    SPHEROID["WGS_1984", 6378137.0, 298.257223563]],
+                  PRIMEM["Greenwich", 0.0],
+                  UNIT["degree", 0.017453292519943295],
+                  AXIS["Lon", EAST],
+                  AXIS["Lat", NORTH]]""");
 
         final CoordinateOperation operation = opFactory.createOperation(sourceCRS, targetCRS);
         if (usingDefaultFactory) {

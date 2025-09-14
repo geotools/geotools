@@ -268,8 +268,7 @@ public class MBExpressionParseTest {
 
         Object value = map;
         for (String key : path) {
-            if (value instanceof JSONObject) {
-                JSONObject m = (JSONObject) value;
+            if (value instanceof JSONObject m) {
                 if (m.containsKey(key)) {
                     value = m.get(key);
                 }

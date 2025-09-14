@@ -26,6 +26,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -55,6 +56,7 @@ import si.uom.NonSI;
  */
 public class WinkelTripel extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -8643765000703074857L;
 
     private enum ProjectionMode {
@@ -174,6 +176,7 @@ public class WinkelTripel extends MapProjection {
      */
     public static class WinkelProvider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -2484567298319140781L;
 
         /**
@@ -229,6 +232,7 @@ public class WinkelTripel extends MapProjection {
      */
     public static class AitoffProvider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 1189973109778926762L;
 
         /** The parameters group. */

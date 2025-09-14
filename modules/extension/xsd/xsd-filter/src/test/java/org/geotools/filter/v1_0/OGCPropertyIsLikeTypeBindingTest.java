@@ -134,10 +134,11 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     @Test
     public void testBackwardLikeFilter() throws Exception {
         String f =
-                "<ogc:Filter  xmlns:ogc=\"http://www.opengis.net/ogc\"><ogc:PropertyIsLike wildCard=\"*\" singleChar=\"#\" escapeChar=\"!\">\n"
-                        + "<ogc:Literal>M*</ogc:Literal>\n"
-                        + "<ogc:PropertyName>gml:name</ogc:PropertyName>\n"
-                        + "</ogc:PropertyIsLike></ogc:Filter>";
+                """
+                <ogc:Filter  xmlns:ogc="http://www.opengis.net/ogc"><ogc:PropertyIsLike wildCard="*" singleChar="#" escapeChar="!">
+                <ogc:Literal>M*</ogc:Literal>
+                <ogc:PropertyName>gml:name</ogc:PropertyName>
+                </ogc:PropertyIsLike></ogc:Filter>""";
         Configuration configuration = new org.geotools.filter.v1_0.OGCConfiguration();
         Parser parser = new Parser(configuration);
         Filter filter = (Filter) parser.parse(new ByteArrayInputStream(f.getBytes(StandardCharsets.UTF_8)));
@@ -164,10 +165,11 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     @Test
     public void testBackwardLikeFilterWithFunction() throws Exception {
         String f =
-                "<ogc:Filter  xmlns:ogc=\"http://www.opengis.net/ogc\"><ogc:PropertyIsLike wildCard=\"*\" singleChar=\"#\" escapeChar=\"!\">\n"
-                        + "<ogc:Literal>M*</ogc:Literal>\n"
-                        + "<ogc:Function name=\"strToLowerCase\"><ogc:PropertyName>gml:name</ogc:PropertyName></ogc:Function>\n"
-                        + "</ogc:PropertyIsLike></ogc:Filter>";
+                """
+                <ogc:Filter  xmlns:ogc="http://www.opengis.net/ogc"><ogc:PropertyIsLike wildCard="*" singleChar="#" escapeChar="!">
+                <ogc:Literal>M*</ogc:Literal>
+                <ogc:Function name="strToLowerCase"><ogc:PropertyName>gml:name</ogc:PropertyName></ogc:Function>
+                </ogc:PropertyIsLike></ogc:Filter>""";
         Configuration configuration = new org.geotools.filter.v1_0.OGCConfiguration();
         Parser parser = new Parser(configuration);
         Filter filter = (Filter) parser.parse(new ByteArrayInputStream(f.getBytes(StandardCharsets.UTF_8)));

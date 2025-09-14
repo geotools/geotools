@@ -53,8 +53,7 @@ public class PointOnLineFunction extends FunctionExpressionImpl {
         if (geometry == null) return null;
 
         // if it's a collection of one, return the first geometry
-        if (geometry instanceof GeometryCollection) {
-            GeometryCollection collection = (GeometryCollection) geometry;
+        if (geometry instanceof GeometryCollection collection) {
             if (collection.getNumGeometries() == 0) return null;
             if (collection.getNumGeometries() > 1)
                 throw new IllegalArgumentException("Expected a single geometry, got a collection of "

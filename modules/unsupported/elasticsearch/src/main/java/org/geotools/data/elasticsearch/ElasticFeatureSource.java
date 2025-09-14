@@ -155,8 +155,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        if (visitor instanceof ElasticBucketVisitor) {
-            ElasticBucketVisitor elasticBucketVisitor = (ElasticBucketVisitor) visitor;
+        if (visitor instanceof ElasticBucketVisitor elasticBucketVisitor) {
             final ObjectMapper mapper = new ObjectMapper();
             Map<String, String> hints = new HashMap<>();
             if (elasticBucketVisitor.getAggregationDefinition() != null

@@ -75,8 +75,7 @@ public class AttributeEncodeExecutor implements BindingWalker.Visitor {
             }
         }
 
-        if (binding instanceof SimpleBinding) {
-            SimpleBinding simple = (SimpleBinding) binding;
+        if (binding instanceof SimpleBinding simple) {
 
             try {
                 encoding.setValue(simple.encode(object, encoding.getValue()));

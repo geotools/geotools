@@ -118,8 +118,8 @@ public class MongoSchemaDBStore implements MongoSchemaStore {
                 DBObject document = cursor.next();
                 if (document != null) {
                     Object typeName = document.get(FeatureTypeDBObject.KEY_typeName);
-                    if (typeName instanceof String) {
-                        typeNames.add((String) typeName);
+                    if (typeName instanceof String string) {
+                        typeNames.add(string);
                     }
                 }
             }

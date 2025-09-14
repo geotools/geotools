@@ -9,6 +9,7 @@
  */
 package org.geotools.api.coverage;
 
+import java.io.Serial;
 import org.geotools.api.geometry.Position;
 
 /**
@@ -25,6 +26,7 @@ import org.geotools.api.geometry.Position;
  */
 public class CannotEvaluateException extends RuntimeException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 506793649975583062L;
 
     /**

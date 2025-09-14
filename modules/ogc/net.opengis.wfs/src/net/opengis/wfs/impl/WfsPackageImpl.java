@@ -459,7 +459,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
 
     // Obtain or create and register package
     Object registeredWfsPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-    WfsPackageImpl theWfsPackage = registeredWfsPackage instanceof WfsPackageImpl ? (WfsPackageImpl)registeredWfsPackage : new WfsPackageImpl();
+    WfsPackageImpl theWfsPackage = registeredWfsPackage instanceof WfsPackageImpl wpi ? wpi : new WfsPackageImpl();
 
     isInited = true;
 

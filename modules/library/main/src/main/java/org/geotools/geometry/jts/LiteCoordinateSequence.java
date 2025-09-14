@@ -157,8 +157,8 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         this.size = cs.size();
         this.dimension = dimension;
 
-        if (cs instanceof LiteCoordinateSequence && cs.getMeasures() == measures) {
-            double[] orig = ((LiteCoordinateSequence) cs).getOrdinateArray(dimension, measures);
+        if (cs instanceof LiteCoordinateSequence sequence && cs.getMeasures() == measures) {
+            double[] orig = sequence.getOrdinateArray(dimension, measures);
             this.coords = new double[orig.length];
             System.arraycopy(orig, 0, coords, 0, coords.length);
         } else {
@@ -340,12 +340,12 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
 
         if (geom == null) return null;
 
-        if (geom instanceof LineString) {
-            return cloneGeometry((LineString) geom, dimension);
-        } else if (geom instanceof Polygon) {
-            return cloneGeometry((Polygon) geom, dimension);
-        } else if (geom instanceof Point) {
-            return cloneGeometry((Point) geom, dimension);
+        if (geom instanceof LineString string) {
+            return cloneGeometry(string, dimension);
+        } else if (geom instanceof Polygon polygon) {
+            return cloneGeometry(polygon, dimension);
+        } else if (geom instanceof Point point) {
+            return cloneGeometry(point, dimension);
         } else {
             return cloneGeometry((GeometryCollection) geom, dimension);
         }
@@ -371,15 +371,13 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     private static final Geometry cloneGeometry(LineString geom, int dimension) {
-        if (geom instanceof SingleCurvedGeometry<?>) {
-            SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) geom;
+        if (geom instanceof SingleCurvedGeometry<?> curved) {
             double[] controlPoints = curved.getControlPoints();
             double[] clonedPoints = new double[controlPoints.length];
             System.arraycopy(controlPoints, 0, clonedPoints, 0, controlPoints.length);
 
             return new CircularString(clonedPoints, geomFac, curved.getTolerance());
-        } else if (geom instanceof CompoundCurvedGeometry<?>) {
-            CompoundCurvedGeometry<?> curved = (CompoundCurvedGeometry<?>) geom;
+        } else if (geom instanceof CompoundCurvedGeometry<?> curved) {
             List<LineString> components = curved.getComponents();
             List<LineString> clonedComponents = new ArrayList<>(components.size());
             for (LineString ls : components) {
@@ -393,15 +391,13 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     private static final Geometry cloneGeometry(LinearRing geom, int dimension) {
-        if (geom instanceof SingleCurvedGeometry<?>) {
-            SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) geom;
+        if (geom instanceof SingleCurvedGeometry<?> curved) {
             double[] controlPoints = curved.getControlPoints();
             double[] clonedPoints = new double[controlPoints.length];
             System.arraycopy(controlPoints, 0, clonedPoints, 0, controlPoints.length);
 
             return new CircularRing(clonedPoints, geomFac, curved.getTolerance());
-        } else if (geom instanceof CompoundCurvedGeometry<?>) {
-            CompoundCurvedGeometry<?> curved = (CompoundCurvedGeometry<?>) geom;
+        } else if (geom instanceof CompoundCurvedGeometry<?> curved) {
             List<LineString> components = curved.getComponents();
             List<LineString> clonedComponents = new ArrayList<>(components.size());
             for (LineString ls : components) {

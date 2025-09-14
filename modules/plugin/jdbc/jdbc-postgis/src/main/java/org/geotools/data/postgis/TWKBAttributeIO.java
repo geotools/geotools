@@ -190,8 +190,8 @@ class TWKBAttributeIO {
      * be called later down the road, handle this case in a special way to ensure better performance
      */
     public Geometry adaptToBinding(Geometry g, Class<?> binding) {
-        if (g instanceof Point && !binding.isInstance(g)) {
-            CoordinateSequence cs = ((Point) g).getCoordinateSequence();
+        if (g instanceof Point point && !binding.isInstance(g)) {
+            CoordinateSequence cs = point.getCoordinateSequence();
             if (Polygon.class.isAssignableFrom(binding)) {
                 g = toPolygon(cs);
             } else if (LineString.class.isAssignableFrom(binding)) {

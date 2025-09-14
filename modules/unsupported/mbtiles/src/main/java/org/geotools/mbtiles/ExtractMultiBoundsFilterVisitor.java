@@ -43,8 +43,8 @@ class ExtractMultiBoundsFilterVisitor extends ExtractBoundsFilterVisitor {
         Object result = filter.accept(INSTANCE, null);
         if (result instanceof List) {
             return (List<Envelope>) result;
-        } else if (result instanceof Envelope) {
-            return Collections.singletonList((Envelope) result);
+        } else if (result instanceof Envelope envelope) {
+            return Collections.singletonList(envelope);
         } else {
             return Collections.emptyList();
         }
@@ -59,8 +59,8 @@ class ExtractMultiBoundsFilterVisitor extends ExtractBoundsFilterVisitor {
             Object result = f.accept(this, data);
             // when a list of envelopes is returned, they are added to the list of envelopes to
             // process
-            if (result instanceof Envelope) {
-                envelopes.add(Collections.singletonList((Envelope) result));
+            if (result instanceof Envelope envelope) {
+                envelopes.add(Collections.singletonList(envelope));
             } else if (result instanceof List) {
                 @SuppressWarnings("unchecked")
                 List<Envelope> list = (List) result;
@@ -106,8 +106,8 @@ class ExtractMultiBoundsFilterVisitor extends ExtractBoundsFilterVisitor {
         // when multiple envelopes are returned, they get or-ed
         for (Filter f : filter.getChildren()) {
             Object result = f.accept(this, data);
-            if (result instanceof Envelope) {
-                envelopes.add((Envelope) result);
+            if (result instanceof Envelope envelope) {
+                envelopes.add(envelope);
             } else if (result instanceof List) {
                 @SuppressWarnings("unchecked")
                 List<Envelope> list = (List) result;

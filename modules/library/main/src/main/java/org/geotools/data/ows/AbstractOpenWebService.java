@@ -311,8 +311,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R> {
 
                 if (clientVersion == null) {
                     if (exception != null) {
-                        if (exception instanceof ServiceException) {
-                            throw (ServiceException) exception;
+                        if (exception instanceof ServiceException serviceException) {
+                            throw serviceException;
                         }
                         IOException e = new IOException(exception.getMessage());
                         throw e;
@@ -330,8 +330,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R> {
 
                 if (clientVersion == null) {
                     if (exception != null) {
-                        if (exception instanceof ServiceException) {
-                            throw (ServiceException) exception;
+                        if (exception instanceof ServiceException serviceException) {
+                            throw serviceException;
                         }
                         IOException e = new IOException(exception.getMessage());
                         throw e;

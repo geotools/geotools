@@ -23,6 +23,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,6 +127,7 @@ import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
  */
 public class Crop extends Operation2D {
     /** Serial number for cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 4466072819239413456L;
 
     public static final double EPS = 1E-3;
@@ -297,10 +299,10 @@ public class Crop extends Operation2D {
 
         Object envelope = envelopeParameter.getValue();
         if (envelope != null) {
-            if (envelope instanceof GeneralBounds) {
-                cropEnvelope = (GeneralBounds) envelope;
-            } else if (envelope instanceof Bounds) {
-                cropEnvelope = new GeneralBounds((Bounds) envelope);
+            if (envelope instanceof GeneralBounds bounds1) {
+                cropEnvelope = bounds1;
+            } else if (envelope instanceof Bounds bounds) {
+                cropEnvelope = new GeneralBounds(bounds);
             }
         }
         // may be null
@@ -764,19 +766,17 @@ public class Crop extends Operation2D {
             return;
         }
 
-        if (geometry instanceof GeometryCollection) {
-            GeometryCollection collection = (GeometryCollection) geometry;
+        if (geometry instanceof GeometryCollection collection) {
             for (int i = 0; i < collection.getNumGeometries(); i++) {
                 transformGeometry(collection.getGeometryN(i));
             }
-        } else if (geometry instanceof Polygon) {
-            Polygon polygon = (Polygon) geometry;
+        } else if (geometry instanceof Polygon polygon) {
             transformGeometry(polygon.getExteriorRing());
             for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
                 transformGeometry(polygon.getInteriorRingN(i));
             }
-        } else if (geometry instanceof LineString) {
-            CoordinateSequence cs = ((LineString) geometry).getCoordinateSequence();
+        } else if (geometry instanceof LineString string) {
+            CoordinateSequence cs = string.getCoordinateSequence();
             for (int i = 0; i < cs.size(); i++) {
                 cs.setOrdinate(i, 0, (int) (cs.getOrdinate(i, 0) + 0.5d));
                 cs.setOrdinate(i, 1, (int) (cs.getOrdinate(i, 1) + 0.5d));

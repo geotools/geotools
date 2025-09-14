@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Throws when a stream can't be parsed because some content uses an invalid format. This exception typically has a
@@ -30,6 +31,7 @@ import java.io.IOException;
  */
 public class ContentFormatException extends IOException {
     /** Serial version for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 6152194019351374599L;
 
     /**

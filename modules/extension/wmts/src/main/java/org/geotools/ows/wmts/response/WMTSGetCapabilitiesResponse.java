@@ -78,8 +78,8 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
             } catch (SAXException | ParserConfigurationException e) {
                 throw new IOException("Error while parsing XML.", e);
             }
-            if (object instanceof CapabilitiesType) {
-                this.capabilities = new WMTSCapabilities((CapabilitiesType) object);
+            if (object instanceof CapabilitiesType type) {
+                this.capabilities = new WMTSCapabilities(type);
             } else {
                 try (InputStream bufferedStream = new ByteArrayInputStream(buffer, 0, bytesRead)) {
                     object = ServiceExceptionParser.parse(bufferedStream);

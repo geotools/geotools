@@ -288,8 +288,8 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
     public Object visit(Literal expression, Object context) throws RuntimeException {
         // type to convert the literal to
         Class target = null;
-        if (context instanceof Class) {
-            target = (Class) context;
+        if (context instanceof Class class1) {
+            target = class1;
         }
 
         // evaluate the expression

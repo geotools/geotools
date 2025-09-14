@@ -200,8 +200,8 @@ public class XMLHandlerHints implements Map<String, Object> {
             Object resolver = hints.get(GeoTools.ENTITY_RESOLVER);
             if (resolver == null) { // use null instance rather than check each time
                 return NullEntityResolver.INSTANCE;
-            } else if (resolver instanceof EntityResolver) {
-                return (EntityResolver) resolver;
+            } else if (resolver instanceof EntityResolver entityResolver) {
+                return entityResolver;
             }
         }
         return GeoTools.getEntityResolver(null);

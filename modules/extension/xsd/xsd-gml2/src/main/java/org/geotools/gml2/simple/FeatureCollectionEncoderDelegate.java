@@ -191,8 +191,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 attribute.name,
                 getPropertyAttributes(attribute.name, attribute.featureType, attribute.descriptor, value));
 
-        if (value instanceof Geometry) {
-            Geometry g = (Geometry) value;
+        if (value instanceof Geometry g) {
             Integer dimension = GML2EncodingUtils.getGeometryDimension(g, encoder.getConfiguration());
             AttributesImpl atts = buildSrsAttributes(
                     ((GeometryDescriptor) attribute.descriptor).getCoordinateReferenceSystem(), dimension);

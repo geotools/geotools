@@ -53,12 +53,12 @@ public class TransparencyFillRIF implements RenderedImageFactory {
         }
         FillType type = TransparencyFillDescriptor.FILL_AVERAGE;
         Object param0 = paramBlock.getObjectParameter(TYPE_ARG);
-        if (param0 != null && param0 instanceof FillType) {
-            type = (FillType) param0;
+        if (param0 != null && param0 instanceof FillType fillType) {
+            type = fillType;
         }
         Object param1 = paramBlock.getObjectParameter(NODATA_ARG);
         Number noData = null;
-        if (param1 != null && param1 instanceof Number) noData = (Number) param1;
+        if (param1 != null && param1 instanceof Number number) noData = number;
 
         Integer width = null;
         Integer param2 = paramBlock.getIntParameter(WIDTH_ARG);

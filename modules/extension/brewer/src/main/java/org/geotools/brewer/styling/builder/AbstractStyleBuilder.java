@@ -72,8 +72,8 @@ abstract class AbstractStyleBuilder<T> extends AbstractSLDBuilder<T> implements 
     }
 
     public Style buildStyle() {
-        if (parent != null && parent instanceof AbstractStyleBuilder) {
-            return ((AbstractStyleBuilder) parent).buildStyle();
+        if (parent != null && parent instanceof AbstractStyleBuilder builder) {
+            return builder.buildStyle();
         } else {
             StyleBuilder sb = new StyleBuilder();
             buildStyleInternal(sb);

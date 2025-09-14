@@ -58,8 +58,8 @@ public class FESParseEncodeUtil {
         }
 
         Expression expr = null;
-        if (other instanceof Expression) {
-            expr = (Expression) other;
+        if (other instanceof Expression expression) {
+            expr = expression;
         } else {
             expr = factory.literal(other);
         }
@@ -88,8 +88,7 @@ public class FESParseEncodeUtil {
     static Object[] distanceBufferOpProperty(Expression e) {
         if (e instanceof PropertyName) {
             return new Object[] {FES.ValueReference, e};
-        } else if (e instanceof Literal) {
-            Literal l = (Literal) e;
+        } else if (e instanceof Literal l) {
             if (l.getValue() instanceof Geometry) {
                 Geometry g = (Geometry) l.getValue();
                 return new Object[] {new QName(GML.NAMESPACE, g.getGeometryType()), g};

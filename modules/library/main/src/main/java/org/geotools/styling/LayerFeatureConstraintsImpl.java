@@ -40,8 +40,7 @@ public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
             return true;
         }
 
-        if (obj instanceof LayerFeatureConstraintsImpl) {
-            LayerFeatureConstraintsImpl other = (LayerFeatureConstraintsImpl) obj;
+        if (obj instanceof LayerFeatureConstraintsImpl other) {
             return Arrays.equals(constraints, other.constraints);
         }
 

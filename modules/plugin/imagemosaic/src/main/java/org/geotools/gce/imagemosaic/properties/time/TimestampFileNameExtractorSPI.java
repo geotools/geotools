@@ -72,16 +72,14 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
         boolean useHighTime = false;
         boolean fullPath = false;
         Properties properties = null;
-        if (o instanceof URL) {
-            source = (URL) o;
-        } else if (o instanceof File) {
-            source = URLs.fileToUrl((File) o);
-        } else if (o instanceof String) {
+        if (o instanceof URL rL) {
+            source = rL;
+        } else if (o instanceof File file) {
+            source = URLs.fileToUrl(file);
+        } else if (o instanceof String value) {
             try {
-                source = new URL((String) o);
+                source = new URL(value);
             } catch (MalformedURLException e) {
-
-                String value = (String) o;
 
                 int minIndex = value.length();
 

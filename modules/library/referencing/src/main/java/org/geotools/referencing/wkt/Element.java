@@ -342,9 +342,9 @@ public final class Element {
         final Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            if (object instanceof Number) {
+            if (object instanceof Number number) {
                 iterator.remove();
-                return ((Number) object).doubleValue();
+                return number.doubleValue();
             }
         }
         throw missingParameter(key);
@@ -361,9 +361,8 @@ public final class Element {
         final Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            if (object instanceof Number) {
+            if (object instanceof Number number) {
                 iterator.remove();
-                final Number number = (Number) object;
                 if (number instanceof Float || number instanceof Double) {
                     throw new ParseException(
                             complete(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, number)), offset);
@@ -399,9 +398,9 @@ public final class Element {
         final Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            if (object instanceof String) {
+            if (object instanceof String string) {
                 iterator.remove();
-                return (String) object;
+                return string;
             }
         }
         return null;
@@ -433,8 +432,7 @@ public final class Element {
         final Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            if (object instanceof Element) {
-                final Element element = (Element) object;
+            if (object instanceof Element element) {
                 if (element.list != null && element.keyword.equals(key)) {
                     iterator.remove();
                     return element;
@@ -456,8 +454,7 @@ public final class Element {
         final Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            if (object instanceof Element) {
-                final Element element = (Element) object;
+            if (object instanceof Element element) {
                 if (element.list == null) {
                     iterator.remove();
                     return element;
@@ -477,8 +474,7 @@ public final class Element {
         final Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            if (object instanceof Element) {
-                final Element element = (Element) object;
+            if (object instanceof Element element) {
                 if (element.list == null) {
                     iterator.remove();
                     return element;
@@ -531,8 +527,8 @@ public final class Element {
             return;
         }
         for (final Object object : list) {
-            if (object instanceof Element) {
-                ((Element) object).print(out, level + 1);
+            if (object instanceof Element element) {
+                element.print(out, level + 1);
             } else {
                 out.print(Utilities.spaces(tabWidth * (level + 1)));
                 out.println(object);

@@ -81,8 +81,7 @@ public final class ObjectCaches {
 
         @Override
         public boolean equals(final Object other) {
-            if (other instanceof Pair) {
-                final Pair that = (Pair) other;
+            if (other instanceof Pair that) {
                 return Utilities.equals(this.source, that.source) && Utilities.equals(this.target, that.target);
             }
             return false;

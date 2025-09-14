@@ -101,8 +101,8 @@ public final class NIOUtilities {
         while ((sr = buffers.poll()) != null) {
             ByteBuffer buffer = null;
             // what did we get, a soft or a hard reference?
-            if (sr instanceof BufferSoftReference) {
-                buffer = ((BufferSoftReference) sr).get();
+            if (sr instanceof BufferSoftReference reference) {
+                buffer = reference.get();
             } else {
                 // we're removing a hard reference from the cache, lower the usage figure
                 buffer = (ByteBuffer) sr;

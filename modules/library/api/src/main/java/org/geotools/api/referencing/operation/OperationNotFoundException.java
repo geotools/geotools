@@ -9,6 +9,7 @@
  */
 package org.geotools.api.referencing.operation;
 
+import java.io.Serial;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
@@ -22,6 +23,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  */
 public class OperationNotFoundException extends FactoryException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -382625493416204214L;
 
     /** Construct an exception with no detail message. */

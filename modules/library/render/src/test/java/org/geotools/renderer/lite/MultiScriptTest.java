@@ -109,9 +109,10 @@ public class MultiScriptTest {
                 type,
                 new Object[] {
                     gf.createPoint(new Coordinate(5, 6)),
-                    "Latin, arab, armenian"
-                            + "\n\u0627\u062E\u062A\u0628\u0627\u0631\n"
-                            + "\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566"
+                    """
+                    Latin, arab, armenian
+                    اختبار
+                    բարեւ Ձեզ"""
                 },
                 null);
         SimpleFeature f3 = SimpleFeatureBuilder.build(

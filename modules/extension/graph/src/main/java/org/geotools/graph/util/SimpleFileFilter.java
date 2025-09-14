@@ -53,8 +53,7 @@ public class SimpleFileFilter extends FileFilter implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
-        if (o instanceof SimpleFileFilter) {
-            SimpleFileFilter other = (SimpleFileFilter) o;
+        if (o instanceof SimpleFileFilter other) {
             return m_ext.equals(other.m_ext);
         }
         return false;

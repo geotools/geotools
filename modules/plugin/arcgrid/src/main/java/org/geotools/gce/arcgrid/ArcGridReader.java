@@ -188,6 +188,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
      * @param input provided to this {@link ArcGridReader}.
      * @param hints Hints to be used by this reader throughout his life.
      */
+    @SuppressWarnings("PMD.CloseResource")
     private void checkSource(Object input, final Hints hints)
             throws UnsupportedEncodingException, DataSourceException, IOException, FileNotFoundException {
 
@@ -199,9 +200,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         // //
         // if it is a URL pointing to a File I convert it to a file,
         // otherwise, later on, I will try to get an inputstream out of it.
-        if (input instanceof URL) {
-            // URL that point to a file
-            final URL sourceURL = (URL) input;
+        if (input instanceof URL sourceURL) {
             if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
                 this.source = input = URLs.urlToFile(sourceURL);
             }
@@ -212,8 +211,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         // File
         //
         // //
-        if (input instanceof File) {
-            final File sourceFile = (File) input;
+        if (input instanceof File sourceFile) {
             if (!sourceFile.exists() || sourceFile.isDirectory() || !sourceFile.canRead())
                 throw new DataSourceException("Provided file does not exist or is a directory or is not readable!");
             this.coverageName = sourceFile.getName();
@@ -234,8 +232,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         // URL
         //
         // //
-        if (input instanceof URL) {
-            final URL tempURL = (URL) input;
+        if (input instanceof URL tempURL) {
             try {
                 input = tempURL.openConnection().getInputStream();
                 inStream = ImageIO.createImageInputStream(new GZIPInputStream((InputStream) input));
@@ -254,10 +251,10 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         // InputStream
         //
         // //
-        if (input instanceof InputStream) {
+        if (input instanceof InputStream stream1) {
             closeMe = false;
-            if (ImageIO.getUseCache()) inStream = new FileCacheImageInputStream((InputStream) input, null);
-            else inStream = new MemoryCacheImageInputStream((InputStream) input);
+            if (ImageIO.getUseCache()) inStream = new FileCacheImageInputStream(stream1, null);
+            else inStream = new MemoryCacheImageInputStream(stream1);
             // let's mark it
             inStream.mark();
         } else
@@ -266,9 +263,9 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         // ImageInputStream
         //
         // //
-        if (input instanceof ImageInputStream) {
+        if (input instanceof ImageInputStream stream) {
             closeMe = false;
-            inStream = (ImageInputStream) input;
+            inStream = stream;
             inStream.mark();
         } else throw new IllegalArgumentException("Unsupported input type");
 
@@ -384,23 +381,21 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         final ParameterBlock pbjImageRead = new ParameterBlock();
         // prepare input to handle possible parallelism between different
         // readers
-        if (source instanceof File) {
+        if (source instanceof File file) {
             if (!gzipped) {
                 if (inStreamSPI != null)
                     pbjImageRead.add(inStreamSPI.createInputStreamInstance(
                             source, ImageIO.getUseCache(), ImageIO.getCacheDirectory()));
                 else pbjImageRead.add(ImageIO.createImageInputStream(source));
-            } else
-                pbjImageRead.add(
-                        ImageIO.createImageInputStream(new GZIPInputStream(new FileInputStream((File) source))));
+            } else pbjImageRead.add(ImageIO.createImageInputStream(new GZIPInputStream(new FileInputStream(file))));
         } else if (source instanceof ImageInputStream || source instanceof InputStream) pbjImageRead.add(inStream);
-        else if (source instanceof URL) {
+        else if (source instanceof URL rL) {
             if (gzipped)
                 ImageIO.createImageInputStream(
-                        new GZIPInputStream(((URL) source).openConnection().getInputStream()));
+                        new GZIPInputStream(rL.openConnection().getInputStream()));
             else
-                pbjImageRead.add(ImageIO.createImageInputStream(
-                        ((URL) source).openConnection().getInputStream()));
+                pbjImageRead.add(
+                        ImageIO.createImageInputStream(rL.openConnection().getInputStream()));
         }
         pbjImageRead.add(imageChoice);
         pbjImageRead.add(Boolean.FALSE);
@@ -541,11 +536,11 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
     private void initCoordinateReferenceSystem() throws FileNotFoundException, IOException {
 
         // check to see if there is a projection file
-        if (source instanceof File || source instanceof URL && ((URL) source).getProtocol() == "file") {
+        if (source instanceof File || source instanceof URL rL && rL.getProtocol() == "file") {
             // getting name for the prj file
             final String sourceAsString;
 
-            if (source instanceof File) sourceAsString = ((File) source).getAbsolutePath();
+            if (source instanceof File file) sourceAsString = file.getAbsolutePath();
             else sourceAsString = ((URL) source).getFile();
 
             int index = sourceAsString.lastIndexOf(".");

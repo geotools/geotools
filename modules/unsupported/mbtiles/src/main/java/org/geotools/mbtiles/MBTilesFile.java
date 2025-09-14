@@ -270,7 +270,7 @@ public class MBTilesFile implements AutoCloseable {
 
                 if (entry.getData() != null) {
                     try (PreparedStatement ps = prepare(
-                                    cx, format("INSERT OR REPLACE INTO %s VALUES (?,?,?,?)", TABLE_TILES))
+                                    cx, "INSERT OR REPLACE INTO %s VALUES (?,?,?,?)".formatted(TABLE_TILES))
                             .set(entry.getZoomLevel())
                             .set(entry.getTileColumn())
                             .set(entry.getTileRow())
@@ -307,7 +307,7 @@ public class MBTilesFile implements AutoCloseable {
         try (Connection cx = connPool.getConnection()) {
             if (entry.getGrid() != null) {
                 try (PreparedStatement ps = prepare(
-                                cx, format("INSERT OR REPLACE INTO %s VALUES (?,?,?,?)", TABLE_GRIDS))
+                                cx, "INSERT OR REPLACE INTO %s VALUES (?,?,?,?)".formatted(TABLE_GRIDS))
                         .set(entry.getZoomLevel())
                         .set(entry.getTileColumn())
                         .set(entry.getTileRow())
@@ -319,9 +319,8 @@ public class MBTilesFile implements AutoCloseable {
             } else {
                 try (PreparedStatement ps = prepare(
                                 cx,
-                                format(
-                                        "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                        TABLE_GRIDS))
+                                "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?"
+                                        .formatted(TABLE_GRIDS))
                         .set(entry.getZoomLevel())
                         .set(entry.getTileColumn())
                         .set(entry.getTileRow())
@@ -334,7 +333,7 @@ public class MBTilesFile implements AutoCloseable {
             for (Map.Entry<String, String> gridDataEntry : entry.getGridData().entrySet()) {
                 if (gridDataEntry.getValue() != null) {
                     try (PreparedStatement ps = prepare(
-                                    cx, format("INSERT OR REPLACE INTO %s VALUES (?,?,?,?,?)", TABLE_GRID_DATA))
+                                    cx, "INSERT OR REPLACE INTO %s VALUES (?,?,?,?,?)".formatted(TABLE_GRID_DATA))
                             .set(entry.getZoomLevel())
                             .set(entry.getTileColumn())
                             .set(entry.getTileRow())
@@ -347,9 +346,8 @@ public class MBTilesFile implements AutoCloseable {
                 } else {
                     try (PreparedStatement ps = prepare(
                                     cx,
-                                    format(
-                                            "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=? AND key_name=?",
-                                            TABLE_GRID_DATA))
+                                    "DELETE FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=? AND key_name=?"
+                                            .formatted(TABLE_GRID_DATA))
                             .set(entry.getZoomLevel())
                             .set(entry.getTileColumn())
                             .set(entry.getTileRow())
@@ -399,9 +397,8 @@ public class MBTilesFile implements AutoCloseable {
             try (Connection cx = connPool.getConnection();
                     PreparedStatement ps = prepare(
                                     cx,
-                                    format(
-                                            "SELECT tile_data FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                            TABLE_TILES))
+                                    "SELECT tile_data FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?"
+                                            .formatted(TABLE_TILES))
                             .set(entry.getZoomLevel())
                             .set(entry.getTileColumn())
                             .set(entry.getTileRow())
@@ -431,9 +428,8 @@ public class MBTilesFile implements AutoCloseable {
             try (Connection cx = connPool.getConnection()) {
                 try (PreparedStatement ps = prepare(
                                         cx,
-                                        format(
-                                                "SELECT grid FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                                TABLE_GRIDS))
+                                        "SELECT grid FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?"
+                                                .formatted(TABLE_GRIDS))
                                 .set(entry.getZoomLevel())
                                 .set(entry.getTileColumn())
                                 .set(entry.getTileRow())
@@ -450,9 +446,8 @@ public class MBTilesFile implements AutoCloseable {
 
                 try (PreparedStatement ps = prepare(
                                         cx,
-                                        format(
-                                                "SELECT key_name, key_json FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?",
-                                                TABLE_GRID_DATA))
+                                        "SELECT key_name, key_json FROM %s WHERE zoom_level=? AND tile_column=? AND tile_row=?"
+                                                .formatted(TABLE_GRID_DATA))
                                 .set(entry.getZoomLevel())
                                 .set(entry.getTileColumn())
                                 .set(entry.getTileRow())
@@ -511,7 +506,7 @@ public class MBTilesFile implements AutoCloseable {
         PreparedStatement ps = null;
         try {
             cx = connPool.getConnection();
-            ps = prepare(cx, format("SELECT * FROM %s WHERE zoom_level=?", TABLE_TILES))
+            ps = prepare(cx, "SELECT * FROM %s WHERE zoom_level=?".formatted(TABLE_TILES))
                     .set(zoomLevel)
                     .statement();
             return new TileIterator(ps.executeQuery(), ps, cx);
@@ -544,9 +539,8 @@ public class MBTilesFile implements AutoCloseable {
 
             ps = prepare(
                             cx,
-                            format(
-                                    "SELECT * FROM %s WHERE zoom_level=? AND tile_column >= ? AND tile_row >= ? AND tile_column <= ? AND tile_row <= ?",
-                                    TABLE_TILES))
+                            "SELECT * FROM %s WHERE zoom_level=? AND tile_column >= ? AND tile_row >= ? AND tile_column <= ? AND tile_row <= ?"
+                                    .formatted(TABLE_TILES))
                     .set(zoomLevel)
                     .set(leftTile)
                     .set(bottomTile)
@@ -579,7 +573,7 @@ public class MBTilesFile implements AutoCloseable {
     public int numberOfTiles(long zoomLevel) throws SQLException {
         int size;
         try (Connection cx = connPool.getConnection();
-                PreparedStatement ps = prepare(cx, format("SELECT COUNT(*) FROM %s WHERE zoom_level=?", TABLE_TILES))
+                PreparedStatement ps = prepare(cx, "SELECT COUNT(*) FROM %s WHERE zoom_level=?".formatted(TABLE_TILES))
                         .set(zoomLevel)
                         .statement();
                 ResultSet rs = ps.executeQuery()) {
@@ -595,7 +589,7 @@ public class MBTilesFile implements AutoCloseable {
         long zoom = 0;
         try (Connection cx = connPool.getConnection();
                 PreparedStatement ps = prepare(
-                                cx, format("SELECT zoom_level FROM %s ORDER BY abs(zoom_level - ?)", TABLE_TILES))
+                                cx, "SELECT zoom_level FROM %s ORDER BY abs(zoom_level - ?)".formatted(TABLE_TILES))
                         .set(zoomLevel)
                         .statement();
                 ResultSet rs = ps.executeQuery()) {
@@ -635,7 +629,7 @@ public class MBTilesFile implements AutoCloseable {
         long size = 0;
         try (Connection cx = connPool.getConnection();
                 PreparedStatement ps = prepare(
-                                cx, format("SELECT MIN(tile_column) FROM %s WHERE zoom_level=?", TABLE_TILES))
+                                cx, "SELECT MIN(tile_column) FROM %s WHERE zoom_level=?".formatted(TABLE_TILES))
                         .set(zoomLevel)
                         .statement();
                 ResultSet rs = ps.executeQuery()) {
@@ -651,7 +645,7 @@ public class MBTilesFile implements AutoCloseable {
 
         try (Connection cx = connPool.getConnection();
                 PreparedStatement ps = prepare(
-                                cx, format("SELECT MAX(tile_column) FROM %s WHERE zoom_level=?", TABLE_TILES))
+                                cx, "SELECT MAX(tile_column) FROM %s WHERE zoom_level=?".formatted(TABLE_TILES))
                         .set(zoomLevel)
                         .statement();
                 ResultSet rs = ps.executeQuery()) {
@@ -667,7 +661,7 @@ public class MBTilesFile implements AutoCloseable {
 
         try (Connection cx = connPool.getConnection();
                 PreparedStatement ps = prepare(
-                                cx, format("SELECT MIN(tile_row) FROM %s WHERE zoom_level=?", TABLE_TILES))
+                                cx, "SELECT MIN(tile_row) FROM %s WHERE zoom_level=?".formatted(TABLE_TILES))
                         .set(zoomLevel)
                         .statement();
                 ResultSet rs = ps.executeQuery()) {
@@ -682,7 +676,7 @@ public class MBTilesFile implements AutoCloseable {
         long size = Long.MAX_VALUE;
         try (Connection cx = connPool.getConnection();
                 PreparedStatement ps = prepare(
-                                cx, format("SELECT MAX(tile_row) FROM %s WHERE zoom_level=?", TABLE_TILES))
+                                cx, "SELECT MAX(tile_row) FROM %s WHERE zoom_level=?".formatted(TABLE_TILES))
                         .set(zoomLevel)
                         .statement();
                 ResultSet rs = ps.executeQuery()) {
@@ -699,12 +693,13 @@ public class MBTilesFile implements AutoCloseable {
      * <p>The application should always call this method when done with a mbtiles to prevent connection leakage.
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource") // ManageableDataSource is closed, PMD just doesn't see it
     public void close() {
         try {
-            if (connPool instanceof BasicDataSource) {
-                ((BasicDataSource) connPool).close();
-            } else if (connPool instanceof ManageableDataSource) {
-                ((ManageableDataSource) connPool).close();
+            if (connPool instanceof BasicDataSource source1) {
+                source1.close();
+            } else if (connPool instanceof ManageableDataSource source) {
+                source.close();
             }
 
         } catch (SQLException e) {
@@ -727,7 +722,7 @@ public class MBTilesFile implements AutoCloseable {
         }
 
         if (value != null) {
-            try (PreparedStatement ps = prepare(cx, format("INSERT OR REPLACE INTO %s VALUES (?,?)", TABLE_METADATA))
+            try (PreparedStatement ps = prepare(cx, "INSERT OR REPLACE INTO %s VALUES (?,?)".formatted(TABLE_METADATA))
                     .set(name)
                     .set(value)
                     .log(Level.FINE)
@@ -735,7 +730,7 @@ public class MBTilesFile implements AutoCloseable {
                 ps.execute();
             }
         } else {
-            try (PreparedStatement ps = prepare(cx, format("DELETE FROM %s WHERE NAME = ?", TABLE_METADATA))
+            try (PreparedStatement ps = prepare(cx, "DELETE FROM %s WHERE NAME = ?".formatted(TABLE_METADATA))
                     .set(name)
                     .log(Level.FINE)
                     .statement()) {
@@ -745,7 +740,7 @@ public class MBTilesFile implements AutoCloseable {
     }
 
     protected String loadMetaDataEntry(String name, Connection cx) throws SQLException {
-        try (PreparedStatement ps = prepare(cx, format("SELECT VALUE FROM %s WHERE NAME = ?", TABLE_METADATA))
+        try (PreparedStatement ps = prepare(cx, "SELECT VALUE FROM %s WHERE NAME = ?".formatted(TABLE_METADATA))
                         .set(name)
                         .log(Level.FINE)
                         .statement();

@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
@@ -43,6 +44,7 @@ import org.geotools.measure.Measure;
  */
 public class DefaultLinearCS extends AbstractCS implements LinearCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -6890723478287625763L;
 
     /**

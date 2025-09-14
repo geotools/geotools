@@ -653,16 +653,15 @@ public class DataUtilities {
             return src;
         }
 
-        if (src instanceof Date) {
-            return new Date(((Date) src).getTime());
+        if (src instanceof Date date) {
+            return new Date(date.getTime());
         }
 
         if (src instanceof URL || src instanceof URI) {
             return src; // immutable
         }
 
-        if (src instanceof Object[]) {
-            Object[] array = (Object[]) src;
+        if (src instanceof Object[] array) {
             Object[] copy = new Object[array.length];
 
             for (int i = 0; i < array.length; i++) {
@@ -672,14 +671,12 @@ public class DataUtilities {
             return copy;
         }
 
-        if (src instanceof Geometry) {
-            Geometry geometry = (Geometry) src;
+        if (src instanceof Geometry geometry) {
 
             return geometry.copy();
         }
 
-        if (src instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) src;
+        if (src instanceof SimpleFeature feature) {
             return SimpleFeatureBuilder.copy(feature);
         }
 
@@ -709,8 +706,7 @@ public class DataUtilities {
             return copy;
         }
 
-        if (src instanceof List) {
-            List list = (List) src;
+        if (src instanceof List list) {
             List<Object> copy = new ArrayList<>(list.size());
 
             for (Object o : list) {
@@ -737,8 +733,8 @@ public class DataUtilities {
         }
 
         // last ditch effort is the source is serializable
-        if (src instanceof Serializable) {
-            return SerializationUtils.clone((Serializable) src);
+        if (src instanceof Serializable serializable) {
+            return SerializationUtils.clone(serializable);
         }
 
         //
@@ -1013,20 +1009,17 @@ public class DataUtilities {
         if (collection == null) {
             throw new NullPointerException("No content provided");
         }
-        if (collection instanceof ListFeatureCollection) {
-            ListFeatureCollection list = (ListFeatureCollection) collection;
+        if (collection instanceof ListFeatureCollection list) {
             CollectionFeatureSource source = new CollectionFeatureSource(list);
 
             return source;
         }
-        if (collection instanceof SpatialIndexFeatureCollection) {
-            SpatialIndexFeatureCollection indexed = (SpatialIndexFeatureCollection) collection;
+        if (collection instanceof SpatialIndexFeatureCollection indexed) {
             SpatialIndexFeatureSource source = new SpatialIndexFeatureSource(indexed);
 
             return source;
         }
-        if (collection instanceof TreeSetFeatureCollection) {
-            TreeSetFeatureCollection tree = (TreeSetFeatureCollection) collection;
+        if (collection instanceof TreeSetFeatureCollection tree) {
             CollectionFeatureSource source = new CollectionFeatureSource(tree);
 
             return source;
@@ -1175,7 +1168,7 @@ public class DataUtilities {
      * <p>Any problems are logged at {@link Level#FINE}.
      */
     public static void close(Iterator<?> iterator) {
-        if (iterator != null && iterator instanceof Closeable) {
+        if (iterator instanceof Closeable) {
             try {
                 ((Closeable) iterator).close();
             } catch (IOException e) {
@@ -1232,8 +1225,8 @@ public class DataUtilities {
     // of SimpleFeatureType, so this is equivalent to a null check.
     public static SimpleFeatureCollection simple(
             FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
-        if (featureCollection instanceof SimpleFeatureCollection) {
-            return (SimpleFeatureCollection) featureCollection;
+        if (featureCollection instanceof SimpleFeatureCollection collection) {
+            return collection;
         }
         if (featureCollection.getSchema() instanceof SimpleFeatureType) {
             return new SimpleFeatureCollectionBridge(featureCollection);
@@ -1243,8 +1236,8 @@ public class DataUtilities {
     }
 
     public static SimpleFeatureReader simple(FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
-        if (reader instanceof SimpleFeatureReader) {
-            return (SimpleFeatureReader) reader;
+        if (reader instanceof SimpleFeatureReader featureReader) {
+            return featureReader;
         } else {
             return new SimpleFeatureReaderBrige(reader);
         }
@@ -1259,14 +1252,14 @@ public class DataUtilities {
      * @since 2.7
      */
     public static SimpleFeatureSource simple(FeatureSource source) {
-        if (source instanceof FeatureLocking) {
-            return simple((FeatureLocking) source);
-        } else if (source instanceof FeatureStore) {
-            return simple((FeatureStore) source);
+        if (source instanceof FeatureLocking locking) {
+            return simple(locking);
+        } else if (source instanceof FeatureStore store) {
+            return simple(store);
         }
 
-        if (source instanceof SimpleFeatureSource) {
-            return (SimpleFeatureSource) source;
+        if (source instanceof SimpleFeatureSource featureSource) {
+            return featureSource;
         }
         if (source.getSchema() instanceof SimpleFeatureType) {
             @SuppressWarnings("unchecked")
@@ -1286,12 +1279,12 @@ public class DataUtilities {
      * @since 2.7
      */
     public static SimpleFeatureStore simple(FeatureStore store) {
-        if (store instanceof FeatureLocking) {
-            return simple((FeatureLocking) store);
+        if (store instanceof FeatureLocking locking) {
+            return simple(locking);
         }
 
-        if (store instanceof SimpleFeatureStore) {
-            return (SimpleFeatureStore) store;
+        if (store instanceof SimpleFeatureStore featureStore) {
+            return featureStore;
         }
         if (store.getSchema() instanceof SimpleFeatureType) {
             @SuppressWarnings("unchecked")
@@ -1353,8 +1346,7 @@ public class DataUtilities {
             if ("http://www.opengis.net/gml".equals(name.getNamespaceURI())) {
                 continue; // skip AbstractFeature stuff
             }
-            if (descriptor instanceof AttributeDescriptor) {
-                AttributeDescriptor attribute = (AttributeDescriptor) descriptor;
+            if (descriptor instanceof AttributeDescriptor attribute) {
 
                 simpleAttributes.add(attribute);
                 simpleProperties.add(attribute.getLocalName());
@@ -1393,8 +1385,8 @@ public class DataUtilities {
      * @since 2.7
      */
     public static SimpleFeatureLocking simple(FeatureLocking locking) {
-        if (locking instanceof SimpleFeatureLocking) {
-            return (SimpleFeatureLocking) locking;
+        if (locking instanceof SimpleFeatureLocking featureLocking) {
+            return featureLocking;
         }
         if (locking.getSchema() instanceof SimpleFeatureType) {
             @SuppressWarnings("unchecked")
@@ -1672,8 +1664,8 @@ public class DataUtilities {
         for (int i = 0; i < featureType.getAttributeCount() && same; i++) {
             AttributeDescriptor type = featureType.getDescriptor(i);
             same = type.getLocalName().equals(properties[i])
-                    && (override != null && type instanceof GeometryDescriptor
-                            ? assertEquals(override, ((GeometryDescriptor) type).getCoordinateReferenceSystem())
+                    && (override != null && type instanceof GeometryDescriptor gd
+                            ? assertEquals(override, gd.getCoordinateReferenceSystem())
                             : true);
         }
 
@@ -1880,8 +1872,7 @@ public class DataUtilities {
             buf.append(type.getName().getLocalPart());
             buf.append(":");
             buf.append(typeMap(type.getType().getBinding()));
-            if (type instanceof GeometryDescriptor) {
-                GeometryDescriptor gd = (GeometryDescriptor) type;
+            if (type instanceof GeometryDescriptor gd) {
                 Map.Entry<Citation, Integer> code = lookupCode(gd.getCoordinateReferenceSystem());
                 if (code != null) {
                     Citation authority = code.getKey();
@@ -2078,8 +2069,8 @@ public class DataUtilities {
             CoordinateReferenceSystem crs = ((GeometryType) descriptor.getType()).getCoordinateReferenceSystem();
             if (crs != null) {
                 // must be geometry, but check anyway
-                if (value != null && value instanceof Geometry) {
-                    ((Geometry) value).setUserData(crs);
+                if (value != null && value instanceof Geometry geometry) {
+                    geometry.setUserData(crs);
                 }
             }
         }
@@ -2122,11 +2113,10 @@ public class DataUtilities {
             }
             if (attribute == null) {
                 build.append("<null>"); // nothing!
-            } else if (attribute instanceof String) {
-                String txt = encodeString((String) attribute);
+            } else if (attribute instanceof String string) {
+                String txt = encodeString(string);
                 build.append(txt);
-            } else if (attribute instanceof Geometry) {
-                Geometry geometry = (Geometry) attribute;
+            } else if (attribute instanceof Geometry geometry) {
                 String txt = geometry.toText();
 
                 txt = encodeString(txt);

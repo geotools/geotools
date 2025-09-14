@@ -66,8 +66,8 @@ final class DelayedBackbufferGraphic extends Graphics2D {
     /** Call this method before starting to use the graphic for good */
     public void init() {
         if (delegate == null) {
-            if (master instanceof DelayedBackbufferGraphic) {
-                ((DelayedBackbufferGraphic) master).init();
+            if (master instanceof DelayedBackbufferGraphic graphic) {
+                graphic.init();
             }
             image = master.getDeviceConfiguration()
                     .createCompatibleImage(screenSize.width, screenSize.height, Transparency.TRANSLUCENT);

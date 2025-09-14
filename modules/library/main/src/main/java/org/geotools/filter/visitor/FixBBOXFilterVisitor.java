@@ -62,10 +62,10 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
         boolean clipped = false;
 
         Literal le = null;
-        if (leftGeometry != null && leftGeometry instanceof Literal) {
-            le = (Literal) leftGeometry;
-        } else if (rightGeometry != null && rightGeometry instanceof Literal) {
-            le = (Literal) rightGeometry;
+        if (leftGeometry != null && leftGeometry instanceof Literal literal1) {
+            le = literal1;
+        } else if (rightGeometry != null && rightGeometry instanceof Literal literal) {
+            le = literal;
         }
         CoordinateReferenceSystem crs = null;
         if (le != null && le.getValue() != null && le.getValue() instanceof Geometry) {

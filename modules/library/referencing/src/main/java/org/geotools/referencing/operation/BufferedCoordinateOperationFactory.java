@@ -84,8 +84,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
             if (object == this) {
                 return true;
             }
-            if (object instanceof CRSPair) {
-                final CRSPair that = (CRSPair) object;
+            if (object instanceof CRSPair that) {
                 return Utilities.equals(this.sourceCRS, that.sourceCRS)
                         && Utilities.equals(this.targetCRS, that.targetCRS);
             }

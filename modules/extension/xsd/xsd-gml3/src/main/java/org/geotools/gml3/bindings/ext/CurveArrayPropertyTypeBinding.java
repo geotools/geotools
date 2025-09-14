@@ -56,14 +56,12 @@ public class CurveArrayPropertyTypeBinding extends org.geotools.gml3.bindings.Cu
         // array.
         for (Node child : node.getChildren()) {
             Object nodeValue = child.getValue();
-            if (nodeValue instanceof MultiLineString) {
-                MultiLineString curve = (MultiLineString) nodeValue;
+            if (nodeValue instanceof MultiLineString curve) {
                 for (int i = 0; i < curve.getNumGeometries(); i++) {
                     LineString lineString = (LineString) curve.getGeometryN(i);
                     lineStrings.add(lineString);
                 }
-            } else if (nodeValue instanceof LineString) {
-                LineString lineString = (LineString) nodeValue;
+            } else if (nodeValue instanceof LineString lineString) {
                 lineStrings.add(lineString);
             }
         }

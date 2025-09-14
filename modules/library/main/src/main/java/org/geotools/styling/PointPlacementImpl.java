@@ -200,8 +200,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
             return true;
         }
 
-        if (obj instanceof PointPlacementImpl) {
-            PointPlacementImpl other = (PointPlacementImpl) obj;
+        if (obj instanceof PointPlacementImpl other) {
 
             return Utilities.equals(anchorPoint, other.anchorPoint)
                     && Utilities.equals(displacement, other.displacement)
@@ -237,10 +236,9 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     static PointPlacementImpl cast(org.geotools.api.style.LabelPlacement placement) {
         if (placement == null) {
             return null;
-        } else if (placement instanceof PointPlacementImpl) {
-            return (PointPlacementImpl) placement;
-        } else if (placement instanceof org.geotools.api.style.PointPlacement) {
-            org.geotools.api.style.PointPlacement pointPlacement = (org.geotools.api.style.PointPlacement) placement;
+        } else if (placement instanceof PointPlacementImpl impl) {
+            return impl;
+        } else if (placement instanceof org.geotools.api.style.PointPlacement pointPlacement) {
             PointPlacementImpl copy = new PointPlacementImpl();
             copy.setAnchorPoint(AnchorPointImpl.cast(pointPlacement.getAnchorPoint()));
             copy.setDisplacement(DisplacementImpl.cast(pointPlacement.getDisplacement()));

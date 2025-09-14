@@ -16,6 +16,7 @@
  */
 package org.geotools.parameter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -33,6 +34,7 @@ import org.geotools.util.Utilities;
  */
 final class ImagingParameterDescription extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -325584046563057577L;
 
     /** Shared keys for arguments. Will be completed only as needed. */

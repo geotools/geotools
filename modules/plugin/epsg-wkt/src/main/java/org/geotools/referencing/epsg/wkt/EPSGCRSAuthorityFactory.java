@@ -154,11 +154,11 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
 
         if (cache.containsKey(EPSG_NUMBER)) {
             Object value = cache.get(EPSG_NUMBER);
-            if (value instanceof Throwable) {
-                throw new FactoryException("WKT for " + code + " could not be parsed", (Throwable) value);
+            if (value instanceof Throwable throwable) {
+                throw new FactoryException("WKT for " + code + " could not be parsed", throwable);
             }
-            if (value instanceof CoordinateReferenceSystem) {
-                return (CoordinateReferenceSystem) value;
+            if (value instanceof CoordinateReferenceSystem system) {
+                return system;
             }
         }
         String wkt = epsg.getProperty(EPSG_NUMBER);

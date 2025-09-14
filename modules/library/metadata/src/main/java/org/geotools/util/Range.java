@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import javax.measure.Unit;
@@ -53,6 +54,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class Range<T extends Comparable<? super T>> implements Serializable {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -5393896130562660517L;
 
     /** The class of elements. */

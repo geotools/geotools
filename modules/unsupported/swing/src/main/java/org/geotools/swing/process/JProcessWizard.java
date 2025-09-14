@@ -18,6 +18,7 @@ package org.geotools.swing.process;
 
 import java.awt.Dialog;
 import java.awt.HeadlessException;
+import java.io.Serial;
 import org.geotools.swing.wizard.JWizard;
 
 /**
@@ -41,7 +42,9 @@ import org.geotools.swing.wizard.JWizard;
  * @version $Id$
  */
 public class JProcessWizard extends JWizard {
+    @Serial
     private static final long serialVersionUID = -5885825548881784615L;
+
     private ProcessSelectionPage selectionPage;
 
     /** Create a JProcessWizard for use */

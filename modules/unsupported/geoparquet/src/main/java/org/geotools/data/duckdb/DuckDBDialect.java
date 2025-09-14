@@ -16,7 +16,6 @@
  */
 package org.geotools.data.duckdb;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
@@ -215,9 +214,8 @@ public class DuckDBDialect extends BasicSQLDialect {
     public Integer getGeometrySRID(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         // Query to get the SRID of a geometry column
-        String sql = String.format(
-                "SELECT ST_SRID(%s) FROM %s WHERE %s IS NOT NULL LIMIT 1",
-                escapeName(columnName), escapeName(tableName), escapeName(columnName));
+        String sql = "SELECT ST_SRID(%s) FROM %s WHERE %s IS NOT NULL LIMIT 1"
+                .formatted(escapeName(columnName), escapeName(tableName), escapeName(columnName));
 
         Statement st = cx.createStatement();
         try {
@@ -253,9 +251,8 @@ public class DuckDBDialect extends BasicSQLDialect {
         GeometryDescriptor geometryDescriptor = requireNonNull(featureType.getGeometryDescriptor());
         String tableName = featureType.getTypeName();
         String column = geometryDescriptor.getLocalName();
-        String sql = String.format(
-                "SELECT ST_AsWKB(ST_Extent_Agg(%s)::GEOMETRY)::BLOB FROM %s",
-                escapeName(column), escapeName(tableName));
+        String sql = "SELECT ST_AsWKB(ST_Extent_Agg(%s)::GEOMETRY)::BLOB FROM %s"
+                .formatted(escapeName(column), escapeName(tableName));
 
         try (PreparedStatement ps = cx.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
@@ -307,20 +304,20 @@ public class DuckDBDialect extends BasicSQLDialect {
                 && hints.containsKey(Hints.FEATURE_2D)
                 && Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
 
-        String geometry = format("%s::GEOMETRY", encodeColumnName(prefix, gatt.getLocalName()));
+        String geometry = "%s::GEOMETRY".formatted(encodeColumnName(prefix, gatt.getLocalName()));
         if (forceMulti) {
-            geometry = format("ST_Multi(%s)", geometry);
+            geometry = "ST_Multi(%s)".formatted(geometry);
         }
         if (force2D) {
-            geometry = format("ST_Force2D(%s)", geometry);
+            geometry = "ST_Force2D(%s)".formatted(geometry);
         }
-        String geomSql = format("ST_AsWKB(%s)::BLOB", geometry);
+        String geomSql = "ST_AsWKB(%s)::BLOB".formatted(geometry);
         sql.append(geomSql);
     }
 
     public String encodeColumnName(String prefix, String raw) {
         if (prefix != null) {
-            return format("%s.%s", escapeName(prefix), escapeName(raw));
+            return "%s.%s".formatted(escapeName(prefix), escapeName(raw));
         }
         return escapeName(raw);
     }

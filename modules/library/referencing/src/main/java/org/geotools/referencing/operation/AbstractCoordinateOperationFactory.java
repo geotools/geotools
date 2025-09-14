@@ -173,8 +173,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     AbstractCoordinateOperationFactory(
             final CoordinateOperationFactory factory, final Hints hints, final int priority) {
         super(priority);
-        if (factory instanceof AbstractCoordinateOperationFactory) {
-            factories = ((AbstractCoordinateOperationFactory) factory).getFactoryContainer();
+        if (factory instanceof AbstractCoordinateOperationFactory operationFactory) {
+            factories = operationFactory.getFactoryContainer();
         } else {
             factories = ReferencingFactoryContainer.instance(hints);
         }
@@ -384,13 +384,13 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             final Class<? extends CoordinateOperation> type)
             throws FactoryException {
         CoordinateOperation operation;
-        if (transform instanceof CoordinateOperation) {
-            operation = (CoordinateOperation) transform;
+        if (transform instanceof CoordinateOperation coordinateOperation) {
+            operation = coordinateOperation;
             if (Utilities.equals(operation.getSourceCRS(), sourceCRS)
                     && Utilities.equals(operation.getTargetCRS(), targetCRS)
                     && Utilities.equals(operation.getMathTransform(), transform)) {
-                if (operation instanceof Operation) {
-                    if (Utilities.equals(((Operation) operation).getMethod(), method)) {
+                if (operation instanceof Operation operation1) {
+                    if (Utilities.equals(operation1.getMethod(), method)) {
                         return operation;
                     }
                 } else {
@@ -463,7 +463,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         CoordinateOperation step = null;
         if (step1.getName() == AXIS_CHANGES && mt1.getSourceDimensions() == mt1.getTargetDimensions()) step = step2;
         if (step2.getName() == AXIS_CHANGES && mt2.getSourceDimensions() == mt2.getTargetDimensions()) step = step1;
-        if (step instanceof Operation) {
+        if (step instanceof Operation operation) {
             /*
              * Applies only on operation in order to avoid merging with PassThroughOperation.
              * Also applies only if the transform to hide has identical source and target
@@ -474,7 +474,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
                     sourceCRS,
                     targetCRS,
                     mtFactory.createConcatenatedTransform(mt1, mt2),
-                    ((Operation) step).getMethod(),
+                    operation.getMethod(),
                     CoordinateOperation.class);
         }
         return createConcatenatedOperation(
@@ -590,16 +590,16 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         final CoordinateReferenceSystem targetCRS = operation.getTargetCRS();
         final Map<String, Object> properties = AbstractIdentifiedObject.getProperties(operation, null);
         properties.putAll(getTemporaryName(targetCRS, sourceCRS));
-        if (operation instanceof ConcatenatedOperation) {
+        if (operation instanceof ConcatenatedOperation concatenatedOperation) {
             final LinkedList<CoordinateOperation> inverted = new LinkedList<>();
-            for (final CoordinateOperation op : ((ConcatenatedOperation) operation).getOperations()) {
+            for (final CoordinateOperation op : concatenatedOperation.getOperations()) {
                 inverted.addFirst(inverse(op));
             }
             return createConcatenatedOperation(properties, inverted.toArray(new CoordinateOperation[inverted.size()]));
         }
         final MathTransform transform = operation.getMathTransform().inverse();
         final Class<? extends CoordinateOperation> type = AbstractCoordinateOperation.getType(operation);
-        final OperationMethod method = operation instanceof Operation ? ((Operation) operation).getMethod() : null;
+        final OperationMethod method = operation instanceof Operation o ? o.getMethod() : null;
         return createFromMathTransform(properties, targetCRS, sourceCRS, transform, method, type);
     }
 
@@ -632,7 +632,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
 
         /** Constructs an identifier derived from the specified one. */
         public TemporaryIdentifier(final ReferenceIdentifier parent) {
-            this(parent, (parent instanceof TemporaryIdentifier ? ((TemporaryIdentifier) parent).count : 0) + 1);
+            this(parent, (parent instanceof TemporaryIdentifier ti ? ti.count : 0) + 1);
         }
 
         /** Work around for RFE #4093999 in Sun's bug database */

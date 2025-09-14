@@ -140,32 +140,32 @@ public class GeometryJSON {
     }
 
     Map<String, Object> create(Geometry geometry) {
-        if (geometry instanceof Point) {
-            return createPoint((Point) geometry);
+        if (geometry instanceof Point point) {
+            return createPoint(point);
         }
 
-        if (geometry instanceof LineString) {
-            return createLine((LineString) geometry);
+        if (geometry instanceof LineString string) {
+            return createLine(string);
         }
 
-        if (geometry instanceof Polygon) {
-            return createPolygon((Polygon) geometry);
+        if (geometry instanceof Polygon polygon) {
+            return createPolygon(polygon);
         }
 
-        if (geometry instanceof MultiPoint) {
-            return createMultiPoint((MultiPoint) geometry);
+        if (geometry instanceof MultiPoint point) {
+            return createMultiPoint(point);
         }
 
-        if (geometry instanceof MultiLineString) {
-            return createMultiLine((MultiLineString) geometry);
+        if (geometry instanceof MultiLineString string) {
+            return createMultiLine(string);
         }
 
-        if (geometry instanceof MultiPolygon) {
-            return createMultiPolygon((MultiPolygon) geometry);
+        if (geometry instanceof MultiPolygon polygon) {
+            return createMultiPolygon(polygon);
         }
 
-        if (geometry instanceof GeometryCollection) {
-            return createGeometryCollection((GeometryCollection) geometry);
+        if (geometry instanceof GeometryCollection collection) {
+            return createGeometryCollection(collection);
         }
 
         throw new IllegalArgumentException("Unable to encode object " + geometry);
@@ -641,12 +641,12 @@ public class GeometryJSON {
         ArrayList<Object> list = new ArrayList<>(mgeom.getNumGeometries());
         for (int i = 0; i < mgeom.getNumGeometries(); i++) {
             Geometry g = mgeom.getGeometryN(i);
-            if (g instanceof Polygon) {
-                list.add(toList((Polygon) g));
-            } else if (g instanceof LineString) {
-                list.add(new CoordinateSequenceEncoder(((LineString) g).getCoordinateSequence(), scale));
-            } else if (g instanceof Point) {
-                list.add(new CoordinateSequenceEncoder(((Point) g).getCoordinateSequence(), scale));
+            if (g instanceof Polygon polygon) {
+                list.add(toList(polygon));
+            } else if (g instanceof LineString string) {
+                list.add(new CoordinateSequenceEncoder(string.getCoordinateSequence(), scale));
+            } else if (g instanceof Point point) {
+                list.add(new CoordinateSequenceEncoder(point.getCoordinateSequence(), scale));
             }
         }
         return list;

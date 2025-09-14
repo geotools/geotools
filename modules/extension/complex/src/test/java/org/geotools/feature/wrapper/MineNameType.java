@@ -22,6 +22,6 @@ public class MineNameType extends FeatureWrapper {
 
     @Override
     public String toString() {
-        return String.format("isPreferred: %s, mineName: %s", this.isPreferred, this.mineName);
+        return "isPreferred: %s, mineName: %s".formatted(this.isPreferred, this.mineName);
     }
 }

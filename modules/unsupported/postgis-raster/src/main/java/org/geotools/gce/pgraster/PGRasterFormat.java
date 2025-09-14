@@ -81,16 +81,15 @@ public class PGRasterFormat extends AbstractGridFormat {
     }
 
     File toConfigFile(Object source) {
-        if (source instanceof Path) {
-            source = ((Path) source).toFile();
+        if (source instanceof Path path) {
+            source = path.toFile();
         }
 
         if (source instanceof String) {
             source = new File(source.toString());
         }
 
-        if (source instanceof File) {
-            File file = (File) source;
+        if (source instanceof File file) {
             if (file.getName().toLowerCase().endsWith(".xml")) {
                 return file;
             }
@@ -99,8 +98,8 @@ public class PGRasterFormat extends AbstractGridFormat {
     }
 
     PGRasterConfig toConfig(Object source) {
-        if (source instanceof PGRasterConfig) {
-            return (PGRasterConfig) source;
+        if (source instanceof PGRasterConfig config) {
+            return config;
         }
 
         File file = toConfigFile(source);

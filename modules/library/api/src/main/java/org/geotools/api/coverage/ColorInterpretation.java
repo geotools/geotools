@@ -12,6 +12,7 @@ package org.geotools.api.coverage;
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.OGC_01004;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -29,6 +30,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CV_ColorInterpretation", specification = OGC_01004)
 public final class ColorInterpretation extends CodeList<ColorInterpretation> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 6947933527594223350L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

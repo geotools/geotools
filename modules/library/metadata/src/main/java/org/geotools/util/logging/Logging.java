@@ -73,8 +73,8 @@ public final class Logging {
 
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR = (o1, o2) -> {
-        final String n1 = o1 instanceof Logging ? ((Logging) o1).name : o1.toString();
-        final String n2 = o2 instanceof Logging ? ((Logging) o2).name : o2.toString();
+        final String n1 = o1 instanceof Logging l ? l.name : o1.toString();
+        final String n2 = o2 instanceof Logging l ? l.name : o2.toString();
         return n1.compareTo(n2);
     };
 
@@ -363,8 +363,8 @@ public final class Logging {
                 if (cause instanceof ClassNotFoundException) {
                     throw (ClassNotFoundException) e;
                 }
-                if (cause instanceof NoClassDefFoundError) {
-                    throw factoryNotFound(className, (NoClassDefFoundError) cause);
+                if (cause instanceof NoClassDefFoundError error) {
+                    throw factoryNotFound(className, error);
                 }
                 throw new IllegalArgumentException(
                         MessageFormat.format(ErrorKeys.CANT_CREATE_FACTORY_$1, className, cause));

@@ -256,8 +256,7 @@ public class Drawer {
         Graphics graphics = bi.getGraphics();
         Graphics2D g = (Graphics2D) graphics;
 
-        if (symb instanceof PolygonSymbolizer) {
-            PolygonSymbolizer polySymb = (PolygonSymbolizer) symb;
+        if (symb instanceof PolygonSymbolizer polySymb) {
             Color stroke = SLD.polyColor(polySymb);
             double opacity = SLD.polyFillOpacity(polySymb);
             Color fill = SLD.polyFill(polySymb);
@@ -280,8 +279,7 @@ public class Drawer {
                 g.draw(shape);
             }
         }
-        if (symb instanceof LineSymbolizer) {
-            LineSymbolizer lineSymbolizer = (LineSymbolizer) symb;
+        if (symb instanceof LineSymbolizer lineSymbolizer) {
             Color c = SLD.color(lineSymbolizer);
             int w = SLD.width(lineSymbolizer);
             if (c != null && w > 0) {
@@ -293,8 +291,7 @@ public class Drawer {
                 g.draw(shape);
             }
         }
-        if (symb instanceof PointSymbolizer) {
-            PointSymbolizer pointSymbolizer = (PointSymbolizer) symb;
+        if (symb instanceof PointSymbolizer pointSymbolizer) {
 
             Color c = SLD.pointColor(pointSymbolizer);
             Color fill = SLD.pointFill(pointSymbolizer);
@@ -308,8 +305,7 @@ public class Drawer {
             Style2D tmp = styleFactory.createStyle(
                     feature, pointSymbolizer, NumberRange.create(Double.MIN_VALUE, Double.MAX_VALUE));
 
-            if (tmp instanceof MarkStyle2D) {
-                MarkStyle2D style = (MarkStyle2D) tmp;
+            if (tmp instanceof MarkStyle2D style) {
                 Shape shape2 = style.getTransformedShape(point[0], point[1]);
 
                 if (c == null && fill == null) {
@@ -335,8 +331,7 @@ public class Drawer {
                     g.setColor(Color.DARK_GRAY);
                     g.draw(shape2);
                 }
-            } else if (tmp instanceof GraphicStyle2D) {
-                GraphicStyle2D style = (GraphicStyle2D) tmp;
+            } else if (tmp instanceof GraphicStyle2D style) {
 
                 double rotation = style.getRotation(); // in radians
 
@@ -483,18 +478,18 @@ public class Drawer {
      * @return feature instance
      */
     public SimpleFeature feature(Geometry geom) {
-        if (geom instanceof Polygon) {
-            return feature((Polygon) geom);
-        } else if (geom instanceof MultiPolygon) {
-            return feature((MultiPolygon) geom);
-        } else if (geom instanceof Point) {
-            return feature((Point) geom);
-        } else if (geom instanceof LineString) {
-            return feature((LineString) geom);
-        } else if (geom instanceof MultiPoint) {
-            return feature((MultiPoint) geom);
-        } else if (geom instanceof MultiLineString) {
-            return feature((MultiLineString) geom);
+        if (geom instanceof Polygon polygon1) {
+            return feature(polygon1);
+        } else if (geom instanceof MultiPolygon polygon) {
+            return feature(polygon);
+        } else if (geom instanceof Point point1) {
+            return feature(point1);
+        } else if (geom instanceof LineString string1) {
+            return feature(string1);
+        } else if (geom instanceof MultiPoint point) {
+            return feature(point);
+        } else if (geom instanceof MultiLineString string) {
+            return feature(string);
         } else {
             throw new IllegalArgumentException("Geometry is not supported to create feature"); // $NON-NLS-1$
         }

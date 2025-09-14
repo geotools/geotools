@@ -133,8 +133,7 @@ public abstract class AbstractMBExpressionTest {
 
         Object value = map;
         for (String key : path) {
-            if (value instanceof JSONObject) {
-                JSONObject m = (JSONObject) value;
+            if (value instanceof JSONObject m) {
                 if (m.containsKey(key)) {
                     value = m.get(key);
                 }
@@ -169,8 +168,7 @@ public abstract class AbstractMBExpressionTest {
         final Object textFieldObj = json.get(jsonTextField);
         // make sure we got a field
         assertNotNull(
-                String.format(
-                        "JSON Text Field not extracted. Is the field name spelled correctly? \"%s\"", jsonTextField),
+                "JSON Text Field not extracted. Is the field name spelled correctly? \"%s\"".formatted(jsonTextField),
                 textFieldObj);
         // assert the field is a JSONArray
         assertEquals(JSONArray.class, textFieldObj.getClass());

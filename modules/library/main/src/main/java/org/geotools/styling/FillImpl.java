@@ -259,8 +259,7 @@ public class FillImpl implements Fill, Cloneable {
             return true;
         }
 
-        if (oth instanceof FillImpl) {
-            FillImpl other = (FillImpl) oth;
+        if (oth instanceof FillImpl other) {
             return Utilities.equals(this.color, other.color)
                     && Utilities.equals(this.opacity, other.opacity)
                     && Utilities.equals(this.graphicFill, other.graphicFill);
@@ -272,8 +271,8 @@ public class FillImpl implements Fill, Cloneable {
     static FillImpl cast(org.geotools.api.style.Fill fill) {
         if (fill == null) {
             return null;
-        } else if (fill instanceof FillImpl) {
-            return (FillImpl) fill;
+        } else if (fill instanceof FillImpl impl) {
+            return impl;
         } else {
             FillImpl copy = new FillImpl();
             copy.color = fill.getColor();

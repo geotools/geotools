@@ -51,14 +51,14 @@ public class GeoPackageFormat extends AbstractGridFormat {
         File sourceFile = null;
 
         try {
-            if (source instanceof File) {
-                sourceFile = (File) source;
-            } else if (source instanceof URL) {
-                if (((URL) source).getProtocol().equals("file")) {
-                    sourceFile = URLs.urlToFile((URL) source);
+            if (source instanceof File file) {
+                sourceFile = file;
+            } else if (source instanceof URL rL) {
+                if (rL.getProtocol().equals("file")) {
+                    sourceFile = URLs.urlToFile(rL);
                 }
-            } else if (source instanceof String) {
-                sourceFile = new File((String) source);
+            } else if (source instanceof String string) {
+                sourceFile = new File(string);
             }
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.FINE)) {

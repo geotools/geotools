@@ -338,7 +338,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
         for (int i = 0; i < x.length; i++) {
             parameters.add(ff2.literal(x[i]));
-            String color = String.format("#%02x0000", reds[i]);
+            String color = "#%02x0000".formatted(reds[i]);
             parameters.add(ff2.literal(color));
         }
 

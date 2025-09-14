@@ -167,8 +167,8 @@ public class AStarIterator extends SourceGraphIterator {
     }
 
     protected Iterator<?> getRelated(Graphable current) {
-        if (current instanceof DirectedGraphable) {
-            return ((DirectedGraphable) current).getOutRelated();
+        if (current instanceof DirectedGraphable graphable) {
+            return graphable.getOutRelated();
         } else {
             return current.getRelated();
         }

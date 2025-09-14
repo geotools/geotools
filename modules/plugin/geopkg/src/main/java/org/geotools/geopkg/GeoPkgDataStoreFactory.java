@@ -207,8 +207,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
             config.setReadOnly(true);
         }
         Object map = MEMORY_MAP_SIZE.lookUp(params);
-        if (map instanceof Integer && (Integer) map >= 0) {
-            int memoryMB = (Integer) map;
+        if (map instanceof Integer memoryMB && memoryMB >= 0) {
             config.setPragma(SQLiteConfig.Pragma.MMAP_SIZE, String.valueOf(memoryMB * 1024 * 1024));
         }
         config.setBusyTimeout(sqlLiteConnectTimeout);

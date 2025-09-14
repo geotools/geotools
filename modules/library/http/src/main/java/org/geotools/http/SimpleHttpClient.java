@@ -98,8 +98,8 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
             headers.put("Content-type", postContentType);
         }
         URLConnection connection = openConnection(url, headers);
-        if (connection instanceof HttpURLConnection) {
-            ((HttpURLConnection) connection).setRequestMethod("POST");
+        if (connection instanceof HttpURLConnection lConnection) {
+            lConnection.setRequestMethod("POST");
         }
         connection.setDoOutput(true);
 
@@ -120,13 +120,12 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
     private URLConnection get(URL url, Map<String, String> headers, int redirectionCount) throws IOException {
 
         URLConnection connection = openConnection(url, headers);
-        if (connection instanceof HttpURLConnection) {
-            ((HttpURLConnection) connection).setRequestMethod("GET");
+        if (connection instanceof HttpURLConnection lConnection) {
+            lConnection.setRequestMethod("GET");
         }
         connection.connect();
 
-        if (connection instanceof HttpURLConnection) {
-            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+        if (connection instanceof HttpURLConnection httpConnection) {
             if (hasRedirect(httpConnection.getResponseCode())) {
                 return this.followRedirect(httpConnection, headers, redirectionCount);
             }

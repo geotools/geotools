@@ -142,8 +142,7 @@ public class FeatureTypeDBObject {
 
         List<?> adDBL = extractDBList(ftDBO, KEY_attributeDescriptors);
         for (Object adO : adDBL) {
-            if (adO instanceof DBObject) {
-                DBObject adDBO = (DBObject) adO;
+            if (adO instanceof DBObject adDBO) {
                 String adLocalName = extractString(adDBO, KEY_localName);
                 String bindingName = extractString(extractDBObject(adDBO, KEY_type), KEY_binding);
                 try {
@@ -196,8 +195,8 @@ public class FeatureTypeDBObject {
             for (Map.Entry<?, ?> entry : map.entrySet()) {
                 Object key = entry.getKey();
                 Object value = entry.getValue();
-                if (key instanceof String && value instanceof String) {
-                    typeChecked.put((String) key, (String) value);
+                if (key instanceof String string && value instanceof String string1) {
+                    typeChecked.put(string, string1);
                 }
             }
         }

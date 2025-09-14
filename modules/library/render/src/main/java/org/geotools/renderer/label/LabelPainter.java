@@ -400,8 +400,7 @@ public class LabelPainter {
         width = Math.max(Math.round(width), 1);
         height = Math.max(Math.round(height), 1);
 
-        if (graphic instanceof MarkStyle2D) {
-            MarkStyle2D mark = (MarkStyle2D) graphic;
+        if (graphic instanceof MarkStyle2D mark) {
 
             Shape original = mark.getShape();
             Rectangle2D bounds = original.getBounds2D();
@@ -422,8 +421,7 @@ public class LabelPainter {
             }
 
             return resized;
-        } else if (graphic instanceof IconStyle2D) {
-            IconStyle2D iconStyle = (IconStyle2D) graphic;
+        } else if (graphic instanceof IconStyle2D iconStyle) {
             IconStyle2D resized = (IconStyle2D) iconStyle.clone();
 
             final Icon icon = iconStyle.getIcon();
@@ -441,8 +439,7 @@ public class LabelPainter {
             }
             resized.setIcon(new TransformedIcon(icon, at));
             return resized;
-        } else if (graphic instanceof GraphicStyle2D) {
-            GraphicStyle2D gstyle = (GraphicStyle2D) graphic;
+        } else if (graphic instanceof GraphicStyle2D gstyle) {
             GraphicStyle2D resized = (GraphicStyle2D) graphic.clone();
             BufferedImage image = gstyle.getImage();
 

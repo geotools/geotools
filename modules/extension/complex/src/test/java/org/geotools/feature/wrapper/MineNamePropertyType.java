@@ -24,6 +24,6 @@ public class MineNamePropertyType extends FeatureWrapper {
 
     @Override
     public String toString() {
-        return String.format("MineName: %s", this.MineName);
+        return "MineName: %s".formatted(this.MineName);
     }
 }

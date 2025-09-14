@@ -109,10 +109,10 @@ class SpatialIndexAttributeExtractor extends DefaultFilterVisitor {
         Expression ex1 = filter.getExpression1();
         Expression ex2 = filter.getExpression2();
         PropertyName pn = null;
-        if (ex1 instanceof PropertyName && ex2 instanceof Literal) {
-            pn = (PropertyName) ex1;
-        } else if (ex1 instanceof Literal && ex2 instanceof PropertyName) {
-            pn = (PropertyName) ex2;
+        if (ex1 instanceof PropertyName name1 && ex2 instanceof Literal) {
+            pn = name1;
+        } else if (ex1 instanceof Literal && ex2 instanceof PropertyName name) {
+            pn = name;
         }
         if (pn != null) {
             String name = pn.getPropertyName();

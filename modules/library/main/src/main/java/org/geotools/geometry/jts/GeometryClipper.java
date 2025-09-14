@@ -157,19 +157,19 @@ public class GeometryClipper {
         }
 
         // clip for good
-        if (g instanceof LineString) {
-            return clipLineString((LineString) g);
-        } else if (g instanceof Polygon) {
+        if (g instanceof LineString string) {
+            return clipLineString(string);
+        } else if (g instanceof Polygon polygon) {
             if (ensureValid) {
                 GeometryFactory gf = g.getFactory();
                 CoordinateSequenceFactory csf = gf.getCoordinateSequenceFactory();
                 Polygon fence = gf.createPolygon(buildBoundsString(gf, csf), null);
                 return g.intersection(fence);
             } else {
-                return clipPolygon((Polygon) g);
+                return clipPolygon(polygon);
             }
-        } else if (g instanceof GeometryCollection) {
-            return clipCollection((GeometryCollection) g, ensureValid);
+        } else if (g instanceof GeometryCollection collection) {
+            return clipCollection(collection, ensureValid);
         } else {
             // still don't know how to clip this
             return g;
@@ -575,8 +575,7 @@ public class GeometryClipper {
     private void flattenCollection(List<Geometry> result) {
         for (int i = 0; i < result.size(); ) {
             Geometry g = result.get(i);
-            if (g instanceof GeometryCollection) {
-                GeometryCollection gc = (GeometryCollection) g;
+            if (g instanceof GeometryCollection gc) {
                 for (int j = 0; j < gc.getNumGeometries(); j++) {
                     result.add(gc.getGeometryN(j));
                 }

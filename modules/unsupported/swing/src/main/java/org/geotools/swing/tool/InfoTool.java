@@ -173,7 +173,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      * @param pos mouse click position in world coordinates
      */
     private void report(Position2D pos) {
-        textReporterConnection.append(String.format("Pos x=%.4f y=%.4f\n", pos.x, pos.y));
+        textReporterConnection.append("Pos x=%.4f y=%.4f\n".formatted(pos.x, pos.y));
     }
 
     /** Creates and shows a {@code JTextReporter}. Does nothing if the reporter is already active. */

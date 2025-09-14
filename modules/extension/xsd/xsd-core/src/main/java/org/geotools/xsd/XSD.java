@@ -261,8 +261,7 @@ public abstract class XSD {
     /** Implementation of equals, equality is based soley on {@link #getNamespaceURI()}. */
     @Override
     public final boolean equals(Object obj) {
-        if (obj instanceof XSD) {
-            XSD other = (XSD) obj;
+        if (obj instanceof XSD other) {
 
             return getNamespaceURI().equals(other.getNamespaceURI());
         }
@@ -299,8 +298,8 @@ public abstract class XSD {
         if (schema != null) {
             ResourceSet rs = schema.eResource().getResourceSet();
             for (Resource r : rs.getResources()) {
-                if (r instanceof XSDResourceImpl) {
-                    Schemas.dispose(((XSDResourceImpl) r).getSchema());
+                if (r instanceof XSDResourceImpl impl) {
+                    Schemas.dispose(impl.getSchema());
                 }
             }
 

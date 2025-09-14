@@ -350,8 +350,8 @@ public class SLDParser {
 
     /** Internal setter for source url. */
     void setSourceUrl(URL sourceUrl) {
-        if (onlineResourceLocator instanceof DefaultResourceLocator) {
-            ((DefaultResourceLocator) onlineResourceLocator).setSourceUrl(sourceUrl);
+        if (onlineResourceLocator instanceof DefaultResourceLocator locator) {
+            locator.setSourceUrl(sourceUrl);
         }
     }
 
@@ -1731,8 +1731,8 @@ public class SLDParser {
     /** Internal parse method - made protected for unit testing */
     protected String parseGeometryName(Node root) {
         Expression result = parseGeometry(root);
-        if (result instanceof PropertyName) {
-            return ((PropertyName) result).getPropertyName();
+        if (result instanceof PropertyName name) {
+            return name.getPropertyName();
         }
         return null;
     }
@@ -2049,8 +2049,8 @@ public class SLDParser {
 
     private void handleDashArrayNode(Node child, List<Expression> expressions) {
         Expression expression = expressionDOMParser.expression(child);
-        if (expression instanceof Literal) {
-            handleDashArrayLiteral((Literal) expression, expressions);
+        if (expression instanceof Literal literal) {
+            handleDashArrayLiteral(literal, expressions);
         } else {
             expressions.add(expression);
         }
@@ -2058,8 +2058,8 @@ public class SLDParser {
 
     private void handleDashArrayLiteral(Literal literal, List<Expression> expressions) {
         Object value = literal.getValue();
-        if (value instanceof String) {
-            handleDashArrayText((String) value, expressions);
+        if (value instanceof String string) {
+            handleDashArrayText(string, expressions);
         } else {
             expressions.add(literal);
         }

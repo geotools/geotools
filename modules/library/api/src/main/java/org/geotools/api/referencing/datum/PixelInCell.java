@@ -12,6 +12,7 @@ package org.geotools.api.referencing.datum;
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19111;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.annotation.UML;
@@ -30,6 +31,7 @@ import org.geotools.api.util.CodeList;
 @UML(identifier = "CD_PixelInCell", specification = ISO_19111)
 public final class PixelInCell extends CodeList<PixelInCell> {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 2857889370030758462L;
 
     /** List of all enumerations of this type. Must be declared before any enum declaration. */

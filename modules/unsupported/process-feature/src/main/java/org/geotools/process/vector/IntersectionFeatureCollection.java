@@ -508,7 +508,10 @@ public class IntersectionFeatureCollection implements VectorProcess {
         }
 
         @Override
-        @SuppressWarnings("PMD.UseTryWithResources") // complex resource management
+        @SuppressWarnings({
+            "PMD.UseTryWithResources", // complex resource management
+            "PMD.EmptyControlStatement" // intentionally empty block with explanatory comment for IntersectionMode.FIRST
+        })
         public boolean hasNext() {
             //   logger.info("qui");
             logger.finer("HAS NEXT");
@@ -521,43 +524,44 @@ public class IntersectionFeatureCollection implements VectorProcess {
                 //               logger.info("qui dopo check if (complete)");
                 // logger.finer("control HAS NEXT");
                 for (Object attribute : first.getAttributes()) {
-                    if (attribute instanceof Geometry && attribute.equals(first.getDefaultGeometry())) {
-                        Geometry currentGeom = (Geometry) attribute;
+                    if (attribute instanceof Geometry geomAttribute
+                            && geomAttribute.equals(first.getDefaultGeometry())) {
 
                         if (intersectedGeometries == null && !added) {
-                            intersectedGeometries = filteredCollection(currentGeom, subFeatureCollection);
+                            intersectedGeometries = filteredCollection(geomAttribute, subFeatureCollection);
                             iterator = intersectedGeometries.features();
                         }
                         try {
                             while (iterator.hasNext()) {
                                 added = false;
                                 SimpleFeature second = iterator.next();
-                                if (currentGeom.getEnvelope().intersects((Geometry) second.getDefaultGeometry())) {
+                                if (geomAttribute.getEnvelope().intersects((Geometry) second.getDefaultGeometry())) {
                                     // compute geometry
                                     if (intersectionMode == IntersectionMode.INTERSECTION) {
-                                        attribute = currentGeom.intersection((Geometry) second.getDefaultGeometry());
+                                        geomAttribute =
+                                                geomAttribute.intersection((Geometry) second.getDefaultGeometry());
 
                                         GeometryFilterImpl filter = new GeometryFilterImpl(
                                                 geomType.getType().getBinding());
-                                        ((Geometry) attribute).apply(filter);
-                                        attribute = filter.getGeometry();
+                                        geomAttribute.apply(filter);
+                                        geomAttribute = filter.getGeometry();
                                     } else if (intersectionMode == IntersectionMode.FIRST) {
-                                        attribute = currentGeom;
+                                        // geomAttribute is already first's geometry
                                     } else if (intersectionMode == IntersectionMode.SECOND) {
-                                        attribute = second.getDefaultGeometry();
+                                        geomAttribute = (Geometry) second.getDefaultGeometry();
                                     }
-                                    if (((Geometry) attribute).getNumGeometries() > 0) {
-                                        fb.add(attribute);
+                                    if (geomAttribute.getNumGeometries() > 0) {
+                                        fb.add(geomAttribute);
                                         fb.set("INTERSECTION_ID", id++);
                                         // add the non geometric attributes
                                         addAttributeValues(first, retainAttributesFst, fb);
                                         addAttributeValues(second, retainAttributesSnd, fb);
                                         // add the dynamic attributes
                                         if (percentagesEnabled) {
-                                            addPercentages(currentGeom, second);
+                                            addPercentages(geomAttribute, second);
                                         }
                                         if (areasEnabled) {
-                                            addAreas(currentGeom, second);
+                                            addAreas(geomAttribute, second);
                                         }
 
                                         // build the feature

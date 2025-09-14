@@ -16,6 +16,7 @@
  */
 package org.geotools.ows;
 
+import java.io.Serial;
 import org.xml.sax.SAXException;
 
 /** @author dzwiers */
@@ -59,6 +60,7 @@ public class ServiceException extends SAXException {
      */
 
     /** Comment for <code>serialVersionUID</code> */
+    @Serial
     private static final long serialVersionUID = "org.geotools.data.ows.ServiceException".hashCode();
 
     private String code = "";

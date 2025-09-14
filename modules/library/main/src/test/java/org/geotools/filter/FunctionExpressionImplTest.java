@@ -200,8 +200,8 @@ public class FunctionExpressionImplTest {
             addExceptionError(errors, functionClass, "toString", e);
         }
 
-        if (function instanceof FunctionExpression) {
-            testDeprecatedMethods((FunctionExpression) function, errors);
+        if (function instanceof FunctionExpression expression) {
+            testDeprecatedMethods(expression, errors);
         }
 
         List<Expression> parameters = function.getParameters();

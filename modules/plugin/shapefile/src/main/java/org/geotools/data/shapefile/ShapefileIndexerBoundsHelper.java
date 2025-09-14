@@ -305,8 +305,8 @@ class ShapefileIndexerBoundsHelper {
             final FileStore fileStore = Files.getFileStore(path);
             final long usableSpace = fileStore.getUsableSpace();
             if (usableSpace < fileSize) {
-                throw new FileSystemException(String.format(
-                        "Not enough disk space. Required %,d bytes, available: %,d ", fileSize, usableSpace));
+                throw new FileSystemException(
+                        "Not enough disk space. Required %,d bytes, available: %,d ".formatted(fileSize, usableSpace));
             }
         }
     }

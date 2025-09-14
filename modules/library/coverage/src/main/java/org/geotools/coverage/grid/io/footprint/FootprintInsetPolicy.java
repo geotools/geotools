@@ -79,8 +79,8 @@ public enum FootprintInsetPolicy {
 
             final List<Polygon> polygons = new ArrayList<>();
             geometry.apply((GeometryComponentFilter) geom -> {
-                if (geom instanceof Polygon && !geom.isEmpty()) {
-                    polygons.add((Polygon) geom);
+                if (geom instanceof Polygon polygon && !geom.isEmpty()) {
+                    polygons.add(polygon);
                 }
             });
 
@@ -119,8 +119,8 @@ public enum FootprintInsetPolicy {
         private List<LinearRing> getRings(Geometry bounds) {
             final ArrayList<LinearRing> rings = new ArrayList<>();
             bounds.apply((GeometryComponentFilter) geom -> {
-                if (geom instanceof LinearRing && !geom.isEmpty()) {
-                    rings.add((LinearRing) geom);
+                if (geom instanceof LinearRing ring && !geom.isEmpty()) {
+                    rings.add(ring);
                 }
             });
             return rings;
@@ -128,8 +128,8 @@ public enum FootprintInsetPolicy {
 
         private void collectLines(Geometry geometry, final List<LineString> lines) {
             geometry.apply((GeometryComponentFilter) geom -> {
-                if (geom instanceof LineString && !geom.isEmpty()) {
-                    lines.add((LineString) geom);
+                if (geom instanceof LineString string && !geom.isEmpty()) {
+                    lines.add(string);
                 }
             });
         }

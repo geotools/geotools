@@ -254,8 +254,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
 
         Node child = parent.getFirstChild();
         while (child != null) {
-            if (child instanceof LabelBoxMetadataNode) {
-                LabelBoxMetadataNode label = (LabelBoxMetadataNode) child;
+            if (child instanceof LabelBoxMetadataNode label) {
                 if (LabelBoxMetadataNode.GML_DATA.equals(label.getText())) {
                     return true;
                 }
@@ -411,8 +410,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         UUIDBoxMetadataNode worldBoxuuid = null;
         if (uuidBoxMetadataNodes != null && !uuidBoxMetadataNodes.isEmpty()) {
             for (IIOMetadataNode node : uuidBoxMetadataNodes) {
-                if (node instanceof UUIDBoxMetadataNode) {
-                    final UUIDBoxMetadataNode uuid = (UUIDBoxMetadataNode) node;
+                if (node instanceof UUIDBoxMetadataNode uuid) {
                     final byte[] id = uuid.getUuid();
                     if (isGeoJP2(id)) {
                         geoJP2uuid = uuid;

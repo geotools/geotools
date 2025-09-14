@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.util.Date;
 import javax.measure.MetricPrefix;
 import javax.measure.UnconvertibleException;
@@ -34,6 +35,7 @@ import si.uom.SI;
  */
 public class DateRange extends Range<Date> {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -6400011350250757942L;
 
     /** The unit used for time representation in a date. */

@@ -256,8 +256,7 @@ public class TransformProcess implements VectorProcess {
             if (Geometry.class.isAssignableFrom(binding)) {
                 CoordinateReferenceSystem crs;
                 AttributeType originalAttributeType = origional.getType(name);
-                if (originalAttributeType != null && originalAttributeType instanceof GeometryType) {
-                    GeometryType geometryType = (GeometryType) originalAttributeType;
+                if (originalAttributeType != null && originalAttributeType instanceof GeometryType geometryType) {
                     crs = geometryType.getCoordinateReferenceSystem();
                 } else {
                     crs = origional.getCoordinateReferenceSystem();

@@ -52,14 +52,14 @@ public class HanaDimensionFinder {
         if (g.isEmpty()) {
             return true;
         }
-        if (g instanceof Point) {
-            return allPointsHave3Coordinates((Point) g);
-        } else if (g instanceof LineString) {
-            return allPointsHave3Coordinates((LineString) g);
-        } else if (g instanceof Polygon) {
-            return allPointsHave3Coordinates((Polygon) g);
-        } else if (g instanceof GeometryCollection) {
-            return allPointsHave3Coordinates((GeometryCollection) g);
+        if (g instanceof Point point) {
+            return allPointsHave3Coordinates(point);
+        } else if (g instanceof LineString string) {
+            return allPointsHave3Coordinates(string);
+        } else if (g instanceof Polygon polygon) {
+            return allPointsHave3Coordinates(polygon);
+        } else if (g instanceof GeometryCollection collection) {
+            return allPointsHave3Coordinates(collection);
         }
         throw new AssertionError();
     }

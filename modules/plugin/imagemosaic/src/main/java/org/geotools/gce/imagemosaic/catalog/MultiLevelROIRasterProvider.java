@@ -70,8 +70,7 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
         }
         // Extracting File from feature
         Object value = sf.getAttribute("location");
-        if (value != null && value instanceof String) {
-            String strValue = (String) value;
+        if (value != null && value instanceof String strValue) {
             GranuleAccessProvider granuleProvider = getGranuleAccessProvider(strValue);
             MultiLevelROI result = null;
             if (granuleProvider != null) {

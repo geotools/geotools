@@ -80,8 +80,8 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
 
     @Override
     public boolean contains(Object feature) {
-        if (feature instanceof PreGeneralizedSimpleFeature)
-            return backendCollection.contains(((PreGeneralizedSimpleFeature) feature).feature);
+        if (feature instanceof PreGeneralizedSimpleFeature simpleFeature)
+            return backendCollection.contains(simpleFeature.feature);
         else return backendCollection.contains(feature);
     }
 
@@ -91,8 +91,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         Iterator it = coll.iterator();
         while (it.hasNext()) {
             Object feature = it.next();
-            if (feature instanceof PreGeneralizedSimpleFeature)
-                searchColl.add(((PreGeneralizedSimpleFeature) feature).feature);
+            if (feature instanceof PreGeneralizedSimpleFeature simpleFeature) searchColl.add(simpleFeature.feature);
             else searchColl.add(feature);
         }
         return backendCollection.containsAll(searchColl);

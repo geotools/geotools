@@ -296,8 +296,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
         if (object == this) {
             return true;
         }
-        if (object instanceof DefaultPeriodDuration) {
-            final DefaultPeriodDuration that = (DefaultPeriodDuration) object;
+        if (object instanceof DefaultPeriodDuration that) {
 
             return Utilities.equals(this.days, that.days)
                     && Utilities.equals(this.hours, that.hours)

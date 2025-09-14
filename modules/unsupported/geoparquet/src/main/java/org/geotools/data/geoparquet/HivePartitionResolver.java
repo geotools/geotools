@@ -230,7 +230,7 @@ class HivePartitionResolver {
 
         try (Statement stmt = connection.createStatement()) {
             // Execute the query without adding quotes to the URI
-            String query = String.format("SELECT file FROM glob('%s')", uri);
+            String query = "SELECT file FROM glob('%s')".formatted(uri);
             try (ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
                     files.add(rs.getString("file"));
@@ -329,12 +329,12 @@ class HivePartitionResolver {
         int partitionLimit = maxDepth == null ? partitionCount : Math.min(partitionCount, maxDepth);
 
         if (partitionLimit == 0) {
-            partitionUri = String.format("%s/**/*", basePath);
+            partitionUri = "%s/**/*".formatted(basePath);
         } else {
             String limitedPartitionParts = extractPartitionPath(filePath, partitionLimit);
             String glob = partitionCount > partitionLimit ? "**/*" : "*";
             // If partition information found, use it as the key
-            partitionUri = String.format("%s/%s/%s", basePath, limitedPartitionParts, glob);
+            partitionUri = "%s/%s/%s".formatted(basePath, limitedPartitionParts, glob);
         }
 
         if (filePath.contains("?")) {

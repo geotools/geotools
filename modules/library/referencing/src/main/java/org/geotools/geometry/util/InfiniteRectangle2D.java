@@ -20,6 +20,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -33,6 +34,7 @@ import java.io.Serializable;
  */
 final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5281254268988984523L;
 
     /** A singleton instance of {@code InfiniteRectangle2D}. */

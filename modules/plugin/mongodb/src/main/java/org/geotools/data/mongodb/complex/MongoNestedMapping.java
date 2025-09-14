@@ -98,8 +98,8 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         }
         CollectionLinkFunction.LinkCollection linkCollection = (CollectionLinkFunction.LinkCollection) foreignKeyValue;
         String collectionPath = linkCollection.getCollectionPath();
-        if (feature instanceof MongoCollectionFeature) {
-            String parentPath = ((MongoCollectionFeature) feature).getCollectionPath();
+        if (feature instanceof MongoCollectionFeature collectionFeature) {
+            String parentPath = collectionFeature.getCollectionPath();
             collectionPath = parentPath + "." + collectionPath;
         }
         List collection = getSubCollection(feature, collectionPath);
@@ -157,14 +157,12 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         Feature f = (Feature) feature;
         Feature extracted = extractFeature(feature, collectionPath);
 
-        if (extracted instanceof MongoFeature) {
-            MongoFeature mongoFeature = (MongoFeature) extracted;
+        if (extracted instanceof MongoFeature mongoFeature) {
             DBObject mongoObject = mongoFeature.getMongoObject();
             Supplier<GeometryCoordinateSequenceTransformer> transformer = getTransformer(f, mongoFeature);
 
             return getSubCollection(mongoObject, collectionPath, Collections.emptyMap(), transformer);
-        } else if (extracted instanceof MongoCollectionFeature) {
-            MongoCollectionFeature collectionFeature = (MongoCollectionFeature) extracted;
+        } else if (extracted instanceof MongoCollectionFeature collectionFeature) {
             MongoFeature mongoFeature = collectionFeature.getMongoFeature();
             Supplier<GeometryCoordinateSequenceTransformer> transformer = getTransformer(f, mongoFeature);
 
@@ -186,8 +184,8 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         if (value == null) {
             return Collections.emptyList();
         }
-        if (value instanceof List) {
-            return (List) value;
+        if (value instanceof List list) {
+            return list;
         }
         throw new RuntimeException("Could not extract collection from path.");
     }

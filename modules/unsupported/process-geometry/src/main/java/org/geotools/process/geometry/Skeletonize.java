@@ -49,8 +49,8 @@ public class Skeletonize {
             for (int i = 0; i < multi.getNumGeometries(); i++) {
                 Geometry skel = getSkeleton((Polygon) multi.getGeometryN(i), perc_tolerance);
 
-                if (skel instanceof LineString) {
-                    geoms.add((LineString) skel);
+                if (skel instanceof LineString string) {
+                    geoms.add(string);
                 } else if (skel instanceof MultiLineString) {
                     for (int k = 0; k < skel.getNumGeometries(); k++) {
                         geoms.add((LineString) skel.getGeometryN(k));

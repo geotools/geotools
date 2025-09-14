@@ -551,8 +551,7 @@ public abstract class Configuration {
     /** Equals override, equality is based solely on {@link #getNamespaceURI()}. */
     @Override
     public final boolean equals(Object obj) {
-        if (obj instanceof Configuration) {
-            Configuration other = (Configuration) obj;
+        if (obj instanceof Configuration other) {
 
             return Utilities.equals(getNamespaceURI(), other.getNamespaceURI());
         }

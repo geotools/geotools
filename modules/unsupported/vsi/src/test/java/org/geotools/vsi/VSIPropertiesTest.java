@@ -26,7 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Properties;
 import org.gdal.gdal.gdal;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public final class VSIPropertiesTest {
 
     @Test
     public void testParsePropertiesEmpty() throws IOException {
-        final File file = Paths.get(TEMP_DIR, "empty.properties").toFile();
+        final File file = Path.of(TEMP_DIR, "empty.properties").toFile();
 
         file.createNewFile();
         System.setProperty(VSIProperties.LOCATION_PROPERTY, file.getAbsolutePath());
@@ -66,7 +66,7 @@ public final class VSIPropertiesTest {
 
     @Test
     public void testPropertiesValid() throws IOException {
-        final File file = Paths.get(TEMP_DIR, "vsi.properties").toFile();
+        final File file = Path.of(TEMP_DIR, "vsi.properties").toFile();
         final Properties prop = new Properties();
 
         prop.setProperty("OS_IDENTITY_API_VERSION", "3");
@@ -102,7 +102,7 @@ public final class VSIPropertiesTest {
 
     @Test
     public void testApply() throws IOException, URISyntaxException {
-        final File file = Paths.get(TEMP_DIR, "vsi.properties").toFile();
+        final File file = Path.of(TEMP_DIR, "vsi.properties").toFile();
         final Properties prop = new Properties();
 
         prop.setProperty("OS_IDENTITY_API_VERSION", "3");

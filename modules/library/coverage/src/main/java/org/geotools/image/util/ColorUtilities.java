@@ -372,8 +372,8 @@ public final class ColorUtilities {
      */
     public static int getNumBands(final ColorModel model) {
         if (model instanceof IndexColorModel) {
-            if (model instanceof MultiBandsIndexColorModel) {
-                return ((MultiBandsIndexColorModel) model).numBands;
+            if (model instanceof MultiBandsIndexColorModel colorModel) {
+                return colorModel.numBands;
             }
             return 1;
         }

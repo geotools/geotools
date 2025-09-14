@@ -19,6 +19,7 @@ package org.geotools.swing.data;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.io.File;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,7 @@ import org.geotools.api.data.FileDataStoreFinder;
  * @version $Id$
  */
 public class JFileDataStoreChooser extends JFileChooser {
+    @Serial
     private static final long serialVersionUID = -7482109609487216939L;
 
     /**

@@ -18,6 +18,7 @@ package org.geotools.coverage.grid;
 
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +61,7 @@ public final class Interpolator2D extends GridCoverage2D {
     protected final GridCoverage2D source;
 
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 9028980295030908004L;
 
     /**

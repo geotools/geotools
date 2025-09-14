@@ -162,15 +162,15 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         //
         if (userHints != null) {
             Object candidate = userHints.get(Hints.DATUM_SHIFT_METHOD);
-            if (candidate instanceof String) {
-                molodenskiMethod = (String) candidate;
+            if (candidate instanceof String string) {
+                molodenskiMethod = string;
                 if (molodenskiMethod.trim().equalsIgnoreCase("Geocentric")) {
                     molodenskiMethod = null;
                 }
             }
             candidate = userHints.get(Hints.LENIENT_DATUM_SHIFT);
-            if (candidate instanceof Boolean) {
-                lenientDatumShift = ((Boolean) candidate).booleanValue();
+            if (candidate instanceof Boolean boolean1) {
+                lenientDatumShift = boolean1.booleanValue();
             }
         }
         //
@@ -282,17 +282,14 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          * may become interleaved with more complex operation (e.g. projection followed by the
          * inverse projection, before they get simplified by DefaultConcatenatedOperation, etc.).
          */
-        if (sourceCRS instanceof CompoundCRS) {
+        if (sourceCRS instanceof CompoundCRS source) {
             final List<SingleCRS> sources = DefaultCompoundCRS.getSingleCRS(sourceCRS);
             final List<SingleCRS> targets = DefaultCompoundCRS.getSingleCRS(targetCRS);
             if (containsIgnoreMetadata(sources, targets)) {
-                final CompoundCRS source = (CompoundCRS) sourceCRS;
-                if (targetCRS instanceof CompoundCRS) {
-                    final CompoundCRS target = (CompoundCRS) targetCRS;
+                if (targetCRS instanceof CompoundCRS target) {
                     return findOperationSteps(source, target, limit);
                 }
-                if (targetCRS instanceof SingleCRS) {
-                    final SingleCRS target = (SingleCRS) targetCRS;
+                if (targetCRS instanceof SingleCRS target) {
                     return findOperationSteps(source, target, limit);
                 }
             }
@@ -302,22 +299,17 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Geographic  -->  Geographic, Projected or Geocentric    ////
         ////                                                             ////
         /////////////////////////////////////////////////////////////////////
-        if (sourceCRS instanceof GeographicCRS) {
-            final GeographicCRS source = (GeographicCRS) sourceCRS;
-            if (targetCRS instanceof GeographicCRS) {
-                final GeographicCRS target = (GeographicCRS) targetCRS;
+        if (sourceCRS instanceof GeographicCRS source) {
+            if (targetCRS instanceof GeographicCRS target) {
                 return Collections.singleton(createOperationStep(source, target));
             }
-            if (targetCRS instanceof ProjectedCRS) {
-                final ProjectedCRS target = (ProjectedCRS) targetCRS;
+            if (targetCRS instanceof ProjectedCRS target) {
                 return findOperationSteps(source, target, limit);
             }
-            if (targetCRS instanceof GeocentricCRS) {
-                final GeocentricCRS target = (GeocentricCRS) targetCRS;
+            if (targetCRS instanceof GeocentricCRS target) {
                 return Collections.singleton(createOperationStep(source, target));
             }
-            if (targetCRS instanceof VerticalCRS) {
-                final VerticalCRS target = (VerticalCRS) targetCRS;
+            if (targetCRS instanceof VerticalCRS target) {
                 return Collections.singleton(createOperationStep(source, target));
             }
         }
@@ -326,14 +318,11 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Projected  -->  Projected or Geographic     ////
         ////                                                 ////
         /////////////////////////////////////////////////////////
-        if (sourceCRS instanceof ProjectedCRS) {
-            final ProjectedCRS source = (ProjectedCRS) sourceCRS;
-            if (targetCRS instanceof ProjectedCRS) {
-                final ProjectedCRS target = (ProjectedCRS) targetCRS;
+        if (sourceCRS instanceof ProjectedCRS source) {
+            if (targetCRS instanceof ProjectedCRS target) {
                 return findOperationSteps(source, target, limit);
             }
-            if (targetCRS instanceof GeographicCRS) {
-                final GeographicCRS target = (GeographicCRS) targetCRS;
+            if (targetCRS instanceof GeographicCRS target) {
                 return findOperationSteps(source, target, limit);
             }
         }
@@ -342,14 +331,11 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Geocentric  -->  Geocentric or Geographic    ////
         ////                                                  ////
         //////////////////////////////////////////////////////////
-        if (sourceCRS instanceof GeocentricCRS) {
-            final GeocentricCRS source = (GeocentricCRS) sourceCRS;
-            if (targetCRS instanceof GeocentricCRS) {
-                final GeocentricCRS target = (GeocentricCRS) targetCRS;
+        if (sourceCRS instanceof GeocentricCRS source) {
+            if (targetCRS instanceof GeocentricCRS target) {
                 return Collections.singleton(createOperationStep(source, target));
             }
-            if (targetCRS instanceof GeographicCRS) {
-                final GeographicCRS target = (GeographicCRS) targetCRS;
+            if (targetCRS instanceof GeographicCRS target) {
                 return Collections.singleton(createOperationStep(source, target));
             }
         }
@@ -358,10 +344,8 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Vertical  -->  Vertical     ////
         ////                                 ////
         /////////////////////////////////////////
-        if (sourceCRS instanceof VerticalCRS) {
-            final VerticalCRS source = (VerticalCRS) sourceCRS;
-            if (targetCRS instanceof VerticalCRS) {
-                final VerticalCRS target = (VerticalCRS) targetCRS;
+        if (sourceCRS instanceof VerticalCRS source) {
+            if (targetCRS instanceof VerticalCRS target) {
                 return Collections.singleton(createOperationStep(source, target));
             }
         }
@@ -370,10 +354,8 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Temporal  -->  Temporal     ////
         ////                                 ////
         /////////////////////////////////////////
-        if (sourceCRS instanceof TemporalCRS) {
-            final TemporalCRS source = (TemporalCRS) sourceCRS;
-            if (targetCRS instanceof TemporalCRS) {
-                final TemporalCRS target = (TemporalCRS) targetCRS;
+        if (sourceCRS instanceof TemporalCRS source) {
+            if (targetCRS instanceof TemporalCRS target) {
                 return Collections.singleton(createOperationStep(source, target));
             }
         }
@@ -382,11 +364,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Any coordinate reference system -->  Derived CRS     ////
         ////                                                          ////
         //////////////////////////////////////////////////////////////////
-        if (targetCRS instanceof GeneralDerivedCRS) {
-            // Note: this code is identical to 'createOperationStep(GeographicCRS, ProjectedCRS)'
-            //       except that the later invokes directly the right method for 'step1' instead
-            //       of invoking 'createOperation' recursively.
-            final GeneralDerivedCRS target = (GeneralDerivedCRS) targetCRS;
+        if (targetCRS instanceof GeneralDerivedCRS target) {
             final CoordinateReferenceSystem base = target.getBaseCRS();
             final Set<CoordinateOperation> step1 = findOperations(sourceCRS, base, limit);
             final CoordinateOperation step2 = target.getConversionFromBase();
@@ -397,11 +375,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Derived CRS -->  Any coordinate reference system     ////
         ////                                                          ////
         //////////////////////////////////////////////////////////////////
-        if (sourceCRS instanceof GeneralDerivedCRS) {
-            // Note: this code is identical to 'createOperationStep(ProjectedCRS, GeographicCRS)'
-            //       except that the later invokes directly the right method for 'step2' instead
-            //       of invoking 'createOperation' recursively.
-            final GeneralDerivedCRS source = (GeneralDerivedCRS) sourceCRS;
+        if (sourceCRS instanceof GeneralDerivedCRS source) {
             final CoordinateReferenceSystem base = source.getBaseCRS();
             final Set<CoordinateOperation> step2 = findOperations(base, targetCRS, limit);
             CoordinateOperation step1 = source.getConversionFromBase();
@@ -419,21 +393,16 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         ////     Compound  -->  various CRS     ////
         ////                                    ////
         ////////////////////////////////////////////
-        if (sourceCRS instanceof CompoundCRS) {
-            final CompoundCRS source = (CompoundCRS) sourceCRS;
-            if (targetCRS instanceof CompoundCRS) {
-                final CompoundCRS target = (CompoundCRS) targetCRS;
+        if (sourceCRS instanceof CompoundCRS source) {
+            if (targetCRS instanceof CompoundCRS target) {
                 return findOperationSteps(source, target, limit);
             }
-            if (targetCRS instanceof SingleCRS) {
-                final SingleCRS target = (SingleCRS) targetCRS;
+            if (targetCRS instanceof SingleCRS target) {
                 return findOperationSteps(source, target, limit);
             }
         }
-        if (targetCRS instanceof CompoundCRS) {
-            final CompoundCRS target = (CompoundCRS) targetCRS;
-            if (sourceCRS instanceof SingleCRS) {
-                final SingleCRS source = (SingleCRS) sourceCRS;
+        if (targetCRS instanceof CompoundCRS target) {
+            if (sourceCRS instanceof SingleCRS source) {
                 return findOperationSteps(source, target, limit);
             }
         }
@@ -445,7 +414,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      * {@link DefaultEngineeringCRS#GENERIC_2D})
      */
     boolean isWildcard(final CoordinateReferenceSystem sourceCRS) {
-        return sourceCRS instanceof DefaultEngineeringCRS && ((DefaultEngineeringCRS) sourceCRS).isWildcard();
+        return sourceCRS instanceof DefaultEngineeringCRS decrs && decrs.isWildcard();
     }
 
     /**
@@ -802,8 +771,8 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         if (molodenskiMethod != null) {
             ReferenceIdentifier identifier = DATUM_SHIFT;
             BursaWolfParameters bursaWolf = null;
-            if (sourceDatum instanceof DefaultGeodeticDatum) {
-                bursaWolf = ((DefaultGeodeticDatum) sourceDatum).getBursaWolfParameters(targetDatum);
+            if (sourceDatum instanceof DefaultGeodeticDatum datum) {
+                bursaWolf = datum.getBursaWolfParameters(targetDatum);
             }
             if (bursaWolf == null) {
                 /*

@@ -173,11 +173,10 @@ public class Viewer extends JPanel {
         final ColorModel model = image.getColorModel();
         out.print(Classes.getShortClassName(model));
         out.println(':');
-        if (model instanceof IndexColorModel) {
+        if (model instanceof IndexColorModel palette) {
             out.println();
             out.println("Sample  Colors              Category or geophysics value");
             out.println("------  ----------------    ----------------------------");
-            final IndexColorModel palette = (IndexColorModel) model;
             final int size = palette.getMapSize();
             final byte[] R = new byte[size];
             final byte[] G = new byte[size];

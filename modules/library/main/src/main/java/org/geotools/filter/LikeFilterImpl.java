@@ -302,10 +302,10 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
         }
 
         // NC - support multiple values
-        if (value instanceof Collection) {
+        if (value instanceof Collection collection) {
             int count = 0;
 
-            for (Object element : (Collection) value) {
+            for (Object element : collection) {
                 Matcher matcher = getMatcher(element.toString());
                 boolean temp = matcher.matches();
                 if (temp) {

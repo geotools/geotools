@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
@@ -42,6 +43,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class PreventLocalEntityResolver implements EntityResolver2, Serializable {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = -5689036455423814933L;
 
     /** Prefix used for SAXException message */
@@ -83,9 +85,8 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
         if (LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.finest(String.format(
-                    "resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s",
-                    name, publicId, baseURI, systemId));
+            LOGGER.finest("resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s"
+                    .formatted(name, publicId, baseURI, systemId));
         }
 
         try {

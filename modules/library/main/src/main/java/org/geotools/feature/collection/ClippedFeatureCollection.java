@@ -62,8 +62,7 @@ public class ClippedFeatureCollection extends DecoratingSimpleFeatureCollection 
     private SimpleFeatureType buildTargetSchema(SimpleFeatureType schema) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         for (AttributeDescriptor ad : schema.getAttributeDescriptors()) {
-            if (ad instanceof GeometryDescriptor) {
-                GeometryDescriptor gd = (GeometryDescriptor) ad;
+            if (ad instanceof GeometryDescriptor gd) {
                 Class<?> binding = ad.getType().getBinding();
                 if (Point.class.isAssignableFrom(binding) || GeometryCollection.class.isAssignableFrom(binding)) {
                     tb.add(ad);

@@ -106,26 +106,27 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     }
 
     /** Constructor for a {@link GeoTiffWriter}. */
+    @SuppressWarnings("PMD.CloseResource")
     public GeoTiffWriter(Object destination, Hints hints) throws IOException {
 
         this.destination = destination;
         if (destination instanceof File) this.outStream = ImageIOExt.createImageOutputStream(null, destination);
-        else if (destination instanceof URL) {
-            final URL dest = (URL) destination;
+        else if (destination instanceof URL dest) {
             if (dest.getProtocol().equalsIgnoreCase("file")) {
                 final File destFile = URLs.urlToFile(dest);
                 this.outStream = ImageIOExt.createImageOutputStream(null, destFile);
             }
 
         } else if (destination instanceof OutputStream) {
-            if (destination instanceof OutputStreamAdapter) {
-                this.outStream = ((OutputStreamAdapter) destination).getWrappedStream();
+            if (destination instanceof OutputStreamAdapter adapter) {
+                this.outStream = adapter.getWrappedStream();
                 this.destination = outStream;
             } else {
                 this.outStream = ImageIOExt.createImageOutputStream(null, destination);
             }
-        } else if (destination instanceof ImageOutputStream) this.outStream = (ImageOutputStream) destination;
-        else throw new IllegalArgumentException("The provided destination canno be used!");
+        } else if (destination instanceof ImageOutputStream stream) {
+            this.outStream = stream;
+        } else throw new IllegalArgumentException("The provided destination canno be used!");
         // //
         //
         // managing hints
@@ -353,9 +354,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
             throw new NullPointerException("Some input parameters are null");
         }
         final ImageWriteParam params = gtParams.getAdaptee();
-        if (params instanceof TIFFImageWriteParam && gtParams instanceof GeoTiffWriteParams) {
-            TIFFImageWriteParam param = (TIFFImageWriteParam) params;
-            param.setForceToBigTIFF(((GeoTiffWriteParams) gtParams).isForceToBigTIFF());
+        if (params instanceof TIFFImageWriteParam param && gtParams instanceof GeoTiffWriteParams writeParams) {
+            param.setForceToBigTIFF(writeParams.isForceToBigTIFF());
         }
         //
         // GETTING READER AND METADATA

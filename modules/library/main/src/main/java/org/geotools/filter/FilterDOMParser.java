@@ -546,13 +546,13 @@ public final class FilterDOMParser {
         Literal literal = right;
         Object obj = literal.getValue();
         ReferencedEnvelope bbox = null;
-        if (obj instanceof Geometry) {
-            bbox = JTS.toEnvelope((Geometry) obj);
-        } else if (obj instanceof ReferencedEnvelope) {
-            bbox = (ReferencedEnvelope) obj;
-        } else if (obj instanceof Envelope) {
+        if (obj instanceof Geometry geometry) {
+            bbox = JTS.toEnvelope(geometry);
+        } else if (obj instanceof ReferencedEnvelope envelope1) {
+            bbox = envelope1;
+        } else if (obj instanceof Envelope envelope) {
             // no clue about CRS / srsName so we should guess
-            bbox = new ReferencedEnvelope((Envelope) obj, null);
+            bbox = new ReferencedEnvelope(envelope, null);
         }
         return FILTER_FACT.bbox(left, bbox);
     }

@@ -31,6 +31,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -70,6 +71,7 @@ import org.geotools.api.parameter.ParameterValueGroup;
  */
 public abstract class Mercator extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 6146741819833248649L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -173,6 +175,7 @@ public abstract class Mercator extends MapProjection {
      */
     abstract static class Spherical extends Mercator {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 2383414176395616561L;
 
         /**

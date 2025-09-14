@@ -131,8 +131,7 @@ public class StyleGenerator {
         // update the number of classes
 
         // numeric
-        if (classifier instanceof RangedClassifier) {
-            RangedClassifier ranged = (RangedClassifier) classifier;
+        if (classifier instanceof RangedClassifier ranged) {
 
             Object localMin = null;
             Object localMax = null;
@@ -156,8 +155,7 @@ public class StyleGenerator {
                         defaultStroke);
                 fts.rules().add(rule);
             }
-        } else if (classifier instanceof ExplicitClassifier) {
-            ExplicitClassifier explicit = (ExplicitClassifier) classifier;
+        } else if (classifier instanceof ExplicitClassifier explicit) {
 
             // for each class
             for (int i = 0; i < explicit.getSize(); i++) {
@@ -230,8 +228,8 @@ public class StyleGenerator {
      * @return Integer(value) if applicable
      */
     private static Object chopInteger(Object value) {
-        if (value instanceof Number && value.toString().endsWith(".0")) {
-            return Integer.valueOf(((Number) value).intValue());
+        if (value instanceof Number number && value.toString().endsWith(".0")) {
+            return Integer.valueOf(number.intValue());
         } else {
             return value;
         }
@@ -377,7 +375,7 @@ public class StyleGenerator {
         Rule thisRule = fts.rules().get(ruleIndex);
         Filter filter = thisRule.getFilter();
 
-        if (filter instanceof And) { // ranged expression
+        if (filter instanceof And and) { // ranged expression
             // figure out the appropriate values
 
             String[] newValue = styleExpression.split("\\.\\."); // $NON-NLS-1$
@@ -386,7 +384,7 @@ public class StyleGenerator {
                 throw new IllegalArgumentException("StyleExpression has incorrect syntax; min..max expected.");
             }
 
-            List<Filter> children = ((BinaryLogicOperator) filter).getChildren();
+            List<Filter> children = and.getChildren();
 
             if (children.size() > 2) {
                 throw new IllegalArgumentException(
@@ -427,9 +425,8 @@ public class StyleGenerator {
 
             Expression attrExpression;
 
-            if (filter instanceof Or) {
-                attrExpression =
-                        ((BinaryComparisonOperator) ((Or) filter).getChildren().get(0)).getExpression1();
+            if (filter instanceof Or or) {
+                attrExpression = ((BinaryComparisonOperator) or.getChildren().get(0)).getExpression1();
             } else { // COMPARE_EQUALS (simple explicit expression)
                 attrExpression = ((PropertyIsEqualTo) filter).getExpression1();
             }
@@ -565,8 +562,7 @@ public class StyleGenerator {
      * @return a styleExpression of the syntax "min..max"
      */
     private static String toRangedStyleExpression(Filter filter) {
-        if (filter instanceof BinaryLogicOperator) {
-            BinaryLogicOperator lFilter = (BinaryLogicOperator) filter;
+        if (filter instanceof BinaryLogicOperator lFilter) {
 
             if (!(filter instanceof And)) {
                 throw new IllegalArgumentException(
@@ -713,10 +709,7 @@ public class StyleGenerator {
     private static String toExplicitStyleExpression(Filter filter) {
         String styleExpression = "";
 
-        if (filter instanceof PropertyIsEqualTo) {
-            // figure out which side is the attributeExpression, and which side
-            // is the LiteralExpression
-            PropertyIsEqualTo compareFilter = (PropertyIsEqualTo) filter;
+        if (filter instanceof PropertyIsEqualTo compareFilter) {
             Expression leftExpression = compareFilter.getExpression1();
             Expression rightExpression = compareFilter.getExpression2();
 
@@ -728,9 +721,7 @@ public class StyleGenerator {
                 throw new IllegalArgumentException(
                         "Could not extract an Explicit Style Expression from the CompareFilter");
             }
-        } else if (filter instanceof Or) {
-            // descend into the child elements of this filter
-            Or parentFilter = (Or) filter;
+        } else if (filter instanceof Or parentFilter) {
             Iterator iterator = parentFilter.getChildren().iterator();
 
             while (iterator.hasNext()) {

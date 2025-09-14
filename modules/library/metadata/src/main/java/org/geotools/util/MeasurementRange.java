@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.util.Objects;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
@@ -33,6 +34,7 @@ import javax.measure.UnitConverter;
  */
 public class MeasurementRange<T extends Number & Comparable<? super T>> extends NumberRange<T> {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3980319420337513745L;
 
     /** The units of measurement, or {@code null} if unknown. */
@@ -198,8 +200,7 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
     @Override
     <N extends Number & Comparable<? super N>> MeasurementRange<N> convertAndCast(
             final Range<? extends Number> range, final Class<N> type) throws IllegalArgumentException {
-        if (range instanceof MeasurementRange) {
-            final MeasurementRange<?> casted = (MeasurementRange<?>) range;
+        if (range instanceof MeasurementRange<?> casted) {
             return casted.convertAndCast(type, units);
         }
         return new MeasurementRange<>(type, range, units);
@@ -295,8 +296,7 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
     @Override
     public boolean equals(final Object object) {
         if (super.equals(object)) {
-            if (object instanceof MeasurementRange) {
-                final MeasurementRange that = (MeasurementRange) object;
+            if (object instanceof MeasurementRange that) {
                 return Utilities.equals(this.units, that.units);
             }
             return true;

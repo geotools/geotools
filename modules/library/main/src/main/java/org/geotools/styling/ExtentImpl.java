@@ -50,8 +50,7 @@ public class ExtentImpl implements Extent, Cloneable {
             return true;
         }
 
-        if (obj instanceof ExtentImpl) {
-            ExtentImpl other = (ExtentImpl) obj;
+        if (obj instanceof ExtentImpl other) {
 
             return Utilities.equals(this.name, other.name) && Utilities.equals(this.value, other.value);
         }

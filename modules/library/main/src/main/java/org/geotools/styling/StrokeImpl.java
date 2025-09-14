@@ -120,8 +120,7 @@ public class StrokeImpl implements Stroke, Cloneable {
         float[] values = new float[dashArray.size()];
         int index = 0;
         for (Expression expression : dashArray) {
-            if (expression instanceof Literal) {
-                Literal literal = (Literal) expression;
+            if (expression instanceof Literal literal) {
                 values[index] = literal.evaluate(null, Float.class);
             } else {
                 throw new RuntimeException("Dash array is not literal: '" + expression + "'.");
@@ -535,8 +534,8 @@ public class StrokeImpl implements Stroke, Cloneable {
     static StrokeImpl cast(org.geotools.api.style.Stroke stroke) {
         if (stroke == null) {
             return null;
-        } else if (stroke instanceof StrokeImpl) {
-            return (StrokeImpl) stroke;
+        } else if (stroke instanceof StrokeImpl impl) {
+            return impl;
         } else {
             StrokeImpl copy = new StrokeImpl();
             copy.setColor(stroke.getColor());

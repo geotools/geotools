@@ -354,8 +354,7 @@ public class DimensionFilter {
             targetDimensions = sourceDimensions;
             return factory.createAffineTransform(MatrixFactory.create(dimInput + 1));
         }
-        if (transform instanceof ConcatenatedTransform) {
-            final ConcatenatedTransform ctr = (ConcatenatedTransform) transform;
+        if (transform instanceof ConcatenatedTransform ctr) {
             final int[] original = sourceDimensions;
             final MathTransform step1 = separateInput(ctr.transform1);
             sourceDimensions = targetDimensions;
@@ -368,8 +367,7 @@ public class DimensionFilter {
          * belong to the passthrough's sub-transform, then delegates part of the work to
          * {@code subTransform(passThrough.transform, ...)}
          */
-        if (transform instanceof PassThroughTransform) {
-            final PassThroughTransform passThrough = (PassThroughTransform) transform;
+        if (transform instanceof PassThroughTransform passThrough) {
             final int dimPass = passThrough.subTransform.getSourceDimensions();
             final int dimDiff = passThrough.subTransform.getTargetDimensions() - dimPass;
             final int subLower = passThrough.firstAffectedOrdinate;
@@ -430,10 +428,10 @@ public class DimensionFilter {
          * output dimension depends on at least one discarted input dimension, then this output
          * dimension will be discarted as well.
          */
-        if (transform instanceof LinearTransform) {
+        if (transform instanceof LinearTransform linearTransform) {
             int nRows = 0;
             boolean hasLastRow = false;
-            final Matrix matrix = ((LinearTransform) transform).getMatrix();
+            final Matrix matrix = linearTransform.getMatrix();
             assert dimSource + 1 == matrix.getNumCol() && dimTarget + 1 == matrix.getNumRow() : matrix;
             double[][] rows = new double[dimTarget + 1][];
             reduce:
@@ -518,8 +516,7 @@ public class DimensionFilter {
         int dimPass = 0;
         int dimDiff = 0;
         int dimStep = dimTarget;
-        if (transform instanceof PassThroughTransform) {
-            final PassThroughTransform passThrough = (PassThroughTransform) transform;
+        if (transform instanceof PassThroughTransform passThrough) {
             final int subLower = passThrough.firstAffectedOrdinate;
             final int subUpper = subLower + passThrough.subTransform.getTargetDimensions();
             if (!containsAny(targetDimensions, subLower, subUpper)) {

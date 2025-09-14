@@ -19,6 +19,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +44,7 @@ import org.geotools.api.util.ScopedName; // For javadoc
  */
 public abstract class GenericName implements org.geotools.api.util.GenericName, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8685047583179337259L;
 
     /** The default separator character. */
@@ -201,6 +203,7 @@ public abstract class GenericName implements org.geotools.api.util.GenericName, 
      */
     private static final class International extends AbstractInternationalString implements Serializable {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -4234089612436334148L;
 
         /**

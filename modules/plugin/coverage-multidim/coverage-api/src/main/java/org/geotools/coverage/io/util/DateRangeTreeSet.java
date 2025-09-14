@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.io.util;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -28,6 +29,7 @@ import org.geotools.util.DateRange;
  */
 public class DateRangeTreeSet extends TreeSet<DateRange> {
 
+    @Serial
     private static final long serialVersionUID = -1613807310486642564L;
 
     static DateRangeComparator COMPARATOR = new DateRangeComparator();

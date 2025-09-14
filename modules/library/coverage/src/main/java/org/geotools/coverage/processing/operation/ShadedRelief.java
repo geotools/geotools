@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing.operation;
 
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.media.shadedrelief.ShadedReliefDescriptor;
@@ -129,6 +130,7 @@ import org.geotools.coverage.processing.OperationJAI;
  */
 public class ShadedRelief extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -1077713495023498436L;
 
     /** ShadedRelief property name */

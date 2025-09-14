@@ -52,8 +52,8 @@ public class FeatureIdVersionedImpl extends FeatureIdImpl {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof FeatureId) {
-            return fid.equals(((FeatureId) obj).getID());
+        if (obj instanceof FeatureId id) {
+            return fid.equals(id.getID());
         }
         return false;
     }

@@ -335,8 +335,8 @@ public class TransparencyStyledTest {
         if (cm instanceof ComponentColorModel) {
             // Get the value of the alpha component
             assertEquals(0, raster.getSample(0, 0, numComponents - 1));
-        } else if (cm instanceof IndexColorModel) {
-            int transparentPixel = ((IndexColorModel) cm).getTransparentPixel();
+        } else if (cm instanceof IndexColorModel model) {
+            int transparentPixel = model.getTransparentPixel();
             assertEquals(transparentPixel, raster.getSample(0, 0, 0));
         }
     }

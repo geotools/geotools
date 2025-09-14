@@ -42,13 +42,12 @@ public class FilterToMongo extends AbstractFilterToMongo {
     }
 
     private Class getJsonSelectType(Expression expression) {
-        if (expression instanceof JsonSelectFunction) {
-            PropertyDescriptor descriptor = featureType.getDescriptor(((JsonSelectFunction) expression).getJsonPath());
+        if (expression instanceof JsonSelectFunction function) {
+            PropertyDescriptor descriptor = featureType.getDescriptor(function.getJsonPath());
             return descriptor == null ? null : descriptor.getType().getBinding();
         }
-        if (expression instanceof JsonSelectAllFunction) {
-            PropertyDescriptor descriptor =
-                    featureType.getDescriptor(((JsonSelectAllFunction) expression).getJsonPath());
+        if (expression instanceof JsonSelectAllFunction function) {
+            PropertyDescriptor descriptor = featureType.getDescriptor(function.getJsonPath());
             return descriptor == null ? null : descriptor.getType().getBinding();
         }
         return null;

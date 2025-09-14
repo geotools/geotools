@@ -248,18 +248,17 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
                     footprintFiles.forEach(this::removeFile);
                 }
                 // now to to ther real "content"
-                if (reader instanceof StructuredGridCoverage2DReader) {
+                if (reader instanceof StructuredGridCoverage2DReader dReader) {
                     // only structured have a way to remove data and metadata
-                    ((StructuredGridCoverage2DReader) reader).delete(mDeleteData);
+                    dReader.delete(mDeleteData);
                 }
                 if (mDeleteData) {
                     List<File> filesToRemove = new ArrayList<>();
                     // if we are removing data, get to the list of files and remove
                     ServiceInfo info = reader.getInfo();
                     // see if the reader can provide a full list of us
-                    if (info instanceof FileServiceInfo) {
-                        try (CloseableIterator<FileGroupProvider.FileGroup> it =
-                                ((FileServiceInfo) info).getFiles(Query.ALL)) {
+                    if (info instanceof FileServiceInfo serviceInfo) {
+                        try (CloseableIterator<FileGroupProvider.FileGroup> it = serviceInfo.getFiles(Query.ALL)) {
                             filesToRemove.addAll(getFilesToRemove(it));
                         }
                     }

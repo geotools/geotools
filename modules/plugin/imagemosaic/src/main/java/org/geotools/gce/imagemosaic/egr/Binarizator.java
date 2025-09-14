@@ -154,8 +154,8 @@ class Binarizator {
         // avoid using the raster path if possible, the vector one has
         // some useful optimizations and we'll avod generating the raster version
         // of
-        if (roi instanceof ROIGeometry) {
-            Geometry geometry = ((ROIGeometry) roi).getAsGeometry();
+        if (roi instanceof ROIGeometry iGeometry) {
+            Geometry geometry = iGeometry.getAsGeometry();
             return add(geometry);
         } else if (roi instanceof ROIShape) {
             Shape shape = roi.getAsShape();

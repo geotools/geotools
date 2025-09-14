@@ -184,8 +184,7 @@ public class QueryTypeBinding extends AbstractComplexEMFBinding {
             if (typeName != null) {
                 for (Iterator it = typeName.iterator(); it.hasNext(); ) {
                     Object o = it.next();
-                    if (o instanceof QName) {
-                        QName qName = (QName) o;
+                    if (o instanceof QName qName) {
                         o = qName.getPrefix() + ":" + qName.getLocalPart();
                     }
 

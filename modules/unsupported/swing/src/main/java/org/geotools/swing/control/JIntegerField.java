@@ -146,7 +146,7 @@ public class JIntegerField extends JValueField {
 
         if (!document.getAllowsNegative() && value < 0) {
             throw new IllegalArgumentException(
-                    String.format("Negative value (%d) but text field set to only allow positive values", value));
+                    "Negative value (%d) but text field set to only allow positive values".formatted(value));
         }
         setText(String.valueOf(value));
         fireEvents = true;

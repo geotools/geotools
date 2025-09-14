@@ -20,6 +20,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
@@ -72,6 +73,7 @@ import org.geotools.util.Utilities;
  */
 public class Position2D extends Point2D.Double implements Position, Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 835130287438466996L;
 
     /** The coordinate reference system for this position; */
@@ -127,8 +129,8 @@ public class Position2D extends Point2D.Double implements Position, Serializable
      */
     public Position2D(final Point2D point) {
         super(point.getX(), point.getY());
-        if (point instanceof Position) {
-            setCoordinateReferenceSystem(((Position) point).getCoordinateReferenceSystem());
+        if (point instanceof Position position) {
+            setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         }
     }
 
@@ -296,8 +298,7 @@ public class Position2D extends Point2D.Double implements Position, Serializable
          * If the other object implements the DirectPosition interface, performs
          * the comparaison as specified in DirectPosition.equals(Object) contract.
          */
-        if (object instanceof Position) {
-            final Position other = (Position) object;
+        if (object instanceof Position other) {
             if (other.getDimension() == 2
                     && Utilities.equals(other.getOrdinate(0), x)
                     && Utilities.equals(other.getOrdinate(1), y)

@@ -106,8 +106,8 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
         BOTH;
 
         private static Literals calculate(Expression expression1, Expression expression2) {
-            boolean left = expression1 instanceof Literal && ((Literal) expression1).getValue() instanceof Geometry;
-            boolean right = expression2 instanceof Literal && ((Literal) expression2).getValue() instanceof Geometry;
+            boolean left = expression1 instanceof Literal l && ((Literal) expression1).getValue() instanceof Geometry;
+            boolean right = expression2 instanceof Literal l && ((Literal) expression2).getValue() instanceof Geometry;
             if (left && right) {
                 return BOTH;
             }

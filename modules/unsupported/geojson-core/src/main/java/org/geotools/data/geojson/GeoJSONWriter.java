@@ -265,25 +265,24 @@ public class GeoJSONWriter implements AutoCloseable {
             g.writeBoolean((boolean) value);
         } else if (Date.class.isAssignableFrom(binding)) {
             g.writeString(this.dateFormatter.format(value));
-        } else if (Object.class.isAssignableFrom(binding) && value instanceof JsonNode) {
-            ((JsonNode) value)
-                    .serialize(
-                            g,
-                            new DefaultSerializerProvider(
-                                    mapper.getSerializerProvider(),
-                                    mapper.getSerializationConfig(),
-                                    mapper.getSerializerFactory()) {
-                                @Override
-                                public DefaultSerializerProvider createInstance(
-                                        SerializationConfig config, SerializerFactory jsf) {
-                                    throw new UnsupportedOperationException();
-                                }
+        } else if (Object.class.isAssignableFrom(binding) && value instanceof JsonNode node) {
+            node.serialize(
+                    g,
+                    new DefaultSerializerProvider(
+                            mapper.getSerializerProvider(),
+                            mapper.getSerializationConfig(),
+                            mapper.getSerializerFactory()) {
+                        @Override
+                        public DefaultSerializerProvider createInstance(
+                                SerializationConfig config, SerializerFactory jsf) {
+                            throw new UnsupportedOperationException();
+                        }
 
-                                @Override
-                                public DefaultSerializerProvider withCaches(CacheProvider cacheProvider) {
-                                    throw new UnsupportedOperationException();
-                                }
-                            });
+                        @Override
+                        public DefaultSerializerProvider withCaches(CacheProvider cacheProvider) {
+                            throw new UnsupportedOperationException();
+                        }
+                    });
         } else if (binding.isArray()) {
             g.writeStartArray();
             int length = Array.getLength(value);

@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -91,7 +92,7 @@ public abstract class FeatureCollectionTest {
         LinkedList next = new LinkedList<>();
         Iterator og = original.iterator();
         while (og.hasNext()) {
-            if (Math.random() > .5) {
+            if (ThreadLocalRandom.current().nextDouble() > .5) {
                 next.add(og.next());
             } else {
                 og.next();
@@ -104,7 +105,7 @@ public abstract class FeatureCollectionTest {
         LinkedList<F> next = new LinkedList<>();
         try (FeatureIterator<F> og = original.features()) {
             while (og.hasNext()) {
-                if (Math.random() > .5) {
+                if (ThreadLocalRandom.current().nextDouble() > .5) {
                     next.add(og.next());
                 } else {
                     og.next();

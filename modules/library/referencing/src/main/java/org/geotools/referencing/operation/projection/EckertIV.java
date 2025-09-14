@@ -25,6 +25,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -45,6 +46,7 @@ import org.geotools.referencing.NamedIdentifier;
 @SuppressWarnings("FloatingPointLiteralPrecision")
 public class EckertIV extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1635471013603509976L;
 
     private static final double C_x = 0.42223820031577120149;
@@ -144,6 +146,7 @@ public class EckertIV extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 1136453952351519284L;
 
         /** The parameters group. */

@@ -116,8 +116,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             if (adaptee.isVisitComplete()) {
                 return; // Skipt
             }
-            if (o instanceof GranuleDescriptor) {
-                final GranuleDescriptor g = (GranuleDescriptor) o;
+            if (o instanceof GranuleDescriptor g) {
                 final SimpleFeature originator = g.getOriginator();
                 if (originator != null && filter.evaluate(originator)) {
                     adaptee.visit(g, null);

@@ -38,9 +38,7 @@ public class ClassifyFunction extends FunctionExpressionImpl {
 
     public Classifier getClassifier(Object context) {
         org.geotools.api.filter.expression.Expression expr = getParameters().get(1);
-        if (expr instanceof Literal) {
-            // this is not good practice! (but the other method doesn't work)
-            Literal literal = (Literal) expr;
+        if (expr instanceof Literal literal) {
             return (Classifier) literal.getValue();
         }
         return expr.evaluate(context, Classifier.class);

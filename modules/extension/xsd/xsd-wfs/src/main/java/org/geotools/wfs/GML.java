@@ -563,20 +563,17 @@ public class GML {
         if (obj == null) {
             return null; // not available?
         }
-        if (obj instanceof SimpleFeatureCollection) {
-            return (SimpleFeatureCollection) obj;
+        if (obj instanceof SimpleFeatureCollection collection) {
+            return collection;
         }
-        if (obj instanceof Collection<?>) {
-            Collection<?> collection = (Collection<?>) obj;
+        if (obj instanceof Collection<?> collection) {
             SimpleFeatureCollection simpleFeatureCollection = simpleFeatureCollection(collection);
             return simpleFeatureCollection;
         }
-        if (obj instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) obj;
+        if (obj instanceof SimpleFeature feature) {
             return DataUtilities.collection(feature);
         }
-        if (obj instanceof FeatureCollectionType) {
-            FeatureCollectionType collectionType = (FeatureCollectionType) obj;
+        if (obj instanceof FeatureCollectionType collectionType) {
             for (Object entry : collectionType.getFeature()) {
                 SimpleFeatureCollection collection = toFeatureCollection(entry);
                 if (entry != null) {
@@ -704,27 +701,24 @@ public class GML {
     }
 
     protected SimpleFeatureType simpleType(Object obj) {
-        if (obj instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) obj;
+        if (obj instanceof SimpleFeature feature) {
             return feature.getFeatureType();
         }
-        if (obj instanceof Map<?, ?>) {
-            Map<?, ?> map = (Map<?, ?>) obj;
+        if (obj instanceof Map<?, ?> map) {
             SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
             build.setName("Unknown");
             for (Map.Entry<?, ?> entry : map.entrySet()) {
                 String key = (String) entry.getKey();
                 Object value = entry.getValue();
                 Class<?> binding = value == null ? Object.class : value.getClass();
-                if (value instanceof Geometry) {
-                    Geometry geom = (Geometry) value;
+                if (value instanceof Geometry geom) {
                     Object srs = geom.getUserData();
-                    if (srs instanceof CoordinateReferenceSystem) {
-                        build.add(key, binding, (CoordinateReferenceSystem) srs);
-                    } else if (srs instanceof Integer) {
-                        build.add(key, binding, (Integer) srs);
-                    } else if (srs instanceof String) {
-                        build.add(key, binding, (String) srs);
+                    if (srs instanceof CoordinateReferenceSystem system) {
+                        build.add(key, binding, system);
+                    } else if (srs instanceof Integer integer) {
+                        build.add(key, binding, integer);
+                    } else if (srs instanceof String string) {
+                        build.add(key, binding, string);
                     } else {
                         build.add(key, binding);
                     }
@@ -735,19 +729,18 @@ public class GML {
             SimpleFeatureType schema = build.buildFeatureType();
             return schema;
         }
-        if (obj instanceof Geometry) {
-            Geometry geom = (Geometry) obj;
+        if (obj instanceof Geometry geom) {
             Class<?> binding = geom.getClass();
             Object srs = geom.getUserData();
 
             SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
             build.setName("Unknown");
-            if (srs instanceof CoordinateReferenceSystem) {
-                build.add("the_geom", binding, (CoordinateReferenceSystem) srs);
-            } else if (srs instanceof Integer) {
-                build.add("the_geom", binding, (Integer) srs);
-            } else if (srs instanceof String) {
-                build.add("the_geom", binding, (String) srs);
+            if (srs instanceof CoordinateReferenceSystem system) {
+                build.add("the_geom", binding, system);
+            } else if (srs instanceof Integer integer) {
+                build.add("the_geom", binding, integer);
+            } else if (srs instanceof String string) {
+                build.add("the_geom", binding, string);
             } else {
                 build.add("the_geom", binding);
             }
@@ -768,11 +761,10 @@ public class GML {
             schema = simpleType(obj);
         }
 
-        if (obj instanceof SimpleFeature) {
-            return (SimpleFeature) obj;
+        if (obj instanceof SimpleFeature feature) {
+            return feature;
         }
-        if (obj instanceof Map<?, ?>) {
-            Map<?, ?> map = (Map<?, ?>) obj;
+        if (obj instanceof Map<?, ?> map) {
             Object[] values = new Object[schema.getAttributeCount()];
             for (int i = 0; i < schema.getAttributeCount(); i++) {
                 AttributeDescriptor descriptor = schema.getDescriptor(i);
@@ -784,8 +776,7 @@ public class GML {
             SimpleFeature feature = SimpleFeatureBuilder.build(schema, values, null);
             return feature;
         }
-        if (obj instanceof Geometry) {
-            Geometry geom = (Geometry) obj;
+        if (obj instanceof Geometry geom) {
             SimpleFeatureBuilder build = new SimpleFeatureBuilder(schema);
             build.set(schema.getGeometryDescriptor().getName(), geom);
 
@@ -885,8 +876,7 @@ public class GML {
 
         for (PropertyDescriptor descriptor : type.getDescriptors()) {
 
-            if (descriptor instanceof AttributeDescriptor) {
-                AttributeDescriptor attributeDescriptor = (AttributeDescriptor) descriptor;
+            if (descriptor instanceof AttributeDescriptor attributeDescriptor) {
 
                 if (skip.contains(attributeDescriptor.getLocalName())) {
                     continue;
@@ -902,8 +892,7 @@ public class GML {
                 if (!anyName.equals(name)) {
                     AttributeType attributeType = attributeDescriptor.getType();
 
-                    if (attributeType instanceof ComplexType) {
-                        ComplexType complexType = (ComplexType) attributeType;
+                    if (attributeType instanceof ComplexType complexType) {
                         // any complex contents must resolve (we cannot encode against
                         // an abstract type for example)
                         if (xsd.resolveTypeDefinition(name.getNamespaceURI(), name.getLocalPart()) == null) {

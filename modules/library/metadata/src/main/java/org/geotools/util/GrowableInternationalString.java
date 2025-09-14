@@ -18,6 +18,7 @@ package org.geotools.util;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -49,6 +50,7 @@ import org.geotools.util.logging.Logging;
  */
 public class GrowableInternationalString extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5760033376627376937L;
 
     /**
@@ -325,8 +327,7 @@ public class GrowableInternationalString extends AbstractInternationalString imp
      * @since 2.3
      */
     public boolean isSubsetOf(final Object candidate) {
-        if (candidate instanceof InternationalString) {
-            final InternationalString string = (InternationalString) candidate;
+        if (candidate instanceof InternationalString string) {
             for (final Map.Entry<Locale, String> entry : localMap.entrySet()) {
                 final Locale locale = entry.getKey();
                 final String text = entry.getValue();
@@ -341,8 +342,7 @@ public class GrowableInternationalString extends AbstractInternationalString imp
                     return false;
                 }
             }
-        } else if (candidate instanceof Map) {
-            final Map<?, ?> map = (Map<?, ?>) candidate;
+        } else if (candidate instanceof Map<?, ?> map) {
             return map.entrySet().containsAll(localMap.entrySet());
         } else {
             return false;

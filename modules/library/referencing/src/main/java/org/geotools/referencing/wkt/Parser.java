@@ -19,6 +19,7 @@ package org.geotools.referencing.wkt;
 import static java.util.Collections.singletonMap;
 
 import java.io.BufferedReader;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -102,6 +103,7 @@ import tech.units.indriya.AbstractUnit;
  */
 public class Parser extends MathTransformParser {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -144097689843465085L;
 
     /**
@@ -212,8 +214,8 @@ public class Parser extends MathTransformParser {
      */
     private CoordinateReferenceSystem parseCoordinateReferenceSystem(final Element element) throws ParseException {
         final Object key = element.peek();
-        if (key instanceof Element) {
-            final String keyword = ((Element) key).keyword.trim().toUpperCase(symbols.locale);
+        if (key instanceof Element element1) {
+            final String keyword = element1.keyword.trim().toUpperCase(symbols.locale);
             CoordinateReferenceSystem r = null;
             try {
                 if ("GEOGCS".equals(keyword)) return r = parseGeoGCS(element);
@@ -243,8 +245,8 @@ public class Parser extends MathTransformParser {
     @Override
     protected Object parse(final Element element) throws ParseException {
         final Object key = element.peek();
-        if (key instanceof Element) {
-            final String keyword = ((Element) key).keyword.trim().toUpperCase(symbols.locale);
+        if (key instanceof Element element1) {
+            final String keyword = element1.keyword.trim().toUpperCase(symbols.locale);
             Object r = null;
             try {
                 if ("AXIS".equals(keyword)) return r = parseAxis(element, SI.METRE, true);

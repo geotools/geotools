@@ -131,17 +131,16 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             datasourceName = DATASOURCE_NAME;
             // datasourceName = GeoTools.fixName(DATASOURCE_NAME);
             hints.put(Hints.EPSG_DATA_SOURCE, datasourceName);
-        } else if (hint instanceof String) {
-            datasourceName = (String) hint;
+        } else if (hint instanceof String string) {
+            datasourceName = string;
             // datasourceName = GeoTools.fixName(datasourceName);
             hints.put(Hints.EPSG_DATA_SOURCE, datasourceName);
-        } else if (hint instanceof Name) {
-            Name name = (Name) hint;
+        } else if (hint instanceof Name name) {
             hints.put(Hints.EPSG_DATA_SOURCE, name);
             datasourceName = name.toString();
             // datasourceName = GeoTools.fixName(name.toString());
-        } else if (hint instanceof DataSource) {
-            datasource = (DataSource) hint;
+        } else if (hint instanceof DataSource source) {
+            datasource = source;
             hints.put(Hints.EPSG_DATA_SOURCE, datasource);
             datasourceName = DATASOURCE_NAME;
             dynamicDataSource = false;
@@ -214,11 +213,11 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
                 dispose();
             } catch (FactoryException exception) {
                 final Throwable cause = exception.getCause();
-                if (cause instanceof SQLException) {
-                    throw (SQLException) cause;
+                if (cause instanceof SQLException lException) {
+                    throw lException;
                 }
-                if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
+                if (cause instanceof RuntimeException runtimeException) {
+                    throw runtimeException;
                 }
                 // Not really an SQL exception, but we should not reach this point anyway.
                 final SQLException e = new SQLException(exception.getLocalizedMessage());
@@ -364,9 +363,8 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
         String url = product;
         try {
             factory = createBackingStore0();
-            if (factory instanceof DirectEpsgFactory) {
-                final DatabaseMetaData info =
-                        ((DirectEpsgFactory) factory).getConnection().getMetaData();
+            if (factory instanceof DirectEpsgFactory epsgFactory) {
+                final DatabaseMetaData info = epsgFactory.getConnection().getMetaData();
                 product = info.getDatabaseProductName();
                 url = info.getURL();
             }
@@ -374,8 +372,8 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_CONNECT_DATABASE_$1, "EPSG"), exception);
         }
         log(Loggings.format(Level.CONFIG, LoggingKeys.CONNECTED_EPSG_DATABASE_$2, url, product));
-        if (factory instanceof DirectEpsgFactory) {
-            ((DirectEpsgFactory) factory).buffered = this;
+        if (factory instanceof DirectEpsgFactory epsgFactory) {
+            epsgFactory.buffered = this;
         }
         return factory;
     }
@@ -396,8 +394,8 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
      */
     @Override
     protected boolean canDisposeBackingStore(final AbstractAuthorityFactory backingStore) {
-        if (backingStore instanceof DirectEpsgFactory) {
-            return ((DirectEpsgFactory) backingStore).canDispose();
+        if (backingStore instanceof DirectEpsgFactory factory) {
+            return factory.canDispose();
         }
         return super.canDisposeBackingStore(backingStore);
     }

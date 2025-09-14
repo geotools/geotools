@@ -18,6 +18,8 @@
  */
 package org.geotools.styling;
 
+import java.io.Serial;
+
 /**
  * An exception that can be thrown by the StyleFactory if it fails to create the implementation of the StyleFactory.
  * $Id: StyleFactoryCreationException.java,v 1.1 2002/10/22 17:02:03 ianturton Exp $
@@ -25,6 +27,7 @@ package org.geotools.styling;
  * @author iant
  */
 public class StyleFactoryCreationException extends java.lang.Exception {
+    @Serial
     private static final long serialVersionUID = -1809128211848169317L;
 
     /** Creates a new instance of <code>StyleFactoryCreationException</code> without detail message. */

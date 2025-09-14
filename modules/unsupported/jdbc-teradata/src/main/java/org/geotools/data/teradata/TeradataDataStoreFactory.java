@@ -146,8 +146,8 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             username = (String) USER.lookUp(params);
         } else if (params.containsKey(DATASOURCE.key)) {
             DataSource dataSource = (DataSource) DATASOURCE.lookUp(params);
-            if (dataSource instanceof BasicDataSource) {
-                username = ((BasicDataSource) dataSource).getUsername();
+            if (dataSource instanceof BasicDataSource source) {
+                username = source.getUsername();
             } else if (dataSource instanceof DBCPDataSource) {
                 try {
                     username = ((BasicDataSource) dataSource.unwrap(DataSource.class)).getUsername();

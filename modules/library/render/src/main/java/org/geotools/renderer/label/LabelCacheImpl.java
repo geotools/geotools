@@ -1446,8 +1446,8 @@ public class LabelCacheImpl implements LabelCache {
         }
         List<LineString> lines = new ArrayList<>();
         geometry.apply((GeometryComponentFilter) g -> {
-            if (g instanceof LineString) {
-                lines.add((LineString) g);
+            if (g instanceof LineString string) {
+                lines.add(string);
             }
         });
 
@@ -1680,8 +1680,7 @@ public class LabelCacheImpl implements LabelCache {
             if (!(g instanceof Point || g instanceof MultiPoint)) // handle
                 // lines,polys, gc, etc..
                 g = g.getCentroid(); // will be point
-            if (g instanceof Point) {
-                Point point = (Point) g;
+            if (g instanceof Point point) {
                 if (displayArea.contains(point.getX(), point.getY()) || partialsEnabled) // this is robust!
                 pts.add(point); // possible label location
             } else if (g instanceof MultiPoint) {
@@ -1800,9 +1799,9 @@ public class LabelCacheImpl implements LabelCache {
 
         // deal with line and multi line string, and finally with geom
         // collection
-        if (g instanceof LineString) {
+        if (g instanceof LineString string) {
             if (g.getLength() != 0) {
-                lines.add((LineString) g);
+                lines.add(string);
                 return 1;
             } else {
                 return 0;
@@ -1844,8 +1843,8 @@ public class LabelCacheImpl implements LabelCache {
             Geometry g = clipper.clip(line, false);
             if (g == null) {
                 return null;
-            } else if (g instanceof LineString) {
-                return line.getFactory().createMultiLineString(new LineString[] {(LineString) g});
+            } else if (g instanceof LineString string) {
+                return line.getFactory().createMultiLineString(new LineString[] {string});
             } else {
                 return (MultiLineString) g;
             }
@@ -1875,8 +1874,8 @@ public class LabelCacheImpl implements LabelCache {
         for (Geometry g : geoms) {
             if (!(g instanceof Polygon || g instanceof MultiPolygon)) continue;
 
-            if (g instanceof Polygon) {
-                polys.add((Polygon) g);
+            if (g instanceof Polygon polygon) {
+                polys.add(polygon);
             } else {
                 // multipoly
                 for (int t = 0; t < g.getNumGeometries(); t++) {
@@ -1956,10 +1955,10 @@ public class LabelCacheImpl implements LabelCache {
 
             clip = poly; // just return the unclipped version
         }
-        if (clip instanceof MultiPolygon) return (MultiPolygon) clip;
-        if (clip instanceof Polygon) {
+        if (clip instanceof MultiPolygon polygon) return polygon;
+        if (clip instanceof Polygon polygon) {
             Polygon[] polys = new Polygon[1];
-            polys[0] = (Polygon) clip;
+            polys[0] = polygon;
             return poly.getFactory().createMultiPolygon(polys);
         }
         // otherwise we've got a point or line&point or empty
@@ -1975,7 +1974,7 @@ public class LabelCacheImpl implements LabelCache {
         Geometry g;
         for (int t = 0; t < gc.getNumGeometries(); t++) {
             g = gc.getGeometryN(t);
-            if (g instanceof Polygon) polys.add((Polygon) g);
+            if (g instanceof Polygon polygon) polys.add(polygon);
             // dont think multiPolygon is possible, but not sure
         }
 

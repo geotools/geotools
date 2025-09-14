@@ -388,10 +388,13 @@ public class NetCDFUtilities {
      */
     public static final Set<DataType> VALID_TYPES = new HashSet<>(12);
 
-    public static final String NC4_ERROR_MESSAGE = "Native NetCDF C library is not available. "
-            + "Unable to handle NetCDF4 files on input/output."
-            + "\nPlease make sure to add the path of the Native NetCDF C libraries to the "
-            + "PATH environment variable\n if you want to support NetCDF4-Classic files";
+    public static final String NC4_ERROR_MESSAGE =
+            """
+            Native NetCDF C library is not available. \
+            Unable to handle NetCDF4 files on input/output.
+            Please make sure to add the path of the Native NetCDF C libraries to the \
+            PATH environment variable
+             if you want to support NetCDF4-Classic files""";
 
     static {
         // TODO remove this block when enhance mode can be set some other way, possibly via read
@@ -649,8 +652,7 @@ public class NetCDFUtilities {
                     // fallback on coordinates attribute for auxiliary coordinates.
                     dimVariable = getAuxiliaryCoordinate(dataset, group, var, dimName);
                 }
-                if (dimVariable instanceof CoordinateAxis1D) {
-                    CoordinateAxis1D axis = (CoordinateAxis1D) dimVariable;
+                if (dimVariable instanceof CoordinateAxis1D axis) {
                     AxisType axisType = axis.getAxisType();
                     if (axisType == null) {
                         return false;
@@ -850,26 +852,24 @@ public class NetCDFUtilities {
      */
     public static NetcdfDataset getDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
-        if (input instanceof URI) {
-            dataset = acquireDataset((URI) input);
-        } else if (input instanceof File) {
-            final File file = (File) input;
+        if (input instanceof URI rI) {
+            dataset = acquireDataset(rI);
+        } else if (input instanceof File file) {
             if (!file.isDirectory()) {
                 dataset = acquireDataset(file.toURI());
             } else {
                 throw new IllegalArgumentException(
                         "Error occurred during NetCDF file reading: The input file is a Directory.");
             }
-        } else if (input instanceof String) {
-            File file = new File((String) input);
+        } else if (input instanceof String string) {
+            File file = new File(string);
             if (!file.isDirectory()) {
                 dataset = acquireDataset(file.toURI());
             } else {
                 throw new IllegalArgumentException(
                         "Error occurred during NetCDF file reading: The input file is a Directory.");
             }
-        } else if (input instanceof URL) {
-            final URL tempURL = (URL) input;
+        } else if (input instanceof URL tempURL) {
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("file")) {
                 File file = ImageIOUtilities.urlToFile(tempURL);
@@ -886,8 +886,7 @@ public class NetCDFUtilities {
                     throw new IOException(e);
                 }
             }
-        } else if (input instanceof AccessibleStream) {
-            final AccessibleStream<?> stream = (AccessibleStream<?>) input;
+        } else if (input instanceof AccessibleStream<?> stream) {
             if (stream.getBinding().isAssignableFrom(File.class)) {
                 @SuppressWarnings("unchecked")
                 AccessibleStream<File> as = (AccessibleStream<File>) input;
@@ -914,24 +913,22 @@ public class NetCDFUtilities {
      * @param input the input to check.
      * @return the file or <code>null</code> if it is not file based.
      */
+    @SuppressWarnings("PMD.CloseResource") // URIImageInputStream
     public static File getFile(Object input) throws IOException {
         File guessedFile = null;
-        if (input instanceof File) {
-            guessedFile = (File) input;
-        } else if (input instanceof String) {
-            guessedFile = new File((String) input);
-        } else if (input instanceof URL) {
-            final URL tempURL = (URL) input;
+        if (input instanceof File file) {
+            guessedFile = file;
+        } else if (input instanceof String string) {
+            guessedFile = new File(string);
+        } else if (input instanceof URL tempURL) {
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("file")) {
                 guessedFile = ImageIOUtilities.urlToFile(tempURL);
             }
-        } else if (input instanceof URIImageInputStream) {
-            final URIImageInputStream uriInStream = (URIImageInputStream) input;
+        } else if (input instanceof URIImageInputStream uriInStream) {
             String uri = uriInStream.getUri().toString();
             guessedFile = new File(uri);
-        } else if (input instanceof AccessibleStream) {
-            final AccessibleStream<?> stream = (AccessibleStream<?>) input;
+        } else if (input instanceof AccessibleStream<?> stream) {
             if (stream.getBinding().isAssignableFrom(File.class)) {
                 @SuppressWarnings("unchecked")
                 AccessibleStream<File> as = (AccessibleStream<File>) input;

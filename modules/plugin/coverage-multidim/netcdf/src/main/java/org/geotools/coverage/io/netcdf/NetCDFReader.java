@@ -176,10 +176,10 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
 
     private URL checkSource(Object input) {
         URL sourceURL = null;
-        if (input instanceof URL) {
-            sourceURL = (URL) input;
-        } else if (input instanceof File) {
-            sourceURL = URLs.fileToUrl((File) input);
+        if (input instanceof URL rL) {
+            sourceURL = rL;
+        } else if (input instanceof File file) {
+            sourceURL = URLs.fileToUrl(file);
         }
         return sourceURL;
     }
@@ -346,10 +346,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     /** Parse a domain */
     private String parseDomain(String name, Object domain) throws IOException {
         name = name.toLowerCase();
-        if (domain instanceof VerticalDomain) {
-
-            // Vertical domain management
-            VerticalDomain verticalDomain = (VerticalDomain) domain;
+        if (domain instanceof VerticalDomain verticalDomain) {
             if (name.endsWith("domain")) {
 
                 // global domain
@@ -371,10 +368,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                     throw new IllegalArgumentException("Unsupported metadata name");
                 }
             }
-        } else if (domain instanceof TemporalDomain) {
-
-            // Temporal domain management
-            TemporalDomain temporalDomain = (TemporalDomain) domain;
+        } else if (domain instanceof TemporalDomain temporalDomain) {
             if (name.endsWith("domain")) {
                 // global domain
                 SortedSet<? extends DateRange> temporalElements = temporalDomain.getTemporalElements(true, null);
@@ -393,10 +387,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                     throw new IllegalArgumentException("Unsupported metadata name");
                 }
             }
-        } else if (domain instanceof AdditionalDomain) {
-
-            // Vertical domain management
-            AdditionalDomain additionalDomain = (AdditionalDomain) domain;
+        } else if (domain instanceof AdditionalDomain additionalDomain) {
             if (name.endsWith("domain")) {
                 Set<Object> elements = additionalDomain.getElements(false, null);
                 return buildElementsList(elements);
@@ -491,8 +482,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
         CoverageReadRequest request = new CoverageReadRequest();
         if (params != null) {
             for (GeneralParameterValue gParam : params) {
-                if (gParam instanceof ParameterValue<?>) {
-                    final ParameterValue<?> param = (ParameterValue<?>) gParam;
+                if (gParam instanceof ParameterValue<?> param) {
                     final ReferenceIdentifier name = param.getDescriptor().getName();
                     try {
                         extractParameter(param, name, request, gridSource);
@@ -536,10 +526,10 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             if (dates != null && !dates.isEmpty()) {
                 SortedSet<DateRange> requestedTemporalSubset = new DateRangeTreeSet();
                 for (Object val : dates) {
-                    if (val instanceof Date) {
-                        requestedTemporalSubset.add(new DateRange((Date) val, (Date) val));
-                    } else if (val instanceof DateRange) {
-                        requestedTemporalSubset.add((DateRange) val);
+                    if (val instanceof Date date) {
+                        requestedTemporalSubset.add(new DateRange(date, date));
+                    } else if (val instanceof DateRange range) {
+                        requestedTemporalSubset.add(range);
                     }
                 }
 
@@ -561,9 +551,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             if (!values.isEmpty()) {
                 Set<NumberRange<Double>> verticalSubset = new DoubleRangeTreeSet();
                 for (Object val : values) {
-                    if (val instanceof Number) {
-                        verticalSubset.add(new NumberRange<>(
-                                Double.class, ((Number) val).doubleValue(), ((Number) val).doubleValue()));
+                    if (val instanceof Number number) {
+                        verticalSubset.add(new NumberRange<>(Double.class, number.doubleValue(), number.doubleValue()));
                     } else if (val instanceof NumberRange) {
                         @SuppressWarnings("unchecked")
                         NumberRange<Double> casted = (NumberRange<Double>) val;
@@ -850,8 +839,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             }
 
             // we do have to change the pixel datum
-            if (gridToWorld instanceof AffineTransform) {
-                final AffineTransform tr = new AffineTransform((AffineTransform) gridToWorld);
+            if (gridToWorld instanceof AffineTransform transform) {
+                final AffineTransform tr = new AffineTransform(transform);
                 tr.concatenate(AffineTransform.getTranslateInstance(-0.5, -0.5));
                 return ProjectiveTransform.create(tr);
             }

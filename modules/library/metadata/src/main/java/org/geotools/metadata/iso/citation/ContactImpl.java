@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import java.io.Serial;
 import net.opengis.ows11.ContactType;
 import org.geotools.api.metadata.citation.Address;
 import org.geotools.api.metadata.citation.Contact;
@@ -38,6 +39,7 @@ import org.geotools.util.SimpleInternationalString;
  */
 public class ContactImpl extends MetadataEntity implements Contact {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3283637180253117382L;
 
     /**

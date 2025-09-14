@@ -112,8 +112,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
 
                 for (Object key : map.keySet()) {
                     // key could be a name or a particle
-                    if (key instanceof XSDParticle) {
-                        XSDParticle particle = (XSDParticle) key;
+                    if (key instanceof XSDParticle particle) {
                         particles.put(Schemas.getParticleName(particle), particle);
                         continue;
                     }
@@ -210,8 +209,8 @@ public class BindingPropertyExtractor implements PropertyExtractor {
                     Collection values = map.get(property[0]);
 
                     QName name;
-                    if (property[0] instanceof XSDParticle) {
-                        name = Schemas.getParticleName((XSDParticle) property[0]);
+                    if (property[0] instanceof XSDParticle particle) {
+                        name = Schemas.getParticleName(particle);
                     } else {
                         name = (QName) property[0];
                     }

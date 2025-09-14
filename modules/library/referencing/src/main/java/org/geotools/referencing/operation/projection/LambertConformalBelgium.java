@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -39,6 +40,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class LambertConformalBelgium extends LambertConformal {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -3441696724046319189L;
 
     /**
@@ -76,6 +78,7 @@ public class LambertConformalBelgium extends LambertConformal {
      */
     public static final class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -6388030784088639876L;
 
         /** The parameters group. */

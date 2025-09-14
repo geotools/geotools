@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
+import java.io.Serial;
 import org.geotools.api.metadata.quality.AbsoluteExternalPositionalAccuracy;
 import org.geotools.api.metadata.quality.Result;
 
@@ -33,6 +34,7 @@ import org.geotools.api.metadata.quality.Result;
 public class AbsoluteExternalPositionalAccuracyImpl extends PositionalAccuracyImpl
         implements AbsoluteExternalPositionalAccuracy {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 4116627805950579738L;
 
     /** Constructs an initially empty absolute external positional accuracy. */

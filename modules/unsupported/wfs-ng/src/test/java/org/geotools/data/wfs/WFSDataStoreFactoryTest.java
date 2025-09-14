@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.data.DataStore;
@@ -52,14 +52,14 @@ public class WFSDataStoreFactoryTest {
     public void setUp() throws Exception {
         dsf = new WFSDataStoreFactory();
         params = new HashMap<>();
-        Files.copy(TestData.openStream(dsf, "tinyows/GetCapabilities.xml"), Paths.get("GetCapabilities.xml"));
+        Files.copy(TestData.openStream(dsf, "tinyows/GetCapabilities.xml"), Path.of("GetCapabilities.xml"));
     }
 
     @After
     public void tearDown() throws Exception {
         dsf = null;
         params = null;
-        Files.deleteIfExists(Paths.get("GetCapabilities.xml"));
+        Files.deleteIfExists(Path.of("GetCapabilities.xml"));
     }
 
     @Test

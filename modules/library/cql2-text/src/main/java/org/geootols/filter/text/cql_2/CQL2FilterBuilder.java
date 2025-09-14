@@ -424,8 +424,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     private Expression popTimeExpression() throws CQLException {
         Result result = getResultStack().popResult();
         Object built = result.getBuilt();
-        if (built instanceof PeriodNode) {
-            PeriodNode pn = (PeriodNode) built;
+        if (built instanceof PeriodNode pn) {
             Position start = new DefaultPosition(pn.getBeginning().evaluate(null, Date.class));
             Position end = new DefaultPosition(pn.getEnding().evaluate(null, Date.class));
             return filterFactory.literal(new DefaultPeriod(new DefaultInstant(start), new DefaultInstant(end)));
@@ -443,8 +442,8 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
         // build a simpler expression in case ex1 is an attribute and ex2 a period
         if (ex1 instanceof PropertyName && ex2 instanceof Literal) {
             Object value = ex2.evaluate(null);
-            if (value instanceof Period) {
-                return filterFactory.before(ex1, filterFactory.literal(getBeginDate((Period) value)));
+            if (value instanceof Period period) {
+                return filterFactory.before(ex1, filterFactory.literal(getBeginDate(period)));
             }
         }
         return filterFactory.before(ex1, ex2);
@@ -466,8 +465,8 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
         // same reasoning as in buildBeforeDate
         if (ex1 instanceof PropertyName && ex2 instanceof Literal) {
             Object value = ex2.evaluate(null);
-            if (value instanceof Period) {
-                return filterFactory.after(ex1, filterFactory.literal(getEndDate((Period) value)));
+            if (value instanceof Period period) {
+                return filterFactory.after(ex1, filterFactory.literal(getEndDate(period)));
             }
         }
 

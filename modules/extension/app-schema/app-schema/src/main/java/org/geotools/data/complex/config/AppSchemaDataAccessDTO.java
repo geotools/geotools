@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex.config;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +41,7 @@ import org.geotools.util.CheckedHashSet;
  * @since 2.4
  */
 public class AppSchemaDataAccessDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = -8649884546130644668L;
 
     /** Url used as base path to resolve relative file names in {@link #targetSchemasUris} */

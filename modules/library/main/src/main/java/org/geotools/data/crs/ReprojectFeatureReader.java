@@ -123,11 +123,10 @@ public class ReprojectFeatureReader implements DelegatingFeatureReader<SimpleFea
         this.reader = reader;
         this.transformers = new HashMap<>();
         for (int i = 0; i < originalType.getDescriptors().size(); i++) {
-            if (originalType.getDescriptor(i) instanceof GeometryDescriptor) {
-                GeometryDescriptor descr = (GeometryDescriptor) originalType.getDescriptor(i);
-                CoordinateReferenceSystem original = descr.getCoordinateReferenceSystem();
-                CoordinateReferenceSystem target =
-                        ((GeometryDescriptor) schema.getDescriptor(descr.getName())).getCoordinateReferenceSystem();
+            if (originalType.getDescriptor(i) instanceof GeometryDescriptor origDescriptor) {
+                CoordinateReferenceSystem original = origDescriptor.getCoordinateReferenceSystem();
+                CoordinateReferenceSystem target = ((GeometryDescriptor) schema.getDescriptor(origDescriptor.getName()))
+                        .getCoordinateReferenceSystem();
                 if (!CRS.equalsIgnoreMetadata(original, target)) {
                     GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
                     transformer.setMathTransform(CRS.findMathTransform(original, target, true));
@@ -188,14 +187,14 @@ public class ReprojectFeatureReader implements DelegatingFeatureReader<SimpleFea
 
         try {
             for (int i = 0; i < schema.getDescriptors().size(); i++) {
-                if (schema.getDescriptor(i) instanceof GeometryDescriptor && attributes[i] instanceof Geometry) {
-                    GeometryDescriptor descr = (GeometryDescriptor) originalType.getDescriptor(i);
-                    GeometryCoordinateSequenceTransformer transformer = getTransformer(descr.getName());
+                if (schema.getDescriptor(i) instanceof GeometryDescriptor targetDescriptor
+                        && attributes[i] instanceof Geometry geometry) {
+                    GeometryCoordinateSequenceTransformer transformer = getTransformer(targetDescriptor.getName());
                     if (transformer != null) {
-                        attributes[i] = transformer.transform((Geometry) attributes[i]);
-                        JTS.setCRS(
-                                (Geometry) attributes[i],
-                                ((GeometryDescriptor) schema.getDescriptor(i)).getCoordinateReferenceSystem());
+                        geometry = transformer.transform(geometry);
+                        CoordinateReferenceSystem target = targetDescriptor.getCoordinateReferenceSystem();
+                        JTS.setCRS(geometry, target);
+                        attributes[i] = geometry;
                     }
                 }
             }

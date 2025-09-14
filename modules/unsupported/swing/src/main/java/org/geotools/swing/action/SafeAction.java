@@ -17,6 +17,7 @@
 package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 import javax.swing.AbstractAction;
 import org.geotools.swing.dialog.JExceptionReporter;
 
@@ -27,6 +28,7 @@ import org.geotools.swing.dialog.JExceptionReporter;
  * exception handling code (gasp!). TODO: provide a background Runnable...
  */
 public abstract class SafeAction extends AbstractAction {
+    @Serial
     private static final long serialVersionUID = 1118122797759176800L;
 
     /**

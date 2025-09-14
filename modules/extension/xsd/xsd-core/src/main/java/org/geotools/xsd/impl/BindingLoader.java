@@ -52,12 +52,12 @@ public class BindingLoader {
         if (o == null) {
             return null;
         }
-        if (o instanceof ComponentAdapter) {
-            return (Binding) ((ComponentAdapter) o).getComponentInstance(context);
+        if (o instanceof ComponentAdapter adapter) {
+            return (Binding) adapter.getComponentInstance(context);
         }
 
-        if (o instanceof Class) {
-            return loadBinding(qName, (Class) o, context);
+        if (o instanceof Class class1) {
+            return loadBinding(qName, class1, context);
         }
 
         return (Binding) o;
@@ -88,12 +88,12 @@ public class BindingLoader {
             return null;
         }
 
-        if (o instanceof ComponentAdapter) {
-            return (ComponentAdapter) o;
+        if (o instanceof ComponentAdapter adapter) {
+            return adapter;
         }
 
-        if (o instanceof Class) {
-            return new ConstructorInjectionComponentAdapter(null, (Class) o);
+        if (o instanceof Class class1) {
+            return new ConstructorInjectionComponentAdapter(null, class1);
         }
 
         return new InstanceComponentAdapter(null, o);

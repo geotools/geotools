@@ -154,8 +154,8 @@ public class FeatureTypeMapping {
     public List<NestedAttributeMapping> getNestedMappings() {
         List<NestedAttributeMapping> mappings = new ArrayList<>();
         for (AttributeMapping mapping : attributeMappings) {
-            if (mapping instanceof NestedAttributeMapping) {
-                mappings.add((NestedAttributeMapping) mapping);
+            if (mapping instanceof NestedAttributeMapping attributeMapping) {
+                mappings.add(attributeMapping);
             }
         }
         return mappings;
@@ -251,8 +251,8 @@ public class FeatureTypeMapping {
     }
 
     public FeatureTypeMapping getUnderlyingComplexMapping() {
-        if (source instanceof MappingFeatureSource) {
-            return ((MappingFeatureSource) source).getMapping();
+        if (source instanceof MappingFeatureSource featureSource) {
+            return featureSource.getMapping();
         }
         return null;
     }

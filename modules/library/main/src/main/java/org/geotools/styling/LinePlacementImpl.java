@@ -165,8 +165,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
             return true;
         }
 
-        if (obj instanceof LinePlacementImpl) {
-            LinePlacementImpl other = (LinePlacementImpl) obj;
+        if (obj instanceof LinePlacementImpl other) {
 
             return Utilities.equals(perpendicularOffset, other.perpendicularOffset)
                     && Utilities.equals(repeated, other.repeated)
@@ -209,10 +208,10 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
     static LinePlacementImpl cast(org.geotools.api.style.LabelPlacement placement) {
         if (placement == null) {
             return null;
-        } else if (placement instanceof LinePlacementImpl) {
-            return (LinePlacementImpl) placement;
-        } else if (placement instanceof LinePlacement) {
-            LinePlacementImpl copy = new LinePlacementImpl((LinePlacement) placement);
+        } else if (placement instanceof LinePlacementImpl impl) {
+            return impl;
+        } else if (placement instanceof LinePlacement linePlacement) {
+            LinePlacementImpl copy = new LinePlacementImpl(linePlacement);
             return copy;
         }
         return null;

@@ -20,6 +20,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.cos;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.logging.Level;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
@@ -60,6 +61,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class EquidistantCylindrical extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -848975059471102069L;
 
     /** Cosinus of the {@code "standard_parallel_1"} parameter. */
@@ -180,6 +182,7 @@ public class EquidistantCylindrical extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -278288251842178001L;
 
         /**
@@ -250,6 +253,7 @@ public class EquidistantCylindrical extends MapProjection {
      */
     public static class SphericalProvider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 8929981563074475828L;
 
         /**

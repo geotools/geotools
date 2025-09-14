@@ -115,9 +115,8 @@ public class GeoParquetTestSupportTest {
             stmt.execute("install parquet");
             stmt.execute("load parquet");
 
-            String sql = String.format(
-                    "SELECT decode(value) AS value FROM parquet_kv_metadata('%s') where key = 'geo'",
-                    pointsFile.getAbsolutePath());
+            String sql = "SELECT decode(value) AS value FROM parquet_kv_metadata('%s') where key = 'geo'"
+                    .formatted(pointsFile.getAbsolutePath());
 
             String metadataJson;
             try (ResultSet rs = stmt.executeQuery(sql)) {

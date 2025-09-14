@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
+import java.io.Serial;
+
 /**
  * Throws when a coverage operation failed.
  *
@@ -26,6 +28,7 @@ package org.geotools.coverage.processing;
  */
 public class CoverageProcessingException extends RuntimeException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -2199436135615396946L;
 
     /** Creates a new exception without detail message. */

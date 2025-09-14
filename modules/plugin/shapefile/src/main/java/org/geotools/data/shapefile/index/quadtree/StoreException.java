@@ -17,10 +17,12 @@
 package org.geotools.data.shapefile.index.quadtree;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /** @author Tommaso Nolli */
 public class StoreException extends IOException {
 
+    @Serial
     private static final long serialVersionUID = -3356954193373344773L;
 
     public StoreException() {

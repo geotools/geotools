@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -50,6 +51,7 @@ import java.util.Set;
  */
 public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7933552571588598563L;
 
     /**

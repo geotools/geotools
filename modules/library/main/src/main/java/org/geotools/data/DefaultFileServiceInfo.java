@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.io.Serial;
 import java.util.List;
 import org.geotools.api.data.CloseableIterator;
 import org.geotools.api.data.FileServiceInfo;
@@ -28,6 +29,7 @@ import org.geotools.api.data.Query;
 public class DefaultFileServiceInfo extends DefaultServiceInfo implements FileServiceInfo {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 3278465948006711812L;
 
     protected List<FileGroup> files;

@@ -16,6 +16,7 @@
  */
 package org.geotools.data.vpf.io;
 
+import java.io.Serial;
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 
 /**
@@ -27,6 +28,7 @@ import org.geotools.data.vpf.ifc.DataTypesDefinition;
  */
 public class RowField extends Number implements DataTypesDefinition {
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = -4223958125941532737L;
 
     /** Describe variable <code>value</code> here. */

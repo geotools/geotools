@@ -16,8 +16,11 @@
  */
 package org.geotools.data.elasticsearch;
 
+import java.io.Serial;
+
 class FilterToElasticException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1819999351118120451L;
 
     public FilterToElasticException(String msg, Throwable exp) {

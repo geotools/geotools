@@ -1539,7 +1539,7 @@ public class ImageMosaicFootprintsTest {
 
         // Let's copy the sample WKB to N different files
         for (int i = 0; i < numberOfSamples; i++) {
-            String newName = fileName.replace("c1", String.format("c%03d", i));
+            String newName = fileName.replace("c1", "c%03d".formatted(i));
             File ithFile = new File(newFolder, newName);
             FileUtils.copyFile(footprintFile, ithFile);
             File ithFootprintFile = new File(newFolder, FilenameUtils.getBaseName(newName));

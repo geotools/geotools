@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
+import java.io.Serial;
 import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
 
 /**
@@ -30,6 +31,7 @@ import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
  */
 public class CoordinateReferenceSystemSerializer extends StdSerializer<CoordinateReferenceSystem> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Creates a new serializer instance. */

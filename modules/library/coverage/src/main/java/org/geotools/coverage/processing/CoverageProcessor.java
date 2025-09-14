@@ -256,8 +256,8 @@ public class CoverageProcessor {
     final void log(final Coverage source, final Coverage result, final String operationName, final boolean fromCache) {
         if (source != result) {
             String interp = "Nearest";
-            if (result instanceof Interpolator2D) {
-                interp = ImageUtilities.getInterpolationName(((Interpolator2D) result).getInterpolation());
+            if (result instanceof Interpolator2D interpolator2D) {
+                interp = ImageUtilities.getInterpolationName(interpolator2D.getInterpolation());
             }
             final Locale locale = getLocale();
             final LogRecord record = Loggings.getResources(locale)
@@ -296,8 +296,8 @@ public class CoverageProcessor {
 
     /** Returns the coverage name in the specified locale. */
     private static String getName(final Coverage coverage, final Locale locale) {
-        if (coverage instanceof AbstractCoverage) {
-            final InternationalString name = ((AbstractCoverage) coverage).getName();
+        if (coverage instanceof AbstractCoverage abstractCoverage) {
+            final InternationalString name = abstractCoverage.getName();
             if (name != null) {
                 return name.toString(locale);
             }
@@ -316,8 +316,8 @@ public class CoverageProcessor {
         final CoverageParameterWriter writer = new CoverageParameterWriter(out);
         final List<ParameterDescriptorGroup> descriptors = new ArrayList<>(operations.size());
         for (final Operation operation : operations) {
-            if (operation instanceof AbstractOperation) {
-                descriptors.add(((AbstractOperation) operation).descriptor);
+            if (operation instanceof AbstractOperation abstractOperation) {
+                descriptors.add(abstractOperation.descriptor);
             }
         }
         writer.summary(descriptors, null);
@@ -339,17 +339,17 @@ public class CoverageProcessor {
         if (names != null) {
             for (String name : names) {
                 final Operation operation = getOperation(name);
-                if (operation instanceof AbstractOperation) {
+                if (operation instanceof AbstractOperation abstractOperation) {
                     out.write(lineSeparator);
-                    writer.format(((AbstractOperation) operation).descriptor);
+                    writer.format(abstractOperation.descriptor);
                 }
             }
         } else {
             final Collection<Operation> operations = getOperations();
             for (final Operation operation : operations) {
-                if (operation instanceof AbstractOperation) {
+                if (operation instanceof AbstractOperation abstractOperation) {
                     out.write(lineSeparator);
-                    writer.format(((AbstractOperation) operation).descriptor);
+                    writer.format(abstractOperation.descriptor);
                 }
             }
         }
@@ -469,13 +469,13 @@ public class CoverageProcessor {
         Interpolation[] interpolations = null;
         if (!operationName.equalsIgnoreCase("Interpolate")) {
             for (final GeneralParameterValue param : parameters.values()) {
-                if (param instanceof ParameterValue) {
-                    final Object value = ((ParameterValue) param).getValue();
-                    if (value instanceof Interpolator2D) {
+                if (param instanceof ParameterValue parameterValue) {
+                    final Object value = parameterValue.getValue();
+                    if (value instanceof Interpolator2D interpolator2D) {
                         // If all sources use the same interpolation, preserves the
                         // interpolation for the resulting coverage. Otherwise, uses
                         // the default interpolation (nearest neighbor).
-                        final Interpolation[] interp = ((Interpolator2D) value).getInterpolations();
+                        final Interpolation[] interp = interpolator2D.getInterpolations();
                         if (interpolations == null) {
                             interpolations = interp;
                         } else if (!Arrays.equals(interpolations, interp)) {
@@ -509,8 +509,10 @@ public class CoverageProcessor {
 
         // processwith local hints
         Coverage coverage = op.doOperation(parameters, localMergeHints);
-        if (interpolations != null && coverage instanceof GridCoverage2D && !(coverage instanceof Interpolator2D)) {
-            coverage = Interpolator2D.create((GridCoverage2D) coverage, interpolations);
+        if (interpolations != null
+                && coverage instanceof GridCoverage2D coverage2D
+                && !(coverage instanceof Interpolator2D)) {
+            coverage = Interpolator2D.create(coverage2D, interpolations);
         }
         log(source, coverage, operationName, false);
         return coverage;

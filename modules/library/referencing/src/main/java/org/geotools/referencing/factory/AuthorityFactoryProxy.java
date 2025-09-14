@@ -149,8 +149,7 @@ abstract class AuthorityFactoryProxy {
         /*
          * Checks for some special cases for which a fast implementation is available.
          */
-        if (factory instanceof CRSAuthorityFactory) {
-            final CRSAuthorityFactory crsFactory = (CRSAuthorityFactory) factory;
+        if (factory instanceof CRSAuthorityFactory crsFactory) {
             if (type.equals(ProjectedCRS.class)) return new Projected(crsFactory);
             if (type.equals(GeographicCRS.class)) return new Geographic(crsFactory);
             if (type.equals(CoordinateReferenceSystem.class)) return new CRS(crsFactory);
@@ -283,14 +282,14 @@ abstract class AuthorityFactoryProxy {
                 return (IdentifiedObject) method.invoke(factory, code);
             } catch (InvocationTargetException exception) {
                 final Throwable cause = exception.getCause();
-                if (cause instanceof FactoryException) {
-                    throw (FactoryException) cause;
+                if (cause instanceof FactoryException factoryException) {
+                    throw factoryException;
                 }
-                if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
+                if (cause instanceof RuntimeException runtimeException) {
+                    throw runtimeException;
                 }
-                if (cause instanceof Error) {
-                    throw (Error) cause;
+                if (cause instanceof Error error) {
+                    throw error;
                 }
                 throw new FactoryException(cause.getLocalizedMessage(), cause);
             } catch (IllegalAccessException exception) {

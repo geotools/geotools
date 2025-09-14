@@ -107,21 +107,19 @@ public abstract class RenderingTransformationHelper {
         // check if it's a wrapper coverage or a wrapped reader
         FeatureType schema = featureSource.getSchema();
         boolean isRasterSource = false;
-        if (featureSource instanceof SimpleFeatureSource) {
+        if (featureSource instanceof SimpleFeatureSource source) {
             SimpleFeatureType simpleSchema = (SimpleFeatureType) schema;
             if (FeatureUtilities.isWrappedCoverage(simpleSchema)
                     || FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
                 isRasterSource = true;
-                result = readFromRaster(
-                        transformation, (SimpleFeatureSource) featureSource, renderingQuery, gridGeometry, hints);
+                result = readFromRaster(transformation, source, renderingQuery, gridGeometry, hints);
             }
         }
 
         if (result == null && !isRasterSource) {
             // it's a transformation starting from vector data, see if we can optimize the query
             Query optimizedQuery = null;
-            if (transformation instanceof RenderingTransformation) {
-                RenderingTransformation tx = (RenderingTransformation) transformation;
+            if (transformation instanceof RenderingTransformation tx) {
                 optimizedQuery = tx.invertQuery(renderingQuery, gridGeometry);
             }
             // if we could not find an optimized query no other choice but to just limit
@@ -138,8 +136,8 @@ public abstract class RenderingTransformationHelper {
             Query mixedQuery = DataUtilities.mixQueries(layerQuery, optimizedQuery, null);
             FeatureCollection originalFeatures = featureSource.getFeatures(mixedQuery);
             if (featureSource.getSupportedHints().contains(Hints.GEOMETRY_CLIP)
-                    && originalFeatures instanceof SimpleFeatureCollection) {
-                originalFeatures = new ClippingFeatureCollection((SimpleFeatureCollection) originalFeatures);
+                    && originalFeatures instanceof SimpleFeatureCollection collection) {
+                originalFeatures = new ClippingFeatureCollection(collection);
             }
             originalFeatures = RendererUtilities.fixFeatureCollectionReferencing(originalFeatures, sourceCrs);
 
@@ -183,8 +181,7 @@ public abstract class RenderingTransformationHelper {
                 readGG = updateGridGeometryToNativeResolution(gridGeometry, reader, readGG);
             }
 
-            if (transformation instanceof RenderingTransformation) {
-                RenderingTransformation tx = (RenderingTransformation) transformation;
+            if (transformation instanceof RenderingTransformation tx) {
 
                 Query invertQuery = new Query(renderingQuery);
                 if (hints != null && hints.containsKey(KEY_INTERPOLATION))
@@ -237,8 +234,7 @@ public abstract class RenderingTransformationHelper {
                 if (coverage != null) {
                     // we might also need to scale the coverage to the desired resolution
                     MathTransform2D coverageTx = readGG.getGridToCRS2D();
-                    if (coverageTx instanceof AffineTransform) {
-                        AffineTransform coverageAt = (AffineTransform) coverageTx;
+                    if (coverageTx instanceof AffineTransform coverageAt) {
                         AffineTransform renderingAt = (AffineTransform) gridGeometry.getGridToCRS2D();
                         // we adjust the scale only if we have many more pixels than
                         // required (30% or more)
@@ -261,8 +257,7 @@ public abstract class RenderingTransformationHelper {
                 }
             }
 
-            if (transformation instanceof RenderingTransformation) {
-                RenderingTransformation tx = (RenderingTransformation) transformation;
+            if (transformation instanceof RenderingTransformation tx) {
                 if (tx.clipOnRenderingArea() && originalRendingEnvelope != null) {
                     // clip the coverage to the rendering area
                     coverage = cropCoverage(coverage, originalRendingEnvelope);
@@ -279,8 +274,7 @@ public abstract class RenderingTransformationHelper {
 
     private static void updateGridGeometryParam(GeneralParameterValue[] params, GridGeometry2D readGG) {
         for (GeneralParameterValue gp : params) {
-            if (gp instanceof ParameterValue) {
-                final ParameterValue param = (ParameterValue) gp;
+            if (gp instanceof ParameterValue param) {
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     param.setValue(readGG);
@@ -294,8 +288,7 @@ public abstract class RenderingTransformationHelper {
         // GEOS-8070, changed the pixel anchor to corner. CENTER can cause issues
         // with the BBOX calculation and cause it to be incorrect
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        if (g2w instanceof AffineTransform2D && readGG.getGridToCRS2D() instanceof AffineTransform2D) {
-            AffineTransform2D atOriginal = (AffineTransform2D) g2w;
+        if (g2w instanceof AffineTransform2D atOriginal && readGG.getGridToCRS2D() instanceof AffineTransform2D) {
             AffineTransform2D atMap = (AffineTransform2D) readGG.getGridToCRS2D();
             if (XAffineTransform.getScale(atMap) < XAffineTransform.getScale(atOriginal)) {
                 // we need to go trough some convoluted code to make sure the new

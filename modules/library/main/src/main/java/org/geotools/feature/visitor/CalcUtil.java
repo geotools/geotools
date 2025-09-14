@@ -165,9 +165,7 @@ public class CalcUtil {
 
     /** Casts an object to the specified type */
     static Object convert(Object var, Class type) {
-        if (var instanceof Number) { // use number conversion
-
-            Number newNum = (Number) var;
+        if (var instanceof Number newNum) {
 
             if (type == Integer.class) {
                 return Integer.valueOf(newNum.intValue());
@@ -215,8 +213,8 @@ public class CalcUtil {
             } else {
                 return null;
             }
-        } else if (newVar instanceof String) {
-            return (String) newVar;
+        } else if (newVar instanceof String string) {
+            return string;
         } else {
             // TODO: add other classes
             return null;

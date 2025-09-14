@@ -22,6 +22,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serial;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -193,6 +194,7 @@ public class MapLayerTable extends JPanel {
     private void initComponents() {
         listModel = new DnDListModel<>();
         list = new DnDList<>(listModel) {
+            @Serial
             private static final long serialVersionUID = 1289744440656016412L;
             /*
              * We override setToolTipText to provide tool tips
@@ -336,8 +338,7 @@ public class MapLayerTable extends JPanel {
      * @param layer the layer to be styled
      */
     private void doSetStyle(Layer layer) {
-        if (layer instanceof StyleLayer) {
-            StyleLayer styleLayer = (StyleLayer) layer;
+        if (layer instanceof StyleLayer styleLayer) {
             Style style = JSimpleStyleDialog.showDialog(this, styleLayer);
             if (style != null) {
                 styleLayer.setStyle(style);

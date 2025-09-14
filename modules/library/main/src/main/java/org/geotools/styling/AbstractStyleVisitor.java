@@ -62,10 +62,10 @@ public class AbstractStyleVisitor implements StyleVisitor {
     @Override
     public void visit(StyledLayerDescriptor sld) {
         for (StyledLayer sl : sld.getStyledLayers()) {
-            if (sl instanceof UserLayer) {
-                ((UserLayer) sl).accept(this);
-            } else if (sl instanceof NamedLayer) {
-                ((NamedLayer) sl).accept(this);
+            if (sl instanceof UserLayer layer1) {
+                layer1.accept(this);
+            } else if (sl instanceof NamedLayer layer) {
+                layer.accept(this);
             }
         }
     }
@@ -133,16 +133,16 @@ public class AbstractStyleVisitor implements StyleVisitor {
 
     @Override
     public void visit(Symbolizer sym) {
-        if (sym instanceof RasterSymbolizer) {
-            visit((RasterSymbolizer) sym);
-        } else if (sym instanceof LineSymbolizer) {
-            visit((LineSymbolizer) sym);
-        } else if (sym instanceof PolygonSymbolizer) {
-            visit((PolygonSymbolizer) sym);
-        } else if (sym instanceof PointSymbolizer) {
-            visit((PointSymbolizer) sym);
-        } else if (sym instanceof TextSymbolizer) {
-            visit((TextSymbolizer) sym);
+        if (sym instanceof RasterSymbolizer symbolizer4) {
+            visit(symbolizer4);
+        } else if (sym instanceof LineSymbolizer symbolizer3) {
+            visit(symbolizer3);
+        } else if (sym instanceof PolygonSymbolizer symbolizer2) {
+            visit(symbolizer2);
+        } else if (sym instanceof PointSymbolizer symbolizer1) {
+            visit(symbolizer1);
+        } else if (sym instanceof TextSymbolizer symbolizer) {
+            visit(symbolizer);
         } else {
             throw new RuntimeException("visit(Symbolizer) unsupported");
         }

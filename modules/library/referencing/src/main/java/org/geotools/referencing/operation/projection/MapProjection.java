@@ -34,6 +34,7 @@ import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -98,6 +99,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
     public static boolean SKIP_SANITY_CHECKS = false;
 
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -406751619777246914L;
 
     /** The projection package logger */
@@ -359,8 +361,8 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
          */
         double v;
         final Object value = param.getDefaultValue();
-        if (value instanceof Number) {
-            v = ((Number) value).doubleValue();
+        if (value instanceof Number number) {
+            v = number.doubleValue();
             if (NonSI.DEGREE_ANGLE.equals(param.getUnit())) {
                 v = toRadians(v);
             }
@@ -477,8 +479,8 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
         }
         final LogRecord record = new LogRecord(Level.WARNING, buffer.toString());
         final String classe;
-        if (tr instanceof Inverse) {
-            classe = ((Inverse) tr).inverse().getClass().getName() + ".Inverse";
+        if (tr instanceof Inverse inverse1) {
+            classe = inverse1.inverse().getClass().getName() + ".Inverse";
         } else {
             classe = tr.getClass().getName();
         }
@@ -955,6 +957,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
      */
     private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -9138242780765956870L;
 
         /** Default constructor. */
@@ -1323,6 +1326,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
      */
     public abstract static class AbstractProvider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = 6280666068007678702L;
 
         /**

@@ -421,8 +421,8 @@ public interface DataAccessFactory extends Factory {
                 return null;
             }
 
-            if (value instanceof String && type != String.class) {
-                value = handle((String) value);
+            if (value instanceof String string && type != String.class) {
+                value = handle(string);
             }
 
             if (value == null) {

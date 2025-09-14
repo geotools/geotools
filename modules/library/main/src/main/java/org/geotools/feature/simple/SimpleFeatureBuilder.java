@@ -141,8 +141,8 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         this.featureType = featureType;
         this.factory = factory;
 
-        if (featureType instanceof SimpleFeatureTypeImpl) {
-            index = ((SimpleFeatureTypeImpl) featureType).index;
+        if (featureType instanceof SimpleFeatureTypeImpl impl) {
+            index = impl.index;
         } else {
             this.index = SimpleFeatureTypeImpl.buildIndex(featureType);
         }
@@ -175,8 +175,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         reset();
 
         // optimize the case in which we just build
-        if (feature instanceof SimpleFeatureImpl) {
-            SimpleFeatureImpl impl = (SimpleFeatureImpl) feature;
+        if (feature instanceof SimpleFeatureImpl impl) {
             System.arraycopy(impl.values, 0, values, 0, impl.values.length);
 
             if (impl.userData != null) {
@@ -383,14 +382,12 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         final int ATTRIBUTE_COUNT = type.getAttributeCount();
         final int VALUE_COUNT = values.size();
         if (ATTRIBUTE_COUNT < VALUE_COUNT) {
-            LOGGER.fine(String.format(
-                    "%s '%s' limited to the first %d values, out of a total %d values provided",
-                    type.getTypeName(), id, ATTRIBUTE_COUNT, VALUE_COUNT));
+            LOGGER.fine("%s '%s' limited to the first %d values, out of a total %d values provided"
+                    .formatted(type.getTypeName(), id, ATTRIBUTE_COUNT, VALUE_COUNT));
             values = values.subList(0, type.getAttributeCount());
         } else if (ATTRIBUTE_COUNT > VALUE_COUNT) {
-            LOGGER.fine(String.format(
-                    "%s '%s' used the first %d values, using default values for remaining %d attributes.",
-                    type.getTypeName(), id, VALUE_COUNT, ATTRIBUTE_COUNT - VALUE_COUNT));
+            LOGGER.fine("%s '%s' used the first %d values, using default values for remaining %d attributes."
+                    .formatted(type.getTypeName(), id, VALUE_COUNT, ATTRIBUTE_COUNT - VALUE_COUNT));
             values = new ArrayList<>(values);
             values.addAll(Collections.nCopies(ATTRIBUTE_COUNT - VALUE_COUNT, null));
         }
@@ -431,8 +428,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
             Object value = property.getValue();
             try {
                 Object copy = value;
-                if (value instanceof Geometry) {
-                    Geometry geometry = (Geometry) value;
+                if (value instanceof Geometry geometry) {
                     copy = geometry.copy();
                 }
                 builder.set(property.getName(), copy);

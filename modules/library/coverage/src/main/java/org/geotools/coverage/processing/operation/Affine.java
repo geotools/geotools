@@ -19,6 +19,7 @@ package org.geotools.coverage.processing.operation;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.imagen.Interpolation;
@@ -51,6 +52,7 @@ import org.geotools.util.factory.GeoTools;
 public class Affine extends BaseScaleOperationJAI {
 
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 1699623079343108288L;
 
     /** Default constructor. */
@@ -148,8 +150,8 @@ public class Affine extends BaseScaleOperationJAI {
 
         // Setting ROI if present
         PropertyGenerator propertyGenerator = null;
-        if (data instanceof RenderedOp) {
-            String operationName = ((RenderedOp) data).getOperationName();
+        if (data instanceof RenderedOp op) {
+            String operationName = op.getOperationName();
             if (operationName.equalsIgnoreCase(AFFINE)
                     || operationName.equalsIgnoreCase(SCALE)
                     || operationName.equalsIgnoreCase(TRANSLATE)) {
@@ -158,8 +160,8 @@ public class Affine extends BaseScaleOperationJAI {
             }
             if (propertyGenerator != null) {
                 Object roiProp = propertyGenerator.getProperty(ROI, data);
-                if (roiProp != null && roiProp instanceof ROI) {
-                    CoverageUtilities.setROIProperty(properties, (ROI) roiProp);
+                if (roiProp != null && roiProp instanceof ROI oI) {
+                    CoverageUtilities.setROIProperty(properties, oI);
                 }
             }
         }

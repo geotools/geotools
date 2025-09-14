@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +42,7 @@ import org.geotools.referencing.AbstractIdentifiedObject;
  */
 public class DefaultCompoundCS extends AbstractCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -5726410275278843372L;
 
     /** The coordinate systems. */

@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ import javax.swing.JPanel;
 import org.eclipse.imagen.media.viewer.ImageViewer;
 
 class ReferenceImageDialog extends JDialog {
+    @Serial
     private static final long serialVersionUID = -8640087805737551918L;
 
     boolean accept = false;

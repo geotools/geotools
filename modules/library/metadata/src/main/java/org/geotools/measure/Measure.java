@@ -16,6 +16,7 @@
  */
 package org.geotools.measure;
 
+import java.io.Serial;
 import javax.measure.Unit;
 import org.geotools.util.Utilities;
 
@@ -28,6 +29,7 @@ import org.geotools.util.Utilities;
  */
 public final class Measure extends Number {
     /** For compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 6917234039472328164L;
 
     /** The scalar value. */
@@ -102,8 +104,7 @@ public final class Measure extends Number {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof Measure) {
-            final Measure that = (Measure) object;
+        if (object instanceof Measure that) {
             return Utilities.equals(value, that.value) && Utilities.equals(unit, that.unit);
         }
         return false;

@@ -255,7 +255,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         else {
             final ConcatenatedTransform tr = (ConcatenatedTransform) mt;
             final MathTransform m1 = tr.transform1, m2 = tr.transform2;
-            if (m1 instanceof MapProjection) projTransf = (MapProjection) m1;
+            if (m1 instanceof MapProjection projection) projTransf = projection;
             else projTransf = (MapProjection) m2;
         }
 
@@ -360,8 +360,7 @@ public final class CRS2GeoTiffMetadataAdapter {
             // params
             List<GeneralParameterValue> values = parameters.values();
             for (GeneralParameterValue value : values) {
-                if (value instanceof ParameterValue) {
-                    ParameterValue<?> paramValue = (ParameterValue<?>) value;
+                if (value instanceof ParameterValue<?> paramValue) {
                     if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "latitude_of_origin")) {
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjNatOriginLatGeoKey, paramValue.doubleValue());
                     } else if (AbstractIdentifiedObject.nameMatches(value.getDescriptor(), "central_meridian")) {

@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractList;
 
@@ -50,6 +51,7 @@ import java.util.AbstractList;
  */
 public class UnmodifiableArrayList<E> extends AbstractList<E> implements CheckedCollection<E>, Serializable {
     /** For compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = -3605810209653785967L;
 
     /** The wrapped array. */

@@ -20,6 +20,7 @@ import au.com.objectix.jgridshift.GridShift;
 import au.com.objectix.jgridshift.GridShiftFile;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
@@ -62,6 +63,7 @@ import org.geotools.util.logging.Logging;
 public class NTv2Transform extends AbstractMathTransform implements MathTransform2D, Serializable {
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3082112044314062512L;
 
     /** Logger */
@@ -289,6 +291,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
      */
     private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D, Serializable {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -4707304160205218546L;
 
         /** Default constructor. */
@@ -338,6 +341,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
      */
     public static class Provider extends MathTransformProvider {
 
+        @Serial
         private static final long serialVersionUID = -3710592152744574801L;
 
         /**

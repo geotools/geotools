@@ -216,8 +216,8 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
             CoordinateReferenceSystem crs = ((GeometryType) attType.getType()).getCoordinateReferenceSystem();
             if (crs != null) {
                 // must be geometry, but check anyway
-                if (value != null && value instanceof Geometry) {
-                    ((Geometry) value).setUserData(crs);
+                if (value != null && value instanceof Geometry geometry) {
+                    geometry.setUserData(crs);
                 }
             }
         }

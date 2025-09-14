@@ -27,8 +27,8 @@ public class GDALResourceInfo extends DefaultResourceInfo implements PAMResource
 
     public GDALResourceInfo(ResourceInfo resourceInfo) {
         super(resourceInfo);
-        if (resourceInfo instanceof GDALResourceInfo) {
-            this.pamDataset = ((GDALResourceInfo) resourceInfo).getPAMDataset();
+        if (resourceInfo instanceof GDALResourceInfo info) {
+            this.pamDataset = info.getPAMDataset();
         }
     }
 

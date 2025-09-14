@@ -122,22 +122,24 @@ public class LongitudeFirstFactoryOverrideTest {
         CoordinateOperation operation =
                 CRS.getCoordinateOperationFactory(true).createOperation(crs5681, DefaultGeographicCRS.WGS84);
 
-        String expected = "CONCAT_MT[PARAM_MT[\"Ellipsoid_To_Geocentric\", \n"
-                + "    PARAMETER[\"dim\", 2], \n"
-                + "    PARAMETER[\"semi_major\", 6377397.155], \n"
-                + "    PARAMETER[\"semi_minor\", 6356078.962818189]], \n"
-                + "  PARAM_MT[\"Coordinate Frame Rotation (geog2D domain)\", \n"
-                + "    PARAMETER[\"dx\", 584.9636], \n"
-                + "    PARAMETER[\"dy\", 107.7175], \n"
-                + "    PARAMETER[\"dz\", 413.8067], \n"
-                + "    PARAMETER[\"ex\", -1.1155], \n"
-                + "    PARAMETER[\"ey\", -0.2824], \n"
-                + "    PARAMETER[\"ez\", 3.1384], \n"
-                + "    PARAMETER[\"ppm\", 7.99220000002876]], \n"
-                + "  PARAM_MT[\"Geocentric_To_Ellipsoid\", \n"
-                + "    PARAMETER[\"dim\", 2], \n"
-                + "    PARAMETER[\"semi_major\", 6378137.0], \n"
-                + "    PARAMETER[\"semi_minor\", 6356752.314245179]]]";
+        String expected =
+                """
+                CONCAT_MT[PARAM_MT["Ellipsoid_To_Geocentric",\s
+                    PARAMETER["dim", 2],\s
+                    PARAMETER["semi_major", 6377397.155],\s
+                    PARAMETER["semi_minor", 6356078.962818189]],\s
+                  PARAM_MT["Coordinate Frame Rotation (geog2D domain)",\s
+                    PARAMETER["dx", 584.9636],\s
+                    PARAMETER["dy", 107.7175],\s
+                    PARAMETER["dz", 413.8067],\s
+                    PARAMETER["ex", -1.1155],\s
+                    PARAMETER["ey", -0.2824],\s
+                    PARAMETER["ez", 3.1384],\s
+                    PARAMETER["ppm", 7.99220000002876]],\s
+                  PARAM_MT["Geocentric_To_Ellipsoid",\s
+                    PARAMETER["dim", 2],\s
+                    PARAMETER["semi_major", 6378137.0],\s
+                    PARAMETER["semi_minor", 6356752.314245179]]]""";
         assertEquals(normalize(expected), normalize(operation.getMathTransform().toWKT()));
     }
 

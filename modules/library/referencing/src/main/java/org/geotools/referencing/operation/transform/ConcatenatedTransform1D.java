@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.Matrix;
@@ -32,6 +33,7 @@ import org.geotools.geometry.Position1D;
  */
 final class ConcatenatedTransform1D extends ConcatenatedTransform implements MathTransform1D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8150427971141078395L;
 
     /** Constructs a concatenated transform. */

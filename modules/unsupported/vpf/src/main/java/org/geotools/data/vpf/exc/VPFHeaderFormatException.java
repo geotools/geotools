@@ -16,6 +16,8 @@
  */
 package org.geotools.data.vpf.exc;
 
+import java.io.Serial;
+
 /**
  * Class VPFHeaderFormatException.java is responsible for
  *
@@ -27,6 +29,7 @@ package org.geotools.data.vpf.exc;
  */
 public class VPFHeaderFormatException extends VPFDataException {
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 4680952037855445222L;
 
     /** Creates a new VPFHeaderFormatException object. */

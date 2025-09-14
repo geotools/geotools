@@ -365,7 +365,7 @@ public class VirtualTable implements Serializable {
         }
         // let's see if the where clause place holder needs to be removed
         Object value = hints.get(KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY);
-        return value != null && value instanceof Boolean && (boolean) value;
+        return value != null && value instanceof Boolean b && b;
     }
 
     /**
@@ -380,7 +380,7 @@ public class VirtualTable implements Serializable {
         }
         if (whereClauseIndex != sql.lastIndexOf(WHERE_CLAUSE_PLACE_HOLDER)) {
             // only a single where clause place holder is supported
-            throw new RuntimeException(String.format("SQL contains multiple where clause placeholders: %s.", sql));
+            throw new RuntimeException("SQL contains multiple where clause placeholders: %s.".formatted(sql));
         }
         // remove the where clause place holder
         return sql.replace(WHERE_CLAUSE_PLACE_HOLDER, "");

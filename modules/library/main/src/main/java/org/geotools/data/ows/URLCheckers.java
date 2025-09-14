@@ -22,7 +22,6 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -156,7 +155,7 @@ public class URLCheckers {
         }
         if (location.indexOf('/') != -1 || location.indexOf('\\') != -1) {
             try {
-                Path path = Paths.get(location);
+                Path path = Path.of(location);
                 return path.normalize().toString();
             } catch (InvalidPathException invalid) {
                 error = true;

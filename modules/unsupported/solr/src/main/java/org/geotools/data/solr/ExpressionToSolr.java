@@ -128,36 +128,32 @@ public class ExpressionToSolr implements ExpressionVisitor {
         StringWriter output = FilterToSolr.asStringWriter(extraData);
 
         Object literal = expression.getValue();
-        if (literal instanceof Geometry) {
-            handle(temp, (Geometry) literal);
-        } else if (literal instanceof Envelope) {
-            handle(temp, (Envelope) literal);
+        if (literal instanceof Geometry geometry) {
+            handle(temp, geometry);
+        } else if (literal instanceof Envelope envelope) {
+            handle(temp, envelope);
         } else if (literal instanceof Number) {
             // don't convert to string
             temp.append(literal.toString());
         } else if (literal instanceof Date) {
             temp.append("\"" + dateFormatUTC.format(literal) + "\"");
-        } else if (literal instanceof Period) {
+        } else if (literal instanceof Period period) {
             if (filter instanceof After) {
-                Period period = (Period) literal;
                 temp.append(
                         dateFormatUTC.format(period.getEnding().getPosition().getDate()));
             }
             if (filter instanceof Before || filter instanceof Begins || filter instanceof BegunBy) {
-                Period period = (Period) literal;
                 temp.append("\""
                         + dateFormatUTC.format(
                                 period.getBeginning().getPosition().getDate())
                         + "\"");
             }
             if (filter instanceof Ends || filter instanceof EndedBy) {
-                Period period = (Period) literal;
                 temp.append("\""
                         + dateFormatUTC.format(period.getEnding().getPosition().getDate())
                         + "\"");
             }
             if (filter instanceof During || filter instanceof TContains) {
-                Period period = (Period) literal;
                 temp.append("\""
                         + dateFormatUTC.format(
                                 period.getBeginning().getPosition().getDate())

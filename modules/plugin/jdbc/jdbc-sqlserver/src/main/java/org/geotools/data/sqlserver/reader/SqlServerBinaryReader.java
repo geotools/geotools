@@ -63,8 +63,8 @@ public class SqlServerBinaryReader {
 
     public SqlServerBinaryReader(GeometryFactory gf) {
         this.gf = gf;
-        if (gf instanceof CurvedGeometryFactory) {
-            cgf = (CurvedGeometryFactory) gf;
+        if (gf instanceof CurvedGeometryFactory factory) {
+            cgf = factory;
         } else {
             cgf = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
         }

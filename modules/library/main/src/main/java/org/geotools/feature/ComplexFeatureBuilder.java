@@ -104,9 +104,9 @@ public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> 
                 // it seems like a good idea but the only problem is that
                 // they're only present on the AttributeDescriptors...
                 else {
-                    throw new IllegalStateException(String.format(
-                            "Failed to build feature '%s'; its property '%s' requires at least %s occurrence(s) but number of occurrences was %s.",
-                            featureType.getName(), name, minOccurs, numberOfProperties));
+                    throw new IllegalStateException(
+                            "Failed to build feature '%s'; its property '%s' requires at least %s occurrence(s) but number of occurrences was %s."
+                                    .formatted(featureType.getName(), name, minOccurs, numberOfProperties));
                 }
             }
         }
@@ -137,9 +137,8 @@ public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> 
 
         // The 'name' must exist in the type, if not, throw an exception:
         if (propertyDescriptor == null) {
-            throw new IllegalArgumentException(String.format(
-                    "The name '%s' is not a valid descriptor name for the type '%s'.",
-                    name, this.featureType.getName()));
+            throw new IllegalArgumentException("The name '%s' is not a valid descriptor name for the type '%s'."
+                    .formatted(name, this.featureType.getName()));
         }
 
         Class<?> expectedClass = propertyDescriptor.getType().getBinding();
@@ -149,9 +148,9 @@ public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> 
             // Make sure that the provided class and the expected class match or
             // that the expectedClass is a base class of the providedClass:
             if (!providedClass.equals(expectedClass) && !expectedClass.isAssignableFrom(providedClass)) {
-                throw new IllegalArgumentException(String.format(
-                        "The value provided contains an object of '%s' but the method expects an object of '%s'.",
-                        providedClass, expectedClass));
+                throw new IllegalArgumentException(
+                        "The value provided contains an object of '%s' but the method expects an object of '%s'."
+                                .formatted(providedClass, expectedClass));
             }
         } else { // value == null
             if (propertyDescriptor.isNillable()) {
@@ -173,9 +172,9 @@ public class ComplexFeatureBuilder extends FeatureBuilder<FeatureType, Feature> 
             // Make sure that the list isn't already at capacity:
             int maxOccurs = propertyDescriptor.getMaxOccurs();
             if (valueList.size() == maxOccurs) {
-                throw new IndexOutOfBoundsException(String.format(
-                        "You can't add another object with the name of '%s' because you already have the maximum number (%s) allowed by the property descriptor.",
-                        name, maxOccurs));
+                throw new IndexOutOfBoundsException(
+                        "You can't add another object with the name of '%s' because you already have the maximum number (%s) allowed by the property descriptor."
+                                .formatted(name, maxOccurs));
             }
         } else {
             valueList = new ArrayList<>();

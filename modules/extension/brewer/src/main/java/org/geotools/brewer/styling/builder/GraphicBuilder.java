@@ -187,13 +187,12 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
         unset = false;
         symbols.clear();
         for (GraphicalSymbol graphicalSymbol : graphic.graphicalSymbols()) {
-            if (graphicalSymbol instanceof Symbol) {
-                Symbol symbol = (Symbol) graphicalSymbol;
+            if (graphicalSymbol instanceof Symbol symbol) {
                 Builder<? extends Symbol> builder;
-                if (symbol instanceof Mark) {
-                    builder = new MarkBuilder(this).reset((Mark) symbol);
-                } else if (symbol instanceof ExternalGraphic) {
-                    builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
+                if (symbol instanceof Mark mark) {
+                    builder = new MarkBuilder(this).reset(mark);
+                } else if (symbol instanceof ExternalGraphic externalGraphic) {
+                    builder = new ExternalGraphicBuilder(this).reset(externalGraphic);
                 } else {
                     throw new IllegalArgumentException("Unrecognized symbol type: " + symbol.getClass());
                 }

@@ -16,6 +16,7 @@
  */
 package org.geotools.data.mongodb;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,6 +26,7 @@ import java.util.List;
  * Holds schema generation parameters for MongoDB datastore.
  */
 public class MongoSchemaInitParams implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private List<String> ids;

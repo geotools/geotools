@@ -544,8 +544,8 @@ public final class ImageUtilities {
      * @throws IllegalArgumentException if the specified interpolation type is not a know one.
      */
     public static Interpolation toInterpolation(final Object type) throws IllegalArgumentException {
-        if (type instanceof Interpolation) {
-            return (Interpolation) type;
+        if (type instanceof Interpolation interpolation) {
+            return interpolation;
         } else if (type instanceof CharSequence) {
             final String name = type.toString();
             final int length = INTERPOLATION_NAMES.length;
@@ -612,8 +612,7 @@ public final class ImageUtilities {
         // /////////////////////////////////////////////////////////////////////
         // getting the reader
         final Object o = image.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
-        if (o instanceof ImageReader) {
-            final ImageReader reader = (ImageReader) o;
+        if (o instanceof ImageReader reader) {
             if (!reader.isImageTiled(0)) {
                 needToTile = true;
             }
@@ -681,43 +680,37 @@ public final class ImageUtilities {
     private static void fill(final DataBuffer buffer, final Number value) {
         final int[] offsets = buffer.getOffsets();
         final int size = buffer.getSize();
-        if (buffer instanceof DataBufferByte) {
-            final DataBufferByte data = (DataBufferByte) buffer;
+        if (buffer instanceof DataBufferByte data) {
             final byte n = value.byteValue();
             for (int i = 0; i < offsets.length; i++) {
                 final int offset = offsets[i];
                 Arrays.fill(data.getData(i), offset, offset + size, n);
             }
-        } else if (buffer instanceof DataBufferShort) {
-            final DataBufferShort data = (DataBufferShort) buffer;
+        } else if (buffer instanceof DataBufferShort data) {
             final short n = value.shortValue();
             for (int i = 0; i < offsets.length; i++) {
                 final int offset = offsets[i];
                 Arrays.fill(data.getData(i), offset, offset + size, n);
             }
-        } else if (buffer instanceof DataBufferUShort) {
-            final DataBufferUShort data = (DataBufferUShort) buffer;
+        } else if (buffer instanceof DataBufferUShort data) {
             final short n = value.shortValue();
             for (int i = 0; i < offsets.length; i++) {
                 final int offset = offsets[i];
                 Arrays.fill(data.getData(i), offset, offset + size, n);
             }
-        } else if (buffer instanceof DataBufferInt) {
-            final DataBufferInt data = (DataBufferInt) buffer;
+        } else if (buffer instanceof DataBufferInt data) {
             final int n = value.intValue();
             for (int i = 0; i < offsets.length; i++) {
                 final int offset = offsets[i];
                 Arrays.fill(data.getData(i), offset, offset + size, n);
             }
-        } else if (buffer instanceof DataBufferFloat) {
-            final DataBufferFloat data = (DataBufferFloat) buffer;
+        } else if (buffer instanceof DataBufferFloat data) {
             final float n = value.floatValue();
             for (int i = 0; i < offsets.length; i++) {
                 final int offset = offsets[i];
                 Arrays.fill(data.getData(i), offset, offset + size, n);
             }
-        } else if (buffer instanceof DataBufferDouble) {
-            final DataBufferDouble data = (DataBufferDouble) buffer;
+        } else if (buffer instanceof DataBufferDouble data) {
             final double n = value.doubleValue();
             for (int i = 0; i < offsets.length; i++) {
                 final int offset = offsets[i];
@@ -747,15 +740,16 @@ public final class ImageUtilities {
         disposePlanarImageChain(pi, new HashSet<>());
     }
 
+    @SuppressWarnings("PMD.CloseResource") // iis.close() is being called explicitly
     private static void disposePlanarImageChain(PlanarImage pi, Set<PlanarImage> visited) {
         List<?> sinks = pi.getSinks();
         // check all the sinks (the image might be in the middle of a chain)
         if (sinks != null) {
             for (Object sink : sinks) {
-                if (sink instanceof PlanarImage && !visited.contains(sink))
-                    disposePlanarImageChain((PlanarImage) sink, visited);
-                else if (sink instanceof BufferedImage) {
-                    ((BufferedImage) sink).flush();
+                if (sink instanceof PlanarImage image1 && !visited.contains(sink))
+                    disposePlanarImageChain(image1, visited);
+                else if (sink instanceof BufferedImage image) {
+                    image.flush();
                 }
             }
         }
@@ -767,21 +761,18 @@ public final class ImageUtilities {
         List<?> sources = pi.getSources();
         if (sources != null) {
             for (Object child : sources) {
-                if (child instanceof PlanarImage && !visited.contains(child))
-                    disposePlanarImageChain((PlanarImage) child, visited);
-                else if (child instanceof BufferedImage) {
-                    ((BufferedImage) child).flush();
+                if (child instanceof PlanarImage image1 && !visited.contains(child))
+                    disposePlanarImageChain(image1, visited);
+                else if (child instanceof BufferedImage image) {
+                    image.flush();
                 }
             }
         }
 
         // ImageRead might also hold onto a image input stream that we have to close
-        if (pi instanceof RenderedOp) {
-            RenderedOp op = (RenderedOp) pi;
+        if (pi instanceof RenderedOp op) {
             for (Object param : op.getParameterBlock().getParameters()) {
-                if (param instanceof ImageInputStream) {
-                    @SuppressWarnings("PMD.CloseResource") // we are actually closing it...
-                    ImageInputStream iis = (ImageInputStream) param;
+                if (param instanceof ImageInputStream iis) {
                     try {
                         iis.close();
                     } catch (Throwable e) {
@@ -790,8 +781,7 @@ public final class ImageUtilities {
                             LOGGER.log(Level.FINE, e.getLocalizedMessage());
                         }
                     }
-                } else if (param instanceof ImageReader) {
-                    ImageReader reader = (ImageReader) param;
+                } else if (param instanceof ImageReader reader) {
                     reader.dispose();
                 }
             }
@@ -865,8 +855,8 @@ public final class ImageUtilities {
                 param.getSubsamplingYOffset());
 
         // check if need to copy extra parameters
-        if (param instanceof EnhancedImageReadParam) {
-            newParam.setBands(((EnhancedImageReadParam) param).getBands());
+        if (param instanceof EnhancedImageReadParam readParam) {
+            newParam.setBands(readParam.getBands());
         }
 
         // Replace the local variable with the new ImageReadParam.
@@ -1140,8 +1130,7 @@ public final class ImageUtilities {
      */
     public static void disposeImage(RenderedImage inputImage) {
         if (inputImage != null) {
-            if (inputImage instanceof PlanarImage) {
-                PlanarImage planarImage = (PlanarImage) inputImage;
+            if (inputImage instanceof PlanarImage planarImage) {
 
                 final int nSources = planarImage.getNumSources();
                 if (nSources > 0) {
@@ -1153,10 +1142,10 @@ public final class ImageUtilities {
                             // Ignore
                         }
                         if (source != null) {
-                            if (source instanceof PlanarImage) {
-                                disposeImage((PlanarImage) source);
-                            } else if (source instanceof BufferedImage) {
-                                ((BufferedImage) source).flush();
+                            if (source instanceof PlanarImage image1) {
+                                disposeImage(image1);
+                            } else if (source instanceof BufferedImage image) {
+                                image.flush();
                                 source = null;
                             }
                         }
@@ -1172,8 +1161,7 @@ public final class ImageUtilities {
                         // underlying images. let's ignore it
                     }
 
-                    if (imageReader != null && imageReader instanceof ImageReader) {
-                        final ImageReader reader = (ImageReader) imageReader;
+                    if (imageReader != null && imageReader instanceof ImageReader reader) {
                         @SuppressWarnings("PMD.CloseResource") // we are actually closing it
                         final ImageInputStream stream = (ImageInputStream) reader.getInput();
                         try {
@@ -1190,8 +1178,8 @@ public final class ImageUtilities {
                 }
 
                 disposeSinglePlanarImage(planarImage);
-            } else if (inputImage instanceof BufferedImage) {
-                ((BufferedImage) inputImage).flush();
+            } else if (inputImage instanceof BufferedImage image) {
+                image.flush();
                 inputImage = null;
             }
         }
@@ -1208,8 +1196,7 @@ public final class ImageUtilities {
             // let's ignore it
         }
         if (roi != null && (ROI.class.equals(roi.getClass()) || roi instanceof RenderedImage)) {
-            if (roi instanceof ROI) {
-                ROI roiImage = (ROI) roi;
+            if (roi instanceof ROI roiImage) {
                 Rectangle bounds = roiImage.getBounds();
                 if (!bounds.isEmpty()) {
                     PlanarImage image = roiImage.getAsImage();

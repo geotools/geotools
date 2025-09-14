@@ -55,8 +55,7 @@ public class XXEProtectionTest {
     }
 
     private void assertEntityResolutionDisabled(Throwable t) {
-        if (t instanceof SAXException) {
-            SAXException se = (SAXException) t;
+        if (t instanceof SAXException se) {
             String message = se.getMessage();
             if (message != null && message.contains("Entity resolution disallowed")) {
                 // fine, we found the message

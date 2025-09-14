@@ -64,8 +64,8 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     @Override
     public SimpleFeatureIterator features() {
         Iterator<SimpleFeature> iterator = openIterator();
-        if (iterator instanceof SimpleFeatureIterator) {
-            return (SimpleFeatureIterator) iterator;
+        if (iterator instanceof SimpleFeatureIterator featureIterator) {
+            return featureIterator;
         } else {
             SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(iterator);
             return iter;
@@ -102,7 +102,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      * @return <tt>true</tt> if this collection contains the specified element.
      */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public boolean contains(Object o) {
         Iterator<SimpleFeature> e = iterator();
         try {
@@ -113,8 +113,8 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
             }
             return false;
         } finally {
-            if (e instanceof FeatureIterator) {
-                ((FeatureIterator<?>) e).close();
+            if (e instanceof FeatureIterator<?> iterator) {
+                iterator.close();
             }
         }
     }
@@ -161,14 +161,14 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
 
     /** @return <tt>true</tt> if this collection contains no elements. */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public boolean isEmpty() {
         Iterator<SimpleFeature> iterator = iterator();
         try {
             return !iterator.hasNext();
         } finally {
-            if (iterator instanceof FeatureIterator) {
-                ((FeatureIterator<?>) iterator).close();
+            if (iterator instanceof FeatureIterator<?> featureIterator) {
+                featureIterator.close();
             }
         }
     }
@@ -179,7 +179,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      * @return an array containing all of the elements in this collection.
      */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public Object[] toArray() {
         Object[] result = new Object[size()];
         Iterator<SimpleFeature> e = null;
@@ -188,14 +188,14 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
             for (int i = 0; e.hasNext(); i++) result[i] = e.next();
             return result;
         } finally {
-            if (e instanceof FeatureIterator) {
-                ((FeatureIterator<?>) e).close();
+            if (e instanceof FeatureIterator<?> iterator) {
+                iterator.close();
             }
         }
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "PMD.UseTryWithResources"})
+    @SuppressWarnings({"unchecked", "PMD.UseTryWithResources", "PMD.CloseResource"})
     public <O> O[] toArray(O[] a) {
         int size = size();
         if (a.length < size) {
@@ -208,8 +208,8 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
             if (a.length > size) a[size] = null;
             return a;
         } finally {
-            if (it instanceof FeatureIterator) {
-                ((FeatureIterator<?>) it).close();
+            if (it instanceof FeatureIterator<?> iterator) {
+                iterator.close();
             }
         }
     }

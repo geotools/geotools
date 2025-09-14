@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Date;
 import org.geotools.api.metadata.Identifier;
@@ -40,6 +41,7 @@ import org.geotools.util.SimpleInternationalString;
  */
 public class CitationImpl extends MetadataEntity implements Citation {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4415559967618358778L;
 
     /** Name by which the cited resource is known. */
@@ -104,8 +106,8 @@ public class CitationImpl extends MetadataEntity implements Citation {
      */
     public CitationImpl(final CharSequence title) {
         final InternationalString t;
-        if (title instanceof InternationalString) {
-            t = (InternationalString) title;
+        if (title instanceof InternationalString string) {
+            t = string;
         } else {
             t = new SimpleInternationalString(title.toString());
         }

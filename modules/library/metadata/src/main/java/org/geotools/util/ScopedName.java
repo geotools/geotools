@@ -19,6 +19,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale; // For javadoc
@@ -39,6 +40,7 @@ import org.geotools.api.util.NameSpace;
  */
 public class ScopedName extends org.geotools.util.GenericName implements org.geotools.api.util.ScopedName {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7664125655784137729L;
 
     /** The scope of this variable (also know as the "tail"). */

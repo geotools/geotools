@@ -170,14 +170,16 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /** Tests the {@link CRS#parseWKT} method. */
     @Test
     public void testWKT() throws FactoryException {
-        String wkt = "GEOGCS[\"WGS 84\",\n"
-                + "  DATUM[\"WGS_1984\",\n"
-                + "    SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],\n"
-                + "    TOWGS84[0,0,0,0,0,0,0], AUTHORITY[\"EPSG\",\"6326\"]],\n"
-                + "  PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],\n"
-                + "  UNIT[\"DMSH\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9108\"]],\n"
-                + "  AXIS[\"Lat\",NORTH], AXIS[\"Long\",EAST],\n"
-                + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+        String wkt =
+                """
+                GEOGCS["WGS 84",
+                  DATUM["WGS_1984",
+                    SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],
+                    TOWGS84[0,0,0,0,0,0,0], AUTHORITY["EPSG","6326"]],
+                  PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],
+                  UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],
+                  AXIS["Lat",NORTH], AXIS["Long",EAST],
+                  AUTHORITY["EPSG","4326"]]""";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         assertNotNull(crs);
     }
@@ -631,22 +633,24 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         try {
             MapProjection.SKIP_SANITY_CHECKS = true;
             // @formatter:off
-            String wkt = "PROJCS[\"World_Van_der_Grinten_I\", \n"
-                    + "  GEOGCS[\"GCS_WGS_1984\", \n"
-                    + "    DATUM[\"D_WGS_1984\", \n"
-                    + "      SPHEROID[\"WGS_1984\", 6378137.0, 298.257223563]], \n"
-                    + "    PRIMEM[\"Greenwich\", 0.0], \n"
-                    + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                    + "    AXIS[\"Longitude\", EAST], \n"
-                    + "    AXIS[\"Latitude\", NORTH]], \n"
-                    + "  PROJECTION[\"World_Van_der_Grinten_I\"], \n"
-                    + "  PARAMETER[\"central_meridian\", 0.0], \n"
-                    + "  PARAMETER[\"false_easting\", 0.0], \n"
-                    + "  PARAMETER[\"false_northing\", 0.0], \n"
-                    + "  UNIT[\"m\", 1.0], \n"
-                    + "  AXIS[\"x\", EAST], \n"
-                    + "  AXIS[\"y\", NORTH], \n"
-                    + "  AUTHORITY[\"EPSG\",\"54029\"]]";
+            String wkt =
+                    """
+                    PROJCS["World_Van_der_Grinten_I",\s
+                      GEOGCS["GCS_WGS_1984",\s
+                        DATUM["D_WGS_1984",\s
+                          SPHEROID["WGS_1984", 6378137.0, 298.257223563]],\s
+                        PRIMEM["Greenwich", 0.0],\s
+                        UNIT["degree", 0.017453292519943295],\s
+                        AXIS["Longitude", EAST],\s
+                        AXIS["Latitude", NORTH]],\s
+                      PROJECTION["World_Van_der_Grinten_I"],\s
+                      PARAMETER["central_meridian", 0.0],\s
+                      PARAMETER["false_easting", 0.0],\s
+                      PARAMETER["false_northing", 0.0],\s
+                      UNIT["m", 1.0],\s
+                      AXIS["x", EAST],\s
+                      AXIS["y", NORTH],\s
+                      AUTHORITY["EPSG","54029"]]""";
             // @formatter:on
 
             CoordinateReferenceSystem worldVanDerGrinten = CRS.parseWKT(wkt);
@@ -663,28 +667,30 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
 
     @Test
     public void testTransformSouthEmisphereToStereographic() throws Exception {
-        String wkt = "PROJCS[\"NSIDC Sea Ice Polar Stereographic South\",\n"
-                + "    GEOGCS[\"Unspecified datum based upon the Hughes 1980 ellipsoid\",\n"
-                + "        DATUM[\"Not_specified_based_on_Hughes_1980_ellipsoid\",\n"
-                + "            SPHEROID[\"Hughes 1980\",6378273,298.279411123061,\n"
-                + "                AUTHORITY[\"EPSG\",\"7058\"]],\n"
-                + "            AUTHORITY[\"EPSG\",\"6054\"]],\n"
-                + "        PRIMEM[\"Greenwich\",0,\n"
-                + "            AUTHORITY[\"EPSG\",\"8901\"]],\n"
-                + "        UNIT[\"degree\",0.0174532925199433,\n"
-                + "            AUTHORITY[\"EPSG\",\"9122\"]],\n"
-                + "        AUTHORITY[\"EPSG\",\"4054\"]],\n"
-                + "    PROJECTION[\"Polar_Stereographic\"],\n"
-                + "    PARAMETER[\"latitude_of_origin\",-70],\n"
-                + "    PARAMETER[\"central_meridian\",0],\n"
-                + "    PARAMETER[\"scale_factor\",1],\n"
-                + "    PARAMETER[\"false_easting\",0],\n"
-                + "    PARAMETER[\"false_northing\",0],\n"
-                + "    UNIT[\"metre\",1,\n"
-                + "        AUTHORITY[\"EPSG\",\"9001\"]],\n"
-                + "    AXIS[\"X\",EAST],\n"
-                + "    AXIS[\"Y\",NORTH],\n"
-                + "    AUTHORITY[\"EPSG\",\"3412\"]]";
+        String wkt =
+                """
+                PROJCS["NSIDC Sea Ice Polar Stereographic South",
+                    GEOGCS["Unspecified datum based upon the Hughes 1980 ellipsoid",
+                        DATUM["Not_specified_based_on_Hughes_1980_ellipsoid",
+                            SPHEROID["Hughes 1980",6378273,298.279411123061,
+                                AUTHORITY["EPSG","7058"]],
+                            AUTHORITY["EPSG","6054"]],
+                        PRIMEM["Greenwich",0,
+                            AUTHORITY["EPSG","8901"]],
+                        UNIT["degree",0.0174532925199433,
+                            AUTHORITY["EPSG","9122"]],
+                        AUTHORITY["EPSG","4054"]],
+                    PROJECTION["Polar_Stereographic"],
+                    PARAMETER["latitude_of_origin",-70],
+                    PARAMETER["central_meridian",0],
+                    PARAMETER["scale_factor",1],
+                    PARAMETER["false_easting",0],
+                    PARAMETER["false_northing",0],
+                    UNIT["metre",1,
+                        AUTHORITY["EPSG","9001"]],
+                    AXIS["X",EAST],
+                    AXIS["Y",NORTH],
+                    AUTHORITY["EPSG","3412"]]""";
         CoordinateReferenceSystem polar = CRS.parseWKT(wkt);
 
         GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);

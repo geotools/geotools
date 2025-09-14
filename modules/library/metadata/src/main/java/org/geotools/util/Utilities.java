@@ -342,31 +342,31 @@ public final class Utilities {
             return false;
         }
         if (object1 instanceof Object[]) {
-            return object2 instanceof Object[] && Arrays.deepEquals((Object[]) object1, (Object[]) object2);
+            return object2 instanceof Object[] os && Arrays.deepEquals((Object[]) object1, os);
         }
         if (object1 instanceof double[]) {
-            return object2 instanceof double[] && Arrays.equals((double[]) object1, (double[]) object2);
+            return object2 instanceof double[] ds && Arrays.equals((double[]) object1, ds);
         }
         if (object1 instanceof float[]) {
-            return object2 instanceof float[] && Arrays.equals((float[]) object1, (float[]) object2);
+            return object2 instanceof float[] fs && Arrays.equals((float[]) object1, fs);
         }
         if (object1 instanceof long[]) {
-            return object2 instanceof long[] && Arrays.equals((long[]) object1, (long[]) object2);
+            return object2 instanceof long[] ls && Arrays.equals((long[]) object1, ls);
         }
         if (object1 instanceof int[]) {
-            return object2 instanceof int[] && Arrays.equals((int[]) object1, (int[]) object2);
+            return object2 instanceof int[] is && Arrays.equals((int[]) object1, is);
         }
         if (object1 instanceof short[]) {
-            return object2 instanceof short[] && Arrays.equals((short[]) object1, (short[]) object2);
+            return object2 instanceof short[] ss && Arrays.equals((short[]) object1, ss);
         }
         if (object1 instanceof byte[]) {
-            return object2 instanceof byte[] && Arrays.equals((byte[]) object1, (byte[]) object2);
+            return object2 instanceof byte[] bs && Arrays.equals((byte[]) object1, bs);
         }
         if (object1 instanceof char[]) {
-            return object2 instanceof char[] && Arrays.equals((char[]) object1, (char[]) object2);
+            return object2 instanceof char[] cs && Arrays.equals((char[]) object1, cs);
         }
         if (object1 instanceof boolean[]) {
-            return object2 instanceof boolean[] && Arrays.equals((boolean[]) object1, (boolean[]) object2);
+            return object2 instanceof boolean[] bs && Arrays.equals((boolean[]) object1, bs);
         }
         return object1.equals(object2);
     }
@@ -498,32 +498,32 @@ public final class Utilities {
         if (object == null) {
             return 0;
         }
-        if (object instanceof Object[]) {
-            return Arrays.deepHashCode((Object[]) object);
+        if (object instanceof Object[] object1s) {
+            return Arrays.deepHashCode(object1s);
         }
-        if (object instanceof double[]) {
-            return Arrays.hashCode((double[]) object);
+        if (object instanceof double[] doubles) {
+            return Arrays.hashCode(doubles);
         }
-        if (object instanceof float[]) {
-            return Arrays.hashCode((float[]) object);
+        if (object instanceof float[] floats) {
+            return Arrays.hashCode(floats);
         }
-        if (object instanceof long[]) {
-            return Arrays.hashCode((long[]) object);
+        if (object instanceof long[] longs) {
+            return Arrays.hashCode(longs);
         }
-        if (object instanceof int[]) {
-            return Arrays.hashCode((int[]) object);
+        if (object instanceof int[] ints) {
+            return Arrays.hashCode(ints);
         }
-        if (object instanceof short[]) {
-            return Arrays.hashCode((short[]) object);
+        if (object instanceof short[] shorts) {
+            return Arrays.hashCode(shorts);
         }
-        if (object instanceof byte[]) {
-            return Arrays.hashCode((byte[]) object);
+        if (object instanceof byte[] bytes) {
+            return Arrays.hashCode(bytes);
         }
-        if (object instanceof char[]) {
-            return Arrays.hashCode((char[]) object);
+        if (object instanceof char[] chars) {
+            return Arrays.hashCode(chars);
         }
-        if (object instanceof boolean[]) {
-            return Arrays.hashCode((boolean[]) object);
+        if (object instanceof boolean[] booleans) {
+            return Arrays.hashCode(booleans);
         }
         return object.hashCode();
     }
@@ -550,32 +550,32 @@ public final class Utilities {
      * @return A string representation of the given object.
      */
     public static String deepToString(final Object object) {
-        if (object instanceof Object[]) {
-            return Arrays.deepToString((Object[]) object);
+        if (object instanceof Object[] object1s) {
+            return Arrays.deepToString(object1s);
         }
-        if (object instanceof double[]) {
-            return Arrays.toString((double[]) object);
+        if (object instanceof double[] doubles) {
+            return Arrays.toString(doubles);
         }
-        if (object instanceof float[]) {
-            return Arrays.toString((float[]) object);
+        if (object instanceof float[] floats) {
+            return Arrays.toString(floats);
         }
-        if (object instanceof long[]) {
-            return Arrays.toString((long[]) object);
+        if (object instanceof long[] longs) {
+            return Arrays.toString(longs);
         }
-        if (object instanceof int[]) {
-            return Arrays.toString((int[]) object);
+        if (object instanceof int[] ints) {
+            return Arrays.toString(ints);
         }
-        if (object instanceof short[]) {
-            return Arrays.toString((short[]) object);
+        if (object instanceof short[] shorts) {
+            return Arrays.toString(shorts);
         }
-        if (object instanceof byte[]) {
-            return Arrays.toString((byte[]) object);
+        if (object instanceof byte[] bytes) {
+            return Arrays.toString(bytes);
         }
-        if (object instanceof char[]) {
-            return Arrays.toString((char[]) object);
+        if (object instanceof char[] chars) {
+            return Arrays.toString(chars);
         }
-        if (object instanceof boolean[]) {
-            return Arrays.toString((boolean[]) object);
+        if (object instanceof boolean[] booleans) {
+            return Arrays.toString(booleans);
         }
         return String.valueOf(object);
     }
@@ -739,7 +739,7 @@ public final class Utilities {
     public static final void assertNotZipSlipVulnarable(File file, Path destinationDir) throws IOException {
 
         if (!file.toPath().normalize().startsWith(destinationDir)) {
-            throw new IOException(String.format("Bad zip entry: ZipSlip extracting %s to %s", file, destinationDir));
+            throw new IOException("Bad zip entry: ZipSlip extracting %s to %s".formatted(file, destinationDir));
         }
     }
 }

@@ -445,16 +445,15 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public BBOX bbox(Expression geometry, Expression bounds, MatchAction machAction) {
-        if (bounds instanceof Literal) {
-            Object value = ((Literal) bounds).getValue();
-            if (value instanceof BoundingBox3D) {
-                return bbox(geometry, (BoundingBox3D) value, machAction);
-            } else if (value instanceof org.locationtech.jts.geom.Geometry && geometry instanceof PropertyName) {
-                org.locationtech.jts.geom.Geometry g = (org.locationtech.jts.geom.Geometry) value;
+        if (bounds instanceof Literal literal) {
+            Object value = literal.getValue();
+            if (value instanceof BoundingBox3D box3D) {
+                return bbox(geometry, box3D, machAction);
+            } else if (value instanceof org.locationtech.jts.geom.Geometry g && geometry instanceof PropertyName name) {
                 if (g.getUserData() instanceof CoordinateReferenceSystem) {
                     CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g.getUserData();
                     ReferencedEnvelope3D envelope = (ReferencedEnvelope3D) JTS.bounds(g, crs);
-                    return new BBOX3DImpl((PropertyName) geometry, envelope, this);
+                    return new BBOX3DImpl(name, envelope, this);
                 }
             }
         }
@@ -463,8 +462,8 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public BBOX bbox(Expression geometry, BoundingBox bounds) {
-        if (bounds instanceof BoundingBox3D) {
-            return bbox(geometry, (BoundingBox3D) bounds);
+        if (bounds instanceof BoundingBox3D box3D) {
+            return bbox(geometry, box3D);
         } else {
             return bbox2d(geometry, bounds, MatchAction.ANY);
         }
@@ -472,8 +471,8 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public BBOX bbox(Expression geometry, BoundingBox bounds, MatchAction matchAction) {
-        if (bounds instanceof BoundingBox3D) {
-            return bbox(geometry, (BoundingBox3D) bounds);
+        if (bounds instanceof BoundingBox3D box3D) {
+            return bbox(geometry, box3D);
         } else {
             return bbox2d(geometry, bounds, matchAction);
         }
@@ -481,8 +480,8 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     private BBOXImpl bbox2d(Expression e, BoundingBox bounds, MatchAction matchAction) {
         PropertyName name = null;
-        if (e instanceof PropertyName) {
-            name = (PropertyName) e;
+        if (e instanceof PropertyName propertyName) {
+            name = propertyName;
         } else {
             throw new IllegalArgumentException("BBOX requires PropertyName expression");
         }
@@ -560,8 +559,8 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     @Override
     public BBOX3D bbox(Expression e, BoundingBox3D env, MatchAction matchAction) {
         PropertyName name = null;
-        if (e instanceof PropertyName) {
-            name = (PropertyName) e;
+        if (e instanceof PropertyName propertyName) {
+            name = propertyName;
         } else {
             throw new IllegalArgumentException();
         }

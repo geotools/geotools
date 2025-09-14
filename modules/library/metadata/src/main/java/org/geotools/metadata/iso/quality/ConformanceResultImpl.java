@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
+import java.io.Serial;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.metadata.quality.ConformanceResult;
 import org.geotools.api.metadata.quality.Result;
@@ -37,6 +38,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 public class ConformanceResultImpl extends MetadataEntity implements ConformanceResult, Result {
 
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 6429932577869033286L;
 
     /** Citation of product specification or user requirement against which data is being evaluated. */

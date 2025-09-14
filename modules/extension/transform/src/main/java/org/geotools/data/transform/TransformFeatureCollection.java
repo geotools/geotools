@@ -237,10 +237,10 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
         if (visitor instanceof CountVisitor) {
             // pass through if the CountVisitor has been recognized
             return true;
-        } else if (visitor instanceof FeatureAttributeVisitor) {
+        } else if (visitor instanceof FeatureAttributeVisitor attributeVisitor) {
             // allow passing down if the properties requested are not computed not renamed,
             // thus can be passed to the delegate collection as is
-            for (Expression e : ((FeatureAttributeVisitor) visitor).getExpressions()) {
+            for (Expression e : attributeVisitor.getExpressions()) {
                 if (!(e instanceof PropertyName)) {
                     return false;
                 }
@@ -264,20 +264,17 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             throws IOException {
         if (isTypeCompatible(visitor, transformer.getSchema())) {
             delegateVisitor(visitor, progress);
-        } else if (visitor instanceof MinVisitor) {
-            MinVisitor original = (MinVisitor) visitor;
+        } else if (visitor instanceof MinVisitor original) {
             Expression transformedExpression = transformer.transformExpression(original.getExpression());
             MinVisitor transformedVisitor = new MinVisitor(transformedExpression);
             delegateVisitor(transformedVisitor, progress);
             original.setValue(transformedVisitor.getResult().getValue());
-        } else if (visitor instanceof MaxVisitor) {
-            MaxVisitor original = (MaxVisitor) visitor;
+        } else if (visitor instanceof MaxVisitor original) {
             Expression transformedExpression = transformer.transformExpression(original.getExpression());
             MaxVisitor transformedVisitor = new MaxVisitor(transformedExpression);
             delegateVisitor(transformedVisitor, progress);
             original.setValue(transformedVisitor.getResult().getValue());
-        } else if (visitor instanceof UniqueVisitor) {
-            UniqueVisitor original = (UniqueVisitor) visitor;
+        } else if (visitor instanceof UniqueVisitor original) {
             Expression transformedExpression = transformer.transformExpression(original.getExpression());
             UniqueVisitor transformedVisitor = new UniqueVisitor(transformedExpression);
             transformedVisitor.setMaxFeatures(original.getMaxFeatures());

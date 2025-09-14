@@ -31,8 +31,8 @@ public class MBStyleTestUtils {
 
             @Override
             public boolean matches(Object item) {
-                if (item instanceof MBFunction) {
-                    return matcher.matches(((MBFunction) item).category());
+                if (item instanceof MBFunction function) {
+                    return matcher.matches(function.category());
                 } else {
                     return false;
                 }
@@ -45,9 +45,9 @@ public class MBStyleTestUtils {
 
             @Override
             public void describeMismatch(Object item, Description description) {
-                if (item instanceof MBFunction) {
+                if (item instanceof MBFunction function) {
                     description.appendText("categories were ");
-                    description.appendValueList("[", ", ", "]", ((MBFunction) item).category());
+                    description.appendValueList("[", ", ", "]", function.category());
                 } else {
                     description.appendText("was a ").appendValue(item.getClass().getName());
                 }
@@ -60,8 +60,8 @@ public class MBStyleTestUtils {
 
             @Override
             public boolean matches(Object item) {
-                if (item instanceof Expression) {
-                    return resultMatcher.matches(((Expression) item).evaluate(object));
+                if (item instanceof Expression expression) {
+                    return resultMatcher.matches(expression.evaluate(object));
                 } else {
                     return false;
                 }
@@ -78,8 +78,8 @@ public class MBStyleTestUtils {
 
             @Override
             public void describeMismatch(Object item, Description description) {
-                if (item instanceof Expression) {
-                    Object result = ((Expression) item).evaluate(object);
+                if (item instanceof Expression expression) {
+                    Object result = expression.evaluate(object);
                     description.appendValue(item).appendText(" evaluates to ").appendValue(result);
                 } else {
                     description.appendText("was a ").appendValue(item.getClass().getName());
@@ -122,8 +122,8 @@ public class MBStyleTestUtils {
 
             @Override
             public boolean matches(Object item) {
-                if (item instanceof Expression) {
-                    return resultMatcher.matches(((Expression) item).evaluate(object, context));
+                if (item instanceof Expression expression) {
+                    return resultMatcher.matches(expression.evaluate(object, context));
                 } else {
                     return false;
                 }
@@ -140,8 +140,8 @@ public class MBStyleTestUtils {
 
             @Override
             public void describeMismatch(Object item, Description description) {
-                if (item instanceof Expression) {
-                    Object result = ((Expression) item).evaluate(object);
+                if (item instanceof Expression expression) {
+                    Object result = expression.evaluate(object);
                     description.appendValue(item).appendText(" evaluates to ").appendValue(result);
                 } else {
                     description.appendText("was a ").appendValue(item.getClass().getName());

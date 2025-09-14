@@ -278,8 +278,8 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
             try (BufferedReader reader =
                     new BufferedReader(new InputStreamReader(response.getResponseStream(), charset))) {
                 Object parsed = jsonParser.parse(reader);
-                if (parsed instanceof JSONObject) {
-                    spriteIndex = new SpriteIndex(indexUrlStr, (JSONObject) parsed);
+                if (parsed instanceof JSONObject object) {
+                    spriteIndex = new SpriteIndex(indexUrlStr, object);
                     indexCache.put(baseUrl, spriteIndex);
                 } else {
                     throw new MBSpriteException("Exception parsing sprite index file from: "

@@ -84,8 +84,8 @@ public class DialogUtils {
             if (isClazz) {
                 children.add(clazz.cast(c));
             }
-            if (includeNested && c instanceof Container) {
-                children.addAll(getChildComponents(clazz, (Container) c, includeNested));
+            if (includeNested && c instanceof Container container) {
+                children.addAll(getChildComponents(clazz, container, includeNested));
             }
         }
 

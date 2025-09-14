@@ -121,10 +121,10 @@ class FeatureMapper {
         SimpleFeatureType schema = feature.getFeatureType();
         for (int i = 0, j = 0; i < schema.getAttributeCount(); i++) {
             Object attribute = feature.getAttribute(i);
-            if (attribute instanceof Geometry) {
+            if (attribute instanceof Geometry geometry1) {
                 // using setGeometryDirectly the feature becomes the owner of the generated
                 // OGR geometry and we don't have to .delete() it (it's faster, too)
-                Object geometry = geomMapper.parseGTGeometry((Geometry) attribute);
+                Object geometry = geomMapper.parseGTGeometry(geometry1);
                 ogr.FeatureSetGeometryDirectly(ogrFeature, geometry);
             } else {
                 setFieldValue(featureDefinition, ogrFeature, j, attribute, ogr);

@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
@@ -28,6 +29,7 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
  */
 final class ProjectiveTransform2D extends ProjectiveTransform implements MathTransform2D {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -3101392684596817045L;
 
     /** Creates projective transform from a matrix. */

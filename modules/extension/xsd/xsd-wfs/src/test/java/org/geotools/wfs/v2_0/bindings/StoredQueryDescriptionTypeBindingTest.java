@@ -76,14 +76,16 @@ public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
         p.setType(GML.Polygon);
         sqd.getParameter().add(p);
 
-        String xml = "<wfs:Query typeNames='myns:Parks'>"
-                + "  <fes:Filter>"
-                + "   <fes:Within>\n"
-                + "     <fes:ValueReference>geometry</fes:ValueReference>"
-                + "     ${AreaOfInterest}"
-                + "   </fes:Within>"
-                + "  </fes:Filter>"
-                + "</wfs:Query> ";
+        String xml =
+                """
+                <wfs:Query typeNames='myns:Parks'>\
+                  <fes:Filter>\
+                   <fes:Within>
+                     <fes:ValueReference>geometry</fes:ValueReference>\
+                     ${AreaOfInterest}\
+                   </fes:Within>\
+                  </fes:Filter>\
+                </wfs:Query> """;
 
         QueryExpressionTextType qet = f.createQueryExpressionTextType();
         sqd.getQueryExpressionText().add(qet);

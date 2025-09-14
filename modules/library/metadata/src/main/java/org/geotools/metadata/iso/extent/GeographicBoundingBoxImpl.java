@@ -22,6 +22,7 @@ package org.geotools.metadata.iso.extent;
 import static java.lang.Double.doubleToLongBits;
 
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -44,6 +45,7 @@ import org.geotools.util.Utilities;
  */
 public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements GeographicBoundingBox {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3278089380004172514L;
 
     /** The method for constructing a bounding box from an envelope. Will be obtained only when first needed. */
@@ -138,8 +140,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements G
             invoke(constructor, envelope, this);
         } catch (InvocationTargetException exception) {
             final Throwable cause = exception.getTargetException();
-            if (cause instanceof TransformException) {
-                throw (TransformException) cause;
+            if (cause instanceof TransformException transformException) {
+                throw transformException;
             }
             throw new UndeclaredThrowableException(cause);
         }
@@ -493,11 +495,11 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements G
             throw new AssertionError(exception);
         } catch (InvocationTargetException exception) {
             final Throwable cause = exception.getTargetException();
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
+            if (cause instanceof RuntimeException runtimeException) {
+                throw runtimeException;
             }
-            if (cause instanceof Error) {
-                throw (Error) cause;
+            if (cause instanceof Error error) {
+                throw error;
             }
             throw exception;
         }

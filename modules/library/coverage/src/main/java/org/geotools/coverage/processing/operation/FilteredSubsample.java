@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.io.Serial;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
 
 /**
@@ -29,6 +30,7 @@ import org.geotools.coverage.processing.BaseScaleOperationJAI;
  */
 public class FilteredSubsample extends BaseScaleOperationJAI {
     /** Serial number for cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 652535074064952517L;
 
     /** Constructs a default {@code "FilteredSubsample"} operation. */

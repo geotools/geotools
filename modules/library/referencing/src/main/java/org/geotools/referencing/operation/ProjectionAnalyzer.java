@@ -102,21 +102,21 @@ final class ProjectionAnalyzer {
         MathTransform candidate = projection.getMathTransform();
         while (candidate instanceof ConcatenatedTransform) {
             final ConcatenatedTransform ctr = (ConcatenatedTransform) candidate;
-            if (ctr.transform1 instanceof LinearTransform) {
+            if (ctr.transform1 instanceof LinearTransform linearTransform) {
                 if (geographicScale != null) {
                     // Should never happen with ConcatenatedTransform.create(...) implementation.
                     throw new IllegalStateException(String.valueOf(candidate));
                 }
-                geographicScale = ((LinearTransform) ctr.transform1).getMatrix();
+                geographicScale = linearTransform.getMatrix();
                 candidate = ctr.transform2;
                 continue;
             }
-            if (ctr.transform2 instanceof LinearTransform) {
+            if (ctr.transform2 instanceof LinearTransform linearTransform) {
                 if (projectedScale != null) {
                     // Should never happen with ConcatenatedTransform.create(...) implementation.
                     throw new IllegalStateException(String.valueOf(candidate));
                 }
-                projectedScale = ((LinearTransform) ctr.transform2).getMatrix();
+                projectedScale = linearTransform.getMatrix();
                 candidate = ctr.transform1;
                 continue;
             }
@@ -137,8 +137,8 @@ final class ProjectionAnalyzer {
          * part, as in Geotools implementation.
          */
         ParameterValueGroup group = null;
-        if (candidate instanceof AbstractMathTransform) {
-            group = ((AbstractMathTransform) candidate).getParameterValues();
+        if (candidate instanceof AbstractMathTransform mathTransform) {
+            group = mathTransform.getParameterValues();
         }
         if (group == null) {
             /*
@@ -167,9 +167,7 @@ final class ProjectionAnalyzer {
 
     /** Returns the {@linkplain #transform} parameter descriptor, or {@code null} if none. */
     private ParameterDescriptorGroup getTransformDescriptor() {
-        return transform instanceof AbstractMathTransform
-                ? ((AbstractMathTransform) transform).getParameterDescriptors()
-                : null;
+        return transform instanceof AbstractMathTransform amt ? amt.getParameterDescriptors() : null;
     }
 
     /**
@@ -215,8 +213,7 @@ final class ProjectionAnalyzer {
         String warning = null;
         for (final Iterator<GeneralParameterValue> it = parameters.iterator(); it.hasNext(); ) {
             final GeneralParameterValue parameter = it.next();
-            if (parameter instanceof ParameterValue) {
-                final ParameterValue<?> value = (ParameterValue) parameter;
+            if (parameter instanceof ParameterValue<?> value) {
                 final ParameterDescriptor<?> descriptor = value.getDescriptor();
                 if (Number.class.isAssignableFrom(descriptor.getValueClass())) {
                     if (nameMatches(descriptor, "scale_factor")) {
@@ -275,9 +272,8 @@ final class ProjectionAnalyzer {
                 if (!nameMatches(sourcePrm.getDescriptor(), targetPrm.getDescriptor())) {
                     continue;
                 }
-                if (sourcePrm instanceof ParameterValue && targetPrm instanceof ParameterValue) {
-                    final ParameterValue<?> sourceValue = (ParameterValue) sourcePrm;
-                    final ParameterValue<?> targetValue = (ParameterValue) targetPrm;
+                if (sourcePrm instanceof ParameterValue<?> sourceValue
+                        && targetPrm instanceof ParameterValue<?> targetValue) {
                     if (Number.class.isAssignableFrom(
                             targetValue.getDescriptor().getValueClass())) {
                         final double sourceNum, targetNum;

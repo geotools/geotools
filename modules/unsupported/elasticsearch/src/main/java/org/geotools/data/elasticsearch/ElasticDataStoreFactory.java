@@ -308,18 +308,18 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
         if (user != null) {
             builder.setRequestConfigCallback((b) -> {
-                LOGGER.finest(String.format("Calling %s setRequestConfigCallback", type));
+                LOGGER.finest("Calling %s setRequestConfigCallback".formatted(type));
                 return b.setAuthenticationEnabled(true);
             });
         }
 
         builder.setHttpClientConfigCallback((httpClientBuilder) -> {
-            LOGGER.finest(String.format("Calling %s customizeHttpClient", type));
+            LOGGER.finest("Calling %s customizeHttpClient".formatted(type));
 
             httpClientBuilder.setThreadFactory((run) -> {
                 final Thread thread = new Thread(run);
                 thread.setDaemon(true);
-                thread.setName(String.format("esrest-asynchttp-%s-%d", type, httpThreads.getAndIncrement()));
+                thread.setName("esrest-asynchttp-%s-%d".formatted(type, httpThreads.getAndIncrement()));
                 return thread;
             });
 
@@ -348,7 +348,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
             return httpClientBuilder;
         });
 
-        LOGGER.fine(String.format("Building a %s RestClient for %s @ %s:%d", type, user, hostName, defaultPort));
+        LOGGER.fine("Building a %s RestClient for %s @ %s:%d".formatted(type, user, hostName, defaultPort));
         return builder.build();
     }
 

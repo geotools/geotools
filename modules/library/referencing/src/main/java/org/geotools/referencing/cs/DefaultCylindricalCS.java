@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.util.Map;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
@@ -42,6 +43,7 @@ import org.geotools.api.referencing.cs.CylindricalCS;
  */
 public class DefaultCylindricalCS extends AbstractCS implements CylindricalCS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8290402732390917907L;
 
     /**

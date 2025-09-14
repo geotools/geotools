@@ -32,11 +32,14 @@
  */
 package org.geotools.xml.impl;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /** Implementation of xs:duration. */
 public class Duration implements Serializable, Comparable<Duration> {
+    @Serial
     private static final long serialVersionUID = 3257001055736117303L;
+
     private final boolean isNegative;
     private final int years, months, days, hours, minutes, seconds;
     private final long millis;

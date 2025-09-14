@@ -72,8 +72,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
             response.dispose();
         }
 
-        if (parsed instanceof TransactionResponseType) {
-            TransactionResponseType tr = (TransactionResponseType) parsed;
+        if (parsed instanceof TransactionResponseType tr) {
             ActionResultsType insertResults = tr.getInsertResults();
             if (insertResults != null) {
                 List<CreatedOrModifiedFeatureType> inserted = insertResults.getFeature();

@@ -16,7 +16,6 @@
  */
 package org.geotools.data.geoparquet;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.CONFIG;
 import static java.util.logging.Level.INFO;
@@ -224,7 +223,7 @@ class GeoParquetViewManager {
          * @throws IOException If there is an error executing the SQL statement
          */
         private void createView(String viewName, final String partitionUrl) throws IOException {
-            LOGGER.log(INFO, () -> format("Creating view %s for URI %s", viewName, partitionUrl));
+            LOGGER.log(INFO, () -> "Creating view %s for URI %s".formatted(viewName, partitionUrl));
 
             final String viewSql = createViewSql(viewName, partitionUrl);
             try (Connection c = GeoParquetViewManager.this.getConnection();
@@ -234,7 +233,7 @@ class GeoParquetViewManager {
                 throw new IOException(e);
             }
 
-            LOGGER.log(INFO, () -> format("Created view %s for URI %s", viewName, partitionUrl));
+            LOGGER.log(INFO, () -> "Created view %s for URI %s".formatted(viewName, partitionUrl));
         }
 
         /**
@@ -250,9 +249,8 @@ class GeoParquetViewManager {
          * @return The SQL statement to create the view
          */
         private String createViewSql(String viewName, String partitionUrl) {
-            return String.format(
-                    "CREATE OR REPLACE VIEW \"%s\" AS SELECT * FROM read_parquet('%s', union_by_name = true)",
-                    viewName, partitionUrl);
+            return "CREATE OR REPLACE VIEW \"%s\" AS SELECT * FROM read_parquet('%s', union_by_name = true)"
+                    .formatted(viewName, partitionUrl);
         }
     }
 
@@ -302,10 +300,8 @@ class GeoParquetViewManager {
 
         Map<String, Partition> partitions = loadPartitions(targetUri, maxHiveDepth);
 
-        LOGGER.log(
-                CONFIG,
-                () -> format(
-                        "Found %,d partitions with %,d total files",
+        LOGGER.log(CONFIG, () -> "Found %,d partitions with %,d total files"
+                .formatted(
                         partitions.keySet().size(),
                         partitions.values().stream()
                                 .map(Partition::getFiles)
@@ -386,9 +382,9 @@ class GeoParquetViewManager {
                 Statement st = c.createStatement()) {
             for (Partition p : partitionsByViewName.values()) {
                 String view = p.getViewName();
-                String sql = String.format("DROP VIEW IF EXISTS \"%s\"", view);
+                String sql = "DROP VIEW IF EXISTS \"%s\"".formatted(view);
                 st.addBatch(sql);
-                LOGGER.log(CONFIG, () -> format("Dropping view %s for URI %s", view, p.getURI()));
+                LOGGER.log(CONFIG, () -> "Dropping view %s for URI %s".formatted(view, p.getURI()));
             }
             st.executeBatch();
         } catch (SQLException e) {
@@ -477,7 +473,7 @@ class GeoParquetViewManager {
     public String getVieUri(String viewName) {
         return requireNonNull(
                 partitionsByViewName.get(requireNonNull(viewName, "viewName")).getURI(),
-                () -> String.format("No target URL exists for view %s", viewName));
+                () -> "No target URL exists for view %s".formatted(viewName));
     }
 
     /**

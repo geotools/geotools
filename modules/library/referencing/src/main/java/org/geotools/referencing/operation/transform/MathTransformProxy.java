@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
@@ -42,6 +43,7 @@ import org.geotools.util.Utilities;
  */
 public class MathTransformProxy implements MathTransform, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8844242705205498128L;
 
     /** The math transform on which to delegate the work. */

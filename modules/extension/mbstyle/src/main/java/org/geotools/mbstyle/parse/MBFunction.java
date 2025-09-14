@@ -950,8 +950,8 @@ public class MBFunction {
         // Parse the stops
         List<MBArrayStop> parsedStops = new ArrayList<>();
         for (Object o : arr) {
-            if (o instanceof JSONArray) {
-                parsedStops.add(new MBArrayStop((JSONArray) o));
+            if (o instanceof JSONArray array) {
+                parsedStops.add(new MBArrayStop(array));
             } else {
                 throw new MBFormatException("Exception handling array function: encountered non-array stop value.");
             }
@@ -971,8 +971,8 @@ public class MBFunction {
         JSONArray defaultStopValues = null;
         if (getDefault() != null) {
             Object def = getDefault();
-            if (def instanceof JSONArray && ((JSONArray) def).size() == dimensionCount) {
-                defaultStopValues = (JSONArray) def;
+            if (def instanceof JSONArray array && array.size() == dimensionCount) {
+                defaultStopValues = array;
             } else {
                 throw new MBFormatException(
                         "Exception handling array function: the default value must also be an array of length "

@@ -50,8 +50,7 @@ public class GetPropertiesExecutor implements BindingWalker.Visitor {
 
     @Override
     public void visit(Binding binding) {
-        if (binding instanceof ComplexBinding) {
-            ComplexBinding complex = (ComplexBinding) binding;
+        if (binding instanceof ComplexBinding complex) {
 
             try {
                 List<Object[]> properties = complex.getProperties(parent, element);

@@ -71,9 +71,7 @@ public class DomainFilterBuilder {
             }
             if (endProperty == null) {
                 // Domain made of single values
-                if (value instanceof Range) {
-                    // RANGE
-                    final Range range = (Range) value;
+                if (value instanceof Range range) {
                     filters.add(ff.and(
                             ff.lessOrEqual(ff.property(property), ff.literal(range.getMaxValue())),
                             ff.greaterOrEqual(ff.property(property), ff.literal(range.getMinValue()))));
@@ -84,9 +82,7 @@ public class DomainFilterBuilder {
             } else {
                 // Domain made of ranges such as (beginTime,endTime) ,
                 // (beginElevation,endElevation) , ...
-                if (value instanceof Range) {
-                    // RANGE
-                    final Range range = (Range) value;
+                if (value instanceof Range range) {
                     final Comparable maxValue = range.getMaxValue();
                     final Comparable minValue = range.getMinValue();
                     if (maxValue.compareTo(minValue) != 0) {

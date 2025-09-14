@@ -77,7 +77,10 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
         properties.put("foo.z", "bar");
         InterpolationProperties props = new InterpolationProperties(properties);
         String result = props.interpolate(
-                "123ajh${foo.z} akl ${foo.y}${foo.y} laskj ${foo.x}\n" + "foo.x${foo.x}${foo.x} ${foo.z}${foo.y}");
+                """
+                123ajh${foo.z} akl ${foo.y}${foo.y} laskj ${foo.x}
+                foo.x${foo.x}${foo.x} ${foo.z}${foo.y}\
+                """);
         assertEquals("123ajhbar akl abcabc laskj 123\nfoo.x123123 barabc", result);
     }
 

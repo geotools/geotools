@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
@@ -40,6 +41,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public class CompoundCurve extends LineString implements CompoundCurvedGeometry<LineString> {
 
+    @Serial
     private static final long serialVersionUID = -5796254063449438787L;
 
     List<LineString> components;
@@ -55,8 +57,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         // sanity check, we don't want compound curves containing other compound curves
         this.components = new ArrayList<>();
         for (LineString ls : components) {
-            if (ls instanceof CompoundCurve) {
-                CompoundCurve cc = (CompoundCurve) ls;
+            if (ls instanceof CompoundCurve cc) {
                 this.components.addAll(cc.components);
             } else {
                 this.components.add(ls);
@@ -87,8 +88,8 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         int dimension = Integer.MAX_VALUE;
         for (LineString component : components) {
             int curr;
-            if (component instanceof CurvedGeometry<?>) {
-                curr = ((CurvedGeometry<?>) component).getCoordinatesDimension();
+            if (component instanceof CurvedGeometry<?> geometry) {
+                curr = geometry.getCoordinatesDimension();
             } else {
                 curr = component.getCoordinateSequence().getDimension();
             }
@@ -130,8 +131,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
                 gar.setSize(gar.size() - 2);
             }
             // linearize with tolerance the circular strings, take the linear ones as is
-            if (component instanceof SingleCurvedGeometry<?>) {
-                SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
+            if (component instanceof SingleCurvedGeometry<?> curved) {
                 CoordinateSequence cs = curved.getLinearizedCoordinateSequence(tolerance);
                 gar.addAll(cs);
             } else {
@@ -282,8 +282,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
 
     @Override
     public boolean equalsExact(Geometry other, double tolerance) {
-        if (other instanceof CompoundCurve) {
-            CompoundCurve ccOther = (CompoundCurve) other;
+        if (other instanceof CompoundCurve ccOther) {
             if (ccOther.components.size() != components.size()) {
                 return false;
             }
@@ -303,8 +302,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     @Override
     @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
-        if (other instanceof CompoundCurve) {
-            CompoundCurve ccOther = (CompoundCurve) other;
+        if (other instanceof CompoundCurve ccOther) {
             if (ccOther.components.size() != components.size()) {
                 return false;
             }
@@ -323,8 +321,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
 
     @Override
     public boolean equalsTopo(Geometry other) {
-        if (other instanceof CompoundCurve) {
-            CompoundCurve ccOther = (CompoundCurve) other;
+        if (other instanceof CompoundCurve ccOther) {
             if (ccOther.components.size() != components.size()) {
                 return false;
             }
@@ -343,8 +340,8 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Geometry) {
-            return equals((Geometry) o);
+        if (o instanceof Geometry geometry) {
+            return equals(geometry);
         } else {
             return false;
         }
@@ -370,8 +367,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
             sb.append("(");
             for (int k = 0; k < components.size(); k++) {
                 LineString component = components.get(k);
-                if (component instanceof SingleCurvedGeometry<?>) {
-                    SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
+                if (component instanceof SingleCurvedGeometry<?> curved) {
                     sb.append(curved.toCurvedText());
                 } else {
                     sb.append("(");

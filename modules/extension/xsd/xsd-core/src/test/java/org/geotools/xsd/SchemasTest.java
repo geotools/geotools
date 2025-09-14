@@ -122,13 +122,15 @@ public class SchemasTest {
         write(f, xsd);
 
         f = new File(sub, "test.xsd");
-        xsd = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                + "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\n"
-                + "           targetNamespace=\"http://geotools.org/test\"\n"
-                + "           xmlns=\"http://geotools.org/test\"\n"
-                + "           elementFormDefault=\"qualified\">\n"
-                + "  <xs:element name=\"root\" type=\"xs:anyType\"/>\n"
-                + "</xs:schema>";
+        xsd =
+                """
+                <?xml version="1.0" encoding="UTF-8"?>
+                <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                           targetNamespace="http://geotools.org/test"
+                           xmlns="http://geotools.org/test"
+                           elementFormDefault="qualified">
+                  <xs:element name="root" type="xs:anyType"/>
+                </xs:schema>""";
         write(f, xsd);
 
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "false");

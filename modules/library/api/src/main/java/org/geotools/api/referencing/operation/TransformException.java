@@ -9,6 +9,7 @@
  */
 package org.geotools.api.referencing.operation;
 
+import java.io.Serial;
 import java.util.concurrent.Callable;
 import org.geotools.api.geometry.Position; // For javadoc
 
@@ -25,6 +26,7 @@ import org.geotools.api.geometry.Position; // For javadoc
  */
 public class TransformException extends Exception {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8923944544398567533L;
 
     static final ThreadLocal<Boolean> FILL_STACK_TRACE = new ThreadLocal<>() {

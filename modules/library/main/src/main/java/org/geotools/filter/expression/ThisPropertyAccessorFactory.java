@@ -39,7 +39,7 @@ public class ThisPropertyAccessorFactory implements PropertyAccessorFactory {
         @Override
         @SuppressWarnings("unchecked")
         public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
-            if (object instanceof Attribute) return (T) ((Attribute) object).getValue();
+            if (object instanceof Attribute attribute) return (T) attribute.getValue();
             else return (T) object;
         }
 

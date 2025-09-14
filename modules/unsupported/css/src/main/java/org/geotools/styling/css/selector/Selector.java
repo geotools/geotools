@@ -95,10 +95,10 @@ public abstract class Selector implements Comparable<Selector> {
 
         // if one of the two is an or, we can fold the other into it to preserve
         // a structure with a top-most or
-        if (s1 instanceof Or) {
-            return foldInOr((Or) s1, s2, context);
-        } else if (s2 instanceof Or) {
-            return foldInOr((Or) s2, s1, context);
+        if (s1 instanceof Or or1) {
+            return foldInOr(or1, s2, context);
+        } else if (s2 instanceof Or or) {
+            return foldInOr(or, s1, context);
         }
 
         // ok, we can flatten all the concatenated and nested ands in a single list
@@ -131,8 +131,8 @@ public abstract class Selector implements Comparable<Selector> {
                         return REJECT;
                     } else if (result == ACCEPT) {
                         classifieds.remove(combiner.clazz);
-                    } else if (result instanceof And) {
-                        classifieds.put(combiner.clazz, new ArrayList<>(((Composite) result).getChildren()));
+                    } else if (result instanceof Composite and) {
+                        classifieds.put(combiner.clazz, new ArrayList<>(and.getChildren()));
                     } else {
                         classifieds.put(combiner.clazz, Collections.singletonList(result));
                     }

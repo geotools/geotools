@@ -402,9 +402,9 @@ public class SchemaIndexImpl implements SchemaIndex {
 
         for (XSDSchema schema : schemas) {
             for (XSDTypeDefinition type : schema.getTypeDefinitions()) {
-                if (type instanceof XSDComplexTypeDefinition) {
+                if (type instanceof XSDComplexTypeDefinition definition) {
                     QName qName = new QName(type.getTargetNamespace(), type.getName());
-                    complexTypeIndex.put(qName, (XSDComplexTypeDefinition) type);
+                    complexTypeIndex.put(qName, definition);
                 }
             }
         }
@@ -415,9 +415,9 @@ public class SchemaIndexImpl implements SchemaIndex {
 
         for (XSDSchema schema : schemas) {
             for (XSDTypeDefinition type : schema.getTypeDefinitions()) {
-                if (type instanceof XSDSimpleTypeDefinition) {
+                if (type instanceof XSDSimpleTypeDefinition definition) {
                     QName qName = new QName(type.getTargetNamespace(), type.getName());
-                    simpleTypeIndex.put(qName, (XSDSimpleTypeDefinition) type);
+                    simpleTypeIndex.put(qName, definition);
                 }
             }
         }

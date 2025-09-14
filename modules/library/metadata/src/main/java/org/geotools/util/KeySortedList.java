@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractSequentialList;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.TreeMap;
  */
 public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentialList<V> implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6969483179756527012L;
 
     /** The sorted map of <var>key</var>-<var>list of values</var> pairs. */

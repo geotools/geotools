@@ -160,17 +160,17 @@ public class FeatureConversions {
                 case ColumnType.Short -> target.putShort((short) value);
                 case ColumnType.Int -> target.putInt((int) value);
                 case ColumnType.Long -> {
-                    if (value instanceof Long) {
-                        target.putLong((long) value);
-                    } else if (value instanceof BigInteger bigInteger) {
-                        target.putLong(bigInteger.longValue());
+                    if (value instanceof Long long1) {
+                        target.putLong(long1);
+                    } else if (value instanceof BigInteger integer) {
+                        target.putLong(integer.longValue());
                     } else {
                         target.putLong((long) value);
                     }
                 }
                 case ColumnType.Double -> {
-                    if (value instanceof Double) {
-                        target.putDouble((double) value);
+                    if (value instanceof Double double1) {
+                        target.putDouble(double1);
                     } else if (value instanceof BigDecimal bigDecimal) {
                         target.putDouble(bigDecimal.doubleValue());
                     } else {

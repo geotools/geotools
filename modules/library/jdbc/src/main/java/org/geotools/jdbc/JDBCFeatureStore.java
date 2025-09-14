@@ -304,8 +304,8 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             // close the connection
             getDataStore().closeSafe(cx);
             // safely rethrow
-            if (e instanceof Error) {
-                throw (Error) e;
+            if (e instanceof Error error) {
+                throw error;
             } else {
                 throw (IOException) new IOException().initCause(e);
             }
@@ -373,8 +373,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                 if (state.hasListener()) {
                     // gather any updated bounds due to a geometry modification
                     for (Object value : values) {
-                        if (value instanceof Geometry) {
-                            Geometry geometry = (Geometry) value;
+                        if (value instanceof Geometry geometry) {
                             bounds.expandToInclude(geometry.getEnvelopeInternal());
                         }
                     }

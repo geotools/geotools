@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -812,11 +812,11 @@ public class PropertyDataStoreTest {
     @Test
     public void testRemoveSchema() throws Exception {
         File dir = Files.createTempDirectory("layers").toFile();
-        File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.properties"))
+        File file1 = Files.createFile(Path.of(dir.getAbsolutePath(), "points.properties"))
                 .toFile();
-        File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.properties"))
+        File file2 = Files.createFile(Path.of(dir.getAbsolutePath(), "lines.properties"))
                 .toFile();
-        File file3 = Files.createFile(Paths.get(dir.getAbsolutePath(), "polygon.properties"))
+        File file3 = Files.createFile(Path.of(dir.getAbsolutePath(), "polygon.properties"))
                 .toFile();
         Map<String, Serializable> params = new HashMap<>();
         params.put("directory", dir);

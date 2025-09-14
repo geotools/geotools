@@ -27,7 +27,6 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.Identifier;
-import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
@@ -107,15 +106,14 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
         if (GML._Feature.equals(name)) {
             if (object instanceof SimpleFeature) {
                 return object;
-            } else if (object instanceof FeatureImpl) {
-                ComplexAttribute complex = (ComplexAttribute) object;
+            } else if (object instanceof ComplexAttribute complex) {
                 Identifier ident = complex.getIdentifier();
                 if (ident == null) {
                     return object;
                 }
                 String id;
-                if (ident instanceof FeatureId) {
-                    id = ((FeatureId) ident).getRid();
+                if (ident instanceof FeatureId featureId) {
+                    id = featureId.getRid();
                 } else {
                     id = Converters.convert(ident.getID(), String.class);
                 }
@@ -123,8 +121,8 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
                     return null;
                 }
                 return object;
-            } else if (object instanceof ComplexAttribute) {
-                return ((ComplexAttribute) object).getProperties().iterator().next();
+            } else if (object instanceof ComplexAttribute attribute) {
+                return attribute.getProperties().iterator().next();
             }
         }
         return null;
@@ -133,8 +131,7 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     /** @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element) */
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
-        if (object instanceof ComplexAttribute) {
-            ComplexAttribute complex = (ComplexAttribute) object;
+        if (object instanceof ComplexAttribute complex) {
             checkXlinkHref(complex);
         }
         return value;
@@ -153,8 +150,8 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
             return;
         }
         String id;
-        if (ident instanceof FeatureId) {
-            id = ((FeatureId) ident).getRid();
+        if (ident instanceof FeatureId featureId) {
+            id = featureId.getRid();
         } else {
             id = Converters.convert(ident.getID(), String.class);
         }

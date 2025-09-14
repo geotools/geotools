@@ -29,6 +29,7 @@ import static java.lang.Math.hypot;
 import static java.lang.Math.sin;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -42,6 +43,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class PolarOrthographic extends Orthographic {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = 3281503361127178484L;
 
     /** Maximum difference allowed when comparing real numbers. */

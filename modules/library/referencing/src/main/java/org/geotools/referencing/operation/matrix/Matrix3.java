@@ -17,6 +17,7 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
+import java.io.Serial;
 import java.io.Serializable;
 import org.ejml.UtilEjml;
 import org.ejml.data.DMatrix3x3;
@@ -34,6 +35,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class Matrix3 implements XMatrix, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8902061778871586612L;
 
     /** The matrix size, which is {@value}. */
@@ -83,8 +85,8 @@ public class Matrix3 implements XMatrix, Serializable {
     }
     /** Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDF3. */
     private DMatrix3x3 internal(Matrix matrix) {
-        if (matrix instanceof Matrix3) {
-            return ((Matrix3) matrix).mat;
+        if (matrix instanceof Matrix3 matrix3) {
+            return matrix3.mat;
         } else {
             DMatrix3x3 a = new DMatrix3x3(
                     matrix.getElement(0, 0),

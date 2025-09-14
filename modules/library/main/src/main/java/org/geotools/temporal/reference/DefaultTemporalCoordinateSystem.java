@@ -148,8 +148,7 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
             return true;
         }
         if (object instanceof DefaultTemporalCoordinateSystem && super.equals(object)) {
-            if (object instanceof DefaultTemporalCoordinateSystem) {
-                final DefaultTemporalCoordinateSystem that = (DefaultTemporalCoordinateSystem) object;
+            if (object instanceof DefaultTemporalCoordinateSystem that) {
 
                 return Utilities.equals(this.interval, that.interval) && Utilities.equals(this.origin, that.origin);
             }

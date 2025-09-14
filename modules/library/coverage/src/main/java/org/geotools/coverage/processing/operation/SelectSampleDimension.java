@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.io.Serial;
 import org.eclipse.imagen.media.bandselect.BandSelectDescriptor; // For javadoc
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -84,6 +85,7 @@ import org.geotools.util.factory.Hints;
  */
 public class SelectSampleDimension extends Operation2D {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6889502343896409135L;
 
     /** The parameter descriptor for the sample dimension indices. */

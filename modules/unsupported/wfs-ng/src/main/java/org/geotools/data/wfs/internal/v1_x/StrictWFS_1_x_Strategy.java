@@ -271,14 +271,14 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
 
         try {
             for (TransactionElement elem : transactionElements) {
-                if (elem instanceof TransactionRequest.Insert) {
-                    InsertElementType insert = createInsert(factory, (Insert) elem);
+                if (elem instanceof Insert insert1) {
+                    InsertElementType insert = createInsert(factory, insert1);
                     inserts.add(insert);
-                } else if (elem instanceof TransactionRequest.Update) {
-                    UpdateElementType update = createUpdate(factory, (Update) elem);
+                } else if (elem instanceof Update update1) {
+                    UpdateElementType update = createUpdate(factory, update1);
                     updates.add(update);
-                } else if (elem instanceof TransactionRequest.Delete) {
-                    DeleteElementType delete = createDelete(factory, (Delete) elem);
+                } else if (elem instanceof Delete delete1) {
+                    DeleteElementType delete = createDelete(factory, delete1);
                     deletes.add(delete);
                 }
             }

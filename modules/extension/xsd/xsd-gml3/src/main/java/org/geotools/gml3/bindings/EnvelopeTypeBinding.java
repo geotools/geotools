@@ -216,18 +216,17 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             return new LiteCoordinateSequence(new double[] {envelope.getMaxX(), envelope.getMaxY()}, 2);
         }
 
-        if (envelope instanceof ReferencedEnvelope) {
+        if (envelope instanceof ReferencedEnvelope referencedEnvelope) {
             String localName = name.getLocalPart();
             if (localName.equals("srsName")) {
-                return GML3EncodingUtils.toURI(
-                        ((ReferencedEnvelope) envelope).getCoordinateReferenceSystem(), srsSyntax);
+                return GML3EncodingUtils.toURI(referencedEnvelope.getCoordinateReferenceSystem(), srsSyntax);
             } else if (localName.equals("srsDimension")) {
                 // check if srsDimension is turned off
                 if (config.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {
                     return null;
                 }
 
-                CoordinateReferenceSystem crs = ((ReferencedEnvelope) envelope).getCoordinateReferenceSystem();
+                CoordinateReferenceSystem crs = referencedEnvelope.getCoordinateReferenceSystem();
                 if (crs != null) {
                     return crs.getCoordinateSystem().getDimension();
                 }

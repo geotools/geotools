@@ -52,10 +52,10 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
     private String getPropertyName(Expression expr) {
         String propertyName;
 
-        if (expr instanceof Literal) {
-            propertyName = String.valueOf(((Literal) expr).getValue());
-        } else if (expr instanceof PropertyName) {
-            propertyName = ((PropertyName) expr).getPropertyName();
+        if (expr instanceof Literal literal) {
+            propertyName = String.valueOf(literal.getValue());
+        } else if (expr instanceof PropertyName propertyName1) {
+            propertyName = propertyName1.getPropertyName();
         } else {
             throw new IllegalStateException("Not a property name expression: " + expr);
         }
@@ -81,8 +81,8 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
      */
     @Override
     public Object evaluate(Object bean) {
-        if (bean instanceof SimpleFeature) {
-            return evaluate((SimpleFeature) bean);
+        if (bean instanceof SimpleFeature feature) {
+            return evaluate(feature);
         }
 
         final String propName = getPropertyName();

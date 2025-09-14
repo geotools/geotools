@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +44,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class ElementImpl extends MetadataEntity implements Element {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3542504624077298894L;
 
     /** Name of the test applied to the data. */

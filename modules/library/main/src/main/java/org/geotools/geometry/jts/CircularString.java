@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.io.Serial;
 import java.util.Arrays;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
@@ -64,6 +65,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         protected abstract void visitArc(CircularArc arc);
     }
 
+    @Serial
     private static final long serialVersionUID = -5796254063449438787L;
 
     /** This sequence is used as a fake to trick the constructor */
@@ -315,8 +317,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
 
     @Override
     public boolean equalsExact(Geometry other, double tolerance) {
-        if (other instanceof CircularString) {
-            CircularString csOther = (CircularString) other;
+        if (other instanceof CircularString csOther) {
             if (Arrays.equals(controlPoints, csOther.controlPoints)) {
                 return true;
             }
@@ -327,8 +328,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     @Override
     @SuppressWarnings("NonOverridingEquals") // this is part of the interface, not overriding Object.equals()
     public boolean equals(Geometry other) {
-        if (other instanceof CircularString) {
-            CircularString csOther = (CircularString) other;
+        if (other instanceof CircularString csOther) {
             if (Arrays.equals(controlPoints, csOther.controlPoints)) {
                 return true;
             }
@@ -338,8 +338,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
 
     @Override
     public boolean equalsTopo(Geometry other) {
-        if (other instanceof CircularString) {
-            CircularString csOther = (CircularString) other;
+        if (other instanceof CircularString csOther) {
             if (Arrays.equals(controlPoints, csOther.controlPoints)) {
                 return true;
             }
@@ -349,8 +348,8 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Geometry) {
-            return equals((Geometry) o);
+        if (o instanceof Geometry geometry) {
+            return equals(geometry);
         } else {
             return false;
         }

@@ -52,10 +52,9 @@ class CompositingGroup {
         List<Layer> layers = new ArrayList<>();
         for (Layer layer : mc.layers()) {
             Style style = layer.getStyle();
-            if (layer instanceof DirectLayer) {
-                layers.add(new WrappingDirectLayer((DirectLayer) layer));
-            } else if (layer instanceof ZGroupLayer) {
-                ZGroupLayer zLayer = (ZGroupLayer) layer;
+            if (layer instanceof DirectLayer directLayer) {
+                layers.add(new WrappingDirectLayer(directLayer));
+            } else if (layer instanceof ZGroupLayer zLayer) {
                 if (zLayer.isCompositingBase()) {
                     addToCompositingMapContents(graphics, screenSize, result, layers);
                 }
@@ -119,8 +118,8 @@ class CompositingGroup {
 
     private static Composite getComposite(List<Layer> layers) {
         Layer layer = layers.get(0);
-        if (layer instanceof ZGroupLayer) {
-            return ((ZGroupLayer) layer).getComposite();
+        if (layer instanceof ZGroupLayer groupLayer) {
+            return groupLayer.getComposite();
         }
         Style styles = layer.getStyle();
         List<FeatureTypeStyle> featureTypeStyles = styles.featureTypeStyles();

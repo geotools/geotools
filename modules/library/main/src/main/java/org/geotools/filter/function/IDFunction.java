@@ -45,12 +45,10 @@ public class IDFunction extends FunctionExpressionImpl implements VolatileFuncti
 
     @Override
     public Object evaluate(Object obj) {
-        if (obj instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) obj;
+        if (obj instanceof SimpleFeature feature) {
             return feature.getID();
         }
-        if (obj instanceof Attribute) {
-            Attribute attribute = (Attribute) obj;
+        if (obj instanceof Attribute attribute) {
             return attribute.getIdentifier().getID();
         }
         return ""; // no ID

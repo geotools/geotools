@@ -87,25 +87,25 @@ public final class SwingUtilities {
                 throw new IllegalArgumentException();
             }
             // NOTE: All 'addFooListener(...)' below ignore null argument. No need to check ourself.
-            if (owner instanceof JDesktopPane) {
+            if (owner instanceof JDesktopPane pane) {
                 final JInternalFrame frame = new JInternalFrame(title, true, true, true, true);
                 frame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
                 frame.addInternalFrameListener(InternalWindowListener.wrap(listener));
-                ((JDesktopPane) owner).add(frame);
+                pane.add(frame);
                 frame.getContentPane().add(panel);
                 frame.pack();
                 return frame;
             }
-            if (owner instanceof Frame) {
-                final JDialog dialog = new JDialog((Frame) owner, title);
+            if (owner instanceof Frame frame) {
+                final JDialog dialog = new JDialog(frame, title);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.addWindowListener(listener);
                 dialog.getContentPane().add(panel);
                 dialog.pack();
                 return dialog;
             }
-            if (owner instanceof Dialog) {
-                final JDialog dialog = new JDialog((Dialog) owner, title);
+            if (owner instanceof Dialog dialog1) {
+                final JDialog dialog = new JDialog(dialog1, title);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 dialog.addWindowListener(listener);
                 dialog.getContentPane().add(panel);
@@ -129,15 +129,15 @@ public final class SwingUtilities {
     /** Set the title of the parent frame or internal frame of the specified component. */
     public static void setTitle(Component component, final String title) {
         while (component != null) {
-            if (component instanceof JInternalFrame) {
-                ((JInternalFrame) component).setTitle(title);
+            if (component instanceof JInternalFrame frame) {
+                frame.setTitle(title);
             }
-            if (component instanceof Frame) {
-                ((Frame) component).setTitle(title);
+            if (component instanceof Frame frame) {
+                frame.setTitle(title);
                 return;
             }
-            if (component instanceof Dialog) {
-                ((Dialog) component).setTitle(title);
+            if (component instanceof Dialog dialog) {
+                dialog.setTitle(title);
                 return;
             }
         }
@@ -183,8 +183,8 @@ public final class SwingUtilities {
         if (reset != null) {
             final Vocabulary resources = Vocabulary.getResources(owner != null ? owner.getLocale() : null);
             final JButton button;
-            if (reset instanceof Action) {
-                button = new JButton((Action) reset);
+            if (reset instanceof Action action) {
+                button = new JButton(action);
             } else {
                 button = new JButton(resources.getString(VocabularyKeys.RESET));
                 button.addActionListener(reset);
@@ -342,11 +342,11 @@ public final class SwingUtilities {
                 // Someone don't want to let us sleep. Go back to work.
             } catch (InvocationTargetException target) {
                 final Throwable exception = target.getTargetException();
-                if (exception instanceof RuntimeException) {
-                    throw (RuntimeException) exception;
+                if (exception instanceof RuntimeException runtimeException) {
+                    throw runtimeException;
                 }
-                if (exception instanceof Error) {
-                    throw (Error) exception;
+                if (exception instanceof Error error) {
+                    throw error;
                 }
                 // Should not happen, since {@link Runnable#run} do not allow checked exception.
                 throw new UndeclaredThrowableException(exception, exception.getLocalizedMessage());

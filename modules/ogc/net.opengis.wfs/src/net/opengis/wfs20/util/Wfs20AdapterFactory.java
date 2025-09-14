@@ -53,8 +53,8 @@ public class Wfs20AdapterFactory extends AdapterFactoryImpl {
     if (object == modelPackage) {
       return true;
     }
-    if (object instanceof EObject) {
-      return ((EObject)object).eClass().getEPackage() == modelPackage;
+    if (object instanceof EObject eObject) {
+      return eObject.eClass().getEPackage() == modelPackage;
     }
     return false;
   }

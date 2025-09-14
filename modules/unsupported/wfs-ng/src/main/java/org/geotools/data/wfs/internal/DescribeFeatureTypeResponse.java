@@ -92,7 +92,7 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
     private EntityResolver getTempFileEntityResolver(EntityResolver resolver, File tempSchema) {
         if (resolver == null) return null;
-        if (resolver instanceof EntityResolver2) return new TempEntityResolver2((EntityResolver2) resolver, tempSchema);
+        if (resolver instanceof EntityResolver2 resolver2) return new TempEntityResolver2(resolver2, tempSchema);
         return new TempEntityResolver(resolver, tempSchema);
     }
 

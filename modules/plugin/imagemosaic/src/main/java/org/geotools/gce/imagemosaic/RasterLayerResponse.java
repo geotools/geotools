@@ -1219,8 +1219,8 @@ public class RasterLayerResponse {
         CoverageUtilities.setNoDataProperty(properties, w.getNoData());
         // Setting ROI property
         Object property = image.getProperty("ROI");
-        if (property != null && property instanceof ROI) {
-            CoverageUtilities.setROIProperty(properties, (ROI) property);
+        if (property != null && property instanceof ROI oI) {
+            CoverageUtilities.setROIProperty(properties, oI);
         }
 
         return coverageFactory.create(
@@ -1241,10 +1241,10 @@ public class RasterLayerResponse {
         if (image != null) {
             Object obj = image.getProperty(NoDataContainer.GC_NODATA);
             if (obj != null) {
-                if (obj instanceof NoDataContainer) {
-                    return ((NoDataContainer) obj).getAsSingleValue();
-                } else if (obj instanceof Double) {
-                    return (Double) obj;
+                if (obj instanceof NoDataContainer container) {
+                    return container.getAsSingleValue();
+                } else if (obj instanceof Double double1) {
+                    return double1;
                 }
             }
         }

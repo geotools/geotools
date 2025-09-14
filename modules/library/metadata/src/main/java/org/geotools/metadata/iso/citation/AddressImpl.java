@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.citation;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import net.opengis.ows11.AddressType;
@@ -37,6 +38,7 @@ import org.geotools.util.SimpleInternationalString;
  */
 public class AddressImpl extends MetadataEntity implements Address {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 2278687294173262546L;
 
     /** State, province of the location. */

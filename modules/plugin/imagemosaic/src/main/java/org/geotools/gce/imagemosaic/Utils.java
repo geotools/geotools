@@ -465,17 +465,15 @@ public class Utils {
             source = inputSource;
             // if it is a URL or a String let's try to see if we can get a file to
             // check if we have to build the index
-            if (source instanceof File) {
-                file = (File) source;
+            if (source instanceof File file1) {
+                file = file1;
                 url = URLs.fileToUrl(file);
-            } else if (source instanceof URL) {
-                url = (URL) source;
+            } else if (source instanceof URL rL) {
+                url = rL;
                 if (url.getProtocol().equals("file")) {
                     file = URLs.urlToFile(url);
                 }
-            } else if (source instanceof String) {
-                // is it a File?
-                final String tempSource = (String) source;
+            } else if (source instanceof String tempSource) {
                 File tempFile = new File(tempSource);
                 if (!tempFile.exists()) {
                     // is it a URL
@@ -1449,8 +1447,7 @@ public class Utils {
                             .build()) {
                 // load the image
                 Object object = oiStream.readObject();
-                if (object instanceof SampleImage) {
-                    SampleImage si = (SampleImage) object;
+                if (object instanceof SampleImage si) {
                     return si.toBufferedImage();
                 } else {
                     LOGGER.warning(() -> "Unrecognized sample image content '"
@@ -1921,8 +1918,8 @@ public class Utils {
 
     /** Checks if the Shape equates to a Rectangle, if it does it performs a conversion, otherwise returns null */
     static Rectangle toRectangle(Shape shape) {
-        if (shape instanceof Rectangle) {
-            return (Rectangle) shape;
+        if (shape instanceof Rectangle rectangle) {
+            return rectangle;
         }
 
         if (shape == null) {
@@ -2071,16 +2068,14 @@ public class Utils {
     public static boolean minimalIndexCheck(Object source) {
         File sourceFile = null;
         URL sourceURL = null;
-        if (source instanceof File) {
-            sourceFile = (File) source;
-        } else if (source instanceof URL) {
-            sourceURL = (URL) source;
+        if (source instanceof File file) {
+            sourceFile = file;
+        } else if (source instanceof URL rL) {
+            sourceURL = rL;
             if (sourceURL.getProtocol().equals("file")) {
                 sourceFile = URLs.urlToFile(sourceURL);
             }
-        } else if (source instanceof String) {
-            // is it a File?
-            final String tempSource = (String) source;
+        } else if (source instanceof String tempSource) {
             File tempFile = new File(tempSource);
             if (!tempFile.exists()) {
                 return false;
@@ -2495,8 +2490,8 @@ public class Utils {
                 g = new GeometrySnapper(g).snapTo(g, tol).buffer(0);
                 roiGeometry = new ROIGeometry(g, setupJAIHints(hints));
                 roi = roi.intersect(roiGeometry);
-            } else if (roi instanceof ROIGeometry) {
-                g = ((ROIGeometry) roi).getAsGeometry();
+            } else if (roi instanceof ROIGeometry geometry) {
+                g = geometry.getAsGeometry();
                 isValid = g.isValid();
                 if (!isValid) {
                     double tol = GeometrySnapper.computeOverlaySnapTolerance(g);

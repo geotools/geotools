@@ -16,6 +16,8 @@
  */
 package org.geotools.process;
 
+import java.io.Serial;
+
 /**
  * A runtime exception used when executing a process.
  *
@@ -24,6 +26,7 @@ package org.geotools.process;
  * @version 8.0
  */
 public class ProcessException extends RuntimeException {
+    @Serial
     private static final long serialVersionUID = -3953993149819064102L;
 
     public ProcessException(Throwable cause) {

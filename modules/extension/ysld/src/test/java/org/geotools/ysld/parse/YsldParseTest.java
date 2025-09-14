@@ -121,9 +121,15 @@ public class YsldParseTest {
         assertEquals("MyLayer", namedLayer.getName());
         assertEquals("MyStyle", namedLayer.styles().get(0).getName());
 
-        sld = Ysld.parse("sld-name: SLDName\nsld-title: SLD Title\nsld-abstract: Remote user layer\n"
-                + "user-name: RemoteLayer\nuser-remote: http://localhost:8080/geoserver/wms\nuser-service: wms\n"
-                + "name: RemoteStyle");
+        sld = Ysld.parse(
+                """
+                sld-name: SLDName
+                sld-title: SLD Title
+                sld-abstract: Remote user layer
+                user-name: RemoteLayer
+                user-remote: http://localhost:8080/geoserver/wms
+                user-service: wms
+                name: RemoteStyle""");
 
         assertEquals("SLDName", sld.getName());
         assertEquals("SLD Title", sld.getTitle());
@@ -140,11 +146,14 @@ public class YsldParseTest {
 
     @Test
     public void testAnchor() throws Exception {
-        String yaml = "blue: &blue rgb(0,0,255)\n"
-                + "point: \n"
-                + "  symbols: \n"
-                + "  - mark: \n"
-                + "      fill-color: *blue\n";
+        String yaml =
+                """
+                blue: &blue rgb(0,0,255)
+                point:\s
+                  symbols:\s
+                  - mark:\s
+                      fill-color: *blue
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
@@ -220,14 +229,17 @@ public class YsldParseTest {
 
     @Test
     public void testRenderingTransformation() throws IOException {
-        String yaml = "feature-styles: \n"
-                + "- transform:\n"
-                + "    name: ras:Contour\n"
-                + "    params:\n"
-                + "      levels:\n"
-                + "      - 1000\n"
-                + "      - 1100\n"
-                + "      - 1200\n";
+        String yaml =
+                """
+                feature-styles:\s
+                - transform:
+                    name: ras:Contour
+                    params:
+                      levels:
+                      - 1000
+                      - 1100
+                      - 1200
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
@@ -286,16 +298,19 @@ public class YsldParseTest {
 
     @Test
     public void testRenderingTransformationHeatmap() throws IOException {
-        String yaml = "feature-styles: \n"
-                + "- transform:\n"
-                + "    name: vec:Heatmap\n"
-                + "    params:\n"
-                + "      weightAttr: pop2000\n"
-                + "      radius: 100\n"
-                + "      pixelsPerCell: 10\n"
-                + "      outputBBOX: ${env('wms_bbox')}\n"
-                + "      outputWidth: ${env('wms_width')}\n"
-                + "      outputHeight: ${env('wms_height')}\n";
+        String yaml =
+                """
+                feature-styles:\s
+                - transform:
+                    name: vec:Heatmap
+                    params:
+                      weightAttr: pop2000
+                      radius: 100
+                      pixelsPerCell: 10
+                      outputBBOX: ${env('wms_bbox')}
+                      outputWidth: ${env('wms_width')}
+                      outputHeight: ${env('wms_height')}
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
@@ -321,15 +336,18 @@ public class YsldParseTest {
 
     @Test
     public void testRenderingTransformationAlternateInputParam() throws IOException {
-        String yaml = "feature-styles: \n"
-                + "- transform:\n"
-                + "    input: foo\n"
-                + "    name: ras:Contour\n"
-                + "    params:\n"
-                + "      levels:\n"
-                + "      - 1000\n"
-                + "      - 1100\n"
-                + "      - 1200\n";
+        String yaml =
+                """
+                feature-styles:\s
+                - transform:
+                    input: foo
+                    name: ras:Contour
+                    params:
+                      levels:
+                      - 1000
+                      - 1100
+                      - 1200
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
@@ -349,13 +367,16 @@ public class YsldParseTest {
 
     @Test
     public void testRenderingTransformationWMSAuto() throws IOException {
-        String yaml = "feature-styles: \n"
-                + "- transform:\n"
-                + "    name: vec:Heatmap\n"
-                + "    params:\n"
-                + "      weightAttr: pop2000\n"
-                + "      radius: 100\n"
-                + "      pixelsPerCell: 10\n";
+        String yaml =
+                """
+                feature-styles:\s
+                - transform:
+                    name: vec:Heatmap
+                    params:
+                      weightAttr: pop2000
+                      radius: 100
+                      pixelsPerCell: 10
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
@@ -381,14 +402,17 @@ public class YsldParseTest {
 
     @Test
     public void testRenderingTransformationWMSAutoMixed() throws IOException {
-        String yaml = "feature-styles: \n"
-                + "- transform:\n"
-                + "    name: vec:Heatmap\n"
-                + "    params:\n"
-                + "      weightAttr: pop2000\n"
-                + "      radius: 100\n"
-                + "      pixelsPerCell: 10\n"
-                + "      outputBBOX: ${env('test')}\n";
+        String yaml =
+                """
+                feature-styles:\s
+                - transform:
+                    name: vec:Heatmap
+                    params:
+                      weightAttr: pop2000
+                      radius: 100
+                      pixelsPerCell: 10
+                      outputBBOX: ${env('test')}
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
@@ -414,20 +438,22 @@ public class YsldParseTest {
 
     @Test
     public void testNestedRenderingTransformation() throws IOException {
-        String yaml = "feature-styles:\n"
-                + "- transform:\n"
-                + "    name: ras:Contour\n"
-                + "    params:\n"
-                + "      data: \n"
-                + "        name: vec:BarnesSurface\n"
-                + "        input: data\n"
-                + "        params:\n"
-                + "          valuAttr: MxTmp\n"
-                + "      levels:\n"
-                + "      - -5\n"
-                + "      - 0\n"
-                + "      - 5\n"
-                + "";
+        String yaml =
+                """
+                feature-styles:
+                - transform:
+                    name: ras:Contour
+                    params:
+                      data:\s
+                        name: vec:BarnesSurface
+                        input: data
+                        params:
+                          valuAttr: MxTmp
+                      levels:
+                      - -5
+                      - 0
+                      - 5
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
@@ -458,20 +484,23 @@ public class YsldParseTest {
 
     @Test
     public void testLabelShield() throws Exception {
-        String yaml = "feature-styles:\n"
-                + "- name: name\n"
-                + " rules:\n"
-                + " - symbolizers:\n"
-                + "   - line:\n"
-                + "       stroke-color: '#555555'\n"
-                + "       stroke-width: 1.0\n"
-                + "    - text:\n"
-                + "       label: name\n"
-                + "       symbols:\n"
-                + "        - mark:\n"
-                + "           shape: circle\n"
-                + "           fill-color: '#995555'\n"
-                + "       geometry: ${geom}";
+        String yaml =
+                """
+                feature-styles:
+                - name: name
+                 rules:
+                 - symbolizers:
+                   - line:
+                       stroke-color: '#555555'
+                       stroke-width: 1.0
+                    - text:
+                       label: name
+                       symbols:
+                        - mark:
+                           shape: circle
+                           fill-color: '#995555'
+                       geometry: ${geom}\
+                """;
         // the above is really invalid YAML, maybe someone will come, fix it
         // and do some assertions here. For the time being, one silly assertion to appease PMD
         assertNotNull(yaml);
@@ -1189,7 +1218,7 @@ public class YsldParseTest {
             } else {
                 String s = o.toString();
                 if (s.isEmpty() || s.startsWith("#") || s.equalsIgnoreCase("null")) {
-                    builder.append(String.format("'%s'", s));
+                    builder.append("'%s'".formatted(s));
                 } else {
                     builder.append(s);
                 }
@@ -1369,8 +1398,11 @@ public class YsldParseTest {
 
     @Test
     public void testExpressionLong() throws Exception {
-        String yaml = "polygon:\n"
-                + "  fill-color: ${recode(MAPCOLOR7, 1.0, '#FFC3C3', 2.0, '#FFE3C3', 3.0, '#FFFFC3', 4.0, '#C3FFE3', 5.0, '#C3FFFF', 6.0, '#C3C3FF', 7.0, '#BFC3FF')}\n";
+        String yaml =
+                """
+                polygon:
+                  fill-color: ${recode(MAPCOLOR7, 1.0, '#FFC3C3', 2.0, '#FFE3C3', 3.0, '#FFFFC3', 4.0, '#C3FFE3', 5.0, '#C3FFFF', 6.0, '#C3C3FF', 7.0, '#BFC3FF')}
+                """;
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         PolygonSymbolizer symb =
@@ -1400,15 +1432,18 @@ public class YsldParseTest {
 
     @Test
     public void testExpressionLongBreak() throws Exception {
-        String yaml = "polygon:\n"
-                + "  fill-color: ${recode(MAPCOLOR7, \n"
-                + "    1.0, '#FFC3C3', \n"
-                + "    2.0, '#FFE3C3', \n"
-                + "    3.0, '#FFFFC3', \n"
-                + "    4.0, '#C3FFE3', \n"
-                + "    5.0, '#C3FFFF', \n"
-                + "    6.0, '#C3C3FF', \n"
-                + "    7.0, '#BFC3FF')}\n";
+        String yaml =
+                """
+                polygon:
+                  fill-color: ${recode(MAPCOLOR7,\s
+                    1.0, '#FFC3C3',\s
+                    2.0, '#FFE3C3',\s
+                    3.0, '#FFFFC3',\s
+                    4.0, '#C3FFE3',\s
+                    5.0, '#C3FFFF',\s
+                    6.0, '#C3C3FF',\s
+                    7.0, '#BFC3FF')}
+                """;
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         PolygonSymbolizer symb =
@@ -1439,16 +1474,19 @@ public class YsldParseTest {
     @Ignore // This was a test to understand what was going on.  Expect it to fail
     @Test
     public void testExpressionLongBreakFolded() throws Exception {
-        String yaml = "polygon:\n"
-                + "  fill-color: >\n"
-                + "    ${recode(MAPCOLOR7, \n"
-                + "    1.0, '#FFC3C3', \n"
-                + "    2.0, '#FFE3C3', \n"
-                + "    3.0, '#FFFFC3', \n"
-                + "    4.0, '#C3FFE3', \n"
-                + "    5.0, '#C3FFFF', \n"
-                + "    6.0, '#C3C3FF', \n"
-                + "    7.0, '#BFC3FF')}\n";
+        String yaml =
+                """
+                polygon:
+                  fill-color: >
+                    ${recode(MAPCOLOR7,\s
+                    1.0, '#FFC3C3',\s
+                    2.0, '#FFE3C3',\s
+                    3.0, '#FFFFC3',\s
+                    4.0, '#C3FFE3',\s
+                    5.0, '#C3FFFF',\s
+                    6.0, '#C3C3FF',\s
+                    7.0, '#BFC3FF')}
+                """;
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         PolygonSymbolizer symb =
@@ -1479,16 +1517,19 @@ public class YsldParseTest {
     @Ignore // This was a test to understand what was going on.  Expect it to fail
     @Test
     public void testExpressionLongBreakPreserved() throws Exception {
-        String yaml = "polygon:\n"
-                + "  fill-color: |\n"
-                + "    ${recode(MAPCOLOR7, \n"
-                + "    1.0, '#FFC3C3', \n"
-                + "    2.0, '#FFE3C3', \n"
-                + "    3.0, '#FFFFC3', \n"
-                + "    4.0, '#C3FFE3', \n"
-                + "    5.0, '#C3FFFF', \n"
-                + "    6.0, '#C3C3FF', \n"
-                + "    7.0, '#BFC3FF')}\n";
+        String yaml =
+                """
+                polygon:
+                  fill-color: |
+                    ${recode(MAPCOLOR7,\s
+                    1.0, '#FFC3C3',\s
+                    2.0, '#FFE3C3',\s
+                    3.0, '#FFFFC3',\s
+                    4.0, '#C3FFE3',\s
+                    5.0, '#C3FFFF',\s
+                    6.0, '#C3C3FF',\s
+                    7.0, '#BFC3FF')}
+                """;
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs = SLD.defaultStyle(sld).featureTypeStyles().get(0);
         PolygonSymbolizer symb =
@@ -1559,11 +1600,14 @@ public class YsldParseTest {
 
     @Test
     public void testColorHex() throws Exception {
-        String yaml = "point: \n"
-                + "  symbols: \n"
-                + "  - mark: \n"
-                + "      fill-color: 0x001122\n"
-                + "      stroke-color: 0x334455\n";
+        String yaml =
+                """
+                point:\s
+                  symbols:\s
+                  - mark:\s
+                      fill-color: 0x001122
+                      stroke-color: 0x334455
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
@@ -1573,11 +1617,14 @@ public class YsldParseTest {
 
     @Test
     public void testColorQuotedHex() throws Exception {
-        String yaml = "point: \n"
-                + "  symbols: \n"
-                + "  - mark: \n"
-                + "      fill-color: '0x001122'\n"
-                + "      stroke-color: '0x334455'\n";
+        String yaml =
+                """
+                point:\s
+                  symbols:\s
+                  - mark:\s
+                      fill-color: '0x001122'
+                      stroke-color: '0x334455'
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
@@ -1587,11 +1634,14 @@ public class YsldParseTest {
 
     @Test
     public void testColorQuotedHash() throws Exception {
-        String yaml = "point: \n"
-                + "  symbols: \n"
-                + "  - mark: \n"
-                + "      fill-color: '#001122'\n"
-                + "      stroke-color: '#334455'\n";
+        String yaml =
+                """
+                point:\s
+                  symbols:\s
+                  - mark:\s
+                      fill-color: '#001122'
+                      stroke-color: '#334455'
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
@@ -1601,11 +1651,14 @@ public class YsldParseTest {
 
     @Test
     public void testColorQuotedBare() throws Exception {
-        String yaml = "point: \n"
-                + "  symbols: \n"
-                + "  - mark: \n"
-                + "      fill-color: '001122'\n"
-                + "      stroke-color: '334455'\n";
+        String yaml =
+                """
+                point:\s
+                  symbols:\s
+                  - mark:\s
+                      fill-color: '001122'
+                      stroke-color: '334455'
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
@@ -1635,13 +1688,16 @@ public class YsldParseTest {
 
     @Test
     public void testRasterBandSelectionGreyWithContrast() throws Exception {
-        String yaml = "raster:\n"
-                + "  channels:\n"
-                + "    gray:\n"
-                + "      name: foo\n"
-                + "      contrast-enhancement:\n"
-                + "        mode: normalize\n"
-                + "        gamma: 1.2\n";
+        String yaml =
+                """
+                raster:
+                  channels:
+                    gray:
+                      name: foo
+                      contrast-enhancement:
+                        mode: normalize
+                        gamma: 1.2
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
@@ -1664,16 +1720,19 @@ public class YsldParseTest {
 
     @Test
     public void testRasterBandSelectionRGB() throws Exception {
-        String yaml = "raster:\n"
-                + "  channels:\n"
-                + "    red:\n"
-                + "      name: foo\n"
-                + "    green:\n"
-                + "      name: bar\n"
-                + "      contrast-enhancement:\n"
-                + "        mode: normalize\n"
-                + "    blue:\n"
-                + "      name: baz\n";
+        String yaml =
+                """
+                raster:
+                  channels:
+                    red:
+                      name: foo
+                    green:
+                      name: bar
+                      contrast-enhancement:
+                        mode: normalize
+                    blue:
+                      name: baz
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
@@ -1718,13 +1777,16 @@ public class YsldParseTest {
 
     @Test
     public void testBandSelectionExpression() throws Exception {
-        String yaml = "feature-styles:\n"
-                + "- rules:\n"
-                + "  - symbolizers:\n"
-                + "    - raster:\n"
-                + "        channels:\n"
-                + "          gray:\n"
-                + "            name: ${env('B1','1')}";
+        String yaml =
+                """
+                feature-styles:
+                - rules:
+                  - symbolizers:
+                    - raster:
+                        channels:
+                          gray:
+                            name: ${env('B1','1')}\
+                """;
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer raster = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
         Expression name = raster.getChannelSelection().getGrayChannel().getChannelName();
@@ -1739,11 +1801,14 @@ public class YsldParseTest {
 
     @Test
     public void testMarkOpacity() throws Exception {
-        String yaml = "point: \n"
-                + "  symbols: \n"
-                + "  - mark: \n"
-                + "      fill-color: '#FF0000'\n"
-                + "      fill-opacity: 0.5\n"; // Not just 'opacity'
+        String yaml =
+                """
+                point:\s
+                  symbols:\s
+                  - mark:\s
+                      fill-color: '#FF0000'
+                      fill-opacity: 0.5
+                """; // Not just 'opacity'
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
@@ -1868,16 +1933,19 @@ public class YsldParseTest {
 
     @Test
     public void testRelativeExternalGraphicNoResolver() throws Exception {
-        String yaml = "feature-styles:\n"
-                + "- name: name\n"
-                + "  rules:\n"
-                + "  - symbolizers:\n"
-                + "    - point:\n"
-                + "        size: 32\n"
-                + "        symbols:\n"
-                + "        - external:\n"
-                + "            url: smileyface.png\n"
-                + "            format: image/png\n";
+        String yaml =
+                """
+                feature-styles:
+                - name: name
+                  rules:
+                  - symbolizers:
+                    - point:
+                        size: 32
+                        symbols:
+                        - external:
+                            url: smileyface.png
+                            format: image/png
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
@@ -1893,16 +1961,19 @@ public class YsldParseTest {
 
     @Test
     public void testRelativeExternalGraphicWithResolver() throws Exception {
-        String yaml = "feature-styles:\n"
-                + "- name: name\n"
-                + "  rules:\n"
-                + "  - symbolizers:\n"
-                + "    - point:\n"
-                + "        size: 32\n"
-                + "        symbols:\n"
-                + "        - external:\n"
-                + "            url: smileyface.png\n"
-                + "            format: image/png\n";
+        String yaml =
+                """
+                feature-styles:
+                - name: name
+                  rules:
+                  - symbolizers:
+                    - point:
+                        size: 32
+                        symbols:
+                        - external:
+                            url: smileyface.png
+                            format: image/png
+                """;
 
         ResourceLocator locator = EasyMock.createMock(ResourceLocator.class);
 
@@ -2025,13 +2096,15 @@ public class YsldParseTest {
     @Test
     public void testStrokeGraphic() throws Exception {
 
-        String yaml = "line:\n"
-                + "  stroke-graphic:\n"
-                + "    symbols:\n"
-                + "    - mark:\n"
-                + "        shape: circle\n"
-                + "        fill-color: '#995555'\n"
-                + "";
+        String yaml =
+                """
+                line:
+                  stroke-graphic:
+                    symbols:
+                    - mark:
+                        shape: circle
+                        fill-color: '#995555'
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
@@ -2052,13 +2125,15 @@ public class YsldParseTest {
     @Test
     public void testStrokeGraphicFill() throws Exception {
 
-        String yaml = "line:\n"
-                + "  stroke-graphic-fill:\n"
-                + "    symbols:\n"
-                + "    - mark:\n"
-                + "        shape: circle\n"
-                + "        fill-color: '#995555'\n"
-                + "";
+        String yaml =
+                """
+                line:
+                  stroke-graphic-fill:
+                    symbols:
+                    - mark:
+                        shape: circle
+                        fill-color: '#995555'
+                """;
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
@@ -2150,19 +2225,21 @@ public class YsldParseTest {
 
     @Test
     public void testLegend() throws Exception {
-        String yaml = "feature-styles:\n"
-                + "- rules:\n"
-                + "  - legend:\n"
-                + "      symbols:\n"
-                + "      - external:\n"
-                + "          url: smileyface.png\n"
-                + "          format: image/png\n"
-                + "    symbolizers:\n"
-                + "    - point:\n"
-                + "        symbols:\n"
-                + "        - mark:\n"
-                + "            shape: circle\n"
-                + "            fill-color: '#FF0000'";
+        String yaml =
+                """
+                feature-styles:
+                - rules:
+                  - legend:
+                      symbols:
+                      - external:
+                          url: smileyface.png
+                          format: image/png
+                    symbolizers:
+                    - point:
+                        symbols:
+                        - mark:
+                            shape: circle
+                            fill-color: '#FF0000'""";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         Rule rule = SLD.rules(SLD.defaultStyle(sld))[0];
         assertThat(rule.getLegend().graphicalSymbols().get(0), instanceOf(ExternalGraphic.class));

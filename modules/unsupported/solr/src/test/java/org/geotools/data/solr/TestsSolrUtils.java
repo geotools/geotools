@@ -155,7 +155,7 @@ public final class TestsSolrUtils {
         InputStream input = TestsSolrUtils.class.getResourceAsStream(resourceAbsolutePath);
         if (input == null) {
             // the resource was not found
-            throw new RuntimeException(String.format("Could not find resource '%s'.", resourceAbsolutePath));
+            throw new RuntimeException("Could not find resource '%s'.".formatted(resourceAbsolutePath));
         }
         return input;
     }
@@ -362,8 +362,7 @@ public final class TestsSolrUtils {
         /** If this response contains any message errors throw an exception. */
         private void throwIfNeeded() {
             if (errors) {
-                throw new RuntimeException(
-                        String.format("Something bad happen when executing Solr request '%s'.", message));
+                throw new RuntimeException("Something bad happen when executing Solr request '%s'.".formatted(message));
             }
         }
 
@@ -399,7 +398,7 @@ public final class TestsSolrUtils {
             if (!errors.isEmpty()) {
                 // at leats one message errors exists, let's throw an exception
                 throw new RuntimeException(
-                        String.format("Something bad happen when executing Solr request(s) '%s'.", errors));
+                        "Something bad happen when executing Solr request(s) '%s'.".formatted(errors));
             }
         }
     }

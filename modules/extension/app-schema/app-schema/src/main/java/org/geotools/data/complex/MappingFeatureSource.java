@@ -117,9 +117,9 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         namedQuery.setStartIndex(query.getStartIndex());
         namedQuery.setSortBy(query.getSortBy());
         namedQuery.setHints(query.getHints());
-        if (query instanceof JoiningQuery) {
-            ((JoiningQuery) namedQuery).setQueryJoins(((JoiningQuery) query).getQueryJoins());
-            ((JoiningQuery) namedQuery).setRootMapping(((JoiningQuery) query).getRootMapping());
+        if (query instanceof JoiningQuery joiningQuery) {
+            ((JoiningQuery) namedQuery).setQueryJoins(joiningQuery.getQueryJoins());
+            ((JoiningQuery) namedQuery).setRootMapping(joiningQuery.getRootMapping());
         }
         return namedQuery;
     }

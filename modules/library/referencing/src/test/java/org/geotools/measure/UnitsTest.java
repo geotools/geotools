@@ -133,8 +133,7 @@ public class UnitsTest {
             @SuppressWarnings("unchecked")
             TransformedUnit<Length> transformed = (TransformedUnit<Length>) unit;
             UnitConverter converter = transformed.getConverter();
-            if (converter instanceof MultiplyConverter) {
-                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
+            if (converter instanceof MultiplyConverter multiplyConverter) {
                 double factor = multiplyConverter.getFactor().doubleValue();
                 // 0.3048006096012192  // observed
                 // 0.3048006096        // expected
@@ -163,8 +162,7 @@ public class UnitsTest {
             @SuppressWarnings("unchecked")
             TransformedUnit<Angle> transformed = (TransformedUnit<Angle>) unit;
             UnitConverter converter = transformed.getConverter();
-            if (converter instanceof MultiplyConverter) {
-                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
+            if (converter instanceof MultiplyConverter multiplyConverter) {
                 double factor = multiplyConverter.getFactor().doubleValue();
                 if (Math.abs(RADIAN_TO_DEGREE_RATIO - factor) < DEEGREE_RATIO_COMPARISON_EPSILON) {
                     return true;

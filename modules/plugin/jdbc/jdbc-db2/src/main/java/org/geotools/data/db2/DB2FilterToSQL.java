@@ -257,9 +257,8 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
-        if (filter instanceof DistanceBufferOperator) {
-            return visitDistanceSpatialOperator(
-                    (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
+        if (filter instanceof DistanceBufferOperator operator) {
+            return visitDistanceSpatialOperator(operator, property, geometry, swapped, extraData);
         } else {
             return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
         }

@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.datum;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +54,7 @@ import org.geotools.util.Utilities;
  */
 public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4894180465652474930L;
 
     /** List of localizable properties. To be given to {@link AbstractIdentifiedObject} constructor. */

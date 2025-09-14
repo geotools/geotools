@@ -2203,8 +2203,8 @@ public class GridCoverageRendererTest {
         for (int i = 0; i < numSources; i++) {
             Object source = op.getSourceObject(i);
 
-            if (source instanceof RenderedOp) {
-                length += getChainLength((RenderedOp) source);
+            if (source instanceof RenderedOp renderedOp) {
+                length += getChainLength(renderedOp);
             }
         }
 

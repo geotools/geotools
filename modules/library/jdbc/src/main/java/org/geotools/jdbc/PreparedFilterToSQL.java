@@ -81,9 +81,9 @@ public class PreparedFilterToSQL extends FilterToSQL {
 
         // bbox filters have a right side expression that's a ReferencedEnvelope,
         // but SQL dialects use/want polygons instead
-        if (literalValue instanceof Envelope && convertEnvelopeToPolygon()) {
+        if (literalValue instanceof Envelope envelope && convertEnvelopeToPolygon()) {
             clazz = Polygon.class;
-            literalValue = JTS.toGeometry((Envelope) literalValue);
+            literalValue = JTS.toGeometry(envelope);
         }
 
         if (clazz == null && literalValue != null) {
@@ -93,7 +93,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
-        descriptors.add(context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
+        descriptors.add(context instanceof AttributeDescriptor ad ? ad : null);
         literalTypes.add(clazz);
 
         try {
@@ -129,10 +129,10 @@ public class PreparedFilterToSQL extends FilterToSQL {
     }
 
     private Class getTargetClassFromContext(Object context) {
-        if (context instanceof Class) {
-            return (Class) context;
-        } else if (context instanceof AttributeDescriptor) {
-            return ((AttributeDescriptor) context).getType().getBinding();
+        if (context instanceof Class class1) {
+            return class1;
+        } else if (context instanceof AttributeDescriptor descriptor) {
+            return descriptor.getType().getBinding();
         }
         return null;
     }
@@ -162,8 +162,8 @@ public class PreparedFilterToSQL extends FilterToSQL {
 
                 for (int j = 0; j < attValues.size(); j++) {
                     // in case of join the pk columns need to be qualified with alias
-                    if (filter instanceof JoinId) {
-                        out.write(escapeName(((JoinId) filter).getAlias()));
+                    if (filter instanceof JoinId joinId) {
+                        out.write(escapeName(joinId.getAlias()));
                         out.write(".");
                     }
                     out.write(escapeName(columns.get(j).getName()));

@@ -19,6 +19,7 @@
  */
 package org.geotools.metadata.iso.quality;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import javax.measure.Unit;
@@ -39,6 +40,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  */
 public class QuantitativeResultImpl extends MetadataEntity implements QuantitativeResult, Result {
     /** Serial number for compatibility with different versions. */
+    @Serial
     private static final long serialVersionUID = 1230713599561236060L;
 
     /** Quantitative value or values, content determined by the evaluation procedure used. */
@@ -130,8 +132,8 @@ public class QuantitativeResultImpl extends MetadataEntity implements Quantitati
 
         @Override
         public boolean equals(final Object other) {
-            if (other instanceof SimpleRecord) {
-                return map.equals(((SimpleRecord) other).map);
+            if (other instanceof SimpleRecord record) {
+                return map.equals(record.map);
             }
             return false;
         }

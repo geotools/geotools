@@ -32,6 +32,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -56,6 +57,7 @@ import si.uom.NonSI;
  */
 public class PolarStereographic extends Stereographic {
     /** For compatibility with different versions during deserialization. */
+    @Serial
     private static final long serialVersionUID = -6635298308431138524L;
 
     /** Maximum number of iterations for iterative computations. */
@@ -267,6 +269,7 @@ public class PolarStereographic extends Stereographic {
      */
     static final class Spherical extends PolarStereographic {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 1655096575897215547L;
 
         /**
@@ -383,6 +386,7 @@ public class PolarStereographic extends Stereographic {
      */
     static final class Series extends PolarStereographic {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 2795404156883313290L;
 
         /** Constants used for the inverse polar series */
@@ -487,6 +491,7 @@ public class PolarStereographic extends Stereographic {
      */
     public static final class ProviderA extends Stereographic.Provider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 9124091259039220308L;
 
         /** The parameters group. */
@@ -545,6 +550,7 @@ public class PolarStereographic extends Stereographic {
      */
     public static final class ProviderB extends Stereographic.Provider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 5188231050523249971L;
 
         /**
@@ -602,6 +608,7 @@ public class PolarStereographic extends Stereographic {
      */
     public static final class ProviderNorth extends Stereographic.Provider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 657493908431273866L;
 
         /**
@@ -670,6 +677,7 @@ public class PolarStereographic extends Stereographic {
      */
     public static final class ProviderSouth extends Stereographic.Provider {
         /** For compatibility with different versions during deserialization. */
+        @Serial
         private static final long serialVersionUID = 6537800238416448564L;
 
         /**

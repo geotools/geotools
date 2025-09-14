@@ -29,7 +29,6 @@ import org.geotools.api.feature.Attribute;
 import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureFactory;
-import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.FeatureTypeFactory;
@@ -122,7 +121,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
                 while (it.hasNext()) {
                     Feature f = it.next();
                     value = propertyName.evaluate(f);
-                    if (value != null && !(value instanceof Collection && ((Collection) value).isEmpty())) {
+                    if (value != null && !(value instanceof Collection collection && collection.isEmpty())) {
                         next = f;
                         break;
                     }
@@ -130,7 +129,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
                 if (value != null) {
                     if (value instanceof Collection) {
                         @SuppressWarnings("unchecked")
-                        Collection<Object> values = (Collection) value;
+                        Collection<Object> values = (Collection<Object>) value;
                         this.values.addAll(values);
                     } else {
                         values.add(value);
@@ -175,11 +174,10 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
                     descriptor.getDefaultValue());
 
             Attribute result;
-            if (value instanceof ComplexAttribute) {
-                result = factory.createComplexAttribute(
-                        Collections.singletonList((Property) value), newDescriptor, null);
+            if (value instanceof ComplexAttribute attribute) {
+                result = factory.createComplexAttribute(Collections.singletonList(attribute), newDescriptor, null);
             } else {
-                value = value instanceof Attribute ? ((Attribute) value).getValue() : value;
+                value = value instanceof Attribute a ? a.getValue() : value;
                 result = factory.createAttribute(value, newDescriptor, null);
             }
             return result;

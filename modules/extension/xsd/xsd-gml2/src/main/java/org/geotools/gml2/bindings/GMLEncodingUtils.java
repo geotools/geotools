@@ -124,10 +124,10 @@ public class GMLEncodingUtils {
         }
 
         if (type == null) {
-            if (featureType instanceof SimpleFeatureType) {
+            if (featureType instanceof SimpleFeatureType simpleFeatureType) {
                 // could not find the feature type in the schema, create a mock one
                 LOGGER.fine("Could find type for " + typeName + " in the schema, generating type from feature.");
-                type = createXmlTypeFromFeatureType((SimpleFeatureType) featureType, schemaIndex, toFilter);
+                type = createXmlTypeFromFeatureType(simpleFeatureType, schemaIndex, toFilter);
             } else {
                 // look for an element declaration smuggled in the UserData map.
                 XSDElementDeclaration e = (XSDElementDeclaration)
@@ -196,8 +196,8 @@ public class GMLEncodingUtils {
                 }
                 // get the value
                 Object attributeValue = ((SimpleFeature) feature).getAttribute(attribute.getName());
-                if (attributeValue != null && attributeValue instanceof Geometry) {
-                    JTS.setCRS((Geometry) attributeValue, featureType.getCoordinateReferenceSystem());
+                if (attributeValue != null && attributeValue instanceof Geometry geometry) {
+                    JTS.setCRS(geometry, featureType.getCoordinateReferenceSystem());
                 }
                 properties.add(new Object[] {particle, attributeValue});
             } else {
@@ -240,18 +240,17 @@ public class GMLEncodingUtils {
                         // which
                         // will be applied by the encoder
                         value = property;
-                    } else if (property instanceof GeometryAttribute) {
+                    } else if (property instanceof GeometryAttribute geometryAttribute) {
                         value = property.getValue();
                         if (value != null) {
                             // ensure CRS is passed to the Geometry object
                             Geometry geometry = (Geometry) value;
-                            CoordinateReferenceSystem crs = ((GeometryAttribute) property)
-                                    .getDescriptor()
-                                    .getCoordinateReferenceSystem();
+                            CoordinateReferenceSystem crs =
+                                    geometryAttribute.getDescriptor().getCoordinateReferenceSystem();
                             Map<Object, Object> userData = new HashMap<>();
                             Object obj = geometry.getUserData();
-                            if (obj != null && obj instanceof Map) {
-                                userData.putAll((Map) obj);
+                            if (obj != null && obj instanceof Map map) {
+                                userData.putAll(map);
                             }
                             userData.put(CoordinateReferenceSystem.class, crs);
                             geometry.setUserData(userData);
@@ -372,9 +371,8 @@ public class GMLEncodingUtils {
             }
         }
         // no matching XSD type found
-        LOGGER.fine(String.format(
-                "No type definition found for types [%s].",
-                Arrays.stream(typesNames).collect(Collectors.joining(", "))));
+        LOGGER.fine("No type definition found for types [%s]."
+                .formatted(Arrays.stream(typesNames).collect(Collectors.joining(", "))));
         return null;
     }
 
@@ -605,8 +603,8 @@ public class GMLEncodingUtils {
         features.add(feature);
         for (int i = 0; i < feature.getAttributeCount(); i++) {
             Object att = feature.getAttribute(i);
-            if (att != null && att instanceof SimpleFeature) {
-                features.add((SimpleFeature) att);
+            if (att != null && att instanceof SimpleFeature simpleFeature) {
+                features.add(simpleFeature);
 
                 // TODO: come up with a better approcach user, use user data or something to mark
                 // the attribute as encoded

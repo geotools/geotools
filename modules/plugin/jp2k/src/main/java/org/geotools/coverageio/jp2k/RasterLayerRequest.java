@@ -139,8 +139,7 @@ class RasterLayerRequest {
         // //
         if (params != null) {
             for (GeneralParameterValue gParam : params) {
-                if (gParam instanceof ParameterValue<?>) {
-                    final ParameterValue<?> param = (ParameterValue<?>) gParam;
+                if (gParam instanceof ParameterValue<?> param) {
                     final ReferenceIdentifier name = param.getDescriptor().getName();
                     extractParameter(param, name);
                 }
@@ -400,7 +399,7 @@ class RasterLayerRequest {
         // now transform the requested envelope to source crs
         if (destinationToSourceTransform != null && destinationToSourceTransform.isIdentity())
             destinationToSourceTransform = null; // the CRS is basically the same
-        else if (destinationToSourceTransform instanceof AffineTransform) {
+        else if (destinationToSourceTransform instanceof AffineTransform transform) {
             //
             // k, the transformation between the various CRS is not null or the
             // Identity, let's see if it is an affine transform, which case we
@@ -411,7 +410,7 @@ class RasterLayerRequest {
             // update the requested grid to world transformation by pre concatenating the
             // destination to source transform
             AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
-            mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
+            mutableTransform.preConcatenate(transform);
 
             // update the requested envelope
             try {

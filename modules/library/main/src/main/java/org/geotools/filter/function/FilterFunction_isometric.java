@@ -59,19 +59,18 @@ public class FilterFunction_isometric extends FunctionExpressionImpl implements 
             List<Polygon> faces = extractor.getFaces(geom.getFactory(), extrusion);
 
             // add the "cap"
-            if (geom instanceof Polygon) {
+            if (geom instanceof Polygon polygon1) {
                 Polygon offseted = (Polygon) geom.copy();
                 offseted.apply(new OffsetOrdinateFilter(0, extrusion));
-                faces.add(0, (Polygon) geom);
+                faces.add(0, polygon1);
                 faces.add(offseted);
-            } else if (geom instanceof GeometryCollection) {
-                GeometryCollection gc = (GeometryCollection) geom;
+            } else if (geom instanceof GeometryCollection gc) {
                 for (int i = 0; i < gc.getNumGeometries(); i++) {
                     Geometry g = gc.getGeometryN(i);
-                    if (g instanceof Polygon) {
+                    if (g instanceof Polygon polygon) {
                         Polygon offseted = (Polygon) g.copy();
                         offseted.apply(new OffsetOrdinateFilter(0, extrusion));
-                        faces.add(0, (Polygon) g);
+                        faces.add(0, polygon);
                         faces.add(offseted);
                     }
                 }
@@ -108,8 +107,8 @@ public class FilterFunction_isometric extends FunctionExpressionImpl implements 
 
         @Override
         public void filter(Geometry geom) {
-            if (geom instanceof LineString) {
-                extractSegments(((LineString) geom).getCoordinateSequence());
+            if (geom instanceof LineString string) {
+                extractSegments(string.getCoordinateSequence());
             }
         }
 

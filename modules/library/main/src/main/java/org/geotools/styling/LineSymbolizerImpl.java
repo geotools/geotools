@@ -162,10 +162,9 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
         if (symbolizer == null) {
             return null;
         }
-        if (symbolizer instanceof LineSymbolizerImpl) {
-            return (LineSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.geotools.api.style.LineSymbolizer) {
-            org.geotools.api.style.LineSymbolizer lineSymbolizer = (org.geotools.api.style.LineSymbolizer) symbolizer;
+        if (symbolizer instanceof LineSymbolizerImpl impl) {
+            return impl;
+        } else if (symbolizer instanceof org.geotools.api.style.LineSymbolizer lineSymbolizer) {
             LineSymbolizerImpl copy = new LineSymbolizerImpl();
             copy.setDescription(lineSymbolizer.getDescription());
             copy.setGeometryPropertyName(lineSymbolizer.getGeometryPropertyName());

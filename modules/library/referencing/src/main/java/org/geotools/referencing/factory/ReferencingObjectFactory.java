@@ -195,8 +195,8 @@ public class ReferencingObjectFactory extends ReferencingFactory
      *     interface.
      */
     private void addHints(final Object factory) {
-        if (factory instanceof Factory) {
-            hints.putAll(((Factory) factory).getImplementationHints());
+        if (factory instanceof Factory factory1) {
+            hints.putAll(factory1.getImplementationHints());
         }
     }
 
@@ -988,7 +988,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
         MathTransform mt;
         final MathTransform existing = conversionFromBase.getMathTransform();
         final MathTransformFactory mtFactory = getMathTransformFactory();
-        if (existing != null && mtFactory instanceof DefaultMathTransformFactory) {
+        if (existing != null && mtFactory instanceof DefaultMathTransformFactory factory) {
             /*
              * In the particular case of GeoTools implementation, we use a shortcut which avoid
              * the cost of creating a new parameterized transform; we use directly the existing
@@ -1001,7 +1001,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
              * in the sense of MapProjection.equals(Object), with the usual consequences on cached
              * instances.
              */
-            mt = ((DefaultMathTransformFactory) mtFactory).createBaseToDerived(baseCRS, existing, derivedCS);
+            mt = factory.createBaseToDerived(baseCRS, existing, derivedCS);
         } else {
             /*
              * Non-GeoTools implementation, or no existing MathTransform instance.
@@ -1020,11 +1020,9 @@ public class ReferencingObjectFactory extends ReferencingFactory
                  */
                 if (!properties.containsKey(DefaultProjectedCRS.CONVERSION_TYPE_KEY)) {
                     method = mtFactory.getLastMethodUsed();
-                    if (method instanceof MathTransformProvider) {
+                    if (method instanceof MathTransformProvider provider) {
                         final Map<String, Object> copy = new HashMap<>(properties);
-                        copy.put(
-                                DefaultProjectedCRS.CONVERSION_TYPE_KEY,
-                                ((MathTransformProvider) method).getOperationType());
+                        copy.put(DefaultProjectedCRS.CONVERSION_TYPE_KEY, provider.getOperationType());
                         properties = copy;
                     }
                 }
@@ -1079,8 +1077,8 @@ public class ReferencingObjectFactory extends ReferencingFactory
             return parser.parseCoordinateReferenceSystem(wkt);
         } catch (ParseException exception) {
             final Throwable cause = exception.getCause();
-            if (cause instanceof FactoryException) {
-                throw (FactoryException) cause;
+            if (cause instanceof FactoryException factoryException) {
+                throw factoryException;
             }
             throw new FactoryException(exception);
         }

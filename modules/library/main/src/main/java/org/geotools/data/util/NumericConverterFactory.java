@@ -72,7 +72,7 @@ public class NumericConverterFactory implements ConverterFactory {
             // check if the safe conversion flag was set and if so only allow save conversions
             if (hints != null) {
                 Object safeConversion = hints.get(ConverterFactory.SAFE_CONVERSION);
-                if (safeConversion instanceof Boolean && ((Boolean) safeConversion).booleanValue()) {
+                if (safeConversion instanceof Boolean boolean1 && boolean1.booleanValue()) {
                     return new SafeNumericConverter();
                 }
             }
@@ -92,8 +92,7 @@ public class NumericConverterFactory implements ConverterFactory {
 
         public Object convertInternal(Object source, Class<?> target) {
             target = primitiveToWrapperClass(target);
-            if (source instanceof Number) {
-                Number number = (Number) source;
+            if (source instanceof Number number) {
                 Class c = number.getClass();
 
                 if (BigDecimal.class.equals(target)) {
@@ -143,8 +142,7 @@ public class NumericConverterFactory implements ConverterFactory {
                         // return Byte.valueOf(source.toString());
                     }
                 }
-            } else if (source instanceof String) {
-                String src = (String) source;
+            } else if (source instanceof String src) {
                 try {
                     if (BigDecimal.class.isAssignableFrom(target)) {
                         return new BigDecimal(src);
@@ -194,8 +192,7 @@ public class NumericConverterFactory implements ConverterFactory {
             target = primitiveToWrapperClass(target);
             source = cleanSource(source, target);
 
-            if (source instanceof Number) {
-                Number s = (Number) source;
+            if (source instanceof Number s) {
 
                 // integral
                 if (Long.class.equals(target)) {
@@ -253,8 +250,7 @@ public class NumericConverterFactory implements ConverterFactory {
                         // ignore and continue
                     }
                 }
-            } else if (source instanceof String) {
-                String s = (String) source;
+            } else if (source instanceof String s) {
                 // ensure we trim any space off the string
                 s = s.trim();
 
@@ -363,14 +359,14 @@ public class NumericConverterFactory implements ConverterFactory {
      *     null otherwise
      */
     static BigDecimal getBigDecimalFromScientificNotation(Object source, Class target) {
-        if (source instanceof String
+        if (source instanceof String string
                 && (Long.class.equals(target)
                         || Integer.class.equals(target)
                         || Short.class.equals(target)
                         || Byte.class.equals(target)
                         || BigInteger.class.equals(target))) {
             try {
-                return ((String) source).toUpperCase().contains("E") ? new BigDecimal((String) source) : null;
+                return string.toUpperCase().contains("E") ? new BigDecimal(string) : null;
             } catch (NumberFormatException ex) {
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.finest("NumberFormatException for source=" + source);

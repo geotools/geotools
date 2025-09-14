@@ -16,9 +16,12 @@
  */
 package org.geotools.feature;
 
+import java.io.Serial;
+
 /** Indicates client class has attempted to create an invalid schema. */
 public class SchemaException extends Exception {
     /** */
+    @Serial
     private static final long serialVersionUID = 5453903672192802976L;
 
     public SchemaException(Throwable cause) {

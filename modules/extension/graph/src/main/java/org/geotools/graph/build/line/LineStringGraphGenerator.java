@@ -54,8 +54,8 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
     @Override
     public Graphable add(Object obj) {
         LineString ls = null;
-        if (obj instanceof MultiLineString) {
-            ls = (LineString) ((MultiLineString) obj).getGeometryN(0);
+        if (obj instanceof MultiLineString string) {
+            ls = (LineString) string.getGeometryN(0);
         } else {
             ls = (LineString) obj;
         }

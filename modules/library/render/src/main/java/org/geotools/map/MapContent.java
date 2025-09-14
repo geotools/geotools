@@ -993,8 +993,7 @@ public class MapContent {
             boolean removed = super.remove(element);
             if (removed) {
                 fireLayerRemoved((Layer) element, -1, -1);
-                if (element instanceof Layer) {
-                    Layer layer = (Layer) element;
+                if (element instanceof Layer layer) {
                     if (layerListener != null) {
                         layer.removeMapLayerListener(layerListener);
                     }

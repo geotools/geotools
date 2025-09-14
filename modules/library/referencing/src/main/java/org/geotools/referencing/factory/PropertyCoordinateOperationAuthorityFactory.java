@@ -234,14 +234,11 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         // Extract name from the transform, if possible, or use class name.
         String methodName;
         try {
-            if (mt instanceof AbstractMathTransform) {
-                methodName = ((AbstractMathTransform) mt)
-                        .getParameterValues()
-                        .getDescriptor()
-                        .getName()
-                        .getCode();
-            } else if (mt instanceof AffineTransform2D) {
-                methodName = ((AffineTransform2D) mt)
+            if (mt instanceof AbstractMathTransform transform) {
+                methodName =
+                        transform.getParameterValues().getDescriptor().getName().getCode();
+            } else if (mt instanceof AffineTransform2D transform2D) {
+                methodName = transform2D
                         .getParameterValues()
                         .getDescriptor()
                         .getName()

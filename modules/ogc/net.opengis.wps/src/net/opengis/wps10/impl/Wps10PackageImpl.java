@@ -557,7 +557,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
 
     // Obtain or create and register package
     Object registeredWps10Package = EPackage.Registry.INSTANCE.get(eNS_URI);
-    Wps10PackageImpl theWps10Package = registeredWps10Package instanceof Wps10PackageImpl ? (Wps10PackageImpl)registeredWps10Package : new Wps10PackageImpl();
+    Wps10PackageImpl theWps10Package = registeredWps10Package instanceof Wps10PackageImpl wpi ? wpi : new Wps10PackageImpl();
 
     isInited = true;
 

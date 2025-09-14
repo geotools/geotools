@@ -295,8 +295,8 @@ public class DateTimeParser {
             // is it a date or a period?
             if (date.indexOf("/") <= 0) {
                 Object o = getFuzzyDate(date);
-                if (o instanceof Date) {
-                    addDate(result, (Date) o);
+                if (o instanceof Date date1) {
+                    addDate(result, date1);
                 } else {
                     addPeriod(result, (DateRange) o);
                 }
@@ -424,16 +424,16 @@ public class DateTimeParser {
     }
 
     private static Date beginning(Object dateOrDateRange) {
-        if (dateOrDateRange instanceof DateRange) {
-            return ((DateRange) dateOrDateRange).getMinValue();
+        if (dateOrDateRange instanceof DateRange range) {
+            return range.getMinValue();
         } else {
             return (Date) dateOrDateRange;
         }
     }
 
     private static Date end(Object dateOrDateRange) {
-        if (dateOrDateRange instanceof DateRange) {
-            return ((DateRange) dateOrDateRange).getMaxValue();
+        if (dateOrDateRange instanceof DateRange range) {
+            return range.getMaxValue();
         } else {
             return (Date) dateOrDateRange;
         }
@@ -443,9 +443,7 @@ public class DateTimeParser {
     private static void addPeriod(Collection<Object> result, DateRange newRange) {
         for (Iterator it = result.iterator(); it.hasNext(); ) {
             final Object element = it.next();
-            if (element instanceof Date) {
-                // convert
-                final Date local = (Date) element;
+            if (element instanceof Date local) {
                 if (newRange.contains(local)) {
                     it.remove();
                 }

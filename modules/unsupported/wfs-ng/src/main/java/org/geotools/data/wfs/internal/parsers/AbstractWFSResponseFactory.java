@@ -151,8 +151,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
         } catch (Exception e) {
             return new WFSException("Exception parsing server exception report", e);
         }
-        if (parsed instanceof net.opengis.ows10.ExceptionReportType) {
-            net.opengis.ows10.ExceptionReportType report = (net.opengis.ows10.ExceptionReportType) parsed;
+        if (parsed instanceof net.opengis.ows10.ExceptionReportType report) {
             List<net.opengis.ows10.ExceptionType> exceptions = report.getException();
 
             StringBuilder msg = new StringBuilder("WFS returned an exception.");
@@ -164,8 +163,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
                 result.addExceptionDetails(ex.getExceptionCode(), ex.getLocator(), texts);
             }
             return result;
-        } else if (parsed instanceof net.opengis.ows11.ExceptionReportType) {
-            net.opengis.ows11.ExceptionReportType report = (net.opengis.ows11.ExceptionReportType) parsed;
+        } else if (parsed instanceof net.opengis.ows11.ExceptionReportType report) {
             @SuppressWarnings("unchecked")
             List<net.opengis.ows11.ExceptionType> exceptions = report.getException();
 

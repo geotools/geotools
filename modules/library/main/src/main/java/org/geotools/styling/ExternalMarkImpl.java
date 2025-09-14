@@ -96,8 +96,8 @@ public class ExternalMarkImpl implements org.geotools.api.style.ExternalMark {
     static ExternalMarkImpl cast(org.geotools.api.style.ExternalMark mark) {
         if (mark == null) {
             return null;
-        } else if (mark instanceof ExternalMarkImpl) {
-            return (ExternalMarkImpl) mark;
+        } else if (mark instanceof ExternalMarkImpl impl) {
+            return impl;
         } else {
             ExternalMarkImpl copy = new ExternalMarkImpl();
             copy.setFormat(mark.getFormat());

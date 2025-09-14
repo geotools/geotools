@@ -370,8 +370,8 @@ public class IndexedResourceBundle extends ResourceBundle {
      */
     private Object[] toArray(final Object arguments) {
         Object[] array;
-        if (arguments instanceof Object[]) {
-            array = (Object[]) arguments;
+        if (arguments instanceof Object[] objects) {
+            array = objects;
         } else {
             array = new Object[] {arguments};
         }
@@ -379,8 +379,8 @@ public class IndexedResourceBundle extends ResourceBundle {
             final Object element = array[i];
             if (element instanceof CharSequence) {
                 final String s0;
-                if (element instanceof InternationalString) {
-                    s0 = ((InternationalString) element).toString(getFormatLocale());
+                if (element instanceof InternationalString string) {
+                    s0 = string.toString(getFormatLocale());
                 } else {
                     s0 = element.toString();
                 }
@@ -392,14 +392,14 @@ public class IndexedResourceBundle extends ResourceBundle {
                     }
                     array[i] = s1;
                 }
-            } else if (element instanceof Throwable) {
-                String message = ((Throwable) element).getLocalizedMessage();
+            } else if (element instanceof Throwable throwable) {
+                String message = throwable.getLocalizedMessage();
                 if (message == null) {
                     message = Classes.getShortClassName(element);
                 }
                 array[i] = message;
-            } else if (element instanceof Class) {
-                array[i] = Classes.getShortName((Class<?>) element);
+            } else if (element instanceof Class<?> class1) {
+                array[i] = Classes.getShortName(class1);
             }
         }
         return array;
@@ -647,7 +647,7 @@ public class IndexedResourceBundle extends ResourceBundle {
     public static String format(final LogRecord record) {
         String message = record.getMessage();
         final ResourceBundle resources = record.getResourceBundle();
-        if (resources instanceof IndexedResourceBundle) {
+        if (resources instanceof IndexedResourceBundle bundle) {
             int key = -1;
             try {
                 key = Integer.parseInt(message);
@@ -656,7 +656,7 @@ public class IndexedResourceBundle extends ResourceBundle {
             }
             if (key >= 0) {
                 final Object[] parameters = record.getParameters();
-                return ((IndexedResourceBundle) resources).getString(key, parameters);
+                return bundle.getString(key, parameters);
             }
         }
         if (resources != null) {

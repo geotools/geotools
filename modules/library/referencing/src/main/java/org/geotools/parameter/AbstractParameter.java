@@ -20,6 +20,7 @@
 package org.geotools.parameter;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.io.Writer;
 import java.lang.reflect.Array;
@@ -44,6 +45,7 @@ import org.geotools.util.Utilities;
  */
 public abstract class AbstractParameter extends Formattable implements GeneralParameterValue, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 8458179223988766398L;
 
     /** The abstract definition of this parameter or group of parameters. */
@@ -216,7 +218,7 @@ public abstract class AbstractParameter extends Formattable implements GeneralPa
     protected void write(final TableWriter table) throws IOException {
         table.write(getName(descriptor));
         table.nextColumn();
-        if (this instanceof ParameterValue) {
+        if (this instanceof ParameterValue value1) {
             /*
              * Provides a default implementation for parameter value. This implementation doesn't
              * need to be a Geotools's one. Putting a default implementation here avoid duplication
@@ -224,8 +226,8 @@ public abstract class AbstractParameter extends Formattable implements GeneralPa
              */
             table.write('=');
             table.nextColumn();
-            append(table, ((ParameterValue) this).getValue());
-        } else if (this instanceof ParameterValueGroup) {
+            append(table, value1.getValue());
+        } else if (this instanceof ParameterValueGroup group) {
             /*
              * Provides a default implementation for parameter value group, for the same reasons
              * then the previous block. Reminder: the above 'instanceof' check for interface, not
@@ -234,12 +236,12 @@ public abstract class AbstractParameter extends Formattable implements GeneralPa
             table.write(':');
             table.nextColumn();
             TableWriter inner = null;
-            for (final GeneralParameterValue value : ((ParameterValueGroup) this).values()) {
-                if (value instanceof AbstractParameter) {
+            for (final GeneralParameterValue value : group.values()) {
+                if (value instanceof AbstractParameter parameter) {
                     if (inner == null) {
                         inner = new TableWriter(table, 1);
                     }
-                    ((AbstractParameter) value).write(inner);
+                    parameter.write(inner);
                 } else {
                     // Unknow implementation. It will break the formatting. Too bad...
                     if (inner != null) {

@@ -138,7 +138,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
                 LOGGER.fine("First feature parsed.");
                 lastLogMessage = time;
             } else if (time - lastLogMessage > WAIT_LOG) {
-                LOGGER.fine(String.format("Number of features parsed: %d", logCounter));
+                LOGGER.fine("Number of features parsed: %d".formatted(logCounter));
                 lastLogMessage = time;
             }
         }

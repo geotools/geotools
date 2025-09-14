@@ -47,8 +47,7 @@ public class ImageOutlineImpl implements ImageOutline {
             return true;
         }
 
-        if (obj instanceof ImageOutlineImpl) {
-            ImageOutlineImpl other = (ImageOutlineImpl) obj;
+        if (obj instanceof ImageOutlineImpl other) {
             return Utilities.equals(symbolizer, other.symbolizer);
         }
 

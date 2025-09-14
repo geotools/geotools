@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
@@ -45,6 +46,7 @@ import org.geotools.util.UnsupportedImplementationException;
  */
 public abstract class AbstractCRS extends AbstractReferenceSystem implements CoordinateReferenceSystem {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -7433284548909530047L;
 
     /** The coordinate system. */
@@ -122,8 +124,8 @@ public abstract class AbstractCRS extends AbstractReferenceSystem implements Coo
      */
     public Measure distance(final double[] coord1, final double[] coord2)
             throws UnsupportedOperationException, MismatchedDimensionException {
-        if (coordinateSystem instanceof AbstractCS) {
-            return ((AbstractCS) coordinateSystem).distance(coord1, coord2);
+        if (coordinateSystem instanceof AbstractCS cS) {
+            return cS.distance(coord1, coord2);
         }
         throw new UnsupportedImplementationException(coordinateSystem.getClass());
     }

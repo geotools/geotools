@@ -237,7 +237,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
                     : null;
 
             Object property = image.getProperty("ROI");
-            ROI overallROI = property instanceof ROI ? (ROI) property : null;
+            ROI overallROI = property instanceof ROI roi ? roi : null;
             return new MosaicElement(alphaBand, overallROI, image, mosaicElement.getPamDataset());
         } else {
             return mosaicElement;
@@ -328,8 +328,8 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
         } else {
             ImageWorker iw = new ImageWorker(image);
             final Object roi = image.getProperty("ROI");
-            if (roi instanceof ROI) {
-                iw.setROI((ROI) roi);
+            if (roi instanceof ROI oI) {
+                iw.setROI(oI);
             }
             iw.setRenderingHints(localHints);
             iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());

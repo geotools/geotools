@@ -673,12 +673,14 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
             }
         }
         String arcgrid = sb.toString();
-        String expectedHeader = "NCOLS 2\n"
-                + "NROWS 1\n"
-                + "XLLCORNER -180.0\n"
-                + "YLLCORNER -90.0\n"
-                + "CELLSIZE 180.0\n"
-                + "NODATA_VALUE -9999";
+        String expectedHeader =
+                """
+                NCOLS 2
+                NROWS 1
+                XLLCORNER -180.0
+                YLLCORNER -90.0
+                CELLSIZE 180.0
+                NODATA_VALUE -9999""";
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
 
@@ -840,12 +842,14 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
             }
         }
         String arcgrid = sb.toString();
-        String expectedHeader = "NCOLS 100\n"
-                + "NROWS 50\n"
-                + "XLLCORNER -180.0\n"
-                + "YLLCORNER -90.0\n"
-                + "CELLSIZE 3.6\n"
-                + "NODATA_VALUE -9999";
+        String expectedHeader =
+                """
+                NCOLS 100
+                NROWS 50
+                XLLCORNER -180.0
+                YLLCORNER -90.0
+                CELLSIZE 3.6
+                NODATA_VALUE -9999""";
         // System.out.println(arcgrid);
         assertTrue(arcgrid.startsWith(expectedHeader));
     }

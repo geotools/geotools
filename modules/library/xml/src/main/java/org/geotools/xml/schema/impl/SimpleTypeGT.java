@@ -220,12 +220,12 @@ public class SimpleTypeGT implements SimpleType {
 
         Object o = parents[0].getValue(element, t, attrs, hints);
 
-        if (o instanceof Number) {
-            nval = (Number) o;
+        if (o instanceof Number number) {
+            nval = number;
         }
 
-        if (o instanceof Date) {
-            dval = (Date) o;
+        if (o instanceof Date date) {
+            dval = date;
         }
 
         // check each constraint

@@ -235,9 +235,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         for (int i = 0; i < f1.getAttributeCount(); i++) {
             Object att1 = f1.getAttribute(i);
             Object att2 = f2.getAttribute(i);
-            if (att1 instanceof Geometry && att2 instanceof Geometry) {
-                Geometry g1 = (Geometry) att1;
-                Geometry g2 = (Geometry) att2;
+            if (att1 instanceof Geometry g1 && att2 instanceof Geometry g2) {
                 g1.normalize();
                 g2.normalize();
                 if (!g1.equalsExact(g2)) {

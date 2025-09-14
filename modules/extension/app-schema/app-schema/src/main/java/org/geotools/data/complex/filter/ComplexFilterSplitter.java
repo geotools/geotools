@@ -426,9 +426,8 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                 && !isXlinkHRef(exprSteps)
                 && !existsAttrExtractor.isUnboundedNestedElementFound()
                 && existsAttrExtractor.getFeatureChainedAttributes().isEmpty()) {
-            throw new IllegalArgumentException(String.format(
-                    "Attribute \"%s\" not found in type \"%s\"",
-                    expression, mappings.getTargetFeature().getName().toString()));
+            throw new IllegalArgumentException("Attribute \"%s\" not found in type \"%s\""
+                    .formatted(expression, mappings.getTargetFeature().getName().toString()));
         }
     }
 
@@ -485,10 +484,10 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                             xpathSteps.add(attrPath.get(0));
                         }
                     } else {
-                        LOGGER.warning(String.format(
-                                "Cound not run sanity check for nested attribute \"%s\" of type \"%s\"",
-                                descr.getAttributePath(),
-                                ownerType.getTargetFeature().getName()));
+                        LOGGER.warning("Cound not run sanity check for nested attribute \"%s\" of type \"%s\""
+                                .formatted(
+                                        descr.getAttributePath(),
+                                        ownerType.getTargetFeature().getName()));
                     }
                 }
                 xpathSteps = removeIndexesAndPredicates(xpathSteps);
@@ -543,15 +542,16 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                 descr = accessor.get(featureType, xpath, Object.class);
             } catch (Exception e) {
                 throw new IllegalArgumentException(
-                        String.format(
-                                "Attribute \"%s\" not found in type \"%s\"",
-                                xpath, mappings.getTargetFeature().getName().toString()),
+                        "Attribute \"%s\" not found in type \"%s\""
+                                .formatted(
+                                        xpath,
+                                        mappings.getTargetFeature().getName().toString()),
                         e);
             }
             if (!expectedType.isAssignableFrom(descr.getClass())) {
-                throw new IllegalArgumentException(String.format(
-                        "Attribute descriptor for \"%s\" if of type \"%s\", but it should be of type \"%s\"",
-                        xpath, descr.getClass().getName(), expectedType.getName()));
+                throw new IllegalArgumentException(
+                        "Attribute descriptor for \"%s\" if of type \"%s\", but it should be of type \"%s\""
+                                .formatted(xpath, descr.getClass().getName(), expectedType.getName()));
             }
         }
     }

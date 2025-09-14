@@ -266,8 +266,8 @@ class RandomFillBuilder {
         // grow by the stroke size, if this is a mark
         if (icon == null && mark != null) {
             Stroke stroke = factory.getStroke(mark.getStroke(), feature);
-            if (stroke instanceof BasicStroke) {
-                float width = ((BasicStroke) stroke).getLineWidth() / 2 + 1;
+            if (stroke instanceof BasicStroke basicStroke) {
+                float width = basicStroke.getLineWidth() / 2 + 1;
                 if (width > 0) {
                     Geometry buffered = bounds.buffer(width);
                     bounds = new MinimumDiameter(buffered).getMinimumRectangle();

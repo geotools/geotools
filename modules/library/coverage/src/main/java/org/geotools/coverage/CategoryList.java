@@ -20,6 +20,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.AbstractList;
@@ -51,6 +52,7 @@ import org.geotools.util.Utilities;
  */
 class CategoryList extends AbstractList<Category> implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 2647846361059903365L;
 
     /**
@@ -177,8 +179,8 @@ class CategoryList extends AbstractList<Category> implements Serializable {
                         range2.getMinValue(), range2.getMaxValue()
                     };
                     for (int j = 0; j < args.length; j++) {
-                        if (args[j] instanceof Number) {
-                            final float value = ((Number) args[j]).floatValue();
+                        if (args[j] instanceof Number number) {
+                            final float value = number.floatValue();
                             if (Float.isNaN(value)) {
                                 String hex = Integer.toHexString(Float.floatToRawIntBits(value));
                                 args[j] = "NaN(" + hex + ')';
@@ -656,8 +658,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof CategoryList) {
-            final CategoryList that = (CategoryList) object;
+        if (object instanceof CategoryList that) {
             if (Arrays.equals(this.categories, that.categories)) {
                 assert Arrays.equals(this.minimums, that.minimums);
                 return Utilities.equals(this.overflowFallback, that.overflowFallback);

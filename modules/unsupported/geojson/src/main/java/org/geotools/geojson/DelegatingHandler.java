@@ -109,8 +109,8 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
     @Override
     @SuppressWarnings("unchecked")
     public T getValue() {
-        if (delegate instanceof IContentHandler) {
-            return (T) ((IContentHandler) delegate).getValue();
+        if (delegate instanceof IContentHandler handler) {
+            return (T) handler.getValue();
         }
         return null;
     }

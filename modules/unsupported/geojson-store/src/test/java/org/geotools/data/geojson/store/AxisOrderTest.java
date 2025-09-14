@@ -117,8 +117,7 @@ public class AxisOrderTest {
 
         String typeName = duplicate.getTypeNames()[0];
         SimpleFeatureSource source = duplicate.getFeatureSource(typeName);
-        if (source instanceof SimpleFeatureStore) {
-            SimpleFeatureStore outStore = (SimpleFeatureStore) source;
+        if (source instanceof SimpleFeatureStore outStore) {
             outStore.addFeatures(pFeatures);
         } else {
             fail("Can't write to GeoJSONDatastore " + file2);
@@ -163,8 +162,7 @@ public class AxisOrderTest {
         String typeName = duplicate.getTypeNames()[0];
 
         SimpleFeatureSource source = duplicate.getFeatureSource(typeName);
-        if (source instanceof SimpleFeatureStore) {
-            SimpleFeatureStore outStore = (SimpleFeatureStore) source;
+        if (source instanceof SimpleFeatureStore outStore) {
             outStore.addFeatures(features);
         } else {
             fail("Can't write to GeoJSONDatastore " + file2);

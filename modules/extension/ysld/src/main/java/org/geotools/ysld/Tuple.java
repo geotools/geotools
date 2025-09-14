@@ -112,12 +112,12 @@ public class Tuple {
      * @throws IllegalArgumentException if obj cannot be parsed to a Tuple
      */
     public Tuple parse(Object obj) throws IllegalArgumentException {
-        if (obj instanceof List) {
-            return parse((List<?>) obj);
-        } else if (obj instanceof String) {
-            return parse((String) obj);
-        } else if (obj instanceof YamlObject) {
-            return parse(((YamlObject<?>) obj).raw());
+        if (obj instanceof List<?> list) {
+            return parse(list);
+        } else if (obj instanceof String string) {
+            return parse(string);
+        } else if (obj instanceof YamlObject<?> object) {
+            return parse(object.raw());
         }
         throw new IllegalArgumentException();
     }
@@ -139,9 +139,9 @@ public class Tuple {
         StringBuilder sb = new StringBuilder("(");
         for (Object v : values) {
             if (v != null) {
-                if (v instanceof Color) {
+                if (v instanceof Color color) {
                     sb.append('\'');
-                    sb.append(Util.serializeColor((Color) v));
+                    sb.append(Util.serializeColor(color));
                     sb.append('\'');
                 } else {
                     sb.append(v);

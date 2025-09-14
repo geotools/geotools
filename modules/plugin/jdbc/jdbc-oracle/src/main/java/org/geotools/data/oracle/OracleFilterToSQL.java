@@ -200,7 +200,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             expr2 = tmp;
         }
 
-        if (expr1 instanceof FilterFunction_sdonn) {
+        if (expr1 instanceof FilterFunction_sdonn function_sdonn) {
             if (!(expr2 instanceof Literal)) {
                 throw new UnsupportedOperationException(
                         "Unsupported usage of SDO_NN Oracle function: it can be compared only to a Boolean \"true\" value");
@@ -212,7 +212,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                         "Unsupported usage of SDO_NN Oracle function: it can be compared only to a Boolean \"true\" value");
             }
 
-            return (FilterFunction_sdonn) expr1;
+            return function_sdonn;
         } else {
             return null;
         }
@@ -255,8 +255,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     private String encodeJsonPointer(Function jsonPointer, Object extraData) {
         Expression json = getParameter(jsonPointer, 0, true);
         Expression pointer = getParameter(jsonPointer, 1, true);
-        if (json instanceof PropertyName && pointer instanceof Literal) {
-            String strPointer = ((Literal) pointer).getValue().toString();
+        if (json instanceof PropertyName && pointer instanceof Literal literal) {
+            String strPointer = literal.getValue().toString();
             String escapedLiteral = EscapeSql.escapeLiteral(strPointer, true, true);
             List<String> pointerEl = Stream.of(escapedLiteral.split("/"))
                     .filter(p -> !p.equals(""))
@@ -270,7 +270,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                     sb.append("." + property);
                 }
             }
-            return String.format("JSON_VALUE(%s, '%s')", json, sb);
+            return "JSON_VALUE(%s, '%s')".formatted(json, sb);
         }
         return null;
     }
@@ -386,8 +386,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (isFeatureTypeGeometryGeodetic() && !WORLD.contains(geom.getEnvelopeInternal())) {
             Geometry result = geom.intersection(JTS.toGeometry(WORLD));
             if (result != null && !result.isEmpty()) {
-                if (result instanceof GeometryCollection) {
-                    result = distillSameTypeGeometries((GeometryCollection) result, geom);
+                if (result instanceof GeometryCollection collection) {
+                    result = distillSameTypeGeometries(collection, geom);
                 }
                 return result;
             }
@@ -448,8 +448,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                 Geometry result = eval.intersection(JTS.toGeometry(WORLD));
 
                 if (result != null && !result.isEmpty()) {
-                    if (result instanceof GeometryCollection) {
-                        result = distillSameTypeGeometries((GeometryCollection) result, eval);
+                    if (result instanceof GeometryCollection collection) {
+                        result = distillSameTypeGeometries(collection, eval);
                     }
                     FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                     e = ff.literal(result);
@@ -489,8 +489,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     protected <T> void accumulateGeometries(List<T> collection, Geometry g, Class<? extends T> target) {
         if (target.isInstance(g)) {
             collection.add(target.cast(g));
-        } else if (g instanceof GeometryCollection) {
-            GeometryCollection coll = (GeometryCollection) g;
+        } else if (g instanceof GeometryCollection coll) {
             for (int i = 0; i < coll.getNumGeometries(); i++) {
                 accumulateGeometries(collection, coll.getGeometryN(i), target);
             }
@@ -619,7 +618,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (pointers.length > 0) {
             String strJsonPath = escapeLiteral(String.join(".", pointers));
             String strExpected = escapeLiteral(expected.evaluate(null, String.class));
-            return String.format("json_exists(%s, '$%s?(@ == \"%s\")')", columnName, strJsonPath, strExpected);
+            return "json_exists(%s, '$%s?(@ == \"%s\")')".formatted(columnName, strJsonPath, strExpected);
         } else {
             throw new IllegalArgumentException("Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
@@ -630,8 +629,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         // evaluate the literal and store it for later
         Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
 
-        if (geom instanceof LinearRing) {
-            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
+        if (geom instanceof LinearRing ring) {
+            geom = geom.getFactory().createLineString(ring.getCoordinateSequence());
         }
         geom = clipToWorldFeatureTypeGeometry(geom);
         String sdoGeom = SDOSqlDumper.toSDOGeom(geom, getFeatureTypeGeometrySRID());

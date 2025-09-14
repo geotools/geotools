@@ -49,8 +49,8 @@ public class PropertyNameResolvingVisitor extends DuplicatingFilterVisitor {
             return super.visit(expression, extraData);
         }
         Object att = expression.evaluate(featureType, null);
-        if (att instanceof AttributeDescriptor) {
-            return getFactory(extraData).property(((AttributeDescriptor) att).getLocalName());
+        if (att instanceof AttributeDescriptor descriptor) {
+            return getFactory(extraData).property(descriptor.getLocalName());
         }
         return super.visit(expression, extraData);
     }

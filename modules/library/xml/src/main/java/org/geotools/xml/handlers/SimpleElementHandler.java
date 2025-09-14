@@ -16,6 +16,7 @@
  */
 package org.geotools.xml.handlers;
 
+import java.io.Serial;
 import java.net.URI;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
@@ -38,6 +39,7 @@ import org.xml.sax.helpers.AttributesImpl;
 public class SimpleElementHandler extends XMLElementHandler {
 
     /** <code>serialVersionUID</code> field */
+    @Serial
     private static final long serialVersionUID = SimpleElementHandler.class.hashCode();
 
     private SimpleType type; // save casting all over

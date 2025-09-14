@@ -91,10 +91,9 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return new ReprojectFeatureIterator(results.features(), getSchema(), transform);
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     public void closeIterator(Iterator close) {
-        if (close == null) return;
-        if (close instanceof ReprojectFeatureIterator) {
-            ReprojectFeatureIterator iterator = (ReprojectFeatureIterator) close;
+        if (close instanceof ReprojectFeatureIterator iterator) {
             iterator.close();
         }
     }
@@ -107,11 +106,11 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
     private static FeatureCollection<SimpleFeatureType, SimpleFeature> origionalCollection(
             FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
         while (true) {
-            if (results instanceof ReprojectFeatureResults) {
-                results = ((ReprojectFeatureResults) results).getOrigin();
+            if (results instanceof ReprojectFeatureResults featureResults) {
+                results = featureResults.getOrigin();
             }
-            if (results instanceof ForceCoordinateSystemFeatureResults) {
-                results = ((ForceCoordinateSystemFeatureResults) results).getOrigin();
+            if (results instanceof ForceCoordinateSystemFeatureResults featureResults) {
+                results = featureResults.getOrigin();
             }
             break;
         }
@@ -120,11 +119,11 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
 
     private static SimpleFeatureType origionalType(FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
         while (true) {
-            if (results instanceof ReprojectFeatureResults) {
-                results = ((ReprojectFeatureResults) results).getOrigin();
+            if (results instanceof ReprojectFeatureResults featureResults) {
+                results = featureResults.getOrigin();
             }
-            if (results instanceof ForceCoordinateSystemFeatureResults) {
-                results = ((ForceCoordinateSystemFeatureResults) results).getOrigin();
+            if (results instanceof ForceCoordinateSystemFeatureResults featureResults) {
+                results = featureResults.getOrigin();
             }
             break;
         }

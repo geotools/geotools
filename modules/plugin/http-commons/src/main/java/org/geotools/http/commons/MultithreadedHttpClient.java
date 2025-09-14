@@ -106,9 +106,8 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
 
     private HttpClientBuilder builder() {
         HttpClientBuilder builder = HttpClientBuilder.create()
-                .setUserAgent(String.format(
-                        "GeoTools/%s (%s)",
-                        GeoTools.getVersion(), this.getClass().getSimpleName()))
+                .setUserAgent("GeoTools/%s (%s)"
+                        .formatted(GeoTools.getVersion(), this.getClass().getSimpleName()))
                 .useSystemProperties()
                 .setConnectionManager(connectionManager);
         if (credsProvider != null) {

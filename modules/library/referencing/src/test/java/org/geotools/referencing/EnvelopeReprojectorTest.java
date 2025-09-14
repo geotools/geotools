@@ -167,26 +167,28 @@ public class EnvelopeReprojectorTest {
                 + "AXIS[\"Geodetic longitude\", EAST],"
                 + "AXIS[\"Geodetic latitude\", NORTH]]";
         CoordinateReferenceSystem wgs84 = CRS.parseWKT(wkt);
-        wkt = "PROJCS[\"WGS 84 / UTM zone 32N\", \n"
-                + "  GEOGCS[\"WGS 84\", \n"
-                + "    DATUM[\"World Geodetic System 1984\", \n"
-                + "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                + "      AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-                + "    AUTHORITY[\"EPSG\",\"4326\"]], \n"
-                + "  PROJECTION[\"Transverse Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \n"
-                + "  PARAMETER[\"central_meridian\", 9.0], \n"
-                + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
-                + "  PARAMETER[\"scale_factor\", 0.9996], \n"
-                + "  PARAMETER[\"false_easting\", 500000.0], \n"
-                + "  PARAMETER[\"false_northing\", 0.0], \n"
-                + "  UNIT[\"m\", 1.0], \n"
-                + "  AXIS[\"Easting\", EAST], \n"
-                + "  AXIS[\"Northing\", NORTH], \n"
-                + "  AUTHORITY[\"EPSG\",\"32632\"]]";
+        wkt =
+                """
+                PROJCS["WGS 84 / UTM zone 32N",\s
+                  GEOGCS["WGS 84",\s
+                    DATUM["World Geodetic System 1984",\s
+                      SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],\s
+                      AUTHORITY["EPSG","6326"]],\s
+                    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],\s
+                    UNIT["degree", 0.017453292519943295],\s
+                    AXIS["Geodetic longitude", EAST],\s
+                    AXIS["Geodetic latitude", NORTH],\s
+                    AUTHORITY["EPSG","4326"]],\s
+                  PROJECTION["Transverse Mercator", AUTHORITY["EPSG","9807"]],\s
+                  PARAMETER["central_meridian", 9.0],\s
+                  PARAMETER["latitude_of_origin", 0.0],\s
+                  PARAMETER["scale_factor", 0.9996],\s
+                  PARAMETER["false_easting", 500000.0],\s
+                  PARAMETER["false_northing", 0.0],\s
+                  UNIT["m", 1.0],\s
+                  AXIS["Easting", EAST],\s
+                  AXIS["Northing", NORTH],\s
+                  AUTHORITY["EPSG","32632"]]""";
         CoordinateReferenceSystem utm32n = CRS.parseWKT(wkt);
 
         GeneralBounds envelope = new GeneralBounds(utm32n);

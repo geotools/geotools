@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.referencing.crs.VerticalCRS;
@@ -52,6 +53,7 @@ import org.geotools.referencing.wkt.Formatter;
  */
 public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 3565878468719941800L;
 
     /**

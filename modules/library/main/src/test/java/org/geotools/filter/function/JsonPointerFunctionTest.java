@@ -53,18 +53,21 @@ public class JsonPointerFunctionTest {
 
     @Test
     public void testNestArrayObjects() {
-        String json = "{\n"
-                + "  \"prop\": {\n" //
-                + "    \"a\": [\n" //
-                + "      {\n" //
-                + "        \"b\": 10\n" //
-                + "      },\n" //
-                + "      {\n" //
-                + "        \"b\": 20\n" //
-                + "      }\n" //
-                + "    ]\n" //
-                + "  }\n" //
-                + "}";
+        String json =
+                """
+                {
+                  "prop": {
+                    "a": [
+                      {
+                        "b": 10
+                      },
+                      {
+                        "b": 20
+                      }
+                    ]
+                  }
+                }\
+                """;
 
         assertEquals(Integer.valueOf(10), pointer(json, "/prop/a/0/b").evaluate(null));
         assertEquals(Integer.valueOf(20), pointer(json, "/prop/a/1/b").evaluate(null));
@@ -84,17 +87,20 @@ public class JsonPointerFunctionTest {
 
     @Test
     public void testExtractComplex() {
-        String json = "{\"menu\": {\n"
-                + "  \"id\": \"file\",\n"
-                + "  \"value\": \"File\",\n"
-                + "  \"popup\": {\n"
-                + "    \"menuitem\": [\n"
-                + "      {\"value\": \"New\", \"onclick\": \"CreateNewDoc()\"},\n"
-                + "      {\"value\": \"Open\", \"onclick\": \"OpenDoc()\"},\n"
-                + "      {\"value\": \"Close\", \"onclick\": \"CloseDoc()\"}\n"
-                + "    ]\n"
-                + "  }\n"
-                + "}}";
+        String json =
+                """
+                {"menu": {
+                  "id": "file",
+                  "value": "File",
+                  "popup": {
+                    "menuitem": [
+                      {"value": "New", "onclick": "CreateNewDoc()"},
+                      {"value": "Open", "onclick": "OpenDoc()"},
+                      {"value": "Close", "onclick": "CloseDoc()"}
+                    ]
+                  }
+                }}\
+                """;
 
         assertEquals(
                 "{\"menuitem\":[{\"value\":\"New\",\"onclick\":\"CreateNewDoc()\"},{\"value\":\"Open\",\"onclick\":\"OpenDoc()\"},{\"value\":\"Close\",\"onclick\":\"CloseDoc()\"}]}",

@@ -349,8 +349,7 @@ public class GraphicImpl
             return true;
         }
 
-        if (oth instanceof GraphicImpl) {
-            GraphicImpl other = (GraphicImpl) oth;
+        if (oth instanceof GraphicImpl other) {
 
             return Utilities.equals(this.size, other.size)
                     && Utilities.equals(this.rotation, other.rotation)
@@ -364,8 +363,8 @@ public class GraphicImpl
     static GraphicImpl cast(org.geotools.api.style.Graphic graphic) {
         if (graphic == null) {
             return null;
-        } else if (graphic instanceof GraphicImpl) {
-            return (GraphicImpl) graphic;
+        } else if (graphic instanceof GraphicImpl impl) {
+            return impl;
         } else {
             GraphicImpl copy = new GraphicImpl();
             copy.setAnchorPoint(graphic.getAnchorPoint());

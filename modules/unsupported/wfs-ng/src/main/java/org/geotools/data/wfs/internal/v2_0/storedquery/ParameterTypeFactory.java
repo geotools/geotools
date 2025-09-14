@@ -110,10 +110,10 @@ public class ParameterTypeFactory {
     protected String evaluateMapping(ParameterMappingContext mappingContext, ParameterMapping mapping) {
         String value;
 
-        if (mapping instanceof ParameterMappingDefaultValue) {
-            value = ((ParameterMappingDefaultValue) mapping).getDefaultValue();
-        } else if (mapping instanceof ParameterMappingExpressionValue) {
-            value = ((ParameterMappingExpressionValue) mapping).evaluate(mappingContext);
+        if (mapping instanceof ParameterMappingDefaultValue defaultValue) {
+            value = defaultValue.getDefaultValue();
+        } else if (mapping instanceof ParameterMappingExpressionValue expressionValue) {
+            value = expressionValue.evaluate(mappingContext);
         } else if (mapping instanceof ParameterMappingBlockValue) {
             value = null;
         } else {

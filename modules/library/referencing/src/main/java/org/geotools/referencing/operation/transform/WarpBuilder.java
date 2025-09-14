@@ -154,8 +154,8 @@ public class WarpBuilder {
      */
     public Warp buildWarp(MathTransform2D mt, Rectangle domain) throws TransformException {
         // first simple case, the tx is affine
-        if (mt instanceof AffineTransform2D) {
-            return new WarpAffine((AffineTransform2D) mt);
+        if (mt instanceof AffineTransform2D transform2D) {
+            return new WarpAffine(transform2D);
         }
 
         // second simple case, the caller does not want any optimization

@@ -31,6 +31,7 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.imageio.stream.FileImageInputStream;
 import org.eclipse.imagen.RasterFactory;
 import org.eclipse.imagen.RenderedOp;
@@ -500,7 +501,7 @@ public class TestLinearClassifier extends Assert {
 
             final LinearColorMap list = new LinearColorMap("", new LinearColorMapElement[] {n0});
 
-            double testNum = Math.random();
+            double testNum = ThreadLocalRandom.current().nextDouble();
             try {
                 assertEquals(list.transform(testNum), testNum, 0.0);
                 fail();

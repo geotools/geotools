@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.transform;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.prefs.Preferences;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -51,6 +52,7 @@ import org.geotools.util.Utilities;
 public class AffineTransform2D extends XAffineTransform
         implements MathTransform2D, LinearTransform, Formattable, Cloneable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -5299837898367149069L;
 
     /** The inverse transform. This field will be computed only when needed. */

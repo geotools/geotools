@@ -36,10 +36,11 @@ public class DefaultCloseableIterator<T> implements CloseableIterator<T> {
 
     protected Closeable closeableItem;
 
+    @SuppressWarnings("PMD.CloseResource")
     public DefaultCloseableIterator(Iterator<T> wrapped) {
         this.wrapped = wrapped;
-        if (wrapped instanceof Closeable) {
-            this.closeableItem = (Closeable) wrapped;
+        if (wrapped instanceof Closeable closeable) {
+            this.closeableItem = closeable;
         } else {
             this.closeableItem = null;
         }
@@ -91,9 +92,11 @@ public class DefaultCloseableIterator<T> implements CloseableIterator<T> {
             try {
                 close();
             } finally {
-                LOGGER.warning("CloseableIterator need to be closed by the client. "
-                        + "There is code not closing it."
-                        + "\nAuto closing at finalize().");
+                LOGGER.warning(
+                        """
+                        CloseableIterator need to be closed by the client. \
+                        There is code not closing it.
+                        Auto closing at finalize().""");
             }
         }
     }

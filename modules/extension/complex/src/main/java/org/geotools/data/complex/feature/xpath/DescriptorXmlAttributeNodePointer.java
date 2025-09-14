@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex.feature.xpath;
 
+import java.io.Serial;
 import java.util.Iterator;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -36,6 +37,7 @@ import org.geotools.xsd.Schemas;
 public class DescriptorXmlAttributeNodePointer extends NodePointer {
 
     /** */
+    @Serial
     private static final long serialVersionUID = 8096170689141331692L;
 
     /** The name of the node. */
@@ -80,8 +82,7 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
 
         // first try regular way
         PropertyType pt = descriptor.getType();
-        if (pt instanceof ComplexType) {
-            ComplexType ct = (ComplexType) pt;
+        if (pt instanceof ComplexType ct) {
             PropertyDescriptor ad = ct.getDescriptor("@" + name.getLocalPart());
             if (ad != null) {
                 return ad;

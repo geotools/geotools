@@ -288,10 +288,9 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
     static MarkImpl cast(GraphicalSymbol item) {
         if (item == null) {
             return null;
-        } else if (item instanceof MarkImpl) {
-            return (MarkImpl) item;
-        } else if (item instanceof Mark) {
-            Mark mark = (Mark) item;
+        } else if (item instanceof MarkImpl impl) {
+            return impl;
+        } else if (item instanceof Mark mark) {
             MarkImpl copy = new MarkImpl();
             copy.setStroke(mark.getStroke());
             copy.setWellKnownName(mark.getWellKnownName());

@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -142,8 +143,9 @@ public final class MathTransformTest {
             final int dimension = 10;
             final GeneralMatrix matrix = new GeneralMatrix(dimension + 1, dimension + 1);
             for (int i = 0; i < dimension; i++) {
-                matrix.setElement(i, i, 400 * Math.random() - 200);
-                matrix.setElement(i, dimension, 400 * Math.random() - 200);
+                matrix.setElement(i, i, 400 * ThreadLocalRandom.current().nextDouble() - 200);
+                matrix.setElement(
+                        i, dimension, 400 * ThreadLocalRandom.current().nextDouble() - 200);
             }
             assertTrue(matrix.isAffine());
             /*
@@ -453,8 +455,7 @@ public final class MathTransformTest {
         if (transform instanceof ExponentialTransform1D || transform instanceof LogarithmicTransform1D) {
             return 1;
         }
-        if (transform instanceof ConcatenatedTransform) {
-            final ConcatenatedTransform ct = (ConcatenatedTransform) transform;
+        if (transform instanceof ConcatenatedTransform ct) {
             return countNonlinear(ct.transform1) + countNonlinear(ct.transform2);
         }
         return 0;
@@ -477,8 +478,8 @@ public final class MathTransformTest {
      * @param transform The transform to test.
      */
     private static void assertInterfaced(final MathTransform transform) {
-        if (transform instanceof LinearTransform) {
-            final Matrix matrix = ((LinearTransform) transform).getMatrix();
+        if (transform instanceof LinearTransform linearTransform) {
+            final Matrix matrix = linearTransform.getMatrix();
             if (!((XMatrix) matrix).isAffine()) {
                 // Special case: Non-affine transforms not yet declared as a 1D or 2D transform.
                 return;

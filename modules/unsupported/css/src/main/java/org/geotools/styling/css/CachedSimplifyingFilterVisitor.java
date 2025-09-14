@@ -90,8 +90,8 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
             for (int i = 0; i < filters.size(); ) {
                 Filter f = filters.get(i);
                 boolean skip = false;
-                if (f instanceof Or) {
-                    Or or = ((Or) f);
+                if (f instanceof Or or1) {
+                    Or or = or1;
                     for (Filter child : or.getChildren()) {
                         if (topLevel.contains(child)) {
                             skip = true;
@@ -111,8 +111,8 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
         if (filters.size() > 1) {
             for (int i = 0; i < filters.size(); i++) {
                 Filter f = filters.get(i);
-                if (f instanceof Or) {
-                    Or or = ((Or) f);
+                if (f instanceof Or or1) {
+                    Or or = or1;
                     Filter reduced = null;
                     boolean twoOrMore = false;
                     for (Filter child : or.getChildren()) {
@@ -167,8 +167,8 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
             for (int i = 0; i < filters.size(); ) {
                 Filter f = filters.get(i);
                 boolean skip = false;
-                if (f instanceof And) {
-                    And and = ((And) f);
+                if (f instanceof And and1) {
+                    And and = and1;
                     for (Filter child : and.getChildren()) {
                         if (topLevel.contains(child)) {
                             skip = true;
@@ -188,8 +188,8 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
             // overall expression
             for (int i = 0; i < filters.size(); i++) {
                 Filter f = filters.get(i);
-                if (f instanceof And) {
-                    And and = ((And) f);
+                if (f instanceof And and1) {
+                    And and = and1;
                     Filter reduced = null;
                     boolean twoOrMore = false;
                     for (Filter child : and.getChildren()) {

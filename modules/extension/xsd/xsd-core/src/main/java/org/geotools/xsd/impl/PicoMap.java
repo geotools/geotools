@@ -134,13 +134,13 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     @Override
     public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) {
-        if (componentAdapter instanceof DecoratingComponentAdapter) {
-            componentAdapter = ((DecoratingComponentAdapter) componentAdapter).getDelegate();
+        if (componentAdapter instanceof DecoratingComponentAdapter adapter) {
+            componentAdapter = adapter.getDelegate();
         }
 
         Object key = componentAdapter.getComponentKey();
-        if (componentAdapter instanceof InstanceComponentAdapter) {
-            Object instance = ((InstanceComponentAdapter) componentAdapter).getComponentInstance(null);
+        if (componentAdapter instanceof InstanceComponentAdapter adapter) {
+            Object instance = adapter.getComponentInstance(null);
             put(key, instance);
         } else {
             Class implementation = componentAdapter.getComponentImplementation();
@@ -227,9 +227,9 @@ public class PicoMap implements Map, MutablePicoContainer {
             return null;
         }
 
-        if (o instanceof Class) {
+        if (o instanceof Class class1) {
             // TODO: determine which form of injection to use
-            return new ConstructorInjectionComponentAdapter(componentKey, (Class) o);
+            return new ConstructorInjectionComponentAdapter(componentKey, class1);
         }
 
         return new InstanceComponentAdapter(componentKey, o);
@@ -290,9 +290,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         }
 
         Object o = get(componentKey);
-        if (o instanceof Class) {
-            // TODO: instantiate
-            Class clazz = (Class) o;
+        if (o instanceof Class clazz) {
             try {
                 return clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {

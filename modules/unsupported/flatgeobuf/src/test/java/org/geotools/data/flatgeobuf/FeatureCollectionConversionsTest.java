@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Iterator;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.test.TestData;
@@ -20,7 +20,7 @@ public class FeatureCollectionConversionsTest {
     @Test
     public void countriesTest() throws IOException, URISyntaxException {
         URL url = TestData.url(FlatGeobufDataStore.class, "countries.fgb");
-        File file = Paths.get(url.toURI()).toFile();
+        File file = Path.of(url.toURI()).toFile();
         try (InputStream stream = new FileInputStream(file)) {
             Iterator<SimpleFeature> it =
                     FeatureCollectionConversions.deserialize(stream).iterator();
@@ -36,7 +36,7 @@ public class FeatureCollectionConversionsTest {
     @Test
     public void countriesTestFilter() throws IOException, URISyntaxException {
         URL url = TestData.url(FlatGeobufDataStore.class, "countries.fgb");
-        File file = Paths.get(url.toURI()).toFile();
+        File file = Path.of(url.toURI()).toFile();
         try (InputStream stream = new FileInputStream(file)) {
             Envelope rect = new Envelope(12, 12, 56, 56);
             Iterator<SimpleFeature> it =
@@ -53,7 +53,7 @@ public class FeatureCollectionConversionsTest {
     @Test
     public void countriesTestFilterFid() throws IOException, URISyntaxException {
         URL url = TestData.url(FlatGeobufDataStore.class, "countries.fgb");
-        File file = Paths.get(url.toURI()).toFile();
+        File file = Path.of(url.toURI()).toFile();
         try (InputStream stream = new FileInputStream(file)) {
             long[] fids = {0, 1, 2, 45, 46, 178};
             Iterator<SimpleFeature> it =

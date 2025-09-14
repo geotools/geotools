@@ -70,12 +70,12 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
             // }
 
             // try casting the response
-            if (object instanceof WPSCapabilitiesType) {
-                capabilities = (WPSCapabilitiesType) object;
+            if (object instanceof WPSCapabilitiesType type1) {
+                capabilities = type1;
             }
             // exception caught on server and returned
-            else if (object instanceof ExceptionReportType) {
-                excepResponse = (ExceptionReportType) object;
+            else if (object instanceof ExceptionReportType type) {
+                excepResponse = type;
             }
         }
     }

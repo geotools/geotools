@@ -17,6 +17,7 @@
  */
 package org.geotools.http;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.geotools.util.factory.Hints;
@@ -25,6 +26,7 @@ import org.geotools.util.factory.Hints;
 public class HTTPFactoryException extends RuntimeException {
 
     /** */
+    @Serial
     private static final long serialVersionUID = 3038706500613959333L;
 
     public HTTPFactoryException(String message, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
@@ -33,15 +35,16 @@ public class HTTPFactoryException extends RuntimeException {
 
     private static String createMessage(String message, Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
         if (hints.containsKey(Hints.HTTP_CLIENT_FACTORY) || hints.containsKey(Hints.HTTP_CLIENT)) {
-            message = String.format(
-                    "%s\nHTTP_CLIENT_FACTORY(%s) HTTP_CLIENT(%s)",
-                    message, hints.get(Hints.HTTP_CLIENT_FACTORY), hints.get(Hints.HTTP_CLIENT));
+            message = "%s\nHTTP_CLIENT_FACTORY(%s) HTTP_CLIENT(%s)"
+                    .formatted(message, hints.get(Hints.HTTP_CLIENT_FACTORY), hints.get(Hints.HTTP_CLIENT));
         }
         if (!behaviors.isEmpty()) {
-            message = String.format(
-                    "%s\nBehaviors:%s",
-                    message,
-                    behaviors.stream().map(behavior -> behavior.getSimpleName()).collect(Collectors.joining(",")));
+            message = "%s\nBehaviors:%s"
+                    .formatted(
+                            message,
+                            behaviors.stream()
+                                    .map(behavior -> behavior.getSimpleName())
+                                    .collect(Collectors.joining(",")));
         }
         return message;
     }

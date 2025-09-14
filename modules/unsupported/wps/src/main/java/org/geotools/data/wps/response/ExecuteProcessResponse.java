@@ -127,16 +127,16 @@ public class ExecuteProcessResponse extends Response {
         }
 
         // try casting the response
-        if (object instanceof ExecuteResponseType) {
-            exeResponse = (ExecuteResponseType) object;
+        if (object instanceof ExecuteResponseType type1) {
+            exeResponse = type1;
             // in case of exceptions let's be explicit about them
             if (exeResponse.getStatus() != null && exeResponse.getStatus().getProcessFailed() != null) {
                 excepResponse = exeResponse.getStatus().getProcessFailed().getExceptionReport();
             }
         }
         // exception caught on server and returned
-        else if (object instanceof ExceptionReportType) {
-            excepResponse = (ExceptionReportType) object;
+        else if (object instanceof ExceptionReportType type) {
+            excepResponse = type;
         }
     }
 

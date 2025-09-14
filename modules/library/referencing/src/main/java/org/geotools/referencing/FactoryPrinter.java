@@ -106,8 +106,8 @@ final class FactoryPrinter implements Comparator<Class<?>> {
                 final Citation vendor = provider.getVendor();
                 vendors.append(vendor.getTitle().toString(locale));
                 implementations.append(Classes.getShortClassName(provider));
-                if (provider instanceof AuthorityFactory) {
-                    final Citation authority = ((AuthorityFactory) provider).getAuthority();
+                if (provider instanceof AuthorityFactory factory) {
+                    final Citation authority = factory.getAuthority();
                     final Iterator<? extends Identifier> identifiers =
                             authority.getIdentifiers().iterator();
                     final String identifier = identifiers.hasNext()

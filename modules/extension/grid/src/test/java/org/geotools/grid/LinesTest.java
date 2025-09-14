@@ -111,7 +111,7 @@ public class LinesTest {
                 }
 
                 if (!ok) {
-                    fail(String.format("value = %.2f, level = %d", value, level));
+                    fail("value = %.2f, level = %d".formatted(value, level));
                 }
             }
         }

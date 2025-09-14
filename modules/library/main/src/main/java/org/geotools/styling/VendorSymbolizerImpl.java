@@ -69,11 +69,9 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer
     static VendorSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
-        } else if (symbolizer instanceof VendorSymbolizerImpl) {
-            return (VendorSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.geotools.api.style.ExtensionSymbolizer) {
-            org.geotools.api.style.ExtensionSymbolizer extensionSymbolizer =
-                    (org.geotools.api.style.ExtensionSymbolizer) symbolizer;
+        } else if (symbolizer instanceof VendorSymbolizerImpl impl) {
+            return impl;
+        } else if (symbolizer instanceof org.geotools.api.style.ExtensionSymbolizer extensionSymbolizer) {
             VendorSymbolizerImpl copy = new VendorSymbolizerImpl();
             copy.setDescription(extensionSymbolizer.getDescription());
             copy.setGeometryPropertyName(extensionSymbolizer.getGeometryPropertyName());

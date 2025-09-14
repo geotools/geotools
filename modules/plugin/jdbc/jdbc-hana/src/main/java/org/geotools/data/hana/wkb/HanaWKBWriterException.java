@@ -16,6 +16,8 @@
  */
 package org.geotools.data.hana.wkb;
 
+import java.io.Serial;
+
 /**
  * Exception thrown if WKB writing fails.
  *
@@ -23,6 +25,7 @@ package org.geotools.data.hana.wkb;
  */
 public class HanaWKBWriterException extends Exception {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public HanaWKBWriterException(String message) {

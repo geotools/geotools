@@ -109,17 +109,14 @@ public final class GeomCollectionIterator extends AbstractLiteIterator {
         AbstractLiteIterator pi = null;
 
         if (g.isEmpty()) return EmptyIterator.INSTANCE;
-        if (g instanceof Polygon) {
-            Polygon p = (Polygon) g;
+        if (g instanceof Polygon p) {
             pi = new PolygonIterator(p, at, generalize, maxDistance);
-        } else if (g instanceof GeometryCollection) {
-            GeometryCollection gc = (GeometryCollection) g;
+        } else if (g instanceof GeometryCollection gc) {
             pi = new GeomCollectionIterator(gc, at, generalize, maxDistance);
         } else if (g instanceof LineString || g instanceof LinearRing) {
             LineString ls = (LineString) g;
             pi = new LineIterator(ls, at, generalize, (float) maxDistance);
-        } else if (g instanceof Point) {
-            Point p = (Point) g;
+        } else if (g instanceof Point p) {
             pi = new PointIterator(p, at);
         }
 

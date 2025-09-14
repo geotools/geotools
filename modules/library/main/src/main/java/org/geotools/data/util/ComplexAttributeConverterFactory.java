@@ -66,8 +66,8 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
             return new Converter() {
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
-                    if (source instanceof GeometryAttribute) {
-                        return Converters.convert(((GeometryAttribute) source).getValue(), target);
+                    if (source instanceof GeometryAttribute attribute) {
+                        return Converters.convert(attribute.getValue(), target);
                     }
                     return null;
                 }
@@ -92,9 +92,7 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
             return new Converter() {
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
-                    if (source instanceof Attribute) {
-                        // get the attribute value
-                        Attribute attribute = (Attribute) source;
+                    if (source instanceof Attribute attribute) {
                         Object value = attribute.getValue();
                         // let the available converters do their job
                         return target.cast(Converters.convert(value, target));

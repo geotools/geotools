@@ -512,7 +512,7 @@ public class Wps20PackageImpl extends EPackageImpl implements Wps20Package {
 
 		// Obtain or create and register package
 		Object registeredWps20Package = EPackage.Registry.INSTANCE.get(eNS_URI);
-		Wps20PackageImpl theWps20Package = registeredWps20Package instanceof Wps20PackageImpl ? (Wps20PackageImpl)registeredWps20Package : new Wps20PackageImpl();
+		Wps20PackageImpl theWps20Package = registeredWps20Package instanceof Wps20PackageImpl wpi ? wpi : new Wps20PackageImpl();
 
 		isInited = true;
 

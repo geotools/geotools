@@ -139,7 +139,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
             CoverageProcessingNode nodeSource = getSource(0);
 
             CoverageProcessingNode colorMapNode = null;
-            if (nodeSource instanceof ColorMapNode && ((ColorMapNode) nodeSource).getType() != ColorMapNode.TYPE_NONE) {
+            if (nodeSource instanceof ColorMapNode node && node.getType() != ColorMapNode.TYPE_NONE) {
 
                 // If colormap is present, ShadedRelief need to be computed on previous source
                 colorMapNode = nodeSource;

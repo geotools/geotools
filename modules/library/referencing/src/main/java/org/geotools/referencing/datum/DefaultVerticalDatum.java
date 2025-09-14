@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.datum;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.referencing.datum.VerticalDatum;
@@ -41,6 +42,7 @@ import org.geotools.util.Utilities;
  */
 public class DefaultVerticalDatum extends AbstractDatum implements VerticalDatum {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 380347456670516572L;
 
     /** A copy of the list of vertical types. */

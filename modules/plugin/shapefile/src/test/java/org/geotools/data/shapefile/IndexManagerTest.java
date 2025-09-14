@@ -146,8 +146,7 @@ public class IndexManagerTest extends TestCaseSupport {
 
         long buildCount = builds.stream().filter(Boolean::booleanValue).count();
 
-        String msg =
-                String.format("Expected only 1 true result from %d concurrent createSpatialIndex calls", taskCount);
+        String msg = "Expected only 1 true result from %d concurrent createSpatialIndex calls".formatted(taskCount);
         assertEquals(msg, 1, buildCount);
     }
 
@@ -173,9 +172,8 @@ public class IndexManagerTest extends TestCaseSupport {
 
         long buildCount = builds.stream().filter(Boolean::booleanValue).count();
 
-        String msg = String.format(
-                "Expected only %d true results from %d concurrent createSpatialIndex calls with force == true",
-                taskCount, taskCount);
+        String msg = "Expected only %d true results from %d concurrent createSpatialIndex calls with force == true"
+                .formatted(taskCount, taskCount);
         assertEquals(msg, taskCount, buildCount);
         assertEquals(1, maxConcurrentBuilds.get());
     }

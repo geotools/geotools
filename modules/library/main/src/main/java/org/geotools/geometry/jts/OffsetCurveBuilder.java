@@ -162,12 +162,12 @@ public class OffsetCurveBuilder {
 
         // then extract the lines
         final List<LineString> lines = new ArrayList<>();
-        if (g instanceof LineString) {
-            lines.add((LineString) g);
+        if (g instanceof LineString string1) {
+            lines.add(string1);
         } else {
             g.apply((GeometryComponentFilter) geom -> {
-                if (geom instanceof LineString) {
-                    lines.add((LineString) geom);
+                if (geom instanceof LineString string) {
+                    lines.add(string);
                 }
             });
         }

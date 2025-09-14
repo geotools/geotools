@@ -83,8 +83,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
     }
 
     private void encodeContents(LineString geometry, GMLWriter handler) throws Exception {
-        if (geometry instanceof SingleCurvedGeometry) {
-            SingleCurvedGeometry curve = (SingleCurvedGeometry) geometry;
+        if (geometry instanceof SingleCurvedGeometry curve) {
             encodeCurve(curve, handler);
         } else if (geometry instanceof CompoundCurvedGeometry) {
             @SuppressWarnings("unchecked")

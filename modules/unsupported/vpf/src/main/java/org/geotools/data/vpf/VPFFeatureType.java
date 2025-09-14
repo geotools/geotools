@@ -210,8 +210,8 @@ public class VPFFeatureType implements SimpleFeatureType {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof VPFFeatureType) {
-            return Objects.equals(featureClass, ((VPFFeatureType) obj).featureClass);
+        if (obj instanceof VPFFeatureType type) {
+            return Objects.equals(featureClass, type.featureClass);
         }
         return false;
     }

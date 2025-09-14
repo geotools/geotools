@@ -17,6 +17,7 @@
 package org.geotools.data.vpf.exc;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * VPFDataException.java Created: Mon Mar 03 21:32:32 2003
@@ -27,6 +28,7 @@ import java.io.IOException;
  */
 public class VPFDataException extends IOException {
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 7229469219001998383L;
 
     /** Creates a new VPFDataException object. */

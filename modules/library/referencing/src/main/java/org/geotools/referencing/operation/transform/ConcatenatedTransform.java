@@ -18,6 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.Position;
@@ -48,6 +49,7 @@ import org.geotools.util.Utilities;
  */
 public class ConcatenatedTransform extends AbstractMathTransform implements Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 5772066656987558634L;
 
     /** Small number for floating point comparaisons. */
@@ -92,11 +94,11 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
 
     /** Returns the underlying matrix for the specified transform, or {@code null} if the matrix is unavailable. */
     private static XMatrix getMatrix(final MathTransform transform) {
-        if (transform instanceof LinearTransform) {
-            return toXMatrix(((LinearTransform) transform).getMatrix());
+        if (transform instanceof LinearTransform linearTransform) {
+            return toXMatrix(linearTransform.getMatrix());
         }
-        if (transform instanceof AffineTransform) {
-            return new Matrix3((AffineTransform) transform);
+        if (transform instanceof AffineTransform affineTransform) {
+            return new Matrix3(affineTransform);
         }
         return null;
     }
@@ -110,8 +112,8 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      *     create inconditionnaly the inverse transform?
      */
     private static boolean areInverse(final MathTransform tr1, final MathTransform tr2) {
-        if (tr2 instanceof AbstractMathTransform.Inverse) {
-            return tr1.equals(((AbstractMathTransform.Inverse) tr2).inverse());
+        if (tr2 instanceof AbstractMathTransform.Inverse inverse1) {
+            return tr1.equals(inverse1.inverse());
         }
         return false;
     }
@@ -260,14 +262,14 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
          * Gives a chance to AbstractMathTransform to returns an optimized object.
          * The main use case is Logarithmic vs Exponential transforms.
          */
-        if (tr1 instanceof AbstractMathTransform) {
-            final MathTransform optimized = ((AbstractMathTransform) tr1).concatenate(tr2, false);
+        if (tr1 instanceof AbstractMathTransform transform) {
+            final MathTransform optimized = transform.concatenate(tr2, false);
             if (optimized != null) {
                 return optimized;
             }
         }
-        if (tr2 instanceof AbstractMathTransform) {
-            final MathTransform optimized = ((AbstractMathTransform) tr2).concatenate(tr1, true);
+        if (tr2 instanceof AbstractMathTransform transform) {
+            final MathTransform optimized = transform.concatenate(tr1, true);
             if (optimized != null) {
                 return optimized;
             }
@@ -287,8 +289,8 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
          * Checks if the result need to be a MathTransform1D.
          */
         if (dimSource == 1 && dimTarget == 1) {
-            if (tr1 instanceof MathTransform1D && tr2 instanceof MathTransform1D) {
-                return new ConcatenatedTransformDirect1D((MathTransform1D) tr1, (MathTransform1D) tr2);
+            if (tr1 instanceof MathTransform1D transform1D && tr2 instanceof MathTransform1D transform1D1) {
+                return new ConcatenatedTransformDirect1D(transform1D, transform1D1);
             } else {
                 return new ConcatenatedTransform1D(tr1, tr2);
             }
@@ -297,8 +299,8 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
          * Checks if the result need to be a MathTransform2D.
          */
         if (dimSource == 2 && dimTarget == 2) {
-            if (tr1 instanceof MathTransform2D && tr2 instanceof MathTransform2D) {
-                return new ConcatenatedTransformDirect2D((MathTransform2D) tr1, (MathTransform2D) tr2);
+            if (tr1 instanceof MathTransform2D transform2D && tr2 instanceof MathTransform2D transform2D1) {
+                return new ConcatenatedTransformDirect2D(transform2D, transform2D1);
             } else {
                 return new ConcatenatedTransform2D(tr1, tr2);
             }
@@ -315,8 +317,8 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
 
     /** Returns a name for the specified math transform. */
     private static final String getName(final MathTransform transform) {
-        if (transform instanceof AbstractMathTransform) {
-            ParameterValueGroup params = ((AbstractMathTransform) transform).getParameterValues();
+        if (transform instanceof AbstractMathTransform mathTransform) {
+            ParameterValueGroup params = mathTransform.getParameterValues();
             if (params != null) {
                 String name = params.getDescriptor().getName().getCode();
                 if (name != null && (name = name.trim()).length() != 0) {
@@ -568,8 +570,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
 
     /** Append to a string buffer the WKT for the specified math transform. */
     private static void addWKT(final Formatter formatter, final MathTransform transform) {
-        if (transform instanceof ConcatenatedTransform) {
-            final ConcatenatedTransform concat = (ConcatenatedTransform) transform;
+        if (transform instanceof ConcatenatedTransform concat) {
             addWKT(formatter, concat.transform1);
             addWKT(formatter, concat.transform2);
         } else {

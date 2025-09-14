@@ -141,8 +141,8 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
     protected final Comparable comparable(Object value) {
         if (value == null) {
             return null;
-        } else if (value instanceof Comparable) {
-            return (Comparable) value;
+        } else if (value instanceof Comparable comparable) {
+            return comparable;
         } else {
             return String.valueOf(value);
         }

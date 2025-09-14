@@ -71,9 +71,9 @@ public class H2FilterToSQL extends FilterToSQL {
     @Override
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         Geometry g = (Geometry) evaluateLiteral(expression, Geometry.class);
-        if (g instanceof LinearRing) {
+        if (g instanceof LinearRing ring) {
             // WKT does not support linear rings
-            g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
+            g = g.getFactory().createLineString(ring.getCoordinateSequence());
         }
         out.write("ST_GeomFromText('" + g.toText() + "', " + currentSRID + ")");
     }
@@ -95,7 +95,7 @@ public class H2FilterToSQL extends FilterToSQL {
 
         double distance = 0;
         try {
-            if (filter instanceof DistanceBufferOperator) {
+            if (filter instanceof DistanceBufferOperator operator) {
                 out.write("ST_Distance(");
                 e1.accept(this, extraData);
                 out.write(", ");
@@ -109,7 +109,7 @@ public class H2FilterToSQL extends FilterToSQL {
                 } else {
                     throw new RuntimeException("Unknown distance operator");
                 }
-                distance = getDistanceInNativeUnits((DistanceBufferOperator) filter);
+                distance = getDistanceInNativeUnits(operator);
                 out.write(Double.toString(distance));
             } else if (filter instanceof BBOX) {
                 // TODO: make a loose bounding box parameter

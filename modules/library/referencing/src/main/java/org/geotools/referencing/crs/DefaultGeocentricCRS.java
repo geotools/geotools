@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import javax.measure.Unit;
@@ -50,6 +51,7 @@ import org.geotools.referencing.wkt.Formatter;
  */
 public class DefaultGeocentricCRS extends AbstractSingleCRS implements GeocentricCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6784642848287659827L;
 
     /**

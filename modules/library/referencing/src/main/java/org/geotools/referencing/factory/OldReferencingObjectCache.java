@@ -73,8 +73,8 @@ final class OldReferencingObjectCache {
     public Object get(final Object key) {
         // assert Thread.holdsLock(factory);
         Object object = pool.get(key);
-        if (object instanceof Reference) {
-            object = ((Reference) object).get();
+        if (object instanceof Reference reference) {
+            object = reference.get();
         }
         return object;
     }
@@ -96,8 +96,8 @@ final class OldReferencingObjectCache {
             for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator(); it.hasNext(); ) {
                 final Map.Entry<Object, Object> entry = it.next();
                 final Object value = entry.getValue();
-                if (value instanceof Reference) {
-                    if (((Reference) value).get() == null) {
+                if (value instanceof Reference reference) {
+                    if (reference.get() == null) {
                         it.remove();
                     }
                     continue;

@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,6 +39,7 @@ import org.geotools.referencing.factory.IdentifiedObjectSet;
  */
 final class CoordinateOperationSet extends IdentifiedObjectSet {
     /** For compatibility with previous versions. */
+    @Serial
     private static final long serialVersionUID = -2421669857023064667L;
 
     // These operations are returned at the top of the results but they

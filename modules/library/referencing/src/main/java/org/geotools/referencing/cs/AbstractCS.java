@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,6 +69,7 @@ import si.uom.SI;
  */
 public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSystem {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 6757665252533744744L;
 
     /**
@@ -101,8 +103,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      */
     public AbstractCS(final CoordinateSystem cs) {
         super(cs);
-        if (cs instanceof AbstractCS) {
-            axis = ((AbstractCS) cs).axis;
+        if (cs instanceof AbstractCS cS) {
+            axis = cS.axis;
         } else {
             axis = new CoordinateSystemAxis[cs.getDimension()];
             for (int i = 0; i < axis.length; i++) {
@@ -472,8 +474,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             CoordinateSystemAxis a = axis[i];
             if (!unit.equals(a.getUnit())) {
                 DefaultCoordinateSystemAxis converted;
-                if (a instanceof DefaultCoordinateSystemAxis) {
-                    converted = (DefaultCoordinateSystemAxis) a;
+                if (a instanceof DefaultCoordinateSystemAxis systemAxis) {
+                    converted = systemAxis;
                 } else {
                     converted = new DefaultCoordinateSystemAxis(a);
                     a = converted; // For detecting changes.
@@ -501,8 +503,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             final CoordinateSystemAxis a = cs.getAxis(i);
             DefaultCoordinateSystemAxis c = DefaultCoordinateSystemAxis.getPredefined(a);
             if (c == null) {
-                if (a instanceof DefaultCoordinateSystemAxis) {
-                    c = (DefaultCoordinateSystemAxis) a;
+                if (a instanceof DefaultCoordinateSystemAxis systemAxis) {
+                    c = systemAxis;
                 } else {
                     c = new DefaultCoordinateSystemAxis(a);
                 }

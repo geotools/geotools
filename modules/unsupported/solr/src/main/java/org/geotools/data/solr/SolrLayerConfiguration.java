@@ -17,6 +17,7 @@
 
 package org.geotools.data.solr;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 /** Describes a SOLR layer configuration as set of {@link SolrAttribute} */
 public class SolrLayerConfiguration implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1838874365349725912L;
 
     /** A KEY to identify SOLR layer configuration */

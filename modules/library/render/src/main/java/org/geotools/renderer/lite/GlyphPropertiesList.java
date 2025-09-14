@@ -112,14 +112,14 @@ public class GlyphPropertiesList {
         int index = names.indexOf(name);
         if (index != -1) {
             GlyphProperty prop = list.get(index);
-            if (value instanceof String) {
-                value = stringToLiteral((String) value);
+            if (value instanceof String string) {
+                value = stringToLiteral(string);
             }
-            if (value instanceof Integer) {
-                value = numberToLiteral((Integer) value);
+            if (value instanceof Integer integer) {
+                value = numberToLiteral(integer);
             }
-            if (value instanceof Double) {
-                value = numberToLiteral((Double) value);
+            if (value instanceof Double double1) {
+                value = numberToLiteral(double1);
             }
             if (prop.getType().isAssignableFrom(value.getClass())) {
                 prop.setValue(value);

@@ -486,7 +486,7 @@ public class MemoryMappedFileCache implements FileCacheIF {
                     file.ncfile.setFileCache(null);
                     file.ncfile.close();
                 } else {
-                    log.error(String.format("MemoryMappedFileCache %s: null file or null ncfile", this.name));
+                    log.error("MemoryMappedFileCache %s: null file or null ncfile".formatted(this.name));
                 }
 
                 if (file != null) {

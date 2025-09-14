@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.transform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
@@ -107,6 +108,7 @@ import org.geotools.util.Arguments;
  */
 public class NADCONTransform extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -4707304160205218546L;
 
     /** The factory that loads the NADCON grids */
@@ -435,6 +437,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
      */
     private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D, Serializable {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -4707304160205218546L;
 
         /** Default constructor. */
@@ -487,6 +490,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
      */
     public static class Provider extends MathTransformProvider {
         /** Serial number for interoperability with different versions. */
+        @Serial
         private static final long serialVersionUID = -4707304160205218546L;
 
         /**

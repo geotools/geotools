@@ -300,7 +300,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS);
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(String.format("%s; 1=%s, 2=%s", sql, tbl, col));
+            LOGGER.fine("%s; 1=%s, 2=%s".formatted(sql, tbl, col));
         }
 
         try (PreparedStatement ps = cx.prepareStatement(sql)) {
@@ -376,8 +376,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             for (DataColumn dataColumn : dataColumns) {
                 if (col.equals(dataColumn.getColumnName())) {
                     DataColumnConstraint constraint = dataColumn.getConstraint();
-                    if (constraint instanceof DataColumnConstraint.Enum) {
-                        DataColumnConstraint.Enum ec = (DataColumnConstraint.Enum) constraint;
+                    if (constraint instanceof DataColumnConstraint.Enum ec) {
                         return FeatureTypes.createFieldOptions(ec.getValues().values());
                     }
                 }
@@ -439,8 +438,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
             // other geometry columns are possible
             for (PropertyDescriptor descr : featureType.getDescriptors()) {
-                if (descr instanceof GeometryDescriptor) {
-                    GeometryDescriptor gd1 = (GeometryDescriptor) descr;
+                if (descr instanceof GeometryDescriptor gd1) {
                     if (!gd1.getLocalName().equals(fe.getGeometryColumn())) {
                         FeatureEntry fe1 = new FeatureEntry();
                         fe1.init(fe);
@@ -561,8 +559,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             LOGGER.log(Level.FINE, "Unable to create CRS from epsg code " + srid, e);
 
             // try looking up in spatial ref sys
-            String sql = String.format(
-                    "SELECT definition FROM %s WHERE organization_coordsys_id = %d", SPATIAL_REF_SYS, srid);
+            String sql =
+                    "SELECT definition FROM %s WHERE organization_coordsys_id = %d".formatted(SPATIAL_REF_SYS, srid);
             LOGGER.fine(sql);
 
             Statement st = cx.createStatement();
@@ -708,8 +706,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         int length = Array.getLength(value);
         for (int i = 0; i < length; i++) {
             Object item = Array.get(value, i);
-            if (mapping != null && item instanceof String) {
-                sb.append(mapping.fromValue((String) item));
+            if (mapping != null && item instanceof String string) {
+                sb.append(mapping.fromValue(string));
             } else if (item instanceof Number) {
                 sb.append(item);
             } else {
@@ -726,8 +724,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public boolean isArray(AttributeDescriptor att) {
         Object dataColumnMaybe = att.getUserData().get(DATA_COLUMN);
-        if (dataColumnMaybe instanceof DataColumn) {
-            DataColumn dc = (DataColumn) dataColumnMaybe;
+        if (dataColumnMaybe instanceof DataColumn dc) {
             // arrays are stored as json
             String mime = dc.getMimeType();
             return "application/json".equals(mime) || "text/json".equals(mime);
@@ -844,13 +841,13 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ad = schema.getDescriptor(name);
             }
             // check if geometris
-            if (ad instanceof GeometryDescriptor) {
+            if (ad instanceof GeometryDescriptor descriptor) {
                 if (geometryAttribute != null && !geometryAttribute.equals(ad)) {
                     // two different attributes found
                     return null;
                 }
                 // can run both on spatial filters and without
-                geometryAttribute = (GeometryDescriptor) ad;
+                geometryAttribute = descriptor;
             }
         }
 

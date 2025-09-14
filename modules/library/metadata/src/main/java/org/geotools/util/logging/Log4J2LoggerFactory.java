@@ -86,8 +86,8 @@ public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.
      */
     @Override
     protected org.apache.logging.log4j.Logger unwrap(final Logger logger) {
-        if (logger instanceof Log4J2Logger) {
-            return ((Log4J2Logger) logger).logger;
+        if (logger instanceof Log4J2Logger j2Logger) {
+            return j2Logger.logger;
         }
         return null;
     }
@@ -101,14 +101,14 @@ public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.
     public String lookupConfiguration() {
         try (LoggerContext context = (LoggerContext) LogManager.getContext()) {
             Configuration configuration = context.getConfiguration();
-            if (configuration instanceof XmlConfiguration) {
-                return ((XmlConfiguration) configuration).getName();
-            } else if (configuration instanceof YamlConfiguration) {
-                return ((YamlConfiguration) configuration).getName();
-            } else if (configuration instanceof JsonConfiguration) {
-                return ((JsonConfiguration) configuration).getName();
-            } else if (configuration instanceof PropertiesConfiguration) {
-                return ((PropertiesConfiguration) configuration).getName();
+            if (configuration instanceof XmlConfiguration xmlConfiguration) {
+                return xmlConfiguration.getName();
+            } else if (configuration instanceof YamlConfiguration yamlConfiguration) {
+                return yamlConfiguration.getName();
+            } else if (configuration instanceof JsonConfiguration jsonConfiguration) {
+                return jsonConfiguration.getName();
+            } else if (configuration instanceof PropertiesConfiguration propertiesConfiguration) {
+                return propertiesConfiguration.getName();
             } else if (configuration instanceof DefaultConfiguration) {
                 return "org.apache.logging.log4j.level="
                         + System.getProperty("org.apache.logging.log4j.level", "ERROR");

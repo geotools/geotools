@@ -50,8 +50,8 @@ enum HarvestedResource {
                 final List<HarvestedSource> result,
                 ImageMosaicReader reader) {
             File file;
-            if (source instanceof Collection<?>) {
-                file = (File) ((Collection<?>) source).iterator().next();
+            if (source instanceof Collection<?> collection) {
+                file = (File) collection.iterator().next();
             } else {
                 file = (File) source;
             }
@@ -68,8 +68,8 @@ enum HarvestedResource {
                 final List<HarvestedSource> result,
                 ImageMosaicReader reader) {
             File directory;
-            if (source instanceof Collection<?>) {
-                directory = (File) ((Collection<?>) source).iterator().next();
+            if (source instanceof Collection<?> collection) {
+                directory = (File) collection.iterator().next();
             } else {
                 directory = (File) source;
             }
@@ -184,8 +184,8 @@ enum HarvestedResource {
     /** Returns the HarvestedResource associated to the input Object */
     public static HarvestedResource getResourceFromObject(Object source) {
         // Check if the resource is a File or a Directory
-        if (source instanceof File) {
-            return getResourceFromFile((File) source);
+        if (source instanceof File file) {
+            return getResourceFromFile(file);
         }
         if (source instanceof URL) {
             return URL;
@@ -194,12 +194,12 @@ enum HarvestedResource {
             return URI;
         }
         // For a String instance, it is converted to String
-        if (source instanceof String) {
-            return getResourceFromString((String) source);
+        if (source instanceof String string) {
+            return getResourceFromString(string);
         }
         // Check if the input Object is a File/URL Collection
-        if (source instanceof Collection<?>) {
-            Object sample = ((Collection) source).iterator().next();
+        if (source instanceof Collection collection) {
+            Object sample = collection.iterator().next();
             // Let's check if it's a Collection of files
             if (sample instanceof File) {
                 Collection<File> files = null;
@@ -232,8 +232,8 @@ enum HarvestedResource {
                 // will be of homogeneous type.
             } else if (sample instanceof URL) {
                 return URL_COLLECTION;
-            } else if (sample instanceof String) {
-                HarvestedResource resource = getResourceFromString((String) sample);
+            } else if (sample instanceof String string) {
+                HarvestedResource resource = getResourceFromString(string);
                 switch (resource) {
                     case FILE:
                         return FILE_COLLECTION;
@@ -337,9 +337,7 @@ enum HarvestedResource {
 
             @Override
             public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent) {
-                    ImageMosaicEventHandlers.FileProcessingEvent fileEvent =
-                            (ImageMosaicEventHandlers.FileProcessingEvent) event;
+                if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent fileEvent) {
                     result.add(new DefaultHarvestedSource(
                             fileEvent.getFile(), fileEvent.isIngested(), fileEvent.getMessage()));
                 }
@@ -422,9 +420,7 @@ enum HarvestedResource {
 
             @Override
             public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                if (event instanceof ImageMosaicEventHandlers.URLProcessingEvent) {
-                    ImageMosaicEventHandlers.URLProcessingEvent urlEvent =
-                            (ImageMosaicEventHandlers.URLProcessingEvent) event;
+                if (event instanceof ImageMosaicEventHandlers.URLProcessingEvent urlEvent) {
                     result.add(new DefaultHarvestedSource(
                             urlEvent.getUrl(), urlEvent.isIngested(), urlEvent.getMessage()));
                 }
@@ -507,9 +503,7 @@ enum HarvestedResource {
 
             @Override
             public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                if (event instanceof ImageMosaicEventHandlers.URIProcessingEvent) {
-                    ImageMosaicEventHandlers.URIProcessingEvent uriEvent =
-                            (ImageMosaicEventHandlers.URIProcessingEvent) event;
+                if (event instanceof ImageMosaicEventHandlers.URIProcessingEvent uriEvent) {
                     result.add(new DefaultHarvestedSource(
                             uriEvent.getURI(), uriEvent.isIngested(), uriEvent.getMessage()));
                 }
@@ -561,9 +555,7 @@ enum HarvestedResource {
 
             @Override
             public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
-                if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent) {
-                    ImageMosaicEventHandlers.FileProcessingEvent fileEvent =
-                            (ImageMosaicEventHandlers.FileProcessingEvent) event;
+                if (event instanceof ImageMosaicEventHandlers.FileProcessingEvent fileEvent) {
                     result.add(new DefaultHarvestedSource(
                             fileEvent.getFile(), fileEvent.isIngested(), fileEvent.getMessage()));
                 }

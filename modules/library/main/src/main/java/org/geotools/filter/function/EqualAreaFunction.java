@@ -74,7 +74,7 @@ public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
     protected boolean percentages() {
         if (getParameters().size() > 3) {
             Object value = ((Literal) getParameters().get(3)).getValue();
-            if (value instanceof Boolean) return ((Boolean) value).booleanValue();
+            if (value instanceof Boolean boolean1) return boolean1.booleanValue();
         }
         return false;
     }

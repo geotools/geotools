@@ -22,6 +22,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.io.Serial;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +99,7 @@ import org.geotools.util.factory.Hints;
  */
 final class Resampler2D extends GridCoverage2D {
     /** For compatibility during cross-version serialization. */
+    @Serial
     private static final long serialVersionUID = -8593569923766544474L;
 
     /**
@@ -166,8 +168,7 @@ final class Resampler2D extends GridCoverage2D {
             properties.put(Resample.OPERATION, operation);
             if (warp != null) {
                 properties.put(Resample.WARP_TYPE, warp.getClass());
-                if (warp instanceof WarpGrid) {
-                    WarpGrid grid = (WarpGrid) warp;
+                if (warp instanceof WarpGrid grid) {
                     Dimension dimension = new Dimension(grid.getXNumCells(), grid.getYNumCells());
                     properties.put(Resample.GRID_DIMENSIONS, dimension);
                 }
@@ -367,7 +368,7 @@ final class Resampler2D extends GridCoverage2D {
         sourceProps = sourceProps != null ? new HashMap<>(sourceProps) : new HashMap<>();
         Object roiProp = sourceProps.get("GC_ROI");
         NoDataContainer nodataProp = CoverageUtilities.getNoDataProperty(sourceCoverage);
-        ROI roi = roiProp != null && roiProp instanceof ROI ? (ROI) roiProp : null;
+        ROI roi = roiProp != null && roiProp instanceof ROI roi1 ? roi1 : null;
         Range nodata = nodataProp != null ? nodataProp.getAsRange() : null;
 
         // From this point, consider 'sourceCoverage' as final.
@@ -383,8 +384,8 @@ final class Resampler2D extends GridCoverage2D {
 
         final CoordinateOperationFactory factory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
         final MathTransformFactory mtFactory;
-        if (factory instanceof AbstractCoordinateOperationFactory) {
-            mtFactory = ((AbstractCoordinateOperationFactory) factory).getMathTransformFactory();
+        if (factory instanceof AbstractCoordinateOperationFactory operationFactory) {
+            mtFactory = operationFactory.getMathTransformFactory();
         } else {
             mtFactory = ReferencingFactoryFinder.getMathTransformFactory(hints);
         }
@@ -582,8 +583,7 @@ final class Resampler2D extends GridCoverage2D {
         final Map<String, Object> imageProperties = new HashMap<>();
         Warp warp = null;
         if (allSteps.isIdentity()
-                || allSteps instanceof AffineTransform
-                        && XAffineTransform.isIdentity((AffineTransform) allSteps, EPS)) {
+                || allSteps instanceof AffineTransform transform1 && XAffineTransform.isIdentity(transform1, EPS)) {
             sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
             w.setImage(sourceImage);
             if (targetBB.equals(sourceBB)) {
@@ -879,14 +879,14 @@ final class Resampler2D extends GridCoverage2D {
         filter.addSourceDimension(sourceGG.axisDimensionX);
         filter.addSourceDimension(sourceGG.axisDimensionY);
         MathTransform candidate = filter.separate(transform);
-        if (candidate instanceof MathTransform2D) {
-            return (MathTransform2D) candidate;
+        if (candidate instanceof MathTransform2D transform2D) {
+            return transform2D;
         }
         filter.addTargetDimension(sourceGG.axisDimensionX);
         filter.addTargetDimension(sourceGG.axisDimensionY);
         candidate = filter.separate(transform);
-        if (candidate instanceof MathTransform2D) {
-            return (MathTransform2D) candidate;
+        if (candidate instanceof MathTransform2D transform2D) {
+            return transform2D;
         }
         throw new FactoryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
     }

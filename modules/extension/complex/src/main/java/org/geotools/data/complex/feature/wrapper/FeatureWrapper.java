@@ -66,7 +66,7 @@ public abstract class FeatureWrapper {
             try {
                 wrapper = clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
-                throw new InvalidClassException(String.format("Unable instantiate class of type '%s'.", clazz));
+                throw new InvalidClassException("Unable instantiate class of type '%s'.".formatted(clazz));
             }
 
             wrapper.setUnderlyingComplexAttribute(complexAttribute);
@@ -129,9 +129,9 @@ public abstract class FeatureWrapper {
                         if (featureWrapperAttribute == null) {
                             // What's wrong is that MineName is not being added
                             // to MineNamePropertyType
-                            throw new InvalidClassException(String.format(
-                                    "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'.",
-                                    clazz.getName(), targetAttribute.getName(), xsdName));
+                            throw new InvalidClassException(
+                                    "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'."
+                                            .formatted(clazz.getName(), targetAttribute.getName(), xsdName));
                         }
 
                         // We get the name of its type and then use that name to
@@ -143,9 +143,9 @@ public abstract class FeatureWrapper {
                         if (nestedComplexAttribute == null) {
                             // What's wrong is that MineName's properties are
                             // missing the mine type
-                            throw new InvalidClassException(String.format(
-                                    "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'.",
-                                    clazz.getName(), xsdName, typeName));
+                            throw new InvalidClassException(
+                                    "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'."
+                                            .formatted(clazz.getName(), xsdName, typeName));
                         }
 
                         // Look for this field in the complexAttribute:
@@ -184,9 +184,9 @@ public abstract class FeatureWrapper {
                         Property property = targetAttribute.getProperty(xsdName);
 
                         if (property == null) {
-                            throw new InvalidClassException(String.format(
-                                    "Unable to wrap attribute in class '%s'. %s could not be found in the attribute.",
-                                    clazz, xsdName));
+                            throw new InvalidClassException(
+                                    "Unable to wrap attribute in class '%s'. %s could not be found in the attribute."
+                                            .formatted(clazz, xsdName));
                         }
 
                         field.set(wrapper, property.getValue());
@@ -196,9 +196,9 @@ public abstract class FeatureWrapper {
 
             return wrapper;
         } catch (IllegalAccessException iae) {
-            throw new InvalidClassException(String.format(
-                    "Unable to wrap attribute in class '%s'. Exception of type: '%s' was thrown with message: '%s'",
-                    clazz, iae.getClass(), iae.getMessage()));
+            throw new InvalidClassException(
+                    "Unable to wrap attribute in class '%s'. Exception of type: '%s' was thrown with message: '%s'"
+                            .formatted(clazz, iae.getClass(), iae.getMessage()));
         }
     }
 }

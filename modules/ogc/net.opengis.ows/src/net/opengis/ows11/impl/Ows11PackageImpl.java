@@ -522,7 +522,7 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
 
     // Obtain or create and register package
     Object registeredOws11Package = EPackage.Registry.INSTANCE.get(eNS_URI);
-    Ows11PackageImpl theOws11Package = registeredOws11Package instanceof Ows11PackageImpl ? (Ows11PackageImpl)registeredOws11Package : new Ows11PackageImpl();
+    Ows11PackageImpl theOws11Package = registeredOws11Package instanceof Ows11PackageImpl opi ? opi : new Ows11PackageImpl();
 
     isInited = true;
 

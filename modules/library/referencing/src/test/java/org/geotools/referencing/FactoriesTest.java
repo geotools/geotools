@@ -203,7 +203,7 @@ public final class FactoriesTest {
                 // Probably not a map projection. This test is mostly about projection, so ignore.
                 continue;
             }
-            if (mt instanceof MapProjection) {
+            if (mt instanceof MapProjection projection) {
                 /*
                  * Tests map projection properties. Some tests are ommitted for south-oriented
                  * map projections, since they are implemented as a concatenation of their North-
@@ -217,10 +217,7 @@ public final class FactoriesTest {
                 if (!skip) {
                     assertEquals(
                             classification,
-                            ((MapProjection) mt)
-                                    .getParameterDescriptors()
-                                    .getName()
-                                    .getCode());
+                            projection.getParameterDescriptors().getName().getCode());
                 }
                 final ProjectedCRS projCRS = crsFactory.createProjectedCRS(
                         dummyName,

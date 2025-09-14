@@ -94,8 +94,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             return targetCrs;
         }
         // let's try to get the CRS from the provided property name
-        if (o instanceof GeometryDescriptor) {
-            GeometryDescriptor gat = (GeometryDescriptor) o;
+        if (o instanceof GeometryDescriptor gat) {
             return gat.getCoordinateReferenceSystem();
         } else {
             return null;
@@ -372,13 +371,11 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     Expression reproject(
             final Expression expression, final CoordinateReferenceSystem propertyCrs, boolean forceReprojection) {
         // check for case of section filter being a function
-        if (expression instanceof Function) {
-            // wrap the function in one that will transform the result
-            final Function delegate = (Function) expression;
+        if (expression instanceof Function delegate) {
             return new FunctionReprojector(propertyCrs, delegate);
-        } else if (expression instanceof Literal) {
+        } else if (expression instanceof Literal literal) {
             // second expression is a geometry literal
-            Geometry value = (Geometry) ((Literal) expression).getValue();
+            Geometry value = (Geometry) literal.getValue();
             return ff.literal(reproject(value, propertyCrs));
         } else if (forceReprojection) {
             throw new IllegalArgumentException("Binary geometry filter, but second expression "

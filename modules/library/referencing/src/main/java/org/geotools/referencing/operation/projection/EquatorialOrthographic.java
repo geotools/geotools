@@ -30,6 +30,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -46,6 +47,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  */
 public class EquatorialOrthographic extends ObliqueOrthographic {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 1093901743907259987L;
 
     /** Maximum difference allowed when comparing real numbers. */

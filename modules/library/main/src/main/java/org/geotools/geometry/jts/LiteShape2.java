@@ -141,25 +141,23 @@ public final class LiteShape2 implements Shape, Cloneable {
 
         if (mathTransform == null || mathTransform.isIdentity()) return;
 
-        if (geometry instanceof GeometryCollection) {
-            GeometryCollection collection = (GeometryCollection) geometry;
+        if (geometry instanceof GeometryCollection collection) {
             for (int i = 0; i < collection.getNumGeometries(); i++) {
                 transformGeometry(collection.getGeometryN(i));
             }
-        } else if (geometry instanceof Point) {
-            LiteCoordinateSequence seq = (LiteCoordinateSequence) ((Point) geometry).getCoordinateSequence();
+        } else if (geometry instanceof Point point) {
+            LiteCoordinateSequence seq = (LiteCoordinateSequence) point.getCoordinateSequence();
             double[] coords = seq.getArray();
             double[] newCoords = new double[coords.length];
             mathTransform.transform(coords, 0, newCoords, 0, seq.size());
             seq.setArray(newCoords);
-        } else if (geometry instanceof Polygon) {
-            Polygon polygon = (Polygon) geometry;
+        } else if (geometry instanceof Polygon polygon) {
             transformGeometry(polygon.getExteriorRing());
             for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
                 transformGeometry(polygon.getInteriorRingN(i));
             }
-        } else if (geometry instanceof LineString) {
-            LiteCoordinateSequence seq = (LiteCoordinateSequence) ((LineString) geometry).getCoordinateSequence();
+        } else if (geometry instanceof LineString string) {
+            LiteCoordinateSequence seq = (LiteCoordinateSequence) string.getCoordinateSequence();
             double[] coords = seq.getArray();
             mathTransform.transform(coords, 0, coords, 0, seq.size());
             seq.setArray(coords);

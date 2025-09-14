@@ -426,11 +426,9 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
         if (symbolizer == null) {
             return null;
         }
-        if (symbolizer instanceof RasterSymbolizerImpl) {
-            return (RasterSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.geotools.api.style.RasterSymbolizer) {
-            org.geotools.api.style.RasterSymbolizer rasterSymbolizer =
-                    (org.geotools.api.style.RasterSymbolizer) symbolizer;
+        if (symbolizer instanceof RasterSymbolizerImpl impl) {
+            return impl;
+        } else if (symbolizer instanceof org.geotools.api.style.RasterSymbolizer rasterSymbolizer) {
             RasterSymbolizerImpl copy = new RasterSymbolizerImpl();
             copy.setChannelSelection(rasterSymbolizer.getChannelSelection());
             copy.setColorMap(rasterSymbolizer.getColorMap());

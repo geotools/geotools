@@ -712,7 +712,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
 
     // Obtain or create and register package
     Object registeredWfs20Package = EPackage.Registry.INSTANCE.get(eNS_URI);
-    Wfs20PackageImpl theWfs20Package = registeredWfs20Package instanceof Wfs20PackageImpl ? (Wfs20PackageImpl)registeredWfs20Package : new Wfs20PackageImpl();
+    Wfs20PackageImpl theWfs20Package = registeredWfs20Package instanceof Wfs20PackageImpl wpi ? wpi : new Wfs20PackageImpl();
 
     isInited = true;
 

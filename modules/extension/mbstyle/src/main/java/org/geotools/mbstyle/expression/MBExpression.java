@@ -213,11 +213,11 @@ public abstract class MBExpression extends FunctionImpl {
 
     protected void throwUnexpectedArgumentCount(String expression, int argCount) throws MBFormatException {
         throw new MBFormatException(
-                String.format("Expression \"%s\" should have exactly %d argument(s)", expression, argCount));
+                "Expression \"%s\" should have exactly %d argument(s)".formatted(expression, argCount));
     }
 
     protected void throwInsufficientArgumentCount(String expression, int argCount) throws MBFormatException {
         throw new MBFormatException(
-                String.format("Expression \"%s\" should have at least %d argument(s)", expression, argCount));
+                "Expression \"%s\" should have at least %d argument(s)".formatted(expression, argCount));
     }
 }

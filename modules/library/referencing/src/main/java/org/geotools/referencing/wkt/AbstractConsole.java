@@ -122,8 +122,7 @@ public abstract class AbstractConsole implements Runnable {
      * @throws FactoryException if the object is not of the expected type.
      */
     public Object parseObject(final String text, final Class type) throws ParseException, FactoryException {
-        if (parser instanceof Preprocessor) {
-            final Preprocessor parser = (Preprocessor) this.parser;
+        if (parser instanceof Preprocessor parser) {
             parser.offset = line != null ? Math.max(0, line.indexOf(text)) : 0;
             return parser.parseObject(text, type);
         } else {
@@ -142,8 +141,8 @@ public abstract class AbstractConsole implements Runnable {
      * @throws ParseException if the WKT can't be parsed.
      */
     public void addDefinition(final String name, final String value) throws ParseException {
-        if (parser instanceof Preprocessor) {
-            ((Preprocessor) parser).addDefinition(name, value);
+        if (parser instanceof Preprocessor preprocessor) {
+            preprocessor.addDefinition(name, value);
         }
     }
 
@@ -177,8 +176,8 @@ public abstract class AbstractConsole implements Runnable {
      * @throws IOException if an error occured while writting to the output stream.
      */
     public void printDefinitions() throws IOException {
-        if (parser instanceof Preprocessor) {
-            ((Preprocessor) parser).printDefinitions(out);
+        if (parser instanceof Preprocessor preprocessor) {
+            preprocessor.printDefinitions(out);
         }
     }
 
@@ -313,8 +312,8 @@ public abstract class AbstractConsole implements Runnable {
             err.print(Classes.getShortClassName(cause));
         }
         err.println("Type 'stacktrace' for stack trace information.");
-        if (line != null && exception instanceof ParseException) {
-            AbstractParser.reportError(err, line, ((ParseException) exception).getErrorOffset());
+        if (line != null && exception instanceof ParseException parseException) {
+            AbstractParser.reportError(err, line, parseException.getErrorOffset());
         }
         err.println();
     }

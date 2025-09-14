@@ -17,6 +17,7 @@
 package org.geotools.geometry;
 
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Bounds;
@@ -52,6 +53,7 @@ import org.geotools.util.Utilities;
  */
 public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBox, Bounds, Cloneable {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3319231220761419350L;
 
     /** The coordinate reference system, or {@code null}. */
@@ -321,8 +323,7 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
     @Override
     public boolean equals(final Object object) {
         if (super.equals(object)) {
-            final CoordinateReferenceSystem otherCRS =
-                    object instanceof Envelope2DArchived ? ((Envelope2DArchived) object).crs : null;
+            final CoordinateReferenceSystem otherCRS = object instanceof Envelope2DArchived eda ? eda.crs : null;
             return Utilities.equals(crs, otherCRS);
         }
         return false;

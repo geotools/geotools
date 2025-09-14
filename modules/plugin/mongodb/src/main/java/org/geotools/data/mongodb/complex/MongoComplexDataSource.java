@@ -144,10 +144,9 @@ public final class MongoComplexDataSource implements CustomSourceDataStore {
             return null;
         }
         // let's check if we have a nested attribute
-        if (attributeMapping instanceof MongoNestedMapping) {
+        if (attributeMapping instanceof NestedAttributeMapping mapping) {
             // delegate the expression finding to MongoDB nested expression factories
-            return CustomImplementationsFinder.find(
-                    featureTypeMapping, propertySteps, (NestedAttributeMapping) attributeMapping);
+            return CustomImplementationsFinder.find(featureTypeMapping, propertySteps, mapping);
         }
         // let's see if we have a source expression
         Expression expression = attributeMapping.getSourceExpression();

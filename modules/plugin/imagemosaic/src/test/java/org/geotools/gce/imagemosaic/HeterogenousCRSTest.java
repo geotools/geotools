@@ -394,13 +394,15 @@ public class HeterogenousCRSTest {
         File datastoreProperties = new File(testDirectory, "datastore.properties");
         try (FileWriter out = new FileWriter(datastoreProperties, StandardCharsets.UTF_8)) {
             out.write("database=hetero_concurrent\n");
-            out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                    + "dbtype=h2\n"
-                    + "user=gs\n"
-                    + "passwd=gs\n"
-                    + "Connection\\ timeout=3600\n"
-                    + "max \\connections=1"
-                    + "min \\connections=1");
+            out.write(
+                    """
+                    SPI=org.geotools.data.h2.H2DataStoreFactory
+                    dbtype=h2
+                    user=gs
+                    passwd=gs
+                    Connection\\ timeout=3600
+                    max \\connections=1\
+                    min \\connections=1""");
             out.flush();
         }
 
@@ -563,13 +565,13 @@ public class HeterogenousCRSTest {
         FileUtils.copyDirectory(testDataFolder, testDirectory);
 
         // force hetero setup, different CRS for the mosaic
-        String indexer = "GranuleAcceptors=org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory\n"
-                + "GranuleHandler=org.geotools.gce.imagemosaic.granulehandler.ReprojectingGranuleHandlerFactory\n"
-                + "HeterogeneousCRS=true\n"
-                + //
-                "MosaicCRS=EPSG\\:3857\n"
-                + // the reprojection bit
-                "Schema=*the_geom:Polygon,location:String,crs:String";
+        String indexer =
+                """
+                GranuleAcceptors=org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory
+                GranuleHandler=org.geotools.gce.imagemosaic.granulehandler.ReprojectingGranuleHandlerFactory
+                HeterogeneousCRS=true
+                MosaicCRS=EPSG\\:3857
+                Schema=*the_geom:Polygon,location:String,crs:String""";
         FileUtils.writeStringToFile(new File(testDirectory, "indexer.properties"), indexer, "UTF-8");
 
         // footprint management
@@ -742,8 +744,7 @@ public class HeterogenousCRSTest {
     @SuppressWarnings("PMD.CloseResource") // image stream closed along the reader
     private List<String> getInputFileNames(RenderedImage inputImage) {
         List<String> files = new ArrayList<>();
-        if (inputImage instanceof PlanarImage) {
-            PlanarImage planarImage = (PlanarImage) inputImage;
+        if (inputImage instanceof PlanarImage planarImage) {
 
             final int nSources = planarImage.getNumSources();
             if (nSources > 0) {
@@ -755,8 +756,8 @@ public class HeterogenousCRSTest {
                         // Ignore
                     }
                     if (source != null) {
-                        if (source instanceof PlanarImage) {
-                            List<String> piFiles = getInputFileNames((RenderedImage) source);
+                        if (source instanceof RenderedImage image) {
+                            List<String> piFiles = getInputFileNames(image);
                             files.addAll(piFiles);
                         }
                     }
@@ -765,11 +766,9 @@ public class HeterogenousCRSTest {
                 // grab the streams from the reader, the particular implementation being
                 // used has an accessor for the source files
                 Object imageReader = inputImage.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
-                if (imageReader != null && imageReader instanceof ImageReader) {
-                    final ImageReader reader = (ImageReader) imageReader;
+                if (imageReader != null && imageReader instanceof ImageReader reader) {
                     final ImageInputStream stream = (ImageInputStream) reader.getInput();
-                    if (stream instanceof FileImageInputStreamExtImpl) {
-                        FileImageInputStreamExtImpl fis = (FileImageInputStreamExtImpl) stream;
+                    if (stream instanceof FileImageInputStreamExtImpl fis) {
                         File file = fis.getFile();
                         files.add(file.getName());
                     }
@@ -877,8 +876,7 @@ public class HeterogenousCRSTest {
         Iterator it = sources.iterator();
         while (it.hasNext()) {
             Object source = it.next();
-            if (source instanceof RenderedOp) {
-                RenderedOp op = (RenderedOp) source;
+            if (source instanceof RenderedOp op) {
                 String opName = op.getOperationName();
                 if (opName.equalsIgnoreCase("ImageRead")) {
                     imageReads.remove(op);
@@ -891,8 +889,7 @@ public class HeterogenousCRSTest {
     }
 
     private void groupOperations(Object ri, Map<String, Set<RenderedOp>> operationsSet) {
-        if (ri instanceof RenderedOp) {
-            RenderedOp op = (RenderedOp) ri;
+        if (ri instanceof RenderedOp op) {
             String opName = op.getOperationName();
             Set<RenderedOp> set = operationsSet.get(opName);
             if (set == null) {

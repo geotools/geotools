@@ -69,27 +69,27 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
     @Override
     public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String parentId) throws Exception {
 
-        if (geometry instanceof LineString) {
+        if (geometry instanceof LineString string) {
             LineStringEncoder lineString = new LineStringEncoder(encoder, LineStringEncoder.LINE_STRING);
-            lineString.encode((LineString) geometry, atts, handler, parentId);
-        } else if (geometry instanceof Point) {
+            lineString.encode(string, atts, handler, parentId);
+        } else if (geometry instanceof Point point1) {
             PointEncoder pt = new PointEncoder(encoder, gmlPrefix, gmlUri);
-            pt.encode((Point) geometry, atts, handler, parentId);
-        } else if (geometry instanceof Polygon) {
+            pt.encode(point1, atts, handler, parentId);
+        } else if (geometry instanceof Polygon polygon1) {
             PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix, gmlUri);
-            polygon.encode((Polygon) geometry, atts, handler, parentId);
+            polygon.encode(polygon1, atts, handler, parentId);
         } else if (geometry instanceof MultiLineString) {
             MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
             multiLineString.encode(geometry, atts, handler, parentId);
-        } else if (geometry instanceof MultiPoint) {
+        } else if (geometry instanceof MultiPoint point) {
             MultiPointEncoder multiPoint = new MultiPointEncoder(encoder, gmlPrefix, gmlUri);
-            multiPoint.encode((MultiPoint) geometry, atts, handler, parentId);
-        } else if (geometry instanceof MultiPolygon) {
+            multiPoint.encode(point, atts, handler, parentId);
+        } else if (geometry instanceof MultiPolygon polygon) {
             MultiPolygonEncoder multiPolygon = new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri);
-            multiPolygon.encode((MultiPolygon) geometry, atts, handler, parentId);
-        } else if (geometry instanceof LinearRing) {
+            multiPolygon.encode(polygon, atts, handler, parentId);
+        } else if (geometry instanceof LinearRing ring) {
             LinearRingEncoder linearRing = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
-            linearRing.encode((LinearRing) geometry, atts, handler, parentId);
+            linearRing.encode(ring, atts, handler, parentId);
         } else if (geometry instanceof CircularString
                 || geometry instanceof CompoundCurve
                 || geometry instanceof CircularRing

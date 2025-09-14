@@ -350,8 +350,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
                 return null;
             }
         }
-        if (aliases instanceof GenericName[]) {
-            return (GenericName[]) aliases;
+        if (aliases instanceof GenericName[] genericNames) {
+            return genericNames;
         }
         /*
          * Aliases has been found, but available as an array of strings only. This means
@@ -398,8 +398,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
         Object value = properties.get(IdentifiedObject.NAME_KEY);
         ensureNonNull("name", value);
         final String name;
-        if (value instanceof Identifier) {
-            name = ((Identifier) value).getCode();
+        if (value instanceof Identifier identifier) {
+            name = identifier.getCode();
         } else {
             name = value.toString();
         }

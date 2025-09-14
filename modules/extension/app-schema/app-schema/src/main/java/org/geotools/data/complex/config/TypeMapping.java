@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex.config;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import org.geotools.util.CheckedArrayList;
 public class TypeMapping implements Serializable {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TypeMapping.class);
 
+    @Serial
     private static final long serialVersionUID = 1444252634598922057L;
 
     private String sourceDataStore;

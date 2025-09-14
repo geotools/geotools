@@ -357,19 +357,19 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         // otherwise you'll get an error when it can't find complex attributes in the
         // simple feature source
         if (AppSchemaDataAccessConfigurator.isJoining()) {
-            if (mappedSource instanceof JDBCFeatureSource) {
-                mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
+            if (mappedSource instanceof JDBCFeatureSource source) {
+                mappedSource = new JoiningJDBCFeatureSource(source);
                 targetQuery = new JoiningQuery(targetQuery);
-            } else if (mappedSource instanceof JDBCFeatureStore) {
-                mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
+            } else if (mappedSource instanceof JDBCFeatureStore store) {
+                mappedSource = new JoiningJDBCFeatureSource(store);
                 targetQuery = new JoiningQuery(targetQuery);
             }
         }
         boolean canCount = canCount(targetQuery, mappedSource, mapping);
         if (canCount) {
             Query unrollQuery = unrollQuery(targetQuery, mapping);
-            if (unrollQuery instanceof JoiningQuery) {
-                ((JoiningQuery) unrollQuery).setRootMapping(mapping);
+            if (unrollQuery instanceof JoiningQuery query) {
+                query.setRootMapping(mapping);
             }
             return mappedSource.getCount(unrollQuery);
         }
@@ -380,10 +380,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         boolean canCount = false;
         if (query.getFilter().equals(Filter.INCLUDE)) canCount = true;
         FilterCapabilities capabilities = null;
-        if (mappedSource instanceof JDBCFeatureSource) {
-            capabilities = ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
-        } else if (mappedSource instanceof JDBCFeatureStore) {
-            capabilities = ((JDBCFeatureStore) mappedSource).getDataStore().getFilterCapabilities();
+        if (mappedSource instanceof JDBCFeatureSource source) {
+            capabilities = source.getDataStore().getFilterCapabilities();
+        } else if (mappedSource instanceof JDBCFeatureStore store) {
+            capabilities = store.getDataStore().getFilterCapabilities();
         }
         if (capabilities != null) {
             ComplexFilterSplitter splitter = new ComplexFilterSplitter(capabilities, rootMapping);
@@ -439,9 +439,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
             Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS);
             List<PropertyName> propNames = getSurrogatePropertyNames(
-                    query.getProperties(),
-                    mapping,
-                    includeProps instanceof Boolean && ((Boolean) includeProps).booleanValue());
+                    query.getProperties(), mapping, includeProps instanceof Boolean b && b.booleanValue());
 
             Query newQuery = new Query();
             String name = source.getName().getLocalPart();
@@ -471,7 +469,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 }
             }
 
-            if (query instanceof JoiningQuery) {
+            if (query instanceof JoiningQuery joiningQuery) {
                 FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                 mapping.getFeatureIdExpression().accept(extractor, null);
                 if (!Expression.NIL.equals(mapping.getFeatureIdExpression())
@@ -483,19 +481,20 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                             mapping.getTargetFeature().getName().getNamespaceURI());
                     String separator = mapping.getTargetFeature().getName().getSeparator();
                     String typeName = mapping.getTargetFeature().getLocalName();
-                    throw new UnsupportedOperationException(String.format(
-                            "idExpression '%s' for targetElement '%s%s%s' cannot be translated into SQL, "
-                                    + "therefore is not supported with joining!"
-                                    + "\nPlease make sure idExpression is mapped into existing database fields, "
-                                    + "and only use functions that are supported by your database."
-                                    + "\nIf this cannot be helped, you can turn off joining in app-schema.properties file.",
-                            mapping.getFeatureIdExpression(), ns, separator, typeName));
+                    throw new UnsupportedOperationException(
+                            """
+                            idExpression '%s' for targetElement '%s%s%s' cannot be translated into SQL, \
+                            therefore is not supported with joining!
+                            Please make sure idExpression is mapped into existing database fields, \
+                            and only use functions that are supported by your database.
+                            If this cannot be helped, you can turn off joining in app-schema.properties file."""
+                                    .formatted(mapping.getFeatureIdExpression(), ns, separator, typeName));
                 }
 
                 JoiningQuery jQuery = new JoiningQuery(newQuery);
-                jQuery.setDenormalised(((JoiningQuery) query).isDenormalised());
-                jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
-                jQuery.setSubset(((JoiningQuery) query).isSubset());
+                jQuery.setDenormalised(joiningQuery.isDenormalised());
+                jQuery.setQueryJoins(joiningQuery.getQueryJoins());
+                jQuery.setSubset(joiningQuery.isSubset());
 
                 for (String att : extractor.getAttributeNameSet()) {
                     sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING));
@@ -524,10 +523,9 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         FeatureSource source = mappings.getSource();
         FeatureType featureType = source.getSchema();
         JDBCDataStore store = null;
-        if (source instanceof JDBCFeatureSource) {
-            JDBCFeatureSource jdbcSource = (JDBCFeatureSource) source;
+        if (source instanceof JDBCFeatureSource jdbcSource) {
             store = jdbcSource.getDataStore();
-        } else if (source instanceof JDBCFeatureStore) store = ((JDBCFeatureStore) source).getDataStore();
+        } else if (source instanceof JDBCFeatureStore featureStore) store = featureStore.getDataStore();
         if (store != null) {
             try {
                 PrimaryKey primaryKey = store.getPrimaryKey((SimpleFeatureType) source.getSchema());
@@ -629,8 +627,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 if (includeMandatory) {
                     PropertyName targetProp = filterFac.property(targetSteps.toString(), mapping.getNamespaces());
                     Object descr = targetProp.evaluate(targetDescriptor.getType());
-                    if (descr instanceof PropertyDescriptor) {
-                        if (((PropertyDescriptor) descr).getMinOccurs() >= 1) {
+                    if (descr instanceof PropertyDescriptor descriptor) {
+                        if (descriptor.getMinOccurs() >= 1) {
                             addThis = true;
                         }
                     }
@@ -676,8 +674,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     idExpression.accept(extractor, null);
 
                     // RA - include function parameters in linkField
-                    if (entry instanceof NestedAttributeMapping) {
-                        final Expression linkFieldExpression = ((NestedAttributeMapping) entry).nestedFeatureType;
+                    if (entry instanceof NestedAttributeMapping attributeMapping) {
+                        final Expression linkFieldExpression = attributeMapping.nestedFeatureType;
                         linkFieldExpression.accept(extractor, null);
                     }
 

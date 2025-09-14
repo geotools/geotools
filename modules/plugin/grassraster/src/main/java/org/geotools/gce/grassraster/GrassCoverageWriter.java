@@ -56,8 +56,8 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
 
     /** Constructor for the {@link GrassCoverageWriter}. */
     public GrassCoverageWriter(Object output) {
-        if (output instanceof File) {
-            this.output = (File) output;
+        if (output instanceof File file) {
+            this.output = file;
         } else {
             throw new IllegalArgumentException("Illegal input argument!");
         }
@@ -141,8 +141,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
     @Override
     public void write(GridCoverage coverage, GeneralParameterValue... parameters)
             throws IllegalArgumentException, IOException {
-        if (coverage instanceof GridCoverage2D) {
-            GridCoverage2D gridCoverage = (GridCoverage2D) coverage;
+        if (coverage instanceof GridCoverage2D gridCoverage) {
             // beware a call with no values mean an empty array.
             if (parameters == null || parameters.length == 0) {
                 writeRaster(gridCoverage);

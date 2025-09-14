@@ -23,6 +23,7 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.toRadians;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -42,6 +43,7 @@ import org.geotools.referencing.NamedIdentifier;
  */
 public class Homolosine extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = 4740760391570944118L;
 
     private static double LAT_THRESH = toRadians(40 + 44 / 60. + 11.8 / 3600.);
@@ -249,6 +251,7 @@ public class Homolosine extends MapProjection {
     public static class Provider extends AbstractProvider {
 
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = -7345885830045627291L;
 
         /** The parameters group. */

@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.builder;
 
+import java.io.Serial;
 import org.geotools.api.referencing.FactoryException;
 
 /**
@@ -28,6 +29,7 @@ import org.geotools.api.referencing.FactoryException;
 public class MissingInfoException extends FactoryException {
 
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -3128525157353302290L;
 
     /**

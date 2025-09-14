@@ -27,6 +27,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -48,6 +49,7 @@ import si.uom.NonSI;
  */
 public final class Gnomonic extends MapProjection {
     /** For cross-version compatibility. */
+    @Serial
     private static final long serialVersionUID = -1334127158883911268L;
 
     /** Maximum difference allowed when comparing real numbers. */
@@ -221,6 +223,7 @@ public final class Gnomonic extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** For cross-version compatibility. */
+        @Serial
         private static final long serialVersionUID = 7216851295693867026L;
 
         /**

@@ -53,18 +53,18 @@ public class YsldValidator {
             for (Event evt : YamlUtil.getSafeYaml().parse(input)) {
                 YsldValidateHandler h = context.peek();
 
-                if (evt instanceof MappingStartEvent) {
-                    h.mapping((MappingStartEvent) evt, context);
-                } else if (evt instanceof MappingEndEvent) {
-                    h.endMapping((MappingEndEvent) evt, context);
-                } else if (evt instanceof SequenceStartEvent) {
-                    h.sequence((SequenceStartEvent) evt, context);
-                } else if (evt instanceof SequenceEndEvent) {
-                    h.endSequence((SequenceEndEvent) evt, context);
-                } else if (evt instanceof ScalarEvent) {
-                    h.scalar((ScalarEvent) evt, context);
-                } else if (evt instanceof AliasEvent) {
-                    h.alias((AliasEvent) evt, context);
+                if (evt instanceof MappingStartEvent event5) {
+                    h.mapping(event5, context);
+                } else if (evt instanceof MappingEndEvent event4) {
+                    h.endMapping(event4, context);
+                } else if (evt instanceof SequenceStartEvent event3) {
+                    h.sequence(event3, context);
+                } else if (evt instanceof SequenceEndEvent event2) {
+                    h.endSequence(event2, context);
+                } else if (evt instanceof ScalarEvent event1) {
+                    h.scalar(event1, context);
+                } else if (evt instanceof AliasEvent event) {
+                    h.alias(event, context);
                 }
             }
         } catch (MarkedYAMLException e) {

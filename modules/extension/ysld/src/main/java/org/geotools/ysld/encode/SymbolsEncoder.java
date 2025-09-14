@@ -32,12 +32,12 @@ public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
 
     @Override
     protected void encode(GraphicalSymbol symbol) {
-        if (symbol instanceof Mark) {
+        if (symbol instanceof Mark mark) {
             push("mark");
-            encode((Mark) symbol);
-        } else if (symbol instanceof ExternalGraphic) {
+            encode(mark);
+        } else if (symbol instanceof ExternalGraphic graphic) {
             push("external");
-            encode((ExternalGraphic) symbol);
+            encode(graphic);
         }
     }
 

@@ -16,6 +16,7 @@
  */
 package org.geotools.mbstyle.parse;
 
+import java.io.Serial;
 import org.geotools.mbstyle.MBStyle;
 
 /**
@@ -25,6 +26,7 @@ import org.geotools.mbstyle.MBStyle;
  */
 public class MBFormatException extends RuntimeException {
     /** serialVersionUID */
+    @Serial
     private static final long serialVersionUID = 8328125000220917830L;
 
     public MBFormatException(String message) {

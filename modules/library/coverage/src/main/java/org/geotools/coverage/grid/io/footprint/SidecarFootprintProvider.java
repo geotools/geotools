@@ -122,8 +122,7 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
             path = reference.getAbsolutePath();
         } else {
             Object value = feature.getAttribute(FOOTPRINT_LOCATION_ATTRIBUTE);
-            if (value instanceof String && !((String) value).matches("^(?i)https?://.*$")) {
-                String strValue = (String) value;
+            if (value instanceof String strValue && !strValue.matches("^(?i)https?://.*$")) {
                 path = getFullPath(strValue);
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {

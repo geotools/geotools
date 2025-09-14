@@ -181,8 +181,7 @@ public class WorldFileWriter {
                 close(writer);
                 return;
             }
-            if (transform instanceof AffineTransform2D) {
-                final AffineTransform2D affine = (AffineTransform2D) transform;
+            if (transform instanceof AffineTransform2D affine) {
                 writer.write(Double.toString(affine.getScaleX()));
                 writer.newLine();
                 writer.write(Double.toString(affine.getShearX()));

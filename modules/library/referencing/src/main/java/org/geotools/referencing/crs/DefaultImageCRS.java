@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.api.referencing.crs.ImageCRS;
@@ -44,6 +45,7 @@ import org.geotools.referencing.AbstractReferenceSystem;
  */
 public class DefaultImageCRS extends AbstractSingleCRS implements ImageCRS {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 7312452786096397847L;
 
     /**

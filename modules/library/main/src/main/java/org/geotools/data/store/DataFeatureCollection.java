@@ -223,8 +223,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         if (close instanceof FeatureReaderIterator) {
             FeatureReaderIterator<SimpleFeature> iterator = (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
-        } else if (close instanceof FeatureWriterIterator) {
-            FeatureWriterIterator iterator = (FeatureWriterIterator) close;
+        } else if (close instanceof FeatureWriterIterator iterator) {
             iterator.close(); // only needs package visability
         }
     }
@@ -358,8 +357,8 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * </ul>
      */
     public boolean addAll(Collection collection) {
-        if (collection instanceof FeatureCollection) {
-            return addAll((FeatureCollection<?, ?>) collection);
+        if (collection instanceof FeatureCollection<?, ?> featureCollection) {
+            return addAll(featureCollection);
         }
         try (FeatureWriter writer = writer()) {
             if (writer == null) {
@@ -370,8 +369,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
                 writer.next();
             }
             for (Object obj : collection) {
-                if (obj instanceof SimpleFeature) {
-                    SimpleFeature copy = (SimpleFeature) obj;
+                if (obj instanceof SimpleFeature copy) {
                     SimpleFeature feature = (SimpleFeature) writer.next();
 
                     feature.setAttributes(copy.getAttributes());

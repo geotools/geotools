@@ -127,8 +127,8 @@ public class GeometryCollector {
             // a collection of valid polygon does not necessarily make up a valid multipolygon
             if (array.length > 1 && !mp.isValid()) {
                 Geometry g = mp.buffer(0);
-                if (g instanceof Polygon) {
-                    return gf.createMultiPolygon(new Polygon[] {(Polygon) g});
+                if (g instanceof Polygon polygon) {
+                    return gf.createMultiPolygon(new Polygon[] {polygon});
                 } else {
                     return (GeometryCollection) g;
                 }
@@ -190,8 +190,7 @@ public class GeometryCollector {
         }
 
         initCRS(g);
-        if (g instanceof GeometryCollection) {
-            GeometryCollection gc = (GeometryCollection) g;
+        if (g instanceof GeometryCollection gc) {
             for (int i = 0; i < gc.getNumGeometries(); i++) {
                 add(gc.getGeometryN(i));
             }

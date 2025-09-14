@@ -202,8 +202,7 @@ public class DbaseFileReader implements FileReader, Closeable {
 
         // create the ByteBuffer
         // if we have a FileChannel, lets map it
-        if (channel instanceof FileChannel && this.useMemoryMappedBuffer) {
-            final FileChannel fc = (FileChannel) channel;
+        if (channel instanceof FileChannel fc && this.useMemoryMappedBuffer) {
             if (fc.size() - fc.position() < Integer.MAX_VALUE) {
                 buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             } else {

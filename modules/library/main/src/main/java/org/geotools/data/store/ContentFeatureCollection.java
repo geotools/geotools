@@ -297,8 +297,8 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
 
     ContentFeatureStore ensureFeatureStore() {
-        if (featureSource instanceof ContentFeatureStore) {
-            return (ContentFeatureStore) featureSource;
+        if (featureSource instanceof ContentFeatureStore store) {
+            return store;
         }
         throw new UnsupportedOperationException("read only");
     }
@@ -367,7 +367,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * @see #contains(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     public boolean containsAll(Collection<?> c) {
         Iterator<?> e = c.iterator();
         try {
@@ -378,8 +378,8 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             }
             return true;
         } finally {
-            if (e instanceof FeatureIterator) {
-                ((FeatureIterator<?>) e).close();
+            if (e instanceof FeatureIterator<?> iterator) {
+                iterator.close();
             }
         }
     }

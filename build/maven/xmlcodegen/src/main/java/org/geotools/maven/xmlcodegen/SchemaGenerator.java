@@ -343,9 +343,9 @@ public class SchemaGenerator extends AbstractGenerator {
                     continue;
                 }
 
-                if (xsdType instanceof XSDSimpleTypeDefinition) {
+                if (xsdType instanceof XSDSimpleTypeDefinition definition) {
                     logger.fine(xsdType.getName());
-                    createType((XSDSimpleTypeDefinition) xsdType, 0);
+                    createType(definition, 0);
                 }
             }
         }
@@ -365,10 +365,10 @@ public class SchemaGenerator extends AbstractGenerator {
                     continue;
                 }
 
-                if (xsdType instanceof XSDComplexTypeDefinition) {
+                if (xsdType instanceof XSDComplexTypeDefinition definition) {
                     logger.fine(xsdType.getName());
                     try {
-                        createType((XSDComplexTypeDefinition) xsdType, 0);
+                        createType(definition, 0);
                     } catch (Exception e) {
                         logger.warning("XERRORX generating " + xsdType);
                         e.printStackTrace();
@@ -427,8 +427,7 @@ public class SchemaGenerator extends AbstractGenerator {
                 gg.add(new Object[]{type, superType});
             }
 
-            if (type instanceof ComplexType) {
-                ComplexType cType = (ComplexType) type;
+            if (type instanceof ComplexType cType) {
 
                 //add an edge for each descriptor
                 Collection atts = cType.getDescriptors();
@@ -487,8 +486,8 @@ public class SchemaGenerator extends AbstractGenerator {
 	}
 
 	protected final AttributeType createType(XSDTypeDefinition xsdType, int depth) {
-		if (xsdType instanceof XSDSimpleTypeDefinition) {
-			return createType((XSDSimpleTypeDefinition)xsdType, depth);
+		if (xsdType instanceof XSDSimpleTypeDefinition definition) {
+			return createType(definition, depth);
 		}
 		else {
 			return createType((XSDComplexTypeDefinition)xsdType, depth);

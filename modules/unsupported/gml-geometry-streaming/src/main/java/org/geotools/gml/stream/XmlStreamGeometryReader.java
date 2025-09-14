@@ -621,8 +621,8 @@ public class XmlStreamGeometryReader {
             } else {
                 LineString lineString = parseCurve(dimension, crs);
                 // We don't want compound curves containing other compound curves
-                if (lineString instanceof CompoundCurvedGeometry) {
-                    components.addAll(((CompoundCurvedGeometry<?>) lineString).getComponents());
+                if (lineString instanceof CompoundCurvedGeometry<?> geometry) {
+                    components.addAll(geometry.getComponents());
                 } else {
                     components.add(lineString);
                 }

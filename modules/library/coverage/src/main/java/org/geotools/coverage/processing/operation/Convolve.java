@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import java.io.Serial;
 import org.eclipse.imagen.media.convolve.ConvolveDescriptor;
 import org.geotools.coverage.processing.OperationJAI;
 
@@ -57,6 +58,7 @@ import org.geotools.coverage.processing.OperationJAI;
  */
 public class Convolve extends OperationJAI {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = -8324284100732653109L;
 
     /** Constructs a default {@code "Convolve"} operation. */

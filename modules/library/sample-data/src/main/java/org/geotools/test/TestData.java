@@ -248,7 +248,7 @@ public class TestData implements Runnable {
             name = DIRECTORY + '/' + name;
         }
         if (caller != null) {
-            final Class c = caller instanceof Class ? (Class) caller : caller.getClass();
+            final Class c = caller instanceof Class c1 ? c1 : caller.getClass();
             return c.getResource(name);
         } else {
             return Thread.currentThread().getContextClassLoader().getResource(name);

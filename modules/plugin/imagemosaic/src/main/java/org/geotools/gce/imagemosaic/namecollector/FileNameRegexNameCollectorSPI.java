@@ -60,8 +60,7 @@ public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
             final File file = sourceGetter.getFile();
             String path = null;
             if (file == null) {
-                if (source instanceof SourceSPIProvider) {
-                    SourceSPIProvider provider = (SourceSPIProvider) source;
+                if (source instanceof SourceSPIProvider provider) {
                     try {
                         path = provider.getSourceUrl().toString();
                     } catch (MalformedURLException e) {

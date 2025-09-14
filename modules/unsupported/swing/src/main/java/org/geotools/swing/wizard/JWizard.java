@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -57,6 +58,7 @@ public class JWizard extends JDialog {
 
     static final Logger LOGGER = Logging.getLogger(SubHandlerLinearRing.class);
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** Indicates that the 'Finish' button was pressed to close the dialog. */

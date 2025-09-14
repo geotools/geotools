@@ -205,8 +205,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         // setup loose bbox
         SQLDialect genericDialect = dataStore.getSQLDialect();
         PostGISDialect dialect;
-        if (genericDialect instanceof PostGISPSDialect) {
-            dialect = ((PostGISPSDialect) genericDialect).getDelegate();
+        if (genericDialect instanceof PostGISPSDialect sDialect) {
+            dialect = sDialect.getDelegate();
         } else {
             dialect = (PostGISDialect) dataStore.getSQLDialect();
         }

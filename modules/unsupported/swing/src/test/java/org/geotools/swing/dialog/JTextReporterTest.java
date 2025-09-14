@@ -176,7 +176,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
 
     @Test
     public void appendTextWithFormattedNewlines() throws Exception {
-        final String text = getConcatenatedText(String.format("%n"));
+        final String text = getConcatenatedText("%n".formatted());
 
         Connection conn = showDialog(TITLE).get();
         conn.append(text);
@@ -212,7 +212,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
 
         windowFixture.robot().waitForIdle();
         String displayedText = windowFixture.textBox().text();
-        String expectedText = String.format("%s%n%n%s%n", TEXT[0], TEXT[1]);
+        String expectedText = "%s%n%n%s%n".formatted(TEXT[0], TEXT[1]);
         assertEquals(expectedText, displayedText);
     }
 
@@ -225,7 +225,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
 
         char[] chars = new char[N];
         Arrays.fill(chars, JTextReporter.DEFAULT_SEPARATOR_CHAR);
-        String expected = String.format("%s%n%s%n", TEXT[0], String.valueOf(chars));
+        String expected = "%s%n%s%n".formatted(TEXT[0], String.valueOf(chars));
 
         String displayedText = windowFixture.textBox().text();
         assertEquals(expected, displayedText);
@@ -241,7 +241,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
 
         char[] chars = new char[N];
         Arrays.fill(chars, c);
-        String expected = String.format("%s%n%s%n", TEXT[0], String.valueOf(chars));
+        String expected = "%s%n%s%n".formatted(TEXT[0], String.valueOf(chars));
 
         String displayedText = windowFixture.textBox().text();
         assertEquals(expected, displayedText);
@@ -255,7 +255,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
         windowFixture.robot().waitForIdle();
 
         String actual = windowFixture.textBox().text();
-        String expected = String.format("%s%n%s", TEXT[0], TEXT[1]);
+        String expected = "%s%n%s".formatted(TEXT[0], TEXT[1]);
         assertEquals(expected, actual);
     }
 
@@ -276,7 +276,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
 
     @Test
     public void getTextFromConnection() throws Exception {
-        final String text = getConcatenatedText(String.format("%n"));
+        final String text = getConcatenatedText("%n".formatted());
         Connection conn = showDialog(TITLE, text).get();
         assertEquals(text, conn.getText());
     }
@@ -366,7 +366,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
 
     @Test
     public void copyTextToClipboard() throws Exception {
-        final String text = getConcatenatedText(String.format("%n"));
+        final String text = getConcatenatedText("%n".formatted());
         showDialog(TITLE, text).get();
 
         getButton("Copy to clipboard").click();

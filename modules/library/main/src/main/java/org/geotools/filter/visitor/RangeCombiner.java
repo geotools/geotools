@@ -65,8 +65,8 @@ abstract class RangeCombiner {
 
         @Override
         protected void addFiltersToResults(List<Filter> results, Filter filter) {
-            if (filter instanceof org.geotools.api.filter.Or) {
-                results.addAll(((org.geotools.api.filter.Or) filter).getChildren());
+            if (filter instanceof org.geotools.api.filter.Or or) {
+                results.addAll(or.getChildren());
             } else {
                 results.add(filter);
             }
@@ -91,8 +91,8 @@ abstract class RangeCombiner {
 
         @Override
         protected void addFiltersToResults(List<Filter> results, Filter filter) {
-            if (filter instanceof org.geotools.api.filter.And) {
-                results.addAll(((org.geotools.api.filter.And) filter).getChildren());
+            if (filter instanceof org.geotools.api.filter.And and) {
+                results.addAll(and.getChildren());
             } else {
                 results.add(filter);
             }
@@ -164,8 +164,7 @@ abstract class RangeCombiner {
         this.expressionTypeVisitor = new ExpressionTypeVisitor(featureType);
         // now organize by comparison filters to apply range based simplification
         for (Filter f : filters) {
-            if (f instanceof PropertyIsBetween) {
-                PropertyIsBetween pb = (PropertyIsBetween) f;
+            if (f instanceof PropertyIsBetween pb) {
                 Class binding = getTypeIfComparable(pb.getExpression());
                 if (binding == null) {
                     otherFilters.add(pb);
@@ -181,8 +180,7 @@ abstract class RangeCombiner {
                         addRange(rangeMap, expression, new MultiRange<>(range));
                     }
                 }
-            } else if (f instanceof PropertyIsNotEqualTo) {
-                PropertyIsNotEqualTo ne = (PropertyIsNotEqualTo) f;
+            } else if (f instanceof PropertyIsNotEqualTo ne) {
                 Comparable exclusion = null;
                 Expression expression = null;
                 Class<Comparable<?>> binding = getTypeIfComparable(ne.getExpression1());
@@ -203,8 +201,7 @@ abstract class RangeCombiner {
                 } else {
                     otherFilters.add(f);
                 }
-            } else if (f instanceof BinaryComparisonOperator) {
-                BinaryComparisonOperator op = (BinaryComparisonOperator) f;
+            } else if (f instanceof BinaryComparisonOperator op) {
                 ExpressionRange er = getRange(op);
 
                 // Right now, only PropertyIsEqualTo actually considers matchcase, all others
@@ -311,8 +308,7 @@ abstract class RangeCombiner {
     }
 
     String getPropertyName(Expression ex) {
-        if (ex instanceof PropertyName) {
-            PropertyName pn = (PropertyName) ex;
+        if (ex instanceof PropertyName pn) {
             return pn.getPropertyName();
         }
 

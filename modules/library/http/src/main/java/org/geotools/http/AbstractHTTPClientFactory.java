@@ -48,8 +48,7 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
             return true;
         }
 
-        if (val instanceof String) {
-            final String clsName = (String) val;
+        if (val instanceof String clsName) {
             return cls.getName().equals(clsName);
         } else {
             final Class<?> cls2 = (Class<?>) val;
@@ -78,12 +77,12 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
                 .filter(behavior -> !behavior.isInstance(client))
                 .collect(Collectors.toSet());
         if (!missingBehaviors.isEmpty()) {
-            throw new RuntimeException(String.format(
-                    "HTTP client %s doesn't support behaviors: %s",
-                    client.getClass().getName(),
-                    missingBehaviors.stream()
-                            .map(behavior -> behavior.getSimpleName())
-                            .collect(Collectors.joining(", "))));
+            throw new RuntimeException("HTTP client %s doesn't support behaviors: %s"
+                    .formatted(
+                            client.getClass().getName(),
+                            missingBehaviors.stream()
+                                    .map(behavior -> behavior.getSimpleName())
+                                    .collect(Collectors.joining(", "))));
         }
         if (hints.containsKey(Hints.HTTP_LOGGING)) {
             return applyLogging(client, hints);
@@ -108,7 +107,7 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
         } else if ("false".equalsIgnoreCase(hint)) {
             return client;
         } else {
-            throw new RuntimeException(String.format("HTTP_LOGGING value %s is unknown.", hint));
+            throw new RuntimeException("HTTP_LOGGING value %s is unknown.".formatted(hint));
         }
     }
 

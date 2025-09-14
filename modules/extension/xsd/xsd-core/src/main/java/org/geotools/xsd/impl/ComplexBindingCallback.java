@@ -42,8 +42,8 @@ public abstract class ComplexBindingCallback implements Visitor {
 
     @Override
     public void visit(Binding binding) {
-        if (binding instanceof ComplexBinding) {
-            doCallback((ComplexBinding) binding);
+        if (binding instanceof ComplexBinding complexBinding) {
+            doCallback(complexBinding);
         }
     }
 

@@ -345,14 +345,14 @@ public class SpatialRequestHelper {
                 // k, the transformation between the various CRS is not null or the
                 // Identity, let's see if it is an affine transform, which case we
                 // can incorporate it into the requested grid to world
-                if (destinationToSourceTransform instanceof AffineTransform) {
+                if (destinationToSourceTransform instanceof AffineTransform transform) {
 
                     //
                     // we should not have any problems with regards to BBOX reprojection
                     // update the requested grid to world transformation by pre concatenating the
                     // destination to source transform
                     AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
-                    mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
+                    mutableTransform.preConcatenate(transform);
 
                     // update the requested envelope
                     try {

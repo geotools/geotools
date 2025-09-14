@@ -54,12 +54,10 @@ class Utils {
         // /////////////////////////////////////////////////////////////////////
         // if it is a URL or a String let's try to see if we can get a file to
         // check if we have to build the index
-        if (source instanceof URL) {
-            sourceURL = (URL) source;
+        if (source instanceof URL rL) {
+            sourceURL = rL;
             source = URLs.urlToFile(sourceURL);
-        } else if (source instanceof String) {
-            // is it a File?
-            final String tempSource = (String) source;
+        } else if (source instanceof String tempSource) {
             File tempFile = new File(tempSource);
             if (!tempFile.exists()) {
                 // is it a URL
@@ -74,16 +72,16 @@ class Utils {
                 sourceURL = URLs.fileToUrl(tempFile);
                 source = tempFile;
             }
-        } else if (source instanceof AccessibleStream && ((AccessibleStream) source).getTarget() instanceof File) {
-            final File inputFile = (File) ((AccessibleStream) source).getTarget();
+        } else if (source instanceof AccessibleStream stream
+                && ((AccessibleStream) source).getTarget() instanceof File) {
+            final File inputFile = (File) stream.getTarget();
             source = inputFile;
         }
 
         // at this point we have tried to convert the thing to a File as hard as
         // we could, let's see what we can do
-        if (source instanceof File) {
-            final File sourceFile = (File) source;
-            if (!sourceFile.isDirectory()) sourceURL = ((File) source).toURI().toURL();
+        if (source instanceof File sourceFile) {
+            if (!sourceFile.isDirectory()) sourceURL = sourceFile.toURI().toURL();
         } else sourceURL = null;
         return sourceURL;
     }
@@ -102,8 +100,9 @@ class Utils {
         // get a reader
         //		inStream.mark();
         try {
-            if (inStream instanceof AccessibleStream && ((AccessibleStream) inStream).getTarget() instanceof File) {
-                final File file = (File) ((AccessibleStream) inStream).getTarget();
+            if (inStream instanceof AccessibleStream stream
+                    && ((AccessibleStream) inStream).getTarget() instanceof File) {
+                final File file = (File) stream.getTarget();
                 if (FILEFILTER.accept(file))
                     return JP2KFormatFactory.getCachedSpi().createReaderInstance();
             }

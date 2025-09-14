@@ -146,11 +146,9 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
     }
 
     private void updateMinMaxFields(Expression expression) {
-        if (expression instanceof Literal) {
-            Literal bbox = (Literal) expression;
+        if (expression instanceof Literal bbox) {
             Object value = bbox.getValue();
-            if (value instanceof BoundingBox) {
-                BoundingBox env = (BoundingBox) value;
+            if (value instanceof BoundingBox env) {
                 minx = env.getMinX();
                 maxx = env.getMaxX();
                 miny = env.getMinY();
@@ -158,10 +156,9 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
                 srs = CRS.toSRS(env.getCoordinateReferenceSystem());
             } else {
                 Envelope env = null;
-                if (value instanceof Envelope) {
-                    env = (Envelope) value;
-                } else if (value instanceof Geometry) {
-                    Geometry geom = (Geometry) value;
+                if (value instanceof Envelope envelope) {
+                    env = envelope;
+                } else if (value instanceof Geometry geom) {
                     env = geom.getEnvelopeInternal();
                     if (geom.getUserData() != null) {
                         if (geom.getUserData() instanceof String) {
@@ -207,8 +204,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         }
 
         Polygon polygon = GEOMETRY_FACTORY.createPolygon(ring, null);
-        if (env instanceof ReferencedEnvelope) {
-            ReferencedEnvelope refEnv = (ReferencedEnvelope) env;
+        if (env instanceof ReferencedEnvelope refEnv) {
             polygon.setUserData(refEnv.getCoordinateReferenceSystem());
         }
 
@@ -237,8 +233,8 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
     @Override
     public BoundingBox getBounds() {
         Object value = ((Literal) getExpression2()).getValue();
-        if (value instanceof BoundingBox) {
-            return (BoundingBox) value;
+        if (value instanceof BoundingBox box) {
+            return box;
         } else { // create one
             return buildEnvelope(minx, maxx, miny, maxy, srs);
         }

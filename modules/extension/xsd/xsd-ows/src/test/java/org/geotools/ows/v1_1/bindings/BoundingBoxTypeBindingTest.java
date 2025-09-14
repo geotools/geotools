@@ -44,10 +44,11 @@ public class BoundingBoxTypeBindingTest extends OWSTestSupport_1_1 {
     @Test
     public void testParse() throws Exception {
         String xml =
-                "<ows:BoundingBox dimensions=\"2\" crs=\"EPSG:4326\" xmlns:ows=\"http://www.opengis.net/ows\" version=\"1.1.0\">\n"
-                        + "          <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>\n"
-                        + "          <ows:UpperCorner>180.0 90.0</ows:UpperCorner>\n"
-                        + "        </ows:BoundingBox>";
+                """
+                <ows:BoundingBox dimensions="2" crs="EPSG:4326" xmlns:ows="http://www.opengis.net/ows" version="1.1.0">
+                          <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+                          <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+                        </ows:BoundingBox>""";
 
         buildDocument(xml);
 

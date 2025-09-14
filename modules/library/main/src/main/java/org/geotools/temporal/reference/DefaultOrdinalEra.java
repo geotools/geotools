@@ -95,8 +95,7 @@ public class DefaultOrdinalEra implements OrdinalEra {
 
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof DefaultOrdinalEra) {
-            final DefaultOrdinalEra that = (DefaultOrdinalEra) object;
+        if (object instanceof DefaultOrdinalEra that) {
 
             return Utilities.equals(this.beginning, that.beginning)
                     && Utilities.equals(this.end, that.end)

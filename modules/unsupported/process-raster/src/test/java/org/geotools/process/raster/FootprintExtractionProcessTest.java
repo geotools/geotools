@@ -175,8 +175,7 @@ public class FootprintExtractionProcessTest {
 
                 SimpleFeatureSource source = ds.getFeatureSource(ds.getTypeNames()[0]);
 
-                if (source instanceof SimpleFeatureStore) {
-                    SimpleFeatureStore store = (SimpleFeatureStore) source;
+                if (source instanceof SimpleFeatureStore store) {
 
                     store.setTransaction(transaction);
                     try { // NOPMD Catch needs transaction

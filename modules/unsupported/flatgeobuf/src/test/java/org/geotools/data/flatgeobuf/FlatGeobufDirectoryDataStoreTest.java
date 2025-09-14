@@ -26,7 +26,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -116,9 +116,9 @@ public class FlatGeobufDirectoryDataStoreTest {
     public void removeSchema() throws Exception {
         File dir = temporaryFolder.newFolder("layers");
         File file1 =
-                Files.createFile(Paths.get(dir.getAbsolutePath(), "points.fgb")).toFile();
+                Files.createFile(Path.of(dir.getAbsolutePath(), "points.fgb")).toFile();
         File file2 =
-                Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.fgb")).toFile();
+                Files.createFile(Path.of(dir.getAbsolutePath(), "lines.fgb")).toFile();
         Map<String, Serializable> params = new HashMap<>();
         URL url = dir.toURI().toURL();
         params.put("url", url);

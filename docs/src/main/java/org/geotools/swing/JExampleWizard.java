@@ -11,6 +11,7 @@
  */
 package org.geotools.swing;
 
+import java.io.Serial;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -31,6 +32,7 @@ import org.geotools.swing.wizard.JWizard;
  */
 // example wizard start
 public class JExampleWizard extends JWizard {
+    @Serial
     private static final long serialVersionUID = 2103905729508952829L;
 
     /** Value collected by the first page */

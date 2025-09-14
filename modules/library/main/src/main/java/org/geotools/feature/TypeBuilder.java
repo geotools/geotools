@@ -483,13 +483,11 @@ public class TypeBuilder {
         name = descriptor.getName().getLocalPart();
         minOccurs = descriptor.getMinOccurs();
         maxOccurs = descriptor.getMaxOccurs();
-        if (descriptor instanceof AttributeDescriptor) {
-            AttributeDescriptor attribute = (AttributeDescriptor) descriptor;
+        if (descriptor instanceof AttributeDescriptor attribute) {
             isNillable = attribute.isNillable();
             propertyType = attribute.getType();
         }
-        if (descriptor instanceof AssociationDescriptor) {
-            AssociationDescriptor association = (AssociationDescriptor) descriptor;
+        if (descriptor instanceof AssociationDescriptor association) {
             propertyType = association.getType();
         }
     }
@@ -505,32 +503,27 @@ public class TypeBuilder {
         restrictions = null;
         restrictions().addAll(type.getRestrictions());
 
-        if (type instanceof AssociationType) {
-            AssociationType assType = (AssociationType) type;
+        if (type instanceof AssociationType assType) {
 
             referenceType = assType.getRelatedType();
             superType = assType.getSuper();
         }
-        if (type instanceof AttributeType) {
-            AttributeType aType = (AttributeType) type;
+        if (type instanceof AttributeType aType) {
 
             binding = aType.getBinding();
             isIdentified = aType.isIdentified();
             superType = aType.getSuper();
         }
-        if (type instanceof GeometryType) {
-            GeometryType geometryType = (GeometryType) type;
+        if (type instanceof GeometryType geometryType) {
 
             this.crs = geometryType.getCoordinateReferenceSystem();
         }
-        if (type instanceof ComplexType) {
-            ComplexType cType = (ComplexType) type;
+        if (type instanceof ComplexType cType) {
 
             properties = newCollection(cType.getDescriptors());
             properties.addAll(cType.getDescriptors());
         }
-        if (type instanceof FeatureType) {
-            FeatureType featureType = (FeatureType) type;
+        if (type instanceof FeatureType featureType) {
             defaultGeom = featureType.getGeometryDescriptor().getType().getName();
             crs = featureType.getCoordinateReferenceSystem();
         }
@@ -655,15 +648,9 @@ public class TypeBuilder {
     public AttributeDescriptor attributeDescriptor() {
         // TODO: handle default value
         AttributeDescriptor attribute;
-        if (propertyType instanceof GeometryType) {
+        if (propertyType instanceof GeometryType type) {
             attribute = getTypeFactory()
-                    .createGeometryDescriptor(
-                            (GeometryType) propertyType,
-                            typeName(),
-                            getMinOccurs(),
-                            getMaxOccurs(),
-                            isNillable(),
-                            null);
+                    .createGeometryDescriptor(type, typeName(), getMinOccurs(), getMaxOccurs(), isNillable(), null);
         } else {
             attribute = getTypeFactory()
                     .createAttributeDescriptor(
@@ -1223,8 +1210,8 @@ public class TypeBuilder {
 
         // not found or not set, return first geometry
         for (PropertyDescriptor pd : properties) {
-            if (pd instanceof GeometryDescriptor) {
-                return (GeometryDescriptor) pd;
+            if (pd instanceof GeometryDescriptor descriptor) {
+                return descriptor;
             }
         }
         return null;

@@ -106,8 +106,8 @@ public class DefaultClock extends DefaultTemporalReferenceSystem implements Cloc
         }
         if (super.equals(object)) {
             final DefaultClock that;
-            if (object instanceof DefaultClock) {
-                that = (DefaultClock) object;
+            if (object instanceof DefaultClock clock) {
+                that = clock;
 
                 return Utilities.equals(this.referenceEvent, that.referenceEvent)
                         && Utilities.equals(this.referenceTime, that.referenceTime)

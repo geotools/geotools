@@ -509,10 +509,9 @@ public class FeatureTransformer extends TransformerBase {
                 if (o instanceof FeatureCollection) {
                     SimpleFeatureCollection fc = (SimpleFeatureCollection) o;
                     FeatureCollectionIteration.iteration(this, fc);
-                } else if (o instanceof FeatureCollection[]) {
+                } else if (o instanceof FeatureCollection[] results) {
                     // Did FeatureResult[] so that we are sure they're all the same type.
                     // Could also consider collections here...
-                    FeatureCollection[] results = (FeatureCollection[]) o;
                     startFeatureCollection();
                     if (collectionBounding) {
                         ReferencedEnvelope bounds = null;
@@ -750,12 +749,11 @@ public class FeatureTransformer extends TransformerBase {
                             // equals should get us better performance.  Albeit
                             // very slightly, but this method gets called millions
                             && name.equals("boundedBy")
-                            && value instanceof Geometry) {
+                            && value instanceof Geometry geomValue) {
 
-                        Envelope envelopeInternal = ((Geometry) value).getEnvelopeInternal();
+                        Envelope envelopeInternal = geomValue.getEnvelopeInternal();
                         CoordinateReferenceSystem crs = null;
-                        if (descriptor instanceof GeometryDescriptor) {
-                            GeometryDescriptor geometryDescriptor = (GeometryDescriptor) descriptor;
+                        if (descriptor instanceof GeometryDescriptor geometryDescriptor) {
                             crs = geometryDescriptor.getCoordinateReferenceSystem();
                         }
                         ReferencedEnvelope bounds = new ReferencedEnvelope(envelopeInternal, crs);
@@ -774,7 +772,7 @@ public class FeatureTransformer extends TransformerBase {
 
                         contentHandler.startElement("", "", name, NULL_ATTS);
 
-                        if (value instanceof Geometry) {
+                        if (value instanceof Geometry geomValue) {
                             if (dimension == 0) {
                                 // lets look at the CRS
                                 GeometryDescriptor geometryType = (GeometryDescriptor) descriptor;
@@ -792,7 +790,7 @@ public class FeatureTransformer extends TransformerBase {
                                     }
                                 }
                             }
-                            geometryTranslator.encode((Geometry) value, srsName);
+                            geometryTranslator.encode(geomValue, srsName);
                         } else if (value instanceof Date) {
                             String text = getDateString(value);
                             contentHandler.characters(text.toCharArray(), 0, text.length());
@@ -815,14 +813,13 @@ public class FeatureTransformer extends TransformerBase {
 
         private String getDateString(Object value) {
             String text = null;
-            if (value instanceof java.sql.Date) text = DateUtil.serializeSqlDate((java.sql.Date) value);
-            else if (value instanceof java.sql.Time) {
+            if (value instanceof java.sql.Date date) text = DateUtil.serializeSqlDate(date);
+            else if (value instanceof java.sql.Time time) {
                 // is date time formatting activated?
                 if (isDateTimeFormattingEnabled()) {
-                    final Date dateValue = (Date) value;
-                    text = DatatypeConverterImpl.getInstance().printTime(dateToCalendar(dateValue));
+                    text = DatatypeConverterImpl.getInstance().printTime(dateToCalendar(time));
                 } else {
-                    text = DateUtil.serializeSqlTime((java.sql.Time) value);
+                    text = DateUtil.serializeSqlTime(time);
                 }
             } else {
                 // is date time formatting activated?

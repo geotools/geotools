@@ -9,6 +9,8 @@
  */
 package org.geotools.api.coverage.grid;
 
+import java.io.Serial;
+
 /**
  * Thrown when an attempt is made to write in a non-editable grid.
  *
@@ -19,6 +21,7 @@ package org.geotools.api.coverage.grid;
  */
 public class GridNotEditableException extends IllegalStateException {
     /** Serial number for interoperability with different versions. */
+    @Serial
     private static final long serialVersionUID = 612186655921122650L;
 
     /** Creates an exception with no message. */

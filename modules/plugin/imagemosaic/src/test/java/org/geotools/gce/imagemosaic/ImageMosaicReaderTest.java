@@ -5682,6 +5682,74 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
+    public void testSubsamplingFactor() throws Exception {
+        URL ssfactor = TestData.url(this, "subsampling_factor/");
+        final AbstractGridFormat format = TestUtils.getFormat(ssfactor);
+        File mosaicFile = URLs.urlToFile(ssfactor);
+        final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
+        GridCoverage2D coverage = null;
+        try {
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final GeneralBounds envelope = reader.getOriginalEnvelope();
+            final Dimension dim = new Dimension();
+            GridEnvelope gridRange = reader.getOriginalGridRange();
+            dim.setSize(gridRange.getSpan(0) / 15.8, gridRange.getSpan(1) / 15.8);
+            final Rectangle rasterArea = (GridEnvelope2D) gridRange;
+            rasterArea.setSize(dim);
+            final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+            gg.setValue(new GridGeometry2D(range, envelope));
+
+            coverage = reader.read(new GeneralParameterValue[] {gg});
+            File sample = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/subsampling_factor.png");
+            ImageAssert.assertEquals(sample, coverage.getRenderedImage(), 0);
+        } finally {
+            if (coverage != null) coverage.dispose(true);
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testSubsamplingFactorWithROI() throws Exception {
+        URL ssfactor = TestData.url(this, "subsampling_factor/");
+        final AbstractGridFormat format = TestUtils.getFormat(ssfactor);
+        File mosaicFile = URLs.urlToFile(ssfactor);
+        final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
+
+        GridCoverage2D coverage = null;
+        try {
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final GeneralBounds fullEnvelope = reader.getOriginalEnvelope();
+            final GridEnvelope origRange = reader.getOriginalGridRange();
+            final int origW = origRange.getSpan(0);
+            final int origH = origRange.getSpan(1);
+            final double resX = fullEnvelope.getSpan(0) / origW;
+            final double resY = fullEnvelope.getSpan(1) / origH;
+            ReferencedEnvelope roi = new ReferencedEnvelope(
+                    /* minX */ fullEnvelope.getMedian(0) - 750,
+                    /* maxX */ fullEnvelope.getMedian(0) + 750,
+                    /* minY */ fullEnvelope.getMedian(1) - 750,
+                    /* maxY */ fullEnvelope.getMedian(1) + 750,
+                    fullEnvelope.getCoordinateReferenceSystem());
+            final double subsampling = 15.8;
+            final int outW = Math.max(1, (int) Math.round(roi.getSpan(0) / resX / subsampling));
+            final int outH = Math.max(1, (int) Math.round(roi.getSpan(1) / resY / subsampling));
+
+            final GridEnvelope2D outRange = new GridEnvelope2D(0, 0, outW, outH);
+            gg.setValue(new GridGeometry2D(outRange, roi));
+
+            coverage = reader.read(new GeneralParameterValue[] {gg});
+
+            File sample = new File(
+                    "src/test/resources/org/geotools/gce/imagemosaic/test-data/subsampling_factor_withroi.png");
+            ImageAssert.assertEquals(sample, coverage.getRenderedImage(), 0);
+
+        } finally {
+            if (coverage != null) coverage.dispose(true);
+            reader.dispose();
+        }
+    }
+
+    @Test
     public void testSkipDuplicates() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "duplicates_test");

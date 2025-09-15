@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
@@ -54,19 +55,25 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
         @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             try {
-                if (xpath != null && object != null && object instanceof SimpleFeature) {
+                if (xpath != null && object != null) {
                     String[] parts = stripAndReturnHeadAndRest(xpath);
-                    SimpleFeature feature = (SimpleFeature) object;
-                    Object value = getValue(parts, feature);
-                    if (value != null && value instanceof JsonNode) {
-                        if (parts.length < 2) {
-                            // only one part means return whole JsonNode
-                            return true;
-                        } else {
-                            JsonPointer pointer = JsonPointer.compile(parts[1]);
-                            JsonNode jsonNode = ((JsonNode) value).at(pointer);
-                            return !jsonNode.isMissingNode();
+                    if (object instanceof SimpleFeature) {
+                        SimpleFeature feature = (SimpleFeature) object;
+                        Object value = getValue(parts, feature);
+                        if (value != null && value instanceof JsonNode) {
+                            if (parts.length < 2) {
+                                // only one part means return whole JsonNode
+                                return true;
+                            } else {
+                                JsonPointer pointer = JsonPointer.compile(parts[1]);
+                                JsonNode jsonNode = ((JsonNode) value).at(pointer);
+                                return !jsonNode.isMissingNode();
+                            }
                         }
+                    } else if (object instanceof SimpleFeatureType) {
+                        SimpleFeatureType type = (SimpleFeatureType) object;
+                        AttributeDescriptor ad = type.getDescriptor(parts[0]);
+                        return ad != null && ad.getType().getBinding().equals(JsonNode.class);
                     }
                 }
             } catch (IllegalArgumentException e) {
@@ -111,26 +118,35 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
         @SuppressWarnings("unchecked")
         public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
             JsonNode jsonNode = null;
-            if (xpath != null && object != null && object instanceof SimpleFeature) {
+            if (xpath != null && object != null) {
                 String[] parts = stripAndReturnHeadAndRest(xpath);
-                SimpleFeature feature = (SimpleFeature) object;
-                Object value = getValue(parts, feature);
-                if (value != null && value instanceof JsonNode) {
-                    if (parts.length < 2) {
-                        // only one part means return whole JsonNode
-                        return (T) value;
-                    } else {
-                        JsonPointer pointer = JsonPointer.compile(parts[1]);
-                        jsonNode = ((JsonNode) value).at(pointer);
-                        if (jsonNode.isMissingNode()) {
-                            throw new IllegalArgumentException("Cannot get property " + xpath + " from " + object);
+                if (object instanceof SimpleFeature) {
+                    SimpleFeature feature = (SimpleFeature) object;
+                    Object value = getValue(parts, feature);
+                    if (value != null && value instanceof JsonNode) {
+                        if (parts.length < 2) {
+                            // only one part means return whole JsonNode
+                            return (T) value;
+                        } else {
+                            JsonPointer pointer = JsonPointer.compile(parts[1]);
+                            jsonNode = ((JsonNode) value).at(pointer);
+                            if (jsonNode.isMissingNode()) {
+                                throw new IllegalArgumentException("Cannot get property " + xpath + " from " + object);
+                            }
+                            return (T) getMostPrimitive(jsonNode);
                         }
-                        return (T) getMostPrimitive(jsonNode);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Property at " + xpath + " from " + object + " is not a JSON Node");
                     }
-                } else {
-                    throw new IllegalArgumentException(
-                            "Property at " + xpath + " from " + object + " is not a JSON Node");
+                } else if (object instanceof SimpleFeatureType) {
+                    SimpleFeatureType type = (SimpleFeatureType) object;
+                    AttributeDescriptor ad = type.getDescriptor(parts[0]);
+                    if (ad != null && (target == null || target.isInstance(ad))) {
+                        return (T) ad;
+                    }
                 }
+                return null;
             } else {
                 throw new IllegalArgumentException("Xpath or object is null or not an Attribute");
             }

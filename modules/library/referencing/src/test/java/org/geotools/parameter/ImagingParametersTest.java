@@ -148,7 +148,7 @@ public final class ImagingParametersTest {
         // Gets the descriptors for extrema  JAI operation
         final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
         final OperationDescriptor operation =
-                (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, "Extrema");
+                (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, "Stats");
 
         // Gets the ImagingParameterDescriptors to replace xPeriod
         final List<ParameterDescriptor> replacingDescriptors = new ArrayList<>(1);

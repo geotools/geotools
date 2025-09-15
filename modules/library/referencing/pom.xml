@@ -189,6 +189,11 @@
       <artifactId>scale</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.imagen</groupId>
+      <artifactId>stats</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>

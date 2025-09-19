@@ -29,7 +29,6 @@ import java.util.Locale;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import org.eclipse.imagen.GraphicsJAI;
 import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.util.InternationalString;
@@ -88,8 +87,7 @@ public class Viewer extends JPanel {
     @Override
     public void paintComponent(final Graphics graphics) {
         super.paintComponent(graphics);
-        final GraphicsJAI g = GraphicsJAI.createGraphicsJAI((Graphics2D) graphics, this);
-        g.drawRenderedImage(image, gridToCoordinateSystem);
+        ((Graphics2D) graphics).drawRenderedImage(image, gridToCoordinateSystem);
     }
 
     /**

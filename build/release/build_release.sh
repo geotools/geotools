@@ -155,6 +155,9 @@ if [ "$SKIP_JAVADOCS" != true ]; then
   echo "building javadocs"
   pushd modules > /dev/null
   mvn $MAVEN_FLAGS -Dfmt.skip=true -DskipTests javadoc:aggregate
+  if [ -d "target/reports" ]; then
+    mv "target/reports" "target/site"
+  fi
   pushd target/site > /dev/null
   zip -r -q $target/geotools-$tag-doc.zip apidocs
   popd > /dev/null

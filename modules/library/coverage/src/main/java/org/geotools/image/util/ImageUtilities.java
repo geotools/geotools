@@ -1361,18 +1361,74 @@ public final class ImageUtilities {
         // Note: using "round" instead of floor to go for the closest subsampling factory
         // improves quality
         // /////////////////////////////////////////////////////////////////////
-        int subSamplingFactorX = (int) Math.round(requestedRes[0] / selectedRes[0]);
-        subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
 
-        while (subSamplingFactorX > 0 && rasterWidth / subSamplingFactorX <= 0) subSamplingFactorX--;
-        subSamplingFactorX = subSamplingFactorX <= 0 ? 1 : subSamplingFactorX;
+        // Control parameters
+        final double resEpsilon = 1e-9; // Small epsilon to avoid floating point errors when using floor
+        final double overviewTolerance =
+                0.03; // Relative tolerance (%) to allow a small upward adjustment of subsampling
 
-        int subSamplingFactorY = (int) Math.round(requestedRes[1] / selectedRes[1]);
-        subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
+        // Ratios between requested resolution and the resolution of the selected overview
+        final double ratioX = requestedRes[0] / selectedRes[0];
+        final double ratioY = requestedRes[1] / selectedRes[1];
 
-        while (subSamplingFactorY > 0 && rasterHeight / subSamplingFactorY <= 0) subSamplingFactorY--;
-        subSamplingFactorY = subSamplingFactorY <= 0 ? 1 : subSamplingFactorY;
+        // Use floor with epsilon and minimum clamps
+        int subSamplingFactorX = (int) Math.floor(ratioX + resEpsilon);
+        int subSamplingFactorY = (int) Math.floor(ratioY + resEpsilon);
 
+        subSamplingFactorX = Math.max(1, subSamplingFactorX);
+        subSamplingFactorY = Math.max(1, subSamplingFactorY);
+
+        // Explicit clamp per dimension (replaces integer division)
+        // Ensures we never request a factor larger than the raster size
+        if (subSamplingFactorX > rasterWidth) subSamplingFactorX = rasterWidth;
+        if (subSamplingFactorY > rasterHeight) subSamplingFactorY = rasterHeight;
+
+        // Upward adjustment ONLY if it falls within tolerance
+        // Prevents unnecessary quality drops, but allows better alignment when very close
+        int candidateX = subSamplingFactorX + 1;
+        if (candidateX <= rasterWidth) {
+            double relErrFloor = Math.abs(ratioX - subSamplingFactorX) / Math.max(ratioX, 1e-9);
+            double relErrUp = Math.abs(ratioX - candidateX) / Math.max(ratioX, 1e-9);
+            if (relErrUp <= overviewTolerance && relErrUp < relErrFloor) {
+                subSamplingFactorX = candidateX;
+            }
+        }
+        int candidateY = subSamplingFactorY + 1;
+        if (candidateY <= rasterHeight) {
+            double relErrFloor = Math.abs(ratioY - subSamplingFactorY) / Math.max(ratioY, 1e-9);
+            double relErrUp = Math.abs(ratioY - candidateY) / Math.max(ratioY, 1e-9);
+            if (relErrUp <= overviewTolerance && relErrUp < relErrFloor) {
+                subSamplingFactorY = candidateY;
+            }
+        }
+
+        // Align SourceRegion to subsampling factors to avoid seams
+        // If there is a source region, adjust it so (x,y,width,height) are multiples of the factors
+        java.awt.Rectangle region = readParameters.getSourceRegion();
+        if (region != null) {
+            // Align x and y to the lower multiple of the factors
+            int alignedX = region.x - Math.floorMod(region.x, subSamplingFactorX);
+            int alignedY = region.y - Math.floorMod(region.y, subSamplingFactorY);
+
+            // Align width/height to the lower multiple of the factors (avoids half rows/columns)
+            int alignedW = region.width - Math.floorMod(region.width, subSamplingFactorX);
+            int alignedH = region.height - Math.floorMod(region.height, subSamplingFactorY);
+
+            // Ensure positive, non-zero sizes (at least one subsampling block)
+            if (alignedW <= 0) alignedW = subSamplingFactorX;
+            if (alignedH <= 0) alignedH = subSamplingFactorY;
+
+            // Conservative clipping if realignment exceeds raster bounds
+            // (assuming (0,0)-(rasterWidth,rasterHeight) as the full raster bounds)
+            if (alignedX < 0) alignedX = 0;
+            if (alignedY < 0) alignedY = 0;
+            if (alignedX + alignedW > rasterWidth) alignedW = Math.max(subSamplingFactorX, rasterWidth - alignedX);
+            if (alignedY + alignedH > rasterHeight) alignedH = Math.max(subSamplingFactorY, rasterHeight - alignedY);
+
+            readParameters.setSourceRegion(new java.awt.Rectangle(alignedX, alignedY, alignedW, alignedH));
+        }
+
+        // Finally, apply the sanitized and aligned subsampling
         readParameters.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
     }
 }

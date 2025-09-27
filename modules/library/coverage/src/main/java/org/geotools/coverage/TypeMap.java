@@ -294,7 +294,7 @@ public final class TypeMap {
                         return UNSIGNED_4BITS;
                     case 5:
                         return UNSIGNED_8BITS; // for BufferedImages TYPE_USHORT_555_RGB
-                        // TYPE_USHORT_565_RGB
+                    // TYPE_USHORT_565_RGB
                     case 8:
                         return signed ? SIGNED_8BITS : UNSIGNED_8BITS;
                     case 16:

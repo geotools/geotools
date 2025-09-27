@@ -155,10 +155,10 @@ public class VPFColumn {
 
                 break;
 
-                // Short integers are usually coded values
+            // Short integers are usually coded values
             case DATA_SHORT_INTEGER:
                 attemptLookup = true;
-                // Fall through
+            // Fall through
             case DATA_TEXT:
             case DATA_NULL_FIELD:
             case DATA_LEVEL1_TEXT:

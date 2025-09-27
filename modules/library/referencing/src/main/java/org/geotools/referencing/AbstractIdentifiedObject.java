@@ -341,8 +341,8 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
              *       so it should not change across implementations.
              */
             switch (key.hashCode()) {
-                    // Fix case for common keywords. They are not used
-                    // by this class, but are used by some subclasses.
+                // Fix case for common keywords. They are not used
+                // by this class, but are used by some subclasses.
                 case -1528693765:
                     if (key.equalsIgnoreCase("anchorPoint")) key = "anchorPoint";
                     break;
@@ -368,9 +368,9 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                     if (key.equalsIgnoreCase("validArea")) key = "validArea";
                     break;
 
-                    // -------------------------------------
-                    // "name": String or ReferenceIdentifier
-                    // -------------------------------------
+                // -------------------------------------
+                // "name": String or ReferenceIdentifier
+                // -------------------------------------
                 case 3373707: {
                     if (key.equals(NAME_KEY)) {
                         if (value instanceof String) {
@@ -387,9 +387,9 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                     }
                     break;
                 }
-                    // -------------------------------------------------------
-                    // "alias": String, String[], GenericName or GenericName[]
-                    // -------------------------------------------------------
+                // -------------------------------------------------------
+                // "alias": String, String[], GenericName or GenericName[]
+                // -------------------------------------------------------
                 case 92902992: {
                     if (key.equals(ALIAS_KEY)) {
                         alias = NameFactory.toArray(value);
@@ -397,9 +397,9 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                     }
                     break;
                 }
-                    // -----------------------------------------------------------
-                    // "identifiers": ReferenceIdentifier or ReferenceIdentifier[]
-                    // -----------------------------------------------------------
+                // -----------------------------------------------------------
+                // "identifiers": ReferenceIdentifier or ReferenceIdentifier[]
+                // -----------------------------------------------------------
                 case 1368189162: {
                     if (key.equals(IDENTIFIERS_KEY)) {
                         if (value != null) {
@@ -413,9 +413,9 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                     }
                     break;
                 }
-                    // ----------------------------------------
-                    // "remarks": String or InternationalString
-                    // ----------------------------------------
+                // ----------------------------------------
+                // "remarks": String or InternationalString
+                // ----------------------------------------
                 case 1091415283: {
                     if (key.equals(REMARKS_KEY)) {
                         if (value instanceof InternationalString) {

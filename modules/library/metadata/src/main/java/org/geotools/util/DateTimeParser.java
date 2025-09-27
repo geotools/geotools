@@ -560,7 +560,7 @@ public class DateTimeParser {
                     case 'W':
                         factor = 7 * MILLIS_IN_DAY;
                         break;
-                        // TODO: handle months in a better way than just taking the average length.
+                    // TODO: handle months in a better way than just taking the average length.
                     case 'M':
                         factor = 30 * MILLIS_IN_DAY;
                         break;

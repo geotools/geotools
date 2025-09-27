@@ -2952,7 +2952,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 return MICRORADIAN;
             case 9110:
                 return SEXAGESIMAL_DMS;
-                // TODO case 9111: return NonSI.SEXAGESIMAL_DM;
+            // TODO case 9111: return NonSI.SEXAGESIMAL_DM;
             case 9203: // Fall through
             case 9201:
                 return ONE;

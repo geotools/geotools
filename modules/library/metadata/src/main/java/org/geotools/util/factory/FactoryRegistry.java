@@ -741,7 +741,7 @@ public class FactoryRegistry {
                     case 3:
                         loader = ClassLoader.getSystemClassLoader();
                         break;
-                        // Add any supplementary class loaders here, if needed.
+                    // Add any supplementary class loaders here, if needed.
                     default:
                         throw new AssertionError(i); // Should never happen.
                 }

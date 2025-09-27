@@ -466,7 +466,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         Object object = null;
         if (fieldLen > 0) {
             switch (type) {
-                    // (L)logical (T,t,F,f,Y,y,N,n)
+                // (L)logical (T,t,F,f,Y,y,N,n)
                 case 'l':
                 case 'L':
                     final char c = (char) bytes[fieldOffset];
@@ -489,7 +489,7 @@ public class DbaseFileReader implements FileReader, Closeable {
                             object = null;
                     }
                     break;
-                    // (C)character (String)
+                // (C)character (String)
                 case 'c':
                 case 'C':
                     // if the string begins with a null terminator, the value is null
@@ -502,7 +502,7 @@ public class DbaseFileReader implements FileReader, Closeable {
                         }
                     }
                     break;
-                    // (D)date (Date)
+                // (D)date (Date)
                 case 'd':
                 case 'D':
                     // If the first 8 characters are '0', this is a null date
@@ -527,7 +527,7 @@ public class DbaseFileReader implements FileReader, Closeable {
                         }
                     }
                     break;
-                    // (@) Timestamp (Date)
+                // (@) Timestamp (Date)
                 case '@':
                     try {
                         // TODO: Find a smarter way to do this.
@@ -554,7 +554,7 @@ public class DbaseFileReader implements FileReader, Closeable {
                         // todo: use progresslistener, this isn't a grave error.
                     }
                     break;
-                    // (N)umeric (Integer, Long or Fallthrough to Double)
+                // (N)umeric (Integer, Long or Fallthrough to Double)
                 case 'n':
                 case 'N':
                     // numbers that begin with '*' are considered null
@@ -582,9 +582,9 @@ public class DbaseFileReader implements FileReader, Closeable {
                             }
                         }
                     }
-                    // do not break, fall through to the 'f' case
+                // do not break, fall through to the 'f' case
 
-                    // (F)loating point number
+                // (F)loating point number
                 case 'f':
                 case 'F':
                     if (bytes[fieldOffset] != '*') {

@@ -372,7 +372,7 @@ public class AngleFormat extends Format {
                     rounded = Math.round(scaledValue);
                     return rounded / scale;
 
-                    // Include impossible case to allow detection of new entries in RoundingMethod.
+                // Include impossible case to allow detection of new entries in RoundingMethod.
                 case ROUND_HALF_EVEN:
                     throw new AssertionError(rm);
             }
@@ -1001,48 +1001,48 @@ public class AngleFormat extends Format {
             boolean swapDM = true;
             BigBoss:
             switch (skipSuffix(source, pos, DEGREES_FIELD)) {
-                    /* ----------------------------------------------
-                     * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
-                     * ----------------------------------------------
-                     * Les degrés étaient suivit du préfix d'un autre angle. Le préfix sera donc
-                     * retourné dans le buffer pour un éventuel traitement par le prochain appel
-                     * à la méthode 'parse' et on n'ira pas plus loin dans l'analyse de la chaîne.
-                     */
+                /* ----------------------------------------------
+                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
+                 * ----------------------------------------------
+                 * Les degrés étaient suivit du préfix d'un autre angle. Le préfix sera donc
+                 * retourné dans le buffer pour un éventuel traitement par le prochain appel
+                 * à la méthode 'parse' et on n'ira pas plus loin dans l'analyse de la chaîne.
+                 */
                 case PREFIX_FIELD: {
                     pos.setIndex(indexEndField);
                     break BigBoss;
                 }
-                    /* ----------------------------------------------
-                     * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
-                     * ----------------------------------------------
-                     * On a trouvé le symbole des secondes au lieu de celui des degrés. On fait
-                     * la correction dans les variables 'degrés' et 'secondes' et on considère
-                     * que la lecture est terminée.
-                     */
+                /* ----------------------------------------------
+                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
+                 * ----------------------------------------------
+                 * On a trouvé le symbole des secondes au lieu de celui des degrés. On fait
+                 * la correction dans les variables 'degrés' et 'secondes' et on considère
+                 * que la lecture est terminée.
+                 */
                 case SECONDS_FIELD: {
                     secondes = degrees;
                     degrees = Double.NaN;
                     break BigBoss;
                 }
-                    /* ----------------------------------------------
-                     * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
-                     * ----------------------------------------------
-                     * Aucun symbole ne suit les degrés. Des minutes sont-elles attendues?
-                     * Si oui, on fera comme si le symbole des degrés avait été là. Sinon,
-                     * on considèrera que la lecture est terminée.
-                     */
+                /* ----------------------------------------------
+                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
+                 * ----------------------------------------------
+                 * Aucun symbole ne suit les degrés. Des minutes sont-elles attendues?
+                 * Si oui, on fera comme si le symbole des degrés avait été là. Sinon,
+                 * on considèrera que la lecture est terminée.
+                 */
                 default: {
                     if (width1 == 0) break BigBoss;
                     if (!spaceAsSeparator) break BigBoss;
                     // fall through
                 }
-                    /* ----------------------------------------------
-                     * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
-                     * ----------------------------------------------
-                     * Un symbole des degrés a été explicitement trouvé. Les degrés sont peut-être
-                     * suivit des minutes. On procèdera donc à la lecture du prochain nombre, puis
-                     * à l'analyse du symbole qui le suit.
-                     */
+                /* ----------------------------------------------
+                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
+                 * ----------------------------------------------
+                 * Un symbole des degrés a été explicitement trouvé. Les degrés sont peut-être
+                 * suivit des minutes. On procèdera donc à la lecture du prochain nombre, puis
+                 * à l'analyse du symbole qui le suit.
+                 */
                 case DEGREES_FIELD: {
                     final int indexStartField = index = pos.getIndex();
                     while (index < length && Character.isSpaceChar(source.charAt(index))) {
@@ -1060,57 +1060,57 @@ public class AngleFormat extends Format {
                     indexEndField = pos.getIndex();
                     minutes = fieldObject.doubleValue();
                     switch (skipSuffix(source, pos, width1 != 0 ? MINUTES_FIELD : PREFIX_FIELD)) {
-                            /* ------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                             * ------------------------------------------------
-                             * Le symbole trouvé est bel et bien celui des minutes.
-                             * On continuera le bloc pour tenter de lire les secondes.
-                             */
+                        /* ------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                         * ------------------------------------------------
+                         * Le symbole trouvé est bel et bien celui des minutes.
+                         * On continuera le bloc pour tenter de lire les secondes.
+                         */
                         case MINUTES_FIELD: {
                             break; // continue outer switch
                         }
-                            /* ------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                             * ------------------------------------------------
-                             * Un symbole des secondes a été trouvé au lieu du symbole des minutes
-                             * attendu. On fera la modification dans les variables 'secondes' et
-                             * 'minutes' et on considèrera la lecture terminée.
-                             */
+                        /* ------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                         * ------------------------------------------------
+                         * Un symbole des secondes a été trouvé au lieu du symbole des minutes
+                         * attendu. On fera la modification dans les variables 'secondes' et
+                         * 'minutes' et on considèrera la lecture terminée.
+                         */
                         case SECONDS_FIELD: {
                             secondes = minutes;
                             minutes = Double.NaN;
                             break BigBoss;
                         }
-                            /* ------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                             * ------------------------------------------------
-                             * Aucun symbole n'a été trouvé. Les minutes étaient-elles attendues?
-                             * Si oui, on les acceptera et on tentera de lire les secondes. Si non,
-                             * on retourne le texte lu dans le buffer et on termine la lecture.
-                             */
+                        /* ------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                         * ------------------------------------------------
+                         * Aucun symbole n'a été trouvé. Les minutes étaient-elles attendues?
+                         * Si oui, on les acceptera et on tentera de lire les secondes. Si non,
+                         * on retourne le texte lu dans le buffer et on termine la lecture.
+                         */
                         default: {
                             if (width1 != 0) break; // Continue outer switch
                             // fall through
                         }
-                            /* ------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                             * ------------------------------------------------
-                             * Au lieu des minutes, le symbole lu est celui des degrés. On considère
-                             * qu'il appartient au prochain angle. On retournera donc le texte lu dans
-                             * le buffer et on terminera la lecture.
-                             */
+                        /* ------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                         * ------------------------------------------------
+                         * Au lieu des minutes, le symbole lu est celui des degrés. On considère
+                         * qu'il appartient au prochain angle. On retournera donc le texte lu dans
+                         * le buffer et on terminera la lecture.
+                         */
                         case DEGREES_FIELD: {
                             pos.setIndex(indexStartField);
                             minutes = Double.NaN;
                             break BigBoss;
                         }
-                            /* ------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                             * ------------------------------------------------
-                             * Après les minutes (qu'on accepte), on a trouvé le préfix du prochain
-                             * angle à lire. On retourne ce préfix dans le buffer et on considère la
-                             * lecture terminée.
-                             */
+                        /* ------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                         * ------------------------------------------------
+                         * Après les minutes (qu'on accepte), on a trouvé le préfix du prochain
+                         * angle à lire. On retourne ce préfix dans le buffer et on considère la
+                         * lecture terminée.
+                         */
                         case PREFIX_FIELD: {
                             pos.setIndex(indexEndField);
                             break BigBoss;
@@ -1119,14 +1119,14 @@ public class AngleFormat extends Format {
                     swapDM = false;
                     // fall through
                 }
-                    /* ----------------------------------------------
-                     * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
-                     * ----------------------------------------------
-                     * Un symbole des minutes a été trouvé au lieu du symbole des degrés attendu.
-                     * On fera donc la modification dans les variables 'degrés' et 'minutes'. Ces
-                     * minutes sont peut-être suivies des secondes. On tentera donc de lire le
-                     * prochain nombre.
-                     */
+                /* ----------------------------------------------
+                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
+                 * ----------------------------------------------
+                 * Un symbole des minutes a été trouvé au lieu du symbole des degrés attendu.
+                 * On fera donc la modification dans les variables 'degrés' et 'minutes'. Ces
+                 * minutes sont peut-être suivies des secondes. On tentera donc de lire le
+                 * prochain nombre.
+                 */
                 case MINUTES_FIELD: {
                     if (swapDM) {
                         minutes = degrees;
@@ -1148,44 +1148,44 @@ public class AngleFormat extends Format {
                     indexEndField = pos.getIndex();
                     secondes = fieldObject.doubleValue();
                     switch (skipSuffix(source, pos, width2 != 0 ? MINUTES_FIELD : PREFIX_FIELD)) {
-                            /* -------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                             * -------------------------------------------------
-                             * Un symbole des secondes explicite a été trouvée.
-                             * La lecture est donc terminée.
-                             */
+                        /* -------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                         * -------------------------------------------------
+                         * Un symbole des secondes explicite a été trouvée.
+                         * La lecture est donc terminée.
+                         */
                         case SECONDS_FIELD: {
                             break;
                         }
-                            /* -------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                             * -------------------------------------------------
-                             * Aucun symbole n'a été trouvée. Attendait-on des secondes? Si oui, les
-                             * secondes seront acceptées. Sinon, elles seront retournées au buffer.
-                             */
+                        /* -------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                         * -------------------------------------------------
+                         * Aucun symbole n'a été trouvée. Attendait-on des secondes? Si oui, les
+                         * secondes seront acceptées. Sinon, elles seront retournées au buffer.
+                         */
                         default: {
                             if (width2 != 0) break;
                             // fall through
                         }
-                            /* -------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                             * -------------------------------------------------
-                             * Au lieu des degrés, on a trouvé un symbole des minutes ou des
-                             * secondes. On renvoie donc le nombre et son symbole dans le buffer.
-                             */
+                        /* -------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                         * -------------------------------------------------
+                         * Au lieu des degrés, on a trouvé un symbole des minutes ou des
+                         * secondes. On renvoie donc le nombre et son symbole dans le buffer.
+                         */
                         case MINUTES_FIELD:
                         case DEGREES_FIELD: {
                             pos.setIndex(indexStartField);
                             secondes = Double.NaN;
                             break;
                         }
-                            /* -------------------------------------------------
-                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                             * -------------------------------------------------
-                             * Après les secondes (qu'on accepte), on a trouvé le préfix du prochain
-                             * angle à lire. On retourne ce préfix dans le buffer et on considère la
-                             * lecture terminée.
-                             */
+                        /* -------------------------------------------------
+                         * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                         * -------------------------------------------------
+                         * Après les secondes (qu'on accepte), on a trouvé le préfix du prochain
+                         * angle à lire. On retourne ce préfix dans le buffer et on considère la
+                         * lecture terminée.
+                         */
                         case PREFIX_FIELD: {
                             pos.setIndex(indexEndField);
                             break BigBoss;

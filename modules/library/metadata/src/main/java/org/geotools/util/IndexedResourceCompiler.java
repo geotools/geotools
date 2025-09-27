@@ -275,12 +275,12 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
         search:
         for (int i = 0; i < buffer.length(); i++) { // Length of 'buffer' will vary.
             switch (buffer.charAt(i)) {
-                    /*
-                     * Left and right braces take us up or down a level.  Quotes will only be doubled
-                     * if we are at level 0.  If the brace is between quotes it will not be taken into
-                     * account as it will have been skipped over during the previous pass through the
-                     * loop.
-                     */
+                /*
+                 * Left and right braces take us up or down a level.  Quotes will only be doubled
+                 * if we are at level 0.  If the brace is between quotes it will not be taken into
+                 * account as it will have been skipped over during the previous pass through the
+                 * loop.
+                 */
                 case '{':
                     level++;
                     last = i;

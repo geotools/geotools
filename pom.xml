@@ -473,7 +473,7 @@
     <series>latest</series>
     <!-- test dependency management. For compile dependency management look at platform-dependencies/pom.xml -->
     <hamcrest.version>3.0</hamcrest.version>
-    <mockito.version>5.15.2</mockito.version>
+    <mockito.version>5.20.0</mockito.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
     <!-- surefire configuration -->
@@ -566,7 +566,7 @@
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
-        <version>5.5.0</version>
+        <version>5.6.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -808,7 +808,7 @@
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
-          <version>2.43.0</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -1312,7 +1312,7 @@
         <configuration>
           <java>
             <palantirJavaFormat>
-              <version>2.50.0</version>
+              <version>2.74.0</version>
               <formatJavadoc>true</formatJavadoc>
             </palantirJavaFormat>
           </java>

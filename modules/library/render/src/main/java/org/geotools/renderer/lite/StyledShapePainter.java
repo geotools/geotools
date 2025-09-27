@@ -543,7 +543,7 @@ public class StyledShapePainter {
                                 + coords[1]);
                     }
 
-                    // no break here - fall through to next section
+                // no break here - fall through to next section
                 case PathIterator.SEG_LINETO:
 
                     // draw from previous to coords

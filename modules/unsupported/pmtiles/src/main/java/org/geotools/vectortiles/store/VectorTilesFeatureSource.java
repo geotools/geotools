@@ -619,8 +619,9 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
             case "String" -> String.class;
             case "Boolean" -> Boolean.class;
             case "Number" -> Double.class;
-            default -> throw new UnsupportedOperationException(
-                    "Unable to map field type %s to a Class binding".formatted(fieldType));
+            default ->
+                throw new UnsupportedOperationException(
+                        "Unable to map field type %s to a Class binding".formatted(fieldType));
         };
     }
 

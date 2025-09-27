@@ -143,18 +143,18 @@ public final class CRS2GeoTiffMetadataAdapter {
         metadata.addGeoShortParam(GeoTiffConstants.GTModelTypeGeoKey, modelType);
         switch (modelType) {
 
-                //
-                // GEOGRAPHIC COORDINATE REFERENCE SYSTEMCREATING METADATA AND SETTING
-                // BASE FIELDS FOR THEM
-                //
+            //
+            // GEOGRAPHIC COORDINATE REFERENCE SYSTEMCREATING METADATA AND SETTING
+            // BASE FIELDS FOR THEM
+            //
             case GeoTiffGCSCodes.ModelTypeGeographic:
                 parseGeoGCS((DefaultGeographicCRS) crs, metadata);
                 break;
 
-                //
-                // PROJECTED COORDINATE REFERENCE SYSTEMCREATING METADATA AND SETTING
-                // BASE FIELDS FOR THEM
-                //
+            //
+            // PROJECTED COORDINATE REFERENCE SYSTEMCREATING METADATA AND SETTING
+            // BASE FIELDS FOR THEM
+            //
             case GeoTiffPCSCodes.ModelTypeProjected:
                 parseProjCRS((ProjectedCRS) crs, metadata);
                 break;

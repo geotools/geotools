@@ -185,9 +185,9 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
         switch (n.getType()) {
 
-                // ----------------------------------------
-                // (+|-) Integer and Float
-                // ----------------------------------------
+            // ----------------------------------------
+            // (+|-) Integer and Float
+            // ----------------------------------------
             case JJTINTEGERNODE:
                 return this.builder.buildLiteralInteger(getTokenInPosition(0).toString());
             case JJTFLOATINGNODE:
@@ -195,33 +195,33 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTNEGATIVENUMBER_NODE:
                 return this.builder.bulidNegativeNumber();
 
-                // ----------------------------------------
-                // String
-                // ----------------------------------------
+            // ----------------------------------------
+            // String
+            // ----------------------------------------
             case JJTSTRINGNODE:
                 return this.builder.buildLiteralString(getTokenInPosition(0).toString());
 
-                // ----------------------------------------
-                // Identifier
-                // ----------------------------------------
+            // ----------------------------------------
+            // Identifier
+            // ----------------------------------------
             case JJTIDENTIFIER_NODE:
                 return this.builder.buildIdentifier(JJTIDENTIFIER_PART_NODE);
 
             case JJTIDENTIFIER_PART_NODE:
                 return this.builder.buildIdentifierPart(getTokenInPosition(0));
 
-                // ----------------------------------------
-                // attribute
-                // ----------------------------------------
+            // ----------------------------------------
+            // attribute
+            // ----------------------------------------
             case JJTSIMPLE_ATTRIBUTE_NODE:
                 return this.builder.buildSimpleAttribute();
 
             case JJTCOMPOUND_ATTRIBUTE_NODE:
                 return this.builder.buildCompoundAttribute(JJTSIMPLE_ATTRIBUTE_NODE, ATTRIBUTE_PATH_SEPARATOR);
 
-                // ----------------------------------------
-                // function
-                // ----------------------------------------
+            // ----------------------------------------
+            // function
+            // ----------------------------------------
             case JJTFUNCTION_NODE:
                 return this.builder.buildFunction(JJTFUNCTIONNAME_NODE);
 
@@ -231,14 +231,14 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTFUNCTIONARG_NODE:
                 return n; // used as mark of args in stack
 
-                // Math Nodes
+            // Math Nodes
             case JJTADDNODE:
             case JJTSUBTRACTNODE:
             case JJTMULNODE:
             case JJTDIVNODE:
                 return buildBinaryExpression(n.getType());
 
-                // Boolean expression
+            // Boolean expression
             case JJTBOOLEAN_AND_NODE:
                 return buildLogicFilter(JJTBOOLEAN_AND_NODE);
 
@@ -248,18 +248,18 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTBOOLEAN_NOT_NODE:
                 return buildLogicFilter(JJTBOOLEAN_NOT_NODE);
 
-                // ----------------------------------------
-                // between predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // between predicate actions
+            // ----------------------------------------
             case JJTBETWEEN_NODE:
                 return this.builder.buildBetween();
 
             case JJTNOT_BETWEEN_NODE:
                 return this.builder.buildNotBetween();
 
-                // ----------------------------------------
-                // Compare predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // Compare predicate actions
+            // ----------------------------------------
             case JJTCOMPARISONPREDICATE_EQ_NODE:
             case JJTCOMPARISONPREDICATE_GT_NODE:
             case JJTCOMPARISONPREDICATE_LT_NODE:
@@ -273,36 +273,36 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
                 return notFilter;
 
-                // ----------------------------------------
-                // Text predicate (Like)
-                // ----------------------------------------
+            // ----------------------------------------
+            // Text predicate (Like)
+            // ----------------------------------------
             case JJTLIKE_NODE:
                 return this.builder.buildLikeFilter(true);
 
             case JJTNOT_LIKE_NODE:
                 return this.builder.buildNotLikeFilter(true);
 
-                // ----------------------------------------
-                // Text predicate (ILike)
-                // ----------------------------------------
+            // ----------------------------------------
+            // Text predicate (ILike)
+            // ----------------------------------------
             case JJTILIKE_NODE:
                 return this.builder.buildLikeFilter(false);
 
             case JJTNOT_ILIKE_NODE:
                 return this.builder.buildNotLikeFilter(false);
 
-                // ----------------------------------------
-                // Null predicate
-                // ----------------------------------------
+            // ----------------------------------------
+            // Null predicate
+            // ----------------------------------------
             case JJTNULLPREDICATENODE:
                 return this.builder.buildPropertyIsNull();
 
             case JJTNOTNULLPREDICATENODE:
                 return this.builder.buildPorpertyNotIsNull();
 
-                // ----------------------------------------
-                // temporal predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // temporal predicate actions
+            // ----------------------------------------
             case JJTDATE_NODE:
                 return this.builder.buildDateExpression(getTokenInPosition(0));
 
@@ -339,9 +339,9 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTTPDURING_OR_AFTER_PERIOD_NODE:
                 return buildDuringOrAfter();
 
-                // ----------------------------------------
-                // existence predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // existence predicate actions
+            // ----------------------------------------
             case JJTEXISTENCE_PREDICATE_EXISTS_NODE:
                 return this.builder.buildPropertyExists();
 
@@ -351,9 +351,9 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
                 return filterPropNotExist;
 
-                // ----------------------------------------
-                // routine invocation Geo Operation
-                // ----------------------------------------
+            // ----------------------------------------
+            // routine invocation Geo Operation
+            // ----------------------------------------
             case JJTROUTINEINVOCATION_GEOOP_EQUAL_NODE:
             case JJTROUTINEINVOCATION_GEOOP_DISJOINT_NODE:
             case JJTROUTINEINVOCATION_GEOOP_INTERSECT_NODE:
@@ -374,9 +374,9 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTDE9IM_NODE:
                 return this.builder.buildDE9IM(getToken(0).image);
 
-                // ----------------------------------------
-                // routine invocation RelGeo Operation
-                // ----------------------------------------
+            // ----------------------------------------
+            // routine invocation RelGeo Operation
+            // ----------------------------------------
             case JJTTOLERANCE_NODE:
                 return this.builder.buildTolerance();
 
@@ -387,9 +387,9 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTROUTINEINVOCATION_RELOP_DWITHIN_NODE:
                 return buildDistanceBufferOperator(n.getType());
 
-                // ----------------------------------------
-                // Geometries:
-                // ----------------------------------------
+            // ----------------------------------------
+            // Geometries:
+            // ----------------------------------------
             case JJTPOINT_NODE:
                 return this.builder.buildCoordinate();
 
@@ -441,17 +441,17 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTFALSENODE:
                 return this.builder.buildFalseLiteral();
 
-                // ----------------------------------------
-                //  ID Predicate
-                // ----------------------------------------
+            // ----------------------------------------
+            //  ID Predicate
+            // ----------------------------------------
             case JJTFEATURE_ID_NODE:
                 return this.builder.buildFeatureID(getTokenInPosition(0));
 
             case JJTID_PREDICATE_NODE:
                 return this.builder.buildFilterId(JJTFEATURE_ID_NODE);
-                // ----------------------------------------
-                //  IN Predicate
-                // ----------------------------------------
+            // ----------------------------------------
+            //  IN Predicate
+            // ----------------------------------------
             case JJTIN_PREDICATE_NODE:
                 return this.builder.buildInPredicate(JJTEXPRESSION_IN_LIST_NODE);
 

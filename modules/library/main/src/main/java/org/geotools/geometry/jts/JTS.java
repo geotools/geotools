@@ -706,10 +706,10 @@ public final class JTS {
 
         while (!iterator.isDone()) {
             switch (iterator.currentSegment(buffer)) {
-                    /*
-                     * Close the polygon: the last point is equal to the first point, and a LinearRing is
-                     * created.
-                     */
+                /*
+                 * Close the polygon: the last point is equal to the first point, and a LinearRing is
+                 * created.
+                 */
                 case PathIterator.SEG_CLOSE: {
                     if (!coords.isEmpty()) {
                         coords.add(coords.get(0));
@@ -719,10 +719,10 @@ public final class JTS {
                     break;
                 }
 
-                    /*
-                     * General case: A LineString is created from previous points, and a new LineString
-                     * begin for next points.
-                     */
+                /*
+                 * General case: A LineString is created from previous points, and a new LineString
+                 * begin for next points.
+                 */
                 case PathIterator.SEG_MOVETO: {
                     if (!coords.isEmpty()) {
                         lines.add(factory.createLineString(coords.toArray(new Coordinate[coords.size()])));

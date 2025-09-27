@@ -146,7 +146,7 @@ public class FilterOpsComplexTypes {
         int i = 0;
 
         switch (Filters.getExpressionType(expr)) {
-                /* Types implemented by ExpressionLiteral */
+            /* Types implemented by ExpressionLiteral */
             case org.geotools.filter.ExpressionType.LITERAL_DOUBLE:
             case org.geotools.filter.ExpressionType.LITERAL_INTEGER:
             case org.geotools.filter.ExpressionType.LITERAL_STRING:
@@ -156,7 +156,7 @@ public class FilterOpsComplexTypes {
 
                 break;
 
-                /* Types implemented by ExpressionMath. */
+            /* Types implemented by ExpressionMath. */
             case org.geotools.filter.ExpressionType.MATH_ADD:
                 i = 29;
 
@@ -177,9 +177,9 @@ public class FilterOpsComplexTypes {
 
                 break;
 
-                /* Types implemented by ExpressionAttribute. */
+            /* Types implemented by ExpressionAttribute. */
 
-                /** Defines an attribute expression with a declared double type. */
+            /** Defines an attribute expression with a declared double type. */
             case org.geotools.filter.ExpressionType.ATTRIBUTE_DOUBLE:
             case org.geotools.filter.ExpressionType.ATTRIBUTE_INTEGER:
             case org.geotools.filter.ExpressionType.ATTRIBUTE_STRING:

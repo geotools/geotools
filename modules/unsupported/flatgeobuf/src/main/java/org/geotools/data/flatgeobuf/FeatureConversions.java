@@ -205,8 +205,9 @@ public class FeatureConversions {
                 }
 
                 case ColumnType.String -> writeString(target, (String) value);
-                default -> throw new RuntimeException(
-                        "Cannot handle type " + value.getClass().getName());
+                default ->
+                    throw new RuntimeException(
+                            "Cannot handle type " + value.getClass().getName());
             }
         }
     }

@@ -37,9 +37,9 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import org.eclipse.imagen.BorderExtender;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.TileCache;
 import org.eclipse.imagen.TileScheduler;
@@ -713,7 +713,7 @@ class NetCDFResponse extends CoverageResponse {
             finalRaster2Model.preConcatenate((AffineTransform) mosaicWorldToGrid);
 
             final Interpolation interpolation = request.getInterpolation();
-            // paranoiac check to avoid that JAI freaks out when computing its internal layouT on
+            // paranoiac check to avoid that ImageN freaks out when computing its internal layouT on
             // images that are too small
             Rectangle2D finalLayout = ImageUtilities.layoutHelper(
                     raster,
@@ -731,7 +731,7 @@ class NetCDFResponse extends CoverageResponse {
             }
             // apply the affine transform conserving indexed color model
             final RenderingHints localHints = new RenderingHints(
-                    JAI.KEY_REPLACE_INDEX_COLOR_MODEL,
+                    ImageN.KEY_REPLACE_INDEX_COLOR_MODEL,
                     interpolation instanceof InterpolationNearest ? Boolean.FALSE : Boolean.TRUE);
             //
             // In case we are asked to use certain tile dimensions we tile
@@ -743,31 +743,31 @@ class NetCDFResponse extends CoverageResponse {
             // if(tileDimensions!=null&&request.getReadType().equals(ReadType.DIRECT_READ)) {
             // final ImageLayout layout = new ImageLayout();
             // layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-            // localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));
+            // localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT,layout));
             // } else {
-            // if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            // final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
+            // if (hints != null && hints.containsKey(ImageN.KEY_IMAGE_LAYOUT)) {
+            // final Object layout = hints.get(ImageN.KEY_IMAGE_LAYOUT);
             // if (layout != null && layout instanceof ImageLayout) {
-            // localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, ((ImageLayout)
+            // localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, ((ImageLayout)
             // layout).clone()));
             // }
             // }
             // }
-            if (hints != null && hints.containsKey(JAI.KEY_TILE_CACHE)) {
-                final Object cache = hints.get(JAI.KEY_TILE_CACHE);
+            if (hints != null && hints.containsKey(ImageN.KEY_TILE_CACHE)) {
+                final Object cache = hints.get(ImageN.KEY_TILE_CACHE);
                 if (cache != null && cache instanceof TileCache)
-                    localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
+                    localHints.add(new RenderingHints(ImageN.KEY_TILE_CACHE, cache));
             }
-            if (hints != null && hints.containsKey(JAI.KEY_TILE_SCHEDULER)) {
-                final Object scheduler = hints.get(JAI.KEY_TILE_SCHEDULER);
+            if (hints != null && hints.containsKey(ImageN.KEY_TILE_SCHEDULER)) {
+                final Object scheduler = hints.get(ImageN.KEY_TILE_SCHEDULER);
                 if (scheduler != null && scheduler instanceof TileScheduler)
-                    localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
+                    localHints.add(new RenderingHints(ImageN.KEY_TILE_SCHEDULER, scheduler));
             }
             boolean addBorderExtender = true;
-            if (hints != null && hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-                final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
+            if (hints != null && hints.containsKey(ImageN.KEY_BORDER_EXTENDER)) {
+                final Object extender = hints.get(ImageN.KEY_BORDER_EXTENDER);
                 if (extender != null && extender instanceof BorderExtender) {
-                    localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, extender));
+                    localHints.add(new RenderingHints(ImageN.KEY_BORDER_EXTENDER, extender));
                     addBorderExtender = false;
                 }
             }

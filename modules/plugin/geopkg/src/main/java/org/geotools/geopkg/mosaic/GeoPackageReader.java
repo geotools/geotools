@@ -43,8 +43,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OpImage;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
@@ -389,7 +389,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         il.setTileHeight(sourceImages.get(0).getHeight());
 
         // simple
-        RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+        RenderingHints hints = new Hints(ImageN.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
         return new OpImage(new Vector<>(sourceImages), il, hints, false) {
 
@@ -457,7 +457,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         pb.setParameter("backgroundValues", new double[] {0});
         pb.setParameter("nodata", null);
 
-        RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+        RenderingHints hints = new Hints(ImageN.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
         RenderedImage image = new MosaicRIF().create(pb, hints);
         return image;

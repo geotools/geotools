@@ -21,7 +21,7 @@ import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.operator.ConstantDescriptor;
@@ -53,7 +53,7 @@ public class ZeroImageNode extends BaseCoverageProcessingNode {
         Hints hints = new Hints(getHints());
         final ImageLayout layout = new ImageLayout(sourceImage);
         layout.unsetValid(ImageLayout.COLOR_MODEL_MASK).unsetValid(ImageLayout.SAMPLE_MODEL_MASK);
-        hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+        hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
         final RenderedOp constant = ConstantDescriptor.create(
                 (float) sourceImage.getWidth(), (float) sourceImage.getHeight(), bandValues, hints);
 

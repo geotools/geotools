@@ -96,7 +96,7 @@ public final class SubsampleAverageTest extends GridProcessingTestBase {
          * Check that the final envelope is close enough to the initial envelope.
          * In a perfect world they should be the same exact thing but in practice
          * this is quite hard to achieve when doing scaling due to the fact that
-         * the various JAI operations use some complex laws to compute the final
+         * the various ImageN operations use some complex laws to compute the final
          * image bounds.
          */
         assertEnvelopeEquals(scaled, coverage);
@@ -119,7 +119,7 @@ public final class SubsampleAverageTest extends GridProcessingTestBase {
         scaledImage = scaled.getRenderedImage();
         /*
          * I had to comment this out since sometimes this evaluation fails
-         * unexpectedly. I think it is a JAI issue because here below I am using
+         * unexpectedly. I think it is a ImageN issue because here below I am using
          * the rule they claim to follow.
          */
         //        if (false) {

@@ -69,9 +69,9 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
         boolean available = false;
 
         // if these classes are here, then the runtime environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
-            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.ImageN");
             Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
             if (cachedSpi != null) available = true;
             //

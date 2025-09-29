@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.ROIShape;
@@ -116,7 +115,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseStatisticsOperationJAI}.
      *
-     * @param operationDescriptor {@link OperationDescriptor} for the underlying JAI operation.
+     * @param operationDescriptor {@link OperationDescriptor} for the underlying ImageN operation.
      */
     public BaseStatisticsOperationJAI(OperationDescriptor operationDescriptor) {
         super(
@@ -128,9 +127,9 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseStatisticsOperationJAI}.
      *
-     * @param operationDescriptor {@link OperationDescriptor} for the underlying JAI operation.
+     * @param operationDescriptor {@link OperationDescriptor} for the underlying ImageN operation.
      * @param replacements {@link ImagingParameterDescriptors} that should replace the correspondent
-     *     {@link ImagingParameters} in order to change the default behavior they have inside JAI.
+     *     {@link ImagingParameters} in order to change the default behavior they have inside ImageN.
      */
     public BaseStatisticsOperationJAI(
             OperationDescriptor operationDescriptor, ImagingParameterDescriptors replacements) {
@@ -146,7 +145,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseStatisticsOperationJAI}.
      *
-     * @param name of the underlying JAI operation.
+     * @param name of the underlying ImageN operation.
      */
     public BaseStatisticsOperationJAI(String name, OperationDescriptor operationDescriptor) {
         super(
@@ -158,7 +157,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseStatisticsOperationJAI}.
      *
-     * @param name of the underlying JAI operation.
+     * @param name of the underlying ImageN operation.
      */
     public BaseStatisticsOperationJAI(String name) {
         super(
@@ -170,7 +169,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
      * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link ParameterBlockJAI}
      *
      * @param parameters The {@link ParameterValueGroup} to be copied.
-     * @return A copy of the provided {@link ParameterValueGroup} as a JAI block.
+     * @return A copy of the provided {@link ParameterValueGroup} as a ImageN block.
      * @see
      *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.geotools.api.parameter.ParameterValueGroup)
      */

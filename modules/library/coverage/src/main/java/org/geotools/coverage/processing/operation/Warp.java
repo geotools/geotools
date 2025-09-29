@@ -34,7 +34,7 @@ import org.geotools.coverage.processing.BaseScaleOperationJAI;
 import org.geotools.coverage.util.CoverageUtilities;
 
 /**
- * This operation is simply a wrapper for the JAI Warp operation
+ * This operation is simply a wrapper for the ImageN Warp operation
  *
  * @version $Id$
  * @author Simone Giannecchini

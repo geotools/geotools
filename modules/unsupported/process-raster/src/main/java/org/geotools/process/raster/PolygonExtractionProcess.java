@@ -22,7 +22,7 @@ import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.range.Range;
@@ -66,7 +66,7 @@ public class PolygonExtractionProcess implements RasterProcess {
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(), new VectorizeDescriptor(), new VectorizeRIF(), Registry.JAI_TOOLS_PRODUCT);
+                ImageN.getDefaultInstance(), new VectorizeDescriptor(), new VectorizeRIF(), Registry.JAI_TOOLS_PRODUCT);
     }
 
     /**
@@ -182,7 +182,7 @@ public class PolygonExtractionProcess implements RasterProcess {
         }
         // pb.setParameter("removeCollinear", false);
 
-        final RenderedOp dest = JAI.create("Vectorize", pb);
+        final RenderedOp dest = ImageN.create("Vectorize", pb);
         @SuppressWarnings("unchecked")
         final Collection<Polygon> prop =
                 (Collection<Polygon>) dest.getProperty(VectorizeDescriptor.VECTOR_PROPERTY_NAME);

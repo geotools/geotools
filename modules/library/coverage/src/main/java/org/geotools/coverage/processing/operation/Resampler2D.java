@@ -33,8 +33,8 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
@@ -219,7 +219,7 @@ final class Resampler2D extends GridCoverage2D {
      * @param interpolation The interpolation to use, or {@code null} if none.
      * @param hints The rendering hints. This is usually provided by {@link CoverageProcessor}. This method will looks
      *     for {@link Hints#COORDINATE_OPERATION_FACTORY} and {@link Hints#JAI_INSTANCE} keys.
-     * @param backgroundValues The background values to be used by the underlying JAI operation, or {@code null} if
+     * @param backgroundValues The background values to be used by the underlying ImageN operation, or {@code null} if
      *     none.
      * @return The new grid coverage, or {@code sourceCoverage} if no resampling was needed.
      * @throws FactoryException if a transformation step can't be created.
@@ -238,7 +238,7 @@ final class Resampler2D extends GridCoverage2D {
         //// =======>>  STEP 1: Extracts needed informations from the parameters   <<====== ////
         ////            STEP 2: Creates the "target to source" MathTransform                ////
         ////            STEP 3: Computes the target image layout                            ////
-        ////            STEP 4: Applies the JAI operation ("Affine", "Warp", etc)           ////
+        ////            STEP 4: Applies the ImageN operation ("Affine", "Warp", etc)           ////
         ////                                                                                ////
         ////////////////////////////////////////////////////////////////////////////////////////
         Utilities.ensureNonNull("sourceCoverage", sourceCoverage);
@@ -275,16 +275,16 @@ final class Resampler2D extends GridCoverage2D {
 
             // if we did not the interpolation, let's try to get it from hints
             if (hints != null) {
-                // JAI interpolation
-                if (hints.containsKey(JAI.KEY_INTERPOLATION))
-                    interpolation = (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
+                // ImageN interpolation
+                if (hints.containsKey(ImageN.KEY_INTERPOLATION))
+                    interpolation = (Interpolation) hints.get(ImageN.KEY_INTERPOLATION);
             }
         } else {
             // we have been provided with interpolation, let's override hints
-            hints.put(JAI.KEY_INTERPOLATION, interpolation);
+            hints.put(ImageN.KEY_INTERPOLATION, interpolation);
         }
-        if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-            hints.put(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+        if (hints != null && !hints.containsKey(ImageN.KEY_BORDER_EXTENDER)) {
+            hints.put(ImageN.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
         }
 
         /*
@@ -378,7 +378,7 @@ final class Resampler2D extends GridCoverage2D {
         ////            STEP 1: Extracts needed informations from the parameters            ////
         //// =======>>  STEP 2: Creates the "target to source" MathTransform       <<====== ////
         ////            STEP 3: Computes the target image layout                            ////
-        ////            STEP 4: Applies the JAI operation ("Affine", "Warp", etc)           ////
+        ////            STEP 4: Applies the ImageN operation ("Affine", "Warp", etc)           ////
         ////                                                                                ////
         ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -499,24 +499,24 @@ final class Resampler2D extends GridCoverage2D {
         ////            STEP 1: Extracts needed informations from the parameters            ////
         ////            STEP 2: Creates the "target to source" MathTransform                ////
         //// =======>>  STEP 3: Computes the target image layout                   <<====== ////
-        ////            STEP 4: Applies the JAI operation ("Affine", "Warp", etc)           ////
+        ////            STEP 4: Applies the ImageN operation ("Affine", "Warp", etc)           ////
         ////                                                                                ////
         ////////////////////////////////////////////////////////////////////////////////////////
 
         RenderingHints targetHints = ImageUtilities.getRenderingHints(sourceImage);
         if (targetHints == null) {
-            targetHints =
-                    new RenderingHints(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            targetHints = new RenderingHints(
+                    ImageN.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         } else {
-            targetHints.put(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            targetHints.put(ImageN.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         }
-        targetHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
-        targetHints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, false);
+        targetHints.put(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+        targetHints.put(ImageN.KEY_TRANSFORM_ON_COLORMAP, false);
 
         if (hints != null) {
             targetHints.add(hints);
         }
-        ImageLayout layout = (ImageLayout) targetHints.get(JAI.KEY_IMAGE_LAYOUT);
+        ImageLayout layout = (ImageLayout) targetHints.get(ImageN.KEY_IMAGE_LAYOUT);
         if (layout != null) {
             layout = (ImageLayout) layout.clone();
         } else {
@@ -549,20 +549,20 @@ final class Resampler2D extends GridCoverage2D {
 
         /*
          * We need to correctly manage the Hints to control the replacement of IndexColorModel.
-         * It is worth to point out that setting the JAI.KEY_REPLACE_INDEX_COLOR_MODEL hint to
+         * It is worth to point out that setting the ImageN.KEY_REPLACE_INDEX_COLOR_MODEL hint to
          * Boolean.TRUE is not enough to force the operators to do an expansion. If we explicitly
          * provide an ImageLayout built with the source image where the CM and the SM are valid.
          * those will be employed overriding a the possibility to expand the color model.
          */
 
-        targetHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+        targetHints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
 
         ////////////////////////////////////////////////////////////////////////////////////////
         ////                                                                                ////
         ////            STEP 1: Extracts needed informations from the parameters            ////
         ////            STEP 2: Creates the "target to source" MathTransform                ////
         ////            STEP 3: Computes the target image layout                            ////
-        //// =======>>  STEP 4: Applies the JAI operation ("Affine", "Warp", etc)  <<====== ////
+        //// =======>>  STEP 4: Applies the ImageN operation ("Affine", "Warp", etc)  <<====== ////
         ////                                                                                ////
         ////////////////////////////////////////////////////////////////////////////////////////
         /*
@@ -626,12 +626,12 @@ final class Resampler2D extends GridCoverage2D {
             }
         } else {
             /*
-             * Special case for the affine transform. Try to use the JAI "Affine" operation
-             * instead of the more general "Warp" one. JAI provides native acceleration for
+             * Special case for the affine transform. Try to use the ImageN "Affine" operation
+             * instead of the more general "Warp" one. ImageN provides native acceleration for
              * the affine operation.
              *
              * NOTE 1: There is no need to check for "Scale" and "Translate" as special cases
-             *         of "Affine" since JAI already does this check for us.
+             *         of "Affine" since ImageN already does this check for us.
              *
              * NOTE 2: "Affine", "Scale", "Translate", "Rotate" and similar operations ignore
              *         the 'xmin', 'ymin', 'width' and 'height' image layout. Consequently, we
@@ -669,16 +669,16 @@ final class Resampler2D extends GridCoverage2D {
                 /*
                  * General case: constructs the warp transform.
                  *
-                 * TODO: JAI 1.1.3 seems to have a bug when the target envelope is greater than
+                 * TODO: ImageN 1.1.3 seems to have a bug when the target envelope is greater than
                  *       the source envelope:  Warp on float values doesn't set to 'background'
                  *       the points outside the envelope. The operation seems to work correctly
                  *       on integer values, so as a workaround we restart the operation without
                  *       interpolation (which increase the chances to get it down on integers).
-                 *       Remove this hack when this JAI bug will be fixed.
+                 *       Remove this hack when this ImageN bug will be fixed.
                  *
                  * TODO: Move the check for AffineTransform into WarpTransform2D.
                  */
-                // -------- End of JAI bug workaround --------
+                // -------- End of ImageN bug workaround --------
                 final MathTransform2D transform = (MathTransform2D) allSteps2D;
                 final CharSequence name = sourceCoverage.getName();
                 operation = "Warp";
@@ -701,8 +701,8 @@ final class Resampler2D extends GridCoverage2D {
         }
         final Locale locale = sourceCoverage.getLocale(); // For logging purpose.
         /*
-         * The JAI operation sometime returns an image with a bounding box different than what we
-         * expected. This is true especially for the "Affine" operation: the JAI documentation said
+         * The ImageN operation sometime returns an image with a bounding box different than what we
+         * expected. This is true especially for the "Affine" operation: the ImageN documentation said
          * explicitly that xmin, ymin, width and height image layout hints are ignored for this one.
          * As a safety, we check the bounding box in any case. If it doesn't matches, then we will
          * reconstruct the target grid geometry.
@@ -730,7 +730,7 @@ final class Resampler2D extends GridCoverage2D {
          * Constructs the final grid coverage, then log a message as in the following example:
          *
          *     Resampled coverage "Foo" from coordinate system "myCS" (for an image of size
-         *     1000x1500) to coordinate system "WGS84" (image size 1000x1500). JAI operation
+         *     1000x1500) to coordinate system "WGS84" (image size 1000x1500). ImageN operation
          *     is "Warp" with "Nearest" interpolation on geophysics pixels values. Background
          *     value is 255.
          */
@@ -831,8 +831,8 @@ final class Resampler2D extends GridCoverage2D {
     private static boolean isColorModelExpanded(final RenderedImage image, final Hints hints) {
 
         if (image.getColorModel() instanceof IndexColorModel) {
-            if (hints != null && hints.containsKey(JAI.KEY_REPLACE_INDEX_COLOR_MODEL)) {
-                Boolean replace = (Boolean) hints.get(JAI.KEY_REPLACE_INDEX_COLOR_MODEL);
+            if (hints != null && hints.containsKey(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL)) {
+                Boolean replace = (Boolean) hints.get(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL);
                 if (replace != null) {
                     return replace;
                 }

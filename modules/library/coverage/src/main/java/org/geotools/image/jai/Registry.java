@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.ParameterBlockJAI;
@@ -56,11 +56,11 @@ public final class Registry {
     /** Native acceleration is no longer supported. */
     @Deprecated
     public static synchronized void setNativeAccelerationAllowed(
-            final String operation, final boolean allowed, final JAI jai) {
+            final String operation, final boolean allowed, final ImageN jai) {
         final String product = "org.eclipse.imagen.media";
         final OperationRegistry registry = jai.getOperationRegistry();
 
-        // TODO: Check if we can remove SuppressWarnings with a future JAI version.
+        // TODO: Check if we can remove SuppressWarnings with a future ImageN version.
         @SuppressWarnings("unchecked")
         final List<RenderedImageFactory> factories =
                 registry.getOrderedFactoryList(RenderedRegistryMode.MODE_NAME, operation, product);
@@ -109,21 +109,21 @@ public final class Registry {
     /** Native acceleration is no longer supported. */
     @Deprecated
     public static void setNativeAccelerationAllowed(final String operation, final boolean allowed) {
-        setNativeAccelerationAllowed(operation, allowed, JAI.getDefaultInstance());
+        setNativeAccelerationAllowed(operation, allowed, ImageN.getDefaultInstance());
     }
 
     /**
-     * Register the "SampleTranscode" image operation to the operation registry of the specified JAI instance. This
+     * Register the "SampleTranscode" image operation to the operation registry of the specified ImageN instance. This
      * method is invoked by the static initializer of {@link GridSampleDimension}.
      *
      * @param jai is he {@link JAI} instance in which we ant to register this operation.
-     * @param descriptor is the {@link OperationDescriptor} for the JAI operation to register.
+     * @param descriptor is the {@link OperationDescriptor} for the ImageN operation to register.
      * @param name is the name of the operation to register.
      * @param crif is the rendered image facotry for this operation.
      * @return <code>true</code> if everything goes well, <code>false</code> otherwise.
      */
     public static boolean registerRIF(
-            final JAI jai,
+            final ImageN jai,
             final OperationDescriptor descriptor,
             final String name,
             final ContextualRenderedImageFactory crif) {
@@ -146,13 +146,13 @@ public final class Registry {
     }
 
     /**
-     * Forcefully registers the specified rendered operation in the JAI registry
+     * Forcefully registers the specified rendered operation in the ImageN registry
      *
      * @return true if the registration succeded, false if the registration was not required as the operation was
      *     already available in the registry
      */
     public static boolean registerRIF(
-            final JAI jai, OperationDescriptor descriptor, RenderedImageFactory rif, String productName) {
+            final ImageN jai, OperationDescriptor descriptor, RenderedImageFactory rif, String productName) {
         final OperationRegistry registry = jai.getOperationRegistry();
         try {
             // see if the operation is already registered, avoid registering it twice

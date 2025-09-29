@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.lookup.LookupTable;
 import org.eclipse.imagen.media.lookup.LookupTableFactory;
@@ -385,7 +385,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                     imageLayout.setSampleModel(IHS.getSampleModel());
                     final RenderingHints rendHints = new RenderingHints(Collections.emptyMap());
                     rendHints.add(hints);
-                    rendHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, imageLayout));
+                    rendHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, imageLayout));
 
                     // merge and go to rgb again
                     intensityWorker
@@ -419,7 +419,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                     // merge and go to rgb
                     intensityWorker
                             .setRenderingHints(hints)
-                            .setRenderingHint(JAI.KEY_IMAGE_LAYOUT, imageLayout)
+                            .setRenderingHint(ImageN.KEY_IMAGE_LAYOUT, imageLayout)
                             .addBand(alphaBand, false, true, null);
                 }
 

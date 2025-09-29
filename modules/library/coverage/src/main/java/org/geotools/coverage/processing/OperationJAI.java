@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import javax.measure.Unit;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.ParameterBlockJAI;
@@ -78,7 +78,7 @@ import org.geotools.util.factory.Hints;
 /**
  * Wraps a JAI's {@link OperationDescriptor} for interoperability with <A
  * HREF="http://java.sun.com/products/java-media/jai/">Java Advanced Imaging</A>. This class help to leverage the rich
- * set of JAI operators in an GeoAPI framework. {@code OperationJAI} inherits operation name and argument types from
+ * set of ImageN operators in an GeoAPI framework. {@code OperationJAI} inherits operation name and argument types from
  * {@link OperationDescriptor}, except the source argument type (usually <code>{@linkplain RenderedImage}.class</code>)
  * which is set to <code>
  * {@linkplain GridCoverage2D}.class</code>. If there is only one source argument, it will be renamed {@code "source"}
@@ -108,7 +108,7 @@ import org.geotools.util.factory.Hints;
  *   <tr><td>{@link #deriveUnit deriveUnit}:&nbsp;</td>
  *       <td>gets the destination units.</td></tr>
  *   <tr><td>{@link #createRenderedImage createRenderedImage}:&nbsp;</td>
- *       <td>the actual call to {@link JAI#createNS JAI.createNS}.</td></tr>
+ *       <td>the actual call to {@link JAI#createNS ImageN.createNS}.</td></tr>
  * </table>
  *
  * </blockquote>
@@ -123,49 +123,49 @@ public class OperationJAI extends Operation2D {
     @Serial
     private static final long serialVersionUID = -5974520239347639965L;
 
-    /** The rendered mode for JAI operation. */
+    /** The rendered mode for ImageN operation. */
     protected static final String RENDERED_MODE = RenderedRegistryMode.MODE_NAME;
 
     /** The JAI's operation descriptor. */
     protected final OperationDescriptor operation;
 
     /**
-     * Constructs a grid coverage operation from a JAI operation name. This convenience constructor fetch the
+     * Constructs a grid coverage operation from a ImageN operation name. This convenience constructor fetch the
      * {@link OperationDescriptor} from the specified operation name using the default {@link JAI} instance.
      *
-     * @param operation JAI operation name
-     * @throws OperationNotFoundException if no JAI descriptor was found for the given name.
+     * @param operation ImageN operation name
+     * @throws OperationNotFoundException if no ImageN descriptor was found for the given name.
      */
     public OperationJAI(final String operation) throws OperationNotFoundException {
         this(getOperationDescriptor(operation));
     }
 
     /**
-     * Constructs a grid coverage operation backed by a JAI operation. The operation descriptor must supports the
-     * {@code "rendered"} mode (which is the case for most JAI operations).
+     * Constructs a grid coverage operation backed by a ImageN operation. The operation descriptor must supports the
+     * {@code "rendered"} mode (which is the case for most ImageN operations).
      *
-     * @param operation The JAI operation descriptor.
+     * @param operation The ImageN operation descriptor.
      */
     public OperationJAI(final OperationDescriptor operation) {
         this(operation, new ImagingParameterDescriptors(operation));
     }
 
     /**
-     * Constructs a grid coverage operation backed by a JAI operation. The operation descriptor must supports the
-     * {@code "rendered"} mode (which is the case for most JAI operations).
+     * Constructs a grid coverage operation backed by a ImageN operation. The operation descriptor must supports the
+     * {@code "rendered"} mode (which is the case for most ImageN operations).
      *
-     * @param operationName JAI operation name
-     * @param operation The JAI operation descriptor.
+     * @param operationName ImageN operation name
+     * @param operation The ImageN operation descriptor.
      */
     public OperationJAI(final String operationName, final OperationDescriptor operation) {
         this(operation, new ExtendedImagingParameterDescriptors(operationName, operation));
     }
 
     /**
-     * Constructs a grid coverage operation backed by a JAI operation. The operation descriptor must supports the
-     * {@code "rendered"} mode (which is the case for most JAI operations).
+     * Constructs a grid coverage operation backed by a ImageN operation. The operation descriptor must supports the
+     * {@code "rendered"} mode (which is the case for most ImageN operations).
      *
-     * @param operation The JAI operation descriptor.
+     * @param operation The ImageN operation descriptor.
      * @param descriptor The OGC parameters descriptor.
      */
     protected OperationJAI(final OperationDescriptor operation, final ParameterDescriptorGroup descriptor) {
@@ -188,16 +188,16 @@ public class OperationJAI extends Operation2D {
     }
 
     /**
-     * Returns the operation descriptor for the specified JAI operation name. This method uses the default {@link JAI}
-     * instance and looks for the {@value #RENDERED_MODE} mode.
+     * Returns the operation descriptor for the specified ImageN operation name. This method uses the default
+     * {@link JAI} instance and looks for the {@value #RENDERED_MODE} mode.
      *
      * @param name The operation name.
      * @return The operation descriptor for the given name.
-     * @throws OperationNotFoundException if no JAI descriptor was found for the given name.
+     * @throws OperationNotFoundException if no ImageN descriptor was found for the given name.
      * @since 2.4
      */
     protected static OperationDescriptor getOperationDescriptor(final String name) throws OperationNotFoundException {
-        final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+        final OperationRegistry registry = ImageN.getDefaultInstance().getOperationRegistry();
         OperationDescriptor operation = (OperationDescriptor) registry.getDescriptor(RENDERED_MODE, name);
         if (operation != null) {
             return operation;
@@ -222,7 +222,7 @@ public class OperationJAI extends Operation2D {
      * However, we perform an unconditional copy instead because some operations may change the values.
      *
      * @param parameters The {@link ParameterValueGroup} to be copied.
-     * @return A copy of the provided {@link ParameterValueGroup} as a JAI block.
+     * @return A copy of the provided {@link ParameterValueGroup} as a ImageN block.
      * @since 2.4
      */
     protected ParameterBlockJAI prepareParameters(final ParameterValueGroup parameters) {
@@ -296,7 +296,7 @@ public class OperationJAI extends Operation2D {
     }
 
     /**
-     * Post processing on the coverage resulting from JAI operation.
+     * Post processing on the coverage resulting from ImageN operation.
      *
      * @param coverage {@link GridCoverage2D} resulting from the operation.
      * @return the prepared {@link GridCoverage2D}.
@@ -521,13 +521,13 @@ public class OperationJAI extends Operation2D {
     }
 
     /**
-     * Applies a JAI operation to a grid coverage. This method is invoked automatically by {@link #doOperation}. The
+     * Applies a ImageN operation to a grid coverage. This method is invoked automatically by {@link #doOperation}. The
      * default implementation performs the following steps:
      *
      * <ul>
      *   <li>Gets the {@linkplain GridSampleDimension sample dimensions} for the target images by invoking the
      *       {@link #deriveSampleDimension deriveSampleDimension(...)} method.
-     *   <li>Applied the JAI operation using {@link #createRenderedImage}.
+     *   <li>Applied the ImageN operation using {@link #createRenderedImage}.
      *   <li>Wraps the result in a {@link GridCoverage2D} object.
      * </ul>
      *
@@ -569,7 +569,7 @@ public class OperationJAI extends Operation2D {
          *     - Color model
          */
         RenderingHints hints = ImageUtilities.getRenderingHints(parameters.getSource());
-        ImageLayout layout = hints != null ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
+        ImageLayout layout = hints != null ? (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT) : null;
         if (layout == null || !layout.isValid(ImageLayout.COLOR_MODEL_MASK)) {
             if (sampleDims != null && sampleDims.length != 0) {
                 int visibleBand = CoverageUtilities.getVisibleBand(primarySource.getRenderedImage());
@@ -587,9 +587,9 @@ public class OperationJAI extends Operation2D {
         }
         if (layout != null) {
             if (hints == null) {
-                hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
             } else {
-                hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         }
         if (parameters.hints != null) {
@@ -600,7 +600,7 @@ public class OperationJAI extends Operation2D {
             }
         }
         /*
-         * Performs the operation using JAI and construct the new grid coverage.
+         * Performs the operation using ImageN and construct the new grid coverage.
          * Uses the coordinate system from the main source coverage in order to
          * preserve the extra dimensions (if any). The first two dimensions should
          * be equal to the coordinate system set in the 'parameters' block.
@@ -927,8 +927,8 @@ public class OperationJAI extends Operation2D {
     }
 
     /**
-     * Applies the JAI operation. The operation name can be fetch from {@link #operation}. The JAI instance to use can
-     * be fetch from {@link #getJAI}. The default implementation returns the following:
+     * Applies the ImageN operation. The operation name can be fetch from {@link #operation}. The ImageN instance to use
+     * can be fetch from {@link #getJAI}. The default implementation returns the following:
      *
      * <blockquote>
      *
@@ -938,31 +938,31 @@ public class OperationJAI extends Operation2D {
      *
      * </blockquote>
      *
-     * Subclasses may override this method in order to invokes a different JAI operation according the parameters.
+     * Subclasses may override this method in order to invokes a different ImageN operation according the parameters.
      *
-     * @param parameters The parameters to be given to JAI.
-     * @param hints The rendering hints to be given to JAI.
-     * @return The result of JAI operation using the given parameters and hints.
+     * @param parameters The parameters to be given to ImageN.
+     * @param hints The rendering hints to be given to ImageN.
+     * @return The result of ImageN operation using the given parameters and hints.
      */
     protected RenderedImage createRenderedImage(final ParameterBlockJAI parameters, final RenderingHints hints) {
         return getJAI(hints).createNS(operation.getName(), parameters, hints);
     }
 
     /**
-     * Returns the {@link JAI} instance to use for operations on {@link RenderedImage}. If no JAI instance is defined
+     * Returns the {@link JAI} instance to use for operations on {@link RenderedImage}. If no ImageN instance is defined
      * for the {@link Hints#JAI_INSTANCE} key, then the default instance is returned.
      *
      * @param hints The rendering hints, or {@code null} if none.
-     * @return The JAI instance to use (never {@code null}).
+     * @return The ImageN instance to use (never {@code null}).
      */
-    public static final JAI getJAI(final RenderingHints hints) {
+    public static final ImageN getJAI(final RenderingHints hints) {
         if (hints != null) {
             final Object value = hints.get(Hints.JAI_INSTANCE);
-            if (value instanceof JAI aI) {
+            if (value instanceof ImageN aI) {
                 return aI;
             }
         }
-        return JAI.getDefaultInstance();
+        return ImageN.getDefaultInstance();
     }
 
     /** Compares the specified object with this operation for equality. */
@@ -1043,7 +1043,7 @@ public class OperationJAI extends Operation2D {
     }
 
     /**
-     * Extension point for adding to the JAI {@link ParameterBlockJAI} object the parameters defined in the
+     * Extension point for adding to the ImageN {@link ParameterBlockJAI} object the parameters defined in the
      * {@link ParameterValueGroup}, which can be read by the JAI-EXT operations.
      *
      * <p>Notice that if you are using JAI, the new parameters will not be accepted by the {@link ParameterBlockJAI}

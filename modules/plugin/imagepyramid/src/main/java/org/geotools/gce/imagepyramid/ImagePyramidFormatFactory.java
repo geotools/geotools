@@ -30,7 +30,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  */
 public final class ImagePyramidFormatFactory implements GridFormatFactorySpi {
     /**
-     * Tells us if this plugin is avaialble or not. Since usually coverage plugins depend on JAI and ImageIO classes
+     * Tells us if this plugin is avaialble or not. Since usually coverage plugins depend on ImageN and ImageIO classes
      * this method is suitable for understanding if such a plugin is available or not, preventing users from having
      * problems later on when trying to instantiate it.
      *

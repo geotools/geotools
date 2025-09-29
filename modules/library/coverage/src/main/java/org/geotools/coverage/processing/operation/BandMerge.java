@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
@@ -354,7 +354,7 @@ public class BandMerge extends OperationJAI {
         // Storing the input sources into and array
         GridCoverage2D[] sources = new GridCoverage2D[size];
         sourceCollection.toArray(sources);
-        // Creation of the ParameterBlockJAI object to pass to JAI.
+        // Creation of the ParameterBlockJAI object to pass to ImageN.
         ParameterBlockJAI block;
         try {
             block = prepareParameters(parameters, sources, tr, crsToGrid);
@@ -412,7 +412,7 @@ public class BandMerge extends OperationJAI {
      * <ul>
      *   <li>Gets the {@linkplain GridSampleDimension sample dimensions} for the target images by invoking the
      *       {@link #deriveSampleDimension deriveSampleDimension(...)} method.
-     *   <li>Applied the JAI operation using {@link #createRenderedImage}.
+     *   <li>Applied the ImageN operation using {@link #createRenderedImage}.
      *   <li>Wraps the result in a {@link GridCoverage2D} object.
      * </ul>
      *
@@ -445,7 +445,7 @@ public class BandMerge extends OperationJAI {
          * - Color model
          */
         RenderingHints hints = ImageUtilities.getRenderingHints(parameters.getSource());
-        ImageLayout layout = hints != null ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
+        ImageLayout layout = hints != null ? (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT) : null;
 
         // Selection of the Bounding Box to use if present
         ReferencedEnvelope bbox = parameters.bbox;
@@ -457,9 +457,9 @@ public class BandMerge extends OperationJAI {
             }
 
             if (hints == null) {
-                hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
             } else {
-                hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         } else if (bbox != null) {
             // New Layout Creation
@@ -468,9 +468,9 @@ public class BandMerge extends OperationJAI {
             updateLayout(parameters, layout, bbox);
 
             if (hints == null) {
-                hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
             } else {
-                hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         }
         // Setting of the Hints to use
@@ -483,7 +483,7 @@ public class BandMerge extends OperationJAI {
         }
 
         /*
-         * Performs the operation using JAI and construct the new grid coverage. Uses the coordinate system from the main source coverage in order to
+         * Performs the operation using ImageN and construct the new grid coverage. Uses the coordinate system from the main source coverage in order to
          * preserve the extra dimensions (if any). The first two dimensions should be equal to the coordinate system set in the 'parameters' block.
          */
         final InternationalString name = deriveName(sources, primarySourceIndex, null);
@@ -574,7 +574,7 @@ public class BandMerge extends OperationJAI {
     }
 
     /**
-     * This method prepares the {@link ParameterBlockJAI} to pass to JAI in order to execute the {@link BandMerge}
+     * This method prepares the {@link ParameterBlockJAI} to pass to ImageN in order to execute the {@link BandMerge}
      * operation.
      */
     private ParameterBlockJAI prepareParameters(

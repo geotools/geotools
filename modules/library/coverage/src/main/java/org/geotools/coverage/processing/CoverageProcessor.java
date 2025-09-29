@@ -33,8 +33,8 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.TileCache;
@@ -119,18 +119,18 @@ public class CoverageProcessor {
         }
     }
 
-    /** Augments the amount of memory allocated for the JAI tile cache. */
+    /** Augments the amount of memory allocated for the ImageN tile cache. */
     static {
         final long targetCapacity = 0x4000000; // 64 Mo.
         final long maxMemory = Runtime.getRuntime().maxMemory();
-        final TileCache cache = JAI.getDefaultInstance().getTileCache();
+        final TileCache cache = ImageN.getDefaultInstance().getTileCache();
         if (maxMemory >= 2 * targetCapacity) {
             if (cache.getMemoryCapacity() < targetCapacity) {
                 cache.setMemoryCapacity(targetCapacity);
             }
         }
         LOGGER.config("Java Advanced Imaging: "
-                + JAI.getBuildVersion()
+                + ImageN.getBuildVersion()
                 + ", TileCache capacity="
                 + (float) (cache.getMemoryCapacity() / (1024 * 1024))
                 + " Mb");
@@ -156,7 +156,7 @@ public class CoverageProcessor {
     private final Map<String, Operation> operations = Collections.synchronizedMap(new TreeMap<>(COMPARATOR));
 
     /**
-     * The rendering hints for JAI operations (never {@code null}). This field is usually given as argument to
+     * The rendering hints for ImageN operations (never {@code null}). This field is usually given as argument to
      * {@link OperationJAI} methods.
      */
     protected final Hints hints;
@@ -186,8 +186,8 @@ public class CoverageProcessor {
     public CoverageProcessor(final RenderingHints hints) {
         registry = new FactoryRegistry(Arrays.asList(new Class<?>[] {Operation.class}));
         this.hints = new Hints();
-        this.hints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
-        this.hints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
+        this.hints.put(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+        this.hints.put(ImageN.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
 
         // override with user hints
         if (hints != null) this.hints.add(hints);

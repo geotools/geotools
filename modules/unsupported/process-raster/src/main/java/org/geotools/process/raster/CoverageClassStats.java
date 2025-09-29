@@ -137,7 +137,7 @@ public class CoverageClassStats implements RasterProcess {
         }
 
         // compute the class breaks
-        // JD: for some reason running this in tomcat via JAI.create does not work, the operation
+        // JD: for some reason running this in tomcat via ImageN.create does not work, the operation
         // descriptor is never registered and it fails, so for now we just invoke the op directly
         // TODO: look into this more
         ParameterBlock pb = new ParameterBlock();

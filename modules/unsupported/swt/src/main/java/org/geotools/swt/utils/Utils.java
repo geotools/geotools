@@ -382,7 +382,7 @@ public class Utils {
      * Check if the given map layer contains a grid coverage or a grid coverage reader.
      *
      * <p>Implementation note: we avoid referencing org.geotools.coverage.grid classes directly here
-     * so that applications dealing only with other data types are not forced to have JAI in the
+     * so that applications dealing only with other data types are not forced to have ImageN in the
      * classpath.
      *
      * @param layer the map layer

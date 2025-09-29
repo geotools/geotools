@@ -137,7 +137,7 @@ final class ColorModelFactory {
             final int transparency = Transparency.OPAQUE;
             final ColorSpace colors = new ScaledColorSpace(visibleBand, numBands, minimum, maximum);
             // This is the J2SE implementation of color model. It should be our preferred one.
-            // In JAI 1.1 we had to use JAI implementation instead of J2SE's one because
+            // In ImageN 1.1 we had to use ImageN implementation instead of J2SE's one because
             // org.eclipse.imagen.iterator.RectIter didn't work with J2SE's DataBuffer
             // when the data type is float or double.
             return new ComponentColorModel(colors, false, false, transparency, type);

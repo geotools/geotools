@@ -44,8 +44,8 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.measure.Unit;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.NotAColorSpace;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
@@ -828,7 +828,7 @@ public class RasterLayerResponse {
             double minyRaster = Math.round(requestedRasterArea.getMinimum(1));
 
             // rebase the grid to world location to a position close to the requested one to
-            // avoid JAI playing with very large raster coordinates
+            // avoid ImageN playing with very large raster coordinates
             // This can be done because the final computation generates the coordinates of the
             // output coverage based on the output raster bounds and this very transform
             final AffineTransform at = (AffineTransform) baseGridToWorld;
@@ -972,14 +972,14 @@ public class RasterLayerResponse {
         il.setColorModel(cm);
         Dimension tileSize = request.getTileDimensions();
         if (tileSize == null) {
-            tileSize = JAI.getDefaultTileSize();
+            tileSize = ImageN.getDefaultTileSize();
         }
 
         il.setTileGridXOffset(0)
                 .setTileGridYOffset(0)
                 .setTileWidth((int) tileSize.getWidth())
                 .setTileHeight((int) tileSize.getHeight());
-        final RenderingHints renderingHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il);
+        final RenderingHints renderingHints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, il);
 
         // the output image is empty, if background values are not provided we use the noData value
         Double noData = rasterManager.getConfiguration().getNoData();

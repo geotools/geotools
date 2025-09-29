@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -532,7 +532,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         try {
             Hints newHints = hints.clone();
             Interpolation interpolation = readParameters.getInterpolation();
-            newHints.add(new RenderingHints(JAI.KEY_INTERPOLATION, interpolation));
+            newHints.add(new RenderingHints(ImageN.KEY_INTERPOLATION, interpolation));
             GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(hints);
             return GridCoverageRendererUtilities.reproject(
                     coverage2D,

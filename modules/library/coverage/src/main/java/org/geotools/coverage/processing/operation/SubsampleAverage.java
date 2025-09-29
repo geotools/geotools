@@ -20,7 +20,7 @@ import java.io.Serial;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
 
 /**
- * This operation is simply a wrapper for the JAI SubsampleAverage operation which allows me to arbitrarily scale a
+ * This operation is simply a wrapper for the ImageN SubsampleAverage operation which allows me to arbitrarily scale a
  * rendered image while smoothing it out.
  *
  * @author Simone Giannecchini, GeoSolutions.

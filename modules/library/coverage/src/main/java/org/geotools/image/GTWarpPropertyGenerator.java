@@ -23,8 +23,8 @@ import java.awt.image.renderable.ParameterBlock;
 import java.io.Serial;
 import org.eclipse.imagen.GeometricOpImage;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
@@ -56,7 +56,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
 
     public static synchronized void register(boolean force) {
         if (!registered || force) {
-            OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+            OperationRegistry registry = ImageN.getDefaultInstance().getOperationRegistry();
             registry.addPropertyGenerator("rendered", "Warp", new GTWarpPropertyGenerator());
             registered = true;
         }
@@ -129,7 +129,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             layout.setTileWidth(op.getTileWidth());
             layout.setTileHeight(op.getTileHeight());
             RenderingHints hints = op.getRenderingHints();
-            hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
 
             final PlanarImage constantImage =
                     ConstantDescriptor.create(Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
@@ -138,7 +138,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
 
             // Make sure to specify tileCache, tileScheduler, tileRecyclier, by cloning hints.
             RenderingHints warpingHints = op.getRenderingHints();
-            warpingHints.remove(JAI.KEY_IMAGE_LAYOUT);
+            warpingHints.remove(ImageN.KEY_IMAGE_LAYOUT);
 
             // Creating warped roi by the same way (Warp, Interpolation, source ROI) we warped the
             // input image.
@@ -153,7 +153,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             // force in the image layout, this way we get exactly the same
             // as the affine we're eliminating
             Hints localHints = new Hints(op.getRenderingHints());
-            localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+            localHints.remove(ImageN.KEY_IMAGE_LAYOUT);
             ImageLayout il = new ImageLayout();
             il.setMinX(dstBounds.x);
             il.setMinY(dstBounds.y);
@@ -161,9 +161,9 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             il.setHeight(dstBounds.height);
             il.setTileWidth(op.getTileWidth());
             il.setTileHeight(op.getTileHeight());
-            localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
-            // we need to use JAI-EXT own warp, the JAI one ignores the ROI
-            roiImage = JAI.create("Warp", paramBlk, localHints);
+            localHints.put(ImageN.KEY_IMAGE_LAYOUT, il);
+            // we need to use JAI-EXT own warp, the ImageN one ignores the ROI
+            roiImage = ImageN.create("Warp", paramBlk, localHints);
             ROI dstROI = new ROI(roiImage, 1);
 
             // If necessary, clip the warped ROI to the destination bounds.

@@ -80,7 +80,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
      * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link ParameterBlockJAI}
      *
      * @param parameters The {@link ParameterValueGroup} to be copied.
-     * @return A copy of the provided {@link ParameterValueGroup} as a JAI block.
+     * @return A copy of the provided {@link ParameterValueGroup} as a ImageN block.
      * @see
      *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.geotools.api.parameter.ParameterValueGroup)
      */

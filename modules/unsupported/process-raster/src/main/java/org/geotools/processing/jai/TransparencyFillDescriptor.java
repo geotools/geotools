@@ -19,7 +19,7 @@ package org.geotools.processing.jai;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import org.eclipse.imagen.EnumeratedParameter;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptorImpl;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.PropertyGenerator;
@@ -95,6 +95,6 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
         pb.setParameter("type", type);
         pb.setParameter("noData", noData);
         pb.setParameter("width", width);
-        return JAI.create("TransparencyFill", pb, hints);
+        return ImageN.create("TransparencyFill", pb, hints);
     }
 }

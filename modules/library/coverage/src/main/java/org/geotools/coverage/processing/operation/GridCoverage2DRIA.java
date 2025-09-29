@@ -32,9 +32,9 @@ import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.BorderExtenderConstant;
 import org.eclipse.imagen.GeometricOpImage;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
@@ -157,8 +157,8 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         imageLayout.setColorModel(src.getRenderedImage().getColorModel());
         imageLayout.setSampleModel(src.getRenderedImage().getSampleModel());
 
-        if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            ImageLayout l = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+        if (hints != null && hints.containsKey(ImageN.KEY_IMAGE_LAYOUT)) {
+            ImageLayout l = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
             if (l.isValid(ImageLayout.TILE_HEIGHT_MASK) && l.isValid(ImageLayout.TILE_WIDTH_MASK)) {
                 imageLayout.setTileHeight(Math.min(imageLayout.getHeight(null), l.getTileHeight(null)));
                 imageLayout.setTileWidth(Math.min(imageLayout.getWidth(null), l.getTileWidth(null)));
@@ -302,11 +302,11 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
         // ensure we have tile caching
         if (hints != null) {
-            TileCache tc = (TileCache) hints.get(JAI.KEY_TILE_CACHE);
+            TileCache tc = (TileCache) hints.get(ImageN.KEY_TILE_CACHE);
             if (tc != null) {
                 setTileCache(tc);
             } else {
-                setTileCache(JAI.getDefaultInstance().getTileCache());
+                setTileCache(ImageN.getDefaultInstance().getTileCache());
             }
         }
     }
@@ -1476,7 +1476,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                 layout.setMinY(miny);
                 layout.setWidth(w);
                 layout.setHeight(h);
-                RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+                RenderingHints hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
 
                 final PlanarImage constantImage =
                         ConstantDescriptor.create(Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);

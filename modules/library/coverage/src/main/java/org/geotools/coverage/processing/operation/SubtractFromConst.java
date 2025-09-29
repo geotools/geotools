@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// JAI dependencies (for javadoc)
+// ImageN dependencies (for javadoc)
 
 import java.awt.image.RenderedImage;
 import java.io.Serial;

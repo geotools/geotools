@@ -658,8 +658,8 @@ public class Hints extends RenderingHints {
      */
     public static final Key DECIMATION_POLICY = new Key("org.geotools.coverage.grid.io.DecimationPolicy");
 
-    /** The {@link org.eclipse.imagen.JAI} instance to use. */
-    public static final Key JAI_INSTANCE = new Key("org.eclipse.imagen.JAI");
+    /** The {@link org.eclipse.imagen.ImageN} instance to use. */
+    public static final Key JAI_INSTANCE = new Key("org.eclipse.imagen.ImageN");
 
     /** The {@link org.geotools.api.coverage.SampleDimensionType} to use. */
     public static final Key SAMPLE_DIMENSION_TYPE = new Key("org.geotools.api.coverage.SampleDimensionType");
@@ -1224,11 +1224,11 @@ public class Hints extends RenderingHints {
                 }
                 case 1: {
                     try {
-                        type = Class.forName("org.eclipse.imagen.JAI");
+                        type = Class.forName("org.eclipse.imagen.ImageN");
                         break;
                     } catch (ClassNotFoundException | NoClassDefFoundError e) {
                         continue;
-                    } // May occurs because of indirect JAI dependencies.
+                    } // May occurs because of indirect ImageN dependencies.
                 }
                 default: {
                     return key.toString();
@@ -1279,7 +1279,7 @@ public class Hints extends RenderingHints {
         /**
          * Base class of all values for this key. Will be created from {@link #className} only when first required, in
          * order to avoid too early class loading. This is significant for the {@link #JAI_INSTANCE} key for example, in
-         * order to avoid JAI dependencies in applications that do not need it.
+         * order to avoid ImageN dependencies in applications that do not need it.
          */
         private transient Class<?> valueClass;
 

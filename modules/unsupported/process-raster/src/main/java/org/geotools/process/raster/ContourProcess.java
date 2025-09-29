@@ -22,9 +22,9 @@ import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.contour.ContourDescriptor;
@@ -84,7 +84,7 @@ public class ContourProcess implements RasterProcess {
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(), new ContourDescriptor(), new ContourRIF(), Registry.JAI_TOOLS_PRODUCT);
+                ImageN.getDefaultInstance(), new ContourDescriptor(), new ContourRIF(), Registry.JAI_TOOLS_PRODUCT);
     }
 
     /**
@@ -245,7 +245,7 @@ public class ContourProcess implements RasterProcess {
             pb.setParameter("nodata", noDataList);
         }
 
-        final RenderedOp dest = JAI.create("Contour", pb);
+        final RenderedOp dest = ImageN.create("Contour", pb);
         @SuppressWarnings("unchecked")
         final Collection<LineString> prop =
                 (Collection<LineString>) dest.getProperty(ContourDescriptor.CONTOUR_PROPERTY_NAME);
@@ -289,7 +289,7 @@ public class ContourProcess implements RasterProcess {
         // can only alter a GridGeometry2D
         if (!(gg instanceof GridGeometry2D)) return gg;
 
-        Object interpolationKeyValue = targetQuery.getHints().get(JAI.KEY_INTERPOLATION);
+        Object interpolationKeyValue = targetQuery.getHints().get(ImageN.KEY_INTERPOLATION);
         // no need for extra padding if the reader is alredy using high order interpolations,
         // some padding will be added anyways
         if (interpolationKeyValue instanceof Interpolation interpolation) {

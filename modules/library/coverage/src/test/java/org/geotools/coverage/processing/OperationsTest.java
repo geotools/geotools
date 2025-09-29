@@ -31,16 +31,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests JAI operation wrapped as {@link OperatorJAI}.
+ * Tests ImageN operation wrapped as {@link OperatorJAI}.
  *
  * <p><strong>NOTE:</strong> This test may fails when executed on a machine without the <cite>mediaLib</cite>
  * accelerator. On Windows, the {@code mlib_jai.dll} and {@code mlib_jai_mmx.dll} files should exist in the
  * {@code jre/bin} directory, as well as {@code mlibwrapper_jai.jar} in {@code jre/lib/ext}. Those {@code .dll} files
- * should be there if JAI has been installed with the Sun standard installation program
+ * should be there if ImageN has been installed with the Sun standard installation program
  * ({@code jai-1_1_2_01-lib-windows-i586-jdk.exe}). With such installation, everything should run fine. The {@code .dll}
- * files are probably missing if JAI has been put in the classpath by Maven, like our past attempt on the 2.1 branch.
+ * files are probably missing if ImageN has been put in the classpath by Maven, like our past attempt on the 2.1 branch.
  *
- * <p>This behavior looks like a JAI bug to me. In theory, the pure Java mode is supposed to produce exactly the same
+ * <p>This behavior looks like a ImageN bug to me. In theory, the pure Java mode is supposed to produce exactly the same
  * result than the <cite>mediaLib</cite> native mode; just slower. This test failure suggests that it is not always the
  * case. The <cite>mediaLib</cite> native code seems right in this case (the bug would be in the pure Java code).
  *
@@ -100,7 +100,7 @@ public final class OperationsTest extends GridProcessingTestBase {
                 if (Float.isNaN(s)) {
                     /*
                      * For a mysterious reason (JAI bug?), the following test seems to fail when
-                     * JAI is running in pure Java mode. If you get an assertion failure on this
+                     * ImageN is running in pure Java mode. If you get an assertion failure on this
                      * line, then make sure that "<your_jdk_path>/jre/bin/mlib_jai.dll" (Windows)
                      * or "lib/i386/libmlib_jai.so" (Linux) is presents in your JDK installation.
                      */

@@ -239,7 +239,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         //
         // If the original color model is an index color model an expansion
         // might be requested in case the different palettes are not all the
-        // same. In this case the mosaic operator from JAI would provide wrong
+        // same. In this case the mosaic operator from ImageN would provide wrong
         // results since it would take the first palette and use that one for
         // all the other images.
         //

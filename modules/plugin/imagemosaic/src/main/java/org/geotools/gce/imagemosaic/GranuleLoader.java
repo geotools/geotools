@@ -21,7 +21,7 @@ import java.awt.RenderingHints;
 import java.util.concurrent.Callable;
 import javax.imageio.ImageReadParam;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
@@ -68,8 +68,8 @@ public class GranuleLoader implements Callable<GranuleLoadingResult> {
         this.hints = new Hints(hints);
         if (request.getTileDimensions() != null) {
             final Dimension tileDimension = request.getTileDimensions();
-            if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-                final Object layout = this.hints.get(JAI.KEY_IMAGE_LAYOUT);
+            if (hints != null && hints.containsKey(ImageN.KEY_IMAGE_LAYOUT)) {
+                final Object layout = this.hints.get(ImageN.KEY_IMAGE_LAYOUT);
                 if (layout != null && layout instanceof ImageLayout imageLayout) {
                     imageLayout.setTileHeight(tileDimension.height);
                     imageLayout.setTileWidth(tileDimension.width);
@@ -77,7 +77,7 @@ public class GranuleLoader implements Callable<GranuleLoadingResult> {
             } else {
                 final ImageLayout layout = new ImageLayout();
                 layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
-                this.hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                this.hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
             }
         }
     }

@@ -71,7 +71,7 @@ class Compositing {
             RenderedImage applyImage = forceToRGB(compositingImage, true);
             RenderedImage sourceImage = forceToRGB(source.getRenderedImage(), true);
 
-            // TODO: Setup a JAI operation to do the composition without need
+            // TODO: Setup a ImageN operation to do the composition without need
             // to use Graphics2D which requires a BufferedImage which loads all data
             // in memory
             BufferedImage composedImage =

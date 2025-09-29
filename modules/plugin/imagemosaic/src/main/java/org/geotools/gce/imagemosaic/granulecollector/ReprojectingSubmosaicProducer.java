@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.range.NoDataContainer;
@@ -145,7 +145,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     private static RenderingHints createRenderingHints(Hints hints, RasterLayerRequest request) {
         RenderingHints renderHints = new RenderingHints(null);
         if (request.getInterpolation() != null) {
-            renderHints.put(JAI.KEY_INTERPOLATION, request.getInterpolation());
+            renderHints.put(ImageN.KEY_INTERPOLATION, request.getInterpolation());
         }
 
         return renderHints;
@@ -302,7 +302,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
         RasterLayerRequest request = rasterLayerResponse.getRequest();
         final Interpolation interpolation = request.getInterpolation();
 
-        // paranoiac check to avoid that JAI freaks out when computing its internal layouT on images
+        // paranoiac check to avoid that ImageN freaks out when computing its internal layouT on images
         // that are too small
         Rectangle2D finalLayout = ImageUtilities.layoutHelper(
                 image,
@@ -321,7 +321,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
 
         // apply the affine transform conserving indexed color model
         final RenderingHints localHints = new RenderingHints(
-                JAI.KEY_REPLACE_INDEX_COLOR_MODEL,
+                ImageN.KEY_REPLACE_INDEX_COLOR_MODEL,
                 interpolation instanceof InterpolationNearest ? Boolean.FALSE : Boolean.TRUE);
         if (XAffineTransform.isIdentity(finalRaster2Model, CoverageUtilities.AFFINE_IDENTITY_EPS)) {
             return image;

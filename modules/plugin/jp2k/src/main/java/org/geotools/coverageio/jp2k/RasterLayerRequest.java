@@ -192,7 +192,7 @@ class RasterLayerRequest {
 
             // //
             //
-            // Use JAI ImageRead parameter
+            // Use ImageN ImageRead parameter
             //
             // //
             if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
@@ -285,7 +285,7 @@ class RasterLayerRequest {
 
         // //
         //
-        // Use JAI ImageRead parameter
+        // Use ImageN ImageRead parameter
         //
         // //
         if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
@@ -431,7 +431,7 @@ class RasterLayerRequest {
     }
 
     /**
-     * Check the type of read operation which will be performed and return {@code true} if a JAI imageRead operation
+     * Check the type of read operation which will be performed and return {@code true} if a ImageN imageRead operation
      * need to be performed or {@code false} if a simple read operation is needed.
      */
     private void checkReadType() {

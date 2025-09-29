@@ -29,7 +29,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Bounds;
@@ -152,7 +152,7 @@ class RasterLayerRequest {
     private File input;
 
     /**
-     * Set to {@code true} if the read operation needed to request data is a JAI Image Read operation. Set to
+     * Set to {@code true} if the read operation needed to request data is a ImageN Image Read operation. Set to
      * {@code false} if the read operation is a direct {@code ImageReader.read(...)} call.
      */
     private boolean useJAI;
@@ -234,7 +234,7 @@ class RasterLayerRequest {
 
         // //
         //
-        // Use JAI ImageRead parameter
+        // Use ImageN ImageRead parameter
         //
         // //
         if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
@@ -381,10 +381,10 @@ class RasterLayerRequest {
     }
 
     /**
-     * Check the type of read operation which will be performed and return {@code true} if a JAI imageRead operation
+     * Check the type of read operation which will be performed and return {@code true} if a ImageN imageRead operation
      * need to be performed or {@code false} if a simple read operation is needed.
      *
-     * @return {@code true} if the read operation will use a JAI ImageRead operation instead of a simple
+     * @return {@code true} if the read operation will use a ImageN ImageRead operation instead of a simple
      *     {@code ImageReader.read(...)} call.
      */
     private boolean requestUsesJaiImageread() {
@@ -766,7 +766,7 @@ class RasterLayerRequest {
         this.multiLevelRoi = reader.getMultiLevelRoi();
         this.noData = reader.getNodata();
         if (layout != null) {
-            this.hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            this.hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         }
     }
 

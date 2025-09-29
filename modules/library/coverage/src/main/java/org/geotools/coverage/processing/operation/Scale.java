@@ -22,9 +22,9 @@ import java.awt.image.RenderedImage;
 import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.PropertyGenerator;
@@ -41,8 +41,8 @@ import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.coverage.util.CoverageUtilities;
 
 /**
- * This operation is simply a wrapper for the JAI scale operation which allows me to arbitrarily scale and translate a
- * rendered image.
+ * This operation is simply a wrapper for the ImageN scale operation which allows me to arbitrarily scale and translate
+ * a rendered image.
  *
  * @version $Id$
  * @author Simone Giannecchini
@@ -66,8 +66,8 @@ public class Scale extends BaseScaleOperationJAI {
         final Interpolation interpolation;
         if (parameters.getObjectParameter("interpolation") != null)
             interpolation = (Interpolation) parameters.getObjectParameter("interpolation");
-        else if (hints.get(JAI.KEY_INTERPOLATION) != null)
-            interpolation = (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
+        else if (hints.get(ImageN.KEY_INTERPOLATION) != null)
+            interpolation = (Interpolation) hints.get(ImageN.KEY_INTERPOLATION);
         else {
             // I am pretty sure this should not happen. However I am not sure we should throw an
             // error
@@ -76,7 +76,7 @@ public class Scale extends BaseScaleOperationJAI {
         final int transferType = source.getSampleModel().getDataType();
 
         @SuppressWarnings("PMD.CloseResource")
-        final JAI processor = OperationJAI.getJAI(hints);
+        final ImageN processor = OperationJAI.getJAI(hints);
         PlanarImage image;
         if (interpolation != null
                 && !(interpolation instanceof InterpolationNearest)

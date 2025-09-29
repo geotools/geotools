@@ -56,8 +56,8 @@ public class FilterOperation extends OperationJAI {
     /**
      * Constructs a new filter operation.
      *
-     * @param name The JAI operation name.
-     * @throws OperationNotFoundException if no JAI descriptor was found for the given name.
+     * @param name The ImageN operation name.
+     * @throws OperationNotFoundException if no ImageN descriptor was found for the given name.
      */
     public FilterOperation(final String name) throws OperationNotFoundException {
         super(name);

@@ -21,7 +21,7 @@ import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.util.Arrays;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
@@ -159,15 +159,16 @@ public enum MergeBehavior {
 
         // different extents found, use mosaic to extend each one of them to the union of the bounds
         // shared image layout for all images
-        final ImageLayout layout = (ImageLayout) (hints != null ? hints.get(JAI.KEY_IMAGE_LAYOUT) : new ImageLayout2());
+        final ImageLayout layout =
+                (ImageLayout) (hints != null ? hints.get(ImageN.KEY_IMAGE_LAYOUT) : new ImageLayout2());
         layout.setWidth(union.width).setHeight(union.height).setMinX(union.x).setMinY(union.y);
 
         final RenderingHints localHints;
         if (hints != null) {
             localHints = (RenderingHints) hints.clone();
-            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         } else {
-            localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+            localHints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
         }
 
         // extend each one using mosaic

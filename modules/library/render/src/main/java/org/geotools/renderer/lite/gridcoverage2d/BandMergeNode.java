@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
@@ -235,7 +235,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
             // let's now create the output coverage and
             //
             // /////////////////////////////////////////////////////////////////////
-            if (layout != null) hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            if (layout != null) hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
             if (hasAlpha && !op.getColorModel().hasAlpha()) {
                 // Only restore the alphaChannel if not already available
                 w.addBand(alpha, false, true, null);

@@ -91,7 +91,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      *
      * <p><b>Implementation note:</b> An instance of {@code InfoToolHelper} is created and cached for each of the
      * {@code Layers}. The helpers are created using reflection to avoid direct references to grid coverage classes here
-     * that would required JAI (Java Advanced Imaging) to be on the classpath even when only vector layers are being
+     * that would required ImageN (Java Advanced Imaging) to be on the classpath even when only vector layers are being
      * used.
      *
      * @param ev mouse event

@@ -77,7 +77,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.Histogram;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.TileCache;
 import org.eclipse.imagen.TileScheduler;
@@ -1996,19 +1996,19 @@ public class Utils {
     }
 
     public static ImageLayout getImageLayoutHint(RenderingHints renderHints) {
-        return (ImageLayout) getHintIfAvailable(renderHints, JAI.KEY_IMAGE_LAYOUT);
+        return (ImageLayout) getHintIfAvailable(renderHints, ImageN.KEY_IMAGE_LAYOUT);
     }
 
     public static TileCache getTileCacheHint(RenderingHints renderHints) {
-        return (TileCache) getHintIfAvailable(renderHints, JAI.KEY_TILE_CACHE);
+        return (TileCache) getHintIfAvailable(renderHints, ImageN.KEY_TILE_CACHE);
     }
 
     public static BorderExtender getBorderExtenderHint(RenderingHints renderHints) {
-        return (BorderExtender) getHintIfAvailable(renderHints, JAI.KEY_BORDER_EXTENDER);
+        return (BorderExtender) getHintIfAvailable(renderHints, ImageN.KEY_BORDER_EXTENDER);
     }
 
     public static TileScheduler getTileSchedulerHint(RenderingHints renderHints) {
-        return (TileScheduler) getHintIfAvailable(renderHints, JAI.KEY_TILE_SCHEDULER);
+        return (TileScheduler) getHintIfAvailable(renderHints, ImageN.KEY_TILE_SCHEDULER);
     }
 
     public static Object getHintIfAvailable(RenderingHints hints, RenderingHints.Key key) {
@@ -2025,14 +2025,14 @@ public class Utils {
             // TileCache
             TileCache tc = Utils.getTileCacheHint(inputHints);
             if (tc != null) {
-                hints.add(new RenderingHints(JAI.KEY_TILE_CACHE, tc));
+                hints.add(new RenderingHints(ImageN.KEY_TILE_CACHE, tc));
             }
 
             // TileScheduler
             @SuppressWarnings("PMD.CloseResource")
             TileScheduler tileScheduler = Utils.getTileSchedulerHint(inputHints);
             if (tileScheduler != null) {
-                hints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, tileScheduler));
+                hints.add(new RenderingHints(ImageN.KEY_TILE_SCHEDULER, tileScheduler));
             }
         }
         return hints;

@@ -86,7 +86,7 @@ public class UtilsTest {
 
     @Test
     public void testMigrateSampleImage() throws Exception {
-        // path to a sample image still containing JAI references, to test migration (package rebasing in the loader)
+        // path to a sample image still containing ImageN references, to test migration (package rebasing in the loader)
         File oldSampleImage = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/old_sample_image");
         RenderedImage renderedImage = Utils.loadSampleImage(oldSampleImage);
         assertThat(renderedImage.getSampleModel(), CoreMatchers.instanceOf(ComponentSampleModelJAI.class));

@@ -151,7 +151,7 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
         String operation = null;
         if (image instanceof RenderedOp op) {
             operation = op.getOperationName();
-            CoverageProcessor.LOGGER.fine("Applied \"" + operation + "\" JAI operation.");
+            CoverageProcessor.LOGGER.fine("Applied \"" + operation + "\" ImageN operation.");
         }
         if (SHOW) {
             /*

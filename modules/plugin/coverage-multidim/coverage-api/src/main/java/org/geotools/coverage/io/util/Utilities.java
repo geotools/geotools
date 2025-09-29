@@ -44,7 +44,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
@@ -751,9 +751,9 @@ public class Utilities {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope, and a requested
      * dimension.
      *
-     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead operation or a simple
+     * @param useJAI specify if the underlying read process should leverage on a ImageN ImageRead operation or a simple
      *     direct call to the {@code read} method of a proper {@code ImageReader}.
-     * @param useMultithreading specify if the underlying read process should use multithreading when a JAI ImageRead
+     * @param useMultithreading specify if the underlying read process should use multithreading when a ImageN ImageRead
      *     operation is requested
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
@@ -833,11 +833,11 @@ public class Utilities {
      * Returns a {@code PlanarImage} given a set of parameter specifying the type of read operation to be performed.
      *
      * @param input the input to be used for reading the image.
-     * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we need a simple direct
-     *     {@code ImageReader.read(...)} call.
+     * @param useJAI {@code true} if we need to use a ImageN ImageRead operation, {@code false} if we need a simple
+     *     direct {@code ImageReader.read(...)} call.
      * @param imageReadParam an {@code ImageReadParam} specifying the read parameters
-     * @param useMultithreading {@code true} if a JAI ImageRead operation is requested with support for multithreading.
-     *     This parameter will be ignored if requesting a direct read operation.
+     * @param useMultithreading {@code true} if a ImageN ImageRead operation is requested with support for
+     *     multithreading. This parameter will be ignored if requesting a direct read operation.
      * @return the read {@code PlanarImage}
      */
     @SuppressWarnings("PMD.CloseResource") // stream managed in the returned delayed read op
@@ -891,7 +891,7 @@ public class Utilities {
             reader = readerSpi.createReaderInstance();
             pbjImageRead.add(reader);
 
-            planarImage = JAI.create("ImageRead", pbjImageRead, null);
+            planarImage = ImageN.create("ImageRead", pbjImageRead, null);
         } else {
             reader = readerSpi.createReaderInstance();
             reader.setInput(paramInput, true, true);

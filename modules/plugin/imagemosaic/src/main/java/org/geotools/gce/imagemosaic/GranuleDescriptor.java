@@ -55,9 +55,9 @@ import javax.imageio.stream.ImageInputStream;
 import org.apache.commons.beanutils.MethodUtils;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
@@ -146,7 +146,7 @@ public class GranuleDescriptor {
     static {
         try {
             Registry.registerRIF(
-                    JAI.getDefaultInstance(),
+                    ImageN.getDefaultInstance(),
                     new VectorBinarizeDescriptor(),
                     new VectorBinarizeRIF(),
                     Registry.JAI_TOOLS_PRODUCT);
@@ -1323,7 +1323,7 @@ public class GranuleDescriptor {
             finalRaster2Model.preConcatenate((AffineTransform) mosaicWorldToGrid);
             final Interpolation interpolation = request.getInterpolation();
 
-            // paranoiac check to avoid that JAI freaks out when computing its internal layouT on
+            // paranoiac check to avoid that ImageN freaks out when computing its internal layouT on
             // images that are too small
             Rectangle2D finalLayout = ImageUtilities.layoutHelper(
                     raster,
@@ -1342,7 +1342,7 @@ public class GranuleDescriptor {
 
             // apply the affine transform conserving indexed color model
             final RenderingHints localHints = new RenderingHints(
-                    JAI.KEY_REPLACE_INDEX_COLOR_MODEL,
+                    ImageN.KEY_REPLACE_INDEX_COLOR_MODEL,
                     interpolation instanceof InterpolationNearest ? Boolean.FALSE : Boolean.TRUE);
             if (XAffineTransform.isIdentity(finalRaster2Model, CoverageUtilities.AFFINE_IDENTITY_EPS)) {
                 if (noData != null) {
@@ -1427,21 +1427,21 @@ public class GranuleDescriptor {
         if (layout != null) {
             layout.setTileWidth(Math.min(layout.getTileWidth(null), raster.getWidth()));
             layout.setTileHeight(Math.min(layout.getTileHeight(null), raster.getHeight()));
-            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         }
         final TileCache cache = Utils.getTileCacheHint(hints);
         if (cache != null) {
-            localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
+            localHints.add(new RenderingHints(ImageN.KEY_TILE_CACHE, cache));
         }
         @SuppressWarnings("PMD.CloseResource")
         final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
         if (scheduler != null) {
-            localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
+            localHints.add(new RenderingHints(ImageN.KEY_TILE_SCHEDULER, scheduler));
         }
 
         final BorderExtender extender = Utils.getBorderExtenderHint(hints);
         if (extender != null) {
-            localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, extender));
+            localHints.add(new RenderingHints(ImageN.KEY_BORDER_EXTENDER, extender));
         } else {
             localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
         }
@@ -1463,7 +1463,7 @@ public class GranuleDescriptor {
                         && roi instanceof ROIGeometry geometry
                         && geometry.getAsGeometry().isEmpty()
                 || roi instanceof ROI && ((ROI) roi).getBounds().isEmpty()) {
-            // JAI not only transforms the ROI, but may also apply clipping to the image
+            // ImageN not only transforms the ROI, but may also apply clipping to the image
             // boundary.  this results in an empty ROI in some edge cases
             return null;
         }
@@ -1522,7 +1522,7 @@ public class GranuleDescriptor {
 
     private RenderedImage rescaleRaster(RasterLayerRequest request, Hints hints, RenderedImage raster, int[] bands) {
         if (noData != null && request.getReadType() == ReadType.JAI_IMAGEREAD) {
-            // Force nodata settings since JAI ImageRead may lost that
+            // Force nodata settings since ImageN ImageRead may lost that
             // We have to make sure that noData pixels won't be rescaled
             PlanarImage t = PlanarImage.wrapRenderedImage(raster);
             t.setProperty(NoDataContainer.GC_NODATA, noData);
@@ -1539,11 +1539,11 @@ public class GranuleDescriptor {
             raster = new ImageWorker(raster).forceComponentColorModel().getRenderedImage();
         }
 
-        // delegate the band selection operation on JAI BandSelect operation
+        // delegate the band selection operation on ImageN BandSelect operation
         raster = new ImageWorker(raster).retainBands(bands).getRenderedImage();
         ColorModel colorModel = raster.getColorModel();
         if (colorModel == null) {
-            ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+            ImageLayout layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
             if (layout == null) {
                 layout = new ImageLayout();
             }
@@ -1595,14 +1595,14 @@ public class GranuleDescriptor {
         if (tileDimensions != null && request.getReadType().equals(ReadType.DIRECT_READ)) {
             final ImageLayout layout = new ImageLayout();
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-            localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+            localHints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
         } else {
             final ImageLayout originalLayout = Utils.getImageLayoutHint(hints);
             if (originalLayout != null) {
                 final ImageLayout localLayout = new ImageLayout();
                 localLayout.setTileHeight(originalLayout.getTileHeight(null));
                 localLayout.setTileWidth(originalLayout.getTileWidth(null));
-                localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
+                localHints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, localLayout);
             }
         }
         if (localHints == null) {
@@ -1617,10 +1617,10 @@ public class GranuleDescriptor {
 
     private void updateLocalHints(Hints hints, RenderingHints localHints) {
         final TileCache cache = Utils.getTileCacheHint(hints);
-        if (cache != null) localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
+        if (cache != null) localHints.add(new RenderingHints(ImageN.KEY_TILE_CACHE, cache));
         @SuppressWarnings("PMD.CloseResource")
         final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
-        if (scheduler != null) localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
+        if (scheduler != null) localHints.add(new RenderingHints(ImageN.KEY_TILE_SCHEDULER, scheduler));
     }
 
     /** Returns the raw color model of the reader at the specified image index */

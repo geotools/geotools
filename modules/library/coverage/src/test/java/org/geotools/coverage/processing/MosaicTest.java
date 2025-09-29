@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
@@ -191,7 +191,7 @@ public class MosaicTest extends GridProcessingTestBase {
     @Test
     public void testCacheCleanup() {
         // make sure the tile cache is empty
-        TileCache tc = JAI.getDefaultInstance().getTileCache();
+        TileCache tc = ImageN.getDefaultInstance().getTileCache();
         tc.flush();
 
         testMosaicWithAnotherNoData();
@@ -216,10 +216,10 @@ public class MosaicTest extends GridProcessingTestBase {
         // RenderingHints
         Hints hints = new Hints();
         // Ensure No Layout is set
-        assertFalse(hints.containsKey(JAI.KEY_IMAGE_LAYOUT));
+        assertFalse(hints.containsKey(ImageN.KEY_IMAGE_LAYOUT));
         // Add a fake Layout for the operation
         ImageLayout il = new ImageLayout();
-        hints.put(JAI.KEY_IMAGE_LAYOUT, il);
+        hints.put(ImageN.KEY_IMAGE_LAYOUT, il);
         il.setTileHeight(TILE_SIZE);
         il.setTileWidth(TILE_SIZE);
         // Mosaic operation
@@ -260,9 +260,9 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Ensure the Layout is already present after the mosaic
-        Assert.assertTrue(hints.containsKey(JAI.KEY_IMAGE_LAYOUT));
+        Assert.assertTrue(hints.containsKey(ImageN.KEY_IMAGE_LAYOUT));
         // Ensure no additional bound parameter is set
-        ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+        ImageLayout layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
         assertFalse(layout.isValid(ImageLayout.MIN_X_MASK));
         assertFalse(layout.isValid(ImageLayout.MIN_Y_MASK));
         assertFalse(layout.isValid(ImageLayout.WIDTH_MASK));
@@ -792,7 +792,7 @@ public class MosaicTest extends GridProcessingTestBase {
         sources.add(shifted);
         param.parameter("Sources").setValue(sources);
         // Mosaic simulating a hints set that contains index color model expansion
-        Hints hints = new Hints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.TRUE);
+        Hints hints = new Hints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.TRUE);
         GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param, hints);
         assertNotNull(mosaic);
         assertEquals(3, mosaic.getRenderedImage().getSampleModel().getNumBands());

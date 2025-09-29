@@ -26,7 +26,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.PlanarImage;
@@ -192,17 +192,17 @@ public class CustomPaletteBuilderTest {
         assertEquals(5, icm.getMapSize());
 
         //
-        // now use the JAI op
+        // now use the ImageN op
         //
-        assertNotNull(JAI.getDefaultInstance()
+        assertNotNull(ImageN.getDefaultInstance()
                 .getOperationRegistry()
                 .getDescriptor(OperationDescriptor.class, "org.geotools.ColorReduction"));
         ParameterBlockJAI pbj = new ParameterBlockJAI("org.geotools.ColorReduction");
         // I will tile the image in 4 tiles and force parallelism here
-        JAI.getDefaultInstance().getTileScheduler().setParallelism(4);
+        ImageN.getDefaultInstance().getTileScheduler().setParallelism(4);
         pbj.addSource(new ImageWorker(image)
                 .setRenderingHint(
-                        JAI.KEY_IMAGE_LAYOUT,
+                        ImageN.KEY_IMAGE_LAYOUT,
                         new ImageLayout(image)
                                 .setTileGridXOffset(0)
                                 .setTileGridYOffset(0)
@@ -214,7 +214,7 @@ public class CustomPaletteBuilderTest {
         pbj.setParameter("alphaThreshold", 1);
         pbj.setParameter("subsampleX", 1);
         pbj.setParameter("subsampleY", 1);
-        indexed = JAI.create("org.geotools.ColorReduction", pbj);
+        indexed = ImageN.create("org.geotools.ColorReduction", pbj);
         PlanarImage.wrapRenderedImage(indexed).getTiles();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
 
@@ -229,13 +229,13 @@ public class CustomPaletteBuilderTest {
         //
         // now use the inversion of color
         //
-        assertNotNull(JAI.getDefaultInstance()
+        assertNotNull(ImageN.getDefaultInstance()
                 .getOperationRegistry()
                 .getDescriptor(OperationDescriptor.class, "org.geotools.ColorInversion"));
         pbj = new ParameterBlockJAI("org.geotools.ColorInversion");
         pbj.addSource(new ImageWorker(image)
                 .setRenderingHint(
-                        JAI.KEY_IMAGE_LAYOUT,
+                        ImageN.KEY_IMAGE_LAYOUT,
                         new ImageLayout(image)
                                 .setTileGridXOffset(0)
                                 .setTileGridYOffset(0)
@@ -246,7 +246,7 @@ public class CustomPaletteBuilderTest {
         pbj.setParameter("quantizationColors", InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS);
         pbj.setParameter("alphaThreshold", 1);
         pbj.setParameter("IndexColorModel", icm);
-        indexed = JAI.create("org.geotools.ColorInversion", pbj);
+        indexed = ImageN.create("org.geotools.ColorInversion", pbj);
         PlanarImage.wrapRenderedImage(indexed).getTiles();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
 

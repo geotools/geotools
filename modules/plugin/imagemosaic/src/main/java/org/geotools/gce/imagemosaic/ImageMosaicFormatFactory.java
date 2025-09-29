@@ -49,7 +49,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
     /**
      * Tells me if this plugin will work on not given the actual installation.
      *
-     * <p>Dependecies are mostly from JAI and ImageIO so if they are installed you should not have many problems.
+     * <p>Dependecies are mostly from ImageN and ImageIO so if they are installed you should not have many problems.
      *
      * @return False if something's missing, true otherwise.
      */
@@ -58,9 +58,9 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
         boolean available = true;
 
         // if these classes are here, then the runtine environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
-            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.ImageN");
             Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
         } catch (ClassNotFoundException cnf) {
             available = false;

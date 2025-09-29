@@ -113,7 +113,7 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
         int numTileX = image.getNumXTiles();
         int numTileY = image.getNumYTiles();
 
-        CogImageReader imageReader = (CogImageReader) image.getProperty("JAI.ImageReader");
+        CogImageReader imageReader = (CogImageReader) image.getProperty("ImageN.ImageReader");
         Object input = imageReader.getInput();
         assertTrue(input instanceof DefaultCogImageInputStream);
         @SuppressWarnings("PMD.CloseResource") // closed elsewhere

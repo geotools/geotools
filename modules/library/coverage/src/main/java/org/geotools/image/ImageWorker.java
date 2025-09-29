@@ -66,8 +66,8 @@ import org.eclipse.imagen.Histogram;
 import org.eclipse.imagen.IHSColorSpace;
 import org.eclipse.imagen.ImageFunction;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.KernelJAI;
 import org.eclipse.imagen.LookupTableJAI;
 import org.eclipse.imagen.NotAColorSpace;
@@ -136,7 +136,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * Helper methods for applying JAI operations on an image. The image is specified at
+ * Helper methods for applying ImageN operations on an image. The image is specified at
  * {@linkplain #ImageWorker(RenderedImage) creation time}. Successive operations can be applied by invoking the methods
  * defined in this class, and the final image can be obtained by invoking {@link #getRenderedImage} at the end of the
  * process.
@@ -339,7 +339,7 @@ public class ImageWorker {
     }
 
     protected static OperationDescriptor getOperationDescriptor(final String name) throws OperationNotFoundException {
-        final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+        final OperationRegistry registry = ImageN.getDefaultInstance().getOperationRegistry();
         OperationDescriptor operation =
                 (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, name);
         if (operation != null) {
@@ -373,7 +373,7 @@ public class ImageWorker {
     /** The image property name reporting the Mean stats. */
     private static final String MEAN = "mean";
 
-    /** Register manually the GTCrop operation, in web containers JAI registration may fails */
+    /** Register manually the GTCrop operation, in web containers ImageN registration may fails */
     static {
         if (WARP_REDUCTION_ENABLED) {
             GTWarpPropertyGenerator.register(false);
@@ -536,7 +536,7 @@ public class ImageWorker {
                 .setParameter("ImageChoice", Integer.valueOf(imageChoice))
                 .setParameter("ReadMetadata", Boolean.valueOf(readMetadata))
                 .setParameter("VerifyInput", Boolean.TRUE);
-        image = JAI.create("ImageRead", pbj, getRenderingHints());
+        image = ImageN.create("ImageRead", pbj, getRenderingHints());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////
@@ -605,7 +605,7 @@ public class ImageWorker {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         // Executing the operation
-        return JAI.create("Null", pb, getRenderingHints());
+        return ImageN.create("Null", pb, getRenderingHints());
     }
 
     /**
@@ -622,7 +622,7 @@ public class ImageWorker {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         // Executing the operation
-        image = JAI.create("Null", pb, getRenderingHints());
+        image = ImageN.create("Null", pb, getRenderingHints());
         return this;
     }
 
@@ -831,7 +831,7 @@ public class ImageWorker {
      *       which happen to be the "null" cache.
      *   <li><code>removeRenderingHint({@linkplain JAI#KEY_TILE_CACHE})</code> unsets any tile cache specified by a
      *       previous rendering hint. All images to be computed after this method call will save their tiles in the
-     *       {@linkplain JAI#getTileCache JAI default tile cache}.
+     *       {@linkplain JAI#getTileCache ImageN default tile cache}.
      * </ul>
      *
      * @return This ImageWorker
@@ -871,17 +871,17 @@ public class ImageWorker {
         }
         if (Boolean.FALSE.equals(hints.get(TILING_ALLOWED))) {
             final ImageLayout layout = getImageLayout(hints);
-            if (commonHints == null || layout != commonHints.get(JAI.KEY_IMAGE_LAYOUT)) {
+            if (commonHints == null || layout != commonHints.get(ImageN.KEY_IMAGE_LAYOUT)) {
                 // Set the layout only if it is not a user-supplied object.
                 layout.setTileWidth(image.getWidth());
                 layout.setTileHeight(image.getHeight());
                 layout.setTileGridXOffset(image.getMinX());
                 layout.setTileGridYOffset(image.getMinY());
-                hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         }
-        if (tileCacheDisabled != 0 && commonHints != null && !commonHints.containsKey(JAI.KEY_TILE_CACHE)) {
-            hints.add(new RenderingHints(JAI.KEY_TILE_CACHE, null));
+        if (tileCacheDisabled != 0 && commonHints != null && !commonHints.containsKey(ImageN.KEY_TILE_CACHE)) {
+            hints.add(new RenderingHints(ImageN.KEY_TILE_CACHE, null));
         }
         return hints;
     }
@@ -933,17 +933,17 @@ public class ImageWorker {
             layout.setColorModel(newCm);
             layout.setSampleModel(newCm.createCompatibleSampleModel(image.getWidth(), image.getHeight()));
         }
-        hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+        hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
         return hints;
     }
 
     /**
      * Gets the image layout from the specified rendering hints, creating a new one if needed. This method do not modify
      * the specified hints. If the caller modifies the image layout, it should invoke
-     * {@code hints.put(JAI.KEY_IMAGE_LAYOUT, layout)} explicitly.
+     * {@code hints.put(ImageN.KEY_IMAGE_LAYOUT, layout)} explicitly.
      */
     private static ImageLayout getImageLayout(final RenderingHints hints) {
-        final Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
+        final Object candidate = hints.get(ImageN.KEY_IMAGE_LAYOUT);
         if (candidate instanceof ImageLayout layout) {
             return layout;
         }
@@ -1026,7 +1026,7 @@ public class ImageWorker {
             pb.set(nodata, 3); // NoData
             pb.set(bands, 5); // band indexes
             pb.set(stats, 6); // statistic operation
-            image = JAI.create("Stats", pb, getRenderingHints());
+            image = ImageN.create("Stats", pb, getRenderingHints());
             // Retrieving the statistics
             Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
             double[][] ext = new double[2][numBands];
@@ -1084,7 +1084,7 @@ public class ImageWorker {
         pb.set(numBins, 9); // Bin number.
         pb.set(lowValues, 7); // Lower values per band.
         pb.set(highValues, 8); // Higher values per band.
-        image = JAI.create("Stats", pb, getRenderingHints());
+        image = ImageN.create("Stats", pb, getRenderingHints());
         // Retrieving the statistics
         Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
         int[][] bins = new int[numBands][];
@@ -1147,7 +1147,7 @@ public class ImageWorker {
             pb.set(nodata, 3); // NoData
             pb.set(bands, 5); // band indexes
             pb.set(stats, 6); // statistic operation
-            image = JAI.create("Stats", pb, getRenderingHints());
+            image = ImageN.create("Stats", pb, getRenderingHints());
             // Retrieving the statistics
             Statistics[][] results = (Statistics[][]) getComputedProperty(Statistics.STATS_PROPERTY);
             double[] meanBands = new double[numBands];
@@ -1388,7 +1388,7 @@ public class ImageWorker {
                 pb.set(destNodata, 5);
             }
 
-            image = JAI.create("Rescale", pb, hints);
+            image = ImageN.create("Rescale", pb, hints);
             if (!Double.isNaN(destNodata)) {
                 setNoData(RangeFactory.create((byte) destNodata, DataBuffer.TYPE_BYTE));
             }
@@ -1396,7 +1396,7 @@ public class ImageWorker {
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0); // The source image.
             pb.set(DataBuffer.TYPE_BYTE, 0); // The destination image data type (BYTE)
-            image = JAI.create("Format", pb, hints);
+            image = ImageN.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, DataBuffer.TYPE_BYTE));
         }
         invalidateStatistics(); // Extremas are no longer valid.
@@ -1456,7 +1456,7 @@ public class ImageWorker {
                 }
             }
 
-            image = JAI.create("ErrorDiffusion", pb, hints);
+            image = ImageN.create("ErrorDiffusion", pb, hints);
         } else {
             // ordered dither
             final KernelJAI[] ditherMask = KernelJAI.DITHER_MASK_443;
@@ -1478,7 +1478,7 @@ public class ImageWorker {
                 }
             }
 
-            image = JAI.create("OrderedDither", pb, hints);
+            image = ImageN.create("OrderedDither", pb, hints);
         }
         tileCacheEnabled(true);
         invalidateStatistics();
@@ -1582,8 +1582,8 @@ public class ImageWorker {
             final ImageLayout layout = getImageLayout(hints);
             layout.setColorModel(newCM);
             // we should not transform on color map here
-            hints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
-            hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+            hints.put(ImageN.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
+            hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
 
             // ParameterBlock definition
             ParameterBlock pb = new ParameterBlock();
@@ -1597,13 +1597,13 @@ public class ImageWorker {
                 }
             }
 
-            image = JAI.create("Lookup", pb, hints);
+            image = ImageN.create("Lookup", pb, hints);
             // New parameterblock for format operation
             pb = new ParameterBlock();
             pb.setSource(image, 0);
             int dataType = image.getSampleModel().getDataType();
             pb.set(dataType, 0);
-            image = JAI.create("Format", pb, hints);
+            image = ImageN.create("Format", pb, hints);
             // Converting NoData Range
             setNoData(RangeFactory.convert(nodata, dataType));
         } else {
@@ -1622,7 +1622,7 @@ public class ImageWorker {
                 ParameterBlock pb = new ParameterBlock();
                 pb.setSource(image, 0);
                 pb.set(new int[] {--numBands}, 0);
-                final RenderedOp alphaChannel = JAI.create("BandSelect", pb, hints);
+                final RenderedOp alphaChannel = ImageN.create("BandSelect", pb, hints);
                 retainBands(numBands);
                 forceIndexColorModel(errorDiffusion);
                 tileCacheEnabled(true);
@@ -1813,12 +1813,12 @@ public class ImageWorker {
              */
             final RenderingHints hints = getRenderingHints();
             final ImageLayout layout;
-            final Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
+            final Object candidate = hints.get(ImageN.KEY_IMAGE_LAYOUT);
             if (candidate instanceof ImageLayout imageLayout) {
                 layout = imageLayout;
             } else {
                 layout = new ImageLayout(image);
-                hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
             }
 
             int[] bits = new int[numDestinationBands];
@@ -1854,7 +1854,7 @@ public class ImageWorker {
                 }
             }
 
-            image = JAI.create("Lookup", pb, hints);
+            image = ImageN.create("Lookup", pb, hints);
 
         } else {
             // Most of the code adapted from jai-interests is in 'getRenderingHints(int)'.
@@ -1866,7 +1866,7 @@ public class ImageWorker {
             pb.setSource(image, 0); // The source image.
             pb.set(type, 0);
 
-            image = JAI.create("Format", pb, hints);
+            image = ImageN.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, type));
         }
         invalidateStatistics();
@@ -1937,7 +1937,7 @@ public class ImageWorker {
             // perform the lookup
             final RenderingHints oldRi = this.getRenderingHints();
             final RenderingHints newRi = (RenderingHints) oldRi.clone();
-            newRi.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            newRi.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
             try {
                 setRenderingHints(newRi);
                 lookup(lut);
@@ -2068,7 +2068,7 @@ public class ImageWorker {
         return this;
     }
 
-    /** Forces the provided {@link ColorModel} via the JAI ColorConvert operation. */
+    /** Forces the provided {@link ColorModel} via the ImageN ColorConvert operation. */
     private void forceColorModel(final ColorModel cm) {
 
         final ImageLayout2 il = new ImageLayout2(image);
@@ -2076,7 +2076,7 @@ public class ImageWorker {
         il.setSampleModel(cm.createCompatibleSampleModel(image.getWidth(), image.getHeight()));
         final RenderingHints oldRi = this.getRenderingHints();
         final RenderingHints newRi = (RenderingHints) oldRi.clone();
-        newRi.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il));
+        newRi.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, il));
         setRenderingHints(newRi);
 
         // Setting the parameter blocks
@@ -2095,7 +2095,7 @@ public class ImageWorker {
             }
         }
 
-        image = JAI.create("ColorConvert", pb, getRenderingHints());
+        image = ImageN.create("ColorConvert", pb, getRenderingHints());
 
         // restore RI
         this.setRenderingHints(oldRi);
@@ -2118,7 +2118,7 @@ public class ImageWorker {
         int numBands = sourceImage.getSampleModel().getNumBands();
 
         // getting first band
-        final RenderedImage firstBand = JAI.create("bandSelect", sourceImage, new int[] {0});
+        final RenderedImage firstBand = ImageN.create("bandSelect", sourceImage, new int[] {0});
 
         // adding to the image
         final int length = writeband - numBands;
@@ -2137,7 +2137,7 @@ public class ImageWorker {
             }
         }
         pb.set(roi, 3);
-        sourceImage = JAI.create("bandmerge", pb);
+        sourceImage = ImageN.create("bandmerge", pb);
         image = sourceImage;
         invalidateStatistics();
 
@@ -2188,7 +2188,7 @@ public class ImageWorker {
         }
         pb.set(roi, 3);
         pb.set(addAlpha, 4);
-        this.image = JAI.create("BandMerge", pb, this.getRenderingHints());
+        this.image = ImageN.create("BandMerge", pb, this.getRenderingHints());
         invalidateStatistics();
 
         return this;
@@ -2239,7 +2239,7 @@ public class ImageWorker {
         pb.set(transformationList, 3);
         pb.set(roi, 3);
         pb.set(addAlpha, 4);
-        this.image = JAI.create("BandMerge", pb, this.getRenderingHints());
+        this.image = ImageN.create("BandMerge", pb, this.getRenderingHints());
         invalidateStatistics();
 
         return this;
@@ -2332,7 +2332,7 @@ public class ImageWorker {
             }
         }
 
-        image = JAI.create("BandCombine", pb, getRenderingHints());
+        image = ImageN.create("BandCombine", pb, getRenderingHints());
 
         invalidateStatistics();
 
@@ -2406,7 +2406,7 @@ public class ImageWorker {
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0);
             pb.set(bands, 0);
-            image = JAI.create("BandSelect", pb, getRenderingHints());
+            image = ImageN.create("BandSelect", pb, getRenderingHints());
         }
 
         // All post conditions for this method contract.
@@ -2429,7 +2429,7 @@ public class ImageWorker {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         pb.set(bands, 0);
-        image = JAI.create("BandSelect", pb, getRenderingHints());
+        image = ImageN.create("BandSelect", pb, getRenderingHints());
         return this;
     }
 
@@ -2444,7 +2444,7 @@ public class ImageWorker {
         pb.setSource(image, 0); // The source image.
         pb.set(dataType, 0);
 
-        image = JAI.create("Format", pb, getRenderingHints());
+        image = ImageN.create("Format", pb, getRenderingHints());
         setNoData(RangeFactory.convert(nodata, dataType));
 
         // All post conditions for this method contract.
@@ -2501,7 +2501,7 @@ public class ImageWorker {
             pb.set(roi, 1);
             pb.set(nodata, 2);
 
-            image = JAI.create("Binarize", pb, hints);
+            image = ImageN.create("Binarize", pb, hints);
 
             setNoData(null);
             invalidateStatistics();
@@ -2553,7 +2553,7 @@ public class ImageWorker {
             }
         }
 
-        image = JAI.create("Lookup", pb, getRenderingHints());
+        image = ImageN.create("Lookup", pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
@@ -2663,14 +2663,14 @@ public class ImageWorker {
         final ImageLayout layout = new ImageLayout(image);
         layout.setColorModel(cm);
         final RenderingHints hints = getRenderingHints();
-        hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-        hints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
+        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
+        hints.add(new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
         // ParameterBlock definition
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0); // The source image.
         pb.set(image.getSampleModel().getDataType(), 0);
 
-        image = JAI.create("Format", pb, hints);
+        image = ImageN.create("Format", pb, hints);
         setNoData(RangeFactory.convert(nodata, image.getSampleModel().getDataType()));
         invalidateStatistics();
         return this;
@@ -2682,19 +2682,19 @@ public class ImageWorker {
      *
      * @param transparentColor The color to make transparent.
      * @return this image worker.
-     *     <p>Current implementation invokes a lot of JAI operations:
+     *     <p>Current implementation invokes a lot of ImageN operations:
      *     <p>"BandSelect" --> "Lookup" --> "BandCombine" --> "Extrema" --> "Binarize" --> "Format" --> "BandSelect"
      *     (one more time) --> "Multiply" --> "BandMerge".
-     *     <p>I would expect more speed and memory efficiency by writing our own JAI operation (PointOp subclass) doing
-     *     that in one step. It would also be more deterministic (our "binarize" method depends on statistics on pixel
-     *     values) and avoid unwanted side-effect like turning black color (RGB = 0,0,0) to transparent one. It would
-     *     also be easier to maintain I believe.
+     *     <p>I would expect more speed and memory efficiency by writing our own ImageN operation (PointOp subclass)
+     *     doing that in one step. It would also be more deterministic (our "binarize" method depends on statistics on
+     *     pixel values) and avoid unwanted side-effect like turning black color (RGB = 0,0,0) to transparent one. It
+     *     would also be easier to maintain I believe.
      */
     private final ImageWorker maskComponentColorModelByte(final Color transparentColor) {
         assert image.getColorModel() instanceof ComponentColorModel;
         assert image.getSampleModel().getDataType() == DataBuffer.TYPE_BYTE;
         /*
-         * Prepares the look up table for the source image. Remember what follows which is taken from the JAI programming guide.
+         * Prepares the look up table for the source image. Remember what follows which is taken from the ImageN programming guide.
          *
          * "The lookup operation performs a general table lookup on a rendered or renderable image. The destination image is obtained by passing the
          * source image through the lookup table. The source image may be single- or multi-banded of data types byte, ushort, short, or int. The
@@ -2731,7 +2731,7 @@ public class ImageWorker {
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0);
             pb.set(opaqueBands, 0);
-            image = JAI.create("BandSelect", pb, hints);
+            image = ImageN.create("BandSelect", pb, hints);
             numBands = numColorBands;
         }
 
@@ -2765,7 +2765,7 @@ public class ImageWorker {
                 LookupTableFactory.create(tableData, image.getSampleModel().getDataType());
         // Do the lookup operation.
         // we should not transform on color map here
-        hints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
+        hints.put(ImageN.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
         // ParameterBlock definition
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
@@ -2778,7 +2778,7 @@ public class ImageWorker {
             }
         }
 
-        PlanarImage luImage = JAI.create("Lookup", pb, hints);
+        PlanarImage luImage = ImageN.create("Lookup", pb, hints);
         // PlanarImage luImage = LookupDescriptor.create(image, table, hints);
 
         /*
@@ -2805,7 +2805,7 @@ public class ImageWorker {
                 pb.set(background[0], 3);
             }
 
-            luImage = JAI.create("BandCombine", pb, getRenderingHints());
+            luImage = ImageN.create("BandCombine", pb, getRenderingHints());
             // luImage = BandCombineDescriptor.create(luImage, matrix, hints);
         }
         pb = new ParameterBlock();
@@ -2820,7 +2820,7 @@ public class ImageWorker {
         }
         pb.set(roi, 3);
         pb.set(true, 4);
-        image = JAI.create("BandMerge", pb, hints);
+        image = ImageN.create("BandMerge", pb, hints);
         // image = BandMergeDescriptor.create(image, luImage, hints);
 
         invalidateStatistics();
@@ -2841,7 +2841,7 @@ public class ImageWorker {
                 pb.set(dest, 3);
             }
         }
-        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
@@ -2869,7 +2869,7 @@ public class ImageWorker {
          */
         tileCacheEnabled(false);
         forceIndexColorModel(true);
-        final RenderingHints hints = new RenderingHints(JAI.KEY_TILE_CACHE, null);
+        final RenderingHints hints = new RenderingHints(ImageN.KEY_TILE_CACHE, null);
 
         /*
          * special case for newValue == 255 && !maskValue.
@@ -2895,7 +2895,7 @@ public class ImageWorker {
             }
             pb.set(roi, 2);
 
-            mask = JAI.create("Lookup", pb, hints);
+            mask = ImageN.create("Lookup", pb, hints);
 
             // mask = LookupDescriptor.create(mask, lut, hints);
 
@@ -2906,7 +2906,7 @@ public class ImageWorker {
             pb.setSource(image, 0);
             pb.setSource(mask, 1);
             prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+            image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AddDescriptor.create(image, mask, getRenderingHints());
             tileCacheEnabled(true);
             invalidateStatistics();
@@ -2917,16 +2917,16 @@ public class ImageWorker {
             // it has to be binary
             if (!isBinary()) binarize();
 
-            // Split between JAI and JAI-EXT operations
+            // Split between ImageN and JAI-EXT operations
 
             ParameterBlock pb;
             // now if we mask with 1 we have to invert the mask
-            RenderingHints renderingHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+            RenderingHints renderingHints = new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
             if (maskValue) {
                 pb = new ParameterBlock();
                 pb.setSource(mask, 0);
                 prepareAlgebricOperation(Operator.NOT, pb, roi, null, false);
-                mask = JAI.create(ALGEBRIC_OP_NAME, pb, renderingHints);
+                mask = ImageN.create(ALGEBRIC_OP_NAME, pb, renderingHints);
             }
             // and with the image to zero the interested pixels
             tileCacheEnabled(false);
@@ -2934,14 +2934,14 @@ public class ImageWorker {
             pb.setSource(mask, 0);
             pb.setSource(image, 1);
             prepareAlgebricOperation(Operator.AND, pb, roi, nodata, true);
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+            image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AndDescriptor.create(mask, image, getRenderingHints());
 
             // add the new value to the mask
             pb = new ParameterBlock();
             pb.setSource(mask, 0);
             prepareOpConstOperation(Operator.SUM, new double[] {newValue}, pb, roi, null, false);
-            image = JAI.create(OPERATION_CONST_OP_NAME, pb, renderingHints);
+            image = ImageN.create(OPERATION_CONST_OP_NAME, pb, renderingHints);
             // mask = AddConstDescriptor.create(mask, new double[] { newValue }, renderingHints);
 
             // add the mask to the image to mask with the new value
@@ -2949,7 +2949,7 @@ public class ImageWorker {
             pb.setSource(mask, 0);
             pb.setSource(image, 1);
             prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
-            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+            image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
             // image = AddDescriptor.create(mask, image, getRenderingHints());
             tileCacheEnabled(true);
             invalidateStatistics();
@@ -2967,7 +2967,7 @@ public class ImageWorker {
             pb.setSource(sources[i], i);
         }
         prepareAlgebricOperation(Operator.MAX, pb, roi, nodata, true);
-        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         return this;
     }
 
@@ -2981,7 +2981,7 @@ public class ImageWorker {
             pb.setSource(sources[i], i);
         }
         prepareAlgebricOperation(Operator.MIN, pb, roi, nodata, true);
-        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         return this;
     }
 
@@ -3027,14 +3027,14 @@ public class ImageWorker {
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
         prepareAlgebricOperation(Operator.SUM, pb, roi, nodata, true);
-        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
 
     /**
      * Takes one rendered or renderable image and an array of double constants, and multiplies every pixel of the same
-     * band of the source by the constant from the corresponding array entry. See JAI {@link ConstantDescriptor} for
+     * band of the source by the constant from the corresponding array entry. See ImageN {@link ConstantDescriptor} for
      * details.
      *
      * @param inValues The constants to be multiplied.
@@ -3045,7 +3045,7 @@ public class ImageWorker {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         prepareOpConstOperation(Operator.MULTIPLY, inValues, pb, roi, nodata, true);
-        image = JAI.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
         // image = MultiplyConstDescriptor.create(image, inValues, getRenderingHints());
         invalidateStatistics();
         return this;
@@ -3053,8 +3053,8 @@ public class ImageWorker {
 
     /**
      * Takes two rendered or renderable source images, and myltiply form each pixel the related value of the second
-     * image, each one from each source image of the corresponding position and band. See JAI {@link AlgebraDescriptor}
-     * for details.
+     * image, each one from each source image of the corresponding position and band. See ImageN
+     * {@link AlgebraDescriptor} for details.
      *
      * @param renderedImage the {@link RenderedImage} to be multiplied to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
@@ -3065,7 +3065,7 @@ public class ImageWorker {
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
         prepareAlgebricOperation(Operator.MULTIPLY, pb, roi, nodata, true);
-        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
@@ -3083,15 +3083,15 @@ public class ImageWorker {
             valuesD[i] = values[i];
         }
         prepareOpConstOperation(Operator.XOR, valuesD, pb, roi, nodata, true);
-        image = JAI.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(OPERATION_CONST_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
 
     /**
      * Takes two rendered or renderable source images, and subtract form each pixel the related value of the second
-     * image, each one from each source image of the corresponding position and band. See JAI {@link AlgebraDescriptor}
-     * for details.
+     * image, each one from each source image of the corresponding position and band. See ImageN
+     * {@link AlgebraDescriptor} for details.
      *
      * @param renderedImage the {@link RenderedImage} to be subtracted to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
@@ -3101,14 +3101,14 @@ public class ImageWorker {
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
         prepareAlgebricOperation(Operator.SUBTRACT, pb, roi, nodata, true);
-        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
 
     /**
      * Takes two rendered or renderable source images, and do an OR for each pixel images, each one from each source
-     * image of the corresponding position and band. See JAI {@link AlgebraDescriptor} for details.
+     * image of the corresponding position and band. See ImageN {@link AlgebraDescriptor} for details.
      *
      * @param renderedImage the {@link RenderedImage} to be subtracted to this {@link ImageWorker}.
      * @return this {@link ImageWorker}.
@@ -3119,7 +3119,7 @@ public class ImageWorker {
         pb.setSource(image, 0);
         pb.setSource(renderedImage, 1);
         prepareAlgebricOperation(Operator.OR, pb, roi, nodata, true);
-        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        image = ImageN.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
         invalidateStatistics();
         return this;
     }
@@ -3214,12 +3214,12 @@ public class ImageWorker {
              */
             final ImageLayout layout = getImageLayout(hints);
             layout.setColorModel(newCM);
-            worker.setRenderingHint(JAI.KEY_IMAGE_LAYOUT, layout);
+            worker.setRenderingHint(ImageN.KEY_IMAGE_LAYOUT, layout);
         }
         /*
          * Applies the mask, maybe with a color model change.
          */
-        worker.setRenderingHint(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+        worker.setRenderingHint(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
         worker.mask(alphaChannel, false, transparent);
         image = worker.image;
         invalidateStatistics();
@@ -3247,7 +3247,7 @@ public class ImageWorker {
             pb.setSource(image, 0); // The source image.
             pb.set(type, 0);
 
-            image = JAI.create("Format", pb, hints);
+            image = ImageN.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, type));
         }
         return this;
@@ -3292,7 +3292,7 @@ public class ImageWorker {
                     buildOpacityLookupTable(0, 1, -1, image.getSampleModel().getDataType());
             ImageLayout layout = new ImageLayout(image);
             layout.setColorModel(newColorModel);
-            RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+            RenderingHints hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
 
             // ParameterBlock definition
             ParameterBlock pb = new ParameterBlock();
@@ -3306,7 +3306,7 @@ public class ImageWorker {
                 }
             }
 
-            result = JAI.create("Lookup", pb, hints);
+            result = ImageN.create("Lookup", pb, hints);
             // result = LookupDescriptor.create(image, table, hints);
         } else {
             // not indexed, then make sure it's some sort of component color model or turn it into
@@ -3330,7 +3330,7 @@ public class ImageWorker {
                         (float) image.getWidth(),
                         (float) image.getHeight(),
                         new Byte[] {Byte.valueOf(alpha)},
-                        new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                        new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
 
                 ParameterBlock pb = new ParameterBlock();
                 pb.setSource(expanded, 0);
@@ -3344,7 +3344,7 @@ public class ImageWorker {
                 }
                 pb.set(roi, 3);
                 pb.set(true, 4);
-                result = JAI.create("BandMerge", pb, null);
+                result = ImageN.create("BandMerge", pb, null);
                 // result = BandMergeDescriptor.create(expanded, alphaBand, null);
             } else {
                 // we need to transform the existing, we'll use a lookup
@@ -3364,7 +3364,7 @@ public class ImageWorker {
                     }
                 }
 
-                result = JAI.create("Lookup", pb, null);
+                result = ImageN.create("Lookup", pb, null);
                 // LookupTableJAI table = buildOpacityLookupTable(opacity, bands, alphaBand);
                 // result = LookupDescriptor.create(expanded, table, null);
             }
@@ -3984,7 +3984,7 @@ public class ImageWorker {
                 // this will do an integer translate, but to get there we need to remove the image
                 // layout
                 Hints localHints = new Hints(getRenderingHints());
-                localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                localHints.remove(ImageN.KEY_IMAGE_LAYOUT);
                 double[] scalingParams = {1.0, 1.0, Math.round(tx.getTranslateX()), Math.round(tx.getTranslateY())};
                 scale(pb, scalingParams, interpolation, localHints);
                 updateNoData(background, image);
@@ -4003,7 +4003,7 @@ public class ImageWorker {
             pb.set(roi, 3);
             pb.set(true, 5);
             pb.set(nodata, 6);
-            image = JAI.create("Affine", pb, getRenderingHints());
+            image = ImageN.create("Affine", pb, getRenderingHints());
             updateNoData(bgValues, image);
             updateROI(false, "Affine");
         }
@@ -4050,7 +4050,7 @@ public class ImageWorker {
                 pb.set(background, 8);
             }
         }
-        RenderedImage scaledImage = JAI.create(SCALE_OP_NAME, pb, hints);
+        RenderedImage scaledImage = ImageN.create(SCALE_OP_NAME, pb, hints);
         image = scaledImage;
         if (alphaChannel != null) {
             // Need to scale alpha separately (with nearest interpolation)
@@ -4067,7 +4067,7 @@ public class ImageWorker {
             pb2.set(Interpolation.getInstance(Interpolation.INTERP_NEAREST), 4);
             pb2.set(roi, 5);
             pb2.set(nodata, 7);
-            alphaChannel = JAI.create(SCALE_OP_NAME, pb2, hints);
+            alphaChannel = ImageN.create(SCALE_OP_NAME, pb2, hints);
             // Now, re-attach the scaled alpha to the scaled image
             ImageWorker merged = prepareForScaledAlphaChannel(scaledImage, hints, cm, sm);
             image = merged.addBand(alphaChannel, false, true, null).getRenderedImage();
@@ -4078,7 +4078,7 @@ public class ImageWorker {
     ImageWorker prepareForScaledAlphaChannel(
             RenderedImage scaledImage, RenderingHints hints, ColorModel cm, SampleModel sm) {
         ImageWorker merged = new ImageWorker(scaledImage);
-        Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
+        Object candidate = hints.get(ImageN.KEY_IMAGE_LAYOUT);
         if (candidate instanceof ImageLayout layout) {
             if (layout.getTileWidth(null) > 0 && layout.getTileHeight(null) > 0) {
                 ImageLayout layout2 = new ImageLayout2(
@@ -4088,7 +4088,7 @@ public class ImageWorker {
                         layout.getTileHeight(null),
                         sm,
                         cm);
-                merged.setRenderingHints(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout2));
+                merged.setRenderingHints(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout2));
             }
         }
         return merged;
@@ -4214,7 +4214,7 @@ public class ImageWorker {
             pb.set(new double[] {destinationNoData}, 6);
         }
 
-        image = JAI.create("Crop", pb, commonHints);
+        image = ImageN.create("Crop", pb, commonHints);
         invalidateStatistics();
         return this;
     }
@@ -4243,7 +4243,7 @@ public class ImageWorker {
             }
         }
 
-        RenderedImage result = JAI.create("ImageFunction", pb, getRenderingHints());
+        RenderedImage result = ImageN.create("ImageFunction", pb, getRenderingHints());
         setImage(result);
         return this;
     }
@@ -4361,7 +4361,7 @@ public class ImageWorker {
         pb.add(background != null ? background : nodataBackground);
         pb.add(nodataNew);
         RenderingHints hints = getRenderingHints();
-        image = JAI.create("Mosaic", pb, hints);
+        image = ImageN.create("Mosaic", pb, hints);
         boolean setRoiProperty = false;
         if (hints != null && !hints.isEmpty() && hints.containsKey(FORCE_MOSAIC_ROI_PROPERTY)) {
             setRoiProperty = (boolean) hints.get(FORCE_MOSAIC_ROI_PROPERTY);
@@ -4455,7 +4455,7 @@ public class ImageWorker {
         pb.add(ROI_THRESHOLDS);
         pb.add(ROI_BACKGROUND);
         pb.add(handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
-        RenderedImage roiMosaic = JAI.create("Mosaic", pb, getRenderingHints());
+        RenderedImage roiMosaic = ImageN.create("Mosaic", pb, getRenderingHints());
         return new ROI(roiMosaic);
     }
 
@@ -4508,7 +4508,7 @@ public class ImageWorker {
                 pb.add(background[0]);
             }
         }
-        image = JAI.create("Border", pb, getRenderingHints());
+        image = ImageN.create("Border", pb, getRenderingHints());
         return this;
     }
 
@@ -4519,7 +4519,7 @@ public class ImageWorker {
         pb.add(yTrans);
         pb.add(interp);
         // do not use getRenderingHints() with translate, as it cannot deal with layout hints
-        image = JAI.create("Translate", pb, commonHints);
+        image = ImageN.create("Translate", pb, commonHints);
         return this;
     }
 
@@ -4532,7 +4532,7 @@ public class ImageWorker {
         pb.set(roi, 3);
         pb.set(nodata, 4);
         pb.set(background, 2);
-        image = JAI.create("Warp", pb, getRenderingHints());
+        image = ImageN.create("Warp", pb, getRenderingHints());
         updateROI(true, null);
         return this;
     }
@@ -4567,7 +4567,7 @@ public class ImageWorker {
             }
         }
 
-        image = JAI.create("Lookup", pb, getRenderingHints());
+        image = ImageN.create("Lookup", pb, getRenderingHints());
         return this;
     }
 
@@ -4583,7 +4583,7 @@ public class ImageWorker {
                 pb.set(background, 3);
             }
         }
-        image = JAI.create("ColorIndexer", pb, getRenderingHints());
+        image = ImageN.create("ColorIndexer", pb, getRenderingHints());
         return this;
     }
 
@@ -4601,7 +4601,7 @@ public class ImageWorker {
                 setNoData(RangeFactory.create(domain1D.getDefaultValue(), domain1D.getDefaultValue()));
             }
         }
-        image = JAI.create("RasterClassifier", pb, getRenderingHints());
+        image = ImageN.create("RasterClassifier", pb, getRenderingHints());
 
         return this;
     }
@@ -4614,8 +4614,8 @@ public class ImageWorker {
         pb.set(bandIndex, 1);
         pb.set(roi, 2);
         pb.set(nodata, 3);
-        image = JAI.create("GenericPiecewise", pb, getRenderingHints());
-        // this sets the NoData value in the output image (so must be done after the JAI operation)
+        image = ImageN.create("GenericPiecewise", pb, getRenderingHints());
+        // this sets the NoData value in the output image (so must be done after the ImageN operation)
         if (isNoDataNeeded()) {
             // if there is nodata in input, GenericPiecewise will transform it to the default value, gap or not
             if (transform.hasGaps() || nodata != null) {
@@ -4648,7 +4648,7 @@ public class ImageWorker {
         }
 
         pb.set(destNodata, 5);
-        image = JAI.create("Rescale", pb, getRenderingHints());
+        image = ImageN.create("Rescale", pb, getRenderingHints());
         if (!Double.isNaN(destNodata)) {
             setNoData(RangeFactory.create((byte) destNodata, (byte) destNodata));
         }
@@ -4669,7 +4669,7 @@ public class ImageWorker {
             }
         }
 
-        image = JAI.create("BandCombine", pb, getRenderingHints());
+        image = ImageN.create("BandCombine", pb, getRenderingHints());
 
         return this;
     }
@@ -4688,7 +4688,7 @@ public class ImageWorker {
                 setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
-        image = JAI.create("RLookup", pb, getRenderingHints());
+        image = ImageN.create("RLookup", pb, getRenderingHints());
 
         return this;
     }
@@ -4908,7 +4908,7 @@ public class ImageWorker {
                 Float.valueOf(image.getWidth()),
                 Float.valueOf(image.getHeight()),
                 new Byte[] {Byte.valueOf((byte) 255)},
-                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, tempLayout));
+                new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, tempLayout));
         addBand(alpha, false, true, null);
         return this;
     }
@@ -5056,7 +5056,7 @@ public class ImageWorker {
      * collector discovers this, and finalize is called. This can be used as a hint in situations where waiting for
      * garbage collection would be overly conservative.
      *
-     * <p>Mind, this also results in disposing the JAI Image chain attached to the image the worker is applied to, so
+     * <p>Mind, this also results in disposing the ImageN Image chain attached to the image the worker is applied to, so
      * don't call this method on image changes (full/partial) that you want to use.
      *
      * <p>{@link ImageWorker} defines this method to remove the image being disposed from the list of sinks in all of
@@ -5099,7 +5099,7 @@ public class ImageWorker {
                 final ImageWorker worker = new ImageWorker(new File(args[0]));
                 // Force usage of tile cache for every operations, including intermediate steps.
                 worker.setRenderingHint(
-                        JAI.KEY_TILE_CACHE, JAI.getDefaultInstance().getTileCache());
+                        ImageN.KEY_TILE_CACHE, ImageN.getDefaultInstance().getTileCache());
                 if (operation != null) {
                     worker.getClass().getMethod(operation, (Class[]) null).invoke(worker, (Object[]) null);
                 }
@@ -5176,7 +5176,7 @@ public class ImageWorker {
             pb.set(roi, 3);
             pb.set(true, 5);
             pb.set(nodata, 6);
-            RenderedOp at = JAI.create("Affine", pb, getRenderingHints());
+            RenderedOp at = ImageN.create("Affine", pb, getRenderingHints());
             updateNoData(bgValues, image);
 
             // commonHints);
@@ -5189,7 +5189,7 @@ public class ImageWorker {
             Rectangle sourceBB = (Rectangle) op.getProperty("SourceBoundingBox");
             Rectangle mappingBB;
             if (op.getProperty("ROI") instanceof ROI) {
-                // Due to a limitation in JAI we need to make sure the
+                // Due to a limitation in ImageN we need to make sure the
                 // mapping bounding box covers both source and target bounding box
                 // otherwise the warped roi image layout won't be computed properly
                 mappingBB = sourceBB.union(targetBB);
@@ -5208,7 +5208,7 @@ public class ImageWorker {
                     || !(sourceWarp instanceof WarpGrid || sourceWarp instanceof WarpAffine)
                     || tx.getScaleX() > 1
                     || tx.getScaleY() > 1) {
-                // and then the JAI Operation
+                // and then the ImageN Operation
                 PlanarImage sourceImage = op.getSourceImage(0);
                 final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
                 Object property = sourceImage.getProperty("ROI");
@@ -5290,7 +5290,7 @@ public class ImageWorker {
                     // force in the image layout, this way we get exactly the same
                     // as the affine we're eliminating
                     Hints localHints = new Hints(getRenderingHints());
-                    localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                    localHints.remove(ImageN.KEY_IMAGE_LAYOUT);
                     ImageLayout il = new ImageLayout();
                     il.setMinX(targetBB.x);
                     il.setMinY(targetBB.y);
@@ -5301,9 +5301,9 @@ public class ImageWorker {
                     il.setTileWidth(tileHeight);
                     il.setTileGridXOffset(0);
                     il.setTileGridYOffset(0);
-                    localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
+                    localHints.put(ImageN.KEY_IMAGE_LAYOUT, il);
 
-                    RenderedOp result = JAI.create("Warp", paramBlk, localHints);
+                    RenderedOp result = ImageN.create("Warp", paramBlk, localHints);
                     result.setProperty("MathTransform", chained);
                     image = result;
                     // getting the new ROI property

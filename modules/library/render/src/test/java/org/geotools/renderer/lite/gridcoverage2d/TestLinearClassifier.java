@@ -126,7 +126,7 @@ public class TestLinearClassifier extends Assert {
             // pbj.addSource(image);
             // pbj.setParameter("Domain1D", list);
             final RenderedOp finalimage = w.classify(list, null).getRenderedOperation();
-            // JAI.create(
+            // ImageN.create(
             // RasterClassifierOpImage.OPERATION_NAME, pbj);
 
             if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalimage, "synthetic");
@@ -380,7 +380,7 @@ public class TestLinearClassifier extends Assert {
 
             // pbj.setParameter("bandIndex", Integer.valueOf(0));
             final RenderedOp finalImage = w.classify(list, Integer.valueOf(0)).getRenderedOperation();
-            // JAI.create(
+            // ImageN.create(
             // RasterClassifierOpImage.OPERATION_NAME, pbj);
             if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalImage, "testSWAN1");
             else finalImage.getTiles();

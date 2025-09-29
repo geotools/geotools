@@ -46,7 +46,7 @@ import org.geotools.api.feature.Property;
  *
  * <p>It works with {@code InfoToolHelper} objects which do the work of querying feature data. The
  * primary reason for this design is to shield this class from the grid coverage classes so that
- * users who are working purely with vector data are not forced to have JAI in the classpath.
+ * users who are working purely with vector data are not forced to have ImageN in the classpath.
  *
  * @see InfoToolHelper
  * @author Michael Bedward
@@ -100,7 +100,7 @@ public class InfoTool extends CursorTool {
      *
      * <p><b>Implementation note:</b> An instance of {@code InfoToolHelper} is created and cached
      * for each of the {@code MapLayers}. The helpers are created using reflection to avoid direct
-     * references to grid coverage classes here that would required JAI (Java Advanced Imaging) to
+     * references to grid coverage classes here that would required ImageN (Java Advanced Imaging) to
      * be on the classpath even when only vector layers are being used.
      *
      * @param ev mouse event

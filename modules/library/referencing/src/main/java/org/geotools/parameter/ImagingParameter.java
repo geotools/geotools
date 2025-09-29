@@ -176,7 +176,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     /**
      * Returns a reference to a file or a part of a file containing one or more parameter value.
      *
-     * @todo Add automatic conversions, if it appears usefull for JAI parameters.
+     * @todo Add automatic conversions, if it appears usefull for ImageN parameters.
      */
     @Override
     public URI valueFile() throws InvalidParameterTypeException {

@@ -33,7 +33,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.stream.FileImageInputStream;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.ParameterBlockJAI;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RasterFactory;
@@ -506,7 +506,7 @@ public class TestPiecewise {
         //
         //
         // /////////////////////////////////////////////////////////////////////
-        final RenderedImage image = new ImageWorker(JAI.create("ImageRead", TestData.file(this, "usa.png")))
+        final RenderedImage image = new ImageWorker(ImageN.create("ImageRead", TestData.file(this, "usa.png")))
                 .forceComponentColorModel()
                 .retainFirstBand()
                 .getRenderedImage();
@@ -588,7 +588,7 @@ public class TestPiecewise {
             // forcing a bad band selection ...
             // //
             // pbj.setParameter("bandIndex", Integer.valueOf(2));
-            // final RenderedOp d = JAI.create(
+            // final RenderedOp d = ImageN.create(
             // GenericPiecewiseOpImage.OPERATION_NAME, pbj);
             final RenderedOp d = w.piecewise(transform, Integer.valueOf(2)).getRenderedOperation();
             d.getTiles();
@@ -602,7 +602,7 @@ public class TestPiecewise {
         Assert.assertTrue(exceptionThrown);
 
         // pbj.setParameter("bandIndex", Integer.valueOf(0));
-        // final RenderedOp finalImage = JAI.create(
+        // final RenderedOp finalImage = ImageN.create(
         // GenericPiecewiseOpImage.OPERATION_NAME, pbj);
         final RenderedOp finalImage = w.piecewise(transform, Integer.valueOf(0)).getRenderedOperation();
         if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalImage, "testSWANLOGARITHMIC");
@@ -629,7 +629,7 @@ public class TestPiecewise {
             new ParameterBlockJAI(GenericPiecewiseOpImage.OPERATION_NAME);
 
         } catch (Exception e) {
-            // GenericPiecewiseOpImage.register(JAI.getDefaultInstance());
+            // GenericPiecewiseOpImage.register(ImageN.getDefaultInstance());
         }
 
         // check that it exisits

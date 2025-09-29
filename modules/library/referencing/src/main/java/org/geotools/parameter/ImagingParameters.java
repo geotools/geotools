@@ -48,7 +48,7 @@ import org.geotools.util.Utilities;
  * Wraps a JAI's {@link ParameterList}. Any change to a {@linkplain #parameter parameter value} in this group is
  * reflected into the {@linkplain #parameters underlying parameter list}, and conversely. This adaptor is provided for
  * interoperability with <A HREF="http://java.sun.com/products/java-media/jai/">Java Advanced Imaging</A>. A typical
- * usage is to wrap a JAI {@linkplain OperationDescriptor operation descriptor} into an
+ * usage is to wrap a ImageN {@linkplain OperationDescriptor operation descriptor} into an
  * {@linkplain ImagingParameterDescriptors imaging parameter descriptor} and create instances of
  * {@code ImagingParameters} through the {@link ImagingParameterDescriptors#createValue createValue} method.
  *
@@ -66,7 +66,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      * group}: all "ordinary" parameters (i.e. <strong>not</strong> including {@linkplain ParameterBlockJAI#getSources
      * sources}) are actually stored in this list.
      *
-     * <p>If the {@linkplain ImagingParameterDescriptors#descriptor JAI descriptor} is an instance of
+     * <p>If the {@linkplain ImagingParameterDescriptors#descriptor ImageN descriptor} is an instance of
      * {@link OperationDescriptor}, then this parameter list is also an instance of {@link ParameterBlockJAI}. The
      * {@linkplain ParameterBlockJAI#getSources sources} must be handled separatly, because the source type for a JAI
      * operator (typically {@link java.awt.image.RenderedImage}) is not the same than the source type for a coverage
@@ -106,8 +106,8 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     }
 
     /**
-     * Constructs a parameter group wrapping the specified JAI parameters. A default {@link ImagingParameterDescriptors}
-     * is created.
+     * Constructs a parameter group wrapping the specified ImageN parameters. A default
+     * {@link ImagingParameterDescriptors} is created.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param parameters The JAI's parameters.
@@ -119,12 +119,13 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     }
 
     /**
-     * Returns {@code true} if the specified OGC descriptor is compatible with the specified JAI descriptor. Note that
-     * the JAI descriptor is allowed to be less strict than the OGC one. This is okay because {@link ImagingParameter}
-     * will keep a reference to the stricter OGC descriptor, which can be used for performing a strict check if we wish.
+     * Returns {@code true} if the specified OGC descriptor is compatible with the specified ImageN descriptor. Note
+     * that the ImageN descriptor is allowed to be less strict than the OGC one. This is okay because
+     * {@link ImagingParameter} will keep a reference to the stricter OGC descriptor, which can be used for performing a
+     * strict check if we wish.
      *
      * @param descriptor The OGC descriptor.
-     * @param listDescriptor The JAI descriptor.
+     * @param listDescriptor The ImageN descriptor.
      * @param names The array returned by {@code listDescriptor.getParamNames()}, obtained once for ever by the caller
      *     for efficienty.
      * @param types The array returned by {@code listDescriptor.getParamClasses()}, obtained once for ever by the caller
@@ -196,14 +197,14 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
             final ParameterValue value;
             if (compatible(d, listDescriptor, names, types, enumerated)) {
                 /*
-                 * Found a parameter which is a member of the JAI ParameterList, and the
+                 * Found a parameter which is a member of the ImageN ParameterList, and the
                  * type matches the expected one. Uses 'parameters' as the backing store.
                  */
                 value = new ImagingParameter<>(d, parameters);
             } else {
                 /*
                  * In theory, we should use ParameterBlock sources. However, we can't because
-                 * the type is not the same: JAI operations typically expect a RenderedImage
+                 * the type is not the same: ImageN operations typically expect a RenderedImage
                  * source, while coverage operations typically expect a GridCoverage source.
                  * The value will be stored separatly, and the coverage framework will need
                  * to handle it itself.

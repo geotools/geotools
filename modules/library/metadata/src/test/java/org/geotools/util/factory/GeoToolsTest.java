@@ -31,7 +31,7 @@ import java.util.jar.Manifest;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.geotools.api.filter.Filter;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
@@ -119,7 +119,7 @@ public final class GeoToolsTest {
     @Test
     public void testManifest() {
         // jar manifest lookup
-        Manifest jai = GeoTools.getManifest(JAI.class);
+        Manifest jai = GeoTools.getManifest(ImageN.class);
         assertFalse("manifest metadata", jai.getMainAttributes().isEmpty());
 
         // this should always be generated during a maven or ide build

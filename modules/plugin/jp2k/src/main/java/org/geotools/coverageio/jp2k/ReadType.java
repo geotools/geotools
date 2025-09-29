@@ -31,13 +31,13 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * This enum can be used to distinguish between differet read methods, namely, JAI ImageRead based and Java2D direct
+ * This enum can be used to distinguish between differet read methods, namely, ImageN ImageRead based and Java2D direct
  * read via ImageReader.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
@@ -164,8 +164,8 @@ enum ReadType {
                 // build a proper layout
                 final ImageLayout layout = new ImageLayout();
                 layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
-                raster = JAI.create("ImageRead", pbjImageRead, new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-            } else raster = JAI.create("ImageRead", pbjImageRead);
+                raster = ImageN.create("ImageRead", pbjImageRead, new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
+            } else raster = ImageN.create("ImageRead", pbjImageRead);
             // force rendering (a-la JAI)
             if (raster != null) raster.getWidth();
             return raster;
@@ -193,7 +193,7 @@ enum ReadType {
     /**
      * Default {@link ReadType} enumeration.
      *
-     * <p>We use the JAI ImageRead as the default type so that we can be sure that we can read very large images with
+     * <p>We use the ImageN ImageRead as the default type so that we can be sure that we can read very large images with
      * deferred loading.
      *
      * @return the default {@link ReadType}.

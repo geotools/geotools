@@ -27,7 +27,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.renderable.ParameterBlock;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.TileCache;
 import org.eclipse.imagen.media.util.SunTileCache;
@@ -42,14 +42,14 @@ public class CropImageTest {
         ParameterBlock pb = buildParameterBlock(source);
 
         RenderedOp gtCropped = new ImageWorker(source).crop(10f, 50f, 20f, 20f).getRenderedOperation();
-        RenderedOp cropped = JAI.create("crop", pb);
+        RenderedOp cropped = ImageN.create("crop", pb);
         assertImageEquals(cropped, gtCropped);
     }
 
     @Test
     public void testTileCache() {
         TileCache tc = new SunTileCache();
-        RenderingHints hints = new RenderingHints(JAI.KEY_TILE_CACHE, tc);
+        RenderingHints hints = new RenderingHints(ImageN.KEY_TILE_CACHE, tc);
 
         BufferedImage source = buildSource();
 
@@ -58,12 +58,12 @@ public class CropImageTest {
                 .crop(10f, 50f, 20f, 20f)
                 .getRenderedOperation();
         gtCropped.getColorModel(); // force to compute the image
-        assertSame(tc, gtCropped.getRenderingHint(JAI.KEY_TILE_CACHE));
+        assertSame(tc, gtCropped.getRenderingHint(ImageN.KEY_TILE_CACHE));
     }
 
     @Test
     public void testNullTileCache() {
-        RenderingHints hints = new RenderingHints(JAI.KEY_TILE_CACHE, null);
+        RenderingHints hints = new RenderingHints(ImageN.KEY_TILE_CACHE, null);
 
         BufferedImage source = buildSource();
 
@@ -72,12 +72,12 @@ public class CropImageTest {
                 .crop(10f, 50f, 20f, 20f)
                 .getRenderedOperation();
         gtCropped.getColorModel(); // force to compute the image
-        assertNull(gtCropped.getRenderingHint(JAI.KEY_TILE_CACHE));
+        assertNull(gtCropped.getRenderingHint(ImageN.KEY_TILE_CACHE));
     }
 
     @Test
     public void testNullTileCacheDescriptor() {
-        RenderingHints hints = new RenderingHints(JAI.KEY_TILE_CACHE, null);
+        RenderingHints hints = new RenderingHints(ImageN.KEY_TILE_CACHE, null);
 
         BufferedImage source = buildSource();
 
@@ -85,7 +85,7 @@ public class CropImageTest {
         RenderedOp gtCropped =
                 w.setRenderingHints(hints).crop(10f, 10f, 20f, 20f).getRenderedOperation();
         gtCropped.getColorModel(); // force to compute the image
-        assertNull(gtCropped.getRenderingHint(JAI.KEY_TILE_CACHE));
+        assertNull(gtCropped.getRenderingHint(ImageN.KEY_TILE_CACHE));
     }
 
     private BufferedImage buildSource() {

@@ -156,7 +156,7 @@ public final class MrSIDTest extends GDALTestCase {
 
         // //
         //
-        // Setting read type: use JAI ImageRead
+        // Setting read type: use ImageN ImageRead
         //
         // //
         final ParameterValue useJaiRead = ((BaseGDALGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();

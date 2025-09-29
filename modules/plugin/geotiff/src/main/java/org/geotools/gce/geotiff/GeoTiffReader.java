@@ -77,7 +77,7 @@ import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
@@ -134,7 +134,7 @@ import org.geotools.util.logging.Logging;
 
 /**
  * this class is responsible for exposing the data and the Georeferencing metadata available to the Geotools library.
- * This reader is heavily based on the capabilities provided by the ImageIO tools and JAI libraries.
+ * This reader is heavily based on the capabilities provided by the ImageIO tools and ImageN libraries.
  *
  * @author Bryce Nordgren, USDA Forest Service
  * @author Simone Giannecchini
@@ -723,7 +723,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             layout.setTileGridYOffset(0);
             layout.setTileHeight(suggestedTileSize[1]);
             layout.setTileWidth(suggestedTileSize[0]);
-            newHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            newHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         }
         final ParameterBlock pbjRead = new ParameterBlock();
         // Image Index used for the Overview management
@@ -757,12 +757,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         pbjRead.add(null);
         pbjRead.add(readP);
         pbjRead.add(readerSpi.createReaderInstance());
-        PlanarImage coverageRaster = JAI.create("ImageRead", pbjRead, newHints != null ? newHints : null);
+        PlanarImage coverageRaster = ImageN.create("ImageRead", pbjRead, newHints != null ? newHints : null);
 
         // applying rescale if needed
         if (rescalePixels) {
             if (noData != null) {
-                // Force nodata settings since JAI ImageRead may lost that
+                // Force nodata settings since ImageN ImageRead may lost that
                 // We have to make sure that noData pixels won't be rescaled
                 PlanarImage t = PlanarImage.wrapRenderedImage(coverageRaster);
                 t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
@@ -802,7 +802,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
             MaskInfo info = maskOvrProvider.getMaskInfo(imageChoice, sourceRegion, readP);
             if (info != null) {
-                @SuppressWarnings("PMD.CloseResource") // stream is closed by the JAI operation in readROIRaster
+                @SuppressWarnings("PMD.CloseResource") // stream is closed by the ImageN operation in readROIRaster
                 ImageInputStream stream = maskOvrProvider.getMaskStream(info);
                 RenderedOp roiRaster = readROIRaster(stream, info.index, newHints, info.readParameters);
                 roi = MaskOverviewProvider.scaleROI(roiRaster, coverageRaster.getBounds());
@@ -869,7 +869,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             pb.add(null);
             pb.add(readP);
             pb.add(readerSpi.createReaderInstance());
-            raster = JAI.create("ImageRead", pb, newHints != null ? newHints : null);
+            raster = ImageN.create("ImageRead", pb, newHints != null ? newHints : null);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unable to read input Mask Band for coverage: " + coverageName, e);
         }

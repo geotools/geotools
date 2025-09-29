@@ -29,7 +29,7 @@ import org.geotools.api.referencing.operation.MathTransform;
  * Abstract base class for helper classes used by {@code InfoTool} to query {@code MapLayers}.
  *
  * <p>The primary reason for having this class is to avoid loading grid coverage classes unless they
- * are really needed, and thus avoid the need for users to have JAI in the classpath when working
+ * are really needed, and thus avoid the need for users to have ImageN in the classpath when working
  * with vector data.
  *
  * <p>The type parameter <code>&lt;T&gt;</code> defines the return type of the {@linkplain #getInfo}

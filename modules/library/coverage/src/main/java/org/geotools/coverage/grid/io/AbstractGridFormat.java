@@ -111,8 +111,8 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
      * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the type of image read
-     * operation requested: using a JAI ImageRead operation (leveraging on Deferred Execution Model, Tile Caching,...),
-     * or the direct {@code ImageReader}'s read methods.
+     * operation requested: using a ImageN ImageRead operation (leveraging on Deferred Execution Model, Tile
+     * Caching,...), or the direct {@code ImageReader}'s read methods.
      */
     public static final DefaultParameterDescriptor<Boolean> USE_JAI_IMAGEREAD = new DefaultParameterDescriptor<>(
             Hints.USE_JAI_IMAGEREAD.toString(),
@@ -150,9 +150,9 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
      * {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the suggested size of tiles
-     * to avoid long time reading occurring with JAI ImageRead on striped images. (Images with tiles Nx1) Value should
-     * be a String in the form of "W,H" (without quotes) where W is a number representing the suggested tileWidth and H
-     * is a number representing the suggested tileHeight.
+     * to avoid long time reading occurring with ImageN ImageRead on striped images. (Images with tiles Nx1) Value
+     * should be a String in the form of "W,H" (without quotes) where W is a number representing the suggested tileWidth
+     * and H is a number representing the suggested tileHeight.
      */
     public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE =
             new DefaultParameterDescriptor<>(SUGGESTED_TILESIZE, String.class, null, "512,512");

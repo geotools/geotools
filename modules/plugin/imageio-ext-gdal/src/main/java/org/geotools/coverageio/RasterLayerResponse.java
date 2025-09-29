@@ -38,7 +38,7 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.range.NoDataContainer;
@@ -175,7 +175,7 @@ class RasterLayerResponse {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope, and a requested
      * dimension.
      *
-     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead operation or a simple
+     * @param useJAI specify if the underlying read process should leverage on a ImageN ImageRead operation or a simple
      *     direct call to the {@code read} method of a proper {@code ImageReader}.
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
@@ -402,8 +402,8 @@ class RasterLayerResponse {
      * Returns a {@code PlanarImage} given a set of parameter specifying the type of read operation to be performed.
      *
      * @param input a File input to be used for reading the image.
-     * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we need a simple direct
-     *     {@code ImageReader.read(...)} call.
+     * @param useJAI {@code true} if we need to use a ImageN ImageRead operation, {@code false} if we need a simple
+     *     direct {@code ImageReader.read(...)} call.
      * @param imageReadParam an {@code ImageReadParam} specifying the read parameters This parameter will be ignored if
      *     requesting a direct read operation.
      * @return the read {@code PlanarImage}
@@ -428,7 +428,7 @@ class RasterLayerResponse {
             pbjImageRead.add(imageReadParam);
             pbjImageRead.add(reader);
 
-            raster = JAI.create(GridCoverageUtilities.IMAGEREAD, pbjImageRead, newRi);
+            raster = ImageN.create(GridCoverageUtilities.IMAGEREAD, pbjImageRead, newRi);
         } else {
             reader = readerSpi.createReaderInstance();
             try (FileImageInputStreamExtImpl fiis = new FileImageInputStreamExtImpl(input)) {
@@ -461,7 +461,7 @@ class RasterLayerResponse {
                 SampleModel sm = cm.createCompatibleSampleModel(layout.getTileWidth(null), layout.getTileHeight(null));
                 final RenderingHints oldRi = hints;
                 newRi = (RenderingHints) oldRi.clone();
-                ImageLayout hintsLayout = (ImageLayout) oldRi.get(JAI.KEY_IMAGE_LAYOUT);
+                ImageLayout hintsLayout = (ImageLayout) oldRi.get(ImageN.KEY_IMAGE_LAYOUT);
 
                 ImageLayout newLayout = new ImageLayout();
                 if (hintsLayout != null) {
@@ -472,7 +472,7 @@ class RasterLayerResponse {
                 }
                 newLayout.setColorModel(cm);
                 newLayout.setSampleModel(sm);
-                newRi.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, newLayout));
+                newRi.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, newLayout));
             }
         }
         return newRi;

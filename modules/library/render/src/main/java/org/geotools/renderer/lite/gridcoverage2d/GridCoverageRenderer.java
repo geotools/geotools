@@ -40,9 +40,9 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.media.utilities.ImageLayout2;
 import org.geotools.api.coverage.grid.GridCoverage;
@@ -282,10 +282,10 @@ public final class GridCoverageRenderer {
         this.gridCoverageFactory = CoverageFactoryFinder.getGridCoverageFactory(this.hints);
 
         // Interpolation
-        if (hints.containsKey(JAI.KEY_INTERPOLATION)) {
-            interpolation = (Interpolation) newHints.get(JAI.KEY_INTERPOLATION);
+        if (hints.containsKey(ImageN.KEY_INTERPOLATION)) {
+            interpolation = (Interpolation) newHints.get(ImageN.KEY_INTERPOLATION);
         } else {
-            hints.add(new RenderingHints(JAI.KEY_INTERPOLATION, interpolation));
+            hints.add(new RenderingHints(ImageN.KEY_INTERPOLATION, interpolation));
         }
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Rendering using interpolation " + interpolation);
@@ -293,8 +293,8 @@ public final class GridCoverageRenderer {
         setInterpolationHints();
 
         // Tile Size
-        if (hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            final ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+        if (hints.containsKey(ImageN.KEY_IMAGE_LAYOUT)) {
+            final ImageLayout layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
             //            // only tiles are valid at this stage?? TODO
             layout.unsetImageBounds();
             // REVISIT:  [ErroneousBitwiseExpression] This expression evaluates to 0. If this isn't an error, consider
@@ -307,18 +307,18 @@ public final class GridCoverageRenderer {
         this.hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
 
         // SG add hints for the border extender
-        this.hints.add(
-                new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
+        this.hints.add(new RenderingHints(
+                ImageN.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
     }
 
     /** */
     private void setInterpolationHints() {
         if (interpolation instanceof InterpolationNearest) {
-            this.hints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
-            this.hints.add(new RenderingHints(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.TRUE));
+            this.hints.add(new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
+            this.hints.add(new RenderingHints(ImageN.KEY_TRANSFORM_ON_COLORMAP, Boolean.TRUE));
         } else {
-            this.hints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.TRUE));
-            this.hints.add(new RenderingHints(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE));
+            this.hints.add(new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.TRUE));
+            this.hints.add(new RenderingHints(ImageN.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE));
         }
     }
 
@@ -548,7 +548,7 @@ public final class GridCoverageRenderer {
         Hints localHints = new Hints();
         localHints.putAll(hints);
         if (symbolizer != null && symbolizer.getColorMap() != null) {
-            localHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+            localHints.put(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, false);
         }
         // Preserve the sample dimensions names when no symbolizer get used
         // Styles using GridCoverage's named properties may not find them if renamed
@@ -634,7 +634,7 @@ public final class GridCoverageRenderer {
                     .setTileGridYOffset(0)
                     .setTileHeight(tileSizeY)
                     .setTileWidth(tileSizeX);
-            hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         }
     }
 
@@ -649,7 +649,7 @@ public final class GridCoverageRenderer {
                 LOGGER.fine("Rendering using interpolation " + interpolation);
             }
             this.interpolation = interpolation;
-            hints.add(new RenderingHints(JAI.KEY_INTERPOLATION, this.interpolation));
+            hints.add(new RenderingHints(ImageN.KEY_INTERPOLATION, this.interpolation));
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Rendering using interpolation " + interpolation);
             }

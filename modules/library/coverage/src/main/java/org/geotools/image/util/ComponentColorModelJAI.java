@@ -26,17 +26,17 @@ import org.eclipse.imagen.FloatDoubleColorModel;
 import org.eclipse.imagen.iterator.RectIter;
 
 /**
- * A {@link ComponentColorModel} modified for interoperability with Java Advanced Imaging. JAI 1.1 was designed for use
- * with J2SE 1.3 and is not aware of new features in J2SE 1.4. This leads to the following problems:
+ * A {@link ComponentColorModel} modified for interoperability with Java Advanced Imaging. ImageN 1.1 was designed for
+ * use with J2SE 1.3 and is not aware of new features in J2SE 1.4. This leads to the following problems:
  *
  * <ul>
  *   <li>{@link ComponentColorModel} supports {@code float} and {@code double} datatypes since J2SE 1.4 only. The
- *       workaround for J2SE 1.3 is to use the {@link FloatDoubleColorModel} provided with JAI 1.1.
+ *       workaround for J2SE 1.3 is to use the {@link FloatDoubleColorModel} provided with ImageN 1.1.
  *   <li>{@link FloatDoubleColorModel} ignores the new API in {@link ColorSpace}, especially the {@code getMinValue} and
  *       {@code getMaxValue} methods. Consequently, rendering of any image using our custom {@code ScaledColorSpace} is
  *       wrong.
  *   <li>{@link ComponentColorModel} uses {@link java.awt.image.DataBufferFloat} and
- *       {@link java.awt.image.DataBufferDouble}, which are unknown to JAI 1.1. Consequently, trying to use
+ *       {@link java.awt.image.DataBufferDouble}, which are unknown to ImageN 1.1. Consequently, trying to use
  *       {@link RectIter} with one of those will throw {@link ClassCastException}.
  * </ul>
  *
@@ -44,7 +44,7 @@ import org.eclipse.imagen.iterator.RectIter;
  * override its {@code createCompatibleSampleModel} in order to returns {@link ComponentSampleModelJAI} instead of
  * {@link ComponentSampleModel} when {@code float} or {@code double} datatype is requested.
  *
- * @todo Remove this patch when JAI will recognize J2SE 1.4 classes.
+ * @todo Remove this patch when ImageN will recognize J2SE 1.4 classes.
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -76,7 +76,7 @@ public class ComponentColorModelJAI extends ComponentColorModel {
 
     /**
      * Returns a compatible sample model. This implementation is nearly identical to default J2SE's implementation,
-     * except that it construct a JAI color model instead of a J2SE one.
+     * except that it construct a ImageN color model instead of a J2SE one.
      */
     @Override
     public SampleModel createCompatibleSampleModel(final int w, final int h) {

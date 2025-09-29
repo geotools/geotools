@@ -270,7 +270,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
             final int cols = source.getWidth();
             final int rows = source.getHeight();
 
-            // Preparing main parameters for JAI imageWrite Operation
+            // Preparing main parameters for ImageN imageWrite Operation
             // //
             // Setting Output
             // //

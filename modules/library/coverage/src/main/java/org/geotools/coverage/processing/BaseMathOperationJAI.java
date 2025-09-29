@@ -79,7 +79,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseMathOperationJAI}.
      *
-     * @param operationDescriptor {@link OperationDescriptor} for the underlying JAI operation.
+     * @param operationDescriptor {@link OperationDescriptor} for the underlying ImageN operation.
      */
     public BaseMathOperationJAI(OperationDescriptor operationDescriptor) {
         super(
@@ -91,9 +91,9 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseMathOperationJAI}.
      *
-     * @param operationDescriptor {@link OperationDescriptor} for the underlying JAI operation.
+     * @param operationDescriptor {@link OperationDescriptor} for the underlying ImageN operation.
      * @param replacements {@link ImagingParameterDescriptors} that should replace the correspondent
-     *     {@link ImagingParameters} in order to change the default behavior they have inside JAI.
+     *     {@link ImagingParameters} in order to change the default behavior they have inside ImageN.
      */
     public BaseMathOperationJAI(OperationDescriptor operationDescriptor, ImagingParameterDescriptors replacements) {
         super(
@@ -109,7 +109,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseMathOperationJAI}.
      *
-     * @param name of the underlying JAI operation.
+     * @param name of the underlying ImageN operation.
      */
     public BaseMathOperationJAI(String name, OperationDescriptor operationDescriptor) {
         super(
@@ -121,7 +121,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     /**
      * Constructor for {@link BaseMathOperationJAI}.
      *
-     * @param name of the underlying JAI operation.
+     * @param name of the underlying ImageN operation.
      */
     public BaseMathOperationJAI(String name) {
         super(

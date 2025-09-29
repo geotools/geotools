@@ -56,20 +56,20 @@ import org.geotools.util.logging.Logging;
  * // Create a RenderingHints object and set hints.
  * RenderingHints rh = new RenderingHints(null);
  * RecyclingTileFactory rtf = new RecyclingTileFactory();
- * rh.put(JAI.KEY_TILE_RECYCLER, rtf);
- * rh.put(JAI.KEY_TILE_FACTORY, rtf);
- * rh.put(JAI.KEY_IMAGE_LAYOUT, new ImageLayout().setTileWidth(32).setTileHeight(
+ * rh.put(ImageN.KEY_TILE_RECYCLER, rtf);
+ * rh.put(ImageN.KEY_TILE_FACTORY, rtf);
+ * rh.put(ImageN.KEY_IMAGE_LAYOUT, new ImageLayout().setTileWidth(32).setTileHeight(
  * 		32));
  *
  * int counter = 0;
  *
  * // Read each image, filter it, and save the output to a file.
  * for (int i = 0; i &lt; sourceFiles.length; i++) {
- * 	PlanarImage source = JAI.create(&quot;fileload&quot;, sourceFiles[i]);
+ * 	PlanarImage source = ImageN.create(&quot;fileload&quot;, sourceFiles[i]);
  * 	ParameterBlock pb = (new ParameterBlock()).addSource(source).add(kernel);
  *
  * 	// The TileFactory hint will cause tiles to be created by 'rtf'.
- * 	RenderedOp dest = JAI.create(&quot;convolve&quot;, pb, rh);
+ * 	RenderedOp dest = ImageN.create(&quot;convolve&quot;, pb, rh);
  * 	String fileName = &quot;image_&quot; + (++counter) + &quot;.tif&quot;;
  * 	JAI.create(&quot;filestore&quot;, dest, fileName);
  *
@@ -81,7 +81,7 @@ import org.geotools.util.logging.Logging;
  * In the above code, if the <code>SampleModel</code> of all source images is identical, then data arrays should only be
  * created in the first iteration.
  *
- * @since JAI 1.1.2
+ * @since ImageN 1.1.2
  */
 // Observer and observable are deprecated in Java 11, however, this class should be rewritten
 // anyways and go into ImageN

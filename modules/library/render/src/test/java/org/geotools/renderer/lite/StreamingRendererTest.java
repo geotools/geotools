@@ -56,8 +56,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.Query;
@@ -398,7 +398,7 @@ public class StreamingRendererTest {
         sr.paint(graphics, new Rectangle(200, 200), reWgs);
         // test right interpolation hint is set on Graphics2D
         assertEquals(
-                graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
+                graphics.getRenderingHint(ImageN.KEY_INTERPOLATION),
                 Interpolation.getInstance(Interpolation.INTERP_BICUBIC_2));
 
         mc.dispose();

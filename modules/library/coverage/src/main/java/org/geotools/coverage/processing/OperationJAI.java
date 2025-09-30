@@ -36,7 +36,7 @@ import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.media.range.Range;
@@ -215,8 +215,8 @@ public class OperationJAI extends Operation2D {
     }
 
     /**
-     * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link ParameterBlockJAI}, except
-     * the sources.
+     * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link ParameterBlockImageN},
+     * except the sources.
      *
      * <p><b>Note:</b> it would be possible to use {@link ImagingParameters#parameters} directly in some occasions.
      * However, we perform an unconditional copy instead because some operations may change the values.
@@ -225,9 +225,9 @@ public class OperationJAI extends Operation2D {
      * @return A copy of the provided {@link ParameterValueGroup} as a ImageN block.
      * @since 2.4
      */
-    protected ParameterBlockJAI prepareParameters(final ParameterValueGroup parameters) {
+    protected ParameterBlockImageN prepareParameters(final ParameterValueGroup parameters) {
         final ImagingParameters copy = (ImagingParameters) descriptor.createValue();
-        final ParameterBlockJAI block = (ParameterBlockJAI) copy.parameters;
+        final ParameterBlockImageN block = (ParameterBlockImageN) copy.parameters;
         org.geotools.parameter.Parameters.copy(parameters, copy);
         handleJAIEXTParams(block, parameters);
         return block;
@@ -255,10 +255,10 @@ public class OperationJAI extends Operation2D {
     @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints)
             throws CoverageProcessingException {
-        final ParameterBlockJAI block = prepareParameters(parameters);
+        final ParameterBlockImageN block = prepareParameters(parameters);
         /*
          * Extracts the source grid coverages now as an array. The sources will be set in the
-         * ParameterBlockJAI (as RenderedImages) later, after the reprojection performed in the
+         * ParameterBlockImageN (as RenderedImages) later, after the reprojection performed in the
          * next block.
          */
         final String[] sourceNames = operation.getSourceNames();
@@ -944,7 +944,7 @@ public class OperationJAI extends Operation2D {
      * @param hints The rendering hints to be given to ImageN.
      * @return The result of ImageN operation using the given parameters and hints.
      */
-    protected RenderedImage createRenderedImage(final ParameterBlockJAI parameters, final RenderingHints hints) {
+    protected RenderedImage createRenderedImage(final ParameterBlockImageN parameters, final RenderingHints hints) {
         return getJAI(hints).createNS(operation.getName(), parameters, hints);
     }
 
@@ -1009,7 +1009,7 @@ public class OperationJAI extends Operation2D {
         public final MathTransform2D gridToCRS;
 
         /** The parameters to be given to the {@link JAI#createNS} method. */
-        public final ParameterBlockJAI parameters;
+        public final ParameterBlockImageN parameters;
 
         /**
          * The rendering hints to be given to the {@link JAI#createNS} method. The {@link JAI} instance to use for the
@@ -1021,7 +1021,7 @@ public class OperationJAI extends Operation2D {
         Parameters(
                 final CoordinateReferenceSystem crs,
                 final MathTransform2D gridToCRS,
-                final ParameterBlockJAI parameters,
+                final ParameterBlockImageN parameters,
                 final Hints hints) {
             this.crs = crs;
             this.gridToCRS = gridToCRS;
@@ -1043,16 +1043,16 @@ public class OperationJAI extends Operation2D {
     }
 
     /**
-     * Extension point for adding to the ImageN {@link ParameterBlockJAI} object the parameters defined in the
+     * Extension point for adding to the ImageN {@link ParameterBlockImageN} object the parameters defined in the
      * {@link ParameterValueGroup}, which can be read by the JAI-EXT operations.
      *
-     * <p>Notice that if you are using JAI, the new parameters will not be accepted by the {@link ParameterBlockJAI}
+     * <p>Notice that if you are using JAI, the new parameters will not be accepted by the {@link ParameterBlockImageN}
      * instance.
      *
-     * @param parameters {@link ParameterBlockJAI} instance used by the current JAI-EXT/JAI operation
+     * @param parameters {@link ParameterBlockImageN} instance used by the current JAI-EXT/JAI operation
      * @param parameters2 {@link ParameterValueGroup} instance containing input operation parameters
      */
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {}
+    protected void handleJAIEXTParams(ParameterBlockImageN parameters, ParameterValueGroup parameters2) {}
 
     /**
      * This method can be used for creating a property Map to set to the new coverage generated by the current
@@ -1063,7 +1063,7 @@ public class OperationJAI extends Operation2D {
      */
     protected static Map<String, Object> handleROINoDataProperties(
             Map<String, Object> properties,
-            ParameterBlockJAI parameters,
+            ParameterBlockImageN parameters,
             GridCoverage2D sourceCoverage,
             String operationName,
             int roiIndex,
@@ -1103,7 +1103,7 @@ public class OperationJAI extends Operation2D {
      * the parameters but is defined as coverage property, it will be set in the input ParameterBlock
      */
     protected static void handleROINoDataInternal(
-            ParameterBlockJAI parameters,
+            ParameterBlockImageN parameters,
             GridCoverage2D sourceCoverage,
             String operationName,
             int roiIndex,

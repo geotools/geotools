@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
@@ -554,7 +554,7 @@ public class Mosaic extends OperationJAI {
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints)
             throws CoverageProcessingException {
         /*
-         * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
+         * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockImageN (as RenderedImages) later.
          */
         final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection, null);
@@ -585,12 +585,12 @@ public class Mosaic extends OperationJAI {
     }
 
     /**
-     * Prepares the parameters to store in the {@link ParameterBlockJAI} object and resample the input
+     * Prepares the parameters to store in the {@link ParameterBlockImageN} object and resample the input
      * {@link GridCoverage2D}.
      */
     private Params prepareParameters(final ParameterValueGroup parameters, GridCoverage2D[] sources, Hints hints) {
         final ImagingParameters copy = (ImagingParameters) descriptor.createValue();
-        final ParameterBlockJAI block = (ParameterBlockJAI) copy.parameters;
+        final ParameterBlockImageN block = (ParameterBlockImageN) copy.parameters;
 
         // Object indicating the policy to use for resampling all the GridCoverages to the same
         // GridGeometry
@@ -805,7 +805,7 @@ public class Mosaic extends OperationJAI {
 
     /** We override this one to get some extra behavior that ImageWorker has (ROI, paletted images management) */
     @Override
-    protected RenderedImage createRenderedImage(final ParameterBlockJAI parameters, RenderingHints hints) {
+    protected RenderedImage createRenderedImage(final ParameterBlockImageN parameters, RenderingHints hints) {
         parameters.getSources();
         RenderedImage[] images = parameters
                 .getSources()
@@ -837,7 +837,7 @@ public class Mosaic extends OperationJAI {
         return iw.getRenderedImage();
     }
 
-    private <T> T getParameter(ParameterBlockJAI pb, int index) {
+    private <T> T getParameter(ParameterBlockImageN pb, int index) {
         if (pb.getNumParameters() > index) {
             @SuppressWarnings("unchecked")
             T result = (T) pb.getObjectParameter(index);
@@ -909,7 +909,7 @@ public class Mosaic extends OperationJAI {
         }
 
         // Get the ROI and NoData property from the parameterBlock
-        ParameterBlockJAI imagen = parameters.parameters;
+        ParameterBlockImageN imagen = parameters.parameters;
         int numSources = imagen.getNumSources();
         // ROI
         // Object roiParam = imagen.getObjectParameter(2);
@@ -972,7 +972,7 @@ public class Mosaic extends OperationJAI {
         public ResampledRasters rr;
 
         /** The parameters to be given to the {@link JAI#createNS} method. */
-        public final ParameterBlockJAI parameters;
+        public final ParameterBlockImageN parameters;
 
         /** The {@link GridGeometry2D} object to use for the final {@link GridCoverage2D}. */
         public final GridGeometry2D finalGeometry;
@@ -984,7 +984,7 @@ public class Mosaic extends OperationJAI {
         public final Hints hints;
 
         /** Constructs a new instance of this class with the specified values. */
-        Params(final ParameterBlockJAI parameters, final Hints hints, final GridGeometry2D finalGeometry) {
+        Params(final ParameterBlockImageN parameters, final Hints hints, final GridGeometry2D finalGeometry) {
             this.parameters = parameters;
             this.hints = hints;
             this.finalGeometry = finalGeometry;

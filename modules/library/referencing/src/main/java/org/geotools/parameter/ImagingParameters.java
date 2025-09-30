@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.imagen.EnumeratedParameter;
 import org.eclipse.imagen.OperationDescriptor;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.ParameterList;
 import org.eclipse.imagen.ParameterListDescriptor;
 import org.eclipse.imagen.ParameterListImpl;
@@ -63,12 +63,12 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
 
     /**
      * The JAI's parameter list. This is also the backing store for this {@linkplain ParameterValueGroup parameter value
-     * group}: all "ordinary" parameters (i.e. <strong>not</strong> including {@linkplain ParameterBlockJAI#getSources
-     * sources}) are actually stored in this list.
+     * group}: all "ordinary" parameters (i.e. <strong>not</strong> including
+     * {@linkplain ParameterBlockImageN#getSources sources}) are actually stored in this list.
      *
      * <p>If the {@linkplain ImagingParameterDescriptors#descriptor ImageN descriptor} is an instance of
-     * {@link OperationDescriptor}, then this parameter list is also an instance of {@link ParameterBlockJAI}. The
-     * {@linkplain ParameterBlockJAI#getSources sources} must be handled separatly, because the source type for a JAI
+     * {@link OperationDescriptor}, then this parameter list is also an instance of {@link ParameterBlockImageN}. The
+     * {@linkplain ParameterBlockImageN#getSources sources} must be handled separatly, because the source type for a JAI
      * operator (typically {@link java.awt.image.RenderedImage}) is not the same than the source type for a coverage
      * operation (typically {@link org.geotools.api.coverage.GridCoverage}).
      */
@@ -98,7 +98,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
         super(descriptor);
         if (descriptor.operation instanceof OperationDescriptor operationDescriptor) {
             // Parameters with sources
-            parameters = new ParameterBlockJAI(operationDescriptor, descriptor.registryMode);
+            parameters = new ParameterBlockImageN(operationDescriptor, descriptor.registryMode);
         } else {
             // Parameters without sources
             parameters = new ParameterListImpl(descriptor.descriptor);

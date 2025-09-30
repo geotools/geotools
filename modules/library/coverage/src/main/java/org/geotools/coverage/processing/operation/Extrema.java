@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.stats.Statistics;
 import org.eclipse.imagen.media.stats.Statistics.StatsType;
@@ -150,7 +150,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockImageN parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source =
                 (GridCoverage2D) parameters2.parameter("source0").getValue();
         // Handle ROI and NoData

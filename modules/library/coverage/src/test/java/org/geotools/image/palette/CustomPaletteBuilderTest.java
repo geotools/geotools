@@ -28,7 +28,7 @@ import java.awt.image.RenderedImage;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.TiledImage;
 import org.geotools.image.ImageWorker;
@@ -197,7 +197,7 @@ public class CustomPaletteBuilderTest {
         assertNotNull(ImageN.getDefaultInstance()
                 .getOperationRegistry()
                 .getDescriptor(OperationDescriptor.class, "org.geotools.ColorReduction"));
-        ParameterBlockJAI pbj = new ParameterBlockJAI("org.geotools.ColorReduction");
+        ParameterBlockImageN pbj = new ParameterBlockImageN("org.geotools.ColorReduction");
         // I will tile the image in 4 tiles and force parallelism here
         ImageN.getDefaultInstance().getTileScheduler().setParallelism(4);
         pbj.addSource(new ImageWorker(image)
@@ -232,7 +232,7 @@ public class CustomPaletteBuilderTest {
         assertNotNull(ImageN.getDefaultInstance()
                 .getOperationRegistry()
                 .getDescriptor(OperationDescriptor.class, "org.geotools.ColorInversion"));
-        pbj = new ParameterBlockJAI("org.geotools.ColorInversion");
+        pbj = new ParameterBlockImageN("org.geotools.ColorInversion");
         pbj.addSource(new ImageWorker(image)
                 .setRenderingHint(
                         ImageN.KEY_IMAGE_LAYOUT,

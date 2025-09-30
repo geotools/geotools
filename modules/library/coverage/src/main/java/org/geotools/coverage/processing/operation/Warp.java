@@ -20,7 +20,7 @@ import java.awt.image.RenderedImage;
 import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PropertyGenerator;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.warp.WarpDescriptor;
@@ -53,7 +53,7 @@ public class Warp extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockImageN parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source =
                 (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, WARP, 3, 4);

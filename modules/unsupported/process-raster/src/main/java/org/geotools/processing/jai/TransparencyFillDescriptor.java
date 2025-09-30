@@ -21,7 +21,7 @@ import java.awt.image.RenderedImage;
 import org.eclipse.imagen.EnumeratedParameter;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptorImpl;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PropertyGenerator;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.util.AreaOpPropertyGenerator;
@@ -89,7 +89,7 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
 
     public static RenderedOp create(
             RenderedImage source0, FillType type, RenderingHints hints, Number noData, Integer width) {
-        ParameterBlockJAI pb = new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
+        ParameterBlockImageN pb = new ParameterBlockImageN("TransparencyFill", RenderedRegistryMode.MODE_NAME);
 
         pb.setSource("source0", source0);
         pb.setParameter("type", type);

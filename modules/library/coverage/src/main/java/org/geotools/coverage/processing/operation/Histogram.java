@@ -23,7 +23,7 @@ import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.stats.HistogramWrapper;
 import org.eclipse.imagen.media.stats.Statistics;
@@ -144,8 +144,8 @@ public class Histogram extends BaseStatisticsOperationJAI {
     }
 
     @Override
-    protected ParameterBlockJAI prepareParameters(ParameterValueGroup parameters) {
-        ParameterBlockJAI block = super.prepareParameters(parameters);
+    protected ParameterBlockImageN prepareParameters(ParameterValueGroup parameters) {
+        ParameterBlockImageN block = super.prepareParameters(parameters);
         block.setParameter("lowValue", parameters.parameter("lowValue").getValue());
         block.setParameter("highValue", parameters.parameter("highValue").getValue());
         block.setParameter("numBins", parameters.parameter("numBins").getValue());

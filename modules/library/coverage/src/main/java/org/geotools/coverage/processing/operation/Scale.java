@@ -25,7 +25,7 @@ import java.util.Map;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.PropertyGenerator;
 import org.eclipse.imagen.ROI;
@@ -61,7 +61,7 @@ public class Scale extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected RenderedImage createRenderedImage(ParameterBlockJAI parameters, RenderingHints hints) {
+    protected RenderedImage createRenderedImage(ParameterBlockImageN parameters, RenderingHints hints) {
         final RenderedImage source = (RenderedImage) parameters.getSource(0);
         final Interpolation interpolation;
         if (parameters.getObjectParameter("interpolation") != null)
@@ -89,7 +89,7 @@ public class Scale extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockImageN parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source =
                 (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, SCALE, 5, 7);

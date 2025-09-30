@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.OperationDescriptor;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.TileCache;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.processing.Operation;
@@ -596,7 +596,7 @@ public class CoverageProcessor {
         arguments.out.flush();
     }
 
-    public static Object getParameter(ParameterBlockJAI parameters, String paramName) {
+    public static Object getParameter(ParameterBlockImageN parameters, String paramName) {
         Object param = null;
         if (parameters != null) {
             try {

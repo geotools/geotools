@@ -25,7 +25,7 @@ import java.util.List;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.contour.ContourDescriptor;
 import org.eclipse.imagen.media.contour.ContourRIF;
@@ -214,7 +214,7 @@ public class ContourProcess implements RasterProcess {
         final RenderedImage raster = gc2d.getRenderedImage();
 
         // perform jai operation
-        ParameterBlockJAI pb = new ParameterBlockJAI("Contour");
+        ParameterBlockImageN pb = new ParameterBlockImageN("Contour");
         pb.setSource("source0", raster);
 
         if (roi != null) {

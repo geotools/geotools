@@ -69,7 +69,7 @@ import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.KernelJAI;
-import org.eclipse.imagen.LookupTableJAI;
+import org.eclipse.imagen.LookupTableImageN;
 import org.eclipse.imagen.NotAColorSpace;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
@@ -1438,7 +1438,7 @@ public class ImageWorker {
         if (error) {
             // error diffusion
             final KernelJAI ditherMask = KernelJAI.ERROR_FILTER_FLOYD_STEINBERG;
-            final LookupTableJAI colorMap = ColorCube.BYTE_496;
+            final LookupTableImageN colorMap = ColorCube.BYTE_496;
 
             // Creation of the ParameterBlock
             ParameterBlock pb = new ParameterBlock();
@@ -2760,7 +2760,7 @@ public class ImageWorker {
                     break;
             }
         }
-        // Create a LookupTableJAI object to be used with the "lookup" operator.
+        // Create a LookupTableImageN object to be used with the "lookup" operator.
         LookupTable table =
                 LookupTableFactory.create(tableData, image.getSampleModel().getDataType());
         // Do the lookup operation.
@@ -3365,7 +3365,7 @@ public class ImageWorker {
                 }
 
                 result = ImageN.create("Lookup", pb, null);
-                // LookupTableJAI table = buildOpacityLookupTable(opacity, bands, alphaBand);
+                // LookupTableImageN table = buildOpacityLookupTable(opacity, bands, alphaBand);
                 // result = LookupDescriptor.create(expanded, table, null);
             }
         }

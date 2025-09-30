@@ -53,7 +53,7 @@ import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.TestData;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.util.ComponentColorModelJAI;
+import org.geotools.image.util.ComponentColorModelImageN;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -654,7 +654,7 @@ public class TestPiecewise {
                 else raster.setSample(x, y, 0, (x + y));
             }
         }
-        ColorModel cm = new ComponentColorModelJAI(
+        ColorModel cm = new ComponentColorModelImageN(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
         final RenderedImage image = new ImageWorker(new BufferedImage(cm, raster, false, null))
                 .setNoData(RangeFactory.create(noDataValue, noDataValue))

@@ -21,13 +21,13 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.SampleModel;
-import org.eclipse.imagen.ComponentSampleModelJAI;
+import org.eclipse.imagen.ComponentSampleModelImageN;
 import org.eclipse.imagen.FloatDoubleColorModel;
 import org.eclipse.imagen.iterator.RectIter;
 
 /**
- * A {@link ComponentColorModel} modified for interoperability with Java Advanced Imaging. ImageN 1.1 was designed for
- * use with J2SE 1.3 and is not aware of new features in J2SE 1.4. This leads to the following problems:
+ * A {@link ComponentColorModel} modified for interoperability with ImageN. ImageN was designed for use with J2SE 1.3
+ * and is not aware of new features in J2SE 1.4. This leads to the following problems:
  *
  * <ul>
  *   <li>{@link ComponentColorModel} supports {@code float} and {@code double} datatypes since J2SE 1.4 only. The
@@ -41,7 +41,7 @@ import org.eclipse.imagen.iterator.RectIter;
  * </ul>
  *
  * The work around is to use J2SE's {@link ComponentColorModel} (which work with our custom {@link ColorSpace}) and
- * override its {@code createCompatibleSampleModel} in order to returns {@link ComponentSampleModelJAI} instead of
+ * override its {@code createCompatibleSampleModel} in order to returns {@link ComponentSampleModelImageN} instead of
  * {@link ComponentSampleModel} when {@code float} or {@code double} datatype is requested.
  *
  * @todo Remove this patch when ImageN will recognize J2SE 1.4 classes.
@@ -49,12 +49,12 @@ import org.eclipse.imagen.iterator.RectIter;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class ComponentColorModelJAI extends ComponentColorModel {
+public class ComponentColorModelImageN extends ComponentColorModel {
     /** Whatever usage of this class should be enabled or not. */
     public static final boolean ENABLED = false;
 
     /** Construct a new color model. */
-    public ComponentColorModelJAI(
+    public ComponentColorModelImageN(
             final ColorSpace colorSpace,
             final int[] bits,
             final boolean hasAlpha,
@@ -65,7 +65,7 @@ public class ComponentColorModelJAI extends ComponentColorModel {
     }
 
     /** Construct a new color model. */
-    public ComponentColorModelJAI(
+    public ComponentColorModelImageN(
             final ColorSpace colorSpace,
             final boolean hasAlpha,
             final boolean isAlphaPremultiplied,
@@ -91,7 +91,8 @@ public class ComponentColorModelJAI extends ComponentColorModel {
                 for (int i = 0; i < numComponents; i++) {
                     bandOffsets[i] = i;
                 }
-                return new ComponentSampleModelJAI(transferType, w, h, numComponents, w * numComponents, bandOffsets);
+                return new ComponentSampleModelImageN(
+                        transferType, w, h, numComponents, w * numComponents, bandOffsets);
             }
         }
     }
@@ -103,7 +104,7 @@ public class ComponentColorModelJAI extends ComponentColorModel {
      */
     @Override
     public String toString() {
-        return "ComponentColorModelJAI: #pixelBits = "
+        return "ComponentColorModelImageN: #pixelBits = "
                 + pixel_bits
                 + " numComponents = "
                 + super.getNumComponents()

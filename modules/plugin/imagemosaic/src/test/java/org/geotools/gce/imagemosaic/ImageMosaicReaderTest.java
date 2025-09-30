@@ -402,7 +402,7 @@ public class ImageMosaicReaderTest {
         gg.setValue(new GridGeometry2D(range, envelope));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
@@ -522,7 +522,7 @@ public class ImageMosaicReaderTest {
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
         bkg.setValue(new double[] {-9999.0});
 
-        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
         direct.setValue(false);
 
         final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
@@ -770,7 +770,7 @@ public class ImageMosaicReaderTest {
         timeValues.add(date);
         time.setValue(timeValues);
 
-        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
         direct.setValue(false);
 
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
@@ -880,7 +880,7 @@ public class ImageMosaicReaderTest {
         gg.setValue(new GridGeometry2D(range, envelope));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         // Test the output coverage
@@ -926,7 +926,7 @@ public class ImageMosaicReaderTest {
         gg.setValue(new GridGeometry2D(range, envelope));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         // specify time
@@ -990,7 +990,7 @@ public class ImageMosaicReaderTest {
         assertEquals("java.lang.Integer", reader.getMetadataValue("DEPTH_DOMAIN_DATATYPE"));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         // specify time
@@ -1073,7 +1073,7 @@ public class ImageMosaicReaderTest {
             assertEquals("java.lang.Integer", reader.getMetadataValue("WAVELENGTH_DOMAIN_DATATYPE"));
 
             // use imageio with defined tiles
-            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
             useJai.setValue(false);
 
             // specify time
@@ -1346,7 +1346,7 @@ public class ImageMosaicReaderTest {
         assertEquals("java.lang.Integer", reader.getMetadataValue("WAVELENGTH_DOMAIN_DATATYPE"));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         // specify time
@@ -1510,7 +1510,7 @@ public class ImageMosaicReaderTest {
         time.setValue(Arrays.asList(range));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
@@ -1561,7 +1561,7 @@ public class ImageMosaicReaderTest {
         assertEquals("java.lang.Integer", reader.getMetadataValue("DEPTH_DOMAIN_DATATYPE"));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
         tileSize.setValue("128,128");
@@ -1658,7 +1658,7 @@ public class ImageMosaicReaderTest {
         gg.setValue(new GridGeometry2D(range, envelope));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         final ParameterValue<OverviewPolicy> op = AbstractGridFormat.OVERVIEW_POLICY.createValue();
@@ -2263,7 +2263,7 @@ public class ImageMosaicReaderTest {
         assertEquals("java.lang.Integer", reader.getMetadataValue("DEPTH_DOMAIN_DATATYPE"));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         // specify time
@@ -2326,7 +2326,7 @@ public class ImageMosaicReaderTest {
         assertEquals("java.sql.Timestamp", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
         tileSize.setValue("128,128");
@@ -3560,7 +3560,7 @@ public class ImageMosaicReaderTest {
         timeValues.add(date);
         time.setValue(timeValues);
 
-        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
         direct.setValue(false);
 
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
@@ -4053,7 +4053,7 @@ public class ImageMosaicReaderTest {
         gg.setValue(new GridGeometry2D(range, envelope));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
@@ -4371,7 +4371,7 @@ public class ImageMosaicReaderTest {
         assertNull(coverage);
 
         // use more complex parameters and own bbox --> should also return null coverage
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
         tileSize.setValue("128,128");
@@ -4469,7 +4469,7 @@ public class ImageMosaicReaderTest {
         assertNull(coverage);
 
         // use more complex parameters and own bbox
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
         tileSize.setValue("128,128");
@@ -4775,7 +4775,7 @@ public class ImageMosaicReaderTest {
         Assert.assertNotNull(imReader);
 
         // read a coverage in deferred mode, check the nodata is there
-        ParameterValue<Boolean> deferredLoading = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        ParameterValue<Boolean> deferredLoading = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         deferredLoading.setValue(true);
         GridCoverage2D coverageDeferred = imReader.read(new GeneralParameterValue[] {deferredLoading});
         assertNoData(coverageDeferred, 0d);
@@ -4798,7 +4798,7 @@ public class ImageMosaicReaderTest {
         Assert.assertNotNull(imReader);
 
         // read a coverage in deferred mode, check the nodata is there
-        ParameterValue<Boolean> deferredLoading = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        ParameterValue<Boolean> deferredLoading = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
 
         deferredLoading.setValue(true);
         GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] {deferredLoading});
@@ -5398,7 +5398,7 @@ public class ImageMosaicReaderTest {
             mtReader = (ImageMosaicReader) format.getReader(source, hints);
             ParameterValue<Boolean> mtParam = ImageMosaicFormat.ALLOW_MULTITHREADING.createValue();
             mtParam.setValue(true);
-            ParameterValue<Boolean> ioParam = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+            ParameterValue<Boolean> ioParam = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
             ioParam.setValue(false);
             GeneralParameterValue[] params = {mtParam, ioParam};
             GridCoverage2D mtCoverage = TestUtils.checkCoverage(mtReader, params, null);
@@ -5513,7 +5513,7 @@ public class ImageMosaicReaderTest {
         }
 
         // immediate read, avoids need for disposing images and sticks them in memory
-        ParameterValue<Boolean> imageRead = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        ParameterValue<Boolean> imageRead = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
         imageRead.setValue(false);
         GeneralParameterValue[] params = {imageRead};
 

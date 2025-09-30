@@ -56,9 +56,9 @@ public final class Registry {
     /** Native acceleration is no longer supported. */
     @Deprecated
     public static synchronized void setNativeAccelerationAllowed(
-            final String operation, final boolean allowed, final ImageN jai) {
+            final String operation, final boolean allowed, final ImageN imagen) {
         final String product = "org.eclipse.imagen.media";
-        final OperationRegistry registry = jai.getOperationRegistry();
+        final OperationRegistry registry = imagen.getOperationRegistry();
 
         // TODO: Check if we can remove SuppressWarnings with a future ImageN version.
         @SuppressWarnings("unchecked")
@@ -123,11 +123,11 @@ public final class Registry {
      * @return <code>true</code> if everything goes well, <code>false</code> otherwise.
      */
     public static boolean registerRIF(
-            final ImageN jai,
+            final ImageN imagen,
             final OperationDescriptor descriptor,
             final String name,
             final ContextualRenderedImageFactory crif) {
-        final OperationRegistry registry = jai.getOperationRegistry();
+        final OperationRegistry registry = imagen.getOperationRegistry();
         try {
             registry.registerDescriptor(descriptor);
             registry.registerFactory(RenderedRegistryMode.MODE_NAME, name, GEOTOOLS_PRODUCT, crif);
@@ -152,8 +152,8 @@ public final class Registry {
      *     already available in the registry
      */
     public static boolean registerRIF(
-            final ImageN jai, OperationDescriptor descriptor, RenderedImageFactory rif, String productName) {
-        final OperationRegistry registry = jai.getOperationRegistry();
+            final ImageN imagen, OperationDescriptor descriptor, RenderedImageFactory rif, String productName) {
+        final OperationRegistry registry = imagen.getOperationRegistry();
         try {
             // see if the operation is already registered, avoid registering it twice
             new ParameterBlockJAI(descriptor.getName());

@@ -640,7 +640,7 @@ public class Hints extends RenderingHints {
      *
      * @since 2.4
      */
-    public static final Key USE_JAI_IMAGEREAD = new Key(Boolean.class);
+    public static final Key USE_IMAGEN_IMAGEREAD = new Key(Boolean.class);
 
     /**
      * Overview choosing policy. The value must be one of {link #org.geotools.coverage.grid.io.OverviewPolicy}

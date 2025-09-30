@@ -94,9 +94,10 @@ public final class ECWTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        final ParameterValue<Boolean> jai = ((AbstractGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();
-        jai.setValue(true);
-        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {jai});
+        final ParameterValue<Boolean> deferredImageRead =
+                ((AbstractGridFormat) reader.getFormat()).USE_IMAGEN_IMAGEREAD.createValue();
+        deferredImageRead.setValue(true);
+        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {deferredImageRead});
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 
@@ -198,14 +199,14 @@ public final class ECWTest extends GDALTestCase {
         final URL url = file.toURI().toURL();
         final BaseGDALGridCoverage2DReader reader = new ECWReader(url, null);
 
-        final ParameterValue<Boolean> jai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
-        jai.setValue(true);
+        final ParameterValue<Boolean> deferredImageRead = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
+        deferredImageRead.setValue(true);
 
         // Setting the footprint behavior
         ParameterValue<String> footprint = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprint.setValue(FootprintBehavior.Transparent.toString());
 
-        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {jai, footprint});
+        GridCoverage2D gc = reader.read(new GeneralParameterValue[] {deferredImageRead, footprint});
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 

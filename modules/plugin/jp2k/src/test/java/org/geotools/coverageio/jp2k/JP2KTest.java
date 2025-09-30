@@ -70,7 +70,7 @@ public final class JP2KTest extends BaseJP2K {
         final Hints hints = new Hints(Hints.OVERVIEW_POLICY, OverviewPolicy.getDefaultPolicy());
         final JP2KReader reader = new JP2KReader(file, hints);
         final ParameterValue<GridGeometry2D> gg = JP2KFormat.READ_GRIDGEOMETRY2D.createValue();
-        final ParameterValue<Boolean> useJAI = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJAI = JP2KFormat.USE_IMAGEN_IMAGEREAD.createValue();
         final ParameterValue<String> tileSize = JP2KFormat.SUGGESTED_TILE_SIZE.createValue();
         final ParameterValue<Color> transparentColor = JP2KFormat.INPUT_TRANSPARENT_COLOR.createValue();
         transparentColor.setValue(new Color(0, 0, 0));
@@ -118,7 +118,7 @@ public final class JP2KTest extends BaseJP2K {
         assertEquals(nCov, 1);
 
         final ParameterValue<GridGeometry2D> gg = JP2KFormat.READ_GRIDGEOMETRY2D.createValue();
-        final ParameterValue<Boolean> useJAI = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJAI = JP2KFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJAI.setValue(false);
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
         checkReader(reader);

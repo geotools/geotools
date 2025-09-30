@@ -136,13 +136,13 @@ public final class Logging {
             Method getImagingListener = ImageN.getMethod("getImagingListener");
             Method setImagingListener = ImageN.getMethod("setImagingListener", IMAGING_LISTENER);
 
-            Object jai = getDefaultInstance.invoke(null);
-            Object imagingListener = getImagingListener.invoke(jai);
+            Object imagen = getDefaultInstance.invoke(null);
+            Object imagingListener = getImagingListener.invoke(imagen);
 
             if (imagingListener == null || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
                 // Client code has not provided an ImagingListener so we can use our own
                 // Custom GeoTools ImagingListener used to ignore common warnings
-                setImagingListener.invoke(jai, new LoggingImagingListener());
+                setImagingListener.invoke(imagen, new LoggingImagingListener());
                 if (LOGGING_TRACE) {
                     System.out.println("Logging ImageN messages: org.eclipse.imagen logger redirected");
                 }

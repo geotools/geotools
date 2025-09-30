@@ -75,7 +75,7 @@ class RasterLayerRequest {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
 
     private ReadType readType =
-            AbstractGridFormat.USE_JAI_IMAGEREAD.getDefaultValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
+            AbstractGridFormat.USE_IMAGEN_IMAGEREAD.getDefaultValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
 
     /** The {@link BoundingBox} requested */
     private BoundingBox requestedBBox;
@@ -195,7 +195,7 @@ class RasterLayerRequest {
             // Use ImageN ImageRead parameter
             //
             // //
-            if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
+            if (name.equals(AbstractGridFormat.USE_IMAGEN_IMAGEREAD.getName())) {
                 if (value == null) continue;
                 readType = (Boolean) value ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
                 continue;
@@ -288,7 +288,7 @@ class RasterLayerRequest {
         // Use ImageN ImageRead parameter
         //
         // //
-        if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
+        if (name.equals(AbstractGridFormat.USE_IMAGEN_IMAGEREAD.getName())) {
             final Object value = param.getValue();
             if (value == null) return;
             readType = param.booleanValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
@@ -443,7 +443,7 @@ class RasterLayerRequest {
         // //
         final Hints hints = rasterManager.getHints();
         if (hints != null) {
-            final Object o = hints.get(Hints.USE_JAI_IMAGEREAD);
+            final Object o = hints.get(Hints.USE_IMAGEN_IMAGEREAD);
             if (o != null) {
                 readType = (ReadType) o;
                 return;

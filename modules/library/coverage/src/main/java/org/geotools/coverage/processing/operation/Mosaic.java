@@ -909,10 +909,10 @@ public class Mosaic extends OperationJAI {
         }
 
         // Get the ROI and NoData property from the parameterBlock
-        ParameterBlockJAI jai = parameters.parameters;
-        int numSources = jai.getNumSources();
+        ParameterBlockJAI imagen = parameters.parameters;
+        int numSources = imagen.getNumSources();
         // ROI
-        // Object roiParam = jai.getObjectParameter(2);
+        // Object roiParam = imagen.getObjectParameter(2);
         ResampledRasters rr = parameters.rr;
         if (rr != null && rr.getRois() != null) {
             ROI[] rois = rr.getRois();
@@ -932,7 +932,7 @@ public class Mosaic extends OperationJAI {
             CoverageUtilities.setROIProperty(properties, finalROI);
         }
         // NoData
-        Object nodataParam = jai.getObjectParameter(4);
+        Object nodataParam = imagen.getObjectParameter(4);
         if (nodataParam != null && rr != null && rr.hasNoData()) {
             CoverageUtilities.setNoDataProperty(properties, nodataParam);
         }

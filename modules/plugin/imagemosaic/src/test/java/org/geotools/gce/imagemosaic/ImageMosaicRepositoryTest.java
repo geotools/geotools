@@ -68,7 +68,7 @@ public class ImageMosaicRepositoryTest {
     static final ImageMosaicFormat FORMAT = new ImageMosaicFormat();
 
     static {
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
         NO_DEFERRED_LOAD = new GeneralParameterValue[] {useJai};
     }

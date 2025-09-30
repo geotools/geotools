@@ -113,7 +113,7 @@ Here below we have added some code to show how to interact with the plugin to re
     	// Setting read type: use JAI ImageRead
     	//
     	// //
-    	final ParameterValue<Boolean> useJaiRead = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
+    	final ParameterValue<Boolean> useJaiRead = JP2KFormat.USE_IMAGEN_IMAGEREAD.createValue();
     	useJaiRead.setValue(true);
      
     	final GridCoverage gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg,tilesize, useJaiRead });

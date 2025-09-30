@@ -71,7 +71,7 @@ import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.image.util.ComponentColorModelJAI;
+import org.geotools.image.util.ComponentColorModelImageN;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.styling.AbstractContrastMethodStrategy;
@@ -110,7 +110,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                 else raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelJAI(
+        final ColorModel cm = new ComponentColorModelImageN(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
@@ -654,7 +654,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                 else raster.setSample(x, y, 0, (x + y));
             }
         }
-        ColorModel cm = new ComponentColorModelJAI(
+        ColorModel cm = new ComponentColorModelImageN(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
         final RenderedImage image = new ImageWorker(new BufferedImage(cm, raster, false, null))
                 .setNoData(RangeFactory.create(noDataValue, noDataValue))

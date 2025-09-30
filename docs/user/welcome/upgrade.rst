@@ -87,6 +87,17 @@ AFTER:
    import org.eclipse.imagen.media.codec.FileSeekableStream;
    import org.eclipse.imagen.widget.ScrollingImagePanel;
 
+GeoTools ImageN API Changes
+'''''''''''''''''''''''''''
+
+With the change to ImageN image processing library several GeoTools integration classes have been renamed:
+
+======================== =========================
+Original                 ImageN Replacement
+======================== =========================
+ComponentColorModelJAI   ComponentColorModelJAI
+======================== =========================
+
 Removal of JAI Tools
 ^^^^^^^^^^^^^^^^^^^^
 

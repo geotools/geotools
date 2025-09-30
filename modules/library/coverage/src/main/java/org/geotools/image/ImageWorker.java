@@ -91,7 +91,7 @@ import org.eclipse.imagen.media.bandselect.BandSelectDescriptor;
 import org.eclipse.imagen.media.binarize.BinarizeDescriptor;
 import org.eclipse.imagen.media.classifier.ColorMapTransform;
 import org.eclipse.imagen.media.colorconvert.ColorConvertDescriptor;
-import org.eclipse.imagen.media.colorconvert.IHSColorSpaceJAIExt;
+import org.eclipse.imagen.media.colorconvert.IHSColorSpaceImageNExt;
 import org.eclipse.imagen.media.colorindexer.ColorIndexer;
 import org.eclipse.imagen.media.errordiffusion.ErrorDiffusionDescriptor;
 import org.eclipse.imagen.media.format.FormatDescriptor;
@@ -1287,7 +1287,7 @@ public class ImageWorker {
         if (cm == null) {
             return false;
         }
-        return cm.getColorSpace() instanceof IHSColorSpace || cm.getColorSpace() instanceof IHSColorSpaceJAIExt;
+        return cm.getColorSpace() instanceof IHSColorSpace || cm.getColorSpace() instanceof IHSColorSpaceImageNExt;
     }
 
     /**
@@ -2049,7 +2049,7 @@ public class ImageWorker {
             forceComponentColorModel();
 
             // Create a ColorModel to convert the image to IHS.
-            final ColorSpace ihs = IHSColorSpaceJAIExt.getInstance();
+            final ColorSpace ihs = IHSColorSpaceImageNExt.getInstance();
             final int numBits = image.getColorModel().getComponentSize(0);
             final ColorModel ihsColorModel = new ComponentColorModel(
                     ihs,

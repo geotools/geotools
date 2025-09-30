@@ -22,7 +22,7 @@ import java.awt.image.RenderedImage;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.Map;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.media.algebra.AlgebraDescriptor.Operator;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -112,7 +112,7 @@ public class Add extends BaseMathOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockImageN parameters, ParameterValueGroup parameters2) {
         parameters.set(Operator.SUM, 0);
         @SuppressWarnings("unchecked")
         Collection<GridCoverage2D> sources =

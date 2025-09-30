@@ -121,7 +121,7 @@ public class TestLinearClassifier extends Assert {
                     "", new LinearColorMapElement[] {c0, c1, c3, c4, c5, c6}, new LinearColorMapElement[] {c7});
 
             ImageWorker w = new ImageWorker(image);
-            // final ParameterBlockJAI pbj = new ParameterBlockJAI(
+            // final ParameterBlockImageN pbj = new ParameterBlockImageN(
             // RasterClassifierOpImage.OPERATION_NAME);
             // pbj.addSource(image);
             // pbj.setParameter("Domain1D", list);

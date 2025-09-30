@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.imagen.ImageN;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.range.Range;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -169,7 +169,7 @@ public class PolygonExtractionProcess implements RasterProcess {
         final RenderedImage raster = coverage.getRenderedImage();
 
         // perform jai operation
-        ParameterBlockJAI pb = new ParameterBlockJAI("Vectorize");
+        ParameterBlockImageN pb = new ParameterBlockImageN("Vectorize");
         pb.setSource("source0", raster);
 
         if (roi != null) {

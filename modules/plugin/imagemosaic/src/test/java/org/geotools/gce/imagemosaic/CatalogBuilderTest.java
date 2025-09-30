@@ -124,8 +124,8 @@ public class CatalogBuilderTest extends Assert {
             return;
         }
 
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
-        useJai.setValue(false);
+        final ParameterValue<Boolean> defferedRead = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
+        defferedRead.setValue(false);
 
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
         tileSize.setValue("128,128");
@@ -173,7 +173,7 @@ public class CatalogBuilderTest extends Assert {
         // use imageio with defined tiles
 
         // Test the output coverage
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg, useJai, tileSize});
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg, defferedRead, tileSize});
         Assert.assertNotNull(coverage);
         PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
 
@@ -247,7 +247,7 @@ public class CatalogBuilderTest extends Assert {
         // use imageio with defined tiles
 
         // Test the output coverage
-        coverage = reader.read(new GeneralParameterValue[] {gg, useJai, tileSize});
+        coverage = reader.read(new GeneralParameterValue[] {gg, defferedRead, tileSize});
         Assert.assertNotNull(coverage);
         PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
 

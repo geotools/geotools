@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.registry.RIFRegistry;
 import org.eclipse.imagen.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
@@ -156,7 +156,7 @@ public final class Registry {
         final OperationRegistry registry = imagen.getOperationRegistry();
         try {
             // see if the operation is already registered, avoid registering it twice
-            new ParameterBlockJAI(descriptor.getName());
+            new ParameterBlockImageN(descriptor.getName());
             return false;
         } catch (Exception e) {
             registry.registerDescriptor(descriptor);

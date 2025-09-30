@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
@@ -841,7 +841,7 @@ public class Crop extends Operation2D {
         int w = (int) Math.ceil(env.getMaxX()) - x;
         int h = (int) Math.ceil(env.getMaxY()) - y;
 
-        ParameterBlockJAI pb = new ParameterBlockJAI("VectorBinarize");
+        ParameterBlockImageN pb = new ParameterBlockImageN("VectorBinarize");
         pb.setParameter("minx", x);
         pb.setParameter("miny", y);
         pb.setParameter("width", w);

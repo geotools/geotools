@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
 import org.eclipse.imagen.RenderedOp;
@@ -77,7 +77,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
     }
 
     /**
-     * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link ParameterBlockJAI}
+     * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link ParameterBlockImageN}
      *
      * @param parameters The {@link ParameterValueGroup} to be copied.
      * @return A copy of the provided {@link ParameterValueGroup} as a ImageN block.
@@ -85,7 +85,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
      *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.geotools.api.parameter.ParameterValueGroup)
      */
     @Override
-    protected ParameterBlockJAI prepareParameters(final ParameterValueGroup parameters) {
+    protected ParameterBlockImageN prepareParameters(final ParameterValueGroup parameters) {
         // /////////////////////////////////////////////////////////////////////
         //
         // Make a copy of the input parameters.
@@ -93,7 +93,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
         // ///////////////////////////////////////////////////////////////////
         final ImagingParameters copy = (ImagingParameters) descriptor.createValue();
         org.geotools.parameter.Parameters.copy(parameters, copy);
-        final ParameterBlockJAI block = (ParameterBlockJAI) copy.parameters;
+        final ParameterBlockImageN block = (ParameterBlockImageN) copy.parameters;
         try {
 
             // /////////////////////////////////////////////////////////////////////

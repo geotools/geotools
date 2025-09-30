@@ -34,7 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.stream.FileImageInputStream;
 import org.eclipse.imagen.ImageN;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RasterFactory;
 import org.eclipse.imagen.RenderedOp;
@@ -578,7 +578,7 @@ public class TestPiecewise {
         DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform =
                 new DefaultPiecewiseTransform1D<>(new DefaultPiecewiseTransform1DElement[] {mainElement}, 0);
 
-        // final ParameterBlockJAI pbj = new ParameterBlockJAI(
+        // final ParameterBlockImageN pbj = new ParameterBlockImageN(
         // GenericPiecewiseOpImage.OPERATION_NAME);
         // pbj.addSource(image);
         // pbj.setParameter("Domain1D", transform);
@@ -626,7 +626,7 @@ public class TestPiecewise {
     @Before
     public void setUp() throws Exception {
         try {
-            new ParameterBlockJAI(GenericPiecewiseOpImage.OPERATION_NAME);
+            new ParameterBlockImageN(GenericPiecewiseOpImage.OPERATION_NAME);
 
         } catch (Exception e) {
             // GenericPiecewiseOpImage.register(ImageN.getDefaultInstance());

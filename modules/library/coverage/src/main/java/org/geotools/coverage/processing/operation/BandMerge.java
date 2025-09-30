@@ -34,7 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.range.NoDataContainer;
@@ -308,7 +308,7 @@ public class BandMerge extends OperationJAI {
     @Override
     public Coverage doOperation(ParameterValueGroup parameters, Hints hints) throws CoverageProcessingException {
         /*
-         * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
+         * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockImageN (as RenderedImages) later.
          */
         final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection);
@@ -354,8 +354,8 @@ public class BandMerge extends OperationJAI {
         // Storing the input sources into and array
         GridCoverage2D[] sources = new GridCoverage2D[size];
         sourceCollection.toArray(sources);
-        // Creation of the ParameterBlockJAI object to pass to ImageN.
-        ParameterBlockJAI block;
+        // Creation of the ParameterBlockImageN object to pass to ImageN.
+        ParameterBlockImageN block;
         try {
             block = prepareParameters(parameters, sources, tr, crsToGrid);
         } catch (MismatchedDimensionException | TransformException | ParameterNotFoundException e) {
@@ -540,7 +540,7 @@ public class BandMerge extends OperationJAI {
         }
 
         // Setting ROI and NoData if present
-        ParameterBlockJAI pb = parameters.parameters;
+        ParameterBlockImageN pb = parameters.parameters;
         CoverageUtilities.setROIProperty(properties, (ROI) pb.getObjectParameter(3));
         CoverageUtilities.setNoDataProperty(properties, pb.getObjectParameter(1));
 
@@ -574,17 +574,17 @@ public class BandMerge extends OperationJAI {
     }
 
     /**
-     * This method prepares the {@link ParameterBlockJAI} to pass to ImageN in order to execute the {@link BandMerge}
+     * This method prepares the {@link ParameterBlockImageN} to pass to ImageN in order to execute the {@link BandMerge}
      * operation.
      */
-    private ParameterBlockJAI prepareParameters(
+    private ParameterBlockImageN prepareParameters(
             final ParameterValueGroup parameters,
             GridCoverage2D[] sources,
             List<AffineTransform> tr,
             AffineTransform2D crsToGRID)
             throws MismatchedDimensionException, ParameterNotFoundException, TransformException {
         final ImagingParameters copy = (ImagingParameters) descriptor.createValue();
-        final ParameterBlockJAI block = (ParameterBlockJAI) copy.parameters;
+        final ParameterBlockImageN block = (ParameterBlockImageN) copy.parameters;
 
         Range[] nodata = new Range[sources.length];
         // Image dataType
@@ -689,7 +689,7 @@ public class BandMerge extends OperationJAI {
         public final AffineTransform2D gridToCRS;
 
         /** The parameters to be given to the {@link JAI#createNS} method. */
-        public final ParameterBlockJAI parameters;
+        public final ParameterBlockImageN parameters;
 
         /**
          * The rendering hints to be given to the {@link JAI#createNS} method. The {@link JAI} instance to use for the
@@ -705,7 +705,7 @@ public class BandMerge extends OperationJAI {
                 final CoordinateReferenceSystem crs,
                 final AffineTransform2D gridToCRS,
                 final ReferencedEnvelope bbox,
-                final ParameterBlockJAI parameters,
+                final ParameterBlockImageN parameters,
                 final Hints hints) {
             this.crs = crs;
             this.gridToCRS = gridToCRS;

@@ -73,7 +73,7 @@ import org.eclipse.imagen.LookupTableJAI;
 import org.eclipse.imagen.NotAColorSpace;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.ParameterListDescriptor;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.PropertyGenerator;
@@ -531,7 +531,7 @@ public class ImageWorker {
      * @param readMetadata If {@code true}, metadata will be read.
      */
     public final void load(final String source, final int imageChoice, final boolean readMetadata) {
-        final ParameterBlockJAI pbj = new ParameterBlockJAI("ImageRead");
+        final ParameterBlockImageN pbj = new ParameterBlockImageN("ImageRead");
         pbj.setParameter("Input", source)
                 .setParameter("ImageChoice", Integer.valueOf(imageChoice))
                 .setParameter("ReadMetadata", Boolean.valueOf(readMetadata))

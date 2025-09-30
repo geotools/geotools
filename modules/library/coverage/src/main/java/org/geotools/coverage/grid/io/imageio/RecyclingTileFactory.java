@@ -81,7 +81,7 @@ import org.geotools.util.logging.Logging;
  * In the above code, if the <code>SampleModel</code> of all source images is identical, then data arrays should only be
  * created in the first iteration.
  *
- * @since ImageN 1.1.2
+ * @since ImageN 0.4.0
  */
 // Observer and observable are deprecated in Java 11, however, this class should be rewritten
 // anyways and go into ImageN

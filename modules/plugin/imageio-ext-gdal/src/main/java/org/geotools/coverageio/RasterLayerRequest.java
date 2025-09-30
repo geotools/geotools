@@ -237,7 +237,7 @@ class RasterLayerRequest {
         // Use ImageN ImageRead parameter
         //
         // //
-        if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
+        if (name.equals(AbstractGridFormat.USE_IMAGEN_IMAGEREAD.getName())) {
             Object value = param.getValue();
             if (value == null) {
                 return;
@@ -403,7 +403,7 @@ class RasterLayerRequest {
         //
         // //
         if (this.hints != null) {
-            final Object o = this.hints.get(Hints.USE_JAI_IMAGEREAD);
+            final Object o = this.hints.get(Hints.USE_IMAGEN_IMAGEREAD);
             if (o != null) {
                 return (Boolean) o;
             }

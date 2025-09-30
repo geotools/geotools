@@ -114,8 +114,8 @@ public abstract class AbstractGridFormat implements Format {
      * operation requested: using a ImageN ImageRead operation (leveraging on Deferred Execution Model, Tile
      * Caching,...), or the direct {@code ImageReader}'s read methods.
      */
-    public static final DefaultParameterDescriptor<Boolean> USE_JAI_IMAGEREAD = new DefaultParameterDescriptor<>(
-            Hints.USE_JAI_IMAGEREAD.toString(),
+    public static final DefaultParameterDescriptor<Boolean> USE_IMAGEN_IMAGEREAD = new DefaultParameterDescriptor<>(
+            Hints.USE_IMAGEN_IMAGEREAD.toString(),
             Boolean.class,
             new Boolean[] {Boolean.TRUE, Boolean.FALSE},
             Boolean.TRUE);

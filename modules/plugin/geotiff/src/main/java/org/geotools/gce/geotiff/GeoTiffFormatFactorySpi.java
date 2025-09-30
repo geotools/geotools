@@ -61,7 +61,7 @@ public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
 
     /**
      * Creates and returns a new instance of the <CODE>GeoTiffFormat</CODE> class if the required libraries are present.
-     * If ImageN and ImageN Image I/O are not present, will throw an <CODE>
+     * If ImageN and Image I/O are not present, will throw an <CODE>
      * UnsupportedOperationException</CODE>.
      *
      * @return <CODE>GeoTiffFormat</CODE> object.

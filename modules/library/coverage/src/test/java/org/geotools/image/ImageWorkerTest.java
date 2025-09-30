@@ -1488,7 +1488,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // check the bounds of the output image has not changed
         assertEquals(fullChain.getBounds(), reduced.getBounds());
 
-        // check we are getting a reasonable tile size and origin (JAI warp_affine will generate
+        // check we are getting a reasonable tile size and origin (ImageN warp_affine will generate
         // odd results otherwise
         assertEquals(0, reduced.getTileGridXOffset());
         assertEquals(0, reduced.getTileGridYOffset());

@@ -133,7 +133,7 @@ public class MBTilesFormat extends AbstractGridFormat {
                 mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D /*,
                        INPUT_TRANSPARENT_COLOR,
                 OUTPUT_TRANSPARENT_COLOR,
-                USE_JAI_IMAGEREAD,
+                USE_IMAGEN_IMAGEREAD,
                 BACKGROUND_VALUES,
                 SUGGESTED_TILE_SIZE,
                 ALLOW_MULTITHREADING,

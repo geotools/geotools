@@ -99,7 +99,7 @@ public final class OperationsTest extends GridProcessingTestBase {
                 t = targetRaster.getSampleFloat(x, y, 0);
                 if (Float.isNaN(s)) {
                     /*
-                     * For a mysterious reason (JAI bug?), the following test seems to fail when
+                     * For a mysterious reason (ImageN bug?), the following test seems to fail when
                      * ImageN is running in pure Java mode. If you get an assertion failure on this
                      * line, then make sure that "<your_jdk_path>/jre/bin/mlib_jai.dll" (Windows)
                      * or "lib/i386/libmlib_jai.so" (Linux) is presents in your JDK installation.

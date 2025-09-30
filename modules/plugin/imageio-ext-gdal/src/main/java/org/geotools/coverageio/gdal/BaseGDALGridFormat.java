@@ -68,7 +68,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
 
     /** Base Parameter Descriptor */
     protected static final GeneralParameterDescriptor[] PARAM_DESCRIPTOR = {
-        READ_GRIDGEOMETRY2D, USE_JAI_IMAGEREAD, SUGGESTED_TILE_SIZE, FOOTPRINT_BEHAVIOR, BANDS
+        READ_GRIDGEOMETRY2D, USE_IMAGEN_IMAGEREAD, SUGGESTED_TILE_SIZE, FOOTPRINT_BEHAVIOR, BANDS
     };
 
     /** Each plugin needs to implement this method defining format specific properties */

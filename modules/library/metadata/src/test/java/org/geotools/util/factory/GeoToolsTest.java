@@ -119,8 +119,8 @@ public final class GeoToolsTest {
     @Test
     public void testManifest() {
         // jar manifest lookup
-        Manifest jai = GeoTools.getManifest(ImageN.class);
-        assertFalse("manifest metadata", jai.getMainAttributes().isEmpty());
+        Manifest imagen = GeoTools.getManifest(ImageN.class);
+        assertFalse("manifest metadata", imagen.getMainAttributes().isEmpty());
 
         // this should always be generated during a maven or ide build
         Manifest metadata = GeoTools.getManifest(GeoTools.class);

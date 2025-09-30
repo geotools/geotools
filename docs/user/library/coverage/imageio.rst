@@ -191,7 +191,7 @@ parameters:
   //
   // //
   final ParameterValue useJaiRead = (ParameterValue) ((BaseGDALGridFormat) reader
-          .getFormat()).USE_JAI_IMAGEREAD.createValue();
+          .getFormat()).USE_IMAGEN_IMAGEREAD.createValue();
   useJaiRead.setValue(true);
   
   // //

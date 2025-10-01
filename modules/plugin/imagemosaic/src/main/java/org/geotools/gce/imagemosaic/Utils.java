@@ -1442,6 +1442,11 @@ public class Utils {
                             .acceptPattern(SAMPLE_IMAGE_PATTERNS)
                             .accept(SAMPLE_IMAGE_PRIMITIVES)
                             .accept(sampleImageAllowList)
+                            .remap("javax.media.jai.ColorSpaceJAI","org.eclipse.imagen.ColorSpaceImageN")
+                            .remap("javax.media.jai.ColorSpaceJAIExt","org.eclipse.imagen.ColorSpaceImageNExt")
+                            .remap("javax.media.jai.ColorSpaceJAIExtWrapper","org.eclipse.imagen.ColorSpaceImageNExtWrapper")
+                            .remap("javax.media.jai.IHSColorSpaceJAIExt","org.eclipse.imagen.IHSColorSpaceImageNExt")
+                            .remap("javax.media.jai.ComponentSampleModelJAI","org.eclipse.imagen.ComponentSampleModelImageN")
                             .remapPackage("javax.media.jai", "org.eclipse.imagen")
                             .remapPackage("com.sun.media.jai.rmi", "org.eclipse.imagen.media.serialize")
                             .build()) {

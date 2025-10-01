@@ -51,7 +51,7 @@ import org.geotools.util.logging.Logging;
  *
  * <pre>
  * String[] sourceFiles; // source file paths
- * KernelJAI kernel; // filtering kernel
+ * KernelImageN kernel; // filtering kernel
  *
  * // Create a RenderingHints object and set hints.
  * RenderingHints rh = new RenderingHints(null);

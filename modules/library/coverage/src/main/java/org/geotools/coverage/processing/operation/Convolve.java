@@ -45,7 +45,7 @@ import org.geotools.coverage.processing.OperationJAI;
  *   </tr>
  *   <tr>
  *     <td>{@code "kernel"}</td>
- *     <td>{@link org.eclipse.imagen.KernelJAI}</td>
+ *     <td>{@link org.eclipse.imagen.KernelImageN}</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>

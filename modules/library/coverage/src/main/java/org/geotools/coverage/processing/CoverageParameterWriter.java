@@ -21,7 +21,7 @@ import java.io.Writer;
 import java.util.Locale;
 import org.eclipse.imagen.EnumeratedParameter;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.KernelJAI;
+import org.eclipse.imagen.KernelImageN;
 import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.image.util.ImageUtilities;
@@ -45,10 +45,10 @@ final class CoverageParameterWriter extends ParameterWriter {
     /** Formats the specified value as a string. */
     @Override
     protected String formatValue(final Object value) {
-        if (KernelJAI.GRADIENT_MASK_SOBEL_HORIZONTAL.equals(value)) {
+        if (KernelImageN.GRADIENT_MASK_SOBEL_HORIZONTAL.equals(value)) {
             return "GRADIENT_MASK_SOBEL_HORIZONTAL";
         }
-        if (KernelJAI.GRADIENT_MASK_SOBEL_VERTICAL.equals(value)) {
+        if (KernelImageN.GRADIENT_MASK_SOBEL_VERTICAL.equals(value)) {
             return "GRADIENT_MASK_SOBEL_VERTICAL";
         }
         if (value instanceof AbstractCoverage coverage) {

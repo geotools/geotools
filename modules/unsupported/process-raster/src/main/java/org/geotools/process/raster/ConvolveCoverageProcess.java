@@ -17,7 +17,7 @@
 package org.geotools.process.raster;
 
 import java.io.IOException;
-import org.eclipse.imagen.KernelJAI;
+import org.eclipse.imagen.KernelImageN;
 import org.eclipse.imagen.media.kernel.KernelFactory;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -35,7 +35,7 @@ public class ConvolveCoverageProcess implements RasterProcess {
     @DescribeResult(name = "result", description = "Convoluted raster")
     public GridCoverage2D execute(
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D coverage,
-            @DescribeParameter(name = "kernel", description = "Convolution kernel", min = 0) KernelJAI kernel,
+            @DescribeParameter(name = "kernel", description = "Convolution kernel", min = 0) KernelImageN kernel,
             @DescribeParameter(name = "kernelRadius", description = "Radius for a circular kernel", min = 0)
                     Integer kernelRadius,
             @DescribeParameter(name = "kernelWidth", description = "Width for rectangular kernel", min = 0)

@@ -68,7 +68,7 @@ import org.eclipse.imagen.ImageFunction;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.KernelJAI;
+import org.eclipse.imagen.KernelImageN;
 import org.eclipse.imagen.LookupTableImageN;
 import org.eclipse.imagen.NotAColorSpace;
 import org.eclipse.imagen.OperationDescriptor;
@@ -1437,7 +1437,7 @@ public class ImageWorker {
         final RenderingHints hints = getRenderingHints();
         if (error) {
             // error diffusion
-            final KernelJAI ditherMask = KernelJAI.ERROR_FILTER_FLOYD_STEINBERG;
+            final KernelImageN ditherMask = KernelImageN.ERROR_FILTER_FLOYD_STEINBERG;
             final LookupTableImageN colorMap = ColorCube.BYTE_496;
 
             // Creation of the ParameterBlock
@@ -1459,7 +1459,7 @@ public class ImageWorker {
             image = ImageN.create("ErrorDiffusion", pb, hints);
         } else {
             // ordered dither
-            final KernelJAI[] ditherMask = KernelJAI.DITHER_MASK_443;
+            final KernelImageN[] ditherMask = KernelImageN.DITHER_MASK_443;
             final ColorCube colorMap = ColorCube.BYTE_496;
 
             // Creation of the ParameterBlock

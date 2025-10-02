@@ -25,10 +25,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -55,7 +53,6 @@ import java.util.regex.Pattern;
  * <p>This class is NOT thread-safe; use a separate instance per thread.
  */
 public final class RemappingFilteringObjectInputStream extends ObjectInputStream {
-    private final Map<String, String> remap; // exact class name -> new name
     private final List<PackageRule> pkgRules; // ordered prefix remaps
     private final Predicate<String> validator;
     private final ClassLoader loader;
@@ -72,14 +69,9 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
     }
 
     private RemappingFilteringObjectInputStream(
-            InputStream in,
-            Map<String, String> remap,
-            List<PackageRule> pkgRules,
-            Predicate<String> validator,
-            ObjectInputFilter jep290Filter)
+            InputStream in, List<PackageRule> pkgRules, Predicate<String> validator, ObjectInputFilter jep290Filter)
             throws IOException {
         super(in);
-        this.remap = remap.isEmpty() ? Map.of() : new HashMap<>(remap);
         this.pkgRules = List.copyOf(pkgRules);
         this.validator = (validator != null) ? validator : name -> true;
         this.loader = Thread.currentThread().getContextClassLoader();
@@ -105,10 +97,6 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
 
     /** Map a non-array class name using exact and package rules. */
     private String mapNonArray(String name) {
-        // exact class remap first
-        String exact = remap.get(name);
-        if (exact != null) return exact;
-
         // package prefix remap (ordered; first match wins)
         for (PackageRule r : pkgRules) {
             String op = r.oldPrefix;
@@ -173,7 +161,6 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
     /** Return true if the given class name (non-array) will be remapped. */
     private boolean isRemappedNonArray(String name) {
         if (name.startsWith("[")) return false;
-        if (remap.containsKey(name)) return true;
         for (PackageRule r : pkgRules) {
             String op = r.oldPrefix;
             if (name.equals(op) || name.startsWith(op + ".")) return true;
@@ -221,7 +208,6 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
         private final List<java.util.regex.Pattern> allowedPatterns = new ArrayList<>();
         private final Set<String> allowedPrimitives =
                 new HashSet<>(Set.of("boolean", "byte", "short", "char", "int", "long", "float", "double", "void"));
-        private final Map<String, String> remap = new HashMap<>();
         private final List<PackageRule> pkgRules = new ArrayList<>();
         private ObjectInputFilter jep290Filter;
 
@@ -271,11 +257,6 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
             return this;
         }
 
-        /** Remap an exact class name (binary name, e.g., "old.pkg.images.MyClass"). */
-        public Builder remap(String oldName, String newName) {
-            remap.put(oldName, newName);
-            return this;
-        }
         /** Remap an entire package (and its subpackages/classes). Use binary package names, e.g., "old.pkg.images". */
         public Builder remapPackage(String oldPkg, String newPkg) {
             pkgRules.add(new PackageRule(oldPkg, newPkg));
@@ -322,7 +303,7 @@ public final class RemappingFilteringObjectInputStream extends ObjectInputStream
          */
         public RemappingFilteringObjectInputStream build() throws IOException {
             if (in == null) throw new IllegalStateException("input(InputStream) is required");
-            return new RemappingFilteringObjectInputStream(in, remap, pkgRules, buildValidator(), jep290Filter);
+            return new RemappingFilteringObjectInputStream(in, pkgRules, buildValidator(), jep290Filter);
         }
     }
 }

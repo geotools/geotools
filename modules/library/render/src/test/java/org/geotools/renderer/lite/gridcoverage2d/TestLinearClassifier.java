@@ -24,6 +24,7 @@ import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
@@ -42,7 +43,6 @@ import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.TestData;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.util.ComponentColorModelImageN;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -149,7 +149,7 @@ public class TestLinearClassifier extends Assert {
                 raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelImageN(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
@@ -235,7 +235,7 @@ public class TestLinearClassifier extends Assert {
                 raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelImageN(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_FLOAT);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;

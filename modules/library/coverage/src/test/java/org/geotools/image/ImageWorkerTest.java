@@ -95,7 +95,6 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.util.ComponentColorModelImageN;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -167,7 +166,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 raster.setSample(x, y, 0, Math.ceil(random.nextDouble() * maximum));
             }
         }
-        final ColorModel cm = new ComponentColorModelImageN(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
@@ -2048,7 +2047,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelImageN(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         ImageWorker worker = new ImageWorker(image);

@@ -25,6 +25,7 @@ import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -53,7 +54,6 @@ import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.TestData;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.util.ComponentColorModelImageN;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -654,7 +654,7 @@ public class TestPiecewise {
                 else raster.setSample(x, y, 0, (x + y));
             }
         }
-        ColorModel cm = new ComponentColorModelImageN(
+        ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
         final RenderedImage image = new ImageWorker(new BufferedImage(cm, raster, false, null))
                 .setNoData(RangeFactory.create(noDataValue, noDataValue))

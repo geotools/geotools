@@ -181,9 +181,9 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      */
     private Object build(Node cqlNode) throws CQLException {
         switch (cqlNode.getType()) {
-                // Literals
-                // note, these should never throw because the parser grammar
-                // constrains input before we ever reach here!
+            // Literals
+            // note, these should never throw because the parser grammar
+            // constrains input before we ever reach here!
             case JJTINTEGERNODE:
                 return this.builder.buildLiteralInteger(getToken(0).image);
 
@@ -192,27 +192,27 @@ public class CQLCompiler extends CQLParser implements ICompiler {
 
             case JJTSTRINGNODE:
                 return this.builder.buildLiteralString(getToken(0).image);
-                // ----------------------------------------
-                // Identifier
-                // ----------------------------------------
+            // ----------------------------------------
+            // Identifier
+            // ----------------------------------------
             case JJTIDENTIFIER_NODE:
                 return this.builder.buildIdentifier(JJTIDENTIFIER_PART_NODE);
 
             case JJTIDENTIFIER_PART_NODE:
                 return this.builder.buildIdentifierPart(getTokenInPosition(0));
 
-                // ----------------------------------------
-                // attribute
-                // ----------------------------------------
+            // ----------------------------------------
+            // attribute
+            // ----------------------------------------
             case JJTSIMPLE_ATTRIBUTE_NODE:
                 return this.builder.buildSimpleAttribute();
 
             case JJTCOMPOUND_ATTRIBUTE_NODE:
                 return this.builder.buildCompoundAttribute(JJTSIMPLE_ATTRIBUTE_NODE, ATTRIBUTE_PATH_SEPARATOR);
 
-                // ----------------------------------------
-                // function
-                // ----------------------------------------
+            // ----------------------------------------
+            // function
+            // ----------------------------------------
             case JJTFUNCTION_NODE:
                 return this.builder.buildFunction(JJTFUNCTIONNAME_NODE);
 
@@ -222,14 +222,14 @@ public class CQLCompiler extends CQLParser implements ICompiler {
             case JJTFUNCTIONARG_NODE:
                 return cqlNode; // used as mark of args in stack
 
-                // Math Nodes
+            // Math Nodes
             case JJTADDNODE:
             case JJTSUBTRACTNODE:
             case JJTMULNODE:
             case JJTDIVNODE:
                 return buildBinaryExpression(cqlNode.getType());
 
-                // Boolean expression
+            // Boolean expression
             case JJTBOOLEAN_AND_NODE:
                 return buildLogicFilter(JJTBOOLEAN_AND_NODE);
 
@@ -239,18 +239,18 @@ public class CQLCompiler extends CQLParser implements ICompiler {
             case JJTBOOLEAN_NOT_NODE:
                 return buildLogicFilter(JJTBOOLEAN_NOT_NODE);
 
-                // ----------------------------------------
-                // between predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // between predicate actions
+            // ----------------------------------------
             case JJTBETWEEN_NODE:
                 return this.builder.buildBetween();
 
             case JJTNOT_BETWEEN_NODE:
                 return this.builder.buildNotBetween();
 
-                // ----------------------------------------
-                // Compare predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // Compare predicate actions
+            // ----------------------------------------
             case JJTCOMPARISONPREDICATE_EQ_NODE:
             case JJTCOMPARISONPREDICATE_GT_NODE:
             case JJTCOMPARISONPREDICATE_LT_NODE:
@@ -264,27 +264,27 @@ public class CQLCompiler extends CQLParser implements ICompiler {
 
                 return notFilter;
 
-                // ----------------------------------------
-                // Text predicate (Like)
-                // ----------------------------------------
+            // ----------------------------------------
+            // Text predicate (Like)
+            // ----------------------------------------
             case JJTLIKE_NODE:
                 return this.builder.buildLikeFilter(true);
 
             case JJTNOT_LIKE_NODE:
                 return this.builder.buildNotLikeFilter(true);
 
-                // ----------------------------------------
-                // Null predicate
-                // ----------------------------------------
+            // ----------------------------------------
+            // Null predicate
+            // ----------------------------------------
             case JJTNULLPREDICATENODE:
                 return this.builder.buildPropertyIsNull();
 
             case JJTNOTNULLPREDICATENODE:
                 return this.builder.buildPorpertyNotIsNull();
 
-                // ----------------------------------------
-                // temporal predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // temporal predicate actions
+            // ----------------------------------------
             case JJTDATETIME_NODE:
                 return this.builder.buildDateTimeExpression(getTokenInPosition(0));
 
@@ -318,9 +318,9 @@ public class CQLCompiler extends CQLParser implements ICompiler {
             case JJTTPDURING_OR_AFTER_PERIOD_NODE:
                 return buildDuringOrAfter();
 
-                // ----------------------------------------
-                // existence predicate actions
-                // ----------------------------------------
+            // ----------------------------------------
+            // existence predicate actions
+            // ----------------------------------------
             case JJTEXISTENCE_PREDICATE_EXISTS_NODE:
                 return this.builder.buildPropertyExists();
 
@@ -330,9 +330,9 @@ public class CQLCompiler extends CQLParser implements ICompiler {
 
                 return filterPropNotExist;
 
-                // ----------------------------------------
-                // routine invocation Geo Operation
-                // -------------------TokenAdapter.newAdapterFor(cqlNode.getToken())---------------------
+            // ----------------------------------------
+            // routine invocation Geo Operation
+            // -------------------TokenAdapter.newAdapterFor(cqlNode.getToken())---------------------
             case JJTROUTINEINVOCATION_GEOOP_EQUAL_NODE:
             case JJTROUTINEINVOCATION_GEOOP_DISJOINT_NODE:
             case JJTROUTINEINVOCATION_GEOOP_INTERSECT_NODE:
@@ -353,9 +353,9 @@ public class CQLCompiler extends CQLParser implements ICompiler {
             case JJTDE9IM_NODE:
                 return this.builder.buildDE9IM(getToken(0).image);
 
-                // ----------------------------------------
-                // routine invocation RelGeo Operatiosn
-                // ----------------------------------------
+            // ----------------------------------------
+            // routine invocation RelGeo Operatiosn
+            // ----------------------------------------
             case JJTTOLERANCE_NODE:
                 return this.builder.buildTolerance();
 
@@ -366,9 +366,9 @@ public class CQLCompiler extends CQLParser implements ICompiler {
             case JJTROUTINEINVOCATION_RELOP_DWITHIN_NODE:
                 return buildDistanceBufferOperator(cqlNode.getType());
 
-                // ----------------------------------------
-                // Geometries:
-                // ----------------------------------------
+            // ----------------------------------------
+            // Geometries:
+            // ----------------------------------------
             case JJTWKTNODE:
                 return this.builder.buildGeometry(TokenAdapter.newAdapterFor(cqlNode.getToken()));
 

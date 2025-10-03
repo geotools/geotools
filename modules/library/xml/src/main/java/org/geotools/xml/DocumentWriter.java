@@ -1122,13 +1122,13 @@ public class DocumentWriter {
         // Simplecontent to match
         if (egs != null) {
             switch (egs.getGrouping()) {
-                    // TODO determine if this will work
-                    //                    	case ElementGrouping.COMPLEXCONTENT:
-                    //                    	    writeAny((ComplexContent)egs,schema,ph,hints);
-                    //                    	    break;
-                    //                    	case ElementGrouping.SIMPLECONTENT:
-                    //                    	    writeAny((SimpleContent)egs,schema,ph,hints);
-                    //                    	    break;
+                // TODO determine if this will work
+                //                    	case ElementGrouping.COMPLEXCONTENT:
+                //                    	    writeAny((ComplexContent)egs,schema,ph,hints);
+                //                    	    break;
+                //                    	case ElementGrouping.SIMPLECONTENT:
+                //                    	    writeAny((SimpleContent)egs,schema,ph,hints);
+                //                    	    break;
                 case ElementGrouping.ALL:
                     writeAll((All) egs, schema, ph, hints);
 

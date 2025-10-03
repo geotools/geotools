@@ -189,19 +189,19 @@ public class GridCoverageTestBase extends CoverageTestBase {
                 default: {
                     throw new IndexOutOfBoundsException(String.valueOf(number));
                 }
-                    /* ------------------------------------------------------------
-                     * Thematic           :  Sea Surface Temperature (SST) in °C
-                     * Data packaging     :  Indexed 8-bits
-                     * Nodata values      :  [0 .. 29] and [240 .. 255] inclusive.
-                     * Conversion formula :  (°C) = (packed value)/10 + 10
-                     * Geographic extent  :  (41°S, 35°E) - (5°N, 80°E)
-                     * Image size         :  (450 x 460) pixels
-                     *
-                     * This is a raster from Earth observations using a relatively straightforward
-                     * conversion formula to geophysics values (a linear transform using the usual
-                     * scale and offset parameters, in this case 0.1 and 10 respectively).     The
-                     * interesting part of this example is that it contains a lot of nodata values.
-                     */
+                /* ------------------------------------------------------------
+                 * Thematic           :  Sea Surface Temperature (SST) in °C
+                 * Data packaging     :  Indexed 8-bits
+                 * Nodata values      :  [0 .. 29] and [240 .. 255] inclusive.
+                 * Conversion formula :  (°C) = (packed value)/10 + 10
+                 * Geographic extent  :  (41°S, 35°E) - (5°N, 80°E)
+                 * Image size         :  (450 x 460) pixels
+                 *
+                 * This is a raster from Earth observations using a relatively straightforward
+                 * conversion formula to geophysics values (a linear transform using the usual
+                 * scale and offset parameters, in this case 0.1 and 10 respectively).     The
+                 * interesting part of this example is that it contains a lot of nodata values.
+                 */
                 case 0: {
                     path = "QL95209.png";
                     crs = DefaultGeographicCRS.WGS84;
@@ -218,18 +218,18 @@ public class GridCoverageTestBase extends CoverageTestBase {
                     bands = new GridSampleDimension[] {new GridSampleDimension("Measure", categories, SI.CELSIUS)};
                     break;
                 }
-                    /* ------------------------------------------------------------
-                     * Thematic           :  Chlorophyle-a concentration in mg/m³
-                     * Data packaging     :  Indexed 8-bits
-                     * Nodata values      :  0 and 255
-                     * Conversion formula :  (mg/m³) = 10 ^ ((packed value)*0.015 - 1.985)
-                     * Geographic extent  :  (34°N, 07°W) - (45°N, 12°E)
-                     * Image size         :  (300 x 175) pixels
-                     *
-                     * This is a raster from Earth observations using a more complex conversion
-                     * formula to geophysics values (an exponential one). The usual scale and
-                     * offset parameters are not enough in this case.
-                     */
+                /* ------------------------------------------------------------
+                 * Thematic           :  Chlorophyle-a concentration in mg/m³
+                 * Data packaging     :  Indexed 8-bits
+                 * Nodata values      :  0 and 255
+                 * Conversion formula :  (mg/m³) = 10 ^ ((packed value)*0.015 - 1.985)
+                 * Geographic extent  :  (34°N, 07°W) - (45°N, 12°E)
+                 * Image size         :  (300 x 175) pixels
+                 *
+                 * This is a raster from Earth observations using a more complex conversion
+                 * formula to geophysics values (an exponential one). The usual scale and
+                 * offset parameters are not enough in this case.
+                 */
                 case 1: {
                     path = "CHL01195.png";
                     crs = DefaultGeographicCRS.WGS84;
@@ -248,10 +248,10 @@ public class GridCoverageTestBase extends CoverageTestBase {
                     };
                     break;
                 }
-                    /* ------------------------------------------------------------
-                     * Thematic           :  World Digital Elevation Model (DEM)
-                     * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
-                     */
+                /* ------------------------------------------------------------
+                 * Thematic           :  World Digital Elevation Model (DEM)
+                 * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
+                 */
                 case 2: {
                     path = "world_dem.gif";
                     bounds = new Rectangle2D.Double(-180, -90, 360, 180);
@@ -259,10 +259,10 @@ public class GridCoverageTestBase extends CoverageTestBase {
                     bands = null;
                     break;
                 }
-                    /* ------------------------------------------------------------
-                     * Thematic           :  World Bathymetry (DEM)
-                     * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
-                     */
+                /* ------------------------------------------------------------
+                 * Thematic           :  World Bathymetry (DEM)
+                 * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
+                 */
                 case 3: {
                     path = "BATHY.png";
                     bounds = new Rectangle2D.Double(-180, -90, 360, 180);
@@ -270,11 +270,11 @@ public class GridCoverageTestBase extends CoverageTestBase {
                     bands = null;
                     break;
                 }
-                    /*
-                     * A float coverage. Because we use only one tile with one band, the code below
-                     * is pretty similar to the code we would have if we were just setting the values
-                     * in a matrix.
-                     */
+                /*
+                 * A float coverage. Because we use only one tile with one band, the code below
+                 * is pretty similar to the code we would have if we were just setting the values
+                 * in a matrix.
+                 */
                 case 4: {
                     final int width = 500;
                     final int height = 500;
@@ -296,10 +296,10 @@ public class GridCoverageTestBase extends CoverageTestBase {
                             new Color[][] {colors},
                             null);
                 }
-                    /*
-                     * A single band fictitious coverage with type UINT 16.
-                     *
-                     */
+                /*
+                 * A single band fictitious coverage with type UINT 16.
+                 *
+                 */
                 case 5: {
                     final int width = 500;
                     final int height = 500;

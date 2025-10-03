@@ -36,6 +36,7 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Coordinate;
 import org.xml.sax.EntityResolver;
 
 /**
@@ -564,8 +565,19 @@ public class Hints extends RenderingHints {
     /** The rendering aid used to avoid painting tiny features over and over in the same pixel */
     public static final Key SCREENMAP = new ClassKey("org.geotools.data.util.ScreenMap");
 
-    /** The actual coordinate dimensions of the geometry (to be used in the GeometryDescriptor user map) */
+    /**
+     * The actual coordinate dimensions of the geometry (to be used in the GeometryDescriptor user map).
+     *
+     * This value is consistent with {@link org.locationtech.jts.geom.Coordinates#dimension(Coordinate)}.
+     */
     public static final Key COORDINATE_DIMENSION = new Key(Integer.class);
+
+    /**
+     * The number of measures included COORDINATE_DIMENSION  (to be used in the GeometryDescriptor user map).
+     *
+     * This value is consistent with {@link org.locationtech.jts.geom.Coordinates#measures(Coordinate)}.
+     */
+    public static final Key COORDINATE_MEASURE = new Key(Integer.class);
 
     /**
      * The {@link org.geotools.api.style.StyleFactory} instance to use.

@@ -99,7 +99,7 @@ public class CoverageUtilities {
      * @param roi a {@link Geometry} in model space.
      * @param mt2d an {@link AffineTransform} that maps from raster to model space. This is already referred to the
      *     pixel corner.
-     * @return a {@link ROI} suitable for using with JAI.
+     * @return a {@link ROI} suitable for using with ImageN.
      * @throws ProcessException in case there are problems with ivnerting the provided {@link AffineTransform}. Very
      *     unlikely to happen.
      */

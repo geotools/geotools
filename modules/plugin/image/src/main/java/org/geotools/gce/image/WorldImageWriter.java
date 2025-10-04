@@ -358,7 +358,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter implement
         // }
         // }
 
-        /** write using JAI encoders */
+        /** write using ImageN encoders */
         ImageTypeSpecifier specifier = ImageTypeSpecifier.createFromRenderedImage(image);
         Iterator<ImageWriter> writers = ImageIO.getImageWriters(specifier, extension);
         if (!writers.hasNext()) {

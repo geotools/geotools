@@ -376,7 +376,7 @@ public class RasterLayout implements Cloneable {
      * @param obj the <code>Object</code> to test for equality
      * @return <code>true</code> if the specified <code>Object</code> is an instance of <code>
      *     RasterLayout</code> and equals this <code>RasterLayout</code>; <code>false</code> otherwise.
-     * @since JAI 1.1
+     * @since ImageN 1.1
      */
     @Override
     public boolean equals(Object obj) {

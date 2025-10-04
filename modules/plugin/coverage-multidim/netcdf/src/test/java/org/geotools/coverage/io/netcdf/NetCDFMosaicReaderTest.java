@@ -150,7 +150,7 @@ public class NetCDFMosaicReaderTest {
     public static ParameterValue<Boolean> NO_DEFERRED_LOADING_PARAM;
 
     static {
-        final ParameterValue<Boolean> imageRead = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> imageRead = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         imageRead.setValue(false);
         NO_DEFERRED_LOADING_PARAM = imageRead;
     }

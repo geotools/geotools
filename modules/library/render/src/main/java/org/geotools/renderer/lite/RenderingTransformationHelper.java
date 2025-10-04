@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.eclipse.imagen.JAI.KEY_INTERPOLATION;
+import static org.eclipse.imagen.ImageN.KEY_INTERPOLATION;
 import static org.geotools.coverage.util.FeatureUtilities.GRID_PROPERTY_NAME;
 import static org.geotools.coverage.util.FeatureUtilities.PARAMS_PROPERTY_NAME;
 

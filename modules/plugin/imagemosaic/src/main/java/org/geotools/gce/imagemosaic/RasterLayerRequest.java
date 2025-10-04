@@ -68,7 +68,7 @@ public class RasterLayerRequest {
     private static final int DEFAULT_PADDING = 10;
 
     private ReadType readType =
-            AbstractGridFormat.USE_JAI_IMAGEREAD.getDefaultValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
+            AbstractGridFormat.USE_IMAGEN_IMAGEREAD.getDefaultValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
 
     SpatialRequestHelper spatialRequestHelper;
 
@@ -414,10 +414,10 @@ public class RasterLayerRequest {
 
             // //
             //
-            // Use JAI ImageRead parameter
+            // Use ImageN ImageRead parameter
             //
             // //
-            if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
+            if (name.equals(AbstractGridFormat.USE_IMAGEN_IMAGEREAD.getName())) {
                 if (value == null) continue;
                 readType = (Boolean) value ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
                 continue;
@@ -629,10 +629,10 @@ public class RasterLayerRequest {
         }
         // //
         //
-        // Use JAI ImageRead parameter
+        // Use ImageN ImageRead parameter
         //
         // //
-        if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
+        if (name.equals(AbstractGridFormat.USE_IMAGEN_IMAGEREAD.getName())) {
             final Object value = param.getValue();
             if (value == null) return;
             readType = param.booleanValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
@@ -932,7 +932,7 @@ public class RasterLayerRequest {
     }
 
     /**
-     * Check the type of read operation which will be performed and return {@code true} if a JAI imageRead operation
+     * Check the type of read operation which will be performed and return {@code true} if a ImageN imageRead operation
      * need to be performed or {@code false} if a simple read operation is needed.
      */
     private void checkReadType() {
@@ -952,7 +952,7 @@ public class RasterLayerRequest {
         // //
         final Hints hints = rasterManager.getHints();
         if (hints != null) {
-            final Object o = hints.get(Hints.USE_JAI_IMAGEREAD);
+            final Object o = hints.get(Hints.USE_IMAGEN_IMAGEREAD);
             if (o != null) {
                 readType = (ReadType) o;
             }

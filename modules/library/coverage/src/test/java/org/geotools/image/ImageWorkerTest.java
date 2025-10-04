@@ -69,8 +69,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import org.eclipse.imagen.Histogram;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.ROIShape;
@@ -95,7 +95,6 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -167,7 +166,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 raster.setSample(x, y, 0, Math.ceil(random.nextDouble() * maximum));
             }
         }
-        final ColorModel cm = new ComponentColorModelJAI(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
@@ -849,7 +848,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ParameterBlock pb = new ParameterBlock();
         pb.addSource(test2).addSource(test3);
         final RenderedImage multiband =
-                JAI.create("BandMerge", pb, null); // BandMergeDescriptor.create(test2, test3, null);
+                ImageN.create("BandMerge", pb, null); // BandMergeDescriptor.create(test2, test3, null);
         ImageWorker testmultibandI = new ImageWorker(multiband);
         final double[] maximums5a = testmultibandI.getMaximums();
         final double[] minimums5a = testmultibandI.getMinimums();
@@ -1069,7 +1068,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
         // Following will change image, so we need to test after the above assertions.
         worker.setRenderingHint(
-                JAI.KEY_IMAGE_LAYOUT,
+                ImageN.KEY_IMAGE_LAYOUT,
                 new ImageLayout()
                         .setTileGridXOffset(0)
                         .setTileGridYOffset(0)
@@ -1272,7 +1271,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 imageWithNodata.getTileHeight(),
                 imageWithNodata.getSampleModel(),
                 imageWithNodata.getColorModel());
-        worker.setRenderingHint(JAI.KEY_IMAGE_LAYOUT, layout);
+        worker.setRenderingHint(ImageN.KEY_IMAGE_LAYOUT, layout);
 
         // Perform the mosaicking operation
         RenderedImage image = worker.mosaic(
@@ -1488,7 +1487,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // check the bounds of the output image has not changed
         assertEquals(fullChain.getBounds(), reduced.getBounds());
 
-        // check we are getting a reasonable tile size and origin (JAI warp_affine will generate
+        // check we are getting a reasonable tile size and origin (ImageN warp_affine will generate
         // odd results otherwise
         assertEquals(0, reduced.getTileGridXOffset());
         assertEquals(0, reduced.getTileGridYOffset());
@@ -1953,7 +1952,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 null);
         RenderedImage mosaicked = iw.getRenderedImage();
         // it has been replaced with a ROI geometry as big as the image since it cannot be removed
-        // due to JAI picking the ROI of the mosaic from the first source
+        // due to ImageN picking the ROI of the mosaic from the first source
         Object roiProperty = mosaicked.getProperty("ROI");
         assertThat(roiProperty, instanceOf(ROIGeometry.class));
     }
@@ -2048,7 +2047,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelJAI(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         ImageWorker worker = new ImageWorker(image);
@@ -2216,7 +2215,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = new TiledImage(0, 0, tileWitdh, tileHeight, 0, 0, sm, cm);
         ImageWorker worker = new ImageWorker(image);
         RenderingHints hints = worker.getRenderingHints();
-        ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+        ImageLayout layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
 
         // No IllegalArgumentException will be thrown at this point when creating a new ImageLayout
         // on top of a reference one.
@@ -2322,7 +2321,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_GRAY);
         ImageWorker iw = new ImageWorker(bi);
         RenderingHints hints = new RenderingHints(null);
-        hints.put(JAI.KEY_IMAGE_LAYOUT, new ImageLayout(0, 0, 1, 1));
+        hints.put(ImageN.KEY_IMAGE_LAYOUT, new ImageLayout(0, 0, 1, 1));
         iw.prepareForScaledAlphaChannel(bi, hints, bi.getColorModel(), bi.getSampleModel());
     }
 

@@ -19,7 +19,7 @@ package org.geotools.coverage.processing.operation;
 import java.awt.image.RenderedImage;
 import java.io.Serial;
 import java.util.Map;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.media.shadedrelief.ShadedReliefDescriptor;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -159,7 +159,7 @@ public class ShadedRelief extends OperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI jaiParams, ParameterValueGroup params) {
+    protected void handleJAIEXTParams(ParameterBlockImageN jaiParams, ParameterValueGroup params) {
         GridCoverage2D source = (GridCoverage2D) params.parameter("source0").getValue();
 
         // Handle ROI and NoData

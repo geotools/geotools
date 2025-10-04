@@ -283,7 +283,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements 
             w.setNoData(noDataProperty != null ? noDataProperty.getAsRange() : null);
             w.classify(colorMapTransform, null);
             final RenderedOp classified =
-                    w.getRenderedOperation(); // JAI.create(RasterClassifierOpImage.OPERATION_NAME,pbj);
+                    w.getRenderedOperation(); // ImageN.create(RasterClassifierOpImage.OPERATION_NAME,pbj);
 
             ////
             //

@@ -40,7 +40,7 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.WritableRenderedImageAdapter;
 import org.eclipse.imagen.media.imageread.ImageReadDescriptor;
@@ -163,7 +163,7 @@ public class ImageUtilitiesTest {
         layout.setTileHeight(50);
         layout.setTileWidth(50);
         RenderedImage result = ImageUtilities.applyRescaling(
-                new Double[] {10d}, new Double[] {1d}, bi, new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
+                new Double[] {10d}, new Double[] {1d}, bi, new Hints(ImageN.KEY_IMAGE_LAYOUT, layout));
         assertEquals(DataBuffer.TYPE_DOUBLE, result.getSampleModel().getDataType());
         assertEquals(50, result.getTileWidth());
         assertEquals(50, result.getTileHeight());

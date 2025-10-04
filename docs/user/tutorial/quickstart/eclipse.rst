@@ -2,7 +2,7 @@
 :Author: Micheal Bedward
 :Author: Ian Turton
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Create Commons with attribution
 
 **********************
@@ -29,100 +29,68 @@ fun to use. These sessions are applicable to both server side and client side de
 Java Install
 ============
 
-.. sidebar:: Lab
+We are going to be making use of Java, even if you already have a JDK we would
+like to ask you to install Java 17 for this tutorial.
 
-   If you are following this workbook in a lab setting you will find installers on the DVD.
-   
-We are going to be making use of Java, so if you don't have a Java Development Kit installed now is
-the time to do so. Even if you have Java installed already check out the optional Java Advanced
-Imaging and Java Image IO section.
-   
-#. Download the latest Java Development Kit (JDK) from the Oracle website:
-
-   http://www.oracle.com/technetwork/java/javase/downloads/
-   
-#. At the time of writing the latest was JDK 8. Choose a download for your platform, for example:
-   
-   `jdk-8u66-windows-i586.exe`
-   
-   For Windows 32bit platforms.
-   
-#. Click through the installer. You will need to accept a license agreement, choose a directory
-   and so forth.
-   
-   By default this will install to:     
-   
-   ``C:\\Program Files\\Java\\jdk1.8.0\\``
-     
-#. **Optional**: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
-   performance will be improved:   
-   
-   http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html
-   
-   Both a JDK and JRE installer are available:
-   
-   * ``jai-1_1_3-lib-windows-i586-jdk.exe``
-   * ``jai-1_1_3-lib-windows-i586-jre.exe``
-     
-#. **Optional**: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
-   ImageIO library:
-   
-  https://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html
-   
-   Both a JDK and JRE installer are available:   
-   
-   * ``jai_imageio-1_1-lib-windows-i586-jdk.exe``
-   * ``jai_imageio-1_1-lib-windows-i586-jre.exe``
-   
-For more details of how to install these packages see `this page <http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions>`_
+.. include:: jdk-install.txt
 
 Eclipse
 =======
 
-.. sidebar:: Lab
-
-   In a lab setting your instructor will have downloaded these files for you, and often have a ready
-   to go Eclipse zipped up and ready to use.
-   
 Eclipse is a popular integrated development environment most often used for all kinds of Java
 development. For this tutorial we are doing straight up Java programming using the smallest
 download available - if you already have an Eclipse download please go ahead and use it and
 switch to the "Java Perspective".
    
-1. Visit the Eclipse download page (http://www.eclipse.org/downloads/eclipse-packages/) and download "Eclipse IDE for Java developers".
-2. Eclipse now provides an installer; however this tutorial targets the binary packages that 
-   you simply extract and run.
-3. To start out with create the folder C:\\java to keep all our java development in one spot.
-4. Unzip the downloaded ``eclipse-java-mars-R-win32.zip`` file to your ``C:\\java`` directory - the
-   folder ``C:\\java\\eclipse`` will be created.
-5. Navigate to ``C:\\java\\eclipse`` and right-click on the ``eclipse.exe`` file and select
-   Send To -> Desktop (create shortcut).
-6. Open up the ``eclipse.ini`` file.
-   
-   * Use our JDK directly by providing a ``-vm`` argument
-   
-7. Double click on your desktop shortcut to start up eclipse.
-8. When you start up eclipse for the first time it will prompt you for a workspace. To keep our
+1. Visit the Eclipse download page and download "Eclipse IDE for Java Developers".
+
+   https://www.eclipse.org/downloads/packages/
+
+2. Double click on your desktop shortcut to start up eclipse.
+
+3. When you start up eclipse for the first time it will prompt you for a workspace. To keep our
    java work in one spot you can type in:
-   
-   ``C:\\java\\workspace``
-   
-9. On the Welcome view press Workbench along the right hand side and we can get started
+
+   * ``~/java/eclipse-workspace``
+   * ``C:\\java\\eclipse-workspace``
+
+   Compiling is an intensive activity and local disk should be used (rather than a network share).
+
+4. On the Welcome view press Workbench along the right hand side and we can get started
+
+5. Open up :guilabel:`Preferences` and navigate to :menuselection:`Java --> Installed JREs`.
+
+   The built-in JRE is selected by default, change to the Java 17 JDK downloaded earlier.
+
+   Once selected there will be a warning about the compliance level.
+
+   .. figure:: images/eclipse-installed-jre.png
+
+      Installed JREs: Java 17 JDK selected
+
+6. Navigate to :menuselection:`Java --> Compiler` and set the compliance level to 17.
+
+   .. figure:: images/eclipse-compiler.png
+
+      Java Compiler JDK Compliance 17
+
+7. Press :guilabel:`Apply and Close` to save your changes.
 
 .. _eclipse-m2eclipse:
 
-M2E
------
+M2E Plugin
+----------
   
 Maven is a build system for Java which is very good at managing dependencies. The GeoTools library
 is plugin based and you get to pick and choose what features you need for your application. While
 this is useful when determining just what is needed for delivery - it can be a pain to manage by
 hand so we encourage the use of a tool such as maven.
 
-In previous years we used the command line (gasp!) when working with maven. This year we are going
-to be using the M2E plugin from Sonyatype.
+The M2E plugin is included by default, this can be confirmed if the :guilabel:`Maven` preference page is listed.
 
-The M2E plugin is included by default since Eclipse 3.7.
+   .. figure:: images/eclipse-m2.png
+
+      Eclipse Maven Preference Page
 
 Quickstart
 ==========
@@ -152,8 +120,9 @@ To use M2E plugin to create a create a new maven project:
    .. image:: images/newmaven.png
       :scale: 60
    
-#. The default of *maven-archtype-quickstart* is fine, press *Next*
- 
+#. A large number of sample projects are available, type in ``maven-archetype-quickstart`` to search
+   for the apache one.
+
    .. image:: images/archetype.png
       :scale: 60
 
@@ -180,19 +149,6 @@ To use M2E plugin to create a create a new maven project:
 Adding Jars to your Project
 ---------------------------
 
-.. sidebar:: Lab
-
-   We are going to cheat in order to save time; the local maven repository has already been
-   populated with the latest copy of GeoTools allowing us to use offline mode.
-   
-   To turn on offline mode:
-   
-   #. Open :menuselection:`Windows --> Preferences`
-   #. Select :guilabel:`Maven` preference page
-   #. Ensure :guilabel:`offline` is checked
-    
-   This setting is useful when wanting to work quickly once everything is downloaded.
-    
 The ``pom.xml`` file is used to describe the care and feeding of your maven project; we are going to
 focus on the dependencies needed for your project 
 
@@ -212,7 +168,7 @@ such as GeoTools publish their work.
 1. Open up :file:`pom.xml` in your new project. You can see some of the information we entered
    earlier.
    
-   .. image:: images/pomOverview.jpg
+   .. image:: images/pom-overview.png
       :scale: 60
  
 2. This editor allows you to describe all kinds of things; in the interest of time we are going to
@@ -221,57 +177,61 @@ such as GeoTools publish their work.
 3. To make use of GeoTools we are going to add several things to this ``pom.xml`` file.
    
 4. At the top after ``moduleVersion`` add a ``properties`` element defining the version of GeoTools we
-   want to use. This workbook was written for |release| although you may wish to try a different
-   version.
-   
-   For production a stable release of |branch| should be used for `geotools.version`:
-    
-   .. literalinclude:: /../../tutorials/quickstart/pom.xml
-        :language: xml
-        :start-at: <properties>
-        :end-at: </properties>
-   
-   To make use of a nightly build set the ``geotools.version`` property to |branch|-SNAPSHOT .
+   want to use.
+
+   This workbook was written for |release| although you may wish to try a different version.
+
+   .. include:: pom-properties.txt
 
 5. We use the GeoTools Bill of Materials (BOM) to manage dependency versions. This ensures that all GeoTools modules use compatible versions:
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
-        :language: xml
-        :start-at: <dependencyManagement>
-        :end-at: </dependencyManagement>
+      :language: xml
+      :start-at: <dependencyManagement>
+      :end-at: </dependencyManagement>
 
    The BOM (Bill of Materials) pattern centralizes version management. By importing the ``gt-bom``, we don't need to specify version numbers for individual GeoTools modules.
 
 6. We add dependencies to GeoTools modules. Note that we don't specify version numbers since these are managed by the BOM:
    
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
-        :language: xml
-        :start-after: </dependencyManagement>
-        :end-at: </dependencies>
+      :language: xml
+      :start-after: </dependencyManagement>
+      :end-at: </dependencies>
     
-7. Finally we need to list the external *repositories* where maven can download GeoTools and 
+7. We need to list the external *repositories* where maven can download GeoTools and
    other required jars from.
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
-        :language: xml
-        :start-at: <repositories>
-        :end-at: </repositories>
+      :language: xml
+      :start-at: <repositories>
+      :end-at: </repositories>
    
-   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |series|-SNAPSHOT)
 
-8. GeoTools now requires Java 17 - you need to tell Maven to use the 17 source level.
+8. The project was generated with a build **dependencyManagement** section
+   locking down plugin versions to avoid using Maven defaults.0
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml
-      :start-after: </repositories>
-      :end-before: <profiles>
+      :prepend: <build>
+      :start-at: <pluginManagement>
+      :end-at: </pluginManagement>
+      :append: </build>
+
+   GeoTools now requires Java 17 - add build configuration to ask maven to use Java 17 source level.
+
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+      :start-after: </pluginManagement>
+      :end-at: </build>
 
 #. Here is what the completed :file:`pom.xml` looks like:
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
-        :language: xml
-        :end-before: <profiles>
-        :append: </project>
+      :language: xml
+      :end-before:   <reporting>
+      :append: </project>
    
    * Recommend cutting and pasting the above to avoid mistakes when typing
    
@@ -468,7 +428,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files used by :comman
             :start-after: </dependencies>
             :end-before: </project>
 
-   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |series|-SNAPSHOT)
 
 7. GeoTools now requires Java 17 - you need to tell Maven to use the 17 source level.
 

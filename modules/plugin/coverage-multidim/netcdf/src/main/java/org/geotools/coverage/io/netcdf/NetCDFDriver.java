@@ -107,10 +107,10 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
         boolean available = true;
 
         // if these classes are here, then the runtime environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
 
-            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.ImageN");
             Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("NetCDFDriver is available.");
         } catch (ClassNotFoundException cnf) {

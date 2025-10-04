@@ -43,10 +43,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OpImage;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
 import org.eclipse.imagen.media.mosaic.MosaicRIF;
 import org.geotools.api.coverage.grid.Format;
@@ -389,7 +389,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         il.setTileHeight(sourceImages.get(0).getHeight());
 
         // simple
-        RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+        RenderingHints hints = new Hints(ImageN.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
         return new OpImage(new Vector<>(sourceImages), il, hints, false) {
 
@@ -439,7 +439,8 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     private RenderedImage mosaicHeterogeneousImages(List<ImageInTile> sources) {
         // at the time of writing, only JAI-EXT mosaic can handle a mix of different
         // color models, we need to use it explicitly
-        final ParameterBlockJAI pb = new ParameterBlockJAI(new org.eclipse.imagen.media.mosaic.MosaicDescriptor());
+        final ParameterBlockImageN pb =
+                new ParameterBlockImageN(new org.eclipse.imagen.media.mosaic.MosaicDescriptor());
         for (ImageInTile it : sources) {
             if (it.posx != 0 || it.posy != 0) {
                 ImageWorker iw = new ImageWorker(it.image);
@@ -457,7 +458,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         pb.setParameter("backgroundValues", new double[] {0});
         pb.setParameter("nodata", null);
 
-        RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+        RenderingHints hints = new Hints(ImageN.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
         RenderedImage image = new MosaicRIF().create(pb, hints);
         return image;

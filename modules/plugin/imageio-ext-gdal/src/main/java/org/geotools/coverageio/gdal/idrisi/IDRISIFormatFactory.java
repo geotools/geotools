@@ -46,7 +46,7 @@ public final class IDRISIFormatFactory implements GridFormatFactorySpi {
         boolean available = true;
 
         // if these classes are here, then the runtime environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
             Class.forName("it.geosolutions.imageio.plugins.arcbinarygrid.ArcBinaryGridImageReaderSpi");
             available = new IDRISIImageReaderSpi().isAvailable();

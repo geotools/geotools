@@ -60,9 +60,9 @@ import org.geotools.util.XArray;
 
 /**
  * Wraps a JAI's {@link ParameterListDescriptor}. This adaptor is provided for interoperability with <A
- * HREF="http://java.sun.com/products/java-media/jai/">Java Advanced Imaging</A>. A JAI parameter list descriptor is
+ * HREF="http://java.sun.com/products/java-media/jai/">Java Advanced Imaging</A>. A ImageN parameter list descriptor is
  * part of an {@linkplain OperationDescriptor operation descriptor}. This adaptor make it easier to access parameters
- * for a JAI operation through the general GeoAPI parameters framework.
+ * for a ImageN operation through the general GeoAPI parameters framework.
  *
  * @since 2.2
  * @version $Id$
@@ -85,8 +85,8 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
 
     /**
      * The default <cite>source type map</cite> as a (<code>{@linkplain RenderedImage}.class</code>, <code>
-     * {@linkplain GridCoverage}.class</code>) key-value pair. This is the default argument for wrapping a JAI operation
-     * in the {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME} registry mode.
+     * {@linkplain GridCoverage}.class</code>) key-value pair. This is the default argument for wrapping a ImageN
+     * operation in the {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME} registry mode.
      */
     public static final Map<Class<?>, Class<?>> DEFAULT_SOURCE_TYPE_MAP =
             Collections.singletonMap(RenderedImage.class, GridCoverage.class);
@@ -110,7 +110,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     protected final ParameterListDescriptor descriptor;
 
     /**
-     * Constructs a parameter descriptor wrapping the specified JAI operation, including sources. The
+     * Constructs a parameter descriptor wrapping the specified ImageN operation, including sources. The
      * {@linkplain #getName name for this parameter group} will be inferred from the
      * {@linkplain RegistryElementDescriptor#getName name of the supplied registry element} using the {@link #properties
      * properties} method.
@@ -132,7 +132,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     }
 
     /**
-     * Constructs a parameter descriptor wrapping the specified JAI operation, including sources. The
+     * Constructs a parameter descriptor wrapping the specified ImageN operation, including sources. The
      * {@linkplain #getName name for this parameter group} will be inferred from the
      * {@linkplain RegistryElementDescriptor#getName name of the supplied registry element} using the {@link #properties
      * properties} method.
@@ -152,15 +152,15 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     }
 
     /**
-     * Constructs a parameter descriptor wrapping the specified JAI operation, including sources. The properties map is
-     * given unchanged to the {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class
+     * Constructs a parameter descriptor wrapping the specified ImageN operation, including sources. The properties map
+     * is given unchanged to the {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class
      * constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param operation The JAI's operation descriptor, usually as an instance of {@link OperationDescriptor}.
      * @param registryMode The JAI's registry mode (usually
      *     {@value org.eclipse.imagen.registry.RenderedRegistryMode#MODE_NAME}).
-     * @param sourceTypeMap Mapping from JAI source type to this group source type. Typically a singleton with the (
+     * @param sourceTypeMap Mapping from ImageN source type to this group source type. Typically a singleton with the (
      *     <code>{@linkplain RenderedImage}.class</code>, <code>
      *     {@linkplain GridCoverage}.class</code>) key-value pair.
      * @param extension Additional parameters to put in this descriptor, or {@code null} if none. If a parameter has the
@@ -183,20 +183,20 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     }
 
     /**
-     * Constructs a parameter descriptor wrapping the specified JAI parameter list descriptor. The properties map is
+     * Constructs a parameter descriptor wrapping the specified ImageN parameter list descriptor. The properties map is
      * given unchanged to the {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class
      * constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
-     * @param descriptor The JAI descriptor.
+     * @param descriptor The ImageN descriptor.
      */
     public ImagingParameterDescriptors(final Map<String, ?> properties, final ParameterListDescriptor descriptor) {
         this(properties, descriptor, null, null, null, null);
     }
 
     /**
-     * Constructs a parameter descriptor wrapping the specified JAI descriptor. If {@code operation} is non-null, then
-     * {@code descriptor} should be derived from it. This constructor is private in order to ensure this condition.
+     * Constructs a parameter descriptor wrapping the specified ImageN descriptor. If {@code operation} is non-null,
+     * then {@code descriptor} should be derived from it. This constructor is private in order to ensure this condition.
      */
     private ImagingParameterDescriptors(
             final Map<String, ?> properties,
@@ -212,7 +212,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     }
 
     /**
-     * Infers from the specified JAI operation a set of properties that can be given to the
+     * Infers from the specified ImageN operation a set of properties that can be given to the
      * {@code ImagingParameterDescriptors(Map, RegistryElementDescriptor, String, Map, Collection) constructor}. The
      * returned map includes values (when available) for the following keys:
      *
@@ -249,7 +249,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      *  </tr>
      * </table>
      *
-     * <p>For JAI image operation (for example {@code "Add"}, the end result is fully-qualified name like
+     * <p>For ImageN image operation (for example {@code "Add"}, the end result is fully-qualified name like
      * {@code "JAI:Add"} and one alias like {@code "org.eclipse.imagen.media.Add"}.
      *
      * <p>This method returns a modifiable map. Users can safely changes its content in order to select for example a
@@ -317,7 +317,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
             /*
              * At this point, all properties have been created. Stores them in the map.
              * The name should be stored as a String (not as an Identifier), otherwise
-             * the version and the authority would be ignored. For JAI image operation,
+             * the version and the authority would be ignored. For ImageN image operation,
              * the end result is fully-qualified name like "JAI:Add" and one alias like
              * "org.eclipse.imagen.media.Add".
              */
@@ -348,7 +348,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
             final Map<Class<?>, Class<?>> sourceTypeMap,
             final Collection<ParameterDescriptor> extension) {
         /*
-         * Creates the list of JAI descriptor to be replaced by user-supplied parameters.
+         * Creates the list of ImageN descriptor to be replaced by user-supplied parameters.
          * Note that this map will be modified again in the remaining of this method.
          */
         ensureNonNull("descriptor", descriptor);
@@ -363,7 +363,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
             }
         }
         /*
-         * JAI considers sources as a special kind of parameters, while GridCoverageProcessor makes
+         * ImageN considers sources as a special kind of parameters, while GridCoverageProcessor makes
          * no distinction. If the registry element "operation" is really a JAI's OperationDescriptor
          * (which should occurs most of the time), prepend the JAI's sources before all ordinary
          * parameters. In addition, transforms the source type if needed.
@@ -416,7 +416,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
         }
         /*
          * Source parameters completed. Now get the ordinary parameters. We check for
-         * replacement of JAI parameters by user-supplied parameters in this process.
+         * replacement of ImageN parameters by user-supplied parameters in this process.
          */
         final String[] names = descriptor.getParamNames();
         final Class<?>[] classes = descriptor.getParamClasses();
@@ -477,7 +477,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     }
 
     /**
-     * Creates a new instance of parameter value group. A JAI {@link org.eclipse.imagen.ParameterList} is created for
+     * Creates a new instance of parameter value group. A ImageN {@link org.eclipse.imagen.ParameterList} is created for
      * holding parameter values, and wrapped into an {@link ImagingParameters} instance.
      *
      * @return The new value initialized to the default value.

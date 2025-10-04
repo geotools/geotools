@@ -20,7 +20,7 @@ package org.geotools.gce.imagemosaic;
 import java.util.List;
 
 /**
- * This class represents the inputs for a mosaic JAI operation.
+ * This class represents the inputs for a mosaic ImageN operation.
  *
  * <p>It contains
  *

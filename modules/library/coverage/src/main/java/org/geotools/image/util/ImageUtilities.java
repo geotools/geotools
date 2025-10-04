@@ -56,8 +56,8 @@ import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.BorderExtenderCopy;
 import org.eclipse.imagen.BorderExtenderReflect;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.NotAColorSpace;
 import org.eclipse.imagen.OpImage;
 import org.eclipse.imagen.PlanarImage;
@@ -102,7 +102,7 @@ public final class ImageUtilities {
 
     static final Logger LOGGER = Logging.getLogger(ImageUtilities.class);
 
-    /** {@code true} if JAI media lib is available. */
+    /** {@code true} if ImageN media lib is available. */
     private static final boolean mediaLibAvailable;
 
     static {
@@ -139,7 +139,7 @@ public final class ImageUtilities {
                 // Because the property org.eclipse.imagen.media.disableMediaLib isn't
                 // defined as public, the users shouldn't know it.  In most of
                 // the cases, it isn't defined, and thus no access permission
-                // is granted to it in the policy file.  When JAI is utilized in
+                // is granted to it in the policy file.  When ImageN is utilized in
                 // a security environment, AccessControlException will be thrown.
                 // In this case, we suppose that the users would like to use
                 // medialib accelaration.  So, the medialib won't be disabled.
@@ -155,32 +155,32 @@ public final class ImageUtilities {
 
     /** {@link RenderingHints} used to prevent {@link JAI} operations from expanding {@link IndexColorModel}s. */
     public static final RenderingHints DONT_REPLACE_INDEX_COLOR_MODEL =
-            new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+            new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
 
     /** {@link RenderingHints} used to force {@link JAI} operations to expand {@link IndexColorModel}s. */
     public static final RenderingHints REPLACE_INDEX_COLOR_MODEL =
-            new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.TRUE);
+            new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.TRUE);
 
     /** {@link RenderingHints} for requesting Nearest Neighbor intepolation. */
     public static final RenderingHints NN_INTERPOLATION_HINT =
-            new RenderingHints(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            new RenderingHints(ImageN.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
     /** {@link RenderingHints} for avoiding caching of {@link JAI} {@link RenderedOp}s. */
-    public static final RenderingHints NOCACHE_HINT = new RenderingHints(JAI.KEY_TILE_CACHE, null);
+    public static final RenderingHints NOCACHE_HINT = new RenderingHints(ImageN.KEY_TILE_CACHE, null);
 
     /**
      * Cached instance of a {@link RenderingHints} for controlling border extension on {@link JAI} operations. It
      * contains an instance of a {@link BorderExtenderCopy}.
      */
     public static final RenderingHints EXTEND_BORDER_BY_COPYING =
-            new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+            new RenderingHints(ImageN.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
 
     /**
      * Cached instance of a {@link RenderingHints} for controlling border extension on {@link JAI} operations. It
      * contains an instance of a {@link BorderExtenderReflect}.
      */
-    public static final RenderingHints EXTEND_BORDER_BY_REFLECT =
-            new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_REFLECT));
+    public static final RenderingHints EXTEND_BORDER_BY_REFLECT = new RenderingHints(
+            ImageN.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_REFLECT));
 
     /**
      * The default tile size. This default tile size can be overridden with a call to {@link JAI#setDefaultTileSize}.
@@ -199,9 +199,9 @@ public final class ImageUtilities {
      */
     private static final int STRIPE_SIZE = 64;
 
-    /** List of valid names. Note: the "Optimal" type is not implemented because currently not provided by JAI. */
+    /** List of valid names. Note: the "Optimal" type is not implemented because currently not provided by ImageN. */
     public static final String[] INTERPOLATION_NAMES = {
-        "Nearest", // JAI name
+        "Nearest", // ImageN name
         "NearestNeighbor", // OpenGIS name
         "Bilinear",
         "Bicubic",
@@ -221,7 +221,7 @@ public final class ImageUtilities {
             BorderExtender.createInstance(BorderExtender.BORDER_COPY);
 
     public static final RenderingHints BORDER_EXTENDER_HINTS =
-            new RenderingHints(JAI.KEY_BORDER_EXTENDER, DEFAULT_BORDER_EXTENDER);
+            new RenderingHints(ImageN.KEY_BORDER_EXTENDER, DEFAULT_BORDER_EXTENDER);
 
     public static final String DIRECT_KAKADU_PLUGIN = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
 
@@ -315,7 +315,7 @@ public final class ImageUtilities {
             if (layout != null) {
                 layout = layout.unsetTileLayout();
             }
-            Dimension defaultSize = JAI.getDefaultTileSize();
+            Dimension defaultSize = ImageN.getDefaultTileSize();
             if (defaultSize == null) {
                 defaultSize = GEOTOOLS_DEFAULT_TILE_SIZE;
             }
@@ -360,7 +360,7 @@ public final class ImageUtilities {
      */
     public static RenderingHints getRenderingHints(final RenderedImage image) {
         final ImageLayout layout = getImageLayout(image, false);
-        return layout != null ? new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout) : null;
+        return layout != null ? new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout) : null;
     }
 
     /**
@@ -394,7 +394,7 @@ public final class ImageUtilities {
      * </ul>
      */
     public static Dimension toTileSize(final Dimension size) {
-        Dimension defaultSize = JAI.getDefaultTileSize();
+        Dimension defaultSize = ImageN.getDefaultTileSize();
         if (defaultSize == null) {
             defaultSize = GEOTOOLS_DEFAULT_TILE_SIZE;
         }
@@ -584,10 +584,10 @@ public final class ImageUtilities {
      * Tiles the specified image.
      *
      * @todo Usually, the tiling doesn't need to be performed as a separated operation. The {@link ImageLayout} hint
-     *     with tile information can be provided to most JAI operators. The {@link #getRenderingHints} method provides
-     *     such tiling information only if the image was not already tiled, so it should not be a cause of tile size
-     *     mismatch in an operation chain. The mean usage for a separated "tile" operation is to tile an image before to
-     *     save it on disk in some format supporting tiling.
+     *     with tile information can be provided to most ImageN operators. The {@link #getRenderingHints} method
+     *     provides such tiling information only if the image was not already tiled, so it should not be a cause of tile
+     *     size mismatch in an operation chain. The mean usage for a separated "tile" operation is to tile an image
+     *     before to save it on disk in some format supporting tiling.
      * @throws IOException If an I/O operation were required (in order to check if the image were tiled on disk) and
      *     failed.
      * @since 2.3
@@ -637,7 +637,7 @@ public final class ImageUtilities {
             layout.unsetValid(ImageLayout.COLOR_MODEL_MASK | ImageLayout.SAMPLE_MODEL_MASK);
 
             // changing parameters related to the tiling
-            final RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+            final RenderingHints hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
 
             // reading the image
             return new ImageWorker(image)
@@ -722,9 +722,9 @@ public final class ImageUtilities {
     }
 
     /**
-     * Tells me whether or not the native libraries for JAI are active or not.
+     * Tells me whether or not the native libraries for ImageN are active or not.
      *
-     * @return <code>false</code> in case the JAI native libs are not in the path, <code>true</code> otherwise.
+     * @return <code>false</code> in case the ImageN native libs are not in the path, <code>true</code> otherwise.
      */
     public static boolean isMediaLibAvailable() {
         return mediaLibAvailable;
@@ -1306,8 +1306,9 @@ public final class ImageUtilities {
         // type
         RenderingHints localHints = hints != null
                 ? hints.clone()
-                : (RenderingHints) JAI.getDefaultInstance().getRenderingHints().clone();
-        final ImageLayout layout = Optional.ofNullable((ImageLayout) localHints.get(JAI.KEY_IMAGE_LAYOUT))
+                : (RenderingHints)
+                        ImageN.getDefaultInstance().getRenderingHints().clone();
+        final ImageLayout layout = Optional.ofNullable((ImageLayout) localHints.get(ImageN.KEY_IMAGE_LAYOUT))
                 .map(il -> (ImageLayout) il.clone())
                 .orElse(new ImageLayout2(image));
         SampleModel sm = RasterFactory.createBandedSampleModel(
@@ -1318,7 +1319,7 @@ public final class ImageUtilities {
         layout.setSampleModel(sm);
         layout.setColorModel(new ComponentColorModel(
                 new NotAColorSpace(numBands), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE));
-        localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+        localHints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
 
         // at least one band is getting rescaled, apply the operation
         ImageWorker iw = new ImageWorker(image);

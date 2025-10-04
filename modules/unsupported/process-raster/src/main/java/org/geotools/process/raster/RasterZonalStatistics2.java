@@ -19,7 +19,7 @@ package org.geotools.process.raster;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.util.List;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.media.nullop.NullDescriptor;
 import org.eclipse.imagen.media.range.Range;
 import org.eclipse.imagen.media.stats.Statistics.StatsType;
@@ -149,8 +149,8 @@ public class RasterZonalStatistics2 implements RasterProcess {
             // this will adapt the classification image to the projection and image layout
             // of the data coverage
             classificationRaster = GridCoverage2DRIA.create(classifier, coverage, noDataClassifier);
-            // Definition of the JAI TileCache to use
-            RenderingHints hints = new RenderingHints(JAI.KEY_TILE_CACHE, new SunTileCache());
+            // Definition of the ImageN TileCache to use
+            RenderingHints hints = new RenderingHints(ImageN.KEY_TILE_CACHE, new SunTileCache());
             // Wrap of the classification raster with a NullDescriptor for adding the TileCache
             // hints
             classificationRaster = NullDescriptor.create(classificationRaster, hints);

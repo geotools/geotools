@@ -60,8 +60,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
 import org.geotools.api.data.FeatureSource;
@@ -3661,7 +3661,7 @@ public class StreamingRenderer implements GTRenderer {
                 //
                 // /////////////////////////////////////////////////////////////////
                 Hints localHints = new Hints(java2dHints);
-                if (interpolation != null) localHints.put(JAI.KEY_INTERPOLATION, interpolation);
+                if (interpolation != null) localHints.put(ImageN.KEY_INTERPOLATION, interpolation);
                 final GridCoverageRenderer gcr = new GridCoverageRenderer(
                         destinationCRS, originalMapExtent, screenSize, worldToScreen, localHints);
 
@@ -4068,7 +4068,7 @@ public class StreamingRenderer implements GTRenderer {
         protected GridCoverage2D readCoverage(GridCoverage2DReader reader, Object readParams, GridGeometry2D readGG)
                 throws IOException {
             Interpolation interpolation = getRenderingInterpolation(layer);
-            RenderingHints interpolationHints = new RenderingHints(JAI.KEY_INTERPOLATION, interpolation);
+            RenderingHints interpolationHints = new RenderingHints(ImageN.KEY_INTERPOLATION, interpolation);
             final GridCoverageRenderer gcr;
 
             try {

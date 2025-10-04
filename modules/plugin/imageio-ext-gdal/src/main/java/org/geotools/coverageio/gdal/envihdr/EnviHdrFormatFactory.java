@@ -36,7 +36,7 @@ public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements Gr
         boolean available = true;
 
         // if these classes are here, then the runtime environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
             Class.forName("it.geosolutions.imageio.plugins.envihdr.ENVIHdrImageReaderSpi");
             available = new ENVIHdrImageReaderSpi().isAvailable();

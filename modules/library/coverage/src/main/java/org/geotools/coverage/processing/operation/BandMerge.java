@@ -33,8 +33,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ImageN;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.range.NoDataContainer;
@@ -308,7 +308,7 @@ public class BandMerge extends OperationJAI {
     @Override
     public Coverage doOperation(ParameterValueGroup parameters, Hints hints) throws CoverageProcessingException {
         /*
-         * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockJAI (as RenderedImages) later.
+         * Extracts the source grid coverages now as a List. The sources will be set in the ParameterBlockImageN (as RenderedImages) later.
          */
         final Collection<GridCoverage2D> sourceCollection = new ArrayList<>();
         extractSources(parameters, sourceCollection);
@@ -354,8 +354,8 @@ public class BandMerge extends OperationJAI {
         // Storing the input sources into and array
         GridCoverage2D[] sources = new GridCoverage2D[size];
         sourceCollection.toArray(sources);
-        // Creation of the ParameterBlockJAI object to pass to JAI.
-        ParameterBlockJAI block;
+        // Creation of the ParameterBlockImageN object to pass to ImageN.
+        ParameterBlockImageN block;
         try {
             block = prepareParameters(parameters, sources, tr, crsToGrid);
         } catch (MismatchedDimensionException | TransformException | ParameterNotFoundException e) {
@@ -412,7 +412,7 @@ public class BandMerge extends OperationJAI {
      * <ul>
      *   <li>Gets the {@linkplain GridSampleDimension sample dimensions} for the target images by invoking the
      *       {@link #deriveSampleDimension deriveSampleDimension(...)} method.
-     *   <li>Applied the JAI operation using {@link #createRenderedImage}.
+     *   <li>Applied the ImageN operation using {@link #createRenderedImage}.
      *   <li>Wraps the result in a {@link GridCoverage2D} object.
      * </ul>
      *
@@ -445,7 +445,7 @@ public class BandMerge extends OperationJAI {
          * - Color model
          */
         RenderingHints hints = ImageUtilities.getRenderingHints(parameters.getSource());
-        ImageLayout layout = hints != null ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
+        ImageLayout layout = hints != null ? (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT) : null;
 
         // Selection of the Bounding Box to use if present
         ReferencedEnvelope bbox = parameters.bbox;
@@ -457,9 +457,9 @@ public class BandMerge extends OperationJAI {
             }
 
             if (hints == null) {
-                hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
             } else {
-                hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         } else if (bbox != null) {
             // New Layout Creation
@@ -468,9 +468,9 @@ public class BandMerge extends OperationJAI {
             updateLayout(parameters, layout, bbox);
 
             if (hints == null) {
-                hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
             } else {
-                hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         }
         // Setting of the Hints to use
@@ -483,7 +483,7 @@ public class BandMerge extends OperationJAI {
         }
 
         /*
-         * Performs the operation using JAI and construct the new grid coverage. Uses the coordinate system from the main source coverage in order to
+         * Performs the operation using ImageN and construct the new grid coverage. Uses the coordinate system from the main source coverage in order to
          * preserve the extra dimensions (if any). The first two dimensions should be equal to the coordinate system set in the 'parameters' block.
          */
         final InternationalString name = deriveName(sources, primarySourceIndex, null);
@@ -540,7 +540,7 @@ public class BandMerge extends OperationJAI {
         }
 
         // Setting ROI and NoData if present
-        ParameterBlockJAI pb = parameters.parameters;
+        ParameterBlockImageN pb = parameters.parameters;
         CoverageUtilities.setROIProperty(properties, (ROI) pb.getObjectParameter(3));
         CoverageUtilities.setNoDataProperty(properties, pb.getObjectParameter(1));
 
@@ -574,17 +574,17 @@ public class BandMerge extends OperationJAI {
     }
 
     /**
-     * This method prepares the {@link ParameterBlockJAI} to pass to JAI in order to execute the {@link BandMerge}
+     * This method prepares the {@link ParameterBlockImageN} to pass to ImageN in order to execute the {@link BandMerge}
      * operation.
      */
-    private ParameterBlockJAI prepareParameters(
+    private ParameterBlockImageN prepareParameters(
             final ParameterValueGroup parameters,
             GridCoverage2D[] sources,
             List<AffineTransform> tr,
             AffineTransform2D crsToGRID)
             throws MismatchedDimensionException, ParameterNotFoundException, TransformException {
         final ImagingParameters copy = (ImagingParameters) descriptor.createValue();
-        final ParameterBlockJAI block = (ParameterBlockJAI) copy.parameters;
+        final ParameterBlockImageN block = (ParameterBlockImageN) copy.parameters;
 
         Range[] nodata = new Range[sources.length];
         // Image dataType
@@ -689,7 +689,7 @@ public class BandMerge extends OperationJAI {
         public final AffineTransform2D gridToCRS;
 
         /** The parameters to be given to the {@link JAI#createNS} method. */
-        public final ParameterBlockJAI parameters;
+        public final ParameterBlockImageN parameters;
 
         /**
          * The rendering hints to be given to the {@link JAI#createNS} method. The {@link JAI} instance to use for the
@@ -705,7 +705,7 @@ public class BandMerge extends OperationJAI {
                 final CoordinateReferenceSystem crs,
                 final AffineTransform2D gridToCRS,
                 final ReferencedEnvelope bbox,
-                final ParameterBlockJAI parameters,
+                final ParameterBlockImageN parameters,
                 final Hints hints) {
             this.crs = crs;
             this.gridToCRS = gridToCRS;

@@ -36,7 +36,7 @@ import org.junit.Before;
 /**
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
- *     <p>Base testing class initializing JAI properties to be used during tests.
+ *     <p>Base testing class initializing ImageN properties to be used during tests.
  */
 public class GDALTestCase {
 

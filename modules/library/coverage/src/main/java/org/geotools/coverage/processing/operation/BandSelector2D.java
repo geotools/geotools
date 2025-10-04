@@ -23,7 +23,7 @@ import java.awt.image.RenderedImage;
 import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.eclipse.imagen.media.range.Range;
@@ -185,7 +185,7 @@ final class BandSelector2D extends GridCoverage2D {
          */
         ImageLayout layout = null;
         if (hints != null) {
-            layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+            layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
         }
         if (layout == null) {
             layout = new ImageLayout();
@@ -202,16 +202,16 @@ final class BandSelector2D extends GridCoverage2D {
             }
             /*
              * If we are not able to provide a color model because our sample dimensions
-             * are very simple, let's JAI do its magic and figure out the best one for us.
+             * are very simple, let's ImageN do its magic and figure out the best one for us.
              */
             if (colors != null) {
                 layout.setColorModel(colors);
             }
             if (hints != null) {
                 hints = hints.clone();
-                hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             } else {
-                hints = new Hints(JAI.KEY_IMAGE_LAYOUT, layout);
+                hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         }
         if (visibleBand == null) {
@@ -228,7 +228,7 @@ final class BandSelector2D extends GridCoverage2D {
         }
         // do we have a color model available?
         if (image.getColorModel() == null) {
-            layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+            layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
             final ColorModel tempCM = ImageIOUtilities.createColorModel(image.getSampleModel());
 
             // did we manage to create one?

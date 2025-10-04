@@ -695,9 +695,9 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *   <li>The underlying {@linkplain #image} has no {@linkplain PlanarImage#getSinks sinks}.
      * </ul>
      *
-     * <p>This safety check helps to prevent the disposal of an {@linkplain #image} that still used in a JAI operation
-     * chain. It doesn't prevent the disposal in every cases however. When unsure about whatever a coverage is still in
-     * use or not, it is safer to not invoke this method and rely on the garbage collector instead.
+     * <p>This safety check helps to prevent the disposal of an {@linkplain #image} that still used in a ImageN
+     * operation chain. It doesn't prevent the disposal in every cases however. When unsure about whatever a coverage is
+     * still in use or not, it is safer to not invoke this method and rely on the garbage collector instead.
      *
      * @see PlanarImage#dispose
      * @since 2.4

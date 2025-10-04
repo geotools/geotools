@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -76,7 +76,7 @@ public final class NITFTest extends GDALTestCase {
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
 
         Hints hints = new Hints();
-        hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, l));
+        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
 
         final BaseGDALGridCoverage2DReader reader = new NITFReader(file, hints);
 

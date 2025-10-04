@@ -44,7 +44,7 @@ public final class RPFTOCFormatFactory extends BaseGridFormatFactorySPI implemen
         boolean available = true;
 
         // if these classes are here, then the runtime environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
             Class.forName("it.geosolutions.imageio.plugins.rpftoc.RPFTOCImageReaderSpi");
             available = new RPFTOCImageReaderSpi().isAvailable();

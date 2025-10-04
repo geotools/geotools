@@ -28,7 +28,7 @@ import org.geotools.util.Classes;
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @todo Consider extending {@link org.eclipse.imagen.ColorSpaceJAI}.
+ * @todo Consider extending {@link org.eclipse.imagen.ColorSpaceImageN}.
  */
 final class ScaledColorSpace extends ColorSpace {
     /** Minimal normalized RGB value. */

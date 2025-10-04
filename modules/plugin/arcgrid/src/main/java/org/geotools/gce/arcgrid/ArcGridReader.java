@@ -45,7 +45,7 @@ import javax.imageio.stream.FileCacheImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.measure.Unit;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.Format;
@@ -405,7 +405,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
         pbjImageRead.add(null);
         pbjImageRead.add(readP);
         pbjImageRead.add(readerSPI.createReaderInstance());
-        final RenderedOp asciiCoverage = JAI.create("ImageRead", pbjImageRead, hints);
+        final RenderedOp asciiCoverage = ImageN.create("ImageRead", pbjImageRead, hints);
 
         // //
         //

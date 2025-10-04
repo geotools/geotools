@@ -34,8 +34,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform2D;
@@ -375,7 +375,7 @@ class Granule {
             finalRaster2Model.preConcatenate((AffineTransform) worldToGrid);
 
             final InterpolationNearest nearest = new InterpolationNearest();
-            // paranoiac check to avoid that JAI freaks out when computing its internal layouT on
+            // paranoiac check to avoid that ImageN freaks out when computing its internal layouT on
             // images that are too small
             Rectangle2D finalLayout = ImageUtilities.layoutHelper(
                     raster,
@@ -391,7 +391,7 @@ class Granule {
             }
 
             // apply the affine transform  conserving indexed color model
-            final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
+            final RenderingHints localHints = new RenderingHints(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
             if (XAffineTransform.isIdentity(finalRaster2Model, 10E-6)) return raster;
             else {
                 //
@@ -404,7 +404,7 @@ class Granule {
                 if (tileDimensions != null && request.getReadType().equals(ReadType.DIRECT_READ)) {
                     final ImageLayout layout = new ImageLayout();
                     layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-                    localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                    localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
                 }
                 ImageWorker worker = new ImageWorker(raster).setRenderingHints(localHints);
                 worker.affine(finalRaster2Model, nearest, null);

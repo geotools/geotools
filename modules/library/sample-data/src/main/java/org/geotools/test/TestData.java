@@ -109,7 +109,7 @@ public class TestData implements Runnable {
      */
     private static final Deque<Deletable> toDelete = new ArrayDeque<>();
 
-    /** {@code true} if JAI media lib is available. */
+    /** {@code true} if ImageN media lib is available. */
     private static final boolean mediaLibAvailable;
 
     static {
@@ -147,7 +147,7 @@ public class TestData implements Runnable {
                 // Because the property org.eclipse.imagen.media.disableMediaLib isn't
                 // defined as public, the users shouldn't know it.  In most of
                 // the cases, it isn't defined, and thus no access permission
-                // is granted to it in the policy file.  When JAI is utilized in
+                // is granted to it in the policy file.  When ImageN is utilized in
                 // a security environment, AccessControlException will be thrown.
                 // In this case, we suppose that the users would like to use
                 // medialib accelaration.  So, the medialib won't be disabled.
@@ -202,11 +202,11 @@ public class TestData implements Runnable {
     }
 
     /**
-     * Returns {@code true} if JAI MediaLib acceleration is available.
+     * Returns {@code true} if ImageN MediaLib acceleration is available.
      *
-     * <p>This method is used to disable some checks in unit tests that fail when JAI is run in pure java mode.
+     * <p>This method is used to disable some checks in unit tests that fail when ImageN is run in pure java mode.
      *
-     * @return {@code true} if JAI medialib are available.
+     * @return {@code true} if ImageN medialib are available.
      */
     public static boolean isMediaLibAvailable() {
         return mediaLibAvailable;

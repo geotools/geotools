@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.media.jiffle.Jiffle;
@@ -73,7 +73,7 @@ public class JiffleProcess implements RasterProcess {
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(), new JiffleDescriptor(), new JiffleRIF(), "org.eclipse.imagen.media");
+                ImageN.getDefaultInstance(), new JiffleDescriptor(), new JiffleRIF(), "org.eclipse.imagen.media");
     }
 
     static final Logger LOGGER = Logging.getLogger(JiffleProcess.class);

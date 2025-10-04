@@ -1,6 +1,6 @@
 :Author: Travis Brundage
 :Thanks: geotools-devel list
-:Version: |release|
+:Version: |version|
 :License: Creative Commons with attribution
 
 Strategy Patterns

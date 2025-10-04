@@ -26,7 +26,7 @@ import java.awt.image.SampleModel;
 import java.text.MessageFormat;
 import java.util.List;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.style.SelectedChannelType;
 import org.geotools.api.util.InternationalString;
@@ -167,7 +167,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter implem
                             oldSM.getDataType());
                     layout.setColorModel(cm);
                     layout.setSampleModel(cm.createCompatibleSampleModel(oldSM.getWidth(), oldSM.getHeight()));
-                    hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                    hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
                     output = (GridCoverage2D) new SelectSampleDimension().doOperation(parameters, hints);
                 }
 

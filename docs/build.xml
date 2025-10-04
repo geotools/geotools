@@ -35,12 +35,6 @@
       <condition property="build.directory" value="${build.directory}" else="${basedir}/target">
          <isset property="build.directory" />
       </condition>
-
-      <condition property="project.version" value="${project.version}" else="34-SNAPSHOT">
-          <isset property="project.version" />
-      </condition>
-
-      <echo message="Build directory is ${build.directory} and project version is ${project.version}"/>
    </target>
 
     <target name="clean" depends="init">
@@ -112,7 +106,7 @@
     <target name="sphinx" if="sphinx.available">
         <local name="argLine"/>
         <property name="argLine"
-                  value="-D release=${project.version} -q -W --keep-going -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+                  value="-q -W --keep-going -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
         <echo message="Running sphinx-build ${argLine}"/> 
         <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
           <arg line="${argLine}"/>
@@ -121,7 +115,7 @@
     
   <target name="autobuild" if="autobuild.available">
     <local name="argLine"/>
-    <property name="argLine" value="-D release=${project.version} -q -W -b html -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/html&quot;"/>
+    <property name="argLine" value="-q -W -b html -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/html&quot;"/>
     <echo message="Running sphinx-autobuild ${argLine}"/> 
     <exec executable="sphinx-autobuild" failonerror="true" dir="${basedir}/${id}">
       <arg line="${argLine} --open-browser"/>
@@ -130,23 +124,23 @@
     
     <!-- available if needed for troubleshooting -->
     <target name="sphinx-ignore-warnings" if="sphinx.available">
-        <echo message="Running sphinx-build -D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        <echo message="Running sphinx-build -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
         <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-            <arg line="-D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+            <arg line="-q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
         </exec>
     </target>
     
     <!-- not presently used: LaTeX environment hard to setup -->
     <target name="latex" if="latex.available">
         <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-            <arg line="-D release=${project.version} -b latex -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+            <arg line="-b latex -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
         </exec>
     </target>
     
     <!-- not presently used: https://github.com/rst2pdf/rst2pdf -->
     <target name="pdf" if="rst2pdf.available">
         <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-            <arg line="-D release=${project.version} -c ${basedir}/${id}/pdf -b pdf -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+            <arg line="-c ${basedir}/${id}/pdf -b pdf -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
         </exec>
     </target>
 

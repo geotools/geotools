@@ -39,7 +39,7 @@ import java.util.zip.Inflater;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.stream.ImageInputStream;
-import org.eclipse.imagen.ComponentSampleModelJAI;
+import org.eclipse.imagen.ComponentSampleModelImageN;
 import org.eclipse.imagen.RasterFactory;
 import org.eclipse.imagen.iterator.RectIter;
 import org.geotools.api.referencing.FactoryException;
@@ -1245,7 +1245,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
         if (sampleModel == null) {
             if (numberOfBytesPerValue == 8) {
                 if (!castDoubleToFloating) {
-                    sampleModel = new ComponentSampleModelJAI(
+                    sampleModel = new ComponentSampleModelImageN(
                             DataBuffer.TYPE_DOUBLE,
                             rasterMapWidth,
                             rasterMapHeight,
@@ -1254,7 +1254,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                             bands,
                             bandOffsets);
                 } else {
-                    sampleModel = new ComponentSampleModelJAI(
+                    sampleModel = new ComponentSampleModelImageN(
                             DataBuffer.TYPE_FLOAT,
                             rasterMapWidth,
                             rasterMapHeight,
@@ -1264,10 +1264,10 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                             bandOffsets);
                 }
             } else if (numberOfBytesPerValue == 4 && readerMapType < 0) {
-                sampleModel = new ComponentSampleModelJAI(
+                sampleModel = new ComponentSampleModelImageN(
                         DataBuffer.TYPE_FLOAT, rasterMapWidth, rasterMapHeight, 1, rasterMapWidth, bands, bandOffsets);
             } else if (readerMapType > -1) {
-                sampleModel = new ComponentSampleModelJAI(
+                sampleModel = new ComponentSampleModelImageN(
                         DataBuffer.TYPE_INT, rasterMapWidth, rasterMapHeight, 1, rasterMapWidth, bands, bandOffsets);
             }
         }

@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.range.Range;
@@ -568,7 +568,7 @@ public final class GridCoverageRendererUtilities {
 
             // do not expand index color models, we know they are all the same
             Hints mosaicHints = new Hints(hints);
-            mosaicHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+            mosaicHints.put(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, false);
             mosaicked = mosaic(coverages, new ArrayList<>(), destinationEnvelope, mosaicHints, bgValues);
         }
         return mosaicked;
@@ -611,7 +611,7 @@ public final class GridCoverageRendererUtilities {
         final AffineTransform finalRasterTransformation = (AffineTransform) affineTransform.clone();
         finalRasterTransformation.concatenate(finalGCgridToWorld);
 
-        // paranoiac check to avoid that JAI freaks out when computing its internal
+        // paranoiac check to avoid that ImageN freaks out when computing its internal
         // layout on images that are too small
         ImageLayout finalLayout = Scale2OpImage.layoutHelper(
                 finalImage,

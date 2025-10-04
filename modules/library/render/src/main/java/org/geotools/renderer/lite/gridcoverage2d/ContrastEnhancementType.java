@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.imagen.Histogram;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.RasterFactory;
 import org.eclipse.imagen.media.lookup.LookupTable;
 import org.eclipse.imagen.media.lookup.LookupTableFactory;
@@ -337,7 +337,7 @@ public enum ContrastEnhancementType {
                     Transparency.OPAQUE,
                     DataBuffer.TYPE_BYTE));
             RenderingHints localHints = hints.clone();
-            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
 
             if (destinationNoData != null) {
                 // rescale op will fill pixel nodata value with background value
@@ -413,7 +413,7 @@ public enum ContrastEnhancementType {
                     inputWorker.getRenderedImage().getWidth(),
                     inputWorker.getRenderedImage().getHeight()));
             RenderingHints localHints = hints.clone();
-            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
             if (destinationNoData != null) {
                 // rescale op will fill pixel nodata value with background value
                 // let's use the destination nodata as new background.

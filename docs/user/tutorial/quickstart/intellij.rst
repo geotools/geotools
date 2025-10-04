@@ -1,6 +1,6 @@
 :Author: Devon Tucker
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Create Commons with attribution
 
 .. _JetBrains: https://www.jetbrains.com/idea/
@@ -106,14 +106,14 @@ Maven downloads jars from public repositories on the internet where projects suc
    properties element defining the version of GeoTools we wish to use. This workbook was written for |release| 
    although you may wish to try a different version.
    
-   For production a stable release of |branch| should be used for `geotools.version`:
+   For production a stable release of |series| should be used for `geotools.version`:
     
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
         :start-at: <properties>
         :end-at: </properties>
    
-   To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
+   To make use of a nightly build set the `geotools.version` property to |series|-SNAPSHOT .
 
 #. We use the GeoTools Bill of Materials (BOM) to manage dependency versions. This ensures that all GeoTools modules use compatible versions:
 
@@ -139,7 +139,7 @@ Maven downloads jars from public repositories on the internet where projects suc
         :start-at: <repositories>
         :end-at: </repositories>
 
-   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |series|-SNAPSHOT)
 
 #. GeoTools requires Java 17, you need to tell Maven to use the 17 source level
 

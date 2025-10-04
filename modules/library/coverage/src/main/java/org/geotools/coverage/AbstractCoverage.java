@@ -48,7 +48,7 @@ import java.util.Set;
 import java.util.Vector;
 import org.eclipse.imagen.ImageFunction;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.PropertySource;
 import org.eclipse.imagen.PropertySourceImpl;
@@ -663,14 +663,14 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             final SampleModel sampleModel = colorModel.createCompatibleSampleModel(tileSize.width, tileSize.height);
             /*
              * If the image can be created using the ImageFunction operation, do it.
-             * It allow JAI to defer the computation until a tile is really requested.
+             * It allow ImageN to defer the computation until a tile is really requested.
              */
             final PlanarImage image;
             if ((area == null || area instanceof Rectangle2D)
                     && crsToGrid.getShearX() == 0
                     && crsToGrid.getShearY() == 0) {
                 RenderingHints hints = new RenderingHints(
-                        JAI.KEY_IMAGE_LAYOUT,
+                        ImageN.KEY_IMAGE_LAYOUT,
                         new ImageLayout()
                                 .setMinX(gridBounds.x)
                                 .setMinY(gridBounds.y)
@@ -697,7 +697,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                 //                        (float) (1/crsToGrid.getScaleY()),   // The Y scale factor
                 //                        (float) crsToGrid.getTranslateX(),   // The X translation
                 //                        (float) crsToGrid.getTranslateY(),   // The Y translation
-                //                        new RenderingHints(JAI.KEY_IMAGE_LAYOUT, new ImageLayout()
+                //                        new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, new ImageLayout()
                 //                                .setMinX       (gridBounds.x)
                 //                                .setMinY       (gridBounds.y)
                 //                                .setTileWidth  (tileSize.width)

@@ -19,7 +19,7 @@ package org.geotools.coverage.processing.operation;
 import java.awt.image.RenderedImage;
 import java.io.Serial;
 import java.util.Map;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -108,7 +108,7 @@ public class Rescale extends OperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockImageN parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source =
                 (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, "Rescale", 2, 3);

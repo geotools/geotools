@@ -24,8 +24,8 @@ import java.awt.image.renderable.ParameterBlock;
 import java.io.Serial;
 import org.eclipse.imagen.GeometricOpImage;
 import org.eclipse.imagen.ImageLayout;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
@@ -54,7 +54,7 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
 
     public static synchronized void register(boolean force) {
         if (!registered || force) {
-            OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+            OperationRegistry registry = ImageN.getDefaultInstance().getOperationRegistry();
             registry.addPropertyGenerator("rendered", "Affine", new GTAffinePropertyGenerator());
             registered = true;
         }
@@ -121,7 +121,7 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
                 paramBlock.add(transform);
                 paramBlock.add(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
                 Hints localHints = new Hints(op.getRenderingHints());
-                localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                localHints.remove(ImageN.KEY_IMAGE_LAYOUT);
                 ImageLayout il = new ImageLayout();
                 Rectangle dstBounds = op.getBounds();
                 il.setMinX(dstBounds.x);
@@ -130,7 +130,7 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
                 il.setHeight(dstBounds.height);
                 il.setTileWidth(op.getTileWidth());
                 il.setTileWidth(op.getTileHeight());
-                localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il));
+                localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, il));
 
                 dstROI = srcROI.performImageOp("Affine", paramBlock, 0, localHints);
             } else {

@@ -39,7 +39,7 @@ public final class VRTFormatFactory extends BaseGridFormatFactorySPI implements 
         boolean available = true;
 
         // if these classes are here, then the runtime environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
             Class.forName("it.geosolutions.imageio.plugins.vrt.VRTImageReaderSpi");
             available = new VRTImageReaderSpi().isAvailable();

@@ -1,7 +1,7 @@
 :Author: Jody Garnett
 :Author: Micheal Bedward
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Creative Commons with attribution (CC-BY)
 
 .. include:: <isonum.txt>

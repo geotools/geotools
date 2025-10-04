@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -68,7 +68,7 @@ public final class AIGTest extends GDALTestCase {
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(3).setTileWidth(1);
 
         Hints hints = new Hints();
-        hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, l));
+        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
 
         // get a reader
         final URL url = file.toURI().toURL();

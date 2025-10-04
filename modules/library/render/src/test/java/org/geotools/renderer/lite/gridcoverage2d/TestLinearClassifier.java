@@ -24,6 +24,7 @@ import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
@@ -42,7 +43,6 @@ import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.TestData;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.util.ComponentColorModelJAI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -121,12 +121,12 @@ public class TestLinearClassifier extends Assert {
                     "", new LinearColorMapElement[] {c0, c1, c3, c4, c5, c6}, new LinearColorMapElement[] {c7});
 
             ImageWorker w = new ImageWorker(image);
-            // final ParameterBlockJAI pbj = new ParameterBlockJAI(
+            // final ParameterBlockImageN pbj = new ParameterBlockImageN(
             // RasterClassifierOpImage.OPERATION_NAME);
             // pbj.addSource(image);
             // pbj.setParameter("Domain1D", list);
             final RenderedOp finalimage = w.classify(list, null).getRenderedOperation();
-            // JAI.create(
+            // ImageN.create(
             // RasterClassifierOpImage.OPERATION_NAME, pbj);
 
             if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalimage, "synthetic");
@@ -149,7 +149,7 @@ public class TestLinearClassifier extends Assert {
                 raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelJAI(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
@@ -235,7 +235,7 @@ public class TestLinearClassifier extends Assert {
                 raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelJAI(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_FLOAT);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
@@ -380,7 +380,7 @@ public class TestLinearClassifier extends Assert {
 
             // pbj.setParameter("bandIndex", Integer.valueOf(0));
             final RenderedOp finalImage = w.classify(list, Integer.valueOf(0)).getRenderedOperation();
-            // JAI.create(
+            // ImageN.create(
             // RasterClassifierOpImage.OPERATION_NAME, pbj);
             if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalImage, "testSWAN1");
             else finalImage.getTiles();

@@ -23,7 +23,7 @@ import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.util.ImagingListener;
 
 /**
- * Listens to JAI events, redirecting logging to org.eclipse.imagen loggers.
+ * Listens to ImageN events, redirecting logging to org.eclipse.imagen loggers.
  *
  * <p>Logger is determined from {@code where} parameter allowing fine-grain control of org.eclipse.imagen logging.
  */

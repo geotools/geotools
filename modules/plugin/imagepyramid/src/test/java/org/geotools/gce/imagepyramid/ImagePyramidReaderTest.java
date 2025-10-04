@@ -650,7 +650,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         // specify time
@@ -727,7 +727,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         // specify time

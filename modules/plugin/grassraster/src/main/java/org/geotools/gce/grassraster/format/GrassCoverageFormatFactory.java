@@ -45,7 +45,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
     }
 
     /**
-     * Checks for the JAI library which is needed by the GrassCoverage datasource
+     * Checks for the ImageN library which is needed by the GrassCoverage datasource
      *
      * @return true if all libraries are available
      */
@@ -54,10 +54,10 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
         boolean available = true;
 
         // if these classes are here, then the runtine environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
 
         try {
-            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.ImageN");
             Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
         } catch (ClassNotFoundException e) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);

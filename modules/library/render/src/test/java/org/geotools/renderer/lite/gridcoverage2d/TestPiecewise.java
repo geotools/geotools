@@ -25,6 +25,7 @@ import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -33,8 +34,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.stream.FileImageInputStream;
-import org.eclipse.imagen.JAI;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ImageN;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RasterFactory;
 import org.eclipse.imagen.RenderedOp;
@@ -53,7 +54,6 @@ import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.TestData;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.util.ComponentColorModelJAI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -506,7 +506,7 @@ public class TestPiecewise {
         //
         //
         // /////////////////////////////////////////////////////////////////////
-        final RenderedImage image = new ImageWorker(JAI.create("ImageRead", TestData.file(this, "usa.png")))
+        final RenderedImage image = new ImageWorker(ImageN.create("ImageRead", TestData.file(this, "usa.png")))
                 .forceComponentColorModel()
                 .retainFirstBand()
                 .getRenderedImage();
@@ -578,7 +578,7 @@ public class TestPiecewise {
         DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform =
                 new DefaultPiecewiseTransform1D<>(new DefaultPiecewiseTransform1DElement[] {mainElement}, 0);
 
-        // final ParameterBlockJAI pbj = new ParameterBlockJAI(
+        // final ParameterBlockImageN pbj = new ParameterBlockImageN(
         // GenericPiecewiseOpImage.OPERATION_NAME);
         // pbj.addSource(image);
         // pbj.setParameter("Domain1D", transform);
@@ -588,7 +588,7 @@ public class TestPiecewise {
             // forcing a bad band selection ...
             // //
             // pbj.setParameter("bandIndex", Integer.valueOf(2));
-            // final RenderedOp d = JAI.create(
+            // final RenderedOp d = ImageN.create(
             // GenericPiecewiseOpImage.OPERATION_NAME, pbj);
             final RenderedOp d = w.piecewise(transform, Integer.valueOf(2)).getRenderedOperation();
             d.getTiles();
@@ -602,7 +602,7 @@ public class TestPiecewise {
         Assert.assertTrue(exceptionThrown);
 
         // pbj.setParameter("bandIndex", Integer.valueOf(0));
-        // final RenderedOp finalImage = JAI.create(
+        // final RenderedOp finalImage = ImageN.create(
         // GenericPiecewiseOpImage.OPERATION_NAME, pbj);
         final RenderedOp finalImage = w.piecewise(transform, Integer.valueOf(0)).getRenderedOperation();
         if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalImage, "testSWANLOGARITHMIC");
@@ -626,10 +626,10 @@ public class TestPiecewise {
     @Before
     public void setUp() throws Exception {
         try {
-            new ParameterBlockJAI(GenericPiecewiseOpImage.OPERATION_NAME);
+            new ParameterBlockImageN(GenericPiecewiseOpImage.OPERATION_NAME);
 
         } catch (Exception e) {
-            // GenericPiecewiseOpImage.register(JAI.getDefaultInstance());
+            // GenericPiecewiseOpImage.register(ImageN.getDefaultInstance());
         }
 
         // check that it exisits
@@ -654,7 +654,7 @@ public class TestPiecewise {
                 else raster.setSample(x, y, 0, (x + y));
             }
         }
-        ColorModel cm = new ComponentColorModelJAI(
+        ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
         final RenderedImage image = new ImageWorker(new BufferedImage(cm, raster, false, null))
                 .setNoData(RangeFactory.create(noDataValue, noDataValue))

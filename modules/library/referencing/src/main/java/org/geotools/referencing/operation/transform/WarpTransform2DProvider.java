@@ -32,8 +32,8 @@ import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.MathTransformProvider;
 
 /**
- * The provider for the {@link WarpTransform2D}. This provider constructs a JAI {@linkplain WarpPolynomial image warp}
- * from a set of polynomial coefficients, and wrap it in a {@link WarpTransform2D} object.
+ * The provider for the {@link WarpTransform2D}. This provider constructs a ImageN {@linkplain WarpPolynomial image
+ * warp} from a set of polynomial coefficients, and wrap it in a {@link WarpTransform2D} object.
  *
  * @version $Id$
  * @author Martin Desruisseaux

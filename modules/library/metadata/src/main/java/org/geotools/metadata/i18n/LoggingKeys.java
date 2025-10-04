@@ -41,8 +41,8 @@ public final class LoggingKeys {
 
     /**
      * Resampled coverage "{0}" from coordinate system "{1}" (for an image of size {2}×{3}) to coordinate system "{4}"
-     * (image size {5}×{6}). JAI operation is "{7}" with "{9}" interpolation on {8,choice,0#packed|1#geophysics} pixels
-     * values. Background value is ({10}).
+     * (image size {5}×{6}). ImageN operation is "{7}" with "{9}" interpolation on {8,choice,0#packed|1#geophysics}
+     * pixels values. Background value is ({10}).
      */
     public static final int APPLIED_RESAMPLE_$11 = 3;
 
@@ -64,7 +64,7 @@ public final class LoggingKeys {
     /** Can't read "{0}". */
     public static final int CANT_READ_FILE_$1 = 9;
 
-    /** Can't register JAI operation "{0}". Some grid coverage operations may not work. */
+    /** Can't register ImageN operation "{0}". Some grid coverage operations may not work. */
     public static final int CANT_REGISTER_JAI_OPERATION_$1 = 10;
 
     /** Changed the renderer coordinate system. Cause is: */
@@ -151,7 +151,7 @@ public final class LoggingKeys {
     /** Log records are redirected to Apache commons logging. */
     public static final int REDIRECTED_TO_COMMONS_LOGGING = 36;
 
-    /** Registered Geotools extensions to JAI operations. */
+    /** Registered Geotools extensions to ImageN operations. */
     public static final int REGISTERED_JAI_OPERATIONS = 37;
 
     /** Select an image of "{0}" decimated to level {1} of {2}. */

@@ -20,7 +20,7 @@ import java.io.Serial;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
 
 /**
- * This operation is simply a wrapper for the JAI FilteredSubsample operation which allows me to arbitrarly scale a
+ * This operation is simply a wrapper for the ImageN FilteredSubsample operation which allows me to arbitrarly scale a
  * rendered image while smoothing it out.
  *
  * @version $Id$

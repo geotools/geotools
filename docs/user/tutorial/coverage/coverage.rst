@@ -1,5 +1,5 @@
 :Author: Devon Tucker
-:Version: |release|
+:Version: |version|
 :License: Create Commons with attribution
 
 .. include:: <isonum.txt>

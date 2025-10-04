@@ -26,7 +26,7 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PointOpImage;
 import org.eclipse.imagen.media.algebra.AlgebraDescriptor;
 import org.eclipse.imagen.media.algebra.constant.OperationConstDescriptor;
@@ -77,7 +77,8 @@ public class ColorReduction extends PointOpImage {
                     false,
                     Transparency.BITMASK,
                     DataBuffer.TYPE_BYTE));
-            ImageWorker w = new ImageWorker(image).setRenderingHints(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            ImageWorker w =
+                    new ImageWorker(image).setRenderingHints(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
             w.addBand(alpha, false);
             image = w.getRenderedImage();
             this.setSource(image, 0);
@@ -89,7 +90,7 @@ public class ColorReduction extends PointOpImage {
     }
 
     private ImageLayout getImageLayout(RenderedImage image, RenderingHints hints) {
-        ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+        ImageLayout layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
         if (layout == null) layout = new ImageLayout(image);
 
         layout.setColorModel(this.paletteBuilder.getIndexColorModel());

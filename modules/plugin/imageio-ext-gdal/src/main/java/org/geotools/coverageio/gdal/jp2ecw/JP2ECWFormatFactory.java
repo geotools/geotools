@@ -44,7 +44,7 @@ public final class JP2ECWFormatFactory extends BaseGridFormatFactorySPI implemen
         boolean available = true;
 
         // if these classes are here, then the runtime environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
             Class.forName("it.geosolutions.imageio.plugins.jp2ecw.JP2GDALEcwImageReaderSpi");
             available = new JP2GDALEcwImageReaderSpi().isAvailable();

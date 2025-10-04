@@ -1,7 +1,7 @@
 :Author: Jody Garnett
 :Author: Micheal Bedward
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Create Commons with attribution
 
 ********************

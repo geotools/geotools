@@ -31,7 +31,7 @@ import org.junit.Assert;
 /**
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
- *     <p>Base testing class initializing JAI properties to be used during tests.
+ *     <p>Base testing class initializing ImageN properties to be used during tests.
  */
 public class BaseJP2K {
 

@@ -288,7 +288,7 @@ public class Operations {
      * default value is nearest neighbor. The new interpolation type operates on all sample dimensions.
      *
      * @param source The source coverage.
-     * @param type The interpolation type as a JAI interpolation object.
+     * @param type The interpolation type as a ImageN interpolation object.
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.Interpolate
      */

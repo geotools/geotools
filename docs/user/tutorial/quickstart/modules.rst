@@ -1,6 +1,6 @@
 :Author: Torben Barsballe
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Creative Commons with attribution
 
 **********************

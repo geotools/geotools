@@ -1184,10 +1184,10 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * inconsistency has been found, then an error string is returned. This string will be typically used as a message
      * in an exception to be thrown.
      *
-     * <p>Note that a succesful check at construction time may fails later if the image is part of a JAI chain (i.e. is
-     * a {@link org.eclipse.imagen.RenderedOp}) and its bounds has been edited (i.e the image node as been re-rendered).
-     * Since {@code GridCoverage2D} are immutable by design, we are not allowed to propagate the image change here. The
-     * {@link #getGridGeometry} method will thrown an {@link IllegalStateException} in this case.
+     * <p>Note that a succesful check at construction time may fails later if the image is part of a ImageN chain (i.e.
+     * is a {@link org.eclipse.imagen.RenderedOp}) and its bounds has been edited (i.e the image node as been
+     * re-rendered). Since {@code GridCoverage2D} are immutable by design, we are not allowed to propagate the image
+     * change here. The {@link #getGridGeometry} method will thrown an {@link IllegalStateException} in this case.
      */
     static String checkConsistency(final RenderedImage image, final GridGeometry2D grid) {
         final GridEnvelope range = grid.getGridRange();
@@ -1217,8 +1217,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
     /**
      * Returns a "canonical" representation of the grid geometry, that is, one whose grid range originates in 0,0, but
-     * maps to the same real world coordinates. This setup helps in image processing, as JAI is not meant to be used for
-     * images whose ordinates are in the range of the millions and starts to exhibit numerical issues when used there.
+     * maps to the same real world coordinates. This setup helps in image processing, as ImageN is not meant to be used
+     * for images whose ordinates are in the range of the millions and starts to exhibit numerical issues when used
+     * there.
      *
      * @since 13.3
      */

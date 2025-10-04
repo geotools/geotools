@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.WarpAffine;
 import org.eclipse.imagen.media.utilities.ImageLayout2;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -120,7 +120,8 @@ public class WarpTest extends GridProcessingTestBase {
 
         // Doing a first scale.
         final ImageLayout2 layout = new ImageLayout2(0, 0, (int) (w / 2.0), (int) (h / 2.0));
-        GridCoverage2D scaled = (GridCoverage2D) processor.doOperation(param, new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
+        GridCoverage2D scaled =
+                (GridCoverage2D) processor.doOperation(param, new Hints(ImageN.KEY_IMAGE_LAYOUT, layout));
         assertEnvelopeEquals(coverage, scaled);
         RenderedImage scaledImage = scaled.getRenderedImage();
         assertEquals(w / 2.0, scaledImage.getWidth(), EPS);

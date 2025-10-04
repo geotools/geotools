@@ -41,7 +41,7 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.RenderedOp;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.data.DataSourceException;
@@ -410,7 +410,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
         // layout.setTileGridYOffset(0);
         // layout.setTileHeight(tileSize.height);
         // layout.setTileWidth(tileSize.width);
-        // newHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+        // newHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         // }
         // }
         // inStream.close();
@@ -431,7 +431,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
         pbjRead.add(null);
         pbjRead.add(readP);
         pbjRead.add(readerSPI.createReaderInstance());
-        final RenderedOp coverageRaster = JAI.create("ImageRead", pbjRead, newHints);
+        final RenderedOp coverageRaster = ImageN.create("ImageRead", pbjRead, newHints);
 
         // /////////////////////////////////////////////////////////////////////
         //

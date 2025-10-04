@@ -208,7 +208,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
             bkg.setValue(new double[] {-9999.0});
 
-            final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+            final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
             direct.setValue(false);
 
             final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
@@ -494,7 +494,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
             bkg.setValue(new double[] {-9999.0});
 
-            final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+            final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
             direct.setValue(false);
 
             final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();

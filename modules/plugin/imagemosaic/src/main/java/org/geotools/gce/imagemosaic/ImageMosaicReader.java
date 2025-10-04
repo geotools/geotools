@@ -87,7 +87,7 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * Reader responsible for providing access to mosaic of georeferenced images. Citing JAI documentation:
+ * Reader responsible for providing access to mosaic of georeferenced images. Citing ImageN documentation:
  *
  * <p>The "Mosaic" operation creates a mosaic of two or more source images. This operation could be used for example to
  * assemble a set of overlapping geospatially rectified images into a contiguous image. It could also be used to create

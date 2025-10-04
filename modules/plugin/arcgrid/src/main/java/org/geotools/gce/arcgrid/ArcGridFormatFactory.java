@@ -45,10 +45,10 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
         boolean available = true;
 
         // if these classes are here, then the runtine environment has
-        // access to JAI and the JAI ImageI/O toolbox.
+        // access to ImageN and the ImageN ImageI/O toolbox.
         try {
 
-            Class.forName("org.eclipse.imagen.JAI");
+            Class.forName("org.eclipse.imagen.ImageN");
             Class.forName("org.eclipse.imagen.media.imageread.ImageReadDescriptor");
             Class.forName("it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata");
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ArcGridFormatFactory is available.");

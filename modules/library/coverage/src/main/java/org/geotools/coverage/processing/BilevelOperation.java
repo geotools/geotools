@@ -24,7 +24,7 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 
 /**
- * Wraps any JAI operation producing a bilevel image. An example of such operation is {@link BinarizeDescriptor
+ * Wraps any ImageN operation producing a bilevel image. An example of such operation is {@link BinarizeDescriptor
  * Binarize}.
  *
  * @since 2.2
@@ -41,10 +41,10 @@ public class BilevelOperation extends OperationJAI {
             new GridSampleDimension("Bilevel SampleDimension", new Category[] {Category.FALSE, Category.TRUE}, null);
 
     /**
-     * Constructs a bilevel operation with an OGC's name identical to the JAI name.
+     * Constructs a bilevel operation with an OGC's name identical to the ImageN name.
      *
-     * @param name The JAI operation name.
-     * @throws OperationNotFoundException if no JAI descriptor was found for the given name.
+     * @param name The ImageN operation name.
+     * @throws OperationNotFoundException if no ImageN descriptor was found for the given name.
      */
     public BilevelOperation(final String name) throws OperationNotFoundException {
         super(name);

@@ -61,7 +61,7 @@ public final class RasterLayerRequesTest extends BaseJP2K {
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final RasterManager manager = new RasterManager(reader);
         final ParameterValue<GridGeometry2D> gg = JP2KFormat.READ_GRIDGEOMETRY2D.createValue();
-        final ParameterValue<Boolean> useJAI = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJAI = JP2KFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJAI.setValue(false);
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), envelope));
         final GeneralParameterValue[] params = {gg, useJAI};

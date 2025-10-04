@@ -180,7 +180,7 @@ public class ImageAssert {
     }
 
     /**
-     * Makes sure the image starts at 0,0, all images coming from files do but the ones coming from a JAI chain might
+     * Makes sure the image starts at 0,0, all images coming from files do but the ones coming from a ImageN chain might
      * not
      */
     static final RenderedImage realignImage(RenderedImage image) {

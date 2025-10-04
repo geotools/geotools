@@ -149,7 +149,7 @@ public class ImageMosaicEgrTest {
         params.add(footprintManagement);
 
         // this prevents us from having problems with link to files still open.
-        ParameterValue<Boolean> jaiImageRead = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        ParameterValue<Boolean> jaiImageRead = ImageMosaicFormat.USE_IMAGEN_IMAGEREAD.createValue();
         jaiImageRead.setValue(false);
         params.add(jaiImageRead);
 

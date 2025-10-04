@@ -72,7 +72,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
         writeParameters = null;
         readParameters =
                 new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
-                    READ_GRIDGEOMETRY2D, INPUT_TRANSPARENT_COLOR, USE_JAI_IMAGEREAD, SUGGESTED_TILE_SIZE,
+                    READ_GRIDGEOMETRY2D, INPUT_TRANSPARENT_COLOR, USE_IMAGEN_IMAGEREAD, SUGGESTED_TILE_SIZE,
                 }));
     }
 

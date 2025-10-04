@@ -162,12 +162,12 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
      * <p>This method read the grass file with a special image I/O class. If the image support the tiling read the data
      * with a special operation which are written for this case. The step are:
      * <li>set the region in the world
-     * <li>set the region to read in the JAI coordinate
+     * <li>set the region to read in the ImageN coordinate
      * <li>read the data directly with driver or, if isTiling is true, with the operation.
      * <li>verify if the image cover whole the region, if not fill the rows and columns with padding (with the Border
      *     operation)
      * <li>scale the image to return an image with the number of columns and rows equal to the requestedRegion
-     * <li>set the coverage (with the transformation from the JAI coordinate to the real world coordinate.
+     * <li>set the coverage (with the transformation from the ImageN coordinate to the real world coordinate.
      *
      *     <p>
      *
@@ -303,7 +303,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             tmpDxE = xDeltaE < 0.0 ? 0.0 : xDeltaE;
             // set the region to the requestedRegion, this value is passed to
             // the coverage to
-            // transform the JAI space into the real space.
+            // transform the ImageN space into the real space.
 
             /*
              * define the subsampling values. This done starting from the

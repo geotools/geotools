@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Warp;
 import org.eclipse.imagen.WarpPolynomial;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -75,7 +75,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
     private static final boolean USE_HACK;
 
     static {
-        final String buildVersion = JAI.getBuildVersion();
+        final String buildVersion = ImageN.getBuildVersion();
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd' 'hh:mm:ss.SSSZ");
         final TimeZone tz = TimeZone.getTimeZone("UTC");
         df.setTimeZone(tz);
@@ -217,7 +217,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
 
     /**
      * Work around for a bug in WarpPolynomial.createWarp(...). This constructor should move in the one above when the
-     * {@code cloneCoords} argument will no longer be needed (after the JAI bug get fixed).
+     * {@code cloneCoords} argument will no longer be needed (after the ImageN bug get fixed).
      */
     @SuppressWarnings("NarrowingCompoundAssignment")
     private WarpTransform2D(
@@ -248,7 +248,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
         /*
          * Workaround for a bug in WarpPolynomial.create(...): the later scale coordinates
          * according the scale values, but the 'preScale' and 'postScale' are interchanged.
-         * When JAI bug will be fixed, delete all the following block until the next comment.
+         * When ImageN bug will be fixed, delete all the following block until the next comment.
          */
         if (USE_HACK) {
             final double scaleX = preScaleX / postScaleX;
@@ -469,7 +469,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
          * There is also an other reason for creating a temporary object:
          * JAI's Warp is designed for mapping pixel coordinates in J2SE's image. In JAI, pixel
          * coordinates map by definition to the pixel's upper left corner. But for interpolation
-         * purpose, JAI needs to map pixel's center. This introduce a shift of 0.5, which is
+         * purpose, ImageN needs to map pixel's center. This introduce a shift of 0.5, which is
          * documented (for example) in WarpAffine.mapDestPoint(Point2D).
          */
         ptSrc = new PointDouble(ptSrc.getX() - 0.5, ptSrc.getY() - 0.5);

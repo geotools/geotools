@@ -38,8 +38,8 @@ import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.RasterFactory;
 import org.eclipse.imagen.TiledImage;
@@ -260,7 +260,7 @@ public final class ResampleTest extends GridProcessingTestBase {
 
         // Setting Force ReplaceIndexColorModel and CoverageProcessingView as SAME
         Hints hints = GeoTools.getDefaultHints().clone();
-        hints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, true);
+        hints.put(ImageN.KEY_REPLACE_INDEX_COLOR_MODEL, true);
 
         // Create a new GridCoverage
         GridCoverageFactory factory = new GridCoverageFactory(hints);
@@ -477,7 +477,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                 .addSource(grid.getRenderedImage())
                 .add((float) transX)
                 .add((float) transY);
-        RenderedImage image = JAI.create("Translate", block);
+        RenderedImage image = ImageN.create("Translate", block);
         assertEquals("Incorrect X translation", transX, image.getMinX());
         assertEquals("Incorrect Y translation", transY, image.getMinY());
 

@@ -10,7 +10,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class LoggingImagingListenerTest {
         LoggingImagingListener listener = new LoggingImagingListener();
         Throwable thrown = new Throwable("Continuing in pure Java mode");
         try {
-            boolean recoverySuccess = listener.errorOccurred(thrown.getMessage(), thrown, JAI.class, false);
+            boolean recoverySuccess = listener.errorOccurred(thrown.getMessage(), thrown, ImageN.class, false);
             assertFalse(recoverySuccess);
         } catch (Throwable ignore) {
             // expected
@@ -58,7 +58,7 @@ public class LoggingImagingListenerTest {
         LoggingImagingListener listener = new LoggingImagingListener();
         Throwable thrown = new IllegalStateException("Special test exception");
         try {
-            listener.errorOccurred(thrown.getMessage(), thrown, JAI.class, false);
+            listener.errorOccurred(thrown.getMessage(), thrown, ImageN.class, false);
         } catch (IllegalStateException expected) {
         } catch (Throwable t) {
             fail("Exception '%s' not expected".formatted(t.getClass().getSimpleName()));

@@ -38,9 +38,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javax.xml.transform.TransformerException;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.InterpolationBilinear;
 import org.eclipse.imagen.InterpolationNearest;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROIShape;
 import org.eclipse.imagen.RasterFactory;
@@ -71,7 +71,6 @@ import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.styling.AbstractContrastMethodStrategy;
@@ -110,7 +109,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                 else raster.setSample(x, y, 0, x + y);
             }
         }
-        final ColorModel cm = new ComponentColorModelJAI(
+        final ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
@@ -124,7 +123,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         envelope,
@@ -169,7 +168,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -217,7 +216,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -252,7 +251,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}));
@@ -296,7 +295,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -331,7 +330,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -380,7 +379,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -424,7 +423,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "test_ushort.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -482,7 +481,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "Float",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "smalldem.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -546,7 +545,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -592,7 +591,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -654,7 +653,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                 else raster.setSample(x, y, 0, (x + y));
             }
         }
-        ColorModel cm = new ComponentColorModelJAI(
+        ColorModel cm = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_SHORT);
         final RenderedImage image = new ImageWorker(new BufferedImage(cm, raster, false, null))
                 .setNoData(RangeFactory.create(noDataValue, noDataValue))
@@ -722,7 +721,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "smalldem.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -786,7 +785,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "smalldem.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -915,7 +914,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "hs.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -970,7 +969,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "test_ushort.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -1032,7 +1031,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "smalldem.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -1098,7 +1097,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "smalldem.tif").toURI())),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
@@ -1160,7 +1159,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_1band_Float32.tif")
                                         .toURI())),
@@ -1200,7 +1199,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_1band_Float32.tif")
                                         .toURI())),
@@ -1239,7 +1238,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_1band_Float32.tif")
                                         .toURI())),
@@ -1286,7 +1285,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_1band_Float32.tif")
                                         .toURI())),
@@ -1349,7 +1348,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "test.tif").toURI())),
                         envelope,
@@ -1389,7 +1388,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_4bands_UInt16.tif")
                                         .toURI())),
@@ -1438,8 +1437,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         };
         GeneralBounds envelope = new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-        RenderedOp image =
-                JAI.create("ImageRead", new File(TestData.url(this, "test.tif").toURI()));
+        RenderedOp image = ImageN.create(
+                "ImageRead", new File(TestData.url(this, "test.tif").toURI()));
 
         Map<String, Object> properties = new HashMap<>();
         properties.put(
@@ -1479,7 +1478,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         // - Contrast Enh: Histogram
         //
         // ////////////////////////////////////////////////////////////////////
-        RenderedOp image2 = JAI.create(
+        RenderedOp image2 = ImageN.create(
                 "ImageRead",
                 new File(TestData.url(this, "small_4bands_UInt16.tif").toURI()));
         properties = new HashMap<>();
@@ -1576,7 +1575,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_3bands_Byte.tif")
                                         .toURI())),
@@ -1649,7 +1648,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         return CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_3bands_Byte.tif")
                                         .toURI())),
@@ -1700,7 +1699,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_3bands_Byte.tif")
                                         .toURI())),
@@ -1759,7 +1758,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_1band_Byte.tif")
                                         .toURI())),
@@ -1798,7 +1797,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_1band_Byte.tif")
                                         .toURI())),
@@ -1841,7 +1840,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create(
+                        ImageN.create(
                                 "ImageRead",
                                 new File(TestData.url(this, "small_1band_Byte.tif")
                                         .toURI())),
@@ -2051,7 +2050,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "bahamas_hires.jpg")),
+                        ImageN.create("ImageRead", TestData.file(this, "bahamas_hires.jpg")),
                         envelope,
                         gsd,
                         null,
@@ -2082,7 +2081,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GeneralBounds envelope = new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
-                .create("name", JAI.create("ImageRead", TestData.file(this, "toc.tif")), envelope, gsd, null, null);
+                .create("name", ImageN.create("ImageRead", TestData.file(this, "toc.tif")), envelope, gsd, null, null);
 
         // build the RasterSymbolizer
         final SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
@@ -2112,7 +2111,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "smalldem.tif")),
+                        ImageN.create("ImageRead", TestData.file(this, "smalldem.tif")),
                         envelope,
                         new GridSampleDimension[] {new GridSampleDimension("dem")},
                         null,
@@ -2130,7 +2129,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "smalldem.tif")),
+                        ImageN.create("ImageRead", TestData.file(this, "smalldem.tif")),
                         new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}));
         StyleBuilder sldBuilder = new StyleBuilder();
         // the RasterSymbolizer Helper
@@ -2178,7 +2177,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "smalldem.tif")),
+                        ImageN.create("ImageRead", TestData.file(this, "smalldem.tif")),
                         envelope,
                         new GridSampleDimension[] {new GridSampleDimension("dem")},
                         null,
@@ -2206,7 +2205,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "smalldem.tif")),
+                        ImageN.create("ImageRead", TestData.file(this, "smalldem.tif")),
                         envelope,
                         new GridSampleDimension[] {new GridSampleDimension("dem")},
                         null,
@@ -2240,7 +2239,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "landsat.tiff")),
+                        ImageN.create("ImageRead", TestData.file(this, "landsat.tiff")),
                         envelope,
                         gsd,
                         null,
@@ -2278,7 +2277,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "smalldem.tif")),
+                        ImageN.create("ImageRead", TestData.file(this, "smalldem.tif")),
                         envelope,
                         new GridSampleDimension[] {new GridSampleDimension("dem")},
                         null,
@@ -2331,7 +2330,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
                 .create(
                         "name",
-                        JAI.create("ImageRead", TestData.file(this, "test_ushort.tif")),
+                        ImageN.create("ImageRead", TestData.file(this, "test_ushort.tif")),
                         envelope,
                         new GridSampleDimension[] {new GridSampleDimension("test_dimension")},
                         null,

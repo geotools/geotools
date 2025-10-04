@@ -1,6 +1,6 @@
 :Author: Jody Garnett
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Create Commons with attribution
 
 .. _userdocs:
@@ -17,14 +17,17 @@ and :doc:`extension </extension/index>`.
    
    Please report any issues with this documentation using the project issue tracker.
    
-   * :doc:`Create an Issue </welcome/support>` .
-   * `Known Documentation Issues <https://osgeo-org.atlassian.net/issues/?jql=project%20%3D%20GEOT%20AND%20component%20%3D%20docs>`_ (Issue Tracker)
-   * `Jody Garnett <mailto: jody.garnett@gmail.com>`_ (Module Maintainer)
+   * :doc:`Create an Issue </welcome/support>`.
+   * `Known Documentation Issues <https://osgeo-org.atlassian.net/issues/?filter=12230>`_ (Issue Tracker)
+   * `Jody Garnett <mailto:jody.garnett@gmail.com>`_ (Module Maintainer)
    
    For small typos and source code corrections email the module maintainer above.
-   
-   Version: |release|
-   
+
+   Documentation Version: |version|
+
+   Examples Release: |release|
+
+
 
 .. toctree::
    :maxdepth: 2

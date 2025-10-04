@@ -1,0 +1,21 @@
+For GeoTools |series| release set the `geotools.version` property to |release|.
+
+.. parsed-literal::
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>17</maven.compiler.release>
+    <gt.version>\ |release|\ </gt.version>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+For GeoTools |series|.x nightly build `geotools.version` should be set to |series|-SNAPSHOT:
+
+.. parsed-literal::
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>17</maven.compiler.release>
+    <gt.version>\ |series|\ -SNAPSHOT</gt.version>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>

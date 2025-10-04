@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.ROIShape;
 import org.eclipse.imagen.iterator.RandomIter;
 import org.eclipse.imagen.iterator.RandomIterFactory;
@@ -327,11 +327,11 @@ public final class MarchingSquaresVectorizer {
         this.exclusionLuminanceRanges = exclusionLuminanceRanges;
 
         RenderingHints localHints = hints != null ? (RenderingHints) hints.clone() : null;
-        if (localHints != null && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            Object l = localHints.get(JAI.KEY_IMAGE_LAYOUT);
+        if (localHints != null && localHints.containsKey(ImageN.KEY_IMAGE_LAYOUT)) {
+            Object l = localHints.get(ImageN.KEY_IMAGE_LAYOUT);
             if (l != null && l instanceof ImageLayout imageLayout) {
                 final ImageLayout layout = (ImageLayout) imageLayout.clone();
-                localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                localHints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         }
         this.hints = localHints;
@@ -360,11 +360,11 @@ public final class MarchingSquaresVectorizer {
         this.exclusionLuminanceRanges = exclusionLuminanceRanges;
 
         RenderingHints localHints = hints != null ? (RenderingHints) hints.clone() : null;
-        if (localHints != null && localHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-            Object l = localHints.get(JAI.KEY_IMAGE_LAYOUT);
+        if (localHints != null && localHints.containsKey(ImageN.KEY_IMAGE_LAYOUT)) {
+            Object l = localHints.get(ImageN.KEY_IMAGE_LAYOUT);
             if (l != null && l instanceof ImageLayout imageLayout) {
                 final ImageLayout layout = (ImageLayout) imageLayout.clone();
-                localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+                localHints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
             }
         }
         this.hints = localHints;
@@ -442,7 +442,7 @@ public final class MarchingSquaresVectorizer {
 
             // setting up hints
             final ImageLayout layout = new ImageLayout(inputRI);
-            RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+            RenderingHints localHints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
             if (hints != null) {
                 localHints.add(hints);
             }
@@ -558,7 +558,7 @@ public final class MarchingSquaresVectorizer {
         }
 
         // fix imagelayout to set gray color model
-        final ImageLayout layout2 = (ImageLayout) localHints.get(JAI.KEY_IMAGE_LAYOUT);
+        final ImageLayout layout2 = (ImageLayout) localHints.get(ImageN.KEY_IMAGE_LAYOUT);
         layout2.setColorModel(ColorUtilities.GRAY_CM);
         layout2.setSampleModel(
                 ColorUtilities.GRAY_CM.createCompatibleSampleModel(inputRI.getTileWidth(), inputRI.getTileHeight()));

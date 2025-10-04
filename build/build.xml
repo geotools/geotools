@@ -8,7 +8,7 @@
        ant info
     
     Update code references during release:
-       ant release -Drelease='27.0'
+       ant release -Drelease='28.1'
        
     Update main to a new snapshot version:
        ant latest -Drelease='28-SNAPSHOT'
@@ -107,7 +107,7 @@
      <echo if:set="release">release: '${release}'</echo>
      <echo unless:set="release"/>
      <echo unless:set="release">The `release` target requires next release version:</echo>
-     <echo unless:set="release">  ant release -Drelease='27.0'</echo>
+     <echo unless:set="release">  ant release -Drelease='28.1'</echo>
      <echo unless:set="release"/>
      <echo unless:set="release">The `latest` target requires next snapshot version:</echo>
      <echo unless:set="release">  ant latest -Drelease='28-SNAPSHOT'</echo>

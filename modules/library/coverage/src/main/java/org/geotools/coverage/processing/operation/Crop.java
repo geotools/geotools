@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ImageN;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.mosaic.MosaicDescriptor;
@@ -83,7 +83,7 @@ import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 
 /**
  * The crop operation is responsible for selecting geographic subarea of the source coverage. The CoverageCrop operation
- * does not merely wrap the JAI Crop operation but it goes beyond that as far as capabilities.
+ * does not merely wrap the ImageN Crop operation but it goes beyond that as far as capabilities.
  *
  * <p>The key point is that the CoverageCrop operation aims to perform a spatial crop, i.e. cropping the underlying
  * raster by providing a spatial {@link Bounds} (if the envelope is not 2D only the 2D part of it will be used). This
@@ -489,7 +489,7 @@ public class Crop extends Operation2D {
         final RenderingHints targetHints = new RenderingHints(null);
         if (hints != null) targetHints.add(hints);
         final ImageLayout layout = initLayout(sourceImage, targetHints);
-        targetHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
+        targetHints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
 
         try {
 
@@ -794,7 +794,7 @@ public class Crop extends Operation2D {
      */
     private static ImageLayout initLayout(final RenderedImage sourceImage, final RenderingHints hints) {
 
-        ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+        ImageLayout layout = (ImageLayout) hints.get(ImageN.KEY_IMAGE_LAYOUT);
         if (layout != null) {
             layout = (ImageLayout) layout.clone();
         } else {
@@ -841,14 +841,14 @@ public class Crop extends Operation2D {
         int w = (int) Math.ceil(env.getMaxX()) - x;
         int h = (int) Math.ceil(env.getMaxY()) - y;
 
-        ParameterBlockJAI pb = new ParameterBlockJAI("VectorBinarize");
+        ParameterBlockImageN pb = new ParameterBlockImageN("VectorBinarize");
         pb.setParameter("minx", x);
         pb.setParameter("miny", y);
         pb.setParameter("width", w);
         pb.setParameter("height", h);
         pb.setParameter("geometry", PreparedGeometryFactory.prepare(theGeom));
         pb.setParameter("antiAliasing", true);
-        RenderedImage roiImage = JAI.create("VectorBinarize", pb, null);
+        RenderedImage roiImage = ImageN.create("VectorBinarize", pb, null);
 
         return new ROI(roiImage);
     }

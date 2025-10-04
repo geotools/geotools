@@ -23,13 +23,13 @@ import static java.lang.Math.round;
 import java.awt.image.DataBuffer;
 import java.util.Arrays;
 import java.util.Map;
-import org.eclipse.imagen.LookupTableJAI;
+import org.eclipse.imagen.LookupTableImageN;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.util.WeakValueHashMap;
 
 /**
- * A factory for {@link LookupTableJAI} objects built from an array of {@link MathTransform1D}. This factory is used
+ * A factory for {@link LookupTableImageN} objects built from an array of {@link MathTransform1D}. This factory is used
  * internally by {@link GridCoverageViews#create}.
  *
  * @since 2.1
@@ -37,8 +37,8 @@ import org.geotools.util.WeakValueHashMap;
  * @author Martin Desruisseaux (IRD)
  */
 public final class LookupTableFactory {
-    /** The pool of {@link LookupTableJAI} objects already created. */
-    private static final Map<LookupTableFactory, LookupTableJAI> pool = new WeakValueHashMap<>();
+    /** The pool of {@link LookupTableImageN} objects already created. */
+    private static final Map<LookupTableFactory, LookupTableImageN> pool = new WeakValueHashMap<>();
 
     /** The source data type. Should be one of {@link DataBuffer} constants. */
     private final int sourceType;
@@ -71,8 +71,8 @@ public final class LookupTableFactory {
      * @return The lookup table, or {@code null} if this method can't build a lookup table for the supplied parameters.
      * @throws TransformException if a transformation failed.
      */
-    public static LookupTableJAI create(final int sourceType, final int targetType, final MathTransform1D[] transforms)
-            throws TransformException {
+    public static LookupTableImageN create(
+            final int sourceType, final int targetType, final MathTransform1D[] transforms) throws TransformException {
         /*
          * Argument check. Null values are legal but can't be processed by this method.
          */
@@ -88,7 +88,7 @@ public final class LookupTableFactory {
              * sharing tables may save a significant amount of memory if there is many images.
              */
             final LookupTableFactory key = new LookupTableFactory(sourceType, targetType, transforms);
-            LookupTableJAI table = pool.get(key);
+            LookupTableImageN table = pool.get(key);
             if (table != null) {
                 return table;
             }
@@ -138,7 +138,7 @@ public final class LookupTableFactory {
                         transforms[i].transform(array, 0, array, 0, array.length);
                         data[i] = array;
                     }
-                    table = new LookupTableJAI(data, offset);
+                    table = new LookupTableImageN(data, offset);
                     break;
                 }
                 case DataBuffer.TYPE_FLOAT: {
@@ -152,7 +152,7 @@ public final class LookupTableFactory {
                         transforms[i].transform(array, 0, array, 0, length);
                         data[i] = array;
                     }
-                    table = new LookupTableJAI(data, offset);
+                    table = new LookupTableImageN(data, offset);
                     break;
                 }
                 case DataBuffer.TYPE_INT: {
@@ -166,7 +166,7 @@ public final class LookupTableFactory {
                         }
                         data[i] = array;
                     }
-                    table = new LookupTableJAI(data, offset);
+                    table = new LookupTableImageN(data, offset);
                     break;
                 }
                 case DataBuffer.TYPE_SHORT:
@@ -189,7 +189,7 @@ public final class LookupTableFactory {
                         }
                         data[i] = array;
                     }
-                    table = new LookupTableJAI(data, offset, minimum != 0);
+                    table = new LookupTableImageN(data, offset, minimum != 0);
                     break;
                 }
                 case DataBuffer.TYPE_BYTE: {
@@ -202,7 +202,7 @@ public final class LookupTableFactory {
                         }
                         data[i] = array;
                     }
-                    table = new LookupTableJAI(data, offset);
+                    table = new LookupTableImageN(data, offset);
                     break;
                 }
             }

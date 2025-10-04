@@ -1,7 +1,7 @@
 :Author: Jody Garnett
 :Author: Micheal Bedward
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Create Commons with attribution
 
 **********************
@@ -156,14 +156,14 @@ such as GeoTools publish their work.
 2. We are going to start by defining the version number of GeoTools we wish to use. This workbook
    was written for |release| although you may wish to try a different version.
    
-   For production a stable release of |branch| should be used for `geotools.version`:
+   For production a stable release of |series| should be used for `geotools.version`:
     
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
         :language: xml
         :start-at: <properties>
         :end-at: </properties>
    
-   To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
+   To make use of a nightly build set the `geotools.version` property to |series|-SNAPSHOT .
   
    If you make any mistakes when editing the xml file you'll see that your project will be renamed
    "<Badly formed Maven project>" in the Projects window. You can choose "Format" as a quick way to
@@ -193,7 +193,7 @@ such as GeoTools publish their work.
         :start-at: <repositories>
         :end-at: </repositories>
 
-   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |series|-SNAPSHOT)
 
 6. GeoTools requires Java 17, you need to tell Maven to use the 17 source level
 

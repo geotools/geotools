@@ -110,7 +110,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // TODO I am not sure this will work with multipacked types (using INT for an RGB as an
         // instance)
         // TODO should we go to component color model also?
-        // TODO use JAI TOOLS statistics and ignore no data properly.
+        // TODO use ImageN TOOLS statistics and ignore no data properly.
         switch (dataType) {
                 // in case the original image has a USHORT pixel type without being associated
                 // with an index color model I would still go to 8 bits

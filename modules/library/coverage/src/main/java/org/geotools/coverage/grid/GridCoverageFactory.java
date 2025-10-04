@@ -165,7 +165,7 @@ public class GridCoverageFactory extends AbstractFactory {
             // TODO: We may support that in a future version.
             //       1) Create a copy with shear[X/Y] set to 0. Use the copy.
             //       2) Compute the residu with createInverse() and concatenate().
-            //       3) Apply the residu with JAI.create("Affine").
+            //       3) Apply the residu with ImageN.create("Affine").
             throw new IllegalArgumentException("Shear and rotation not supported");
         }
         final double xScale = at.getScaleX();
@@ -207,7 +207,7 @@ public class GridCoverageFactory extends AbstractFactory {
                 }
             }
         }
-        // Need to use JAI raster factory, since WritableRaster
+        // Need to use ImageN raster factory, since WritableRaster
         // does not supports TYPE_FLOAT as of J2SE 1.5.0_06.
         final WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
         for (int j = 0; j < height; j++) {

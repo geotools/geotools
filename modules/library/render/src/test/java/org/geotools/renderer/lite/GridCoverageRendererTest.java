@@ -53,8 +53,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
 import org.eclipse.imagen.TiledImage;
@@ -2168,7 +2168,7 @@ public class GridCoverageRendererTest {
         Rectangle mapRasterArea = new Rectangle(768, 768);
         AffineTransform worldToScreen = RendererUtilities.worldToScreenTransform(mapExtent, mapRasterArea);
         Interpolation interpolation = InterpolationNearest.getInstance(Interpolation.INTERP_NEAREST);
-        RenderingHints interpolationHints = new RenderingHints(JAI.KEY_INTERPOLATION, interpolation);
+        RenderingHints interpolationHints = new RenderingHints(ImageN.KEY_INTERPOLATION, interpolation);
         GridCoverageRenderer gcr = new GridCoverageRenderer(
                 mapExtent.getCoordinateReferenceSystem(), mapExtent, mapRasterArea, worldToScreen, interpolationHints);
         gcr.setAdvancedProjectionHandlingEnabled(true);

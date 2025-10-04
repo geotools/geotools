@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.OperationRegistry;
 import org.eclipse.imagen.ParameterList;
@@ -54,7 +54,7 @@ public final class ImagingParametersTest {
         final String vendor = "org.eclipse.imagen.media";
         final String mode = RenderedRegistryMode.MODE_NAME;
         final RegistryElementDescriptor descriptor =
-                JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "Scale");
+                ImageN.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "Scale");
         final ImagingParameterDescriptors parameters = new ImagingParameterDescriptors(descriptor);
         final GenericName alias = parameters.getAlias().iterator().next();
         /*
@@ -123,7 +123,7 @@ public final class ImagingParametersTest {
         assertNotSame("clone", values.parameters, copy.parameters);
     }
 
-    /** Ensures that the specified character sequence created from JAI parameters preserve the localization infos. */
+    /** Ensures that the specified character sequence created from ImageN parameters preserve the localization infos. */
     private static void assertLocalized(final String name, final CharSequence title) {
         assertTrue(name, title instanceof ImagingParameterDescription);
     }
@@ -145,8 +145,8 @@ public final class ImagingParametersTest {
                 null, // Unit of measure
                 false); // Parameter is optional
 
-        // Gets the descriptors for extrema  JAI operation
-        final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+        // Gets the descriptors for extrema  ImageN operation
+        final OperationRegistry registry = ImageN.getDefaultInstance().getOperationRegistry();
         final OperationDescriptor operation =
                 (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, "Stats");
 

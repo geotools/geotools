@@ -17,7 +17,7 @@
 package org.geotools.process.raster;
 
 import java.io.Serial;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.image.jai.Registry;
 import org.geotools.processing.jai.TransparencyFillDescriptor;
@@ -30,7 +30,7 @@ public class TransparencyFill extends OperationJAI {
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(),
+                ImageN.getDefaultInstance(),
                 new TransparencyFillDescriptor(),
                 new TransparencyFillRIF(),
                 "org.eclipse.imagen.media");

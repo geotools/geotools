@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
@@ -95,12 +95,12 @@ public class Mosaicker {
                     rasterLayerResponse.getRasterBounds().height);
             Dimension tileDimensions = rasterLayerResponse.getRequest().getTileDimensions();
             if (tileDimensions == null) {
-                tileDimensions = (Dimension) JAI.getDefaultTileSize().clone();
+                tileDimensions = (Dimension) ImageN.getDefaultTileSize().clone();
             }
             layout.setTileGridXOffset(0).setTileGridYOffset(0);
             layout.setTileHeight(tileDimensions.height).setTileWidth(tileDimensions.width);
 
-            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            localHints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
         }
 
         // look for additional hints for caching and tile scheduling
@@ -111,7 +111,7 @@ public class Mosaicker {
             localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS); // default
             BorderExtender be = Utils.getBorderExtenderHint(responseHints);
             if (be != null) {
-                localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, be));
+                localHints.add(new RenderingHints(ImageN.KEY_BORDER_EXTENDER, be));
             }
 
             Hints jaiHints = Utils.setupJAIHints(responseHints);

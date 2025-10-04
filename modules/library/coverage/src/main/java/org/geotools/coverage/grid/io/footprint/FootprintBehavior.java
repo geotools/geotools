@@ -20,7 +20,7 @@ import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
@@ -97,7 +97,7 @@ public enum FootprintBehavior {
 
                     final SampleModel sampleModel = mosaic.getSampleModel();
                     layout.setTileHeight(sampleModel.getWidth()).setTileWidth(sampleModel.getHeight());
-                    hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                    hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
 
                     // correct bounds of the current image
                     alpha = new ImageWorker(hints)
@@ -124,7 +124,7 @@ public enum FootprintBehavior {
             } else {
                 hints = (RenderingHints) hints.clone();
             }
-            hints.remove(JAI.KEY_IMAGE_LAYOUT); // remove an eventual layout passed down to us
+            hints.remove(ImageN.KEY_IMAGE_LAYOUT); // remove an eventual layout passed down to us
             return hints;
         }
 
@@ -211,7 +211,7 @@ public enum FootprintBehavior {
                 (float) finalImage.getWidth(),
                 (float) finalImage.getHeight(),
                 new Byte[] {0},
-                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout));
 
         ImageWorker iw = new ImageWorker(finalImage);
         iw.setROI(new ROI(roi));

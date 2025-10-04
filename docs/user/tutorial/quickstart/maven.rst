@@ -1,7 +1,7 @@
 :Author: Jody Garnett
 :Author: Micheal Bedward
 :Thanks: geotools-user list
-:Version: |release|
+:Version: |version|
 :License: Create Commons with attribution
 
 **********************
@@ -32,33 +32,24 @@ Java Install
 
 We are going to be making use of Java so if you don't have a Java Development Kit (JDK) installed now is the time to do so. 
 
-#. Download the latest Java 17 JDK:
+.. include:: jdk-install.txt
 
-   * OpenJDK: http://openjdk.java.net/
-   * Adoptium distribution: https://adoptium.net/
-    
-#. Click through the installer you will need to set an acceptance a license agreement and so forth.
-     
-.. Note::
-
-   In this tutorial we refer to file and directory paths as used by Windows. If you are fortunate
-   enough to be using another operating system such as Linux or OSX all of the commands and source
-   code below will work, just modify the paths to suit. 
-
-
-Maven (and why it's not so bad)
-===============================
+Apache Maven
+============
 
 Maven is a widely-used build tool which works by describing the contents of a project. This is a
 different approach than that used by the Make or Ant tools which list the steps required to build.
 
-It takes a while to get used to Maven and, for some, it remains a love-hate relationship, but it
-definitely makes working with GeoTools much easier:
+It takes a while to get used to Maven and, but it definitely makes working with GeoTools much easier:
 
 * You only download as much of GeoTools as your application requires.
  
-* Jars are downloaded into a single location in your home directory (e.g. :file:`C:\\Documents and Settings\<user\>\\.m2` 
-  on Windows). This is your *local repository*.
+* Jars are downloaded into a single location in your home directory:
+
+  * :file:`C:\\Documents and Settings\\<user\>\\.m2\\repository`
+  * :file:`~/.m2/repository`
+
+  This is your *local repository*.
 
 * The correct versions of all of the third-party jars required by GeoTools will be downloaded for
   you. This helps you to avoid obscure errors than can be caused by mismatched dependencies which
@@ -73,39 +64,42 @@ definitely makes working with GeoTools much easier:
 Installing Maven
 ----------------
 
-#. Download Maven from http://maven.apache.org/download.html 
-   
-   In this tutorial we refer to Maven version 3.8.6.
-   
-#. Unzip the file ``apache-maven-3.8.6-bin.zip``
+#. In this tutorial we refer to Maven version 3.8.6.
 
-#. You need to have a couple of environmental variables set for maven to work. Navigate to
-   :menuselection:`Control Panel --> System --> Advanced`. Change to the :guilabel:`Advanced` tab and click :guilabel:`Environmental Variables` button.
-   
-   Add the following system variables (short paths on Windows might be needed):
-   
-   * JAVA_HOME = :file:`C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot`
-   * MAVEN_HOME = :file:`C:\\java\\apache-maven-3.8.6`
-   
-   And add the following to your PATH:
-   
-   * PATH = :file:`%JAVA_HOME%\\bin;%MAVEN_HOME%\\bin`
-   
-   .. image:: images/env-variables.png
-      :scale: 60
-   
-#. Open up a commands prompt :menuselection:`Accessories --> Command Prompt`
+   * Recomended: Use SDKMan to manage build environment.
 
-#. Type the following command to confirm you are set up correctly::
-   
-      C:java> mvn --version
-      
-#. This should produce something similar to the following output::
+     .. code-block:: bash
 
-      C:\java>mvn -version
+        sdk install maven 3.8.6
+
+   * Alternative: Download Maven from https://maven.apache.org
+
+     Unzip the file ``apache-maven-3.8.6-bin.zip``
+
+     Set the environment variable :envvar:`MAVEN_HOME` to point to the directory where you unzipped Maven.
+
+     Windows: Navigate to :menuselection:`Control Panel --> System --> Advanced`. Change to the :guilabel:`Advanced` tab and click :guilabel:`Environmental Variables` button.
+   
+     * JAVA_HOME = :file:`C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.8.7-hotspot`
+     * MAVEN_HOME = :file:`C:\\java\\apache-maven-3.8.6`
+   
+     And add the following to your PATH:
+   
+     * PATH = :file:`%JAVA_HOME%\\bin;%MAVEN_HOME%\\bin`
+   
+     .. image:: images/env-variables.png
+        :scale: 60
+   
+#. From a terminal or command prompt (:menuselection:`Accessories --> Command Prompt`)
+   Type the following command to confirm you are set up correctly::
+
+        mvn --version
+
+   This should produce something similar to the following output::
+
       Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
       Maven home: C:\devel\apache-maven-3.8.6
-      Java version: 11.0.17, vendor: Eclipse Adoptium, runtime: C:\PROGRA~1\ECLIPS~1\jdk-11.0.17.8-hotspot
+      Java version: 11.0.17, vendor: Eclipse Adoptium, runtime: C:\Program Files\Eclipse Adoptium\jdk-17.0.8.7-hotspot
       Default locale: it_IT, platform encoding: Cp1252
       OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 
@@ -147,7 +141,7 @@ Creating a new project
        PLATFORM           LOCAL REPOSITORY
     ==================  ========================================================
        Windows XP:      :file:`C:\\Documents and Settings\\You\\.m2\\repository`
-       Windows:         :file:`C:\\Users\\You\.m2\\repository`
+       Windows:         :file:`C:\\Users\\You\\.m2\\repository`
        Linux and Mac:   :file:`~/.m2/repository`
     ==================  ========================================================
 
@@ -157,16 +151,9 @@ Creating a new project
    loading the file.
 
 #. We are going to start by defining the version number of GeoTools we wish to use. This workbook
-   was written for |release| although you may wish to try a different version.
-   
-   For production a stable release of |branch| should be used for `geotools.version`:
-    
-   .. literalinclude:: /../../tutorials/quickstart/pom.xml
-      :language: xml
-      :start-after: <url>http://maven.apache.org</url>
-      :end-before: <dependencyManagement>
-   
-   To make use of a nightly build set the `geotools.version` property to |branch|-SNAPSHOT .
+   was written for |version| although you may wish to try a different version.
+
+   .. include:: pom-properties.txt
 
 #. We use the GeoTools Bill of Materials (BOM) to manage dependency versions. This ensures that all GeoTools modules use compatible versions and simplifies dependency management:
 
@@ -185,7 +172,10 @@ Creating a new project
       :language: xml
       :start-after: </dependencyManagement>
       :end-at: </dependencies>
-        
+
+   The BOM (Bill of Materials) pattern centralizes version management. By importing the ``gt-bom``, we don't need to specify version numbers for individual GeoTools modules.
+
+
 #. We tell maven which repositories to download jars from:
    
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
@@ -193,21 +183,31 @@ Creating a new project
       :start-at: <repositories>
       :end-before: <build>
 
-   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |series|-SNAPSHOT)
 
-#. GeoTools requires Java 17, you need to tell Maven to use the 17 source level
+8. The project was generated with a build **dependencyManagement** section
+   locking down plugin versions to avoid using Maven defaults.0
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
       :language: xml
-      :start-after: </repositories>
-      :end-before: <profiles>
+      :prepend: <build>
+      :start-at: <pluginManagement>
+      :end-at: </pluginManagement>
+      :append: </build>
+
+   GeoTools now requires Java 17 - add build configuration to ask maven to use Java 17 source level.
+
+   .. literalinclude:: /../../tutorials/quickstart/pom.xml
+      :language: xml
+      :start-after: </pluginManagement>
+      :end-at: </build>
 
 #. Here is what the completed :file:`pom.xml` looks like:
 
    .. literalinclude:: /../../tutorials/quickstart/pom.xml
-        :language: xml
-        :end-before: <profiles>
-        :append: </project>
+      :language: xml
+      :end-before:   <reporting>
+      :append: </project>
    
    * Recommend cutting and pasting the above to avoid mistakes when typing
    
@@ -230,7 +230,10 @@ Creating the Quickstart application
 Now we are ready to create the application.
 
 #. Crete the *org.geotools.tutorial.quickstart* package by navigating to the directory
-   :file:`tutorial` and create the directory :file:`src\\main\\java\\org\\geotools\\tutorial\\quickstart`
+   :file:`tutorial` and create the directory:
+
+   * Linux: :file:`src/main/java/org/geotools/tutorial/quickstart`
+   * Windows: :file:`src\\main\\java\\org\\geotools\\tutorial\\quickstart`
 
 #. In the new sub-directory, create a new file ``Quickstart.java`` using your text editor.
 

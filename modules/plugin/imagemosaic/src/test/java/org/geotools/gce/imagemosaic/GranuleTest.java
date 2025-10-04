@@ -28,7 +28,7 @@ import java.net.URL;
 import javax.imageio.ImageReadParam;
 import javax.imageio.spi.ImageReaderSpi;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.media.utilities.ImageLayout2;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -156,7 +156,7 @@ public class GranuleTest extends Assert {
         final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
 
         // use imageio with defined tiles
-        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_IMAGEN_IMAGEREAD.createValue();
         useJai.setValue(false);
 
         final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
@@ -175,7 +175,7 @@ public class GranuleTest extends Assert {
                 .setTileGridYOffset(0)
                 .setTileHeight(10)
                 .setTileWidth(10);
-        RenderingHints rHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+        RenderingHints rHints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
         Hints hints = new Hints(rHints);
         final RenderedImage raster = granuleDescriptor
                 .loadRaster(readParameters, 0, TEST_BBOX, gridToWorldTransform.inverse(), request, hints)

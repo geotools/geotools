@@ -911,7 +911,7 @@ public class FactoryRegistry {
                 /*
                  * A factory can't be registered because of some missing dependencies.
                  * This occurs for example when trying to register the WarpTransform2D
-                 * math transform on a machine without JAI installation. Since the factory
+                 * math transform on a machine without ImageN installation. Since the factory
                  * may not be essential (this is the case of WarpTransform2D), just skip it.
                  */
                 loadingFailure(category, error, false);

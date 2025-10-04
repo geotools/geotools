@@ -24,7 +24,7 @@ import java.io.Serial;
 import java.util.Map;
 import org.eclipse.imagen.BorderExtender;
 import org.eclipse.imagen.ImageLayout;
-import org.eclipse.imagen.JAI;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.OperationDescriptor;
 import org.eclipse.imagen.PlanarImage;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
@@ -41,7 +41,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 
 /**
- * Base class for providing capabilities to scale {@link GridCoverage2D} objects using JAI scale operations.
+ * Base class for providing capabilities to scale {@link GridCoverage2D} objects using ImageN scale operations.
  *
  * <p>This class tries to handles all the problems related to scaling index-color images in order to avoid strange
  * results in the smoothest possible way by performing color expansions under the hood as needed. It may also apply some
@@ -134,7 +134,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
                 parameters.hints != null ? parameters.hints : ImageUtilities.getRenderingHints(sourceImage);
         if (targetHints == null) targetHints = new RenderingHints(null);
         if (parameters.hints != null) targetHints.add(parameters.hints);
-        ImageLayout layout = (ImageLayout) targetHints.get(JAI.KEY_IMAGE_LAYOUT);
+        ImageLayout layout = (ImageLayout) targetHints.get(ImageN.KEY_IMAGE_LAYOUT);
         if (layout != null) {
             layout = (ImageLayout) layout.clone();
         } else {
@@ -156,12 +156,12 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
             if (layout.getTileWidth(sourceImage) > width) layout.setTileWidth(width);
             if (layout.getTileHeight(sourceImage) > height) layout.setTileHeight(height);
         }
-        targetHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
-        targetHints.put(JAI.KEY_BORDER_EXTENDER, borderExtender);
+        targetHints.put(ImageN.KEY_IMAGE_LAYOUT, layout);
+        targetHints.put(ImageN.KEY_BORDER_EXTENDER, borderExtender);
 
         // it is crucial to correctly manage the Hints to control the
         // replacement of IndexColorModel. It is worth to point out that setting
-        // the JAI.KEY_REPLACE_INDEX_COLOR_MODEL hint to true is not enough to
+        // the ImageN.KEY_REPLACE_INDEX_COLOR_MODEL hint to true is not enough to
         // force the operators to do an expansion.
         // If we explicitly provide an ImageLayout built with the source image
         // where the CM and the SM are valid. those will be employed overriding
@@ -190,7 +190,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
         //
         // This step is crucial for making a leap towards a more robust
         // implementation of the scaling operations and also towards their
-        // integration as operation JAI subclasses.
+        // integration as operation ImageN subclasses.
         //
         // What we do here is quite trivial, we take into account the initial
         // Grid to World transform and then we concatenate to it a
@@ -220,7 +220,7 @@ public abstract class BaseScaleOperationJAI extends OperationJAI {
         // /////////////////////////////////////////////////////////////////////
 
         /*
-         * Performs the operation using JAI and construct the new grid coverage.
+         * Performs the operation using ImageN and construct the new grid coverage.
          * Uses the coordinate system from the main source coverage in order to
          * preserve the extra dimensions (if any). The first two dimensions should
          * be equal to the coordinate system set in the 'parameters' block.

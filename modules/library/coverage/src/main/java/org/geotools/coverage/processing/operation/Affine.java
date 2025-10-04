@@ -22,9 +22,9 @@ import java.awt.image.RenderedImage;
 import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.Interpolation;
-import org.eclipse.imagen.JAI;
-import org.eclipse.imagen.ParameterBlockJAI;
+import org.eclipse.imagen.ParameterBlockImageN;
 import org.eclipse.imagen.PropertyGenerator;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
@@ -42,7 +42,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.util.factory.GeoTools;
 
 /**
- * This operation is simply a wrapper for the JAI Affine operation
+ * This operation is simply a wrapper for the ImageN Affine operation
  *
  * @version $Id$
  * @author Simone Giannecchini
@@ -61,7 +61,7 @@ public class Affine extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected RenderedImage createRenderedImage(ParameterBlockJAI parameters, RenderingHints hints) {
+    protected RenderedImage createRenderedImage(ParameterBlockImageN parameters, RenderingHints hints) {
         final RenderedImage source = (RenderedImage) parameters.getSource(0);
         if (hints == null) {
             hints = GeoTools.getDefaultHints().clone();
@@ -75,8 +75,8 @@ public class Affine extends BaseScaleOperationJAI {
         final Interpolation interpolation;
         if (parameters.getObjectParameter("interpolation") != null) {
             interpolation = (Interpolation) parameters.getObjectParameter("interpolation");
-        } else if (hints.get(JAI.KEY_INTERPOLATION) != null) {
-            interpolation = (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
+        } else if (hints.get(ImageN.KEY_INTERPOLATION) != null) {
+            interpolation = (Interpolation) hints.get(ImageN.KEY_INTERPOLATION);
         } else {
             // I am pretty sure this should not happen. However I am not sure we should throw an
             // error
@@ -120,7 +120,7 @@ public class Affine extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockImageN parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source =
                 (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, AFFINE, 3, 6);

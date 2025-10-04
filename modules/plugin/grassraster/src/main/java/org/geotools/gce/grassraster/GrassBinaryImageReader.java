@@ -211,7 +211,7 @@ public class GrassBinaryImageReader extends ImageReader {
     //        ImageLayout layout = new ImageLayout();
     //        layout.setTileWidth(tileSize);
     //        layout.setTileHeight(tileSize);
-    //        RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+    //        RenderingHints hints = new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, layout);
     //        ParameterBlock pbj = new ParameterBlock();
     //        pbj.add(this.getInput());// the input, it can be file, ImageInputStream....
     //        pbj.add(0);// the image index
@@ -222,7 +222,7 @@ public class GrassBinaryImageReader extends ImageReader {
     //        pbj.add(null);// ImageReadParam
     //        pbj.add(this);// ImageRead
     //
-    //        RenderedOp image = JAI.create("ImageRead", pbj, hints);
+    //        RenderedOp image = ImageN.create("ImageRead", pbj, hints);
     //
     //        return image;
     //    }

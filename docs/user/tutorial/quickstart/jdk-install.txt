@@ -1,0 +1,18 @@
+#. Java 17 Development Environment required:
+
+   * Recommended: Download Java 17 Java Development Kit (JDK) from the Adoptium website:
+
+     https://adoptium.net/en-GB/temurin/releases?version=17&os=any&arch=any
+
+   * Recommended: SDKMan is recommend on Linux and MacOS (and Windows WSL) to manage your Java Development environment:
+
+     https://sdkman.io/install
+
+     .. code-block:: bash
+
+        sdk install java 17.0.16-tem
+        sdk use java 17.0.16-tem
+
+   * Alternate: You may also be in position to use Java 17 from your operating system package manager.
+
+#. At the time of writing Java 17 is the minimum required version.

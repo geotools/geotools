@@ -38,7 +38,7 @@ This method configures:
 
 * ``Logging.ALL``
 * ``Logging.GEOTOOLS``
-* ``Logging.JAI``
+* ``Logging.IMAGEN``
 
 This is the the most flexible way to set up logging, allowing users of your application to choose
 the logging system based on configuration files and jars supplied at runtime.
@@ -54,7 +54,7 @@ If you know the LoggerFactory you wish to use:
 
 The above example uses the ``LogbackLoggerFactory.getInstance()`` singleton, which writes messages using the SLF4J API be available at runtime.
 
-Using the ``GeoTools.setLoggerFactory(LoggerFactory)`` method updates ``Logging.ALL``, ``Logging.GEOTOOLS`` and ``Logging.JAI``.  When subsequently called ``GeoTools.init()`` will check that  ``Logging.ALL.getLoggerFactory()`` is not {@code null} - recognizing logging has already been configured, and will not replace your setting.
+Using the ``GeoTools.setLoggerFactory(LoggerFactory)`` method updates ``Logging.ALL``, ``Logging.GEOTOOLS`` and ``Logging.IMAGEN``.  When subsequently called ``GeoTools.init()`` will check that  ``Logging.ALL.getLoggerFactory()`` is not {@code null} - recognizing logging has already been configured, and will not replace your setting.
 
 Logging.setLoggerFactory()
 ''''''''''''''''''''''''''

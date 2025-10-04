@@ -11,7 +11,8 @@
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <geotools.version>34-SNAPSHOT</geotools.version>
+    <maven.compiler.release>17</maven.compiler.release>
+    <gt.version>34-SNAPSHOT</gt.version>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
   
@@ -21,7 +22,14 @@
       <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-bom</artifactId>
-        <version>${geotools.version}</version>
+        <version>${gt.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.11.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -38,42 +46,80 @@
       <artifactId>gt-swing</artifactId>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <repositories>
     <repository>
-    <id>osgeo</id>
-    <name>OSGeo Release Repository</name>
-    <url>https://repo.osgeo.org/repository/release/</url>
-    <snapshots><enabled>false</enabled></snapshots>
-    <releases><enabled>true</enabled></releases>
+      <id>osgeo</id>
+      <name>OSGeo Release Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
     </repository>
     <repository>
-    <id>osgeo-snapshot</id>
-    <name>OSGeo Snapshot Repository</name>
-    <url>https://repo.osgeo.org/repository/snapshot/</url>
-    <snapshots><enabled>true</enabled></snapshots>
-    <releases><enabled>false</enabled></releases>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
     </repository>
   </repositories>
+
   <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
+        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.4.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.12.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.6.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
         <configuration>
           <release>17</release>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.11.2</version>
       </plugin>
     </plugins>
   </build>
@@ -83,7 +129,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-
+        <version>3.11.2</version>
         <configuration>
           <release>17</release>
           <!-- Force non-modular mode for projects without module-info.java -->

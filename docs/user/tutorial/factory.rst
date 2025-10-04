@@ -1,5 +1,5 @@
 :Author: Jody Garnett
-:Version: |release|
+:Version: |version|
 :License: Creative Commons with attribution
 
 Factory Tutorial

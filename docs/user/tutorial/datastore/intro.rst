@@ -1,6 +1,6 @@
 :Author: Jody Garnett
 :Thanks: geotools-devel list
-:Version: |release|
+:Version: |version|
 :License: Creative Commons with attribution
 
 Introducing CSVDataStore
@@ -95,7 +95,7 @@ Time to create a new project making use of this library:
    * Using Eclipse: :menuselection:`New --> Project` to create a `Maven Project` with group `org.geotools.tutorial` and name `csv`.
    * Using Maven: ``mvn archetype:generate -DgroupId=org.geotools.tutorial -DartifactId=csv -Dversion=1.0-SNAPSHOT -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-quickstart``
 
-#. Fill in project details, paying careful attention to the *gt.version* property you wish to use. You can choose a stable release (recommended) or use |branch|-SNAPSHOT for access to the latest nightly build.
+#. Fill in project details, paying careful attention to the *gt.version* property you wish to use. You can choose a stable release (recommended) or use |series|-SNAPSHOT for access to the latest nightly build.
 
    .. literalinclude:: artifacts/pom.xml
       :language: xml

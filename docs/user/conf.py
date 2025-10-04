@@ -5,6 +5,6 @@ from common import *
 
 # The encoding of source files.
 
-html_title='GeoTools %s User Guide' % release
+html_title='GeoTools %s User Guide' % branch
 
 spelling_show_suggestions=False

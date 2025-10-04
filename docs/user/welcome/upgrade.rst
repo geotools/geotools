@@ -5,7 +5,7 @@ With a library as experienced as GeoTools you will occasionally run into a proje
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
 fundamental changes with code examples showing how to upgrade your code.
 
-The first step to upgrade: change the ``geotools.version`` of your dependencies in your ``pom.xml`` to |release| (or an appropriate stable version):
+The first step to upgrade: change the ``geotools.version`` of your dependencies in your ``pom.xml`` to |release|:
 
 .. use a parsed-literal here instead of a code-block because substitution of the RELEASE token does not work in a code-block
 .. parsed-literal::
@@ -16,23 +16,88 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
     </properties>
     ....
     <dependencies>
+          <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-bom</artifactId>
+            <version>${geotools.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+          </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-shapefile</artifactId>
-            <version>${geotools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-swing</artifactId>
-            <version>${geotools.version}</version>
         </dependency>
         ....
     </dependencies>
 
-.. _update32:
+.. _update34:
 
 GeoTools 34.x
 -------------
+
+Maven Bill of Materials
+^^^^^^^^^^^^^^^^^^^^^^^
+
+GeoTools has adopted the use of Maven Bill of Materials (BOM) to advertise both the versions of GeoTools modules and the third party libraries used by GeoTools.
+
+This change will significantly reduce the amount of work expected of downstream projects, however to take advantage of this you will need to perform some clean up of your ``pom.xml``
+to remove dependencies, and especially remove version numbers.
+
+Use maven import scope to include the `gt-bom`:
+
+.. code-block:: xml
+
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-bom</artifactId>
+            <version>${geotools.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+
+GeoTools dependencies can then be listed without version numbers:
+
+.. code-block:: xml
+
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shapefile</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-swing</artifactId>
+    </dependency>
+  </dependencies>
+
+To align third party dependencies with those used by GeoTools import the ``gt-platform-dependencies``:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>org.geotools</groupId>
+     <artifactId>gt-platform-dependencies</artifactId>
+     <version>${geotools.version}</version>
+     <type>pom</type>
+     <scope>import</scope>
+   </dependency>
+
+Third-party dependences such as the postgresql jdbc driver can then be listed without version numbers:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>org.postgresql</groupId>
+     <artifactId>postgresql</artifactId>
+   </dependency>
 
 Java 17 Minimum
 ^^^^^^^^^^^^^^^
@@ -41,6 +106,16 @@ GeoTools 34.x is the first series requiring Java 17 minimum.
 
 Javas 17 introduces additional Java Runtime Environment protections "Strongly Encapsulate JDK Internals" and "Sealed Classes". These new restrictions have resulted in several significant component upgrades (ImageN and removal of JAI Tools) outlined below.
 
+.. code-block:: xml
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <release>17</release>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
 
 Migration to Eclipse ImageN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,6 +127,7 @@ and improvements that have been made on behalf of the GeoTools and GeoServer pro
 Migration instructions and script are provided by the new ImageN project:
 
 * `JAI Migration <https://eclipse-imagen.github.io/imagen/migration/>`__
+* ImageN is available as individual maven modules, or as a combined `imagen-all` module.
 
 BEFORE:
 
@@ -76,8 +152,13 @@ AFTER:
 
    <dependency>
      <groupId>org.eclipse.imagen</groupId>
-     <artifactId>imagen-legacy-all</artifactId>
-     <version>0.4-SNAPSHOT</version>
+     <artifactId>imagen-core</artifactId>
+     <!-- version managed via gt-platform-dependencies bom -->
+   </dependency>
+   <dependency>
+     <groupId>org.eclipse.imagen</groupId>
+     <artifactId>affine</artifactId>
+     <!-- version managed via gt-platform-dependencies bom -->
    </dependency>
    
 .. code-block:: java
@@ -90,24 +171,22 @@ AFTER:
 GeoTools ImageN API Changes
 '''''''''''''''''''''''''''
 
-With the change to ImageN image processing library several GeoTools integration classes have been renamed:
+Additional GeoTools migration guidance:
 
-======================== =========================
-Original                 ImageN Replacement
-======================== =========================
-ComponentColorModelJAI   ComponentColorModelJAI
-======================== =========================
+* JAIExt utility class is no longer required and has been removed.
+* Logging has been updated, ``Logging.IMAGEN`` is now used to configure ImageN logging
+* THe constant `ImageMosaicFormat.USE_JAI_IMAGEREAD` has changed to `ImageMosaicFormat.USE_IMAGEN_IMAGEREAD`.
+* `ComponentColorModelJAI`: Deprecated, no longer required, maintained for serialization compatibility
 
 Removal of JAI Tools
-^^^^^^^^^^^^^^^^^^^^
+''''''''''''''''''''
 
 To facilitate the migration to Eclipse ImageN the JAI Tools library is no longer available.
 
-GeoTools now uses equivalent functionality, or in the case of statistics has internally adopted
-JAI Tools code.
+GeoTools now uses equivalent functionality:
 
-Use of RangeLookupTable and Range
-'''''''''''''''''''''''''''''''''
+* Use of RangeLookupTable and Range
+* In the case of statistics has internally adopted JAI Tools code
 
 BEFORE:
 
@@ -151,7 +230,9 @@ ImageN:
    RangeFloat span2 = RangeFactory.create(10.0f,true,null,true);
    RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
    PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
-   
+
+.. _update32:
+
 GeoTools 32.x
 -------------
 

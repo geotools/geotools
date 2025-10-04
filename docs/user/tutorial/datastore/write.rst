@@ -1,6 +1,6 @@
 :Author: Jody Garnett
 :Thanks: geotools-devel list
-:Version: |release|
+:Version: |version|
 :License: Creative Commons with attribution
 
 Using ``FeatureStore``

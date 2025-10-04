@@ -17,7 +17,7 @@ Here is an example template to get you started.
         :Author: Jody Garnett
         :Author: Michael Bedward
         :Thanks: geotools-user list
-        :Version: |release|
+        :Version: |version|
         :License: Creative Commons with attribution
         
         .. include:: <isonum.txt>

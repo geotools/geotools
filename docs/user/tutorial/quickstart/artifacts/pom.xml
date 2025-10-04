@@ -13,6 +13,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <geotools.version>34-SNAPSHOT</geotools.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Import the GeoTools BOM -->
+            <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-bom</artifactId>
+                <version>${geotools.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.11.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

@@ -116,7 +116,7 @@ public final class Registry {
      * Register the "SampleTranscode" image operation to the operation registry of the specified ImageN instance. This
      * method is invoked by the static initializer of {@link GridSampleDimension}.
      *
-     * @param jai is he {@link JAI} instance in which we ant to register this operation.
+     * @param imagen is he {@link JAI} instance in which we ant to register this operation.
      * @param descriptor is the {@link OperationDescriptor} for the ImageN operation to register.
      * @param name is the name of the operation to register.
      * @param crif is the rendered image facotry for this operation.

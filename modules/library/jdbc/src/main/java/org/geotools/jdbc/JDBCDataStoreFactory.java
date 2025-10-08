@@ -313,7 +313,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         String sqlOnBorrow = (String) SQL_ON_BORROW.lookUp(params);
         String sqlOnRelease = (String) SQL_ON_RELEASE.lookUp(params);
         if (sqlOnBorrow != null || sqlOnRelease != null) {
-            SessionCommandsListener listener = new SessionCommandsListener(sqlOnBorrow, sqlOnRelease);
+            SessionCommandsListener listener = new SessionCommandsListener(getDatabaseID(), sqlOnBorrow, sqlOnRelease);
             dataStore.getConnectionLifecycleListeners().add(listener);
         }
 

@@ -471,7 +471,7 @@
     <javac.version>9+181-r4173-1</javac.version>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <series>latest</series>
+    <series>stable</series>
     <!-- test dependency management. For compile dependency management look at platform-dependencies/pom.xml -->
     <hamcrest.version>3.0</hamcrest.version>
     <mockito.version>5.15.2</mockito.version>

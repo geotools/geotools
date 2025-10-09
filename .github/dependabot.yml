@@ -11,12 +11,12 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
-    target-branch: '33.x'
+    target-branch: '34.x'
     open-pull-requests-limit: 10
 
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'monthly'
-    target-branch: '32.x'
+    target-branch: '33.x'
     open-pull-requests-limit: 10

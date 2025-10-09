@@ -173,6 +173,23 @@
     </replace>
   </target>
   
+  <target name="archive"
+          description="Update sereis to archive">
+
+    <replace dir="..">
+      <include name="build/rename.xml"/>
+      <include name="build/release.xml"/>
+      <replacefilter
+         token="&lt;property name=&quot;series&quot; value=&quot;maintenance&quot;/&quot;"
+         value="&lt;property name=&quot;series&quot; value=&quot;archive&quot;/&gt;"/>
+    </replace>
+    <replace dir="..">
+      <include name="pom.xml"/>
+      <replacefilter token="&lt;series&gt;maintenance&lt;/series&gt;"
+                     value="&lt;series&gt;archive&lt;/series&gt;"/>
+    </replace>
+  </target>
+  
   
   <!-- update release version -->
   <target name="release"

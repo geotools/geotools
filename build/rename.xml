@@ -29,6 +29,11 @@
       <include name="**/common.py"/>
       <replacefilter token="35-SNAPSHOT" value="${release}"/>
     </replace>
+    <replaceregexp file="../docs/common.py"
+                   match="release = '(.*)'"
+                   replace="release = '${release}'"
+                   byline="true"/>
+    
   </target>
   
   <target name="readme">

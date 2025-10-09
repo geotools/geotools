@@ -358,7 +358,6 @@
     <module>platform-dependencies</module>
     <module>bom</module>
     <module>modules</module>
-    <module>release</module>
   </modules>
 
   <scm>
@@ -1548,6 +1547,18 @@
       <modules>
         <module>tutorials/quickstart</module>
         <module>docs</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>release</id>
+      <!-- release is here after docs in build order-->
+      <activation>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
+      <modules>
+        <module>release</module>
       </modules>
     </profile>
     <profile>

@@ -176,13 +176,10 @@
     </replace>
   </target>
   
-  <target name="archive"
-          description="Update url references from maintenance to archive">
-    <replace dir="..">
-      <include name="docs/common.py"/>
-      <include name="release/src/markdown/README.md"/>
-      <replacefilter token="docs.geotools.org/maintenance" value="docs.geotools.org/archive"/>
-    </replace>
+  
+<target name="archive"
+          description="Update sereis to archive">
+
     <replace dir="..">
       <include name="build/rename.xml"/>
       <include name="build/release.xml"/>

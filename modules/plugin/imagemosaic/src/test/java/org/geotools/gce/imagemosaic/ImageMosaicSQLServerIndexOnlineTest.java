@@ -399,7 +399,8 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
                                 + ":"
                                 + fixture.getProperty("port")
                                 + ";databaseName="
-                                + (database != null ? database : fixture.getProperty("database")),
+                                + (database != null ? database : fixture.getProperty("database"))
+                                + ";encrypt=false",
                         fixture.getProperty("user"),
                         fixture.getProperty("passwd"));
                 Statement st = connection.createStatement()) {

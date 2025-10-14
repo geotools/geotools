@@ -84,6 +84,7 @@ public class SQLServerDataStoreFactoryOnlineTest extends JDBCTestSupport {
         }
         params.put(DBTYPE.key, factory.getDatabaseID());
         params.put(SQLServerDataStoreFactory.INTSEC.key, false);
+        params.put(SQLServerDataStoreFactory.ENCRYPT.key, false);
 
         assertTrue(factory.canProcess(params));
 

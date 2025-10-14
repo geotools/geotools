@@ -65,7 +65,7 @@
     <log4j.version>2.24.3</log4j.version>
     <logback.version>1.5.14</logback.version>
     <mssql-jdbc.version>9.4.0.jre8</mssql-jdbc.version>
-    <mysql-connector-java.version>9.1.0</mysql-connector-java.version>
+    <mysql-connector-java.version>9.4.0</mysql-connector-java.version>
     <mongodb-driver-legacy.version>4.0.6</mongodb-driver-legacy.version>
     <netcdf.version>5.5.3</netcdf.version>
     <ojdbc17.version>23.7.0.25.01</ojdbc17.version>

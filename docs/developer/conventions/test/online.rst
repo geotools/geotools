@@ -226,6 +226,7 @@ The appropriate fixture for using the above database schema would be::
     database=geotools
     host=127.0.0.1
     driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+    encrypt=false
 
 In file ``~/.geotools/sqlserver.properties``
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================= 
+	Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
+	Version: $Id$ ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>34-SNAPSHOT</version>
+  </parent>
+  <!-- =========================================================== -->
+  <!-- Module Description -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>dggs</artifactId>
+  <packaging>pom</packaging>
+  <name>DGGS</name>
+  <description>Parent module for DGGS</description>
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <!-- Modules included in a normal build -->
+  <modules>
+    <module>dggs-core</module>
+    <module>dggs-h3</module>
+    <module>dggs-rhealpix</module>
+    <module>clickhouse</module>
+  </modules>
+</project>

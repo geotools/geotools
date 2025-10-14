@@ -240,5 +240,16 @@
         <module>jdbc-singlestore</module>
       </modules>
     </profile>
+    <profile>
+      <id>dggs</id>
+      <activation>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
+      <modules>
+        <module>dggs</module>
+      </modules>
+    </profile>
   </profiles>
 </project>

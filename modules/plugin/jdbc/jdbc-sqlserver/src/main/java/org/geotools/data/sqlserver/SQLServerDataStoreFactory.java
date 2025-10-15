@@ -46,6 +46,14 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
             false,
             Boolean.FALSE);
 
+    /** parameter for connection encryption. Setting to true will use SSL encryption, false otherwise. */
+    public static final Param ENCRYPT = new Param(
+            "encrypt",
+            Boolean.class,
+            "Set to true to use SSL encryption for the connection, false otherwise.",
+            false,
+            Boolean.FALSE);
+
     /** parameter for using Native Paging */
     public static final Param NATIVE_PAGING = new Param(
             "Use Native Paging",
@@ -132,9 +140,10 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(FORCE_SPATIAL_INDEX.key, FORCE_SPATIAL_INDEX);
         parameters.put(TABLE_HINTS.key, TABLE_HINTS);
         parameters.put(INSTANCE.key, INSTANCE);
+        parameters.put(ENCRYPT.key, ENCRYPT);
     }
 
-    /** Builds up the JDBC url in a jdbc:<database>://<host>:<port>;DatabaseName=<dbname> */
+    /** Builds up the JDBC url in a {@code jdbc:<database>://<host>:<port>;DatabaseName=<dbname> } */
     @Override
     protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         String host = (String) HOST.lookUp(params);
@@ -160,6 +169,13 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
 
         if (intsec != null && intsec.booleanValue()) {
             url = url + ";integratedSecurity=true";
+        }
+
+        Boolean encrypt = (Boolean) ENCRYPT.lookUp(params);
+        if (encrypt != null && !url.contains("encrypt=")) {
+            url = url + ";encrypt=" + encrypt;
+        } else if (encrypt == null && !url.contains("encrypt=")) {
+            url = url + ";encrypt=" + ENCRYPT.getDefaultValue();
         }
 
         return url;

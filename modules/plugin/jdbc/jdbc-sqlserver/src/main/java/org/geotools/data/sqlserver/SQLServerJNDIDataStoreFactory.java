@@ -16,8 +16,10 @@
  */
 package org.geotools.data.sqlserver;
 
+import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.ENCRYPT;
 import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.FORCE_SPATIAL_INDEX;
 import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.GEOMETRY_METADATA_TABLE;
+import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.INSTANCE;
 import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.INTSEC;
 import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.NATIVE_PAGING;
 import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.NATIVE_SERIALIZATION;
@@ -55,6 +57,7 @@ public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
         parameters.put(FORCE_SPATIAL_INDEX.key, FORCE_SPATIAL_INDEX);
         parameters.put(TABLE_HINTS.key, TABLE_HINTS);
-        parameters.put(SQLServerDataStoreFactory.INSTANCE.key, SQLServerDataStoreFactory.INSTANCE);
+        parameters.put(INSTANCE.key, INSTANCE);
+        parameters.put(ENCRYPT.key, ENCRYPT);
     }
 }

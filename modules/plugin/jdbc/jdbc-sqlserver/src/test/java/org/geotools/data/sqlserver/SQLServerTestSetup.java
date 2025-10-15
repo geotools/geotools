@@ -40,6 +40,7 @@ public class SQLServerTestSetup extends JDBCTestSetup {
         fixture.put("port", "1433");
         fixture.put("user", "geotools");
         fixture.put("password", "geotools");
+        fixture.put("encrypt", "false");
         return fixture;
     }
 

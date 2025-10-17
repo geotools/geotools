@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
@@ -204,6 +205,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     /** Whether to escape backslash characters in string literals */
     protected boolean escapeBackslash = false;
+
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("\\d+(\\.\\d+)?");
 
     /** Default constructor */
     public FilterToSQL() {}
@@ -912,7 +915,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 if (code == null) {
                     out.write("FALSE");
                 } else {
-                    out.write(String.valueOf(code));
+                    code = wrapCharacterStringLiteralInSingleQuotes(code);
+                    out.write(code);
+
                     out.write(" " + type + " ");
                     writeEncodedField(Integer.class, rightName, (AttributeDescriptor) right.evaluate(featureType));
                 }
@@ -942,7 +947,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 } else {
                     writeEncodedField(Integer.class, leftName, (AttributeDescriptor) left.evaluate(featureType));
                     out.write(" " + type + " ");
-                    out.write(String.valueOf(code));
+
+                    code = wrapCharacterStringLiteralInSingleQuotes(code);
+                    out.write(code);
                 }
             } else {
                 writeEncodedField(Integer.class, leftName, (AttributeDescriptor) left.evaluate(featureType));
@@ -959,6 +966,20 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 out.write("END");
             }
         }
+    }
+
+    /**
+     * Standard SQL requires character string literals to be wrapped into single quotes. Otherwise, they will be treated
+     * as identifiers.
+     *
+     * @param enumValue
+     * @return
+     */
+    private String wrapCharacterStringLiteralInSingleQuotes(String enumValue) {
+        if (enumValue != null && !NUMBER_PATTERN.matcher(enumValue).matches()) {
+            return String.format("'%s'", enumValue);
+        }
+        return enumValue;
     }
 
     private boolean isEnumerated(Expression ex) {

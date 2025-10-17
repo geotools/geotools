@@ -16,21 +16,23 @@
  */
 package org.geotools.http;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
@@ -50,30 +52,36 @@ final class HttpStaticServer {
         connector = new ServerConnector(server);
         connector.setPort(0);
         server.setConnectors(new Connector[] {connector});
-        server.setHandler(new AbstractHandler() {
+        server.setHandler(new Handler.Abstract() {
             @Override
-            public void handle(
-                    String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-                for (Map.Entry<String, String> resource : resources.entrySet()) {
-                    if (target != null && target.equalsIgnoreCase("/" + resource.getKey())) {
-                        // we found the resource we where looking for
-                        response.setContentType("text/xml");
-                        response.setStatus(HttpServletResponse.SC_OK);
-                        baseRequest.setHandled(true);
-                        try (InputStream input =
-                                new ByteArrayInputStream(resource.getValue().getBytes(StandardCharsets.UTF_8))) {
-                            // write the resource content to the HTTP response output stream
-                            IOUtils.copy(input, response.getOutputStream());
-                            // we are done
-                            return;
-                        } catch (Exception exception) {
-                            throw new RuntimeException("Error writing HTTP response.", exception);
+            public boolean handle(Request request, Response response, Callback callback) throws Exception {
+                try {
+                    String path = request.getHttpURI().getPath();
+                    for (Map.Entry<String, String> resource : resources.entrySet()) {
+                        String expected = "/" + resource.getKey();
+                        if (path != null && path.equalsIgnoreCase(expected)) {
+                            // Found the resource: set headers and status on the Response
+                            response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/xml");
+                            response.setStatus(HttpStatus.OK_200);
+
+                            // Write the resource body to the response OutputStream
+                            byte[] bytes = resource.getValue().getBytes(StandardCharsets.UTF_8);
+                            ByteBuffer buffer = ByteBuffer.wrap(bytes);
+                            response.write(true, buffer, callback);
+                            return true;
                         }
                     }
+
+                    // Not found: you can return false to let a downstream DefaultHandler send 404,
+                    // or set it yourself and return true. This mirrors your Jetty 9 behavior:
+                    response.setStatus(404);
+                    callback.succeeded();
+                    return true;
+                } catch (Exception e) {
+                    // Signal failure via the callback in Jetty 10
+                    callback.failed(e);
+                    return true; // we took ownership of the request
                 }
-                // request not handled
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                baseRequest.setHandled(true);
             }
         });
     }

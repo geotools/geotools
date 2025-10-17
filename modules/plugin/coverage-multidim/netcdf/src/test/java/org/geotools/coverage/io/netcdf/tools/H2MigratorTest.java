@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.common.io.Files;
+import jakarta.xml.bind.JAXBException;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +45,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
-import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.parameter.GeneralParameterValue;

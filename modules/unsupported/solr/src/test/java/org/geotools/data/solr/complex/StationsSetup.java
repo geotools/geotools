@@ -16,6 +16,8 @@
  */
 package org.geotools.data.solr.complex;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -24,8 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.IOUtils;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.geotools.data.solr.TestsSolrUtils;

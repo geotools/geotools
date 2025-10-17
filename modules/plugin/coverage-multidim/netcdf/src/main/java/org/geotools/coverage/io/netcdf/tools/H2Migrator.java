@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.io.netcdf.tools;
 
+import jakarta.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -44,7 +45,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;

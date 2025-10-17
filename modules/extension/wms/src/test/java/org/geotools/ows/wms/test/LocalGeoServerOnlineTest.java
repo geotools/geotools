@@ -16,6 +16,7 @@
  */
 package org.geotools.ows.wms.test;
 
+import jakarta.mail.internet.ContentType;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -28,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import javax.imageio.ImageIO;
-import javax.mail.internet.ContentType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.geotools.api.data.ResourceInfo;

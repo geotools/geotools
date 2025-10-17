@@ -16,11 +16,11 @@
  */
 package org.geotools.data.solr;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.solr.common.SolrInputDocument;
 
 /** Station data model, for load from XML */

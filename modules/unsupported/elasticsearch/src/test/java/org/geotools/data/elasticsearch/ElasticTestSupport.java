@@ -130,11 +130,16 @@ public class ElasticTestSupport {
             elasticsearch.withEnv("xpack.security.http.ssl.enabled", "false");
         }
 
+        // Workaround for cgroup v2 issue in CI environments (GitHub Actions) Elasticsearch fails to read cgroup metrics
+        // on some systems with cgroup v2  (at least for the 7.15.2 docker image)
+        elasticsearch.withEnv("ES_JAVA_OPTS", "-Djdk.internal.platform.CgroupSubsystemController.enabled=false");
+
         final String regex = ".*(\"message\":\\s?\"started[\\s?|\"].*|] started\n$)";
         WaitStrategy waitStrategy = Wait.forLogMessage(regex, 1);
         // In CI environments containers may take longer to start up due to resource constraints
         // Use longer timeout in CI (GitHub Actions sets CI=true)
-        int timeoutSeconds = System.getenv("CI") != null ? 180 : 60;
+        final boolean ciEnvironment = System.getenv("CI") != null;
+        int timeoutSeconds = ciEnvironment ? 60 : 15;
         waitStrategy = waitStrategy.withStartupTimeout(Duration.ofSeconds(timeoutSeconds));
         elasticsearch.setWaitStrategy(waitStrategy);
 

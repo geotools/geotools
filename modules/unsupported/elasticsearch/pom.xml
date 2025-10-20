@@ -44,7 +44,7 @@
     <elastic.test.image>docker.elastic.co/elasticsearch/elasticsearch-oss</elastic.test.image>
     <elastic.test.version>7.10.2</elastic.test.version>
     <!-- To run the latest check out https://www.docker.elastic.co/r/elasticsearch/elasticsearch -->
-    <elasticsearch.version>7.14.0</elasticsearch.version>
+    <elasticsearch.version>9.1.5</elasticsearch.version>
     <spatial4j.version>0.8</spatial4j.version>
     <geo.version>0.7.7</geo.version>
   </properties>
@@ -162,8 +162,7 @@
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>1.16.2</version>
+      <artifactId>testcontainers-elasticsearch</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -221,8 +220,11 @@
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
             <configuration>
+              <forkCount>1</forkCount>
+              <reuseForks>false</reuseForks>
               <argLine>-Djava.util.logging.config.file=${project.build.directory}/test-classes/test-classes/logging.properties</argLine>
               <skipTests>${skipOnlineTests}</skipTests>
+              <skipAfterFailureCount>1</skipAfterFailureCount>
               <systemPropertyVariables>
                 <elastic.test.image>${elastic.test.image}</elastic.test.image>
                 <elastic.test.version>${elastic.test.version}</elastic.test.version>

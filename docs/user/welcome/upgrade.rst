@@ -34,7 +34,64 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+.. _update35:
+
+GeoTools 35.x
+-------------
+
+JavaEE to JakarataEE Migration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+GeoTools 35.x has from JavaEE to JakarataEE reflecting the transition of this technology form Oracle to the Eclipse Foundation. Jakarata version mangement is provided by `platform-dependencies/pom.xml` import.
+
+BEFORE:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>javax.xml.bind</groupId>
+     <artifactId>jaxb-api</artifactId>
+   </dependency>
+   <dependency>
+     <groupId>javax.activation</groupId>
+     <artifactId>javax.activation-api</artifactId>
+   </dependency>
+   <dependency>
+     <groupId>javax.mail</groupId>
+     <artifactId>mail</artifactId>
+   </dependency>
+
+.. code-block:: java
+   
+   import javax.xml.bind.annotation.XmlRootElement;
+
+AFTER:
+
+.. code-block:: xml
+
+   <dependency>
+     <groupId>jakarta.xml.bind</groupId>
+     <artifactId>jakarta.xml.bind-api</artifactId>
+   </dependency>
+   <dependency>
+     <groupId>jakarta.activation</groupId>
+     <artifactId>jakarta.activation-api</artifactId>
+   </dependency>
+   <dependency>
+     <groupId>jakarta.mail</groupId>
+     <artifactId>jakarta.mail-api</artifactId>
+   </dependency>
+
+.. code-block:: java
+
+   import jakarta.xml.bind.annotation.XmlRootElement;
+
+Migration instructions:
+
+* `Migrate to Jakarta EE 10 <https://docs.openrewrite.org/recipes/java/migrate/jakarta/jakartaee10)>`__ (Open Rewrite Script)
+
 .. _update34:
+
 
 GeoTools 34.x
 -------------
@@ -42,7 +99,7 @@ GeoTools 34.x
 Maven Bill of Materials
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools has adopted the use of Maven Bill of Materials (BOM) to advertise both the versions of GeoTools modules and the third party libraries used by GeoTools.
+GeoTools 34.x has adopted the use of Maven Bill of Materials (BOM) to advertise both the versions of GeoTools modules and the third party libraries used by GeoTools.
 
 This change will significantly reduce the amount of work expected of downstream projects, however to take advantage of this you will need to perform some clean up of your ``pom.xml``
 to remove dependencies, and especially remove version numbers.

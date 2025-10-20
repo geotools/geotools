@@ -39,10 +39,14 @@ import org.junit.Test;
 
 public class GeoHashGridProcessIT extends ElasticTestSupport {
 
+    @Before
+    @Override
+    public void init() throws Exception {
+        super.init();
+    }
+
     @Test
     public void testAutomaticAggregation() throws Exception {
-        init();
-
         ContentFeatureCollection features = featureSource.getFeatures();
         String aggregationDefinition = null;
         GridCoverage2D grid = new GeoHashGridProcess()
@@ -66,12 +70,6 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
         RenderedImage ri = grid.getRenderedImage();
         assertEquals(256, ri.getWidth());
         assertEquals(128, ri.getHeight());
-    }
-
-    @Before
-    @Override
-    public void init() throws Exception {
-        super.init();
     }
 
     @Test

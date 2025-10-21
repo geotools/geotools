@@ -42,7 +42,7 @@ GeoTools 35.x
 JavaEE to JakartaEE Migration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools 35.x has from JavaEE to JakarataEE reflecting the transition of this technology form Oracle to the Eclipse Foundation. Jakarata version mangement is provided by `platform-dependencies/pom.xml` import.
+GeoTools 35.x has upgraded from JavaEE to JakartaEE reflecting the transition of this technology from Oracle to the Eclipse Foundation. Jakarta version mangement is provided by `platform-dependencies/pom.xml` import.
 
 BEFORE:
 

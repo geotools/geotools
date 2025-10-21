@@ -39,7 +39,7 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 GeoTools 35.x
 -------------
 
-JavaEE to JakarataEE Migration
+JavaEE to JakartaEE Migration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GeoTools 35.x has from JavaEE to JakarataEE reflecting the transition of this technology form Oracle to the Eclipse Foundation. Jakarata version mangement is provided by `platform-dependencies/pom.xml` import.

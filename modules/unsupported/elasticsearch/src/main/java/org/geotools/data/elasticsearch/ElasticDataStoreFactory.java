@@ -29,12 +29,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.hc.client5.http.auth.CredentialsStore;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.geotools.api.data.DataStore;
@@ -297,7 +297,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
                 final String host = matcher.group("host");
                 final Integer port =
                         matcher.group("port") != null ? Integer.valueOf(matcher.group("port")) : defaultPort;
-                httpHosts[index] = new HttpHost(host, port, scheme);
+                httpHosts[index] = new HttpHost(scheme, host, port);
                 auths[index] = new AuthScope(host, port);
             } else {
                 throw new IOException("Unable to parse host");
@@ -337,8 +337,8 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
             }
 
             if (user != null) {
-                final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-                final Credentials credentials = new org.apache.http.auth.UsernamePasswordCredentials(user, password);
+                final CredentialsStore credentialsProvider = new BasicCredentialsProvider();
+                final Credentials credentials = new org.apache.hc.client5.http.auth.UsernamePasswordCredentials(user, password.toCharArray());
                 for (AuthScope scope : auths) {
                     credentialsProvider.setCredentials(scope, credentials);
                 }

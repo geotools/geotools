@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import org.apache.http.client.utils.URIBuilder;
+import org.apache.hc.core5.net.URIBuilder;
 import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cqljson.CQL2Json;

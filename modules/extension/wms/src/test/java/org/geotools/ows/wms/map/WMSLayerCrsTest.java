@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.hc.core5.net.URLEncodedUtils;
+import org.apache.hc.core5.http.NameValuePair;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
@@ -43,7 +43,7 @@ public class WMSLayerCrsTest {
 
     Map<String, String> parseParams(String query) {
 
-        List<org.apache.http.NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
+        List<org.apache.hc.core5.http.NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
         Map<String, String> result = new HashMap<>();
         for (Object param : params) {
             NameValuePair pair = (NameValuePair) param;

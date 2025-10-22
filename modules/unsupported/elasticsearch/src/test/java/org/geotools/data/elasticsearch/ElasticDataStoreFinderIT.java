@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.apache.http.HttpHost;
+import org.apache.hc.core5.http.HttpHost;
 import org.elasticsearch.client.Node;
 import org.elasticsearch.client.RestClient;
 import org.geotools.api.data.DataStore;
@@ -87,43 +87,43 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
 
     @Test
     public void testCreateRestClient() throws IOException {
-        assertEquals(ImmutableList.of(new HttpHost("localhost", port, "http")), getHosts("localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("http", "localhost", port)), getHosts("localhost"));
         assertEquals(
-                ImmutableList.of(new HttpHost("localhost.localdomain", port, "http")),
+                ImmutableList.of(new HttpHost("http", "localhost.localdomain", port)),
                 getHosts("localhost.localdomain"));
 
-        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "http")), getHosts("localhost:9201"));
+        assertEquals(ImmutableList.of(new HttpHost("http", "localhost", 9201)), getHosts("localhost:9201"));
         assertEquals(
-                ImmutableList.of(new HttpHost("localhost.localdomain", 9201, "http")),
+                ImmutableList.of(new HttpHost("http", "localhost.localdomain", 9201)),
                 getHosts("localhost.localdomain:9201"));
 
-        assertEquals(ImmutableList.of(new HttpHost("localhost", port, "http")), getHosts("http://localhost"));
-        assertEquals(ImmutableList.of(new HttpHost("localhost", 9200, "http")), getHosts("http://localhost:9200"));
-        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "http")), getHosts("http://localhost:9201"));
+        assertEquals(ImmutableList.of(new HttpHost("http", "localhost", port)), getHosts("http://localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("http", "localhost", 9200)), getHosts("http://localhost:9200"));
+        assertEquals(ImmutableList.of(new HttpHost("http", "localhost", 9201)), getHosts("http://localhost:9201"));
 
-        assertEquals(ImmutableList.of(new HttpHost("localhost", port, "https")), getHosts("https://localhost"));
-        assertEquals(ImmutableList.of(new HttpHost("localhost", 9200, "https")), getHosts("https://localhost:9200"));
-        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "https")), getHosts("https://localhost:9201"));
+        assertEquals(ImmutableList.of(new HttpHost("https", "localhost", port)), getHosts("https://localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("https", "localhost", 9200)), getHosts("https://localhost:9200"));
+        assertEquals(ImmutableList.of(new HttpHost("https", "localhost", 9201)), getHosts("https://localhost:9201"));
 
         assertEquals(
                 ImmutableList.of(
-                        new HttpHost("somehost.somedomain", port, "http"),
-                        new HttpHost("anotherhost.somedomain", port, "http")),
+                        new HttpHost("http", "somehost.somedomain", port),
+                        new HttpHost("http", "anotherhost.somedomain", port)),
                 getHosts("somehost.somedomain:" + port + ",anotherhost.somedomain:" + port));
         assertEquals(
                 ImmutableList.of(
-                        new HttpHost("somehost.somedomain", port, "https"),
-                        new HttpHost("anotherhost.somedomain", port, "https")),
+                        new HttpHost("https", "somehost.somedomain", port),
+                        new HttpHost("https", "anotherhost.somedomain", port)),
                 getHosts("https://somehost.somedomain:" + port + ",https://anotherhost.somedomain:" + port));
         assertEquals(
                 ImmutableList.of(
-                        new HttpHost("somehost.somedomain", port, "https"),
-                        new HttpHost("anotherhost.somedomain", port, "https")),
+                        new HttpHost("https", "somehost.somedomain", port),
+                        new HttpHost("https", "anotherhost.somedomain", port)),
                 getHosts("https://somehost.somedomain:" + port + ", https://anotherhost.somedomain:" + port));
         assertEquals(
                 ImmutableList.of(
-                        new HttpHost("somehost.somedomain", port, "https"),
-                        new HttpHost("anotherhost.somedomain", port, "http")),
+                        new HttpHost("https", "somehost.somedomain", port),
+                        new HttpHost("http", "anotherhost.somedomain", port)),
                 getHosts("https://somehost.somedomain:" + port + ",anotherhost.somedomain:" + port));
     }
 

@@ -30,9 +30,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.StatusLine;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.message.StatusLine;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
@@ -62,7 +62,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
         String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
-        HttpHost httpHost = new HttpHost(host, port, "http");
+        HttpHost httpHost = new HttpHost("http", host, port);
         try (RestClient client = RestClient.builder(httpHost).build()) {
 
             DataStore dataStore = new ElasticDataStore(client, indexName);
@@ -78,7 +78,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
         String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
 
-        HttpHost httpHost = new HttpHost(host, port, "http");
+        HttpHost httpHost = new HttpHost("http", host, port);
         try (RestClient client = RestClient.builder(httpHost).build()) {
 
             DataStore dataStore = new ElasticDataStore(

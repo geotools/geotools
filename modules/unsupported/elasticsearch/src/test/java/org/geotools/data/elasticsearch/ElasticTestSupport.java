@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.logging.Logger;
-import org.apache.http.HttpHost;
+import org.apache.hc.core5.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.temporal.Instant;
@@ -177,7 +177,7 @@ public class ElasticTestSupport {
         port = elasticsearch.getFirstMappedPort();
         indexName = "gt_integ_test_" + System.nanoTime();
         client = new RestElasticClient(
-                RestClient.builder(new HttpHost(host, port, "http")).build());
+                RestClient.builder(new HttpHost("http", host, port)).build());
         enableIdFieldDataIfNeeded(client);
         Map<String, Serializable> params = createConnectionParams();
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();

@@ -17,11 +17,11 @@
  */
 package org.geotools.ysld.parse;
 
+import jakarta.annotation.Nullable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Nullable;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 

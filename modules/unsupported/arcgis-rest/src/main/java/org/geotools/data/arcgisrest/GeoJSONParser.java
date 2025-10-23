@@ -451,7 +451,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
                 List<double[]> rings = this.parsePolygonCoordinates();
                 this.reader.endObject();
                 return (Geometry) builder.polygon(rings.get(0)); // FIXME: what about
-                // holes?
+            // holes?
 
             case GEOMETRY_MULTIPOLYGON:
                 this.checkPropertyName(FEATURE_GEOMETRY_COORDINATES);

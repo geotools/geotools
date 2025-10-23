@@ -5,16 +5,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.net.URLEncodedUtils;
-import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -27,6 +22,7 @@ import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMSTestUtils;
 import org.geotools.ows.wms.WebMapServer;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -45,17 +41,6 @@ public class WMSCoverageReaderTest {
     public static final String BOOLEAN_VP = "BOOLEAN";
     public static final String ESCAPED_CHARACTERS = "ESCAPED_CHARACTERS";
 
-    Map<String, String> parseParams(String query) {
-
-        List<NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
-        Map<String, String> result = new HashMap<>();
-        for (Object param : params) {
-            NameValuePair pair = (NameValuePair) param;
-            result.put(pair.getName().toUpperCase(), pair.getValue());
-        }
-        return result;
-    }
-
     @Before
     public void setup() {
         System.setProperty("org.geotools.referencing.forceXY", "true");
@@ -71,7 +56,7 @@ public class WMSCoverageReaderTest {
     }
 
     @Test
-    public void testWithVendorParameters() throws Exception {
+    public void testWithVendorParameters() throws IOException, ServiceException, FactoryException {
         Map<String, String> vendorParameters = Map.of(
                 STRING_VP, "5,10,20,5,1,3,1,,,,1",
                 NUMBER_VP, "-95.0",
@@ -90,7 +75,7 @@ public class WMSCoverageReaderTest {
                     URL caps130 = WMSCoverageReaderTest.class.getResource("caps130.xml");
                     return new MockHttpResponse(caps130, "text/xml");
                 } else if (url.getQuery().contains("GetMap") && url.getQuery().contains("world4326")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
 
                     // Standard checks for parameters to see if any are lost
                     assertEquals("1.3.0", params.get("VERSION"));
@@ -128,7 +113,7 @@ public class WMSCoverageReaderTest {
         layer.setVendorParameters(vendorParameters);
 
         WMSCoverageReader reader = new WMSCoverageReader(server, layer);
-        reader.read(new GeneralParameterValue[] {ggParam});
+        reader.read(ggParam);
     }
 
     @Test
@@ -142,7 +127,7 @@ public class WMSCoverageReaderTest {
         final Parameter<GridGeometry2D> ggParam =
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(gg);
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggParam});
+        GridCoverage2D coverage = reader.read(ggParam);
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
         assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
     }
@@ -158,7 +143,7 @@ public class WMSCoverageReaderTest {
         final Parameter<GridGeometry2D> ggParam =
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(gg);
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggParam});
+        GridCoverage2D coverage = reader.read(ggParam);
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
         assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
     }
@@ -179,12 +164,12 @@ public class WMSCoverageReaderTest {
         final Parameter<GridGeometry2D> ggParam =
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(gg);
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggParam});
+        GridCoverage2D coverage = reader.read(ggParam);
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
         assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
     }
 
-    private WMSCoverageReader getReader4326wms13() throws IOException, ServiceException, MalformedURLException {
+    private WMSCoverageReader getReader4326wms13() throws IOException, ServiceException {
         // prepare the responses
         MockHttpClient client = new MockHttpClient() {
 
@@ -194,7 +179,7 @@ public class WMSCoverageReaderTest {
                     URL caps130 = WMSCoverageReaderTest.class.getResource("caps130.xml");
                     return new MockHttpResponse(caps130, "text/xml");
                 } else if (url.getQuery().contains("GetMap") && url.getQuery().contains("world4326")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
                     assertEquals("1.3.0", params.get("VERSION"));
                     assertEquals("-90.0,-180.0,90.0,180.0", params.get("BBOX"));
                     assertEquals("EPSG:4326", params.get("CRS"));
@@ -208,8 +193,7 @@ public class WMSCoverageReaderTest {
         };
         // setup the reader
         WebMapServer server = new WebMapServer(new URL("http://geoserver.org/geoserver/wms"), client);
-        WMSCoverageReader reader = new WMSCoverageReader(server, getLayer(server, "world4326"));
-        return reader;
+        return new WMSCoverageReader(server, getLayer(server, "world4326"));
     }
 
     @Test
@@ -229,7 +213,7 @@ public class WMSCoverageReaderTest {
                     URL caps130 = WMSCoverageReaderTest.class.getResource("caps130.xml");
                     return new MockHttpResponse(caps130, "text/xml");
                 } else if (url.getQuery().contains("GetMap") && url.getQuery().contains("world4326")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
                     assertEquals("1.3.0", params.get("VERSION"));
                     assertEquals("-90.0,-180.0,90.0,180.0", params.get("BBOX"));
                     assertEquals("EPSG:4326", params.get("CRS"));
@@ -259,7 +243,7 @@ public class WMSCoverageReaderTest {
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(gg);
         try {
-            reader.read(new GeneralParameterValue[] {ggParam});
+            reader.read(ggParam);
             fail("Should have thrown an exception, the GetMap content type was null");
         } catch (Exception e) {
             // it's fine
@@ -281,12 +265,12 @@ public class WMSCoverageReaderTest {
         final Parameter<GridGeometry2D> ggParam =
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(gg);
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggParam});
+        GridCoverage2D coverage = reader.read(ggParam);
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
         assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
     }
 
-    private WMSCoverageReader getReader4326wms11() throws IOException, ServiceException, MalformedURLException {
+    private WMSCoverageReader getReader4326wms11() throws IOException, ServiceException, URISyntaxException {
         // prepare the responses
         MockHttpClient client = new MockHttpClient() {
 
@@ -296,7 +280,7 @@ public class WMSCoverageReaderTest {
                     URL caps130 = WMSCoverageReaderTest.class.getResource("caps110.xml");
                     return new MockHttpResponse(caps130, "text/xml");
                 } else if (url.getQuery().contains("GetMap") && url.getQuery().contains("world4326")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
                     assertEquals("1.1.0", params.get("VERSION"));
                     assertEquals("-180.0,-90.0,180.0,90.0", params.get("BBOX"));
                     assertEquals("EPSG:4326", params.get("SRS"));
@@ -310,8 +294,7 @@ public class WMSCoverageReaderTest {
         };
         // setup the reader
         WebMapServer server = new WebMapServer(new URL("http://geoserver.org/geoserver/wms"), client);
-        WMSCoverageReader reader = new WMSCoverageReader(server, getLayer(server, "world4326"));
-        return reader;
+        return new WMSCoverageReader(server, getLayer(server, "world4326"));
     }
 
     @Test
@@ -325,7 +308,7 @@ public class WMSCoverageReaderTest {
                     URL caps130 = WMSCoverageReaderTest.class.getResource("caps130_crs84.xml");
                     return new MockHttpResponse(caps130, "text/xml");
                 } else if (url.getQuery().contains("GetMap") && url.getQuery().contains("world84")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
                     assertEquals("1.3.0", params.get("VERSION"));
                     assertEquals("CRS:84", params.get("CRS"));
                     assertEquals("-180.0,-90.0,180.0,90.0", params.get("BBOX"));
@@ -348,7 +331,7 @@ public class WMSCoverageReaderTest {
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(gg);
 
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggParam});
+        GridCoverage2D coverage = reader.read(ggParam);
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, coverage.getCoordinateReferenceSystem()));
         assertEquals(worldEnvelope, new ReferencedEnvelope(coverage.getEnvelope()));
     }

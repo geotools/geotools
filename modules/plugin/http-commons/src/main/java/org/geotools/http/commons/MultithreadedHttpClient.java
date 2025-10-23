@@ -37,6 +37,7 @@ import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.StandardCookieSpec;
 import org.apache.hc.client5.http.impl.auth.BasicAuthCache;
@@ -44,6 +45,7 @@ import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.auth.BasicScheme;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.client5.http.routing.RoutingSupport;
 import org.apache.hc.core5.http.ClassicHttpResponse;
@@ -88,19 +90,25 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
 
     private HttpClient client;
 
-    private RequestConfig connectionConfig;
+    private ConnectionConfig connectionConfig;
+
+    private RequestConfig requestConfig;
 
     private AuthScope authScope;
 
     public MultithreadedHttpClient() {
-        connectionManager = new PoolingHttpClientConnectionManager();
+        connectionConfig = ConnectionConfig.custom()
+                .setSocketTimeout(Timeout.ofSeconds(30))
+                .setConnectTimeout(Timeout.ofSeconds(30))
+                .build();
+        connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setDefaultConnectionConfig(connectionConfig)
+                .build();
         connectionManager.setMaxTotal(6);
         connectionManager.setDefaultMaxPerRoute(6);
-        connectionConfig = RequestConfig.custom()
+        requestConfig = RequestConfig.custom()
                 .setCookieSpec(StandardCookieSpec.RELAXED)
                 .setExpectContinueEnabled(true)
-                .setResponseTimeout(Timeout.ofSeconds(30))
-                .setConnectTimeout(Timeout.ofSeconds(30))
                 .build();
 
         client = builder().build();
@@ -127,6 +135,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public HttpMethodResponse post(
             URL url, InputStream postContent, String postContentType, Map<String, String> headers) throws IOException {
 
@@ -136,7 +145,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
             headers = new HashMap<>(headers); // avoid parameter modification
         }
         HttpPost postMethod = new HttpPost(url.toExternalForm());
-        postMethod.setConfig(connectionConfig);
+        postMethod.setConfig(requestConfig);
         HttpEntity requestEntity;
         if (credsProvider != null) {
             // we can't read the input stream twice as would be needed if the server asks us to
@@ -191,9 +200,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         }
         resp = client.executeOpen(RoutingSupport.determineHost(method), method, localContext);
 
-        HttpMethodResponse response = new HttpMethodResponse(resp);
-
-        return response;
+        return new HttpMethodResponse(resp);
     }
 
     @Override
@@ -219,7 +226,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         }
 
         HttpGet getMethod = new HttpGet(url.toExternalForm());
-        getMethod.setConfig(connectionConfig);
+        getMethod.setConfig(requestConfig);
 
         if (tryGzip) {
             headers.put("Accept-Encoding", "gzip");
@@ -285,19 +292,19 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
 
     @Override
     public void setConnectTimeout(int connectTimeout) {
-        connectionConfig = RequestConfig.copy(connectionConfig)
+        connectionConfig = ConnectionConfig.copy(connectionConfig)
                 .setConnectTimeout(Timeout.ofSeconds(connectTimeout))
                 .build();
     }
 
     @Override
     public int getReadTimeout() {
-        return (int) connectionConfig.getResponseTimeout().toSeconds();
+        return (int) requestConfig.getResponseTimeout().toSeconds();
     }
 
     @Override
     public void setReadTimeout(int readTimeout) {
-        connectionConfig = RequestConfig.copy(connectionConfig)
+        requestConfig = RequestConfig.copy(requestConfig)
                 .setResponseTimeout(Timeout.ofSeconds(readTimeout))
                 .build();
     }
@@ -387,7 +394,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         public String getResponseCharset() {
             final Header encoding = new BasicHeader(
                     HttpHeaders.CONTENT_ENCODING, methodResponse.getEntity().getContentEncoding());
-            return encoding == null ? null : encoding.getValue();
+            return encoding.getValue();
         }
     }
 }

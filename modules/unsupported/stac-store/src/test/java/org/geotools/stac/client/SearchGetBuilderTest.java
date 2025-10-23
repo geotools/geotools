@@ -75,7 +75,7 @@ public class SearchGetBuilderTest {
     public void testTextFilter() throws Exception {
         SearchQuery search = new SearchQuery();
         search.setFilter(CQL.toFilter("A = 10"));
-        assertURLEquals(BASE + "&filter=A+%3D+10&filter-lang=cql2-text", BUILDER.toGetURL(search));
+        assertURLEquals(BASE + "&filter=A%20%3D%2010&filter-lang=cql2-text", BUILDER.toGetURL(search));
     }
 
     @Test

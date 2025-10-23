@@ -12,11 +12,10 @@
   <description>A DataStore reading data from a STAC API</description>
 
   <dependencies>
-  <dependency>
-   <groupId>org.apache.httpcomponents.client5</groupId>
-   <artifactId>httpclient5</artifactId>
-   <version>5.4.4</version>
-  </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents.client5</groupId>
+      <artifactId>httpclient5</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-http-commons</artifactId>

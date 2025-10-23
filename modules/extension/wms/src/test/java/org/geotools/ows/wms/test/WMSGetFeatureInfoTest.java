@@ -2,13 +2,9 @@ package org.geotools.ows.wms.test;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.net.URLEncodedUtils;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -18,6 +14,7 @@ import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMSTestUtils;
 import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.map.WMSCoverageReader;
 import org.geotools.ows.wms.map.WMSCoverageReaderTest;
@@ -48,11 +45,11 @@ public class WMSGetFeatureInfoTest {
                 if (url.getQuery().contains("GetCapabilities")) {
                     return new MockHttpResponse(brunar130, "text/xml");
                 } else if (url.getQuery().contains("GetFeatureInfo")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams((url.getQuery()));
 
                     // Expected position request
-                    if (!Double.valueOf(params.get("I")).equals(Double.valueOf(107))
-                            || !Double.valueOf(params.get("J")).equals(Double.valueOf(2))) {
+                    if (!Double.valueOf(params.get("I")).equals(107.0)
+                            || !Double.valueOf(params.get("J")).equals(2.0)) {
                         // this will cause the test to fail
                         throw new IllegalArgumentException();
                     } else {
@@ -108,16 +105,5 @@ public class WMSGetFeatureInfoTest {
             super(wms, layer);
             this.reader = reader;
         }
-    }
-
-    Map<String, String> parseParams(String query) {
-
-        List<NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
-        Map<String, String> result = new HashMap<>();
-        for (Object param : params) {
-            NameValuePair pair = (NameValuePair) param;
-            result.put(pair.getName().toUpperCase(), pair.getValue());
-        }
-        return result;
     }
 }

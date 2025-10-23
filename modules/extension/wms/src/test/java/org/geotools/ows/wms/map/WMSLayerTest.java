@@ -22,18 +22,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.net.URLEncodedUtils;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
+import org.geotools.ows.wms.WMSTestUtils;
 import org.geotools.ows.wms.WMSUtils;
 import org.geotools.ows.wms.WebMapServer;
 import org.junit.After;
@@ -46,16 +43,6 @@ import org.junit.Test;
 public class WMSLayerTest {
     private WebMapServer server;
 
-    Map<String, String> parseParams(String query) {
-
-        List<org.apache.hc.core5.http.NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
-        Map<String, String> result = new HashMap<>();
-        for (Object param : params) {
-            NameValuePair pair = (NameValuePair) param;
-            result.put(pair.getName().toUpperCase(), pair.getValue());
-        }
-        return result;
-    }
     /** @throws java.lang.Exception */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {}
@@ -72,7 +59,7 @@ public class WMSLayerTest {
             @Override
             public HTTPResponse get(URL url) throws IOException {
                 if (url.getQuery().contains("GetCapabilities")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
                     URL caps = null;
                     if ("1.3.0".equals(params.get("VERSION"))) {
                         caps = WMSCoverageReaderTest.class.getResource("caps130.xml");
@@ -134,7 +121,7 @@ public class WMSLayerTest {
             @Override
             public HTTPResponse get(URL url) throws IOException {
                 if (url.getQuery().contains("GetCapabilities")) {
-                    Map<String, String> params = parseParams(url.getQuery());
+                    Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
                     URL caps = null;
                     if ("1.3.0".equals(params.get("VERSION"))) {
                         caps = WMSCoverageReaderTest.class.getResource("caps130_jpeg_only.xml");

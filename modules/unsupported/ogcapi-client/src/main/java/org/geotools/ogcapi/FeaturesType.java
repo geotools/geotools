@@ -57,8 +57,7 @@ public class FeaturesType {
         this.links = links;
     }
 
-    public static FeaturesType fetchContents(URL featureURL)
-            throws JsonParseException, IOException {
+    public static FeaturesType fetchContents(URL featureURL) throws JsonParseException, IOException {
         FeaturesType ret = new FeaturesType();
         JsonFactory factory = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper();
@@ -72,18 +71,15 @@ public class FeaturesType {
                 if (token == null) {
                     break;
                 }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "title".equalsIgnoreCase(parser.currentName())) {
+                if (JsonToken.FIELD_NAME.equals(token) && "title".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
                     ret.setTitle(parser.getValueAsString());
                 }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "description".equalsIgnoreCase(parser.currentName())) {
+                if (JsonToken.FIELD_NAME.equals(token) && "description".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
                     ret.setDescription(parser.getValueAsString());
                 }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "links".equalsIgnoreCase(parser.currentName())) {
+                if (JsonToken.FIELD_NAME.equals(token) && "links".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
                     if (!JsonToken.START_ARRAY.equals(token)) {
                         throw new UnsupportedOperationException("Was expecting an array of links");
@@ -103,9 +99,7 @@ public class FeaturesType {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("OGCAPI Features:\n")
-                .append("\tTitle: " + title + "\n")
-                .append("\tDesc: " + description + "\n");
+        sb.append("OGCAPI Features:\n").append("\tTitle: " + title + "\n").append("\tDesc: " + description + "\n");
         sb.append("\tLinks:\n");
         for (Link l : links) {
             sb.append("\t\t" + l.toString()).append("\n");

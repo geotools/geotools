@@ -55,12 +55,10 @@ public class CollectionsType {
                     break;
                 }
 
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "collections".equalsIgnoreCase(parser.currentName())) {
+                if (JsonToken.FIELD_NAME.equals(token) && "collections".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
                     if (!JsonToken.START_ARRAY.equals(token)) {
-                        throw new UnsupportedOperationException(
-                                "Was expecting an array of collections");
+                        throw new UnsupportedOperationException("Was expecting an array of collections");
                     }
                     while (parser.nextToken() == JsonToken.START_OBJECT) { // collections
                         // array
@@ -74,22 +72,18 @@ public class CollectionsType {
                                 if ("self".equalsIgnoreCase(link.get("rel").asText())
                                         && APPLICATION_JSON.equalsIgnoreCase(
                                                 link.get("type").asText())) {
-                                    CollectionType realCollection =
-                                            CollectionType.buildRealCollection(
-                                                    new URL(link.get("href").asText()));
-                                    ret.collections.put(
-                                            realCollection.getIdentifier(), realCollection);
+                                    CollectionType realCollection = CollectionType.buildRealCollection(
+                                            new URL(link.get("href").asText()));
+                                    ret.collections.put(realCollection.getIdentifier(), realCollection);
                                 }
                             }
                         }
                     }
                 }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "crs".equalsIgnoreCase(parser.currentName())) {
+                if (JsonToken.FIELD_NAME.equals(token) && "crs".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
                     if (!JsonToken.START_ARRAY.equals(token)) {
-                        throw new UnsupportedOperationException(
-                                "Was expecting an array of CRS Strings");
+                        throw new UnsupportedOperationException("Was expecting an array of CRS Strings");
                     }
                     while (parser.nextToken() == JsonToken.START_OBJECT) {
 

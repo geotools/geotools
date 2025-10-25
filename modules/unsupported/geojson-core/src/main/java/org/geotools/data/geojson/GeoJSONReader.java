@@ -485,7 +485,9 @@ public class GeoJSONReader implements AutoCloseable {
                     descriptor = schema.getDescriptor(n.getKey());
                 }
                 Class<?> binding = descriptor.getType().getBinding();
-                if (binding == Integer.class) {
+                if (n.getValue().isNull()) {
+                    builder.set(n.getKey(), null);
+                } else if (binding == Integer.class) {
                     builder.set(n.getKey(), n.getValue().asInt());
                 } else if (binding == Double.class) {
                     builder.set(n.getKey(), n.getValue().asDouble());

@@ -977,9 +977,22 @@ public class SimpleFeatureTypeBuilder {
         // clear the attributes
         b.attributes().clear();
 
-        // add attributes in order
+        // add recognized attributes in order and only once
         for (String type : attributes) {
-            b.add(original.getDescriptor(type));
+            AttributeDescriptor found = original.getDescriptor(type);
+            if (found == null && type.contains("/")) {
+                // requested attribute seems to be xpath, so include its root
+                found = original.getDescriptor(type.substring(0, type.indexOf('/')));
+            }
+            if (found == null) {
+                throw new IllegalArgumentException("Attribute '" + type + "' not found");
+            }
+            if (!b.attributes().contains(found)) {
+                // attribute not yet included, so add it
+                b.add(found);
+            } else if (attributes.size() != new HashSet<String>(attributes).size()) {
+                throw new IllegalArgumentException("Attribute '" + type + "' specified more than once");
+            }
         }
 
         // handle default geometry

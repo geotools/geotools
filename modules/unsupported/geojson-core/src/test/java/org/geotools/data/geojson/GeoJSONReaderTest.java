@@ -445,6 +445,229 @@ public class GeoJSONReaderTest {
     }
 
     @Test
+    public void testReadNullInteger() throws Exception {
+        String geojson = "{"
+                + "'type': 'FeatureCollection',"
+                + "'features': "
+                + "[{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.0',"
+                + "  'properties': {"
+                + "    'integer': 1"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "},"
+                + "{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.1',"
+                + "  'properties': {"
+                + "    'integer': null"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "}"
+                + "]"
+                + "}";
+        geojson = geojson.replace('\'', '"');
+        try (SimpleFeatureIterator features =
+                GeoJSONReader.parseFeatureCollection(geojson).features()) {
+            assertEquals(1, features.next().getAttribute("integer"));
+            assertNull(features.next().getAttribute("integer"));
+        }
+    }
+
+    @Test
+    public void testReadNullDouble() throws Exception {
+        String geojson = "{"
+                + "'type': 'FeatureCollection',"
+                + "'features': "
+                + "[{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.0',"
+                + "  'properties': {"
+                + "    'double': 1.1"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "},"
+                + "{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.1',"
+                + "  'properties': {"
+                + "    'double': null"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "}"
+                + "]"
+                + "}";
+        geojson = geojson.replace('\'', '"');
+        try (SimpleFeatureIterator features =
+                GeoJSONReader.parseFeatureCollection(geojson).features()) {
+            assertEquals(1.1, features.next().getAttribute("double"));
+            assertNull(features.next().getAttribute("double"));
+        }
+    }
+
+    @Test
+    public void testReadNullString() throws Exception {
+        String geojson = "{"
+                + "'type': 'FeatureCollection',"
+                + "'features': "
+                + "[{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.0',"
+                + "  'properties': {"
+                + "    'string':'hello'"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "},"
+                + "{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.1',"
+                + "  'properties': {"
+                + "    'string': null"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "}"
+                + "]"
+                + "}";
+        geojson = geojson.replace('\'', '"');
+        try (SimpleFeatureIterator features =
+                GeoJSONReader.parseFeatureCollection(geojson).features()) {
+            assertEquals("hello", features.next().getAttribute("string"));
+            assertNull(features.next().getAttribute("string"));
+        }
+    }
+
+    @Test
+    public void testReadNullBoolean() throws Exception {
+        String geojson = "{"
+                + "'type': 'FeatureCollection',"
+                + "'features': "
+                + "[{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.0',"
+                + "  'properties': {"
+                + "    'bool':true"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "},"
+                + "{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.1',"
+                + "  'properties': {"
+                + "    'bool': null"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "}"
+                + "]"
+                + "}";
+        geojson = geojson.replace('\'', '"');
+        try (SimpleFeatureIterator features =
+                GeoJSONReader.parseFeatureCollection(geojson).features()) {
+            assertEquals(true, features.next().getAttribute("bool"));
+            assertNull(features.next().getAttribute("bool"));
+        }
+    }
+
+    @Test
+    public void testReadNullObject() throws Exception {
+        String geojson = "{"
+                + "'type': 'FeatureCollection',"
+                + "'features': "
+                + "[{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.0',"
+                + "  'properties': {"
+                + "    'object':{}"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "},"
+                + "{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.1',"
+                + "  'properties': {"
+                + "    'object': null"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "}"
+                + "]"
+                + "}";
+        geojson = geojson.replace('\'', '"');
+        try (SimpleFeatureIterator features =
+                GeoJSONReader.parseFeatureCollection(geojson).features()) {
+            assertEquals(
+                    ObjectNode.class, features.next().getAttribute("object").getClass());
+            assertNull(features.next().getAttribute("object"));
+        }
+    }
+
+    @Test
+    public void testReadNullArray() throws Exception {
+        String geojson = "{"
+                + "'type': 'FeatureCollection',"
+                + "'features': "
+                + "[{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.0',"
+                + "  'properties': {"
+                + "    'array': []"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "},"
+                + "{"
+                + "  'type': 'Feature',"
+                + "  'id': 'features.1',"
+                + "  'properties': {"
+                + "    'array': null"
+                + "  },"
+                + "  'geometry': {"
+                + "    'type': 'Point',"
+                + "    'coordinates': [0.1, 0.1]"
+                + "  }"
+                + "}"
+                + "]"
+                + "}";
+        geojson = geojson.replace('\'', '"');
+        try (SimpleFeatureIterator features =
+                GeoJSONReader.parseFeatureCollection(geojson).features()) {
+            assertEquals(List.of(), features.next().getAttribute("array"));
+            assertNull(features.next().getAttribute("array"));
+        }
+    }
+
+    @Test
     public void testObjectInList() throws Exception {
         String geojson = "{"
                 + "  'type': 'Feature',"

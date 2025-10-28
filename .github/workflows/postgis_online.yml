@@ -10,18 +10,16 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        postgis: [ 11-3.3, 18-3.6 ]
+        java: [ 17 ]
 
     steps:
-    - uses: huaxk/postgis-action@v1
-      with:
-        postgresql version: '11'
-        postgresql password: 'geotools'
-        postgresql user: 'geotools'
-        postgresql db: 'gttest'
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v5
       with:
-        java-version: 17
+        java-version: ${{ matrix.java }}
         distribution: 'temurin'
     - uses: actions/checkout@v5
     - name: Maven repository caching
@@ -31,39 +29,16 @@ jobs:
         key: gt-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           gt-maven-
+    - name: Setup test environment for PostGIS ${{ matrix.postgis }}
+      run: |
+        ./build/ci/postgis/start-postgis.sh ${{ matrix.postgis }}
+        ./build/ci/postgis/setup-postgis.sh
     - name: Build GeoTools dependent modules (no tests, prepare fresh artifacts)
       run: mvn -B clean install -T1C -U -Dall --file pom.xml -DskipTests -pl modules/plugin/jdbc/jdbc-postgis,modules/plugin/imagemosaic -am -Dspotless.apply.skip=true
     - name: Build PostGIS data store with online tests
       run: |
-        mkdir ~/.geotools
-        cat <<EOT >>   ~/.geotools/postgis.properties
-        user=geotools
-        port=5432
-        password=geotools
-        passwd=geotools
-        url=jdbc\:postgresql\://localhost/gttest
-        host=localhost
-        database=gttest
-        driver=org.postgresql.Driver
-        EOT
-        cat <<EOT >>   ~/.geotools/postgis_datastore.properties
-        SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory
-        user=geotools
-        port=5432
-        password=geotools
-        passwd=geotools
-        url=jdbc\:postgresql\://localhost/gttest
-        host=localhost
-        database=gttest
-        schema=public
-        Loose\ bbox=true
-        Estimated\ extends=false
-        Connection\ timeout=10
-        validate\ connections=true
-        preparedStatements=false
-        EOT
-        mvn -B clean install --file modules/plugin/jdbc/jdbc-postgis/pom.xml -Ponline -nsu
-        mvn -B clean install --file modules/plugin/imagemosaic/pom.xml -Ponline -nsu
+        mvn -B clean install -pl modules/plugin/jdbc/jdbc-postgis -Ponline -nsu
+        mvn -B clean install -pl modules/plugin/imagemosaic -Ponline -nsu
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

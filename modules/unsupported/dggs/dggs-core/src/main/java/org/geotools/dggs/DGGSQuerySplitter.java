@@ -156,7 +156,8 @@ public class DGGSQuerySplitter {
 
         // turn all spatial filters into checks against zoneId, if possible
         Filter adapted = DGGSFilterTransformer.adapt(filter, dggs, resolutionCalculator, resolution, zoneAttribute);
-        if (resolution != DGGSFilterTransformer.RESOLUTION_NOT_SPECIFIED) {
+        if (!resolutionCalculator.hasFixedResolution()
+                && resolution != DGGSFilterTransformer.RESOLUTION_NOT_SPECIFIED) {
             PropertyIsEqualTo resolutionFilter = FF.equals(FF.property(DGGSStore.RESOLUTION), FF.literal(resolution));
             result.setFilter(FF.and(adapted, resolutionFilter));
         } else {

@@ -1,0 +1,2 @@
+org.geotools.dggs.clickhouse.ClickHouseJDBCDataStoreFactory
+org.geotools.dggs.clickhouse.ClickHouseJDBCJNDIDataStoreFactory

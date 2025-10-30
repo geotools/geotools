@@ -16,10 +16,10 @@
  */
 package org.geotools.ogcapi;
 
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 public final class OgcApiUtils {
     private OgcApiUtils() {}

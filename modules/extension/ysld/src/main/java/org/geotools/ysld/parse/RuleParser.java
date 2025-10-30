@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.parse;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicLegend;

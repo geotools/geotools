@@ -883,29 +883,20 @@ public class PostGISDialect extends BasicSQLDialect {
     protected Integer getDimensionFromFirstGeo(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
 
-        // If PostGIS >= 2.0.0, use ST_DIMENSION
-        // http://postgis.net/docs/ST_Dimension.html
-        // If PostGIS < 2.0.0, use DIMENSION
-        String dimFunction = getVersion(cx).compareTo(V_2_0_0) >= 0 ? "ST_DIMENSION" : "DIMENSION";
-
         Statement statement = null;
         ResultSet result = null;
         try {
             // cast column to a geometry so this will work on both geometry and geography columns
-            String sqlStatement = "SELECT "
-                    + dimFunction
-                    + "("
+            String sqlStatement = "SELECT ST_NDIMS("
                     + escapeName(columnName)
-                    + "::geometry) "
-                    + "FROM "
+                    + "::geometry) FROM "
                     + escapeName(schemaName)
                     + "."
                     + escapeName(tableName)
                     + " "
                     + "WHERE "
                     + escapeName(columnName)
-                    + " IS NOT NULL "
-                    + "LIMIT 1";
+                    + " IS NOT NULL LIMIT 1";
             statement = cx.createStatement();
             result = statement.executeQuery(sqlStatement);
             if (result.next()) {

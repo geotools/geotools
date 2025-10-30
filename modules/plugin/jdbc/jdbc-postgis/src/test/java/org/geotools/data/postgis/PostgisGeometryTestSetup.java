@@ -37,6 +37,9 @@ public class PostgisGeometryTestSetup extends JDBCGeometryTestSetup {
                 + "-130.0 40.0, -130.0 50.0, -130.0 40.0, -120.0 40.0))', 4326) as geom;");
         run("CREATE TABLE dim_collection AS SELECT ST_GeomFromText('GEOMETRYCOLLECTION("
                 + "POINT(-120.0 40.0),LINESTRING(-120.0 40.0,-130.0 50.0))',4326) as geom");
+
+        run("CREATE TABLE dim_point3d (geom geometry(POINTZ, 3857));");
+        run("INSERT INTO dim_point3d (geom) VALUES (ST_GeomFromText('POINTZ(1 2 3)', 3857));");
     }
 
     @Override
@@ -45,6 +48,7 @@ public class PostgisGeometryTestSetup extends JDBCGeometryTestSetup {
         dropSpatialTable("dim_line");
         dropSpatialTable("dim_polygon");
         dropSpatialTable("dim_collection");
+        dropSpatialTable("dim_point3d");
     }
 
     @Override

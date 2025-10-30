@@ -146,8 +146,8 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
     public void testDimensionFromFirstGeography() throws Exception {
         try (Connection cx = dataStore.getDataSource().getConnection()) {
             PostGISDialect dialect = (PostGISDialect) dataStore.getSQLDialect();
-            assertEquals((Integer) 0, dialect.getDimensionFromFirstGeo("public", "geopoint", "geo", cx));
-            assertEquals((Integer) 1, dialect.getDimensionFromFirstGeo("public", "geoline", "geo", cx));
+            assertEquals((Integer) 2, dialect.getDimensionFromFirstGeo("public", "geopoint", "geo", cx));
+            assertEquals((Integer) 2, dialect.getDimensionFromFirstGeo("public", "geoline", "geo", cx));
         }
     }
 }

@@ -34,7 +34,7 @@ public class DGGSResolutionCalculatorTest {
     @Before
     public void setUp() throws IOException {
         dggsInstance = new H3DGGSFactory().createInstance(new HashMap<>());
-        calculator = new DGGSResolutionCalculator(dggsInstance);
+        calculator = new DGGSResolutionCalculator(dggsInstance, null);
     }
 
     @Test

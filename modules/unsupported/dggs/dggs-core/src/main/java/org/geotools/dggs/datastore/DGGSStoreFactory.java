@@ -56,6 +56,13 @@ public class DGGSStoreFactory implements DataStoreFactorySpi {
             false,
             "zoneId");
 
+    public static final Param RESOLUTION = new Param(
+            "resolution",
+            Integer.class,
+            "A fixed resolution value in case the delegate datastore doesn't contain the resolution column",
+            false,
+            null);
+
     @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         return createDataStore(params);
@@ -70,6 +77,7 @@ public class DGGSStoreFactory implements DataStoreFactorySpi {
         String storeName = (String) STORE_NAME.lookUp(params);
         Repository repository = (Repository) REPOSITORY.lookUp(params);
         String zoneIdAttribute = (String) ZONE_ID_COLUMN_NAME.lookUp(params);
+        Integer resolution = (Integer) RESOLUTION.lookUp(params);
         String[] storeNameParts = storeName.split(":");
         Name name = storeNameParts.length == 2
                 ? new NameImpl(storeNameParts[0], storeNameParts[1])
@@ -78,7 +86,7 @@ public class DGGSStoreFactory implements DataStoreFactorySpi {
         if (datastore == null) {
             throw new IOException("Could not find a DataStore named '" + storeName + "' in the provided repository.");
         }
-        return new DGGSDataStore(dggs, datastore, zoneIdAttribute);
+        return new DGGSDataStore(dggs, datastore, zoneIdAttribute, resolution);
     }
 
     @Override

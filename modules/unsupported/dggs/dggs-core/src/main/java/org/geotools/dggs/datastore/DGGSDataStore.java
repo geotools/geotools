@@ -91,11 +91,11 @@ public class DGGSDataStore implements DGGSStore {
     private final String zoneIdAttribute;
     private final DGGSResolutionCalculator resolutions;
 
-    public DGGSDataStore(DGGSInstance dggs, DataStore delegate, String zoneIdAttribute) {
+    public DGGSDataStore(DGGSInstance dggs, DataStore delegate, String zoneIdAttribute, Integer fixedResolution) {
         this.delegate = delegate;
         this.dggs = dggs;
         this.zoneIdAttribute = zoneIdAttribute;
-        this.resolutions = new DGGSResolutionCalculator(dggs);
+        this.resolutions = new DGGSResolutionCalculator(dggs, fixedResolution);
     }
 
     /** return the attribute name used to store the DGGS zone identifier */
@@ -141,7 +141,8 @@ public class DGGSDataStore implements DGGSStore {
 
     private boolean isDGGSSchema(SimpleFeatureType schema) {
         return checkAttribute(schema, zoneIdAttribute, String.class)
-                && checkAttribute(schema, RESOLUTION, Byte.class, Short.class, Integer.class)
+                && (resolutions.hasFixedResolution()
+                        || checkAttribute(schema, RESOLUTION, Byte.class, Short.class, Integer.class))
                 && schema.getDescriptor(GEOMETRY) == null;
     }
 

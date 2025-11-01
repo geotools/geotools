@@ -37,7 +37,7 @@ public class DGGSFilterTransformerTest {
     @Before
     public void setupTransformer() throws Exception {
         dggs = new H3DGGSInstance(H3Core.newInstance());
-        DGGSResolutionCalculator resolutionCalculator = new DGGSResolutionCalculator(dggs);
+        DGGSResolutionCalculator resolutionCalculator = new DGGSResolutionCalculator(dggs, null);
         AttributeDescriptor zoneIdDescriptor =
                 DataUtilities.createType("test", "zoneId:String").getDescriptor("zoneId");
         transformer = new DGGSFilterTransformer(dggs, resolutionCalculator, 3, zoneIdDescriptor);
@@ -66,6 +66,26 @@ public class DGGSFilterTransformerTest {
                 true);
         PropertyIsEqualTo matchResolution = FF.equal(FF.property("resolution"), FF.literal(3), true);
         Filter expected = FF.and(inZone, matchResolution);
+        assertEquals(transformed, expected);
+    }
+
+    @Test
+    public void testFixedResolution() throws Exception {
+        DGGSResolutionCalculator resolutionCalculator = new DGGSResolutionCalculator(dggs, 3);
+        AttributeDescriptor zoneIdDescriptor =
+                DataUtilities.createType("test", "zoneId:String").getDescriptor("zoneId");
+        DGGSFilterTransformer transformer = new DGGSFilterTransformer(dggs, resolutionCalculator, 3, zoneIdDescriptor);
+
+        Intersects intersects = FF.intersects(
+                "geom",
+                read("MULTIPOLYGON(((11 45, 11 46, 12 46, 12 45, 11 45)), ((12 45, 12 46, 13 46, 13 45, 12 45)))"));
+        Filter transformed = (Filter) intersects.accept(transformer, null);
+        PropertyIsEqualTo inZone = FF.equal(
+                FF.function("in", FF.property("zoneId"), FF.literal("831ea4fffffffff"), FF.literal("831ea5fffffffff")),
+                FF.literal(true),
+                true);
+        Filter fixedResolutionFilter = Filter.INCLUDE;
+        Filter expected = FF.and(inZone, fixedResolutionFilter);
         assertEquals(transformed, expected);
     }
 

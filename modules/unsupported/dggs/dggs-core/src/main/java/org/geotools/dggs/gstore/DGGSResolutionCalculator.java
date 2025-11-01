@@ -66,8 +66,9 @@ public class DGGSResolutionCalculator {
             Hints.ConfigurationMetadataKey.get(CONFIGURED_MAXRES_KEY);
 
     double[] levelThresholds;
+    Integer fixedResolution = null;
 
-    public DGGSResolutionCalculator(DGGSInstance dggs) {
+    public DGGSResolutionCalculator(DGGSInstance dggs, Integer fixedResolution) {
         // compute threshold switch levels (arbitrary heuristic)
         levelThresholds = new double[dggs.getResolutions().length];
         for (int i = 0; i < levelThresholds.length; i++) {
@@ -76,6 +77,11 @@ public class DGGSResolutionCalculator {
             double radius = new MinimumBoundingCircle(polygon).getRadius();
             levelThresholds[i] = radius / 100;
         }
+        this.fixedResolution = fixedResolution;
+    }
+
+    public boolean hasFixedResolution() {
+        return fixedResolution != null;
     }
 
     public int getTargetResolution(Query query, int defaultResolution) {

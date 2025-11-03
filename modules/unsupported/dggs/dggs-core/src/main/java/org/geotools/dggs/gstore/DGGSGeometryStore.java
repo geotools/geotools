@@ -40,7 +40,7 @@ public class DGGSGeometryStore extends ContentDataStore implements DGGSStore {
 
     public DGGSGeometryStore(DGGSInstance dggs) {
         this.dggs = dggs;
-        this.resolutions = new DGGSResolutionCalculator(dggs);
+        this.resolutions = new DGGSResolutionCalculator(dggs, null);
     }
 
     @Override

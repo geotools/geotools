@@ -93,7 +93,7 @@ public class DGGSStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[] {DGGS_FACTORY_ID, STORE_NAME, REPOSITORY, ZONE_ID_COLUMN_NAME};
+        return new Param[] {DGGS_FACTORY_ID, STORE_NAME, REPOSITORY, ZONE_ID_COLUMN_NAME, RESOLUTION};
     }
 
     @Override

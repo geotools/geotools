@@ -61,8 +61,7 @@ public class TileMatrixSet extends org.geotools.ows.wmts.model.TileMatrixSet {
      * @throws IOException
      * @throws JsonParseException
      */
-    public static ArrayList<TileMatrixSet> buildTileMatrixSetList(URL url)
-            throws IOException, JsonParseException {
+    public static ArrayList<TileMatrixSet> buildTileMatrixSetList(URL url) throws IOException, JsonParseException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
 
@@ -76,8 +75,7 @@ public class TileMatrixSet extends org.geotools.ows.wmts.model.TileMatrixSet {
                     break;
                 }
 
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "tileMatrixSets".equalsIgnoreCase(parser.currentName())) {
+                if (JsonToken.FIELD_NAME.equals(token) && "tileMatrixSets".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
                     if (!JsonToken.START_ARRAY.equals(token)) {
                         throw new UnsupportedOperationException("Was expecting an array of links");

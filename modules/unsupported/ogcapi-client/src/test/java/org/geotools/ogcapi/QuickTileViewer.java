@@ -41,8 +41,10 @@ import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.FileDataStore;
 import org.geotools.api.data.FileDataStoreFinder;
-import org.geotools.data.geojson.store.GeoJSONDataStore;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.Style;
+import org.geotools.data.geojson.store.GeoJSONDataStore;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.GeoPkgDataStoreFactory;
 import org.geotools.map.FeatureLayer;
@@ -51,12 +53,10 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLD;
-import org.geotools.api.style.Style;
 import org.geotools.swing.JMapFrame;
 import org.geotools.util.URLs;
 import org.geotools.util.UnsupportedImplementationException;
 import org.geotools.util.logging.Logging;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
 
 public class QuickTileViewer {
@@ -108,13 +108,11 @@ public class QuickTileViewer {
         }
     }
 
-    void addLayer(String identifier)
-            throws IOException, SAXException, ParserConfigurationException {
+    void addLayer(String identifier) throws IOException, SAXException, ParserConfigurationException {
         addLayer(identifier, "", APPLICATION_JSON);
     }
 
-    void addLayer(String identifier, String style)
-            throws IOException, SAXException, ParserConfigurationException {
+    void addLayer(String identifier, String style) throws IOException, SAXException, ParserConfigurationException {
         addLayer(identifier, style, APPLICATION_JSON);
     }
 
@@ -139,20 +137,16 @@ public class QuickTileViewer {
                             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
                             Map<String, Object> params = new HashMap<>();
-                            params.put(
-                                    GeoPkgDataStoreFactory.DBTYPE.key,
-                                    GeoPkgDataStoreFactory.DBTYPE.sample);
+                            params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
                             params.put(GeoPkgDataStoreFactory.DATABASE.key, tempFile);
                             params.put(GeoPkgDataStoreFactory.READ_ONLY.key, true);
                             ds = DataStoreFinder.getDataStore(params);
                         }
                         break;
                     case APPLICATION_MVT:
-                        throw new UnsupportedImplementationException(
-                                APPLICATION_MVT + " is not currently supported");
+                        throw new UnsupportedImplementationException(APPLICATION_MVT + " is not currently supported");
                     case APPLICATION_KML:
-                        throw new UnsupportedImplementationException(
-                                APPLICATION_KML + " is not currently supported");
+                        throw new UnsupportedImplementationException(APPLICATION_KML + " is not currently supported");
                     case APPLICATION_GML_32:
                         throw new UnsupportedImplementationException(
                                 APPLICATION_GML_32 + " is not currently supported");
@@ -214,12 +208,10 @@ public class QuickTileViewer {
         return null;
     }
 
-    private ArrayList<TileMatrix> fetchTileMatrixSet(
-            CoordinateReferenceSystem crs2, TileMatrixSet tms)
+    private ArrayList<TileMatrix> fetchTileMatrixSet(CoordinateReferenceSystem crs2, TileMatrixSet tms)
             throws JsonProcessingException, IOException {
         for (Link l : tms.getLinks()) {
-            if ("tileMatrixSet".equalsIgnoreCase(l.getRel())
-                    && APPLICATION_JSON.equalsIgnoreCase(l.getType())) {
+            if ("tileMatrixSet".equalsIgnoreCase(l.getRel()) && APPLICATION_JSON.equalsIgnoreCase(l.getType())) {
                 return TileMatrix.buildTileMatrixList(new URL(l.getHref()));
             }
         }
@@ -230,8 +222,7 @@ public class QuickTileViewer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JtsModule());
         for (Link link : contents.links) {
-            if ("tiling-schemes".equalsIgnoreCase(link.rel)
-                    && APPLICATION_JSON.equalsIgnoreCase(link.type)) {
+            if ("tiling-schemes".equalsIgnoreCase(link.rel) && APPLICATION_JSON.equalsIgnoreCase(link.type)) {
                 URL url = new URL(link.href);
                 return TileMatrixSet.buildTileMatrixSetList(url);
             }
@@ -268,24 +259,20 @@ public class QuickTileViewer {
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("add.png"));
         layerDialog = new LayerDialog(this, "Select a layer");
         JButton button = new JButton(imageIcon);
-        button.addActionListener(
-                e -> {
-                    layerDialog.updateLayers(collections);
-                    layerDialog.setVisible(true);
-                    String newLayer = layerDialog.getLayer();
-                    if (newLayer != null && !newLayer.isEmpty()) {
-                        SwingUtilities.invokeLater(
-                                () -> {
-                                    try {
-                                        addLayer(newLayer);
-                                    } catch (IOException
-                                            | SAXException
-                                            | ParserConfigurationException ex) {
-                                        LOGGER.log(Level.WARNING, "", ex);
-                                    }
-                                });
+        button.addActionListener(e -> {
+            layerDialog.updateLayers(collections);
+            layerDialog.setVisible(true);
+            String newLayer = layerDialog.getLayer();
+            if (newLayer != null && !newLayer.isEmpty()) {
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        addLayer(newLayer);
+                    } catch (IOException | SAXException | ParserConfigurationException ex) {
+                        LOGGER.log(Level.WARNING, "", ex);
                     }
                 });
+            }
+        });
         frame.enableToolBar(true);
         frame.enableStatusBar(true);
 

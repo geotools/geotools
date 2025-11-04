@@ -40,7 +40,9 @@
     <guava.version>33.4.8-jre</guava.version>
     <h2.version>1.1.119</h2.version>
     <hsqldb.version>2.7.2</hsqldb.version>
-    <httpclient.version>4.5.14</httpclient.version>
+    <httpclient4.version>4.5.14</httpclient4.version>
+    <httpclient5.version>5.4.4</httpclient5.version>
+    <httpcore5.version>5.3.6</httpcore5.version>
     <imageio.ext.version>2.1-SNAPSHOT</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson.version>2.19.0</jackson.version>
@@ -49,6 +51,7 @@
     <jai-imageio.version>1.1</jai-imageio.version>
     <imagen.version>0.9.0</imagen.version>
     <javacsv.version>2.0</javacsv.version>
+    <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
     <jakarta-mail.version>2.1.2</jakarta-mail.version>
     <javax.activation-api.version>2.1.2</javax.activation-api.version>
     <javax.measure.version>2.2</javax.measure.version>
@@ -158,6 +161,11 @@
         <groupId>tech.units</groupId>
         <artifactId>indriya</artifactId>
         <version>${tech-units-indriya.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <version>${jakarta-annotation.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.measure</groupId>
@@ -816,14 +824,24 @@
 
       <!-- HTTP -->
       <dependency>
+        <groupId>org.apache.httpcomponents.core5</groupId>
+        <artifactId>httpcore5</artifactId>
+        <version>${httpcore5.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents.client5</groupId>
+        <artifactId>httpclient5</artifactId>
+        <version>${httpclient5.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-        <version>${httpclient.version}</version>
+        <version>${httpclient4.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient-cache</artifactId>
-        <version>${httpclient.version}</version>
+        <version>${httpclient4.version}</version>
       </dependency>
 
       <!-- Batik SVG -->

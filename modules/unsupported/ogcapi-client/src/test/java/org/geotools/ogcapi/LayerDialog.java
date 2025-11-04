@@ -156,20 +156,18 @@ public class LayerDialog extends JDialog {
         gbcpanel0.anchor = GridBagConstraints.NORTH;
         gbpanel0.setConstraints(ok, gbcpanel0);
         panel0.add(ok);
-        ok.addActionListener(
-                e -> {
-                    setLayer((String) combo0.getSelectedItem());
-                    setStyle((String) combo0.getSelectedItem());
-                    setVisible(false);
-                });
+        ok.addActionListener(e -> {
+            setLayer((String) combo0.getSelectedItem());
+            setStyle((String) combo0.getSelectedItem());
+            setVisible(false);
+        });
 
         cancel = new JButton("Cancel");
-        cancel.addActionListener(
-                e -> {
-                    setLayer(null);
-                    setStyle(null);
-                    dispose();
-                });
+        cancel.addActionListener(e -> {
+            setLayer(null);
+            setStyle(null);
+            dispose();
+        });
         gbcpanel0.gridx = 13;
         gbcpanel0.gridy = 16;
         gbcpanel0.gridwidth = 5;

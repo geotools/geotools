@@ -19,6 +19,8 @@ Like other data stores, an instance of ``AppSchemaDataAccess`` is constructed by
 
 * ``dbtype`` set to the string ``"app-schema"``
 * ``url`` set to a string containing a ``file:``, ``jar:file:`` or ``http:`` URL for a mapping file
+* ``delegateStoreName`` the name of datastore provided from external source
+* ``repository`` repository provided by external caller to get access for delegateStoreName
 
 
 Resource Management
@@ -36,6 +38,23 @@ Schema download
 
 To enable automatic schema download and caching, create a directory ``app-schema-cache`` in the same directory as the mapping file, or one of its parent directories or provide an explicit location using system property ``schema.cache.dir``, e.g. ``-Dschema.cache.dir=/var/lib/app-schema-cache``.
 
+Using external datastore
+''''''''''''''''''''''''
+
+It is possible to use datastores provided from external sources (for example GeoServer) by providing ``delegateStoreName`` parameter in sourceDataStores.DataStore of mapping file.
+An example of such configuration is provided in block below::
+
+    <sourceDataStores>
+        <DataStore>
+          <id>delegated</id>
+          <parameters>
+            <Parameter>
+              <name>delegateStoreName</name>
+              <value>testWorkspace:testStoreName</value>
+            </Parameter>
+          </parameters>
+        </DataStore>
+    </sourceDataStores>
 
 Example
 '''''''

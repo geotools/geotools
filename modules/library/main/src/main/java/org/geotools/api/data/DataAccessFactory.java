@@ -584,4 +584,23 @@ public interface DataAccessFactory extends Factory {
             return buf.toString();
         }
     }
+
+    /**
+     * Lookup the parameter in provided map and return default value if not found.
+     *
+     * @param param
+     * @param params
+     * @return
+     * @param <T>
+     * @throws IOException
+     */
+    @SuppressWarnings("unchecked")
+    static <T> T lookup(Param param, Map<String, ?> params) throws IOException {
+        T result = (T) param.lookUp(params);
+        if (result == null) {
+            return (T) param.getDefaultValue();
+        } else {
+            return result;
+        }
+    }
 }

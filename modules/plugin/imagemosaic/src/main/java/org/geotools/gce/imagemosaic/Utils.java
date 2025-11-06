@@ -1444,6 +1444,7 @@ public class Utils {
                             .accept(sampleImageAllowList)
                             .remapPackage("javax.media.jai", "org.eclipse.imagen")
                             .remapPackage("com.sun.media.jai.rmi", "org.eclipse.imagen.media.serialize")
+                            .remapPackage("com.sun.media.jai.codecimpl.util", "org.eclipse.imagen")
                             .build()) {
                 // load the image
                 Object object = oiStream.readObject();

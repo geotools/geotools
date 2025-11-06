@@ -91,4 +91,12 @@ public class UtilsTest {
         RenderedImage renderedImage = Utils.loadSampleImage(oldSampleImage);
         assertThat(renderedImage.getSampleModel(), CoreMatchers.instanceOf(ComponentSampleModelImageN.class));
     }
+
+    @Test
+    public void testMigrateSampleImage2() throws Exception {
+        // path to a sample image still containing ImageN references, to test migration (package rebasing in the loader)
+        File oldSampleImage = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/old_sample_image2");
+        RenderedImage renderedImage = Utils.loadSampleImage(oldSampleImage);
+        assertThat(renderedImage.getSampleModel(), CoreMatchers.instanceOf(ComponentSampleModelImageN.class));
+    }
 }

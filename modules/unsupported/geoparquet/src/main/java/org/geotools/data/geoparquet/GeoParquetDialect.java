@@ -25,15 +25,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.referencing.FactoryException;
@@ -712,5 +719,39 @@ public class GeoParquetDialect extends DuckDBDialect {
             }
         }
         return srid;
+    }
+
+    @Override
+    public Object convertValue(Object value, AttributeDescriptor ad) {
+        if (value instanceof OffsetDateTime odt) {
+            return Date.from(odt.withOffsetSameInstant(ZoneOffset.UTC).toInstant());
+        }
+        return super.convertValue(value, ad);
+    }
+
+    private static Date convertValue(Object value, Class<?> binding) {
+        if (value instanceof OffsetDateTime odt && binding.equals(java.sql.Date.class)) {
+            return Date.from(odt.withOffsetSameInstant(ZoneOffset.UTC).toInstant());
+        } else if (value instanceof OffsetDateTime time && binding.equals(java.sql.Timestamp.class)) {
+            return java.sql.Timestamp.from(
+                    time.withOffsetSameInstant(ZoneOffset.UTC).toInstant());
+        }
+        return null;
+    }
+
+    @Override
+    public Function<Object, Object> getAggregateConverter(FeatureVisitor visitor, SimpleFeatureType featureType) {
+        Optional<List<Class>> maybeResultTypes = getResultTypes(visitor, featureType);
+        if (maybeResultTypes.isPresent()) {
+            List<Class> resultTypes = maybeResultTypes.get();
+            if (resultTypes.size() == 1) {
+                Class<?> targetType = resultTypes.get(0);
+                if (java.util.Date.class.isAssignableFrom(targetType)) {
+                    return v -> convertValue(v, targetType);
+                }
+            }
+        }
+        // otherwise no conversion needed
+        return Function.identity();
     }
 }

@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +170,14 @@ public class DuckDBDialect extends BasicSQLDialect {
     @Override
     public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
         super.registerSqlTypeToClassMappings(mappings);
-        mappings.put(Integer.valueOf(Types.STRUCT), java.sql.Struct.class);
+        mappings.put(Types.STRUCT, java.sql.Struct.class);
+        mappings.put(Types.TIMESTAMP_WITH_TIMEZONE, java.sql.Timestamp.class);
+    }
+
+    @Override
+    public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
+        super.registerSqlTypeNameToClassMappings(mappings);
+        mappings.put("TIMESTAMP WITH TIME ZONE", Timestamp.class);
     }
 
     /**

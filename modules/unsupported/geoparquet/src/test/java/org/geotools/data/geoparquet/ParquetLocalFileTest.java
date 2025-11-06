@@ -75,7 +75,9 @@ public class ParquetLocalFileTest extends GeoParquetTestBase {
                 "h3indexstr", String.class,
                 "uniqueid", String.class,
                 "landcover", Double.class,
-                "percentage", Double.class);
+                "percentage", Double.class,
+                "startdate", java.sql.Timestamp.class,
+                "enddate", java.sql.Timestamp.class);
         for (Map.Entry e : expected.entrySet()) {
             AttributeDescriptor desc = schema.getDescriptor((String) e.getKey());
             assertNotNull("Missing attribute: " + e.getKey(), desc);

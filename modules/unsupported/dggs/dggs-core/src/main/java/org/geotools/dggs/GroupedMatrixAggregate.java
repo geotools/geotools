@@ -185,7 +185,7 @@ public class GroupedMatrixAggregate implements FeatureCalc, FeatureAttributeVisi
         }
     }
 
-    static class MemoryResult extends AbstractCalcResult {
+    static class MemoryResult extends AbstractCalcResult implements IterableCalcResult<GroupByResult> {
 
         Map<List<Object>, List<CalcResult>> results;
 
@@ -236,6 +236,37 @@ public class GroupedMatrixAggregate implements FeatureCalc, FeatureAttributeVisi
                 merged.add(thisResults.get(i).merge(otherResults.get(i)));
             }
             return merged;
+        }
+
+        @Override
+        public CloseableIterator<GroupByResult> getIterator() {
+            // Plain iterator over the map entries
+            Iterator<Map.Entry<List<Object>, List<CalcResult>>> it =
+                    results.entrySet().iterator();
+
+            return new CloseableIterator<>() {
+
+                @Override
+                public boolean hasNext() {
+                    return it.hasNext();
+                }
+
+                @Override
+                public GroupByResult next() {
+                    Map.Entry<List<Object>, List<CalcResult>> e = it.next();
+                    return new GroupByResult(e.getKey(), calcToValue(e.getValue()));
+                }
+
+                @Override
+                public void remove() {
+                    throw new UnsupportedOperationException("remove");
+                }
+
+                @Override
+                public void close() throws IOException {
+                    // nothing to close, it's all in-memory
+                }
+            };
         }
     }
 }

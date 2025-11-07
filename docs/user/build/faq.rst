@@ -83,10 +83,10 @@ How do I create an executable jar for my GeoTools app?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you're familiar with Maven you might have used the `assembly plugin
-<http://maven.apache.org/plugins/maven-assembly-plugin/>`_ to create self-contained, executable jars. The bad news is
-that this generally won't work with GeoTools. The problem is that GeoTools
-modules often define one or more files in its ``META-INF/services`` directory
-with the same names as files defined in other modules.  The assembly plugin just
+<http://maven.apache.org/plugins/maven-assembly-plugin/>`_ to create self-contained, executable jars.
+Note that this does not work for GeoTools without additional configuration. The problem is that GeoTools
+plugins are connected to the library using one or more files in the ``META-INF/services`` directory
+with the name of the plugin interface being registered. The assembly plugin just
 copies files with the same name over the top of each other rather than merging
 their contents.
 
@@ -111,7 +111,7 @@ GeoTools modules and their dependencies.
     <url>http://geotools.org</url>
 
     <properties>
-        <geotools.version>14.1</geotools.version>
+        <gt.version>34.0</gt.version>
     </properties>
 
     <build>
@@ -126,7 +126,7 @@ GeoTools modules and their dependencies.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -135,7 +135,7 @@ GeoTools modules and their dependencies.
                         </goals>
                         <configuration>
                             <filters>
-	                  	<!-- filter signed jars in the dependencies -->
+                        <!-- filter signed jars in the dependencies -->
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
@@ -144,15 +144,27 @@ GeoTools modules and their dependencies.
                                         <exclude>META-INF/*.RSA</exclude>
                                     </excludes>
                                 </filter>
-                            </filters>                    
+                            </filters>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>shaded</shadedClassifierName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.geotools.demo.Quickstart</mainClass>
                                 </transformer>
-	 			<!-- This bit merges the various GeoTools META-INF/services files  (e.g. referencing plugins) -->
+
+                                <!-- merges the various GeoTools META-INF/services files  (e.g. referencing plugins) -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <!-- merges META-INF/services/ entries instead of overwriting -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+
+                                <!-- merges META-INF/org.eclipse.imagen.registryFile.imagen entries instead of overwriting -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                  <resource>META-INF/org.eclipse.imagen.registryFile.imagen</resource>
+                                </transformer>
+                                <!-- merges META-INF/registryFile.imagen entries instead of overwriting -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                  <resource>META-INF/registryFile.imagen</resource>
+                                </transformer>
                             </transformers>
                         </configuration>
                     </execution>
@@ -161,27 +173,31 @@ GeoTools modules and their dependencies.
         </plugins>
     </build>
 
+  <dependencyManagement>
+    <dependencies>
+      <!-- Import the GeoTools BOM -->
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-bom</artifactId>
+        <version>${gt.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-shapefile</artifactId>
-            <version>${geotools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-epsg-hsql</artifactId>
-            <version>${geotools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-swing</artifactId>
-            <version>${geotools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.5</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
   </project>

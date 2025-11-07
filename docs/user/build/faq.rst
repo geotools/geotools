@@ -151,8 +151,20 @@ GeoTools modules and their dependencies.
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.geotools.demo.Quickstart</mainClass>
                                 </transformer>
-	 			<!-- This bit merges the various GeoTools META-INF/services files  (e.g. referencing plugins) -->
+
+                    			<!-- merges the various GeoTools META-INF/services files  (e.g. referencing plugins) -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <!-- merges META-INF/services/ entries instead of overwriting —>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+
+                                <!-- merges META-INF/org.eclipse.imagen.registryFile.imagen entries instead of overwriting —>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                  <resource>META-INF/org.eclipse.imagen.registryFile.imagen</resource>
+                                </transformer>
+                                <!-- merges META-INF/registryFile.imagen entries instead of overwriting —>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                  <resource>META-INF/registryFile.imagen</resource>
+                                </transformer>
                             </transformers>
                         </configuration>
                     </execution>

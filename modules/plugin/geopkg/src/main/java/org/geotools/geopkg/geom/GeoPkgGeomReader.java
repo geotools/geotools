@@ -19,6 +19,7 @@ package org.geotools.geopkg.geom;
 import java.io.IOException;
 import java.io.InputStream;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.WKBReader;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -38,7 +39,6 @@ import org.locationtech.jts.io.ByteOrderDataInStream;
 import org.locationtech.jts.io.InStream;
 import org.locationtech.jts.io.InputStreamInStream;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
 
 /**
  * Translates a GeoPackage geometry BLOB to a vividsolutions Geometry.

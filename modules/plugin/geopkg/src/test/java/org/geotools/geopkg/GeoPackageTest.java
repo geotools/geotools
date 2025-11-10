@@ -18,6 +18,9 @@ package org.geotools.geopkg;
 
 import static org.geotools.jdbc.JDBCDataStore.JDBC_NATIVE_TYPE;
 import static org.geotools.jdbc.JDBCDataStore.JDBC_NATIVE_TYPENAME;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -54,6 +57,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.imagen.PlanarImage;
 import org.geotools.TestData;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.api.data.SimpleFeatureWriter;
@@ -84,7 +88,10 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.DecoratingSimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.mosaic.GeoPackageFormat;
 import org.geotools.geopkg.mosaic.GeoPackageReader;
@@ -279,6 +286,54 @@ public class GeoPackageTest {
             SQLDialect dialect = citiesGpkg.dataStore().dialect;
             try (Connection conn = citiesGpkg.connPool.getConnection()) {
                 assertTrue(CRS.equalsIgnoreMetadata(dialect.createCRS(84, conn), CRS.decode("EPSG:4326", true)));
+            }
+        }
+    }
+
+    @Test
+    public void canReadCompoundCurves() throws Exception {
+        File curvedGeoms = new File("./src/test/resources/org/geotools/geopkg/curved-geometry.gpkg");
+        try (GeoPackage gpkg = new GeoPackage(curvedGeoms)) {
+            JDBCDataStore store = gpkg.dataStore();
+            ContentFeatureSource source = store.getFeatureSource("compoundcurve");
+
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> ra = source.getReader()) {
+                SimpleFeature f = ra.next();
+                assertThat(f.getAttribute("name"), is("curve"));
+                // just check that the geometry is the expected type
+                assertThat(f.getAttribute("geometry"), instanceOf(CompoundCurve.class));
+            }
+        }
+    }
+
+    @Test
+    public void canReadCurvesPolygon() throws Exception {
+        File curvedGeoms = new File("./src/test/resources/org/geotools/geopkg/curved-geometry.gpkg");
+        try (GeoPackage gpkg = new GeoPackage(curvedGeoms)) {
+            JDBCDataStore store = gpkg.dataStore();
+            ContentFeatureSource source = store.getFeatureSource("curvedpolygon");
+
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> ra = source.getReader()) {
+                SimpleFeature f = ra.next();
+                assertThat(f.getAttribute("name"), is("curve-polygon"));
+                // just check that the geometry is the expected type
+                assertThat(f.getAttribute("geometry"), instanceOf(CurvePolygon.class));
+            }
+        }
+    }
+
+    @Test
+    public void canReadMultiSurface() throws Exception {
+        File curvedGeoms = new File("./src/test/resources/org/geotools/geopkg/curved-geometry.gpkg");
+        try (GeoPackage gpkg = new GeoPackage(curvedGeoms)) {
+            JDBCDataStore store = gpkg.dataStore();
+            ContentFeatureSource source = store.getFeatureSource("multisurface");
+
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> ra = source.getReader()) {
+                SimpleFeature f = ra.next();
+                assertThat(f.getAttribute("name"), is("multi-surface"));
+                // just check that the geometry is the expected type
+                assertThat(f.getAttribute("geometry"), instanceOf(MultiSurface.class));
             }
         }
     }

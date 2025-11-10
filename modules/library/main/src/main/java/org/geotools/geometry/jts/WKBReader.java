@@ -1,46 +1,19 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ * Copyright (c) 2016 Vivid Solutions.
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * and the Eclipse Distribution License is available at
  *
- * The JTS Topology Suite is a collection of Java classes that
- * implement the fundamental operations required to validate a given
- * geo-spatial data set to a known topological specification.
- *
- * Copyright (C) 2001 - 2014 Vivid Solutions
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * For more information, contact:
- *
- *     Vivid Solutions
- *     Suite #1A
- *     2328 Government Street
- *     Victoria BC  V8T 5G5
- *     Canada
- *
- *     (250)385-6040
- *     www.vividsolutions.com
+ * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.geotools.geometry.jts;
+package org.locationtech.jts.io;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import org.locationtech.jts.geom.Coordinate;
+import java.util.EnumSet;
+
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.CoordinateSequences;
@@ -55,406 +28,425 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.io.ByteArrayInStream;
-import org.locationtech.jts.io.ByteOrderDataInStream;
-import org.locationtech.jts.io.ByteOrderValues;
-import org.locationtech.jts.io.InStream;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBWriter;
 
 /**
- * Reads a {@link Geometry}from a byte stream in Postgis Extended Well-Known Binary format. Supports use of an
- * {@link InStream}, which allows easy use with arbitrary byte stream sources.
- *
- * <p>This class reads the format describe in {@link WKBWriter}. It also partially handles the <b>Extended WKB</b>
- * format used by PostGIS and SQLServer, by parsing and storing SRID values and supporting . The reader repairs
- * structurally-invalid input (specifically, LineStrings and LinearRings which contain too few points have vertices
- * added, and non-closed rings are closed).
- *
- * <p>This class is designed to support reuse of a single instance to read multiple geometries. This class is not
- * thread-safe; each thread should create its own instance.
- *
+ * Reads a {@link Geometry}from a byte stream in Well-Known Binary format.
+ * Supports use of an {@link InStream}, which allows easy use
+ * with arbitrary byte stream sources.
+ * <p>
+ * This class reads the format describe in {@link WKBWriter}.  
+ * It partially handles
+ * the <b>Extended WKB</b> format used by PostGIS, 
+ * by parsing and storing optional SRID values.
+ * If a SRID is not specified in an element geometry, it is inherited
+ * from the parent's SRID.
+ * The default SRID value is 0.
+ * <p>
+ * Although not defined in the WKB specification, empty points
+ * are handled if they are represented as a Point with <code>NaN</code> X and Y ordinates.
+ * <p>
+ * The reader repairs structurally-invalid input
+ * (specifically, LineStrings and LinearRings which contain
+ * too few points have vertices added,
+ * and non-closed rings are closed).
+ * <p>
+ * The reader handles most errors caused by malformed or malicious WKB data.
+ * It checks for obviously excessive values of the fields 
+ * <code>numElems</code>, <code>numRings</code>, and <code>numCoords</code>.
+ * It also checks that the reader does not read beyond the end of the data supplied.
+ * A {@link ParseException} is thrown if this situation is detected.
+ * <p>
+ * This class is designed to support reuse of a single instance to read multiple
+ * geometries. This class is not thread-safe; each thread should create its own
+ * instance.
+ * <p>
+ * As of version 1.15, the reader can read geometries following the OGC 06-103r4 
+ * Simple Features Access 1.2.1 specification,
+ * which aligns with the ISO 19125 standard.
+ * This format is used by Spatialite and Geopackage.
+ * <p>
+ * The difference between PostGIS EWKB format and the new ISO/OGC specification is
+ * that Z and M coordinates are detected with a bit mask on the higher byte in
+ * the former case (0x80 for Z and 0x40 for M) while new OGC specification use
+ * specific int ranges for 2D geometries, Z geometries (2D code+1000), M geometries
+ * (2D code+2000) and ZM geometries (2D code+3000).
+ * <p>
+ * Note that the {@link WKBWriter} is not changed and still writes the PostGIS EWKB
+ * geometry format.
+ * 
  * @see WKBWriter for a formal format specification
  */
-public class WKBReader {
+public class WKBReader
+{
+  /**
+   * Converts a hexadecimal string to a byte array.
+   * The hexadecimal digit symbols are case-insensitive.
+   *
+   * @param hex a string containing hex digits
+   * @return an array of bytes with the value of the hex string
+   */
+  public static byte[] hexToBytes(String hex)
+  {
+    int byteLen = hex.length() / 2;
+    byte[] bytes = new byte[byteLen];
+
+    for (int i = 0; i < hex.length() / 2; i++) {
+      int i2 = 2 * i;
+      if (i2 + 1 > hex.length())
+        throw new IllegalArgumentException("Hex string has odd length");
+
+      int nib1 = hexToInt(hex.charAt(i2));
+      int nib0 = hexToInt(hex.charAt(i2 + 1));
+      byte b = (byte) ((nib1 << 4) + (byte) nib0);
+      bytes[i] = b;
+    }
+    return bytes;
+  }
+
+  private static int hexToInt(char hex)
+  {
+    int nib = Character.digit(hex, 16);
+    if (nib < 0)
+      throw new IllegalArgumentException("Invalid hex digit: '" + hex + "'");
+    return nib;
+  }
+
+  private static final String INVALID_GEOM_TYPE_MSG
+  = "Invalid geometry type encountered in ";
+
+  private static final String FIELD_NUMCOORDS = "numCoords";
+
+  private static final String FIELD_NUMRINGS = "numRings";
+
+  private static final String FIELD_NUMELEMS = "numElems";
+
+  private GeometryFactory factory;
+  private CoordinateSequenceFactory csFactory;
+  private PrecisionModel precisionModel;
+  // default dimension - will be set on read
+  private int inputDimension = 2;
+  /**
+   * true if structurally invalid input should be reported rather than repaired.
+   * At some point this could be made client-controllable.
+   */
+  private boolean isStrict = false;
+  private ByteOrderDataInStream dis = new ByteOrderDataInStream();
+  private double[] ordValues;
+
+  private int maxNumFieldValue;
+
+  public WKBReader() {
+    this(new GeometryFactory());
+  }
+
+  public WKBReader(GeometryFactory geometryFactory) {
+    this.factory = geometryFactory;
+    precisionModel = factory.getPrecisionModel();
+    csFactory = factory.getCoordinateSequenceFactory();
+  }
+
+  /**
+   * Reads a single {@link Geometry} in WKB format from a byte array.
+   *
+   * @param bytes the byte array to read from
+   * @return the geometry read
+   * @throws ParseException if the WKB is ill-formed
+   */
+  public Geometry read(byte[] bytes) throws ParseException
+  {  
+    // possibly reuse the ByteArrayInStream?
+    // don't throw IOExceptions, since we are not doing any I/O
+    try {
+      return read(new ByteArrayInStream(bytes), bytes.length / 8);
+    }
+    catch (IOException ex) {
+      throw new RuntimeException("Unexpected IOException caught: " + ex.getMessage());
+    }
+  }
+
+  /**
+   * Reads a {@link Geometry} in binary WKB format from an {@link InStream}.
+   *
+   * @param is the stream to read from
+   * @return the Geometry read
+   * @throws IOException if the underlying stream creates an error
+   * @throws ParseException if the WKB is ill-formed
+   */
+  public Geometry read(InStream is)
+  throws IOException, ParseException
+  {
+    // can't tell size of InStream, but MAX_VALUE should be safe
+    return read(is, Integer.MAX_VALUE);
+  }
+
+  private Geometry read(InStream is, int maxCoordNum)
+  throws IOException, ParseException
+  {
     /**
-     * Converts a hexadecimal string to a byte array. The hexadecimal digit symbols are case-insensitive.
-     *
-     * @param hex a string containing hex digits
-     * @return an array of bytes with the value of the hex string
+     * This puts an upper bound on the allowed value
+     * in coordNum fields.
+     * It avoids OOM exceptions due to malformed input.
      */
-    public static byte[] hexToBytes(String hex) {
-        int byteLen = hex.length() / 2;
-        byte[] bytes = new byte[byteLen];
-
-        for (int i = 0; i < hex.length() / 2; i++) {
-            int i2 = 2 * i;
-            if (i2 + 1 > hex.length()) throw new IllegalArgumentException("Hex string has odd length");
-
-            int nib1 = hexToInt(hex.charAt(i2));
-            int nib0 = hexToInt(hex.charAt(i2 + 1));
-            byte b = (byte) ((nib1 << 4) + (byte) nib0);
-            bytes[i] = b;
-        }
-        return bytes;
+    this.maxNumFieldValue = maxCoordNum;
+    dis.setInStream(is);
+    return readGeometry(0);
+  }
+  
+  private int readNumField(String fieldName) throws IOException, ParseException {
+    // num field is unsigned int, but Java has only signed int
+    int num = dis.readInt();
+    if (num < 0 || num > maxNumFieldValue) {
+      throw new ParseException(fieldName + " value is too large");
     }
+    return num;
+  }
+  
+  private Geometry readGeometry(int SRID)
+  throws IOException, ParseException
+  {
 
-    private static int hexToInt(char hex) {
-        int nib = Character.digit(hex, 16);
-        if (nib < 0) throw new IllegalArgumentException("Invalid hex digit: '" + hex + "'");
-        return nib;
-    }
+      // determine byte order
+      byte byteOrderWKB = dis.readByte();
 
-    private static final String INVALID_GEOM_TYPE_MSG = "Invalid geometry type encountered in ";
+      // always set byte order, since it may change from geometry to geometry
+     if(byteOrderWKB == WKBConstants.wkbNDR)
+     {
+        dis.setOrder(ByteOrderValues.LITTLE_ENDIAN);
+     }
+     else if(byteOrderWKB == WKBConstants.wkbXDR)
+     {
+        dis.setOrder(ByteOrderValues.BIG_ENDIAN);
+     }
+     else if(isStrict)
+     {
+        throw new ParseException("Unknown geometry byte order (not NDR or XDR): " + byteOrderWKB);
+     }
+     //if not strict and not XDR or NDR, then we just use the dis default set at the
+     //start of the geometry (if a multi-geometry).  This  allows WBKReader to work
+     //with Spatialite native BLOB WKB, as well as other WKB variants that might just
+     //specify endian-ness at the start of the multigeometry.
 
-    private CurvedGeometryFactory factory;
 
-    private CoordinateSequenceFactory csFactory;
-
-    private PrecisionModel precisionModel;
-
-    // default dimension - will be set on read
-    private int inputDimension = 2;
-
-    private int inputMeasures = 0;
-
-    private boolean hasSRID = false;
-
+    int typeInt = dis.readInt();
+    
     /**
-     * true if structurally invalid input should be reported rather than repaired. At some point this could be made
-     * client-controllable.
+     * To get geometry type mask out EWKB flag bits, 
+     * and use only low 3 digits of type word.
+     * This supports both EWKB and ISO/OGC.
      */
-    private boolean isStrict = false;
+    int geometryType = (typeInt & 0xffff) % 1000;
 
-    private ByteOrderDataInStream dis = new ByteOrderDataInStream();
-
-    public WKBReader() {
-        this(new GeometryFactory());
+    // handle 3D and 4D WKB geometries
+    // geometries with Z coordinates have the 0x80 flag (postgis EWKB)
+    // or are in the 1000 range (Z) or in the 3000 range (ZM) of geometry type (ISO/OGC 06-103r4)
+    boolean hasZ = ((typeInt & 0x80000000) != 0 || (typeInt & 0xffff)/1000 == 1 || (typeInt & 0xffff)/1000 == 3);
+    // geometries with M coordinates have the 0x40 flag (postgis EWKB)
+    // or are in the 1000 range (M) or in the 3000 range (ZM) of geometry type (ISO/OGC 06-103r4)
+    boolean hasM = ((typeInt & 0x40000000) != 0 || (typeInt & 0xffff)/1000 == 2 || (typeInt & 0xffff)/1000 == 3);
+    //System.out.println(typeInt + " - " + geometryType + " - hasZ:" + hasZ);
+    inputDimension = 2 + (hasZ ? 1 : 0) + (hasM ? 1 : 0);
+    
+    EnumSet<Ordinate> ordinateFlags = EnumSet.of(Ordinate.X, Ordinate.Y);
+    if (hasZ) {
+      ordinateFlags.add(Ordinate.Z);
+    }
+    if (hasM) {
+      ordinateFlags.add(Ordinate.M);
     }
 
-    public WKBReader(GeometryFactory geometryFactory) {
-        this.factory = getCurvedGeometryFactory(geometryFactory);
-        precisionModel = factory.getPrecisionModel();
-        csFactory = factory.getCoordinateSequenceFactory();
+    // determine if SRIDs are present (EWKB only)
+    boolean hasSRID = (typeInt & 0x20000000) != 0;
+    if (hasSRID) {
+      SRID = dis.readInt();
     }
 
-    /**
-     * Reads a single {@link Geometry} in WKB format from a byte array.
-     *
-     * @param bytes the byte array to read from
-     * @return the geometry read
-     * @throws ParseException if the WKB is ill-formed
-     */
-    public Geometry read(byte[] bytes) throws ParseException {
-        // possibly reuse the ByteArrayInStream?
-        // don't throw IOExceptions, since we are not doing any I/O
-        try {
-            return read(new ByteArrayInStream(bytes));
-        } catch (IOException ex) {
-            throw new RuntimeException("Unexpected IOException caught: " + ex.getMessage());
-        }
+    // only allocate ordValues buffer if necessary
+    if (ordValues == null || ordValues.length < inputDimension)
+      ordValues = new double[inputDimension];
+
+    Geometry geom = null;
+    switch (geometryType) {
+      case WKBConstants.wkbPoint :
+        geom = readPoint(ordinateFlags);
+        break;
+      case WKBConstants.wkbLineString :
+        geom = readLineString(ordinateFlags);
+        break;
+     case WKBConstants.wkbPolygon :
+       geom = readPolygon(ordinateFlags);
+        break;
+      case WKBConstants.wkbMultiPoint :
+        geom = readMultiPoint(SRID);
+        break;
+      case WKBConstants.wkbMultiLineString :
+        geom = readMultiLineString(SRID);
+        break;
+     case WKBConstants.wkbMultiPolygon :
+        geom = readMultiPolygon(SRID);
+        break;
+      case WKBConstants.wkbGeometryCollection :
+        geom = readGeometryCollection(SRID);
+        break;
+      default: 
+        throw new ParseException("Unknown WKB type " + geometryType);
     }
+    setSRID(geom, SRID);
+    return geom;
+  }
 
-    /**
-     * Reads a {@link Geometry} in binary WKB format from an {@link InStream}.
-     *
-     * @param is the stream to read from
-     * @return the Geometry read
-     * @throws IOException if the underlying stream creates an error
-     * @throws ParseException if the WKB is ill-formed
-     */
-    public Geometry read(InStream is) throws IOException, ParseException {
-        dis.setInStream(is);
-        Geometry g = readGeometry();
-        return g;
+  /**
+   * Sets the SRID, if it was specified in the WKB
+   *
+   * @param g the geometry to update
+   * @return the geometry with an updated SRID value, if required
+   */
+  private Geometry setSRID(Geometry g, int SRID)
+  {
+    if (SRID != 0)
+      g.setSRID(SRID);
+    return g;
+  }
+
+  private Point readPoint(EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
+  {
+    CoordinateSequence pts = readCoordinateSequence(1, ordinateFlags);
+    // If X and Y are NaN create a empty point
+    if (Double.isNaN(pts.getX(0)) || Double.isNaN(pts.getY(0))) {
+      return factory.createPoint();
     }
+    return factory.createPoint(pts);
+  }
 
-    protected Geometry readGeometry() throws IOException, ParseException {
-        // determine byte order
-        byte byteOrderWKB = dis.readByte();
-        // always set byte order, since it may change from geometry to geometry
-        int byteOrder =
-                byteOrderWKB == WKBConstants.wkbNDR ? ByteOrderValues.LITTLE_ENDIAN : ByteOrderValues.BIG_ENDIAN;
-        dis.setOrder(byteOrder);
+  private LineString readLineString(EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
+  {
+    int size = readNumField(FIELD_NUMCOORDS);
+    CoordinateSequence pts = readCoordinateSequenceLineString(size, ordinateFlags);
+    return factory.createLineString(pts);
+  }
 
-        int typeInt = dis.readInt();
-        int geometryType = typeInt & 0xff;
-        // determine if Z values are present
-        boolean hasZ = (typeInt & 0x80000000) != 0;
-        inputDimension = hasZ ? 3 : 2;
-        // determine if M values are present
-        boolean hasM = (typeInt & 0x40000000) != 0;
-        if (hasM) {
-            // the coordinates will have a single measure
-            inputMeasures = 1;
-            inputDimension += 1;
-        }
-        // determine if SRIDs are present
-        hasSRID = (typeInt & 0x20000000) != 0;
+  private LinearRing readLinearRing(EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
+  {
+    int size = readNumField(FIELD_NUMCOORDS);
+    CoordinateSequence pts = readCoordinateSequenceRing(size, ordinateFlags);
+    return factory.createLinearRing(pts);
+  }
 
-        int SRID = 0;
-        if (hasSRID) {
-            SRID = dis.readInt();
-        }
+  private Polygon readPolygon(EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
+  {
+    int numRings = readNumField(FIELD_NUMRINGS);
+    LinearRing[] holes = null;
+    if (numRings > 1)
+      holes = new LinearRing[numRings - 1];
 
-        Geometry geom = readGeometry(geometryType);
-        setSRID(geom, SRID);
-        return geom;
+    // empty polygon
+    if (numRings <= 0)
+      return factory.createPolygon();
+    
+    LinearRing shell = readLinearRing(ordinateFlags);
+    for (int i = 0; i < numRings - 1; i++) {
+      holes[i] = readLinearRing(ordinateFlags);
     }
+    return factory.createPolygon(shell, holes);
+  }
 
-    protected Geometry readGeometry(int geometryType) throws IOException, ParseException {
-        Geometry geom = null;
-        switch (geometryType) {
-            case WKBConstants.wkbPoint:
-                geom = readPoint();
-                break;
-            case WKBConstants.wkbLineString:
-                geom = readLineString();
-                break;
-            case WKBConstants.wkbPolygon:
-                geom = readPolygon();
-                break;
-            case WKBConstants.wkbMultiPoint:
-                geom = readMultiPoint();
-                break;
-            case WKBConstants.wkbMultiCurve:
-            case WKBConstants.wkbMultiLineString:
-                geom = readMultiLineString();
-                break;
-            case WKBConstants.wkbMultiPolygon:
-            case WKBConstants.wkbMultiSurface:
-                geom = readMultiPolygon();
-                break;
-            case WKBConstants.wkbGeometryCollection:
-                geom = readGeometryCollection();
-                break;
-            case WKBConstants.wkbCircularString:
-                geom = readCircularString();
-                break;
-            case WKBConstants.wkbCompoundCurve:
-                geom = readCompoundCurve();
-                break;
-            case WKBConstants.wkbCurvePolygon:
-                geom = readCurvePolygon();
-                break;
-
-            default:
-                throw new ParseException("Unknown WKB type " + geometryType);
-        }
-        return geom;
+  private MultiPoint readMultiPoint(int SRID) throws IOException, ParseException
+  {
+    int numGeom = readNumField(FIELD_NUMELEMS);
+    Point[] geoms = new Point[numGeom];
+    for (int i = 0; i < numGeom; i++) {
+      Geometry g = readGeometry(SRID);
+      if (! (g instanceof Point))
+        throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPoint");
+      geoms[i] = (Point) g;
     }
+    return factory.createMultiPoint(geoms);
+  }
 
-    /**
-     * Sets the SRID, if it was specified in the WKB
-     *
-     * @param g the geometry to update
-     * @return the geometry with an updated SRID value, if required
-     */
-    private Geometry setSRID(Geometry g, int SRID) {
-        if (SRID != 0) g.setSRID(SRID);
-        return g;
+  private MultiLineString readMultiLineString(int SRID) throws IOException, ParseException
+  {
+    int numGeom = readNumField(FIELD_NUMELEMS);
+    LineString[] geoms = new LineString[numGeom];
+    for (int i = 0; i < numGeom; i++) {
+      Geometry g = readGeometry(SRID);
+      if (! (g instanceof LineString))
+        throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
+      geoms[i] = (LineString) g;
     }
+    return factory.createMultiLineString(geoms);
+  }
 
-    private Point readPoint() throws IOException, ParseException {
-        CoordinateSequence pts = readCoordinateSequence(1);
-        boolean empty = true;
-        for (int i = 0; i < pts.getDimension(); i++) {
-            if (!Double.isNaN(pts.getOrdinate(0, i))) {
-                empty = false;
-            }
-        }
-        if (empty) return factory.createPoint();
-        return factory.createPoint(pts);
+  private MultiPolygon readMultiPolygon(int SRID) throws IOException, ParseException
+  {
+    int numGeom = readNumField(FIELD_NUMELEMS);
+    Polygon[] geoms = new Polygon[numGeom];
+
+    for (int i = 0; i < numGeom; i++) {
+      Geometry g = readGeometry(SRID);
+      if (! (g instanceof Polygon))
+        throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPolygon");
+      geoms[i] = (Polygon) g;
     }
+    return factory.createMultiPolygon(geoms);
+  }
 
-    private LineString readLineString() throws IOException, ParseException {
-        int size = dis.readInt();
-        CoordinateSequence pts = readCoordinateSequenceLineString(size);
-        return factory.createLineString(pts);
+  private GeometryCollection readGeometryCollection(int SRID) throws IOException, ParseException
+  {
+    int numGeom = readNumField(FIELD_NUMELEMS);
+    Geometry[] geoms = new Geometry[numGeom];
+    for (int i = 0; i < numGeom; i++) {
+      geoms[i] = readGeometry(SRID);
     }
+    return factory.createGeometryCollection(geoms);
+  }
 
-    private Geometry readCircularString() throws IOException, ParseException {
-        int size = dis.readInt();
-        CoordinateSequence pts = readCoordinateSequenceCircularString(size);
-        return factory.createCurvedGeometry(pts);
+  private CoordinateSequence readCoordinateSequence(int size, EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
+  {
+    CoordinateSequence seq = csFactory.create(size, inputDimension, ordinateFlags.contains(Ordinate.M) ? 1 : 0);
+    int targetDim = seq.getDimension();
+    if (targetDim > inputDimension)
+      targetDim = inputDimension;
+    for (int i = 0; i < size; i++) {
+      readCoordinate();
+      for (int j = 0; j < targetDim; j++) {
+        seq.setOrdinate(i, j, ordValues[j]);
+      }
     }
+    return seq;
+  }
 
-    private Geometry readCompoundCurve() throws IOException, ParseException {
-        int numGeom = dis.readInt();
-        List<LineString> geoms = new ArrayList<>();
-        for (int i = 0; i < numGeom; i++) {
-            Geometry g = readGeometry();
-            if (!(g instanceof LineString)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
-            geoms.add((LineString) g);
-        }
-        return factory.createCurvedGeometry(geoms);
+  private CoordinateSequence readCoordinateSequenceLineString(int size, EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
+  {
+    CoordinateSequence seq = readCoordinateSequence(size, ordinateFlags);
+    if (isStrict) return seq;
+    if (seq.size() == 0 || seq.size() >= 2) return seq;
+    return CoordinateSequences.extend(csFactory, seq, 2);
+  }
+  
+  private CoordinateSequence readCoordinateSequenceRing(int size, EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
+  {
+    CoordinateSequence seq = readCoordinateSequence(size, ordinateFlags);
+    if (isStrict) return seq;
+    if (CoordinateSequences.isRing(seq)) return seq;
+    return CoordinateSequences.ensureValidRing(csFactory, seq);
+  }
+
+  /**
+   * Reads a coordinate value with the specified dimensionality.
+   * Makes the X and Y ordinates precise according to the precision model
+   * in use.
+   * @throws ParseException 
+   */
+  private void readCoordinate() throws IOException, ParseException
+  {
+    for (int i = 0; i < inputDimension; i++) {
+      if (i <= 1) {
+        ordValues[i] = precisionModel.makePrecise(dis.readDouble());
+      }
+      else {
+        ordValues[i] = dis.readDouble();
+      }
+
     }
+  }
 
-    private LinearRing readLinearRing() throws IOException, ParseException {
-        int size = dis.readInt();
-        CoordinateSequence pts = readCoordinateSequenceRing(size);
-        return factory.createLinearRing(pts);
-    }
-
-    protected Polygon readPolygon() throws IOException, ParseException {
-        int numRings = dis.readInt();
-        if (numRings == 0) return factory.createPolygon();
-
-        LinearRing[] holes = null;
-        if (numRings > 1) holes = new LinearRing[numRings - 1];
-
-        LinearRing shell = readLinearRing();
-        for (int i = 0; i < numRings - 1; i++) {
-            holes[i] = readLinearRing();
-        }
-        return factory.createPolygon(shell, holes);
-    }
-
-    protected Polygon readCurvePolygon() throws IOException, ParseException {
-        int numRings = dis.readInt();
-        LinearRing[] holes = null;
-        if (numRings > 1) holes = new LinearRing[numRings - 1];
-
-        LinearRing shell = readRing();
-        for (int i = 0; i < numRings - 1; i++) {
-            holes[i] = readRing();
-        }
-        return factory.createPolygon(shell, holes);
-    }
-
-    private LinearRing readRing() throws IOException, ParseException {
-        LineString ls = (LineString) readGeometry();
-        if (!(ls instanceof LinearRing)) {
-            if (!ls.isClosed()) {
-                if (ls instanceof CompoundCurve cc) {
-                    List<LineString> components = cc.getComponents();
-                    Coordinate start = components.get(0).getCoordinateN(0);
-                    LineString lastGeom = components.get(components.size() - 1);
-                    Coordinate end = lastGeom.getCoordinateN(lastGeom.getNumPoints() - 1);
-                    components.add(factory.createLineString(new Coordinate[] {start, end}));
-                    ls = factory.createCurvedGeometry(components);
-                } else {
-                    Coordinate start = ls.getCoordinateN(0);
-                    Coordinate end = ls.getCoordinateN(ls.getNumPoints() - 1);
-                    // turn it into a compound and add the segment that closes it
-                    LineString closer = factory.createLineString(new Coordinate[] {start, end});
-                    ls = factory.createCurvedGeometry(ls, closer);
-                }
-            } else {
-                if (ls instanceof CompoundCurve cc) {
-                    ls = new CompoundRing(cc.getComponents(), cc.getFactory(), cc.getTolerance());
-                } else {
-                    ls = new LinearRing(ls.getCoordinateSequence(), ls.getFactory());
-                }
-            }
-        }
-
-        return (LinearRing) ls;
-    }
-
-    private MultiPoint readMultiPoint() throws IOException, ParseException {
-        int numGeom = dis.readInt();
-        Point[] geoms = new Point[numGeom];
-        for (int i = 0; i < numGeom; i++) {
-            Geometry g = readGeometry();
-            if (!(g instanceof Point)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPoint");
-            geoms[i] = (Point) g;
-        }
-        return factory.createMultiPoint(geoms);
-    }
-
-    private MultiLineString readMultiLineString() throws IOException, ParseException {
-        int numGeom = dis.readInt();
-        LineString[] geoms = new LineString[numGeom];
-        for (int i = 0; i < numGeom; i++) {
-            Geometry g = readGeometry();
-            if (!(g instanceof LineString)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
-            geoms[i] = (LineString) g;
-        }
-        return factory.createMultiLineString(geoms);
-    }
-
-    private MultiPolygon readMultiPolygon() throws IOException, ParseException {
-        int numGeom = dis.readInt();
-        Polygon[] geoms = new Polygon[numGeom];
-        for (int i = 0; i < numGeom; i++) {
-            Geometry g = readGeometry();
-            if (!(g instanceof Polygon)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPolygon");
-            geoms[i] = (Polygon) g;
-        }
-        return factory.createMultiPolygon(geoms);
-    }
-
-    private GeometryCollection readGeometryCollection() throws IOException, ParseException {
-        int numGeom = dis.readInt();
-        Geometry[] geoms = new Geometry[numGeom];
-        for (int i = 0; i < numGeom; i++) {
-            geoms[i] = readGeometry();
-        }
-        return factory.createGeometryCollection(geoms);
-    }
-
-    private CoordinateSequence readCoordinateSequence(int size) throws IOException, ParseException {
-        CoordinateSequence seq = JTS.createCS(csFactory, size, inputDimension, inputMeasures);
-        int targetDim = seq.getDimension();
-        if (targetDim > inputDimension) targetDim = inputDimension;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < targetDim; j++) {
-                seq.setOrdinate(i, j, readCoordinate(j));
-            }
-            if (targetDim < inputDimension) {
-                for (int j = targetDim; j < inputDimension; j++) {
-                    readCoordinate(j);
-                }
-            }
-        }
-        return seq;
-    }
-
-    private CoordinateSequence readCoordinateSequenceCircularString(int size) throws IOException, ParseException {
-        CoordinateSequence seq = readCoordinateSequence(size);
-        if (isStrict) return seq;
-        if (seq.size() == 0 || seq.size() >= 3) return seq;
-        return CoordinateSequences.extend(csFactory, seq, 3);
-    }
-
-    private CoordinateSequence readCoordinateSequenceLineString(int size) throws IOException, ParseException {
-        CoordinateSequence seq = readCoordinateSequence(size);
-        if (isStrict) return seq;
-        if (seq.size() == 0 || seq.size() >= 2) return seq;
-        return CoordinateSequences.extend(csFactory, seq, 2);
-    }
-
-    private CoordinateSequence readCoordinateSequenceRing(int size) throws IOException, ParseException {
-        CoordinateSequence seq = readCoordinateSequence(size);
-        if (isStrict) return seq;
-        if (CoordinateSequences.isRing(seq)) return seq;
-        return CoordinateSequences.ensureValidRing(csFactory, seq);
-    }
-
-    /**
-     * Reads a coordinate value with the specified dimensionality. Makes the X and Y ordinates precise according to the
-     * precision model in use.
-     */
-    private double readCoordinate(int i) throws IOException, ParseException {
-        if (i <= 1) {
-            return precisionModel.makePrecise(dis.readDouble());
-        } else {
-            return dis.readDouble();
-        }
-    }
-
-    /**
-     * Casts the provided geometry factory to a curved one if possible, or wraps it into one with infinite tolerance
-     * (the linearization will happen using the default base segments number set in {@link CircularArc}
-     */
-    private CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
-        CurvedGeometryFactory curvedFactory;
-        if (gf instanceof CurvedGeometryFactory geometryFactory) {
-            curvedFactory = geometryFactory;
-        } else {
-            curvedFactory = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
-        }
-        return curvedFactory;
-    }
 }

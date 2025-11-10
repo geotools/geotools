@@ -28,6 +28,7 @@ import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.MultiCurvedGeometry;
@@ -329,6 +330,13 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                 result = new CircularString(cr.getControlPoints(), cr.getFactory(), cr.getTolerance());
             } else if (source instanceof CompoundRing cr && CompoundCurve.class.isAssignableFrom(target)) {
                 result = new CompoundCurve(cr.getComponents(), cr.getFactory(), cr.getTolerance());
+            } else if (source instanceof Polygon && CurvePolygon.class.isAssignableFrom(target)) {
+                Polygon poly = (Polygon) source;
+                List<LinearRing> holes = new ArrayList<>();
+                for (int i = 0; i < poly.getNumInteriorRing(); i++) {
+                    holes.add(poly.getInteriorRingN(i));
+                }
+                result = new CurvePolygon(poly.getExteriorRing(), holes, poly.getFactory(), Double.MAX_VALUE);
             } else {
                 LineString converted = Converters.convert(source, LineString.class);
                 if (converted.isEmpty()) {

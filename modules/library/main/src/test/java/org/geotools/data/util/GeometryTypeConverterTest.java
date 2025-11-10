@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.MultiCurvedGeometry;
@@ -140,5 +141,16 @@ public class GeometryTypeConverterTest {
         Assert.assertEquals(pol, mp.getGeometryN(0));
         Assert.assertNull(mp.getGeometryN(0).getUserData());
         Assert.assertEquals(userData, mp.getUserData());
+    }
+
+    @Test
+    public void testPolygonToCurvePolygon() throws Exception {
+        Geometry pol = new WKTReader().read("POLYGON((0 0, 10 10, 10 0, 0 0))");
+        Map<String, String> userData = Collections.singletonMap("test", "value");
+        pol.setUserData(userData);
+        Converter converter = getConverter(pol, CurvePolygon.class);
+        CurvePolygon converted = converter.convert(pol, CurvePolygon.class);
+        Assert.assertArrayEquals(pol.getCoordinates(), converted.getCoordinates());
+        Assert.assertEquals(userData, converted.getUserData());
     }
 }

@@ -1,4 +1,9 @@
 /*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
@@ -9,11 +14,14 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package org.locationtech.jts.io;
+package org.geotools.geometry.jts;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.CoordinateSequences;
@@ -28,6 +36,13 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.io.ByteArrayInStream;
+import org.locationtech.jts.io.ByteOrderDataInStream;
+import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.InStream;
+import org.locationtech.jts.io.Ordinate;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKBWriter;
 
 /**
  * Reads a {@link Geometry}from a byte stream in Well-Known Binary format.
@@ -120,7 +135,7 @@ public class WKBReader
 
   private static final String FIELD_NUMELEMS = "numElems";
 
-  private GeometryFactory factory;
+  private CurvedGeometryFactory factory;
   private CoordinateSequenceFactory csFactory;
   private PrecisionModel precisionModel;
   // default dimension - will be set on read
@@ -140,7 +155,7 @@ public class WKBReader
   }
 
   public WKBReader(GeometryFactory geometryFactory) {
-    this.factory = geometryFactory;
+    this.factory = getCurvedGeometryFactory(geometryFactory);
     precisionModel = factory.getPrecisionModel();
     csFactory = factory.getCoordinateSequenceFactory();
   }
@@ -278,15 +293,26 @@ public class WKBReader
       case WKBConstants.wkbMultiPoint :
         geom = readMultiPoint(SRID);
         break;
+      case WKBConstants.wkbMultiCurve:
       case WKBConstants.wkbMultiLineString :
         geom = readMultiLineString(SRID);
         break;
      case WKBConstants.wkbMultiPolygon :
+     case WKBConstants.wkbMultiSurface:
         geom = readMultiPolygon(SRID);
         break;
       case WKBConstants.wkbGeometryCollection :
         geom = readGeometryCollection(SRID);
         break;
+      case WKBConstants.wkbCircularString:
+          geom = readCircularString(ordinateFlags);
+          break;
+      case WKBConstants.wkbCompoundCurve:
+          geom = readCompoundCurve(SRID);
+          break;
+      case WKBConstants.wkbCurvePolygon:
+          geom = readCurvePolygon(SRID);
+          break;
       default: 
         throw new ParseException("Unknown WKB type " + geometryType);
     }
@@ -324,6 +350,23 @@ public class WKBReader
     return factory.createLineString(pts);
   }
 
+  private Geometry readCircularString(EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException {
+      int size = dis.readInt();
+      CoordinateSequence pts = readCoordinateSequenceCircularString(size, ordinateFlags);
+      return factory.createCurvedGeometry(pts);
+  }
+
+  private Geometry readCompoundCurve(int SRID) throws IOException, ParseException {
+      int numGeom = dis.readInt();
+      List<LineString> geoms = new ArrayList<>();
+      for (int i = 0; i < numGeom; i++) {
+          Geometry g = readGeometry(SRID);
+          if (!(g instanceof LineString)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
+          geoms.add((LineString) g);
+      }
+      return factory.createCurvedGeometry(geoms);
+  }
+
   private LinearRing readLinearRing(EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
   {
     int size = readNumField(FIELD_NUMCOORDS);
@@ -347,6 +390,52 @@ public class WKBReader
       holes[i] = readLinearRing(ordinateFlags);
     }
     return factory.createPolygon(shell, holes);
+  }
+
+  protected Polygon readCurvePolygon(int SRID) throws IOException, ParseException {
+      int numRings = dis.readInt();
+      LinearRing[] holes = null;
+      if (numRings > 1) holes = new LinearRing[numRings - 1];
+
+      LinearRing shell = readRing(SRID);
+      for (int i = 0; i < numRings - 1; i++) {
+          holes[i] = readRing(SRID);
+      }
+      return factory.createPolygon(shell, holes);
+  }
+
+  private LinearRing readRing(int SRID) throws IOException, ParseException {
+      LineString ls = (LineString) readGeometry(SRID);
+      if (!(ls instanceof LinearRing)) {
+          if (!ls.isClosed()) {
+              if (ls instanceof CompoundCurve) {
+                  CompoundCurve cc = (CompoundCurve) ls;
+                  List<LineString> components = cc.getComponents();
+                  Coordinate start = components.get(0).getCoordinateN(0);
+                  LineString lastGeom = components.get(components.size() - 1);
+                  Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
+                  components.add(factory.createLineString(new Coordinate[] {start, end}));
+                  ls = factory.createCurvedGeometry(components);
+              } else {
+                  Coordinate start = ls.getCoordinateN(0);
+                  Coordinate end = ls.getCoordinateN((ls.getNumPoints() - 1));
+                  // turn it into a compound and add the segment that closes it
+                  LineString closer = factory.createLineString(new Coordinate[] {start, end});
+                  ls = factory.createCurvedGeometry(ls, closer);
+              }
+          } else {
+              if (ls instanceof CompoundCurve) {
+                  // this case should never happen, but let's be robust against
+                  // alternative geometry factories not behaving as expected
+                  CompoundCurve cc = (CompoundCurve) ls;
+                  ls = new CompoundRing(cc.getComponents(), cc.getFactory(), cc.getTolerance());
+              } else {
+                  ls = new LinearRing(ls.getCoordinateSequence(), ls.getFactory());
+              }
+          }
+      }
+
+      return (LinearRing) ls;
   }
 
   private MultiPoint readMultiPoint(int SRID) throws IOException, ParseException
@@ -414,6 +503,13 @@ public class WKBReader
     return seq;
   }
 
+  private CoordinateSequence readCoordinateSequenceCircularString(int size, EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException {
+      CoordinateSequence seq = readCoordinateSequence(size, ordinateFlags);
+      if (isStrict) return seq;
+      if (seq.size() == 0 || seq.size() >= 3) return seq;
+      return CoordinateSequences.extend(csFactory, seq, 3);
+  }
+
   private CoordinateSequence readCoordinateSequenceLineString(int size, EnumSet<Ordinate> ordinateFlags) throws IOException, ParseException
   {
     CoordinateSequence seq = readCoordinateSequence(size, ordinateFlags);
@@ -448,5 +544,19 @@ public class WKBReader
 
     }
   }
+
+  /**
+    * Casts the provided geometry factory to a curved one if possible, or wraps it into one with infinite tolerance
+    * (the linearization will happen using the default base segments number set in {@link CircularArc}
+    */
+   private CurvedGeometryFactory getCurvedGeometryFactory(GeometryFactory gf) {
+       CurvedGeometryFactory curvedFactory;
+       if (gf instanceof CurvedGeometryFactory) {
+           curvedFactory = (CurvedGeometryFactory) gf;
+       } else {
+           curvedFactory = new CurvedGeometryFactory(gf, Double.MAX_VALUE);
+       }
+       return curvedFactory;
+   }
 
 }

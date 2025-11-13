@@ -21,16 +21,30 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 
+import java.util.List;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.locationtech.jts.geom.CoordinateSequenceComparator;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 
+@RunWith(Parameterized.class)
 public class WKBReaderTest {
+
+    enum GeometryTypeEncoding {
+        POSTGIS,
+        ISO_OGC
+    }
+
+    @Parameterized.Parameters
+    public static List<GeometryTypeEncoding> getParameters() {
+        return List.of(GeometryTypeEncoding.POSTGIS, GeometryTypeEncoding.ISO_OGC);
+    }
 
     CurvedGeometryFactory curvedfactory = new CurvedGeometryFactory(Double.MAX_VALUE);
     WKBReader wkbReader = new WKBReader(curvedfactory);
@@ -39,6 +53,12 @@ public class WKBReaderTest {
 
     CoordinateSequenceComparator compXY = new CoordinateSequenceComparator(2);
     CoordinateSequenceComparator compXYZ = new CoordinateSequenceComparator(3);
+
+    GeometryTypeEncoding geometryTypeEncoding;
+
+    public WKBReaderTest(GeometryTypeEncoding geometryTypeEncoding) {
+        this.geometryTypeEncoding = geometryTypeEncoding;
+    }
 
     @Test
     public void canReadPoint() {
@@ -51,9 +71,11 @@ public class WKBReaderTest {
     @Test
     public void canReadPointWithSRID() {
         // SELECT ST_GeomFromText('POINT(1 1)', 4326)
-        assertThat(
-                readWkb("0101000020E6100000000000000000F03F000000000000F03F"),
-                allOf(matchesExact(readWkt("POINT(1 1)"), compXY), hasProperty("SRID", is(4326))));
+        Point point = readWkb("0101000020E6100000000000000000F03F000000000000F03F");
+        assertThat(point, matchesExact(readWkt("POINT(1 1)"), compXY));
+        if (geometryTypeEncoding == GeometryTypeEncoding.POSTGIS) {
+            assertThat(point, hasProperty("SRID", is(4326)));
+        }
     }
 
     @Test
@@ -76,17 +98,6 @@ public class WKBReaderTest {
     public void canReadPointWithZM() {
         // SELECT ST_GeomFromText('POINT ZM(1 1 2 200)')
         Point pointZM = readWkb("01010000C0000000000000F03F000000000000F03F00000000000000400000000000006940");
-        assertThat(pointZM, allOf(matchesExact(readWkt("POINT(1 1)"), compXY), hasProperty("SRID", is(0))));
-        assertThat(pointZM.getCoordinates()[0].getZ(), is(2D));
-        assertThat(pointZM.getCoordinates()[0].getM(), is(200D));
-    }
-
-    @Test
-    public void canReadPointWithZM_OGC() {
-        // test for geometry codes in (ISO/OGC 06-103r4) format
-        // point zm -> 3001 = BB9
-        // so update geom code    `010000C` (in canReadPointWithZM)
-        Point pointZM = readWkb("01B90B0000000000000000F03F000000000000F03F00000000000000400000000000006940");
         assertThat(pointZM, allOf(matchesExact(readWkt("POINT(1 1)"), compXY), hasProperty("SRID", is(0))));
         assertThat(pointZM.getCoordinates()[0].getZ(), is(2D));
         assertThat(pointZM.getCoordinates()[0].getM(), is(200D));
@@ -124,13 +135,6 @@ public class WKBReaderTest {
         assertThat(
                 readWkb(
                         "010500008002000000010200008002000000000000000000F03F000000000000F03F0000000000000840000000000000004000000000000000400000000000000840010200008002000000000000000000144000000000000014400000000000001040000000000000184000000000000018400000000000001040"),
-                matchesExact(readWkt("MULTILINESTRING((1 1 3, 2 2 3), (5 5 4, 6 6 4))"), compXYZ));
-
-        // SELECT ST_GeomFromText('MULTILINESTRING((1 1 3, 2 2 3), (5 5 4, 6 6 4))')
-        // I've messed with the geometry code here `0500008` -> `ED030000` to use (ISO/OGC 06-103r4) format
-        assertThat(
-                readWkb(
-                        "01ED03000002000000010200008002000000000000000000F03F000000000000F03F0000000000000840000000000000004000000000000000400000000000000840010200008002000000000000000000144000000000000014400000000000001040000000000000184000000000000018400000000000001040"),
                 matchesExact(readWkt("MULTILINESTRING((1 1 3, 2 2 3), (5 5 4, 6 6 4))"), compXYZ));
     }
 
@@ -233,10 +237,34 @@ public class WKBReaderTest {
         };
     }
 
+    /**
+     * Read geometry from PostGIS style WKT.
+     *
+     * <p>When {@link #geometryTypeEncoding} is set to ISO_OGC the geometry type part of the wkb is rewritten to OGC
+     * format. This allows the test to be parameterized so both formats can be tested with less duplication.
+     *
+     * <p>As part of this translation the SRID (if any) is removed. Which is fine because OGC does not format does not
+     * have the SRID, but this does mean that tests can only verify SRID when in PostGIS mode.
+     */
     @SuppressWarnings("unchecked")
-    <T extends Geometry> T readWkb(String wkbHex) {
+    <T extends Geometry> T readWkb(String postgisWkbHex) {
+        if (geometryTypeEncoding == GeometryTypeEncoding.ISO_OGC) {
+            int code = Integer.parseInt(postgisWkbHex.substring(2, 4), 16);
+            int zm = Integer.parseInt(postgisWkbHex.substring(8, 9), 16);
+            if ((zm & 0x8) == 8) {
+                code += 1000;
+            }
+            if ((zm & 0x4) == 4) {
+                code += 2000;
+            }
+            boolean hasSRID = (zm & 0x2) == 2;
+            String ogcCode = String.format("%04x", code);
+            ogcCode = ogcCode.substring(2, 4) + ogcCode.substring(0, 2) + "0000";
+            // if hasSRID we skip the 8byte srid
+            postgisWkbHex = postgisWkbHex.substring(0, 2) + ogcCode + postgisWkbHex.substring(hasSRID ? 18 : 10);
+        }
         try {
-            return (T) wkbReader.read(WKBReader.hexToBytes(wkbHex));
+            return (T) wkbReader.read(WKBReader.hexToBytes(postgisWkbHex));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

@@ -61,8 +61,8 @@ public class GeoPkgDataStoreFactoryTest {
         Thread thread1 = new Thread(() -> {
             try {
                 createGeoPackage(dbName2, null, "foo");
-                Connection connection = DriverManager.getConnection(
-                        "jdbc:sqlite:" + tmp.getRoot().getPath() + File.separator + dbName2);
+                Connection connection = DriverManager.getConnection("jdbc:sqlite:file:"
+                        + tmp.getRoot().toPath().resolve(dbName2).toAbsolutePath());
                 Statement statement = connection.createStatement();
                 statement.executeUpdate("PRAGMA locking_mode = EXCLUSIVE");
                 PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO foo (name) VALUES (?)");

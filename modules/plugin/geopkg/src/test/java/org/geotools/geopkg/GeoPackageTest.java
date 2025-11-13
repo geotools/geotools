@@ -35,10 +35,14 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermission;
 import java.sql.Connection;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -47,6 +51,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -106,6 +111,8 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
+import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -335,6 +342,58 @@ public class GeoPackageTest {
                 // just check that the geometry is the expected type
                 assertThat(f.getAttribute("geometry"), instanceOf(MultiSurface.class));
             }
+        }
+    }
+
+    @Test
+    public void canOpenGeoPackageWithIncompleteTransactionOnReadonlyFileSystemIfReadOnly() throws Exception {
+        // this test cannot run on windows because it needs to make changes to file permissions.
+        Assume.assumeFalse(System.getProperty("os.name").toLowerCase().contains("windows"));
+
+        // for this test we need to make the geopackage file and it's parent directory readonly.
+        // so we will use version copied to the target directory to keep well away from the source tree
+        Path hasIncompleteTransaction = Path.of(
+                "./target/test-classes/org/geotools/geopkg/readonly/cities_srs_84-with-incomplete-transaction.gpkg");
+        // we need to update the file permissions on the test file and it's parent directory.
+        Set<PosixFilePermission> perms = new HashSet<>();
+        perms.add(PosixFilePermission.OWNER_READ);
+        perms.add(PosixFilePermission.OWNER_EXECUTE);
+        perms.add(PosixFilePermission.GROUP_READ);
+        perms.add(PosixFilePermission.OTHERS_READ);
+        Files.setPosixFilePermissions(hasIncompleteTransaction, perms);
+        Files.setPosixFilePermissions(hasIncompleteTransaction.getParent(), perms);
+
+        // sanity check the geopackage and parent dir are readonly (this is important otherwise we aren't
+        // really testing the fix)
+        assertThat(Files.isWritable(hasIncompleteTransaction), is(false));
+        assertThat(Files.isWritable(hasIncompleteTransaction.getParent()), is(false));
+
+        try {
+            // open the with readonly set (true in arg4)
+            try (GeoPackage gpkg = new GeoPackage(hasIncompleteTransaction.toFile(), null, null, true)) {
+                List<FeatureEntry> contents = gpkg.features();
+                assertEquals(2, contents.size());
+                Integer expectedSrid = 84;
+                for (Entry content : contents) {
+                    assertEquals(expectedSrid, content.getSrid());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            // now we open the same geopackage without setting readonly.
+            // this should fail, which serves to show that there is a problem and also ensures that
+            // the test geopackage has not had the incomplete transation fixed
+            IOException ex = Assert.assertThrows(IOException.class, () -> {
+                GeoPackage gpkg = new GeoPackage(hasIncompleteTransaction.toFile());
+                gpkg.features();
+            });
+            assertThat(ex.getCause(), instanceOf(SQLException.class));
+        } finally {
+            // we need to restore owner write or CI agents might not be able to unlink these files
+            perms.add(PosixFilePermission.OWNER_WRITE);
+            Files.setPosixFilePermissions(hasIncompleteTransaction.getParent(), perms);
+            Files.setPosixFilePermissions(hasIncompleteTransaction, perms);
         }
     }
 

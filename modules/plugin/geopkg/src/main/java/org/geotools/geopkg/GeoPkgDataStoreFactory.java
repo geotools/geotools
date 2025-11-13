@@ -18,6 +18,8 @@ package org.geotools.geopkg;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Map;
 import javax.sql.DataSource;
@@ -130,7 +132,24 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
                 db = new File(baseDirectory, db.getPath());
             }
         }
-        return "jdbc:sqlite:" + db;
+        String jdbcUri = "jdbc:sqlite:" + db.toURI();
+        Object readOnly = READ_ONLY.lookUp(params);
+        if (Boolean.TRUE.equals(readOnly) && isNeedImmutable(db.toPath())) {
+            // if the readOnly mode has been requested and the geopackage file and parent directory are also
+            // readonly we also set the immutable flag. This prevents any exceptions being thrown in the
+            // unlikely case the GeoPackage has an incomplete transaction because sqlite will otherwise
+            // attempt to recover the transaction and that will fail on a read only file system.
+            // Refer to: https://www.sqlite.org/wal.html#readonly
+            jdbcUri = jdbcUri + "?immutable=true";
+        }
+        return jdbcUri;
+    }
+
+    private boolean isNeedImmutable(Path databasePath) {
+        Path parentPath = databasePath.getParent();
+        return Files.exists(databasePath)
+                && (parentPath != null && !Files.isWritable(parentPath))
+                && !Files.isWritable(databasePath);
     }
 
     @Override

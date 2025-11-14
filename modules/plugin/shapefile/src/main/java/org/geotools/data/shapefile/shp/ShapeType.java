@@ -19,8 +19,11 @@ package org.geotools.data.shapefile.shp;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * Not much but a type safe enumeration of file types as ints and names. The descriptions can easily be tied to a
- * ResourceBundle if someone wants to do that.
+ * Type safe enumeration of file types as ints and names.
+ *
+ * The descriptions can easily be tied to a ResourceBundle if someone wants to do that.
+ *
+ * @See http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf
  *
  * @author Ian Schneider
  */
@@ -115,6 +118,24 @@ public enum ShapeType {
 
     public boolean isMultiPointType() {
         return id % 10 == 8;
+    }
+
+    /**
+     * TypeZ indicates that Z values are stored in the shape, and that M values are optionally stored.
+     *
+     * @return true for POINTZ, ARCZ, POLYGONZ, and MULTIPOINTZ.
+     */
+    public boolean isTypeZ() {
+        return this == POINTZ || this == ARCZ || this == POLYGONZ || this == MULTIPOINTZ;
+    }
+
+    /**
+     * TypeM indicates that M values are stored in the shape, but no Z values.
+     *
+     * @return true for POINTM, ARCM, POLYGONM, and MULTIPOINTM.
+     */
+    public boolean isTypeM() {
+        return this == POINTM || this == ARCM || this == POLYGONM || this == MULTIPOINT;
     }
 
     /**

@@ -232,6 +232,19 @@ public class H3DGGSInstanceTest {
     }
 
     @Test
+    public void testParent() throws Exception {
+        String child = "82f3b7fffffffff";
+        Long childId = Long.parseUnsignedLong(child, 16);
+        H3ParentIterator parentIterator = new H3ParentIterator(childId, (H3DGGSInstance) h3i);
+        Zone zone = parentIterator.next();
+        String parentId1 = "81f3bffffffffff";
+        assertEquals(parentId1, zone.getId());
+        zone = parentIterator.next();
+        String parentId2 = "80f3fffffffffff";
+        assertEquals(parentId2, zone.getId());
+    }
+
+    @Test
     public void testMapPoint() throws Exception {
         Point northPole = GF.createPoint(new Coordinate(0, 90));
         // test few different resolutions

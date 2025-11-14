@@ -55,7 +55,12 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
+import org.geotools.geometry.jts.CircularString;
+import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.MultiCurve;
+import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.Entry.DataType;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
@@ -358,6 +363,14 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         else if ("MULTIPOLYGON".equalsIgnoreCase(typeName)) return MultiPolygon.class;
         else if ("GEOMETRY".equalsIgnoreCase(typeName)) return Geometry.class;
         else if ("GEOMETRYCOLLECTION".equalsIgnoreCase(typeName)) return GeometryCollection.class;
+        // support for curved geometry types
+        else if ("CIRCULARSTRING".equalsIgnoreCase(typeName)) return CircularString.class;
+        else if ("COMPOUNDCURVE".equalsIgnoreCase(typeName)) return CompoundCurve.class;
+        else if ("CURVEPOLYGON".equalsIgnoreCase(typeName)) return CurvePolygon.class;
+        else if ("MULTICURVE".equalsIgnoreCase(typeName)) return MultiCurve.class;
+        else if ("MULTISURFACE".equalsIgnoreCase(typeName)) return MultiSurface.class;
+        else if ("CURVE".equalsIgnoreCase(typeName)) return LineString.class;
+        else if ("SURFACE".equalsIgnoreCase(typeName)) return CurvePolygon.class;
 
         return null;
     }

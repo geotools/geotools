@@ -31,9 +31,10 @@
 
   <licenses>
     <license>
-      <name>GNU Lesser General Public License, Version 2.1</name>
+      <name>LGPL-2.1-only</name>
       <url>https://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html</url>
       <distribution>repo</distribution>
+      <comments>GNU Lesser General Public License, Version 2.1</comments>
     </license>
   </licenses>
 

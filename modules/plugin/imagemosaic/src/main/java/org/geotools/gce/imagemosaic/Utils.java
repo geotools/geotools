@@ -2181,6 +2181,21 @@ public class Utils {
         }
     }
 
+    public static void fixGeoPkgParameters(Map<String, Serializable> params, String parentLocation)
+            throws MalformedURLException {
+        if (params.containsKey(DATABASE_KEY)) {
+            File dbname = (File) params.get(DATABASE_KEY);
+            if (!dbname.isAbsolute()) {
+                String path = dbname.getPath();
+                if ("".equals(FilenameUtils.getExtension(dbname.getName()))) {
+                    path += ".gpkg";
+                }
+                params.put(DATABASE_KEY, new File(URLs.urlToFile(new URL(parentLocation)), path));
+            }
+        }
+        params.put("read_only", false);
+    }
+
     /** Checks if the provided factory spi builds a Oracle store */
     public static boolean isOracleStore(DataStoreFactorySpi spi) {
         String spiName = spi == null ? null : spi.getClass().getName();
@@ -2201,6 +2216,11 @@ public class Utils {
         String spiName = spi == null ? null : spi.getClass().getName();
         return "org.geotools.data.sqlserver.SQLServerDataStoreFactory".equals(spiName)
                 || "org.geotools.data.sqlserver.SQLServerJNDIDataStoreFactory".equals(spiName);
+    }
+
+    public static boolean isGeoPkgStore(DataStoreFactorySpi spi) {
+        String spiName = spi == null ? null : spi.getClass().getName();
+        return "org.geotools.geopkg.GeoPkgDataStoreFactory".equals(spiName);
     }
 
     /** Merge statistics across datasets. */

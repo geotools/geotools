@@ -28,6 +28,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.catalog.geopkg.GeoPKGDataStoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.OracleDatastoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.sqlserver.SQLServerDatastoreWrapper;
@@ -64,6 +65,9 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
             Utils.fixH2DatabaseLocation(dastastoreParams, parentLocation);
             Utils.fixH2MVCCParam(dastastoreParams);
         }
+        if (Utils.isGeoPkgStore(spi)) {
+            Utils.fixGeoPkgParameters(dastastoreParams, parentLocation);
+        }
         if (isPostgis) {
             Utils.fixPostgisDBCreationParams(dastastoreParams);
         }
@@ -90,6 +94,9 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
             // always wrap to ensure the geometry metadata table is there
             this.tileIndexStore =
                     new SQLServerDatastoreWrapper(getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
+        } else if (Utils.isGeoPkgStore(spi)) {
+            this.tileIndexStore =
+                    new GeoPKGDataStoreWrapper(getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
         }
 
         // this init must be here as it's getting called by the parent class constructor

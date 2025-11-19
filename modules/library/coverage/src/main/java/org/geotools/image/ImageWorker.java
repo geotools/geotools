@@ -2219,6 +2219,7 @@ public class ImageWorker {
     public final ImageWorker addBands(
             RenderedImage[] bands, boolean addAlpha, Range[] nodata2, List<AffineTransform> transformationList) {
         ParameterBlock pb = new ParameterBlock();
+        pb.addSource(this.image);
         for (RenderedImage band : bands) {
             pb.addSource(band);
         }

@@ -1700,7 +1700,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage input = iw.getRenderedImage();
         RenderedImage image = iw.addBands(new RenderedImage[] {input, input, input, input}, false, null)
                 .getRenderedImage();
-        assertEquals(4, image.getTile(0, 0).getSampleModel().getNumBands());
+        // Note that adding 4 bands to the existing 1 gray-band image will result into 5 total bands
+        assertEquals(5, image.getTile(0, 0).getSampleModel().getNumBands());
         assertNoData(image, null);
     }
 

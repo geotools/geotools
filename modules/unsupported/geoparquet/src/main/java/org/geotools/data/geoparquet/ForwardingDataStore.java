@@ -30,6 +30,8 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.decorate.Wrapper;
 
 /**
  * A decorator implementation of the DataStore interface that forwards all method calls to a delegate DataStore
@@ -38,9 +40,20 @@ import org.geotools.api.filter.Filter;
  * <p>This class is used as a base for creating specialized DataStore implementations that need to modify or extend the
  * behavior of an existing DataStore without modifying the original class.
  *
+ * <p>Some internal workflows — such as the setup of an {@code AggregatorCollection} on top of a
+ * {@code SimpleFeatureSource} — require access to JDBC-specific capabilities. In particular, certain visitors can only
+ * be applied if the DataStore is a {@code JDBCDataStore}.
+ *
+ * <p>The {@link Wrapper} interface allows controlled access to the underlying store, making it possible (at the
+ * caller’s discretion and risk) to extract the original {@code JDBCDataStore} when such specialized handling is needed.
+ *
+ * <p>In short: - The wrapper preserves the intent of shielding JDBC internals from general use. - The {@code Wrapper}
+ * interface makes JDBC access *possible but explicit* for advanced cases. - Callers are responsible for ensuring that
+ * any direct JDBC usage does not reintroduce security problems (especially when dealing with user-defined SQL).
+ *
  * @param <S> The type of DataStore being decorated
  */
-public class ForwardingDataStore<S extends DataStore> implements DataStore {
+public class ForwardingDataStore<S extends DataStore> implements DataStore, Wrapper {
 
     protected final S delegate;
 
@@ -145,5 +158,19 @@ public class ForwardingDataStore<S extends DataStore> implements DataStore {
     @Override
     public LockingManager getLockingManager() {
         return delegate.getLockingManager();
+    }
+
+    @Override
+    public boolean isWrapperFor(Class<?> aClass) {
+        return JDBCDataStore.class.isAssignableFrom(aClass);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T unwrap(Class<T> aClass) throws IllegalArgumentException {
+        if (isWrapperFor(aClass)) {
+            return (T) delegate;
+        }
+        return null;
     }
 }

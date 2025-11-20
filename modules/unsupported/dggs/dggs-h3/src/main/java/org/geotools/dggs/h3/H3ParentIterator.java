@@ -38,9 +38,10 @@ public class H3ParentIterator implements Iterator<Zone> {
 
     @Override
     public Zone next() {
-        long parentId = dggs.h3.h3ToParent(id, resolution);
+        int parentResolution = resolution - 1;
+        long parentId = dggs.h3.h3ToParent(id, parentResolution);
         this.id = parentId;
-        this.resolution--;
+        this.resolution = parentResolution;
         return new H3Zone(dggs, parentId);
     }
 }

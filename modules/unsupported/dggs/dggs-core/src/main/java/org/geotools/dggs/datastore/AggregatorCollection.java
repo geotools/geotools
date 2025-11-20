@@ -22,7 +22,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
@@ -119,7 +122,7 @@ public class AggregatorCollection extends DecoratingSimpleFeatureCollection {
                 if (!rs.next()) return false;
                 List<Object> results = new ArrayList<>();
                 for (int i = 1; i <= calculators.size(); i++) {
-                    results.add(rs.getObject(i));
+                    results.add(getObject(rs, i));
                 }
                 visitor.setResults(results);
                 return true;
@@ -245,11 +248,13 @@ public class AggregatorCollection extends DecoratingSimpleFeatureCollection {
             try {
                 List<Object> key = new ArrayList<>();
                 for (int i = 0; i < groupSize; i++) {
-                    key.add(rs.getObject(i + 1));
+                    Object objectKey = getObject(rs, i + 1);
+                    key.add(objectKey);
                 }
                 List<Object> values = new ArrayList<>();
                 for (int i = 0; i < resultSize; i++) {
-                    values.add(rs.getObject(groupSize + i + 1));
+                    Object objectValue = getObject(rs, groupSize + i + 1);
+                    values.add(objectValue);
                 }
                 return new GroupByResult(key, values);
             } catch (SQLException e) {
@@ -325,5 +330,13 @@ public class AggregatorCollection extends DecoratingSimpleFeatureCollection {
         }
 
         return null;
+    }
+
+    private static Object getObject(ResultSet rs, int i) throws SQLException {
+        Object object = rs.getObject(i);
+        if (object instanceof OffsetDateTime odt) {
+            object = Date.from(odt.withOffsetSameInstant(ZoneOffset.UTC).toInstant());
+        }
+        return object;
     }
 }

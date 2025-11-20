@@ -51,6 +51,7 @@ import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.decorate.Wrapper;
 
 public class DGGSFeatureSourceImpl implements org.geotools.dggs.gstore.DGGSFeatureSource {
 
@@ -223,6 +224,9 @@ public class DGGSFeatureSourceImpl implements org.geotools.dggs.gstore.DGGSFeatu
         } else if (delegate.getDataStore() instanceof JDBCDataStore) {
             result = new AggregatorCollection(
                     result, (JDBCDataStore) delegate.getDataStore(), new Query(split.pre), getSchema());
+        } else if (delegate.getDataStore() instanceof Wrapper w && w.isWrapperFor(JDBCDataStore.class)) {
+            JDBCDataStore jdbcDataStore = w.unwrap(JDBCDataStore.class);
+            result = new AggregatorCollection(result, jdbcDataStore, new Query(split.pre), getSchema());
         }
         result = reprojectFeatureCollection(result, query);
         return result;

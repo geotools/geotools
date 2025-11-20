@@ -66,6 +66,7 @@ public class DGGSResolutionCalculator {
             Hints.ConfigurationMetadataKey.get(CONFIGURED_MAXRES_KEY);
 
     double[] levelThresholds;
+
     Integer fixedResolution = null;
 
     public DGGSResolutionCalculator(DGGSInstance dggs, Integer fixedResolution) {
@@ -183,5 +184,9 @@ public class DGGSResolutionCalculator {
 
     public NumberRange<Integer> getValidResolutions() {
         return new NumberRange<>(Integer.class, 0, levelThresholds.length - 1);
+    }
+
+    public Integer getFixedResolution() {
+        return fixedResolution;
     }
 }

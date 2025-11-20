@@ -293,7 +293,7 @@ public class DGGSDataStore implements DGGSStore {
         return dggs;
     }
 
-    protected DGGSResolutionCalculator getResolutions() {
+    public DGGSResolutionCalculator getResolutions() {
         return resolutions;
     }
 }

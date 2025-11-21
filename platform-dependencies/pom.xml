@@ -44,10 +44,8 @@
     <imageio.ext.version>2.0.0</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson.version>2.19.0</jackson.version>
-    <!--     <jai-core.version>1.1.3</jai-core.version> -->
-    <!--     <jai-codec.version>${jai-core.version}</jai-codec.version> -->
     <jai-imageio.version>1.1</jai-imageio.version>
-    <imagen.version>0.9.0</imagen.version>
+    <imagen.version>0.9.1</imagen.version>
     <javacsv.version>2.0</javacsv.version>
     <java-mail.version>1.4.7</java-mail.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>

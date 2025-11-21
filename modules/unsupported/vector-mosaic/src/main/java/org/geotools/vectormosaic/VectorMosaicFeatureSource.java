@@ -16,12 +16,12 @@
  */
 package org.geotools.vectormosaic;
 
+import static org.geotools.data.util.PropertiesTransformer.loadProperties;
 import static org.geotools.vectormosaic.VectorMosaicGranule.GRANULE_CONFIG_FIELDS;
 import static org.geotools.vectormosaic.VectorMosaicStore.buildName;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -80,6 +80,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     private final String delegateStoreName;
     private final String preferredSPI;
     private final String connectionParameterKey;
+    private final Properties commonParameters;
     // included for cache testing purposes
     protected ContentState state;
     protected FilterTracker filterTracker = new FilterTracker();
@@ -98,7 +99,8 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         repository = store.getRepository();
         delegateStoreName = store.getDelegateStoreName();
         this.preferredSPI = store.getPreferredSPI();
-        finder = new GranuleStoreFinderImpl(preferredSPI, repository);
+        this.commonParameters = store.getCommonParameters();
+        finder = new GranuleStoreFinderImpl(preferredSPI, repository, commonParameters);
         this.connectionParameterKey = store.getConnectionParameterKey();
     }
 
@@ -492,10 +494,13 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
             if (isURI(params)) {
                 connProps.put(connectionParameterKey, toConnectionParameter(connectionParameterKey, params));
             } else {
-                connProps.load(new StringReader(params));
+                loadProperties(params, connProps);
             }
         } catch (IOException e) {
             connProps.put(connectionParameterKey, toConnectionParameter(connectionParameterKey, granule.getParams()));
+        }
+        if (commonParameters != null && !commonParameters.isEmpty()) {
+            connProps.putAll(commonParameters);
         }
         granule.setConnProperties(connProps);
     }

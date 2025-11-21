@@ -19,6 +19,7 @@ package org.geotools.vectormosaic;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
@@ -41,15 +42,17 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
     static final Logger LOGGER = Logging.getLogger(GranuleStoreFinderImpl.class);
     protected final String preferredSPI;
     protected final Repository repository;
+    protected final Properties commonProperties;
 
     /**
      * Constructor that accepts a nullable preferred SPI.
      *
      * @param preferredSPI the preferred SPI
      */
-    public GranuleStoreFinderImpl(String preferredSPI, Repository repository) {
+    public GranuleStoreFinderImpl(String preferredSPI, Repository repository, Properties commonProperties) {
         this.preferredSPI = preferredSPI;
         this.repository = repository;
+        this.commonProperties = commonProperties;
     }
 
     @Override

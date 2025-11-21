@@ -20,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.hamcrest.Matchers;
@@ -40,7 +41,8 @@ public class VectorMosaicStoreFactoryTest extends VectorMosaicTest {
                         VectorMosaicStoreFactory.NAMESPACE,
                         VectorMosaicStoreFactory.REPOSITORY_PARAM,
                         VectorMosaicStoreFactory.CONNECTION_PARAMETER_KEY,
-                        VectorMosaicStoreFactory.PREFERRED_DATASTORE_SPI));
+                        VectorMosaicStoreFactory.PREFERRED_DATASTORE_SPI,
+                        VectorMosaicStoreFactory.COMMON_PARAMETERS));
     }
 
     @Test
@@ -52,5 +54,27 @@ public class VectorMosaicStoreFactoryTest extends VectorMosaicTest {
 
         DataStore vectorMosaicStore = DataStoreFinder.getDataStore(params);
         assertThat(vectorMosaicStore, Matchers.instanceOf(VectorMosaicStore.class));
+    }
+
+    @Test
+    public void testFactoryCreateStoreWithCommonParameters() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put(VectorMosaicStoreFactory.DELEGATE_STORE_NAME.getName(), "delegate");
+        params.put(VectorMosaicStoreFactory.NAMESPACE.getName(), "topp");
+        params.put(VectorMosaicStoreFactory.REPOSITORY_PARAM.getName(), REPOSITORY);
+
+        String commonProps = "dggs.resolution=6\n" + "delegate.dbtype=geoparquet";
+
+        params.put(VectorMosaicStoreFactory.COMMON_PARAMETERS.getName(), commonProps);
+
+        DataStore store = DataStoreFinder.getDataStore(params);
+        assertThat(store, Matchers.instanceOf(VectorMosaicStore.class));
+
+        // Also check that the common properties were parsed correctly
+        VectorMosaicStore vm = (VectorMosaicStore) store;
+        Properties cp = vm.getCommonParameters();
+
+        assertThat(cp.getProperty("dggs.resolution"), Matchers.equalTo("6"));
+        assertThat(cp.getProperty("delegate.dbtype"), Matchers.equalTo("geoparquet"));
     }
 }

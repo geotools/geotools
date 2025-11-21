@@ -45,5 +45,10 @@
       <artifactId>gt-shapefile</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geoparquet</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

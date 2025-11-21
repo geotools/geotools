@@ -102,10 +102,8 @@ import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactorySPI;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlingException;
 import org.geotools.gce.imagemosaic.namecollector.DefaultCoverageNameCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.CRSExtractor;
-import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
+import org.geotools.gce.imagemosaic.properties.PropertiesCollectorBean;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
@@ -935,42 +933,14 @@ public class ImageMosaicConfigHandler {
         }
         List<Collector> collectorList = collectors.getCollector();
 
-        // load the SPI set
-        final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder.getPropertiesCollectorSPI();
-
         // parse the string
         final List<PropertiesCollector> pcs = new ArrayList<>();
         boolean hasCRSCollector = false;
         for (Collector collector : collectorList) {
-            PropertiesCollectorSPI selectedSPI = null;
-            final String spiName = collector.getSpi();
-            for (PropertiesCollectorSPI spi : pcSPIs) {
-                if (spi.isAvailable() && spi.getName().equalsIgnoreCase(spiName)) {
-                    selectedSPI = spi;
-                    break;
-                }
-            }
+            PropertiesCollectorBean bean =
+                    new PropertiesCollectorBean(collector.getSpi(), collector.getValue(), collector.getMapped());
+            PropertiesCollector pc = bean.getCollector();
 
-            if (selectedSPI == null) {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info("Unable to find a PropertyCollector for this definition: " + spiName);
-                }
-                continue;
-            }
-
-            // property names
-            String collectorValue = collector.getValue();
-            String config = null;
-            if (collectorValue != null) {
-                if (!collectorValue.startsWith(DefaultPropertiesCollectorSPI.REGEX_PREFIX)) {
-                    config = DefaultPropertiesCollectorSPI.REGEX_PREFIX + collector.getValue();
-                } else {
-                    config = collector.getValue();
-                }
-            }
-
-            // create the PropertiesCollector
-            final PropertiesCollector pc = selectedSPI.create(config, Arrays.asList(collector.getMapped()));
             if (pc != null) {
                 hasCRSCollector |= pc instanceof CRSExtractor;
                 pcs.add(pc);

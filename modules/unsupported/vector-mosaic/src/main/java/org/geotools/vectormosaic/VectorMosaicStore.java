@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -42,6 +43,8 @@ public class VectorMosaicStore extends ContentDataStore {
     private final Repository repository;
 
     private final String delegateStoreName;
+
+    private Properties commonParameters;
 
     private String preferredSPI;
 
@@ -148,6 +151,14 @@ public class VectorMosaicStore extends ContentDataStore {
         }
 
         return true;
+    }
+
+    public Properties getCommonParameters() {
+        return commonParameters;
+    }
+
+    public void setCommonParameters(Properties commonParameters) {
+        this.commonParameters = commonParameters;
     }
 
     /**

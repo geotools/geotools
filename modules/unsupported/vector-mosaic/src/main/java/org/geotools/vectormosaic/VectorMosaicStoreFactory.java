@@ -16,8 +16,12 @@
  */
 package org.geotools.vectormosaic;
 
+import static org.geotools.data.util.PropertiesTransformer.normalizePropertiesString;
+
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Map;
+import java.util.Properties;
 import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
@@ -32,7 +36,7 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
     public static final Param REPOSITORY_PARAM = new Param(
             "repository",
             Repository.class,
-            "The repository that will provide the store intances",
+            "The repository that will provide the store instances",
             true,
             null,
             new KVP(Param.LEVEL, "advanced"));
@@ -50,6 +54,14 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
             "The preferred DataStoreSPI to test connection parameters against. "
                     + "If not specified, the first DataStoreSPI found that accepts connection parameters will be used. "
                     + "Default is org.geotools.data.shapefile.ShapefileDataStoreFactory",
+            false);
+
+    public static final Param COMMON_PARAMETERS = new Param(
+            "commonParameters",
+            String.class,
+            "All the needed parameters required by the Vector Mosaic store to handle the"
+                    + " underlying vector granules, like property collector configuration and shared delegate store"
+                    + " configurations, see also the GeoServer vector mosaic REST API",
             false);
 
     public static final Param CONNECTION_PARAMETER_KEY = new Param(
@@ -73,6 +85,14 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
         if (connectionParameterKey != null) {
             vectorMosaicStore.setConnectionParameterKey(connectionParameterKey);
         }
+        String commonParameters = DataAccessFactory.lookup(COMMON_PARAMETERS, params);
+        if (commonParameters != null) {
+            Properties props = new Properties();
+            try (StringReader rawText = new StringReader(normalizePropertiesString(commonParameters))) {
+                props.load(rawText);
+            }
+            vectorMosaicStore.setCommonParameters(props);
+        }
         return vectorMosaicStore;
     }
 
@@ -89,7 +109,12 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
     @Override
     public Param[] getParametersInfo() {
         return new Param[] {
-            REPOSITORY_PARAM, NAMESPACE, DELEGATE_STORE_NAME, CONNECTION_PARAMETER_KEY, PREFERRED_DATASTORE_SPI
+            REPOSITORY_PARAM,
+            NAMESPACE,
+            DELEGATE_STORE_NAME,
+            CONNECTION_PARAMETER_KEY,
+            PREFERRED_DATASTORE_SPI,
+            COMMON_PARAMETERS
         };
     }
 

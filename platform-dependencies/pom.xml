@@ -47,7 +47,7 @@
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson.version>2.19.0</jackson.version>
     <jai-imageio.version>1.1</jai-imageio.version>
-    <imagen.version>0.9.1-SNAPSHOT</imagen.version>
+    <imagen.version>0.9.2-SNAPSHOT</imagen.version>
     <javacsv.version>2.0</javacsv.version>
     <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
     <jakarta-mail.version>2.1.2</jakarta-mail.version>

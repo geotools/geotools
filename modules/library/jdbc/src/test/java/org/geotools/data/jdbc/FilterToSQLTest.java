@@ -35,6 +35,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Expression;
@@ -546,5 +547,47 @@ public class FilterToSQLTest {
         encoder.encode(filter);
 
         Assert.assertEquals("WHERE 2 = testNumAttr", output.getBuffer().toString());
+    }
+
+    @Test
+    public void testLiteralEnumQuotedInOrChaining() throws Exception {
+        Expression propOneVal = ff.literal("one");
+        Expression propOneKey = ff.property("testStrAttr");
+        Expression propTwoVal = ff.literal("two");
+        Expression propTwoKey = ff.property("testStrAttr");
+        PropertyIsEqualTo filterOne = ff.equals(propOneVal, propOneKey);
+        PropertyIsEqualTo filterTwo = ff.equals(propTwoVal, propTwoKey);
+        Or or = ff.or(filterOne, filterTwo);
+
+        encoder.setFeatureType(enumFeatureType);
+        encoder.encode(or);
+
+        String resultingFilterString = output.getBuffer().toString();
+        LOGGER.fine("testAttr is a enum " + or + " -> " + resultingFilterString);
+        Assert.assertTrue(resultingFilterString.contains("WHEN 'one' THEN 'valueOne'"));
+        Assert.assertTrue(resultingFilterString.contains("WHEN 'two' THEN 'valueTwo'"));
+        Assert.assertTrue(resultingFilterString.contains("WHEN 'three' THEN 'valueThree'"));
+        Assert.assertTrue(resultingFilterString.contains("END IN ('one', 'two')"));
+    }
+
+    @Test
+    public void testNumberEnumNotQuotedInOrChaining() throws Exception {
+        Expression propOneVal = ff.literal("one");
+        Expression propOneKey = ff.property("testNumAttr");
+        Expression propTwoVal = ff.literal("two");
+        Expression propTwoKey = ff.property("testNumAttr");
+        PropertyIsEqualTo filterOne = ff.equals(propOneVal, propOneKey);
+        PropertyIsEqualTo filterTwo = ff.equals(propTwoVal, propTwoKey);
+        Or or = ff.or(filterOne, filterTwo);
+
+        encoder.setFeatureType(enumFeatureType);
+        encoder.encode(or);
+
+        String resultingFilterString = output.getBuffer().toString();
+        LOGGER.fine("testAttr is a enum " + or + " -> " + resultingFilterString);
+        Assert.assertTrue(resultingFilterString.contains("WHEN 1 THEN 'one'"));
+        Assert.assertTrue(resultingFilterString.contains("WHEN 2 THEN 'two'"));
+        Assert.assertTrue(resultingFilterString.contains("WHEN 3 THEN 'three'"));
+        Assert.assertTrue(resultingFilterString.contains("END IN ('one', 'two')"));
     }
 }

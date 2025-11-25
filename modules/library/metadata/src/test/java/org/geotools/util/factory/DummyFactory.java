@@ -103,7 +103,7 @@ public interface DummyFactory extends InternalFactory {
 
     /**
      * Dummy factory implementation #5. {@link FactoryRegistryTest} will not register this factory in same time than
-     * other ones. This factory is the only one to accept hints.
+     * other ones. This factory is the first one to accept hints.
      */
     final class Example5 implements DummyFactory {
         private Object value = Hints.VALUE_INTERPOLATION_BILINEAR;
@@ -121,6 +121,34 @@ public interface DummyFactory extends InternalFactory {
         @Override
         public String toString() {
             return "#5";
+        }
+
+        @Override
+        public Map<RenderingHints.Key, ?> getImplementationHints() {
+            return Collections.singletonMap(Hints.KEY_INTERPOLATION, value);
+        }
+    }
+
+    /**
+     * Dummy factory implementation #6. {@link FactoryRegistryTest} will not register this factory in same time than
+     * other ones. This factory is the second one to accept hints.
+     */
+    final class Example6 implements DummyFactory {
+        private Object value = Hints.VALUE_INTERPOLATION_BILINEAR;
+
+        public Example6() {
+            fail("The constructor with Hints argument should have been used.");
+        }
+
+        public Example6(Hints hints) {
+            if (hints != null && hints.containsKey(Hints.KEY_INTERPOLATION)) {
+                value = hints.get(Hints.KEY_INTERPOLATION);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "#6";
         }
 
         @Override

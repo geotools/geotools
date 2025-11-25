@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import javax.naming.Name;
 import javax.sql.DataSource;
 import org.geotools.api.util.InternationalString;
@@ -922,6 +923,13 @@ public class Hints extends RenderingHints {
      * @since 21.0
      */
     public static final Key DATE_TIME_FORMAT_HANDLING = new Key(Boolean.class);
+
+    /**
+     * When true, whenever a factory is found that does not support the required hints, try to re-create the factories
+     * with the provided hints using reflection (as it's done in FactoryCreator#createFactory). This hint is meant to be
+     * used when calling {@link FactoryCreator#getFactories(Class, Predicate, Hints)}
+     */
+    public static final Key CREATE_FACTORIES_WITH_HINTS = new Key(Boolean.class);
 
     /**
      * Constructs an initially empty set of hints.

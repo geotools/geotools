@@ -154,4 +154,31 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      */
     Set<CoordinateOperation> findOperations(CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws FactoryException;
+
+    /**
+     * Returns a list of available coordinate operations explicitly defined in some database (typically EPSG), for the
+     * provided CRS pair. Otherwise (if there is no database, or if the database doesn't contains any explicit operation
+     * from {@code sourceCRS} to {@code targetCRS}, or if this method failed to create the operations from the
+     * database), returns an empty {@link Set}.
+     *
+     * <p>The default implementation always returns an empty {@link Set}. Subclasses should override this method if they
+     * can fetch a more accurate operation from some database.
+     *
+     * <p>This method is normally invoked by <code>{@linkplain #findOperations findOperations}(sourceCRS,
+     * targetCRS)</code> before to try to figure out a transformation path by itself.
+     *
+     * <p>The default implementation returns an empty set, subclasses working with an actual transformation database can
+     * override
+     *
+     * @param sourceCRS Input coordinate reference system.
+     * @param targetCRS Output coordinate reference system.
+     * @param limit The maximum number of operations to be returned. Use -1 to return all the available operations. Use
+     *     1 to return just one operation. Currently, the behavior for other values of {@code limit} is undefined.
+     * @return A set of coordinate operations from {@code sourceCRS} to {@code targetCRS} if and only if one is
+     *     explicitly defined in some underlying database, or an empty {@link Set} otherwise.
+     */
+    default Set<CoordinateOperation> findFromDatabase(
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS, int limit) {
+        return Set.of();
+    }
 }

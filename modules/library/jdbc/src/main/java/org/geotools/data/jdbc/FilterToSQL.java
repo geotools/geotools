@@ -1524,7 +1524,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             if (mapping != null) {
                 out.write("\n ");
                 for (Map.Entry<String, String> entry : mapping.keyToValueMap().entrySet()) {
-                    out.write("WHEN " + entry.getKey() + " THEN '" + entry.getValue() + "'\n");
+                    String wrappedValue = wrapCharacterStringLiteralInSingleQuotes(entry.getKey());
+                    out.write("WHEN " + wrappedValue + " THEN '" + entry.getValue() + "'\n");
                 }
                 out.write("END");
             }

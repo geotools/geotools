@@ -27,8 +27,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.logging.Logging;
 
@@ -249,6 +251,33 @@ public class FactoryCreator extends FactoryRegistry {
     }
 
     /**
+     * A {@link #createSafe(Class, Class, Hints)} alternative tolerant to the lack of the desired constructor, will
+     * return null in that case.
+     */
+    private <T> T tryCreateSafe(Class<T> category, Hints hints, Class<?> implementation) {
+        final T candidate;
+        try {
+            candidate = createSafe(category, implementation, hints);
+        } catch (FactoryNotFoundException exception) {
+            // The factory has a dependency which has not been found.
+            // Be tolerant to that kind of error.
+            Logging.recoverableException(LOGGER, FactoryCreator.class, "getFactory", exception);
+            return null;
+        } catch (FactoryRegistryException exception) {
+            if (exception.getCause() instanceof NoSuchMethodException) {
+                // No public constructor with the expected argument.
+                // Try an other implementation.
+                return null;
+            } else {
+                // Other kind of error, probably unexpected.
+                // Let the exception propagates.
+                throw exception;
+            }
+        }
+        return candidate;
+    }
+
+    /**
      * Creates a new instance of the specified factory using the specified hints. The default implementation tries to
      * instantiate the given implementation class using the first of the following constructor found:
      *
@@ -271,7 +300,7 @@ public class FactoryCreator extends FactoryRegistry {
         try {
             try {
                 return category.cast(
-                        implementation.getConstructor(HINTS_ARGUMENT).newInstance(new Object[] {hints}));
+                        implementation.getConstructor(HINTS_ARGUMENT).newInstance(hints));
             } catch (NoSuchMethodException exception) {
                 // Constructor do not exists or is not public. We will fallback on the no-arg one.
                 cause = exception;
@@ -293,6 +322,43 @@ public class FactoryCreator extends FactoryRegistry {
         }
         throw new FactoryRegistryException(
                 MessageFormat.format(ErrorKeys.CANT_CREATE_FACTORY_$1, implementation), cause);
+    }
+
+    /**
+     * Returns a stream of factories for the specified category. If the {@link Hints#CREATE_FACTORIES_WITH_HINTS} hint
+     * is set to {@link Boolean#TRUE}, factories will be re-created with the specified hints if they don't match user's
+     * requirements.
+     *
+     * @param category The category to look for. Usually an interface class (not the actual implementation class).
+     * @param filter The optional filter predicate, or {@code null}.
+     * @param hints The optional user requirements, or {@code null}.
+     * @return A stream of factories for the specified category, filters and hints.
+     * @param <T>
+     */
+    public <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
+        // Delegate to super class if not re-creating factories with hints
+        if (hints == null || !Boolean.TRUE.equals(hints.get(Hints.CREATE_FACTORIES_WITH_HINTS)))
+            return super.getFactories(category, filter, hints);
+
+        // Get the factories, if they are not supporting the hints already, re-create them with hints
+        Hints cleanedHints = new Hints(hints);
+        cleanedHints.remove(Hints.CREATE_FACTORIES_WITH_HINTS);
+        Predicate<T> isAcceptable = factory -> isAcceptable(category.cast(factory), category, cleanedHints, filter);
+        return getUnfilteredFactories(category)
+                .map(candidate -> {
+                    if (!isAcceptable.test(candidate) && candidate instanceof Factory) {
+                        candidate = tryCreateSafe(category, cleanedHints, candidate.getClass());
+                        if (candidate != null && isAcceptable.test(candidate)) {
+                            cache(category, candidate);
+                        } else {
+                            dispose(candidate);
+                            return null;
+                        }
+                    }
+                    return candidate;
+                })
+                .filter(Objects::nonNull)
+                .filter(isAcceptable);
     }
 
     /**

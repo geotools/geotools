@@ -246,7 +246,7 @@ public final class FactoryRegistryTest {
         }
         /*
          * Register a DummyFactory with a constructor expecting a Hints argument, and try again
-         * with the same hints. Now it should creates a new factory instance, because we are using
+         * with the same hints. Now it should create a new factory instance, because we are using
          * FactoryCreator instead of FactoryRegistry and an appropriate constructor is found.
          * Note that an AssertionFailedError should be thrown if the no-argument constructor of
          * Example5 is invoked, since the constructor with a Hints argument should have priority.
@@ -265,6 +265,28 @@ public final class FactoryRegistryTest {
         factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertEquals(
                 "An instance of Factory #4 should have been created.", DummyFactory.Example4.class, factory.getClass());
+    }
+
+    @Test
+    public void testCreateProviderList() throws Exception {
+        final Hints.Key key = DummyFactory.DUMMY_FACTORY;
+        final DummyFactory factory1 = new DummyFactory.Example1();
+        final DummyFactory factory5 = new DummyFactory.Example5(null);
+        final DummyFactory factory6 = new DummyFactory.Example6(null);
+        final FactoryRegistry registry = getRegistry(true, factory1, factory5, factory6);
+
+        // regular lookup, no factory matches the hints (backwards compatible behavior)
+        Hints hints = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BICUBIC);
+        Stream<DummyFactory> factories = registry.getFactories(DummyFactory.class, f -> true, hints);
+        assertFalse(factories.findAny().isPresent());
+
+        // lookup creating factories, should return factory #5 and #6
+        hints.put(Hints.CREATE_FACTORIES_WITH_HINTS, Boolean.TRUE);
+        factories = registry.getFactories(DummyFactory.class, f -> true, hints);
+        Set<Class<?>> factorySet = factories.map(f -> f.getClass()).collect(toSet());
+        assertEquals(2, factorySet.size());
+        assertTrue(factorySet.contains(DummyFactory.Example5.class));
+        assertTrue(factorySet.contains(DummyFactory.Example6.class));
     }
 
     @Ignore

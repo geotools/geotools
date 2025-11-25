@@ -37,7 +37,7 @@
     <ejml-ddense.version>0.41</ejml-ddense.version>
     <geodb.version>0.9</geodb.version>
     <geographiclib-java.version>1.49</geographiclib-java.version>
-    <guava.version>33.4.8-jre</guava.version>
+    <guava.version>33.5.0-jre</guava.version>
     <h2.version>1.1.119</h2.version>
     <hsqldb.version>2.7.2</hsqldb.version>
     <httpclient4.version>4.5.14</httpclient4.version>

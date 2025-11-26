@@ -86,9 +86,6 @@ import org.geotools.util.SimpleInternationalString;
  *
  * <p>This factory doesn't cache any result. Any call to a {@code createFoo} method will trig a new WKT parsing. For
  * caching, this factory should be wrapped in some buffered factory like {@link BufferedAuthorityFactory}.
- *
- * @version $Id$
- * @author Oscar Fonts
  */
 public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthorityFactory
         implements CoordinateOperationAuthorityFactory {

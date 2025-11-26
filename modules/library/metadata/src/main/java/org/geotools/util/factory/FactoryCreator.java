@@ -335,6 +335,7 @@ public class FactoryCreator extends FactoryRegistry {
      * @return A stream of factories for the specified category, filters and hints.
      * @param <T>
      */
+    @Override
     public <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
         // Delegate to super class if not re-creating factories with hints
         if (hints == null || !Boolean.TRUE.equals(hints.get(Hints.CREATE_FACTORIES_WITH_HINTS)))

@@ -21,7 +21,6 @@ import static org.geotools.referencing.CRS.equalsIgnoreMetadata;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +32,6 @@ import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.operation.ConcatenatedOperation;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
@@ -80,13 +78,6 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory im
     /** The default authority factory to use. */
     private static final String DEFAULT_AUTHORITY = "EPSG";
 
-    /**
-     * The cache of pivot CRSs. This cache is used for avoiding to search for pivot CRSs in the EPSG database every time
-     */
-    private static Set<CoordinateReferenceSystem> PIVOT_CRS_CACHE = null;
-
-    /** The key for enabling or disabling the pivot CRS checks. The default value is {@code true}. */
-    public static final String PIVOT_CRS_LIST_KEY = "org.geotools.referencing.pivots";
     /**
      * The authority factory to use for creating new operations. If {@code null}, a default factory will be fetched when
      * first needed.
@@ -284,56 +275,6 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory im
         return null;
     }
 
-    /*
-     * Before attempting the Molodenki, which would pivot over WGS84, we should check if there are
-     * operations in the database that can pivot over ETRS89 or NAD83. This is important because
-     * explicit routes in the EPSG database are more accurate than the Molodenki.
-     */
-    @Override
-    protected CoordinateOperation tryWellKnownPivots(GeographicCRS sourceCRS, GeographicCRS targetCRS)
-            throws FactoryException {
-        // Kill switch to disable the pivot CRS checks, in case this might cause regressions in some cases
-        Set<CoordinateReferenceSystem> pivots = getPivotCoordinateReferenceSystems();
-        for (CoordinateReferenceSystem pivot : pivots) {
-            // Check if the pivot CRS is the same as the source or target CRS, in that case we can skip
-            if (CRS.equalsIgnoreMetadata(sourceCRS, pivot) || CRS.equalsIgnoreMetadata(targetCRS, pivot)) return null;
-
-            // look for a direct source to pivot
-            CoordinateOperation sourceToPivot = createFromDatabase(sourceCRS, pivot);
-            if (sourceToPivot == null || sourceToPivot instanceof ConcatenatedOperation) continue;
-
-            // and a direct pivot to target
-            CoordinateOperation pivotToDest = createFromDatabase(pivot, targetCRS);
-            if (pivotToDest == null || pivotToDest instanceof ConcatenatedOperation) continue;
-            return concatenate(sourceToPivot, pivotToDest);
-        }
-
-        // no path through the pivot CRS found
-        return null;
-    }
-
-    /** Lazily computes the pivot CRSs. Not synchronized, there is no harm in computing the codes multiple times. */
-    private Set<CoordinateReferenceSystem> getPivotCoordinateReferenceSystems() throws FactoryException {
-        if (PIVOT_CRS_CACHE == null) {
-            try {
-                String list = System.getProperty(PIVOT_CRS_LIST_KEY, "4258,4269");
-                String[] codes = list.split("\\s*,\\s*");
-                Set<CoordinateReferenceSystem> pivots = new LinkedHashSet<>(codes.length);
-                for (String code : codes) {
-                    pivots.add((CoordinateReferenceSystem) authorityFactory.createObject(code));
-                }
-                PIVOT_CRS_CACHE = Collections.unmodifiableSet(pivots);
-            } catch (NoSuchAuthorityCodeException e) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Failed to initialize pivot CRSs, please ensure you have a valid EPSG database",
-                        e);
-                PIVOT_CRS_CACHE = Collections.emptySet();
-            }
-        }
-        return PIVOT_CRS_CACHE;
-    }
-
     /**
      * Returns the list of available operations for conversion or transformation between two coordinate reference
      * systems. The default implementation extracts the authority code from the supplied {@code sourceCRS} and
@@ -356,7 +297,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory im
      * @since 19
      */
     @Override
-    protected Set<CoordinateOperation> findFromDatabase(
+    public Set<CoordinateOperation> findFromDatabase(
             final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS, int limit) {
         HashSet<CoordinateOperation> result = new HashSet<>();
         /*

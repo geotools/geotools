@@ -269,7 +269,6 @@ public final class FactoryRegistryTest {
 
     @Test
     public void testCreateProviderList() throws Exception {
-        final Hints.Key key = DummyFactory.DUMMY_FACTORY;
         final DummyFactory factory1 = new DummyFactory.Example1();
         final DummyFactory factory5 = new DummyFactory.Example5(null);
         final DummyFactory factory6 = new DummyFactory.Example6(null);

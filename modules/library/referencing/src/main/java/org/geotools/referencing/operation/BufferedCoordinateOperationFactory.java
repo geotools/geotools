@@ -127,6 +127,11 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
         this(userHints, PRIORITY);
     }
 
+    /** Creates a buffered factory wrapping the specified factory. */
+    public BufferedCoordinateOperationFactory(ManyCoordinateOperationFactory many, Hints hints) {
+        this(many, hints, PRIORITY);
+    }
+
     /**
      * Creates a buffered factory wrapping an other factory selected according the specified hints.
      *
@@ -153,7 +158,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of this()/super() call in
      * constructors").
      */
-    private BufferedCoordinateOperationFactory(
+    public BufferedCoordinateOperationFactory(
             final CoordinateOperationFactory factory, final Hints userHints, final int priority) {
         super(factory, userHints, priority);
         this.factory = factory;
@@ -177,7 +182,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * Returns the backing factory. Coordinate operation creation will be delegated to this factory when not available
      * in the cache.
      */
-    private final CoordinateOperationFactory getBackingFactory() {
+    public final CoordinateOperationFactory getBackingFactory() {
         if (factory == null) {
             synchronized (this) {
                 if (factory == null) {
@@ -257,5 +262,11 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
             final OperationMethod method)
             throws OperationNotFoundException, FactoryException {
         return getBackingFactory().createOperation(sourceCRS, targetCRS, method);
+    }
+
+    @Override
+    public Set<CoordinateOperation> findFromDatabase(
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS, int limit) {
+        return getBackingFactory().findFromDatabase(sourceCRS, targetCRS, limit);
     }
 }

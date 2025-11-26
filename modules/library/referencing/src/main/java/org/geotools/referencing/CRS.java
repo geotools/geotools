@@ -82,9 +82,11 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
+import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
 import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.DefaultTransformation;
+import org.geotools.referencing.operation.ManyCoordinateOperationFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
@@ -297,7 +299,10 @@ public final class CRS {
                     if (lenient) {
                         hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
                     }
-                    factory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
+                    // Use ManyCoordinateOperationFactory in order to take advantage of all registered factories,
+                    // and then buffer the results for better performance.
+                    ManyCoordinateOperationFactory many = new ManyCoordinateOperationFactory(hints);
+                    factory = new BufferedCoordinateOperationFactory(many, hints);
                     if (lenient) {
                         lenientFactory = factory;
                     } else {

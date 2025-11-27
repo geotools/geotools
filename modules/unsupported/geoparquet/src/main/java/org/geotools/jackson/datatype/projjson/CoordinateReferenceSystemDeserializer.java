@@ -16,20 +16,18 @@
  */
 package org.geotools.jackson.datatype.projjson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import java.io.IOException;
-import java.io.Serial;
 import org.geotools.jackson.datatype.projjson.model.BoundCRS;
 import org.geotools.jackson.datatype.projjson.model.CompoundCRS;
 import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
 import org.geotools.jackson.datatype.projjson.model.GeographicCRS;
 import org.geotools.jackson.datatype.projjson.model.ProjectedCRS;
 import org.geotools.jackson.datatype.projjson.model.Transformation;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 /**
  * Jackson deserializer for CoordinateReferenceSystem objects.
@@ -39,42 +37,32 @@ import org.geotools.jackson.datatype.projjson.model.Transformation;
  */
 public class CoordinateReferenceSystemDeserializer extends StdDeserializer<CoordinateReferenceSystem> {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /** Creates a new deserializer instance. */
     public CoordinateReferenceSystemDeserializer() {
         super(CoordinateReferenceSystem.class);
     }
 
     @Override
-    public CoordinateReferenceSystem deserialize(JsonParser p, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+    public CoordinateReferenceSystem deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
 
         // Parse the JSON tree
-        ObjectMapper mapper = (ObjectMapper) p.getCodec();
+        ObjectMapper mapper = (ObjectMapper) p.objectReadContext();
         JsonNode root = mapper.readTree(p);
 
         // Get the type field to determine which concrete class to use
         if (root.has("type")) {
-            String type = root.get("type").asText();
+            String type = root.get("type").asString();
 
-            switch (type) {
-                case "GeographicCRS":
-                    return mapper.treeToValue(root, GeographicCRS.class);
-                case "ProjectedCRS":
-                    return mapper.treeToValue(root, ProjectedCRS.class);
-                case "CompoundCRS":
-                    return mapper.treeToValue(root, CompoundCRS.class);
-                case "BoundCRS":
-                    return mapper.treeToValue(root, BoundCRS.class);
-                case "Transformation":
-                    return mapper.treeToValue(root, Transformation.class);
-                default:
-                    throw new IOException("Unknown CRS type: " + type);
-            }
+            return switch (type) {
+                case "GeographicCRS" -> mapper.treeToValue(root, GeographicCRS.class);
+                case "ProjectedCRS" -> mapper.treeToValue(root, ProjectedCRS.class);
+                case "CompoundCRS" -> mapper.treeToValue(root, CompoundCRS.class);
+                case "BoundCRS" -> mapper.treeToValue(root, BoundCRS.class);
+                case "Transformation" -> mapper.treeToValue(root, Transformation.class);
+                default -> throw new RuntimeException("Unknown CRS type: " + type);
+            };
         } else {
-            throw new IOException("Missing required 'type' field in CRS JSON");
+            throw new RuntimeException("Missing required 'type' field in CRS JSON");
         }
     }
 }

@@ -16,9 +16,6 @@
  */
 package org.geotools.filter.text.cqljson;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
@@ -71,6 +68,9 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /** This class is responsible to transform a filter to an CQL2-JSON */
 public class FilterToCQL2Json implements FilterVisitor {

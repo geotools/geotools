@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +31,7 @@ import org.geotools.jackson.datatype.projjson.model.GeographicCRS;
 import org.geotools.jackson.datatype.projjson.model.Identifier;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
+import tools.jackson.databind.ObjectMapper;
 
 /** Test cases for the GeoParquet Jackson module. */
 public class GeoParquetModuleTest {

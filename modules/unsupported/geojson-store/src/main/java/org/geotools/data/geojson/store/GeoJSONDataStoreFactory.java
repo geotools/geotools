@@ -17,7 +17,6 @@
 package org.geotools.data.geojson.store;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +32,8 @@ import org.geotools.api.data.FileDataStoreFactorySpi;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
@@ -146,8 +147,8 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
             try {
                 @SuppressWarnings("PMD.UnusedLocalVariable")
                 Class geoJSONReaderType = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.registerModule(new JtsModule());
+                ObjectMapper mapper =
+                        JsonMapper.builder().addModule(new JtsModule()).build();
                 isAvailable = true;
             } catch (ClassNotFoundException e) {
                 isAvailable = false;

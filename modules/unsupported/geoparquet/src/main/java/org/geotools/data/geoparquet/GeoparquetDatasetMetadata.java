@@ -26,7 +26,6 @@ import static org.locationtech.jts.geom.Geometry.TYPENAME_MULTIPOLYGON;
 import static org.locationtech.jts.geom.Geometry.TYPENAME_POINT;
 import static org.locationtech.jts.geom.Geometry.TYPENAME_POLYGON;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,6 +50,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Represents metadata for an entire GeoParquet dataset, which may contain multiple files.

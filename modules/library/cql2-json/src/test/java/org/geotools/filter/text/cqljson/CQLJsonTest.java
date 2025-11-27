@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.text.cqljson;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
+import tools.jackson.databind.JsonNode;
 
 public class CQLJsonTest {
     protected Filter parse(String line) throws IOException, CQLException {

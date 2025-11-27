@@ -20,7 +20,6 @@ import static org.geotools.stac.client.FilterLang.CQL2_JSON;
 import static org.geotools.stac.client.FilterLang.CQL2_TEXT;
 import static org.geotools.stac.client.STACClient.OBJECT_MAPPER;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -32,6 +31,7 @@ import org.apache.hc.core5.net.URIBuilder;
 import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cqljson.CQL2Json;
+import tools.jackson.core.JacksonException;
 
 /** Builds a Search GET URL based on the landing page and {@link SearchQuery} specification */
 class SearchGetBuilder {
@@ -64,7 +64,7 @@ class SearchGetBuilder {
         if (search.getIntersects() != null) {
             try {
                 builder.addParameter("intersects", OBJECT_MAPPER.writeValueAsString(search.getIntersects()));
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
                 throw new RuntimeException(e);
             }
         }

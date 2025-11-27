@@ -18,8 +18,6 @@ package org.geotools.process.elasticsearch;
 
 import static org.junit.Assert.assertEquals;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
 import com.github.davidmoten.geo.LatLong;
 import com.google.common.collect.ImmutableList;
@@ -44,6 +42,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class GeoHashGridProcessTest {
 
@@ -56,7 +56,7 @@ public class GeoHashGridProcessTest {
     private FilterFactory ff;
 
     @Before
-    public void setup() throws JsonProcessingException {
+    public void setup() throws JacksonException {
         ObjectMapper mapper = new ObjectMapper();
         byte[] aggregation1 = mapper.writeValueAsBytes(
                 ImmutableMap.of("key", GeoHash.encodeHash(new LatLong(-89.9, -179.9), 1), "doc_count", 10));

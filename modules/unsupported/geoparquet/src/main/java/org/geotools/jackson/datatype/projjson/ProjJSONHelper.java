@@ -16,8 +16,6 @@
  */
 package org.geotools.jackson.datatype.projjson;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.referencing.FactoryException;
@@ -25,6 +23,9 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.jackson.datatype.projjson.model.GeographicCRS;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Helper class for working with PROJJSON in GeoParquet files.
@@ -36,7 +37,8 @@ public class ProjJSONHelper {
 
     private static final Logger LOGGER = Logger.getLogger(ProjJSONHelper.class.getName());
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new ProjJSONModule());
+    private static final ObjectMapper OBJECT_MAPPER =
+            JsonMapper.builder().addModule(new ProjJSONModule()).build();
 
     /**
      * Parses a PROJJSON string into a GeoTools CRS object.
@@ -57,7 +59,7 @@ public class ProjJSONHelper {
 
             // Convert from model to GeoTools CRS
             return convertToGeoToolsCRS(modelCrs);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             LOGGER.log(Level.WARNING, "Failed to parse PROJJSON: " + e.getMessage(), e);
             return DefaultGeographicCRS.WGS84;
         }

@@ -16,11 +16,11 @@
  */
 package org.geotools.filter.function;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.JsonTokenId;
 import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.core.JsonTokenId;
 
 public final class JsonFunctionUtils {
 
@@ -46,7 +46,7 @@ public final class JsonFunctionUtils {
                 token = parser.nextToken()) {
             switch (parser.currentTokenId()) {
                 case JsonTokenId.ID_STRING:
-                    generator.writeString(parser.getText());
+                    generator.writeString(parser.getString());
                     break;
                 case JsonTokenId.ID_NUMBER_FLOAT:
                     generator.writeNumber(parser.getFloatValue());
@@ -71,11 +71,11 @@ public final class JsonFunctionUtils {
                 token != END_OF_STREAM && token != JsonToken.END_OBJECT;
                 token = parser.nextToken()) {
             switch (parser.currentTokenId()) {
-                case JsonTokenId.ID_FIELD_NAME:
-                    generator.writeFieldName(parser.currentName());
+                case JsonTokenId.ID_PROPERTY_NAME:
+                    generator.writeName(parser.currentName());
                     break;
                 case JsonTokenId.ID_STRING:
-                    generator.writeString(parser.getText());
+                    generator.writeString(parser.getString());
                     break;
                 case JsonTokenId.ID_NUMBER_FLOAT:
                     generator.writeNumber(parser.getFloatValue());

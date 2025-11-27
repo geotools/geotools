@@ -20,11 +20,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import org.locationtech.jts.geom.Envelope;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Base class for GeoParquet metadata, representing the common structure of the "geo" metadata field in a GeoParquet

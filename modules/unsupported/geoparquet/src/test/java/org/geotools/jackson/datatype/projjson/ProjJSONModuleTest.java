@@ -21,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +36,8 @@ import org.geotools.jackson.datatype.projjson.model.ProjectedCRS;
 import org.geotools.jackson.datatype.projjson.model.Transformation;
 import org.junit.Before;
 import org.junit.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /** Test cases for the PROJJSON module. */
 public class ProjJSONModuleTest {
@@ -45,8 +46,7 @@ public class ProjJSONModuleTest {
 
     @Before
     public void setUp() {
-        mapper = new ObjectMapper();
-        mapper.registerModule(new ProjJSONModule());
+        mapper = JsonMapper.builder().addModule(new ProjJSONModule()).build();
     }
 
     @Test

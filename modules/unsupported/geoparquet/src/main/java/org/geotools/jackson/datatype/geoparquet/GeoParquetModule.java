@@ -16,11 +16,12 @@
  */
 package org.geotools.jackson.datatype.geoparquet;
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.Serial;
 import org.geotools.jackson.datatype.projjson.ProjJSONModule;
+import tools.jackson.core.Version;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * Jackson module for GeoParquet metadata handling.
@@ -47,9 +48,9 @@ public class GeoParquetModule extends SimpleModule {
      * @return a configured ObjectMapper instance
      */
     public static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new GeoParquetModule());
-        mapper.registerModule(new ProjJSONModule());
-        return mapper;
+        return JsonMapper.builder()
+                .addModule(new GeoParquetModule())
+                .addModule(new ProjJSONModule())
+                .build();
     }
 }

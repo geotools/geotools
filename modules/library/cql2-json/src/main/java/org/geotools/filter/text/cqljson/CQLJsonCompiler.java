@@ -17,10 +17,6 @@
 
 package org.geotools.filter.text.cqljson;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,6 +28,10 @@ import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.io.ParseException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.JsonNodeType;
 
 public class CQLJsonCompiler implements ICompiler {
 
@@ -144,7 +144,7 @@ public class CQLJsonCompiler implements ICompiler {
     public Filter convertToFilter(JsonNode cql2Expression) throws CQLException, IOException, ParseException {
         Filter out = null;
         if (isCql2Expression(cql2Expression)) {
-            String op = cql2Expression.get("op").textValue();
+            String op = cql2Expression.get("op").asString();
             switch (op) {
                 case "like":
                     out = builder.convertLike((ArrayNode) cql2Expression.get("args"));

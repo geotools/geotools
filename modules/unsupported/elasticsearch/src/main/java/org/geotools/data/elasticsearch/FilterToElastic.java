@@ -20,8 +20,6 @@ import static org.geotools.process.elasticsearch.ElasticBucketVisitor.ES_AGGREGA
 import static org.geotools.util.factory.Hints.VIRTUAL_TABLE_PARAMETERS;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
@@ -113,6 +111,8 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectReader;
 
 /**
  * Encodes an OGC {@link Filter} and creates a filter for an Elasticsearch query. Optionally applies SQL View parameters

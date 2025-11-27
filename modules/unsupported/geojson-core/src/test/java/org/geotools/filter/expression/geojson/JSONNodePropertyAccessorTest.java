@@ -18,8 +18,6 @@ package org.geotools.filter.expression.geojson;
 
 import static org.junit.Assert.assertEquals;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import java.net.URL;
 import java.util.Date;
 import java.util.Scanner;
@@ -33,6 +31,8 @@ import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.StringNode;
 
 public class JSONNodePropertyAccessorTest {
 
@@ -85,8 +85,8 @@ public class JSONNodePropertyAccessorTest {
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeature feature = reader.getFeature();
 
-            assertEquals("1.0.0", ((TextNode) accessor.get(feature, "stac_version", null)).asText());
-            assertEquals("simple-collection", ((TextNode) accessor.get(feature, "collection", null)).asText());
+            assertEquals("1.0.0", ((StringNode) accessor.get(feature, "stac_version", null)).asString());
+            assertEquals("simple-collection", ((StringNode) accessor.get(feature, "collection", null)).asString());
             assertEquals(
                     "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
                     accessor.get(feature, "stac_extensions/0", null));

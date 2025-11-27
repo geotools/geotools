@@ -20,7 +20,6 @@ package org.geotools.data.elasticsearch;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -35,6 +34,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
+import tools.jackson.databind.ObjectMapper;
 
 public class ElasticViewParametersFilterIT extends ElasticTestSupport {
 

@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -52,6 +51,7 @@ import org.geotools.util.Converters;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.databind.JsonNode;
 
 public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 
@@ -88,14 +88,15 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
             "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&requestId=1234&page=2";
 
     private static String CLOUD_50_GET =
-            "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&filter=\"eo:cloud_cover\" < 50&filter-lang=cql2-text&limit=1000&f=application/geo%2Bjson";
+            "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&filter=\"eo:cloud_cover\" <"
+                    + " 50&filter-lang=cql2-text&limit=1000&f=application/geo%2Bjson";
 
     private static String CLOUD_0_GET =
-            "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&filter=\"eo:cloud_cover\" < 0&filter-lang=cql2-text&limit=1000&f=application/geo%2Bjson";
+            "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&filter=\"eo:cloud_cover\" <"
+                    + " 0&filter-lang=cql2-text&limit=1000&f=application/geo%2Bjson";
 
     private static final String MAJA_CC_50_POST =
-            "{\"collections\":[\"S2_L2A_MAJA\"],\"limit\":1000,\"filter\":{\"op\":\"<\","
-                    + "\"args\":[{\"property\":\"eo:cloud_cover\"},50]},\"filter-lang\":\"cql2-json\"}";
+            "{\"collections\":[\"S2_L2A_MAJA\"],\"filter\":{\"op\":\"<\",\"args\":[{\"property\":\"eo:cloud_cover\"},50]},\"filter-lang\":\"cql2-json\",\"limit\":1000}";
     private static final String NS_URI = "https://stacspec.org/store";
     private static final String MAJA = "S2_L2A_MAJA";
 
@@ -182,12 +183,12 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         assertEquals("SENTINEL-2B", f.getAttribute("platform"));
         assertEquals(106.80, (Double) f.getAttribute("view:azimuth"), 0.01);
         JsonNode processing = (JsonNode) f.getAttribute("processing:software");
-        assertEquals("1.3", processing.get("CATENA").textValue());
+        assertEquals("1.3", processing.get("CATENA").asString());
 
         // check the assets can be found in the extra attributes
         Map<String, Object> topLevels = getTopLevelAttributes(f);
         JsonNode assets = (JsonNode) topLevels.get("assets");
-        assertEquals("image/jpeg", assets.get("thumbnail").get("type").textValue());
+        assertEquals("image/jpeg", assets.get("thumbnail").get("type").asString());
     }
 
     @Test

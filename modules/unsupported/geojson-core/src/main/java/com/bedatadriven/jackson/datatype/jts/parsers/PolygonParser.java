@@ -22,12 +22,12 @@ package com.bedatadriven.jackson.datatype.jts.parsers;
 
 import static com.bedatadriven.jackson.datatype.jts.GeoJson.COORDINATES;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JsonNode;
 
 /** Created by mihaildoronin on 11/11/15. */
 public class PolygonParser extends BaseParser implements GeometryParser<Polygon> {
@@ -63,7 +63,7 @@ public class PolygonParser extends BaseParser implements GeometryParser<Polygon>
     }
 
     @Override
-    public Polygon geometryFromJson(JsonNode node) throws JsonMappingException {
+    public Polygon geometryFromJson(JsonNode node) throws DatabindException {
         return polygonFromJson(node);
     }
 }

@@ -27,9 +27,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -44,6 +41,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 @SuppressWarnings("unchecked")
 public class STACClientEarthSearchOnlineTest extends AbstractSTACClientOnlineTest {
@@ -83,9 +83,9 @@ public class STACClientEarthSearchOnlineTest extends AbstractSTACClientOnlineTes
                 .findFirst()
                 .get();
         assertEquals(
-                "Global Sentinel-2 data from the Multispectral Instrument (MSI) onboard Sentinel 2",
+                "Global Sentinel-2 data from the Multispectral Instrument (MSI) onboard Sentinel-2",
                 s2.getDescription());
-        assertEquals("Sentinel 2 Level 2A", s2.getTitle());
+        assertEquals("Sentinel-2 Level-2A", s2.getTitle());
         CollectionExtent extent = s2.getExtent();
         assertEquals(
                 Arrays.asList(-180d, -90d, 180d, 90d),
@@ -123,8 +123,8 @@ public class STACClientEarthSearchOnlineTest extends AbstractSTACClientOnlineTes
         ArrayNode links = (ArrayNode) top.get("links");
         assertNotNull(links);
         String license = StreamSupport.stream(links.spliterator(), false)
-                .filter(l -> "license".equals(l.get("rel").textValue()))
-                .map(l -> l.get("href").textValue())
+                .filter(l -> "license".equals(l.get("rel").asString()))
+                .map(l -> l.get("href").asString())
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Could not find the license rel"));
         assertEquals("https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice", license);
@@ -133,7 +133,7 @@ public class STACClientEarthSearchOnlineTest extends AbstractSTACClientOnlineTes
         ObjectNode assets = (ObjectNode) top.get("assets");
         assertNotNull(assets);
         ObjectNode visual = (ObjectNode) assets.get("visual");
-        assertEquals("True color image", visual.get("title").textValue());
+        assertEquals("True color image", visual.get("title").asString());
         assertNotNull(visual.get("href"));
     }
 
@@ -163,10 +163,10 @@ public class STACClientEarthSearchOnlineTest extends AbstractSTACClientOnlineTes
         ObjectNode assets = (ObjectNode) top.get("assets");
         assertNotNull(assets);
         ObjectNode visual = (ObjectNode) assets.get("visual");
-        assertEquals("True color image", visual.get("title").textValue());
+        assertEquals("True color image", visual.get("title").asString());
         assertNotNull(visual.get("href"));
 
         // check id
-        assertEquals("S2B_26QLD_20220718_0_L2A", top.get("id").textValue());
+        assertEquals("S2B_26QLD_20220718_0_L2A", top.get("id").asString());
     }
 }

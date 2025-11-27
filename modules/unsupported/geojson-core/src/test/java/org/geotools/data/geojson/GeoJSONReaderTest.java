@@ -26,9 +26,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -62,6 +59,9 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.StringNode;
 
 /** @author ian */
 public class GeoJSONReaderTest {
@@ -137,7 +137,7 @@ public class GeoJSONReaderTest {
                 { "type": "Feature", "properties": { "LAT": -33.925278, "LON": 18.423889, "CITY": "Cape Town", "NUMBER": 550, "YEAR": 2008 }, "bbox": [ 18.424, -33.925, 18.424, -33.925 ], "geometry": { "type": "Point", "coordinates": [ 18.424, -33.925 ] } },
                 { "type": "Feature", "properties": { "LAT": -33.859972, "LON": 151.21111, "CITY": "Sydney", "NUMBER": 436, "YEAR": 2009 }, "bbox": [ 151.211, -33.86, 151.211, -33.86 ], "geometry": { "type": "Point", "coordinates": [ 151.211, -33.86 ] } }
                 ]
-                }\
+                }
                 """;
 
         try (GeoJSONReader reader =
@@ -420,7 +420,7 @@ public class GeoJSONReaderTest {
         SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
         ObjectNode object = (ObjectNode) feature.getAttribute("object");
         assertEquals(10, object.get("a").intValue());
-        assertEquals("foo", object.get("b").textValue());
+        assertEquals("foo", object.get("b").asString());
     }
 
     @Test
@@ -684,7 +684,7 @@ public class GeoJSONReaderTest {
         SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
         List array = (List) feature.getAttribute("array");
         assertEquals(10, ((ObjectNode) array.get(0)).get("a").asDouble(), 0d);
-        assertEquals("foo", ((ObjectNode) array.get(1)).get("b").asText());
+        assertEquals("foo", ((ObjectNode) array.get(1)).get("b").asString());
     }
 
     @Test
@@ -704,7 +704,7 @@ public class GeoJSONReaderTest {
         SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
         ObjectNode parent = (ObjectNode) feature.getAttribute("parent");
         assertEquals(10, ((ObjectNode) parent.get("child")).get("a").asDouble(), 0d);
-        assertEquals("foo", ((ObjectNode) parent.get("child")).get("b").asText());
+        assertEquals("foo", ((ObjectNode) parent.get("child")).get("b").asString());
     }
 
     @Test
@@ -713,18 +713,18 @@ public class GeoJSONReaderTest {
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeature feature = reader.getFeature();
             Map topLevelAttributes = (Map) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
-            assertEquals("1.0.0", ((TextNode) topLevelAttributes.get("stac_version")).asText());
-            assertEquals("simple-collection", ((TextNode) topLevelAttributes.get("collection")).asText());
+            assertEquals("1.0.0", ((StringNode) topLevelAttributes.get("stac_version")).asString());
+            assertEquals("simple-collection", ((StringNode) topLevelAttributes.get("collection")).asString());
             ArrayNode stacExtensions = (ArrayNode) topLevelAttributes.get("stac_extensions");
             assertEquals(
                     "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
-                    ((TextNode) stacExtensions.get(0)).asText());
+                    ((StringNode) stacExtensions.get(0)).asString());
             ArrayNode links = (ArrayNode) topLevelAttributes.get("links");
-            assertEquals("./collection.json", ((TextNode) links.get(0).get("href")).asText());
+            assertEquals("./collection.json", links.get(0).get("href").asString());
             ObjectNode assets = (ObjectNode) topLevelAttributes.get("assets");
             assertEquals(
                     "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
-                    ((TextNode) assets.get("thumbnail").get("href")).asText());
+                    ((StringNode) assets.get("thumbnail").get("href")).asString());
         }
     }
 

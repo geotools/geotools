@@ -16,13 +16,13 @@
  */
 package org.geotools.stac.client;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.InputStream;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.geojson.PagingFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.http.HTTPClient;
+import tools.jackson.databind.JsonNode;
 
 /** A subclass of GeoJSONReader that can perform paging requests using a given {@link HTTPClient} */
 class STACGeoJSONReader extends GeoJSONReader {
@@ -36,7 +36,7 @@ class STACGeoJSONReader extends GeoJSONReader {
 
     @Override
     protected PagingFeatureCollection getPagingFeatureCollection(
-            SimpleFeatureCollection result, Integer matched, ObjectNode next) {
+            SimpleFeatureCollection result, Integer matched, JsonNode next) {
         return new STACPagingFeatureCollection(result, next, matched, http);
     }
 }

@@ -189,6 +189,8 @@ public class GeoParquetDialect extends DuckDBDialect {
      * <ul>
      *   <li>httpfs - For HTTP/S3 access to remote GeoParquet files
      *   <li>parquet - For reading Parquet file format
+     *   <li>aws - Adds functionality (e.g., authentication) on top of the httpfs extension's S3 capabilities, using the
+     *       AWS SDK
      * </ul>
      *
      * @return List of SQL statements to initialize the database
@@ -200,6 +202,8 @@ public class GeoParquetDialect extends DuckDBDialect {
         initScript.add("load httpfs");
         initScript.add("install parquet");
         initScript.add("load parquet");
+        initScript.add("install aws");
+        initScript.add("load aws");
         return initScript;
     }
 
@@ -211,7 +215,7 @@ public class GeoParquetDialect extends DuckDBDialect {
      *
      * <ol>
      *   <li>Clears any cached metadata
-     *   <li>Initializes the view manager with the new configuration
+     *   <li>Initializes the view manager with the new configuration (including S3 credential chain setup if enabled)
      * </ol>
      *
      * @param config The GeoParquet configuration

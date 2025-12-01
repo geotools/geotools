@@ -34,6 +34,7 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.jdbc.JDBCDataStore;
@@ -298,6 +299,12 @@ class GeoParquetViewManager {
 
         LOGGER.config("Resolving files for geoparquet uri " + targetUri);
 
+        // Create S3 secret if credential chain is enabled
+        if (config.isUseAwsCredentialChain()) {
+            createAwsCredentialChainSecret(config.getAwsRegion(), config.getAwsProfile());
+            LOGGER.log(CONFIG, "Created AWS credential chain secret for S3 access to " + targetUri);
+        }
+
         Map<String, Partition> partitions = loadPartitions(targetUri, maxHiveDepth);
 
         LOGGER.log(CONFIG, () -> "Found %,d partitions with %,d total files"
@@ -311,6 +318,79 @@ class GeoParquetViewManager {
         dropViews();
         this.config = config;
         this.partitionsByViewName = partitions;
+    }
+
+    /**
+     * Creates a DuckDB secret for AWS credential chain authentication.
+     *
+     * <p>This enables automatic credential discovery using AWS SDK mechanisms: environment variables, config files, IAM
+     * roles, etc.
+     *
+     * <p>If a region is specified, it will override the automatically fetched region. If a profile is specified,
+     * credentials will be loaded from that profile in ~/.aws/credentials and ~/.aws/config files.
+     *
+     * @param region AWS region to use (may be null for automatic detection)
+     * @param profile AWS profile name to load credentials from (may be null for default)
+     * @throws IOException If secret creation fails
+     */
+    private void createAwsCredentialChainSecret(String region, String profile) throws IOException {
+        String createSecretSql = buildCreateSecretSql(region, profile);
+
+        try (Connection c = getConnection();
+                Statement st = c.createStatement()) {
+            st.execute(createSecretSql);
+            LOGGER.log(CONFIG, "Created AWS credential chain secret for S3 access");
+        } catch (SQLException e) {
+            throw new IOException("Failed to create AWS credential chain secret: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Builds a DuckDB CREATE SECRET SQL statement for AWS credential chain authentication.
+     *
+     * <p>This method constructs the SQL with optional region and profile parameters. The generated SQL follows the
+     * pattern:
+     *
+     * <pre>
+     * CREATE OR REPLACE SECRET geoparquet_s3_secret (
+     *     TYPE s3,
+     *     PROVIDER credential_chain[, CHAIN 'config'][, PROFILE 'profile_name'][, REGION 'region_name']
+     * )
+     * </pre>
+     *
+     * <p>The CHAIN 'config' clause is automatically included when a profile is specified, as it is required by DuckDB
+     * to load credentials from AWS configuration files.
+     *
+     * @param region AWS region to use (may be null or empty for automatic detection)
+     * @param profile AWS profile name to load credentials from (may be null or empty for default)
+     * @return A complete CREATE SECRET SQL statement
+     */
+    static String buildCreateSecretSql(String region, String profile) {
+        // Build optional clauses for the CREATE SECRET statement
+        String chainClause = "";
+        String profileClause = "";
+        String regionClause = "";
+
+        if (StringUtils.isNotBlank(profile)) {
+            // CHAIN 'config' is required when using PROFILE parameter to specify a non-default profile.
+            // Without PROFILE, the default credential chain uses the default profile from config files.
+            // With PROFILE, we explicitly specify which profile to use from ~/.aws/credentials and ~/.aws/config.
+            chainClause = ", CHAIN 'config'";
+            profileClause = ", PROFILE '%s'".formatted(profile.replace("'", "''"));
+        }
+
+        if (StringUtils.isNotBlank(region)) {
+            // REGION allows overriding the region from the credential chain
+            regionClause = ", REGION '%s'".formatted(region.replace("'", "''"));
+        }
+
+        return """
+                CREATE OR REPLACE SECRET geoparquet_s3_secret (
+                    TYPE s3,
+                    PROVIDER credential_chain%s%s%s
+                )
+                """
+                .formatted(chainClause, profileClause, regionClause);
     }
 
     /**

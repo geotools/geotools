@@ -114,6 +114,108 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
             .advancedLevel()
             .build();
 
+    /**
+     * Parameter for enabling AWS credential chain for S3 access.
+     *
+     * <p>When enabled, uses AWS SDK credential chain to automatically discover credentials from:
+     *
+     * <ul>
+     *   <li>Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+     *   <li>AWS config files (~/.aws/credentials, ~/.aws/config)
+     *   <li>IAM instance profiles (EC2)
+     *   <li>ECS task roles
+     *   <li>AWS SSO/federation
+     * </ul>
+     *
+     * <p>When disabled (default), S3 credentials must be provided in URI query parameters.
+     *
+     * <p>Example with credential chain enabled:
+     *
+     * <pre>
+     * use_aws_credential_chain=true
+     * uri=s3://bucket/path/file.parquet
+     * </pre>
+     *
+     * <p>Example without credential chain (legacy):
+     *
+     * <pre>
+     * uri=s3://bucket/path/file.parquet?s3_access_key_id=xxx&s3_secret_access_key=yyy
+     * </pre>
+     */
+    public static final DataAccessFactory.Param USE_AWS_CREDENTIAL_CHAIN = new ParamBuilder("use_aws_credential_chain")
+            .type(Boolean.class)
+            .title("Use AWS Credential Chain")
+            .description("Use AWS SDK credential chain for S3 authentication instead of URI parameters")
+            .required(false)
+            .defaultValue(false)
+            .userLevel()
+            .build();
+
+    /**
+     * Parameter for specifying AWS region for S3 access.
+     *
+     * <p>This parameter allows overriding the AWS region when using credential chain authentication. If not specified,
+     * the region will be determined automatically from AWS SDK configuration.
+     *
+     * <p>Example:
+     *
+     * <pre>
+     * use_aws_credential_chain=true
+     * aws_region=eu-west-1
+     * uri=s3://bucket/path/file.parquet
+     * </pre>
+     *
+     * <p>This corresponds to the REGION parameter in DuckDB's CREATE SECRET statement:
+     *
+     * <pre>
+     * CREATE OR REPLACE SECRET secret (
+     *     TYPE s3,
+     *     PROVIDER credential_chain,
+     *     REGION 'eu-west-1'
+     * );
+     * </pre>
+     */
+    public static final DataAccessFactory.Param AWS_REGION = new ParamBuilder("aws_region")
+            .type(String.class)
+            .title("AWS Region")
+            .description("AWS region for S3 access (e.g., 'us-east-1', 'eu-west-1')")
+            .required(false)
+            .userLevel()
+            .build();
+
+    /**
+     * Parameter for specifying AWS profile for S3 access.
+     *
+     * <p>This parameter allows loading credentials from a specific AWS profile in ~/.aws/credentials and ~/.aws/config
+     * files when using credential chain authentication.
+     *
+     * <p>Example:
+     *
+     * <pre>
+     * use_aws_credential_chain=true
+     * aws_profile=my_profile
+     * uri=s3://bucket/path/file.parquet
+     * </pre>
+     *
+     * <p>This corresponds to the PROFILE parameter in DuckDB's CREATE SECRET statement:
+     *
+     * <pre>
+     * CREATE OR REPLACE SECRET secret (
+     *     TYPE s3,
+     *     PROVIDER credential_chain,
+     *     CHAIN config,
+     *     PROFILE 'my_profile'
+     * );
+     * </pre>
+     */
+    public static final DataAccessFactory.Param AWS_PROFILE = new ParamBuilder("aws_profile")
+            .type(String.class)
+            .title("AWS Profile")
+            .description("AWS profile name to load credentials from ~/.aws/credentials")
+            .required(false)
+            .userLevel()
+            .build();
+
     /** Parameter for specifying the namespace URI for the feature type. */
     public static final Param NAMESPACE = AbstractDuckDBDataStoreFactory.NAMESPACE;
 
@@ -167,6 +269,9 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(URI_PARAM.key, URI_PARAM);
         parameters.put(MAX_HIVE_DEPTH.key, MAX_HIVE_DEPTH);
+        parameters.put(USE_AWS_CREDENTIAL_CHAIN.key, USE_AWS_CREDENTIAL_CHAIN);
+        parameters.put(AWS_REGION.key, AWS_REGION);
+        parameters.put(AWS_PROFILE.key, AWS_PROFILE);
     }
 
     /**

@@ -56,6 +56,9 @@ public class GeoParquetDataStoreFactory extends ForwardingDataStoreFactory<GeoPa
     public static final Param FETCHSIZE = GeoParquetDataStoreFactoryDelegate.FETCHSIZE;
     public static final Param SCREENMAP = GeoParquetDataStoreFactoryDelegate.SCREENMAP;
     public static final Param SIMPLIFY = GeoParquetDataStoreFactoryDelegate.SIMPLIFY;
+    public static final Param USE_AWS_CREDENTIAL_CHAIN = GeoParquetDataStoreFactoryDelegate.USE_AWS_CREDENTIAL_CHAIN;
+    public static final Param AWS_REGION = GeoParquetDataStoreFactoryDelegate.AWS_REGION;
+    public static final Param AWS_PROFILE = GeoParquetDataStoreFactoryDelegate.AWS_PROFILE;
 
     public GeoParquetDataStoreFactory() {
         super(new GeoParquetDataStoreFactoryDelegate());

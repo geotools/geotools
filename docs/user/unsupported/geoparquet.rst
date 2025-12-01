@@ -115,30 +115,92 @@ Remote GeoParquet File (HTTP)
 Remote GeoParquet File (S3)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+**Recommended: Using AWS Credential Chain**
+
 .. code-block:: java
 
    Map<String, Object> params = new HashMap<>();
    params.put("dbtype", "geoparquet");
-   params.put("uri", "s3://my-bucket/data.parquet?s3_region=us-west-2&s3_access_key_id=AKIAIOSFODNN7EXAMPLE&s3_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY&s3_session_token=FwoGZXIvYXdzEJr");
+   params.put("uri", "s3://my-bucket/data.parquet");
+   params.put("use_aws_credential_chain", true);
+
+   // Optional: override region
+   params.put("aws_region", "us-west-2");
+
+   // Optional: use a specific AWS profile
+   params.put("aws_profile", "my_profile");
+
+   DataStore store = DataStoreFinder.getDataStore(params);
+
+This approach automatically discovers credentials from:
+
+- Environment variables (``AWS_ACCESS_KEY_ID``, ``AWS_SECRET_ACCESS_KEY``)
+- AWS config files (``~/.aws/credentials``, ``~/.aws/config``)
+- IAM instance profiles (EC2)
+- ECS task roles
+- AWS SSO/federation
+
+**Legacy: Credentials in URI (Deprecated)**
+
+.. warning::
+
+   **Security Risk**: Passing credentials directly in the URI is deprecated and discouraged as it exposes
+   sensitive credentials in logs, error messages, and stack traces. Use the credential chain approach instead.
+
+.. code-block:: java
+
+   // DEPRECATED - Do not use in production
+   Map<String, Object> params = new HashMap<>();
+   params.put("dbtype", "geoparquet");
+   params.put("uri", "s3://my-bucket/data.parquet?s3_region=us-west-2&s3_access_key_id=AKIAIOSFODNN7EXAMPLE&s3_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY");
 
    DataStore store = DataStoreFinder.getDataStore(params);
 
 Parameters
 ----------
 
-===================== ======== ========= ===========================================================
-Parameter             Type     Required  Description
-===================== ======== ========= ===========================================================
-**dbtype**            String   Yes       Must be "geoparquet"
-**uri**               String   Yes       URI to GeoParquet file or directory (supports file://, https://, s3://)
-**max_hive_depth**    Integer  No        Maximum depth of Hive partition hierarchy to use (null = all levels, 0 = none, 1+ = specific level)
-**simplify**          Boolean  No        Enable geometry simplification for rendering optimization (default: ``true``)
-**namespace**         String   No        Namespace URI to use for features
-===================== ======== ========= ===========================================================
+============================= ======== ========= ===========================================================
+Parameter                     Type     Required  Description
+============================= ======== ========= ===========================================================
+**dbtype**                    String   Yes       Must be "geoparquet"
+**uri**                       String   Yes       URI to GeoParquet file or directory (supports file://, https://, s3://)
+**max_hive_depth**            Integer  No        Maximum depth of Hive partition hierarchy to use (null = all levels, 0 = none, 1+ = specific level)
+**use_aws_credential_chain**  Boolean  No        Use AWS SDK credential chain for S3 authentication (default: ``false``)
+**aws_region**                String   No        AWS region for S3 access (e.g., ``us-east-1``, ``eu-west-1``). Overrides region from credential chain.
+**aws_profile**               String   No        AWS profile name to load credentials from ``~/.aws/credentials``. Requires ``use_aws_credential_chain=true``.
+**simplify**                  Boolean  No        Enable geometry simplification for rendering optimization (default: ``true``)
+**namespace**                 String   No        Namespace URI to use for features
+============================= ======== ========= ===========================================================
 
-For S3 URIs, you can include authentication parameters::
+S3 Authentication
+^^^^^^^^^^^^^^^^^
 
-   s3://bucket/path/to/file.parquet?region=us-west-2&access_key=ACCESS_KEY&secret_key=SECRET_KEY&endpoint=ENDPOINT
+**Recommended Approach: AWS Credential Chain**
+
+Set ``use_aws_credential_chain=true`` to enable automatic credential discovery through the AWS SDK. This securely loads credentials from:
+
+- Environment variables
+- AWS configuration files
+- IAM roles (EC2 instances, ECS tasks, Lambda)
+- AWS SSO sessions
+
+Optionally specify:
+
+- ``aws_region`` to override the region
+- ``aws_profile`` to use a specific profile from ``~/.aws/credentials``
+
+**Legacy Approach: URI Query Parameters (Deprecated)**
+
+.. warning::
+
+   **Deprecated and Insecure**: Embedding credentials in URIs exposes them in logs, error messages, and stack traces.
+   This approach is maintained only for backward compatibility and should not be used in production.
+
+You can still include authentication parameters in the S3 URI::
+
+   s3://bucket/path/to/file.parquet?s3_region=us-west-2&s3_access_key_id=ACCESS_KEY&s3_secret_access_key=SECRET_KEY
+
+However, this practice is strongly discouraged. Use the credential chain approach instead.
 
 GeoParquet Metadata Support
 ---------------------------

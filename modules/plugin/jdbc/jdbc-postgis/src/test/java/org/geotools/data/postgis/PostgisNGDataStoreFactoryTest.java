@@ -43,6 +43,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.postgresql.jdbc.PgConnection;
+import org.postgresql.jdbc.SslMode;
 
 public class PostgisNGDataStoreFactoryTest {
 
@@ -178,6 +179,30 @@ public class PostgisNGDataStoreFactoryTest {
         params.put(PostgisNGDataStoreFactory.REWRITE_BATCHED_INSERTS.key, Boolean.TRUE);
         assertEquals(
                 "jdbc:postgresql://localhost:5432/template1?reWriteBatchedInserts=true",
+                new PostgisNGDataStoreFactory().getJDBCUrl(params));
+    }
+
+    @Test
+    public void testGetJDBCUrlSslModePreferEnumValue() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put(PostgisNGDataStoreFactory.HOST.key, "localhost");
+        params.put(PostgisNGDataStoreFactory.PORT.key, 5432);
+        params.put(PostgisNGDataStoreFactory.DATABASE.key, "template1");
+        params.put(PostgisNGDataStoreFactory.SSL_MODE.key, SslMode.PREFER);
+        assertEquals(
+                "jdbc:postgresql://localhost:5432/template1?reWriteBatchedInserts=false&sslmode=prefer&binaryTransferEnable=bytea",
+                new PostgisNGDataStoreFactory().getJDBCUrl(params));
+    }
+
+    @Test
+    public void testGetJDBCUrlSslModePreferString() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put(PostgisNGDataStoreFactory.HOST.key, "localhost");
+        params.put(PostgisNGDataStoreFactory.PORT.key, 5432);
+        params.put(PostgisNGDataStoreFactory.DATABASE.key, "template1");
+        params.put(PostgisNGDataStoreFactory.SSL_MODE.key, "prefer");
+        assertEquals(
+                "jdbc:postgresql://localhost:5432/template1?reWriteBatchedInserts=false&sslmode=prefer&binaryTransferEnable=bytea",
                 new PostgisNGDataStoreFactory().getJDBCUrl(params));
     }
 }

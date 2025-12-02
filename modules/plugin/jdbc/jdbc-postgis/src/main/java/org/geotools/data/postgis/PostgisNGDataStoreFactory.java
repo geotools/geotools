@@ -297,7 +297,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                 + reWriteBatchedInserts;
         SslMode mode = (SslMode) SSL_MODE.lookUp(params);
         if (mode != null) {
-            url = url + "&sslmode=" + mode + "&binaryTransferEnable=bytea";
+            url = url + "&sslmode=" + mode.value + "&binaryTransferEnable=bytea";
         }
 
         return url;

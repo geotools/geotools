@@ -33,10 +33,8 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.dggs.DGGSFactoryFinder;
 import org.geotools.dggs.DGGSInstance;
 import org.geotools.dggs.datastore.DGGSDataStore;
-import org.geotools.dggs.datastore.DGGSStoreFactory;
 import org.geotools.dggs.gstore.DGGSFeatureSource;
 import org.geotools.dggs.h3.H3DGGSFactory;
 import org.geotools.factory.CommonFactoryFinder;
@@ -47,7 +45,7 @@ import org.hamcrest.Matchers;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // JUnit 3 tests here
-public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestCase<Long> {
+public class ClickHouseH3IntegerOnlineTest extends ClickHouseOnlineTestCase<Long> {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
@@ -56,74 +54,57 @@ public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestC
         return new H3DGGSFactory().getId();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected DGGSDataStore<Long> getDataStore() throws Exception {
-        String dggsId = getDGGSId();
-        if (DGGSFactoryFinder.getFactory(dggsId).isEmpty()) {
-            throw new Exception(dggsId + " is not present, skipping the test");
-        }
-
-        DGGSStoreFactory factory = new DGGSStoreFactory();
-        Map<String, Object> params = toParamMap(fixture);
-        params.put(DGGSStoreFactory.STORE_NAME.key, "test");
-        // Use the exact Param key your DGGSStoreFactory declares, e.g. "repository"
-        params.put(DGGSStoreFactory.REPOSITORY.key, buildRepository(fixture));
-        params.put(DGGSStoreFactory.ZONE_ID_COLUMN_NAME.key, "zoneId");
-        params.put(DGGSStoreFactory.RESOLUTION.key, "0");
-
-        return (DGGSDataStore<Long>) factory.createDataStore(params);
-    }
-
     @Override
     protected void setupTestData(DGGSDataStore<Long> dataStore) throws Exception {
         try (Connection cx = ((JDBCDataStore) dataStore.getDelegate()).getConnection(Transaction.AUTO_COMMIT);
                 Statement st = cx.createStatement()) {
             // cleanup
-            st.execute("DROP TABLE IF EXISTS zoneAttributesNoRes");
+            st.execute("DROP TABLE IF EXISTS zoneAttributesInt");
 
-            st.execute("CREATE TABLE zoneAttributesNoRes (\n"
-                    + "    zoneId String,\n"
+            st.execute("CREATE TABLE zoneAttributesInt (\n"
+                    + "    zoneId Int64,\n"
                     + "    ts UInt32,\n"
                     + "    value UInt32,\n"
+                    + "    resolution UInt8\n"
                     + ") ENGINE = MergeTree()\n"
                     + "ORDER BY (zoneId, ts);");
 
-            st.execute("INSERT INTO zoneAttributesNoRes VALUES\n"
-                    + "('8009fffffffffff', 1, 100),\n"
-                    + "('8009fffffffffff', 2, 50),\n"
-                    + "('8009fffffffffff', 3, 150),\n"
-                    + "('8011fffffffffff', 1, 75),\n"
-                    + "('8011fffffffffff', 2, 25),\n"
-                    + "('8011fffffffffff', 3, 0);");
+            st.execute("INSERT INTO zoneAttributesInt VALUES\n"
+                    + "(576636674163867647, 1, 100, 0),\n"
+                    + "(576636674163867647, 2, 50, 0),\n"
+                    + "(576636674163867647, 3, 150, 0),\n"
+                    + "(576777411652222975, 1, 75, 0),\n"
+                    + "(576777411652222975, 2, 25, 0),\n"
+                    + "(576777411652222975, 3, 0, 0);");
         }
     }
 
     public void testTypeNames() throws IOException {
         List<String> names = Arrays.asList(dataStore.getTypeNames());
-        assertThat(names, Matchers.hasItem("zoneAttributesNoRes"));
+        assertThat(names, Matchers.hasItem("zoneAttributesInt"));
     }
 
     public void testDataStoreSchema() throws IOException {
-        SimpleFeatureType schema = dataStore.getSchema("zoneAttributesNoRes");
+        SimpleFeatureType schema = dataStore.getSchema("zoneAttributesInt");
         assertZoneAttributesSchema(schema);
     }
 
     public void testFeatureSourceSchema() throws IOException {
         SimpleFeatureType schema =
-                dataStore.getFeatureSource("zoneAttributesNoRes").getSchema();
+                dataStore.getFeatureSource("zoneAttributesInt").getSchema();
         assertZoneAttributesSchema(schema);
     }
 
     public void testFeatureCollectionSchema() throws IOException {
         SimpleFeatureType schema =
-                dataStore.getFeatureSource("zoneAttributesNoRes").getFeatures().getSchema();
+                dataStore.getFeatureSource("zoneAttributesInt").getFeatures().getSchema();
         assertZoneAttributesSchema(schema);
     }
 
     private void assertZoneAttributesSchema(SimpleFeatureType schema) {
-        assertEquals(4, schema.getAttributeDescriptors().size());
-        assertDescriptor(schema, "zoneId", String.class);
+        assertEquals(5, schema.getAttributeDescriptors().size());
+        assertDescriptor(schema, "zoneId", Long.class);
+        assertDescriptor(schema, "resolution", Short.class);
         assertDescriptor(schema, "ts", Long.class);
         assertDescriptor(schema, "value", Long.class);
         assertDescriptor(schema, "geometry", Polygon.class);
@@ -136,7 +117,7 @@ public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestC
     }
 
     public void testCountAll() throws Exception {
-        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesNoRes");
+        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesInt");
         assertEquals(6, fs.getCount(Query.ALL));
     }
 
@@ -160,15 +141,15 @@ public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestC
                 };
 
         // execute visit, the visitor should be optimized out
-        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesNoRes");
+        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesInt");
         fs.getFeatures().accepts(visitor, null);
         assertEquals(0, visitCount.get());
         assertTrue(setValueCalled.get());
 
         @SuppressWarnings("PMD.CloseResource") // the store manages the dggs lifecycle
         DGGSInstance<Long> dggs = dataStore.getDggs();
-        Polygon p1 = dggs.getZoneFromString("8009fffffffffff").getBoundary();
-        Polygon p2 = dggs.getZoneFromString("8011fffffffffff").getBoundary();
+        Polygon p1 = dggs.getZone(Long.parseUnsignedLong("8009fffffffffff", 16)).getBoundary();
+        Polygon p2 = dggs.getZone(Long.parseUnsignedLong("8011fffffffffff", 16)).getBoundary();
 
         @SuppressWarnings("unchecked")
         Map<List<Object>, Object> results = visitor.getResult().toMap();

@@ -48,21 +48,23 @@ public class ParentsFunction extends DGGSSetFunctionBase {
     public Object evaluate(Object object) {
         // get the zone being tested
         String testedZoneId = (String) getParameterValue(object, 0);
-        if (testedZoneId == null) return false;
+        if (testedZoneId == null) return Boolean.FALSE;
 
         return matches(testedZoneId, () -> {
             // check params
             String referenceZoneId = (String) getParameterValue(object, 1);
-            DGGSInstance dggs = (DGGSInstance) getParameterValue(object, 2);
-            if (referenceZoneId == null || dggs == null) return Collections.emptyIterator();
+            DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(object, 2);
+            if (referenceZoneId == null || dggs == null) {
+                return Collections.emptyIterator();
+            }
 
-            // check resolution first
-            return dggs.parents(referenceZoneId);
+            // go through the typed ID path
+            return dggs.parentsFromString(referenceZoneId);
         });
     }
 
     @Override
-    public void setDGGSInstance(DGGSInstance dggs) {
+    public void setDGGSInstance(DGGSInstance<?> dggs) {
         Literal dggsLiteral = FF.literal(dggs);
         List<Expression> parameters = getParameters();
         if (parameters.size() == 2) {
@@ -78,9 +80,11 @@ public class ParentsFunction extends DGGSSetFunctionBase {
     public Iterator<Zone> getMatchedZones() {
         if (!isStable()) throw new IllegalStateException("Source parameters are not stable");
         String referenceZoneId = (String) getParameterValue(null, 1);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 2);
-
-        return dggs.parents(referenceZoneId);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 2);
+        if (referenceZoneId == null || dggs == null) {
+            return Collections.emptyIterator();
+        }
+        return dggs.parentsFromString(referenceZoneId);
     }
 
     @Override
@@ -88,8 +92,10 @@ public class ParentsFunction extends DGGSSetFunctionBase {
     public long countMatched() {
         if (!isStable()) throw new IllegalStateException("Source parameters are not stable");
         String referenceZoneId = (String) getParameterValue(null, 1);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 2);
-
-        return dggs.countParents(referenceZoneId);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 2);
+        if (referenceZoneId == null || dggs == null) {
+            return 0L;
+        }
+        return dggs.countParentsFromString(referenceZoneId);
     }
 }

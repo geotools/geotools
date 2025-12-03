@@ -24,5 +24,5 @@ public interface DGGSFunction {
 
     FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
-    void setDGGSInstance(DGGSInstance instance);
+    void setDGGSInstance(DGGSInstance<?> instance);
 }

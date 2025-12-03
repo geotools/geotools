@@ -53,6 +53,7 @@ public class GeoParquetDataStoreFactory extends ForwardingDataStoreFactory<GeoPa
 
     public static final DataAccessFactory.Param URI_PARAM = GeoParquetDataStoreFactoryDelegate.URI_PARAM;
     public static final DataAccessFactory.Param MAX_HIVE_DEPTH = GeoParquetDataStoreFactoryDelegate.MAX_HIVE_DEPTH;
+    public static final DataAccessFactory.Param PRIMARY_KEY_ID = GeoParquetDataStoreFactoryDelegate.PRIMARY_KEY_ID;
     public static final Param FETCHSIZE = GeoParquetDataStoreFactoryDelegate.FETCHSIZE;
     public static final Param SCREENMAP = GeoParquetDataStoreFactoryDelegate.SCREENMAP;
     public static final Param SIMPLIFY = GeoParquetDataStoreFactoryDelegate.SIMPLIFY;

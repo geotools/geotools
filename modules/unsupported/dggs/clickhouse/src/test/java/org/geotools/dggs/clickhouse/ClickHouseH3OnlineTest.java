@@ -45,7 +45,7 @@ import org.hamcrest.Matchers;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // JUnit 3 tests here
-public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
+public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase<String> {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
@@ -55,7 +55,7 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
     }
 
     @Override
-    protected void setupTestData(DGGSDataStore dataStore) throws Exception {
+    protected void setupTestData(DGGSDataStore<String> dataStore) throws Exception {
         try (Connection cx = ((JDBCDataStore) dataStore.getDelegate()).getConnection(Transaction.AUTO_COMMIT);
                 Statement st = cx.createStatement()) {
             // cleanup
@@ -116,7 +116,7 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testCountAll() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("zoneAttributes");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("zoneAttributes");
         assertEquals(6, fs.getCount(Query.ALL));
     }
 
@@ -140,15 +140,15 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
                 };
 
         // execute visit, the visitor should be optimized out
-        DGGSFeatureSource fs = dataStore.getFeatureSource("zoneAttributes");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("zoneAttributes");
         fs.getFeatures().accepts(visitor, null);
         assertEquals(0, visitCount.get());
         assertTrue(setValueCalled.get());
 
         @SuppressWarnings("PMD.CloseResource") // the store manages the dggs lifecycle
-        DGGSInstance ddgs = dataStore.getDggs();
-        Polygon p1 = ddgs.getZone("8009fffffffffff").getBoundary();
-        Polygon p2 = ddgs.getZone("8011fffffffffff").getBoundary();
+        DGGSInstance<String> dggs = dataStore.getDggs();
+        Polygon p1 = dggs.getZoneFromString("8009fffffffffff").getBoundary();
+        Polygon p2 = dggs.getZoneFromString("8011fffffffffff").getBoundary();
 
         @SuppressWarnings("unchecked")
         Map<List<Object>, Object> results = visitor.getResult().toMap();

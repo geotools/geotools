@@ -53,16 +53,16 @@ import org.geotools.feature.visitor.GroupByVisitor.GroupByRawResult;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
-public class DGGSFeatureCollection implements SimpleFeatureCollection {
+public class DGGSFeatureCollection<I> implements SimpleFeatureCollection {
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     private final SimpleFeatureType schema;
-    private final DGGSInstance dggs;
+    private final DGGSInstance<I> dggs;
     private final String zoneIdColumn;
     private final SimpleFeatureCollection delegate;
 
     public DGGSFeatureCollection(
-            SimpleFeatureCollection delegate, SimpleFeatureType schema, String zoneIdColumn, DGGSInstance dggs) {
+            SimpleFeatureCollection delegate, SimpleFeatureType schema, String zoneIdColumn, DGGSInstance<I> dggs) {
         this.delegate = delegate;
         this.schema = schema;
         this.dggs = dggs;
@@ -87,8 +87,7 @@ public class DGGSFeatureCollection implements SimpleFeatureCollection {
         }
 
         // special case for aggregate visitors grouping on geometry (need to map the geometry to zone ids)
-        if (visitor instanceof GroupByVisitor) {
-            GroupByVisitor groupByVisitor = (GroupByVisitor) visitor;
+        if (visitor instanceof GroupByVisitor groupByVisitor) {
             if (delegateGroupBy(progress, groupByVisitor)) return;
         }
 
@@ -129,7 +128,8 @@ public class DGGSFeatureCollection implements SimpleFeatureCollection {
                 .map(e -> {
                     // the key is a list of grouping attribute values, we need to map the zone id back to the geometry
                     List<Object> key = e.getKey();
-                    Zone zone = dggs.getZone((String) key.get(geometryIdx));
+                    Object geometryKey = key.get(geometryIdx);
+                    Zone zone = dggs.getZoneFromRawId(geometryKey);
                     key.set(geometryIdx, zone.getBoundary());
                     return new GroupByRawResult(key, e.getValue());
                 })
@@ -286,7 +286,8 @@ public class DGGSFeatureCollection implements SimpleFeatureCollection {
         for (AttributeDescriptor ad : schema.getAttributeDescriptors()) {
             String name = ad.getLocalName();
             if (DGGSDataStore.GEOMETRY.equals(name)) {
-                Zone zone = dggs.getZone((String) next.getAttribute(zoneIdColumn));
+                Object rawId = next.getAttribute(zoneIdColumn);
+                Zone zone = dggs.getZoneFromRawId(rawId);
                 fb.add(zone.getBoundary());
             } else {
                 fb.add(next.getAttribute(name));

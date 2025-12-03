@@ -89,6 +89,30 @@ public class DGGSFilterTransformerTest {
         assertEquals(transformed, expected);
     }
 
+    @Test
+    public void testFixedResolutionOnIntegerType() throws Exception {
+        DGGSResolutionCalculator resolutionCalculator = new DGGSResolutionCalculator(dggs, 3);
+        AttributeDescriptor zoneIdDescriptor =
+                DataUtilities.createType("test", "zoneId:Integer").getDescriptor("zoneId");
+        DGGSFilterTransformer transformer = new DGGSFilterTransformer(dggs, resolutionCalculator, 3, zoneIdDescriptor);
+
+        Intersects intersects = FF.intersects(
+                "geom",
+                read("MULTIPOLYGON(((11 45, 11 46, 12 46, 12 45, 11 45)), ((12 45, 12 46, 13 46, 13 45, 12 45)))"));
+        Filter transformed = (Filter) intersects.accept(transformer, null);
+        PropertyIsEqualTo inZone = FF.equal(
+                FF.function(
+                        "in",
+                        FF.property("zoneId"),
+                        FF.literal(Long.parseUnsignedLong("831ea4fffffffff", 16)),
+                        FF.literal(Long.parseUnsignedLong("831ea5fffffffff", 16))),
+                FF.literal(true),
+                true);
+        Filter fixedResolutionFilter = Filter.INCLUDE;
+        Filter expected = FF.and(inZone, fixedResolutionFilter);
+        assertEquals(transformed, expected);
+    }
+
     private static Geometry read(String wellKnownText) throws ParseException {
         return new WKTReader().read(wellKnownText);
     }

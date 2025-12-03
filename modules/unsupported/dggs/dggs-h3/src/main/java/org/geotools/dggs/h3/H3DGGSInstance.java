@@ -20,6 +20,7 @@ import com.uber.h3core.H3Core;
 import com.uber.h3core.util.GeoCoord;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ import java.util.stream.IntStream;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.store.EmptyIterator;
 import org.geotools.dggs.DGGSInstance;
 import org.geotools.dggs.Zone;
@@ -43,7 +45,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.predicate.RectangleContains;
 import org.locationtech.jts.operation.predicate.RectangleIntersects;
 
-public class H3DGGSInstance implements DGGSInstance {
+public class H3DGGSInstance implements DGGSInstance<Long> {
 
     final H3Core h3;
     final GeometryFactory gf = new GeometryFactory(new LiteCoordinateSequenceFactory());
@@ -80,10 +82,18 @@ public class H3DGGSInstance implements DGGSInstance {
     }
 
     @Override
+    public Zone getZone(Long lid) throws IllegalArgumentException {
+        try {
+            return new H3Zone(this, lid);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Could not build zone from id, is the id valid?", e);
+        }
+    }
+
     public Zone getZone(String id) throws IllegalArgumentException {
         try {
             long lid = h3.stringToH3(id);
-            return new H3Zone(this, lid);
+            return getZone(lid);
         } catch (Exception e) {
             throw new IllegalArgumentException("Could not build zone from id, is the id valid?", e);
         }
@@ -273,18 +283,22 @@ public class H3DGGSInstance implements DGGSInstance {
     }
 
     @Override
-    public Iterator<Zone> neighbors(String id, int radius) {
+    public Iterator<Zone> neighbors(Long h3Id, int radius) {
         // Using H3 facilities. Upside fast and accurate (considering dateline and pole neighbors
         // too), downside, will quickly go OOM, radius should be limited
-        long h3Id = this.h3.stringToH3(id);
         return this.h3.kRing(h3Id, radius).stream()
-                .filter(zoneId -> h3Id != zoneId)
+                .filter(zoneId -> !h3Id.equals(zoneId))
                 .map(zoneId -> (Zone) new H3Zone(this, zoneId))
                 .iterator();
     }
 
+    public Iterator<Zone> neighbors(String id, int radius) {
+        long h3Id = parseId(id);
+        return neighbors(h3Id, radius);
+    }
+
     @Override
-    public Iterator<Zone> children(String zoneId, int resolution) {
+    public Iterator<Zone> children(Long zoneId, int resolution) {
         Zone zone = getZone(zoneId);
         if (zone.getResolution() >= resolution) return new EmptyIterator<>();
 
@@ -294,13 +308,12 @@ public class H3DGGSInstance implements DGGSInstance {
                 id -> h3.h3GetResolution(id) < resolution,
                 id -> h3.h3GetResolution(id) == resolution,
                 id -> new H3Zone(this, id),
-                Arrays.asList(h3.stringToH3(zoneId)));
+                Collections.singletonList(zoneId));
     }
 
     @Override
-    public Iterator<Zone> parents(String zoneId) {
-        long id = h3.stringToH3(zoneId);
-        return new H3ParentIterator(id, this);
+    public Iterator<Zone> parents(Long zoneId) {
+        return new H3ParentIterator(zoneId, this);
     }
 
     @Override
@@ -333,15 +346,43 @@ public class H3DGGSInstance implements DGGSInstance {
 
     @Override
     public Filter getChildFilter(
-            FilterFactory ff, String zoneId, int resolution, boolean upTo, AttributeDescriptor zoneAttribute) {
-        long id = h3.stringToH3(zoneId);
-        H3Index idx = new H3Index(id);
+            FilterFactory ff, Long zoneId, int resolution, boolean upTo, AttributeDescriptor zoneAttribute) {
+        H3Index idx = new H3Index(zoneId);
+        return buildChildRangeFilter(ff, zoneAttribute, idx, resolution);
+    }
+
+    @Override
+    public Long parseId(String id) {
+        return h3.stringToH3(id);
+    }
+
+    @Override
+    public String idToString(Long id) {
+        return h3.h3ToString(id);
+    }
+
+    @Override
+    public Class<Long> idType() {
+        return Long.class;
+    }
+
+    private Filter buildChildRangeFilter(
+            FilterFactory ff, AttributeDescriptor zoneAttribute, H3Index idx, int resolution) {
+
         long lowest = idx.lowestIdChild(resolution);
         long highest = idx.highestIdChild(resolution);
+
+        Class<?> binding = zoneAttribute.getType().getBinding();
+        Expression prop = ff.property(zoneAttribute.getLocalName());
+
+        // Numeric column: go directly with longs
+        if (Number.class.isAssignableFrom(binding)) {
+            return ff.between(prop, ff.literal(lowest), ff.literal(highest));
+        }
+
+        // String / text column and fallback: use hex string IDs
         String lowestId = h3.h3ToString(lowest);
         String highestId = h3.h3ToString(highest);
-        Filter matchFilter =
-                ff.between(ff.property(zoneAttribute.getLocalName()), ff.literal(lowestId), ff.literal(highestId));
-        return matchFilter;
+        return ff.between(prop, ff.literal(lowestId), ff.literal(highestId));
     }
 }

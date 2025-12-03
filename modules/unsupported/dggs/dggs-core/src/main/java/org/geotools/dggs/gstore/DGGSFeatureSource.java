@@ -21,14 +21,14 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.dggs.DGGSInstance;
 
 /** DGGS specific extensions to {@link SimpleFeatureSource}, adding ability to native zone access */
-public interface DGGSFeatureSource extends SimpleFeatureSource {
+public interface DGGSFeatureSource<I> extends SimpleFeatureSource {
 
     /**
      * Returns the DGGS instance used by this feature source
      *
      * @return
      */
-    DGGSInstance getDGGS();
+    DGGSInstance<I> getDGGS();
 
     /**
      * Returns the attribute used to store zone identifiers

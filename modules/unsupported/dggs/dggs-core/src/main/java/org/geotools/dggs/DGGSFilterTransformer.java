@@ -54,7 +54,7 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
 
     public static Filter adapt(
             Filter filter,
-            DGGSInstance dggs,
+            DGGSInstance<?> dggs,
             DGGSResolutionCalculator resolutionCalculator,
             int resolution,
             AttributeDescriptor zoneAttribute) {
@@ -63,13 +63,13 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
         return (Filter) filter.accept(adapter, null);
     }
 
-    DGGSInstance dggs;
+    DGGSInstance<?> dggs;
     int resolution;
     AttributeDescriptor zoneAttribute;
     DGGSResolutionCalculator resolutionCalculator;
 
     public DGGSFilterTransformer(
-            DGGSInstance dggs,
+            DGGSInstance<?> dggs,
             DGGSResolutionCalculator resolutionCalculator,
             int resolution,
             AttributeDescriptor zoneAttribute) {
@@ -83,10 +83,9 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
 
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        if (filter.getExpression1() instanceof DGGSSetFunction
+        if (filter.getExpression1() instanceof DGGSSetFunction function
                 && filter.getExpression2() instanceof Literal
                 && Boolean.TRUE.equals(filter.getExpression2().evaluate(null, Boolean.class))) {
-            DGGSSetFunction function = (DGGSSetFunction) filter.getExpression1();
             if (function.isStable()) {
                 Iterator<Zone> zones = function.getMatchedZones();
                 return getFilterFrom(zones);
@@ -166,7 +165,7 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
      * @return
      */
     public static Filter getFilterFrom(
-            DGGSInstance dggs,
+            DGGSInstance<?> dggs,
             Iterator<Zone> zones,
             int resolution,
             DGGSResolutionCalculator resolutionCalculator,
@@ -178,9 +177,9 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
             Zone zone = zones.next();
             // exact match
             if (zone.getResolution() == resolution) {
-                inExpressions.add(FF.literal(zone.getId()));
+                inExpressions.add(buildZoneLiteral(dggs, zoneAttribute, zone.getId()));
             } else { // parent match
-                Filter childFilter = dggs.getChildFilter(FF, zone.getId(), resolution, false, zoneAttribute);
+                Filter childFilter = buildChildFilter(dggs, zone.getId(), resolution, zoneAttribute);
                 filters.add(childFilter);
             }
         }
@@ -207,5 +206,51 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
         } else {
             return FF.and(FF.or(filters), resolutionFilter);
         }
+    }
+
+    /**
+     * Builds a literal expression for the zone identifier, converting to the appropriate type if needed.
+     *
+     * @param dggs
+     * @param zoneAttribute
+     * @param zoneIdText
+     * @return
+     */
+    private static Expression buildZoneLiteral(
+            DGGSInstance<?> dggs, AttributeDescriptor zoneAttribute, String zoneIdText) {
+
+        Class<?> binding = zoneAttribute.getType().getBinding();
+
+        // String / text column: keep String ID
+        if (String.class.isAssignableFrom(binding) || CharSequence.class.isAssignableFrom(binding)) {
+            return FF.literal(zoneIdText);
+        }
+
+        // Numeric column:  convert to the DGGS numeric ID (e.g., Long for H3)
+        if (Number.class.isAssignableFrom(binding)) {
+            Number numericId = parseNumericZoneId(dggs, zoneIdText);
+            return FF.literal(numericId);
+        }
+
+        // Fallback: safest is to stick with String
+        return FF.literal(zoneIdText);
+    }
+
+    private static <I> Number parseNumericZoneId(DGGSInstance<I> dggs, String zoneIdText) {
+        I parsed = dggs.parseId(zoneIdText);
+
+        if (parsed instanceof Number n) {
+            return n;
+        }
+
+        throw new IllegalArgumentException(
+                "Zone attribute is numeric but DGGSInstance ID type is not Number: " + dggs.idType());
+    }
+
+    private static <I> Filter buildChildFilter(
+            DGGSInstance<I> dggs, String id, int resolution, AttributeDescriptor zoneAttribute) {
+
+        I zoneId = dggs.parseId(id);
+        return dggs.getChildFilter(FF, zoneId, resolution, false, zoneAttribute);
     }
 }

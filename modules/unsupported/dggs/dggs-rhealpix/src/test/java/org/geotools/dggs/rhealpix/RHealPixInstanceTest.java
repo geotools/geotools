@@ -64,15 +64,16 @@ public class RHealPixInstanceTest {
     private static final GeometryFactory GF = new GeometryFactory();
     private static final ReferencedEnvelope WORLD =
             new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
-    private DGGSInstance rpix;
+    private DGGSInstance<String> rpix;
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setup() throws IOException {
         Optional<DGGSFactory> factory = DGGSFactoryFinder.getExtensionFactories()
                 .filter(d -> "rHEALPix".equalsIgnoreCase(d.getId()))
                 .findFirst();
         Assume.assumeTrue(factory.isPresent());
-        rpix = factory.get().createInstance(null);
+        rpix = (DGGSInstance<String>) factory.get().createInstance(null);
     }
 
     @After
@@ -120,14 +121,12 @@ public class RHealPixInstanceTest {
 
     @Test
     public void countZonesFromEnvelopeWorldResZero() {
-        ReferencedEnvelope envelope = WORLD;
-        assertZoneCount(envelope, 0);
+        assertZoneCount(WORLD, 0);
     }
 
     @Test
     public void countZonesFromEnvelopeWorldResOne() {
-        ReferencedEnvelope envelope = WORLD;
-        assertZoneCount(envelope, 1);
+        assertZoneCount(WORLD, 1);
     }
 
     @Test

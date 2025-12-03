@@ -47,7 +47,7 @@ public class DGGSQuerySplitter {
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     private final SimpleFeatureType schema;
-    private final DGGSInstance dggs;
+    private final DGGSInstance<?> dggs;
     private final DGGSResolutionCalculator resolutionCalculator;
     private final AttributeDescriptor zoneAttribute;
 
@@ -57,7 +57,7 @@ public class DGGSQuerySplitter {
     }
 
     public DGGSQuerySplitter(
-            DGGSInstance dggs,
+            DGGSInstance<?> dggs,
             DGGSResolutionCalculator resolutionCalculator,
             SimpleFeatureType schema,
             AttributeDescriptor zoneAttribute) {
@@ -124,7 +124,7 @@ public class DGGSQuerySplitter {
                     && !requestedProperties.contains(zoneAttributeName)) {
                 namesStream = Stream.concat(namesStream, Stream.of(zoneAttributeName));
             }
-            String[] delegateProperties = namesStream.toArray(n -> new String[n]);
+            String[] delegateProperties = namesStream.toArray(String[]::new);
 
             result.setPropertyNames(delegateProperties);
         }
@@ -137,7 +137,7 @@ public class DGGSQuerySplitter {
                         if (sb == SortBy.REVERSE_ORDER) return FF.sort(zoneAttributeName, SortOrder.DESCENDING);
                         return sb;
                     })
-                    .toArray(n -> new SortBy[n]);
+                    .toArray(SortBy[]::new);
             result.setSortBy(adaptedSort);
         } else if (query.getStartIndex() != null || query.getMaxFeatures() < Integer.MAX_VALUE) {
             // need a sort to do paging, the underlying store might not have a primary key

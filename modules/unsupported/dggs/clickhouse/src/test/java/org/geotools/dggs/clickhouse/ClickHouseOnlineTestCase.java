@@ -29,11 +29,11 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.util.logging.Logging;
 
-public abstract class ClickHouseOnlineTestCase extends OnlineTestCase {
+public abstract class ClickHouseOnlineTestCase<I> extends OnlineTestCase {
 
     static final Logger LOGGER = Logging.getLogger(ClickHouseOnlineTestCase.class);
 
-    protected DGGSDataStore dataStore;
+    protected DGGSDataStore<I> dataStore;
 
     @Override
     protected void connect() throws Exception {
@@ -86,23 +86,23 @@ public abstract class ClickHouseOnlineTestCase extends OnlineTestCase {
     }
 
     /** Subclasses should override this to create the test data. */
-    protected abstract void setupTestData(DGGSDataStore dataStore) throws Exception;
+    protected abstract void setupTestData(DGGSDataStore<I> dataStore) throws Exception;
 
-    protected DGGSDataStore getDataStore() throws Exception {
+    @SuppressWarnings("unchecked")
+    protected DGGSDataStore<I> getDataStore() throws Exception {
         String dggsId = getDGGSId();
         if (DGGSFactoryFinder.getFactory(dggsId).isEmpty()) {
             throw new Exception(dggsId + " is not present, skipping the test");
         }
 
         DGGSStoreFactory factory = new DGGSStoreFactory();
-        @SuppressWarnings("unchecked")
         Map<String, Object> params = toParamMap(fixture);
         params.put(DGGSStoreFactory.STORE_NAME.key, "test");
         // Use the exact Param key your DGGSStoreFactory declares, e.g. "repository"
         params.put(DGGSStoreFactory.REPOSITORY.key, buildRepository(fixture));
         params.put(DGGSStoreFactory.ZONE_ID_COLUMN_NAME.key, "zoneId");
 
-        return (DGGSDataStore) factory.createDataStore(params);
+        return (DGGSDataStore<I>) factory.createDataStore(params);
     }
 
     @Override

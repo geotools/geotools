@@ -22,9 +22,9 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 /** Duplicating filter visitor injecting a DGGS instance in well known DGGS related functions */
 public class DGGSFilterVisitor extends DuplicatingFilterVisitor {
 
-    DGGSInstance dggs;
+    DGGSInstance<?> dggs;
 
-    public DGGSFilterVisitor(DGGSInstance dggs) {
+    public DGGSFilterVisitor(DGGSInstance<?> dggs) {
         this.dggs = dggs;
     }
 

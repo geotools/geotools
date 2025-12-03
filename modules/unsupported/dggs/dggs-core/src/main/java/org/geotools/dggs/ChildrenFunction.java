@@ -54,12 +54,12 @@ public class ChildrenFunction extends DGGSSetFunctionBase {
             // check params
             String referenceZoneId = (String) getParameterValue(object, 1);
             Integer resolution = (Integer) getParameterValue(object, 2);
-            DGGSInstance dggs = (DGGSInstance) getParameterValue(object, 3);
+            DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(object, 3);
             if (referenceZoneId == null || resolution == null || dggs == null) return Collections.emptyIterator();
 
             // check resolution first
-            if (dggs.getZone(testedZoneId).getResolution() != resolution) return Collections.emptyIterator();
-            return dggs.children(referenceZoneId, resolution);
+            if (dggs.getZoneFromString(testedZoneId).getResolution() != resolution) return Collections.emptyIterator();
+            return dggs.childrenFromString(referenceZoneId, resolution);
         });
     }
 
@@ -69,9 +69,9 @@ public class ChildrenFunction extends DGGSSetFunctionBase {
         if (!isStable()) throw new IllegalStateException("Source parameters are not stable");
         String referenceZoneId = (String) getParameterValue(null, 1);
         Integer resolution = (Integer) getParameterValue(null, 2);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 3);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 3);
 
-        return dggs.children(referenceZoneId, resolution);
+        return dggs.childrenFromString(referenceZoneId, resolution);
     }
 
     @Override
@@ -80,8 +80,8 @@ public class ChildrenFunction extends DGGSSetFunctionBase {
         if (!isStable()) throw new IllegalStateException("Source parameters are not stable");
         String referenceZoneId = (String) getParameterValue(null, 1);
         Integer resolution = (Integer) getParameterValue(null, 2);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 3);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 3);
 
-        return dggs.countChildren(referenceZoneId, resolution);
+        return dggs.countChildrenFromString(referenceZoneId, resolution);
     }
 }

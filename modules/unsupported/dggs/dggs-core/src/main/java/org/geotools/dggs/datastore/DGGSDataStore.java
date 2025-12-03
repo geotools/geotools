@@ -61,7 +61,7 @@ import org.locationtech.jts.geom.Polygon;
  * The zoneId is interpreted as a DGGS zone identifier, and common spatial queries and DGGS query functions translated
  * into tests against the zone identifiers.
  */
-public class DGGSDataStore implements DGGSStore {
+public class DGGSDataStore<I> implements DGGSStore<I> {
 
     static final Logger LOGGER = Logging.getLogger(DGGSDataStore.class);
 
@@ -86,12 +86,12 @@ public class DGGSDataStore implements DGGSStore {
     /** The default geometry property, often used in filters */
     public static final String DEFAULT_GEOMETRY = "";
 
-    private final DGGSInstance dggs;
+    private final DGGSInstance<I> dggs;
     private final DataStore delegate;
     private final String zoneIdAttribute;
     private final DGGSResolutionCalculator resolutions;
 
-    public DGGSDataStore(DGGSInstance dggs, DataStore delegate, String zoneIdAttribute, Integer fixedResolution) {
+    public DGGSDataStore(DGGSInstance<I> dggs, DataStore delegate, String zoneIdAttribute, Integer fixedResolution) {
         this.delegate = delegate;
         this.dggs = dggs;
         this.zoneIdAttribute = zoneIdAttribute;
@@ -140,7 +140,10 @@ public class DGGSDataStore implements DGGSStore {
     }
 
     private boolean isDGGSSchema(SimpleFeatureType schema) {
-        return checkAttribute(schema, zoneIdAttribute, String.class)
+        return checkAttribute(
+                        schema,
+                        zoneIdAttribute,
+                        schema.getDescriptor(zoneIdAttribute).getType().getBinding())
                 && (resolutions.hasFixedResolution()
                         || checkAttribute(schema, RESOLUTION, Byte.class, Short.class, Integer.class))
                 && schema.getDescriptor(GEOMETRY) == null;
@@ -183,17 +186,17 @@ public class DGGSDataStore implements DGGSStore {
     }
 
     @Override
-    public DGGSFeatureSource getFeatureSource(String typeName) throws IOException {
-        return new DGGSFeatureSourceImpl(this, delegate.getFeatureSource(typeName), getSchema(typeName));
+    public DGGSFeatureSource<I> getFeatureSource(String typeName) throws IOException {
+        return new DGGSFeatureSourceImpl<>(this, delegate.getFeatureSource(typeName), getSchema(typeName));
     }
 
     @Override
-    public DGGSFeatureSource getFeatureSource(Name typeName) throws IOException {
-        return new DGGSFeatureSourceImpl(this, delegate.getFeatureSource(typeName), getSchema(typeName));
+    public DGGSFeatureSource<I> getFeatureSource(Name typeName) throws IOException {
+        return new DGGSFeatureSourceImpl<>(this, delegate.getFeatureSource(typeName), getSchema(typeName));
     }
 
     @Override
-    public DGGSFeatureSource getDGGSFeatureSource(String typeName) throws IOException {
+    public DGGSFeatureSource<I> getDGGSFeatureSource(String typeName) throws IOException {
         return getFeatureSource(typeName);
     }
 
@@ -208,7 +211,7 @@ public class DGGSDataStore implements DGGSStore {
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
             throws IOException {
         // just delegating to the FeatureSource machinery
-        DGGSFeatureSource source = getFeatureSource(query.getTypeName());
+        DGGSFeatureSource<I> source = getFeatureSource(query.getTypeName());
         @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         SimpleFeatureIterator features = source.getFeatures(query).features();
         return new FeatureReader<>() {
@@ -289,7 +292,7 @@ public class DGGSDataStore implements DGGSStore {
         return delegate;
     }
 
-    public DGGSInstance getDggs() {
+    public DGGSInstance<I> getDggs() {
         return dggs;
     }
 

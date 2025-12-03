@@ -35,8 +35,9 @@ import org.mockito.Mockito;
 @SuppressWarnings("ErrorProne.BanJNDI")
 public class ClickHouseJNDIRHealPixOnlineTest extends ClickHouseRHealPixOnlineTest {
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected DGGSDataStore getDataStore() throws Exception {
+    protected DGGSDataStore<String> getDataStore() throws Exception {
         String dggsId = getDGGSId();
         if (DGGSFactoryFinder.getFactory(dggsId).isEmpty()) {
             throw new Exception(dggsId + " is not present, skipping the test");
@@ -60,7 +61,7 @@ public class ClickHouseJNDIRHealPixOnlineTest extends ClickHouseRHealPixOnlineTe
         params.put(JDBCJNDIDataStoreFactory.JNDI_REFNAME.key, "ds");
         params.put(DGGSStoreFactory.DGGS_FACTORY_ID.key, dggsId);
 
-        return (DGGSDataStore) DataStoreFinder.getDataStore(params);
+        return (DGGSDataStore<String>) DataStoreFinder.getDataStore(params);
     }
 
     public static class MockInitialDirContextFactory implements InitialContextFactory {

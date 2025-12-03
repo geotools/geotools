@@ -17,12 +17,18 @@
 package org.geotools.data.geoparquet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.data.duckdb.AbstractDuckDBDataStoreFactory;
 import org.geotools.data.duckdb.ParamBuilder;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
+import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.PrimaryKeyColumn;
+import org.geotools.jdbc.PrimaryKeyFinder;
 import org.geotools.jdbc.SQLDialect;
 
 /**
@@ -216,6 +222,18 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
             .userLevel()
             .build();
 
+    /**
+     * Parameter for providing a specific primaryKey identifier, in case the dataset is not using the default GeoParquet
+     * identifier "id"
+     */
+    public static final DataAccessFactory.Param PRIMARY_KEY_ID = new ParamBuilder("primary_key_id")
+            .type(String.class)
+            .title("Primary Key Identifier")
+            .description("Primary Key identifier to use for the GeoParquet dataset when not default 'id'")
+            .required(false)
+            .programLevel()
+            .build();
+
     /** Parameter for specifying the namespace URI for the feature type. */
     public static final Param NAMESPACE = AbstractDuckDBDataStoreFactory.NAMESPACE;
 
@@ -272,6 +290,7 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
         parameters.put(USE_AWS_CREDENTIAL_CHAIN.key, USE_AWS_CREDENTIAL_CHAIN);
         parameters.put(AWS_REGION.key, AWS_REGION);
         parameters.put(AWS_PROFILE.key, AWS_PROFILE);
+        parameters.put(PRIMARY_KEY_ID.key, PRIMARY_KEY_ID);
     }
 
     /**
@@ -317,7 +336,21 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
     @Override
     protected JDBCDataStore setupDataStore(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         GeoParquetDialect dialect = (GeoParquetDialect) dataStore.getSQLDialect();
-        dataStore.setPrimaryKeyFinder(dialect.getPrimaryKeyFinder());
+        PrimaryKeyFinder finder;
+        if (params.containsKey(PRIMARY_KEY_ID.key)) {
+            String pkId = (String) PRIMARY_KEY_ID.lookUp(params);
+            finder = new PrimaryKeyFinder() {
+                @Override
+                public PrimaryKey getPrimaryKey(JDBCDataStore store, String schema, String table, Connection cx) {
+                    List<PrimaryKeyColumn> columns = List.of(new NonIncrementingPrimaryKeyColumn(pkId, String.class));
+                    return new PrimaryKey(table, columns);
+                }
+            };
+
+        } else {
+            finder = dialect.getPrimaryKeyFinder();
+        }
+        dataStore.setPrimaryKeyFinder(finder);
 
         GeoParquetConfig config = GeoParquetConfig.valueOf(params);
         dialect.initialize(config);

@@ -245,7 +245,7 @@ public class ImageMosaicCogOnlineTest {
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/emptyCogMosaic/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogmosaic\n");
-            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
+            out.write(ImageMosaicReaderTest.GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
@@ -283,7 +283,7 @@ public class ImageMosaicCogOnlineTest {
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/timeMosaic/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogtimemosaic\n");
-            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
+            out.write(ImageMosaicReaderTest.GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
         try (FileWriter out = new FileWriter(
@@ -434,7 +434,7 @@ public class ImageMosaicCogOnlineTest {
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), folder + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogmosaic\n");
-            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
+            out.write(ImageMosaicReaderTest.GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
         ImageMosaicReader reader = IMAGE_MOSAIC_FORMAT.getReader(workDir);
@@ -477,7 +477,7 @@ public class ImageMosaicCogOnlineTest {
         assertTrue(workDir.mkdir());
         try (FileWriter out = new FileWriter(new File(workDir, "datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=cogmosaic\n");
-            out.write(ImageMosaicReaderTest.H2_SAMPLE_PROPERTIES);
+            out.write(ImageMosaicReaderTest.GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
         String name = "emptycog";

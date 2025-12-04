@@ -1152,7 +1152,7 @@ public class GeoPackage implements Closeable {
                 .set(e.getTableName())
                 .set(e.getGeometryColumn())
                 .set(e.getGeometryType() != null ? e.getGeometryType().getName().toUpperCase() : null)
-                .set(e.getSrid())
+                .set(Optional.ofNullable(e.getSrid()).orElse(GENERIC_PROJECTED_SRID))
                 .set(e.isZ())
                 .set(e.isM())
                 .log(Level.FINE)

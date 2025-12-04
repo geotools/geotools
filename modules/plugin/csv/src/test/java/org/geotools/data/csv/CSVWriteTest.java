@@ -522,8 +522,8 @@ public class CSVWriteTest {
         SimpleFeature feature, newFeature;
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader();
-             FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                     duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 newFeature = writer.next();

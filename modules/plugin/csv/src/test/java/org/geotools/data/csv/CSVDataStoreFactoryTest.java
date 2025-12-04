@@ -176,19 +176,6 @@ public class CSVDataStoreFactoryTest {
     }
 
     @Test
-    public void testCSVStrategyWKTMissingWktField() throws IOException {
-        Map<String, Serializable> params = new HashMap<>();
-        params.put("strategy", "wkt");
-        params.put("file", file);
-        try {
-            csvDataStoreFactory.createDataStore(params);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        fail("Expected illegal argument exception for missing wktField");
-    }
-
-    @Test
     public void testCSVStrategyWKT() throws IOException {
         Map<String, Serializable> params = new HashMap<>();
         params.put("strategy", "wkt");

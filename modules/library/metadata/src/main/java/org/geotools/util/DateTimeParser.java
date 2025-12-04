@@ -185,24 +185,28 @@ public class DateTimeParser {
         private static int findPrecision(String format) {
             // Converting the custom format to a simplified ISO8601
             String simplifiedFormat = format.replaceAll(ISO8601_CHARS_REGEX, "");
-            if (SIMPLIFIED_FORMAT_MILLISECOND.equalsIgnoreCase(simplifiedFormat)) return Calendar.MILLISECOND;
-            else if (SIMPLIFIED_FORMAT_SECOND.equalsIgnoreCase(simplifiedFormat)) return Calendar.SECOND;
-            else if (SIMPLIFIED_FORMAT_MINUTE.equalsIgnoreCase(simplifiedFormat)) return Calendar.MINUTE;
-            else if (SIMPLIFIED_FORMAT_HOUR.equalsIgnoreCase(simplifiedFormat)) return Calendar.HOUR;
-            else if (SIMPLIFIED_FORMAT_DAY.equalsIgnoreCase(simplifiedFormat)) return Calendar.DAY_OF_MONTH;
-            else if (SIMPLIFIED_FORMAT_MONTH.equalsIgnoreCase(simplifiedFormat)) return Calendar.MONTH;
-            else if (SIMPLIFIED_FORMAT_YEAR.equalsIgnoreCase(simplifiedFormat)) return Calendar.YEAR;
-            // No ISO8601 strict variant has been identified.
-            // Try finding the precision through the ending part of the format
-            else if (simplifiedFormat.endsWith("SSS")) return Calendar.MILLISECOND;
-            else if (simplifiedFormat.endsWith("ss")) return Calendar.SECOND;
-            else if (simplifiedFormat.endsWith("mm")) return Calendar.MINUTE;
-            else if (simplifiedFormat.endsWith("HH")) return Calendar.HOUR;
-            else if (simplifiedFormat.endsWith("dd")) return Calendar.DAY_OF_MONTH;
-            else if (simplifiedFormat.endsWith("mm")) return Calendar.MONTH;
-            else if (simplifiedFormat.endsWith("yyyy")) return Calendar.YEAR;
-            throw new IllegalArgumentException(
-                    "Unable to identify an ISO8601 format corresponding to the provided format:" + format);
+            return switch (simplifiedFormat) {
+                case SIMPLIFIED_FORMAT_MILLISECOND -> Calendar.MILLISECOND;
+                case SIMPLIFIED_FORMAT_SECOND -> Calendar.SECOND;
+                case SIMPLIFIED_FORMAT_MINUTE -> Calendar.MINUTE;
+                case SIMPLIFIED_FORMAT_HOUR -> Calendar.HOUR;
+                case SIMPLIFIED_FORMAT_DAY -> Calendar.DAY_OF_MONTH;
+                case SIMPLIFIED_FORMAT_MONTH -> Calendar.MONTH;
+                case SIMPLIFIED_FORMAT_YEAR -> Calendar.YEAR;
+                default -> {
+                    // No ISO8601 strict variant has been identified.
+                    // Try finding the precision through the ending part of the format
+                    if (simplifiedFormat.endsWith("SSS")) yield Calendar.MILLISECOND;
+                    else if (simplifiedFormat.endsWith("ss")) yield Calendar.SECOND;
+                    else if (simplifiedFormat.endsWith("mm")) yield Calendar.MINUTE;
+                    else if (simplifiedFormat.endsWith("HH")) yield Calendar.HOUR;
+                    else if (simplifiedFormat.endsWith("dd")) yield Calendar.DAY_OF_MONTH;
+                    else if (simplifiedFormat.endsWith("MM")) yield Calendar.MONTH;
+                    else if (simplifiedFormat.endsWith("yyyy")) yield Calendar.YEAR;
+                    throw new IllegalArgumentException(
+                            "Unable to identify an ISO8601 format corresponding to the provided format:" + format);
+                }
+            };
         }
     }
 

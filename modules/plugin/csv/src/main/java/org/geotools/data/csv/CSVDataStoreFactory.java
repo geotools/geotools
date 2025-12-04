@@ -233,7 +233,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     private FileDataStore createDataStoreFromFile(File file, URI namespace, Map<String, ?> params) throws IOException {
         CSVFileState csvFileState = new CSVFileState(file, namespace);
         Object strategyParam = STRATEGYP.lookUp(params);
-        CSVStrategy csvStrategy = null;
+        CSVStrategy csvStrategy;
         if (strategyParam != null) {
             String strategyString = strategyParam.toString();
             if (strategyString.equalsIgnoreCase(GUESS_STRATEGY)) {
@@ -250,10 +250,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                 csvStrategy = new CSVLatLonStrategy(csvFileState, latParam.toString(), lngParam.toString());
             } else if (strategyString.equalsIgnoreCase(WKT_STRATEGY)) {
                 Object wktParam = WKTP.lookUp(params);
-                if (wktParam == null) {
-                    throw new IllegalArgumentException("'wkt' csv strategy selected, but wktField param not specified");
-                }
-                csvStrategy = new CSVSpecifiedWKTStrategy(csvFileState, wktParam.toString());
+                csvStrategy = new CSVSpecifiedWKTStrategy(csvFileState, wktParam);
             } else {
                 csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
             }

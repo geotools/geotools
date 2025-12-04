@@ -36,21 +36,23 @@ import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.locationtech.jts.io.WKTWriter;
 
 public class CSVSpecifiedWKTStrategy extends CSVStrategy {
 
-    private final String wktField;
+    private final Object wktFieldParameter;
 
-    public CSVSpecifiedWKTStrategy(CSVFileState csvFileState, String wktField) {
+    public CSVSpecifiedWKTStrategy(CSVFileState csvFileState, Object wktFieldParameter) {
         super(csvFileState);
-        this.wktField = wktField;
+        this.wktFieldParameter = wktFieldParameter;
     }
 
     @Override
     protected SimpleFeatureType buildFeatureType() {
-        SimpleFeatureTypeBuilder featureBuilder = createBuilder(csvFileState);
+
         // For WKT strategy, we need to make sure the wktField is recognized as a Geometry
+        String wktField = retrieveRequiredWktField();
+
+        SimpleFeatureTypeBuilder featureBuilder = createBuilder(csvFileState);
         AttributeDescriptor descriptor = featureBuilder.get(wktField);
         if (descriptor != null) {
             AttributeTypeBuilder attributeBuilder = new AttributeTypeBuilder();
@@ -71,8 +73,8 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
         List<String> header = new ArrayList<>();
 
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
-            if (descriptor instanceof GeometryDescriptor) {
-                header.add(wktField);
+            if (wktFieldParameter != null && descriptor instanceof GeometryDescriptor) {
+                header.add(retrieveRequiredWktField());
             } else {
                 header.add(descriptor.getLocalName());
             }
@@ -84,7 +86,7 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
                 getQuotechar(),
                 getEscapechar(),
                 getLineSeparator())) {
-            writer.writeNext(header.toArray(new String[header.size()]), isQuoteAllFields());
+            writer.writeNext(header.toArray(new String[0]), isQuoteAllFields());
         }
     }
 
@@ -92,14 +94,9 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
     public String[] encode(SimpleFeature feature) {
         List<String> csvRecord = new ArrayList<>();
         for (Property property : feature.getProperties()) {
-            String name = property.getName().getLocalPart();
             Object value = property.getValue();
             if (value == null) {
                 csvRecord.add("");
-            } else if (name.compareTo(wktField) == 0) {
-                WKTWriter wkt = new WKTWriter();
-                String txt = wkt.write((Geometry) value);
-                csvRecord.add(txt);
             } else {
                 String txt = Converters.convert(value, String.class);
                 csvRecord.add(txt);
@@ -110,6 +107,9 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
 
     @Override
     public SimpleFeature decode(String recordId, String[] csvRecord) {
+
+        String wktField = retrieveRequiredWktField();
+
         SimpleFeatureType featureType = getFeatureType();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
@@ -140,5 +140,12 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
             }
         }
         return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
+    }
+
+    private String retrieveRequiredWktField() {
+        if (wktFieldParameter == null) {
+            throw new IllegalArgumentException("'wkt' csv strategy selected, but wktField parameter not specified");
+        }
+        return wktFieldParameter.toString();
     }
 }

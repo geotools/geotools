@@ -349,32 +349,32 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             throwSQLException(e);
         }
 
-        // handle GeoPackage integer type expectations
-        if ("TINYINT".equals(typeName)) return Byte.class;
-        else if ("SMALLINT".equals(typeName)) return Short.class;
-        else if ("MEDIUMINT".equals(typeName)) return Integer.class;
-        else if ("INT".equals(typeName) || "INTEGER".equals(typeName)) return Long.class;
-        // BLOB
-        else if ("BLOB".equals(typeName)) return byte[].class;
-        // support for overview tables
-        else if ("POINT".equalsIgnoreCase(typeName)) return Point.class;
-        else if ("MULTIPOINT".equalsIgnoreCase(typeName)) return MultiPoint.class;
-        else if ("LINESTRING".equalsIgnoreCase(typeName)) return LineString.class;
-        else if ("MULTILINESTRING".equalsIgnoreCase(typeName)) return MultiLineString.class;
-        else if ("POLYGON".equalsIgnoreCase(typeName)) return Polygon.class;
-        else if ("MULTIPOLYGON".equalsIgnoreCase(typeName)) return MultiPolygon.class;
-        else if ("GEOMETRY".equalsIgnoreCase(typeName)) return Geometry.class;
-        else if ("GEOMETRYCOLLECTION".equalsIgnoreCase(typeName)) return GeometryCollection.class;
-        // support for curved geometry types
-        else if ("CIRCULARSTRING".equalsIgnoreCase(typeName)) return CircularString.class;
-        else if ("COMPOUNDCURVE".equalsIgnoreCase(typeName)) return CompoundCurve.class;
-        else if ("CURVEPOLYGON".equalsIgnoreCase(typeName)) return CurvePolygon.class;
-        else if ("MULTICURVE".equalsIgnoreCase(typeName)) return MultiCurve.class;
-        else if ("MULTISURFACE".equalsIgnoreCase(typeName)) return MultiSurface.class;
-        else if ("CURVE".equalsIgnoreCase(typeName)) return LineString.class;
-        else if ("SURFACE".equalsIgnoreCase(typeName)) return CurvePolygon.class;
-
-        return null;
+        if (typeName == null) return null;
+        return switch (typeName.toUpperCase()) {
+            // handle GeoPackage integer type expectations
+            case "TINYINT" -> Byte.class;
+            case "SMALLINT" -> Short.class;
+            case "MEDIUMINT" -> Integer.class;
+            case "INT", "INTEGER" -> Long.class;
+            // BLOB
+            case "BLOB" -> byte[].class;
+            // support for overview tables
+            case "POINT" -> Point.class;
+            case "MULTIPOINT" -> MultiPoint.class;
+            case "LINESTRING", "CURVE" -> LineString.class;
+            case "MULTILINESTRING" -> MultiLineString.class;
+            case "POLYGON" -> Polygon.class;
+            case "MULTIPOLYGON" -> MultiPolygon.class;
+            case "GEOMETRY" -> Geometry.class;
+            case "GEOMETRYCOLLECTION" -> GeometryCollection.class;
+            // support for curved geometry types
+            case "CIRCULARSTRING" -> CircularString.class;
+            case "COMPOUNDCURVE" -> CompoundCurve.class;
+            case "CURVEPOLYGON", "SURFACE" -> CurvePolygon.class;
+            case "MULTICURVE" -> MultiCurve.class;
+            case "MULTISURFACE" -> MultiSurface.class;
+            default -> null;
+        };
     }
 
     @Override

@@ -354,6 +354,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         else if ("SMALLINT".equals(typeName)) return Short.class;
         else if ("MEDIUMINT".equals(typeName)) return Integer.class;
         else if ("INT".equals(typeName) || "INTEGER".equals(typeName)) return Long.class;
+        // BLOB
+        else if ("BLOB".equals(typeName)) return byte[].class;
         // support for overview tables
         else if ("POINT".equalsIgnoreCase(typeName)) return Point.class;
         else if ("MULTIPOINT".equalsIgnoreCase(typeName)) return MultiPoint.class;
@@ -483,7 +485,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                     dc = new DataColumn();
                     dc.setColumnName(ad.getLocalName());
                     dc.setName(featureType.getTypeName() + ":" + ad.getLocalName());
-                    if (ad.getType().getBinding().isArray()) {
+                    if (ad.getType().getBinding().isArray()
+                            && !ad.getType().getBinding().equals(byte[].class)) {
                         dc.setMimeType("application/json");
                     }
                     Map<String, String> optionsMap = new LinkedHashMap<>();
@@ -494,7 +497,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                     DataColumnConstraint.Enum dcc = new DataColumnConstraint.Enum(constraintName, optionsMap);
                     dc.setConstraint(dcc);
                     geopkg.getExtension(GeoPkgSchemaExtension.class).addDataColumn(featureType.getTypeName(), dc, cx);
-                } else if (ad.getType().getBinding().isArray()) {
+                } else if (ad.getType().getBinding().isArray() && ad.getType().getBinding() != byte[].class) {
                     dc = new DataColumn();
                     dc.setColumnName(ad.getLocalName());
                     dc.setName(featureType.getTypeName() + "_" + ad.getLocalName());
@@ -932,7 +935,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             return Types.INTEGER;
         }
         // for JSON encoded arrays
-        if (ad.getType().getBinding().isArray()) {
+        if (ad.getType().getBinding().isArray() && ad.getType().getBinding() != byte[].class) {
             return Types.VARCHAR;
         }
 

@@ -511,6 +511,50 @@ public class CSVWriteTest {
         Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
         params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
+
+        CSVDataStoreFactory factory = new CSVDataStoreFactory();
+        DataStore duplicate = factory.createNewDataStore(params2);
+        SimpleFeatureType featureType = store.getSchema();
+
+        duplicate.createSchema(featureType);
+
+        SimpleFeature feature, newFeature;
+
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader();
+             FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                     duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
+            while (reader.hasNext()) {
+                feature = reader.next();
+                newFeature = writer.next();
+
+                newFeature.setAttributes(feature.getAttributes());
+                writer.write();
+            }
+        }
+        assertTrue("Temp files being left behind", cleanedup());
+        String contents = getFileContents(file2);
+
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+            String line = lineReader.readLine(); // header
+            assertNotNull(line);
+            assertTrue("Geom is not included", line.toLowerCase().contains("the_geom"));
+            line = lineReader.readLine();
+            assertNotNull(line);
+            assertTrue("Geom is not included", line.toLowerCase().contains("multipolygon"));
+        }
+        file2.delete();
+    }
+
+    @Test
+    public void testWKTWritesWithWktpParameter() throws IOException {
+
+        URL states = TestData.url("shapes/statepop.shp");
+        FileDataStore store = FileDataStoreFinder.getDataStore(states);
+        assertNotNull("couldn't create store", store);
+        File file2 = File.createTempFile("CSVTest", ".csv");
+        Map<String, Serializable> params2 = new HashMap<>();
+        params2.put("file", file2);
+        params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
         params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
 
         CSVDataStoreFactory factory = new CSVDataStoreFactory();

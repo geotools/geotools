@@ -113,14 +113,14 @@ public class CSVSpecifiedWKTStrategyTest {
     public void testCreateSchemaWithWktField() throws IOException {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setCRS(DefaultGeographicCRS.WGS84);
-        builder.setName("testCreateSchema");
+        builder.setName("testCreateSchemaWithWktField");
         builder.add("the_geom", Point.class);
         builder.add("id", Integer.class);
         builder.add("int_field", Integer.class);
         builder.add("string_field", String.class);
         SimpleFeatureType featureType = builder.buildFeatureType();
 
-        File csvFile = File.createTempFile("testCreateSchema", ".csv");
+        File csvFile = File.createTempFile("testCreateSchemaWithWktField", ".csv");
         CSVFileState csvFileState = new CSVFileState(csvFile);
         CSVStrategy strategy = new CSVSpecifiedWKTStrategy(csvFileState, "the_geom_wkt");
         strategy.createSchema(featureType);

@@ -8,6 +8,7 @@ package org.geotools.data.csv.parse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,15 @@ public class CSVSpecifiedWKTStrategyTest {
         assertEquals("Invalid attribute count", 2, featureType.getAttributeCount());
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
         assertEquals("Invalid geometry attribute name", "quux", geometryDescriptor.getLocalName());
+    }
+
+    @Test
+    public void testBuildFeatureTypeMissingWktField() {
+        String input = CSVTestStrategySupport.buildInputString("quux,morx\n");
+        CSVFileState fileState = new CSVFileState(input, "foo");
+        CSVStrategy strategy = new CSVSpecifiedWKTStrategy(fileState, null);
+        IllegalArgumentException iaex = assertThrows(IllegalArgumentException.class, strategy::getFeatureType);
+        assertEquals("'wkt' csv strategy selected, but wktField parameter not specified", iaex.getMessage());
     }
 
     @Test
@@ -90,10 +100,32 @@ public class CSVSpecifiedWKTStrategyTest {
 
         File csvFile = File.createTempFile("testCreateSchema", ".csv");
         CSVFileState csvFileState = new CSVFileState(csvFile);
+        CSVStrategy strategy = new CSVSpecifiedWKTStrategy(csvFileState, null);
+        strategy.createSchema(featureType);
+
+        assertEquals("Strategy does not have provided feature type", featureType, strategy.getFeatureType());
+        List<String> content = Files.readAllLines(csvFile.toPath());
+        assertEquals("the_geom,id,int_field,string_field", content.get(0));
+        csvFile.delete();
+    }
+
+    @Test
+    public void testCreateSchemaWithWktField() throws IOException {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.setName("testCreateSchema");
+        builder.add("the_geom", Point.class);
+        builder.add("id", Integer.class);
+        builder.add("int_field", Integer.class);
+        builder.add("string_field", String.class);
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        File csvFile = File.createTempFile("testCreateSchema", ".csv");
+        CSVFileState csvFileState = new CSVFileState(csvFile);
         CSVStrategy strategy = new CSVSpecifiedWKTStrategy(csvFileState, "the_geom_wkt");
         strategy.createSchema(featureType);
 
-        assertEquals("Stragegy does not have provided feature type", featureType, strategy.getFeatureType());
+        assertEquals("Strategy does not have provided feature type", featureType, strategy.getFeatureType());
         List<String> content = Files.readAllLines(csvFile.toPath());
         assertEquals("the_geom_wkt,id,int_field,string_field", content.get(0));
         csvFile.delete();

@@ -122,6 +122,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.io.WKTReader;
 import org.sqlite.SQLiteConfig;
 
 @SuppressWarnings("PMD.CheckResultSet")
@@ -1241,6 +1242,33 @@ public class GeoPackageTest {
         assertEquals(Short.MAX_VALUE, read.getAttribute("n_short"));
         assertEquals(Integer.MAX_VALUE, read.getAttribute("n_int"));
         assertEquals(Long.MAX_VALUE, read.getAttribute("n_long"));
+    }
+
+    @Test
+    public void testCreateNoCRS() throws Exception {
+        // a feature type without CRS
+        String typeName = "cartesianPoints";
+        final SimpleFeatureType cartesianType = DataUtilities.createType(typeName, "geom:Point,name:String");
+        JDBCDataStore store = geopkg.dataStore();
+        store.createSchema(cartesianType);
+        SimpleFeatureType createdType = store.getSchema(typeName);
+        assertTrue(FeatureTypes.equals(cartesianType, createdType));
+
+        // write it out, each number at the limits of its range
+        Geometry thePoint = new WKTReader().read("POINT(10 20)");
+        String theName = "point1";
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(cartesianType);
+        fb.add(thePoint);
+        fb.add(theName);
+        SimpleFeature feature = fb.buildFeature(null);
+        SimpleFeatureCollection collection = DataUtilities.collection(feature);
+        SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource(typeName);
+        fs.addFeatures(collection);
+
+        // read it back
+        SimpleFeature read = DataUtilities.first(fs.getFeatures());
+        assertEquals(thePoint, read.getAttribute("geom"));
+        assertEquals(theName, read.getAttribute("name"));
     }
 
     @Test

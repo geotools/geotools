@@ -668,7 +668,8 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME_LEGACY),
                 FileFilterUtils.nameFileFilter("error.txt.lck"),
                 FileFilterUtils.suffixFileFilter("xml"),
-                FileFilterUtils.suffixFileFilter("db"));
+                FileFilterUtils.suffixFileFilter("db"),
+                FileFilterUtils.suffixFileFilter("gpkg"));
         return filesFilter;
     }
 
@@ -685,7 +686,8 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("prj"),
                 FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
                 FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME_LEGACY),
-                FileFilterUtils.suffixFileFilter("db"));
+                FileFilterUtils.suffixFileFilter("db"),
+                FileFilterUtils.suffixFileFilter("gpkg"));
         return filesFilter;
     }
 

@@ -62,7 +62,7 @@ import org.geotools.util.Utilities;
  */
 public abstract class DataStoreWrapper implements DataStore {
 
-    protected static final String HIDDEN_FOLDER = ".mosaic";
+    public static final String HIDDEN_FOLDER = ".mosaic";
 
     protected static final String NAME = "NAME";
 

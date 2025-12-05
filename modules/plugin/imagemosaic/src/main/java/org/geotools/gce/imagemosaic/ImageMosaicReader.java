@@ -78,6 +78,7 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
+import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -1078,6 +1079,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         for (File file : files) {
             FileUtils.deleteQuietly(file);
         }
+        // cleanup eventual datastore wrapper configurations too
+        File wrapperConfig = new File(parentDirectory, DataStoreWrapper.HIDDEN_FOLDER);
+        if (wrapperConfig.exists()) FileUtils.deleteQuietly(wrapperConfig);
     }
 
     /**

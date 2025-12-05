@@ -83,6 +83,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -265,18 +266,12 @@ public class ImageMosaicReaderTest {
 
     private URL imposedEnvelopeURL;
 
-    static final String H2_SAMPLE_PROPERTIES =
+    static final String GEOPKG_SAMPLE_PROPERTIES =
             """
-            SPI=org.geotools.data.h2.H2DataStoreFactory
-            dbtype=h2
-            Loose\\ bbox=true #important for performances
-            Estimated\\ extends=false #important for performances
-            user=gs
-            passwd=gs
-            validate \\connections=true #important for avoiding errors
-            Connection\\ timeout=3600
-            max \\connections=10 #important for performances, internal pooling
-            min \\connections=5  #important for performances, internal pooling
+            SPI=org.geotools.geopkg.GeoPkgDataStoreFactory
+            dbtype=geopkg
+            database=imagemosaic.gpkg
+            timeout=60000
             """;
 
     private URL timeFormatURL;
@@ -447,7 +442,7 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    public void timeElevationH2() throws Exception {
+    public void timeElevationGeoPkg() throws Exception {
 
         final File workDir = new File(TestData.file(this, "."), "water_temp3");
         if (!workDir.mkdir()) {
@@ -458,11 +453,11 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, "water_temp3/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "water_temp3");
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/water_temp3/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -482,7 +477,7 @@ public class ImageMosaicReaderTest {
         assertEquals(2, timeMetadata.split(",").length);
         assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
         assertEquals(timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
-        assertEquals("java.sql.Timestamp", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
+        assertEquals("java.util.Date", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
 
         assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
         final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
@@ -593,12 +588,12 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, "water_temp5/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "water_temp5");
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
 
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/water_temp5/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -654,11 +649,10 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, mosaicName + "/watertemp.zip");
         final URL timeElevURL = TestData.url(this, mosaicName);
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         File datastoreProperties = new File(workDir, "datastore.properties");
         try (FileWriter out = new FileWriter(datastoreProperties, StandardCharsets.UTF_8)) {
-            out.write("database=imagemosaic\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -685,22 +679,21 @@ public class ImageMosaicReaderTest {
         try (InputStream is = new FileInputStream(datastoreProperties)) {
             props.load(is);
         }
-        props.put("database", new File(workDir, "imagemosaic").getPath());
+        props.put("database", new File(workDir, "imagemosaic.gpkg").getPath());
         JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(DataUtilities.toConnectionParameters(props));
-        // H2 seems to return the table names in alphabetical order
+        // GeoPackage seems to return the table names in alphabetical order
         store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
-        store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
+        store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon:srid=4326,b:String"));
         try (Connection conn = store.getConnection(Transaction.AUTO_COMMIT);
                 Statement st = conn.createStatement()) {
-            st.execute("alter table \"" + mosaicName + "\" rename to \"customIndex\"");
-            st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'customIndex'");
+            st.execute("alter table water_temp6 rename to \"customIndex\"");
+            st.execute("UPDATE gpkg_contents SET table_name = 'customIndex' WHERE table_name = 'water_temp6'");
+            st.execute("UPDATE gpkg_geometry_columns SET table_name = 'customIndex' WHERE table_name = 'water_temp6'");
         }
         store.dispose();
 
         // remove all mosaic related files
-        for (File file : FileUtils.listFiles(workDir, new RegexFileFilter(mosaicName + ".*"), null)) {
-            assertTrue(file.delete());
-        }
+        deleteMosaicRelatedFiles(workDir);
 
         // see that we can create the reader again
         format = TestUtils.getFormat(timeElevURL);
@@ -811,7 +804,7 @@ public class ImageMosaicReaderTest {
 
         TestData.unzipFile(this, "watertemp1/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "watertemp1");
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/watertemp1/indexer.properties"), StandardCharsets.UTF_8)) {
             out.write("TimeAttribute=ingestion\n");
@@ -1138,7 +1131,7 @@ public class ImageMosaicReaderTest {
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/emptyMosaic/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -1235,7 +1228,7 @@ public class ImageMosaicReaderTest {
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/emptyMosaicXML/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -2672,11 +2665,11 @@ public class ImageMosaicReaderTest {
         // for this to work we need a datastore.properties (a shapefile cannot contain a typename
         // other than its
         // name, but the name of the store is fixed to match the one of the coverage)
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out =
                 new FileWriter(new File(mosaicDirectory, "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -3152,11 +3145,11 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, referenceDir + "/watertemp.zip");
         final URL timeElevURL = TestData.url(this, referenceDir);
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -3172,11 +3165,11 @@ public class ImageMosaicReaderTest {
             assertEquals(1, reader.getGridCoverageNames().length);
             File[] files = workDir.listFiles();
             assertNotNull(files);
-            assertEquals(16, files.length);
+            assertEquals(13, files.length);
 
             reader.removeCoverage(reader.getGridCoverageNames()[0], false);
             assertEquals(0, reader.getGridCoverageNames().length);
-            assertEquals(16, files.length);
+            assertEquals(13, files.length);
         } finally {
             reader.dispose();
         }
@@ -3197,11 +3190,11 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, referenceDir + "/watertemp.zip");
         final URL timeElevURL = TestData.url(this, referenceDir);
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove2\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -3215,12 +3208,12 @@ public class ImageMosaicReaderTest {
             assertEquals(1, reader.getGridCoverageNames().length);
             File[] files = workDir.listFiles();
             assertNotNull(files);
-            assertEquals(16, files.length);
+            assertEquals(13, files.length);
 
             reader.removeCoverage(reader.getGridCoverageNames()[0], true);
             assertEquals(0, reader.getGridCoverageNames().length);
             files = workDir.listFiles();
-            assertEquals(12, files.length);
+            assertEquals(9, files.length);
 
         } finally {
             reader.dispose();
@@ -3243,11 +3236,11 @@ public class ImageMosaicReaderTest {
         FileUtils.deleteQuietly(new File(workDir + "/watertemp.zip"));
         final URL timeElevURL = TestData.url(this, referenceDir);
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove3\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -3264,7 +3257,7 @@ public class ImageMosaicReaderTest {
             // delete all files associated to that mosaic (granules, auxiliary files, DB entries,
             // ...)
             File[] files = workDir.listFiles();
-            assertEquals(15, files.length);
+            assertEquals(12, files.length);
             reader.delete(true);
             files = workDir.listFiles();
             assertEquals(0, files.length);
@@ -3289,11 +3282,11 @@ public class ImageMosaicReaderTest {
         FileUtils.deleteQuietly(new File(workDir + "/watertemp.zip"));
         final URL timeElevURL = TestData.url(this, referenceDir);
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), referenceDir + "/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaicremove4\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
         // now start the test
@@ -3308,7 +3301,7 @@ public class ImageMosaicReaderTest {
 
             // delete metadata only (auxiliary files, DB entries, ...)
             File[] files = workDir.listFiles();
-            assertEquals(15, files.length);
+            assertEquals(12, files.length);
             reader.delete(false);
             files = workDir.listFiles();
             assertEquals(4, files.length);
@@ -3821,11 +3814,11 @@ public class ImageMosaicReaderTest {
         TestData.unzipFile(this, "stop-it/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "stop-it");
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         try (FileWriter out = new FileWriter(
                 new File(TestData.file(this, "."), "/stop-it/datastore.properties"), StandardCharsets.UTF_8)) {
             out.write("database=imagemosaic\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -3846,7 +3839,7 @@ public class ImageMosaicReaderTest {
         assertEquals(2, timeMetadata.split(",").length);
         assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
         assertEquals(timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
-        assertEquals("java.sql.Timestamp", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
+        assertEquals("java.util.Date", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
 
         // Disposing the reader before recreating the mosaic
         reader.dispose();
@@ -4087,11 +4080,10 @@ public class ImageMosaicReaderTest {
         cleanConfigurationFiles(testMosaic, "rgb");
         URL testMosaicUrl = fileToUrl(testMosaic);
 
-        // place H2 file in the dir
+        // place GeoPackage file in the dir
         File dataStoreProperties = new File(testMosaic, "datastore.properties");
         try (FileWriter out = new FileWriter(dataStoreProperties, StandardCharsets.UTF_8)) {
-            out.write("database=imagemosaic\n");
-            out.write(H2_SAMPLE_PROPERTIES);
+            out.write(GEOPKG_SAMPLE_PROPERTIES);
             out.flush();
         }
 
@@ -4104,17 +4096,18 @@ public class ImageMosaicReaderTest {
         cleanConfigurationFiles(testMosaic, "existingStore");
 
         // rename the table
-        Properties h2Connection = new Properties();
+        Properties geoPackageConnection = new Properties();
         try (FileReader fr = new FileReader(dataStoreProperties, StandardCharsets.UTF_8)) {
-            h2Connection.load(fr);
+            geoPackageConnection.load(fr);
         }
-        h2Connection.put("database", new File(testMosaic, "imagemosaic").getCanonicalPath());
-        JDBCDataStore store =
-                (JDBCDataStore) DataStoreFinder.getDataStore(DataUtilities.toConnectionParameters(h2Connection));
+        geoPackageConnection.put("database", new File(testMosaic, "imagemosaic.gpkg").getCanonicalPath());
+        JDBCDataStore store = (JDBCDataStore)
+                DataStoreFinder.getDataStore(DataUtilities.toConnectionParameters(geoPackageConnection));
         try (Connection c = store.getConnection(Transaction.AUTO_COMMIT);
                 Statement st = c.createStatement()) {
             st.execute("ALTER TABLE \"existingStore\" RENAME TO \"testMosaic\"");
-            st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'testMosaic'");
+            st.execute("UPDATE gpkg_contents SET table_name = 'testMosaic' WHERE table_name = 'existingStore'");
+            st.execute("UPDATE gpkg_geometry_columns SET table_name = 'testMosaic' WHERE table_name= 'existingStore'");
         }
         store.dispose();
 
@@ -4126,11 +4119,26 @@ public class ImageMosaicReaderTest {
             indexer.store(fos, null);
         }
 
+        deleteMosaicRelatedFiles(testMosaic);
+
         // now read again, see if the config gets read properly
         final ImageMosaicReader reader2 = getReader(testMosaicUrl, format);
         GridCoverage2D coverage = reader2.read();
         coverage.dispose(true);
         reader2.dispose();
+    }
+
+    private void deleteMosaicRelatedFiles(File workDir) throws IOException {
+        for (File f : Objects.requireNonNull(workDir.listFiles())) {
+            if (f.isDirectory() && f.getName().equals(".mosaic")) {
+                FileUtils.deleteDirectory(f);
+            }
+            if (f.getName().endsWith(".properties")
+                    || f.getName().equals("imagemosaic")
+                    || f.getName().equals("imagemosaic.gpkg")) {
+                assertTrue(f.delete());
+            }
+        }
     }
 
     @Test
@@ -4227,15 +4235,13 @@ public class ImageMosaicReaderTest {
     @Test
     public void testCoverageOnBands() throws Exception {
         File mosaicFolder = URLs.urlToFile(coverageBandsURL);
-        for (File configFile : mosaicFolder.listFiles((FileFilter) FileFilterUtils.or(
-                FileFilterUtils.suffixFileFilter("db"),
-                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
-                FileFilterUtils.and(
-                        FileFilterUtils.suffixFileFilter(".properties"),
-                        FileFilterUtils.notFileFilter(FileFilterUtils.or(
-                                FileFilterUtils.nameFileFilter("indexer.properties"),
-                                FileFilterUtils.nameFileFilter("datastore.properties"))))))) {
-            configFile.delete();
+        for (File configFile : mosaicFolder.listFiles()) {
+            if (!configFile.getName().endsWith(".tif")
+                    && !configFile.getName().endsWith(".png")
+                    && !configFile.getName().equals("indexer.properties")
+                    && !configFile.getName().equals("datastore.properties")) {
+                configFile.delete();
+            }
         }
         AbstractGridFormat format = TestUtils.getFormat(coverageBandsURL);
         ImageMosaicReader reader = getReader(coverageBandsURL, format);
@@ -4258,15 +4264,13 @@ public class ImageMosaicReaderTest {
         // - a RGB coverage with heterogeneous granules
 
         File mosaicFolder = URLs.urlToFile(coverageBands2URL);
-        for (File configFile : mosaicFolder.listFiles((FileFilter) FileFilterUtils.or(
-                FileFilterUtils.suffixFileFilter("db"),
-                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
-                FileFilterUtils.and(
-                        FileFilterUtils.suffixFileFilter(".properties"),
-                        FileFilterUtils.notFileFilter(FileFilterUtils.or(
-                                FileFilterUtils.nameFileFilter("indexer.properties"),
-                                FileFilterUtils.nameFileFilter("datastore.properties"))))))) {
-            configFile.delete();
+        for (File configFile : mosaicFolder.listFiles()) {
+            if (!configFile.getName().endsWith(".tif")
+                    && !configFile.getName().endsWith(".png")
+                    && !configFile.getName().equals("indexer.properties")
+                    && !configFile.getName().equals("datastore.properties")) {
+                configFile.delete();
+            }
         }
         // Before GEOT-6958 fix, this read would have thrown a
         // java.lang.NullPointerException: Argument "overviewsController" should not be null.
@@ -5011,13 +5015,13 @@ public class ImageMosaicReaderTest {
     }
 
     @Test
-    public void testConcurrentHarvestAndRemoveH2() throws Exception {
+    public void testConcurrentHarvestAndRemoveGeoPackage() throws Exception {
         checkConcurrentHarvestAndRemove(
                 f -> {
-                    // place H2 file in the dir
+                    // place GeoPackage file in the dir
                     try (FileWriter out = new FileWriter(new File(f, "datastore.properties"), StandardCharsets.UTF_8)) {
                         out.write("database=imagemosaic\n");
-                        out.write(H2_SAMPLE_PROPERTIES);
+                        out.write(GEOPKG_SAMPLE_PROPERTIES);
                         out.flush();
                     } catch (IOException e) {
                         throw new RuntimeException(e);

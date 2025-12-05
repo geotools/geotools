@@ -396,10 +396,9 @@ public class HeterogenousCRSTest {
             out.write("database=hetero_concurrent\n");
             out.write(
                     """
-                    SPI=org.geotools.data.h2.H2DataStoreFactory
-                    dbtype=h2
-                    user=gs
-                    passwd=gs
+                    SPI=org.geotools.geopkg.GeoPkgDataStoreFactory
+                    dbtype=geopkg
+                    database=test
                     Connection\\ timeout=3600
                     max \\connections=1\
                     min \\connections=1""");

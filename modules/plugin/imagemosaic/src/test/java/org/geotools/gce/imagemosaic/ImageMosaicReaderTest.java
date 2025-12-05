@@ -29,6 +29,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -5810,5 +5811,43 @@ public class ImageMosaicReaderTest {
         image = coverage.getRenderedImage();
         assertEquals(1, image.getSampleModel().getNumBands());
         coverage.dispose(true);
+    }
+
+    @Test
+    public void testRemoveGeoPackageFiles() throws Exception {
+        File source = URLs.urlToFile(rgbAURLTiff);
+        File extras = URLs.urlToFile(rgbaExtraURLTiff);
+        File testDataDir = TestData.file(this, ".");
+        File directory = new File(testDataDir, "rgba_tiff_extra_cleanup");
+        if (directory.exists()) {
+            FileUtils.deleteDirectory(directory);
+        }
+        FileUtils.copyDirectory(source, directory);
+        FileUtils.copyDirectory(extras, directory);
+
+        // ok, let's create a mosaic with a single granule and check its times
+        ImageMosaicReader reader = getReader(directory);
+        try {
+            // the coverage name got parsed
+            String[] names = reader.getGridCoverageNames();
+            assertEquals(1, names.length);
+            assertEquals("passA", names[0]);
+
+            // several files in the directory (images,extra image,properties,sample image)
+            assertThat(directory.listFiles().length, greaterThan(9));
+
+            // clean up, data stays, config files should go away
+            reader.delete(false);
+
+            // only the data is left
+            List<String> fileNames =
+                    Arrays.stream(directory.listFiles()).map(f -> f.getName()).toList();
+            assertEquals(3, fileNames.size());
+            assertThat(
+                    fileNames,
+                    Matchers.hasItems("global_mosaic_0.png", "passA2006128194218.tiff", "passA2006128211927.tiff"));
+        } finally {
+            reader.dispose();
+        }
     }
 }

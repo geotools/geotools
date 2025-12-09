@@ -36,10 +36,10 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
   <rule ref="category/java/bestpractices.xml/ForLoopCanBeForeach" />
   <rule ref="category/java/bestpractices.xml/UseTryWithResources" >
     <properties>
-      // The rule reports false positives for closeable arguments that are used
-      // closed within the method body. This suppression tries to avoid false positives for
-      // this case, until we can switch to Java 9 and just use try(variable) {...} without
-      // the need to instatiate the variable in the try
+      <!-- The rule reports false positives for closeable arguments that are used
+       closed within the method body. This suppression tries to avoid false positives for
+       this case, until we can switch to Java 9 and just use try(variable) {...} without
+       the need to instantiate the variable in the try -->
       <property name="violationSuppressXPath" value="./FinallyStatement//Name[substring-after(@Image, '.') = 'close' or substring-after(@Image, '.') = 'closeQuietly'][pmd-java:typeIs('java.lang.AutoCloseable') and fn:substring-before(@Image, '.') = ancestor::MethodDeclaration/MethodDeclarator//VariableDeclaratorId/@Name]"/>
     </properties>
   </rule>

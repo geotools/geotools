@@ -28,8 +28,8 @@ public class H3GeometryStoreTest {
 
     @Test
     public void testStoreCreation() throws IOException {
-        try (DGGSInstance instance = new H3DGGSFactory().createInstance(Collections.emptyMap())) {
-            DGGSGeometryStore store = new DGGSGeometryStore(instance);
+        try (DGGSInstance<?> instance = new H3DGGSFactory().createInstance(Collections.emptyMap())) {
+            DGGSGeometryStore<?> store = new DGGSGeometryStore<>(instance);
             String[] typeNames = store.getTypeNames();
             assertEquals(1, typeNames.length);
             assertEquals("H3", typeNames[0]);

@@ -497,6 +497,19 @@ public class DataUtilitiesTest extends DataTestCase {
         Assert.assertEquals("fid1=1|Jody Garnett\\nSteering Committee|POINT (1 2)", text);
     }
 
+    @Test
+    public void testEncodeLong() throws Exception {
+        SimpleFeatureType featureType =
+                DataUtilities.createType("Contact", "id:Long,party:String,geom:Geometry:srid=4326");
+        SimpleFeature feature1 = DataUtilities.createFeature(featureType, "fid1=1|Testing Party|POINT (1 2)");
+
+        String spec = DataUtilities.encodeType(featureType);
+        Assert.assertEquals("id:Long,party:String,geom:Geometry:srid=4326", spec);
+
+        String text = DataUtilities.encodeFeature(feature1);
+        Assert.assertEquals("fid1=1|Testing Party|POINT (1 2)", text);
+    }
+
     /** Test createType and encode can handle com.vividsolutions.jts and org.locationtech.jts bindings. */
     @Test
     public void testDecodeGeometrySpec() throws Exception {

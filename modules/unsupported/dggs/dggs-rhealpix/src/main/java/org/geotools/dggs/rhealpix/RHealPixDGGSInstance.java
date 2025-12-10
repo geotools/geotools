@@ -55,7 +55,7 @@ import org.locationtech.jts.geom.prep.PreparedPolygon;
 import org.locationtech.jts.operation.predicate.RectangleContains;
 import org.locationtech.jts.operation.predicate.RectangleIntersects;
 
-public class RHealPixDGGSInstance implements DGGSInstance {
+public class RHealPixDGGSInstance implements DGGSInstance<String> {
 
     static final Logger LOGGER = Logging.getLogger(RHealPixDGGSInstance.class);
     private final String identifier;
@@ -486,5 +486,20 @@ public class RHealPixDGGSInstance implements DGGSInstance {
     public Filter getChildFilter(
             FilterFactory ff, String zoneId, int resolution, boolean upTo, AttributeDescriptor zoneAttribute) {
         return ff.like(ff.property(zoneAttribute.getLocalName()), zoneId + "%", "%", "?", "\\", true);
+    }
+
+    @Override
+    public String parseId(String id) {
+        return id;
+    }
+
+    @Override
+    public String idToString(String id) {
+        return id;
+    }
+
+    @Override
+    public Class<String> idType() {
+        return String.class;
     }
 }

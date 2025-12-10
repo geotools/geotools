@@ -86,8 +86,7 @@ public class DGGSH3GeometryStoreTest {
         Map<String, Object> params = new HashMap<>();
         params.put(DGGSGeometryStoreFactory.DGGS_FACTORY_ID.key, "H3");
         params.put(DGGSGeometryStoreFactory.NAMESPACE.key, NAMESPACE);
-        DataStore store = DataStoreFinder.getDataStore(params);
-        return store;
+        return DataStoreFinder.getDataStore(params);
     }
 
     @Test

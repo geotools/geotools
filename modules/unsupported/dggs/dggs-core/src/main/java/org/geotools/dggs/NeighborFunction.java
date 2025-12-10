@@ -54,10 +54,10 @@ public class NeighborFunction extends DGGSSetFunctionBase {
             // check params
             String referenceZoneId = (String) getParameterValue(object, 1);
             Integer distance = (Integer) getParameterValue(object, 2);
-            DGGSInstance dggs = (DGGSInstance) getParameterValue(object, 3);
+            DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(object, 3);
             if (referenceZoneId == null || distance == null || dggs == null) return Collections.emptyIterator();
 
-            return dggs.neighbors(referenceZoneId, distance);
+            return dggs.neighborsFromString(referenceZoneId, distance);
         });
     }
 
@@ -67,9 +67,11 @@ public class NeighborFunction extends DGGSSetFunctionBase {
         if (!isStable()) throw new IllegalStateException("Source parameters are not stable");
         String referenceZoneId = (String) getParameterValue(null, 1);
         Integer distance = (Integer) getParameterValue(null, 2);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 3);
-
-        return dggs.neighbors(referenceZoneId, distance);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 3);
+        if (referenceZoneId == null || dggs == null) {
+            return Collections.emptyIterator();
+        }
+        return dggs.neighborsFromString(referenceZoneId, distance);
     }
 
     @Override
@@ -78,8 +80,10 @@ public class NeighborFunction extends DGGSSetFunctionBase {
         if (!isStable()) throw new IllegalStateException("Source parameters are not stable");
         String referenceZoneId = (String) getParameterValue(null, 1);
         Integer distance = (Integer) getParameterValue(null, 2);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 3);
-
-        return dggs.countNeighbors(referenceZoneId, distance);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 3);
+        if (referenceZoneId == null || dggs == null) {
+            return 0L;
+        }
+        return dggs.countNeighborsFromString(referenceZoneId, distance);
     }
 }

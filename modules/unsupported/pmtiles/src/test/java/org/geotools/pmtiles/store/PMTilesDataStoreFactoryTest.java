@@ -48,6 +48,7 @@ import org.geotools.api.data.DataAccessFactory.Param;
 import org.geotools.api.data.DataAccessFinder;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
+import org.geotools.tileverse.rangereader.RangeReaderParams;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;

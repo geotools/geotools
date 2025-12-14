@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.pmtiles.store;
+package org.geotools.tileverse.rangereader;
 
 import java.util.Arrays;
 import java.util.Collections;

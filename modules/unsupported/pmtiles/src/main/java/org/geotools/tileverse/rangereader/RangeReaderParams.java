@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *
  */
-package org.geotools.pmtiles.store;
+package org.geotools.tileverse.rangereader;
 
 import com.google.api.client.util.store.DataStoreFactory;
 import io.tileverse.rangereader.RangeReaderFactory;
@@ -32,11 +32,10 @@ import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.geotools.api.data.DataAccessFactory.Param;
+import org.geotools.pmtiles.store.PMTilesDataStoreFactory;
 import org.geotools.util.Converters;
-import org.geotools.util.logging.Logging;
 
 /**
  * Bridges Tileverse Range Reader configuration to GeoTools DataStore parameters.
@@ -76,9 +75,7 @@ import org.geotools.util.logging.Logging;
  * @see RangeReaderProvider
  * @see PMTilesDataStoreFactory
  */
-class RangeReaderParams {
-
-    private static final Logger logger = Logging.getLogger(RangeReaderParams.class);
+public class RangeReaderParams {
 
     /**
      * Param {@link DataStoreFactory} can use to force selecting a specific {@link RangeReaderProvider} with
@@ -129,7 +126,7 @@ class RangeReaderParams {
      * Aggregated list of supported {@link RangeReaderProvider#getParameters() range reader parameters} converted to
      * {@link Param DataAccessFactory.Param}
      */
-    static List<Param> PROVIDER_PARAMS = List.of(
+    public static final List<Param> PROVIDER_PARAMS = List.of(
             RANGEREADER_PROVIDER_ID,
             MEMORY_CACHE_ENABLED,
             MEMORY_CACHE_BLOCK_ALIGNED,
@@ -154,6 +151,10 @@ class RangeReaderParams {
             GCS_PROJECT_ID,
             GCS_QUOTA_PROJECT_ID,
             GCS_USE_DEFAULT_APPLICTION_CREDENTIALS);
+
+    private RangeReaderParams() {
+        // private constructor, utility class
+    }
 
     /**
      * Appends Range Reader configuration parameters after the specified datastore parameters.
@@ -186,9 +187,7 @@ class RangeReaderParams {
      * @param param the Range Reader parameter to convert
      * @return the equivalent GeoTools Param
      */
-    static Param dataStoreParam(RangeReaderParameter<?> param) {
-        logger.fine("Creating DataStoreFactory param for " + param);
-
+    public static Param dataStoreParam(RangeReaderParameter<?> param) {
         Object defaultValue = param.defaultValue().orElse(null);
         List<?> sampleValues = param.sampleValues();
         Object[] options = sampleValues.isEmpty() ? null : sampleValues.toArray();

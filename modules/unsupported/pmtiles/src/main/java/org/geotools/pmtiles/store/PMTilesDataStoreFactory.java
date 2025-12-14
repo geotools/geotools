@@ -32,6 +32,9 @@ import java.util.Map;
 import java.util.Properties;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.Parameter;
+import org.geotools.tileverse.rangereader.ParamBuilder;
+import org.geotools.tileverse.rangereader.RangeReaderParams;
 import org.geotools.util.Converters;
 
 /**
@@ -159,8 +162,8 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
                     • HTTP/HTTPS: https://example.com/path/file.pmtiles (with optional authentication)
                     • MinIO and S3-compatible services: http://localhost:9000/bucket/key.pmtiles
                     """)
-            .metadata(Param.EXT, "pmtiles")
-            .metadata(Param.IS_LARGE_TEXT, true)
+            .metadata(Parameter.EXT, "pmtiles")
+            .metadata(Parameter.IS_LARGE_TEXT, true)
             .build();
 
     /**
@@ -308,7 +311,8 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
             lookUp = param.getDefaultValue();
         }
         T converted = Converters.convert(lookUp, target);
-        if (param.isRequired() && converted == null) {
+        boolean required = param.isRequired() != null && param.isRequired();
+        if (required && converted == null) {
             String v = param.isPassword() ? "*****" : String.valueOf(rawValue);
             String actualType = rawValue == null ? "null" : rawValue.getClass().getCanonicalName();
             String expectedType = param.getType().getCanonicalName();

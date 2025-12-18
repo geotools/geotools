@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>33.4</version>
   </parent>
   <artifactId>gt-geojson-store</artifactId>
   <name>GeoJSON Datastore</name>

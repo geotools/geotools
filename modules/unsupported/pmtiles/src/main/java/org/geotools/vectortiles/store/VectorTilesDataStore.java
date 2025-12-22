@@ -96,6 +96,8 @@ public abstract class VectorTilesDataStore extends ContentDataStore {
     /**
      * Returns the underlying {@link VectorTileStore} that provides access to the tile data.
      *
+     * <p>Used by {@link VectorTilesFeatureSource}
+     *
      * @return the vector tile store
      */
     public VectorTileStore getTileStore() {

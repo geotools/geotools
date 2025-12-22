@@ -17,6 +17,11 @@
  */
 package org.geotools.pmtiles.store;
 
+import io.tileverse.cache.CacheManager;
+import io.tileverse.cache.CacheStats;
+import io.tileverse.io.ByteBufferPool;
+import io.tileverse.io.ByteBufferPool.PoolStatistics;
+import io.tileverse.pmtiles.PMTilesReader;
 import io.tileverse.rangereader.RangeReader;
 import io.tileverse.rangereader.RangeReaderFactory;
 import io.tileverse.rangereader.azure.AzureBlobRangeReaderProvider;
@@ -28,14 +33,21 @@ import io.tileverse.rangereader.spi.RangeReaderProvider;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.Parameter;
 import org.geotools.tileverse.rangereader.ParamBuilder;
 import org.geotools.tileverse.rangereader.RangeReaderParams;
 import org.geotools.util.Converters;
+import org.geotools.util.logging.Logging;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Factory for creating {@link PMTilesDataStore} instances.
@@ -72,10 +84,6 @@ import org.geotools.util.Converters;
  *   <li><strong>Caching parameters</strong>:
  *       <ul>
  *         <li>{@linkplain #MEMORY_CACHE_ENABLED io.tileverse.rangereader.caching.enabled} - Enable in-memory caching
- *         <li>{@linkplain #MEMORY_CACHE_BLOCK_ALIGNED io.tileverse.rangereader.caching.blockaligned} - Enable
- *             block-aligned caching
- *         <li>{@linkplain #MEMORY_CACHE_BLOCK_SIZE io.tileverse.rangereader.caching.blocksize} - Cache block size in
- *             bytes (power of 2)
  *       </ul>
  *   <li><strong>HTTP(S) parameters</strong>:
  *       <ul>
@@ -136,7 +144,11 @@ import org.geotools.util.Converters;
  * @see RangeReaderParams
  * @see <a href="https://tileverse.io">Tileverse Documentation</a>
  */
+@NullMarked
+@SuppressWarnings("java:S2629")
 public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
+
+    private static final Logger LOGGER = Logging.getLogger(PMTilesDataStoreFactory.class);
 
     /** Optional - uri of the FeatureType's namespace */
     public static final Param NAMESPACEP = ParamBuilder.builder()
@@ -154,14 +166,14 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
             .required(true)
             .title(
                     """
-                    URI to a Protomaps PMTiles file containing Vector Tiles. Supports local files and cloud storage:
-                    • Local files: file:/path/to/file.pmtiles
-                    • AWS S3: s3://bucket/key.pmtiles or https://bucket.s3.amazonaws.com/key.pmtiles
-                    • Azure Blob Storage: https://account.blob.core.windows.net/container/key.pmtiles
-                    • Google Cloud Storage: https://storage.googleapis.com/bucket/key.pmtiles
-                    • HTTP/HTTPS: https://example.com/path/file.pmtiles (with optional authentication)
-                    • MinIO and S3-compatible services: http://localhost:9000/bucket/key.pmtiles
-                    """)
+			URI to a Protomaps PMTiles file containing Vector Tiles. Supports local files and cloud storage:
+			• Local files: file:/path/to/file.pmtiles
+			• AWS S3: s3://bucket/key.pmtiles or https://bucket.s3.amazonaws.com/key.pmtiles
+			• Azure Blob Storage: https://account.blob.core.windows.net/container/key.pmtiles
+			• Google Cloud Storage: https://storage.googleapis.com/bucket/key.pmtiles
+			• HTTP/HTTPS: https://example.com/path/file.pmtiles (with optional authentication)
+			• MinIO and S3-compatible services: http://localhost:9000/bucket/key.pmtiles
+			""")
             .metadata(Parameter.EXT, "pmtiles")
             .metadata(Parameter.IS_LARGE_TEXT, true)
             .build();
@@ -172,12 +184,13 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
      */
     public static final Param RANGEREADER_PROVIDER_ID = RangeReaderParams.RANGEREADER_PROVIDER_ID;
 
-    /** Enable memory cache for raw byte data */
+    /**
+     * Enable memory cache for raw byte data.
+     *
+     * <p>{@link RangeReaderParams#MEMORY_CACHE_BLOCK_ALIGNED} and {@link RangeReaderParams#MEMORY_CACHE_BLOCK_SIZE} are
+     * not included because they don't make sense for PMTiles, which is optimized for byte-range requests natively
+     */
     public static final Param MEMORY_CACHE_ENABLED = RangeReaderParams.MEMORY_CACHE_ENABLED;
-    /** Apply block alignment for cached byte ranges */
-    public static final Param MEMORY_CACHE_BLOCK_ALIGNED = RangeReaderParams.MEMORY_CACHE_BLOCK_ALIGNED;
-    /** Cache block size in bytes (power of 2) */
-    public static final Param MEMORY_CACHE_BLOCK_SIZE = RangeReaderParams.MEMORY_CACHE_BLOCK_SIZE;
 
     public static final Param HTTP_CONNECTION_TIMEOUT_MILLIS = RangeReaderParams.HTTP_CONNECTION_TIMEOUT_MILLIS;
     public static final Param HTTP_TRUST_ALL_SSL_CERTIFICATES = RangeReaderParams.HTTP_TRUST_ALL_SSL_CERTIFICATES;
@@ -217,7 +230,55 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     public static final Param GCS_USE_DEFAULT_APPLICTION_CREDENTIALS =
             RangeReaderParams.GCS_USE_DEFAULT_APPLICTION_CREDENTIALS;
 
-    static final PMTilesDataStoreFactory INSTANCE = new PMTilesDataStoreFactory();
+    @NonNull
+    private static CacheManager cacheManager = CacheManager.getDefault();
+
+    /**
+     * Sets the global {@link CacheManager} used by all PMTiles datastores created by this factory.
+     *
+     * <p>This allows applications to provide a custom cache manager for fine-grained control over caching behavior,
+     * memory limits, and eviction policies. By default, uses {@link CacheManager#getDefault()}.
+     *
+     * @param cacheManager the cache manager to use, must not be {@code null}
+     * @see #getCacheManager()
+     * @see #clearCaches()
+     */
+    public static void setCacheManager(@NonNull CacheManager cacheManager) {
+        PMTilesDataStoreFactory.cacheManager = cacheManager;
+    }
+
+    /**
+     * Returns the current global {@link CacheManager} used by PMTiles datastores.
+     *
+     * @return the current cache manager, never {@code null}
+     */
+    public static CacheManager getCacheManager() {
+        return cacheManager;
+    }
+
+    /**
+     * Invalidates all caches managed by the current {@link CacheManager} and clears the {@link ByteBufferPool}.
+     *
+     * <p>This method is useful for:
+     *
+     * <ul>
+     *   <li>Forcing a refresh when the underlying PMTiles file has been updated
+     *   <li>Freeing memory under pressure
+     *   <li>Testing and debugging cache behavior
+     * </ul>
+     *
+     * <p>Cache statistics are logged at CONFIG level before invalidation.
+     */
+    public static void clearCaches() {
+        Map<String, CacheStats> stats = cacheManager.stats();
+        cacheManager.invalidateAll();
+        stats.forEach((name, cache) -> LOGGER.config("Invalidated cache %s: %s".formatted(name, cache)));
+
+        ByteBufferPool pool = ByteBufferPool.getDefault();
+        PoolStatistics byteBufferPoolStats = pool.getStatistics();
+        pool.clear();
+        LOGGER.config("Invalidated %s".formatted(byteBufferPoolStats));
+    }
 
     @Override
     public String getDisplayName() {
@@ -235,13 +296,20 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Dynamically builds the list of configuration parameters based on which {@link RangeReaderProvider}s are avilable.
+     * Dynamically builds the list of configuration parameters based on which {@link RangeReaderProvider}s are
+     * available.
      *
      * @see RangeReaderParams#appendAfter(org.geotools.api.data.DataAccessFactory.Param...)
      */
     @Override
     public Param[] getParametersInfo() {
-        return RangeReaderParams.appendAfter(NAMESPACEP, URIP);
+        List<String> ignore = Stream.of(
+                        RangeReaderParams.MEMORY_CACHE_BLOCK_ALIGNED, RangeReaderParams.MEMORY_CACHE_BLOCK_SIZE)
+                .map(p -> p.key)
+                .toList();
+
+        Predicate<Param> filter = p -> !ignore.contains(p.key);
+        return RangeReaderParams.appendAfter(filter, NAMESPACEP, URIP);
     }
 
     @Override
@@ -273,13 +341,21 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     public PMTilesDataStore createDataStore(Map<String, ?> params) throws IOException {
 
         @SuppressWarnings("PMD.CloseResource")
-        RangeReader reader = createRangeReader(params);
-        PMTilesDataStore store = new PMTilesDataStore(reader);
+        PMTilesReader pmtilesReader = createPMTilesReader(params);
+        PMTilesDataStore store = new PMTilesDataStore(this, pmtilesReader);
 
         String namespaceURI = lookup(NAMESPACEP, params, String.class);
         store.setNamespaceURI(namespaceURI);
 
         return store;
+    }
+
+    @SuppressWarnings("PMD.CloseResource")
+    private PMTilesReader createPMTilesReader(Map<String, ?> params) throws IOException {
+        RangeReader reader = createRangeReader(params);
+        PMTilesReader pmTilesReader = new PMTilesReader(reader);
+        pmTilesReader.cacheManager(cacheManager);
+        return pmTilesReader;
     }
 
     static RangeReader createRangeReader(Map<String, ?> params) throws IOException {

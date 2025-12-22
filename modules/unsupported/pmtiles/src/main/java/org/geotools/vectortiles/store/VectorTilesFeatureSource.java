@@ -17,12 +17,10 @@
 package org.geotools.vectortiles.store;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.Optional.ofNullable;
 import static java.util.function.Predicate.not;
 import static org.geotools.util.factory.Hints.GEOMETRY_CLIP;
 import static org.geotools.util.factory.Hints.GEOMETRY_DISTANCE;
 import static org.geotools.util.factory.Hints.GEOMETRY_GENERALIZATION;
-import static org.geotools.util.factory.Hints.GEOMETRY_SIMPLIFICATION;
 import static org.geotools.util.factory.Hints.JTS_COORDINATE_SEQUENCE_FACTORY;
 import static org.geotools.util.factory.Hints.JTS_GEOMETRY_FACTORY;
 
@@ -40,10 +38,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.Query;
@@ -72,6 +73,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -96,8 +98,7 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  *
  * <ul>
  *   <li><b>Zoom Level Selection:</b> Automatically selects the best zoom level based on
- *       {@link Hints#GEOMETRY_DISTANCE}, {@link Hints#GEOMETRY_SIMPLIFICATION}, or
- *       {@link Hints#GEOMETRY_GENERALIZATION} hints
+ *       {@link Hints#GEOMETRY_DISTANCE}, or {@link Hints#GEOMETRY_GENERALIZATION} hints
  *   <li><b>Spatial Filtering:</b> Extracts bounding boxes from query filters to minimize tile reads
  *   <li><b>CRS Transformation:</b> Efficiently transforms geometries using affine transformations where possible
  *   <li><b>Pre-filtering:</b> Applies filters at the vector tile level before converting to GeoTools features
@@ -121,6 +122,8 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  * @see io.tileverse.pmtiles.store.VectorTileStore
  */
 public class VectorTilesFeatureSource extends ContentFeatureSource {
+
+    private static final Logger LOGGER = Logging.getLogger(VectorTilesFeatureSource.class);
 
     /** TileJSON layer metadata */
     protected final VectorLayer layerMetadata;
@@ -222,7 +225,6 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
      *   <li>{@link Hints#JTS_GEOMETRY_FACTORY} - Custom geometry factory
      *   <li>{@link Hints#JTS_COORDINATE_SEQUENCE_FACTORY} - Custom coordinate sequence factory
      *   <li>{@link Hints#GEOMETRY_GENERALIZATION} - Topology-preserving simplification distance
-     *   <li>{@link Hints#GEOMETRY_SIMPLIFICATION} - Non-topology-preserving simplification distance
      *   <li>{@link Hints#GEOMETRY_DISTANCE} - Target resolution for zoom level selection
      *   <li>{@link Hints#GEOMETRY_CLIP} - Tile clip mask for rendering (this is an "output" hint, added to each
      *       returned {@link SimpleFeature#getUserData()} map. See {@link VectorTilesFeatureReader})
@@ -244,11 +246,10 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
         hints.add(JTS_COORDINATE_SEQUENCE_FACTORY);
 
         // topology preserving on the fly generalization of the geometries.
-        // the renderer tries this one first, then GEOMETRY_SIMPLIFICATION
+        // the renderer tries this one first, then GEOMETRY_SIMPLIFICATION, then GEOMETRY_DISTANCE.
+        // we don't advertise GEOMETRY_SIMPLIFICATION for the renderer to fall back to GEOMETRY_DISTANCE,
+        // which provides better consistency for tiled vector data where zoom levels are discrete.
         hints.add(GEOMETRY_GENERALIZATION);
-
-        // non topology preserving on the fly generalization of the geometries
-        hints.add(GEOMETRY_SIMPLIFICATION);
 
         // Asks a datastore having a vector pyramid (pre-generalized geometries) to return the geometry version whose
         // points have been generalized less than the specified distance (further generalization might be performed by
@@ -317,10 +318,16 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
             return StreamFeatureReader.empty(targetSchema);
         }
 
-        VectorTilesQuery vtQuery = toVectorTilesQuery(query);
+        Optional<VectorTilesQuery> vtQuery = toVectorTilesQuery(query);
+        Stream<VectorTile.Layer.Feature> vectorTileFeatures;
 
-        VectorTileStore tileStore = getTileStore();
-        Stream<VectorTile.Layer.Feature> vectorTileFeatures = tileStore.getFeatures(vtQuery);
+        if (vtQuery.isEmpty()) {
+            vectorTileFeatures = Stream.empty();
+        } else {
+            VectorTileStore tileStore = getTileStore();
+            vectorTileFeatures = tileStore.getFeatures(vtQuery.orElseThrow());
+        }
+
         return new VectorTilesFeatureReader(targetSchema, vectorTileFeatures)
                 .filter(postFilter(query))
                 .offset(offset(query))
@@ -334,9 +341,12 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
         return query;
     }
 
-    private VectorTilesQuery toVectorTilesQuery(Query query) {
+    private Optional<VectorTilesQuery> toVectorTilesQuery(Query query) {
         // Determine the best zoom level to use
-        final int zoomLevel = determineZoomLevel(query);
+        final OptionalInt zoomLevel = determineZoomLevel(query);
+        if (!zoomLevel.isPresent()) {
+            return Optional.empty();
+        }
 
         // Filter TileMatrix by bounding boxes in Query.Filter
         final List<BoundingBox2D> queryExtent = queryExtent(query);
@@ -354,7 +364,7 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
         VectorTilesQuery vtQuery = new VectorTilesQuery()
                 .layers(this.layerMetadata.id())
                 .extent(queryExtent)
-                .zoomLevel(zoomLevel)
+                .zoomLevel(zoomLevel.getAsInt())
                 .geometryFactory(geometryFactory)
                 // first transform from tile extent to source CRS
                 .transformToCrs(true)
@@ -363,8 +373,7 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
                 // finally apply the filter to the vector tile Feature
                 // with VectorTilesFeaturePropertyAccessorFactory
                 .filter(preFilter);
-
-        return vtQuery;
+        return Optional.of(vtQuery);
     }
 
     private UnaryOperator<Geometry> reprojectFunction(Query query) {
@@ -484,10 +493,20 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
      */
     private List<BoundingBox2D> queryExtent(Query query) {
         List<ReferencedEnvelope> queryBounds = extractQueryBounds(query);
+        final ReferencedEnvelope maxBounds = getBoundsInternal();
         return queryBounds.stream()
                 .filter(not(ReferencedEnvelope::isEmpty))
+                .map(queryExtent -> clipToMaxBounds(maxBounds, queryExtent))
+                .filter(Objects::nonNull)
                 .map(this::toExtent)
                 .toList();
+    }
+
+    private ReferencedEnvelope clipToMaxBounds(final ReferencedEnvelope maxBounds, ReferencedEnvelope queryExtent) {
+        if (maxBounds.intersects((Envelope) queryExtent)) {
+            return maxBounds.intersection(queryExtent);
+        }
+        return null;
     }
 
     private List<ReferencedEnvelope> extractQueryBounds(Query query) {
@@ -541,46 +560,87 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
     /**
      * Determines the optimal zoom level for a query based on resolution hints and layer constraints.
      *
-     * <p>This method selects the best zoom level by considering:
+     * <p>This method selects the best zoom level by considering (in priority order):
      *
-     * <ul>
-     *   <li>Query resolution hints ({@link Hints#GEOMETRY_DISTANCE}, {@link Hints#GEOMETRY_SIMPLIFICATION},
-     *       {@link Hints#GEOMETRY_GENERALIZATION})
-     *   <li>Layer-specific min/max zoom levels from {@link VectorLayer#minZoom()} and {@link VectorLayer#maxZoom()}
-     *   <li>Tile matrix set available zoom levels
-     *   <li>Query strategy (SPEED vs QUALITY)
-     * </ul>
+     * <ol>
+     *   <li><b>VectorTilesRequestScale:</b> If set via {@link VectorTilesRequestScale#set(double)}, the scale
+     *       denominator is converted to resolution ({@code scale * 0.00028}) and used to find the best zoom level. This
+     *       takes precedence over query hints.
+     *   <li><b>Query resolution hints:</b> {@link Hints#GEOMETRY_GENERALIZATION} or {@link Hints#GEOMETRY_DISTANCE}
+     *       from the query
+     *   <li><b>Layer defaults:</b> Falls back to {@link VectorLayer#minZoom()} or the tile matrix set's minimum zoom
+     *       level
+     * </ol>
      *
-     * <p>For SPEED strategy (when simplification hints are present), starts from the minimum zoom level to favor
-     * performance. For QUALITY strategy (no simplification hints), starts from the layer's minimum zoom level to favor
-     * detail.
+     * <p>When a rendering query is detected (simplification hints present), the method also checks layer visibility at
+     * the computed zoom level. If the layer is not visible at that zoom level (outside its min/max zoom range), an
+     * empty result is returned, effectively filtering out the layer from the response.
+     *
+     * <p><b>Note:</b> {@link Hints#GEOMETRY_SIMPLIFICATION} is intentionally not advertised to force the renderer to
+     * fall back to {@link Hints#GEOMETRY_DISTANCE}, which provides more consistent behavior with tiled vector data.
      *
      * @param query the query containing resolution hints
-     * @return the selected zoom level
+     * @return the selected zoom level, or empty if the layer is not visible at the computed scale
+     * @see VectorTilesRequestScale
      */
-    protected int determineZoomLevel(Query query) {
-        final VectorTileStore tileStore = getTileStore();
+    protected OptionalInt determineZoomLevel(Query query) {
+        final OptionalDouble querySimplificationDistance = querySimplificationDistance(query);
+        final boolean isRenderingQuery = querySimplificationDistance.isPresent();
+        final OptionalDouble scaleDenominator = VectorTilesRequestScale.get();
 
-        final double resolution = determineResolution(query);
+        if (scaleDenominator.isPresent()) {
+            double scale = scaleDenominator.getAsDouble();
+            double resolution = scale * 0.00028;
+            LOGGER.finer(() -> "scaleDenominator: %s, resolution: %f, query distance: %s"
+                    .formatted(scaleDenominator, resolution, querySimplificationDistance));
+            return determineZoomLevelForSimplificationDistance(query, resolution);
+        }
+
+        LOGGER.finer(() -> "query distance: %s".formatted(querySimplificationDistance));
+        if (isRenderingQuery) {
+            return determineZoomLevelForSimplificationDistance(query, querySimplificationDistance.getAsDouble());
+        }
+
+        if (layerMetadata.minZoom() != null) {
+            return OptionalInt.of(layerMetadata.minZoom());
+        }
+        return OptionalInt.of(getMatrixSet().minZoomLevel());
+    }
+
+    private OptionalInt determineZoomLevelForSimplificationDistance(Query query, final double simplificationDistance) {
+
+        final VectorTileStore tileStore = getTileStore();
+        final TileMatrixSet matrixSet = getMatrixSet();
+
         final Strategy strategy = determineStrategy(query);
 
-        TileMatrixSet matrixSet = getMatrixSet();
-        int matrixsetMinZoom = matrixSet.minZoomLevel();
-        int matrixsetMaxZoom = matrixSet.maxZoomLevel();
-        int layerMinZoom = ofNullable(layerMetadata.minZoom()).orElse(matrixsetMinZoom);
+        final int matrixsetMinZoom = matrixSet.minZoomLevel();
+        final int matrixsetMaxZoom = matrixSet.maxZoomLevel();
 
-        int minZoom;
-        if (strategy == Strategy.SPEED) {
-            minZoom = matrixsetMinZoom;
-        } else {
-            minZoom = layerMinZoom;
-        }
-        // for max zoom we always want the layer's max zoom.
-        int maxZoom = ofNullable(layerMetadata.maxZoom()).orElse(matrixsetMaxZoom);
+        final int bestZoom =
+                tileStore.findBestZoomLevel(simplificationDistance, strategy, matrixsetMinZoom, matrixsetMaxZoom);
 
-        int bestZoom = tileStore.findBestZoomLevel(resolution, strategy, minZoom, maxZoom);
+        final boolean layerIsVisible = layerIsVisibleAtZoomLevel(bestZoom);
 
-        return bestZoom;
+        LOGGER.fine(() -> "layer %s, visible: %s, distance: %f, best zoom: %d [%d..%d], strategy: %s"
+                .formatted(
+                        layerMetadata.id(),
+                        layerIsVisible,
+                        simplificationDistance,
+                        bestZoom,
+                        layerMetadata.minZoom(),
+                        layerMetadata.maxZoom(),
+                        strategy));
+        return layerIsVisible ? OptionalInt.of(bestZoom) : OptionalInt.empty();
+    }
+
+    private boolean layerIsVisibleAtZoomLevel(int z) {
+        int minz = Optional.ofNullable(layerMetadata.minZoom())
+                .orElse(getMatrixSet().minZoomLevel());
+        int maxz = Optional.ofNullable(layerMetadata.maxZoom())
+                .orElse(getMatrixSet().maxZoomLevel());
+
+        return z >= minz && z <= maxz;
     }
 
     private TileStore.Strategy determineStrategy(Query query) {
@@ -588,24 +648,12 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
         return querySimplificationDistance.isPresent() ? TileStore.Strategy.SPEED : TileStore.Strategy.QUALITY;
     }
 
-    private double determineResolution(Query query) {
-
-        final double defaultResolution =
-                getMatrixSet().resolution(getMatrixSet().minZoomLevel());
-
-        OptionalDouble querySimplificationDistance = querySimplificationDistance(query);
-
-        double distance = querySimplificationDistance.orElse(defaultResolution);
-
-        return distance;
-    }
-
     private OptionalDouble querySimplificationDistance(Query query) {
-        OptionalDouble simplificationDistance = getHint(GEOMETRY_SIMPLIFICATION, query);
         OptionalDouble generalizationDistance = getHint(GEOMETRY_GENERALIZATION, query);
         OptionalDouble geometryDistance = getHint(GEOMETRY_DISTANCE, query);
-        if (simplificationDistance.isPresent()) return simplificationDistance;
-        if (generalizationDistance.isPresent()) return generalizationDistance;
+        if (generalizationDistance.isPresent()) {
+            return generalizationDistance;
+        }
         return geometryDistance;
     }
 

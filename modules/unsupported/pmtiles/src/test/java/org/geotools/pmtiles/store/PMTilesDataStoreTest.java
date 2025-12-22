@@ -75,7 +75,7 @@ public class PMTilesDataStoreTest {
     public void setUp() throws IOException, InvalidHeaderException {
         this.andorraPMTiles = PMTilesTestData.andorra(tmpFolder.getRoot().toPath());
         reader = new PMTilesReader(andorraPMTiles);
-        store = new PMTilesDataStore(reader);
+        store = new PMTilesDataStore(new PMTilesDataStoreFactory(), reader);
         store.setNamespaceURI(namespaceURI);
         store.setFeatureTypeFactory(CommonFactoryFinder.getFeatureTypeFactory(null));
         store.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));

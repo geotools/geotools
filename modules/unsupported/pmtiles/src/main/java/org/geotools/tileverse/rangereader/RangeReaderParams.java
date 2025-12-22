@@ -32,6 +32,7 @@ import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.geotools.api.data.DataAccessFactory.Param;
 import org.geotools.pmtiles.store.PMTilesDataStoreFactory;
@@ -162,12 +163,14 @@ public class RangeReaderParams {
      * <p>This method is used by {@link PMTilesDataStoreFactory#getParametersInfo()} to dynamically include all Range
      * Reader configuration parameters based on available providers.
      *
+     * @param filter a filter predicate to apply in case some parameters need to be excluded
      * @param dataStoreParams the base datastore parameters (e.g., URI, namespace)
      * @return array combining datastore parameters followed by all Range Reader parameters
      */
-    public static Param[] appendAfter(Param... dataStoreParams) {
+    public static Param[] appendAfter(Predicate<Param> filter, Param... dataStoreParams) {
         List<Param> rangeReaderParams = PROVIDER_PARAMS;
-        return Stream.concat(Stream.of(dataStoreParams), rangeReaderParams.stream())
+        return Stream.concat(
+                        Stream.of(dataStoreParams), rangeReaderParams.stream().filter(filter))
                 .toArray(Param[]::new);
     }
 

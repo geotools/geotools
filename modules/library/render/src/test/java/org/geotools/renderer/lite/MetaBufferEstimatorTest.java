@@ -222,4 +222,12 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(9, estimator.getBuffer());
     }
+
+    @Test
+    public void testExternalGraphicInvalid() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "externalGraphicInvalid.sld");
+        MetaBufferEstimator estimator = new MetaBufferEstimator();
+        style.accept(estimator);
+        assertFalse(estimator.isEstimateAccurate());
+    }
 }

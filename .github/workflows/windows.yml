@@ -19,7 +19,7 @@ jobs:
         java-version: 11
         distribution: 'temurin'
     - name: Maven repository caching
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.m2/repository
         key: gt-maven-${{ hashFiles('**/pom.xml') }}

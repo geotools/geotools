@@ -1233,7 +1233,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             Geometry geom = readGeometry(wktResource);
             String testName = wktResource;
             try {
-
                 runWriteReadTest(geom, false);
                 make3D(geom);
                 testName += "3d";

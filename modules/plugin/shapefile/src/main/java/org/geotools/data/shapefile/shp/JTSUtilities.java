@@ -23,6 +23,10 @@ import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateXY;
+import org.locationtech.jts.geom.CoordinateXYM;
+import org.locationtech.jts.geom.CoordinateXYZM;
+import org.locationtech.jts.geom.Coordinates;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -211,23 +215,18 @@ public class JTSUtilities {
     /**
      * Returns: <br>
      * 2 for 2d (default) <br>
-     * 4 for 3d - one of the oordinates has a non-NaN z value <br>
-     * (3 is for x,y,m but thats not supported yet) <br>
+     * 3 for 3d - has a 3rd dimension (either z or measure) <br>
+     * 4 for 4d - has both Z and M <br>
+     * This is done by looking at one of the coordinates. See {Coordinates}.
      *
      * @param cs The array of Coordinates to search.
      * @return The dimension.
      */
-    public static final int guessCoorinateDims(final Coordinate[] cs) {
-        int dims = 2;
-
-        for (int t = cs.length - 1; t >= 0; t--) {
-            if (!Double.isNaN(cs[t].getZ())) {
-                dims = 4;
-                break;
-            }
+    public static int guessCoordinateDims(final Coordinate[] cs) {
+        if (cs == null || cs.length == 0) {
+            return 2;
         }
-
-        return dims;
+        return Coordinates.dimension(cs[0]);
     }
 
     public static Geometry convertToCollection(Geometry geom, ShapeType type) {
@@ -279,23 +278,35 @@ public class JTSUtilities {
      * Determine the best ShapeType for a geometry with the given dimension.
      *
      * @param geom The Geometry to examine.
-     * @param shapeFileDimentions The dimension 2,3 or 4.
      * @throws ShapefileException If theres a problem, like a bogus Geometry.
      * @return The best ShapeType.
      */
-    public static final ShapeType getShapeType(Geometry geom, int shapeFileDimentions) throws ShapefileException {
+    public static final ShapeType getShapeType(Geometry geom) throws ShapefileException {
+        Coordinate coordinate = geom.getCoordinate();
+
+        String shapeFileDimentions = "xyz";
+        if (coordinate instanceof CoordinateXY) {
+            shapeFileDimentions = "xy";
+        } else if (coordinate instanceof CoordinateXYM) {
+            shapeFileDimentions = "xym";
+        } else if (coordinate instanceof CoordinateXYZM) {
+            shapeFileDimentions = "xyzm";
+        } else if (coordinate instanceof Coordinate) {
+            shapeFileDimentions = "xyz";
+        }
 
         ShapeType type = null;
 
         if (geom instanceof Point) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.POINT;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.POINTM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.POINTZ;
                     break;
                 default:
@@ -303,13 +314,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof MultiPoint) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.MULTIPOINT;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.MULTIPOINTM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.MULTIPOINTZ;
                     break;
                 default:
@@ -317,13 +329,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof Polygon || geom instanceof MultiPolygon) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.POLYGON;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.POLYGONM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.POLYGONZ;
                     break;
                 default:
@@ -331,13 +344,14 @@ public class JTSUtilities {
             }
         } else if (geom instanceof LineString || geom instanceof MultiLineString) {
             switch (shapeFileDimentions) {
-                case 2:
+                case "xy":
                     type = ShapeType.ARC;
                     break;
-                case 3:
+                case "xym":
                     type = ShapeType.ARCM;
                     break;
-                case 4:
+                case "xyz":
+                case "xyzm":
                     type = ShapeType.ARCZ;
                     break;
                 default:

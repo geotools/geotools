@@ -126,6 +126,7 @@ import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
+import org.locationtech.jts.densify.Densifier;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -203,6 +204,13 @@ public class Utils {
      */
     static final boolean OPTIMIZE_CROP;
 
+    /**
+     * Enables local reprojection for heterogeneous mosaics, in other words, when a coverage has heterogeneous crs
+     * granules, marks the reader as a reprojecting one, and the renderer will delegate target reprojection to it.
+     * (intentionally marked as non-final to help testing)
+     */
+    public static boolean HETEROGENEOUS_LOCAL_REPROJECT;
+
     static final double DEFAULT_LINESTRING_DECIMATION_SPAN = 0.8;
 
     static final int DEFAULT_COORDS_DECIMATION_THRESHOLD = 200;
@@ -218,6 +226,13 @@ public class Utils {
             OPTIMIZE_CROP = false;
         } else {
             OPTIMIZE_CROP = true;
+        }
+
+        String localReprojectProp = System.getProperty("org.geotools.imagemosaic.heterogeneousLocalReproject");
+        if (localReprojectProp != null && localReprojectProp.equalsIgnoreCase("FALSE")) {
+            HETEROGENEOUS_LOCAL_REPROJECT = false;
+        } else {
+            HETEROGENEOUS_LOCAL_REPROJECT = true;
         }
 
         try {
@@ -2421,24 +2436,24 @@ public class Utils {
             CoordinateReferenceSystem targetCRS,
             ReferencedEnvelope targetReferenceEnvelope)
             throws FactoryException, TransformException {
-        ProjectionHandler handler;
         CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
         if (targetReferenceEnvelope == null) {
             targetReferenceEnvelope = ReferencedEnvelope.reference(getCRSEnvelope(targetCRS));
+        } else if (CRS.isTransformationRequired(targetCRS, targetReferenceEnvelope.getCoordinateReferenceSystem())) {
+            targetReferenceEnvelope = reprojectEnvelope(targetReferenceEnvelope, targetCRS, null);
         }
-        if (targetReferenceEnvelope != null) {
-            handler = ProjectionHandlerFinder.getHandler(targetReferenceEnvelope, sourceCRS, true);
-        } else {
-            // cannot handle wrapping if we do not have a reference envelope, but
-            // cutting/adapting will still work
-            ReferencedEnvelope reference = new ReferencedEnvelope(targetCRS);
-            handler = ProjectionHandlerFinder.getHandler(reference, sourceCRS, false);
-        }
-
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(targetReferenceEnvelope, sourceCRS, true);
         if (handler != null) {
             MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
             Geometry footprint = JTS.toGeometry(sourceEnvelope);
-            Geometry preProcessed = handler.preProcess(footprint);
+            // similar to the envelope reprojection, use a 5-points densification on each side
+            Geometry densified = Densifier.densify(
+                    footprint,
+                    Math.min(
+                                    footprint.getEnvelopeInternal().getWidth(),
+                                    footprint.getEnvelopeInternal().getHeight())
+                            / 5);
+            Geometry preProcessed = handler.preProcess(densified);
             if (preProcessed == null) {
                 return null;
             }

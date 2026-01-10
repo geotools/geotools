@@ -101,7 +101,9 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             try {
                 code = CRS.lookupEpsgCode(crs, false);
                 // Let's switch the targetCRS to the requested one if supported
-                if (request.isUseAlternativeCRS() && rasterManager.hasAlternativeCRS(code)) {
+                if (response.isHeterogeneousCRS()
+                        && (Utils.HETEROGENEOUS_LOCAL_REPROJECT
+                                || (request.isUseAlternativeCRS() && rasterManager.hasAlternativeCRS(code)))) {
                     targetCRS = crs;
                 }
             } catch (IOException | FactoryException e) {

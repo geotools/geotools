@@ -323,7 +323,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                                 ExternalGraphicFactory factory = it.next();
                                 icon = factory.getIcon(null, expanded, eg.getFormat(), imageSize);
                             } catch (Exception e) {
-                                LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
+                                LOGGER.log(Level.WARNING, "Error occurred evaluating external graphic:" + location, e);
                             }
                         }
                     }

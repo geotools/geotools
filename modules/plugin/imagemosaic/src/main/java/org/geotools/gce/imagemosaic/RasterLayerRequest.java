@@ -322,8 +322,8 @@ public class RasterLayerRequest {
     private void computeRequestedGridGeometry() throws IOException {
         if (requestedGridGeometry != null) {
             if (heterogeneousCRS && !useAlternativeCRS) {
-                ReadPaddingCalculator paddingCalculator =
-                        new ReadPaddingCalculator(rasterManager.parentReader, interpolation, DEFAULT_PADDING);
+                ReadPaddingCalculator paddingCalculator = new ReadPaddingCalculator(
+                        rasterManager.parentReader, rasterManager.getName(), interpolation, DEFAULT_PADDING);
                 GridGeometry2D padded = paddingCalculator.padGridGeometry(requestedGridGeometry);
                 spatialRequestHelper.setRequestedGridGeometry(padded.toCanonical());
             } else {

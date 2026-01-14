@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.FalseFileFilter;
@@ -247,30 +248,34 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
         filesFilter = FileFilterUtils.or(filesFilter, FileFilterUtils.nameFileFilter("indexer.properties"));
 
         // exclude common extensions
-        Set<String> extensions = WorldImageFormat.getWorldExtension("png");
-        for (String ext : extensions) {
-            filesFilter = FileFilterUtils.and(
-                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
-        }
-        extensions = WorldImageFormat.getWorldExtension("gif");
-        for (String ext : extensions) {
-            filesFilter = FileFilterUtils.and(
-                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
-        }
-        extensions = WorldImageFormat.getWorldExtension("jpg");
-        for (String ext : extensions) {
-            filesFilter = FileFilterUtils.and(
-                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
-        }
-        extensions = WorldImageFormat.getWorldExtension("tiff");
-        for (String ext : extensions) {
-            filesFilter = FileFilterUtils.and(
-                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
-        }
-        extensions = WorldImageFormat.getWorldExtension("bmp");
-        for (String ext : extensions) {
-            filesFilter = FileFilterUtils.and(
-                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
+        try {
+            Set<String> extensions = WorldImageFormat.getWorldExtension("png");
+            for (String ext : extensions) {
+                filesFilter = FileFilterUtils.and(
+                        filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            }
+            extensions = WorldImageFormat.getWorldExtension("gif");
+            for (String ext : extensions) {
+                filesFilter = FileFilterUtils.and(
+                        filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            }
+            extensions = WorldImageFormat.getWorldExtension("jpg");
+            for (String ext : extensions) {
+                filesFilter = FileFilterUtils.and(
+                        filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            }
+            extensions = WorldImageFormat.getWorldExtension("tiff");
+            for (String ext : extensions) {
+                filesFilter = FileFilterUtils.and(
+                        filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            }
+            extensions = WorldImageFormat.getWorldExtension("bmp");
+            for (String ext : extensions) {
+                filesFilter = FileFilterUtils.and(
+                        filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            }
+        } catch (NoClassDefFoundError e) {
+            // the world image format might be excluded from the build, don't assume it's going to be around
         }
 
         // sdw

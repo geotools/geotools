@@ -39,12 +39,12 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.ReadPaddingCalculator;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.data.DataUtilities;
@@ -92,7 +92,7 @@ public class RasterLayerRequest {
 
     private boolean heterogeneousCRS = false;
 
-    private boolean useAlternativeCRS = false;
+    protected boolean useAlternativeCRS = false;
 
     RasterManager rasterManager;
 
@@ -290,8 +290,8 @@ public class RasterLayerRequest {
         spatialRequestHelper.compute();
     }
 
-    private void checkAlternativeCRSIsSupported() throws IOException {
-        if (heterogeneousCRS && useAlternativeCRS && requestedBounds != null) {
+    protected void checkAlternativeCRSIsSupported() throws IOException {
+        if (heterogeneousCRS && requestedBounds != null) {
             CoordinateReferenceSystem requestedCRS = requestedBounds.getCoordinateReferenceSystem();
             Integer requestedEpsgCode = null;
             try {
@@ -301,10 +301,11 @@ public class RasterLayerRequest {
                         "Exception occurred while looking for an " + "epsgCode on the provided crs: " + requestedCRS,
                         e);
             }
-            // Enable alternative CRS Output support only when the requested CRS doesn't match
-            // the coverage's one. In that case, proceed with the standard approach
-            if (!CRS.equalsIgnoreMetadata(requestedCRS, spatialRequestHelper.getReferenceCRS(false))
-                    && rasterManager.hasAlternativeCRS(requestedEpsgCode)) {
+            // Enable alternative CRS Output support in heterogeneous mode, unless explicitly disabled.
+            // In the latter case, see if the alternative CRS read parameter has been set (backwards compatibility)
+            if (heterogeneousCRS
+                    && !CRS.equalsIgnoreMetadata(requestedCRS, spatialRequestHelper.getReferenceCRS(false))
+                    && (Utils.HETEROGENEOUS_LOCAL_REPROJECT || rasterManager.hasAlternativeCRS(requestedEpsgCode))) {
                 // Initialize the alternativeCRS Output Coverage properties
                 spatialRequestHelper.setSupportingAlternativeCRSOutput(true);
                 CoverageProperties alternativeProperties = new CoverageProperties();
@@ -321,17 +322,9 @@ public class RasterLayerRequest {
     private void computeRequestedGridGeometry() throws IOException {
         if (requestedGridGeometry != null) {
             if (heterogeneousCRS && !useAlternativeCRS) {
-                GridEnvelope2D paddedRange = new GridEnvelope2D(requestedGridGeometry.getGridRange2D());
-                paddedRange.setBounds(
-                        paddedRange.x - DEFAULT_PADDING,
-                        paddedRange.y - DEFAULT_PADDING,
-                        paddedRange.width + DEFAULT_PADDING * 2,
-                        paddedRange.height + DEFAULT_PADDING * 2);
-
-                GridGeometry2D padded = new GridGeometry2D(
-                        paddedRange,
-                        requestedGridGeometry.getGridToCRS(),
-                        requestedGridGeometry.getCoordinateReferenceSystem());
+                ReadPaddingCalculator paddingCalculator =
+                        new ReadPaddingCalculator(rasterManager.parentReader, interpolation, DEFAULT_PADDING);
+                GridGeometry2D padded = paddingCalculator.padGridGeometry(requestedGridGeometry);
                 spatialRequestHelper.setRequestedGridGeometry(padded.toCanonical());
             } else {
                 // Do not apply any padding if we are going to produce output in requested CRS.

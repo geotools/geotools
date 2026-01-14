@@ -157,6 +157,12 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
         if (inProperties && currentProp != null) {
             --complexNestingLevel;
         }
+
+        if (delegate == NULL && inProperties && complexNestingLevel == 0) {
+            inProperties = false;
+            return true;
+        }
+
         if (complexNestingLevel > 0) {
             return true;
         }

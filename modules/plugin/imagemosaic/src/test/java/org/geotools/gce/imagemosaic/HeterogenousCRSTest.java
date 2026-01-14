@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -229,15 +230,13 @@ public class HeterogenousCRSTest {
         GridCoverage2D gc2d = imReader.read(finalParamsCollection.toArray(new GeneralParameterValue[] {}));
         assertEquals(CRS.toSRS(gc2d.getCoordinateReferenceSystem()), expectedCRS);
 
+        RenderedImage renderImage = gc2d.getRenderedImage();
         if (resultLocation != null) {
-            RenderedImage renderImage = gc2d.getRenderedImage();
             File resultsFile = testFile(resultLocation);
 
             // number 1000 was a bit arbitrary for differences, should account for small differences
-            // in
-            // interpolation and such, but not the reprojection of the blue tiff. Correct and
-            // incorrect
-            // images will be pretty similar anyway
+            // in interpolation and such, but not the reprojection of the blue tiff. Correct and
+            // incorrect images will be pretty similar anyway
             ImageAssert.assertEquals(resultsFile, renderImage, 1000);
         }
         imReader.dispose();
@@ -310,6 +309,72 @@ public class HeterogenousCRSTest {
         final String expectedResultLocation = "hetero_utm_results/full.png";
         assertExpectedMosaic(imReader, expectedResultLocation);
         imReader.dispose();
+    }
+
+    @Test
+    public void testReprojectingReader() throws Exception {
+        String testLocation = "hetero_utm";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        // ask for an output in web mercator, when the mosaic is in 4326
+        CoordinateReferenceSystem webMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope re = new ReferencedEnvelope(11, 13, -1, 1, WGS84).transform(webMercator, true);
+        ParameterValue<GridGeometry2D> ggParam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        GridEnvelope2D range = new GridEnvelope2D(0, 0, 512, 512);
+        GridGeometry2D gg = new GridGeometry2D(range, re);
+        ggParam.setValue(gg);
+
+        // read and check the CRS
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+        GridCoverage2D coverage = imReader.read(ggParam);
+        assertEquals(webMercator, coverage.getCoordinateReferenceSystem());
+
+        // Collect all the warp operations and make sure none is downstream of another one.
+        // In other words, make sure the warp from native to requested CRS is direct, without
+        // going through the mosaic CRS first then to requested CRS.
+        RenderedImage ri = coverage.getRenderedImage();
+        Set<RenderedOp> warps = new HashSet<>();
+        collectWarpOperations(ri, warps);
+        assertEquals(4, warps.size());
+        for (RenderedOp warp : warps) {
+            assertNull(getDownstreamWarp(warp.getSinks()));
+        }
+
+        imReader.dispose();
+    }
+
+    /**
+     * Returns the first downstream warp operation found, or null if none
+     *
+     * @param sinks the sinks to explore
+     * @return the warp operation or null
+     */
+    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+    private RenderedOp getDownstreamWarp(Vector sinks) {
+        if (sinks != null) {
+            for (RenderedOp sink : (Vector<RenderedOp>) sinks) {
+                if (sink.getOperationName().equals("Warp")) {
+                    return sink;
+                }
+                return getDownstreamWarp(sink.getSinks());
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void collectWarpOperations(RenderedImage ri, Set<RenderedOp> warps) {
+        if (ri instanceof RenderedOp op) {
+            if (op.getOperationName().equals("Warp")) {
+                warps.add(op);
+            }
+            op.getSources().forEach(s -> collectWarpOperations((RenderedOp) s, warps));
+        }
     }
 
     @Test
@@ -803,26 +868,6 @@ public class HeterogenousCRSTest {
         ParameterValue<GridGeometry2D> ggParam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(readingGridGeometry);
 
-        GridCoverage2D gc = imReader.read(new GeneralParameterValue[] {ggParam});
-
-        // Check that we get back ImageMosaic on its "common" CRS (4326)
-        CoordinateReferenceSystem wgs84 = DefaultGeographicCRS.WGS84;
-        assertTrue(CRS.equalsIgnoreMetadata(wgs84, gc.getCoordinateReferenceSystem()));
-        RenderedImage ri = gc.getRenderedImage();
-        Map<String, Set<RenderedOp>> operationsGroups = new HashMap<>();
-        groupOperations(ri, operationsGroups);
-
-        Set<RenderedOp> imageReads = operationsGroups.get("ImageRead");
-        int granulesRead = imageReads.size();
-        // All the 3 granules have been reprojected
-        assertEquals(3, granulesRead);
-        assertEquals(granulesRead, operationsGroups.get("Warp").size());
-        gc.dispose(true);
-
-        //
-        // Repeat the TEST by setting the flag to provide the output in alternative CRS.
-        //
-
         // Test the metadata value
         String epsgCodes = imReader.getMetadataValue(AbstractGridCoverage2DReader.MULTICRS_EPSGCODES);
 
@@ -832,7 +877,7 @@ public class HeterogenousCRSTest {
 
         ParameterValue<Boolean> useAlternativeCRS = ImageMosaicFormat.OUTPUT_TO_ALTERNATIVE_CRS.createValue();
         useAlternativeCRS.setValue(true);
-        gc = imReader.read(new GeneralParameterValue[] {ggParam, useAlternativeCRS});
+        GridCoverage2D gc = imReader.read(new GeneralParameterValue[] {ggParam, useAlternativeCRS});
 
         // Check that the output is in the requested CRS (no 4326 anymore)
         assertTrue(CRS.equalsIgnoreMetadata(utmZone32N, gc.getCoordinateReferenceSystem()));
@@ -844,14 +889,14 @@ public class HeterogenousCRSTest {
         assertEquals(1000, XAffineTransform.getScaleX0(tx), DELTA);
         assertEquals(1000, XAffineTransform.getScaleY0(tx), DELTA);
 
-        ri = gc.getRenderedImage();
-        operationsGroups.clear();
+        RenderedImage ri = gc.getRenderedImage();
+        Map<String, Set<RenderedOp>> operationsGroups = new HashMap<>();
         groupOperations(ri, operationsGroups);
         // Check that all the 3 granules have been read but only 2
         // of them have been warped
-        imageReads = operationsGroups.get("ImageRead");
+        Set<RenderedOp> imageReads = operationsGroups.get("ImageRead");
         Set<RenderedOp> warps = operationsGroups.get("Warp");
-        granulesRead = imageReads.size();
+        int granulesRead = imageReads.size();
         assertEquals(3, granulesRead);
         assertEquals(2, warps.size());
         for (RenderedOp warp : warps) {

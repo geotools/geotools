@@ -793,10 +793,11 @@ public class RasterLayerResponse {
         if (rasterBounds.height == 0) rasterBounds.height++;
         if (oversampledRequest) rasterBounds.grow(2, 2);
 
-        // make sure the expanded bounds are still within the reach of the granule bounds, not
-        // larger
+        // make sure the expanded bounds are still within the reach of the granule bounds, not larger
         // (the above expansion might have made them so)
-        if (!request.spatialRequestHelper.isSupportingAlternativeCRSOutput()) {
+        if (!(request.isHeterogeneousGranules()
+                && (request.spatialRequestHelper.isSupportingAlternativeCRSOutput()
+                        || Utils.HETEROGENEOUS_LOCAL_REPROJECT))) {
             final GeneralBounds levelRasterArea_ =
                     CRS.transform(finalWorldToGridCorner, request.spatialRequestHelper.getCoverageBBox());
             final GridEnvelope2D levelRasterArea =
@@ -875,9 +876,9 @@ public class RasterLayerResponse {
         if (cropBBOX != null) {
             queryBBox = ReferencedEnvelope.reference(cropBBOX);
             mosaicBBox = queryBBox;
-            if (request.spatialRequestHelper.isSupportingAlternativeCRSOutput()) {
-                // When supporting Output in alternative CRS
-                // BBOX for query and BBOX for computations are different
+            if (request.spatialRequestHelper.isSupportingAlternativeCRSOutput()
+                    || Utils.HETEROGENEOUS_LOCAL_REPROJECT) {
+                // When supporting output in alternative CRS BBOX for query and BBOX for computations are different
                 mosaicBBox = ReferencedEnvelope.reference(request.spatialRequestHelper.getComputedBBox(true));
             }
         } else {
@@ -1374,17 +1375,16 @@ public class RasterLayerResponse {
         RasterManager manager = originalRasterManager.getForGranuleCRS(
                 request,
                 templateDescriptor,
-                this.mosaicBBox,
-                originalRequest.spatialRequestHelper.isSupportingAlternativeCRSOutput()
+                mosaicBBox,
+                (originalRequest.spatialRequestHelper.isSupportingAlternativeCRSOutput()
+                                || Utils.HETEROGENEOUS_LOCAL_REPROJECT)
                         ? this.queryBBox
                         : this.mosaicBBox);
         RasterLayerRequest request = new RasterLayerRequest(originalRequest.getParams(), manager) {
             @Override
             protected ReferencedEnvelope computeCoverageBoundingBox(RasterManager rasterManager) throws IOException {
-                // in case of filtering we are re-computing the bbox from the data, it gets
-                // back in the mosaic CRS instead of the desired one. Force it to use the
-                // whole
-                // thing, we already used the filter
+                // in case of filtering we are re-computing the bbox from the data, it gets back in the mosaic CRS
+                // instead of the desired one. Force it to use the whole thing, we already used the filter
                 // TODO: add projection handler support
                 if (filter != null && !Filter.INCLUDE.equals(filter)) {
                     // limit it to the filtered granules bounding box by full enumeration,
@@ -1413,13 +1413,20 @@ public class RasterLayerResponse {
                         } catch (TransformException | FactoryException e) {
                             LOGGER.log(
                                     Level.FINE,
-                                    "Could not transform filtered envelope into target granule CRS, falling back on mosaic");
+                                    "Could not transform filtered envelope into target granule CRS, falling back on"
+                                            + " mosaic");
                         }
                     }
                 }
 
                 // fallback
                 return rasterManager.spatialDomainManager.coverageBBox;
+            }
+
+            @Override
+            protected void checkAlternativeCRSIsSupported() {
+                // this is already reprojected, we don't use the alternative CRS any longer
+                this.useAlternativeCRS = false;
             }
         };
         // if the output needs to have transparent footprint behavior, we need to preserve the

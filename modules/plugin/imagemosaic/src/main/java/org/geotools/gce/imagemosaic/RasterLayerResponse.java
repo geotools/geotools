@@ -723,7 +723,7 @@ public class RasterLayerResponse {
                 rasterManager.getGranuleDescriptors(query, dryRunVisitor);
                 if (dryRunVisitor.granulesNumber > 0) {
                     LOGGER.fine(
-                            "Dry run got a target granule, returning null as the additional filters did filter all the  granules out");
+                            "Dry run got a target granule, returning null as the additional filters did filter all the granules out");
                     // It means the previous lack of granule was due to a filter excluding all the
                     // results. Then we return null
                     return null;

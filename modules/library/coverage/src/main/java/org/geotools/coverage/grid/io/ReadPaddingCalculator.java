@@ -17,6 +17,7 @@
 package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.imagen.Interpolation;
@@ -45,15 +46,29 @@ public class ReadPaddingCalculator {
     private final int padding;
     private final GridCoverage2DReader reader;
     private final Interpolation interpolation;
+    private final String coverageName;
 
-    public ReadPaddingCalculator(GridCoverage2DReader reader, Interpolation interpolation) {
+    public ReadPaddingCalculator(GridCoverage2DReader reader, Interpolation interpolation) throws IOException {
         this(reader, interpolation, DEFAULT_PADDING);
     }
 
-    public ReadPaddingCalculator(GridCoverage2DReader reader, Interpolation interpolation, int padding) {
+    public ReadPaddingCalculator(GridCoverage2DReader reader, Interpolation interpolation, int padding)
+            throws IOException {
+        this(reader, null, interpolation, padding);
+    }
+
+    public ReadPaddingCalculator(
+            GridCoverage2DReader reader, String coverageName, Interpolation interpolation, int padding)
+            throws IOException {
         this.reader = reader;
         this.interpolation = interpolation;
         this.padding = padding;
+        if (coverageName == null)
+            coverageName = Optional.ofNullable(reader.getGridCoverageNames())
+                    .filter(names -> names.length > 0)
+                    .map(names -> names[0])
+                    .orElse(null);
+        this.coverageName = coverageName;
     }
 
     /**
@@ -91,9 +106,9 @@ public class ReadPaddingCalculator {
      * the interpolation might need a few pixels, which might be thousands of pixels at the rendering resolution
      */
     private int[] computeRenderingPaddings(GridGeometry2D requestedGridGeometry) throws IOException {
-        MathTransform originalGridToWorld = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        MathTransform originalGridToWorld = reader.getOriginalGridToWorld(coverageName, PixelInCell.CELL_CORNER);
         int[] paddings = {this.padding, this.padding};
-        double[][] levels = reader.getResolutionLevels();
+        double[][] levels = reader.getResolutionLevels(coverageName);
 
         // cases where the calculation cannot be performed
         if (!(originalGridToWorld instanceof AffineTransform2D)
@@ -103,7 +118,7 @@ public class ReadPaddingCalculator {
         // scale up padding factors if needed
         ReferencedEnvelope mapExtent = ReferencedEnvelope.reference(requestedGridGeometry.getEnvelope());
         try {
-            CoordinateReferenceSystem readerCRS = reader.getCoordinateReferenceSystem();
+            CoordinateReferenceSystem readerCRS = reader.getCoordinateReferenceSystem(coverageName);
             ReadResolutionCalculator cc = new ReadResolutionCalculator(requestedGridGeometry, readerCRS, levels[0]);
             double[] requestedRes = cc.computeRequestedResolution(mapExtent.transform(readerCRS, true));
             double[] nativeRes = levels[0];

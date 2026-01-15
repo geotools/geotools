@@ -29,6 +29,6 @@ public class MongoTestUtil {
     }
 
     public static String prettyPrint(String json) {
-        return new GsonBuilder().setPrettyPrinting().create().toJson(new JsonParser().parse(json));
+        return new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(json));
     }
 }

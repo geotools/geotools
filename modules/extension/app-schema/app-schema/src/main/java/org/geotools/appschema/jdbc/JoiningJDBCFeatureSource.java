@@ -153,7 +153,14 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     }
 
     /** Create order by field for specific table name */
-    protected void sort(String typeName, String alias, SortBy[] sort, Set<String> orderByFields, StringBuffer sql)
+    protected void sort(
+            JoiningQuery query,
+            String typeName,
+            String schemaName,
+            String alias,
+            SortBy[] sort,
+            Set<String> orderByFields,
+            StringBuffer sql)
             throws IOException, SQLException {
         for (SortBy sortBy : sort) {
             if (SortBy.NATURAL_ORDER.equals(sortBy) || SortBy.REVERSE_ORDER.equals(sortBy)) {
@@ -163,7 +170,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 if (alias != null) {
                     encodeColumnName2(sortBy.getPropertyName().getPropertyName(), alias, mySql, null);
                 } else {
-                    encodeColumnName(sortBy.getPropertyName().getPropertyName(), typeName, mySql, null);
+                    encodeColumnName(sortBy.getPropertyName().getPropertyName(), typeName, schemaName, mySql, null);
                 }
                 if (!mySql.toString().isEmpty() && orderByFields.add(mySql.toString())) {
                     // if it's not already in ORDER BY (because you can't have duplicate column
@@ -185,9 +192,10 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         // GEOT-4554: sort by PK if idExpression is not there
         if (sort.length == 0) {
             PrimaryKey joinKey = null;
-            SimpleFeatureType joinFeatureType = getDataStore().getSchema(typeName);
+            SimpleFeatureType joinFeatureType = resolveFeatureType(query, typeName, schemaName);
             try {
-                joinKey = getDataStore().getPrimaryKey(joinFeatureType);
+                JDBCDataStore store = resolveDataStore(query, typeName, schemaName);
+                joinKey = store.getPrimaryKey(joinFeatureType);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -196,7 +204,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 if (alias != null) {
                     encodeColumnName2(col.getName(), alias, mySql, null);
                 } else {
-                    encodeColumnName(col.getName(), typeName, mySql, null);
+                    encodeColumnName(col.getName(), typeName, schemaName, mySql, null);
                 }
                 if (!mySql.toString().isEmpty() && orderByFields.add(mySql.toString())) {
                     // if it's not already in ORDER BY (because you can't have duplicate column
@@ -215,14 +223,24 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     }
 
     protected void addMultiValuedSort(
-            String tableName, Set<String> orderByFields, JoiningQuery.QueryJoin join, StringBuffer sql)
+            JoiningQuery query,
+            String tableName,
+            Set<String> orderByFields,
+            JoiningQuery.QueryJoin join,
+            StringBuffer sql)
             throws IOException, FilterToSQLException, SQLException {
 
         StringBuffer field2 = new StringBuffer();
-        encodeColumnName(join.getForeignKeyName().toString(), join.getJoiningTypeName(), field2, null);
+        String joinSchema = resolveSchemaForJoin(query, join);
+        JDBCDataStore joinStore = resolveDataStore(query, join.getJoiningTypeName(), joinSchema);
+        joinSchema = effectiveSchema(joinStore, joinSchema);
+        encodeColumnName(join.getForeignKeyName().toString(), join.getJoiningTypeName(), joinSchema, field2, null);
 
         StringBuffer field1 = new StringBuffer();
-        encodeColumnName(join.getJoiningKeyName().toString(), tableName, field1, null);
+        String tableSchema = resolveSchemaForTypeName(query, tableName);
+        JDBCDataStore tableStore = resolveDataStore(query, tableName, tableSchema);
+        tableSchema = effectiveSchema(tableStore, tableSchema);
+        encodeColumnName(join.getJoiningKeyName().toString(), tableName, tableSchema, field1, null);
 
         if (orderByFields.add(field1.toString()) && orderByFields.add(field2.toString())) {
             // check that they don't already exists in ORDER BY because duplicate column names
@@ -249,10 +267,14 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
             if (sort != null) {
                 if (j < 0) {
-                    sort(query.getTypeName(), null, sort, orderByFields, joinOrders);
+                    String rootSchema = resolveSchemaForTypeName(query, query.getTypeName());
+                    JDBCDataStore rootStore = resolveDataStore(query, query.getTypeName(), rootSchema);
+                    rootSchema = effectiveSchema(rootStore, rootSchema);
+                    sort(query, query.getTypeName(), rootSchema, null, sort, orderByFields, joinOrders);
 
                     if (query.getQueryJoins() != null && !query.getQueryJoins().isEmpty()) {
                         addMultiValuedSort(
+                                query,
                                 query.getTypeName(),
                                 orderByFields,
                                 query.getQueryJoins().get(0),
@@ -268,7 +290,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         for (String pk : pkColumnNames) {
 
                             StringBuffer pkSql = new StringBuffer();
-                            encodeColumnName(pk, query.getTypeName(), pkSql, null);
+                            encodeColumnName(pk, query.getTypeName(), rootSchema, pkSql, null);
 
                             if (!pkSql.toString().isEmpty() && orderByFields.add(pkSql.toString())) {
                                 sql.append(", ");
@@ -277,13 +299,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         }
                     }
                 } else {
+                    String joinSchema = resolveSchemaForJoin(query, join);
+                    JDBCDataStore joinStore = resolveDataStore(query, join.getJoiningTypeName(), joinSchema);
+                    joinSchema = effectiveSchema(joinStore, joinSchema);
                     if (aliases != null && aliases[j] != null) {
-                        sort(join.getJoiningTypeName(), aliases[j], sort, orderByFields, joinOrders);
+                        sort(query, join.getJoiningTypeName(), joinSchema, aliases[j], sort, orderByFields, joinOrders);
                     } else {
-                        sort(join.getJoiningTypeName(), null, sort, orderByFields, joinOrders);
+                        sort(query, join.getJoiningTypeName(), joinSchema, null, sort, orderByFields, joinOrders);
                     }
                     if (query.getQueryJoins().size() > j + 1) {
                         addMultiValuedSort(
+                                query,
                                 join.getJoiningTypeName(),
                                 orderByFields,
                                 query.getQueryJoins().get(j + 1),
@@ -297,7 +323,13 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     /** Encode column name with table name included. */
     public void encodeColumnName(String colName, String typeName, StringBuffer sql, Hints hints) throws SQLException {
 
-        getDataStore().encodeTableName(typeName, sql, hints);
+        encodeColumnName(colName, typeName, null, sql, hints);
+    }
+
+    /** Encode column name with table name included and optional schema override. */
+    public void encodeColumnName(String colName, String typeName, String schemaName, StringBuffer sql, Hints hints)
+            throws SQLException {
+        encodeTableName(typeName, schemaName, sql, hints);
         sql.append(".");
         getDataStore().dialect.encodeColumnName(null, colName, sql);
     }
@@ -310,20 +342,256 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         getDataStore().dialect.encodeColumnName(null, colName, sql);
     }
 
-    /** Craete the filter to sql converter */
+    private void encodeTableName(String typeName, String schemaName, StringBuffer sql, Hints hints)
+            throws SQLException {
+        if (schemaName == null) {
+            getDataStore().encodeTableName(typeName, sql, hints);
+            return;
+        }
+        SQLDialect dialect = getDataStore().getSQLDialect();
+        dialect.encodeSchemaName(schemaName, sql);
+        sql.append(".");
+        dialect.encodeTableName(typeName, sql);
+    }
+
+    private void encodeAliasedTableName(String typeName, String schemaName, StringBuffer sql, Hints hints, String alias)
+            throws SQLException {
+        if (schemaName == null) {
+            getDataStore().encodeAliasedTableName(typeName, sql, hints, alias);
+            return;
+        }
+        SQLDialect dialect = getDataStore().getSQLDialect();
+        dialect.encodeSchemaName(schemaName, sql);
+        sql.append(".");
+        dialect.encodeTableName(typeName, sql);
+        if (alias != null) {
+            dialect.encodeTableAlias(alias, sql);
+        }
+    }
+
+    private String resolveSchemaForTypeName(JoiningQuery query, String typeName) {
+        if (!AppSchemaDataAccessConfigurator.isCrossSchemaJoiningEnabled() || query == null || typeName == null) {
+            return null;
+        }
+        FeatureTypeMapping rootMapping = query.getRootMapping();
+        if (matchesTypeName(rootMapping, typeName)) {
+            return rootMapping.getSourceDatabaseSchema();
+        }
+        for (QueryJoin join : query.getQueryJoins()) {
+            if (!typeName.equals(join.getJoiningTypeName())) {
+                continue;
+            }
+            FeatureTypeMapping joinRoot = join.getRootMapping();
+            if (matchesTypeName(joinRoot, typeName)) {
+                if (joinRoot.getSourceDatabaseSchema() != null) {
+                    return joinRoot.getSourceDatabaseSchema();
+                }
+            }
+            if (join.getJoiningTypeSchema() != null) {
+                return join.getJoiningTypeSchema();
+            }
+        }
+        return null;
+    }
+
+    private String resolveSchemaForJoin(JoiningQuery query, QueryJoin join) {
+        if (!AppSchemaDataAccessConfigurator.isCrossSchemaJoiningEnabled() || join == null) {
+            return null;
+        }
+        FeatureTypeMapping mapping = join.getRootMapping();
+        if (mapping != null
+                && mapping.getSourceDatabaseSchema() != null
+                && matchesTypeName(mapping, join.getJoiningTypeName())) {
+            return mapping.getSourceDatabaseSchema();
+        }
+        if (join.getJoiningTypeSchema() != null) {
+            return join.getJoiningTypeSchema();
+        }
+        return resolveSchemaForTypeName(query, join.getJoiningTypeName());
+    }
+
+    private FeatureTypeMapping resolveMappingForTypeName(JoiningQuery query, String typeName, String schema) {
+        if (query == null || typeName == null) {
+            return null;
+        }
+        FeatureTypeMapping rootMapping = query.getRootMapping();
+        if (matchesTypeName(rootMapping, typeName) && schemaMatches(rootMapping, schema)) {
+            return rootMapping;
+        }
+        for (QueryJoin join : query.getQueryJoins()) {
+            FeatureTypeMapping mapping = join.getRootMapping();
+            if (matchesTypeName(mapping, typeName) && schemaMatches(mapping, schema)) {
+                return mapping;
+            }
+        }
+        return null;
+    }
+
+    private FeatureTypeMapping resolveFilterRootMapping(JoiningQuery query, String typeName, String schema) {
+        // For nested/chained queries, prefer the mapping attached to the query join.
+        // The query root mapping may point to the nested target (same source table, different
+        // target type), which cannot encode root-level nested filters correctly.
+        FeatureTypeMapping mapping = resolveJoinMappingForTypeName(query, typeName, schema);
+        if (mapping == null && schema != null) {
+            mapping = resolveJoinMappingForTypeName(query, typeName, null);
+        }
+        if (mapping != null) {
+            return mapping;
+        }
+
+        mapping = resolveMappingForTypeName(query, typeName, schema);
+        if (mapping == null && schema != null) {
+            mapping = resolveMappingForTypeName(query, typeName, null);
+        }
+        if (mapping != null) {
+            return mapping;
+        }
+        return query != null ? query.getRootMapping() : null;
+    }
+
+    private FeatureTypeMapping resolveJoinMappingForTypeName(JoiningQuery query, String typeName, String schema) {
+        if (query == null || query.getQueryJoins() == null) {
+            return null;
+        }
+        for (QueryJoin join : query.getQueryJoins()) {
+            FeatureTypeMapping mapping = join.getRootMapping();
+            if (matchesTypeName(mapping, typeName) && schemaMatches(mapping, schema)) {
+                return mapping;
+            }
+        }
+        return null;
+    }
+
+    private boolean schemaMatches(FeatureTypeMapping mapping, String schema) {
+        if (schema == null) {
+            return true;
+        }
+        if (mapping == null) {
+            return false;
+        }
+        String mappingSchema = mapping.getSourceDatabaseSchema();
+        if (mappingSchema != null) {
+            return schema.equalsIgnoreCase(mappingSchema);
+        }
+        JDBCDataStore mappingStore = getMappingDataStore(mapping);
+        String defaultSchema = mappingStore != null ? mappingStore.getDatabaseSchema() : null;
+        return defaultSchema != null && schema.equalsIgnoreCase(defaultSchema);
+    }
+
+    private JDBCDataStore getMappingDataStore(FeatureTypeMapping mapping) {
+        if (mapping == null || mapping.getSource() == null) {
+            return null;
+        }
+        if (mapping.getSource() instanceof JDBCFeatureSource) {
+            return ((JDBCFeatureSource) mapping.getSource()).getDataStore();
+        }
+        if (mapping.getSource() instanceof JDBCFeatureStore) {
+            return ((JDBCFeatureStore) mapping.getSource()).getDataStore();
+        }
+        return null;
+    }
+
+    private boolean matchesTypeName(FeatureTypeMapping mapping, String typeName) {
+        if (mapping == null
+                || mapping.getSource() == null
+                || mapping.getSource().getSchema() == null) {
+            return false;
+        }
+        return typeName.equals(mapping.getSource().getSchema().getName().getLocalPart());
+    }
+
+    private SimpleFeatureType resolveFeatureType(JoiningQuery query, String typeName, String schema)
+            throws IOException {
+        FeatureTypeMapping mapping = resolveMappingForTypeName(query, typeName, schema);
+        if (mapping == null && schema != null) {
+            mapping = resolveMappingForTypeName(query, typeName, null);
+        }
+        if (mapping != null
+                && mapping.getSource() != null
+                && mapping.getSource().getSchema() instanceof SimpleFeatureType) {
+            return (SimpleFeatureType) mapping.getSource().getSchema();
+        }
+        return resolveDataStore(query, typeName, schema).getSchema(typeName);
+    }
+
+    private JDBCDataStore resolveDataStore(JoiningQuery query, String typeName, String schema) {
+        FeatureTypeMapping mapping = resolveMappingForTypeName(query, typeName, schema);
+        if (mapping == null && schema != null) {
+            mapping = resolveMappingForTypeName(query, typeName, null);
+        }
+        if (mapping != null && mapping.getSource() instanceof JDBCFeatureSource) {
+            return ((JDBCFeatureSource) mapping.getSource()).getDataStore();
+        }
+        if (mapping != null && mapping.getSource() instanceof JDBCFeatureStore) {
+            return ((JDBCFeatureStore) mapping.getSource()).getDataStore();
+        }
+        return getDataStore();
+    }
+
+    private String normalizeSchema(JDBCDataStore store, String schema) {
+        if (schema == null || store == null) {
+            return schema;
+        }
+        String defaultSchema = store.getDatabaseSchema();
+        if (defaultSchema != null && defaultSchema.equalsIgnoreCase(schema)) {
+            return null;
+        }
+        return schema;
+    }
+
+    /**
+     * Computes schema to be used in SQL serialization for a table owned by {@code owningStore}.
+     *
+     * <p>When joining tables coming from a different source store than this feature source, a null schema would cause
+     * table encoding to fallback to this datastore default schema. In that case we force the owning store default
+     * schema to keep table qualification correct.
+     */
+    private String effectiveSchema(JDBCDataStore owningStore, String schema) {
+        String normalized = normalizeSchema(owningStore, schema);
+        if (normalized != null || owningStore == null || owningStore == getDataStore()) {
+            return normalized;
+        }
+        String owningDefault = owningStore.getDatabaseSchema();
+        String currentDefault = getDataStore().getDatabaseSchema();
+        if (owningDefault != null && (currentDefault == null || !owningDefault.equalsIgnoreCase(currentDefault))) {
+            return owningDefault;
+        }
+        return null;
+    }
+
+    /** Create the filter to SQL converter. */
     protected FilterToSQL createFilterToSQL(SimpleFeatureType ft) {
         return createFilterToSQL(ft, true);
     }
 
-    /** Craete the filter to sql converter */
+    /** Create the filter to SQL converter. */
     protected FilterToSQL createFilterToSQL(SimpleFeatureType ft, boolean usePreparedStatementParameters) {
-        if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
-            PreparedFilterToSQL pfsql = getDataStore().createPreparedFilterToSQL(ft);
+        return createFilterToSQL(getDataStore(), ft, usePreparedStatementParameters);
+    }
+
+    protected FilterToSQL createFilterToSQL(
+            JDBCDataStore store, SimpleFeatureType ft, boolean usePreparedStatementParameters) {
+        if (store.getSQLDialect() instanceof PreparedStatementSQLDialect) {
+            PreparedFilterToSQL pfsql = store.createPreparedFilterToSQL(ft);
             pfsql.setPrepareEnabled(usePreparedStatementParameters);
             return pfsql;
         } else {
-            return getDataStore().createFilterToSQL(ft);
+            return store.createFilterToSQL(ft);
         }
+    }
+
+    protected FilterToSQL createFilterToSQL(
+            SimpleFeatureType ft, boolean usePreparedStatementParameters, String schemaName) {
+        return createFilterToSQL(getDataStore(), ft, usePreparedStatementParameters, schemaName);
+    }
+
+    protected FilterToSQL createFilterToSQL(
+            JDBCDataStore store, SimpleFeatureType ft, boolean usePreparedStatementParameters, String schemaName) {
+        FilterToSQL toSQL = createFilterToSQL(store, ft, usePreparedStatementParameters);
+        if (schemaName != null) {
+            toSQL.setDatabaseSchema(schemaName);
+        }
+        return toSQL;
     }
 
     protected static String createAlias(String typeName, Set<String> tableNames) {
@@ -369,6 +637,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             AtomicReference<PreparedFilterToSQL> toSQLref,
             boolean isCount)
             throws IOException, SQLException, FilterToSQLException {
+        sanitizeJoinIds(query);
 
         // first we create from clause, for aliases
 
@@ -378,6 +647,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         Set<String> tableNames = new HashSet<>();
 
         String lastTypeName = featureType.getTypeName();
+        String lastTypeSchema = resolveSchemaForTypeName(query, lastTypeName);
         String curTypeName = lastTypeName;
 
         String[] aliases = null;
@@ -395,16 +665,28 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
                 joinClause.append(" INNER JOIN ");
 
-                FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(lastTypeName), toSQLref != null);
-                FilterToSQL toSQL2 =
-                        createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()), toSQLref != null);
+                JDBCDataStore lastStore = resolveDataStore(query, lastTypeName, lastTypeSchema);
+                String normalizedLastTypeSchema = effectiveSchema(lastStore, lastTypeSchema);
+                FilterToSQL toSQL1 = createFilterToSQL(
+                        lastStore,
+                        resolveFeatureType(query, lastTypeName, lastTypeSchema),
+                        toSQLref != null,
+                        normalizedLastTypeSchema);
+                String joinSchema = resolveSchemaForJoin(query, join);
+                JDBCDataStore joinStore = resolveDataStore(query, join.getJoiningTypeName(), joinSchema);
+                String normalizedJoinSchema = effectiveSchema(joinStore, joinSchema);
+                FilterToSQL toSQL2 = createFilterToSQL(
+                        joinStore,
+                        resolveFeatureType(query, join.getJoiningTypeName(), joinSchema),
+                        toSQLref != null,
+                        normalizedJoinSchema);
 
                 if (tableNames.contains(join.getJoiningTypeName())) {
                     alias = createAlias(join.getJoiningTypeName(), tableNames);
 
                     aliases[i] = alias;
 
-                    getDataStore().encodeTableName(join.getJoiningTypeName(), joinClause, query.getHints());
+                    encodeTableName(join.getJoiningTypeName(), normalizedJoinSchema, joinClause, query.getHints());
                     joinClause.append(" ");
                     getDataStore().dialect.encodeTableName(alias, joinClause);
                     joinClause.append(" ON ( ");
@@ -414,7 +696,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
                 } else {
                     aliases[i] = null;
-                    getDataStore().encodeTableName(join.getJoiningTypeName(), joinClause, query.getHints());
+                    encodeTableName(join.getJoiningTypeName(), normalizedJoinSchema, joinClause, query.getHints());
                     joinClause.append(" ON ( ");
                     toSQL2.setFieldEncoder(new JoiningFieldEncoder(join.getJoiningTypeName(), getDataStore()));
                     joinClause.append(toSQL2.encodeToString(join.getForeignKeyName()));
@@ -426,6 +708,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 joinClause.append(toSQL1.encodeToString(join.getJoiningKeyName()));
                 joinClause.append(") ");
                 lastTypeName = join.getJoiningTypeName();
+                lastTypeSchema = normalizedJoinSchema;
                 curTypeName = aliases[i] == null ? lastTypeName : aliases[i];
 
                 tableNames.add(curTypeName);
@@ -435,11 +718,14 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         // begin sql
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
+        String featureTypeSchema = resolveSchemaForTypeName(query, featureType.getTypeName());
+        JDBCDataStore featureStore = resolveDataStore(query, featureType.getTypeName(), featureTypeSchema);
+        featureTypeSchema = effectiveSchema(featureStore, featureTypeSchema);
 
         // primary key
-        Set<String> pkColumnNames = getAllPrimaryKeys(featureType);
+        Set<String> pkColumnNames = getAllPrimaryKeys(featureStore, featureType);
         for (String colName : pkColumnNames) {
-            encodeColumnName(colName, featureType.getTypeName(), sql, query.getHints());
+            encodeColumnName(colName, featureType.getTypeName(), featureTypeSchema, sql, query.getHints());
             sql.append(",");
         }
         Set<String> lastPkColumnNames = pkColumnNames;
@@ -457,7 +743,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 // alias it to be the name of the original geometry
                 getDataStore().dialect.encodeColumnAlias(columnName, sql);
             } else {
-                encodeColumnName(columnName, featureType.getTypeName(), sql, query.getHints());
+                encodeColumnName(columnName, featureType.getTypeName(), featureTypeSchema, sql, query.getHints());
             }
 
             sql.append(",");
@@ -475,9 +761,14 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                                         query.getQueryJoins().get(i).getIds().get(j),
                                         sql);
                     } else {
+                        QueryJoin queryJoin = query.getQueryJoins().get(i);
+                        String joinSchema = resolveSchemaForJoin(query, queryJoin);
+                        JDBCDataStore joinStore = resolveDataStore(query, queryJoin.getJoiningTypeName(), joinSchema);
+                        String normalizedJoinSchema = effectiveSchema(joinStore, joinSchema);
                         encodeColumnName(
-                                query.getQueryJoins().get(i).getIds().get(j),
-                                query.getQueryJoins().get(i).getJoiningTypeName(),
+                                queryJoin.getIds().get(j),
+                                queryJoin.getJoiningTypeName(),
+                                normalizedJoinSchema,
                                 sql,
                                 query.getHints());
                     }
@@ -486,11 +777,15 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 // GEOT-4554: handle PK as default idExpression
                 if (ids.isEmpty()) {
                     PrimaryKey joinKey = null;
-                    String joinTypeName = query.getQueryJoins().get(i).getJoiningTypeName();
-                    SimpleFeatureType joinFeatureType = getDataStore().getSchema(joinTypeName);
+                    QueryJoin queryJoin = query.getQueryJoins().get(i);
+                    String joinTypeName = queryJoin.getJoiningTypeName();
+                    String joinSchema = resolveSchemaForJoin(query, queryJoin);
+                    SimpleFeatureType joinFeatureType = resolveFeatureType(query, joinTypeName, joinSchema);
+                    JDBCDataStore store = resolveDataStore(query, joinTypeName, joinSchema);
+                    String normalizedJoinSchema = effectiveSchema(store, joinSchema);
 
                     try {
-                        joinKey = getDataStore().getPrimaryKey(joinFeatureType);
+                        joinKey = store.getPrimaryKey(joinFeatureType);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -502,7 +797,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         if (aliases[i] != null) {
                             getDataStore().dialect.encodeColumnName(aliases[i], col.getName(), sql);
                         } else {
-                            encodeColumnName(col.getName(), joinTypeName, sql, query.getHints());
+                            encodeColumnName(col.getName(), joinTypeName, normalizedJoinSchema, sql, query.getHints());
                         }
                         query.getQueryJoins().get(i).addId(col.getName());
                         sql.append(" ").append(FOREIGN_ID + "_" + i + "_" + j).append(",");
@@ -515,7 +810,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         if (!query.hasIdColumn() && !pkColumnNames.isEmpty()) {
             int pkIndex = 0;
             for (String pk : pkColumnNames) {
-                encodeColumnName(pk, featureType.getTypeName(), sql, query.getHints());
+                encodeColumnName(pk, featureType.getTypeName(), featureTypeSchema, sql, query.getHints());
                 sql.append(" ").append(PRIMARY_KEY).append("_").append(pkIndex).append(",");
                 pkIndex++;
             }
@@ -525,7 +820,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
         sql.append(" FROM ");
 
-        getDataStore().encodeTableName(featureType.getTypeName(), sql, query.getHints());
+        encodeTableName(featureType.getTypeName(), featureTypeSchema, sql, query.getHints());
 
         // filtering
         FilterToSQL toSQL = null;
@@ -568,7 +863,22 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                                 ? lastTableName
                                 : aliases[query.getQueryJoins().size() - 1];
 
-                toSQL = createFilterToSQL(getDataStore().getSchema(lastTableName), toSQLref != null);
+                String lastTableSchema = isRootFeature
+                        ? resolveSchemaForTypeName(query, lastTableName)
+                        : resolveSchemaForJoin(
+                                query,
+                                query.getQueryJoins().get(query.getQueryJoins().size() - 1));
+                FeatureTypeMapping lastTableMapping = resolveFilterRootMapping(query, lastTableName, lastTableSchema);
+                JDBCDataStore lastStore = resolveDataStore(query, lastTableName, lastTableSchema);
+                lastTableSchema = effectiveSchema(lastStore, lastTableSchema);
+                if (lastTableMapping == null) {
+                    lastTableMapping = resolveFilterRootMapping(query, lastTableName, lastTableSchema);
+                }
+                toSQL = createFilterToSQL(
+                        lastStore,
+                        resolveFeatureType(query, lastTableName, lastTableSchema),
+                        toSQLref != null,
+                        lastTableSchema);
 
                 // apply paging to the root feature if applicable
                 Collection<String> ids = new ArrayList<>();
@@ -583,6 +893,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             tableNames,
                             toSQL,
                             filter,
+                            lastTableMapping,
                             ids,
                             aliases);
 
@@ -595,13 +906,15 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             filter,
                             lastSortBy,
                             lastTableName,
+                            lastTableSchema,
                             lastTableAlias,
+                            lastTableMapping,
                             ids,
                             curTypeName);
                 } else if (!pagingApplied) {
                     if (NestedFilterToSQL.isNestedFilter(filter)) {
                         toSQL.setFieldEncoder(new JoiningFieldEncoder(curTypeName, getDataStore()));
-                        sql.append(" WHERE ").append(createNestedFilter(filter, query, toSQL));
+                        sql.append(" WHERE ").append(createNestedFilter(filter, lastTableMapping, toSQL));
                     } else {
                         sql.append(" ").append(toSQL.encodeToString(filter));
                     }
@@ -611,7 +924,20 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             }
         } else if (!isCount) {
             pagingApplied = applyPaging(
-                    query, isRootFeature, sql, featureType, pkColumnNames, tableNames, null, null, null, aliases);
+                    query,
+                    isRootFeature,
+                    sql,
+                    featureType,
+                    pkColumnNames,
+                    tableNames,
+                    null,
+                    null,
+                    resolveFilterRootMapping(
+                            query,
+                            featureType.getTypeName(),
+                            resolveSchemaForTypeName(query, featureType.getTypeName())),
+                    null,
+                    aliases);
         }
 
         // sorting
@@ -631,6 +957,48 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         return sql.toString();
     }
 
+    private void sanitizeJoinIds(JoiningQuery query) throws IOException {
+        if (query == null || query.getQueryJoins() == null) {
+            return;
+        }
+        for (QueryJoin join : query.getQueryJoins()) {
+            if (join.getIds().isEmpty()) {
+                continue;
+            }
+            String joinTypeName = join.getJoiningTypeName();
+            String joinSchema = resolveSchemaForJoin(query, join);
+            SimpleFeatureType joinFeatureType = resolveFeatureType(query, joinTypeName, joinSchema);
+            if (joinFeatureType == null) {
+                continue;
+            }
+            List<String> validIds = new ArrayList<>();
+            for (String id : join.getIds()) {
+                if (hasAttribute(joinFeatureType, id)) {
+                    validIds.add(id);
+                }
+            }
+            if (validIds.size() != join.getIds().size()) {
+                join.getIds().clear();
+                join.getIds().addAll(validIds);
+            }
+        }
+    }
+
+    private boolean hasAttribute(SimpleFeatureType featureType, String attributeName) {
+        if (featureType == null || attributeName == null) {
+            return false;
+        }
+        if (featureType.getDescriptor(attributeName) != null) {
+            return true;
+        }
+        for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
+            if (attributeName.equalsIgnoreCase(descriptor.getLocalName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean applyPaging(
             JoiningQuery query,
             boolean isRootFeature,
@@ -640,6 +1008,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Set<String> tableNames,
             FilterToSQL toSQL,
             Filter filter,
+            FeatureTypeMapping filterRootMapping,
             Collection<String> ids,
             String[] aliases)
             throws IOException, SQLException, FilterToSQLException {
@@ -658,6 +1027,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     tableNames,
                     toSQL,
                     filter,
+                    filterRootMapping,
                     ids);
         } else if (!isRootFeature) {
             // also we always need to apply paging for the last queryJoin since it is the
@@ -667,9 +1037,28 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             int lastJoinIndex = query.getQueryJoins().size() - 1;
             QueryJoin lastJoin = query.getQueryJoins().get(lastJoinIndex);
             String lastTableName = query.getQueryJoins().get(lastJoinIndex).getJoiningTypeName();
+            String lastTableSchema = resolveSchemaForJoin(query, lastJoin);
             String lastTableAlias = aliases[lastJoinIndex] == null ? lastTableName : aliases[lastJoinIndex];
+            // For nested joins, fallback IDs must come from the joined parent table (last join),
+            // not from the current feature type PK columns.
+            Set<String> lastJoinPkColumnNames = Collections.emptySet();
+            if (lastJoin.getIds().isEmpty()) {
+                JDBCDataStore lastJoinStore = resolveDataStore(query, lastTableName, lastTableSchema);
+                lastJoinPkColumnNames =
+                        getAllPrimaryKeys(lastJoinStore, resolveFeatureType(query, lastTableName, lastTableSchema));
+            }
+            FeatureTypeMapping lastTableMapping = resolveFilterRootMapping(query, lastTableName, lastTableSchema);
             pagingApplied = applyPaging(
-                    lastJoin, sql, pkColumnNames, lastTableName, lastTableAlias, tableNames, toSQL, filter, ids);
+                    lastJoin,
+                    sql,
+                    lastJoinPkColumnNames,
+                    lastTableName,
+                    lastTableAlias,
+                    tableNames,
+                    toSQL,
+                    filter,
+                    lastTableMapping,
+                    ids);
         }
         return pagingApplied;
     }
@@ -682,7 +1071,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Filter filter,
             SortBy[] lastSortBy,
             String lastTableName,
+            String lastTableSchema,
             String lastTableAlias,
+            FeatureTypeMapping filterRootMapping,
             Collection<String> ids,
             String curTypeName)
             throws SQLException, FilterToSQLException, IOException {
@@ -700,44 +1091,76 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         query,
                         toSQL,
                         filter,
+                        filterRootMapping,
                         lastSortBy,
                         lastTableName,
+                        lastTableSchema,
                         lastTableAlias,
                         lastPkColumnNames,
                         sortBySQL,
                         hasSortBy)
                 : buildFiterBasedOnSortBy(
-                        query, toSQL, filter, lastSortBy, lastTableName, lastTableAlias, ids, sortBySQL, hasSortBy);
+                        query,
+                        toSQL,
+                        filter,
+                        filterRootMapping,
+                        lastSortBy,
+                        lastTableName,
+                        lastTableSchema,
+                        lastTableAlias,
+                        ids,
+                        sortBySQL,
+                        hasSortBy);
 
         if (lastSortBy.length == 0) {
             // GEOT-4554: if ID expression is not specified, use PK
-            Set<String> lastTablePk = getAllPrimaryKeys(getDataStore().getSchema(lastTableName));
-            int i = 0;
-            for (String pk : lastTablePk) {
-                getDataStore().dialect.encodeColumnName(null, pk, sortBySQL);
+            JDBCDataStore lastTableStore = resolveDataStore(query, lastTableName, lastTableSchema);
+            Set<String> lastTablePk =
+                    getAllPrimaryKeys(lastTableStore, resolveFeatureType(query, lastTableName, lastTableSchema));
+            if (!lastTablePk.isEmpty()) {
+                int i = 0;
+                for (String pk : lastTablePk) {
+                    getDataStore().dialect.encodeColumnName(null, pk, sortBySQL);
+                    if (i < lastTablePk.size() - 1) {
+                        sortBySQL.append(", ");
+                    }
+                    i++;
+                }
                 sortBySQL.append(" FROM ");
-                if (!lastTableAlias.equals(lastTableName))
-                    getDataStore().encodeAliasedTableName(lastTableName, sortBySQL, query.getHints(), lastTableAlias);
-                else getDataStore().encodeTableName(lastTableName, sortBySQL, query.getHints());
+                if (!lastTableAlias.equals(lastTableName)) {
+                    encodeAliasedTableName(lastTableName, lastTableSchema, sortBySQL, query.getHints(), lastTableAlias);
+                } else {
+                    encodeTableName(lastTableName, lastTableSchema, sortBySQL, query.getHints());
+                }
                 String sqlFilter;
                 if (NestedFilterToSQL.isNestedFilter(filter)) {
                     toSQL.setFieldEncoder(new JoiningFieldEncoder(curTypeName, getDataStore()));
-                    sortBySQL.append(" WHERE ");
-                    sqlFilter = createNestedFilter(filter, query, toSQL).toString();
+                    sqlFilter =
+                            createNestedFilter(filter, filterRootMapping, toSQL).toString();
                 } else {
                     sqlFilter = toSQL.encodeToString(filter);
                 }
-                sortBySQL.append(" ").append(sqlFilter);
+                if (sqlFilter != null && !sqlFilter.isBlank()) {
+                    if (NestedFilterToSQL.isNestedFilter(filter)) {
+                        sortBySQL.append(" WHERE ");
+                    } else {
+                        sortBySQL.append(" ");
+                    }
+                    sortBySQL.append(sqlFilter);
+                }
                 sortBySQL.append(" ) ");
                 getDataStore().dialect.encodeTableName(TEMP_FILTER_ALIAS, sortBySQL);
                 sortBySQL.append(" ON ( ");
-                encodeColumnName2(pk, lastTableAlias, sortBySQL, null);
-                sortBySQL.append(" = ");
-                encodeColumnName2(pk, TEMP_FILTER_ALIAS, sortBySQL, null);
-                if (i < lastPkColumnNames.size() - 1) {
-                    sortBySQL.append(" AND ");
+                i = 0;
+                for (String pk : lastTablePk) {
+                    encodeColumnName2(pk, lastTableAlias, sortBySQL, null);
+                    sortBySQL.append(" = ");
+                    encodeColumnName2(pk, TEMP_FILTER_ALIAS, sortBySQL, null);
+                    if (i < lastTablePk.size() - 1) {
+                        sortBySQL.append(" AND ");
+                    }
+                    i++;
                 }
-                i++;
                 hasSortBy = true;
             }
         }
@@ -754,8 +1177,10 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             JoiningQuery query,
             FilterToSQL toSQL,
             Filter filter,
+            FeatureTypeMapping filterRootMapping,
             SortBy[] lastSortBy,
             String lastTableName,
+            String lastTableSchema,
             String lastTableAlias,
             Collection<String> ids,
             StringBuffer sortBySQL,
@@ -763,8 +1188,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             throws SQLException, FilterToSQLException {
         for (int i = 0; i < lastSortBy.length; i++) {
             if (!ids.contains(lastSortBy[i].getPropertyName().toString())) {
-                hasSortBy =
-                        processSortByKey(query, toSQL, filter, lastSortBy, lastTableName, lastTableAlias, sortBySQL, i);
+                hasSortBy = processSortByKey(
+                        query,
+                        filterRootMapping,
+                        toSQL,
+                        filter,
+                        lastSortBy,
+                        lastTableName,
+                        lastTableSchema,
+                        lastTableAlias,
+                        sortBySQL,
+                        i);
             }
         }
         return hasSortBy;
@@ -778,25 +1212,39 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             JoiningQuery query,
             FilterToSQL toSQL,
             Filter filter,
+            FeatureTypeMapping filterRootMapping,
             SortBy[] lastSortBy,
             String lastTableName,
+            String lastTableSchema,
             String lastTableAlias,
             Set<String> lastPkColumnNames,
             StringBuffer sortBySQL,
             boolean hasSortBy)
             throws SQLException, FilterToSQLException {
         for (int i = lastSortBy.length - lastPkColumnNames.size(); i < lastSortBy.length; i++) {
-            hasSortBy = processSortByKey(query, toSQL, filter, lastSortBy, lastTableName, lastTableAlias, sortBySQL, i);
+            hasSortBy = processSortByKey(
+                    query,
+                    filterRootMapping,
+                    toSQL,
+                    filter,
+                    lastSortBy,
+                    lastTableName,
+                    lastTableSchema,
+                    lastTableAlias,
+                    sortBySQL,
+                    i);
         }
         return hasSortBy;
     }
 
     private boolean processSortByKey(
             JoiningQuery query,
+            FeatureTypeMapping filterRootMapping,
             FilterToSQL toSQL,
             Filter filter,
             SortBy[] lastSortBy,
             String lastTableName,
+            String lastTableSchema,
             String lastTableAlias,
             StringBuffer sortBySQL,
             int i)
@@ -806,21 +1254,32 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 .dialect
                 .encodeColumnName(lastTableName, lastSortBy[i].getPropertyName().getPropertyName(), sortBySQL);
         sortBySQL.append(" FROM ");
-        getDataStore().encodeTableName(lastTableName, sortBySQL, query.getHints());
+        encodeTableName(lastTableName, lastTableSchema, sortBySQL, query.getHints());
         // perform a left join with multi values tables of the root feature type
-        encodeMultipleValueJoin(query.getRootMapping(), lastTableName, getDataStore(), sortBySQL);
+        JDBCDataStore mappingStore = getMappingDataStore(filterRootMapping);
+        if (mappingStore == null) {
+            mappingStore = getDataStore();
+        }
+        encodeMultipleValueJoin(filterRootMapping, lastTableName, mappingStore, sortBySQL);
         if (NestedFilterToSQL.isNestedFilter(filter)) {
-            sortBySQL.append(" WHERE ");
             // if it's postgis and replacement is enabled use UNION
             boolean replaceOrWithUnion = isPostgisDialect() && isOrUnionReplacementEnabled();
             // get current select clause
             String selectClause = sortBySQL.toString().replace(" INNER JOIN ( ", "");
             // use a FilterToSql without prepared statement parameters
             SimpleFeatureType featureType = toSQL.getFeatureType();
-            FilterToSQL toSQL2 = createFilterToSQL(featureType, false);
-            sortBySQL.append(createNestedFilter(filter, query, toSQL2, selectClause, replaceOrWithUnion));
+            JDBCDataStore lastStore = resolveDataStore(query, lastTableName, lastTableSchema);
+            FilterToSQL toSQL2 = createFilterToSQL(lastStore, featureType, false);
+            String sqlFilter = createNestedFilter(filter, filterRootMapping, toSQL2, selectClause, replaceOrWithUnion)
+                    .toString();
+            if (sqlFilter != null && !sqlFilter.isBlank()) {
+                sortBySQL.append(" WHERE ").append(sqlFilter);
+            }
         } else {
-            sortBySQL.append(" ").append(toSQL.encodeToString(filter));
+            String sqlFilter = toSQL.encodeToString(filter);
+            if (sqlFilter != null && !sqlFilter.isBlank()) {
+                sortBySQL.append(" ").append(sqlFilter);
+            }
         }
         sortBySQL.append(" ) ");
         getDataStore().dialect.encodeTableName(TEMP_FILTER_ALIAS, sortBySQL);
@@ -837,6 +1296,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
     private void encodeMultipleValueJoin(
             FeatureTypeMapping rootMapping, String rootTableName, JDBCDataStore store, StringBuffer sql) {
+        if (rootMapping == null) {
+            return;
+        }
         for (AttributeMapping attributeMapping : rootMapping.getAttributeMappings()) {
             if (!(attributeMapping.getMultipleValue() instanceof JdbcMultipleValue)) {
                 continue;
@@ -861,17 +1323,27 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
     }
 
-    private Object createNestedFilter(Filter filter, JoiningQuery query, FilterToSQL filterToSQL)
+    private Object createNestedFilter(Filter filter, FeatureTypeMapping rootMapping, FilterToSQL filterToSQL)
             throws FilterToSQLException {
-        NestedFilterToSQL nested = new NestedFilterToSQL(query.getRootMapping(), filterToSQL);
+        if (rootMapping == null) {
+            return filterToSQL.encodeToString(filter);
+        }
+        NestedFilterToSQL nested = new NestedFilterToSQL(rootMapping, filterToSQL);
         nested.setInline(true);
         return nested.encodeToString(filter);
     }
 
     private Object createNestedFilter(
-            Filter filter, JoiningQuery query, FilterToSQL filterToSQL, String selectClause, boolean replaceOrWithUnion)
+            Filter filter,
+            FeatureTypeMapping rootMapping,
+            FilterToSQL filterToSQL,
+            String selectClause,
+            boolean replaceOrWithUnion)
             throws FilterToSQLException {
-        NestedFilterToSQL nested = new NestedFilterToSQL(query.getRootMapping(), filterToSQL);
+        if (rootMapping == null) {
+            return filterToSQL.encodeToString(filter);
+        }
+        NestedFilterToSQL nested = new NestedFilterToSQL(rootMapping, filterToSQL);
         nested.setInline(true);
         nested.setSelectClause(selectClause);
         nested.setReplaceOrWithUnion(replaceOrWithUnion);
@@ -891,9 +1363,16 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Set<String> tableNames,
             FilterToSQL filterToSQL,
             Filter filter,
+            FeatureTypeMapping filterRootMapping,
             Collection<String> allIds)
             throws SQLException, FilterToSQLException, IOException {
         Collection<String> ids = Collections.emptyList();
+        String typeSchema = resolveSchemaForTypeName(query, typeName);
+        JDBCDataStore typeStore = resolveDataStore(query, typeName, typeSchema);
+        typeSchema = effectiveSchema(typeStore, typeSchema);
+        if (filterToSQL != null && typeSchema != null) {
+            filterToSQL.setDatabaseSchema(typeSchema);
+        }
         if (getDataStore().dialect.isLimitOffsetSupported()) {
             int startIndex = query.getStartIndex() == null ? 0 : query.getStartIndex();
             int maxFeatures = query.getMaxFeatures();
@@ -911,7 +1390,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     topIds.append("SELECT DISTINCT ");
 
                     StringBuffer idSQL = new StringBuffer();
-                    encodeColumnName(id, typeName, idSQL, query.getHints());
+                    encodeColumnName(id, typeName, typeSchema, idSQL, query.getHints());
                     topIds.append(idSQL);
 
                     // apply SORTBY
@@ -919,7 +1398,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     Set<String> orderByFields = new LinkedHashSet<>();
                     StringBuffer sortSQL = new StringBuffer();
                     if (sort != null) {
-                        sort(typeName, null, sort, orderByFields, sortSQL);
+                        sort(query, typeName, typeSchema, null, sort, orderByFields, sortSQL);
                     }
                     if (!orderByFields.contains(idSQL.toString())) {
                         // check for duplicate
@@ -931,17 +1410,34 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             topIds.append(", ").append(orderBy);
                         }
                     }
+                    // Ensure ORDER BY is never empty to avoid invalid SQL in dialects requiring
+                    // at least one ORDER BY expression when paging/sorting is applied.
+                    // This can happen when sort expressions resolve only to the same id column.
+                    if (sortSQL.length() == 0) {
+                        sortSQL.append(idSQL);
+                    }
                     topIds.append(" FROM ");
-                    getDataStore().encodeTableName(typeName, topIds, query.getHints());
+                    encodeTableName(typeName, typeSchema, topIds, query.getHints());
                     // perform a left join with multi values tables of the root feature type
-                    encodeMultipleValueJoin(query.getRootMapping(), typeName, getDataStore(), topIds);
+                    JDBCDataStore mappingStore = getMappingDataStore(filterRootMapping);
+                    if (mappingStore == null) {
+                        mappingStore = getDataStore();
+                    }
+                    encodeMultipleValueJoin(filterRootMapping, typeName, mappingStore, topIds);
                     // apply filter
                     if (filter != null) {
                         if (NestedFilterToSQL.isNestedFilter(filter)) {
                             filterToSQL.setFieldEncoder(new JoiningFieldEncoder(typeName, getDataStore()));
-                            topIds.append(" WHERE ").append(createNestedFilter(filter, query, filterToSQL));
+                            String sqlFilter = createNestedFilter(filter, filterRootMapping, filterToSQL)
+                                    .toString();
+                            if (sqlFilter != null && !sqlFilter.isBlank()) {
+                                topIds.append(" WHERE ").append(sqlFilter);
+                            }
                         } else {
-                            topIds.append(" ").append(filterToSQL.encodeToString(filter));
+                            String sqlFilter = filterToSQL.encodeToString(filter);
+                            if (sqlFilter != null && !sqlFilter.isBlank()) {
+                                topIds.append(" ").append(sqlFilter);
+                            }
                         }
                     }
                     topIds.append(" ORDER BY ");
@@ -1030,6 +1526,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     }
 
     protected SimpleFeatureType getFeatureType(SimpleFeatureType origType, JoiningQuery query) throws IOException {
+        sanitizeJoinIds(query);
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.init(origType);
 
@@ -1039,11 +1536,14 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 if (query.getQueryJoins().get(i).getIds().isEmpty()) {
                     // GEOT-4554: handle PK as default idExpression
                     PrimaryKey joinKey = null;
-                    String joinTypeName = query.getQueryJoins().get(i).getJoiningTypeName();
-                    SimpleFeatureType joinFeatureType = getDataStore().getSchema(joinTypeName);
+                    QueryJoin queryJoin = query.getQueryJoins().get(i);
+                    String joinTypeName = queryJoin.getJoiningTypeName();
+                    String joinSchema = resolveSchemaForJoin(query, queryJoin);
+                    SimpleFeatureType joinFeatureType = resolveFeatureType(query, joinTypeName, joinSchema);
 
                     try {
-                        joinKey = getDataStore().getPrimaryKey(joinFeatureType);
+                        JDBCDataStore store = resolveDataStore(query, joinTypeName, joinSchema);
+                        joinKey = store.getPrimaryKey(joinFeatureType);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -1092,11 +1592,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             throw new IllegalArgumentException("Postfilters not allowed in Joining Queries");
         }
 
-        // rebuild a new query with the same params, but just the pre-filter
-        JoiningQuery preQuery = new JoiningQuery(query);
-        preQuery.setFilter(preFilter);
-        preQuery.setRootMapping(query.getRootMapping());
-
         // Build the feature type returned by this query. Also build an eventual extra feature type
         // containing the attributes we might need in order to evaluate the post filter
         SimpleFeatureType querySchema;
@@ -1110,6 +1605,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         // this is so we can retrieve the PK later to use for feature chaining grouping
         SimpleFeatureType fullSchema =
                 query.hasIdColumn() && query.getQueryJoins() == null ? querySchema : getFeatureType(querySchema, query);
+
+        // rebuild a new query with the same params, but just the pre-filter.
+        // this must happen after getFeatureType, as that path may sanitize join ids
+        JoiningQuery preQuery = new JoiningQuery(query);
+        preQuery.setFilter(preFilter);
+        preQuery.setRootMapping(query.getRootMapping());
 
         // create the reader
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
@@ -1206,7 +1707,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             }
             finalSql.delete(finalSql.length() - 2, finalSql.length());
             // encode value expression
-            FilterToSQL cfToSql = createFilterToSQL(store.getSchema(mv.getTargetTable()));
+            FilterToSQL cfToSql = createFilterToSQL(store, store.getSchema(mv.getTargetTable()), true);
             cfToSql.setFieldEncoder(field -> {
                 StringBuffer fieldSql = new StringBuffer();
                 store.dialect.encodeTableName(mv.getTargetTable(), fieldSql);
@@ -1284,7 +1785,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             for (String id : joiningQuery.getIds()) {
                 jQuery.addId(id);
             }
-            jQuery.setQueryJoins(joiningQuery.getQueryJoins());
+            jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
+            jQuery.setRootMapping(((JoiningQuery) query).getRootMapping());
             return jQuery;
         } else {
             return super.joinQuery(query);
@@ -1322,12 +1824,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         // Uses a MultipleValueExtractor to detect
         // if there are MultipleValues
         MultipleValueExtractor extractor = new MultipleValueExtractor();
-        jQuery.getRootMapping().getFeatureIdExpression().accept(extractor, null);
+        FeatureTypeMapping rootMapping = jQuery.getRootMapping();
+        if (rootMapping != null && rootMapping.getFeatureIdExpression() != null) {
+            rootMapping.getFeatureIdExpression().accept(extractor, null);
+        } else if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Root mapping id expression is not available; count query will fallback to datastore keys");
+        }
         // the id from the app-schema configuration
         Set<String> idMapping = new HashSet<>();
         Collections.addAll(idMapping, extractor.getAttributeNames());
         boolean idsColumnEquals = idColumnNames.equals(idMapping);
-        Filter filter = jQuery.getFilter();
+        Filter filter = jQuery.getFilter() == null ? Filter.INCLUDE : jQuery.getFilter();
         filter.accept(extractor, null);
 
         // check if the filter is nested, if not we might delegate to the root JDBCFeatureSource
@@ -1397,24 +1904,33 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Set<String> idColumnNames,
             AtomicReference<PreparedFilterToSQL> toSQLRef)
             throws FilterToSQLException, SQLException {
+        Filter queryFilter = query.getFilter() == null ? Filter.INCLUDE : query.getFilter();
+        if (idColumnNames == null || idColumnNames.isEmpty()) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("No id columns available for count query; using non-distinct fallback strategy");
+            }
+            return createCountQueryWithoutIdColumns(querySchema, query, toSQLRef);
+        }
+
         StringBuffer countSQL = new StringBuffer("SELECT COUNT(*) FROM (SELECT DISTINCT ");
+        String querySchemaName = resolveSchemaForTypeName(query, querySchema.getTypeName());
+        JDBCDataStore queryStore = resolveDataStore(query, querySchema.getTypeName(), querySchemaName);
+        querySchemaName = effectiveSchema(queryStore, querySchemaName);
         boolean first = true;
         for (String idColumnName : idColumnNames) {
             if (!first) {
                 countSQL.append(", ");
             }
-            getDataStore().encodeTableName(querySchema.getTypeName(), countSQL, query.getHints());
-            countSQL.append(".");
-            dialect.encodeColumnName(null, idColumnName, countSQL);
+            encodeColumnName(idColumnName, querySchema.getTypeName(), querySchemaName, countSQL, query.getHints());
             first = false;
         }
         countSQL.append(" FROM ");
-        getDataStore().encodeTableName(querySchema.getTypeName(), countSQL, query.getHints());
-        if (!query.getFilter().equals(Filter.INCLUDE)) {
+        encodeTableName(querySchema.getTypeName(), querySchemaName, countSQL, query.getHints());
+        if (!queryFilter.equals(Filter.INCLUDE)) {
             countSQL.append(" ");
-            FilterToSQL toSql = createFilterToSQL(querySchema);
-            countSQL.append(toSql.encodeToString(query.getFilter()));
-            if (toSql instanceof PreparedFilterToSQL qL) toSQLRef.set(qL);
+            FilterToSQL toSql = createFilterToSQL(queryStore, querySchema, true, querySchemaName);
+            countSQL.append(toSql.encodeToString(queryFilter));
+            capturePreparedFilterToSql(toSQLRef, toSql);
         }
         countSQL.append(")");
         dialect.encodeTableName(DISTINCT_TABLE_ALIAS, countSQL);
@@ -1430,6 +1946,13 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             Set<String> idColumnNames,
             AtomicReference<PreparedFilterToSQL> toSQLRef)
             throws IOException, SQLException, FilterToSQLException {
+        if (idColumnNames == null || idColumnNames.isEmpty()) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("No id columns available for joining count query; using DISTINCT * fallback strategy");
+            }
+            return createJoiningCountQueryWithoutIdColumns(dialect, querySchema, query, toSQLRef);
+        }
+
         StringBuffer countSQL = new StringBuffer("SELECT COUNT(*) FROM (SELECT DISTINCT ");
         boolean first = true;
         for (String idColumnName : idColumnNames) {
@@ -1450,6 +1973,66 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         return countQuery;
     }
 
+    /**
+     * Fallback for count generation when no id column can be resolved.
+     *
+     * <p>This prevents invalid SQL like {@code SELECT DISTINCT FROM ...}, which triggers a syntax error across SQL
+     * dialects.
+     */
+    private String createCountQueryWithoutIdColumns(
+            SimpleFeatureType querySchema, JoiningQuery query, AtomicReference<PreparedFilterToSQL> toSQLRef)
+            throws FilterToSQLException, SQLException {
+        Filter queryFilter = query.getFilter() == null ? Filter.INCLUDE : query.getFilter();
+        StringBuffer countSQL = new StringBuffer("SELECT COUNT(*) FROM ");
+        String querySchemaName = resolveSchemaForTypeName(query, querySchema.getTypeName());
+        JDBCDataStore queryStore = resolveDataStore(query, querySchema.getTypeName(), querySchemaName);
+        querySchemaName = effectiveSchema(queryStore, querySchemaName);
+        encodeTableName(querySchema.getTypeName(), querySchemaName, countSQL, query.getHints());
+        if (!queryFilter.equals(Filter.INCLUDE)) {
+            countSQL.append(" ");
+            FilterToSQL toSql = createFilterToSQL(queryStore, querySchema, true, querySchemaName);
+            countSQL.append(toSql.encodeToString(queryFilter));
+            capturePreparedFilterToSql(toSQLRef, toSql);
+        }
+        String countQuery = countSQL.toString();
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine(countQuery);
+        return countQuery;
+    }
+
+    /**
+     * Captures the prepared filter encoder when prepared statements are active.
+     *
+     * <p>This helper avoids repeating the same cast/assignment block in multiple SQL-building branches.
+     */
+    private void capturePreparedFilterToSql(AtomicReference<PreparedFilterToSQL> toSQLRef, FilterToSQL toSql) {
+        if (toSQLRef != null && toSql instanceof PreparedFilterToSQL) {
+            toSQLRef.set((PreparedFilterToSQL) toSql);
+        }
+    }
+
+    /**
+     * Joining fallback for count generation when no id column can be resolved.
+     *
+     * <p>We use {@code DISTINCT *} over the joining subquery to preserve de-duplication without emitting an empty
+     * DISTINCT projection.
+     */
+    private String createJoiningCountQueryWithoutIdColumns(
+            SQLDialect dialect,
+            SimpleFeatureType querySchema,
+            JoiningQuery query,
+            AtomicReference<PreparedFilterToSQL> toSQLRef)
+            throws IOException, SQLException, FilterToSQLException {
+        StringBuffer countSQL = new StringBuffer("SELECT COUNT(*) FROM (SELECT DISTINCT * FROM (");
+        String sql = selectSQL(querySchema, query, toSQLRef, true);
+        countSQL.append(sql).append(") ");
+        dialect.encodeTableName(COUNT_TABLE_ALIAS, countSQL);
+        countSQL.append(") ");
+        dialect.encodeTableName(DISTINCT_TABLE_ALIAS, countSQL);
+        String countQuery = countSQL.toString();
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine(countQuery);
+        return countQuery;
+    }
+
     private Set<String> getIdColumnNames(SimpleFeatureType featureType) throws IOException {
         Set<String> columnNames = new HashSet<>();
         for (PrimaryKeyColumn column : getDataStore().getPrimaryKey(featureType).getColumns()) {
@@ -1458,11 +2041,11 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         return columnNames;
     }
 
-    private Set<String> getAllPrimaryKeys(SimpleFeatureType featureType) {
+    private Set<String> getAllPrimaryKeys(JDBCDataStore store, SimpleFeatureType featureType) {
         PrimaryKey key = null;
 
         try {
-            key = getDataStore().getPrimaryKey(featureType);
+            key = store.getPrimaryKey(featureType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

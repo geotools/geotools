@@ -67,7 +67,7 @@
     <jts.version>1.20.0</jts.version>
     <log4j.version>2.24.3</log4j.version>
     <logback.version>1.5.19</logback.version>
-    <lz4.version>1.8.0</lz4.version>
+    <lz4.version>1.10.2</lz4.version>
     <mssql-jdbc.version>13.2.1.jre11</mssql-jdbc.version>
     <mysql-connector-java.version>9.4.0</mysql-connector-java.version>
     <mongodb-driver-legacy.version>4.0.6</mongodb-driver-legacy.version>
@@ -1083,7 +1083,7 @@
         <version>${clickhouse-jdbc.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.lz4</groupId>
+        <groupId>at.yawk.lz4</groupId>
         <artifactId>lz4-java</artifactId>
         <version>${lz4.version}</version>
       </dependency>

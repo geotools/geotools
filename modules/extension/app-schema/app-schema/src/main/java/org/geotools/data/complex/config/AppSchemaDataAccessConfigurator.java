@@ -89,6 +89,7 @@ import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.JoinPropertyName;
@@ -120,6 +121,10 @@ public class AppSchemaDataAccessConfigurator {
 
     public static final String PROPERTY_REPLACE_OR_UNION = "app-schema.orUnionReplace";
 
+    public static final String PROPERTY_CROSS_SCHEMA_JOINING = "app-schema.crossSchemaJoining";
+
+    private static final String SCHEMA_STORE_KEY_SEPARATOR = "::schema::";
+
     /** Whether the mapping is for an include. */
     private boolean isInclude = false;
 
@@ -136,15 +141,49 @@ public class AppSchemaDataAccessConfigurator {
 
     private Map<String, String> schemaURIs;
 
+    private final Map<String, Map<String, Serializable>> sourceDataStoreParamsById = new LinkedHashMap<>();
+
+    private final Map<String, SourceDataStore> sourceDataStoreConfigsById = new LinkedHashMap<>();
+
     /** Convenience method for "joining" property. */
     public static boolean isJoining() {
-        String s = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
-        return s == null || s.equalsIgnoreCase("true");
+        String value = getJoiningOverride();
+        if (value == null) {
+            value = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
+        }
+        return value == null || value.equalsIgnoreCase("true");
     }
 
     public static boolean isJoiningSet() {
+        if (getJoiningOverride() != null) {
+            return true;
+        }
         String s = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
         return s != null;
+    }
+
+    public static boolean isCrossSchemaJoiningEnabled() {
+        String value = getCrossSchemaJoiningOverride();
+        if (value == null) {
+            value = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_CROSS_SCHEMA_JOINING);
+        }
+        return value != null && value.equalsIgnoreCase("true");
+    }
+
+    private static String getJoiningOverride() {
+        String value = System.getProperty(PROPERTY_JOINING);
+        if (value != null) {
+            return value;
+        }
+        return System.getenv("APP_SCHEMA_JOINING");
+    }
+
+    private static String getCrossSchemaJoiningOverride() {
+        String value = System.getProperty(PROPERTY_CROSS_SCHEMA_JOINING);
+        if (value != null) {
+            return value;
+        }
+        return System.getenv("APP_SCHEMA_CROSS_SCHEMA_JOINING");
     }
 
     public static boolean isOrUnionReplacementEnabled() {
@@ -346,8 +385,10 @@ public class AppSchemaDataAccessConfigurator {
                 boolean isDatabaseBackend =
                         featureSource instanceof JDBCFeatureSource || featureSource instanceof JDBCFeatureStore;
 
+                boolean useJoining = isJoining() && isDatabaseBackend;
+
                 List<AttributeMapping> attMappings = getAttributeMappings(
-                        target, dto.getAttributeMappings(), dto.getItemXpath(), crs, isDatabaseBackend);
+                        target, dto.getAttributeMappings(), dto.getItemXpath(), crs, isDatabaseBackend, useJoining);
 
                 // if an external index (e.g. Solr) is used in the mappings, get its data store
                 FeatureSource<SimpleFeatureType, SimpleFeature> indexFeatureSource =
@@ -364,6 +405,7 @@ public class AppSchemaDataAccessConfigurator {
                         dto.isXmlDataStore(),
                         dto.isDenormalised(),
                         dto.getSourceDataStore());
+                mapping.setSourceDatabaseSchema(StringUtils.trimToNull(dto.getSourceDatabaseSchema()));
 
                 String mappingName = dto.getMappingName();
                 if (mappingName != null) {
@@ -480,7 +522,8 @@ public class AppSchemaDataAccessConfigurator {
             final List attDtos,
             String itemXpath,
             CoordinateReferenceSystem crs,
-            boolean isJDBC)
+            boolean isJDBC,
+            boolean useJoining)
             throws IOException {
         List<AttributeMapping> attMappings = new LinkedList<>();
 
@@ -576,7 +619,7 @@ public class AppSchemaDataAccessConfigurator {
                         namespaces);
                 if (customNestedMapping != null) {
                     attMapping = customNestedMapping;
-                } else if (isJoining() && isJDBC) {
+                } else if (useJoining) {
                     attMapping = new JoiningNestedAttributeMapping(
                             idExpression,
                             sourceExpression,
@@ -751,13 +794,10 @@ public class AppSchemaDataAccessConfigurator {
 
     private FeatureSource<? extends FeatureType, ? extends Feature> getFeatureSource(
             TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores) throws IOException {
-        String dsId = dto.getSourceDataStore();
         String typeName = dto.getSourceTypeName();
 
-        DataAccess<FeatureType, Feature> sourceDataStore = sourceDataStores.get(dsId);
-        if (sourceDataStore == null) {
-            throw new DataSourceException("datastore " + dsId + " not found for type mapping " + dto);
-        }
+        DataAccess<? extends FeatureType, ? extends Feature> sourceDataStore =
+                resolveSourceDataStore(dto, sourceDataStores);
 
         AppSchemaDataAccessConfigurator.LOGGER.fine(
                 "asking datastore " + sourceDataStore + " for source type " + typeName);
@@ -768,6 +808,85 @@ public class AppSchemaDataAccessConfigurator {
         }
         AppSchemaDataAccessConfigurator.LOGGER.fine("found feature source for " + typeName);
         return fSource;
+    }
+
+    private DataAccess<? extends FeatureType, ? extends Feature> resolveSourceDataStore(
+            TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores) throws IOException {
+        String dsId = dto.getSourceDataStore();
+        DataAccess<? extends FeatureType, ? extends Feature> sourceDataStore = sourceDataStores.get(dsId);
+        if (sourceDataStore == null) {
+            throw new DataSourceException("datastore " + dsId + " not found for type mapping " + dto);
+        }
+
+        String databaseSchema = StringUtils.trimToNull(dto.getSourceDatabaseSchema());
+        if (databaseSchema == null) {
+            return sourceDataStore;
+        }
+
+        if (!(sourceDataStore instanceof JDBCDataStore)) {
+            String mappingId = dto.getMappingName() != null ? dto.getMappingName() : dto.getTargetElementName();
+            LOGGER.warning("sourceDatabaseSchema ignored for mapping '" + mappingId + "'; datastore '" + dsId
+                    + "' is not JDBC");
+            return sourceDataStore;
+        }
+
+        JDBCDataStore jdbcStore = (JDBCDataStore) sourceDataStore;
+        if (databaseSchema.equals(jdbcStore.getDatabaseSchema())) {
+            return sourceDataStore;
+        }
+
+        String schemaKey = schemaDataStoreKey(dsId, databaseSchema);
+        DataAccess<FeatureType, Feature> schemaDataStore = sourceDataStores.get(schemaKey);
+        if (schemaDataStore != null) {
+            return schemaDataStore;
+        }
+
+        Map<String, Serializable> baseParams = sourceDataStoreParamsById.get(dsId);
+        if (baseParams == null) {
+            throw new DataSourceException("datastore params for '" + dsId + "' not found for type mapping " + dto);
+        }
+        Map<String, Serializable> schemaParams = new LinkedHashMap<>(baseParams);
+        schemaParams.put("schema", databaseSchema);
+
+        SourceDataStore baseConfig = sourceDataStoreConfigsById.get(dsId);
+        schemaDataStore = getOrCreateDataStore(schemaParams, baseConfig);
+        sourceDataStores.put(schemaKey, schemaDataStore);
+        return schemaDataStore;
+    }
+
+    private DataAccess<FeatureType, Feature> getOrCreateDataStore(
+            Map<String, Serializable> datastoreParams, SourceDataStore baseConfig) throws IOException {
+        DataAccess<FeatureType, Feature> dataStore = null;
+        if (dataStoreMap != null && dataStoreMap.containsKey(datastoreParams)) {
+            dataStore = dataStoreMap.get(datastoreParams);
+        } else {
+            SourceDataStore schemaConfig = new SourceDataStore();
+            if (baseConfig != null) {
+                schemaConfig.setId(baseConfig.getId());
+                schemaConfig.setDataAccess(Boolean.toString(baseConfig.isDataAccess()));
+            }
+            schemaConfig.setParams(datastoreParams);
+
+            List<CustomSourceDataStore> extensions = CustomSourceDataStore.loadExtensions();
+            dataStore = buildDataStore(extensions, schemaConfig, config);
+            dataStore = dataStore == null ? DataAccessFinder.getDataStore(datastoreParams) : dataStore;
+            if (dataStoreMap != null) {
+                dataStoreMap.put(datastoreParams, dataStore);
+            }
+        }
+
+        if (dataStore == null) {
+            AppSchemaDataAccessConfigurator.LOGGER.log(
+                    Level.SEVERE, "Cannot find a DataAccess for parameters " + datastoreParams);
+            throw new DataSourceException("Cannot find a DataAccess for parameters "
+                    + "(some not shown) "
+                    + filterDatastoreParams(datastoreParams));
+        }
+        return dataStore;
+    }
+
+    private String schemaDataStoreKey(String dataStoreId, String databaseSchema) {
+        return dataStoreId + SCHEMA_STORE_KEY_SEPARATOR + databaseSchema;
     }
 
     /**
@@ -884,6 +1003,8 @@ public class AppSchemaDataAccessConfigurator {
             Map<String, Serializable> datastoreParams = dsconfig.getParams();
 
             datastoreParams = resolveRelativePaths(datastoreParams);
+            sourceDataStoreParamsById.put(id, datastoreParams);
+            sourceDataStoreConfigsById.put(id, dsconfig);
 
             AppSchemaDataAccessConfigurator.LOGGER.fine("looking for datastore " + id);
 

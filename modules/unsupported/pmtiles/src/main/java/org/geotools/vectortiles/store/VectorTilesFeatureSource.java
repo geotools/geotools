@@ -300,7 +300,7 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
 
     protected ReferencedEnvelope getBoundsInternal() {
         // layerMetadata does not provide layer-specific bounds, we're stuck with the full bounds
-        BoundingBox2D fullExtent = tileMatrixsetFullExtent();
+        BoundingBox2D fullExtent = getTileStore().getExtent();
         CoordinateReferenceSystem crs = getSchema().getCoordinateReferenceSystem();
         double minX = fullExtent.minX();
         double maxX = fullExtent.maxX();
@@ -682,10 +682,5 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
 
     private BoundingBox2D toExtent(Envelope env) {
         return new BoundingBox2D(env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
-    }
-
-    private BoundingBox2D tileMatrixsetFullExtent() {
-        TileMatrixSet matrixSet = getMatrixSet();
-        return matrixSet.boundingBox();
     }
 }

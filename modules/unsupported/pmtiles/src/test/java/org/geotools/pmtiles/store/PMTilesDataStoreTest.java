@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import io.tileverse.pmtiles.InvalidHeaderException;
 import io.tileverse.pmtiles.PMTilesReader;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.geotools.api.data.FeatureStore;
+import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -45,12 +47,15 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -64,21 +69,26 @@ public class PMTilesDataStoreTest {
     @Rule
     public TemporaryFolder tmpFolder = new TemporaryFolder();
 
-    private Path andorraPMTiles;
-
     private PMTilesReader reader;
     private PMTilesDataStore store;
 
-    private final String namespaceURI = "https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md";
+    private static final String namespaceURI = "https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md";
 
     @Before
     public void setUp() throws IOException, InvalidHeaderException {
-        this.andorraPMTiles = PMTilesTestData.andorra(tmpFolder.getRoot().toPath());
+        Path andorraPMTiles = PMTilesTestData.andorra(tmpFolder.getRoot().toPath());
         reader = new PMTilesReader(andorraPMTiles);
         store = new PMTilesDataStore(new PMTilesDataStoreFactory(), reader);
         store.setNamespaceURI(namespaceURI);
         store.setFeatureTypeFactory(CommonFactoryFinder.getFeatureTypeFactory(null));
         store.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        if (reader != null) {
+            reader.close();
+        }
     }
 
     @Test
@@ -91,8 +101,8 @@ public class PMTilesDataStoreTest {
     @Test
     public void getNames() throws IOException, InvalidHeaderException {
         List<Name> typeNames = store.getNames();
-        // ContentDataStore.getName(): Returns the same list of names than {@link #getTypeNames()} meaning the returned
-        // Names have no namespace set.
+        // ContentDataStore.getName(): Returns the same list of names than  getTypeNames() meaning the returned Names
+        // have no namespace set.
         List<Name> expected = PMTilesTestData.andorraLayerNames().stream()
                 .map(NameImpl::new)
                 .map(Name.class::cast)
@@ -133,15 +143,48 @@ public class PMTilesDataStoreTest {
     }
 
     @Test
-    public void getFeatureSource() throws IOException, FactoryException {
-        SimpleFeatureSource buildings = store.getFeatureSource("buildings");
-        assertNotNull(buildings);
-        assertThat(buildings, not(instanceOf(FeatureStore.class)));
+    public void getFeatureSource() throws IOException {
         assertThrows(IOException.class, () -> store.getFeatureSource("nonexistent"));
+
+        for (String typeName : PMTilesTestData.andorraLayerNames()) {
+            SimpleFeatureSource fs = store.getFeatureSource(typeName);
+            assertNotNull(fs);
+            assertThat(fs, not(instanceOf(FeatureStore.class)));
+        }
     }
 
     @Test
-    public void getFeatureSourceGetFeatures() throws Exception {
+    public void getBounds() throws IOException, FactoryException {
+
+        CoordinateReferenceSystem webMercator = CRS.decode("EPSG:3857", true);
+
+        ReferencedEnvelope expected = new ReferencedEnvelope(
+                157224.0865727142, 198981.47472265144, 5225248.626677216, 5259934.357682772, webMercator);
+
+        for (String typeName : PMTilesTestData.andorraLayerNames()) {
+            SimpleFeatureSource fs = store.getFeatureSource(typeName);
+            ReferencedEnvelope bounds = fs.getBounds();
+            assertBounds(expected, bounds, 1e-6);
+
+            bounds = fs.getBounds(Query.ALL);
+            assertBounds(expected, bounds, 1e-6);
+
+            bounds = fs.getBounds(new Query(typeName));
+            assertBounds(expected, bounds, 1e-6);
+        }
+    }
+
+    private void assertBounds(ReferencedEnvelope expected, ReferencedEnvelope actual, double delta) {
+        assertTrue(CRS.equalsIgnoreMetadata(
+                expected.getCoordinateReferenceSystem(), actual.getCoordinateReferenceSystem()));
+        assertEquals(expected.getMinX(), actual.getMinX(), delta);
+        assertEquals(expected.getMinY(), actual.getMinY(), delta);
+        assertEquals(expected.getMaxX(), actual.getMaxX(), delta);
+        assertEquals(expected.getMaxY(), actual.getMaxY(), delta);
+    }
+
+    @Test
+    public void getFeatureSourceGetFeatures() throws IOException {
 
         TileMatrix tileMatrix = store.getTileStore().matrixSet().getTileMatrix(12);
         BoundingBox2D tileExtent = tileMatrix.first().extent();

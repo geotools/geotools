@@ -904,9 +904,16 @@ public class SLDStyleFactory {
         return stroke2d;
     }
 
+    /**
+     * Minimum dash array value in pixels. Values below this threshold are treated as zero to avoid rendering issues
+     * with astronomically small values (e.g., 1E-12) that can cause Java2D to crash when computing an impossibly large
+     * number of dashes.
+     */
+    private static final float MIN_DASH_VALUE = 1e-6f;
+
     private boolean allZeroes(float[] dashes) {
         for (float dash : dashes) {
-            if (dash != 0) return false;
+            if (Math.abs(dash) >= MIN_DASH_VALUE) return false;
         }
         return true;
     }

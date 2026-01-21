@@ -111,9 +111,13 @@ public class CrossAuthorityTest {
         CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:4326");
 
         CoordinateOperation forward = CRS.getCoordinateOperationFactory(true).createOperation(sourceCRS, targetCRS);
+        assertEquals(forward.getSourceCRS(), sourceCRS);
+        assertEquals(forward.getTargetCRS(), targetCRS);
         checkConcatenatedGeocentricTranslation(forward, 1, 1, 2, 3);
 
         CoordinateOperation backwards = CRS.getCoordinateOperationFactory(true).createOperation(targetCRS, sourceCRS);
+        assertEquals(backwards.getSourceCRS(), targetCRS);
+        assertEquals(backwards.getTargetCRS(), sourceCRS);
         checkConcatenatedGeocentricTranslation(backwards, 1, -1, -2, -3);
     }
 

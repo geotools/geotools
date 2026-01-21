@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
@@ -151,8 +152,16 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
     private Set<CoordinateOperation> getCoordinateOperations(
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS, Properties definitions)
             throws FactoryException {
-        String sourceCode = CRS.lookupIdentifier(sourceCRS, false).toString();
-        String targetCode = CRS.lookupIdentifier(targetCRS, false).toString();
+        String sourceCode = getIdentifier(sourceCRS);
+        if (sourceCode == null) {
+            LOGGER.fine(() -> "Could not find identifiers for source CRS: " + sourceCRS);
+            return Collections.emptySet();
+        }
+        String targetCode = getIdentifier(targetCRS);
+        if (targetCode == null) {
+            LOGGER.fine(() -> "Could not find identifiers for target CRS: " + targetCRS);
+            return Collections.emptySet();
+        }
         String key = sourceCode + "," + targetCode;
 
         String wkt = definitions.getProperty(key);
@@ -224,7 +233,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
             try {
                 props.put("name", targetCRS + " \u21E8 " + sourceCRS);
                 coordop = DefaultOperation.create(
-                        props, targetCRS, sourceCRS, mt2.inverse(), method, CoordinateOperation.class);
+                        props, sourceCRS, targetCRS, mt2.inverse(), method, CoordinateOperation.class);
             } catch (NoninvertibleTransformException e) {
                 return null;
             }
@@ -232,5 +241,27 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
         return Set.of(coordop);
     }
 
+    /**
+     * Gets an identifier for the given CRS. First uses the internal identifier, if there is a single one and it's
+     * suitable. Otherwise, falls back on {@link CRS#lookupIdentifier(CoordinateReferenceSystem, boolean)}, for a fast
+     * lookup.
+     *
+     * @param crs the CRS to get the identifier for
+     * @return the identifier, or {@code null} if none found
+     * @throws FactoryException if an error occurs while looking up the identifier
+     */
+    private static String getIdentifier(CoordinateReferenceSystem crs) throws FactoryException {
+        Set<ReferenceIdentifier> identifier = crs.getIdentifiers();
+        if (identifier.size() == 1) {
+            return identifier.iterator().next().toString();
+        }
+        return CRS.lookupIdentifier(crs, false);
+    }
+
+    /**
+     * Gets the URL to the definitions properties file.
+     *
+     * @return the definitions URL
+     */
     protected abstract URL getDefinitionsURL();
 }

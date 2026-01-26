@@ -16,15 +16,21 @@
  */
 package org.geotools.feature.simple;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Schema;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.SampleFeatureFixtures;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.referencing.CRS;
@@ -169,6 +175,82 @@ public class SimpleTypeBuilderTest {
         Assert.assertNull(retyped.getGeometryDescriptor());
         Assert.assertEquals(1, retyped.getAttributeCount());
         Assert.assertEquals("integer", retyped.getAttributeDescriptors().get(0).getLocalName());
+    }
+
+    private static final List<String> attributeNames(SimpleFeatureType ft) {
+        return ft.getAttributeDescriptors().stream().map(d -> d.getLocalName()).toList();
+    }
+
+    @Test
+    public void testRetypeWithAllAttributes() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, attributeNames(ft));
+        Assert.assertEquals(ft.getAttributeDescriptors(), result.getAttributeDescriptors());
+    }
+
+    @Test
+    public void testRetypeWithNoAttributes() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of());
+        Assert.assertEquals(0, result.getAttributeCount());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRetypeWithNonexistentAttribute() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+        SimpleFeatureTypeBuilder.retype(
+                ft,
+                Stream.concat(
+                                Stream.of("<nonexistent>"),
+                                Stream.of(attributeNames(ft).toArray(String[]::new)))
+                        .toList());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRetypeWithOnlyNonexistentAttribute() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+        SimpleFeatureTypeBuilder.retype(ft, List.of("<nonexistent>"));
+    }
+
+    @Test
+    public void testRetypeWithPrefixingAttribute() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+        AttributeDescriptor ad = ft.getAttributeDescriptors().get(0);
+        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of(ad.getLocalName() + "/suffix"));
+        Assert.assertEquals(List.of(ad), result.getAttributeDescriptors());
+    }
+
+    @Test
+    public void testRetypeOnlyPrefixesIfNoExactMatch() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+        AttributeDescriptor ad = ft.getAttributeDescriptors().get(0);
+        SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+        b.init(ft);
+        b.add(ad.getLocalName() + "/suffix", ad.getType().getBinding());
+        ft = b.buildFeatureType();
+
+        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, List.of(ad.getLocalName() + "/suffix"));
+        Assert.assertEquals(List.of(ft.getDescriptor(ad.getLocalName() + "/suffix")), result.getAttributeDescriptors());
+    }
+
+    @Test
+    public void testRetypeOrder() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+        List<String> ads = new ArrayList<>(attributeNames(ft));
+        Collections.shuffle(ads, new Random());
+
+        SimpleFeatureType result = SimpleFeatureTypeBuilder.retype(ft, ads);
+        Assert.assertEquals(ads, attributeNames(result));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRetypeNoDuplicates() throws Exception {
+        SimpleFeatureType ft = SampleFeatureFixtures.createTestType();
+
+        SimpleFeatureTypeBuilder.retype(
+                ft,
+                Stream.concat(attributeNames(ft).stream(), attributeNames(ft).stream())
+                        .toList());
     }
 
     @Test

@@ -495,7 +495,7 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().textValue());
                 } else if (binding == Boolean.class) {
                     builder.set(n.getKey(), n.getValue().booleanValue());
-                } else if (binding == Object.class) {
+                } else if (binding == JsonNode.class) {
                     builder.set(n.getKey(), n.getValue());
                 } else if (binding == List.class) {
                     ArrayNode array = (ArrayNode) n.getValue();
@@ -667,7 +667,7 @@ public class GeoJSONReader implements AutoCloseable {
                     typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
                 } else {
                     // a complex object, we don't know what it is going to be
-                    typeBuilder.add(n.getKey(), Object.class);
+                    typeBuilder.add(n.getKey(), JsonNode.class);
                 }
             } else if (value instanceof ArrayNode) {
                 typeBuilder.add(n.getKey(), List.class);

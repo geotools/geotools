@@ -495,7 +495,7 @@ public class GranuleDescriptor {
             }
 
             // handle the nodata and rescaling if available
-            initFromImageMetadata(imageReader, checkAuxiliaryMetadata);
+            initFromImageMetadata(imageReader);
         } catch (IllegalStateException | IOException e) {
             throw new IllegalArgumentException(e);
 
@@ -568,7 +568,7 @@ public class GranuleDescriptor {
         return provider;
     }
 
-    private void initFromImageMetadata(ImageReader reader, boolean readPam) throws IOException {
+    private void initFromImageMetadata(ImageReader reader) throws IOException {
         // grabbing the nodata if possible
         int index = 0;
         if (originator != null) {
@@ -591,7 +591,7 @@ public class GranuleDescriptor {
                 this.scales = ccm.getScales();
                 this.offsets = ccm.getOffsets();
             }
-            if (readPam && this.pamDataset == null && metadata instanceof TIFFImageMetadata tiffMetadata) {
+            if (this.pamDataset == null && metadata instanceof TIFFImageMetadata tiffMetadata) {
                 this.pamDataset = AbstractGridCoverage2DReader.getPamDataset(tiffMetadata);
             }
         } catch (UnsupportedOperationException e) {

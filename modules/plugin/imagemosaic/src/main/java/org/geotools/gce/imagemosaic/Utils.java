@@ -44,6 +44,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,6 +52,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Queue;
@@ -2225,16 +2227,16 @@ public class Utils {
 
     /** Merge statistics across datasets. */
     public static PAMDataset mergePamDatasets(PAMDataset[] pamDatasets) {
-        PAMDataset merged = pamDatasets[0];
-        if (pamDatasets.length > 1) {
-            merged = initRasterBands(pamDatasets[0]);
+        if (pamDatasets.length > 1 && Arrays.stream(pamDatasets).allMatch(Objects::nonNull)) {
+            PAMDataset merged = initRasterBands(pamDatasets[0]);
             if (merged != null) {
                 for (PAMDataset pamDataset : pamDatasets) {
                     updatePamDatasets(pamDataset, merged);
                 }
             }
+            return merged;
         }
-        return merged;
+        return pamDatasets[0];
     }
 
     /**
@@ -2268,21 +2270,27 @@ public class Utils {
      * min between them
      */
     private static void updateMDI(MDI mdiInput, MDI mdiOutput) {
-        Double current = Double.parseDouble(mdiInput.getValue());
-        Object value = mdiOutput.getValue();
-        if (value != null) {
-            Double output = Double.parseDouble((String) value);
-            if (mdiInput.getKey().toUpperCase().endsWith("_MAXIMUM")) {
-                if (current < output) {
-                    current = output;
-                }
-            } else {
-                if (output < current) {
-                    current = output;
+        String key = mdiInput.getKey().toUpperCase();
+        if (key.endsWith("_MAXIMUM") || key.endsWith("_MINIMUM") || key.endsWith("_STDDEV") || key.endsWith("_MEAN")) {
+            double current = Double.parseDouble(mdiInput.getValue());
+            String value = mdiOutput.getValue();
+            if (value != null) {
+                double output = Double.parseDouble(value);
+                if (key.endsWith("_MAXIMUM")) {
+                    if (current < output) {
+                        current = output;
+                    }
+                } else {
+                    // For other statistics we simply take the min
+                    if (output < current) {
+                        current = output;
+                    }
                 }
             }
+            mdiOutput.setValue(Double.toString(current));
+        } else {
+            mdiOutput.setValue(mdiInput.getValue());
         }
-        mdiOutput.setValue(Double.toString(current));
     }
 
     /**

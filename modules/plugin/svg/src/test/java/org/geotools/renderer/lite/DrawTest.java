@@ -243,6 +243,28 @@ public class DrawTest {
     }
 
     @Test
+    public void testAnchorPointDisplacedRotateBase() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "rotateDisplaceSVGHouseBase.sld");
+        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointRotateFS, pStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.VECTOR_RENDERING_KEY, true));
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+
+        BufferedImage image = RendererBaseTest.showRender("PointHouseRotate", renderer, TIME, bounds, listener);
+        ImageAssert.assertEquals(
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/pointHouseAnchorDisplaceRotateBase.png"),
+                image,
+                1000);
+    }
+
+    @Test
     public void testParametricNoValues() throws Exception {
         StreamingRenderer renderer = setupSinglePointRenderer("firestationNoParams.sld");
 

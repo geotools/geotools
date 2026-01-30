@@ -24,9 +24,9 @@ import org.geotools.jackson.datatype.projjson.model.ProjectedCRS;
 import org.geotools.jackson.datatype.projjson.model.Transformation;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonParser;
+import tools.jackson.core.ObjectReadContext;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.deser.std.StdDeserializer;
 
 /**
@@ -46,23 +46,28 @@ public class CoordinateReferenceSystemDeserializer extends StdDeserializer<Coord
     public CoordinateReferenceSystem deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
 
         // Parse the JSON tree
-        ObjectMapper mapper = (ObjectMapper) p.objectReadContext();
-        JsonNode root = mapper.readTree(p);
+        ObjectReadContext rc = p.objectReadContext();
+        JsonNode root = rc.readTree(p);
 
-        // Get the type field to determine which concrete class to use
-        if (root.has("type")) {
-            String type = root.get("type").asString();
-
-            return switch (type) {
-                case "GeographicCRS" -> mapper.treeToValue(root, GeographicCRS.class);
-                case "ProjectedCRS" -> mapper.treeToValue(root, ProjectedCRS.class);
-                case "CompoundCRS" -> mapper.treeToValue(root, CompoundCRS.class);
-                case "BoundCRS" -> mapper.treeToValue(root, BoundCRS.class);
-                case "Transformation" -> mapper.treeToValue(root, Transformation.class);
-                default -> throw new RuntimeException("Unknown CRS type: " + type);
-            };
-        } else {
+        JsonNode typeNode = root.get("type");
+        if (typeNode == null) {
             throw new RuntimeException("Missing required 'type' field in CRS JSON");
         }
+        String type = typeNode.asString();
+
+        Class<? extends CoordinateReferenceSystem> target =
+                switch (type) {
+                    case "GeographicCRS" -> GeographicCRS.class;
+                    case "ProjectedCRS" -> ProjectedCRS.class;
+                    case "CompoundCRS" -> CompoundCRS.class;
+                    case "BoundCRS" -> BoundCRS.class;
+                    case "Transformation" -> Transformation.class;
+                    default -> throw new RuntimeException("Unknown CRS type: " + type);
+                };
+
+        // Convert tree -> tokens -> value
+        JsonParser treeParser = rc.treeAsTokens(root);
+        treeParser.nextToken(); // required: treeAsTokens() is not positioned yet
+        return rc.readValue(treeParser, target);
     }
 }

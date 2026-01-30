@@ -472,7 +472,10 @@ public class GeoJSONWriter implements AutoCloseable {
         this.singleFeature = singleFeature;
     }
 
-    /** Enables/disables pretty printing. */
+    /**
+     * Enables/disables pretty printing. This needs to be called before any writing happens, or the output will be
+     * broken
+     */
     public void setPrettyPrinting(boolean prettyPrint) {
         if (isPrettyPrinting() == prettyPrint) return;
         // generator is immutable, need to recreate

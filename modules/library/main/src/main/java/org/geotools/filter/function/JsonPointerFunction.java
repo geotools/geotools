@@ -29,6 +29,8 @@ import tools.jackson.core.JsonGenerator;
 import tools.jackson.core.JsonParser;
 import tools.jackson.core.JsonPointer;
 import tools.jackson.core.JsonTokenId;
+import tools.jackson.core.ObjectReadContext;
+import tools.jackson.core.ObjectWriteContext;
 import tools.jackson.core.json.JsonFactory;
 
 /** Applies a JSON pointer on a given JSON string, extracting a value out of it */
@@ -53,7 +55,7 @@ public class JsonPointerFunction extends FunctionExpressionImpl {
 
         JsonPointer expectedPointer = JsonPointer.compile(pointerSpec);
         if (json == null) return null;
-        try (JsonParser parser = factory.createParser(json)) {
+        try (JsonParser parser = factory.createParser(ObjectReadContext.empty(), json)) {
             while (parser.nextToken() != JsonFunctionUtils.END_OF_STREAM) {
                 final JsonPointer pointer = parser.streamReadContext().pathAsPointer();
                 if (pointer.equals(expectedPointer) && parser.currentTokenId() != JsonTokenId.ID_PROPERTY_NAME) {
@@ -69,7 +71,8 @@ public class JsonPointerFunction extends FunctionExpressionImpl {
                             return parser.getBooleanValue();
                         default:
                             StringWriter writer = new StringWriter();
-                            try (final JsonGenerator generator = factory.createGenerator(writer)) {
+                            try (final JsonGenerator generator =
+                                    factory.createGenerator(ObjectWriteContext.empty(), writer)) {
                                 serializeContents(parser, generator);
                             }
                             return writer.toString();

@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -48,6 +47,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
+import tools.jackson.databind.node.ObjectNode;
 
 /** @author ian */
 public class GeoJSONReaderTest {
@@ -353,7 +353,7 @@ public class GeoJSONReaderTest {
         SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
         ObjectNode object = (ObjectNode) feature.getAttribute("object");
         assertEquals(10, object.get("a").intValue());
-        assertEquals("foo", object.get("b").textValue());
+        assertEquals("foo", object.get("b").asString());
     }
 
     @Test

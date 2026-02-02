@@ -32,11 +32,15 @@ public class AbstractDocument extends AnyJSONObject {
 
     String type;
 
-    protected final List<Link> links = new ArrayList<>();
+    protected List<Link> links = new ArrayList<>();
 
     /** Adds a link to the document */
     public void addLink(Link link) {
         links.add(link);
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
     public List<Link> getLinks() {

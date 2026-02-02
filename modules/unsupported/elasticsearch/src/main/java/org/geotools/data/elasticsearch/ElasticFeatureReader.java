@@ -16,8 +16,6 @@
  */
 package org.geotools.data.elasticsearch;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -33,6 +31,8 @@ import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /** FeatureReader access to the Elasticsearch index. */
 class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
@@ -214,7 +214,7 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
         try {
             final byte[] data = mapper.writeValueAsBytes(aggregation);
             builder.set("_aggregation", data);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             LOGGER.warning("Unable to set aggregation. Try reloading layer.");
         }
     }

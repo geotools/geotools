@@ -19,7 +19,6 @@ package org.geotools.stac.store;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +31,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.databind.node.ObjectNode;
 
 public class STACDataStoreTest extends AbstractSTACStoreTest {
 

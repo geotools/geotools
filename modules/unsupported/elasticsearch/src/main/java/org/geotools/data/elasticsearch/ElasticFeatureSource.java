@@ -18,8 +18,6 @@ package org.geotools.data.elasticsearch;
 
 import static org.geotools.filter.visitor.ExtractBoundsFilterVisitor.BOUNDS_VISITOR;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +41,8 @@ import org.geotools.process.elasticsearch.ElasticBucketVisitor;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 /** Provides access to a specific type within the Elasticsearch index described by the associated data store. */
 public class ElasticFeatureSource extends ContentFeatureSource {

@@ -18,8 +18,6 @@ package org.geotools.process.elasticsearch;
 
 import static org.geotools.process.elasticsearch.GridCoverageUtil.pad;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
 import com.github.davidmoten.geo.LatLong;
 import java.io.IOException;
@@ -46,6 +44,9 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 abstract class GeoHashGrid {
 
@@ -189,7 +190,7 @@ abstract class GeoHashGrid {
                         try {
                             final Map<String, Object> aggregation = mapper.readValue(data, new TypeReference<>() {});
                             buckets.add(aggregation);
-                        } catch (IOException e) {
+                        } catch (JacksonException e) {
                             LOGGER.fine("Failed to parse aggregation value: " + e);
                         }
                     }

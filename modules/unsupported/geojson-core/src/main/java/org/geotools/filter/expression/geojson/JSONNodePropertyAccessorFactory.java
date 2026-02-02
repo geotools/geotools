@@ -16,8 +16,6 @@
  */
 package org.geotools.filter.expression.geojson;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.databind.JsonNode;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -29,6 +27,8 @@ import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
 
 /** Property Accessor Factory for {@link JsonNode} */
 public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory {
@@ -167,11 +167,11 @@ public class JSONNodePropertyAccessorFactory implements PropertyAccessorFactory 
                 } else {
                     return jsonNode.numberValue();
                 }
-            } else if (jsonNode.isTextual()) {
+            } else if (jsonNode.isString()) {
                 if (Boolean.getBoolean(JSON_NODE_DATE_FORMAT_OFF)) {
-                    return jsonNode.textValue();
+                    return jsonNode.asString();
                 } else {
-                    return toDateIfISO(jsonNode.textValue());
+                    return toDateIfISO(jsonNode.asString());
                 }
             } else {
                 return jsonNode;

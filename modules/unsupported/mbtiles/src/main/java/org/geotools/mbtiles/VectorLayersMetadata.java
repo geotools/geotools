@@ -17,21 +17,20 @@
 package org.geotools.mbtiles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /** Maps to the JSON layers metadata object contained in the json key of the metadata table */
 class VectorLayersMetadata {
 
-    static final ObjectMapper MAPPER =
-            new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    // Object mapper for JSON parsing (failing on unknown properties is disabled by default in Jackson 3)
+    static final ObjectMapper MAPPER = JsonMapper.builder().build();
 
-    static VectorLayersMetadata parseMetadata(String json) throws IOException {
+    static VectorLayersMetadata parseMetadata(String json) {
         return MAPPER.readValue(json, VectorLayersMetadata.class);
     }
 

@@ -19,12 +19,6 @@ package org.geotools.filter.function;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import static org.geotools.filter.function.JsonFunctionUtils.serializeArray;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.JsonTokenId;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -32,6 +26,14 @@ import java.util.logging.Logger;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.core.JsonToken;
+import tools.jackson.core.JsonTokenId;
+import tools.jackson.core.ObjectReadContext;
+import tools.jackson.core.ObjectWriteContext;
+import tools.jackson.core.json.JsonFactory;
 
 public class JsonArrayContainsFunction extends FunctionExpressionImpl {
 
@@ -50,7 +52,7 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl {
 
     public JsonArrayContainsFunction() {
         super(NAME);
-        this.factory = new JsonFactory();
+        this.factory = JsonFactory.builder().build();
     }
 
     @Override
@@ -59,7 +61,7 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl {
         boolean found = false;
 
         if (json != null) {
-            try (JsonParser parser = factory.createParser(json)) {
+            try (JsonParser parser = factory.createParser(ObjectReadContext.empty(), json)) {
                 found = checkExpected(parser, object);
             } catch (IOException e) {
                 LOGGER.severe("Error when parsing the JSON: " + json + ". Exception: " + e.getLocalizedMessage());
@@ -82,10 +84,10 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl {
          * is reached
          */
         while (parser.nextToken() != END_OF_STREAM && !found) {
-            final JsonPointer pointer = parser.getParsingContext().pathAsPointer();
+            final JsonPointer pointer = parser.streamReadContext().pathAsPointer();
             if (pointer.equals(expectedPointer) && parser.currentTokenId() == JsonTokenId.ID_START_ARRAY) {
                 StringWriter writer = new StringWriter();
-                try (final JsonGenerator generator = factory.createGenerator(writer)) {
+                try (final JsonGenerator generator = factory.createGenerator(ObjectWriteContext.empty(), writer)) {
                     serializeArray(parser, generator);
                 }
                 found = writer.toString().contains(expected);

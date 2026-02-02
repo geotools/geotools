@@ -22,11 +22,11 @@ package com.bedatadriven.jackson.datatype.jts.parsers;
 
 import static com.bedatadriven.jackson.datatype.jts.GeoJson.COORDINATES;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JsonNode;
 
 /** Created by mihaildoronin on 11/11/15. */
 public class MultiLineStringParser extends BaseParser implements GeometryParser<MultiLineString> {
@@ -48,7 +48,7 @@ public class MultiLineStringParser extends BaseParser implements GeometryParser<
     }
 
     @Override
-    public MultiLineString geometryFromJson(JsonNode node) throws JsonMappingException {
+    public MultiLineString geometryFromJson(JsonNode node) throws DatabindException {
         return multiLineStringFromJson(node);
     }
 }

@@ -26,8 +26,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -53,6 +51,9 @@ import org.mockito.ArgumentMatcher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 public class RestElasticClientTest {
 
@@ -724,7 +725,7 @@ public class RestElasticClientTest {
             try {
                 Map<String, Object> data = mapper.readValue(inputStream, new TypeReference<>() {});
                 return this.data.equals(data);
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 return false;
             }
         }

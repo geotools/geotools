@@ -29,8 +29,6 @@ import com.bedatadriven.jackson.datatype.jts.parsers.PointParser;
 import com.bedatadriven.jackson.datatype.jts.parsers.PolygonParser;
 import com.bedatadriven.jackson.datatype.jts.serialization.GeometryDeserializer;
 import com.bedatadriven.jackson.datatype.jts.serialization.GeometrySerializer;
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.Serial;
 import java.math.RoundingMode;
 import org.locationtech.jts.geom.Geometry;
@@ -42,6 +40,8 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.core.Version;
+import tools.jackson.databind.module.SimpleModule;
 
 public class JtsModule extends SimpleModule {
 

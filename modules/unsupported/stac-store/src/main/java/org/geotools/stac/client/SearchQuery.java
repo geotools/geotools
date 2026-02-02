@@ -17,11 +17,11 @@
 package org.geotools.stac.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.locationtech.jts.geom.Geometry;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /** Represents a STAC query used in search requests */
 public class SearchQuery {

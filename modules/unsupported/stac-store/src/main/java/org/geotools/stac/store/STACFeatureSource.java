@@ -16,7 +16,6 @@
  */
 package org.geotools.stac.store;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
@@ -52,6 +51,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.stac.client.STACClient;
 import org.geotools.stac.client.SearchQuery;
 import org.geotools.util.factory.Hints;
+import tools.jackson.databind.node.ObjectNode;
 
 public class STACFeatureSource extends ContentFeatureSource {
 

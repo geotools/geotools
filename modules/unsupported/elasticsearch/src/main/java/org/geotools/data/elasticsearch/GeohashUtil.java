@@ -16,9 +16,6 @@
  */
 package org.geotools.data.elasticsearch;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
 import java.util.Map;
 import java.util.logging.Level;
@@ -32,6 +29,9 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import si.uom.SI;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 public class GeohashUtil {
 
@@ -163,7 +163,7 @@ public class GeohashUtil {
                     }
                 }
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.log(
                     Level.WARNING,
                     "Failure when trying to read precision from aggregation definition: " + aggregationDefinition,

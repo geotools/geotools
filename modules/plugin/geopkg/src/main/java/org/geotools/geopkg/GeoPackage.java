@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
@@ -104,6 +105,9 @@ import org.sqlite.SQLiteConfig;
 public class GeoPackage implements Closeable {
 
     static final Logger LOGGER = Logging.getLogger(GeoPackage.class);
+
+    /** WeakHashMap to track connections that have already had SQLite functions registered */
+    private static final WeakHashMap<Connection, Boolean> INITIALIZED_CONNECTIONS = new WeakHashMap<>();
 
     public static final String GEOPACKAGE_CONTENTS = "gpkg_contents";
 
@@ -347,13 +351,23 @@ public class GeoPackage implements Closeable {
     }
 
     static void createFunctions(Connection cx) throws SQLException {
-        while (cx instanceof DelegatingConnection) {
-            cx = ((DelegatingConnection) cx).getDelegate();
+        // Unwrap the connection to get the real SQLite connection
+        Connection unwrapped = cx;
+        while (unwrapped instanceof DelegatingConnection) {
+            unwrapped = ((DelegatingConnection) unwrapped).getDelegate();
+        }
+
+        // Check if functions are already created on this connection
+        // This prevents "error creating function" when reusing pooled connections
+        synchronized (INITIALIZED_CONNECTIONS) {
+            if (INITIALIZED_CONNECTIONS.containsKey(unwrapped)) {
+                return;
+            }
         }
 
         // minx
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MinX",
                 new GeometryDoubleFunction() {
 
@@ -367,7 +381,7 @@ public class GeoPackage implements Closeable {
 
         // maxx
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MaxX",
                 new GeometryDoubleFunction() {
                     @Override
@@ -380,7 +394,7 @@ public class GeoPackage implements Closeable {
 
         // miny
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MinY",
                 new GeometryDoubleFunction() {
 
@@ -393,7 +407,7 @@ public class GeoPackage implements Closeable {
                 Function.FLAG_DETERMINISTIC);
         // maxy
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MaxY",
                 new GeometryDoubleFunction() {
 
@@ -407,7 +421,7 @@ public class GeoPackage implements Closeable {
 
         // empty
         Function.create(
-                cx,
+                unwrapped,
                 "ST_IsEmpty",
                 new GeometryBooleanFunction() {
                     @Override
@@ -417,6 +431,11 @@ public class GeoPackage implements Closeable {
                 },
                 1,
                 Function.FLAG_DETERMINISTIC);
+
+        // Mark this connection as initialized
+        synchronized (INITIALIZED_CONNECTIONS) {
+            INITIALIZED_CONNECTIONS.put(unwrapped, Boolean.TRUE);
+        }
     }
 
     /**

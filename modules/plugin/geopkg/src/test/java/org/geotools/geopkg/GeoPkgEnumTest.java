@@ -455,7 +455,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         config.setJournalMode(SQLiteConfig.JournalMode.MEMORY);
         config.setPragma(SQLiteConfig.Pragma.SYNCHRONOUS, "OFF");
         config.setTransactionMode(SQLiteConfig.TransactionMode.DEFERRED);
-        config.setReadUncommited(true);
+        config.setReadUncommitted(true);
         config.setLockingMode(SQLiteConfig.LockingMode.EXCLUSIVE);
 
         // create a geopackage that will be accessed in creation mode at top write speed

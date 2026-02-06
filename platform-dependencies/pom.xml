@@ -88,7 +88,7 @@
     <snakeyaml.version>2.4</snakeyaml.version>
     <spatialdb.version>0.1</spatialdb.version>
     <spotbugs-annotations.version>4.0.2</spotbugs-annotations.version>
-    <sqlite-jdbc.version>3.41.2.2</sqlite-jdbc.version>
+    <sqlite-jdbc.version>3.51.1.0</sqlite-jdbc.version>
     <systems-common.version>2.1</systems-common.version>
     <tech-units-indriya.version>2.2</tech-units-indriya.version>
     <uber-h3.version>3.7.3</uber-h3.version>

@@ -345,4 +345,13 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param featureType The feature type the update is executing against.
      */
     public void onUpdate(PreparedStatement update, Connection cx, SimpleFeatureType featureType) throws SQLException {}
+
+    /**
+     * Indicates whether this dialect supports retrieving generated keys after batch execution.
+     *
+     * @return true if getGeneratedKeys() works reliably after executeBatch(), false otherwise
+     */
+    public boolean supportsBatchGeneratedKeys() {
+        return true;
+    }
 }

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.Feature;
@@ -59,7 +60,8 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase<String> {
         try (Connection cx = ((JDBCDataStore) dataStore.getDelegate()).getConnection(Transaction.AUTO_COMMIT);
                 Statement st = cx.createStatement()) {
             // cleanup
-            st.execute("DROP TABLE IF EXISTS zoneAttributes");
+            st.execute("DROP TABLE IF EXISTS zoneAttributes;");
+            st.execute("DROP TABLE IF EXISTS noZones;");
 
             st.execute("CREATE TABLE zoneAttributes (\n"
                     + "    zoneId String,\n"
@@ -76,12 +78,26 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase<String> {
                     + "('8011fffffffffff', 1, 75, 0),\n"
                     + "('8011fffffffffff', 2, 25, 0),\n"
                     + "('8011fffffffffff', 3, 0, 0);");
+
+            st.execute("CREATE TABLE noZones (\n"
+                    + "    ts UInt32,\n"
+                    + "    value UInt32,\n"
+                    + "    resolution UInt8\n"
+                    + ") ENGINE = MergeTree()\n"
+                    + "ORDER BY ts;");
+
+            st.execute("INSERT INTO noZones VALUES\n" + "(1, 100, 0),\n" + "(2, 50, 0),\n" + "(3, 150, 0);");
         }
     }
 
     public void testTypeNames() throws IOException {
         List<String> names = Arrays.asList(dataStore.getTypeNames());
         assertThat(names, Matchers.hasItem("zoneAttributes"));
+        assertThat(names, Matchers.not(Matchers.hasItem("noZones")));
+
+        DataStore delegate = dataStore.getDelegate();
+        names = Arrays.asList(delegate.getTypeNames());
+        assertThat(names, Matchers.hasItem("noZones"));
     }
 
     public void testDataStoreSchema() throws IOException {

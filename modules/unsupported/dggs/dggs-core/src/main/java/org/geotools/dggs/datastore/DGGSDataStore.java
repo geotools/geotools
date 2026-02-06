@@ -63,6 +63,12 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class DGGSDataStore<I> implements DGGSStore<I> {
 
+    private static final Class<?>[] ZONE_ID_BINDINGS = {
+        String.class, Long.class, Integer.class, Short.class, java.math.BigInteger.class
+    };
+
+    private static final Class<?>[] RESOLUTION_BINDINGS = {Byte.class, Short.class, Integer.class};
+
     static final Logger LOGGER = Logging.getLogger(DGGSDataStore.class);
 
     /**
@@ -140,12 +146,8 @@ public class DGGSDataStore<I> implements DGGSStore<I> {
     }
 
     private boolean isDGGSSchema(SimpleFeatureType schema) {
-        return checkAttribute(
-                        schema,
-                        zoneIdAttribute,
-                        schema.getDescriptor(zoneIdAttribute).getType().getBinding())
-                && (resolutions.hasFixedResolution()
-                        || checkAttribute(schema, RESOLUTION, Byte.class, Short.class, Integer.class))
+        return checkAttribute(schema, zoneIdAttribute, ZONE_ID_BINDINGS)
+                && (resolutions.hasFixedResolution() || checkAttribute(schema, RESOLUTION, RESOLUTION_BINDINGS))
                 && schema.getDescriptor(GEOMETRY) == null;
     }
 

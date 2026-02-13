@@ -107,17 +107,34 @@ public class GeostationarySatelliteTest {
 
     @Test
     public void testEllipsoidProjection() throws Exception {
-        // Allow for some floating point shenanigans.
-        double allowedError = 1e-10;
-        // Calculated with pyproj.
-        // +proj=geos +lon_0=-135 +h=35785831 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs +sweep=x
-        double[] wsg84 = {-71.391245, 41.766279, -80.452193, -5.547325};
-        double[] geos = {3778584.7403456536, 3762727.556421232, 4779926.185724244, -569498.6040787804};
-        double[] actual = new double[wsg84.length];
-        geogToEllipsoidalGeos.transform(wsg84, 0, actual, 0, actual.length / 2);
-        assertArrayEquals(geos, actual, allowedError);
-        ellipsoidalGeosToGeog.transform(geos, 0, actual, 0, actual.length / 2);
-        assertArrayEquals(wsg84, actual, allowedError);
+        // Calculated with pyproj: proj=geos +lon_0=-135 +h=35785831 +x_0=0 +y_0=0 +ellps=WGS84 +sweep=x
+        double[] wgs84 = {
+            -71.391245, 41.766279,
+            -80.452193, -5.547325,
+            -53.700994, 0.0, // Limb (approx 81.3 deg East of center)
+            -135.0, 64.143628 // High Latitude (due North of center)
+        };
+        double[] geos = {
+            3778584.7403456536, 3762727.556421232,
+            4779926.185724244, -569498.6040787804,
+            5434177.815700539, 0.0,
+            0.0, 5159593.473948262
+        };
+
+        double[] actual = new double[wgs84.length];
+
+        // Forward Transform (wgs84 -> Geos)
+        geogToEllipsoidalGeos.transform(wgs84, 0, actual, 0, wgs84.length / 2);
+        assertArrayEquals("Forward transform failed accuracy test", geos, actual, 1 /* meter */);
+
+        // And back, inverse Transform (Geos -> wgs84)
+        double[] actualWgs = new double[wgs84.length];
+        ellipsoidalGeosToGeog.transform(geos, 0, actualWgs, 0, geos.length / 2);
+        assertArrayEquals(
+                "Inverse transform failed accuracy test (check your latitude math!)",
+                wgs84,
+                actualWgs,
+                1e-6 /* degree */);
     }
 
     @Test
@@ -384,6 +401,25 @@ public class GeostationarySatelliteTest {
         // tickle);
         //            ellipsoidalGeosToGeog.transform(p, p);
         //        }});
+    }
+
+    @Test(expected = ProjectionException.class)
+    public void testOffDiskVisibility() throws Exception {
+        // A point slightly further out than the maximum possible X/Y
+        // For WGS84 at 35,785,831m, the horizon is ~5434177m
+        double[] offDisk = {5500000.0, 0.0};
+        double[] result = new double[2];
+        ellipsoidalGeosToGeog.transform(offDisk, 0, result, 0, 1);
+    }
+
+    @Test(expected = ProjectionException.class)
+    public void testHorizonPrecisionFailure() throws Exception {
+        // This value is roughly 20cm past the physical horizon of the Earth
+        double xPastHorizon = 5434178.0;
+        double y = 0.0;
+
+        double[] result = new double[2];
+        ellipsoidalGeosToGeog.transform(new double[] {xPastHorizon, y}, 0, result, 0, 1);
     }
 
     private void expectProjectionException(Testable testable) {

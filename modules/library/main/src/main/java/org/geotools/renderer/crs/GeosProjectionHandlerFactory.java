@@ -16,17 +16,11 @@
  */
 package org.geotools.renderer.crs;
 
-import static org.geotools.referencing.operation.projection.GeostationarySatellite.Provider.SATELLITE_HEIGHT;
-import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.CENTRAL_MERIDIAN;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.crs.ProjectedCRS;
-import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -35,14 +29,10 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.GeostationarySatellite;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.locationtech.jts.densify.Densifier;
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.util.AffineTransformation;
 
 /** Projection handler for {@link org.geotools.referencing.operation.projection.GeostationarySatellite} */
 public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
@@ -51,6 +41,8 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
     public static final Polygon WORLD = JTS.toGeometry(new Envelope(-180, 180, -90, 90));
     public static final Polygon WORLD_RIGHT = JTS.toGeometry(new Envelope(180, 360, -90, 90));
 
+    private static final GeosValidAreaCache VALID_AREA_CACHE = new GeosValidAreaCache();
+
     @Override
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCRS, boolean wrap, int wrapLimit)
@@ -58,57 +50,11 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
         CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
         MapProjection mapProjection = CRS.getMapProjection(targetCRS);
         if (!(mapProjection instanceof GeostationarySatellite)) return null;
-
-        ParameterValueGroup params = mapProjection.getParameterValues();
-        double cm = params.parameter(CENTRAL_MERIDIAN.getName().getCode()).doubleValue();
-        double height = params.parameter(SATELLITE_HEIGHT.getName().getCode()).doubleValue();
-        Ellipsoid ellipsoid = ((ProjectedCRS) targetCRS).getBaseCRS().getDatum().getEllipsoid();
-        double radius = (ellipsoid.getSemiMajorAxis() + ellipsoid.getSemiMajorAxis()) / 2;
-        double angle = getInnerAngle(height, radius);
-
-        Geometry validArea = getValidAreaLatLon(cm, angle);
-
-        return new GeosProjectionHandler(sourceCRS, validArea, renderingEnvelope);
-    }
-
-    /**
-     * Returns the inner angle between the hypotenuse and the catethus. In the context of this class, the hypotenuse is
-     * the height of the satellite, and the catethus is the radius of the Earth.
-     */
-    static double getInnerAngle(double hypotenuse, double cathetus) {
-        double opposite = Math.sqrt(hypotenuse * hypotenuse - cathetus * cathetus);
-        return Math.toDegrees(Math.atan2(opposite, cathetus));
-    }
-
-    /**
-     * Returns the valid area of the projection in lat/lon coordinates.
-     *
-     * @param centralMeridian the central meridian of the projection
-     * @param angle the inner angle of the projection
-     * @return the valid area of the projection
-     */
-    static Geometry getValidAreaLatLon(double centralMeridian, double angle) {
-        // compute "circle" around the center, one segment every 2 degrees
-        Point center = new GeometryFactory().createPoint(new Coordinate(centralMeridian, 0));
-        Geometry circle = center.buffer(angle, 45);
-
-        // check if crossing the dateline, or not
-        Envelope env = circle.getEnvelopeInternal();
-        if (env.getMinX() < -180) {
-            Geometry left = circle.intersection(WORLD_LEFT);
-            Geometry leftTranslated =
-                    AffineTransformation.translationInstance(360, 0).transform(left);
-            Geometry right = circle.intersection(WORLD);
-
-            return right.union(leftTranslated);
-        } else if (env.getMaxX() > 180) {
-            Geometry left = circle.intersection(WORLD);
-            Geometry right = circle.intersection(WORLD_RIGHT);
-            Geometry rightTranslated =
-                    AffineTransformation.translationInstance(-360, 0).transform(right);
-            return left.union(rightTranslated);
-        } else {
-            return circle;
+        try {
+            Geometry validArea = VALID_AREA_CACHE.getValidAreaInGeosCrs(targetCRS);
+            return new GeosProjectionHandler(sourceCRS, validArea, renderingEnvelope);
+        } catch (TransformException e) {
+            throw new FactoryException("Failed to calculate valid area for GeostationarySatellite projection", e);
         }
     }
 

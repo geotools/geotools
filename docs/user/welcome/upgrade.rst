@@ -40,7 +40,7 @@ GeoTools 35.x
 -------------
 
 JavaEE to JakartaEE Migration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GeoTools 35.x has upgraded from JavaEE to JakartaEE reflecting the transition of this technology from Oracle to the Eclipse Foundation. Jakarta version mangement is provided by `platform-dependencies/pom.xml` import.
 
@@ -105,6 +105,66 @@ We recommend this default, however you may configure GeoTools with your own more
 
 .. _update34:
 
+
+NetCDF Index removal
+^^^^^^^^^^^^^^^^^^^^
+Starting with GeoTools 35.x, NetCDF plugin (and coverage multidim) has been simplified by removing external indexing mechanisms. 
+In particular, it no longer relies on 
+
+- a database (e.g., H2 or PostGIS) to map temporal and elevation domains to image indices, 
+- nor on the auxiliary .idx binary files previously used to link image indices to NetCDF dimension coordinates. 
+
+These relationships are now resolved directly from the NetCDF structure at runtime, reducing configuration overhead, 
+improving portability, and eliminating synchronization issues between datasets and external indexes.
+
+The NetCDF plugin no longer generates the legacy binary .idx files and the embedded H2 database previously used for indexing temporal and elevation domains.
+All indexing is now handled in-memory and derived directly from the NetCDF dataset structure at runtime, eliminating the need to manage or clean up external index artifacts.
+
+Due to that, several methods have been removed/updated.
+
+CoverageSlicesCatalog 
+'''''''''''''''''''''
+BEFORE:
+
+.. code-block:: java
+
+  public CoverageSlicesCatalog(final String database, final File parentLocation);
+  public CoverageSlicesCatalog(final String database, final File parentLocation, Repository repository);
+  public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig);
+  public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig, Repository repository);
+  public void removeGranules(String typeName, Filter filter, Transaction transaction);
+  public void addGranule(final String typeName, final SimpleFeature granule, final Transaction transaction);
+  public void addGranules(final String typeName, final SimpleFeatureCollection granules, final Transaction transaction);
+  public void createType(SimpleFeatureType featureType);
+  public void createType(String identification, String typeSpec);
+  public List<CoverageSlice> getGranules(Query q);
+  public void purge(Filter filter);
+
+AFTER:
+
+All methods supporting a physical datastore and related operations have been removed.
+Slices can now be returned as an iterator.
+
+.. code-block:: java
+
+  public List<CoverageSlice> getGranules(Query q);
+  public CoverageSlicesCatalog.SliceIterator iterateGranules(final Query q);
+
+
+GeoSpatialImageReader
+'''''''''''''''''''''
+BEFORE:
+
+.. code-block:: java
+
+  public String getAuxiliaryDatastorePath();
+  public void setAuxiliaryDatastorePath(String auxiliaryDatastorePath);
+  public void setRepository(Repository repository);
+
+AFTER:
+
+All the above methods have been removed since they were related to the Datastore 
+holding the NetCDF tuple imageIndexes.
 
 GeoTools 34.x
 -------------

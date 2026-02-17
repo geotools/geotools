@@ -963,16 +963,12 @@ public class RasterManager implements Cloneable {
     private void updateHints(Hints hints, MosaicConfigurationBean configuration, ImageMosaicReader parentReader) {
         if (configuration != null) {
             String auxiliaryFilePath = configuration.getAuxiliaryFilePath();
-            String auxiliaryDatastorePath = configuration.getAuxiliaryDatastorePath();
             boolean update = false;
             if (auxiliaryFilePath != null) {
                 hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, auxiliaryFilePath));
                 update = true;
             }
-            if (auxiliaryDatastorePath != null) {
-                hints.add(new RenderingHints(Utils.AUXILIARY_DATASTORE_PATH, auxiliaryDatastorePath));
-                update = true;
-            }
+
             if (update && !hints.containsKey(Utils.PARENT_DIR)) {
                 String parentDir = null;
                 if (parentReader.parentDirectory != null) {

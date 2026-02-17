@@ -28,15 +28,10 @@ import java.util.Map;
 import org.geotools.api.data.CloseableIterator;
 import org.geotools.api.data.FileResourceInfo;
 import org.geotools.api.data.Query;
-import org.geotools.api.filter.sort.SortBy;
-import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
-import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
-import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DefaultResourceInfo;
-import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.DateRange;
@@ -270,36 +265,14 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
         // them...
         List<CoverageSlice> fc = null;
         try {
-            // WrappedCoverageSlicesCatalog share the DB. Therefore I have to deal with
-            // the location attribute
-            boolean sharedCatalog = slicesCatalog instanceof WrappedCoverageSlicesCatalog;
-            Query updatedQuery = query != null && sharedCatalog ? query : new Query();
-
-            if (sharedCatalog) {
-                final List<SortBy> clauses = new ArrayList<>(1);
-                clauses.add(new SortByImpl(
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(CoverageSlice.Attributes.LOCATION),
-                        SortOrder.ASCENDING));
-                final SortBy[] sb = clauses.toArray(new SortBy[] {});
-                final boolean isSortBySupported =
-                        slicesCatalog.getQueryCapabilities(coverageName).supportsSorting(sb);
-                if (isSortBySupported) {
-                    updatedQuery.setSortBy(sb);
-                }
-            }
-
+            Query updatedQuery = query != null ? new Query(query) : new Query();
             updatedQuery.setTypeName(coverageName);
-
-            // TODO: Make sure to add different iterator for stores
-            // not supporting sortBy
 
             // Get all the features matching the query
             fc = slicesCatalog.getGranules(updatedQuery);
 
             // They are already an in memory list
-            return sharedCatalog
-                    ? new WrappedCoverageSlicesToFileGroupIterator(fc)
-                    : new SimpleCoverageSlicesToFileGroupIterator(fc);
+            return new SimpleCoverageSlicesToFileGroupIterator(fc);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

@@ -163,8 +163,6 @@ public class Utils {
 
     public static final Key AUXILIARY_FILES_PATH = new Key(String.class);
 
-    public static final Key AUXILIARY_DATASTORE_PATH = new Key(String.class);
-
     public static final Key PARENT_DIR = new Key(String.class);
 
     public static final Key MOSAIC_READER = new Key(ImageMosaicReader.class);

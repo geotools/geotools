@@ -16,13 +16,11 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import jakarta.xml.bind.JAXBException;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -68,7 +66,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
@@ -76,7 +73,6 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
-import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
@@ -85,8 +81,6 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import si.uom.SI;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -222,8 +216,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
     }
 
     @Test
-    public void NetCDFTestOn4Dcoverages()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+    public void NetCDFTestOn4Dcoverages() throws FactoryException, IOException {
         File mosaic = new File(TestData.file(this, "."), "NetCDFTestOn4Dcoverages");
         if (mosaic.exists()) {
             FileUtils.deleteDirectory(mosaic);
@@ -1174,111 +1167,6 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
         assertTrue(noData instanceof NoDataContainer);
         d = ((NoDataContainer) noData).getAsSingleValue();
         assertEquals(d, 0d, DELTA);
-    }
-
-    @Test
-    public void NetCDFCachedConfigs() throws IOException, JAXBException, NoSuchAlgorithmException {
-        File netcdf1 = TestData.file(this, "gome/20130101.BrO.DUMMY.nc");
-        File aux = TestData.file(this, "gome/_dummy.xml");
-        File datastore = TestData.file(this, "gome/netcdf_datastore.properties");
-        AncillaryFileManager manager =
-                new AncillaryFileManager(netcdf1, aux.getAbsolutePath(), datastore.getAbsolutePath());
-        DataStoreConfiguration datastoreConfig1 = manager.getDatastoreConfiguration();
-
-        File netcdf2 = TestData.file(this, "gome/20130101.BrO.DUMMY.nc");
-        manager = new AncillaryFileManager(netcdf2, aux.getAbsolutePath(), datastore.getAbsolutePath());
-        DataStoreConfiguration datastoreConfig2 = manager.getDatastoreConfiguration();
-
-        Assert.assertSame(datastoreConfig1, datastoreConfig2);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    @Ignore
-    public void IASI() throws Exception {
-
-        final URL testURL = TestData.url(this, "IASI_C_EUMP_20121120062959_31590_eps_o_l2.nc");
-        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-        // Get format
-        final AbstractGridFormat format = GridFormatFinder.findFormat(testURL, hints);
-        final NetCDFReader reader = (NetCDFReader) format.getReader(testURL, hints);
-        assertNotNull(format);
-        assertNotNull(reader);
-        try {
-            String[] names = reader.getGridCoverageNames();
-            assertNotNull(names);
-            assertEquals(names.length, 20);
-
-            // surface_emissivity
-            final String coverageName = "surface_emissivity";
-            final String[] metadataNames = reader.getMetadataNames(coverageName);
-            assertNotNull(metadataNames);
-            assertEquals(14, metadataNames.length);
-
-            // Parsing metadata values
-            assertEquals("false", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
-            assertEquals("false", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
-            assertEquals("true", reader.getMetadataValue(coverageName, "HAS_NEW_DOMAIN"));
-
-            // additional domains
-            final String newDomain = reader.getMetadataValue(coverageName, "NEW_DOMAIN");
-            assertNotNull(metadataNames);
-            final String[] newDomainValues = newDomain.split(",");
-            assertNotNull(newDomainValues);
-            assertEquals(12, newDomainValues.length);
-            assertEquals(13.063399669990758, Double.valueOf(newDomainValues[11]), 1E-6);
-            assertEquals(3.6231999084702693, Double.valueOf(newDomainValues[0]), 1E-6);
-
-            // subsetting the envelope
-            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
-            final GeneralBounds reducedEnvelope = new GeneralBounds(
-                    new double[] {
-                        originalEnvelope.getLowerCorner().getOrdinate(0),
-                        originalEnvelope.getLowerCorner().getOrdinate(1)
-                    },
-                    new double[] {
-                        originalEnvelope.getMedian().getOrdinate(0),
-                        originalEnvelope.getMedian().getOrdinate(1)
-                    });
-            reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
-
-            // Selecting bigger gridRange for a zoomed result
-            final Dimension dim = new Dimension();
-            GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
-            dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
-            final Rectangle rasterArea = (GridEnvelope2D) gridRange;
-            rasterArea.setSize(dim);
-            final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
-            gg.setValue(new GridGeometry2D(range, reducedEnvelope));
-
-            // specify additional Dimensions
-            Set<ParameterDescriptor<List>> params = reader.getDynamicParameters(coverageName);
-            ParameterValue<List> new_ = null;
-            for (ParameterDescriptor param : params) {
-                if (param.getName().getCode().equalsIgnoreCase("NEW")) {
-                    new_ = param.createValue();
-                    new_.setValue(List.of(Double.valueOf(newDomainValues[11])));
-                }
-            }
-
-            GeneralParameterValue[] values = {gg, new_};
-            GridCoverage2D coverage = reader.read(coverageName, values);
-            assertNotNull(coverage);
-            if (TestData.isInteractiveTest()) {
-                coverage.show();
-            } else {
-                PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
-            }
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.dispose();
-                } catch (Throwable t) {
-                    // Does nothing
-                }
-            }
-        }
     }
 
     /**

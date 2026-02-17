@@ -44,7 +44,7 @@
     <elastic.test.image>docker.elastic.co/elasticsearch/elasticsearch-oss</elastic.test.image>
     <elastic.test.version>7.10.2</elastic.test.version>
     <!-- To run the latest check out https://www.docker.elastic.co/r/elasticsearch/elasticsearch -->
-    <elasticsearch.version>9.1.5</elasticsearch.version>
+    <elasticsearch.version>9.3.0</elasticsearch.version>
     <spatial4j.version>0.8</spatial4j.version>
     <geo.version>0.7.7</geo.version>
   </properties>

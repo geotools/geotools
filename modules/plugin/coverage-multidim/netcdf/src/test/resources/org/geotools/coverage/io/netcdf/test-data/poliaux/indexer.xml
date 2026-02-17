@@ -28,6 +28,5 @@
     <parameters>
         <parameter name="AuxiliaryFile" value="_polyphemus.xml" />
         <parameter name="AbsolutePath" value="false" />
-		<parameter name="AuxiliaryDatastoreFile" value="netcdf_datastore.properties" />
     </parameters>
 </Indexer>

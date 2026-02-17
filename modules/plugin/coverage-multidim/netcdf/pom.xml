@@ -111,13 +111,18 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-postgis</artifactId>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>jaxen</groupId>
-      <artifactId>jaxen</artifactId>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geopkg</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -138,43 +143,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <!-- not quite sure we need this, the target db datastore support would not be included 
-         in it anyways, unless all dbms are also added in the mix -->
-    <profile>
-      <id>migrate-jar</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>shade</goal>
-                </goals>
-                <phase>package</phase>
-                <configuration>
-                  <outputFile>target/${project.artifactId}-migrate-${project.version}.jar</outputFile>
-                  <transformers>
-                    <!-- This bit sets the main class for the executable jar as you otherwise -->
-                    <!-- would with the assembly plugin                                       -->
-                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                      <manifestEntries>
-                        <Main-Class>org.geotools.coverage.io.netcdf.tools.H2Migrate</Main-Class>
-                      </manifestEntries>
-                    </transformer>
-                    <!-- This bit merges the various GeoTools META-INF/services files         -->
-                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"></transformer>
-                  </transformers>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
 </project>

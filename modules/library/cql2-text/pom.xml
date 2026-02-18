@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>33-SNAPSHOT</version>
+    <version>33.5</version>
   </parent>
   <artifactId>gt-cql2-text</artifactId>
   <name>OGC CQL2 support</name>

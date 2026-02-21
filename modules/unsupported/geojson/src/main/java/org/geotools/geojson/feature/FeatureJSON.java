@@ -494,7 +494,7 @@ public class FeatureJSON {
      */
     public SimpleFeatureType readFeatureCollectionSchema(InputStream input, boolean nullValuesEncoded)
             throws IOException {
-        return readFeatureCollectionSchema((Object) input, false);
+        return readFeatureCollectionSchema((Object) input, nullValuesEncoded);
     }
 
     /**

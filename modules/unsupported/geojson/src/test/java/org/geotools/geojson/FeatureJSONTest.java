@@ -23,10 +23,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geotools.api.data.SimpleFeatureSource;
@@ -40,6 +37,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.feature.FeatureJSON;
@@ -699,6 +697,19 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
                 assertEquals(ftype, it.next().getType());
             }
         }
+    }
+
+    @Test
+    public void testFeatureCollectionWithMissingAttributeReadFromInputStream() throws Exception {
+        String collectionText = collectionText(true, true, false, true, false);
+        InputStream inputStream = new ByteArrayInputStream(strip(collectionText).getBytes(StandardCharsets.UTF_8));
+
+        // missing values are encoded as null is set to true
+        SimpleFeatureType ftype = fjson.readFeatureCollectionSchema(inputStream, true);
+
+        // but this is not the case. double attribute is missing from the schema of first feature
+        assertTrue(
+                ftype.getDescriptors().stream().noneMatch(desc -> desc.getName().equals(new NameImpl("double"))));
     }
 
     @Test

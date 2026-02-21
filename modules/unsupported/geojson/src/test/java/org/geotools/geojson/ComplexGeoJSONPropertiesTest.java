@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -580,6 +581,35 @@ public class ComplexGeoJSONPropertiesTest extends GeoJSONTestSupport {
 
         SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, false);
         assertEquals(List.class, type.getDescriptor("prop").getType().getBinding());
+    }
+
+    @Test
+    public void testFieldsOfSecondFeatureAreStillParsedCorrectly() throws Exception {
+        String json = strip("{"
+                + "  'type': 'FeatureCollection',"
+                + "  'features': ["
+                + "    {"
+                + "      'type': 'Feature',"
+                + "      'properties': { 'ID': 1 },"
+                + "      'geometry': {"
+                + "         'type': 'Point',"
+                + "         'coordinates': [1.0, 1.0]"
+                + "       }"
+                + "    },"
+                + "    {"
+                + "      'type': 'Feature',"
+                + "      'geometry': {"
+                + "         'type': 'Point',"
+                + "         'coordinates': [2.0, 2.0]"
+                + "      }"
+                + "      'properties': { 'ID': 2 }"
+                + "    }"
+                + "  ]"
+                + "}");
+
+        SimpleFeatureType schema = fjson.readFeatureCollectionSchema(json, false);
+        AttributeDescriptor geometry = schema.getDescriptor("geometry");
+        assertEquals(Point.class, geometry.getType().getBinding());
     }
 
     SimpleFeature feature(int val) {

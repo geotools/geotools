@@ -1271,7 +1271,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 // except for the sign of rotation parameters.
                 parameters.ex = -parameters.ex;
                 parameters.ey = -parameters.ey;
-                parameters.ey = -parameters.ey;
+                parameters.ez = -parameters.ez;
             }
             bwInfos.set(i, parameters);
         }

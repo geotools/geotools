@@ -337,8 +337,9 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
     protected JDBCDataStore setupDataStore(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         GeoParquetDialect dialect = (GeoParquetDialect) dataStore.getSQLDialect();
         PrimaryKeyFinder finder;
-        if (params.containsKey(PRIMARY_KEY_ID.key)) {
-            String pkId = (String) PRIMARY_KEY_ID.lookUp(params);
+        String pkId;
+        if ((pkId = (String) PRIMARY_KEY_ID.lookUp(params)) != null) {
+            // Only set up the primaryKeyFinder if the params actually contain a primary key identifier,
             finder = new PrimaryKeyFinder() {
                 @Override
                 public PrimaryKey getPrimaryKey(JDBCDataStore store, String schema, String table, Connection cx) {
@@ -346,8 +347,8 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
                     return new PrimaryKey(table, columns);
                 }
             };
-
         } else {
+            // otherwise rely on the dialect's default which is to look for "id"
             finder = dialect.getPrimaryKeyFinder();
         }
         dataStore.setPrimaryKeyFinder(finder);

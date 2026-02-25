@@ -178,7 +178,22 @@ public class GeoParquetDialect extends DuckDBDialect {
      */
     @Override
     public FilterToSQL createFilterToSQL() {
-        return new GeoParquetFilterToSQL();
+        GeoParquetFilterToSQL f = new GeoParquetFilterToSQL();
+
+        // provide a supplier to the filter that can retrieve GeoParquet metadata
+        // for the current feature type being processed
+        f.setDatasetMetadataSupplier(() -> {
+            String typeName = CURRENT_TYPENAME.get();
+            if (typeName == null) return null;
+
+            try {
+                return getGeoparquetMetadata(typeName);
+            } catch (IOException e) {
+                return null; // filter encoder will fall back to slower/other path
+            }
+        });
+
+        return f;
     }
 
     /**

@@ -79,6 +79,7 @@ import org.eclipse.xsd.util.XSDResourceImpl;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.eclipse.xsd.util.XSDUtil;
+import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.xsd.impl.SchemaIndexImpl;
@@ -90,6 +91,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.xml.sax.Attributes;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -552,7 +554,7 @@ public class Schemas {
             }
         }
 
-        SchemaImportIncludeValidator validator = new SchemaImportIncludeValidator(locators, resolvers);
+        SchemaImportIncludeValidator validator = new SchemaImportIncludeValidator(locators, resolvers, entityResolver);
 
         // queue of files to parse
         LinkedList<String> q = new LinkedList<>();
@@ -595,13 +597,32 @@ public class Schemas {
         List<String> errors;
         /** next set of locations to process */
         List<String> next;
+        /** custom entity resolver */
+        EntityResolver entityResolver;
 
+        @Deprecated
         SchemaImportIncludeValidator(List<XSDSchemaLocator> locators, List<XSDSchemaLocationResolver> resolvers) {
+            this(locators, resolvers, new DefaultEntityResolver());
+        }
+
+        SchemaImportIncludeValidator(
+                List<XSDSchemaLocator> locators,
+                List<XSDSchemaLocationResolver> resolvers,
+                EntityResolver entityResolver) {
             this.locators = locators;
             this.resolvers = resolvers;
             seen = new HashSet<>();
             errors = new ArrayList<>();
             next = new ArrayList<>();
+            this.entityResolver = entityResolver == null ? new DefaultEntityResolver() : entityResolver;
+        }
+
+        @Override
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+            if (entityResolver == null) {
+                return super.resolveEntity(publicId, systemId);
+            }
+            return entityResolver.resolveEntity(publicId, systemId);
         }
 
         public void setBaseLocation(String baseLocation) {
@@ -677,7 +698,7 @@ public class Schemas {
                 }
             }
 
-            // attempt tp resolve manuualy
+            // attempt tp resolve manually
             File file = new File(location);
             if (file.exists()) {
                 return file.getAbsolutePath();

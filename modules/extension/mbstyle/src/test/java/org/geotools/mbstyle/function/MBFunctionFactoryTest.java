@@ -302,6 +302,30 @@ public class MBFunctionFactoryTest {
         assertEquals("SOMESTRING", f.evaluate(null));
     }
 
+    /** Tests for {@link MapBoxRoundFunction}, which rounds halfway values away from zero. */
+    @Test
+    public void roundAwayFunctionTest() throws Exception {
+        // positive values
+        assertEquals(3L, ff.function("round_away", ff.literal(3.4)).evaluate(null));
+        assertEquals(4L, ff.function("round_away", ff.literal(3.5)).evaluate(null));
+        assertEquals(4L, ff.function("round_away", ff.literal(3.7)).evaluate(null));
+
+        // negative values — halfway rounds away from zero (toward negative infinity)
+        assertEquals(-3L, ff.function("round_away", ff.literal(-3.4)).evaluate(null));
+        assertEquals(-4L, ff.function("round_away", ff.literal(-3.5)).evaluate(null));
+        assertEquals(-4L, ff.function("round_away", ff.literal(-3.7)).evaluate(null));
+
+        // whole numbers pass through
+        assertEquals(5L, ff.function("round_away", ff.literal(5.0)).evaluate(null));
+        assertEquals(-5L, ff.function("round_away", ff.literal(-5.0)).evaluate(null));
+
+        // zero
+        assertEquals(0L, ff.function("round_away", ff.literal(0.0)).evaluate(null));
+
+        // null input returns null
+        assertNull(ff.function("round_away", ff.literal(null)).evaluate(null));
+    }
+
     @Test
     public void testFontFunctions() throws Exception {
         FontCache fc = FontCache.getDefaultInstance();

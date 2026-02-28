@@ -107,6 +107,16 @@ public class MBMath extends MBExpression {
     }
 
     /**
+     * Returns the absolute value of the input. Example: ["abs", number]: number
+     *
+     * @return abs expression
+     */
+    public Expression mathAbs() {
+        Expression e1 = parse.string(json, 1);
+        return ff.function("abs_4", e1);
+    }
+
+    /**
      * Returns the arccosine of the input. Example: ["acos", number]: number
      *
      * @return acos expression
@@ -137,6 +147,16 @@ public class MBMath extends MBExpression {
     }
 
     /**
+     * Returns the smallest integer that is greater than or equal to the input. Example: ["ceil", number]: number
+     *
+     * @return ceil expression
+     */
+    public Expression mathCeil() {
+        Expression e1 = parse.string(json, 1);
+        return ff.function("ceil", e1);
+    }
+
+    /**
      * Returns the cosine of the input. Example: ["cos", number]: number
      *
      * @return cos expression
@@ -153,6 +173,16 @@ public class MBMath extends MBExpression {
      */
     public Expression mathE() {
         return ff.literal(Math.E);
+    }
+
+    /**
+     * Returns the largest integer that is less than or equal to the input. Example: ["floor", number]: number
+     *
+     * @return floor expression
+     */
+    public Expression mathFloor() {
+        Expression e1 = parse.string(json, 1);
+        return ff.function("floor", e1);
     }
 
     /**
@@ -236,6 +266,17 @@ public class MBMath extends MBExpression {
     }
 
     /**
+     * Rounds the input to the nearest integer, with halfway values rounded away from zero. This matches the Mapbox
+     * specification (e.g., {@code round(-1.5) = -2}, {@code round(2.5) = 3}). Example: ["round", number]: number
+     *
+     * @return round expression
+     */
+    public Expression mathRound() {
+        Expression e1 = parse.string(json, 1);
+        return ff.function("round_away", e1);
+    }
+
+    /**
      * Returns the sine of the input. Example: ["sin", number]: number
      *
      * @return sin expression
@@ -280,16 +321,22 @@ public class MBMath extends MBExpression {
                 return mathExponent();
             case "+":
                 return mathAdd();
+            case "abs":
+                return mathAbs();
             case "acos":
                 return mathAcos();
             case "asin":
                 return mathAsin();
             case "atan":
                 return mathAtan();
+            case "ceil":
+                return mathCeil();
             case "cos":
                 return mathCos();
             case "e":
                 return mathE();
+            case "floor":
+                return mathFloor();
             case "ln":
                 return mathLn();
             case "ln2":
@@ -304,6 +351,8 @@ public class MBMath extends MBExpression {
                 return mathMin();
             case "pi":
                 return mathPi();
+            case "round":
+                return mathRound();
             case "sin":
                 return mathSin();
             case "sqrt":

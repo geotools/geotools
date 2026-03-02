@@ -153,6 +153,7 @@ public class Drawer {
         return symbs.toArray(new Symbolizer[symbs.size()]);
     }
 
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public static Symbolizer[] getSymbolizers(SimpleFeature feature) {
         return getSymbolizers(((Geometry) feature.getDefaultGeometry()).getClass(), Color.RED);
     }

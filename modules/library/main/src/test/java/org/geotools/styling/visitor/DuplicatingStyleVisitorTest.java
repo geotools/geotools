@@ -445,6 +445,7 @@ public class DuplicatingStyleVisitorTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public void testPointPlacement() {
         PointPlacement pointPl = sf.getDefaultPointPlacement();
 
@@ -610,6 +611,7 @@ public class DuplicatingStyleVisitorTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public void testStroke() {
         Stroke stroke = sf.getDefaultStroke();
         Stroke clone = visitor.copy(stroke);

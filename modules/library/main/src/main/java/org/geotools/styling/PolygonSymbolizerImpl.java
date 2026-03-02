@@ -151,6 +151,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
      * @return The deep copy clone.
      */
     @Override
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public Object clone() {
         PolygonSymbolizerImpl clone;
 

@@ -144,6 +144,7 @@ public class FeatureTypeStyleImpl implements FeatureTypeStyle, Cloneable {
 
     /** Creates a deep copy clone of the FeatureTypeStyle. */
     @Override
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public Object clone() {
         FeatureTypeStyleImpl clone;
 

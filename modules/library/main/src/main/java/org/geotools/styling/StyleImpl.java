@@ -130,6 +130,7 @@ public class StyleImpl implements Style, Cloneable {
      * @see Style
      */
     @Override
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public Object clone() {
         Style clone;
 

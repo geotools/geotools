@@ -136,6 +136,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             + "AUTHORITY[\"EPSG\",\"3785\"],"
             + "AXIS[\"X\",EAST],"
             + "AXIS[\"Y\",NORTH]]";
+    public static final double DELTA = 1E-6;
 
     /** Image to use for testing purpose. */
     private static RenderedImage sstImage,
@@ -147,7 +148,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             grayAlpha,
             imageWithNodata,
             imageWithNodata2,
-            imageWithNan;
+            imageWithNan,
+            imageWithScaleAndNodata;
 
     /** {@code true} if the image should be visualized. */
     private static final boolean SHOW = TestData.isInteractiveTest();
@@ -355,6 +357,12 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         if (imageWithNodata2 == null) {
             try (InputStream input = org.geotools.test.TestData.openStream(this, "nodata.tiff")) {
                 imageWithNodata2 = ImageIO.read(input);
+            }
+        }
+
+        if (imageWithScaleAndNodata == null) {
+            try (InputStream input = org.geotools.test.TestData.openStream(this, "scalenodata.tif")) {
+                imageWithScaleAndNodata = ImageIO.read(input);
             }
         }
     }
@@ -1281,7 +1289,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // querying the pixels outside of the original image extent have been filled with nodata
         double sample = image.getData().getSample(w + 10, h + 10, 0);
         assertNoData(image, noData.getAsRange());
-        assertEquals(noDataValue, sample, 1E-6);
+        assertEquals(noDataValue, sample, DELTA);
     }
 
     @Test
@@ -1640,6 +1648,28 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
 
     @Test
+    public void testRescaleWithNodata() {
+        ImageWorker iw = new ImageWorker(imageWithScaleAndNodata);
+        double inputNodata = iw.getNoData().getMin().doubleValue();
+        // verify the input nodata
+        assertEquals(-32768, inputNodata, DELTA);
+        // applyi rescaling
+        iw.rescale(new double[] {0, 0.1}, new double[] {0});
+        RenderedImage ri = iw.getRenderedImage();
+        // check the nodata has been preserved
+        iw.setImage(ri);
+        Range destNodata = iw.getNoData();
+        assertNotNull(destNodata);
+        assertEquals(inputNodata, destNodata.getMin().doubleValue(), DELTA);
+        assertEquals(inputNodata, destNodata.getMax().doubleValue(), DELTA);
+        double[] dataBuff = new double[1];
+        // Read 1 pixel that should contain nodata,
+        // to make sure it is still nodata after rescaling
+        ri.getData().getPixel(4, 4, dataBuff);
+        assertEquals(inputNodata, dataBuff[0], DELTA);
+    }
+
+    @Test
     public void testAddBands() {
         ImageWorker iw = new ImageWorker(gray).retainBands(1);
         RenderedImage input = iw.getRenderedImage();
@@ -1679,7 +1709,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         double[] threeSamples = new double[3];
         threeBands.getData().getPixel(18, 18, threeSamples);
         for (double sample : threeSamples) {
-            assertEquals(noDataValue, sample, 1E-6);
+            assertEquals(noDataValue, sample, DELTA);
         }
     }
 
@@ -1694,7 +1724,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             assertEquals("We expect lack of noData, but one was found", Object.class, property.getClass());
         } else {
             NoDataContainer container = (NoDataContainer) property;
-            assertEquals(nodata, container.getAsRange());
+            Range noDataRange = container.getAsRange();
+            assertEquals(nodata.getMin().doubleValue(), noDataRange.getMin().doubleValue(), DELTA);
+            assertEquals(nodata.getMax().doubleValue(), noDataRange.getMax().doubleValue(), DELTA);
         }
     }
 
@@ -2241,9 +2273,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     private void assertMinMax(RenderedImage image, int xPeriod, int yPeriod, double expectedMin, double expectedMax) {
         ImageWorker iw = new ImageWorker(image).setXPeriod(xPeriod).setYPeriod(yPeriod);
         double[] minimums = iw.getMinimums();
-        assertEquals(expectedMin, minimums[0], 1e-6);
+        assertEquals(expectedMin, minimums[0], DELTA);
         double[] maximums = iw.getMaximums();
-        assertEquals(expectedMax, maximums[0], 1e-6);
+        assertEquals(expectedMax, maximums[0], DELTA);
     }
 
     @Test

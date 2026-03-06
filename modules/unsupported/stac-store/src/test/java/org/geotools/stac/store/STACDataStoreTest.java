@@ -31,6 +31,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ObjectNode;
 
 public class STACDataStoreTest extends AbstractSTACStoreTest {
@@ -68,7 +69,7 @@ public class STACDataStoreTest extends AbstractSTACStoreTest {
         assertEquals(String.class, getBinding(schema, "platform"));
         assertEquals(List.class, getBinding(schema, "instruments"));
         assertEquals(Double.class, getBinding(schema, "gsd"));
-        assertEquals(Object.class, getBinding(schema, "processing:software"));
+        assertEquals(JsonNode.class, getBinding(schema, "processing:software"));
         assertEquals(String.class, getBinding(schema, "sar:frequency_band"));
         assertEquals(ObjectNode.class, getBinding(schema, "assets"));
     }

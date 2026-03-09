@@ -31,6 +31,7 @@
     <commons-text.version>1.13.0</commons-text.version>
     <conversantmedia-disruptor.version>1.2.15</conversantmedia-disruptor.version>
     <db2.jdbc.version>12.1.0.0</db2.jdbc.version>
+    <duckdb-jdbc.version>1.4.2.0</duckdb-jdbc.version>
     <eastwood.version>1.1.1-20090908</eastwood.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <eclipse.xsd.version>2.12.0</eclipse.xsd.version>
@@ -426,6 +427,11 @@
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <version>${h2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.duckdb</groupId>
+        <artifactId>duckdb_jdbc</artifactId>
+        <version>${duckdb-jdbc.version}</version>
       </dependency>
       <dependency>
         <!-- gt-jdbc-h2 dependency -->

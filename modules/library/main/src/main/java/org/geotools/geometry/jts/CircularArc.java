@@ -241,6 +241,7 @@ public class CircularArc {
             points++;
         }
 
+        // Snapshot of the incoming array size so we can rollback only this arc's partial output.
         int start = array.size();
         array.ensureLength(start + points * 2);
         // add the start point
@@ -261,6 +262,7 @@ public class CircularArc {
             // Final safety barrier: extreme magnitudes can still overflow when combining center
             // and radius*trig values. Fall back to control points instead of emitting Infinity/NaN.
             if (!Double.isFinite(x) || !Double.isFinite(y)) {
+                // Keep previously appended segments intact; drop only points produced for this arc.
                 array.setSize(start);
                 array.addAll(controlPoints);
                 return array;
@@ -304,6 +306,17 @@ public class CircularArc {
         final double r = Math.min(1.0, rawR);
         final double oneMinusRSquared = 1.0 - r * r;
         return (1.0 + sqrt(oneMinusRSquared)) / r;
+    }
+
+    /**
+     * Returns {@code sqrt(dx^2 + dy^2)} while avoiding intermediate overflow in the squaring step.
+     *
+     * <p>For regular ranges we keep the direct expression for historical numeric behavior. If {@code dx^2 + dy^2}
+     * overflows, we switch to {@link Math#hypot(double, double)} which is scaled to remain finite when possible.
+     */
+    private static double overflowSafeHypot(double dx, double dy) {
+        double squared = dx * dx + dy * dy;
+        return Double.isFinite(squared) ? sqrt(squared) : Math.hypot(dx, dy);
     }
 
     private void initializeCenterRadius() {
@@ -442,20 +455,15 @@ public class CircularArc {
             // distances as radius.
             final double rsx = centerX - sx;
             final double rsy = centerY - sy;
-            // Keep historical numerics when squaring is finite; use hypot only when squaring
-            // overflows to preserve stability on extreme coordinates.
-            double rs2 = rsx * rsx + rsy * rsy;
-            final double rs = Double.isFinite(rs2) ? sqrt(rs2) : Math.hypot(rsx, rsy);
+            final double rs = overflowSafeHypot(rsx, rsy);
 
             final double rmx = centerX - mx;
             final double rmy = centerY - my;
-            double rm2 = rmx * rmx + rmy * rmy;
-            final double rm = Double.isFinite(rm2) ? sqrt(rm2) : Math.hypot(rmx, rmy);
+            final double rm = overflowSafeHypot(rmx, rmy);
 
             final double rex = centerX - ex;
             final double rey = centerY - ey;
-            double re2 = rex * rex + rey * rey;
-            final double re = Double.isFinite(re2) ? sqrt(re2) : Math.hypot(rex, rey);
+            final double re = overflowSafeHypot(rex, rey);
 
             if (rs <= rm) {
                 if (rm <= re) {

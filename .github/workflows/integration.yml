@@ -70,9 +70,9 @@ jobs:
           cd ~
           sed -i "s/<mf.version>2.2.0<\/mf.version>/<mf.version>2.3-SNAPSHOT<\/mf.version>/g" geoserver/src/pom.xml
           sed -i "s/<gf.version>3.6.0<\/gf.version>/<gf.version>3.6-SNAPSHOT<\/gf.version>/g" geoserver/src/pom.xml
-          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T1C
+          mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease,pending -Dspotless.apply.skip=true -DskipTests -T1C
           mvn -B -f geoserver/src/community/pom.xml install -nsu -PcommunityRelease -Dspotless.apply.skip=true -DskipTests -T1C
-          mvn -B -f geoserver/src/pom.xml verify -fae -T1C -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
+          mvn -B -f geoserver/src/pom.xml verify -fae -T1C -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease,pending -Dspotless.apply.skip=true
       - name: Remove SNAPSHOT jars from repository
         run: |
           find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

@@ -93,6 +93,38 @@ public class CurvedGeometryTest {
     }
 
     @Test
+    public void testCircularStringCollinearLinearizeNoInfinity() {
+        // Integration regression through the user-facing CircularString linearize() path.
+        // This verifies ArcScan -> CircularArc.linearize(array) handles collinear arcs by
+        // returning finite control-point output instead of Infinity/NaN coordinates.
+        double[] controlPoints = {0, 0, 0, 10, 0, 20};
+        CircularString cs = new CircularString(controlPoints, GEOMETRY_FACTORY, Double.MAX_VALUE);
+        LineString linearized = cs.linearize(0);
+
+        assertFinite(linearized.getCoordinateSequence());
+        assertEquals(3, linearized.getNumPoints());
+        assertCoordinateEquals(new Coordinate(0, 0), linearized.getCoordinateN(0));
+        assertCoordinateEquals(new Coordinate(0, 10), linearized.getCoordinateN(1));
+        assertCoordinateEquals(new Coordinate(0, 20), linearized.getCoordinateN(2));
+    }
+
+    @Test
+    public void testCircularStringOverflowFallbackLinearizeNoInfinity() {
+        // Integration regression for overflow fallback through CircularString.linearize().
+        // The control points represent a huge closed circle arc where sampling can overflow.
+        // The linearized output must remain finite and match fallback control points.
+        CircularString cs = new CircularString(
+                new double[] {9e307, 9e307, 9e307, -9e307, 9e307, 9e307}, GEOMETRY_FACTORY, Double.MAX_VALUE);
+        LineString linearized = cs.linearize(0);
+
+        assertFinite(linearized.getCoordinateSequence());
+        assertEquals(3, linearized.getNumPoints());
+        assertCoordinateEquals(new Coordinate(9e307, 9e307), linearized.getCoordinateN(0));
+        assertCoordinateEquals(new Coordinate(9e307, -9e307), linearized.getCoordinateN(1));
+        assertCoordinateEquals(new Coordinate(9e307, 9e307), linearized.getCoordinateN(2));
+    }
+
+    @Test
     public void testCircularStringWings() {
         double[] sp1 = new Circle(10).samplePoints(Math.PI / 2, Math.PI / 4, 0);
         double[] sp2 = new Circle(10, 20, 0).samplePoints(Math.PI, Math.PI * 3 / 4, Math.PI / 2);
@@ -244,6 +276,26 @@ public class CurvedGeometryTest {
     }
 
     @Test
+    public void testCompoundCurveWithCollinearCircularStringLinearizeNoInfinity() {
+        // Integration regression for CompoundCurve aggregation path: one curved component is
+        // collinear and must not leak Infinity/NaN through component merge linearization.
+        CircularString collinear =
+                new CircularString(new double[] {0, 0, 0, 10, 0, 20}, GEOMETRY_FACTORY, Double.MAX_VALUE);
+        LineString line = new LineString(
+                new CoordinateArraySequence(new Coordinate[] {new Coordinate(0, 20), new Coordinate(10, 20)}),
+                GEOMETRY_FACTORY);
+        CompoundCurve curve = new CompoundCurve(Arrays.asList(collinear, line), GEOMETRY_FACTORY, Double.MAX_VALUE);
+        LineString linearized = curve.linearize(0);
+
+        assertFinite(linearized.getCoordinateSequence());
+        assertEquals(4, linearized.getNumPoints());
+        assertCoordinateEquals(new Coordinate(0, 0), linearized.getCoordinateN(0));
+        assertCoordinateEquals(new Coordinate(0, 10), linearized.getCoordinateN(1));
+        assertCoordinateEquals(new Coordinate(0, 20), linearized.getCoordinateN(2));
+        assertCoordinateEquals(new Coordinate(10, 20), linearized.getCoordinateN(3));
+    }
+
+    @Test
     public void testCompoundRing() {
         double[] halfCircle = {10, 10, 0, 20, -10, 10};
         CircularString cs = new CircularString(halfCircle, GEOMETRY_FACTORY, Double.MAX_VALUE);
@@ -277,6 +329,61 @@ public class CurvedGeometryTest {
         assertEquals(
                 "COMPOUNDCURVE (CIRCULARSTRING (10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 10.0 10.0))",
                 wkt);
+    }
+
+    @Test
+    public void testCompoundRingWithCollinearCircularStringLinearizeNoInfinity() {
+        // Integration regression for CompoundRing linearization path: a collinear curved
+        // component must stay finite and be merged correctly with linear components.
+        CircularString collinear =
+                new CircularString(new double[] {0, 0, 0, 10, 0, 20}, GEOMETRY_FACTORY, Double.MAX_VALUE);
+        LineString closing = new LineString(
+                new CoordinateArraySequence(new Coordinate[] {
+                    new Coordinate(0, 20), new Coordinate(10, 20), new Coordinate(10, 0), new Coordinate(0, 0)
+                }),
+                GEOMETRY_FACTORY);
+        CompoundRing ring = new CompoundRing(Arrays.asList(collinear, closing), GEOMETRY_FACTORY, Double.MAX_VALUE);
+        LinearRing linearized = ring.linearize(0);
+
+        assertFinite(linearized.getCoordinateSequence());
+        assertEquals(6, linearized.getNumPoints());
+        assertCoordinateEquals(new Coordinate(0, 0), linearized.getCoordinateN(0));
+        assertCoordinateEquals(new Coordinate(0, 10), linearized.getCoordinateN(1));
+        assertCoordinateEquals(new Coordinate(0, 20), linearized.getCoordinateN(2));
+        assertCoordinateEquals(new Coordinate(10, 20), linearized.getCoordinateN(3));
+        assertCoordinateEquals(new Coordinate(10, 0), linearized.getCoordinateN(4));
+        assertCoordinateEquals(new Coordinate(0, 0), linearized.getCoordinateN(5));
+    }
+
+    @Test
+    public void testCurvePolygonWithCollinearCompoundRingLinearizeNoInfinity() {
+        // Integration regression for CurvePolygon shell linearization when the shell is a
+        // CompoundRing containing a collinear CircularString component.
+        CircularString collinear =
+                new CircularString(new double[] {0, 0, 0, 10, 0, 20}, GEOMETRY_FACTORY, Double.MAX_VALUE);
+        LineString closing = new LineString(
+                new CoordinateArraySequence(new Coordinate[] {
+                    new Coordinate(0, 20), new Coordinate(10, 20), new Coordinate(10, 0), new Coordinate(0, 0)
+                }),
+                GEOMETRY_FACTORY);
+        CompoundRing shell = new CompoundRing(Arrays.asList(collinear, closing), GEOMETRY_FACTORY, Double.MAX_VALUE);
+        CurvePolygon polygon = new CurvePolygon(shell, new LinearRing[0], GEOMETRY_FACTORY, Double.MAX_VALUE);
+        Polygon linearized = polygon.linearize(0);
+
+        assertFinite(linearized.getExteriorRing().getCoordinateSequence());
+        assertEquals(6, linearized.getExteriorRing().getNumPoints());
+        assertCoordinateEquals(
+                new Coordinate(0, 0), linearized.getExteriorRing().getCoordinateN(0));
+        assertCoordinateEquals(
+                new Coordinate(0, 10), linearized.getExteriorRing().getCoordinateN(1));
+        assertCoordinateEquals(
+                new Coordinate(0, 20), linearized.getExteriorRing().getCoordinateN(2));
+        assertCoordinateEquals(
+                new Coordinate(10, 20), linearized.getExteriorRing().getCoordinateN(3));
+        assertCoordinateEquals(
+                new Coordinate(10, 0), linearized.getExteriorRing().getCoordinateN(4));
+        assertCoordinateEquals(
+                new Coordinate(0, 0), linearized.getExteriorRing().getCoordinateN(5));
     }
 
     @Test
@@ -389,6 +496,20 @@ public class CurvedGeometryTest {
                 GEOMETRY_FACTORY);
         CurvePolygon curved = new CurvePolygon(shell, new LinearRing[] {hole}, GEOMETRY_FACTORY, Double.MAX_VALUE);
         return curved;
+    }
+
+    private void assertFinite(CoordinateSequence coordinates) {
+        // Shared invariant for integration regressions: user-facing linearized geometries
+        // must never expose non-finite ordinates.
+        for (int i = 0; i < coordinates.size(); i++) {
+            assertTrue("Found non finite X ordinate: " + coordinates.getX(i), Double.isFinite(coordinates.getX(i)));
+            assertTrue("Found non finite Y ordinate: " + coordinates.getY(i), Double.isFinite(coordinates.getY(i)));
+        }
+    }
+
+    private void assertCoordinateEquals(Coordinate expected, Coordinate actual) {
+        assertEquals(expected.x, actual.x, 0d);
+        assertEquals(expected.y, actual.y, 0d);
     }
 
     private void assertEnvelopeEquals(Envelope envelope, Envelope env) {

@@ -40,6 +40,14 @@ public class CircularArc {
 
     static final double EPS = 1.0e-12;
 
+    /**
+     * Tolerance used when validating the conditioning metric R.
+     *
+     * <p>R is mathematically in (0, 1], but floating point arithmetic can produce tiny overshoots above 1 for otherwise
+     * valid systems. We accept those and clamp to 1.
+     */
+    static final double CONDITION_R_DOMAIN_EPS = 1.0e-12;
+
     static final double MAXCOND = 2.0e4;
 
     public static final double COLLINEARS = Double.POSITIVE_INFINITY;
@@ -129,6 +137,16 @@ public class CircularArc {
 
     GrowableOrdinateArray linearize(double tolerance, GrowableOrdinateArray array) {
         initializeCenterRadius();
+        // This overload is used by higher-level curved geometries; keep it as safe as the
+        // public linearize(double) path and never sample from invalid circle parameters.
+        if (radius == COLLINEARS
+                || radius == 0
+                || !Double.isFinite(radius)
+                || !Double.isFinite(centerX)
+                || !Double.isFinite(centerY)) {
+            array.addAll(controlPoints);
+            return array;
+        }
         if (tolerance < 0) {
             throw new IllegalArgumentException(
                     "The tolerance must be a positive number (or zero, to make the system use the "
@@ -222,6 +240,7 @@ public class CircularArc {
             points++;
         }
 
+        // Snapshot of the incoming array size so we can rollback only this arc's partial output.
         int start = array.size();
         array.ensureLength(start + points * 2);
         // add the start point
@@ -239,6 +258,14 @@ public class CircularArc {
         while (angle < end) {
             double x = centerX + radius * cos(angle);
             double y = centerY + radius * sin(angle);
+            // Final safety barrier: extreme magnitudes can still overflow when combining center
+            // and radius*trig values. Fall back to control points instead of emitting Infinity/NaN.
+            if (!Double.isFinite(x) || !Double.isFinite(y)) {
+                // Keep previously appended segments intact; drop only points produced for this arc.
+                array.setSize(start);
+                array.addAll(controlPoints);
+                return array;
+            }
             array.add(x, y);
             double next = angle + step;
             if (angle < ma && next > ma && !equals(angle, ma) && !equals(next, ma)) {
@@ -260,9 +287,35 @@ public class CircularArc {
     }
 
     private double computeChordCircleDistance(int segmentsPerQuadrant) {
-        double halfChordLength = radius * Math.sin(HALF_PI / segmentsPerQuadrant);
-        double apothem = Math.sqrt(radius * radius - halfChordLength * halfChordLength);
-        return radius - apothem;
+        // Equivalent to radius - sqrt(radius^2 - halfChordLength^2), but avoids radius^2 overflow
+        // and inf-inf cancellation when radius is very large.
+        return radius * (1.0 - Math.cos(HALF_PI / segmentsPerQuadrant));
+    }
+
+    /**
+     * Computes the matrix condition number from the raw R metric used in the center solver.
+     *
+     * <p>Returns {@link Double#NaN} if R is outside the accepted numeric domain.
+     */
+    static double conditionNumberFromR(double rawR) {
+        if (!Double.isFinite(rawR) || rawR <= 0.0 || rawR > 1.0 + CONDITION_R_DOMAIN_EPS) {
+            return Double.NaN;
+        }
+        // Tiny floating point overshoots above 1 are not geometric issues, clamp them before sqrt(1-R^2).
+        final double r = Math.min(1.0, rawR);
+        final double oneMinusRSquared = 1.0 - r * r;
+        return (1.0 + sqrt(oneMinusRSquared)) / r;
+    }
+
+    /**
+     * Returns {@code sqrt(dx^2 + dy^2)} while avoiding intermediate overflow in the squaring step.
+     *
+     * <p>For regular ranges we keep the direct expression for historical numeric behavior. If {@code dx^2 + dy^2}
+     * overflows, we switch to {@link Math#hypot(double, double)} which is scaled to remain finite when possible.
+     */
+    private static double overflowSafeHypot(double dx, double dy) {
+        double squared = dx * dx + dy * dy;
+        return Double.isFinite(squared) ? sqrt(squared) : Math.hypot(dx, dy);
     }
 
     private void initializeCenterRadius() {
@@ -371,13 +424,15 @@ public class CircularArc {
                 // and we already have a^2 + b^2 + c^2 + d^2 in sqs, we just need the determinant to
                 // compute R.
                 final double R = 2.0 * abs(lu.computeDeterminant().getReal()) / sqs;
-
                 // From R we can now compute the condition number k. When generating random
                 // collinear points with double precision, the points are basically never perfectly
                 // collinear due to the limited precision of double precision numbers. In such
                 // cases, the matrix condition number usually is > 2*10^4.
-                final double k = (1.0 + sqrt(1.0 - R * R)) / R;
-                if (k > MAXCOND) {
+                // The helper tolerates tiny R > 1 rounding noise and clamps it to avoid false
+                // collinear classification in otherwise valid configurations.
+                final double k = conditionNumberFromR(R);
+                // Reject non-finite k explicitly; this covers out-of-domain/NaN R as well.
+                if (!Double.isFinite(k) || k > MAXCOND) {
                     radius = COLLINEARS;
                     return;
                 }
@@ -387,6 +442,11 @@ public class CircularArc {
 
                 centerX = x.get(0);
                 centerY = x.get(1);
+                // Defensive guard against non-finite solver output before radius/sampling math.
+                if (!Double.isFinite(centerX) || !Double.isFinite(centerY)) {
+                    radius = COLLINEARS;
+                    return;
+                }
             }
 
             // As the center has to be snapped on the floating point grid, the distance of the
@@ -394,15 +454,15 @@ public class CircularArc {
             // distances as radius.
             final double rsx = centerX - sx;
             final double rsy = centerY - sy;
-            final double rs = sqrt(rsx * rsx + rsy * rsy);
+            final double rs = overflowSafeHypot(rsx, rsy);
 
             final double rmx = centerX - mx;
             final double rmy = centerY - my;
-            final double rm = sqrt(rmx * rmx + rmy * rmy);
+            final double rm = overflowSafeHypot(rmx, rmy);
 
             final double rex = centerX - ex;
             final double rey = centerY - ey;
-            final double re = sqrt(rex * rex + rey * rey);
+            final double re = overflowSafeHypot(rex, rey);
 
             if (rs <= rm) {
                 if (rm <= re) {

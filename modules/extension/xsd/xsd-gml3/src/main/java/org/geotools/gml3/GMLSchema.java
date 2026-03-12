@@ -35,10 +35,10 @@ import org.geotools.feature.type.ProfileImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.MultiCurvedGeometry;
-import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.gml3.smil.SMIL20LANGSchema;
 import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;
+import org.locationtech.jts.geom.MultiPolygon;
 
 public class GMLSchema extends SchemaImpl {
 
@@ -8312,7 +8312,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_MULTISURFACETYPE_TYPE() {
         AttributeType builtType = new AttributeTypeImpl(
                 new NameImpl("http://www.opengis.net/gml", "MultiSurfaceType"),
-                MultiSurface.class,
+                MultiPolygon.class,
                 false,
                 false,
                 Collections.emptyList(),
@@ -9550,7 +9550,7 @@ public class GMLSchema extends SchemaImpl {
     private static AttributeType build_MULTISURFACEPROPERTYTYPE_TYPE() {
         AttributeType builtType = new AttributeTypeImpl(
                 new NameImpl("http://www.opengis.net/gml", "MultiSurfacePropertyType"),
-                MultiSurface.class,
+                MultiPolygon.class,
                 false,
                 false,
                 Collections.emptyList(),

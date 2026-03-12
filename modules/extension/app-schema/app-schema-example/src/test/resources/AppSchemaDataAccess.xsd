@@ -207,6 +207,13 @@
                 <documentation>one of the datastore ids defined in the sourceDataStores section</documentation>
               </annotation>
             </element>
+            <element name="sourceDatabaseSchema" type="string" minOccurs="0">
+              <annotation>
+                <documentation>
+                  optional database schema name to use when resolving the sourceType from the sourceDataStore
+                </documentation>
+              </annotation>
+            </element>
             <element name="sourceType" type="string">
               <annotation>
                 <documentation>

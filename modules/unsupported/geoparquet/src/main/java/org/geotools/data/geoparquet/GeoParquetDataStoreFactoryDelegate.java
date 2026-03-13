@@ -23,7 +23,10 @@ import java.util.Map;
 import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.data.duckdb.AbstractDuckDBDataStoreFactory;
+import org.geotools.data.duckdb.DuckDBDialect;
 import org.geotools.data.duckdb.ParamBuilder;
+import org.geotools.data.duckdb.security.DuckDBExecutionPolicies;
+import org.geotools.data.duckdb.security.DuckDBExecutionPolicy;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
 import org.geotools.jdbc.PrimaryKey;
@@ -379,5 +382,10 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
     @Override
     protected String getJDBCUrl(Map<String, ?> params) throws IOException {
         return GeoParquetDatabaseUtils.getJDBCUrl(params, getParametersInfo());
+    }
+
+    @Override
+    protected DuckDBExecutionPolicy createExecutionPolicy(Map<String, ?> params, DuckDBDialect dialect) {
+        return DuckDBExecutionPolicies.geoparquetInternal();
     }
 }

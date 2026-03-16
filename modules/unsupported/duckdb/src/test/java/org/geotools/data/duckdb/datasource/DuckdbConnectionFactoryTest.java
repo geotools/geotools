@@ -43,7 +43,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import org.duckdb.DuckDBDriver;
 import org.geotools.data.duckdb.DuckDBTestUtils;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicies;
 import org.junit.After;
 import org.junit.Test;
 
@@ -70,11 +69,7 @@ public class DuckdbConnectionFactoryTest {
         CountingDriver driver = new CountingDriver(new DuckDBDriver());
         Path database = createDatabasePath();
         DuckdbConnectionFactory factory = new DuckdbConnectionFactory(
-                driver,
-                "jdbc:duckdb:" + database.toAbsolutePath(),
-                new Properties(),
-                List.of(),
-                DuckDBExecutionPolicies.jdbcStorePublic());
+                driver, "jdbc:duckdb:" + database.toAbsolutePath(), new Properties(), List.of());
 
         ExecutorService executor = Executors.newFixedThreadPool(8);
         try {

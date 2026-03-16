@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Properties;
 import org.apache.commons.dbcp.DriverConnectionFactory;
 import org.duckdb.DuckDBConnection;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicy;
-import org.geotools.data.duckdb.security.DuckDBSecureObjects;
 
 /**
  * A specialized connection factory for DuckDB that leverages connection duplication.
@@ -46,7 +44,6 @@ class DuckdbConnectionFactory extends DriverConnectionFactory {
 
     private volatile DuckDBConnection sentinel;
     private final List<String> databaseInitSqls;
-    private volatile DuckDBExecutionPolicy executionPolicy;
 
     /**
      * Constructs a new DuckdbConnectionFactory.
@@ -56,15 +53,9 @@ class DuckdbConnectionFactory extends DriverConnectionFactory {
      * @param props The connection properties
      * @param databaseInitSqls SQL statements to execute when initializing the database
      */
-    public DuckdbConnectionFactory(
-            Driver driver,
-            String connectUri,
-            Properties props,
-            List<String> databaseInitSqls,
-            DuckDBExecutionPolicy executionPolicy) {
+    public DuckdbConnectionFactory(Driver driver, String connectUri, Properties props, List<String> databaseInitSqls) {
         super(driver, connectUri, props);
-        this.databaseInitSqls = databaseInitSqls;
-        this.executionPolicy = requireNonNull(executionPolicy, "executionPolicy");
+        this.databaseInitSqls = requireNonNull(databaseInitSqls, "databaseInitSqls");
     }
 
     /**
@@ -84,11 +75,10 @@ class DuckdbConnectionFactory extends DriverConnectionFactory {
         DuckDBConnection current = initializeSentinelIfNeeded();
 
         DuckDBConnection duplicate = null;
-        DuckDBExecutionPolicy policy = executionPolicy;
         try {
             duplicate = current.duplicate();
-            initDatabase(duplicate, false, policy);
-            return DuckDBSecureObjects.wrapConnection(duplicate, policy);
+            initDatabase(duplicate, false);
+            return duplicate;
         } catch (SQLException e) {
             if (duplicate != null) {
                 try {
@@ -109,17 +99,17 @@ class DuckdbConnectionFactory extends DriverConnectionFactory {
         synchronized (this) {
             DuckDBConnection initialized = sentinel;
             if (initialized == null) {
-                initialized = createAndInitializeSentinel(executionPolicy);
+                initialized = createAndInitializeSentinel();
                 sentinel = initialized;
             }
             return initialized;
         }
     }
 
-    private DuckDBConnection createAndInitializeSentinel(DuckDBExecutionPolicy policy) throws SQLException {
+    private DuckDBConnection createAndInitializeSentinel() throws SQLException {
         DuckDBConnection created = (DuckDBConnection) super.createConnection();
         try {
-            initDatabase(created, true, policy);
+            initDatabase(created, true);
             return created;
         } catch (SQLException e) {
             try {
@@ -148,14 +138,6 @@ class DuckdbConnectionFactory extends DriverConnectionFactory {
         }
     }
 
-    synchronized void setExecutionPolicy(DuckDBExecutionPolicy executionPolicy) {
-        this.executionPolicy = requireNonNull(executionPolicy, "executionPolicy");
-    }
-
-    synchronized DuckDBExecutionPolicy getExecutionPolicy() {
-        return executionPolicy;
-    }
-
     /**
      * Initializes the database by executing the provided SQL statements.
      *
@@ -165,14 +147,12 @@ class DuckdbConnectionFactory extends DriverConnectionFactory {
      * @param conn The connection to execute the initialization SQL on
      * @throws SQLException if a database access error occurs
      */
-    private void initDatabase(DuckDBConnection conn, boolean allowInstall, DuckDBExecutionPolicy policy)
-            throws SQLException {
+    private void initDatabase(DuckDBConnection conn, boolean allowInstall) throws SQLException {
         try (Statement stmt = conn.createStatement()) {
             for (String sql : databaseInitSqls) {
                 if (!allowInstall && isInstallStatement(sql)) {
                     continue;
                 }
-                policy.validateDatabaseInitSql(sql);
                 stmt.execute(sql);
             }
         }

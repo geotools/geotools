@@ -16,36 +16,13 @@
  */
 package org.geotools.data.duckdb;
 
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicy;
 import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 /** JDBC type-names online test setup for DuckDB. */
 public class DuckDBTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
-    private DuckDBExecutionPolicy previousPolicy;
-
     protected DuckDBTypeNamesTestSetup() {
         super(new DuckDBTestSetup());
-    }
-
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        previousPolicy = ((DuckDBTestSetup) delegate).beginSetupSqlPolicy();
-    }
-
-    @Override
-    public void tearDown() throws Exception {
-        DuckDBTestSetup setup = (DuckDBTestSetup) delegate;
-        DuckDBExecutionPolicy toRestore = previousPolicy;
-        previousPolicy = null;
-        try {
-            if (toRestore != null) {
-                setup.endSetupSqlPolicy(toRestore);
-            }
-        } finally {
-            super.tearDown();
-        }
     }
 
     @Override

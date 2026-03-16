@@ -56,6 +56,16 @@ public class ForwardingFeatureSource implements SimpleFeatureSource {
 
     static SimpleFeatureSource wrap(
             SimpleFeatureSource delegate, DataAccess<SimpleFeatureType, SimpleFeature> overridingStore) {
+        return wrap(delegate, overridingStore, false);
+    }
+
+    static SimpleFeatureSource wrap(
+            SimpleFeatureSource delegate,
+            DataAccess<SimpleFeatureType, SimpleFeature> overridingStore,
+            boolean forceReadOnly) {
+        if (forceReadOnly) {
+            return new ForwardingFeatureSource(delegate, overridingStore);
+        }
         if (delegate instanceof SimpleFeatureLocking locking) {
             return new ForwardingFeatureLocking(locking, overridingStore);
         }

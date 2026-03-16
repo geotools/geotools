@@ -27,6 +27,7 @@ import org.geotools.api.filter.NativeFilter;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_strToLowerCase;
 import org.junit.Test;
 
@@ -115,6 +116,12 @@ public class DuckDBFilterToSQLTest {
         assertFalse(encoder.getCapabilities().supports(FilterFunction_strToLowerCase.class));
         assertTrue(encoder.getCapabilities().fullySupports(like));
         assertTrue(encode(like).contains("strToLowerCase"));
+    }
+
+    @Test
+    public void testAreaFunctionCapabilityIsEnabledByDefault() {
+        DuckDBFilterToSQL encoder = new DuckDBFilterToSQL();
+        assertTrue(encoder.getCapabilities().supports(FilterFunction_area.class));
     }
 
     @Test

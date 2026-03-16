@@ -25,6 +25,13 @@ import org.geotools.api.data.DataStoreFactorySpi;
 /**
  * Decorator implementation of {@link DataStoreFactorySpi} that forwards all method calls to a delegate factory.
  *
+ * <p>This type exists to keep the public DuckDB factory surface independent from the internal JDBC implementation while
+ * preserving standard {@link DataStoreFactorySpi} behavior and parameters. Concrete wrappers can override only selected
+ * creation methods (for example, wrapping the returned {@link DataStore}) and delegate the rest unchanged.
+ *
+ * <p>Keeping this as a dedicated forwarding layer also centralizes null-checking and avoids copy/pasting factory
+ * boilerplate across wrapper factories.
+ *
  * @param <D> the type of datastore factory being decorated
  */
 public class ForwardingDataStoreFactory<D extends DataStoreFactorySpi> implements DataStoreFactorySpi {

@@ -19,7 +19,6 @@ package org.geotools.data.duckdb;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicy;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
 public class DuckDBPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
@@ -142,24 +141,6 @@ public class DuckDBPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     @Override
     protected void run(String input) throws Exception {
-        withSetupSqlPolicy(() -> {
-            super.run(input);
-            return null;
-        });
-    }
-
-    @FunctionalInterface
-    private interface SqlCallable<T> {
-        T call() throws Exception;
-    }
-
-    private <T> T withSetupSqlPolicy(SqlCallable<T> callable) throws Exception {
-        DuckDBTestSetup setup = (DuckDBTestSetup) delegate;
-        DuckDBExecutionPolicy previous = setup.beginSetupSqlPolicy();
-        try {
-            return callable.call();
-        } finally {
-            setup.endSetupSqlPolicy(previous);
-        }
+        super.run(input);
     }
 }

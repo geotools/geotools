@@ -54,43 +54,10 @@ public final class DuckDBTestUtils {
     }
 
     public static void runSetupSql(JDBCDataStore store, String... statements) throws Exception {
-        DuckdbDataSourceGuard policyGuard = new DuckdbDataSourceGuard(store);
-        try {
-            policyGuard.enable();
-            try (Connection connection = store.getDataSource().getConnection();
-                    Statement statement = connection.createStatement()) {
-                for (String sql : statements) {
-                    statement.execute(sql);
-                }
-            }
-        } finally {
-            policyGuard.restore();
-        }
-    }
-
-    private static final class DuckdbDataSourceGuard {
-        private final JDBCDataStore store;
-        private org.geotools.data.duckdb.security.DuckDBExecutionPolicy previous;
-
-        private DuckdbDataSourceGuard(JDBCDataStore store) {
-            this.store = store;
-        }
-
-        @SuppressWarnings("PMD.CloseResource")
-        private void enable() throws Exception {
-            if (store.getDataSource() instanceof org.geotools.data.duckdb.datasource.DuckdbDataSource dataSource) {
-                previous = dataSource.getExecutionPolicy();
-                dataSource.setExecutionPolicy(
-                        org.geotools.data.duckdb.security.DuckDBExecutionPolicies.jdbcTestSetup());
-            }
-        }
-
-        @SuppressWarnings("PMD.CloseResource")
-        private void restore() throws Exception {
-            if (previous != null
-                    && store.getDataSource()
-                            instanceof org.geotools.data.duckdb.datasource.DuckdbDataSource dataSource) {
-                dataSource.setExecutionPolicy(previous);
+        try (Connection connection = store.getDataSource().getConnection();
+                Statement statement = connection.createStatement()) {
+            for (String sql : statements) {
+                statement.execute(sql);
             }
         }
     }

@@ -38,6 +38,10 @@ import org.geotools.util.decorate.Wrapper;
  * <p>The wrapper preserves the intent of shielding JDBC internals from general use while still allowing explicit
  * unwrapping for advanced internal use cases.
  *
+ * <p>Some internal workflows, such as setting up an {@code AggregatingFeatureSource} on top of a
+ * {@code ContentFeatureSource}, still need stable {@link DataStore} identity without exposing the raw JDBC store. This
+ * wrapper keeps that identity while forwarding behavior to the delegate.
+ *
  * @param <S> the type of datastore being decorated
  */
 public class ForwardingDataStore<S extends DataStore> implements DataStore, Wrapper {

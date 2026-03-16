@@ -21,7 +21,6 @@ import static java.util.Objects.requireNonNull;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -95,7 +94,6 @@ public class DuckDBDialect extends BasicSQLDialect {
 
     private boolean simplifyEnabled = true;
 
-    private boolean forceFeatureTypeReadOnly;
     // null means "not probed yet"; true/false are stable cached outcomes.
     private volatile Boolean stSridAvailable;
 
@@ -122,10 +120,6 @@ public class DuckDBDialect extends BasicSQLDialect {
 
     public void setSimplifyEnabled(boolean simplifyEnabled) {
         this.simplifyEnabled = simplifyEnabled;
-    }
-
-    public void setForceFeatureTypeReadOnly(boolean forceFeatureTypeReadOnly) {
-        this.forceFeatureTypeReadOnly = forceFeatureTypeReadOnly;
     }
 
     //    public void setTopologyPreserved(boolean topologyPreserved) {
@@ -295,12 +289,6 @@ public class DuckDBDialect extends BasicSQLDialect {
     }
 
     @Override
-    public void encodePostColumnCreateTable(AttributeDescriptor att, StringBuffer sql) {
-        // Geometry columns are already emitted as GEOMETRY by getGeometryTypeName(Types.OTHER).
-        // Appending another type token here produces invalid "GEOMETRY GEOMETRY" DDL.
-    }
-
-    @Override
     public Integer getGeometrySRID(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         if (!isStSridAvailable(cx)) {
@@ -419,16 +407,6 @@ public class DuckDBDialect extends BasicSQLDialect {
             return "GEOMETRY";
         }
         return null;
-    }
-
-    @Override
-    public void postCreateFeatureType(
-            SimpleFeatureType featureType, DatabaseMetaData metadata, String schemaName, Connection cx)
-            throws SQLException {
-        super.postCreateFeatureType(featureType, metadata, schemaName, cx);
-        if (forceFeatureTypeReadOnly) {
-            featureType.getUserData().put(JDBCDataStore.JDBC_READ_ONLY, Boolean.TRUE);
-        }
     }
 
     @Override

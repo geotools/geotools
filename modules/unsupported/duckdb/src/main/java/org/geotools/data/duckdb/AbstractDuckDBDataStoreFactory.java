@@ -24,8 +24,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.duckdb.DuckDBDriver;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.data.duckdb.datasource.DuckdbDataSource;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicies;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicy;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -147,9 +145,8 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
 
         DuckDBDialect duckDBDialect = (DuckDBDialect) dialect;
         List<String> databaseInitSqls = duckDBDialect.getDatabaseInitSql();
-        DuckDBExecutionPolicy executionPolicy = createExecutionPolicy(params, duckDBDialect);
 
-        DuckdbDataSource dataSource = new DuckdbDataSource(databaseInitSqls, executionPolicy);
+        DuckdbDataSource dataSource = new DuckdbDataSource(databaseInitSqls);
         dataSource.setUrl(getJDBCUrl(params));
         dataSource.setDriverClassName(getDriverClassName());
         // configure the driver for streaming
@@ -172,10 +169,6 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
         Boolean simplify = (Boolean) SIMPLIFY.lookUp(params);
         dialect.setSimplifyEnabled(simplify == null || simplify);
 
-        // read_only=true is default and should also surface as a read-only feature source contract.
-        Boolean readOnly = (Boolean) READ_ONLY.lookUp(params);
-        dialect.setForceFeatureTypeReadOnly(readOnly == null || readOnly);
-
         // check preserving topology when simplifying geometries (off by default)
         // REVISIT: see note in DuckbDialect#encodeGeometryColumnSimplified()
         // SimplificationMethod simplificationMethod = (SimplificationMethod)
@@ -189,18 +182,5 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
     @Override
     protected String getValidationQuery() {
         return "SELECT 1";
-    }
-
-    /**
-     * Creates the execution policy used to validate initialization and runtime SQL issued through pooled DuckDB
-     * connections.
-     */
-    protected DuckDBExecutionPolicy createExecutionPolicy(Map<String, ?> params, DuckDBDialect dialect)
-            throws IOException {
-        Boolean readOnly = (Boolean) READ_ONLY.lookUp(params);
-        if (readOnly == null || readOnly) {
-            return DuckDBExecutionPolicies.jdbcStorePublic();
-        }
-        return DuckDBExecutionPolicies.jdbcStoreWritable();
     }
 }

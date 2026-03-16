@@ -25,7 +25,6 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 import java.util.logging.Logger;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicy;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.logging.Logging;
@@ -46,7 +45,6 @@ public class DuckdbDataSource extends BasicDataSource implements ManageableDataS
 
     private DuckdbConnectionFactory duckdbConnectionFactory;
     private final List<String> databaseInitSqls;
-    private DuckDBExecutionPolicy executionPolicy;
 
     /**
      * Constructs a new DuckdbDataSource.
@@ -55,9 +53,8 @@ public class DuckdbDataSource extends BasicDataSource implements ManageableDataS
      *     to load DuckDB extensions like 'spatial' and 'parquet')
      * @throws NullPointerException if databaseInitSqls is null
      */
-    public DuckdbDataSource(List<String> databaseInitSqls, DuckDBExecutionPolicy executionPolicy) {
+    public DuckdbDataSource(List<String> databaseInitSqls) {
         this.databaseInitSqls = requireNonNull(databaseInitSqls);
-        this.executionPolicy = requireNonNull(executionPolicy);
         super.setDriverClassName("org.duckdb.DuckDBDriver");
     }
 
@@ -89,23 +86,8 @@ public class DuckdbDataSource extends BasicDataSource implements ManageableDataS
         if (pwd != null) {
             addConnectionProperty("password", pwd);
         }
-        duckdbConnectionFactory =
-                new DuckdbConnectionFactory(driver, url, connectionProperties, databaseInitSqls, executionPolicy);
+        duckdbConnectionFactory = new DuckdbConnectionFactory(driver, url, connectionProperties, databaseInitSqls);
         return duckdbConnectionFactory;
-    }
-
-    public synchronized void setExecutionPolicy(DuckDBExecutionPolicy executionPolicy) {
-        this.executionPolicy = requireNonNull(executionPolicy, "executionPolicy");
-        if (duckdbConnectionFactory != null) {
-            duckdbConnectionFactory.setExecutionPolicy(this.executionPolicy);
-        }
-    }
-
-    public synchronized DuckDBExecutionPolicy getExecutionPolicy() {
-        if (duckdbConnectionFactory != null) {
-            return duckdbConnectionFactory.getExecutionPolicy();
-        }
-        return executionPolicy;
     }
 
     /**

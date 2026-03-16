@@ -35,6 +35,8 @@ public class DuckDBDataStoreFactory extends ForwardingDataStoreFactory<DuckDBJDB
 
     public static final JDBCDataStoreFactory.Param DB_PATH = DuckDBJDBCDataStoreFactory.DB_PATH;
 
+    public static final JDBCDataStoreFactory.Param SIMPLIFY = AbstractDuckDBDataStoreFactory.SIMPLIFY;
+
     public DuckDBDataStoreFactory() {
         super(new DuckDBJDBCDataStoreFactory());
     }
@@ -49,11 +51,18 @@ public class DuckDBDataStoreFactory extends ForwardingDataStoreFactory<DuckDBJDB
 
     @Override
     public DuckDBDataStore createDataStore(Map<String, ?> params) throws IOException {
-        return new DuckDBDataStore(delegate.createDataStore(params));
+        boolean readOnly = isReadOnly(params);
+        return new DuckDBDataStore(delegate.createDataStore(params), readOnly);
     }
 
     @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
-        return new DuckDBDataStore((JDBCDataStore) delegate.createNewDataStore(params));
+        boolean readOnly = isReadOnly(params);
+        return new DuckDBDataStore((JDBCDataStore) delegate.createNewDataStore(params), readOnly);
+    }
+
+    private boolean isReadOnly(Map<String, ?> params) throws IOException {
+        Boolean value = (Boolean) AbstractDuckDBDataStoreFactory.READ_ONLY.lookUp(params);
+        return value == null || value;
     }
 }

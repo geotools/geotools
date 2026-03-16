@@ -9,20 +9,20 @@ The DuckDB DataStore provides read-focused access to DuckDB databases within the
 - **DuckDB Database Access**: Connect to in-memory or file-backed DuckDB databases
 - **Native Geometry Support**: Works with DuckDB native `GEOMETRY` columns
 - **Spatial Queries**: Supports spatial filters through the GeoTools JDBC stack
-- **Read-Focused Execution Model**: Public access is restricted to a guarded execution path
+- **Guarded Public API**: Public access is restricted to the wrapped GeoTools datastore API
 - **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, and geometry simplification settings
 
 ## Security Model
 
-The public DuckDB store is exposed through a restricted GeoTools-side execution wrapper.
+The public DuckDB store is exposed through a restricted GeoTools-side wrapper.
 
 - Only the guarded GeoTools datastore API is intended for public use
-- Arbitrary session scripts are not exposed
-- Multi-statement SQL is rejected
+- The public wrapper does not expose the internal `JDBCDataStore`
 - GeoTools JDBC virtual tables are disabled for the public store
-- Initialization SQL is managed internally by GeoTools under the execution policy
+- Native filters are disabled (`DuckDBFilterToSQL` rejects `NativeFilter`)
+- Initialization SQL is managed internally by GeoTools
 
-This module is intended to reduce the exposed SQL surface while still allowing DuckDB-backed read access through standard GeoTools APIs.
+This module is intended to reduce the exposed SQL surface while still allowing DuckDB-backed access through standard GeoTools APIs.
 
 ## Usage
 
@@ -87,6 +87,5 @@ SimpleFeatureCollection features = source.getFeatures(filter);
 
 ## Notes
 
-- This is an unsupported GeoTools module
-- The public store focuses on native DuckDB datasets and guarded read access
-- GeoParquet may rely on additional internal DuckDB capabilities through a trusted internal policy implemented in GeoTools
+- The public store focuses on native DuckDB datasets and guarded API access
+- `read_only` is enabled by default and can be disabled per-store instance

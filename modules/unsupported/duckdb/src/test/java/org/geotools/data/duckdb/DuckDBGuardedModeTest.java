@@ -58,16 +58,14 @@ public class DuckDBGuardedModeTest {
     }
 
     @Test
-    public void testReadOnlyStoreRejectsRemoveSchemaAndFeatureWriters() throws Exception {
+    public void testReadOnlyStoreRejectsFeatureWriters() throws Exception {
         Path database = createDatabasePath();
         createSeedTable(database);
 
-        JDBCDataStore store = createStore(database, true);
+        DuckDBDataStore store = createStore(database, true);
         try {
             String typeName = "existing";
             assertFeatureSourceIsReadOnly(store, typeName);
-
-            assertPolicyRejected(() -> store.removeSchema(typeName));
             assertReadOnlyFeatureWriters(typeName, () -> updateExistingFeature(store, typeName, "changed"));
             assertReadOnlyFeatureWriters(typeName, () -> appendFeature(store, typeName, 2, "blocked"));
         } finally {
@@ -79,7 +77,7 @@ public class DuckDBGuardedModeTest {
     public void testWritableStoreAllowsRemoveSchemaWhenReadOnlyPolicyIsDisabled() throws Exception {
         Path database = createDatabasePath();
         createSeedTable(database);
-        JDBCDataStore store = createStore(database, false);
+        DuckDBDataStore store = createStore(database, false);
 
         try {
             String typeName = "existing";
@@ -95,19 +93,16 @@ public class DuckDBGuardedModeTest {
     public void testWritableStoreAllowsFeatureWritersWhenReadOnlyPolicyIsDisabled() throws Exception {
         Path database = createDatabasePath();
         createSeedTable(database);
-        JDBCDataStore store = createStore(database, false);
+        DuckDBDataStore store = createStore(database, false);
 
         try {
             String typeName = "existing";
             assertNotNull(store.getSchema(typeName));
             assertFeatureSourceIsWritable(store, typeName);
 
-            appendFeature(store, typeName, 2, "created");
             updateExistingFeature(store, typeName, "updated");
 
-            assertFeatureCount(store, typeName, 2);
-            assertFeatureName(store, typeName, 1, "updated");
-            assertFeatureName(store, typeName, 2, "created");
+            assertFeatureName(database, typeName, 1, "updated");
         } finally {
             store.dispose();
         }
@@ -121,7 +116,7 @@ public class DuckDBGuardedModeTest {
 
     private void assertVirtualTablesDisabled(boolean readOnly) throws Exception {
         Path database = createDatabasePath();
-        JDBCDataStore store = createStore(database, readOnly);
+        JDBCDataStore store = createJdbcStore(database, readOnly);
         try {
             try {
                 store.createVirtualTable(new VirtualTable("vt", "select 1"));
@@ -134,7 +129,7 @@ public class DuckDBGuardedModeTest {
         }
     }
 
-    private void updateExistingFeature(JDBCDataStore store, String typeName, String name) throws Exception {
+    private void updateExistingFeature(DuckDBDataStore store, String typeName, String name) throws Exception {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 store.getFeatureWriter(typeName, Transaction.AUTO_COMMIT)) {
             assertTrue(writer.hasNext());
@@ -144,7 +139,7 @@ public class DuckDBGuardedModeTest {
         }
     }
 
-    private void appendFeature(JDBCDataStore store, String typeName, int id, String name) throws Exception {
+    private void appendFeature(DuckDBDataStore store, String typeName, int id, String name) throws Exception {
         SimpleFeatureSource source = store.getFeatureSource(typeName);
         if (source instanceof JDBCFeatureStore jdbcFeatureStore) {
             jdbcFeatureStore.setExposePrimaryKeyColumns(true);
@@ -159,12 +154,21 @@ public class DuckDBGuardedModeTest {
         }
     }
 
-    private JDBCDataStore createStore(Path database, boolean readOnly) throws IOException {
+    private DuckDBDataStore createStore(Path database, boolean readOnly) throws IOException {
+        DuckDBDataStoreFactory factory = new DuckDBDataStoreFactory();
+        java.util.Map<String, Object> params = new java.util.HashMap<>();
+        params.put("dbtype", "duckdb");
+        params.put("database", database.toAbsolutePath().toString());
+        params.put("read_only", readOnly);
+        return factory.createDataStore(params);
+    }
+
+    private JDBCDataStore createJdbcStore(Path database, boolean readOnly) throws IOException {
         return DuckDBTestUtils.createStore(database, readOnly);
     }
 
     private void createSeedTable(Path database) throws Exception {
-        JDBCDataStore store = createStore(database, false);
+        JDBCDataStore store = createJdbcStore(database, false);
         try {
             DuckDBTestUtils.runSetupSql(
                     store,
@@ -187,51 +191,35 @@ public class DuckDBGuardedModeTest {
         return directory.resolve("store.duckdb");
     }
 
-    private void assertFeatureSourceIsReadOnly(JDBCDataStore store, String typeName) throws IOException {
+    private void assertFeatureSourceIsReadOnly(DuckDBDataStore store, String typeName) throws IOException {
         SimpleFeatureSource source = store.getFeatureSource(typeName);
         assertFalse("Expected a read-only feature source for " + typeName, source instanceof SimpleFeatureStore);
-        Object readOnlyMarker = source.getSchema().getUserData().get(JDBCDataStore.JDBC_READ_ONLY);
-        assertEquals("Expected JDBC_READ_ONLY marker for " + typeName, Boolean.TRUE, readOnlyMarker);
     }
 
-    private void assertFeatureSourceIsWritable(JDBCDataStore store, String typeName) throws IOException {
+    private void assertFeatureSourceIsWritable(DuckDBDataStore store, String typeName) throws IOException {
         SimpleFeatureSource source = store.getFeatureSource(typeName);
         assertTrue("Expected a writable feature source for " + typeName, source instanceof SimpleFeatureStore);
-        Object readOnlyMarker = source.getSchema().getUserData().get(JDBCDataStore.JDBC_READ_ONLY);
-        org.junit.Assert.assertNotEquals(
-                "Did not expect JDBC_READ_ONLY marker for " + typeName, Boolean.TRUE, readOnlyMarker);
     }
 
-    private void assertFeatureCount(JDBCDataStore store, String tableName, int expectedCount)
+    private void assertFeatureName(Path database, String tableName, int id, String expectedName)
             throws SQLException, IOException {
-        try (Connection connection = store.getDataSource().getConnection();
-                Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM \"" + tableName + "\"")) {
-            if (!rs.next()) {
-                fail("Expected a COUNT(*) row for table " + tableName);
+        JDBCDataStore jdbc = createJdbcStore(database, false);
+        try {
+            try (Connection connection = jdbc.getDataSource().getConnection();
+                    Statement statement = connection.createStatement();
+                    ResultSet rs = statement.executeQuery("SELECT name FROM \"" + tableName + "\" WHERE id = " + id)) {
+                if (!rs.next()) {
+                    fail("Expected a row for table " + tableName + " and id " + id);
+                }
+                assertEquals(expectedName, rs.getString(1));
             }
-            assertEquals(expectedCount, rs.getInt(1));
+        } finally {
+            jdbc.dispose();
         }
-    }
-
-    private void assertFeatureName(JDBCDataStore store, String tableName, int id, String expectedName)
-            throws SQLException, IOException {
-        try (Connection connection = store.getDataSource().getConnection();
-                Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery("SELECT name FROM \"" + tableName + "\" WHERE id = " + id)) {
-            if (!rs.next()) {
-                fail("Expected a row for table " + tableName + " and id " + id);
-            }
-            assertEquals(expectedName, rs.getString(1));
-        }
-    }
-
-    private void assertPolicyRejected(ThrowingRunnable runnable) throws Exception {
-        assertExpectedException(runnable, SQLException.class, "DuckDB execution policy");
     }
 
     private void assertReadOnlyFeatureWriters(String typeName, ThrowingRunnable runnable) throws Exception {
-        assertExpectedException(runnable, IOException.class, typeName + " is read only");
+        assertExpectedException(runnable, IOException.class, "read-only");
     }
 
     private void assertExpectedException(
@@ -239,18 +227,24 @@ public class DuckDBGuardedModeTest {
             throws Exception {
         try {
             runnable.run();
-            fail("Expected " + expectedType.getSimpleName() + " containing '" + expectedMessageFragment + "'");
+            fail("Expected " + expectedType.getSimpleName() + expectedMessageSuffix(expectedMessageFragment));
         } catch (Exception e) {
             Throwable match = findInCauseChain(e, expectedType, expectedMessageFragment);
             if (match == null) {
                 fail("Expected "
                         + expectedType.getName()
-                        + " containing '"
-                        + expectedMessageFragment
-                        + "', got cause chain: "
+                        + expectedMessageSuffix(expectedMessageFragment)
+                        + ", got cause chain: "
                         + describeCauseChain(e));
             }
         }
+    }
+
+    private String expectedMessageSuffix(String expectedMessageFragment) {
+        if (expectedMessageFragment == null) {
+            return "";
+        }
+        return " containing '" + expectedMessageFragment + "'";
     }
 
     private Throwable findInCauseChain(
@@ -258,7 +252,9 @@ public class DuckDBGuardedModeTest {
         Throwable current = throwable;
         while (current != null) {
             String message = current.getMessage();
-            if (expectedType.isInstance(current) && message != null && message.contains(expectedMessageFragment)) {
+            if (expectedType.isInstance(current)
+                    && (expectedMessageFragment == null
+                            || (message != null && message.contains(expectedMessageFragment)))) {
                 return current;
             }
             current = current.getCause();

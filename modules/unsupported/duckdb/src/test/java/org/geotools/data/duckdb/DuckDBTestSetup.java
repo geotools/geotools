@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.geotools.data.duckdb.datasource.DuckdbDataSource;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicies;
-import org.geotools.data.duckdb.security.DuckDBExecutionPolicy;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -130,8 +128,7 @@ public class DuckDBTestSetup extends JDBCTestSetup {
         Properties db = fixture;
         ensureDatabaseDirectory(db);
 
-        DuckdbDataSource dataSource = new DuckdbDataSource(
-                List.of("install spatial", "load spatial"), DuckDBExecutionPolicies.jdbcStoreWritable());
+        DuckdbDataSource dataSource = new DuckdbDataSource(List.of("install spatial", "load spatial"));
         dataSource.setDriverClassName(db.getProperty("driver"));
         dataSource.setUrl(db.getProperty("url"));
 
@@ -169,27 +166,5 @@ public class DuckDBTestSetup extends JDBCTestSetup {
     @Override
     protected Connection getConnection() throws SQLException, IOException {
         return super.getConnection();
-    }
-
-    DuckDBExecutionPolicy beginSetupSqlPolicy() throws IOException {
-        // This helper accesses the already-managed shared datasource and must not close it here.
-        @SuppressWarnings("PMD.CloseResource")
-        DuckdbDataSource dataSource = requireDuckdbDataSource();
-        DuckDBExecutionPolicy previous = dataSource.getExecutionPolicy();
-        dataSource.setExecutionPolicy(DuckDBExecutionPolicies.jdbcTestSetup());
-        return previous;
-    }
-
-    void endSetupSqlPolicy(DuckDBExecutionPolicy previous) throws IOException {
-        requireDuckdbDataSource().setExecutionPolicy(previous);
-    }
-
-    private DuckdbDataSource requireDuckdbDataSource() throws IOException {
-        DataSource dataSource = getDataSource();
-        if (!(dataSource instanceof DuckdbDataSource duckdbDataSource)) {
-            throw new IOException(
-                    "Expected DuckdbDataSource, found " + dataSource.getClass().getName());
-        }
-        return duckdbDataSource;
     }
 }

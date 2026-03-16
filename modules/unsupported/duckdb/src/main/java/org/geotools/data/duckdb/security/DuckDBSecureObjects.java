@@ -26,11 +26,35 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Statement;
 
-/** Wraps JDBC objects so all SQL goes through a {@link DuckDBExecutionPolicy}. */
+/**
+ * Creates security-hardened JDBC proxies for DuckDB access.
+ *
+ * <p>The returned {@link Connection}, {@link Statement}, and {@link PreparedStatement} proxies enforce
+ * a {@link DuckDBExecutionPolicy} before any SQL text is passed to the JDBC driver. This is the core
+ * guardrail used by the DuckDB datastore to block unsafe statement classes (DDL, DML, scripting, etc.)
+ * in read-only/public modes.
+ *
+ * <p>This class also intentionally restricts JDBC unwrapping so callers cannot recover implementation
+ * specific connection/statement objects and bypass policy checks.
+ */
 public final class DuckDBSecureObjects {
 
     private DuckDBSecureObjects() {}
 
+    /**
+     * Wraps a JDBC connection in a policy-enforcing proxy.
+     *
+     * <p>The proxy validates SQL passed through:
+     *
+     * <ul>
+     *   <li>{@code Connection#nativeSQL(String)}
+     *   <li>{@code Connection#prepareStatement(...)} variants with SQL text
+     *   <li>{@code Connection#createStatement(...)} (returned statements are wrapped)
+     * </ul>
+     *
+     * <p>{@code prepareCall(...)} is always blocked because callable statements are outside the supported
+     * hardened execution model.
+     */
     public static Connection wrapConnection(Connection delegate, DuckDBExecutionPolicy policy) {
         return (Connection) Proxy.newProxyInstance(
                 DuckDBSecureObjects.class.getClassLoader(),
@@ -77,6 +101,10 @@ public final class DuckDBSecureObjects {
         }
     }
 
+    /**
+     * Wraps a prepared statement so runtime execution methods are policy-checked and
+     * {@code getConnection()} returns the wrapped connection.
+     */
     private static PreparedStatement wrapPreparedStatement(
             PreparedStatement delegate, DuckDBExecutionPolicy policy, Connection wrappedConnection) {
         return (PreparedStatement) Proxy.newProxyInstance(
@@ -85,6 +113,10 @@ public final class DuckDBSecureObjects {
                 new StatementInvocationHandler(delegate, policy, wrappedConnection));
     }
 
+    /**
+     * Wraps a plain statement so SQL-bearing methods ({@code execute*}, {@code addBatch(String)}) are
+     * validated by the execution policy.
+     */
     private static Statement wrapStatement(
             Statement delegate, DuckDBExecutionPolicy policy, Connection wrappedConnection) {
         return (Statement) Proxy.newProxyInstance(
@@ -134,6 +166,12 @@ public final class DuckDBSecureObjects {
         }
     }
 
+    /**
+     * Restrictive unwrap implementation for security proxies.
+     *
+     * <p>Only unwrap to the exposed JDBC API interface (or {@link Object}) is allowed; unwrapping to
+     * vendor-specific implementation classes is rejected to avoid policy bypass.
+     */
     private static Object unwrap(Object proxy, Class<?> iface, Class<?> apiType) throws SQLException {
         if (iface.isInstance(proxy) || iface == apiType || iface == Object.class) {
             return proxy;
@@ -141,6 +179,12 @@ public final class DuckDBSecureObjects {
         throw new SQLException("Unwrapping to " + iface.getName() + " is disabled by the DuckDB execution policy");
     }
 
+    /**
+     * Reports wrapper compatibility for the exposed API type only.
+     *
+     * <p>This mirrors {@link #unwrap(Object, Class, Class)} behavior and intentionally does not advertise
+     * vendor implementation classes as wrappable.
+     */
     private static boolean isWrapperFor(Class<?> iface, Class<?> apiType) {
         return iface == apiType || iface.isAssignableFrom(apiType);
     }

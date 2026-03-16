@@ -243,5 +243,5 @@ The GeoParquet module has strong typing for Coordinate Reference Systems (CRS):
 ## Dependencies
 
 - GeoTools Core and JDBC modules
-- DuckDB JDBC driver (version specified in the root `pom.xml` for the `org.duckdb:duckdb_jdbc` dependency)
+- `gt-duckdb` (GeoParquet depends on the shared DuckDB module, which brings `org.duckdb:duckdb_jdbc`; the driver version is managed in `build/platform-dependencies/pom.xml`)
 - Jackson Databind (for parsing GeoParquet metadata)

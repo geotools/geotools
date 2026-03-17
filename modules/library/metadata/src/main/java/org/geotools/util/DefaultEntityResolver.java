@@ -40,7 +40,7 @@ import org.xml.sax.ext.EntityResolver2;
  */
 public class DefaultEntityResolver implements EntityResolver2, Serializable {
 
-    /** Location of Open Geospatical Consortium schemas for OGC OpenGIS standards */
+    /** Location of Open Geospatial Consortium schemas for OGC OpenGIS standards */
     public static String OGC1 = "schemas.opengis.net";
 
     public static String OGC2 = "www.opengis.net";
@@ -78,8 +78,11 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
     /** Allowed http(s) locations */
     private final Pattern ALLOWED_URIS;
 
+    /** Singleton instance of DefaultEntityResolver. */
+    public static final DefaultEntityResolver INSTANCE = new DefaultEntityResolver();
+
     /** OGCInspireSchemasEntityResolver willing to resolve common ogc and w3c entities. */
-    public DefaultEntityResolver() {
+    protected DefaultEntityResolver() {
         ALLOWED_URIS = Pattern.compile("(?i)(http|https)://("
                 + Pattern.quote(W3C)
                 + "|"
@@ -211,7 +214,7 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("OGCInspireSchemasEntityResolver:( ");
+        StringBuilder builder = new StringBuilder("DefaultEntityResolver:( ");
         builder.append(this.ALLOWED_URIS);
         builder.append(")");
         return builder.toString();

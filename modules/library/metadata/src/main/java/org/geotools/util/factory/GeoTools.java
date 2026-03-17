@@ -56,6 +56,7 @@ import javax.xml.parsers.SAXParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Arguments;
 import org.geotools.util.Classes;
+import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Utilities;
@@ -908,10 +909,10 @@ public final class GeoTools {
             } else if (hint instanceof EntityResolver resolver) {
                 return resolver;
             } else if (hint instanceof String className) {
-                return instantiate(className, EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
+                return instantiate(className, EntityResolver.class, DefaultEntityResolver.INSTANCE);
             }
         }
-        return PreventLocalEntityResolver.INSTANCE;
+        return DefaultEntityResolver.INSTANCE;
     }
 
     /**

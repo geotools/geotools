@@ -602,7 +602,7 @@ public class Schemas {
 
         @Deprecated
         SchemaImportIncludeValidator(List<XSDSchemaLocator> locators, List<XSDSchemaLocationResolver> resolvers) {
-            this(locators, resolvers, new DefaultEntityResolver());
+            this(locators, resolvers, DefaultEntityResolver.INSTANCE);
         }
 
         SchemaImportIncludeValidator(
@@ -614,7 +614,7 @@ public class Schemas {
             seen = new HashSet<>();
             errors = new ArrayList<>();
             next = new ArrayList<>();
-            this.entityResolver = entityResolver == null ? new DefaultEntityResolver() : entityResolver;
+            this.entityResolver = entityResolver == null ? DefaultEntityResolver.INSTANCE : entityResolver;
         }
 
         @Override

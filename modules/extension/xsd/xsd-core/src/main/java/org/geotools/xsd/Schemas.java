@@ -698,7 +698,7 @@ public class Schemas {
                 }
             }
 
-            // attempt tp resolve manually
+            // attempt to resolve manually
             File file = new File(location);
             if (file.exists()) {
                 return file.getAbsolutePath();

@@ -73,3 +73,37 @@ Here is the SLD representation of the generated style:
     </sld:StyledLayerDescriptor>
 
 
+Rule metadata i18n
+''''''''''''''''''
+
+GeoTools CSS supports internationalized rule metadata in rule comments for ``@title`` and ``@abstract``.
+Localized variants are provided with a language suffix:
+
+.. code-block:: css
+
+    /*
+     * @title Default title
+     * @title[en] English title
+     * @title[it] Titolo italiano
+     * @abstract Default abstract
+     * @abstract[en_US] English abstract
+     */
+    * {
+      stroke: #444;
+    }
+
+When translated to SLD, localized values are emitted as ``<Localized>`` entries under ``<Title>`` and ``<Abstract>``.
+
+In cascaded styles where multiple CSS rules combine into one SLD rule:
+
+* default ``@title`` values are concatenated using ``", "``
+* default ``@abstract`` values are concatenated using newlines
+* localized values are concatenated per language independently
+
+Language tags accept both ``-`` and ``_`` separators (for example ``en-US`` and ``en_US``).
+Malformed localized tags that match the localized syntax but are not valid language tags cause translation to fail.
+
+Note:
+
+* i18n support is currently for rule metadata comments only (``@title[...]``, ``@abstract[...]``)
+* style directives such as ``@styleTitle`` and ``@styleAbstract`` are not localized in GeoTools CSS

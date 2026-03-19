@@ -1,0 +1,19 @@
+/*
+ * @title Base title
+ * @title[en] Base title EN
+ * @abstract Base abstract
+ * @abstract[en] Base abstract EN
+ */
+* {
+  fill: #aaaaaa;
+}
+
+/*
+ * @title Overlay title
+ * @title[it] Titolo overlay
+ * @abstract Overlay abstract
+ * @abstract[it] Riassunto overlay
+ */
+* {
+  stroke: #222222;
+}

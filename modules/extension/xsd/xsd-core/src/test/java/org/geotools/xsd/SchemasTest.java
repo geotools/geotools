@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +56,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /** Tests for {@link org.geotools.xsd.Schemas}. */
 public class SchemasTest {
@@ -281,6 +284,14 @@ public class SchemasTest {
         }
     }
 
+    public static final class EmptyStringEntityResolver implements EntityResolver {
+
+        @Override
+        public InputSource resolveEntity(String publicId, String systemId) {
+            return new InputSource(new StringReader(""));
+        }
+    }
+
     /**
      * Test ensures no deadlock occurs when a remote schema is loaded, which resolves to the same JVM. Deadlock used to
      * occur in GeoServer, when schema was loaded from same GeoServer instance, because schema consumer and schema
@@ -314,5 +325,24 @@ public class SchemasTest {
         XSDSchema schema = Schemas.parse(
                 new File(sub, "test.xsd").getCanonicalPath(), null, null, null, NullEntityResolver.INSTANCE);
         assertEquals("root", ((XSDElementDeclaration) schema.getContents().get(0)).getName());
+    }
+
+    @Test
+    public void testWithCustomEntityResolver() {
+        assertThrows(
+                IOException.class,
+                () -> Schemas.validateImportsIncludes(
+                        this.getClass().getResource("custom.xsd").toExternalForm(),
+                        List.of(),
+                        List.of(),
+                        new EmptyStringEntityResolver()));
+    }
+
+    @Test
+    public void testWithNoEntityResolver() {
+        assertThrows(
+                IOException.class,
+                () -> Schemas.validateImportsIncludes(
+                        this.getClass().getResource("custom.xsd").toExternalForm(), List.of(), List.of()));
     }
 }

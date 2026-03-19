@@ -145,7 +145,7 @@ BEFORE:
    import javax.media.jai.RenderedOp;
    import com.sun.media.jai.codec.FileSeekableStream;
    import javax.media.jai.widget.ScrollingImagePanel;
-   
+
 AFTER:
 
 .. code-block:: xml
@@ -160,7 +160,7 @@ AFTER:
      <artifactId>affine</artifactId>
      <!-- version managed via gt-platform-dependencies bom -->
    </dependency>
-   
+
 .. code-block:: java
 
    import org.eclipse.imagen.JAI;
@@ -194,12 +194,12 @@ BEFORE:
 
    import org.jaitools.numeric.Range;
    import org.jaitools.media.jai.rangelookup.RangeLookupTable;
-   
+
 
    Range<Double> span = Range.create(0.0,true,5.0,false);
    Range<Float> span1 = Range.create(0.0f,true,10.0f,false);
    Range<Float> span2 = Range.create(10.0f,true,null,true);
-   
+
    RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
    PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
 
@@ -216,7 +216,7 @@ JAI-Ext:
    RangeFloat span2 = (RangeFloat) RangeFactory.create(10.0f,true,null,true);
    RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
    PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
-   
+
 ImageN:
 
 .. code-block:: java
@@ -224,12 +224,25 @@ ImageN:
    import org.eclipse.imagen.media.range.Range;
    import org.eclipse.imagen.media.rangerange.RangeFactory;
    import org.eclipse.imagen.media.rlookup.RangeLookupTable;
-   
+
    RangeDouble span = RangeFactory.create(0.0,true,5.0,false);
    RangeFloat span1 = RangeFactory.create(0.0f,true,10.0f,false);
    RangeFloat span2 = RangeFactory.create(10.0f,true,null,true);
    RangeLookupTable lookup = CoverageUtilities.getRangeLookupTable(List.of(span1,span2),-1.0f);
    PolygonExtractionProcess.process(band,insideEdges,noDataValues,List.of(span1,span2));
+
+DefaultEntityResolver
+^^^^^^^^^^^^^^^^^^^^^
+
+``GeoTools.getEntityResolver(Hints)`` has been updated to return ``DefaultEntityResolver``` by default.
+This implementation allows access to commonly used OGC and INSPIRE schema locations.
+
+We recommend this default, however you may configure GeoTools with your own more permissive EntityResolver:
+
+.. code-block: java
+
+   System.getProperties().put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.PreventLocalEntityResolver");
+   Hints.scanSystemProperties();
 
 .. _update32:
 
@@ -275,7 +288,7 @@ Users of JDBCDataStore are not affected. Custom implementations of ``org.geotool
 
 NetCDF Version upgrade to 5.5.3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-GeoTools 32.0 upgraded underlying Unidata NetCDF libraries from 4.6.15 to 5.5.3 which includes internal GRIB mapping table 
+GeoTools 32.0 upgraded underlying Unidata NetCDF libraries from 4.6.15 to 5.5.3 which includes internal GRIB mapping table
 updates and GRIB parameters interpretation updates. The upgrade impacted the way the GRIB parameters are being retrieved as
 well the way the temporal information is being extracted from the underlying data which may affect the construction of the
 names and the reported temporal ranges as well, resulting in some breakage with the upgrade.
@@ -367,7 +380,7 @@ To aid in this transition an `Apache Ant <https://ant.apache.org>`__ script is p
    Use the absolute path for project.dir:
 
    .. code-block:: bash
-    
+
       ant -f remove-opengis.xml -Dproject.dir=(absolute path to your project directory)
 
    Or copy :file:`remove-opengis.xml` file into  your project directory and run:
@@ -388,11 +401,11 @@ Data API
 The main data access interfaces have been moved from ``org.geotools.data`` to ``org.geotools.api.data``.
 This includes, ``DataStore``, ``FeatureSource``, ``FeatureIterator``, and many others.
 
-As part of the move, the datastore registration files found in ``META-INF/services`` need to be moved as well, 
+As part of the move, the datastore registration files found in ``META-INF/services`` need to be moved as well,
 in particular:
 
 
-.. code-block:: 
+.. code-block::
 
    org.geotools.data.DataAccessFactory
    org.geotools.data.DataStoreFactorySpi
@@ -400,7 +413,7 @@ in particular:
 
 should now be named:
 
-.. code-block:: 
+.. code-block::
 
    org.geotools.api.data.DataAccessFactory
    org.geotools.api.data.DataStoreFactorySpi
@@ -520,16 +533,16 @@ The method confirms the required API is available on the CLASSPATH before select
 To use ``GeoTools.init()``:
 
 .. code-block:: java
-   
+
    package net.fun.example;
-   
+
    import java.util.logging.Logger;
-   
+
    import org.geotools.util.factory.GeoTools;
    import org.geotools.util.logging.Logging;
-   
+
    class Example {
-      
+
       public static void main(String args[]){
          GeoTools.init();
          Logger LOGGER = Logging.getLogger("org.geotools.tutorial");
@@ -540,22 +553,22 @@ To use ``GeoTools.init()``:
 In a production environment several logging libraries from different components may be available. To select a specific LoggingFactory use ``GeoTools.setLoggingFactory(LoggingFactory)``:
 
 .. code-block:: java
-   
+
    package net.fun.example;
-   
+
    import java.util.logging.Logger;
-   
+
    import org.geotools.util.factory.GeoTools;
    import org.geotools.util.logging.Logging;
-   
+
    class Example {
-      
+
       public static Logger LOG = defaultLogger();
-      
+
        public static void main(String args[]){
             LOGGER.fine("Application started - first post!")
        }
-      
+
       private static final Logger defaultLogger(){
          GeoTools.setLoggerFactory(Log4JLoggerFactory.getInstance());
          return Logging.getLogger(Example.class);
@@ -575,9 +588,9 @@ Shapefile
 ``ShapefileDataStore`` will autodetect DBF charset from CPG sidecar file, the feature now enabled by default. When this feature is enabled, the following rules apply:
 
 * if no explicit charset parameter passed to ``ShapefileDataStoreFactory``, it will instruct created ``ShapefileDataStore``
-  to try and figure out DBF file charset from CPG file. In this case, CPG files must contain correct charset name, otherwise, 
-  these files should be removed, or updated properly. 
-* if the store fails to read CPG, it uses the default charset specified by ``ShapefileDataStoreFactory.DBFCHARSET`` constant, 
+  to try and figure out DBF file charset from CPG file. In this case, CPG files must contain correct charset name, otherwise,
+  these files should be removed, or updated properly.
+* if the store fails to read CPG, it uses the default charset specified by ``ShapefileDataStoreFactory.DBFCHARSET`` constant,
   which is usual behavior.
 
 In case of trouble there is an ability to bring old behavior back by setting ``org.geotools.shapefile.enableCPG`` system property
@@ -608,11 +621,11 @@ Fixing this required changes to multiple classes:
 Improvements to Regex Parsing in `IsLike` and similar filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Processing of regular expressions in the ``IsLike`` & ``StrMatches`` functions, and in the ``isPropertyLike`` 
-filter to make use of the faster and more robust `Google regular expression's library 
-<https://github.com/google/re2j>`_. As part of this work we have improved the handling of some "permissible" 
-but inadvisable patterns, such as those with multi character escapes or wild cards. If you had patterns that 
-relied on long escape or wild card patterns you may now get an ``IllegalArgumentException`` for a pattern that 
+Processing of regular expressions in the ``IsLike`` & ``StrMatches`` functions, and in the ``isPropertyLike``
+filter to make use of the faster and more robust `Google regular expression's library
+<https://github.com/google/re2j>`_. As part of this work we have improved the handling of some "permissible"
+but inadvisable patterns, such as those with multi character escapes or wild cards. If you had patterns that
+relied on long escape or wild card patterns you may now get an ``IllegalArgumentException`` for a pattern that
 happened to work in the past.
 
 .. _update25:
@@ -623,7 +636,7 @@ GeoTools 25.x
 GeoTools
 ^^^^^^^^
 
-In GeoTools 25.7 ``GeoTools.getInitialContext().look(name)`` and related methods have been deprecated, with ``GeoTools.jndiLookup(name)``. We have also taken an opportunity to remove ``GeoTools.fixName( context, name )`` 
+In GeoTools 25.7 ``GeoTools.getInitialContext().look(name)`` and related methods have been deprecated, with ``GeoTools.jndiLookup(name)``. We have also taken an opportunity to remove ``GeoTools.fixName( context, name )``
 
 The use of ``GeoTools.jndiLookup(name)`` is subject to validation with the default ``GeoTools.DEFAULT_JNDI_VALIDATOR`` validator used limit name lookup.
 
@@ -645,7 +658,7 @@ AFTER
 More variable arguments support in core classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Several code classes have been switched to use ``varargs`` instead of explicit arrays. 
+Several code classes have been switched to use ``varargs`` instead of explicit arrays.
 While the old clients are compatible with these changes, there's now an opportunity
 to simplify code.
 
@@ -705,7 +718,7 @@ HTTPClient moved to its own module
 A new module ``gt-http`` has been established for the HTTPClient API.
 
 The original interfaces ``HTTPClient`` and ``HTTPResponse`` and their implementations:
-(``SimpleHttpClient``, ``DelegateHTTPClient``, ``LoggingHTTPClient`` and DelegateHTTPResponse) have moved from 
+(``SimpleHttpClient``, ``DelegateHTTPClient``, ``LoggingHTTPClient`` and DelegateHTTPResponse) have moved from
 ``org.geotools.data.ows`` to the ``org.geotools.http`` package.
 
 
@@ -740,9 +753,9 @@ This will result in a compile error in cases where GeoTools returns `org.geotool
 BEFORE (compile error):
 
 .. code-block:: java
-   
+
    import org.geotools.ows.HTTPClient;
-   
+
    WebMapServer wms = new WebMapServer("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
    HTTPClient client = wms.getHTTPClient();
 
@@ -751,7 +764,7 @@ AFTER change imports (recommended):
 .. code-block:: java
 
    import org.geotools.http.HTTPClient;
-   
+
    WebMapServer wms = new WebMapServer("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
    HTTPClient client = (HTTPClient) wms.getHTTPClient();
 
@@ -760,7 +773,7 @@ ALTERNATIVE add cast (continue to use deprecated api):
 .. code-block:: java
 
    import org.geotools.data.ows.HTTPClient;
-   
+
    WebMapServer wms = new WebMapServer("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
    HTTPClient client = (HTTPClient) wms.getHTTPClient();
 
@@ -773,14 +786,14 @@ To allow the library to be configured with different ``HTTPClient`` implementati
 BEFORE:
 
 .. code-block:: java
-   
+
    import org.geotools.data.ows.HTTPClient;
    import org.geotools.data.ows.HTTPResponse;
    import org.geotools.ows.SimpleHttpClient;
-   
-   
+
+
    HTTPClient http = new SimpleHttpClient();
-   HTTPResponse response = http.get();   
+   HTTPResponse response = http.get();
 
 AFTER:
 
@@ -797,10 +810,10 @@ AFTER:
    import org.geotools.http.HTTPClient;
    import org.geotools.http.HTTPResponse;
    import org.geotools.http.HTTPClientFinder;
-      
+
    HTTPClient http = HTTPClientFinder.createClient();
    HTTPResponse response = http.get();
-   
+
 In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHttpClient.
 
 .. code-block:: xml
@@ -817,7 +830,7 @@ In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHtt
    import org.geotools.http.HTTPResponse;
    import org.geotools.http.HTTPClientFinder;
    import org.geotools.http.commons.MultihreadedHttpClient;
-      
+
    Hints hints = new Hints(Hints.HTTP_CLIENT, MultihreadedHttpClient.class);
    HTTPClient http = HTTPClientFinder.createClient(hints);
    HTTPResponse response = http.get();
@@ -876,7 +889,7 @@ BEFORE :file:`pom.xml`:
        <name>Open Source Geospatial Foundation Repository</name>
        <url>http://download.osgeo.org/webdav/geotools/</url>
    </repository>
-   
+
 AFTER :file:`pom.xml`:
 
 .. code-block:: xml
@@ -971,7 +984,7 @@ The following table shows how maven dependencies have changed, and the resulting
 .. list-table:: Restructure Library
    :widths: 30, 30, 40
    :header-rows: 1
-   
+
    * - Dependency
      - Upgrade
      - Automatic Module Name
@@ -983,7 +996,7 @@ The following table shows how maven dependencies have changed, and the resulting
      - ``org.geotools.metadata``
    * - ``gt-api``
      - (removed)
-     - 
+     -
    * - ``gt-referencing``
      - ``gt-referencing``
      - ``org.geotools.referencing``
@@ -1011,18 +1024,18 @@ Previously GeoTools reused packages across modules by design, this approach is n
 .. list-table:: Restructure Library
    :widths: 30, 70
    :header-rows: 3
-   
+
    * - Module
      - Package
    * - Upgrade
      - Package
-   * - 
+   * -
      - Classes Affected
    * - ``gt-api``
      - ``org.geotools.decorate``
    * - ``gt-metadata``
      - ``org.geotools.util.decorate``
-   * - 
+   * -
      - Abstract Store, Wrapper
    * - ``gt-api``
      - ``org.geotools.data``
@@ -1036,7 +1049,7 @@ Previously GeoTools reused packages across modules by design, this approach is n
      - ``org.geotools.decorate``
    * - ``gt-main``
      - ``org.geotools.util.decorate``
-   * - 
+   * -
      - AbstractDecorator, Wrapper
    * - ``gt-api``
      - ``org.geotools.factory``
@@ -1072,7 +1085,7 @@ BEFORE :file:`pom.xml`:
        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
        <geotools.version>21-SNAPSHOT</geotools.version>
    </properties>
-   
+
 AFTER :file:`pom.xml`:
 
 .. code-block:: xml
@@ -1107,7 +1120,7 @@ This release changes the package names from ``com.vividsolutions.jts`` to ``org.
 Using the command line to update your own ``pom.xml`` files::
 
    git grep -l com.vividsolutions | grep pom.xml | xargs sed -i "s/com.vividsolutions/org.locationtech.jts/g"
-   
+
 And codebase::
 
    git grep -l com.vividsolutions | xargs sed -i "s/com.vividsolutions/org.locationtech/"
@@ -1115,7 +1128,7 @@ And codebase::
 **Use of copy rather than clone**
 
 If you are in the habit of using ``clone`` to duplicate JTS objects (such as Geometry and Coordinate) you will find the ``clone`` method has been deprecated, and a ``copy`` method introduced to explicitly perform a deep copy::
-    
+
     Geometry duplicate = geom.copy();
 
 Migrate to JSR-363 Units
@@ -1124,7 +1137,7 @@ Migrate to JSR-363 Units
 This releases upgrades from the unofficial JSR-275 units library to the official JSR-363 units API.
 
 Maven transitive dependency will correctly bring in the required jars::
-   
+
     <dependency>
        <groupId>systems.uom</groupId>
        <artifactId>systems-common-java8</artifactId>
@@ -1132,12 +1145,12 @@ Maven transitive dependency will correctly bring in the required jars::
     </dependency>
 
 Package names have changed, resulting in some common search and replaces when upgrading:
-  
+
 * Search ``javax.measure.unit.Unit`` replace ``javax.measure.Unit``
 * Search ``ConversionException`` replace  ``IncommensurableException``
-  
+
   This is a checked exception, in areas of the GeoTools library where this was found we now return an ``IllegalArgument`` exception.
-  
+
 * Search ``converter == UnitConverter.IDENTITY`` replace ``converter.isIdentity()``
 * Search ``javax.measure.unit.NonSI`` replace ``import si.uom.NonSI``
 * Search ``javax.measure.unit.SI`` replace ``import si.uom.SI``
@@ -1147,7 +1160,7 @@ Package names have changed, resulting in some common search and replaces when up
 * Search ``Unit.ONE`` replace ``AbstractUnit.ONE``
 * Search ``Dimensionless.UNIT`` replace ``AbstractUnit.ONE``
 * Search ``Unit.valueOf(unitString)`` replace ``Units.parseUnit(unitString)``
-  
+
 **Getting Unit instances**
 
 If you know the unit to use at compile time, use one of the Unit instances defined as static variables in ``org.geotools.measure.Units``, ``si.uom.SI``, ``si.uom.NonSI`` or ``systems.uom.common.USCustomary``.
@@ -1164,9 +1177,9 @@ If you need to define new Units at runtime, it is important to immediately try t
 
    // the result should be SI.METRE
    Unit<?> unit = Units.autocorrect(halfMetre.multiply(4).divide(2));
-   
+
 .. code-block:: java
-   
+
    public <T extends Quantity<T>> Unit<T> deriveUnit(Unit<T>  baseUnit, double factor) {
       return Units.autocorrect(baseUnit.multiply(factor);)
    }
@@ -1179,7 +1192,7 @@ This allows for type-safety checks at compile time:
 
    Unit<Length> halfMetre = SI.METRE.divide(2);
    Unit<Length> stupidUnit = Units.autocorrect(halfMetre.multiply(4).divide(2));
-     
+
 **Formatting units**
 
 Use ``org.geotools.measure.Units.toName(unit)`` to get the unit name (or unit label if name is not defined).
@@ -1205,7 +1218,7 @@ Use ``org.geotools.measure.Units.getDefaultFormat().format()`` to get the unit l
    System.out.println(Units.toName(SI.METRE))
    // prints "m"
    System.out.println(Units.getDefaultFormat().format(SI.METRE))
-  
+
 **Converting units**
 
 If the unit ``Quantity`` type is known, use the type-safe ``getConverterTo()`` method:
@@ -1229,7 +1242,7 @@ If the ``Quantity`` type is undefined, use the convenience method ``org.geotools
 If previously you made use of the Units in your code, to help with unit
 conversion or simply to keep the units straight. You might have code like:
 
-.. code-block:: java 
+.. code-block:: java
 
   Measure<Double, Length> dist = Measure.valueOf(distance, SI.METER);
   System.out.println(dist.doubleValue(SI.KILOMETER) + " Km");
@@ -1287,7 +1300,7 @@ GeoTools 15.x requires Java 8::
 
 GeoTools 14.x
 -------------
-From 14.x version, the `JAI-EXT Project <https://github.com/geosolutions-it/jai-ext>`_ has been integrated in GeoTools. This project provides a high scalable Java API for image processing with support for ``NoData`` and ``ROI``. 
+From 14.x version, the `JAI-EXT Project <https://github.com/geosolutions-it/jai-ext>`_ has been integrated in GeoTools. This project provides a high scalable Java API for image processing with support for ``NoData`` and ``ROI``.
 This integration provides also the removal of the following classes, since they are now inside JAI-EXT:
 
 * ``ColorIndexer`` from *gt-coverage* module;
@@ -1310,9 +1323,9 @@ BEFORE::
       Font f = textSymbolizer.getFonts()[i];
       ...
    }
-  
+
 AFTER::
- 
+
   textSymbolizer.fonts().add(font);
   for(Font f : textSymbolizer.fonts()){
      ...
@@ -1376,9 +1389,9 @@ For those migrating the first visible benefit is that referring to a generic gri
 BEFORE::
 
   AbstractGridCoverage2DReader reader = format.getReader(source);
-  
+
 AFTER::
- 
+
   GridCoverage2DReader reader = format.getReader(source);
 
 .. _update9:
@@ -1410,9 +1423,9 @@ BEFORE::
 
   ReferencedEnvelope bbox = new ReferencedEnvelope( crs );
   ReferencedEnvelope copy = new ReferencedEnvelope( bbox );
-  
+
 AFTER::
-  
+
   ReferencedEnvelope bbox = ReferencedEnvelope.create( crs );
   ReferencedEnvelope copy = ReferencedEnvelope.create( bbox );
 
@@ -1456,7 +1469,7 @@ ALTERNATE DETAIL::
     else {
         throw new IllegalStateException("FeatureCollections configured with immutbale implementation");
     }
-    
+
 SPECIFIC::
 
     ListFeatureCollection features = new ListFeatureCollection( schema, list );
@@ -1558,7 +1571,7 @@ JAVA7 using try-with-resource syntax for ``Iterator`` that implements ``Closeabl
              ...
         }
     }
-    
+
 
 .. _update8:
 
@@ -1895,7 +1908,7 @@ GeneralEnvelope
 We have been removing old deprecated code from the ``GeneralEnvelope`` class.
 
 =================================== ===================================================
-Old Method                          New Method     
+Old Method                          New Method
 =================================== ===================================================
 ``double getCenter(dimension)``     ``DirectPosition getMedian()``
 ``double getCenter()``              ``double getMedian(dimension)``

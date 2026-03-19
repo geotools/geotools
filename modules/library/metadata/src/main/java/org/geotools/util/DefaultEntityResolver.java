@@ -36,6 +36,8 @@ import org.xml.sax.ext.EntityResolver2;
  * Entity Resolver which allows to resolve on OGC & INSPIRE schemas, roughly inspired from the `AllowListEntityResolver`
  * class from GeoServer.
  *
+ * In addition to XSD entities, we also have standards like WMS 1.1.1 making use of DTD definitions.
+ *
  * @author Pierre Mauduit (Camptocamp)
  */
 public class DefaultEntityResolver implements EntityResolver2, Serializable {
@@ -64,10 +66,10 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
      *   <li>vfs - internal schema reference (JBoss/WildFly)
      * </ul>
      */
-    private static final Pattern INTERNAL_URIS = Pattern.compile("(?i)(jar:file|vfs)[^?#;]*\\.xsd");
+    private static final Pattern INTERNAL_URIS = Pattern.compile("(?i)(jar:file|vfs)[^?#;]*\\.(xsd|dtd)$");
 
-    /** Only allow XSD URIs that do not contain a URI query or fragment */
-    private static final Pattern XSD_URIS = Pattern.compile("(?i)^[^?#;]*\\.xsd$");
+    /** Only allow XSD or DTD URIs that do not contain a URI query or fragment */
+    private static final Pattern XSD_OR_DTD_URIS = Pattern.compile("(?i)^[^?#;]*\\.(xsd|dtd)$");
 
     /** Checks if a URL contains escaped periods, slashes or backslashes */
     private static final Pattern BANNED_ESCAPES = Pattern.compile("(?i)^.*%(2e|2f|5c).*$");
@@ -91,7 +93,7 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
                 + Pattern.quote(OGC2)
                 + "|"
                 + Pattern.quote(INSPIRE)
-                + ")/[^?#;]*\\.xsd");
+                + ")/[^?#;]*\\.(xsd|dtd)");
     }
 
     @Override
@@ -155,7 +157,7 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
             new URL(uri);
         }
         String lower = uri.toLowerCase();
-        if (!XSD_URIS.matcher(uri).matches() || BANNED_ESCAPES.matcher(uri).matches()) {
+        if (!XSD_OR_DTD_URIS.matcher(uri).matches() || BANNED_ESCAPES.matcher(uri).matches()) {
             throw new IllegalArgumentException("Invalid XSD URI: " + uri);
         } else if (lower.startsWith("jar:file:/")) {
             uri = normalize("jar:file:", uri.substring(9), IS_OS_WINDOWS, true);

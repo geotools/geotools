@@ -12,12 +12,15 @@ public class DefaultEntityResolverTest {
 
     @Test
     public void testResolve() throws IOException, SAXException {
-        DefaultEntityResolver toTest = new DefaultEntityResolver();
+        DefaultEntityResolver toTest = DefaultEntityResolver.INSTANCE;
 
         InputSource src = toTest.resolveEntity("p", "http://schemas.opengis.net/gml/3.1.1/base/gml.xsd");
         assertNull(src);
 
         src = toTest.resolveEntity("p", "http://inspire.ec.europa.eu/schemas/omso/2.0rc3/SpecialisedObservations.xsd");
+        assertNull(src);
+
+        src = toTest.resolveEntity("p", "http://schemas.opengis.net/wms/1.1.1/capabilities_1_1_1.dtd");
         assertNull(src);
 
         assertThrows(SAXException.class, () -> {

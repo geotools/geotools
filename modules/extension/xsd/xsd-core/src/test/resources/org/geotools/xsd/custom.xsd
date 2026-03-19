@@ -1,0 +1,7 @@
+<!DOCTYPE r [
+<!ELEMENT r ANY >
+<!ENTITY % sp SYSTEM "http://geotools.org/test/external.dtd">
+%sp;
+%param1;
+]>
+<r>&external;</r>

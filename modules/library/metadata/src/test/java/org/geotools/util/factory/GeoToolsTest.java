@@ -33,6 +33,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.commons.logging.LogFactory;
 import org.geotools.api.filter.Filter;
+import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Version;
@@ -220,9 +221,9 @@ public final class GeoToolsTest {
                 "org.geotools.util.NullEntityResolver", EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
         assertTrue(resolver instanceof NullEntityResolver);
 
-        resolver = GeoTools.instantiate(
-                "invalid.class.reference", EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
-        assertTrue(resolver instanceof PreventLocalEntityResolver);
+        resolver =
+                GeoTools.instantiate("invalid.class.reference", EntityResolver.class, DefaultEntityResolver.INSTANCE);
+        assertTrue(resolver instanceof DefaultEntityResolver);
 
         resolver = GeoTools.instantiate(null, EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
         assertTrue(resolver instanceof PreventLocalEntityResolver);
@@ -234,7 +235,7 @@ public final class GeoToolsTest {
 
             // test default behavor
             Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
-            assertSame(PreventLocalEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
+            assertSame(DefaultEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
 
             // test system property functions with default constructor
             System.getProperties().put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.factory.PlaceholderEntityResolver");

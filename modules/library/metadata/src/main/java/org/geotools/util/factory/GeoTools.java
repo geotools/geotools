@@ -57,8 +57,8 @@ import javax.xml.parsers.SAXParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Arguments;
 import org.geotools.util.Classes;
+import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.NullEntityResolver;
-import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Utilities;
 import org.geotools.util.Version;
 import org.geotools.util.logging.DefaultLoggerFactory;
@@ -911,10 +911,10 @@ public final class GeoTools {
                 return (EntityResolver) hint;
             } else if (hint instanceof String) {
                 String className = (String) hint;
-                return instantiate(className, EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
+                return instantiate(className, EntityResolver.class, DefaultEntityResolver.INSTANCE);
             }
         }
-        return PreventLocalEntityResolver.INSTANCE;
+        return DefaultEntityResolver.INSTANCE;
     }
 
     /**
@@ -922,8 +922,8 @@ public final class GeoTools {
      *
      * @param className Class name to instantiate
      * @param type Class of object created
-     * @param defaultValue Default to be provided, may be null
-     * @return EntityResolver, defaults to {@link PreventLocalEntityResolver#INSTANCE} if unavailable.
+     * @param defaultValue Default to be provided, may be {@code null}
+     * @return EntityResolver, uses {@code defaultValue} if className is {@code }null}, or if instantiation fails.
      */
     static <T, D extends T> T instantiate(String className, Class<T> type, D defaultValue) {
         if (className == null) {

@@ -93,14 +93,15 @@ Migration instructions:
 DefaultEntityResolver
 ^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools.getEntityResolver(Hints) has been updated to return `DefaultEntityResolver` by default. This implementation
-allows access to commonly used OGC and INSPIRE schema locations.
+``GeoTools.getEntityResolver(Hints)`` has been updated to return ``DefaultEntityResolver``` by default.
+This implementation allows access to commonly used OGC and INSPIRE schema locations.
 
 We recommend this default, however you may configure GeoTools with your own more permissive EntityResolver:
 
-   System.getProperties.put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.PreventLocalEntityResolver");
-   Hints.scanSystemProperties();
+.. code-block: java
 
+   System.getProperties().put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.PreventLocalEntityResolver");
+   Hints.scanSystemProperties();
 
 .. _update34:
 

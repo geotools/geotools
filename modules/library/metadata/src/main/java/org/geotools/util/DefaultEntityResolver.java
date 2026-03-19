@@ -21,9 +21,11 @@ import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -36,11 +38,14 @@ import org.xml.sax.ext.EntityResolver2;
  * Entity Resolver which allows to resolve on OGC & INSPIRE schemas, roughly inspired from the `AllowListEntityResolver`
  * class from GeoServer.
  *
- * In addition to XSD entities, we also have standards like WMS 1.1.1 making use of DTD definitions.
+ * <p>In addition to XSD entities, we also have standards like WMS 1.1.1 making use of DTD definitions.
  *
  * @author Pierre Mauduit (Camptocamp)
  */
 public class DefaultEntityResolver implements EntityResolver2, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -793816026668809854L;
 
     /** Location of Open Geospatial Consortium schemas for OGC OpenGIS standards */
     public static String OGC1 = "schemas.opengis.net";
@@ -55,7 +60,7 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
     public static String W3C = "www.w3.org";
 
     /** Prefix used for SAXException message */
-    private static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for ";
+    private static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for {0}";
 
     /**
      * Internal uri references.
@@ -109,14 +114,15 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
     @Override
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
+
+        if (systemId == null) {
+            if (name != null) {
+                return null;
+            }
+            throw new SAXException("External entity systemId not provided");
+        }
         try {
             String uri;
-            if (systemId == null) {
-                if (name != null) {
-                    return null;
-                }
-                throw new SAXException("External entity systemId not provided");
-            }
 
             if (URI.create(systemId).isAbsolute()) {
                 uri = systemId;
@@ -145,7 +151,7 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
         }
 
         // do not allow external entities
-        throw new SAXException(ERROR_MESSAGE_BASE + systemId);
+        throw new SAXException(MessageFormat.format(ERROR_MESSAGE_BASE, systemId));
     }
 
     private static String normalize(String uri) throws IOException {
@@ -157,10 +163,13 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
             new URL(uri);
         }
         String lower = uri.toLowerCase();
-        if (!XSD_OR_DTD_URIS.matcher(uri).matches() || BANNED_ESCAPES.matcher(uri).matches()) {
+        if (!XSD_OR_DTD_URIS.matcher(uri).matches()
+                || BANNED_ESCAPES.matcher(uri).matches()) {
             throw new IllegalArgumentException("Invalid XSD URI: " + uri);
         } else if (lower.startsWith("jar:file:/")) {
             uri = normalize("jar:file:", uri.substring(9), IS_OS_WINDOWS, true);
+        } else if (lower.startsWith("jar:nested:")) {
+            uri = normalize("jar:nested:", uri.substring(11), IS_OS_WINDOWS, true);
         } else if (lower.startsWith("vfs:/")) {
             uri = normalize("vfs:", uri.substring(4), IS_OS_WINDOWS, false);
         } else if (lower.startsWith("https://")) {

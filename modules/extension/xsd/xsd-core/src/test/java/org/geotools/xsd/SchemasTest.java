@@ -328,7 +328,7 @@ public class SchemasTest {
     }
 
     @Test
-    public void testCustomEntityResolverConstructorTest() {
+    public void testWithCustomEntityResolver() {
         assertThrows(
                 IOException.class,
                 () -> Schemas.validateImportsIncludes(
@@ -339,7 +339,7 @@ public class SchemasTest {
     }
 
     @Test
-    public void testNoEntityResolverConstructorTest() {
+    public void testWithNoEntityResolver() {
         assertThrows(
                 IOException.class,
                 () -> Schemas.validateImportsIncludes(

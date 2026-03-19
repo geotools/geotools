@@ -46,9 +46,6 @@ import org.locationtech.jts.io.WKBWriter;
  */
 public class HexWKBEncoder {
 
-    /** Per-thread WKB writer; WKBWriter is not thread-safe. */
-    private static final ThreadLocal<WKBWriter> WKB_WRITER = ThreadLocal.withInitial(WKBWriter::new);
-
     /**
      * Encodes a JTS geometry as hexadecimal WKB and appends it to the provided writer.
      *
@@ -66,7 +63,7 @@ public class HexWKBEncoder {
         }
         // Use WKB (Well-Known Binary) format to avoid locale-specific text parsing issues
         // ST_GeomFromHEXEWKB is locale-independent and works with binary data
-        WKB_WRITER.get().write(g, new OutStream() {
+        new WKBWriter().write(g, new OutStream() {
             @Override
             public void write(byte[] buf, int len) throws IOException {
                 HexFormat.of().formatHex(writer, buf, 0, len);

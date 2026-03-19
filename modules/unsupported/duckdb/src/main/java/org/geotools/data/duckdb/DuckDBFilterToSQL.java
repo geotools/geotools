@@ -139,13 +139,9 @@ public class DuckDBFilterToSQL extends FilterToSQL {
     @Override
     public Object visit(Function function, Object extraData) throws RuntimeException {
         if (function instanceof FilterFunction_area) {
-            try {
-                write("ST_Area(");
-                function.getParameters().get(0).accept(this, Geometry.class);
-                write(")");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            write("ST_Area(");
+            function.getParameters().get(0).accept(this, Geometry.class);
+            write(")");
             return extraData;
         }
         return super.visit(function, extraData);

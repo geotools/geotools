@@ -330,12 +330,10 @@ public class DuckDBDialect extends BasicSQLDialect {
         try (Statement statement = cx.createStatement();
                 ResultSet rs = statement.executeQuery(ST_SRID_CAPABILITY_SQL)) {
             // PMD false-positive safe pattern: navigation result is checked and then consumed.
-            if (!rs.next()) {
-                LOGGER.log(Level.FINE, "DuckDB spatial extension does not expose ST_SRID for native GEOMETRY");
-                return false;
-            }
-            boolean available = true;
-            if (!available) {
+            boolean available = rs.next();
+            if (available) {
+                LOGGER.log(Level.FINE, "DuckDB spatial extension exposes ST_SRID for native GEOMETRY");
+            } else {
                 LOGGER.log(Level.FINE, "DuckDB spatial extension does not expose ST_SRID for native GEOMETRY");
             }
             return available;

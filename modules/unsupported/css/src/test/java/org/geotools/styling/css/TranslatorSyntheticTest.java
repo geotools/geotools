@@ -982,37 +982,24 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 }
                 """;
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
-        assertThat(e.getMessage(), containsString("Malformed language tag"));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
+        assertThat(e.getMessage(), containsString("\"_\""));
     }
 
-    /** Verifies malformed tags that do not match localized syntax are treated as default metadata text. */
+    /** Verifies language tags with spaces fail with an explicit actionable message. */
     @Test
-    public void localizedRuleMetadataMalformedLocaleNotMatchingPatternFallsBackToDefaultText() throws Exception {
+    public void localizedRuleMetadataTagWithSpacesFails() throws Exception {
         String css =
                 """
                 /*
-                 * @title Default title
-                 * @title[] Missing locale
                  * @title[en us] Invalid locale with spaces
-                 * @title[en] English title
-                 * @abstract Default abstract
-                 * @abstract[en@US] Invalid locale with special char
-                 * @abstract[en] English abstract
                  */
                 * {
                     mark: symbol('circle');
                 }
                 """;
-        Style style = translate(css);
-        Rule rule = assertSingleRule(style);
-        assertEquals(
-                "Default title, [] Missing locale, [en us] Invalid locale with spaces",
-                rule.getDescription().getTitle().toString());
-        assertEquals("English title", rule.getDescription().getTitle().toString(Locale.ENGLISH));
-        assertEquals(
-                "Default abstract\n[en@US] Invalid locale with special char",
-                rule.getDescription().getAbstract().toString());
-        assertEquals("English abstract", rule.getDescription().getAbstract().toString(Locale.ENGLISH));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("contains spaces"));
     }
 
     /** Verifies localized metadata parsing works with Windows CRLF line endings in rule comments. */
@@ -1072,7 +1059,8 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 }
                 """;
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
-        assertThat(e.getMessage(), containsString("Malformed language tag"));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
+        assertThat(e.getMessage(), containsString("\"_\""));
     }
 
     /** Verifies mixed-case locale tags are normalized and retrievable through standard Locale lookups. */
@@ -1141,7 +1129,42 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 }
                 """;
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
-        assertThat(e.getMessage(), containsString("Malformed language tag"));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
+        assertThat(e.getMessage(), containsString("en-"));
+    }
+
+    /** Verifies empty localized tag brackets fail fast for both title and abstract metadata. */
+    @Test
+    public void localizedRuleMetadataEmptyBracketTagFails() throws Exception {
+        String css =
+                """
+                /*
+                 * @title[] Missing locale for title
+                 * @abstract[] Missing locale for abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("empty language tag"));
+    }
+
+    /** Verifies unclosed localized tag brackets fail fast for both title and abstract metadata. */
+    @Test
+    public void localizedRuleMetadataUnclosedBracketTagFails() throws Exception {
+        String css =
+                """
+                /*
+                 * @title[en Missing closing bracket for title
+                 * @abstract[it Missing closing bracket for abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("missing closing ']'"));
     }
 
     /** Verifies malformed localized metadata in any combined rule aborts translation. */
@@ -1165,7 +1188,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 }
                 """;
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
-        assertThat(e.getMessage(), containsString("Malformed language tag"));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
     }
 
     @Test

@@ -176,12 +176,11 @@ public class CssTranslator {
     static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /** Matches the title tag inside a rule comment */
-    static final Pattern TITLE_PATTERN =
-            Pattern.compile("^.*@title(?:\\[([\\p{Alnum}_-]+)\\])?\\s*(?:\\:\\s*)?(.+)\\s*$");
+    static final Pattern TITLE_PATTERN = Pattern.compile("^.*@title(?:\\[([^\\]]*)\\])?\\s*(?:\\:\\s*)?(.+)\\s*$");
 
     /** Matches the abstract tag inside a rule comment */
     static final Pattern ABSTRACT_PATTERN =
-            Pattern.compile("^.*@abstract(?:\\[([\\p{Alnum}_-]+)\\])?\\s*(?:\\:\\s*)?(.+)\\s*$");
+            Pattern.compile("^.*@abstract(?:\\[([^\\]]*)\\])?\\s*(?:\\:\\s*)?(.+)\\s*$");
 
     /** The global composite property */
     static final String COMPOSITE = "composite";
@@ -1111,11 +1110,11 @@ public class CssTranslator {
         // ok, build the rule
         RuleBuilder ruleBuilder = fts.rule();
         ruleBuilder.filter(filter);
-        InternationalString title = getCombinedTag(cssRule.getComment(), TITLE_PATTERN, ", ");
+        InternationalString title = getCombinedTag(cssRule.getComment(), TITLE_PATTERN, "title", ", ");
         if (title != null) {
             ruleBuilder.title(title);
         }
-        InternationalString ruleAbstract = getCombinedTag(cssRule.getComment(), ABSTRACT_PATTERN, "\n");
+        InternationalString ruleAbstract = getCombinedTag(cssRule.getComment(), ABSTRACT_PATTERN, "abstract", "\n");
         if (ruleAbstract != null) {
             ruleBuilder.ruleAbstract(ruleAbstract);
         }
@@ -1181,7 +1180,7 @@ public class CssTranslator {
      * @param separator separator used between multiple metadata fragments
      * @return an international string containing default and localized values, or {@code null} if no metadata is found
      */
-    private InternationalString getCombinedTag(String comment, Pattern p, String separator) {
+    private InternationalString getCombinedTag(String comment, Pattern p, String directive, String separator) {
         if (comment == null || comment.isEmpty()) {
             return null;
         }
@@ -1189,7 +1188,7 @@ public class CssTranslator {
         Map<String, StringBuilder> localizedBuilders = new LinkedHashMap<>();
 
         for (String line : comment.split("\\R")) {
-            parseMetadataEntry(line, p)
+            parseMetadataEntry(line, p, directive)
                     .ifPresent(entry -> appendMetadata(entry, defaultText, localizedBuilders, separator));
         }
 
@@ -1201,10 +1200,18 @@ public class CssTranslator {
      *
      * @throws IllegalArgumentException if an explicit localized tag is malformed
      */
-    private Optional<MetadataEntry> parseMetadataEntry(String line, Pattern pattern) {
+    private Optional<MetadataEntry> parseMetadataEntry(String line, Pattern pattern, String directive) {
         Matcher matcher = pattern.matcher(line);
         if (!matcher.matches()) {
             return Optional.empty();
+        }
+        String malformedTag = getUnclosedLocalizedTag(line, directive);
+        if (malformedTag != null) {
+            throw new IllegalArgumentException("Invalid localized @"
+                    + directive
+                    + " metadata: missing closing ']' in language tag near \""
+                    + malformedTag
+                    + "\"");
         }
 
         String text = matcher.group(2).trim();
@@ -1212,8 +1219,22 @@ public class CssTranslator {
             return Optional.empty();
         }
 
-        String langTag = normalizeOrThrowLangTag(matcher.group(1));
+        String langTag = normalizeLangTag(matcher.group(1), directive);
         return Optional.of(new MetadataEntry(langTag, text));
+    }
+
+    private String getUnclosedLocalizedTag(String line, String directive) {
+        String token = "@" + directive + "[";
+        int open = line.indexOf(token);
+        if (open < 0) {
+            return null;
+        }
+        int start = open + token.length();
+        int close = line.indexOf(']', start);
+        if (close >= 0) {
+            return null;
+        }
+        return line.substring(start).trim();
     }
 
     /**
@@ -1221,15 +1242,44 @@ public class CssTranslator {
      *
      * <p>Accepted tags use BCP-47 syntax and may contain both '-' and '_' separators.
      */
-    private String normalizeOrThrowLangTag(String rawLangTag) {
+    private String normalizeLangTag(String rawLangTag, String directive) {
         if (rawLangTag == null) {
             return null;
         }
-        String langTag = normalizeLangTag(rawLangTag);
-        if (langTag == null) {
-            throw new IllegalArgumentException("Malformed language tag in rule metadata: " + rawLangTag);
+        if (StringUtils.isBlank(rawLangTag)) {
+            throw new IllegalArgumentException(
+                    "Invalid localized @" + directive + " metadata: empty language tag inside []");
         }
-        return langTag;
+        String trimmed = rawLangTag.trim();
+        if (trimmed.chars().anyMatch(Character::isWhitespace)) {
+            throw new IllegalArgumentException("Invalid localized @"
+                    + directive
+                    + " metadata: language tag contains spaces (\""
+                    + rawLangTag
+                    + "\"). Use BCP47 forms like en or en-US.");
+        }
+        Locale parsedLocale;
+        try {
+            parsedLocale = new Locale.Builder()
+                    .setLanguageTag(trimmed.replace('_', '-'))
+                    .build();
+        } catch (IllformedLocaleException e) {
+            throw new IllegalArgumentException(
+                    "Invalid localized @"
+                            + directive
+                            + " metadata: malformed language tag \""
+                            + rawLangTag
+                            + "\". Use BCP47 forms like en, en-US or it.",
+                    e);
+        }
+        if (parsedLocale.getLanguage().isEmpty()) {
+            throw new IllegalArgumentException("Invalid localized @"
+                    + directive
+                    + " metadata: language tag \""
+                    + rawLangTag
+                    + "\" does not include a language subtag.");
+        }
+        return parsedLocale.toLanguageTag();
     }
 
     /** Adds one metadata fragment to either default or localized aggregation bucket. */
@@ -1262,29 +1312,6 @@ public class CssTranslator {
             }
         }
         return localizedValues;
-    }
-
-    private String normalizeLangTag(String tag) {
-        if (StringUtils.isBlank(tag)) {
-            return null;
-        }
-        String trimmed = tag.trim();
-        Locale parsedLocale;
-        try {
-            parsedLocale = new Locale.Builder()
-                    .setLanguageTag(trimmed.replace('_', '-'))
-                    .build();
-        } catch (IllformedLocaleException e) {
-            LOGGER.fine("Malformed language tag: " + trimmed);
-            // Return null here; callers decide whether to treat this as an error.
-            return null;
-        }
-        if (parsedLocale.getLanguage().isEmpty()) {
-            LOGGER.fine("Malformed language tag: " + trimmed);
-            // Return null here; callers decide whether to treat this as an error.
-            return null;
-        }
-        return parsedLocale.toLanguageTag();
     }
 
     private InternationalString buildInternationalString(String defaultText, Map<String, String> localizedTexts) {

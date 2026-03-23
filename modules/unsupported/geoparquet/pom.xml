@@ -49,25 +49,10 @@
     </developer>
   </developers>
 
-  <properties>
-    <duckdb-jdbc.version>1.4.2.0</duckdb-jdbc.version>
-  </properties>
-  <!-- =========================================================== -->
-  <!--     Dependency Management                                   -->
-  <!-- =========================================================== -->
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.duckdb</groupId>
-        <artifactId>duckdb_jdbc</artifactId>
-        <version>${duckdb-jdbc.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>org.duckdb</groupId>
-      <artifactId>duckdb_jdbc</artifactId>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-duckdb</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

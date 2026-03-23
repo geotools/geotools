@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.data.duckdb.ForwardingDataStoreFactory;
 import org.geotools.jdbc.JDBCDataStore;
 
 /**

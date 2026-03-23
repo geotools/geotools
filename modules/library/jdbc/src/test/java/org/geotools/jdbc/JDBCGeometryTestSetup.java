@@ -39,7 +39,7 @@ public abstract class JDBCGeometryTestSetup extends JDBCDelegatingTestSetup {
         super.setUp();
 
         // clean up all the tables and their metadata
-        for (Class geomClass : getGeometryClasses()) {
+        for (Class<?> geomClass : getGeometryClasses()) {
             try {
                 dropSpatialTable("t" + geomClass.getSimpleName());
             } catch (Exception e) {
@@ -55,18 +55,17 @@ public abstract class JDBCGeometryTestSetup extends JDBCDelegatingTestSetup {
     }
 
     /** The list of geometry classes the datastore will be tested against. */
-    protected List<Class> getGeometryClasses() {
-        return Arrays.asList(new Class[] {
-            Point.class,
-            LineString.class,
-            LinearRing.class,
-            Polygon.class,
-            MultiPoint.class,
-            MultiLineString.class,
-            MultiPolygon.class,
-            Geometry.class,
-            GeometryCollection.class
-        });
+    protected List<Class<?>> getGeometryClasses() {
+        return Arrays.asList(
+                Point.class,
+                LineString.class,
+                LinearRing.class,
+                Polygon.class,
+                MultiPoint.class,
+                MultiLineString.class,
+                MultiPolygon.class,
+                Geometry.class,
+                GeometryCollection.class);
     }
 
     /**

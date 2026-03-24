@@ -474,7 +474,7 @@
     <series>latest</series>
     <!-- test dependency management. For compile dependency management look at platform-dependencies/pom.xml -->
     <hamcrest.version>3.0</hamcrest.version>
-    <mockito.version>5.20.0</mockito.version>
+    <mockito.version>5.23.0</mockito.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
     <!-- surefire configuration -->

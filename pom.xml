@@ -870,7 +870,7 @@
         <plugin>
           <groupId>pl.project13.maven</groupId>
           <artifactId>git-commit-id-plugin</artifactId>
-          <version>2.2.5</version>
+          <version>4.9.10</version>
         </plugin>
         <plugin>
           <groupId>org.geotools.maven</groupId>

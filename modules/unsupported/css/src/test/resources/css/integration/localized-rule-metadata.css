@@ -1,0 +1,12 @@
+@mode 'Flat';
+
+/*
+ * @title Roads
+ * @title[en] Roads EN
+ * @title[it] Strade
+ * @abstract Main roads
+ * @abstract[en_US] Main roads EN
+ */
+* {
+  stroke: #444444;
+}

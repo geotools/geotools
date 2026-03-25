@@ -1,0 +1,11 @@
+/*
+ * @title Base title
+ * @title[en] English one
+ * @title[en] English two
+ * @abstract Base abstract
+ * @abstract[en] English abstract one
+ * @abstract[en] English abstract two
+ */
+* {
+  fill: #bbbbbb;
+}

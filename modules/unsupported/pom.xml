@@ -47,6 +47,7 @@
     <module>vector-mosaic</module>
     <module>jdbc-h2gis</module>
     <module>graticules</module>
+    <module>duckdb</module>
     <module>geoparquet</module>
     <module>jdbc-singlestore</module>
     <module>pmtiles</module>
@@ -226,6 +227,12 @@
       <id>teradata</id>
       <modules>
         <module>jdbc-teradata</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>duckdb</id>
+      <modules>
+        <module>duckdb</module>
       </modules>
     </profile>
     <profile>

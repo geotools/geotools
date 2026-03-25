@@ -17,13 +17,12 @@
 package org.geotools.data.geoparquet;
 
 import java.io.IOException;
-import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
-import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.duckdb.ForwardingFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 
 /**
@@ -43,8 +42,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
  */
 class OverridingFeatureSource extends ForwardingFeatureSource {
 
-    private SimpleFeatureType overridingType;
-    private DataStore dataStore;
+    private final SimpleFeatureType overridingType;
 
     /**
      * Creates a new overriding feature source.
@@ -55,14 +53,8 @@ class OverridingFeatureSource extends ForwardingFeatureSource {
      */
     public OverridingFeatureSource(
             SimpleFeatureSource delegate, DataStore overridingStore, SimpleFeatureType overridingType) {
-        super(delegate);
-        this.dataStore = overridingStore;
+        super(delegate, overridingStore);
         this.overridingType = overridingType;
-    }
-
-    @Override
-    public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {
-        return dataStore;
     }
 
     @Override

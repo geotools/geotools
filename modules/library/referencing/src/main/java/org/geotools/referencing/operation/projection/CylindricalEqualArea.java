@@ -45,7 +45,7 @@ public class CylindricalEqualArea extends MapProjection {
 
         // Set trueScaleLatitude ("lat_ts" in Proj4)
         trueScaleLatitudeDeg = parameters.parameter("standard_parallel_1").doubleValue();
-        trueScaleLatitude = DTR * trueScaleLatitude;
+        trueScaleLatitude = DTR * trueScaleLatitudeDeg;
 
         es = excentricitySquared;
         e = excentricity;

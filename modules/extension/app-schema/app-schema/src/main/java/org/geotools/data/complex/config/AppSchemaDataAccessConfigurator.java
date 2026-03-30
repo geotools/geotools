@@ -123,6 +123,11 @@ public class AppSchemaDataAccessConfigurator {
 
     public static final String PROPERTY_CROSS_SCHEMA_JOINING = "app-schema.crossSchemaJoining";
 
+    /**
+     * Separator used only to compose internal cache keys for schema-scoped source stores.
+     *
+     * <p>Not intended for reverse parsing of datastore/schema components.
+     */
     private static final String SCHEMA_STORE_KEY_SEPARATOR = "::schema::";
 
     /** Whether the mapping is for an include. */
@@ -171,19 +176,11 @@ public class AppSchemaDataAccessConfigurator {
     }
 
     private static String getJoiningOverride() {
-        String value = System.getProperty(PROPERTY_JOINING);
-        if (value != null) {
-            return value;
-        }
-        return System.getenv("APP_SCHEMA_JOINING");
+        return System.getProperty(PROPERTY_JOINING);
     }
 
     private static String getCrossSchemaJoiningOverride() {
-        String value = System.getProperty(PROPERTY_CROSS_SCHEMA_JOINING);
-        if (value != null) {
-            return value;
-        }
-        return System.getenv("APP_SCHEMA_CROSS_SCHEMA_JOINING");
+        return System.getProperty(PROPERTY_CROSS_SCHEMA_JOINING);
     }
 
     public static boolean isOrUnionReplacementEnabled() {

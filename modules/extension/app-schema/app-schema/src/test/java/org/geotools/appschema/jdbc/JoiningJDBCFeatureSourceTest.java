@@ -20,6 +20,8 @@ package org.geotools.appschema.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
@@ -28,7 +30,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.Feature;
@@ -366,5 +370,114 @@ public class JoiningJDBCFeatureSourceTest {
         } finally {
             AppSchemaDataAccessRegistry.clearAppSchemaProperties();
         }
+    }
+
+    @Test
+    public void testResolveWithSchemaFallbackUsesExactSchemaFirst() throws Exception {
+        JoiningJDBCFeatureSource source = Mockito.mock(JoiningJDBCFeatureSource.class, Mockito.CALLS_REAL_METHODS);
+        Method method = JoiningJDBCFeatureSource.class.getDeclaredMethod(
+                "resolveWithSchemaFallback", String.class, Function.class);
+        method.setAccessible(true);
+
+        AtomicInteger calls = new AtomicInteger();
+        @SuppressWarnings("unchecked")
+        String resolved = (String) method.invoke(source, "schema_a", (Function<String, String>) schema -> {
+            calls.incrementAndGet();
+            return "schema_a".equals(schema) ? "exact" : null;
+        });
+
+        assertEquals("exact", resolved);
+        assertEquals(1, calls.get());
+    }
+
+    @Test
+    public void testResolveWithSchemaFallbackRetriesWithNullSchema() throws Exception {
+        JoiningJDBCFeatureSource source = Mockito.mock(JoiningJDBCFeatureSource.class, Mockito.CALLS_REAL_METHODS);
+        Method method = JoiningJDBCFeatureSource.class.getDeclaredMethod(
+                "resolveWithSchemaFallback", String.class, Function.class);
+        method.setAccessible(true);
+
+        AtomicInteger calls = new AtomicInteger();
+        @SuppressWarnings("unchecked")
+        String resolved = (String) method.invoke(source, "schema_a", (Function<String, String>) schema -> {
+            calls.incrementAndGet();
+            return schema == null ? "fallback" : null;
+        });
+
+        assertEquals("fallback", resolved);
+        assertEquals(2, calls.get());
+    }
+
+    @Test
+    public void testSanitizeJoinIdsReturnsCopyWithoutMutatingOriginalQuery() throws Exception {
+        JoiningJDBCFeatureSource source = Mockito.mock(JoiningJDBCFeatureSource.class, Mockito.CALLS_REAL_METHODS);
+        Method method = JoiningJDBCFeatureSource.class.getDeclaredMethod("sanitizeJoinIds", JoiningQuery.class);
+        method.setAccessible(true);
+
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("join_table");
+        builder.add("valid_id", Integer.class);
+        SimpleFeatureType joinType = builder.buildFeatureType();
+
+        @SuppressWarnings("unchecked")
+        FeatureSource<FeatureType, Feature> joinSource = Mockito.mock(FeatureSource.class);
+        Mockito.when(joinSource.getSchema()).thenReturn(joinType);
+
+        FeatureTypeMapping joinMapping =
+                new FeatureTypeMapping(joinSource, null, Collections.emptyList(), new NamespaceSupport());
+
+        JoiningQuery.QueryJoin join = new JoiningQuery.QueryJoin();
+        join.setJoiningTypeName("join_table");
+        join.setRootMapping(joinMapping);
+        join.getIds().add("valid_id");
+        join.getIds().add("invalid_id");
+
+        JoiningQuery query = new JoiningQuery();
+        query.setQueryJoins(Collections.singletonList(join));
+
+        JoiningQuery sanitized = (JoiningQuery) method.invoke(source, query);
+
+        assertNotNull(sanitized);
+        assertNotSame(query, sanitized);
+        assertEquals(
+                Arrays.asList("valid_id", "invalid_id"),
+                query.getQueryJoins().get(0).getIds());
+        assertEquals(
+                Collections.singletonList("valid_id"),
+                sanitized.getQueryJoins().get(0).getIds());
+    }
+
+    @Test
+    public void testSanitizeJoinIdsReturnsSameQueryWhenNoIdsNeedPruning() throws Exception {
+        JoiningJDBCFeatureSource source = Mockito.mock(JoiningJDBCFeatureSource.class, Mockito.CALLS_REAL_METHODS);
+        Method method = JoiningJDBCFeatureSource.class.getDeclaredMethod("sanitizeJoinIds", JoiningQuery.class);
+        method.setAccessible(true);
+
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("join_table");
+        builder.add("valid_id", Integer.class);
+        SimpleFeatureType joinType = builder.buildFeatureType();
+
+        @SuppressWarnings("unchecked")
+        FeatureSource<FeatureType, Feature> joinSource = Mockito.mock(FeatureSource.class);
+        Mockito.when(joinSource.getSchema()).thenReturn(joinType);
+
+        FeatureTypeMapping joinMapping =
+                new FeatureTypeMapping(joinSource, null, Collections.emptyList(), new NamespaceSupport());
+
+        JoiningQuery.QueryJoin join = new JoiningQuery.QueryJoin();
+        join.setJoiningTypeName("join_table");
+        join.setRootMapping(joinMapping);
+        join.getIds().add("valid_id");
+
+        JoiningQuery query = new JoiningQuery();
+        query.setQueryJoins(Collections.singletonList(join));
+
+        JoiningQuery sanitized = (JoiningQuery) method.invoke(source, query);
+
+        assertSame(query, sanitized);
+        assertEquals(
+                Collections.singletonList("valid_id"),
+                sanitized.getQueryJoins().get(0).getIds());
     }
 }

@@ -223,19 +223,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         DataAccessMappingFeatureIterator daFeatureIterator = (DataAccessMappingFeatureIterator) featureIterator;
 
-        // Ensure row-level metadata is initialized before deriving FOREIGN_ID_* expressions.
-        boolean hasSourceRows = daFeatureIterator.hasNext();
-        List<Expression> foreignIds = daFeatureIterator.getForeignIdsFromSourceSchema();
-        if (foreignIds.isEmpty()) {
-            // Fallback for cases where schema metadata is not available yet.
-            foreignIds = new ArrayList<>();
-            for (int i = 0; i < query.getQueryJoins().size(); i++) {
-                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
-                    foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i + "_" + j));
-                }
-            }
-        }
-
+        boolean hasSourceRows = primeNestedSourceIterator(daFeatureIterator);
+        List<Expression> foreignIds = resolveForeignIds(daFeatureIterator, query);
         daFeatureIterator.setForeignIds(foreignIds);
 
         instance.featureIterators.put(featureTypeName, daFeatureIterator);
@@ -250,6 +239,40 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
 
         return daFeatureIterator;
+    }
+
+    /**
+     * Prime the iterator so row-level metadata is available before foreign-id expressions are derived.
+     *
+     * @return true if the iterator has at least one source row
+     */
+    private boolean primeNestedSourceIterator(DataAccessMappingFeatureIterator daFeatureIterator) {
+        // Read ahead once so row-level metadata is materialized before resolving FOREIGN_ID_* expressions.
+        return daFeatureIterator.hasNext();
+    }
+
+    /** Resolve the foreign-id expressions either from the iterator schema or from the join metadata fallback. */
+    private List<Expression> resolveForeignIds(DataAccessMappingFeatureIterator daFeatureIterator, JoiningQuery query) {
+        List<Expression> foreignIds = daFeatureIterator.getForeignIdsFromSourceSchema();
+        if (foreignIds.isEmpty()) {
+            foreignIds = buildFallbackForeignIds(query);
+        }
+        return foreignIds;
+    }
+
+    /** Build fallback FOREIGN_ID expressions when source schema metadata is not yet available. */
+    private List<Expression> buildFallbackForeignIds(JoiningQuery query) {
+        List<Expression> foreignIds = new ArrayList<>();
+        if (query == null || query.getQueryJoins() == null) {
+            return foreignIds;
+        }
+        for (int i = 0; i < query.getQueryJoins().size(); i++) {
+            int idCount = query.getQueryJoins().get(i).getIds().size();
+            for (int j = 0; j < idCount; j++) {
+                foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i + "_" + j));
+            }
+        }
+        return foreignIds;
     }
 
     private String resolveJoiningTypeSchema(Instance instance, String joiningTypeName) {

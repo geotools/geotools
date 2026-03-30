@@ -376,7 +376,8 @@ public class NestedFilterToSQL extends FilterToSQL {
 
     private void encodeTableName(JDBCDataStore store, String typeName, String schemaName, StringBuffer sql, Hints hints)
             throws SQLException {
-        if (schemaName == null) {
+        // Virtual tables must go through JDBCDataStore encoding to preserve subquery expansion.
+        if (schemaName == null || store.getVirtualTables().containsKey(typeName)) {
             store.encodeTableName(typeName, sql, hints);
             return;
         }
@@ -389,7 +390,7 @@ public class NestedFilterToSQL extends FilterToSQL {
     private void encodeAliasedTableName(
             JDBCDataStore store, String typeName, String schemaName, StringBuffer sql, Hints hints, String alias)
             throws SQLException {
-        if (schemaName == null) {
+        if (schemaName == null || store.getVirtualTables().containsKey(typeName)) {
             store.encodeAliasedTableName(typeName, sql, hints, alias);
             return;
         }

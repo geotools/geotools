@@ -27,7 +27,6 @@
   <properties>
     <maven.version>3.8.1</maven.version>
     <maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
-    <plexus-utils.version>3.0.24</plexus-utils.version>
   </properties>
 
   <dependencies>
@@ -64,7 +63,6 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>${plexus-utils.version}</version>
       <scope>provided</scope>
     </dependency>
 

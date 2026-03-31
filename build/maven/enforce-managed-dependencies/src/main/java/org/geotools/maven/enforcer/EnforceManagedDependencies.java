@@ -222,8 +222,8 @@ public class EnforceManagedDependencies extends AbstractEnforcerRule {
     }
 
     private Artifact createArtifact(Dependency dependency) {
-        String type = StringUtils.defaultString(dependency.getType(), "jar");
-        String classifier = StringUtils.defaultString(dependency.getClassifier(), "");
+        String type = dependency.getType() != null ? dependency.getType() : "jar";
+        String classifier = dependency.getClassifier() != null ? dependency.getClassifier() : "";
 
         return new DefaultArtifact(
                 dependency.getGroupId(),
@@ -256,11 +256,11 @@ public class EnforceManagedDependencies extends AbstractEnforcerRule {
     }
 
     private boolean dependencyMatches(Dependency dependency, Dependency managed) {
-        String dependencyType = StringUtils.defaultString(dependency.getType(), "jar");
-        String managedType = StringUtils.defaultString(managed.getType(), "jar");
+        String dependencyType = dependency.getType() != null ? dependency.getType() : "jar";
+        String managedType = managed.getType() != null ? managed.getType() : "jar";
 
-        String dependencyClassifier = StringUtils.defaultString(dependency.getClassifier(), "");
-        String manageClassifier = StringUtils.defaultString(managed.getClassifier(), "");
+        String dependencyClassifier = dependency.getClassifier() != null ? dependency.getClassifier() : "";
+        String manageClassifier = managed.getClassifier() != null ? managed.getClassifier() : "";
         return Objects.equals(dependency.getGroupId(), managed.getGroupId())
                 && Objects.equals(dependency.getArtifactId(), managed.getArtifactId())
                 && Objects.equals(dependencyType, managedType)

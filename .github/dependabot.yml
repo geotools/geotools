@@ -26,6 +26,11 @@ updates:
       - dependency-name: "org.codehaus.mojo:*"
       - dependency-name: "*:*maven-plugin*"
       - dependency-name: "org.xmlunit:xmlunit-matchers"
+      # Keep Java 17-compatible tool versions; newer releases require Java 21.
+      - dependency-name: "com.google.errorprone:error_prone_core"
+        versions: [ "[2.43.0,)" ]
+      - dependency-name: "com.puppycrawl.tools:checkstyle"
+        versions: [ "[13.0.0,)" ]
 
   - package-ecosystem: 'github-actions'
     directory: '/'

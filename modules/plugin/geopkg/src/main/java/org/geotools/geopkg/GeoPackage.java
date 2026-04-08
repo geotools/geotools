@@ -94,6 +94,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.sqlite.Function;
 import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteConnection;
 
 /**
  * Provides access to a GeoPackage database.
@@ -128,6 +129,8 @@ public class GeoPackage implements Closeable {
     public static final String SPATIAL_INDEX = "gpkg_spatial_index";
 
     public static final String SCHEMA = "gpkg_schema";
+
+    static final String ALLOW_EXTENSION_LOADING_KEY = "org.geotools.sqlite.extensions";
 
     /**
      * Adding this key into a {@link FeatureType#getUserData()} with a value of true will allow creating tables without
@@ -310,7 +313,14 @@ public class GeoPackage implements Closeable {
      * <p>This method creates all the necessary metadata tables.
      */
     static void init(Connection cx) throws SQLException {
-        createFunctions(cx);
+        // init portion requiring native connection
+        SQLiteConnection liteCx = unwrapConnection(cx);
+        createFunctions(liteCx);
+        // if the extensions loading is allowed, we can load the extensions
+        boolean extensionLoadingAllowed = Boolean.getBoolean(ALLOW_EXTENSION_LOADING_KEY);
+        liteCx.getDatabase().enable_load_extension(extensionLoadingAllowed);
+        LOGGER.log(Level.FINE, () -> "Loading SQLite extensions is enabled: " + extensionLoadingAllowed);
+
         // see if we have to create the table structure
         boolean initialized = false;
         try (Statement st = cx.createStatement();
@@ -417,6 +427,14 @@ public class GeoPackage implements Closeable {
                 },
                 1,
                 Function.FLAG_DETERMINISTIC);
+    }
+
+    /** Simple unwrapper, which assumes we have control over the {@link DataSource} and/or pooling library. */
+    private static SQLiteConnection unwrapConnection(Connection cx) {
+        while (cx instanceof DelegatingConnection) {
+            cx = ((DelegatingConnection) cx).getDelegate();
+        }
+        return (SQLiteConnection) cx;
     }
 
     /**

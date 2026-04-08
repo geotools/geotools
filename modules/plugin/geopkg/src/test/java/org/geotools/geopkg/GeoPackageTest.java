@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -60,6 +61,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.imagen.PlanarImage;
 import org.geotools.TestData;
 import org.geotools.api.data.FeatureReader;
@@ -1485,6 +1487,51 @@ public class GeoPackageTest {
             assertTrue(attribute instanceof String);
             assertEquals(uuid.toString(), attribute);
         }
+    }
+
+    @Test
+    public void testLoadExtensions() throws Exception {
+        // the native lib for the test is built for Linux 64-bit AMD architecture
+        // rot13 is one of the sqlite examples, it rotates the text by 13 characters
+        Assume.assumeTrue(isLinux64Amd());
+        File extension = new File("src/test/resources/org/geotools/geopkg/test-data/rot13.so");
+
+        try (GeoPackage gpFail =
+                new GeoPackage(File.createTempFile("geopkg", "loadExtensionFail", new File("target")))) {
+            gpFail.init();
+            try (Connection cx = gpFail.getDataSource().getConnection();
+                    Statement st = cx.createStatement()) {
+                // try to load the extension, should fail as the architecture is not supported
+                assertThrows(
+                        SQLException.class,
+                        () -> st.execute("SELECT load_extension('" + extension.getAbsolutePath() + "')"));
+            }
+        }
+
+        System.setProperty(GeoPackage.ALLOW_EXTENSION_LOADING_KEY, "true");
+        try (GeoPackage gpFail =
+                new GeoPackage(File.createTempFile("geopkg", "loadExtensionSuccess", new File("target")))) {
+            gpFail.init();
+            try (Connection cx = gpFail.getDataSource().getConnection();
+                    Statement st = cx.createStatement()) {
+                // try to load the extension, should fail as the architecture is not supported
+                st.execute("SELECT load_extension('" + extension.getAbsolutePath() + "')");
+                // test the extension works
+                try (ResultSet rs = st.executeQuery("SELECT rot13('Hello World!')")) {
+                    assertTrue(rs.next());
+                    assertEquals("Uryyb Jbeyq!", rs.getString(1));
+                }
+            }
+        } finally {
+            System.clearProperty(GeoPackage.ALLOW_EXTENSION_LOADING_KEY);
+        }
+    }
+
+    private static boolean isLinux64Amd() {
+        if (!SystemUtils.IS_OS_LINUX) return false;
+        String arch = System.getProperty("os.arch");
+        // Common values for 64-bit Intel/AMD: "amd64" or "x86_64"
+        return "amd64".equalsIgnoreCase(arch) || "x86_64".equalsIgnoreCase(arch);
     }
 
     /**

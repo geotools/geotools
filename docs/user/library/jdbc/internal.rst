@@ -32,20 +32,20 @@ You will find a careful attention to details and steps taken to minimize any dup
 SQLDialect
 ^^^^^^^^^^
 
-If you would like to implement support for an additional format please ask on the developers list. The clearest starting place is to review the *``gt-jdbc-h2``* code which serves as the reference implementation.
+If you would like to implement support for an additional format please ask on the developers list. The clearest starting place is to review the *``gt-jdbc-postgis``* code which serves as the reference implementation.
 
 To have your format accepted by GeoTools you will also need to extend the
-conformance test cases as shown in the *``gt-jdbc-h2``* module. 
+conformance test cases as shown in the *``gt-jdbc-postgis``* module. 
 
-Here is a brief illustration of ``SQLDialect`` as implemented by the ``gt-jdbc-h2`` plugin.
+Here is a brief illustration of ``SQLDialect`` as implemented by the ``gt-jdbc-postgis`` plugin.
 
 
-.. image:: /images/jdbcDataStoreH2.PNG
+.. image:: /images/jdbcDataStorePostgis.png
 
-As expected this class is required to fill in the H2 specific details:
+As expected this class is required to fill in the Postgis specific details:
 
 * how to decode and encode Geometry and Bounds information
 * handle database specific functionality such as sequences
 * follow up to table creation (often needed if geometry columns need to be registered)
 
-Your implementation of these methods may depend on the conventions of your database.  Oracle spatial for example will have its own idea on how to handle SRID values, while a simple Java database like H2 will make use of the GeoTools CRS class.
+Your implementation of these methods may depend on the conventions of your database.  Oracle spatial for example will have its own idea on how to handle SRID values.

@@ -30,7 +30,7 @@ jobs:
         mkdir $GDAL_INSTALL_PATH
         brew update
         brew upgrade
-        brew install freexl libxml2 libspatialite geos proj libgeotiff openjpeg libaec postgis doxygen unixodbc aom jpeg-xl libheif libarchive libkml boost ccache swig python-setuptools
+        brew install freexl libxml2 libspatialite geos proj libgeotiff openjpeg libaec doxygen unixodbc aom jpeg-xl libarchive libkml boost ccache swig python-setuptools
         : # gdal is automatically installed as a dependency for postgis
         brew uninstall --ignore-dependencies gdal
         wget https://github.com/OSGeo/gdal/releases/download/v$OSX_GDAL_VERSION/gdal-$OSX_GDAL_VERSION.tar.gz

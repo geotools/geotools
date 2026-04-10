@@ -31,11 +31,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.commons.beanutils.BeanComparator;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrQuery.ORDER;
-import org.apache.solr.client.solrj.impl.Http2SolrClient;
+import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClientBase;
 import org.apache.solr.client.solrj.request.LukeRequest;
+import org.apache.solr.client.solrj.request.SolrQuery;
+import org.apache.solr.client.solrj.request.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldTypeInfo;
@@ -84,7 +84,7 @@ public class SolrDataStore extends ContentDataStore {
     // Attributes configurations of the store entries
     private Map<String, SolrLayerConfiguration> solrConfigurations = new ConcurrentHashMap<>();
 
-    Http2SolrClient solrServer;
+    HttpJdkSolrClient solrServer;
 
     // feature types build using the provided indexes configuration
     private final Map<String, SimpleFeatureType> defaultFeatureTypes = new HashMap<>();
@@ -121,7 +121,7 @@ public class SolrDataStore extends ContentDataStore {
         // TODO: make connection timeouts configurable
         this.url = url;
         this.layerMapper = layerMapper;
-        this.solrServer = new Http2SolrClient.Builder(url.toString())
+        this.solrServer = new HttpJdkSolrClient.Builder(url.toString())
                 .withFollowRedirects(true)
                 .withTheseParamNamesInTheUrl(Set.of())
                 .withConnectionTimeout(10, TimeUnit.SECONDS)
@@ -463,6 +463,8 @@ public class SolrDataStore extends ContentDataStore {
     public void dispose() {
         try {
             solrServer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             super.dispose();
         }

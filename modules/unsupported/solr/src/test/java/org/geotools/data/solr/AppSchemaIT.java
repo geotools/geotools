@@ -62,7 +62,7 @@ import org.xml.sax.InputSource;
  * Create appschema.properties file in {{user-dir}}/.geotools folder Set solr_url property URL config example:
  * solr_url=http://localhost:8983/solr, and create "stations" core in Solr
  */
-public final class AppSchemaIntegrationTest extends OnlineTestCase {
+public final class AppSchemaIT extends OnlineTestCase {
 
     private static final String SOLR_URL_KEY = "solr_url";
     private static final String CORE_NAME = "stations";
@@ -70,11 +70,11 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     private static final String xmlFileName = "mappings_solr.xml";
     private static final String ST_NAMESPACE = "http://www.stations.org/1.0";
     private static final Name mappedTypeName = Types.typeName("multi_stations_solr");
-    private static final String testDirStr = "target/test/" + AppSchemaIntegrationTest.class.getSimpleName();
+    private static final String testDirStr = "target/test/" + AppSchemaIT.class.getSimpleName();
     private static final File testDir = new File(testDirStr);
 
     private static final File appSchemaCacheDir =
-            new File("target/test/" + AppSchemaIntegrationTest.class.getSimpleName() + "/app-schema-cache");
+            new File("target/test/" + AppSchemaIT.class.getSimpleName() + "/app-schema-cache");
 
     private HttpJdkSolrClient client;
     private static DataAccess<FeatureType, Feature> mappingDataStore;
@@ -159,9 +159,8 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     }
 
     protected void fieldsSetup() throws Exception {
-        File inFile = new File(AppSchemaIntegrationTest.class
-                .getResource(testData + "solr_types.xml")
-                .toURI());
+        File inFile = new File(
+                AppSchemaIT.class.getResource(testData + "solr_types.xml").toURI());
         JAXBContext jcontext = JAXBContext.newInstance(SolrTypes.class);
         Unmarshaller um = jcontext.createUnmarshaller();
         SolrTypes types = (SolrTypes) um.unmarshal(inFile);
@@ -171,9 +170,8 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     }
 
     protected void indexSetup() throws Exception {
-        File inFile = new File(AppSchemaIntegrationTest.class
-                .getResource(testData + "stationsData.xml")
-                .toURI());
+        File inFile = new File(
+                AppSchemaIT.class.getResource(testData + "stationsData.xml").toURI());
         JAXBContext jcontext = JAXBContext.newInstance(Stations.class);
         Unmarshaller um = jcontext.createUnmarshaller();
         Stations stations = (Stations) um.unmarshal(inFile);
@@ -194,7 +192,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
         copyTestData("stationsData.xml", testDir);
 
         // Modify datasource and copy xml
-        File xmlFile = URLs.urlToFile(AppSchemaIntegrationTest.class.getResource(testData + xmlFileName));
+        File xmlFile = URLs.urlToFile(AppSchemaIT.class.getResource(testData + xmlFileName));
         Document doc = DocumentBuilderFactory.newInstance()
                 .newDocumentBuilder()
                 .parse(new InputSource(new FileInputStream(xmlFile)));
@@ -219,8 +217,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
 
     private void copyTestData(String baseFileName, File destDir) throws IOException {
         destDir.mkdirs();
-        FileUtils.copyFileToDirectory(
-                URLs.urlToFile(AppSchemaIntegrationTest.class.getResource(testData + baseFileName)), destDir);
+        FileUtils.copyFileToDirectory(URLs.urlToFile(AppSchemaIT.class.getResource(testData + baseFileName)), destDir);
     }
 
     /** appschema.properties file required */

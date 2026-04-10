@@ -26,7 +26,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.util.factory.Hints;
 
-public class SolrViewParametersTest extends SolrTestSupport {
+public class SolrViewParametersIT extends SolrTestSupport {
 
     public void testSinglesQParameters() throws Exception {
         init("not-active");

@@ -47,7 +47,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import si.uom.SI;
 
-public class SolrGeometryTest extends SolrTestSupport {
+public class SolrGeometryIT extends SolrTestSupport {
     public void testBBOXLimitSplittedFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();

@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 import org.geotools.api.data.DataStore;
 
-public class SolrDataStoreTest extends SolrTestSupport {
+public class SolrDataStoreIT extends SolrTestSupport {
 
     public void testGetNames() throws IOException {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);

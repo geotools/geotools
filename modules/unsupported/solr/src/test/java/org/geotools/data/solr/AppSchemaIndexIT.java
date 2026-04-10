@@ -37,7 +37,7 @@ import org.junit.Test;
  *
  * @author Fernando Miño, Geosolutions
  */
-public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
+public class AppSchemaIndexIT extends AppSchemaOnlineTestSupport {
 
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     protected final String attId = "st:Station";

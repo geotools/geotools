@@ -19,7 +19,7 @@ package org.geotools.data.solr;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClientBase;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
@@ -52,7 +52,7 @@ public interface SolrLayerMapper {
     }
 
     /** Creates the list of type names provided by the mapping. */
-    List<String> createTypeNames(HttpSolrClient solr) throws Exception;
+    List<String> createTypeNames(HttpSolrClientBase solr) throws Exception;
 
     /**
      * Prepares the filter query used to inspect solr for the purposes of deriving the schema.

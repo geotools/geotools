@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClientBase;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.params.CursorMarkParams;
@@ -59,7 +59,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
     private SolrAttribute pkey;
 
-    private HttpSolrClient server;
+    private HttpSolrClientBase server;
 
     private SolrDataStore solrDataStore;
 
@@ -88,7 +88,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @throws java.io.IOException
      */
     public SolrFeatureReader(
-            SimpleFeatureType featureType, HttpSolrClient server, SolrQuery solrQuery, SolrDataStore solrDataStore)
+            SimpleFeatureType featureType, HttpSolrClientBase server, SolrQuery solrQuery, SolrDataStore solrDataStore)
             throws SolrServerException, IOException {
         this.featureType = featureType;
         this.solrQuery = solrQuery;
@@ -136,7 +136,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * Can't use CURSOR MARK with "start" parameter, so get initial SOLR CURSOR MARK to positioning
      * CURSOR at the row specified by start query parameter
      */
-    private String getCursorMarkForStart(HttpSolrClient server, SolrQuery solrQuery)
+    private String getCursorMarkForStart(HttpSolrClientBase server, SolrQuery solrQuery)
             throws SolrServerException, IOException {
         Integer prevRows = solrQuery.getRows();
         solrQuery.setRows(solrQuery.getStart());

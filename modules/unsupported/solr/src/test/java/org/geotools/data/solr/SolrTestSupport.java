@@ -30,7 +30,7 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
 import org.geotools.temporal.object.DefaultInstant;
@@ -68,7 +68,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     protected DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
     // tests setup will take care of instantiating the client and closing it
-    private HttpSolrClient solrClient;
+    private Http2SolrClient solrClient;
 
     @Override
     protected void setUpInternal() throws Exception {

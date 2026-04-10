@@ -20,16 +20,16 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.request.schema.FieldTypeDefinition;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
@@ -50,16 +50,12 @@ public final class TestsSolrUtils {
      * @param baseUrl base URL of the Apache Solr instance, http://localhost:8983/solr/core
      * @return Apache Solr client instance
      */
-    public static HttpSolrClient instantiateClient(String baseUrl) {
-        HttpSolrClient client = new HttpSolrClient.Builder()
-                .withBaseSolrUrl(baseUrl)
-                .allowCompression(true)
-                .withConnectionTimeout(5000)
-                .withSocketTimeout(5000)
+    public static Http2SolrClient instantiateClient(String baseUrl) {
+        return new Http2SolrClient.Builder(baseUrl)
+                .withFollowRedirects(true)
+                .withConnectionTimeout(5, TimeUnit.SECONDS)
+                .withRequestTimeout(5, TimeUnit.SECONDS)
                 .build();
-        // we can use low timeouts values for tests
-        client.setFollowRedirects(true);
-        return client;
     }
 
     /**
@@ -81,7 +77,7 @@ public final class TestsSolrUtils {
      * @param client Sorl client to use, should already point to the desired core
      * @param xml stream contain the Solr documents encoded in XML
      */
-    public static void runUpdateRequest(HttpSolrClient client, InputStream xml) {
+    public static void runUpdateRequest(SolrClient client, InputStream xml) {
         UpdateRequest request = new UpdateRequest();
         // parse Solr documents from the provided XML stream
         List<SolrInputDocument> documents = parseDocuments(xml);
@@ -96,7 +92,7 @@ public final class TestsSolrUtils {
      *
      * @param client Sorl client to use, should already point to the desired core
      */
-    public static void createWktFieldType(HttpSolrClient client) {
+    public static void createWktFieldType(SolrClient client) {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("name", "wkt");
         attributes.put("class", "solr.SpatialRecursivePrefixTreeFieldType");
@@ -111,7 +107,7 @@ public final class TestsSolrUtils {
      *
      * @param client Sorl client to use, should already point to the desired core
      */
-    public static void createBboxFieldType(HttpSolrClient client) {
+    public static void createBboxFieldType(SolrClient client) {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("name", "bbox");
         attributes.put("class", "solr.BBoxField");
@@ -128,7 +124,7 @@ public final class TestsSolrUtils {
      * @param client Sorl client to use, should already point to the desired core
      * @param name name of the field
      */
-    public static void createWktField(HttpSolrClient client, String name) {
+    public static void createWktField(SolrClient client, String name) {
         createField(client, name, "wkt");
     }
 
@@ -139,7 +135,7 @@ public final class TestsSolrUtils {
      * @param client Sorl client to use, should already point to the desired core
      * @param name name of the field
      */
-    public static void createBboxField(HttpSolrClient client, String name) {
+    public static void createBboxField(SolrClient client, String name) {
         createField(client, name, "bbox");
     }
 
@@ -167,16 +163,14 @@ public final class TestsSolrUtils {
      * @param client Sorl client to use, should already point to the desired core
      * @param attributes attributes of the field type to create
      */
-    public static void createFieldType(HttpSolrClient client, Map<String, Object> attributes) {
+    public static void createFieldType(SolrClient client, Map<String, Object> attributes) {
         FieldTypeDefinition typeDefinition = new FieldTypeDefinition();
         typeDefinition.setAttributes(attributes);
         try {
             runSolrRequest(client, new SchemaRequest.AddFieldType(typeDefinition));
-            return;
         } catch (RuntimeException addException) {
             try {
                 runSolrRequest(client, new SchemaRequest.ReplaceFieldType(typeDefinition));
-                return;
             } catch (RuntimeException replaceException) {
                 replaceException.addSuppressed(addException);
                 throw replaceException;
@@ -192,17 +186,15 @@ public final class TestsSolrUtils {
      * @param name name of the field
      * @param type field type name
      */
-    public static void createField(HttpSolrClient client, String name, String type) {
+    public static void createField(SolrClient client, String name, String type) {
         Map<String, Object> field = new HashMap<>();
         field.put("name", name);
         field.put("type", normalizeFieldType(type));
         try {
             runSolrRequest(client, new SchemaRequest.AddField(field));
-            return;
         } catch (RuntimeException addException) {
             try {
                 runSolrRequest(client, new SchemaRequest.ReplaceField(field));
-                return;
             } catch (RuntimeException replaceException) {
                 replaceException.addSuppressed(addException);
                 throw replaceException;
@@ -219,7 +211,7 @@ public final class TestsSolrUtils {
      * @param request Solr request
      * @return response containing any found error or none
      */
-    private static Response runSolrRequest(HttpSolrClient client, SolrRequest<? extends SolrResponseBase> request) {
+    private static Response runSolrRequest(SolrClient client, SolrRequest<? extends SolrResponseBase> request) {
         try {
             // execute the requests and parse is result
             Response response = Response.parse(request.process(client));
@@ -295,7 +287,7 @@ public final class TestsSolrUtils {
      *
      * @param client the Solr client
      */
-    public static void createGeometryFieldType(HttpSolrClient client) {
+    public static void createGeometryFieldType(SolrClient client) {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("name", "geometry");
         attributes.put("class", "solr.SpatialRecursivePrefixTreeFieldType");
@@ -316,18 +308,16 @@ public final class TestsSolrUtils {
      * @param type the field type
      * @param multiValued TRUE if the type is multi valued, otherwise FALSE
      */
-    public static void createField(HttpSolrClient client, String name, String type, boolean multiValued) {
+    public static void createField(SolrClient client, String name, String type, boolean multiValued) {
         Map<String, Object> field = new HashMap<>();
         field.put("name", name);
         field.put("type", normalizeFieldType(type));
         field.put("multiValued", multiValued ? "true" : "false");
         try {
             runSolrRequest(client, new SchemaRequest.AddField(field));
-            return;
         } catch (RuntimeException addException) {
             try {
                 runSolrRequest(client, new SchemaRequest.ReplaceField(field));
-                return;
             } catch (RuntimeException replaceException) {
                 replaceException.addSuppressed(addException);
                 throw replaceException;
@@ -352,10 +342,6 @@ public final class TestsSolrUtils {
             return errors;
         }
 
-        private String getMessage() {
-            return message;
-        }
-
         /** If this response contains any message errors throw an exception. */
         private void throwIfNeeded() {
             if (errors) {
@@ -377,27 +363,6 @@ public final class TestsSolrUtils {
             // the Solr response doesn't contain any error
             return NO_ERRORS;
         }
-
-        /**
-         * Merge all the errors messages from the provided responses containers and throw a single exception with all of
-         * them.
-         *
-         * <p>If no messages errors can be found no exception will be throw.
-         *
-         * @param responses responses containers
-         */
-        private static void throwIfNeeded(Response... responses) {
-            // merge all errors messages in a single string
-            String errors = Arrays.stream(responses)
-                    .filter(Response::hasErrors)
-                    .map(Response::getMessage)
-                    .collect(Collectors.joining(", "));
-            if (!errors.isEmpty()) {
-                // at leats one message errors exists, let's throw an exception
-                throw new RuntimeException(
-                        "Something bad happen when executing Solr request(s) '%s'.".formatted(errors));
-            }
-        }
     }
 
     /** Helper method that creates a temporary directory. */
@@ -415,7 +380,7 @@ public final class TestsSolrUtils {
      *
      * @param client HTTP Apache Solr client, the client should should be already pointing at the correct core
      */
-    public static void cleanIndex(HttpSolrClient client) {
+    public static void cleanIndex(SolrClient client) {
         // get the number of documents indexed in the target core
         SolrQuery query = new SolrQuery("*:*");
         // don't return any results

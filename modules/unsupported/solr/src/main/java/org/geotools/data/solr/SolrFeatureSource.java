@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClientBase;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureSource;
@@ -160,7 +160,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                     store.getLogger().log(Level.FINE, q.toString());
                 }
                 @SuppressWarnings("PMD.CloseResource") // not managed here
-                HttpSolrClient server = store.getSolrServer();
+                HttpSolrClientBase server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);
                 count = (int) (rsp.getResults().getNumFound() - rsp.getResults().getStart());
                 // Manage max manually
@@ -237,7 +237,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
             preQuery.setMaxFeatures(visitor.getMaxFeatures());
 
             @SuppressWarnings("PMD.CloseResource") // not managed here
-            HttpSolrClient solrServer = store.getSolrServer();
+            HttpSolrClientBase solrServer = store.getSolrServer();
             SolrQuery q = store.selectUniqueValues(getSchema(), preQuery, visitor);
             QueryResponse rsp = solrServer.query(q);
             values = rsp.getGroupResponse().getValues().stream()

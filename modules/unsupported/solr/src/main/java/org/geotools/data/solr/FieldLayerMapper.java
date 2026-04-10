@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClientBase;
 import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.FacetParams;
@@ -44,7 +44,7 @@ public class FieldLayerMapper implements SolrLayerMapper {
     }
 
     @Override
-    public List<String> createTypeNames(HttpSolrClient solrServer) throws Exception {
+    public List<String> createTypeNames(HttpSolrClientBase solrServer) throws Exception {
         List<String> names = new ArrayList<>();
 
         SolrQuery query = new SolrQuery();

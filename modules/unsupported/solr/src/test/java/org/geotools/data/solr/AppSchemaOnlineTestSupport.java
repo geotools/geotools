@@ -32,7 +32,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataAccessFinder;
 import org.geotools.api.feature.Feature;
@@ -75,7 +75,7 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
     protected File tempDir;
     protected File appSchemaCacheDir;
 
-    protected HttpSolrClient client;
+    protected Http2SolrClient client;
     protected DataAccess<FeatureType, Feature> mappingDataStore;
 
     protected void copyTestData(String baseFileName, File destDir) throws IOException {
@@ -103,7 +103,7 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
         fixture.setProperty(PG_USER_KEY, TestContainersSupport.postgresUser());
         fixture.setProperty(PG_PASS_KEY, TestContainersSupport.postgresPassword());
         createTestFolder();
-        client = new HttpSolrClient.Builder(getSolrCoreURL()).build();
+        client = new Http2SolrClient.Builder(getSolrCoreURL()).build();
         solrDataSetup();
         prepareFiles();
         setupDataStore();

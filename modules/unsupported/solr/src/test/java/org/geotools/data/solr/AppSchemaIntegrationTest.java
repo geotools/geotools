@@ -33,7 +33,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataAccessFinder;
 import org.geotools.api.data.FeatureSource;
@@ -76,7 +76,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     private static final File appSchemaCacheDir =
             new File("target/test/" + AppSchemaIntegrationTest.class.getSimpleName() + "/app-schema-cache");
 
-    private HttpSolrClient client;
+    private Http2SolrClient client;
     private static DataAccess<FeatureType, Feature> mappingDataStore;
 
     @Test
@@ -128,7 +128,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     protected void setUpInternal() throws Exception {
         TestContainersSupport.solrCoreUrl(CORE_NAME);
         fixture.setProperty(SOLR_URL_KEY, TestContainersSupport.solrServerUrl());
-        client = new HttpSolrClient.Builder(getSolrCoreURL()).build();
+        client = new Http2SolrClient.Builder(getSolrCoreURL()).build();
         solrDataSetup();
         prepareFiles();
         setupDataStore();

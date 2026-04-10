@@ -28,11 +28,13 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.Http2SolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClientBase;
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
@@ -82,7 +84,7 @@ public class SolrDataStore extends ContentDataStore {
     // Attributes configurations of the store entries
     private Map<String, SolrLayerConfiguration> solrConfigurations = new ConcurrentHashMap<>();
 
-    HttpSolrClient solrServer;
+    Http2SolrClient solrServer;
 
     // feature types build using the provided indexes configuration
     private final Map<String, SimpleFeatureType> defaultFeatureTypes = new HashMap<>();
@@ -119,13 +121,12 @@ public class SolrDataStore extends ContentDataStore {
         // TODO: make connection timeouts configurable
         this.url = url;
         this.layerMapper = layerMapper;
-        this.solrServer = new HttpSolrClient.Builder()
-                .withBaseSolrUrl(url.toString())
-                .allowCompression(true)
-                .withConnectionTimeout(10000)
-                .withSocketTimeout(10000)
+        this.solrServer = new Http2SolrClient.Builder(url.toString())
+                .withFollowRedirects(true)
+                .withTheseParamNamesInTheUrl(Set.of())
+                .withConnectionTimeout(10, TimeUnit.SECONDS)
+                .withRequestTimeout(10, TimeUnit.SECONDS)
                 .build();
-        this.solrServer.setFollowRedirects(true);
     }
 
     /**
@@ -454,7 +455,7 @@ public class SolrDataStore extends ContentDataStore {
         }
     }
 
-    HttpSolrClient getSolrServer() {
+    HttpSolrClientBase getSolrServer() {
         return solrServer;
     }
 
@@ -462,8 +463,6 @@ public class SolrDataStore extends ContentDataStore {
     public void dispose() {
         try {
             solrServer.close();
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         } finally {
             super.dispose();
         }

@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.SolrClient;
 import org.geotools.data.solr.TestsSolrUtils;
 
 /**
@@ -43,7 +43,7 @@ public final class StationsSetup {
      *
      * @param client HTTP Apache Solr client, the client should should be already pointing at the correct core
      */
-    public static void setupSolrIndex(HttpSolrClient client) {
+    public static void setupSolrIndex(SolrClient client) {
         TestsSolrUtils.cleanIndex(client);
         setupStationsIndexSchema(client);
         indexStationsData(client);
@@ -67,7 +67,7 @@ public final class StationsSetup {
     }
 
     /** Helper method that creates the stations index Apache Solr index schema. */
-    private static void setupStationsIndexSchema(HttpSolrClient client) {
+    private static void setupStationsIndexSchema(SolrClient client) {
         // make sure that the JTS based geometry field type is available
         TestsSolrUtils.createGeometryFieldType(client);
         // get the index schema specification
@@ -80,7 +80,7 @@ public final class StationsSetup {
     }
 
     /** Helper method that index the stations data in Apache Solr. */
-    private static void indexStationsData(HttpSolrClient client) {
+    private static void indexStationsData(SolrClient client) {
         // parse the stations data
         Station.Stations stations = parseXmlResource("/solr/complex/stations_data.xml", Station.Stations.class);
         for (Station station : stations.getStations()) {

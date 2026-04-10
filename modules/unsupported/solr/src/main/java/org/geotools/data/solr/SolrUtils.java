@@ -18,8 +18,11 @@
 package org.geotools.data.solr;
 
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Map.Entry;
 import org.apache.solr.client.solrj.response.LukeResponse;
+import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
+import org.apache.solr.common.luke.FieldFlag;
 import org.apache.solr.common.util.NamedList;
 import org.locationtech.jts.geom.Geometry;
 
@@ -31,7 +34,8 @@ public class SolrUtils {
         if (className.equals("org.apache.solr.schema.TextField") || className.equals("org.apache.solr.schema.StrField"))
             return String.class;
         if (className.equals("org.apache.solr.schema.TrieLongField")
-                || className.equals("org.apache.solr.schema.LongField")) return Long.class;
+                || className.equals("org.apache.solr.schema.LongField")
+                || className.equals("org.apache.solr.schema.LongPointField")) return Long.class;
         if (className.equals("org.apache.solr.schema.BoolField")) return Boolean.class;
         if (className.equals("org.apache.solr.schema.SpatialRecursivePrefixTreeFieldType")
                 || className.equals("org.apache.solr.schema.LatLonType")
@@ -39,13 +43,17 @@ public class SolrUtils {
                 || className.equals("org.apache.solr.spatial.pending.BBoxFieldType")
                 || className.equals("org.apache.solr.schema.RptWithGeometrySpatialField")) return Geometry.class;
         if (className.equals("org.apache.solr.schema.DateField")
-                || className.equals("org.apache.solr.schema.TrieDateField")) return Date.class;
+                || className.equals("org.apache.solr.schema.TrieDateField")
+                || className.equals("org.apache.solr.schema.DatePointField")) return Date.class;
         if (className.equals("org.apache.solr.schema.IntField")
-                || className.equals("org.apache.solr.schema.TrieIntField")) return Integer.class;
+                || className.equals("org.apache.solr.schema.TrieIntField")
+                || className.equals("org.apache.solr.schema.IntPointField")) return Integer.class;
         if (className.equals("org.apache.solr.schema.FloatField")
-                || className.equals("org.apache.solr.schema.TrieFloatField")) return Float.class;
+                || className.equals("org.apache.solr.schema.TrieFloatField")
+                || className.equals("org.apache.solr.schema.FloatPointField")) return Float.class;
         if (className.equals("org.apache.solr.schema.DoubleField")
-                || className.equals("org.apache.solr.schema.TrieDoubleField")) return Double.class;
+                || className.equals("org.apache.solr.schema.TrieDoubleField")
+                || className.equals("org.apache.solr.schema.DoublePointField")) return Double.class;
 
         return null;
     }
@@ -80,19 +88,16 @@ public class SolrUtils {
                     break;
                 }
             }
-
-            flds = getField(processField.getResponse(), "fields");
-            for (Entry<String, NamedList> entry : flds) {
-                String fn = entry.getKey();
-                if (fn.equals(fieldName)) {
-                    NamedList om = entry.getValue();
-                    if (om.get("schema") != null && om.get("schema").toString().contains("M")) {
-                        this.multivalued = true;
-                    } else {
-                        this.multivalued = false;
-                    }
-                    break;
+            FieldInfo fieldInfo = processField.getFieldInfo(fieldName);
+            if (fieldInfo == null) {
+                fieldInfo = processField.getDynamicFieldInfo(fieldName);
+            }
+            if (fieldInfo != null) {
+                EnumSet<FieldFlag> flags = fieldInfo.getFlags();
+                if (flags == null && fieldInfo.getSchema() != null) {
+                    flags = LukeResponse.FieldInfo.parseFlags(fieldInfo.getSchema());
                 }
+                this.multivalued = flags != null && flags.contains(FieldFlag.MULTI_VALUED);
             }
         }
 

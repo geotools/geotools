@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -125,6 +126,8 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
+        TestContainersSupport.solrCoreUrl(CORE_NAME);
+        fixture.setProperty(SOLR_URL_KEY, TestContainersSupport.solrServerUrl());
         client = new HttpSolrClient.Builder(getSolrCoreURL()).build();
         solrDataSetup();
         prepareFiles();
@@ -144,6 +147,7 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     }
 
     protected void solrDataSetup() throws Exception {
+        TestsSolrUtils.cleanIndex(client);
         typeSetup();
         fieldsSetup();
         indexSetup();
@@ -223,5 +227,10 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
     @Override
     protected String getFixtureId() {
         return "appschema";
+    }
+
+    @Override
+    protected Properties createOfflineFixture() {
+        return TestContainersSupport.offlineFixture();
     }
 }

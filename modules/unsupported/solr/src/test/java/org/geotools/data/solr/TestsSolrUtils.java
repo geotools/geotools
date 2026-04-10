@@ -115,7 +115,7 @@ public final class TestsSolrUtils {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("name", "bbox");
         attributes.put("class", "solr.BBoxField");
-        attributes.put("numberType", "double");
+        attributes.put("numberType", "pdouble");
         attributes.put("geo", "true");
         // create or replace the field type definition
         createFieldType(client, attributes);
@@ -170,18 +170,17 @@ public final class TestsSolrUtils {
     public static void createFieldType(HttpSolrClient client, Map<String, Object> attributes) {
         FieldTypeDefinition typeDefinition = new FieldTypeDefinition();
         typeDefinition.setAttributes(attributes);
-        // try to create the field type
-        Response addResponse = runSolrRequest(client, new SchemaRequest.AddFieldType(typeDefinition));
-        if (!addResponse.hasErrors()) {
-            // no errors, which means that the field type was correctly created
+        try {
+            runSolrRequest(client, new SchemaRequest.AddFieldType(typeDefinition));
             return;
-        }
-        // something bad happen, let's assume that a field type with the same name already exists
-        Response replaceResponse = runSolrRequest(client, new SchemaRequest.ReplaceFieldType(typeDefinition));
-        if (replaceResponse.hasErrors()) {
-            // trying to replace the field type failed, let's throw an exception with all the
-            // messages errors
-            Response.throwIfNeeded(addResponse, replaceResponse);
+        } catch (RuntimeException addException) {
+            try {
+                runSolrRequest(client, new SchemaRequest.ReplaceFieldType(typeDefinition));
+                return;
+            } catch (RuntimeException replaceException) {
+                replaceException.addSuppressed(addException);
+                throw replaceException;
+            }
         }
     }
 
@@ -196,19 +195,18 @@ public final class TestsSolrUtils {
     public static void createField(HttpSolrClient client, String name, String type) {
         Map<String, Object> field = new HashMap<>();
         field.put("name", name);
-        field.put("type", type);
-        // try to create the field
-        Response addResponse = runSolrRequest(client, new SchemaRequest.AddField(field));
-        if (!addResponse.hasErrors()) {
-            // no errors, which means that the field was correctly created
+        field.put("type", normalizeFieldType(type));
+        try {
+            runSolrRequest(client, new SchemaRequest.AddField(field));
             return;
-        }
-        // something bad happen, let's assume that a field with the same name already exists
-        Response replaceResponse = runSolrRequest(client, new SchemaRequest.ReplaceField(field));
-        if (replaceResponse.hasErrors()) {
-            // trying to replace the field definition failed, let's throw an exception with all the
-            // messages errors
-            Response.throwIfNeeded(addResponse, replaceResponse);
+        } catch (RuntimeException addException) {
+            try {
+                runSolrRequest(client, new SchemaRequest.ReplaceField(field));
+                return;
+            } catch (RuntimeException replaceException) {
+                replaceException.addSuppressed(addException);
+                throw replaceException;
+            }
         }
     }
 
@@ -321,20 +319,19 @@ public final class TestsSolrUtils {
     public static void createField(HttpSolrClient client, String name, String type, boolean multiValued) {
         Map<String, Object> field = new HashMap<>();
         field.put("name", name);
-        field.put("type", type);
+        field.put("type", normalizeFieldType(type));
         field.put("multiValued", multiValued ? "true" : "false");
-        // try to create the field
-        Response addResponse = runSolrRequest(client, new SchemaRequest.AddField(field));
-        if (!addResponse.hasErrors()) {
-            // no errors, which means that the field was correctly created
+        try {
+            runSolrRequest(client, new SchemaRequest.AddField(field));
             return;
-        }
-        // something bad happen, let's assume that a field with the same name already exists
-        Response replaceResponse = runSolrRequest(client, new SchemaRequest.ReplaceField(field));
-        if (replaceResponse.hasErrors()) {
-            // trying to replace the field definition failed, let's throw an exception with all the
-            // messages errors
-            Response.throwIfNeeded(addResponse, replaceResponse);
+        } catch (RuntimeException addException) {
+            try {
+                runSolrRequest(client, new SchemaRequest.ReplaceField(field));
+                return;
+            } catch (RuntimeException replaceException) {
+                replaceException.addSuppressed(addException);
+                throw replaceException;
+            }
         }
     }
 
@@ -443,5 +440,16 @@ public final class TestsSolrUtils {
         } catch (Exception exception) {
             throw new RuntimeException("Error removing Apache Solr indexed data.", exception);
         }
+    }
+
+    private static String normalizeFieldType(String type) {
+        return switch (type) {
+            case "tlongs" -> "plongs";
+            case "tdates" -> "pdates";
+            case "tints" -> "pints";
+            case "tdoubles" -> "pdoubles";
+            case "tfloats" -> "pfloats";
+            default -> type;
+        };
     }
 }

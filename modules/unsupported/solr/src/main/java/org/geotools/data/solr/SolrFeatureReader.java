@@ -18,11 +18,15 @@
 package org.geotools.data.solr;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -38,6 +42,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 
@@ -68,6 +73,10 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
     private Map<Name, SolrSpatialStrategy> geometryReaders;
 
+    private final SimpleDateFormat solrDateFormat;
+
+    private final SimpleDateFormat legacyDateFormat;
+
     /**
      * Creates the feature reader for SOLR store <br>
      * The feature reader use SOLR CURSOR to paginate request, so multiple SOLR query will be executed
@@ -89,6 +98,9 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.builder = new SimpleFeatureBuilder(featureType);
 
         this.server = server;
+        this.solrDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+        this.solrDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        this.legacyDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
 
         // Add always pk as field if not already present
         if (solrQuery.getFields() != null && !solrQuery.getFields().contains(pkey.getName())) {
@@ -179,6 +191,26 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                         builder.add(geometry);
                     }
                 } else {
+                    if (value != null) {
+                        Class<?> binding = type.getType().getBinding();
+                        if (Date.class.isAssignableFrom(binding) && value instanceof String text) {
+                            value = Converters.convert(text, binding);
+                            if (value == null) {
+                                try {
+                                    value = solrDateFormat.parse(text);
+                                } catch (java.text.ParseException exception) {
+                                    try {
+                                        value = legacyDateFormat.parse(text);
+                                    } catch (java.text.ParseException ignored) {
+                                        throw new IOException(
+                                                "Error parsing Solr date '%s'.".formatted(text), exception);
+                                    }
+                                }
+                            }
+                        } else {
+                            value = Converters.convert(value, binding);
+                        }
+                    }
                     builder.add(value);
                 }
             }

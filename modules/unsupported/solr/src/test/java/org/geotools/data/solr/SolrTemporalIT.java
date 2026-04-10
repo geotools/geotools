@@ -24,7 +24,7 @@ import org.geotools.api.temporal.Period;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 
-public class SolrTemporalTest extends SolrTestSupport {
+public class SolrTemporalIT extends SolrTestSupport {
 
     public void testCompareDateFilter() throws Exception {
         init();

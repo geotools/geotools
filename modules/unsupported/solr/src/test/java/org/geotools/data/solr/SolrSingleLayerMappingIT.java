@@ -28,7 +28,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.locationtech.jts.geom.Geometry;
 
-public class SolrSingleLayerMappingTest extends SolrTestSupport {
+public class SolrSingleLayerMappingIT extends SolrTestSupport {
 
     @Override
     protected void setUpInternal() throws Exception {

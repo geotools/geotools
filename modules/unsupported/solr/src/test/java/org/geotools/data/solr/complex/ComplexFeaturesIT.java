@@ -61,9 +61,9 @@ import org.locationtech.jts.geom.Point;
  * activate this tests a fixture file needs to be created in the user home, this follows the usual geoTools conventions
  * for fixture files. Read the README.rst file for more instructions.
  */
-public final class ComplexFeaturesTest extends OnlineTestCase {
+public final class ComplexFeaturesIT extends OnlineTestCase {
 
-    private static final Logger LOGGER = Logging.getLogger(ComplexFeaturesTest.class);
+    private static final Logger LOGGER = Logging.getLogger(ComplexFeaturesIT.class);
 
     private static final Name MAPPED_TYPE_NAME = Types.typeName("stations_solr");
     private static final String STATIONS_NAMESPACE = "http://www.stations.org/1.0";

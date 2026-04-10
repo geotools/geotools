@@ -46,7 +46,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
-public class SolrFeatureSourceTest extends SolrTestSupport {
+public class SolrFeatureSourceIT extends SolrTestSupport {
 
     public void testSchema() throws Exception {
         init();

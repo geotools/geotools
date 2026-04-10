@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
-import org.apache.solr.client.solrj.impl.Http2SolrClient;
+import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
+import org.apache.solr.client.solrj.request.SolrQuery;
 import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.request.schema.FieldTypeDefinition;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
@@ -50,8 +50,8 @@ public final class TestsSolrUtils {
      * @param baseUrl base URL of the Apache Solr instance, http://localhost:8983/solr/core
      * @return Apache Solr client instance
      */
-    public static Http2SolrClient instantiateClient(String baseUrl) {
-        return new Http2SolrClient.Builder(baseUrl)
+    public static HttpJdkSolrClient instantiateClient(String baseUrl) {
+        return new HttpJdkSolrClient.Builder(baseUrl)
                 .withFollowRedirects(true)
                 .withConnectionTimeout(5, TimeUnit.SECONDS)
                 .withRequestTimeout(5, TimeUnit.SECONDS)

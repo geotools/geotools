@@ -35,7 +35,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
-import org.apache.solr.client.solrj.impl.Http2SolrClient;
+import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataAccessFinder;
 import org.geotools.api.data.FeatureSource;
@@ -87,7 +87,7 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
     public void setUpInternal() throws IOException {
         fixture.setProperty("solr_url", TestContainersSupport.solrCoreUrl("complex_stations"));
         // instantiate the Apache Solr client
-        try (Http2SolrClient client = new Http2SolrClient.Builder(getSolrCoreURL()).build()) {
+        try (HttpJdkSolrClient client = new HttpJdkSolrClient.Builder(getSolrCoreURL()).build()) {
             // configure the target Apache Solr core
             StationsSetup.setupSolrIndex(client);
         }

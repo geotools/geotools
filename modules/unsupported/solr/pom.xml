@@ -46,7 +46,7 @@
   </developers>
 
   <properties>
-    <solrj.version>9.10.1</solrj.version>
+    <solrj.version>10.0.0</solrj.version>
   </properties>
   <!-- =========================================================== -->
   <!-- Dependency Management -->

@@ -19,6 +19,7 @@ package org.geotools.data.solr;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.solr.common.SolrInputDocument;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
@@ -80,12 +81,55 @@ public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
     @Override
     protected void prepareFiles() throws Exception {
         copyTestData(this.xsdFileName, tempDir);
-        copyTestData(this.xmlFileName, tempDir);
-        copyTestData("includedTypes.xml", tempDir);
+        copyAndPatchTestData(this.xmlFileName);
+        copyAndPatchTestData("includedTypes.xml");
     }
 
     @Override
-    protected void solrDataSetup() {}
+    protected void solrDataSetup() throws Exception {
+        TestsSolrUtils.cleanIndex(client);
+        TestsSolrUtils.createGeometryFieldType(client);
+        createField("station_id", "strings", false);
+        createField("station_name", "strings", false);
+        createField("stations_comments", "strings", false);
+        createField("observation_id", "strings", false);
+        createField("observation_description", "strings", false);
+        addDoc(
+                "7",
+                "Bologna",
+                "The probability of precipitation (POP), is defined as the likelihood of occurrence (expressed as a percent) of a measurable amount of liquid precipitation",
+                "3",
+                "temperature, wind");
+        addDoc(
+                "7",
+                "Bologna",
+                "The probability of precipitation (POP), is defined as the likelihood of occurrence (expressed as a percent) of a measurable amount of liquid precipitation",
+                "4",
+                "precipitation on a routine basis");
+        addDoc(
+                "7",
+                "Bologna",
+                "The probability of precipitation (POP), is defined as the likelihood of occurrence (expressed as a percent) of a measurable amount of liquid precipitation",
+                "5",
+                null);
+        addDoc("13", "Alessandria", "No risk of severe thunderstorms.", "1", "sky");
+        addDoc("13", "Alessandria", "No risk of severe thunderstorms.", "2", "OneDrive for Business on Linux");
+        client.commit();
+    }
+
+    private void addDoc(
+            String stationId, String stationName, String comments, String observationId, String observationDescription)
+            throws Exception {
+        SolrInputDocument document = new SolrInputDocument();
+        document.addField("station_id", stationId);
+        document.addField("station_name", stationName);
+        document.addField("stations_comments", comments);
+        document.addField("observation_id", observationId);
+        if (observationDescription != null) {
+            document.addField("observation_description", observationDescription);
+        }
+        client.add(document);
+    }
 
     /** appschema_index.properties file required */
     @Override

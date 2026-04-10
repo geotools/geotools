@@ -72,6 +72,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
+        fixture.setProperty(SolrDataStoreFactory.URL.key, TestContainersSupport.solrCoreUrl("test_core"));
         // add to provided Solr core the necessary data
         String coreUrl = fixture.getProperty(SolrDataStoreFactory.URL.key);
         this.solrClient = TestsSolrUtils.instantiateClient(coreUrl);
@@ -83,6 +84,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         TestsSolrUtils.createWktField(this.solrClient, "geo");
         TestsSolrUtils.createWktField(this.solrClient, "geo2");
         TestsSolrUtils.createBboxField(this.solrClient, "geo3");
+        TestsSolrUtils.createField(this.solrClient, "installed_tdt", "pdate");
         // get Solr documents from the test data
         try (InputStream documents = TestsSolrUtils.resourceToStream("/wifiAccessPoint.xml")) {
             // add the documents to the Solr core, letting Solr infer the rest of the schema
@@ -165,6 +167,11 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     @Override
     protected String getFixtureId() {
         return SolrDataStoreFactory.NAMESPACE.sample.toString();
+    }
+
+    @Override
+    protected Properties createOfflineFixture() {
+        return TestContainersSupport.offlineFixture();
     }
 
     protected Date date(String date) throws ParseException {

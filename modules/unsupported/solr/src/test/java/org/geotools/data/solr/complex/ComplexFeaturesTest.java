@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
@@ -43,6 +44,7 @@ import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.solr.TestContainersSupport;
 import org.geotools.data.solr.TestsSolrUtils;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
@@ -83,6 +85,7 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
 
     @Override
     public void setUpInternal() throws IOException {
+        fixture.setProperty("solr_url", TestContainersSupport.solrCoreUrl("complex_stations"));
         // instantiate the Apache Solr client
         try (HttpSolrClient client = new HttpSolrClient.Builder(getSolrCoreURL()).build()) {
             // configure the target Apache Solr core
@@ -171,8 +174,10 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
     /** Helper method that just converts a features iterator to a list of features. */
     private List<Feature> iteratorToList(FeatureIterator<Feature> iterator) {
         List<Feature> features = new ArrayList<>();
-        while (iterator.hasNext()) {
-            features.add(iterator.next());
+        try (FeatureIterator<Feature> closeable = iterator) {
+            while (closeable.hasNext()) {
+                features.add(closeable.next());
+            }
         }
         return features;
     }
@@ -201,5 +206,10 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
     @Override
     protected String getFixtureId() {
         return "solr";
+    }
+
+    @Override
+    protected Properties createOfflineFixture() {
+        return TestContainersSupport.offlineFixture();
     }
 }

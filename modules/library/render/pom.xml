@@ -14,7 +14,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>35-SNAPSHOT</version>
+    <version>35-RC</version>
   </parent>
 
   <!-- =========================================================== -->

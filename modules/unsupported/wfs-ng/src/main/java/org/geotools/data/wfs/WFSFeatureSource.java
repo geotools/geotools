@@ -287,7 +287,15 @@ class WFSFeatureSource extends ContentFeatureSource {
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());
         GetParser<SimpleFeature> features = response.getSimpleFeatures(geometryFactory);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = new WFSFeatureReader(features, response);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+
+        // dispose the opened connection if the WFSFeatureReader initialization throws an exception
+        try{
+            reader = new WFSFeatureReader(features, response);
+        } catch (IOException | RuntimeException e) {
+            response.dispose();
+            throw e;
+        }
 
         Filter unsupportedFilter = request.getUnsupportedFilter();
         if (unsupportedFilter != null && unsupportedFilter != Filter.INCLUDE) {

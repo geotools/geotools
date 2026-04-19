@@ -290,7 +290,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
         // dispose the opened connection if the WFSFeatureReader initialization throws an exception
-        try{
+        try {
             reader = new WFSFeatureReader(features, response);
         } catch (IOException | RuntimeException e) {
             response.dispose();

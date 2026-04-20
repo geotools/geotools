@@ -233,6 +233,7 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /** The key set. */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class KeySet extends DerivedSet<BK, K> {
         @Serial
         private static final long serialVersionUID = -2931806200277420177L;
@@ -253,6 +254,7 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /** The entry set. */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class EntrySet extends DerivedSet<Map.Entry<BK, V>, Entry<BK, K, V>> {
         @Serial
         private static final long serialVersionUID = -2931806200277420177L;
@@ -275,6 +277,7 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
     }
 
     /** The entry element. */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class Entry<BK, K, V> implements Map.Entry<K, V> {
         public final Map.Entry<BK, V> entry;
         private final K derived;

@@ -222,6 +222,7 @@ class CategoryRegistry {
      *
      * @param <T> category
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static class InstanceRegistry<T> {
         /** The logger for all events related to factory registry. */
         protected static final Logger LOGGER = Logging.getLogger(CategoryRegistry.class);

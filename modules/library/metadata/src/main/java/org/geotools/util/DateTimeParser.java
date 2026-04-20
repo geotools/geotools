@@ -543,37 +543,21 @@ public class DateTimeParser {
             final double value = Double.parseDouble(period.substring(lower, upper));
             final double factor;
             if (time) {
-                switch (letter) {
-                    case 'S':
-                        factor = 1000;
-                        break;
-                    case 'M':
-                        factor = 60 * 1000;
-                        break;
-                    case 'H':
-                        factor = 60 * 60 * 1000;
-                        break;
-                    default:
-                        throw new ParseException("Unknown time symbol: " + letter, upper);
-                }
+                factor = switch (letter) {
+                    case 'S' -> 1000;
+                    case 'M' -> 60 * 1000;
+                    case 'H' -> 60 * 60 * 1000;
+                    default -> throw new ParseException("Unknown time symbol: " + letter, upper);
+                };
             } else {
-                switch (letter) {
-                    case 'D':
-                        factor = MILLIS_IN_DAY;
-                        break;
-                    case 'W':
-                        factor = 7 * MILLIS_IN_DAY;
-                        break;
+                factor = switch (letter) {
+                    case 'D' -> MILLIS_IN_DAY;
+                    case 'W' -> 7 * MILLIS_IN_DAY;
                     // TODO: handle months in a better way than just taking the average length.
-                    case 'M':
-                        factor = 30 * MILLIS_IN_DAY;
-                        break;
-                    case 'Y':
-                        factor = 365.25 * MILLIS_IN_DAY;
-                        break;
-                    default:
-                        throw new ParseException("Unknown period symbol: " + letter, upper);
-                }
+                    case 'M' -> 30 * MILLIS_IN_DAY;
+                    case 'Y' -> 365.25 * MILLIS_IN_DAY;
+                    default -> throw new ParseException("Unknown period symbol: " + letter, upper);
+                };
             }
             millis += Math.round(value * factor);
             lower = upper;

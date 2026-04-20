@@ -100,16 +100,12 @@ public class ExpandedTabWriter extends FilterWriter {
     public void write(final int c) throws IOException {
         synchronized (lock) {
             switch (c) {
-                case '\r': // fall through
-                case '\n':
-                    column = 0;
-                    break;
-                case '\t':
+                case '\r', '\n' -> column = 0;
+                case '\t' -> {
                     expand();
                     return;
-                default:
-                    column++;
-                    break;
+                }
+                default -> column++;
             }
             out.write(c);
         }
@@ -131,20 +127,13 @@ public class ExpandedTabWriter extends FilterWriter {
             for (int end = offset; end < length; end++) {
                 final char c = buffer[end];
                 switch (c) {
-                    case '\r': // fall through
-                    case '\n':
-                        column = 0;
-                        break;
-
-                    case '\t':
+                    case '\r', '\n' -> column = 0;
+                    case '\t' -> {
                         out.write(buffer, start, end - start);
                         start = end + 1;
                         expand();
-                        break;
-
-                    default:
-                        column++;
-                        break;
+                    }
+                    default -> column++;
                 }
             }
             out.write(buffer, start, length - start);
@@ -167,20 +156,13 @@ public class ExpandedTabWriter extends FilterWriter {
             for (int end = offset; end < length; end++) {
                 final char c = string.charAt(end);
                 switch (c) {
-                    case '\r': // fall through
-                    case '\n':
-                        column = 0;
-                        break;
-
-                    case '\t':
+                    case '\r', '\n' -> column = 0;
+                    case '\t' -> {
                         out.write(string, start, end - start);
                         start = end + 1;
                         expand();
-                        break;
-
-                    default:
-                        column++;
-                        break;
+                    }
+                    default -> column++;
                 }
             }
             out.write(string, start, length - start);

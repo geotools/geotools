@@ -1268,18 +1268,22 @@ public class AngleFormat extends Format {
         for (int index = pos.getIndex(); index < length; index++) {
             final char c = source.charAt(index);
             switch (Character.toUpperCase(c)) {
-                case NORTH:
+                case NORTH -> {
                     pos.setIndex(index + 1);
                     return new Latitude(degrees);
-                case SOUTH:
+                }
+                case SOUTH -> {
                     pos.setIndex(index + 1);
                     return new Latitude(-degrees);
-                case EAST:
+                }
+                case EAST -> {
                     pos.setIndex(index + 1);
                     return new Longitude(degrees);
-                case WEST:
+                }
+                case WEST -> {
                     pos.setIndex(index + 1);
                     return new Longitude(-degrees);
+                }
             }
             if (!Character.isSpaceChar(c)) {
                 break;

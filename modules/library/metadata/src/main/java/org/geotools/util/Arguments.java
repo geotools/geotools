@@ -119,13 +119,10 @@ public class Arguments {
         if (locale != null) {
             final String[] s = locale.split("_", -1);
             switch (s.length) {
-                case 1:
-                    return new Locale(s[0]);
-                case 2:
-                    return new Locale(s[0], s[1]);
-                case 3:
-                    return new Locale(s[0], s[1], s[2]);
-                default:
+                case 1 -> new Locale(s[0]);
+                case 2 -> new Locale(s[0], s[1]);
+                case 3 -> new Locale(s[0], s[1], s[2]);
+                default ->
                     illegalArgument(
                             new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_LOCALE_$1, locale)));
             }

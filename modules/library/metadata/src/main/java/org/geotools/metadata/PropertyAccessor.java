@@ -115,6 +115,7 @@ final class PropertyAccessor {
      * @param implementation The metadata implementation to wrap.
      * @param type The interface implemented by the metadata. Should be the value returned by {@link #getType}.
      */
+    @SuppressWarnings("AssignmentExpression")
     PropertyAccessor(final Class<?> implementation, final Class<?> type) {
         this.implementation = implementation;
         this.type = type;

@@ -78,14 +78,11 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
      */
     @Override
     public float floatValue() {
-        switch (value) {
-            case Integer.MAX_VALUE:
-                return Float.POSITIVE_INFINITY;
-            case Integer.MIN_VALUE:
-                return Float.NEGATIVE_INFINITY;
-            default:
-                return value;
-        }
+        return switch (value) {
+            case Integer.MAX_VALUE -> Float.POSITIVE_INFINITY;
+            case Integer.MIN_VALUE -> Float.NEGATIVE_INFINITY;
+            default -> value;
+        };
     }
 
     /**
@@ -94,27 +91,21 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
      */
     @Override
     public double doubleValue() {
-        switch (value) {
-            case Integer.MAX_VALUE:
-                return Double.POSITIVE_INFINITY;
-            case Integer.MIN_VALUE:
-                return Double.NEGATIVE_INFINITY;
-            default:
-                return value;
-        }
+        return switch (value) {
+            case Integer.MAX_VALUE -> Double.POSITIVE_INFINITY;
+            case Integer.MIN_VALUE -> Double.NEGATIVE_INFINITY;
+            default -> value;
+        };
     }
 
     /** Returns a string representation of this number. */
     @Override
     public String toString() {
-        switch (value) {
-            case Integer.MAX_VALUE:
-                return "\u221E"; // Infinity symbol.
-            case Integer.MIN_VALUE:
-                return "-\u221E";
-            default:
-                return Integer.toString(value);
-        }
+        return switch (value) {
+            case Integer.MAX_VALUE -> "\u221E"; // Infinity symbol.
+            case Integer.MIN_VALUE -> "-\u221E";
+            default -> Integer.toString(value);
+        };
     }
 
     /** Returns a hash code for this integer. */

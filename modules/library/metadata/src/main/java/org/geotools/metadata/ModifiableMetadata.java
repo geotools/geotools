@@ -457,6 +457,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      * A checked set synchronized on the enclosing {@link ModifiableMetadata}. Used for mutable sets only. Note that the
      * lock most be modified after {@link #clone}. This is currently done in {@link #unmodifiable(Object)}.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class MutableSet<E> extends CheckedHashSet<E> {
         private static final long serialVersionUID = 2337350768744454264L;
 
@@ -483,6 +484,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      * A checked list synchronized on the enclosing {@link ModifiableMetadata}. Used for mutable lists only. Note that
      * the lock most be modified after {@link #clone}. This is currently done in {@link #unmodifiable(Object)}.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class MutableList<E> extends CheckedArrayList<E> {
         private static final long serialVersionUID = -5016778173550153002L;
 

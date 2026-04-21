@@ -201,6 +201,7 @@ public abstract class GenericName implements org.geotools.api.util.GenericName, 
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class International extends AbstractInternationalString implements Serializable {
         /** Serial number for interoperability with different versions. */
         @Serial

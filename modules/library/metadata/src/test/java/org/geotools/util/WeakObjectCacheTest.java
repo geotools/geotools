@@ -120,6 +120,7 @@ public final class WeakObjectCacheTest {
         assertTrue(cache.getKeys().contains(key2));
     }
 
+    @SuppressWarnings("EffectivelyPrivate")
     private class WriterThread implements Runnable {
 
         ObjectCache<Integer, String> cache = null;

@@ -70,11 +70,11 @@ public final class GeoToolsTest {
      */
     @Test
     public void testHintsKey() {
-        final Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+        final Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true);
         assertFalse(hints.isEmpty());
 
         Map<RenderingHints.Key, Object> map = new HashMap<>();
-        assertNull(map.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+        assertNull(map.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, false));
         map = Collections.unmodifiableMap(map);
         assertFalse(map.isEmpty());
 
@@ -88,7 +88,7 @@ public final class GeoToolsTest {
     public void testMyHints() {
         Hints hints = GeoTools.getDefaultHints();
         assertTrue(hints.isEmpty());
-        assertNull(Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+        assertNull(Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, false));
         try {
             hints = GeoTools.getDefaultHints();
             assertNotNull(hints);
@@ -96,18 +96,18 @@ public final class GeoToolsTest {
             assertEquals(1, hints.size());
             final Object value = hints.get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
             assertTrue(value instanceof Boolean);
-            assertFalse(((Boolean) value).booleanValue());
+            assertFalse((Boolean) value);
             /*
              * Tests the toString() method.
              */
             String text = hints.toString().trim();
             assertTrue(text.matches("Hints:\\s+FORCE_LONGITUDE_FIRST_AXIS_ORDER = false"));
 
-            assertEquals(hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE), Boolean.FALSE);
+            assertEquals(false, hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true));
             text = hints.toString().trim();
             assertTrue(text.matches("Hints:\\s+FORCE_LONGITUDE_FIRST_AXIS_ORDER = true"));
 
-            assertEquals(hints.remove(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER), Boolean.TRUE);
+            assertEquals(true, hints.remove(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
             text = hints.toString().trim();
             assertTrue(text.matches("Hints:\\s+System defaults:\\s+FORCE_LONGITUDE_FIRST_AXIS_ORDER = false"));
         } finally {
@@ -129,7 +129,7 @@ public final class GeoToolsTest {
         assertEquals(
                 GeoTools.getVersion().toString(), metadata.getMainAttributes().getValue("Project-Version"));
 
-        // should be a jar durning maven build, generated during IDE build
+        // should be a jar during maven build, generated during IDE build
         Manifest opengis = GeoTools.getManifest(Filter.class);
         assertFalse("manifest metadata", opengis.getMainAttributes().isEmpty());
 
@@ -180,7 +180,7 @@ public final class GeoToolsTest {
             assertEquals(1, hints.size());
             final Object value = hints.get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
             assertTrue(value instanceof Boolean);
-            assertTrue(((Boolean) value).booleanValue());
+            assertTrue((Boolean) value);
         } finally {
             System.clearProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
             assertNotNull(Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
@@ -191,7 +191,7 @@ public final class GeoToolsTest {
     }
 
     /**
-     * Tests {@link org.geotools.util.factory.GeoTools#fixName} using simpliest name or no context. We avoid the tests
+     * Tests {@link org.geotools.util.factory.GeoTools#fixName} using simplest name or no context. We avoid the tests
      * that would require a real initial context.
      */
     @Test

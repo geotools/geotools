@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -35,6 +36,8 @@ import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.SchemaException;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -118,6 +121,21 @@ public class GeoJSONDataStoreFactoryTest {
         }
         if (!found) {
             fail("GeoJSONDataStoreFactory not available");
+        }
+    }
+
+    @Test
+    public void testGetFeatureSourceDoesNotNPE() throws IOException, SchemaException {
+        File outputFile = TestData.temp(GeoJSONDataStore.class, "output.geojson");
+        GeoJSONDataStore outputDataStore =
+                (GeoJSONDataStore) fac.createNewDataStore(Map.of(GeoJSONDataStoreFactory.FILE_PARAM.key, outputFile));
+        SimpleFeatureType fType = DataUtilities.createType("test", "geom:Point,name:String");
+        outputDataStore.createSchema(fType);
+        try {
+            assertNotNull(outputDataStore.getFeatureSource());
+        } catch (NullPointerException e) {
+            fail("Failed to get feature source with exception: " + e.getClass().getName() + " message: "
+                    + e.getMessage());
         }
     }
 }

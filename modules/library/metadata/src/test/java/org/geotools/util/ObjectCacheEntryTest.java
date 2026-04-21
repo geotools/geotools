@@ -34,6 +34,7 @@ public final class ObjectCacheEntryTest {
 
     DefaultObjectCache.ObjectCacheEntry<Integer> entry;
 
+    @SuppressWarnings("EffectivelyPrivate")
     private class EntryReaderThread implements Runnable {
 
         Object[] values = null;
@@ -54,6 +55,7 @@ public final class ObjectCacheEntryTest {
         }
     }
 
+    @SuppressWarnings("EffectivelyPrivate")
     private class EntryWriterThread implements Runnable {
 
         Object[] values = null;

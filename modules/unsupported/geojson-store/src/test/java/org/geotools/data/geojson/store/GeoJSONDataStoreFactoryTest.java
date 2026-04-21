@@ -132,6 +132,7 @@ public class GeoJSONDataStoreFactoryTest {
         SimpleFeatureType fType = DataUtilities.createType("test", "geom:Point,name:String");
         outputDataStore.createSchema(fType);
         try {
+            // https://osgeo-org.atlassian.net/browse/GEOT-7894
             assertNotNull(outputDataStore.getFeatureSource());
         } catch (NullPointerException e) {
             fail("Failed to get feature source with exception: " + e.getClass().getName() + " message: "

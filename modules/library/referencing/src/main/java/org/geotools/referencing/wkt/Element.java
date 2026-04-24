@@ -245,6 +245,7 @@ public final class Element {
      * @param position The position in the string.
      * @return An exception with a formatted error message.
      */
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     private ParseException unparsableString(final String text, final ParsePosition position) {
         final int errorIndex = position.getErrorIndex();
         position.getIndex();

@@ -133,6 +133,7 @@ public final class VSIUtilsTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     public void testDatasetToVRT() throws IOException {
         final String path = "/tmp/mydataset.vrt";
         final Driver driver = mock(Driver.class);
@@ -168,6 +169,7 @@ public final class VSIUtilsTest {
         verify(band, times(1)).SetMetadataItem(eq("source_0"), eq("<SourceBand>mask"), eq("new_vrt_sources"));
     }
 
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     @Test(expected = IOException.class)
     public void testDatasetToVRTInvalid() throws IOException {
         final String path = "/tmp/mydataset.vrt";

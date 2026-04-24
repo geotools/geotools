@@ -63,6 +63,7 @@ public final class ObjectCaches {
      *
      * {@link #createFromCoordinateReferenceSystemCodes}.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class Pair {
         private final String source, target;
 

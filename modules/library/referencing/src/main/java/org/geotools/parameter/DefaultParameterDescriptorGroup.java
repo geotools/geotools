@@ -180,6 +180,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      * implementation based on {@link HashSet}. It can help for map projection implementations (among other), which test
      * often for a parameter validity.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class AsList extends UnmodifiableArrayList<GeneralParameterDescriptor> {
         /** For compatibility with different versions. */
         @Serial
@@ -210,21 +211,12 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             if (parameters == null) {
                 asList = Collections.emptyList();
             } else
-                switch (parameters.length) {
-                    case 0:
-                        asList = Collections.emptyList();
-                        break;
-                    case 1:
-                        asList = Collections.singletonList(parameters[0]);
-                        break;
-                    case 2: // fall through
-                    case 3:
-                        asList = UnmodifiableArrayList.wrap(parameters);
-                        break;
-                    default:
-                        asList = new AsList(parameters);
-                        break;
-                }
+             switch (parameters.length) {
+    case 0 -> asList = Collections.emptyList();
+    case 1 -> asList = Collections.singletonList(parameters[0]);
+    case 2, 3 -> asList = UnmodifiableArrayList.wrap(parameters);
+    default -> asList = new AsList(parameters);
+}
         }
         return asList;
     }

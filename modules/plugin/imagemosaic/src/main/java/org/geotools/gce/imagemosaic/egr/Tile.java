@@ -196,6 +196,7 @@ class Tile {
      * @return true if count changed.
      * @throws IllegalStateException if raster has not been initialized
      */
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     public boolean refreshCoverageCount() throws IllegalStateException {
         if (raster == null) {
             throw new IllegalStateException("Raster not initialized");

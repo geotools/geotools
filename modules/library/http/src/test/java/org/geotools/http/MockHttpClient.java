@@ -93,6 +93,7 @@ public class MockHttpClient extends AbstractHttpClient {
         return getResponse(new Request(url));
     }
 
+    @SuppressWarnings("EffectivelyPrivate")
     private static class Request {
         String path;
 

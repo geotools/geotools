@@ -225,14 +225,19 @@ public class RangeReaderParams {
      *   <li>Any other provider-specific parameters
      * </ul>
      *
+     * <p>Forward-compatible {@code storage.*} keys (canonical in tileverse 2.x) are translated to the canonical
+     * {@code io.tileverse.rangereader.*} form via {@link RangeReaderConfig#normalizeKeys(Map)} before lookup, so
+     * DataStoreInfo entries persisted by a future tileverse 2.x consumer (e.g. GeoServer 3.1+) are read correctly here.
+     *
      * @param connectionParams the DataStore connection parameters (from
      *     {@link PMTilesDataStoreFactory#createDataStore})
      * @return properties object suitable for {@link RangeReaderFactory#create}
      */
     public static Properties toProperties(Map<String, ?> connectionParams) {
+        Map<String, Object> normalized = RangeReaderConfig.normalizeKeys(connectionParams);
         Properties configOpts = new Properties();
-        addProperty(RANGEREADER_PROVIDER_ID, connectionParams, configOpts);
-        PROVIDER_PARAMS.forEach(param -> addProperty(param, connectionParams, configOpts));
+        addProperty(RANGEREADER_PROVIDER_ID, normalized, configOpts);
+        PROVIDER_PARAMS.forEach(param -> addProperty(param, normalized, configOpts));
         return configOpts;
     }
 

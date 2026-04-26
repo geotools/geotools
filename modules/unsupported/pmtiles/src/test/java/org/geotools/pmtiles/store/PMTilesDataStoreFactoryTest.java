@@ -253,6 +253,46 @@ public class PMTilesDataStoreFactoryTest {
         }
     }
 
+    /**
+     * Forward compatibility check: {@link PMTilesDataStoreFactory#canProcess(Map)} must accept connection parameters
+     * that use the {@code storage.*} prefix (canonical in tileverse 2.x). Required-param validation in
+     * {@code DataStoreFactorySpi.canProcess} is keyed off the factory's canonical {@code io.tileverse.rangereader.*}
+     * {@link Param}s, so input keys must be normalized first.
+     */
+    @Test
+    public void testCanProcessWithFutureStorageKeys() {
+        PMTilesDataStoreFactory factory = new PMTilesDataStoreFactory();
+        Map<String, Object> params =
+                Map.of(URIP.key, andorra, "storage.provider", "file", "storage.caching.enabled", Boolean.TRUE);
+        assertTrue(factory.canProcess(params));
+    }
+
+    /**
+     * Forward compatibility check: a DataStoreInfo persisted by a future tileverse 2.x consumer (GeoServer 3.1+)
+     * carries connection parameters with the {@code storage.*} prefix. Tileverse 1.4 must still be able to create the
+     * store -- {@link RangeReaderParams#toProperties(Map)} translates the future prefix back to the canonical
+     * {@code io.tileverse.rangereader.*} form before lookup.
+     */
+    @Test
+    public void testCreateDataStoreWithFutureStorageKeys() throws IOException {
+        PMTilesDataStoreFactory factory = new PMTilesDataStoreFactory();
+        Map<String, Object> params = Map.of(
+                URIP.key,
+                andorra,
+                "storage.provider",
+                "file",
+                "storage.caching.enabled",
+                Boolean.TRUE,
+                "storage.caching.blocksize",
+                65536);
+        PMTilesDataStore store = factory.createDataStore(params);
+        try {
+            assertNotNull(store);
+        } finally {
+            if (store != null) store.dispose();
+        }
+    }
+
     @Test
     public void testDataStoreFactories() throws IOException {
         PMTilesDataStoreFactory factory = new PMTilesDataStoreFactory();

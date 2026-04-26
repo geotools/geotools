@@ -319,6 +319,7 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public boolean canProcess(java.util.Map<String, ?> params) {
+        params = RangeReaderConfig.normalizeKeys(params);
         boolean canProcess = DataStoreFactorySpi.super.canProcess(params);
         URI toURI;
         try {

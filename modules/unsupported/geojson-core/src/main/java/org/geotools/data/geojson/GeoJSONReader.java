@@ -132,8 +132,8 @@ public class GeoJSONReader implements AutoCloseable {
      * @throws IOException
      */
     public GeoJSONReader(URL url) throws IOException {
+        this(url.openStream());
         this.url = url;
-        parser = factory.createParser(url);
         baseName = FilenameUtils.getBaseName(url.getPath());
         idPrefix = baseName;
     }

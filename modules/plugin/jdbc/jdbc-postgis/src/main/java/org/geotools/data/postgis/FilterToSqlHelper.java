@@ -708,7 +708,6 @@ class FilterToSqlHelper {
 
             if (needCast) out.write('(');
             json.accept(delegate, null);
-            out.write(" ::json ");
             String strPointer = literal.getValue().toString();
             List<String> pointerEl =
                     Stream.of(strPointer.split("/")).filter(p -> !p.equals("")).collect(Collectors.toList());

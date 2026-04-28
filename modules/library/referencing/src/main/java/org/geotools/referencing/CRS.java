@@ -146,9 +146,9 @@ public final class CRS {
         /** Indicates axis ordering is not applicable to the coordinate reference system. */
         INAPPLICABLE
     }
-    /** A map with {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER} set to {@link Boolean#TRUE}. */
+    /** A map with {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER} set to {@code true}. */
     private static final Hints FORCE_LONGITUDE_FIRST_AXIS_ORDER =
-            new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+            new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true);
 
     /**
      * A factory for CRS creation with (<var>latitude</var>, <var>longitude</var>) axis order (unless otherwise
@@ -297,7 +297,7 @@ public final class CRS {
                 if (factory == null) {
                     final Hints hints = GeoTools.getDefaultHints();
                     if (lenient) {
-                        hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
+                        hints.put(Hints.LENIENT_DATUM_SHIFT, true);
                     }
                     // Use ManyCoordinateOperationFactory in order to take advantage of all registered factories,
                     // and then buffer the results for better performance.
@@ -649,7 +649,7 @@ public final class CRS {
      * @return The horizontal CRS, or {@code null} if none.
      * @since 2.4
      */
-    @SuppressWarnings("LabelledBreakTarget")
+    @SuppressWarnings({"LabelledBreakTarget", "StatementSwitchToExpressionSwitch"})
     public static SingleCRS getHorizontalCRS(final CoordinateReferenceSystem crs) {
         if (crs instanceof SingleCRS rS1) {
             final CoordinateSystem cs = crs.getCoordinateSystem();
@@ -665,7 +665,7 @@ public final class CRS {
                 }
                 // No need to test for ProjectedCRS, since the code above unwrap it.
                 if (base instanceof GeographicCRS) {
-                    return (SingleCRS) crs; // Really returns 'crs', not 'base'.
+                    return rS1; // Really returns 'crs', not 'base'.
                 }
                 // cartesian are certainly valid horizontal CRS
                 if (base.getCoordinateSystem() instanceof CartesianCS) {
@@ -1089,11 +1089,10 @@ public final class CRS {
             if (!Citations.identifierMatches(factory.getAuthority(), authority)) {
                 continue;
             }
-            if (!(factory instanceof AbstractAuthorityFactory)) {
+            if (!(factory instanceof AbstractAuthorityFactory abstractAuthorityFactory)) {
                 continue;
             }
-            final AbstractAuthorityFactory f = (AbstractAuthorityFactory) factory;
-            final IdentifiedObjectFinder finder = f.getIdentifiedObjectFinder(crs.getClass());
+            final IdentifiedObjectFinder finder = abstractAuthorityFactory.getIdentifiedObjectFinder(crs.getClass());
             finder.setFullScanAllowed(fullScan);
             final String code = finder.findIdentifier(crs);
             if (code != null) {
@@ -1408,24 +1407,27 @@ public final class CRS {
             int n = ++coordinateNumber;
             for (int i = sourceDim; --i >= 0; ) {
                 switch (n % 5) {
-                    case 0:
+                    case 0 -> {
                         sourcePt.setOrdinate(i, envelope.getMinimum(i));
                         n /= 5;
-                        break;
-                    case 1:
+                    }
+                    case 1 -> {
                         sourcePt.setOrdinate(i, envelope.getMaximum(i));
                         continue loop;
-                    case 2:
+                    }
+                    case 2 -> {
                         sourcePt.setOrdinate(i, (envelope.getMinimum(i) + envelope.getMedian(i)) / 2);
                         continue loop;
-                    case 3:
+                    }
+                    case 3 -> {
                         sourcePt.setOrdinate(i, (envelope.getMedian(i) + envelope.getMaximum(i)) / 2);
                         continue loop;
-                    case 4:
+                    }
+                    case 4 -> {
                         sourcePt.setOrdinate(i, envelope.getMedian(i));
                         continue loop;
-                    default:
-                        throw new AssertionError(n); // Should never happen
+                    }
+                    default -> throw new AssertionError(n); // Should never happen
                 }
             }
             break;

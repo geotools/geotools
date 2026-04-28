@@ -769,8 +769,7 @@ public final class GeoTools {
                         }
                     }
                     break;
-                } catch (ClassNotFoundException classNotFound) {
-                    continue;
+                } catch (ClassNotFoundException ignored) {
                 }
             }
         }

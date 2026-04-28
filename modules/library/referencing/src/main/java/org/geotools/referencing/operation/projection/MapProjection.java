@@ -624,7 +624,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
      * loop in {@code assert} statements (when an {@code assert} calls {@code transform(...)}, which calls
      * {@code inverse.transform(...)}, which calls {@code transform(...)}, etc.).
      */
-    @SuppressWarnings("serial")
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class CheckPoint extends Point2D.Double {
         public CheckPoint(final Point2D point) {
             super(point.getX(), point.getY());
@@ -955,6 +955,7 @@ public abstract class MapProjection extends AbstractMathTransform implements Mat
      * @version $Id$
      * @author Martin Desruisseaux (PMO, IRD)
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D {
         /** For cross-version compatibility. */
         @Serial

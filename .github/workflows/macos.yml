@@ -25,14 +25,37 @@ jobs:
         java-version: 17
         distribution: 'temurin'
         architecture: 'arm64'
-    - name: Build GDAL
+    - name: Install GDAL build/runtime dependencies via Homebrew
       run: |
-        mkdir $GDAL_INSTALL_PATH
         brew update
         brew upgrade
         brew install freexl libxml2 libspatialite geos proj libgeotiff openjpeg libaec postgis doxygen unixodbc aom jpeg-xl libheif libarchive libkml boost ccache swig python-setuptools
-        : # gdal is automatically installed as a dependency for postgis
-        brew uninstall --ignore-dependencies gdal
+        : # gdal is automatically installed as a dependency for postgis; remove brew's gdal so our custom build is the only one in DYLD_LIBRARY_PATH
+        brew uninstall --ignore-dependencies gdal || true
+    - name: Capture runner image identity for cache key
+      # ImageOS and ImageVersion are set in the runner's shell environment
+      # but are not exposed to the ${{ env.X }} expression context, so we
+      # surface them as step outputs to use them in the cache key below.
+      id: image
+      run: |
+        echo "os=$ImageOS" >> "$GITHUB_OUTPUT"
+        echo "version=$ImageVersion" >> "$GITHUB_OUTPUT"
+    - name: Restore GDAL build cache
+      id: gdal-cache
+      uses: actions/cache@v5
+      with:
+        path: ${{ env.GDAL_INSTALL_PATH }}
+        key: gdal-${{ env.OSX_GDAL_VERSION }}-${{ steps.image.outputs.os }}-${{ steps.image.outputs.version }}-${{ runner.arch }}-${{ hashFiles('.github/workflows/macos.yml') }}
+    - name: Verify cached GDAL
+      id: gdal-verify
+      if: steps.gdal-cache.outputs.cache-hit == 'true'
+      continue-on-error: true
+      run: $GDAL_INSTALL_PATH/bin/gdalinfo --version
+    - name: Build GDAL
+      if: steps.gdal-cache.outputs.cache-hit != 'true' || steps.gdal-verify.outcome == 'failure'
+      run: |
+        rm -rf $GDAL_INSTALL_PATH
+        mkdir $GDAL_INSTALL_PATH
         wget https://github.com/OSGeo/gdal/releases/download/v$OSX_GDAL_VERSION/gdal-$OSX_GDAL_VERSION.tar.gz
         tar -xvf gdal-$OSX_GDAL_VERSION.tar.gz
         cd gdal-$OSX_GDAL_VERSION
@@ -43,7 +66,7 @@ jobs:
         cmake --build .
         cmake --build . --target install
         : # Sanity test that the gdal bindings actually work
-        ctest --output-on-failure -R java 
+        ctest --output-on-failure -R java
     - name: Maven repository caching
       uses: actions/cache@v5
       with:

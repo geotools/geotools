@@ -211,12 +211,12 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             if (parameters == null) {
                 asList = Collections.emptyList();
             } else
-             switch (parameters.length) {
-    case 0 -> asList = Collections.emptyList();
-    case 1 -> asList = Collections.singletonList(parameters[0]);
-    case 2, 3 -> asList = UnmodifiableArrayList.wrap(parameters);
-    default -> asList = new AsList(parameters);
-}
+                switch (parameters.length) {
+                    case 0 -> asList = Collections.emptyList();
+                    case 1 -> asList = Collections.singletonList(parameters[0]);
+                    case 2, 3 -> asList = UnmodifiableArrayList.wrap(parameters);
+                    default -> asList = new AsList(parameters);
+                }
         }
         return asList;
     }

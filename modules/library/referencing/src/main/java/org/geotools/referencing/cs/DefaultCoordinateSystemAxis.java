@@ -553,14 +553,11 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject implem
         if (xy.length() == 1) {
             final DefaultCoordinateSystemAxis axis;
             switch (Character.toLowerCase(xy.charAt(0))) {
-                case 'x':
-                    axis = EASTING;
-                    break;
-                case 'y':
-                    axis = NORTHING;
-                    break;
-                default:
+                case 'x' -> axis = EASTING;
+                case 'y' -> axis = NORTHING;
+                default -> {
                     return false;
+                }
             }
             return axis.nameMatches(name) || axis.getOpposite().nameMatches(name);
         }

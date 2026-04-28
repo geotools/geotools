@@ -26,9 +26,18 @@ jobs:
         distribution: 'temurin'
         architecture: 'arm64'
     - name: Install GDAL build/runtime dependencies via Homebrew
+      # Skip 'brew update' and 'brew upgrade' (which would upgrade every
+      # preinstalled formula on the runner image, ~5+ min for packages
+      # unrelated to gdal). We rely on whatever versions of proj/geos/etc.
+      # ship in the runner image; GitHub rotates the macOS image roughly
+      # every 2 weeks, which gives us fresh-enough libraries. The gdal
+      # cache key below includes ImageVersion, so any image refresh
+      # invalidates the cache and rebuilds gdal against the new bottles.
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
       run: |
-        brew update
-        brew upgrade
         brew install freexl libxml2 libspatialite geos proj libgeotiff openjpeg libaec postgis doxygen unixodbc aom jpeg-xl libheif libarchive libkml boost ccache swig python-setuptools
         : # gdal is automatically installed as a dependency for postgis; remove brew's gdal so our custom build is the only one in DYLD_LIBRARY_PATH
         brew uninstall --ignore-dependencies gdal || true

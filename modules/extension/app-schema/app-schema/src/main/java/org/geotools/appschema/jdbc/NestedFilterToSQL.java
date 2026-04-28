@@ -55,6 +55,7 @@ import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource.JoiningFieldEncoder;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
+import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.JdbcMultipleValue;
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor;
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainLink;
@@ -70,6 +71,7 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
+import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.factory.Hints;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -161,9 +163,9 @@ public class NestedFilterToSQL extends FilterToSQL {
         }
     }
 
-    private void encodeMultipleValueJoin(
-            FeatureChainedAttributeDescriptor nestedAttribute, JDBCDataStore store, StringBuffer sql) {
+    private void encodeMultipleValueJoin(FeatureChainedAttributeDescriptor nestedAttribute, StringBuffer sql) {
         FeatureTypeMapping featureMapping = nestedAttribute.getFeatureTypeOwningAttribute();
+        JDBCDataStore store = (JDBCDataStore) featureMapping.getSource().getDataStore();
         AttributeMapping mapping = featureMapping.getAttributeMapping(nestedAttribute.getAttributePath());
         if (mapping == null || !mapping.isMultiValued() || !(mapping.getMultipleValue() instanceof JdbcMultipleValue)) {
             return;
@@ -172,7 +174,8 @@ public class NestedFilterToSQL extends FilterToSQL {
         sql.append(" LEFT JOIN ");
         String alias = String.valueOf(multipleValue.getId());
         try {
-            store.encodeAliasedTableName(multipleValue.getTargetTable(), sql, null, alias);
+            encodeAliasedTableName(
+                    store, multipleValue.getTargetTable(), resolveDatabaseSchema(featureMapping), sql, null, alias);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -217,20 +220,19 @@ public class NestedFilterToSQL extends FilterToSQL {
 
             FeatureChainLink lastMappingStep = nestedAttrDescr.getLastLink();
             StringBuffer sql = encodeSelectKeyFrom(lastMappingStep);
-            JDBCDataStore store = (JDBCDataStore)
-                    lastMappingStep.getFeatureTypeMapping().getSource().getDataStore();
-            encodeMultipleValueJoin(nestedAttrDescr, store, sql);
+            encodeMultipleValueJoin(nestedAttrDescr, sql);
 
             for (int i = numMappings - 2; i > 0; i--) {
                 FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
                 if (mappingStep.hasNestedFeature()) {
                     FeatureTypeMapping parentFeature = mappingStep.getFeatureTypeMapping();
-                    store = (JDBCDataStore) parentFeature.getSource().getDataStore();
+                    JDBCDataStore store =
+                            (JDBCDataStore) parentFeature.getSource().getDataStore();
                     String parentTableName =
                             parentFeature.getSource().getSchema().getName().getLocalPart();
 
                     sql.append(" INNER JOIN ");
-                    store.encodeTableName(parentTableName, sql, null);
+                    encodeTableName(store, parentTableName, resolveDatabaseSchema(parentFeature), sql, null);
                     sql.append(" ");
                     store.dialect.encodeTableName(mappingStep.getAlias(), sql);
                     sql.append(" ON ");
@@ -272,14 +274,16 @@ public class NestedFilterToSQL extends FilterToSQL {
         String parentTableColumn = parentToSQL.encodeToString(parentExpression);
 
         String nestedTableAlias = nestedStep.getAlias();
-        WrappedFilterToSql nestedFilterToSQL = createFilterToSQL(parentFeature);
+        WrappedFilterToSql nestedFilterToSQL = createFilterToSQL(nestedFeature);
         // don't escape, as it will be done by the encodeColumn methods
         nestedFilterToSQL.setSqlNameEscape("");
         Expression nestedExpr = nestedFeatureAttr.getMapping(nestedFeature).getSourceExpression();
         String nestedTableColumn = nestedFilterToSQL.encodeToString(nestedExpr);
 
         if (stepIdx == 0) {
-            encodeColumnName(store, parentTableColumn, parentTableName, sql, null);
+            // Correlated predicates must reference the outer table identifier, not a schema-qualified name.
+            // The root query uses table name as reference (without an explicit alias).
+            encodeAliasedColumnName(store, parentTableColumn, parentTableName, sql, null);
         } else {
             encodeAliasedColumnName(store, parentTableColumn, parentTableAlias, sql, null);
         }
@@ -316,7 +320,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             sql.append(sqlKeys.substring(1));
         }
         sql.append(" FROM ");
-        store.encodeTableName(lastType.getTypeName(), sql, null);
+        encodeTableName(store, lastType.getTypeName(), resolveDatabaseSchema(lastTypeMapping), sql, null);
         sql.append(" ");
         store.dialect.encodeTableName(lastMappingStep.getAlias(), sql);
         return sql;
@@ -356,14 +360,47 @@ public class NestedFilterToSQL extends FilterToSQL {
         } else {
             filterToSQL = store.createFilterToSQL(sourceType);
         }
+        String schema = resolveDatabaseSchema(featureMapping);
+        if (schema != null) {
+            filterToSQL.setDatabaseSchema(schema);
+        }
         return new WrappedFilterToSql(featureMapping, filterToSQL);
     }
 
-    private void encodeColumnName(JDBCDataStore store, String colName, String typeName, StringBuffer sql, Hints hints)
+    private String resolveDatabaseSchema(FeatureTypeMapping featureMapping) {
+        if (!AppSchemaDataAccessConfigurator.isCrossSchemaJoiningEnabled()) {
+            return null;
+        }
+        return featureMapping != null ? featureMapping.getSourceDatabaseSchema() : null;
+    }
+
+    private void encodeTableName(JDBCDataStore store, String typeName, String schemaName, StringBuffer sql, Hints hints)
             throws SQLException {
-        store.encodeTableName(typeName, sql, hints);
+        // Virtual tables must go through JDBCDataStore encoding to preserve subquery expansion.
+        if (schemaName == null || store.getVirtualTables().containsKey(typeName)) {
+            store.encodeTableName(typeName, sql, hints);
+            return;
+        }
+        SQLDialect dialect = store.getSQLDialect();
+        dialect.encodeSchemaName(schemaName, sql);
         sql.append(".");
-        store.dialect.encodeColumnName(null, colName, sql);
+        dialect.encodeTableName(typeName, sql);
+    }
+
+    private void encodeAliasedTableName(
+            JDBCDataStore store, String typeName, String schemaName, StringBuffer sql, Hints hints, String alias)
+            throws SQLException {
+        if (schemaName == null || store.getVirtualTables().containsKey(typeName)) {
+            store.encodeAliasedTableName(typeName, sql, hints, alias);
+            return;
+        }
+        SQLDialect dialect = store.getSQLDialect();
+        dialect.encodeSchemaName(schemaName, sql);
+        sql.append(".");
+        dialect.encodeTableName(typeName, sql);
+        if (alias != null) {
+            dialect.encodeTableAlias(alias, sql);
+        }
     }
 
     private void encodeAliasedColumnName(
@@ -494,6 +531,9 @@ public class NestedFilterToSQL extends FilterToSQL {
                         // selectClause will carry the parent SELECT FROM clauses, so we use it to
                         // build UNION
                         out.write(" UNION " + selectClause + " ");
+                        if (!selectClause.trim().toUpperCase().endsWith("WHERE")) {
+                            out.write("WHERE ");
+                        }
                     }
                 }
 

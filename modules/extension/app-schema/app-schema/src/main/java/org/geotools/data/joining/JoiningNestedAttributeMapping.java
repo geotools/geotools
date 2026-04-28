@@ -125,8 +125,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         JoiningQuery query = new JoiningQuery();
         query.setCoordinateSystemReproject(reprojection);
 
-        query.setRootMapping(((JoiningQuery) instance.baseTableQuery).getRootMapping());
         FeatureTypeMapping fMapping = AppSchemaDataAccessRegistry.getMappingByName(featureTypeName);
+        query.setRootMapping(fMapping);
 
         AttributeMapping mapping = fMapping.getAttributeMapping(this.nestedTargetXPath);
         if (mapping == null) {
@@ -144,17 +144,35 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         JoiningQuery.QueryJoin join = new JoiningQuery.QueryJoin();
         join.setForeignKeyName(sourceExpression);
         join.setJoiningKeyName(nestedSourceExpression);
-        join.setJoiningTypeName(instance.baseTableQuery.getTypeName());
+        String joiningTypeName = instance.baseTableQuery.getTypeName();
+        join.setJoiningTypeName(joiningTypeName);
         join.setDenormalised(fMapping.isDenormalised());
         join.setSortBy(instance.baseTableQuery.getSortBy()); // incorporate order
         // pass on paging from the parent table to the same query within this join
         join.setMaxFeatures(instance.baseTableQuery.getMaxFeatures());
-        join.setRootMapping(((JoiningQuery) instance.baseTableQuery).getRootMapping());
+        FeatureTypeMapping joiningTypeMapping = resolveJoiningTypeMapping(instance, joiningTypeName);
+        if (joiningTypeMapping != null) {
+            join.setRootMapping(joiningTypeMapping);
+            if (joiningTypeMapping.getSourceDatabaseSchema() != null) {
+                join.setJoiningTypeSchema(joiningTypeMapping.getSourceDatabaseSchema());
+            }
+        } else {
+            String joiningTypeSchema = resolveJoiningTypeSchema(instance, joiningTypeName);
+            if (joiningTypeSchema != null) {
+                join.setJoiningTypeSchema(joiningTypeSchema);
+            }
+        }
         join.setStartIndex(instance.baseTableQuery.getStartIndex());
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-        instance.mapping.getFeatureIdExpression().accept(extractor, null);
-        for (String pn : extractor.getAttributeNameSet()) {
-            join.addId(pn);
+        FeatureTypeMapping idMapping = joiningTypeMapping;
+        if (idMapping == null && matchesTypeName(instance.mapping, joiningTypeName)) {
+            idMapping = instance.mapping;
+        }
+        if (idMapping != null && idMapping.getFeatureIdExpression() != null) {
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+            idMapping.getFeatureIdExpression().accept(extractor, null);
+            for (String pn : extractor.getAttributeNameSet()) {
+                join.addId(pn);
+            }
         }
         joins.add(0, join);
         query.setQueryJoins(joins);
@@ -205,25 +223,109 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         DataAccessMappingFeatureIterator daFeatureIterator = (DataAccessMappingFeatureIterator) featureIterator;
 
-        List<Expression> foreignIds = new ArrayList<>();
-        for (int i = 0; i < query.getQueryJoins().size(); i++) {
-            for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
-                foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i + "_" + j));
-            }
-        }
-
+        boolean hasSourceRows = primeNestedSourceIterator(daFeatureIterator);
+        List<Expression> foreignIds = resolveForeignIds(daFeatureIterator, query);
         daFeatureIterator.setForeignIds(foreignIds);
 
         instance.featureIterators.put(featureTypeName, daFeatureIterator);
         instance.nestedSourceExpressions.put(featureTypeName, nestedSourceExpression);
 
-        for (Instance.Skip toSkip : instance.skipped) {
-            while (daFeatureIterator.hasNext() && daFeatureIterator.checkForeignIdValues(toSkip.idValues)) {
-                daFeatureIterator.skip();
+        if (hasSourceRows) {
+            for (Instance.Skip toSkip : instance.skipped) {
+                while (daFeatureIterator.hasNext() && daFeatureIterator.checkForeignIdValues(toSkip.idValues)) {
+                    daFeatureIterator.skip();
+                }
             }
         }
 
         return daFeatureIterator;
+    }
+
+    /**
+     * Prime the iterator so row-level metadata is available before foreign-id expressions are derived.
+     *
+     * @return true if the iterator has at least one source row
+     */
+    private boolean primeNestedSourceIterator(DataAccessMappingFeatureIterator daFeatureIterator) {
+        // Read ahead once so row-level metadata is materialized before resolving FOREIGN_ID_* expressions.
+        return daFeatureIterator.hasNext();
+    }
+
+    /** Resolve the foreign-id expressions either from the iterator schema or from the join metadata fallback. */
+    private List<Expression> resolveForeignIds(DataAccessMappingFeatureIterator daFeatureIterator, JoiningQuery query) {
+        List<Expression> foreignIds = daFeatureIterator.getForeignIdsFromSourceSchema();
+        if (foreignIds.isEmpty()) {
+            foreignIds = buildFallbackForeignIds(query);
+        }
+        return foreignIds;
+    }
+
+    /** Build fallback FOREIGN_ID expressions when source schema metadata is not yet available. */
+    private List<Expression> buildFallbackForeignIds(JoiningQuery query) {
+        List<Expression> foreignIds = new ArrayList<>();
+        if (query == null || query.getQueryJoins() == null) {
+            return foreignIds;
+        }
+        for (int i = 0; i < query.getQueryJoins().size(); i++) {
+            int idCount = query.getQueryJoins().get(i).getIds().size();
+            for (int j = 0; j < idCount; j++) {
+                foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i + "_" + j));
+            }
+        }
+        return foreignIds;
+    }
+
+    private String resolveJoiningTypeSchema(Instance instance, String joiningTypeName) {
+        if (instance.baseTableQuery instanceof JoiningQuery) {
+            JoiningQuery baseJoiningQuery = (JoiningQuery) instance.baseTableQuery;
+            FeatureTypeMapping rootMapping = baseJoiningQuery.getRootMapping();
+            if (matchesTypeName(rootMapping, joiningTypeName) && rootMapping.getSourceDatabaseSchema() != null) {
+                return rootMapping.getSourceDatabaseSchema();
+            }
+            if (baseJoiningQuery.getQueryJoins() != null) {
+                for (JoiningQuery.QueryJoin queryJoin : baseJoiningQuery.getQueryJoins()) {
+                    if (!joiningTypeName.equals(queryJoin.getJoiningTypeName())) {
+                        continue;
+                    }
+                    if (queryJoin.getJoiningTypeSchema() != null) {
+                        return queryJoin.getJoiningTypeSchema();
+                    }
+                    FeatureTypeMapping queryJoinMapping = queryJoin.getRootMapping();
+                    if (matchesTypeName(queryJoinMapping, joiningTypeName)
+                            && queryJoinMapping.getSourceDatabaseSchema() != null) {
+                        return queryJoinMapping.getSourceDatabaseSchema();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private FeatureTypeMapping resolveJoiningTypeMapping(Instance instance, String joiningTypeName) {
+        if (instance.baseTableQuery instanceof JoiningQuery) {
+            JoiningQuery baseJoiningQuery = (JoiningQuery) instance.baseTableQuery;
+            FeatureTypeMapping rootMapping = baseJoiningQuery.getRootMapping();
+            if (matchesTypeName(rootMapping, joiningTypeName)) {
+                return rootMapping;
+            }
+            if (baseJoiningQuery.getQueryJoins() != null) {
+                for (JoiningQuery.QueryJoin queryJoin : baseJoiningQuery.getQueryJoins()) {
+                    FeatureTypeMapping queryJoinMapping = queryJoin.getRootMapping();
+                    if (matchesTypeName(queryJoinMapping, joiningTypeName)) {
+                        return queryJoinMapping;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean matchesTypeName(FeatureTypeMapping mapping, String typeName) {
+        return mapping != null
+                && mapping.getSource() != null
+                && mapping.getSource().getSchema() != null
+                && typeName != null
+                && typeName.equals(mapping.getSource().getSchema().getName().getLocalPart());
     }
 
     /**

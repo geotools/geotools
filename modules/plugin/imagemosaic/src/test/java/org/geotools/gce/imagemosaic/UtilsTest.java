@@ -17,14 +17,22 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.PriorityQueue;
 import org.eclipse.imagen.ComponentSampleModelImageN;
 import org.eclipse.imagen.Histogram;
@@ -98,5 +106,64 @@ public class UtilsTest {
         File oldSampleImage = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/old_sample_image2");
         RenderedImage renderedImage = Utils.loadSampleImage(oldSampleImage);
         assertThat(renderedImage.getSampleModel(), CoreMatchers.instanceOf(ComponentSampleModelImageN.class));
+    }
+
+    @Test
+    public void testMergePamDatasetsSkipsNullAndEmptyDatasets() {
+        PAMDataset empty = new PAMDataset();
+        PAMDataset first = pamDataset(pamRasterBand(10, 100));
+        PAMDataset second = pamDataset(pamRasterBand(5, 120));
+
+        PAMDataset merged = Utils.mergePamDatasets(new PAMDataset[] {null, empty, first, second});
+
+        assertNotNull(merged);
+        assertEquals(1, merged.getPAMRasterBand().size());
+        List<MDI> metadata = merged.getPAMRasterBand().get(0).getMetadata().getMDI();
+        assertEquals("5.0", metadataValue(metadata, "STATISTICS_MINIMUM"));
+        assertEquals("120.0", metadataValue(metadata, "STATISTICS_MAXIMUM"));
+    }
+
+    @Test
+    public void testMergePamDatasetsReturnsSingleValidDataset() {
+        PAMDataset valid = pamDataset(pamRasterBand(10, 100));
+
+        assertSame(valid, Utils.mergePamDatasets(new PAMDataset[] {null, new PAMDataset(), valid}));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMergePamDatasetsRejectsInconsistentBandCounts() {
+        Utils.mergePamDatasets(new PAMDataset[] {
+            pamDataset(pamRasterBand(10, 100)), pamDataset(pamRasterBand(5, 120), pamRasterBand(20, 200))
+        });
+    }
+
+    private static PAMDataset pamDataset(PAMRasterBand... bands) {
+        PAMDataset dataset = new PAMDataset();
+        dataset.getPAMRasterBand().addAll(Arrays.asList(bands));
+        return dataset;
+    }
+
+    private static PAMRasterBand pamRasterBand(double minimum, double maximum) {
+        PAMRasterBand band = new PAMRasterBand();
+        Metadata metadata = new Metadata();
+        metadata.getMDI().add(mdi("STATISTICS_MINIMUM", minimum));
+        metadata.getMDI().add(mdi("STATISTICS_MAXIMUM", maximum));
+        band.setMetadata(metadata);
+        return band;
+    }
+
+    private static MDI mdi(String key, double value) {
+        MDI mdi = new MDI();
+        mdi.setKey(key);
+        mdi.setValue(Double.toString(value));
+        return mdi;
+    }
+
+    private static String metadataValue(List<MDI> metadata, String key) {
+        return metadata.stream()
+                .filter(mdi -> key.equals(mdi.getKey()))
+                .findFirst()
+                .map(MDI::getValue)
+                .orElse(null);
     }
 }

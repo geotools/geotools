@@ -1226,19 +1226,15 @@ public class Hints extends RenderingHints {
         while (true) {
             final Class<?> type;
             switch (t++) {
-                case 0: {
-                    type = RenderingHints.class;
-                    break;
-                }
-                case 1: {
+                case 0 -> type = RenderingHints.class;
+                case 1 -> {
                     try {
                         type = Class.forName("org.eclipse.imagen.ImageN");
-                        break;
                     } catch (ClassNotFoundException | NoClassDefFoundError e) {
                         continue;
-                    } // May occurs because of indirect ImageN dependencies.
+                    } // May occur because of indirect ImageN dependencies.
                 }
-                default: {
+                default -> {
                     return key.toString();
                 }
             }
@@ -1367,14 +1363,11 @@ public class Hints extends RenderingHints {
             while (true) {
                 final Class<?> type;
                 switch (t++) {
-                    case 0:
-                        type = Hints.class;
-                        break;
-                    case 1:
-                        type = getValueClass();
-                        break;
-                    default:
+                    case 0 -> type = Hints.class;
+                    case 1 -> type = getValueClass();
+                    default -> {
                         return super.toString();
+                    }
                 }
                 final String name = nameOf(type, this);
                 if (name != null) {

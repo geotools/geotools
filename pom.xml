@@ -502,7 +502,7 @@
     <checkstyle.excludes>**/generated/**/*</checkstyle.excludes>
     <checkstyle.file>checkstyle.xml</checkstyle.file>
     <checkstyle.skip>false</checkstyle.skip>
-    <errorProne.version>2.31.0</errorProne.version>
+    <errorProne.version>2.42.0</errorProne.version>
     <errorProneFlags></errorProneFlags>
     <pmd.skip>false</pmd.skip>
     <pmd.version>7.24.0</pmd.version>

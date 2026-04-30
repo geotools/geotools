@@ -242,10 +242,15 @@ public class TestData implements Runnable {
      * @see #url
      */
     public static URL getResource(final Object caller, String name) {
-        if (name == null || (name = name.trim()).length() == 0) {
+        if (name == null) {
             name = DIRECTORY;
         } else {
-            name = DIRECTORY + '/' + name;
+            name = name.trim();
+            if (name.isEmpty()) {
+                name = DIRECTORY;
+            } else {
+                name = DIRECTORY + '/' + name;
+            }
         }
         if (caller != null) {
             final Class c = caller instanceof Class c1 ? c1 : caller.getClass();
@@ -474,12 +479,14 @@ public class TestData implements Runnable {
         private final long timestamp;
 
         /** Constructs an entry for a file to be deleted. */
+        @SuppressWarnings("EffectivelyPrivate")
         public Deletable(final File file, final boolean force) {
             this.file = file;
             timestamp = force ? Long.MIN_VALUE : file.lastModified();
         }
 
         /** Returns {@code true} if failure to delete this file can be ignored. */
+        @SuppressWarnings("EffectivelyPrivate")
         public boolean canIgnore() {
             return timestamp != Long.MIN_VALUE && file.isDirectory();
         }
@@ -488,6 +495,7 @@ public class TestData implements Runnable {
          * Deletes this file, if modified. Returns {@code false} only if the file should be deleted but the operation
          * failed.
          */
+        @SuppressWarnings("EffectivelyPrivate")
         public boolean delete() {
             if (!file.exists() || file.lastModified() <= timestamp) {
                 return true;

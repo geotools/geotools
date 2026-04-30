@@ -198,10 +198,9 @@ public final class Version {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Version)) {
+        if (!(o instanceof Version v)) {
             return false;
         }
-        Version v = (Version) o;
         return union == v.union;
     }
 

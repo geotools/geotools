@@ -20,7 +20,6 @@ package org.geotools.renderer.label;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
-import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,15 +44,14 @@ class LineInfo {
         // the text represented as a glyph vector
         private GlyphVector gv;
 
-        // the text layout
-        private TextLayout layout;
-
         Rectangle2D visualBounds;
 
-        LineComponent(String text, GlyphVector gv, TextLayout layout) {
+        private final LineMetrics lineMetrics;
+
+        LineComponent(String text, GlyphVector gv, LineMetrics lineMetrics) {
             this.text = text;
             this.gv = gv;
-            this.layout = layout;
+            this.lineMetrics = lineMetrics;
         }
 
         Rectangle2D getVisualBounds() {
@@ -79,8 +77,8 @@ class LineInfo {
             return gv;
         }
 
-        TextLayout getLayout() {
-            return layout;
+        LineMetrics getMetrics() {
+            return lineMetrics;
         }
 
         /**
@@ -161,8 +159,8 @@ class LineInfo {
     float getLineOffset() {
         float offset = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            TextLayout layout = component.getLayout();
-            float co = layout.getAscent() + layout.getDescent() + layout.getLeading();
+            LineMetrics metrics = component.getMetrics();
+            float co = metrics.getAscent() + metrics.getDescent() + metrics.getLeading();
             if (co > offset) {
                 offset = co;
             }
@@ -174,8 +172,8 @@ class LineInfo {
     double getDescentLeading() {
         float descent = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            TextLayout layout = component.getLayout();
-            float de = layout.getDescent() + layout.getLeading();
+            LineMetrics metrics = component.getMetrics();
+            float de = metrics.getDescent() + metrics.getLeading();
             if (de > descent) {
                 descent = de;
             }
@@ -199,7 +197,7 @@ class LineInfo {
     float getAscent() {
         float ascent = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            float ca = component.getLayout().getAscent();
+            float ca = component.getMetrics().getAscent();
             if (ca > ascent) {
                 return ascent;
             }

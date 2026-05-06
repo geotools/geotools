@@ -24,6 +24,7 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -31,11 +32,14 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDSchema;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xs.XS;
 import org.geotools.xsd.impl.ParserHandler;
 import org.geotools.xsd.impl.ParserHandler.ContextCustomizer;
@@ -77,9 +81,6 @@ public class Parser {
 
     /** sax handler which maintains the element stack */
     private ParserHandler handler;
-
-    /** the sax parser driving the handler */
-    private SAXParser parser;
 
     /** Entity expansion limit configuration, set to null by default */
     private Integer entityExpansionLimit;
@@ -152,10 +153,10 @@ public class Parser {
         // TODO: use SAXResult to stream, need to figure out how to enable
         // validation with transformer api
         // SAXResult result = new SAXResult( handler );
-        StreamResult result = new StreamResult(new ByteArrayOutputStream());
 
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer tx = tf.newTransformer();
+        StreamResult result = new StreamResult(new ByteArrayOutputStream());
+        Transformer tx = XMLUtils.newTransformer();
+        SAXSource saxSource = XMLUtils.sourceToInputSource(source, null);
 
         tx.transform(source, result);
 
@@ -171,7 +172,7 @@ public class Parser {
      * @return The object representation of the root element of the document.
      */
     public Object parse(InputSource source) throws IOException, SAXException, ParserConfigurationException {
-        parser = parser();
+        SAXParser parser = parser();
 
         parser.parse(source, handler);
 
@@ -411,7 +412,12 @@ public class Parser {
     protected SAXParser parser(boolean validate) throws ParserConfigurationException, SAXException {
         // JD: we use xerces directly here because jaxp does seem to allow use to
         // override all the namespaces to validate against
-        SAXParserFactory pFactory = SAXParserFactory.newInstance();
+
+        Hints hints = GeoTools.getDefaultHints();
+        if (getEntityResolver() != null) {
+            hints.put(Hints.ENTITY_RESOLVER, getEntityResolver());
+        }
+        SAXParserFactory pFactory = XMLUtils.newSAXParserFactory(hints);
 
         // set the appropriate features
         pFactory.setFeature("http://xml.org/sax/features/namespaces", true);
@@ -421,8 +427,16 @@ public class Parser {
             pFactory.setFeature("http://apache.org/xml/features/validation/schema", true);
             pFactory.setFeature("http://apache.org/xml/features/validation/schema-full-checking", true);
         }
-
         SAXParser parser = pFactory.newSAXParser();
+        if (parser.getXMLReader().getEntityResolver() != getEntityResolver()) {
+            LOGGER.fine("Force entity resolver if required:" + getEntityResolver());
+            parser.getXMLReader().setEntityResolver(getEntityResolver());
+        }
+
+        if (parser.getXMLReader().getEntityResolver() != null) {
+            parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+            parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+        }
 
         // set the schema sources of this configuration, and all dependent ones
         StringBuffer schemaLocation = new StringBuffer();
@@ -452,8 +466,7 @@ public class Parser {
         // set Entity expansion limit
         setupEntityExpansionLimit(parser);
 
-        //
-        // return builded parser
+        // return built parser
         return parser;
     }
 

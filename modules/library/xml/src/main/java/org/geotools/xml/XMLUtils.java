@@ -16,13 +16,35 @@
  */
 package org.geotools.xml;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.SourceLocator;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -32,6 +54,214 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class XMLUtils {
 
+    /**
+     * Create a new SAXParserFactory
+     *
+     * @param hints
+     * @return sax parser
+     */
+    public static SAXParserFactory newSAXParserFactory(final Hints hints) {
+        final SAXParserFactory factory = SAXParserFactory.newInstance();
+        try {
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            // feature secure processing recommended, but not supported
+        }
+        // Apply GeoTools configuration to XMLReader
+        return new SAXParserFactory() {
+            @Override
+            public void setNamespaceAware(boolean awareness) {
+                factory.setNamespaceAware(awareness);
+            }
+
+            @Override
+            public void setValidating(boolean validating) {
+                factory.setValidating(validating);
+            }
+
+            @Override
+            public void setXIncludeAware(boolean state) {
+                factory.setXIncludeAware(state);
+            }
+
+            @Override
+            public void setSchema(Schema schema) {
+                factory.setSchema(schema);
+            }
+
+            @Override
+            public void setFeature(String name, boolean value)
+                    throws ParserConfigurationException, SAXNotRecognizedException, SAXNotSupportedException {
+                factory.setFeature(name, value);
+            }
+
+            @Override
+            public boolean getFeature(String name)
+                    throws ParserConfigurationException, SAXNotRecognizedException, SAXNotSupportedException {
+                return factory.getFeature(name);
+            }
+
+            @Override
+            public Schema getSchema() {
+                return factory.getSchema();
+            }
+
+            @Override
+            public boolean isNamespaceAware() {
+                return factory.isNamespaceAware();
+            }
+
+            @Override
+            public boolean isValidating() {
+                return factory.isValidating();
+            }
+
+            @Override
+            public boolean isXIncludeAware() {
+                return factory.isXIncludeAware();
+            }
+
+            @Override
+            public SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
+                SAXParser parser = factory.newSAXParser();
+                parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver(hints));
+                return parser;
+            }
+
+            @Override
+            public String toString() {
+                return "GeoToolsSAXParserFactoryWrapper {" + factory + "}";
+            }
+        };
+    }
+
+    /** Creates a new Transformer as an alternative to direct use of {@link TransformerFactory#newTransformer()}. */
+    public static Transformer newTransformer() throws TransformerConfigurationException {
+        return newTransformer(GeoTools.getDefaultHints());
+    }
+
+    /** Creates a new Transformer as an alternative to direct use of {@link TransformerFactory#newTransformer()}. */
+    public static Transformer newTransformer(Hints hints) throws TransformerConfigurationException {
+        TransformerFactory xformerFactory = TransformerFactory.newInstance();
+        URIResolver uriResolver = xformerFactory.getURIResolver();
+        if (uriResolver != null) {
+            final EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
+            xformerFactory.setURIResolver((href, base) -> {
+                try {
+                    InputSource source = entityResolver.resolveEntity(href, base);
+                    return uriResolver.resolve(href, base);
+                } catch (SAXParseException e) {
+                    TransformerException transformerException = new TransformerException(e);
+                    SourceLocator sourceLocator = new SourceLocator() {
+                        @Override
+                        public String getPublicId() {
+                            return e.getPublicId();
+                        }
+
+                        @Override
+                        public String getSystemId() {
+                            return e.getSystemId();
+                        }
+
+                        @Override
+                        public int getLineNumber() {
+                            return e.getLineNumber();
+                        }
+
+                        @Override
+                        public int getColumnNumber() {
+                            return e.getColumnNumber();
+                        }
+                    };
+                    transformerException.setLocator(sourceLocator);
+                    throw transformerException;
+                } catch (SAXException e) {
+                    throw new TransformerException(e);
+                } catch (IOException e) {
+                    throw new TransformerException(e);
+                }
+            });
+        }
+        return xformerFactory.newTransformer();
+    }
+
+    /**
+     * Alternative to direct use of {@link SAXSource#sourceToInputSource}, allowing GeoTools library configuration to be
+     * applied.
+     *
+     * @param source
+     * @return SAXSource configured with GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     */
+    public static SAXSource sourceToInputSource(Source source) {
+        return sourceToInputSource(source, GeoTools.getDefaultHints());
+    }
+
+    /**
+     * Alternative to direct use of {@link SAXSource#sourceToInputSource}, allowing GeoTools library configuration to be
+     * applied.
+     *
+     * @param source transform source
+     * @param hints GeoTools library configuration
+     * @return SAXSource configured with GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     */
+    public static SAXSource sourceToInputSource(Source source, Hints hints) {
+        return sourceToInputSource(SAXSource.sourceToInputSource(source), hints);
+    }
+
+    /**
+     * Alternative to direct use of InputSource allowing SAXSource setup with GeoTools configuration to be applied.
+     *
+     * @param source sax input source
+     * @param hints GeoTools library configuration
+     * @return SAXSource configured with GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     */
+    public static SAXSource sourceToInputSource(InputSource source, Hints hints) {
+        if (source == null) return null;
+
+        SAXParserFactory factory = newSAXParserFactory(hints);
+        try {
+            XMLReader reader = factory.newSAXParser().getXMLReader();
+            reader.setEntityResolver(GeoTools.getEntityResolver(hints));
+            return new SAXSource(reader, source);
+        } catch (SAXException | ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Creates a new document builder, as an alternative to {@link DocumentBuilder#newDocument()}, allowing GeoTools
+     * library configuration to be applied.
+     *
+     * <p>The document builder is configured using GeoTools configuration including
+     * {@link GeoTools#getEntityResolver(Hints)} .
+     *
+     * @return DocumentBuilder configured with Ge
+     */
+    public static DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
+        return newDocumentBuilder(GeoTools.getDefaultHints());
+    }
+
+    /**
+     * Creates a new document builder, as an alternative to direct use of {@link DocumentBuilder#newDocument()},
+     * allowing GeoTools library configuration to be applied.
+     *
+     * <p>The document builder is configured using GeoTools configuration including
+     * {@link GeoTools#getEntityResolver(Hints)} .
+     *
+     * @return DocumentBuilder configured using GeoTools Hints
+     */
+    public static DocumentBuilder newDocumentBuilder(Hints hints) throws ParserConfigurationException {
+        if (hints == null) {
+            hints = GeoTools.getDefaultHints();
+        }
+
+        @SuppressWarnings("PMD.AvoidDocumentBuilder")
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        builder.setEntityResolver(GeoTools.getEntityResolver(hints));
+
+        return builder;
+    }
     /**
      * Tests whether the TransformerFactory and SchemaFactory implementations support JAXP 1.5 properties to protect
      * against XML external entity injection (XXE) attacks. The internal JDK XML processors starting with JDK 7u40 would

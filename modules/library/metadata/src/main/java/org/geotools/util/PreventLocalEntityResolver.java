@@ -51,11 +51,17 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
 
     protected static final Logger LOGGER = Logging.getLogger(PreventLocalEntityResolver.class);
 
-    // allow schema parsing for validation.
-    // http(s) - external schema reference
-    // jar - internal schema reference
-    // vfs - internal schema reference (JBoss/WildFly)
-    // jar:nested - internal schema reference (Spring Boot)
+    /**
+     * Allow uri references schema parsing for validation.
+     *
+     * <ul>
+     *   <li>allow {@code xsd} schema parsing for validation
+     *   <li>{@code http(s)} - external schema reference
+     *   <li>{@code jar} - internal schema reference
+     *   <li>{@code jar:nested} - internal schema reference (SpringBoot)
+     *   <li>{@code vfs} - internal schema reference (JBoss/WildFly)
+     * </ul>
+     */
     private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|jar:nested|http|vfs)[^?#;]*\\.xsd");
 
     /** Singleton instance of PreventLocalEntityResolver */

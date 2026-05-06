@@ -20,10 +20,10 @@ import java.io.StringReader;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -101,7 +101,7 @@ public class QueryExpressionTextTypeBinding extends AbstractComplexEMFBinding {
             ConvertToDomHandler h =
                     new ConvertToDomHandler(dbf.newDocumentBuilder().newDocument(), namespaceContext);
 
-            SAXParser saxp = SAXParserFactory.newInstance().newSAXParser();
+            SAXParser saxp = XMLUtils.newSAXParserFactory(null).newSAXParser();
             saxp.parse(new InputSource(new StringReader(qe.getValue())), h);
 
             Document d = h.getDocument();

@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
 import org.geotools.ml.bindings.MLSchemaLocationResolver;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.impl.Handler;
 import org.junit.Assert;
 import org.junit.Test;
@@ -85,6 +86,7 @@ public class ParserTest {
     public void testParseValid() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.setValidating(true);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails.xml"));
 
         Assert.assertEquals(0, parser.getValidationErrors().size());
@@ -94,6 +96,7 @@ public class ParserTest {
     public void testParseNull() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.setValidating(true);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         List mails = (List) parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("null-mail.xml"));
 
         Assert.assertEquals(0, parser.getValidationErrors().size());
@@ -107,6 +110,7 @@ public class ParserTest {
     public void testParseInValid() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.setValidating(true);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
 
         Assert.assertNotEquals(0, parser.getValidationErrors().size());
@@ -123,6 +127,8 @@ public class ParserTest {
     @Test
     public void testValidate() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
+
         parser.validate(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
 
         Assert.assertNotEquals(0, parser.getValidationErrors().size());
@@ -290,6 +296,7 @@ public class ParserTest {
     public void testParseWithEntityResolver() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
 
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         try {
             parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
             Assert.fail("parsing should throw an exception since referenced file does not exist");

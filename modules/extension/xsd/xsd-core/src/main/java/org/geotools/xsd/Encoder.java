@@ -43,7 +43,6 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
@@ -1103,7 +1102,8 @@ public class Encoder {
 
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         DOMResult result = new DOMResult();
-        Transformer tx = TransformerFactory.newInstance().newTransformer();
+
+        Transformer tx = XMLUtils.newTransformer(null);
         tx.transform(new StreamSource(in), result);
         return (Document) result.getNode();
     }

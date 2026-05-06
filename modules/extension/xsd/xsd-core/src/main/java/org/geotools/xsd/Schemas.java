@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -82,6 +83,9 @@ import org.eclipse.xsd.util.XSDUtil;
 import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.impl.SchemaIndexImpl;
 import org.geotools.xsd.impl.TypeWalker;
 import org.picocontainer.ComponentAdapter;
@@ -535,25 +539,34 @@ public class Schemas {
         if (resolvers == null) resolvers = Collections.emptyList();
 
         // create a parser
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+        Hints hints = GeoTools.getDefaultHints();
+        if (entityResolver != null) {
+            hints.put(Hints.ENTITY_RESOLVER, entityResolver);
+        }
+
+        SAXParserFactory factory;
+        factory = XMLUtils.newSAXParserFactory(hints);
+
         factory.setNamespaceAware(true);
         factory.setValidating(false);
-
         SAXParser parser = null;
         try {
             parser = factory.newSAXParser();
+
         } catch (Exception e) {
             throw (IOException) new IOException("could not create parser").initCause(e);
         }
 
-        if (entityResolver != null) {
-            try {
-                parser.getXMLReader().setEntityResolver(entityResolver);
-            } catch (SAXException e) {
-                throw new IOException(e);
+        try {
+            // XMLUtils has configured parser entity resolver provided by Hints
+            entityResolver = parser.getXMLReader().getEntityResolver();
+            if (entityResolver != null) {
+                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
             }
+        } catch (SAXException e) {
+            throw new IOException(e);
         }
-
         SchemaImportIncludeValidator validator = new SchemaImportIncludeValidator(locators, resolvers, entityResolver);
 
         // queue of files to parse

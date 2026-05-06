@@ -33,6 +33,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -182,6 +183,7 @@ public class OGCFilterTest {
                 + "</ogc:Filter>";
 
         Parser p = new Parser(new OGCConfiguration());
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         p.validate(new StringReader(xml));
 
         Assert.assertTrue(p.getValidationErrors().isEmpty());

@@ -30,8 +30,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -296,8 +296,8 @@ public class ColorBrewer {
 
     private void load(InputStream stream, PaletteType type) {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
+            DocumentBuilder builder = XMLUtils.newDocumentBuilder();
+
             Document document = builder.parse(stream);
             this.name = fixToString(document.getElementsByTagName("name")
                     .item(0)

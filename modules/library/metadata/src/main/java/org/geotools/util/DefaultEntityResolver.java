@@ -63,15 +63,16 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
     private static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for {0}";
 
     /**
-     * Internal uri references.
+     * Internal uri schema references.
      *
      * <ul>
-     *   <li>allow schema parsing for validation.
-     *   <li>jar - internal schema reference
-     *   <li>vfs - internal schema reference (JBoss/WildFly)
+     *   <li>allow {@code xsd} schema parsing for validation
+     *   <li>{@code jar:file} - internal schema reference
+     *   <li>{@code jar:nested} - internal schema reference (SpringBoot)
+     *   <li>{@code vfs} - internal schema reference (JBoss/WildFly)
      * </ul>
      */
-    private static final Pattern INTERNAL_URIS = Pattern.compile("(?i)(jar:file|vfs)[^?#;]*\\.(xsd|dtd)$");
+    private static final Pattern INTERNAL_URIS = Pattern.compile("(?i)(jar:file|jar:nested|vfs)[^?#;]*\\.(xsd|dtd)$");
 
     /** Only allow XSD or DTD URIs that do not contain a URI query or fragment */
     private static final Pattern XSD_OR_DTD_URIS = Pattern.compile("(?i)^[^?#;]*\\.(xsd|dtd)$");

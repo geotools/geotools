@@ -22,11 +22,15 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.impl.ParserHandler;
 import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
 /**
@@ -40,6 +44,7 @@ import org.xml.sax.SAXException;
 public class DOMParser {
     Configuration configuration;
     Document document;
+    EntityResolver entityResolver = null;
     ParserHandler handler;
 
     /**
@@ -49,8 +54,21 @@ public class DOMParser {
      * @param document An xml document.
      */
     public DOMParser(Configuration configuration, Document document) {
+        this(configuration, document, null);
+    }
+
+    /**
+     * Creates a new instance of the parser.
+     *
+     * @param configuration Object representing the configuration of the parser.
+     * @param document An xml document.
+     * @param entityResolver An entity resolver to use when parsing the document, or {@code null} to use the default
+     *     one.
+     */
+    public DOMParser(Configuration configuration, Document document, EntityResolver entityResolver) {
         this.configuration = configuration;
         this.document = document;
+        this.entityResolver = entityResolver;
     }
 
     /**
@@ -62,21 +80,27 @@ public class DOMParser {
         // Prepare the DOM source
         Source source = new DOMSource(document);
 
+        // "Parser" traverses Document issuing SAX events (fake as document has already been parsed)
         Parser fake = new Parser(configuration);
+        if (entityResolver != null) {
+            Hints hints = new Hints();
+            hints.put(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+
+            fake.setEntityResolver(GeoTools.getEntityResolver(hints));
+        } else {
+            fake.setEntityResolver(GeoTools.getEntityResolver(null));
+        }
 
         // Create the handler to handle the SAX events
         handler = fake.getParserHandler();
-
         try {
             // Prepare the result
             SAXResult result = new SAXResult(handler);
             // add lexical handler to spot CDATA
             result.setLexicalHandler(handler);
 
-            TransformerFactory xformerFactory = TransformerFactory.newInstance();
-
             // Create a transformer
-            Transformer xformer = xformerFactory.newTransformer();
+            Transformer xformer = XMLUtils.newTransformer();
 
             // Traverse the DOM tree
             xformer.transform(source, result);

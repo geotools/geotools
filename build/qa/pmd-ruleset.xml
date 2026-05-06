@@ -114,5 +114,28 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
     <properties>
       <property name="reportLevel" value="140"/>
     </properties>
-  </rule>	 
+  </rule>
+
+  <rule name="AvoidDocumentBuilder"
+        language="java"
+        message="Do not use DocumentBuilder directly; recommend XMLUtils.newDocumentBuilder()"
+        class="net.sourceforge.pmd.lang.rule.XPathRule">
+    <description>
+      Notice use of DocumentBuilderFactory.newDocumentBuilder() which should be avoided in favor of
+      XMLUtils.newDocumentBuilder(Hints) to respect GeoTools init configuration.
+    </description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //MethodCall[
+          @MethodName='newDocumentBuilder'
+          and
+          ..//Type[@TypeName='DocumentBuilderFactory']
+          ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
 </ruleset>

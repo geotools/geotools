@@ -23,12 +23,13 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class CSWGetRecordsTest {
 
-    Parser parser = new Parser(new CSWConfiguration());
+    Parser parser = new Parser(new CSWConfiguration(), NullEntityResolver.INSTANCE);
 
     @Test
     public void testParseGetRecordsEbrimBrief() throws Exception {

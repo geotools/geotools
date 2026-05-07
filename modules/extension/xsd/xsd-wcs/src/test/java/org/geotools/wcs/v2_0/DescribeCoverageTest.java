@@ -4,12 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import net.opengis.wcs20.DescribeCoverageType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class DescribeCoverageTest {
 
-    Parser parser = new Parser(new WCSConfiguration());
+    Parser parser = new Parser(new WCSConfiguration(), NullEntityResolver.INSTANCE);
 
     @Test
     public void testParseDescribeCoverage() throws Exception {

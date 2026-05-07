@@ -4,12 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.List;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class GetCapabilitiesTest {
 
-    Parser parser = new Parser(new WCSConfiguration());
+    Parser parser = new Parser(new WCSConfiguration(), NullEntityResolver.INSTANCE);
 
     @Test
     public void testParseCapabilitiesRequest() throws Exception {

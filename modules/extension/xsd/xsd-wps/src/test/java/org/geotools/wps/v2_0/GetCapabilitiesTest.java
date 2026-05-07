@@ -13,6 +13,7 @@ import net.opengis.ows20.ServiceIdentificationType;
 import net.opengis.ows20.ServiceProviderType;
 import net.opengis.wps20.ProcessSummaryType;
 import net.opengis.wps20.WPSCapabilitiesType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class GetCapabilitiesTest extends WPSTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        Parser parser = new Parser(createConfiguration());
+        Parser parser = new Parser(createConfiguration(), NullEntityResolver.INSTANCE);
 
         Object o = parser.parse(getClass().getResourceAsStream("wpsCapabilitiesDocumentExample.xml"));
         Assert.assertTrue(o instanceof WPSCapabilitiesType);

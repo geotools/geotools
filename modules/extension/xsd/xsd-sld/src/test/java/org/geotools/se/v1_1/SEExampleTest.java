@@ -62,6 +62,7 @@ import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.SLD;
 import org.geotools.styling.UomOgcMapping;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
 import org.junit.Test;
@@ -270,6 +271,7 @@ public class SEExampleTest extends SETestSupport {
             }
         };
         Parser p = new Parser(se);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         PointSymbolizer sym = (PointSymbolizer) p.parse(getClass().getResourceAsStream("example-pointsymbolizer6.xml"));
         assertEquals("MyPointSymbolizer", sym.getName());
         assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());

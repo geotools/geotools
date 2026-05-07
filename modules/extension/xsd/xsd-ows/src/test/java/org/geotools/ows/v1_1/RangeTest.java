@@ -8,6 +8,7 @@ import net.opengis.ows11.Ows11Factory;
 import net.opengis.ows11.RangeClosureType;
 import net.opengis.ows11.RangeType;
 import net.opengis.ows11.ValueType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
@@ -17,6 +18,7 @@ public class RangeTest extends OWSTestSupport_1_1 {
     @Test
     public void testParseRange() throws Exception {
         Parser p = new Parser(createConfiguration());
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object o = p.parse(getClass().getResourceAsStream("range.xml"));
         RangeType rt = (RangeType) o;
         assertEquals(RangeClosureType.CLOSED_LITERAL, rt.getRangeClosure());
@@ -27,6 +29,7 @@ public class RangeTest extends OWSTestSupport_1_1 {
     @Test
     public void testParseOpenClosed() throws Exception {
         Parser p = new Parser(createConfiguration());
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object o = p.parse(getClass().getResourceAsStream("range-open-closed.xml"));
         RangeType rt = (RangeType) o;
         assertEquals(RangeClosureType.OPEN_CLOSED_LITERAL, rt.getRangeClosure());

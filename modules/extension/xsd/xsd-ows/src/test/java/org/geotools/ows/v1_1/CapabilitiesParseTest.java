@@ -10,6 +10,7 @@ import net.opengis.ows11.DomainType;
 import net.opengis.ows11.OperationType;
 import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.ValueType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 
@@ -17,6 +18,7 @@ public class CapabilitiesParseTest extends OWSTestSupport_1_1 {
     @Test
     public void testParseCapabilities() throws Exception {
         Parser p = new Parser(createConfiguration());
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object o = p.parse(getClass().getResourceAsStream("exampleCapabilities1.xml"));
 
         // the core ows schema is abstract, and meant to be extended, so the root caps document
@@ -46,6 +48,7 @@ public class CapabilitiesParseTest extends OWSTestSupport_1_1 {
     @Test
     public void testConstraints() throws Exception {
         Parser p = new Parser(createConfiguration());
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object o = p.parse(getClass().getResourceAsStream("exampleCapabilities1.xml"));
 
         // the core ows schema is abstract, and meant to be extended, so the

@@ -57,6 +57,7 @@ import org.geotools.api.filter.capability.FilterCapabilities;
 import org.geotools.api.filter.capability.Operator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
@@ -89,7 +90,7 @@ public class WFS_2_0_0_ParsingTest {
 
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         Object parsed = parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(parsed);
         Assert.assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
@@ -103,7 +104,7 @@ public class WFS_2_0_0_ParsingTest {
     public void testParseGetCapabilities() throws Exception {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         Object parsed = parser.parse(getClass().getResourceAsStream("geoserver-GetCapabilities_2_0_0.xml"));
 
         Assert.assertNotNull(parsed);
@@ -124,7 +125,7 @@ public class WFS_2_0_0_ParsingTest {
     public void testParseGetCapabilitiesFMI() throws Exception {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         Object parsed = parser.parse(getClass().getResourceAsStream("fmi-GetCapabilities_2_0_0.xml"));
 
         Assert.assertNotNull(parsed);
@@ -142,7 +143,7 @@ public class WFS_2_0_0_ParsingTest {
     public void testParseGetCapabilitiesCuzk() throws Exception {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         Object parsed = parser.parse(getClass().getResourceAsStream("cuzk-GetCapabilities_2_0_0.xml"));
 
         Assert.assertNotNull(parsed);
@@ -348,7 +349,7 @@ public class WFS_2_0_0_ParsingTest {
 
         try (InputStream in = new FileInputStream(tmp)) {
 
-            Parser parser = new Parser(configuration);
+            Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
             FeatureCollectionType fc = (FeatureCollectionType) parser.parse(in);
             Assert.assertNotNull(fc);
 

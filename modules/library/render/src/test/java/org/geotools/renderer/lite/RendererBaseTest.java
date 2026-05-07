@@ -48,6 +48,7 @@ import org.geotools.renderer.style.FontCache;
 import org.geotools.sld.v1_1.SLDConfiguration;
 import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.test.TestData;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -252,7 +253,7 @@ public abstract class RendererBaseTest {
                 }
             };
             Parser parser = new Parser(configuration);
-
+            parser.setEntityResolver(NullEntityResolver.INSTANCE);
             StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(surl.openStream());
 
             for (int i = 0; i < sld.getStyledLayers().length; i++) {

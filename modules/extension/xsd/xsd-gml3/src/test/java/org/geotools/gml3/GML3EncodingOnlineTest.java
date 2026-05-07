@@ -31,6 +31,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
@@ -66,7 +67,7 @@ public class GML3EncodingOnlineTest {
         TestConfiguration configuration = new TestConfiguration();
 
         // first parse in test data
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         SimpleFeatureCollection fc =
                 (SimpleFeatureCollection) parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
         Assert.assertNotNull(fc);
@@ -94,7 +95,7 @@ public class GML3EncodingOnlineTest {
                 new ApplicationSchemaConfiguration(TEST.NAMESPACE, schemaLocation);
 
         // first parse in test data
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         SimpleFeatureCollection fc =
                 (SimpleFeatureCollection) parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
         Assert.assertNotNull(fc);

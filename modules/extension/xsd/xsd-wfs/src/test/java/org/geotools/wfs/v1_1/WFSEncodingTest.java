@@ -29,6 +29,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.test.xml.XmlTestSupport;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xs.XSSchema;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
@@ -247,7 +248,7 @@ public class WFSEncodingTest extends XmlTestSupport {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             encoder.encode(update, WFS.Update, out);
 
-            Parser parser = new Parser(new WFSConfiguration());
+            Parser parser = new Parser(new WFSConfiguration(), NullEntityResolver.INSTANCE);
             try (ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
                 UpdateElementType updateElementType = (UpdateElementType) parser.parse(in);
 

@@ -77,6 +77,7 @@ public class OGCFilterTest {
     @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new OGCConfiguration());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         try (InputStream in = getClass().getResourceAsStream("test1.xml")) {
 
             if (in == null) {
@@ -118,6 +119,7 @@ public class OGCFilterTest {
         OGCConfiguration configuration = new OGCConfiguration();
 
         Parser parser = new Parser(configuration);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(filter);
 
@@ -159,6 +161,7 @@ public class OGCFilterTest {
         OGCConfiguration configuration = new OGCConfiguration();
 
         Parser parser = new Parser(configuration);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Assert.assertNotNull(filter);
 

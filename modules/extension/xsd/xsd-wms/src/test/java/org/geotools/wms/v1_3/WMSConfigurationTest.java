@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
@@ -19,7 +20,8 @@ public class WMSConfigurationTest {
 
     @Test
     public void testValidate() throws IOException, SAXException, ParserConfigurationException {
-        Parser p = new Parser(new WMSConfiguration());
+        Parser p = new Parser(new WMSConfiguration(), NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         p.setValidating(true);
         try (InputStream is = getClass().getResourceAsStream("./caps130.xml")) {
             p.parse(is);

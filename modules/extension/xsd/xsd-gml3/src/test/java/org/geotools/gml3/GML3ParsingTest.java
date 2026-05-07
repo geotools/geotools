@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.temporal.Period;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
 import org.junit.Assert;
@@ -84,7 +85,7 @@ public class GML3ParsingTest {
 
     @Test
     public void testParse3D() throws Exception {
-        Parser p = new Parser(new GMLConfiguration());
+        Parser p = new Parser(new GMLConfiguration(), NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3ParsingTest.class.getResourceAsStream("polygon3d.xml"));
         assertThat(g, instanceOf(Polygon.class));
 
@@ -97,7 +98,7 @@ public class GML3ParsingTest {
 
     @Test
     public void testParseTimePeriodByPosition() throws Exception {
-        Parser p = new Parser(new GMLConfiguration());
+        Parser p = new Parser(new GMLConfiguration(), NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3ParsingTest.class.getResourceAsStream("timePeriodByPosition.xml"));
         assertThat(g, instanceOf(Period.class));
 

@@ -17,6 +17,7 @@
 package org.geotools.gml2;
 
 import javax.xml.parsers.SAXParserFactory;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -39,6 +40,7 @@ public class GMLGeometryTest {
         Configuration configuration = new GMLConfiguration();
 
         parser = new Parser(configuration);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
     }
 
     @Test

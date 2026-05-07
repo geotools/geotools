@@ -36,6 +36,7 @@ import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.geometry.jts.WKTWriter2;
+import org.geotools.util.NullEntityResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -219,6 +220,7 @@ public class XmlStreamGeometryReaderParameterizedTest {
             configuration = new org.geotools.gml3.GMLConfiguration();
         }
         org.geotools.xsd.Parser parser = new org.geotools.xsd.Parser(configuration);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         return (Geometry) parser.parse(new StringReader(gml));
     }
 }

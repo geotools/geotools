@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.test.XMLTestSupport;
@@ -67,12 +68,14 @@ public abstract class SETestSupport extends XMLTestSupport {
     protected Object parse(String filename) throws Exception {
         SEConfiguration se = new SEConfiguration();
         Parser p = new Parser(se);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         return p.parse(getClass().getResourceAsStream(filename));
     }
 
     protected List validate(String filename) throws Exception {
         SEConfiguration se = new SEConfiguration();
         Parser p = new Parser(se);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         p.validate(getClass().getResourceAsStream(filename));
         return p.getValidationErrors();
     }

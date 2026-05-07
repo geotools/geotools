@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -12,7 +13,7 @@ public class GML32CompositeCurveParsingTest extends GML32TestSupport {
     @Test
     public void testCompositeCurve() throws Exception {
         GMLConfiguration gml = new GMLConfiguration(true);
-        Parser p = new Parser(gml);
+        Parser p = new Parser(gml, NullEntityResolver.INSTANCE);
         Object compositeCurve = p.parse(getClass().getResourceAsStream("gml_compositecurve_1.xml"));
         assertFalse(compositeCurve instanceof String);
         // System.out.println(compositeCurve);

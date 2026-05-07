@@ -3,6 +3,7 @@ package org.geotools.wps.v2_0;
 import net.opengis.wps20.DataInputType;
 import net.opengis.wps20.ExecuteRequestType;
 import net.opengis.wps20.OutputDefinitionType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +12,7 @@ public class WPSExecuteTest extends WPSTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        Parser parser = new Parser(createConfiguration());
+        Parser parser = new Parser(createConfiguration(), NullEntityResolver.INSTANCE);
 
         Object o = parser.parse(getClass().getResourceAsStream("wpsExecuteRequestExample.xml"));
         Assert.assertTrue(o instanceof ExecuteRequestType);

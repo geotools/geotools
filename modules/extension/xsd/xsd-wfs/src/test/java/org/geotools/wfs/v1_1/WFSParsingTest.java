@@ -64,6 +64,7 @@ import org.geotools.api.filter.capability.FilterCapabilities;
 import org.geotools.api.filter.capability.SpatialOperators;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.wfs.WFSConfiguration;
 import org.geotools.xsd.Parser;
@@ -87,7 +88,7 @@ public class WFSParsingTest {
 
     @Test
     public void testParseGetCapabilities() throws Exception {
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         WFSCapabilitiesType caps =
                 (WFSCapabilitiesType) parser.parse(getClass().getResourceAsStream("geoserver-GetCapabilities.xml"));
 
@@ -105,7 +106,7 @@ public class WFSParsingTest {
     @Test
     @Ignore
     public void testParseGetCapabilitiesDeegree() throws Exception {
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         WFSCapabilitiesType caps =
                 (WFSCapabilitiesType) parser.parse(getClass().getResourceAsStream("deegree-GetCapabilities.xml"));
 
@@ -296,7 +297,7 @@ public class WFSParsingTest {
 
         try (InputStream in = new FileInputStream(tmp)) {
 
-            Parser parser = new Parser(configuration);
+            Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
             FeatureCollectionType fc = (FeatureCollectionType) parser.parse(in);
             assertNotNull(fc);
 
@@ -363,7 +364,7 @@ public class WFSParsingTest {
 
     @Test
     public void testParseTransactionResponse() throws IOException, SAXException, ParserConfigurationException {
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(configuration, NullEntityResolver.INSTANCE);
         Object parsed = parser.parse(getClass().getResourceAsStream("transactionResponse.xml"));
 
         assertNotNull(parsed);

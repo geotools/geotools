@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import java.net.URL;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import org.geotools.data.wfs.internal.v2_0.Capabilities200ServiceInfo;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
@@ -40,6 +41,7 @@ public class Capabilities200ServiceInfoOnlineTest {
             URL getCapsUrl = new URL(SERVER_URL);
             WFSConfiguration configuration = new org.geotools.wfs.v2_0.WFSConfiguration();
             Parser parser = new Parser(configuration);
+            parser.setEntityResolver(NullEntityResolver.INSTANCE);
             WFSCapabilitiesType type = (WFSCapabilitiesType) parser.parse(getCapsUrl.openStream());
             featureType =
                     new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, type);

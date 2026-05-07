@@ -60,6 +60,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
@@ -270,7 +271,7 @@ public class WMTSCoverageReaderTest {
         Object object;
         try (InputStream inputStream = new FileInputStream(capa)) {
             Parser parser = new Parser(new WMTSConfiguration());
-
+            parser.setEntityResolver(NullEntityResolver.INSTANCE);
             object = parser.parse(new InputSource(inputStream));
 
         } catch (SAXException | ParserConfigurationException | IOException e) {

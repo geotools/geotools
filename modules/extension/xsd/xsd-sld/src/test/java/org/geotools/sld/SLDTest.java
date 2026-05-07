@@ -39,6 +39,7 @@ import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.style.UserLayer;
 import org.geotools.styling.SLD;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Ignore;
@@ -50,7 +51,7 @@ public class SLDTest {
     @Test
     public void test() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
-
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         StyledLayerDescriptor sld =
                 (StyledLayerDescriptor) parser.parse(getClass().getResourceAsStream("example-sld.xml"));
 
@@ -84,7 +85,7 @@ public class SLDTest {
     @Test
     public void testValidateTransformation() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
-
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("gcontours.sld"));
     }
@@ -92,7 +93,7 @@ public class SLDTest {
     @Test
     public void testValidatePerpendicularOffset() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
-
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("linePerpendicularOffset.sld"));
     }
@@ -100,7 +101,7 @@ public class SLDTest {
     @Test
     public void testValidateGammaValueExpression() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
-
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("gammaValueExpression.sld"));
     }
@@ -155,7 +156,7 @@ public class SLDTest {
     @Test
     public void testBackgroundSolid() throws ParserConfigurationException, SAXException, IOException {
         Parser parser = new Parser(new SLDConfiguration());
-
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("backgroundSolid.sld"));
 
@@ -171,6 +172,7 @@ public class SLDTest {
     @Test
     public void testBackgroundGraphicFill() throws ParserConfigurationException, SAXException, IOException {
         Parser parser = new Parser(new SLDConfiguration());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
 
         // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("backgroundGraphicFill.sld"));

@@ -33,6 +33,7 @@ import net.opengis.wps10.LanguagesType1;
 import net.opengis.wps10.ProcessBriefType;
 import net.opengis.wps10.ProcessOfferingsType;
 import net.opengis.wps10.WPSCapabilitiesType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class GetCapabilitiesTest {
     @Test
     public void testParse() throws Exception {
         WPSConfiguration wps = new WPSConfiguration();
-        Parser parser = new Parser(wps);
+        Parser parser = new Parser(wps, NullEntityResolver.INSTANCE);
 
         Object o = parser.parse(getClass().getResourceAsStream("20_wpsGetCapabilities_response.xml"));
         Assert.assertTrue(o instanceof WPSCapabilitiesType);

@@ -7,12 +7,13 @@ import net.opengis.wcs20.DescribeEOCoverageSetType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.Section;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class DescribeEOCoverageSetTest {
 
-    Parser parser = new Parser(new WCSEOConfiguration());
+    Parser parser = new Parser(new WCSEOConfiguration(), NullEntityResolver.INSTANCE);
 
     @Test
     public void testParseDescribeCoverage() throws Exception {

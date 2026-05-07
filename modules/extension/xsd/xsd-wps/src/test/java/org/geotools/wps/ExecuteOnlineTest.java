@@ -24,6 +24,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -41,7 +42,7 @@ public class ExecuteOnlineTest {
     public void testExecute() throws IOException, SAXException, ParserConfigurationException {
         URL url = new URL("http://schemas.opengis.net/wps/1.0.0/examples/51_wpsExecute_request_ResponseDocument.xml");
         try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
-            Parser parser = new Parser(new WPSConfiguration());
+            Parser parser = new Parser(new WPSConfiguration(), NullEntityResolver.INSTANCE);
             Object obj = parser.parse(in);
             Assert.assertNotNull(obj);
         } catch (UnknownHostException notFound) {

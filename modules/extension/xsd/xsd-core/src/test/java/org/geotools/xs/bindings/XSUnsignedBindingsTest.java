@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XSConfiguration;
@@ -40,6 +41,7 @@ public class XSUnsignedBindingsTest {
     public void setUp() throws Exception {
         XSConfiguration xs = new XSConfiguration();
         p = new Parser(xs);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
     }
 
     @Test

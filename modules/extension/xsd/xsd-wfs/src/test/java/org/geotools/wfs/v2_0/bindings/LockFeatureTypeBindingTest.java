@@ -9,6 +9,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.LockFeatureType;
 import net.opengis.wfs20.QueryType;
 import org.geotools.api.filter.Id;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.geotools.xsd.Parser;
@@ -59,7 +60,7 @@ public class LockFeatureTypeBindingTest extends WFSTestSupport {
                 + "lockId=\"GeoServer_eb5fd6b6b6024d5\" service=\"WFS\" version=\"2.0.0\"> "
                 + "</wfs:LockFeature>";
 
-        Parser p = new Parser(new WFSConfiguration());
+        Parser p = new Parser(new WFSConfiguration(), NullEntityResolver.INSTANCE);
         p.validate(new StringReader(xml));
 
         assertTrue(p.getValidationErrors().isEmpty());

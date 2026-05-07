@@ -34,6 +34,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -68,6 +69,7 @@ public class GMLParsingTest {
 
         GMLConfiguration config = new GMLConfiguration();
         Parser p = new Parser(config);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object o = p.parse(new ByteArrayInputStream(out.toByteArray()));
         Assert.assertTrue(o instanceof FeatureCollection);
 

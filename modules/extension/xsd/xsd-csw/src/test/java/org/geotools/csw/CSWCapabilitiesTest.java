@@ -36,6 +36,7 @@ import org.geotools.api.filter.capability.SpatialOperators;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml2.GML;
 import org.geotools.test.xml.XmlTestSupport;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.EncoderDelegate;
 import org.geotools.xsd.Parser;
@@ -48,7 +49,7 @@ public class CSWCapabilitiesTest extends XmlTestSupport {
 
     private static final String RIM_NAMESPACE = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
 
-    Parser parser = new Parser(new CSWConfiguration());
+    Parser parser = new Parser(new CSWConfiguration(), NullEntityResolver.INSTANCE);
 
     @Override
     protected Map<String, String> getNamespaces() {

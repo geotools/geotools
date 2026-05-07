@@ -12,6 +12,7 @@ import net.opengis.cat.csw20.SimpleLiteral;
 import net.opengis.cat.csw20.SummaryRecordType;
 import net.opengis.ows10.BoundingBoxType;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.ows.OWS;
@@ -26,6 +27,7 @@ public class CSWRecordTest {
     @Before
     public void setup() {
         parser = new Parser(new CSWConfiguration());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         encoder = new Encoder(new CSWConfiguration());
         encoder.getNamespaces().declarePrefix("csw", CSW.NAMESPACE);
         encoder.getNamespaces().declarePrefix("dc", DC.NAMESPACE);

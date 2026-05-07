@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
@@ -29,6 +30,7 @@ public class KMLPlacemarkLookAtTest extends KMLTestSupport {
     @Test
     public void testParseDocument() throws Exception {
         Parser parser = new Parser(createConfiguration());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         SimpleFeature doc = (SimpleFeature) parser.parse(getClass().getResourceAsStream("geot5666.kml"));
         assertNotNull(doc);
         assertEquals("document", doc.getType().getTypeName());

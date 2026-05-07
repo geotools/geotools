@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.PullParser;
 import org.geotools.xsd.StreamingParser;
@@ -215,6 +216,7 @@ public class KMLParsingTest extends KMLTestSupport {
 
     SimpleFeature parseSamples(String sampleName) throws Exception {
         Parser p = new Parser(createConfiguration());
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         SimpleFeature doc = (SimpleFeature) p.parse(getClass().getResourceAsStream(sampleName));
         return doc;
     }

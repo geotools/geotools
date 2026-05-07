@@ -3,11 +3,12 @@ package org.geotools.csw;
 import static org.junit.Assert.assertEquals;
 
 import net.opengis.cat.csw20.GetDomainType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class GetDomainTest {
-    Parser parser = new Parser(new CSWConfiguration());
+    Parser parser = new Parser(new CSWConfiguration(), NullEntityResolver.INSTANCE);
 
     @Test
     public void testParseGetDomainParameter() throws Exception {

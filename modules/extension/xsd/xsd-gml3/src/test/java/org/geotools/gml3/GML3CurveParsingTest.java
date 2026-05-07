@@ -31,6 +31,7 @@ import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.MultiCurve;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
@@ -55,6 +56,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testSingleArc() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object arc = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/singleArc.xml"));
         assertThat(arc, instanceOf(CircularString.class));
         CircularString cs = (CircularString) arc;
@@ -65,6 +67,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testArcString() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object arc = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/arcString.xml"));
         assertThat(arc, instanceOf(CircularString.class));
         CircularString cs = (CircularString) arc;
@@ -75,6 +78,8 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCompoundOpen() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundOpen.xml"));
         assertThat(g, instanceOf(CompoundCurvedGeometry.class));
 
@@ -100,6 +105,8 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCompoundClosed() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundClosed.xml"));
         assertThat(g, instanceOf(CompoundCurvedGeometry.class));
 
@@ -122,6 +129,8 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCirclePolygon() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/circlePolygon.xml"));
         assertThat(g, instanceOf(CurvePolygon.class));
 
@@ -141,6 +150,8 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCompoundPolygon() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundPolygon.xml"));
         assertThat(g, instanceOf(CurvePolygon.class));
 
@@ -165,6 +176,8 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCompoundPolygonWithHole() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundPolygonWithHole.xml"));
         assertThat(g, instanceOf(CurvePolygon.class));
 
@@ -204,6 +217,8 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testMultiSurface() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/multiSurface2.xml"));
         assertThat(g, instanceOf(org.geotools.geometry.jts.MultiSurface.class));
 
@@ -238,6 +253,8 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testMultiCurve() throws Exception {
         Parser p = new Parser(gml);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/multiCurve.xml"));
         assertThat(g, instanceOf(MultiCurve.class));
 

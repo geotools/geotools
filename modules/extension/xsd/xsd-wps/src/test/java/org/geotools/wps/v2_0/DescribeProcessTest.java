@@ -12,6 +12,7 @@ import net.opengis.wps20.ProcessDescriptionType;
 import net.opengis.wps20.ProcessOfferingType;
 import net.opengis.wps20.ProcessOfferingsType;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class DescribeProcessTest extends WPSTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        Parser parser = new Parser(createConfiguration());
+        Parser parser = new Parser(createConfiguration(), NullEntityResolver.INSTANCE);
 
         Object o = parser.parse(getClass().getResourceAsStream("wpsProcessOfferingsExample.xml"));
         Assert.assertTrue(o instanceof ProcessOfferingsType);

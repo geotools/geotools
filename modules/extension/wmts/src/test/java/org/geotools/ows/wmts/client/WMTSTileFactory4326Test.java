@@ -39,6 +39,7 @@ import org.geotools.tile.Tile.RenderState;
 import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -288,6 +289,7 @@ public class WMTSTileFactory4326Test {
 
     public static WMTSCapabilities createCapabilities(File capFile) throws Exception {
         Parser parser = new Parser(new WMTSConfiguration());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
 
         Object object = parser.parse(new FileReader(capFile, StandardCharsets.UTF_8));
         assertTrue("Capabilities failed to parse " + object.getClass(), object instanceof CapabilitiesType);

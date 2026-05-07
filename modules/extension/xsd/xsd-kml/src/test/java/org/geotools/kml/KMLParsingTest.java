@@ -29,6 +29,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.bindings.DocumentTypeBinding;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
@@ -45,6 +46,7 @@ public class KMLParsingTest {
     @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new KMLConfiguration());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         SimpleFeature f = (SimpleFeature) parser.parse(getClass().getResourceAsStream("states.kml"));
         Assert.assertNotNull(f);
 

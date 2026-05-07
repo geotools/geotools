@@ -4,12 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.DescribeRecordType;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class CSWDescribeRecordTest {
 
-    Parser parser = new Parser(new CSWConfiguration());
+    Parser parser = new Parser(new CSWConfiguration(), NullEntityResolver.INSTANCE);
 
     @Test
     public void testParseDescribeRecord() throws Exception {

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -13,7 +14,7 @@ public class GML32SurfaceParsingTest extends GML32TestSupport {
     @Test
     public void testMultiSurface() throws Exception {
         GMLConfiguration gml = new GMLConfiguration(true);
-        Parser p = new Parser(gml);
+        Parser p = new Parser(gml, NullEntityResolver.INSTANCE);
         Object multiSurface = p.parse(getClass().getResourceAsStream("multisurface.xml"));
         assertTrue(multiSurface instanceof MultiPolygon);
         MultiPolygon mp = (MultiPolygon) multiSurface;

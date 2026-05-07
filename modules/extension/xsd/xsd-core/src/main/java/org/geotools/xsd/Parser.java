@@ -92,11 +92,20 @@ public class Parser {
      *     </code>.
      */
     public Parser(Configuration configuration) {
+        this(configuration, GeoTools.getEntityResolver(null));
+    }
+    /**
+     * Creates a new instance of the parser.
+     *
+     * @param configuration The parser configuration, bindings and context, must never be {@code }null}
+     * @param entityResolver EntityResolver used to allow access to xsd assets during parsing
+     */
+    public Parser(Configuration configuration, EntityResolver entityResolver) {
         if (configuration == null) {
             throw new NullPointerException("configuration");
         }
-
         handler = new ParserHandler(configuration);
+        handler.setEntityResolver(entityResolver);
 
         configuration.setupParser(this);
     }

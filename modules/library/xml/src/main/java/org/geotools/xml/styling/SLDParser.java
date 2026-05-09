@@ -107,6 +107,8 @@ import org.geotools.util.Base64;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -357,9 +359,13 @@ public class SLDParser {
 
     protected javax.xml.parsers.DocumentBuilder newDocumentBuilder(boolean namespaceAware)
             throws ParserConfigurationException {
-        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        Hints hints = GeoTools.getDefaultHints();
+        if (this.entityResolver != null) {
+            hints.put(Hints.ENTITY_RESOLVER, this.entityResolver);
+        }
+        javax.xml.parsers.DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory(hints);
         dbf.setNamespaceAware(namespaceAware);
-        javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.newDocumentBuilder();
 
         if (entityResolver != null) {
             db.setEntityResolver(entityResolver);

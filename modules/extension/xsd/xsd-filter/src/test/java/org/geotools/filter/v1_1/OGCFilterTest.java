@@ -34,6 +34,7 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.NullEntityResolver;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -57,10 +58,10 @@ public class OGCFilterTest {
             output.flush();
         }
 
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
 
-        Document doc = docFactory.newDocumentBuilder().parse(file);
+        Document doc = docFactory.newDocumentBuilder().parse(file); // NOPMD: AvoidDocumentBuilder
 
         Assert.assertEquals("ogc:PropertyIsEqualTo", doc.getDocumentElement().getNodeName());
         Assert.assertEquals(1, doc.getElementsByTagName("ogc:PropertyName").getLength());

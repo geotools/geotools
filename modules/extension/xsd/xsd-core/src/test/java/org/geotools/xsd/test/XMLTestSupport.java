@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -33,6 +34,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.test.xml.XmlTestSupport;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.DOMParser;
@@ -150,10 +152,10 @@ public abstract class XMLTestSupport extends XmlTestSupport {
     /** Creates an empty xml document. */
     @Before
     public void setUp() throws Exception {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
 
-        document = docFactory.newDocumentBuilder().newDocument();
+        document = docFactory.newDocumentBuilder().newDocument(); // NOPMD: AvoidDocumentBuilder
     }
 
     /**
@@ -266,10 +268,12 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         encoder.encode(object, element, output);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
         dbf.setNamespaceAware(true);
 
-        return dbf.newDocumentBuilder().parse(new ByteArrayInputStream(output.toByteArray()));
+        @SuppressWarnings("PMD.AvoidDocumentBuilder")
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        return db.parse(new ByteArrayInputStream(output.toByteArray()));
     }
 
     /**
@@ -371,8 +375,9 @@ public abstract class XMLTestSupport extends XmlTestSupport {
      *
      * @param xml A string of xml
      */
+    @SuppressWarnings("PMD.AvoidDocumentBuilder")
     public void buildDocument(String xml) throws Exception {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
 
         document =

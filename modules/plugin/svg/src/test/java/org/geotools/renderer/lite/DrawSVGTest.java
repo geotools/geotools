@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
@@ -45,6 +44,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -143,8 +143,7 @@ public class DrawSVGTest {
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
         mc.addLayer(new FeatureLayer(pointFS, pStyle));
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
 
         // Create an instance of org.w3c.dom.Document
         Document document = db.getDOMImplementation().createDocument(null, "svg", null);
@@ -186,8 +185,7 @@ public class DrawSVGTest {
 
         mc.getViewport().setBounds(lineFS.getBounds());
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
 
         // Create an instance of org.w3c.dom.Document
         Document document = db.getDOMImplementation().createDocument(null, "svg", null);
@@ -230,8 +228,7 @@ public class DrawSVGTest {
         mc.addLayer(new FeatureLayer(lineFS, baseStyle));
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
 
         // Create an instance of org.w3c.dom.Document
         Document document = db.getDOMImplementation().createDocument(null, "svg", null);

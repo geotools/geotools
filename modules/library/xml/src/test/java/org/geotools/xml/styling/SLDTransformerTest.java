@@ -37,7 +37,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.geotools.api.filter.FilterFactory;
@@ -87,6 +86,7 @@ import org.geotools.styling.UomOgcMapping;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.xml.XMLUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -578,9 +578,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDParser parser = new SLDParser(sf);
 
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder db = dbf.newDocumentBuilder();
+            DocumentBuilder db = XMLUtils.newDocumentBuilder();
             Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
             PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
@@ -603,9 +601,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
@@ -625,9 +621,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
@@ -679,9 +673,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
@@ -706,9 +698,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertNotNull(xmlFragment);
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
@@ -727,9 +717,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDParser parser = new SLDParser(sf);
 
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder db = dbf.newDocumentBuilder();
+            DocumentBuilder db = XMLUtils.newDocumentBuilder();
             Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
             PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
@@ -751,9 +739,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
@@ -772,9 +758,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
@@ -793,9 +777,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
@@ -814,9 +796,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         SLDParser parser = new SLDParser(sf);
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());

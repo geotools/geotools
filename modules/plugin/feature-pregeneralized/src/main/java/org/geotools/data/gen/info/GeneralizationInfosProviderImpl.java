@@ -29,6 +29,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -109,13 +110,13 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
     protected GeneralizationInfos parseXML(URL url) throws IOException {
 
         Document doc = null;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory();
         factory.setIgnoringComments(true);
         factory.setNamespaceAware(true);
         factory.setIgnoringElementContentWhitespace(true);
 
         try {
-            DocumentBuilder db = factory.newDocumentBuilder();
+            DocumentBuilder db = factory.newDocumentBuilder(); // NOPMD: AvoidDocumentBuilder
             doc = db.parse(url.openStream());
             VALIDATOR.validate(new DOMSource(doc));
         } catch (Exception e) {

@@ -67,6 +67,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.wfs.WFSConfiguration;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.Schemas;
 import org.geotools.xsd.StreamingParser;
@@ -274,7 +275,7 @@ public class WFSParsingTest {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
 
-            DocumentBuilder db = dbf.newDocumentBuilder();
+            DocumentBuilder db = XMLUtils.newDocumentBuilder();
             Document doc = db.parse(in);
 
             // http://cite.opengeospatial.org/gmlsf

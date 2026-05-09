@@ -86,6 +86,7 @@ public class ExpressionDomParserTest {
 
     Node getDocumentNode() throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        @SuppressWarnings("PMD.AvoidDocumentBuilder")
         DocumentBuilder builder = factory.newDocumentBuilder();
         StringBuilder xmlStringBuilder = new StringBuilder();
         xmlStringBuilder.append("<?xml version=\"1.0\"?> <Literal>3</Literal>");

@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastEnhancement;
 import org.geotools.api.style.ContrastMethod;
@@ -51,6 +50,7 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.xml.sax.InputSource;
 
@@ -823,7 +823,7 @@ public class SLDParserTest {
 
     @Test
     public void testStrokeColorWithEnv() throws Exception {
-        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        DocumentBuilder builder = XMLUtils.newDocumentBuilder();
         org.w3c.dom.Document node =
                 builder.parse(new ByteArrayInputStream(formattedCssStrokeParameter.getBytes(StandardCharsets.UTF_8)));
         SLDParser parser = new SLDParser(styleFactory);
@@ -835,7 +835,7 @@ public class SLDParserTest {
     @Test
     public void testContrastEnhancement() throws Exception {
 
-        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        DocumentBuilder builder = XMLUtils.newDocumentBuilder();
         org.w3c.dom.Document node =
                 builder.parse(new ByteArrayInputStream(contrastEnhance.getBytes(StandardCharsets.UTF_8)));
         // First check the happy path for normalize

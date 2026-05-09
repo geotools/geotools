@@ -167,7 +167,7 @@ public class Parser {
         Transformer tx = XMLUtils.newTransformer();
         SAXSource saxSource = XMLUtils.sourceToInputSource(source, null);
 
-        tx.transform(source, result);
+        tx.transform(saxSource, result);
 
         return parse(new ByteArrayInputStream(((ByteArrayOutputStream) result.getOutputStream()).toByteArray()));
     }

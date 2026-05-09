@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsNull;
@@ -37,6 +36,7 @@ import org.geotools.test.TestData;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.XMLHandlerHints;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xml.filter.FilterSchema;
 import org.junit.Assert;
 import org.junit.Test;
@@ -191,8 +191,7 @@ public class XMLEncoderTest {
 
     public Filter parseDocument(String uri) throws Exception {
         Filter filter = null;
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(TestData.getResource(this, uri).toExternalForm());
 
         //        LOGGER.fine("exporting " + uri);

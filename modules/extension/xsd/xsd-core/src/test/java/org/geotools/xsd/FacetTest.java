@@ -20,6 +20,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.util.NullEntityResolver;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xs.XSConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class FacetTest {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
 
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("list.xml"));
 
         String schemaLocation = "http://geotools.org/test "
@@ -58,7 +59,7 @@ public class FacetTest {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
 
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("whitespace.xml"));
 
         String schemaLocation = "http://geotools.org/test "
@@ -78,7 +79,7 @@ public class FacetTest {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
 
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("whitespace-cdata.xml"));
 
         String schemaLocation = "http://geotools.org/test "

@@ -8,15 +8,14 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.TimeZone;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.temporal.Period;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.util.NullEntityResolver;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
 import org.junit.Assert;
@@ -48,14 +47,14 @@ public class GML3ParsingTest {
 
     @Test
     public void testWithSchema() throws Exception {
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
 
         // copy the schema to a temporary file
         File xsd = new File("target/states.xsd");
         // xsd.deleteOnExit();
 
         Document schema = db.parse(getClass().getResourceAsStream("states.xsd"));
-        Transformer tx = TransformerFactory.newInstance().newTransformer();
+        Transformer tx = XMLUtils.newTransformer();
         tx.transform(new DOMSource(schema), new StreamResult(xsd));
 
         // update the schemaLocation to point at the schema

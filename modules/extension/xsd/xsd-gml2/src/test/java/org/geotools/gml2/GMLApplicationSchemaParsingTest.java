@@ -25,12 +25,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.StreamingParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
+@SuppressWarnings("PMD.AvoidDocumentBuilder")
 public class GMLApplicationSchemaParsingTest {
     @Test
     public void testStreamFeatureWithIncorrectSchemaLocation() throws Exception {
@@ -39,9 +41,8 @@ public class GMLApplicationSchemaParsingTest {
 
         try (InputStream in = getClass().getResourceAsStream("feature.xml")) {
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory();
             factory.setNamespaceAware(true);
-
             Document document = factory.newDocumentBuilder().parse(in);
 
             // update hte schema location

@@ -96,7 +96,10 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
   <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
   <rule ref="category/java/performance.xml/BigIntegerInstantiation"/>
   <rule ref="category/java/performance.xml/StringInstantiation"/>
-  <rule name="wildcards" language="java" message="No Wildcard Imports" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+  <rule name="wildcards"
+        language="java"
+        message="No Wildcard Imports"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
       Don't use wildcard imports
     </description>
@@ -119,7 +122,7 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
   <rule name="AvoidDocumentBuilder"
         language="java"
         message="Do not use DocumentBuilder directly; recommend XMLUtils.newDocumentBuilder()"
-        class="net.sourceforge.pmd.lang.rule.XPathRule">
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
       Notice use of DocumentBuilderFactory.newDocumentBuilder() which should be avoided in favor of
       XMLUtils.newDocumentBuilder(Hints) to respect GeoTools init configuration.
@@ -127,13 +130,11 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
     <priority>3</priority>
     <properties>
       <property name="xpath">
-        <value>
-          //MethodCall[
-          @MethodName='newDocumentBuilder'
-          and
-          ..//Type[@TypeName='DocumentBuilderFactory']
-          ]
-        </value>
+          <value>
+              <![CDATA[
+              //MethodCall[pmd-java:matchesSig("javax.xml.parsers.DocumentBuilderFactory#newDocumentBuilder()")]
+              ]]>
+          </value>
       </property>
     </properties>
   </rule>

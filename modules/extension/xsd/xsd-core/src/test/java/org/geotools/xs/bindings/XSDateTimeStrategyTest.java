@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 import org.geotools.xs.XSConfiguration;
@@ -196,9 +196,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
 
         encoder.encode(cal, qname, out);
 
-        Document dom = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(new ByteArrayInputStream(out.toByteArray()));
+        Document dom = XMLUtils.newDocumentBuilder().parse(new ByteArrayInputStream(out.toByteArray()));
 
         String encodedValue = dom.getDocumentElement().getTextContent();
 

@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
@@ -34,6 +33,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterDOMParser;
 import org.geotools.test.TestData;
+import org.geotools.xml.XMLUtils;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -176,8 +176,7 @@ public class DOMParserTestSuite extends TestSuite {
 
         public Filter parseDocument(String uri) throws Exception {
             Filter filter = null;
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
+            DocumentBuilder db = XMLUtils.newDocumentBuilder();
 
             Document dom = db.parse(TestData.getResource(this, uri).toExternalForm());
             LOGGER.fine("parsing " + uri);

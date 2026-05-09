@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.PropertyIsLike;
@@ -42,6 +41,7 @@ import org.geotools.filter.FilterDOMParser;
 import org.geotools.filter.FilterTestSupport;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.geotools.xml.XMLUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -289,8 +289,7 @@ public class DOMParserTest extends FilterTestSupport {
 
     public Filter parseDocument(String uri) throws Exception {
         org.geotools.api.filter.Filter filter = null;
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
 
         Document dom = db.parse(TestData.getResource(this, uri).toExternalForm());
         FilterTestSupport.LOGGER.fine("parsing " + uri);
@@ -326,8 +325,7 @@ public class DOMParserTest extends FilterTestSupport {
 
     public Filter parseDocumentFirst(String uri) throws Exception {
         Filter filter = null;
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         Document dom = db.parse(TestData.getResource(this, uri).toExternalForm());
         FilterTestSupport.LOGGER.fine("parsing " + uri);
 

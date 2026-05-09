@@ -20,7 +20,6 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.style.ColorMap;
@@ -32,6 +31,7 @@ import org.geotools.styling.ColorMapImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -246,8 +246,7 @@ public class GradientColorMapGenerator {
     private static GradientColorMapGenerator parseSVG(final File xmlFile)
             throws SAXException, IOException, ParserConfigurationException {
         Utilities.ensureNonNull("xmlFile", xmlFile);
-        final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        final DocumentBuilder dBuilder = XMLUtils.newDocumentBuilder();
         final Document doc = dBuilder.parse(xmlFile);
         doc.getDocumentElement().normalize();
         final NodeList nList = doc.getElementsByTagName("stop");

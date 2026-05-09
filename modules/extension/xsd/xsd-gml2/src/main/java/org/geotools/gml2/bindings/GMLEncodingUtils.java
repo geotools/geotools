@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDCompositor;
@@ -57,6 +56,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.util.logging.Logging;
 import org.geotools.xlink.XLINK;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xs.XS;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
@@ -280,7 +280,7 @@ public class GMLEncodingUtils {
         XSDFactory f = XSDFactory.eINSTANCE;
         Document dom;
         try {
-            dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            dom = XMLUtils.newDocumentBuilder().newDocument();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }

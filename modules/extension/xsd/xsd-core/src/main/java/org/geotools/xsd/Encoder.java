@@ -37,7 +37,6 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -611,12 +610,10 @@ public class Encoder {
             }
 
             // create the document
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-
             try {
-                doc = docFactory.newDocumentBuilder().newDocument();
+                doc = XMLUtils.newDocumentBuilder().newDocument();
             } catch (ParserConfigurationException e) {
-                new IOException().initCause(e);
+                throw new IOException("Unable to create document", e);
             }
 
             encoded = new Stack<>();

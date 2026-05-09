@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -36,6 +35,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -58,9 +58,7 @@ public class GMLParsingTest {
         schema.deleteOnExit();
         FileUtils.copyURLToFile(getClass().getResource("test.xsd"), schema);
 
-        Document dom = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(getClass().getResourceAsStream("test.xml"));
+        Document dom = XMLUtils.newDocumentBuilder().parse(getClass().getResourceAsStream("test.xml"));
         URL schemaURL = URLs.fileToUrl(schema.getAbsoluteFile());
         dom.getDocumentElement()
                 .setAttribute("xsi:schemaLocation", "http://www.geotools.org/test " + schemaURL.getFile());

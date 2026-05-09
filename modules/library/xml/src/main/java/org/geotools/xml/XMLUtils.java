@@ -159,23 +159,23 @@ public class XMLUtils {
      */
     public static DocumentBuilder newDocumentBuilder(Hints hints) throws ParserConfigurationException {
         DocumentBuilderFactory factory = newDocumentBuilderFactory(hints);
-
+        @SuppressWarnings("PMD.AvoidDocumentBuilder")
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver(GeoTools.getEntityResolver(hints));
         return builder;
     }
 
     /** Create a new DocumentBuilderFactory that respects library configuration. */
-    public static DocumentBuilderFactory newDocumentBuilderFactory() throws ParserConfigurationException {
+    public static DocumentBuilderFactory newDocumentBuilderFactory() {
         return newDocumentBuilderFactory(GeoTools.getDefaultHints());
     }
 
     /**
      * Create a new DocumentBuilderFactory that respects library configuration.
      *
-     * @param Hints Factory hints
+     * @param hints Factory hints
      */
-    public static DocumentBuilderFactory newDocumentBuilderFactory(Hints hints) throws ParserConfigurationException {
+    public static DocumentBuilderFactory newDocumentBuilderFactory(Hints hints) {
         return new GTDocumentBuilderFactory(hints);
     }
 
@@ -399,7 +399,7 @@ public class XMLUtils {
 
         @Override
         public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
-            // @SuppressWarnings("PMD.AvoidDocumentBuilder")
+            @SuppressWarnings("PMD.AvoidDocumentBuilder")
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setEntityResolver(GeoTools.getEntityResolver(hints));
 

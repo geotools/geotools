@@ -27,10 +27,12 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FESTestSupport;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+@SuppressWarnings("PMD.AvoidDocumentBuilder")
 public class FESFilterTest extends FESTestSupport {
     @Test
     public void testEncodePropertyIsLike() throws Exception {
@@ -41,9 +43,8 @@ public class FESFilterTest extends FESTestSupport {
         Encoder encoder = new Encoder(configuration);
         encoder.encode(filter, org.geotools.filter.v2_0.FES.Filter, os);
 
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
-
         Document doc = docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));
 
         assertEquals(1, doc.getElementsByTagName("fes:PropertyIsLike").getLength());
@@ -60,7 +61,7 @@ public class FESFilterTest extends FESTestSupport {
         Encoder encoder = new Encoder(configuration);
         encoder.encode(filter, org.geotools.filter.v2_0.FES.Filter, os);
 
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
 
         Document doc = docFactory.newDocumentBuilder().parse(new ByteArrayInputStream(os.toByteArray()));

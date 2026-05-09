@@ -19,13 +19,13 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.Document;
 
 /**
@@ -59,10 +59,7 @@ public class GenerateSVG {
         if (canvasSize == null) {
             canvasSize = new Dimension(300, 300); // default of 300x300
         }
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-
+        DocumentBuilder db = XMLUtils.newDocumentBuilder();
         // Create an instance of org.w3c.dom.Document
         Document document = db.getDOMImplementation().createDocument(null, "svg", null);
 

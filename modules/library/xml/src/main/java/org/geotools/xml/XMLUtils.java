@@ -55,84 +55,13 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class XMLUtils {
 
     /**
-     * Create a new SAXParserFactory
+     * Create a new SAXParserFactory that respects library configuration.
      *
-     * @param hints
-     * @return sax parser
+     * @param hints Factory hints
      */
     public static SAXParserFactory newSAXParserFactory(final Hints hints) {
-        final SAXParserFactory factory = SAXParserFactory.newInstance();
-        try {
-            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
-            // feature secure processing recommended, but not supported
-        }
-        // Apply GeoTools configuration to XMLReader
-        return new SAXParserFactory() {
-            @Override
-            public void setNamespaceAware(boolean awareness) {
-                factory.setNamespaceAware(awareness);
-            }
-
-            @Override
-            public void setValidating(boolean validating) {
-                factory.setValidating(validating);
-            }
-
-            @Override
-            public void setXIncludeAware(boolean state) {
-                factory.setXIncludeAware(state);
-            }
-
-            @Override
-            public void setSchema(Schema schema) {
-                factory.setSchema(schema);
-            }
-
-            @Override
-            public void setFeature(String name, boolean value)
-                    throws ParserConfigurationException, SAXNotRecognizedException, SAXNotSupportedException {
-                factory.setFeature(name, value);
-            }
-
-            @Override
-            public boolean getFeature(String name)
-                    throws ParserConfigurationException, SAXNotRecognizedException, SAXNotSupportedException {
-                return factory.getFeature(name);
-            }
-
-            @Override
-            public Schema getSchema() {
-                return factory.getSchema();
-            }
-
-            @Override
-            public boolean isNamespaceAware() {
-                return factory.isNamespaceAware();
-            }
-
-            @Override
-            public boolean isValidating() {
-                return factory.isValidating();
-            }
-
-            @Override
-            public boolean isXIncludeAware() {
-                return factory.isXIncludeAware();
-            }
-
-            @Override
-            public SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
-                SAXParser parser = factory.newSAXParser();
-                parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver(hints));
-                return parser;
-            }
-
-            @Override
-            public String toString() {
-                return "GeoToolsSAXParserFactoryWrapper {" + factory + "}";
-            }
-        };
+        // Factory applying GeoTools configuration to SAXParserFactory
+        return new GTSAXParserFactory(hints);
     }
 
     /** Creates a new Transformer as an alternative to direct use of {@link TransformerFactory#newTransformer()}. */
@@ -148,36 +77,14 @@ public class XMLUtils {
             final EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
             xformerFactory.setURIResolver((href, base) -> {
                 try {
-                    InputSource source = entityResolver.resolveEntity(href, base);
+                    entityResolver.resolveEntity(href, base);
                     return uriResolver.resolve(href, base);
                 } catch (SAXParseException e) {
                     TransformerException transformerException = new TransformerException(e);
-                    SourceLocator sourceLocator = new SourceLocator() {
-                        @Override
-                        public String getPublicId() {
-                            return e.getPublicId();
-                        }
-
-                        @Override
-                        public String getSystemId() {
-                            return e.getSystemId();
-                        }
-
-                        @Override
-                        public int getLineNumber() {
-                            return e.getLineNumber();
-                        }
-
-                        @Override
-                        public int getColumnNumber() {
-                            return e.getColumnNumber();
-                        }
-                    };
+                    SourceLocator sourceLocator = new SaxParseExceptionSourceLocator(e);
                     transformerException.setLocator(sourceLocator);
                     throw transformerException;
-                } catch (SAXException e) {
-                    throw new TransformerException(e);
-                } catch (IOException e) {
+                } catch (SAXException | IOException e) {
                     throw new TransformerException(e);
                 }
             });
@@ -251,17 +158,27 @@ public class XMLUtils {
      * @return DocumentBuilder configured using GeoTools Hints
      */
     public static DocumentBuilder newDocumentBuilder(Hints hints) throws ParserConfigurationException {
-        if (hints == null) {
-            hints = GeoTools.getDefaultHints();
-        }
+        DocumentBuilderFactory factory = newDocumentBuilderFactory(hints);
 
-        @SuppressWarnings("PMD.AvoidDocumentBuilder")
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.setEntityResolver(GeoTools.getEntityResolver(hints));
-
         return builder;
     }
+
+    /** Create a new DocumentBuilderFactory that respects library configuration. */
+    public static DocumentBuilderFactory newDocumentBuilderFactory() throws ParserConfigurationException {
+        return newDocumentBuilderFactory(GeoTools.getDefaultHints());
+    }
+
+    /**
+     * Create a new DocumentBuilderFactory that respects library configuration.
+     *
+     * @param Hints Factory hints
+     */
+    public static DocumentBuilderFactory newDocumentBuilderFactory(Hints hints) throws ParserConfigurationException {
+        return new GTDocumentBuilderFactory(hints);
+    }
+
     /**
      * Tests whether the TransformerFactory and SchemaFactory implementations support JAXP 1.5 properties to protect
      * against XML external entity injection (XXE) attacks. The internal JDK XML processors starting with JDK 7u40 would
@@ -354,5 +271,159 @@ public class XMLUtils {
         return c == 0x9 || c == 0xA || c == 0xD || c >= 0x20 && c <= 0xD7FF || c >= 0xE000 && c <= 0xFFFD;
         // removed as a char cannot get this high
         // || ((c >= 0x10000) && (c <= 0x10FFFF));
+    }
+
+    /** Wrapper providing SourceLocator from SAXParseException information */
+    private static class SaxParseExceptionSourceLocator implements SourceLocator {
+        private final SAXParseException e;
+
+        public SaxParseExceptionSourceLocator(SAXParseException saxException) {
+            this.e = saxException;
+        }
+
+        @Override
+        public String getPublicId() {
+            return e.getPublicId();
+        }
+
+        @Override
+        public String getSystemId() {
+            return e.getSystemId();
+        }
+
+        @Override
+        public int getLineNumber() {
+            return e.getLineNumber();
+        }
+
+        @Override
+        public int getColumnNumber() {
+            return e.getColumnNumber();
+        }
+    }
+
+    /** Wrapper ensuring system SAXParserFactory configured with {@code GeoTools.getEntityResolver(hints)}. */
+    private static class GTSAXParserFactory extends SAXParserFactory {
+        private final SAXParserFactory factory;
+        private final Hints hints;
+
+        public GTSAXParserFactory(Hints hints) {
+            this.hints = hints;
+            this.factory = SAXParserFactory.newInstance();
+            try {
+                factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+                // feature secure processing recommended, but not supported
+            }
+        }
+
+        @Override
+        public void setNamespaceAware(boolean awareness) {
+            factory.setNamespaceAware(awareness);
+        }
+
+        @Override
+        public void setValidating(boolean validating) {
+            factory.setValidating(validating);
+        }
+
+        @Override
+        public void setXIncludeAware(boolean state) {
+            factory.setXIncludeAware(state);
+        }
+
+        @Override
+        public void setSchema(Schema schema) {
+            factory.setSchema(schema);
+        }
+
+        @Override
+        public void setFeature(String name, boolean value)
+                throws ParserConfigurationException, SAXNotRecognizedException, SAXNotSupportedException {
+            factory.setFeature(name, value);
+        }
+
+        @Override
+        public boolean getFeature(String name)
+                throws ParserConfigurationException, SAXNotRecognizedException, SAXNotSupportedException {
+            return factory.getFeature(name);
+        }
+
+        @Override
+        public Schema getSchema() {
+            return factory.getSchema();
+        }
+
+        @Override
+        public boolean isNamespaceAware() {
+            return factory.isNamespaceAware();
+        }
+
+        @Override
+        public boolean isValidating() {
+            return factory.isValidating();
+        }
+
+        @Override
+        public boolean isXIncludeAware() {
+            return factory.isXIncludeAware();
+        }
+
+        @Override
+        public SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
+            SAXParser parser = factory.newSAXParser();
+            parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver(hints));
+            return parser;
+        }
+
+        @Override
+        public String toString() {
+            return "GeoToolsSAXParserFactoryWrapper {" + factory + "}";
+        }
+    }
+
+    /** Wrapper ensuring DocumentBuilderFactory configured with {@code GeoTools.getEntityResolver(hints)}. */
+    private static class GTDocumentBuilderFactory extends DocumentBuilderFactory {
+        final Hints hints;
+        private final DocumentBuilderFactory factory;
+
+        public GTDocumentBuilderFactory(Hints hints) {
+            this.hints = hints != null ? hints : GeoTools.getDefaultHints();
+            this.factory = DocumentBuilderFactory.newInstance();
+            try {
+                this.factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            } catch (ParserConfigurationException e) {
+                // feature secure processing recommended, but not supported
+            }
+        }
+
+        @Override
+        public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
+            // @SuppressWarnings("PMD.AvoidDocumentBuilder")
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            builder.setEntityResolver(GeoTools.getEntityResolver(hints));
+
+            return builder;
+        }
+
+        @Override
+        public void setAttribute(String name, Object value) throws IllegalArgumentException {
+            this.factory.setAttribute(name, value);
+        }
+
+        @Override
+        public Object getAttribute(String name) throws IllegalArgumentException {
+            return this.factory.getAttribute(name);
+        }
+
+        @Override
+        public void setFeature(String name, boolean value) throws ParserConfigurationException {
+            this.factory.setFeature(name, value);
+        }
+
+        @Override
+        public boolean getFeature(String name) throws ParserConfigurationException {
+            return this.factory.getFeature(name);
+        }
     }
 }

@@ -85,6 +85,15 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class AttributeTypeBuilder {
 
+    /**
+     * Looking up the feature type factory incurs in synchronization overhead, so we cache the default one here for use
+     * in the no-arg constructor and as a default
+     */
+    private static final FeatureTypeFactory DEFAULT_FEATURE_TYPE_FACTORY =
+            CommonFactoryFinder.getFeatureTypeFactory(null);
+
+    private static final FilterFactory DEFAULT_FILTER_FACTORY = CommonFactoryFinder.getFilterFactory(null);
+
     /** factory */
     protected FeatureTypeFactory factory;
 
@@ -147,7 +156,7 @@ public class AttributeTypeBuilder {
     protected Map<Object, Object> userData = null;
 
     /** filter factory */
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    protected static final FilterFactory ff = DEFAULT_FILTER_FACTORY;
 
     /** The list of valid values for attributes described by this type (enumeration). */
     private List<?> options;
@@ -157,7 +166,7 @@ public class AttributeTypeBuilder {
 
     /** Constructs the builder. */
     public AttributeTypeBuilder() {
-        this(CommonFactoryFinder.getFeatureTypeFactory(null));
+        this(DEFAULT_FEATURE_TYPE_FACTORY);
         init();
     }
 

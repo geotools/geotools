@@ -30,6 +30,7 @@ import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
@@ -159,13 +160,13 @@ public abstract class WFSTestSupport extends XMLTestSupport {
      * @param xml An URL for the xml resource to build the document from
      */
     protected void buildDocument(URL resource) throws Exception {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
 
         try (InputStream in = resource.openStream();
                 InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
             InputSource source = new InputSource(new BufferedReader(reader));
-            document = docFactory.newDocumentBuilder().parse(source);
+            document = XMLUtils.newDocumentBuilder(docFactory).parse(source);
         }
     }
 }

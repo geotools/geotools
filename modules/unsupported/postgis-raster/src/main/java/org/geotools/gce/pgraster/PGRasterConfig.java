@@ -26,11 +26,11 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -40,26 +40,26 @@ import org.w3c.dom.NodeList;
  *
  * <p>Configuration is stored as XML with the following basic format:
  *
- * <pre>
- *     &lt;pgraster>
- *       &lt;name//>        // coverage name
- *       &lt;database>     // database connection
- *         &lt;host//>      // database host
- *         &lt;port//>      // database port
- *         &lt;name//>      // database name
- *         &lt;user//>      // database username
- *         &lt;pass//>      // database user password
- *       &lt;/database>
- *       &lt;raster>       // raster column config
- *         &lt;column//>      // column name
- *         &lt;table//>     // table name
- *         &lt;schema//>    // table schema
- *       &lt;/raster>
- *       &lt;time>        // time column config
- *         &lt;enabled//>  // enable / disable time
- *         &lt;column//>     // column name
- *       &lt;/time>
- *     &lt;/pgraster>
+ * <pre>{@literal
+ *     <pgraster>
+ *       <name/>       // coverage name
+ *       <database>    // database connection
+ *         <host/>     // database host
+ *         <port/>     // database port
+ *         <name/>     // database name
+ *         <user/>     // database username
+ *         <pass/>     // database user password
+ *       </database>
+ *       <raster>      // raster column config
+ *         <column/>   // column name
+ *         <table/>    // table name
+ *         <schema/>   // table schema
+ *       </raster>
+ *       <time>        // time column config
+ *         <enabled/>  // enable / disable time
+ *         <column/>   // column name
+ *       </time>
+ *     </pgraster>}
  *   </pre>
  */
 class PGRasterConfig implements Closeable {
@@ -76,12 +76,11 @@ class PGRasterConfig implements Closeable {
     TimeConfig time = new TimeConfig();
 
     static Document parse(File cfgfile) {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db;
         try {
-            db = dbf.newDocumentBuilder();
+            db = XMLUtils.newDocumentBuilder();
         } catch (Exception e) {
-            throw new RuntimeException("Error creating XML parser");
+            throw new RuntimeException("Error creating XML parser", e);
         }
 
         try {

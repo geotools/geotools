@@ -30,10 +30,10 @@ public class FacetTest {
 
     @Test
     public void testList() throws Exception {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
         dbf.setNamespaceAware(true);
 
-        DocumentBuilder db = XMLUtils.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf);
         Document doc = db.parse(getClass().getResourceAsStream("list.xml"));
 
         String schemaLocation = "http://geotools.org/test "
@@ -56,10 +56,10 @@ public class FacetTest {
 
     @Test
     public void testWhitespace() throws Exception {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
         dbf.setNamespaceAware(true);
 
-        DocumentBuilder db = XMLUtils.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf);
         Document doc = db.parse(getClass().getResourceAsStream("whitespace.xml"));
 
         String schemaLocation = "http://geotools.org/test "
@@ -76,10 +76,10 @@ public class FacetTest {
 
     @Test
     public void testCDATAWhitespace() throws Exception {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
         dbf.setNamespaceAware(true);
 
-        DocumentBuilder db = XMLUtils.newDocumentBuilder();
+        DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf);
         Document doc = db.parse(getClass().getResourceAsStream("whitespace-cdata.xml"));
 
         String schemaLocation = "http://geotools.org/test "

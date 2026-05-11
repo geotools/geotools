@@ -35,6 +35,7 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.DOMParser;
 import org.w3c.dom.Document;
@@ -53,10 +54,10 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
         try {
             final Document rawDocument;
             try {
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilderFactory builderFactory = XMLUtils.newDocumentBuilderFactory();
                 builderFactory.setNamespaceAware(true);
                 builderFactory.setValidating(false);
-                DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
+                DocumentBuilder documentBuilder = XMLUtils.newDocumentBuilder(builderFactory);
                 if (entityResolver != null) {
                     documentBuilder.setEntityResolver(entityResolver);
                 }

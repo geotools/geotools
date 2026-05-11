@@ -30,6 +30,7 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.NullEntityResolver;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -74,6 +75,8 @@ public class SLDParserNamespaceTest {
     @Test
     public void testNamespace() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input());
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
+
         Style[] styles = parser.readXML();
         Assert.assertEquals(styles.length, 1);
         Style style = styles[0];

@@ -73,10 +73,10 @@ public class GMLApplicationSchemaParsingTest {
         schemaFile.deleteOnExit();
         try (InputStream in = getClass().getResourceAsStream("feature.xml")) {
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory();
             factory.setNamespaceAware(true);
 
-            Document document = factory.newDocumentBuilder().parse(in);
+            Document document = XMLUtils.newDocumentBuilder(factory).parse(in);
 
             // update hte schema location
             document.getDocumentElement().removeAttribute("xsi:schemaLocation");
@@ -107,10 +107,10 @@ public class GMLApplicationSchemaParsingTest {
         File schemaFile = File.createTempFile("test", "xsd");
         schemaFile.deleteOnExit();
         try (InputStream in = getClass().getResourceAsStream("feature.xml")) {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory();
             factory.setNamespaceAware(true);
 
-            Document document = factory.newDocumentBuilder().parse(in);
+            Document document = XMLUtils.newDocumentBuilder(factory).parse(in);
 
             // update hte schema location
             String schemaLocation = getClass().getResource("test.xsd").toString();

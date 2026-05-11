@@ -81,6 +81,7 @@ import org.geotools.filter.function.FilterFunction_buffer;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.test.TestData;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
 import org.junit.Test;
@@ -1077,6 +1078,7 @@ public class SLDStyleTest {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         URL surl = TestData.getResource(this, s);
         SLDParser stylereader = new SLDParser(factory, surl);
+        stylereader.setEntityResolver(NullEntityResolver.INSTANCE);
 
         // basic checks
         return stylereader.readXML();

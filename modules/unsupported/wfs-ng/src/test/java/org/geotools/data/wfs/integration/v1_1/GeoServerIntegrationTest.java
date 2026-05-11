@@ -50,6 +50,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
+import org.geotools.xml.XMLUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -190,10 +191,9 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
 
             try (ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
 
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory();
                 factory.setNamespaceAware(true);
-
-                Document document = factory.newDocumentBuilder().parse(in);
+                Document document = XMLUtils.newDocumentBuilder(factory).parse(in);
 
                 Element root = document.getDocumentElement();
                 NodeList insertNodes = root.getElementsByTagNameNS("http://www.opengis.net/wfs", "Insert");

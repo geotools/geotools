@@ -119,6 +119,25 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
     </properties>
   </rule>
 
+  <rule name="AvoidDocumentBuilderFactory"
+        language="java"
+        message="Do not use DocumentBuildeFactory instance directly; recommend XMLUtils.newDocumentBuilderFactory()"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <description>
+      Notice use of DocumentBuilderFactory.newInstance() which should be avoided in favor of
+      XMLUtils.DocumentBuilderFactory(Hints) to respect GeoTools init configuration.
+    </description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath">
+          <value>
+              <![CDATA[
+              //MethodCall[pmd-java:matchesSig("javax.xml.parsers.DocumentBuilderFactory#newInstance()")]
+              ]]>
+          </value>
+      </property>
+    </properties>
+  </rule>
   <rule name="AvoidDocumentBuilder"
         language="java"
         message="Do not use DocumentBuilder directly; recommend XMLUtils.newDocumentBuilder()"

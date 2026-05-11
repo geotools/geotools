@@ -32,9 +32,9 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -401,8 +401,7 @@ public class TPKFile {
         zoomLevelResolutionMap = new HashMap<>();
 
         try (InputStream is = theTPK.getInputStream(confFile)) {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            DocumentBuilder dBuilder = XMLUtils.newDocumentBuilder();
             Document confDoc = dBuilder.parse(is);
 
             // find the "StorageFormat" element to determine compact cache version/format

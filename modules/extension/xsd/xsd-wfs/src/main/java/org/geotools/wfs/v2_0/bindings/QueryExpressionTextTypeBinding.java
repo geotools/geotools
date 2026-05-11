@@ -95,11 +95,10 @@ public class QueryExpressionTextTypeBinding extends AbstractComplexEMFBinding {
             // having them declared by the expression text, so we first parse the query
             // expression with a sax handler that can transform to a namespace aware dom
             // using the current namespace context
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
             dbf.setNamespaceAware(true);
-
             ConvertToDomHandler h =
-                    new ConvertToDomHandler(dbf.newDocumentBuilder().newDocument(), namespaceContext);
+                    new ConvertToDomHandler(XMLUtils.newDocumentBuilder(dbf).newDocument(), namespaceContext);
 
             SAXParser saxp = XMLUtils.newSAXParserFactory(null).newSAXParser();
             saxp.parse(new InputSource(new StringReader(qe.getValue())), h);

@@ -50,6 +50,7 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.xml.sax.InputSource;
@@ -638,6 +639,7 @@ public class SLDParserTest {
     @Test
     public void testLocalizedWithNamespace() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(LocalizedSLDWithNamespace));
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         Style[] styles = parser.readXML();
         assertEquals(
                 "english",
@@ -783,14 +785,14 @@ public class SLDParserTest {
     public void testExternalEntitiesDisabled() {
         // this SLD file references as external entity a file on the local filesystem
         SLDParser parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
-
-        // without a custom EntityResolver, the parser will try to read the entity file on the local
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
+        // With NullEntityResolver EntityResolver, the parser be able to read the entity file on the local
         // file system
         try {
             parser.readXML();
             fail("parsing should thrown an error");
         } catch (RuntimeException e) {
-            assertTrue(e.getCause() instanceof FileNotFoundException);
+            assertTrue(e.getMessage(), e.getCause() instanceof FileNotFoundException);
         }
 
         parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));

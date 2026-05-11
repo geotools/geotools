@@ -38,6 +38,10 @@
       <artifactId>gt-epsg-hsql</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-xml</artifactId>
+    </dependency>
 
   </dependencies>
 

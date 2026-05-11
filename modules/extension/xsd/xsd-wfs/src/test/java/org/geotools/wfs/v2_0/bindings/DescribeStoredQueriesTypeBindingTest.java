@@ -30,16 +30,17 @@ import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import org.geotools.wfs.WFS_2_0_0_ParsingTest;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 
 public class DescribeStoredQueriesTypeBindingTest extends WFSTestSupport {
     @Test
     public void testParse() throws Exception {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
 
         try (InputStream is = WFS_2_0_0_ParsingTest.class.getResourceAsStream("fmi-DescribeStoredQueries_2_0_0.xml")) {
-            document = docFactory.newDocumentBuilder().parse(is);
+            document = XMLUtils.newDocumentBuilder(docFactory).parse(is);
         }
 
         Object o = parse();

@@ -49,7 +49,6 @@ import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -82,6 +81,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
+import org.geotools.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -269,7 +269,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
             throws IOException, ParserConfigurationException, SAXException, XPathExpressionException, FactoryException,
                     TransformException {
 
-        DocumentBuilder b = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        DocumentBuilder b = XMLUtils.newDocumentBuilder();
         String xml = xmlBox.getXml();
         Document doc = b.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
 

@@ -152,17 +152,11 @@ public class AppSchemaDataAccessConfigurator {
 
     /** Convenience method for "joining" property. */
     public static boolean isJoining() {
-        String value = getJoiningOverride();
-        if (value == null) {
-            value = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
-        }
-        return value == null || value.equalsIgnoreCase("true");
+        String s = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
+        return s == null || s.equalsIgnoreCase("true");
     }
 
     public static boolean isJoiningSet() {
-        if (getJoiningOverride() != null) {
-            return true;
-        }
         String s = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
         return s != null;
     }
@@ -173,10 +167,6 @@ public class AppSchemaDataAccessConfigurator {
             value = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_CROSS_SCHEMA_JOINING);
         }
         return value != null && value.equalsIgnoreCase("true");
-    }
-
-    private static String getJoiningOverride() {
-        return System.getProperty(PROPERTY_JOINING);
     }
 
     private static String getCrossSchemaJoiningOverride() {

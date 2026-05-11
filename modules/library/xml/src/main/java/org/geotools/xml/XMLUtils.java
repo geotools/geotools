@@ -158,20 +158,64 @@ public class XMLUtils {
      * @return DocumentBuilder configured using GeoTools Hints
      */
     public static DocumentBuilder newDocumentBuilder(Hints hints) throws ParserConfigurationException {
-        DocumentBuilderFactory factory = newDocumentBuilderFactory(hints);
-        @SuppressWarnings("PMD.AvoidDocumentBuilder")
-        DocumentBuilder builder = factory.newDocumentBuilder();
+        return newDocumentBuilder(newDocumentBuilderFactory(hints), hints);
+    }
+
+    /**
+     * Create a new DocumentBuilder using a supplied Factory, allowing GeoTools library configuration to be applied.
+     *
+     * <p>This apporach allows document build factory to be configured to be namespace aware, validating, etc. while
+     * still applying GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     *
+     * <pre>{@literal
+     * DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory();
+     * factory.setValidating(true);
+     * factory.setNamespaceAware(true);
+     * DocumentBuilder builder = XMLUtils.newDocumentBuilder(factory);
+     * Document document = builder.parse(source);}</pre>
+     *
+     * @param factory Configured DocumentBuildFactory
+     */
+    public static DocumentBuilder newDocumentBuilder(DocumentBuilderFactory factory)
+            throws ParserConfigurationException {
+        return newDocumentBuilder(factory, GeoTools.getDefaultHints());
+    }
+    /**
+     * Create a new DocumentBuilder using a supplied Factory, allowing GeoTools library configuration to be applied.
+     *
+     * <p>This approach allows document build factory to be configured to be namespace aware, validating, etc. while
+     * still applying GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     *
+     * <pre>{@literal
+     * Hints hints = GeoTools.getDefaultHints();
+     * hints.put(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+     *
+     * DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory(hints);
+     * factory.setValidating(true);
+     * factory.setNamespaceAware(true);
+     * DocumentBuilder builder = XMLUtils.newDocumentBuilder(factory, hints);
+     * Document document = builder.parse(source);}</pre>
+     *
+     * The above example shows use of this method with NullEntityResolver.
+     *
+     * @param factory Configured DocumentBuildFactory
+     * @param hints Factory hints
+     */
+    public static DocumentBuilder newDocumentBuilder(DocumentBuilderFactory factory, Hints hints)
+            throws ParserConfigurationException {
+
+        DocumentBuilder builder = factory.newDocumentBuilder(); // NOPMD.AvoidDocumentBuilder
         builder.setEntityResolver(GeoTools.getEntityResolver(hints));
         return builder;
     }
 
-    /** Create a new DocumentBuilderFactory that respects library configuration. */
+    /** Create a new DocumentBuilderFactory allowing GeoTools library configuration to be applied. */
     public static DocumentBuilderFactory newDocumentBuilderFactory() {
         return newDocumentBuilderFactory(GeoTools.getDefaultHints());
     }
 
     /**
-     * Create a new DocumentBuilderFactory that respects library configuration.
+     * Create a new DocumentBuilder using a supplied Factory, allowing GeoTools library configuration to be applied.
      *
      * @param hints Factory hints
      */
@@ -389,7 +433,7 @@ public class XMLUtils {
 
         public GTDocumentBuilderFactory(Hints hints) {
             this.hints = hints != null ? hints : GeoTools.getDefaultHints();
-            this.factory = DocumentBuilderFactory.newInstance();
+            this.factory = DocumentBuilderFactory.newInstance(); // NOPMD AvoidDocumentBuilderFactory
             try {
                 this.factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             } catch (ParserConfigurationException e) {
@@ -399,11 +443,30 @@ public class XMLUtils {
 
         @Override
         public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
-            @SuppressWarnings("PMD.AvoidDocumentBuilder")
-            DocumentBuilder builder = factory.newDocumentBuilder();
+            DocumentBuilder builder = factory.newDocumentBuilder(); // NOPMD AvoidDocumentBuilder
             builder.setEntityResolver(GeoTools.getEntityResolver(hints));
 
             return builder;
+        }
+
+        @Override
+        public boolean isValidating() {
+            return this.factory.isValidating();
+        }
+
+        @Override
+        public void setValidating(boolean validating) {
+            this.factory.setValidating(validating);
+        }
+
+        @Override
+        public boolean isNamespaceAware() {
+            return this.factory.isNamespaceAware();
+        }
+
+        @Override
+        public void setNamespaceAware(boolean namespaceAware) {
+            this.factory.setNamespaceAware(namespaceAware);
         }
 
         @Override

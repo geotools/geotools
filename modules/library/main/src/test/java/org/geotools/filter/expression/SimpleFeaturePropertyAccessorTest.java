@@ -16,6 +16,11 @@
  */
 package org.geotools.filter.expression;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -45,6 +50,7 @@ public class SimpleFeaturePropertyAccessorTest {
         typeBuilder.add("foo", Integer.class);
         typeBuilder.add("bar", Double.class);
         typeBuilder.add(COMPLEX_PROPERTY, Double.class);
+        typeBuilder.add("a@b-c", Double.class);
 
         type = typeBuilder.buildFeatureType();
 
@@ -52,6 +58,7 @@ public class SimpleFeaturePropertyAccessorTest {
         builder.add(Integer.valueOf(1));
         builder.add(Double.valueOf(2.0));
         builder.add(Double.valueOf(3.0));
+        builder.add(Double.valueOf(4));
 
         feature = builder.buildFeature("fid");
         accessor = SimpleFeaturePropertyAccessorFactory.ATTRIBUTE_ACCESS;
@@ -59,45 +66,48 @@ public class SimpleFeaturePropertyAccessorTest {
 
     @Test
     public void testCanHandle() {
-        Assert.assertTrue(accessor.canHandle(feature, "foo", null));
-        Assert.assertTrue(accessor.canHandle(feature, "bar", null));
+        assertTrue(accessor.canHandle(feature, "foo", null));
+        assertTrue(accessor.canHandle(feature, "bar", null));
+        assertTrue(accessor.canHandle(feature, "a@b-c", null));
 
-        Assert.assertFalse(accessor.canHandle(feature, "illegal", null));
+        assertFalse(accessor.canHandle(feature, "illegal", null));
     }
 
     @Test
     public void testCanHandleType() {
-        Assert.assertTrue(accessor.canHandle(type, "foo", null));
-        Assert.assertTrue(accessor.canHandle(type, "sf:foo", null));
-        Assert.assertTrue(accessor.canHandle(type, "foo[1]", null));
-        Assert.assertTrue(accessor.canHandle(type, "sf:foo[1]", null));
-        Assert.assertTrue(accessor.canHandle(type, "bar", null));
-        Assert.assertTrue(accessor.canHandle(type, COMPLEX_PROPERTY, null));
+        assertTrue(accessor.canHandle(type, "foo", null));
+        assertTrue(accessor.canHandle(type, "sf:foo", null));
+        assertTrue(accessor.canHandle(type, "foo[1]", null));
+        assertTrue(accessor.canHandle(type, "sf:foo[1]", null));
+        assertTrue(accessor.canHandle(type, "bar", null));
+        assertTrue(accessor.canHandle(type, COMPLEX_PROPERTY, null));
+        assertTrue(accessor.canHandle(type, "foo", null));
+        assertTrue(accessor.canHandle(type, "a@b-c", null));
 
-        Assert.assertFalse(accessor.canHandle(type, "illegal", null));
-        Assert.assertFalse(accessor.canHandle(type, "sf:foo[0]", null));
-        Assert.assertFalse(accessor.canHandle(type, "sf:foo[2]", null));
+        assertFalse(accessor.canHandle(type, "illegal", null));
+        assertFalse(accessor.canHandle(type, "sf:foo[0]", null));
+        assertFalse(accessor.canHandle(type, "sf:foo[2]", null));
     }
 
     @Test
     public void testGet() {
-        Assert.assertEquals(Integer.valueOf(1), accessor.get(feature, "foo", null));
-        Assert.assertEquals(Integer.valueOf(1), accessor.get(feature, "sf:foo", null));
-        Assert.assertEquals(Integer.valueOf(1), accessor.get(feature, "foo[1]", null));
-        Assert.assertEquals(Integer.valueOf(1), accessor.get(feature, "sf:foo[1]", null));
-        Assert.assertEquals(Double.valueOf(2.0), accessor.get(feature, "bar", null));
-        Assert.assertEquals(Double.valueOf(3.0), accessor.get(feature, COMPLEX_PROPERTY, null));
-        Assert.assertEquals("fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@id", null));
-        Assert.assertEquals("fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@gml:id", null));
-        Assert.assertFalse(accessor.canHandle(feature, "illegal", null));
-        Assert.assertNull(accessor.get(feature, "illegal", null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "foo", null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "sf:foo", null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "foo[1]", null));
+        assertEquals(Integer.valueOf(1), accessor.get(feature, "sf:foo[1]", null));
+        assertEquals(Double.valueOf(2.0), accessor.get(feature, "bar", null));
+        assertEquals(Double.valueOf(3.0), accessor.get(feature, COMPLEX_PROPERTY, null));
+        assertEquals("fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@id", null));
+        assertEquals("fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@gml:id", null));
+        assertFalse(accessor.canHandle(feature, "illegal", null));
+        assertNull(accessor.get(feature, "illegal", null));
     }
 
     @Test
     public void testGetType() {
-        Assert.assertEquals(type.getDescriptor("foo"), accessor.get(type, "foo", null));
-        Assert.assertEquals(type.getDescriptor("bar"), accessor.get(type, "bar", null));
-        Assert.assertNull(accessor.get(type, "illegal", null));
+        assertEquals(type.getDescriptor("foo"), accessor.get(type, "foo", null));
+        assertEquals(type.getDescriptor("bar"), accessor.get(type, "bar", null));
+        assertNull(accessor.get(type, "illegal", null));
     }
 
     @Test
@@ -107,14 +117,14 @@ public class SimpleFeaturePropertyAccessorTest {
         } catch (IllegalAttributeException e) {
             Assert.fail();
         }
-        Assert.assertEquals(Integer.valueOf(2), accessor.get(feature, "foo", null));
+        assertEquals(Integer.valueOf(2), accessor.get(feature, "foo", null));
 
         try {
             accessor.set(feature, "bar", Double.valueOf(1.0), null);
         } catch (IllegalAttributeException e) {
             Assert.fail();
         }
-        Assert.assertEquals(Double.valueOf(1.0), accessor.get(feature, "bar", null));
+        assertEquals(Double.valueOf(1.0), accessor.get(feature, "bar", null));
         try {
             accessor.set(feature, "@id", "fid2", null);
             Assert.fail("Should have thrown exception trying to set fid");
@@ -149,8 +159,7 @@ public class SimpleFeaturePropertyAccessorTest {
         b.set("g2", p);
         SimpleFeature feature = b.buildFeature(null);
 
-        Assert.assertNull(feature.getDefaultGeometry());
-        Assert.assertEquals(
-                p, SimpleFeaturePropertyAccessorFactory.DEFAULT_GEOMETRY_ACCESS.get(feature, "", Geometry.class));
+        assertNull(feature.getDefaultGeometry());
+        assertEquals(p, SimpleFeaturePropertyAccessorFactory.DEFAULT_GEOMETRY_ACCESS.get(feature, "", Geometry.class));
     }
 }

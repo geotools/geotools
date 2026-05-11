@@ -324,10 +324,10 @@ public class WFS_2_0_0_ParsingTest {
 
         try (InputStream in = getClass().getResourceAsStream("geoserver-GetFeature.xml")) {
 
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
             dbf.setNamespaceAware(true);
 
-            DocumentBuilder db = XMLUtils.newDocumentBuilder();
+            DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf);
             Document doc = db.parse(in);
 
             // http://cite.opengeospatial.org/gmlsf

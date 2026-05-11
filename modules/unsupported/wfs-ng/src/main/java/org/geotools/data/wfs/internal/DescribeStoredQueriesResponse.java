@@ -36,6 +36,7 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.DOMParser;
 import org.w3c.dom.Document;
@@ -63,10 +64,10 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
                 RESPONSES.fine("Full ListStoredQueries response: " + new String(rawResponse, StandardCharsets.UTF_8));
             }
             try {
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilderFactory builderFactory = XMLUtils.newDocumentBuilderFactory();
                 builderFactory.setNamespaceAware(true);
                 builderFactory.setValidating(false);
-                DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
+                DocumentBuilder documentBuilder = XMLUtils.newDocumentBuilder(builderFactory);
                 rawDocument = documentBuilder.parse(new ByteArrayInputStream(rawResponse));
             } catch (Exception e) {
                 throw new IOException("Error parsing capabilities document: " + e.getMessage(), e);

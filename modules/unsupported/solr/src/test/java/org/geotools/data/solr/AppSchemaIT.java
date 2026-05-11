@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -48,6 +47,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.util.URLs;
+import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -193,9 +193,7 @@ public final class AppSchemaIT extends OnlineTestCase {
 
         // Modify datasource and copy xml
         File xmlFile = URLs.urlToFile(AppSchemaIT.class.getResource(testData + xmlFileName));
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(new InputSource(new FileInputStream(xmlFile)));
+        Document doc = XMLUtils.newDocumentBuilder().parse(new InputSource(new FileInputStream(xmlFile)));
         Node solrDs = doc.getElementsByTagName("SolrDataStore").item(0);
         NodeList dsChilds = solrDs.getChildNodes();
         for (int i = 0; i < dsChilds.getLength(); i++) {

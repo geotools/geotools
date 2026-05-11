@@ -38,6 +38,7 @@ import net.opengis.wfs.FeatureTypeType;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xs.bindings.XSDoubleBinding;
 import org.geotools.xs.bindings.XSIntegerBinding;
 import org.geotools.xs.bindings.XSStringBinding;
@@ -107,9 +108,9 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                             && pc.contains("gml:X")
                             && pc.contains("gml:Y")) {
 
-                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                        DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory();
                         factory.setNamespaceAware(true);
-                        DocumentBuilder builder = factory.newDocumentBuilder();
+                        DocumentBuilder builder = XMLUtils.newDocumentBuilder(factory);
                         Document doc = builder.parse(new ByteArrayInputStream(pc.getBytes(StandardCharsets.UTF_8)));
 
                         NodeList boxes = doc.getElementsByTagName("gml:Box");

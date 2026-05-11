@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -43,6 +42,7 @@ import org.geotools.data.solr.SolrTypeData.SolrTypes;
 import org.geotools.data.solr.StationData.Stations;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.util.URLs;
+import org.geotools.xml.XMLUtils;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
@@ -169,9 +169,7 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
 
     protected void copyAndPatchTestData(String baseFileName) throws Exception {
         File file = URLs.urlToFile(this.getClass().getResource(testData + baseFileName));
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(new InputSource(new FileInputStream(file)));
+        Document doc = XMLUtils.newDocumentBuilder().parse(new InputSource(new FileInputStream(file)));
         NodeList solrStores = doc.getElementsByTagName("SolrDataStore");
         for (int i = 0; i < solrStores.getLength(); i++) {
             NodeList children = solrStores.item(i).getChildNodes();

@@ -16,10 +16,12 @@
  */
 package org.geotools.filter.expression;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,21 +38,14 @@ public class SimpleFeaturePropertyAccessorFactoryTest {
     public void test() {
 
         // make sure features are supported
-        Assert.assertNotNull(factory.createPropertyAccessor(SimpleFeature.class, "xpath", null, null));
-        Assert.assertNotNull(factory.createPropertyAccessor(SimpleFeatureType.class, "xpath", null, null));
-        Assert.assertNull(factory.createPropertyAccessor(Map.class, "xpath", null, null));
+        assertNotNull(factory.createPropertyAccessor(SimpleFeature.class, "xpath", null, null));
+        assertNotNull(factory.createPropertyAccessor(SimpleFeatureType.class, "xpath", null, null));
+        assertNull(factory.createPropertyAccessor(Map.class, "xpath", null, null));
 
-        // make sure only simple xpath
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "@xpath", null, null));
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeatureType.class, "@xpath", null, null));
+        // check for default geometry
+        assertNotNull(factory.createPropertyAccessor(SimpleFeature.class, "\"\"", null, null));
 
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "/xpath", null, null));
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeatureType.class, "/xpath", null, null));
-
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "*[0]", null, null));
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeatureType.class, "*[0]", null, null));
-
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "===", null, null));
-        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "34x?<>", null, null));
+        // any other property value will be tested against the simple feature contents by the accessor,
+        // an attribute name in simple features can be anything
     }
 }

@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.filter.Filter;
@@ -107,7 +108,6 @@ import org.geotools.util.Base64;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.GeoTools;
-import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Element;
@@ -359,16 +359,23 @@ public class SLDParser {
 
     protected javax.xml.parsers.DocumentBuilder newDocumentBuilder(boolean namespaceAware)
             throws ParserConfigurationException {
-        Hints hints = GeoTools.getDefaultHints();
-        if (this.entityResolver != null) {
-            hints.put(Hints.ENTITY_RESOLVER, this.entityResolver);
-        }
-        javax.xml.parsers.DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory(hints);
+        javax.xml.parsers.DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
         dbf.setNamespaceAware(namespaceAware);
-        javax.xml.parsers.DocumentBuilder db = XMLUtils.newDocumentBuilder();
+
+        if (entityResolver != null) {
+            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+            dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            dbf.setFeature("http://xml.org/sax/features/external-general-entities", true);
+            dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        }
+
+        javax.xml.parsers.DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf);
 
         if (entityResolver != null) {
             db.setEntityResolver(entityResolver);
+        } else {
+            db.setEntityResolver(GeoTools.getEntityResolver(null));
         }
 
         return db;

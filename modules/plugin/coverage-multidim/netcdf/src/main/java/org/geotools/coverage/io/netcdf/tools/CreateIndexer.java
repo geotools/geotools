@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -115,14 +116,7 @@ public class CreateIndexer {
         System.setProperty("org.geotools.netcdf.quickscan", "TRUE");
 
         File sampleFile = new File(sampleFilePath);
-        File temp = File.createTempFile("XML", "NC");
-        if (!temp.delete()) {
-            throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
-        }
-
-        if (!temp.mkdir()) {
-            throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
-        }
+        File temp = Files.createTempDirectory("XML-NC").toFile();
 
         System.setProperty("NETCDF_DATA_DIR", temp.getAbsolutePath());
         System.out.println("Reading sample file: " + sampleFilePath);

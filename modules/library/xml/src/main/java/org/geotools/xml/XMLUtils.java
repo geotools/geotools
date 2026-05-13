@@ -174,7 +174,8 @@ public class XMLUtils {
      * @param source Source input
      * @param hints Factory configuration
      * @return XML transformer
-     */    public static Transformer newTransformer(Source source, Hints hints) throws TransformerConfigurationException {
+     */
+    public static Transformer newTransformer(Source source, Hints hints) throws TransformerConfigurationException {
         return newTransformerFactory(hints).newTransformer(source);
     }
 

@@ -36,6 +36,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.maven.xmlcodegen.BindingConstructorArgument;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Schemas;
 
 public class CLASS
@@ -128,8 +129,7 @@ public class CLASS
 
     StringWriter writer = new StringWriter();
 
-    SAXTransformerFactory txFactory = 
-            (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+    SAXTransformerFactory txFactory = XMLUtils.newSaxTransformerFactory();
     TransformerHandler xmls;
     try {
         xmls = txFactory.newTransformerHandler();

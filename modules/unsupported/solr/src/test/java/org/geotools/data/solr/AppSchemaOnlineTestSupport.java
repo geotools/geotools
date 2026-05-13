@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
@@ -216,7 +215,7 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
                     break;
             }
         }
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        Transformer transformer = XMLUtils.newTransformer();
         transformer.transform(new DOMSource(doc), new StreamResult(new File(tempDir, baseFileName)));
     }
 

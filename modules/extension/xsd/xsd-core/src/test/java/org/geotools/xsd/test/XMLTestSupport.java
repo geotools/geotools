@@ -29,7 +29,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.xsd.XSDSchema;
@@ -289,8 +288,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
 
     /** Convenience method to dump the contents of the document to stdout. */
     public static void print(Node dom) throws Exception {
-        TransformerFactory txFactory = TransformerFactory.newInstance();
-        Transformer tx = txFactory.newTransformer();
+        Transformer tx = XMLUtils.newTransformer();
         tx.setOutputProperty(OutputKeys.INDENT, "yes");
 
         tx.transform(new DOMSource(dom), new StreamResult(System.out));

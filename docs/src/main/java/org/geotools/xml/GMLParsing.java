@@ -16,7 +16,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.IOUtils;
@@ -114,7 +113,7 @@ public class GMLParsing {
                 .setAttribute("xsi:schemaLocation", "http://www.openplans.org/topp " + xsd.getCanonicalPath());
 
         File xml = File.createTempFile("states", "xml");
-        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(d), new StreamResult(xml));
+        XMLUtils.newTransformer().transform(new DOMSource(d), new StreamResult(xml));
         return xml;
     }
 }

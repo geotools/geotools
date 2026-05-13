@@ -49,6 +49,7 @@ import org.geotools.util.logging.Logging;
 import org.geotools.wmts.WMTS;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xlink.XLINK;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.ows.OWS;
@@ -474,14 +475,14 @@ public class WMTSConfigurationTest extends XmlTestSupport {
 
     /** Utility method to print out a dom. */
     protected void print(Document dom) throws Exception {
-        TransformerFactory txFactory = TransformerFactory.newInstance();
+        TransformerFactory txFactory = XMLUtils.newTransformerFactory();
         try {
             txFactory.setAttribute("{http://xml.apache.org/xalan}indent-number", Integer.valueOf(4));
         } catch (Exception e) {
             // some
         }
 
-        Transformer tx = txFactory.newTransformer();
+        Transformer tx = XMLUtils.newTransformer(txFactory);
         tx.setOutputProperty(OutputKeys.METHOD, "xml");
         tx.setOutputProperty(OutputKeys.INDENT, "yes");
 

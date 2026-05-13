@@ -157,5 +157,24 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
       </property>
     </properties>
   </rule>
+  <rule name="AvoidTransform"
+        language="java"
+        message="Do not use TransformerFactory directly; recommend XMLUtils.newTransformer()"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <description>
+      Notice use of TransformerFactory.newInstance() which should be avoided in favor of
+      XMLUtils.newInstance(Hints) to respect GeoTools init configuration.
+    </description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath">
+          <value>
+              <![CDATA[
+              //MethodCall[pmd-java:matchesSig("javax.xml.transform.TransformerFactory#newTransformer()")]
+              ]]>
+          </value>
+      </property>
+    </properties>
+  </rule>
 
 </ruleset>

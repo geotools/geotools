@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
@@ -63,7 +62,7 @@ public class GMLParsingTest {
         dom.getDocumentElement()
                 .setAttribute("xsi:schemaLocation", "http://www.geotools.org/test " + schemaURL.getFile());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(dom), new StreamResult(out));
+        XMLUtils.newTransformer().transform(new DOMSource(dom), new StreamResult(out));
 
         GMLConfiguration config = new GMLConfiguration();
         Parser p = new Parser(config);

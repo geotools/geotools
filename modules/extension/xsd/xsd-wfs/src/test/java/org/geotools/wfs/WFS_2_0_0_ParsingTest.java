@@ -33,7 +33,6 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import net.opengis.fes20.FilterCapabilitiesType;
@@ -344,7 +343,7 @@ public class WFS_2_0_0_ParsingTest {
             tmp = File.createTempFile("geoserver-GetFeature", "xml");
             tmp.deleteOnExit();
 
-            Transformer tx = TransformerFactory.newInstance().newTransformer();
+            Transformer tx = XMLUtils.newTransformer();
             tx.transform(new DOMSource(doc), new StreamResult(tmp));
         }
 

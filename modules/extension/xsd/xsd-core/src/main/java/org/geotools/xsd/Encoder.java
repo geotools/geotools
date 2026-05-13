@@ -521,7 +521,7 @@ public class Encoder {
         }
 
         // create the document serializer
-        SAXTransformerFactory txFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+        SAXTransformerFactory txFactory = XMLUtils.newSaxTransformerFactory();
 
         TransformerHandler xmls;
         try {
@@ -1100,7 +1100,7 @@ public class Encoder {
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         DOMResult result = new DOMResult();
 
-        Transformer tx = XMLUtils.newTransformer(null);
+        Transformer tx = XMLUtils.newTransformer();
         tx.transform(new StreamSource(in), result);
         return (Document) result.getNode();
     }

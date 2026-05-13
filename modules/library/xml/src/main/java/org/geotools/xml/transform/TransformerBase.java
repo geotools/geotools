@@ -36,6 +36,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
+import org.geotools.xml.XMLUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -68,7 +69,7 @@ public abstract class TransformerBase {
 
     /** Create a Transformer which is initialized with the settings of this TransformerBase. */
     public Transformer createTransformer() throws TransformerException {
-        TransformerFactory tFactory = TransformerFactory.newInstance();
+        TransformerFactory tFactory = XMLUtils.newTransformerFactory();
         if (indentation > -1) {
             try {
                 tFactory.setAttribute("indent-number", Integer.valueOf(indentation));
@@ -77,7 +78,7 @@ public abstract class TransformerBase {
             }
         }
 
-        Transformer transformer = tFactory.newTransformer();
+        Transformer transformer = XMLUtils.newTransformer(tFactory);
 
         if (indentation > -1) {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");

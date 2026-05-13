@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -49,7 +48,7 @@ public class GMLApplicationSchemaParsingTest {
             document.getDocumentElement().removeAttribute("xsi:schemaLocation");
 
             // reserialize the document
-            Transformer tx = TransformerFactory.newInstance().newTransformer();
+            Transformer tx = XMLUtils.newTransformer();
             tx.transform(new DOMSource(document), new StreamResult(schemaFile));
         }
         try (FileInputStream in = new FileInputStream(schemaFile)) {
@@ -82,7 +81,7 @@ public class GMLApplicationSchemaParsingTest {
             document.getDocumentElement().removeAttribute("xsi:schemaLocation");
 
             // reserialize the document
-            Transformer tx = TransformerFactory.newInstance().newTransformer();
+            Transformer tx = XMLUtils.newTransformer();
             tx.transform(new DOMSource(document), new StreamResult(schemaFile));
         }
         try (InputStream in = new FileInputStream(schemaFile)) {
@@ -117,7 +116,7 @@ public class GMLApplicationSchemaParsingTest {
             document.getDocumentElement().setAttribute("xsi:schemaLocation", TEST.NAMESPACE + " " + schemaLocation);
 
             // reserialize the document
-            Transformer tx = TransformerFactory.newInstance().newTransformer();
+            Transformer tx = XMLUtils.newTransformer();
             tx.transform(new DOMSource(document), new StreamResult(schemaFile));
         }
         try (InputStream in = new FileInputStream(schemaFile)) {

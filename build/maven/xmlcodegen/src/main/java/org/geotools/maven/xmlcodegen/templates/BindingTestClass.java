@@ -30,6 +30,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Schemas;
 
 public class BindingTestClass
@@ -79,8 +80,7 @@ public class BindingTestClass
     
     StringWriter writer = new StringWriter();
 
-    SAXTransformerFactory txFactory = 
-            (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+    SAXTransformerFactory txFactory = XMLUtils.newSaxTransformerFactory();
     TransformerHandler xmls;
     try {
         xmls = txFactory.newTransformerHandler();

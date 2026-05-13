@@ -27,7 +27,6 @@ import java.util.Properties;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
@@ -38,6 +37,7 @@ import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GMLTestSupport;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.junit.Before;
@@ -138,8 +138,7 @@ public class GMLWriterTest extends GMLTestSupport {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         // create the document serializer
-        SAXTransformerFactory txFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
-
+        SAXTransformerFactory txFactory = XMLUtils.newSaxTransformerFactory();
         TransformerHandler xmls;
         try {
             xmls = txFactory.newTransformerHandler();
@@ -163,7 +162,7 @@ public class GMLWriterTest extends GMLTestSupport {
 
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         DOMResult result = new DOMResult();
-        Transformer tx = TransformerFactory.newInstance().newTransformer();
+        Transformer tx = XMLUtils.newTransformer();
         tx.transform(new StreamSource(in), result);
         Document d = (Document) result.getNode();
         return d;

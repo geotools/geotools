@@ -39,6 +39,7 @@ import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.feature.type.PropertyType;
 import org.geotools.api.feature.type.Schema;
 import org.geotools.maven.xmlcodegen.SchemaGenerator;
+import org.geotools.xml.XMLUtils;
 
 public class SchemaClassTemplate
 {
@@ -161,8 +162,7 @@ public class SchemaClassTemplate
           StringWriter writer = new StringWriter();
 
           XSDTypeDefinition xsdType = sg.getXSDType(type);
-          SAXTransformerFactory txFactory =
-                  (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+          SAXTransformerFactory txFactory = XMLUtils.newSaxTransformerFactory();
           TransformerHandler xmls;
           try {
               xmls = txFactory.newTransformerHandler();

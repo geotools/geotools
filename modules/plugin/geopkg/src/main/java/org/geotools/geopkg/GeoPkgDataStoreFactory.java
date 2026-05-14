@@ -50,6 +50,8 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     public static final Param READ_ONLY = new Param("read_only", Boolean.class, "Read only", false);
 
+    public static final Param IMMUTABLE = new Param("immutable", Boolean.class, "Immutable", false);
+
     public static final Param CONTENTS_ONLY =
             new Param("contents_only", Boolean.class, "Contents only", false, Boolean.TRUE);
 
@@ -134,8 +136,10 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         }
         String jdbcUri = "jdbc:sqlite:" + db.toURI();
         Object readOnly = READ_ONLY.lookUp(params);
-        if (Boolean.TRUE.equals(readOnly) && isNeedImmutable(db.toPath())) {
-            // if the readOnly mode has been requested and the geopackage file and parent directory are also
+        Object immutable = IMMUTABLE.lookUp(params);
+        if (Boolean.TRUE.equals(immutable) || (Boolean.TRUE.equals(readOnly) && isNeedImmutable(db.toPath()))) {
+            // If immutable is requested, enable it, it will avoid even read only locking.
+            // If the readOnly mode has been requested and the GeoPackage file and parent directory are also
             // readonly we also set the immutable flag. This prevents any exceptions being thrown in the
             // unlikely case the GeoPackage has an incomplete transaction because sqlite will otherwise
             // attempt to recover the transaction and that will fail on a read only file system.
@@ -174,8 +178,9 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(DATABASE.key, DATABASE);
         // replace dbtype
         parameters.put(DBTYPE.key, DBTYPE);
-        // add the read only flag
+        // add the read only and immutable flags
         parameters.put(READ_ONLY.key, READ_ONLY);
+        parameters.put(IMMUTABLE.key, IMMUTABLE);
         // memory mapping
         parameters.put(MEMORY_MAP_SIZE.key, MEMORY_MAP_SIZE);
     }

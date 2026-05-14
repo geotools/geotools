@@ -17,9 +17,12 @@
 package org.geotools.data.geoparquet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.data.DataAccessFactory;
+import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.data.duckdb.AbstractDuckDBDataStoreFactory;
 import org.geotools.data.duckdb.ForwardingDataStoreFactory;
 import org.geotools.jdbc.JDBCDataStore;
 
@@ -68,7 +71,19 @@ public class GeoParquetDataStoreFactory extends ForwardingDataStoreFactory<GeoPa
 
     @Override
     public GeoparquetDataStore createDataStore(Map<String, ?> params) throws IOException {
-        JDBCDataStore delegateStore = delegate.createDataStore(params);
+        JDBCDataStore delegateStore = delegate.createDataStore(withWritableDuckDb(params));
         return new GeoparquetDataStore(delegateStore);
+    }
+
+    @Override
+    public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
+        JDBCDataStore delegateStore = (JDBCDataStore) delegate.createNewDataStore(withWritableDuckDb(params));
+        return new GeoparquetDataStore(delegateStore);
+    }
+
+    private Map<String, Object> withWritableDuckDb(Map<String, ?> params) {
+        Map<String, Object> writableParams = new HashMap<>(params);
+        writableParams.put(AbstractDuckDBDataStoreFactory.READ_ONLY.key, Boolean.FALSE);
+        return writableParams;
     }
 }

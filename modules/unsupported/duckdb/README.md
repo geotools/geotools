@@ -21,6 +21,7 @@ The public DuckDB store is exposed through a restricted GeoTools-side wrapper.
 - GeoTools JDBC virtual tables are disabled for the public store
 - Native filters are disabled (`DuckDBFilterToSQL` rejects `NativeFilter`)
 - Initialization SQL is managed internally by GeoTools
+- `read_only=true` is enforced both at the GeoTools API layer and at the DuckDB engine level, so file-backed databases are opened with DuckDB's read-only connection property
 
 This module is intended to reduce the exposed SQL surface while still allowing DuckDB-backed access through standard GeoTools APIs.
 
@@ -76,6 +77,7 @@ SimpleFeatureCollection features = source.getFeatures(filter);
 | **dbtype** | String | Yes | Must be `"duckdb"` |
 | **memory** | Boolean | No | Use an in-memory DuckDB database (default: `false`) |
 | **database** | String | No | Path to a DuckDB database file; required unless `memory=true` |
+| **read_only** | Boolean | No | Open the DuckDB database in read-only mode at both the GeoTools API layer and the engine level (default: `true`) |
 | **namespace** | String | No | Namespace URI to use for features |
 | **fetch size** | Integer | No | JDBC fetch size used for result streaming |
 | **screenmap** | Boolean | No | Enable screenmap support for rendering optimization (default: `true`) |

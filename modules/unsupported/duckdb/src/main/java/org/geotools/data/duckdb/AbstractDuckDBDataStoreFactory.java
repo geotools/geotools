@@ -57,7 +57,8 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
     public static final Param READ_ONLY = new ParamBuilder("read_only")
             .type(Boolean.class)
             .title("Read only")
-            .description("Restrict the DuckDB datastore to read-only GeoTools operations")
+            .description(
+                    "Open file-backed DuckDB databases in read-only mode at both the GeoTools API layer and the DuckDB engine level")
             .required(false)
             .defaultValue(true)
             .userLevel()
@@ -145,12 +146,18 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
 
         DuckDBDialect duckDBDialect = (DuckDBDialect) dialect;
         List<String> databaseInitSqls = duckDBDialect.getDatabaseInitSql();
+        Boolean readOnly = (Boolean) READ_ONLY.lookUp(params);
+        String jdbcUrl = getJDBCUrl(params);
+        boolean inMemory = "jdbc:duckdb:".equals(jdbcUrl);
 
         DuckdbDataSource dataSource = new DuckdbDataSource(databaseInitSqls);
-        dataSource.setUrl(getJDBCUrl(params));
+        dataSource.setUrl(jdbcUrl);
         dataSource.setDriverClassName(getDriverClassName());
         // configure the driver for streaming
         dataSource.addConnectionProperty(DuckDBDriver.JDBC_STREAM_RESULTS, "true");
+        if (!inMemory && (readOnly == null || readOnly)) {
+            dataSource.addConnectionProperty(DuckDBDriver.DUCKDB_READONLY_PROPERTY, "true");
+        }
         // keep at least one open connection to not lose memory databases
         dataSource.setMinIdle(1);
         dataSource.setMaxActive(2 * Runtime.getRuntime().availableProcessors());

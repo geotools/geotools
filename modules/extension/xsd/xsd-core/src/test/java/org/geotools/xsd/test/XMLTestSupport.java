@@ -29,7 +29,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.test.xml.XmlTestSupport;
@@ -291,7 +290,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         Transformer tx = XMLUtils.newTransformer();
         tx.setOutputProperty(OutputKeys.INDENT, "yes");
 
-        tx.transform(new DOMSource(dom), new StreamResult(System.out));
+        tx.transform(XMLUtils.source(dom), new StreamResult(System.out));
     }
 
     /**

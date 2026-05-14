@@ -17,6 +17,9 @@
 package org.geotools.data.duckdb;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -125,5 +128,35 @@ public class DuckDBDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     @Test
     public void testGetFeatureWriterAppend() throws IOException {
         super.testGetFeatureWriterAppend();
+    }
+
+    /** Verifies that writable mode leaves the DuckDB engine open for DDL on a borrowed connection. */
+    @Test
+    public void testBorrowedConnectionAllowsCreateTableWhenWritable() throws Exception {
+        String tableName = tname("writable_engine_guard");
+
+        try {
+            executeCreateTable(tableName);
+        } finally {
+            try {
+                dropTable(tableName);
+            } catch (Exception e) {
+                throw new AssertionError("Failed to clean up table " + tableName, e);
+            }
+        }
+    }
+
+    private void executeCreateTable(String tableName) throws SQLException {
+        try (Connection connection = dataStore.getDataSource().getConnection();
+                Statement statement = connection.createStatement()) {
+            statement.execute("CREATE TABLE \"" + tableName + "\" (\"id\" INTEGER)");
+        }
+    }
+
+    private void dropTable(String tableName) throws Exception {
+        try (Connection connection = setup.getDataSource().getConnection();
+                Statement statement = connection.createStatement()) {
+            statement.execute("DROP TABLE IF EXISTS \"" + tableName + "\"");
+        }
     }
 }

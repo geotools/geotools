@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.logging.Level;
-import javax.xml.ws.http.HTTPException;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.ResourceInfo;
@@ -273,7 +272,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         // Executes the request
         try {
             result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
-        } catch (HTTPException | URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new IOException(e);
         }
 

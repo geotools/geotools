@@ -28,6 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,25 +41,22 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import org.apache.http.Consts;
-import org.apache.http.Header;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.apache.hc.core5.net.URIBuilder;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.type.Name;
 import org.geotools.data.arcgisrest.schema.catalog.Catalog;
@@ -423,7 +421,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
         });
 
         // Instanties the method based on the methType parameter
-        HttpRequestBase httpRequest;
+        HttpUriRequestBase httpRequest;
         if (methType.equals("GET")) {
             httpRequest = new HttpGet(
                     new URIBuilder(String.valueOf(url)).addParameters(kvps).build());
@@ -431,25 +429,23 @@ public class ArcGISRestDataStore extends ContentDataStore {
                     Level.FINER,
                     String.format(
                             "About to query GET '%s?%s'",
-                            url.toString(), httpRequest.getURI().getQuery()));
+                            url.toString(), httpRequest.getUri().getQuery()));
         } else {
             httpRequest = new HttpPost(new URIBuilder(String.valueOf(url)).build());
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(kvps, Consts.UTF_8);
-            entity.setChunked(true);
-            ((HttpPost) (httpRequest)).setEntity(entity);
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(kvps, StandardCharsets.UTF_8);
+            ((HttpPost) httpRequest).setEntity(entity);
             this.LOGGER.log(Level.FINER, String.format("About to query POST '%s' with body: %s", url, params));
         }
 
-        httpRequest.setConfig(
-                RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT).build());
+        httpRequest.setConfig(RequestConfig.custom().setCookieSpec(null).build());
 
         // Adds authorization if login/password is set
-        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
         if (this.user != null && this.password != null) {
             credsProvider.setCredentials(
                     new AuthScope(
-                            httpRequest.getURI().getHost(), httpRequest.getURI().getPort()),
-                    new UsernamePasswordCredentials("user", "passwd"));
+                            httpRequest.getUri().getHost(), httpRequest.getUri().getPort()),
+                    new UsernamePasswordCredentials("user", "passwd".toCharArray()));
         }
         try (CloseableHttpClient client = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
@@ -462,10 +458,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
                 try (CloseableHttpResponse httpResponse = client.execute(httpRequest)) {
 
                     // If HTTP error, throws an exception
-                    if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                    if (httpResponse.getCode() != HttpStatus.SC_OK) {
                         throw new IOException(String.format(
-                                "HTTP Status: %d for URL: %s",
-                                httpResponse.getStatusLine().getStatusCode(), httpRequest.getURI()));
+                                "HTTP Status: %d for URL: %s", httpResponse.getCode(), httpRequest.getUri()));
                     }
 
                     // Retrieve the wait period is returned by the server
@@ -485,7 +480,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                                 Level.FINE,
                                 String.format(
                                         "Waiting %d seconds before retrying request to %s",
-                                        wait, httpRequest.getURI()));
+                                        wait, httpRequest.getUri()));
                         Thread.sleep(wait * 1000);
 
                     } catch (InterruptedException e) {

@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.Instant;
@@ -33,7 +34,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -179,6 +183,20 @@ public class DuckDBDialect extends BasicSQLDialect {
         Class<?> parentMapping = getParentMapping(columnMetaData, cx);
         String typeName = columnMetaData.getString("TYPE_NAME");
 
+        if (typeName != null) {
+            String normalizedTypeName = typeName.toUpperCase(Locale.ROOT);
+            if ("TIME_NS".equals(normalizedTypeName)
+                    || "TIMETZ".equals(normalizedTypeName)
+                    || "TIME WITH TIME ZONE".equals(normalizedTypeName)) {
+                return Time.class;
+            }
+            // DuckDB reports precision and timezone variants in the SQL type name.
+            // Keep all TIMESTAMP family variants normalized to java.sql.Timestamp.
+            if (normalizedTypeName.startsWith("TIMESTAMP")) {
+                return Timestamp.class;
+            }
+        }
+
         // Check if it's a geometry column
         if ("GEOMETRY".equalsIgnoreCase(typeName)) {
             return Geometry.class;
@@ -204,12 +222,20 @@ public class DuckDBDialect extends BasicSQLDialect {
     public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
         super.registerSqlTypeToClassMappings(mappings);
         mappings.put(Types.STRUCT, Struct.class);
+        mappings.put(Types.TIME_WITH_TIMEZONE, Time.class);
         mappings.put(Types.TIMESTAMP_WITH_TIMEZONE, Timestamp.class);
     }
 
     @Override
     public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
+        mappings.put("TIME_NS", Time.class);
+        mappings.put("TIMETZ", Time.class);
+        mappings.put("TIME WITH TIME ZONE", Time.class);
+        mappings.put("TIMESTAMP_S", Timestamp.class);
+        mappings.put("TIMESTAMP_MS", Timestamp.class);
+        mappings.put("TIMESTAMP_NS", Timestamp.class);
+        mappings.put("TIMESTAMPTZ", Timestamp.class);
         mappings.put("TIMESTAMP WITH TIME ZONE", Timestamp.class);
     }
 
@@ -281,11 +307,37 @@ public class DuckDBDialect extends BasicSQLDialect {
                 return Timestamp.from(instant);
             }
         }
-        if (binding == java.sql.Time.class && value instanceof LocalTime localTime) {
-            return java.sql.Time.valueOf(localTime);
+        if (binding == Time.class) {
+            if (value instanceof LocalTime localTime) {
+                return Time.valueOf(localTime);
+            }
+            if (value instanceof OffsetTime offsetTime) {
+                return Time.valueOf(offsetTime.toLocalTime());
+            }
+            if (value instanceof String text) {
+                Time parsed = parseDuckDbTime(text);
+                if (parsed != null) {
+                    return parsed;
+                }
+            }
         }
 
         return super.convertValue(value, ad);
+    }
+
+    private Time parseDuckDbTime(String text) {
+        try {
+            return Time.valueOf(OffsetTime.parse(text).toLocalTime());
+        } catch (DateTimeParseException e) {
+            // Fallback to local-time parsing for non-timezone time values.
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Unable to parse time string: " + text, e);
+        }
+        try {
+            return Time.valueOf(LocalTime.parse(text));
+        } catch (DateTimeParseException e) {
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Unable to parse time string: " + text, e);
+            return null;
+        }
     }
 
     @Override

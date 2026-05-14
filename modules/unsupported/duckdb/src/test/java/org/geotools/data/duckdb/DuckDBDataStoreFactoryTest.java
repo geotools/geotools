@@ -27,6 +27,9 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -35,6 +38,7 @@ import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.decorate.Wrapper;
 import org.junit.Rule;
 import org.junit.Test;
@@ -146,6 +150,49 @@ public class DuckDBDataStoreFactoryTest {
     }
 
     @Test
+    public void testCreateDataStoreDefaultsToEngineReadOnlyWhenParameterOmitted() throws Exception {
+        File database = new File(temporaryFolder.newFolder("duckdb-read-only"), "store.duckdb");
+        createSeedTable(database);
+
+        DuckDBDataStoreFactory factory = new DuckDBDataStoreFactory();
+        Map<String, Object> params = new HashMap<>();
+        params.put("dbtype", "duckdb");
+        params.put("database", database.getAbsolutePath());
+
+        DuckDBDataStore store = null;
+        try {
+            store = factory.createDataStore(params);
+            assertReadOnlyCreateTableFails(store, "read_only_engine_check");
+        } finally {
+            if (store != null) {
+                store.dispose();
+            }
+        }
+    }
+
+    @Test
+    public void testCreateDataStoreOpensEngineWritableWhenConfigured() throws Exception {
+        File database = new File(temporaryFolder.newFolder("duckdb-writable"), "store.duckdb");
+        createSeedTable(database);
+
+        DuckDBDataStoreFactory factory = new DuckDBDataStoreFactory();
+        Map<String, Object> params = new HashMap<>();
+        params.put("dbtype", "duckdb");
+        params.put("database", database.getAbsolutePath());
+        params.put("read_only", Boolean.FALSE);
+
+        DuckDBDataStore store = null;
+        try {
+            store = factory.createDataStore(params);
+            assertWritableCreateTableSucceeds(store, "writable_engine_check");
+        } finally {
+            if (store != null) {
+                store.dispose();
+            }
+        }
+    }
+
+    @Test
     public void testCreateDataStoreRejectsMissingDatabaseWhenNotInMemory() {
         DuckDBDataStoreFactory factory = new DuckDBDataStoreFactory();
         Map<String, Object> params = new HashMap<>();
@@ -182,7 +229,6 @@ public class DuckDBDataStoreFactoryTest {
         Map<String, Object> params = new HashMap<>();
         params.put("dbtype", "duckdb");
         params.put("memory", Boolean.TRUE);
-        params.put("read_only", Boolean.FALSE);
 
         DataStore store = null;
         try {
@@ -190,6 +236,26 @@ public class DuckDBDataStoreFactoryTest {
             assertNotNull(store);
             assertTrue(store instanceof DuckDBDataStore);
             assertEquals(0, store.getTypeNames().length);
+        } finally {
+            if (store != null) {
+                store.dispose();
+            }
+        }
+    }
+
+    @Test
+    public void testCreateDataStoreSupportsInMemoryModeWithDefaultReadOnly() throws Exception {
+        DuckDBDataStoreFactory factory = new DuckDBDataStoreFactory();
+        Map<String, Object> params = new HashMap<>();
+        params.put("dbtype", "duckdb");
+        params.put("memory", Boolean.TRUE);
+        params.put("read_only", Boolean.TRUE);
+
+        DuckDBDataStore store = null;
+        try {
+            store = factory.createDataStore(params);
+            executeCreateTable(store, "in_memory_read_only_guard");
+            assertTrue(store.getTypeNames().length >= 1);
         } finally {
             if (store != null) {
                 store.dispose();
@@ -224,7 +290,7 @@ public class DuckDBDataStoreFactoryTest {
     }
 
     private void createSeedTable(File database) throws Exception {
-        org.geotools.jdbc.JDBCDataStore store = DuckDBTestUtils.createStore(database.toPath(), false);
+        JDBCDataStore store = DuckDBTestUtils.createStore(database.toPath(), false);
         try {
             DuckDBTestUtils.runSetupSql(
                     store,
@@ -232,6 +298,40 @@ public class DuckDBDataStoreFactoryTest {
                     "INSERT INTO existing VALUES (1, ST_GeomFromText('POINT (0 0)'), 'seed')");
         } finally {
             store.dispose();
+        }
+    }
+
+    private void assertReadOnlyCreateTableFails(DuckDBDataStore store, String tableName) throws Exception {
+        try {
+            executeCreateTable(store, tableName);
+            fail("Expected DuckDB engine read-only mode to reject DDL");
+        } catch (SQLException e) {
+            assertNotNull(e.getMessage());
+            String message = e.getMessage().toLowerCase();
+            assertTrue(message.contains("read-only") || message.contains("readonly"));
+        }
+    }
+
+    private void assertWritableCreateTableSucceeds(DuckDBDataStore store, String tableName) throws Exception {
+        executeCreateTable(store, tableName);
+        try {
+            executeDropTable(store, tableName);
+        } catch (SQLException e) {
+            fail("Expected cleanup DROP TABLE to succeed, but got: " + e.getMessage());
+        }
+    }
+
+    private void executeCreateTable(DuckDBDataStore store, String tableName) throws SQLException {
+        try (Connection connection = store.delegate.getDataSource().getConnection();
+                Statement statement = connection.createStatement()) {
+            statement.execute("CREATE TABLE " + tableName + " (id INTEGER)");
+        }
+    }
+
+    private void executeDropTable(DuckDBDataStore store, String tableName) throws SQLException {
+        try (Connection connection = store.delegate.getDataSource().getConnection();
+                Statement statement = connection.createStatement()) {
+            statement.execute("DROP TABLE " + tableName);
         }
     }
 }

@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -1078,8 +1079,10 @@ public class Hints extends RenderingHints {
     }
 
     /**
-     * Invokes {@link GeoTools#scanSystemProperties} when first needed. The caller is responsible for invoking
-     * {@link GeoTools#fireConfigurationChanged} if this method returns {@code true}.
+     * Invokes {@link GeoTools#scanForSystemHints(Map)} when first needed. The caller is responsible for invoking
+     * {@link GeoTools#fireConfigurationChanged(RenderingHints)} if this method returns {@code true}.
+     *
+     * <p>See {@link #changedHints(boolean, Map)} for code example.
      *
      * @return {@code true} if at least one hint changed as a result of this scan, or {@code false} otherwise.
      */
@@ -1095,27 +1098,76 @@ public class Hints extends RenderingHints {
         }
     }
 
+    /**
+     * Create a diff of what has changed in {@link #GLOBAL} after a chage, such as whenb
+     * {@code ensureSystemDefaultLoaded()} is called. This is used so we can fire a configuration change event with only
+     * the hints that have changed.
+     *
+     * <pre>{@literal
+     * Map<RenderingHints.Key, Object> previous = new ConcurrentHashMap<>(GLOBAL);
+     * final boolean changed = ensureSystemDefaultLoaded();
+     * final Object value = GLOBAL.get(key);
+     * Hints changedHints = changedHints(changed, previous);
+     * if (changedHints != null) {
+     *     GeoTools.fireConfigurationChanged(changedHints);
+     * }}</pre>
+     *
+     * @param changed The result of {@code ensureSystemDefaultLoaded()}
+     * @param previous The previous GLOBAL
+     * @return Hints capturing any change, or {@code null} for no change.
+     */
+    private static Map<RenderingHints.Key, Object> changedHints(
+            boolean changed, Map<RenderingHints.Key, Object> previous) {
+        if (changed) {
+            Map<RenderingHints.Key, Object> changes = new HashMap<>();
+            if (previous != null) {
+                changes.putAll(previous);
+            }
+            for (Map.Entry<RenderingHints.Key, Object> entry : GLOBAL.entrySet()) {
+                if (Objects.equals(entry.getValue(), changes.get(entry.getKey()))) {
+                    changes.remove(entry.getKey()); // unchanged
+                }
+                changes.put(entry.getKey(), entry.getValue()); // changed or added
+            }
+            for (Map.Entry<RenderingHints.Key, Object> entry : changes.entrySet()) {
+                if (!GLOBAL.containsKey(entry.getKey())) {
+                    entry.setValue(null);
+                }
+            }
+            return changes;
+        }
+        return null;
+    }
+
     /** Returns a copy of the system hints. This is for {@link GeoTools#getDefaultHints} implementation only. */
     static Hints getDefaults(final boolean strict) {
         final Hints hints;
+
+        Map<RenderingHints.Key, Object> previous = new HashMap<>(GLOBAL);
         final boolean changed = ensureSystemDefaultLoaded();
+        Map<RenderingHints.Key, Object> changes = changedHints(changed, previous);
+
         if (strict) {
             hints = new StrictHints(GLOBAL);
         } else {
             hints = new Hints(GLOBAL);
         }
         if (changed) {
-            GeoTools.fireConfigurationChanged();
+            GeoTools.fireConfigurationChanged(changes);
         }
         return hints;
     }
 
     /** Adds all specified hints to the system hints. This is for {@link GeoTools#init} implementation only. */
     static void putSystemDefault(final RenderingHints hints) {
+        Map<RenderingHints.Key, Object> previous = new HashMap<>(GLOBAL);
+
         ensureSystemDefaultLoaded();
         Map<RenderingHints.Key, Object> map = toMap(hints);
         GLOBAL.putAll(map);
-        GeoTools.fireConfigurationChanged();
+
+        Map<RenderingHints.Key, Object> changedHints = changedHints(true, previous);
+        GeoTools.fireConfigurationChanged(changedHints);
     }
 
     /**
@@ -1141,10 +1193,13 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public static Object getSystemDefault(final RenderingHints.Key key) {
+        Map<RenderingHints.Key, Object> previous = new ConcurrentHashMap<>(GLOBAL);
+
         final boolean changed = ensureSystemDefaultLoaded();
         final Object value = GLOBAL.get(key);
-        if (changed) {
-            GeoTools.fireConfigurationChanged();
+        Map<RenderingHints.Key, Object> changedHints = changedHints(changed, previous);
+        if (changedHints != null) {
+            GeoTools.fireConfigurationChanged(changedHints);
         }
         return value;
     }
@@ -1166,7 +1221,9 @@ public class Hints extends RenderingHints {
         final boolean changed = ensureSystemDefaultLoaded();
         final Object old = GLOBAL.put(key, value);
         if (changed || !Utilities.equals(value, old)) {
-            GeoTools.fireConfigurationChanged();
+            Map<RenderingHints.Key, Object> changes = new HashMap<>();
+            changes.put(key, value);
+            GeoTools.fireConfigurationChanged(changes);
         }
         return old;
     }
@@ -1182,7 +1239,9 @@ public class Hints extends RenderingHints {
         final boolean changed = ensureSystemDefaultLoaded();
         final Object old = GLOBAL.remove(key);
         if (changed || old != null) {
-            GeoTools.fireConfigurationChanged();
+            Map<RenderingHints.Key, Object> changes = new HashMap<>();
+            changes.put(key, null);
+            GeoTools.fireConfigurationChanged(changes);
         }
         return old;
     }
@@ -1196,22 +1255,20 @@ public class Hints extends RenderingHints {
     @Override
     public String toString() {
         final String lineSeparator = System.getProperty("line.separator", "\n");
-        final StringBuilder buffer = new StringBuilder("Hints:"); // TODO: localize
+        final StringBuilder buffer = new StringBuilder("Hints:");
         buffer.append(lineSeparator).append(AbstractFactory.toString(this));
         Map<?, ?> extra = null;
-        final boolean changed = ensureSystemDefaultLoaded();
-        if (!GLOBAL.isEmpty()) {
-            extra = new HashMap<>(GLOBAL);
-        }
-        if (changed) {
-            GeoTools.fireConfigurationChanged();
-        }
-        if (extra != null) {
-            extra.keySet().removeAll(keySet());
-            if (!extra.isEmpty()) {
-                buffer.append("System defaults:") // TODO: localize
-                        .append(lineSeparator)
-                        .append(AbstractFactory.toString(extra));
+        if (needScan.get()) {
+            buffer.append("System defaults: not loaded");
+        } else {
+            if (!GLOBAL.isEmpty()) {
+                extra = new HashMap<>(GLOBAL);
+            }
+            if (extra != null) {
+                extra.keySet().removeAll(keySet());
+                if (!extra.isEmpty()) {
+                    buffer.append("System defaults:").append(lineSeparator).append(AbstractFactory.toString(extra));
+                }
             }
         }
         return buffer.toString();

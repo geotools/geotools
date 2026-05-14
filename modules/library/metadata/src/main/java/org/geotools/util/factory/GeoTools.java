@@ -747,6 +747,7 @@ public final class GeoTools {
      * @see #getDefaultHints
      */
     public static void init() {
+        Hints.scanSystemProperties();
         if (Logging.ALL.getLoggerFactory() == null) {
             final String[] CANDIDATES = {
                 "org.geotools.util.logging.LogbackLoggerFactory",
@@ -1183,10 +1184,34 @@ public final class GeoTools {
      * Adds the specified listener to the list of objects to inform when system-wide configuration changed.
      *
      * @param listener The listener to add.
+     * @deprecated Use {@link #addConfigurationListener(FactoryChangeListener)} instead, which provdes details of
+     *     configuration change to listeners.
      */
+    @Deprecated
     public static void addChangeListener(final ChangeListener listener) {
         removeChangeListener(listener); // Ensure singleton.
         LISTENERS.add(ChangeListener.class, listener);
+    }
+    /**
+     * Adds the specified listener to the list of objects to inform when system-wide configuration changed.
+     *
+     * @param listener The listener to add.
+     */
+    public static void addConfigurationListener(final FactoryChangeListener listener) {
+        removeChangeListener(listener); // Ensure singleton.
+        LISTENERS.add(FactoryChangeListener.class, listener);
+    }
+
+    /**
+     * Removes the specified listener from the list of objects to inform when system-wide configuration changed.
+     *
+     * @param listener The listener to remove.
+     * @deprecated Use {@link #removeConfigurationListener(FactoryChangeListener)} instead, which provdes details of
+     *     configuration change to listeners.
+     */
+    @Deprecated
+    public static void removeChangeListener(final ChangeListener listener) {
+        LISTENERS.remove(ChangeListener.class, listener);
     }
 
     /**
@@ -1194,18 +1219,37 @@ public final class GeoTools {
      *
      * @param listener The listener to remove.
      */
-    public static void removeChangeListener(final ChangeListener listener) {
-        LISTENERS.remove(ChangeListener.class, listener);
+    public static void removeChangeListener(final FactoryChangeListener listener) {
+        LISTENERS.remove(FactoryChangeListener.class, listener);
     }
 
-    /** Informs every listeners that system-wide configuration changed. */
+    /** Informs every listener of a system-wide configuration changed. */
     public static void fireConfigurationChanged() {
-        final ChangeEvent event = new ChangeEvent(GeoTools.class);
+        fireConfigurationChanged(null);
+    }
+
+    /** Informs every listener of a system-wide configuration changed. */
+    public static void fireConfigurationChanged(Map<RenderingHints.Key, Object> hints) {
+        final ChangeEvent changeEvent = new javax.swing.event.ChangeEvent(GeoTools.class);
+        final FactoryConfigurationEvent configEvent = new FactoryConfigurationEvent(GeoTools.class, hints);
+
         final Object[] listeners = LISTENERS.getListenerList();
+        RuntimeException problem = null;
         for (int i = 0; i < listeners.length; i += 2) {
-            if (listeners[i] == ChangeListener.class) {
-                ((ChangeListener) listeners[i + 1]).stateChanged(event);
+            try {
+                if (listeners[i] == ChangeListener.class) {
+                    ((ChangeListener) listeners[i + 1]).stateChanged(changeEvent);
+                } else if (listeners[i] == FactoryChangeListener.class) {
+                    ((FactoryChangeListener) listeners[i + 1]).configurationChanged(configEvent);
+                }
+            } catch (RuntimeException unexpected) {
+                if (problem == null) problem = unexpected;
+            } catch (Throwable e) {
+                if (problem == null) problem = new RuntimeException(e);
             }
+        }
+        if (problem != null) {
+            throw problem;
         }
     }
 

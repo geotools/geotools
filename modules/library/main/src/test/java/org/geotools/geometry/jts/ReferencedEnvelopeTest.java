@@ -19,7 +19,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +33,6 @@ public class ReferencedEnvelopeTest {
         // its configuration, necessary when tests are run by Maven, one JVM for all
         // the tests in this module
         Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE);
-        GeoTools.fireConfigurationChanged();
     }
 
     @Test
@@ -351,6 +349,5 @@ public class ReferencedEnvelopeTest {
     @After
     public void tearDown() throws Exception {
         Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-        GeoTools.fireConfigurationChanged();
     }
 }

@@ -19,6 +19,7 @@ package org.geotools.referencing;
 import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.EASTING;
 import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
 
+import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.MessageFormat;
@@ -32,8 +33,6 @@ import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.citation.Citation;
@@ -97,6 +96,8 @@ import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.UnsupportedImplementationException;
 import org.geotools.util.Version;
 import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.FactoryChangeListener;
+import org.geotools.util.factory.FactoryConfigurationEvent;
 import org.geotools.util.factory.FactoryNotFoundException;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
@@ -178,17 +179,29 @@ public final class CRS {
 
     /* Registers a listener automatically invoked when the system-wide configuration changed. */
     static {
-        GeoTools.addChangeListener(new ChangeListener() {
+        GeoTools.addConfigurationListener(new FactoryChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
-                synchronized (CRS.class) {
-                    defaultFactory = null;
-                    xyFactory = null;
-                    strictFactory = null;
-                    lenientFactory = null;
-                    xyCache.clear();
-                    wktCache.clear();
-                    defaultCache.clear();
+            public void configurationChanged(FactoryConfigurationEvent e) {
+                Map<RenderingHints.Key, Object> changes = e.getHints();
+                if (changes == null
+                        || changes.containsKey(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
+                        || changes.containsKey(Hints.FORCE_STANDARD_AXIS_UNITS)
+                        || changes.containsKey(Hints.FORCE_STANDARD_AXIS_DIRECTIONS)
+                        || changes.containsKey(Hints.FORCE_AXIS_ORDER_HONORING)
+                        || changes.containsKey(Hints.CRS_AUTHORITY_FACTORY)
+                        || changes.containsKey(Hints.CRS_FACTORY)
+                        || changes.containsKey(Hints.CRS_AUTHORITY_EXTRA_DIRECTORY)
+                        || changes.containsKey(Hints.COORDINATE_OPERATION_FACTORY)
+                        || changes.containsKey(Hints.COORDINATE_OPERATION_AUTHORITY_FACTORY)) {
+                    synchronized (CRS.class) {
+                        defaultFactory = null;
+                        xyFactory = null;
+                        strictFactory = null;
+                        lenientFactory = null;
+                        xyCache.clear();
+                        wktCache.clear();
+                        defaultCache.clear();
+                    }
                 }
             }
         });

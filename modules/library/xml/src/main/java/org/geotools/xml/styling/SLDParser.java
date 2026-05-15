@@ -363,8 +363,16 @@ public class SLDParser {
         dbf.setNamespaceAware(namespaceAware);
 
         if (entityResolver != null) {
-            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
-            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+            try {
+                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            } catch (IllegalArgumentException notSupported) {
+                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
+            }
+            try {
+                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+            } catch (IllegalArgumentException notSupported) {
+                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
+            }
             dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             dbf.setFeature("http://xml.org/sax/features/external-general-entities", true);
             dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);

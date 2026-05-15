@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -36,15 +38,20 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TemplatesHandler;
 import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
+import org.w3c.dom.Node;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
@@ -60,7 +67,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Andrea Aime - GeoSolutions
  */
 public class XMLUtils {
-
+    static final Logger LOGGER = Logging.getLogger(XMLUtils.class);
     /**
      * Create a new SAXParserFactory that respects library configuration.
      *
@@ -205,43 +212,78 @@ public class XMLUtils {
     }
 
     /**
-     * Alternative to direct use of {@link SAXSource#sourceToInputSource}, allowing GeoTools library configuration to be
-     * applied.
+     * Alternative to direct use of {@code DOMSOurce}, allowing GeoTools library configuration to be applied when
+     * traversal is required.
      *
-     * @param source
-     * @return SAXSource configured with GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     * @param dom Document node
+     * @return Source with any XML streaming subject to GeoTools configuration including
+     *     {@link GeoTools#getEntityResolver(Hints)}.
      */
-    public static SAXSource sourceToInputSource(Source source) {
-        return sourceToInputSource(source, GeoTools.getDefaultHints());
+    public static Source source(Node dom) {
+        // no traversal needed
+        return new DOMSource(dom);
     }
 
     /**
-     * Alternative to direct use of {@link SAXSource#sourceToInputSource}, allowing GeoTools library configuration to be
-     * applied.
+     * Alternative to direct use of {@code Source}, allowing GeoTools library configuration to be applied when traversal
+     * is required.
+     *
+     * @param source
+     * @return Source with any XML streaming subject to GeoTools configuration including
+     *     {@link GeoTools#getEntityResolver(Hints)}.
+     */
+    public static Source source(Source source) {
+        return source(source, GeoTools.getDefaultHints());
+    }
+
+    /**
+     * Alternative to direct use of {@code Source}, allowing GeoTools library configuration to be applied when traversal
+     * is required.
      *
      * @param source transform source
      * @param hints GeoTools library configuration
-     * @return SAXSource configured with GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     * @return Source with any XML streaming subject to GeoTools configuration including
+     *     {@link GeoTools#getEntityResolver(Hints)}.
      */
-    public static SAXSource sourceToInputSource(Source source, Hints hints) {
-        return sourceToInputSource(SAXSource.sourceToInputSource(source), hints);
+    public static Source source(Source source, Hints hints) {
+        if (source == null) return null;
+
+        InputSource inputSource;
+        if (source instanceof SAXSource saxSource) {
+            inputSource = saxSource.getInputSource();
+        } else if (source instanceof StreamSource streamSource) {
+            inputSource = new InputSource(streamSource.getSystemId());
+            inputSource.setByteStream(streamSource.getInputStream());
+            inputSource.setCharacterStream(streamSource.getReader());
+            inputSource.setPublicId(streamSource.getPublicId());
+        } else if (source instanceof InputSource) {
+            inputSource = (InputSource) source;
+        } else if (source instanceof DOMSource domSource) {
+            return domSource; // already traversed
+        } else {
+            return source; // unprocessed
+        }
+
+        // Safe traversal with GeoTools configuration
+        return sax(inputSource, hints);
     }
 
     /**
      * Alternative to direct use of InputSource allowing SAXSource setup with GeoTools configuration to be applied.
      *
-     * @param source sax input source
+     * @param inputSource InputSource
      * @param hints GeoTools library configuration
-     * @return SAXSource configured with GeoTools configuration including {@link GeoTools#getEntityResolver(Hints)}.
+     * @return Source with any XML streaming subject to GeoTools configuration including
+     *     {@link GeoTools#getEntityResolver(Hints)}.
      */
-    public static SAXSource sourceToInputSource(InputSource source, Hints hints) {
-        if (source == null) return null;
-
-        SAXParserFactory factory = newSAXParserFactory(hints);
+    public static SAXSource sax(InputSource inputSource, Hints hints) {
+        if (inputSource == null) return null;
         try {
-            XMLReader reader = factory.newSAXParser().getXMLReader();
-            reader.setEntityResolver(GeoTools.getEntityResolver(hints));
-            return new SAXSource(reader, source);
+            GTSAXParserFactory factory = new GTSAXParserFactory(hints);
+
+            XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+            xmlReader.setEntityResolver(GeoTools.getEntityResolver(hints));
+            return new SAXSource(xmlReader, inputSource);
         } catch (SAXException | ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -318,6 +360,9 @@ public class XMLUtils {
 
         DocumentBuilder builder = factory.newDocumentBuilder(); // NOPMD AvoidDocumentBuilder
         builder.setEntityResolver(GeoTools.getEntityResolver(hints));
+        if (factory.isValidating()) {
+            builder.setErrorHandler(new SAXErrorHandler());
+        }
         return builder;
     }
 
@@ -339,8 +384,9 @@ public class XMLUtils {
      * Tests whether the TransformerFactory and SchemaFactory implementations support JAXP 1.5 properties to protect
      * against XML external entity injection (XXE) attacks. The internal JDK XML processors starting with JDK 7u40 would
      * support these properties but outdated versions of XML libraries (e.g., Xalan, Xerces) that do not support these
-     * properties may be included in GeoServer's classpath or provided by the web application server. This method is
-     * intended to support using third-party libraries (e.g., Hazelcast) that use these properties internally.
+     * properties may be included in GeoServer's classpath or provided by the web application server.
+     *
+     * <p>GeoTools uses these properties internally.
      *
      * @throws IllegalStateException if the JAXP 1.5 properties are not supported or if there was an error checking for
      *     JAXP 1.5 support
@@ -951,6 +997,30 @@ public class XMLUtils {
             }
             sb.append('}');
             return sb.toString();
+        }
+    }
+
+    /** SAXErrorHandler that logs errors. */
+    public static class SAXErrorHandler implements ErrorHandler {
+
+        @Override
+        public void warning(SAXParseException exception) throws SAXException {
+            LOGGER.log(Level.WARNING, exception.getMessage(), exception);
+        }
+
+        @Override
+        public void error(SAXParseException exception) throws SAXException {
+            LOGGER.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+
+        @Override
+        public void fatalError(SAXParseException exception) throws SAXException {
+            LOGGER.log(Level.SEVERE, exception.getMessage(), exception);
+        }
+
+        @Override
+        public String toString() {
+            return "SAXErrorHandler";
         }
     }
 }

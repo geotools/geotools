@@ -67,4 +67,9 @@ public class NullEntityResolver implements EntityResolver2, Serializable {
             throws SAXException, IOException {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "NullEntityResolver";
+    }
 }

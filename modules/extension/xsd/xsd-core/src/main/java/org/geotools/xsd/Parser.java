@@ -32,7 +32,6 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDSchema;
@@ -146,28 +145,25 @@ public class Parser {
 
     /**
      * Parses an instance document defined by a transformer source.
-     * <p>
-     * Note: Currently this method reads the entire source into memory in order to validate
-     * it. If large documents must be parsed one of {@link #
-     * </p>
+     *
+     * <p>Note: Currently this method reads the entire source into memory in order to validate it. If large documents
+     * must be parsed one of the other parse methods should be used instead.
+     *
      * @param source THe source of the instance document.
-     *
      * @return @return The object representation of the root element of the document.
-     *
-     *
      * @since 2.6
      */
     public Object parse(Source source)
             throws IOException, SAXException, ParserConfigurationException, TransformerException {
-        // TODO: use SAXResult to stream, need to figure out how to enable
-        // validation with transformer api
+
+        // TODO: use SAXResult to stream, need to figure out how to enable validation with transformer api
         // SAXResult result = new SAXResult( handler );
 
         StreamResult result = new StreamResult(new ByteArrayOutputStream());
         Transformer tx = XMLUtils.newTransformer();
-        SAXSource saxSource = XMLUtils.sourceToInputSource(source, null);
 
-        tx.transform(saxSource, result);
+        Source checkedSource = XMLUtils.source(source, null);
+        tx.transform(checkedSource, result);
 
         return parse(new ByteArrayInputStream(((ByteArrayOutputStream) result.getOutputStream()).toByteArray()));
     }
@@ -443,8 +439,16 @@ public class Parser {
         }
 
         if (parser.getXMLReader().getEntityResolver() != null) {
-            parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
-            parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+            try {
+                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+            } catch (IllegalArgumentException notSupported) {
+                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
+            }
+            try {
+                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+            } catch (IllegalArgumentException notSupported) {
+                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
+            }
         }
 
         // set the schema sources of this configuration, and all dependent ones

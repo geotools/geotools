@@ -561,8 +561,16 @@ public class Schemas {
             // XMLUtils has configured parser entity resolver provided by Hints
             entityResolver = parser.getXMLReader().getEntityResolver();
             if (entityResolver != null) {
-                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
-                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+                try {
+                    parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+                } catch (IllegalArgumentException notSupported) {
+                    LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
+                }
+                try {
+                    parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+                } catch (IllegalArgumentException notSupported) {
+                    LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
+                }
             }
         } catch (SAXException e) {
             throw new IOException(e);

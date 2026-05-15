@@ -39,6 +39,15 @@ XML-encoded, so you'll end up with xlink:href="http://chart?key=value&amp;key=va
 
 Most keys have multiple arguments, whose name encodes the type: f= floating point, i= integer, c = color RRGGBB or RRGGBBAA
 
+The chart plugin implements the URLs using Eastwood, an old and now-abandoned library based on JFreeCharts
+(last release is 2008). In turn, Eastwood implemented part of the Google Charts API, also now abandoned and replaced by
+a Javascript library.
+
+The original Google documentation for these keys is thankfully saved in the Wayback Machine. Be patient, it's
+slow and sometimes fails with a 500, but if you insist you'll get to the page.
+https://web.archive.org/web/20080203131425/https://code.google.com/apis/chart
+Note how parameters from 2010 onwards are not implemented by this plugin.
+
 The following keys are supported.
 
 
@@ -54,7 +63,6 @@ The following keys are supported.
      - Description
    * - cht
      - Chart type - Supported values are:
-
 
         ======   ================================== =====================
         Value    Resulting type                     Data series
@@ -88,6 +96,7 @@ The following keys are supported.
        * Format 't:' fValueSerie1 ',' fValueSerie1 ','  ... '|' fValueSerie2 ',' ...
        * Format 'e:' serie  ',' serie ',' ...
 
+         This is a high-precision variant of s:
          Each serie contains character pairs A..Z,a..z,0..9, -.  with AA being the lowest 0.0 and `..` the
          highest possible value 1.0
 
@@ -102,32 +111,37 @@ The following keys are supported.
        * major tick increment: 'mjt=' fNumber
    * - chds
      - Data scaling - format is fScale ',' fScale ',' ...
+       This is an Eastwood extension, not part of Google Charts.
    * - chf
      - Fill spec - format is spec '|' spec
 
        Spec is one of:
 
        * background color: 'bgs' cColor
-       * background gradient: 'blg' fAngle ',' cColor0 ',' f0 ',' cColor1 ',' f1
+       * background linear gradient: 'blg' fAngle ',' cColor0 ',' f0 ',' cColor1 ',' f1
        * plot color: 'cs' cColor
-       * plot gradient: 'clg'  fAngle ',' cColor0 ',' f0 ',' cColor1 ',' f1
+       * plot linear gradient: 'clg'  fAngle ',' cColor0 ',' f0 ',' cColor1 ',' f1
+       * Google Charts linear stripes are not supported
+
    * - chg
      - Grid line spec - format is fXStep ',' fYStep  ',' fLineSegLen  ', ' fBlankSegLen
    * - chl
-     -  Labels - format is  label '|' label ...
+     - Labels - format is  label '|' label ...
    * - chdl
      - Legend - format is label '|' label ...
    * - chls
      - Line style -  format is fWidth ',' fLineRun ',' fGapRun '|'  ...
    * - chm
-     - Markers - format is type ',' fStart ',' fEnd '|'   ...
-       Types are 'r' for a ranger marjern 'R' for a domain marker
+     - Markers - format is type ',' cColor ',' (ignored) ',' fStart ',' fEnd '|'   ...
+       Types are 'r' for a range (Y-axis) marker,  'R' for a domain (X-axis) marker.
+       Google Chart shape markers are not supported.
    * - chp
      - Pie chart rotation - format is fAngle
+       This is an Eastwood extension, not part of Google Charts.
    * - chs
      - Chart size - format is iWidth 'x' iHeight ( in pixels)
    * - chts
-     - Axis title style - format is: sFontName ',' cTitleColor
+     - Axis title style - format is: cTitleColor ',' iFontSize
    * - chtt
      - Axis title - format is title '|' title '|' ...
    * - chxr
@@ -135,11 +149,12 @@ The following keys are supported.
    * - chxl
      - Axis label - format is: iAxisIndex ':' sText '|' ...
    * - chxp
-     - Axis position - format is: iAxisIndex ','  fTickNumber ',' fTickNumber  ... '|' ...
+     - Axis label position - format is: iAxisIndex ','  fTickNumber ',' fTickNumber  ... '|' ...
    * - chxs
      - Axis style - format is: iAxisIndex ',' cAxisColor  ',' fFontsize ','  unused  ',' drawingcontrol  ',' cTickColor '|' ...
 
-       drawingcontrol is 'l' /'t' / '_'  / 'lt' where l and t make tickmarks and axis line visible
+       drawingcontrol is an Eastwood extension, not part of Google Charts.,  'l' /'t' / '_'  / 'lt' where l and t
+       make tickmarks and axis line visible.
    * - chxt
      - Axis text - format is: axis ',' axis ',' ...
 
@@ -147,9 +162,12 @@ The following keys are supported.
        Every axis defines a new numbered axisindex, starting from 0
    * - ewd2
      - Extra dataset, format is the same as chd
+       This is an Eastwood extension, not part of Google Charts.
    * - ewlo
      - Orientations - format is: iAxisIndex  ',' orientation '|' ...
 
        orientation is 's' / 'u' / 'd' for standard/up/down
+       This is an Eastwood extension, not part of Google Charts.
    * - ewtr
      - format is iSeries ',' cColor ',' cLineWidth
+       This is an Eastwood extension, not part of Google Charts.

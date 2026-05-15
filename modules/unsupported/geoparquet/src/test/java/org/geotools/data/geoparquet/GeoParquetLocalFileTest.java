@@ -24,15 +24,20 @@ import static org.junit.Assume.assumeFalse;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -180,5 +185,40 @@ public class GeoParquetLocalFileTest extends GeoParquetTestBase {
 
         // Should have some features in the bounding box
         assertTrue("Should have features in the bounding box", filteredCount > 0);
+    }
+
+    @Test
+    public void testBboxFilterOnCoveringGeometryBBoxStruct() throws Exception {
+        // This sample data contains geometry_bbox.* columns with covering.bbox mapping in metadata.
+        // This sample data contains 3 features:
+        // box(10.0, 45.0, 11.0, 46.0),   # id=1
+        // box(20.0, 55.0, 21.0, 56.0),   # id=2
+        // box(12.5, 47.5, 13.0, 48.0),   # id=3
+        URL resource = getClass().getResource("/org/geotools/data/geoparquet/sample_geometry_bbox.parquet");
+        File file = new File(resource.toURI());
+        DataStore ds = createLocalDataStore(file.toURI().toASCIIString());
+        try {
+            String typeName = ds.getTypeNames()[0];
+            SimpleFeatureSource source = ds.getFeatureSource(typeName);
+            // source = TransformFactory.transform(source, typeName, Collections.emptyList());
+            BBOX bbox = FF.bbox(FF.property("geometry"), 20, 55, 21, 56, "EPSG:4326");
+            Query query = new Query(typeName);
+            query.setFilter(bbox);
+
+            // Get filtered features
+            SimpleFeatureCollection filtered = source.getFeatures(query);
+            // Only 2nd feature is matching the geometry BBOX filter
+            try (SimpleFeatureIterator features = filtered.features()) {
+                int featureCount = 0;
+                while (features.hasNext()) {
+                    featureCount++;
+                    SimpleFeature feature = features.next();
+                    assertEquals(typeName + ".2", feature.getID());
+                }
+                assertEquals(1, featureCount);
+            }
+        } finally {
+            ds.dispose();
+        }
     }
 }

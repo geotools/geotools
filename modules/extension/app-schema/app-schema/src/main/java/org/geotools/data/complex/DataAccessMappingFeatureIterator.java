@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -298,6 +299,32 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     /**
+     * Build foreign id expressions from the actual source schema used by this iterator. This reflects the effective SQL
+     * projection (FOREIGN_ID_i_j columns), even when query metadata has not been normalized yet.
+     */
+    public List<Expression> getForeignIdsFromSourceSchema() {
+        List<String> foreignIdNames = new ArrayList<>();
+        if (sourceFeatures != null && sourceFeatures.getSchema() != null) {
+            sourceFeatures.getSchema().getDescriptors().stream()
+                    .map(d -> d.getName().getLocalPart())
+                    .filter(this::isForeignIdName)
+                    .forEach(foreignIdNames::add);
+        }
+        // Some readers expose FOREIGN_ID_* only at row level even if the schema is not normalized yet.
+        if (foreignIdNames.isEmpty() && curSrcFeature != null) {
+            curSrcFeature.getProperties().stream()
+                    .map(p -> p.getName().getLocalPart())
+                    .filter(this::isForeignIdName)
+                    .forEach(foreignIdNames::add);
+        }
+        return foreignIdNames.stream()
+                .distinct()
+                .sorted(this::compareForeignIdNames)
+                .map(namespaceAwareFilterFactory::property)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Only used for Joining, to make sure that rows with different foreign id's aren't interpreted as one feature and
      * merged.
      */
@@ -318,10 +345,30 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      */
     protected boolean checkForeignIdValues(List<Object> foreignIdValues, Feature next) {
         if (foreignIds != null) {
+            if (foreignIds.isEmpty()) {
+                List<Object> derivedForeignIdValues = getForeignIdValuesFromAttributes(next);
+                if (!derivedForeignIdValues.isEmpty()) {
+                    if (foreignIdValues == null || foreignIdValues.size() < derivedForeignIdValues.size()) {
+                        return false;
+                    }
+                    int offset = foreignIdValues.size() - derivedForeignIdValues.size();
+                    for (int i = 0; i < derivedForeignIdValues.size(); i++) {
+                        Object actual = derivedForeignIdValues.get(i);
+                        Object expected = foreignIdValues.get(offset + i);
+                        if (!Objects.equals(String.valueOf(actual), String.valueOf(expected))) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            if (foreignIdValues == null || foreignIdValues.size() < foreignIds.size()) {
+                return false;
+            }
             for (int i = 0; i < foreignIds.size(); i++) {
-                if (!peekValue(next, foreignIds.get(i))
-                        .toString()
-                        .equals(foreignIdValues.get(i).toString())) {
+                Object actual = peekValue(next, foreignIds.get(i));
+                Object expected = foreignIdValues.get(i);
+                if (!Objects.equals(String.valueOf(actual), String.valueOf(expected))) {
                     return false;
                 }
             }
@@ -353,9 +400,53 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
         }
         if (foreignIds != null) {
-            ids.addAll(getForeignIdValues(source));
+            if (!foreignIds.isEmpty()) {
+                ids.addAll(getForeignIdValues(source));
+            } else {
+                ids.addAll(getForeignIdValuesFromAttributes(source));
+            }
         }
         return ids;
+    }
+
+    private List<Object> getForeignIdValuesFromAttributes(Object source) {
+        if (!(source instanceof Feature)) {
+            return Collections.emptyList();
+        }
+        return ((Feature) source)
+                .getProperties().stream()
+                        .filter(p -> isForeignIdName(p.getName().getLocalPart()))
+                        .sorted((p1, p2) -> compareForeignIdNames(
+                                p1.getName().getLocalPart(), p2.getName().getLocalPart()))
+                        .map(Property::getValue)
+                        .collect(Collectors.toList());
+    }
+
+    private boolean isForeignIdName(String name) {
+        String prefix = JoiningJDBCFeatureSource.FOREIGN_ID + "_";
+        return name != null && name.regionMatches(true, 0, prefix, 0, prefix.length());
+    }
+
+    private int compareForeignIdNames(String left, String right) {
+        String[] l = left.split("_");
+        String[] r = right.split("_");
+        int li = l.length > 2 ? parseForeignIdPart(l[2]) : -1;
+        int ri = r.length > 2 ? parseForeignIdPart(r[2]) : -1;
+        int cmp = Integer.compare(li, ri);
+        if (cmp != 0) {
+            return cmp;
+        }
+        int lj = l.length > 3 ? parseForeignIdPart(l[3]) : -1;
+        int rj = r.length > 3 ? parseForeignIdPart(r[3]) : -1;
+        return Integer.compare(lj, rj);
+    }
+
+    private int parseForeignIdPart(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     /**

@@ -304,8 +304,6 @@ public class NetCDFUtilities {
 
     public static boolean ENHANCE_SCALE_OFFSET = false;
 
-    public static final String STORE_NAME = "StoreName";
-
     protected static final Map<URI, FileFormat> URI_FORMAT_CACHE = new SoftValueHashMap<>();
 
     protected static final Map<String, DatasetUrl> DATASET_URL_CACHE = new SoftValueHashMap<>();

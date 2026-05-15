@@ -17,19 +17,18 @@
 package org.geotools.data.geojson;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
- * Support class providing {@link com.fasterxml.jackson.databind.ObjectMapper} instances configured with the desired
- * settings.
+ * Support class providing {@link tools.jackson.databind.ObjectMapper} instances configured with the desired settings.
  */
 class ObjectMapperFactory {
 
-    private static ObjectMapper DEFAULT_MAPPER;
+    private static final ObjectMapper DEFAULT_MAPPER;
 
     static {
-        DEFAULT_MAPPER = new ObjectMapper();
-        DEFAULT_MAPPER.registerModule(new JtsModule());
+        DEFAULT_MAPPER = JsonMapper.builder().addModule(new JtsModule()).build();
     }
 
     /**

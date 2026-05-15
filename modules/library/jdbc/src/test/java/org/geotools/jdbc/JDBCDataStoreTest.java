@@ -20,6 +20,7 @@ import static org.geotools.jdbc.SQLDialect.BASE_DBMS_CAPABILITIES;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,26 +29,33 @@ import com.mockrunner.mock.jdbc.JDBCMockObjectFactory;
 import com.mockrunner.mock.jdbc.MockConnection;
 import com.mockrunner.mock.jdbc.MockDataSource;
 import com.mockrunner.mock.jdbc.MockDatabaseMetaData;
+import com.mockrunner.mock.jdbc.MockPreparedStatement;
 import com.mockrunner.mock.jdbc.MockResultSet;
 import com.mockrunner.mock.jdbc.MockStatement;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import javax.sql.DataSource;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
@@ -273,5 +281,178 @@ public class JDBCDataStoreTest {
         when(query.getTypeName()).thenReturn("test");
         store.getAggregateValue(groupVisitor, featureType, query, null);
         verify(sqlDialect, times(1)).splitFilter(any(), any());
+    }
+
+    @SuppressWarnings("PMD.CloseResource") // mock resources
+    @Test
+    public void testSetInsertParams() throws Exception {
+        JDBCDataStore store = new JDBCDataStore();
+        PreparedStatementSQLDialect sqlDialect = mock(PreparedStatementSQLDialect.class);
+        store.setSQLDialect(sqlDialect);
+        Connection cx = new JDBCMockObjectFactory().getMockConnection();
+        PreparedStatement ps = new MockPreparedStatement(cx, "");
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("foo");
+        tb.setNamespaceURI("http://geotools.org");
+        tb.add("name", String.class);
+        SimpleFeatureType featureType = tb.buildFeatureType();
+        SimpleFeature feature = mock(SimpleFeature.class);
+        when(feature.getType()).thenReturn(featureType);
+        when(feature.getAttribute("name")).thenReturn("Test Name");
+        KeysFetcher kf = mock(KeysFetcher.class);
+
+        store.setInsertParameters(ps, featureType, feature, kf, sqlDialect, cx);
+
+        verify(sqlDialect).setValue("Test Name", String.class, featureType.getDescriptor("name"), ps, 1, cx);
+    }
+
+    /** Helper class to hold the setup for insert tests */
+    private static class InsertTestSetup {
+        JDBCDataStore store;
+        PreparedStatement ps;
+        Connection cx;
+        SimpleFeatureType featureType;
+        Collection<SimpleFeature> collection;
+
+        /**
+         * Creates the connection metadata for insert tests with auto-generated keys.
+         *
+         * @param table Name of the table to generate metadata for
+         */
+        @SuppressWarnings({"PMD.CloseResource", "PMD.CheckResultSet"}) // mock resources
+        private static DatabaseMetaData mockConnectionMetaData(String table) throws Exception {
+            DatabaseMetaData metaData = mock(DatabaseMetaData.class);
+            when(metaData.getSearchStringEscape()).thenReturn("");
+
+            // Mock table types result set
+            ResultSet tableTypesRs = mock(ResultSet.class);
+            when(tableTypesRs.next()).thenReturn(true, false);
+            when(tableTypesRs.getString("TABLE_TYPE")).thenReturn("TABLE");
+            when(metaData.getTableTypes()).thenReturn(tableTypesRs);
+
+            // Mock tables result set
+            ResultSet tablesRs = mock(ResultSet.class);
+            when(tablesRs.next()).thenReturn(true, false);
+            when(tablesRs.getString("TABLE_SCHEM")).thenReturn("bar");
+            when(tablesRs.getString("TABLE_NAME")).thenReturn(table);
+            when(metaData.getTables(any(), any(), any(), any())).thenReturn(tablesRs);
+
+            // Mock primary keys result set
+            ResultSet keyRs = mock(ResultSet.class);
+            when(keyRs.next()).thenReturn(true, false);
+            when(keyRs.getString("COLUMN_NAME")).thenReturn("ID");
+            when(keyRs.getInt("DATA_TYPE")).thenReturn(1);
+            when(metaData.getPrimaryKeys(null, null, table)).thenReturn(keyRs);
+
+            // Mock columns result set
+            ResultSet columnsRs = mock(ResultSet.class);
+            when(columnsRs.next()).thenReturn(true, false);
+            when(columnsRs.getString("COLUMN_NAME")).thenReturn("ID");
+            when(columnsRs.getInt("DATA_TYPE")).thenReturn(1);
+            when(metaData.getColumns(null, null, table, "ID")).thenReturn(columnsRs);
+
+            return metaData;
+        }
+    }
+
+    /**
+     * Creates a common setup for insert tests with auto-generated keys.
+     *
+     * @param batchInsertSize the batch size to configure
+     * @param supportsBatchGeneratedKeys whether the dialect supports batch generated keys
+     */
+    @SuppressWarnings({"PMD.CloseResource", "PMD.CheckResultSet"}) // mock resources
+    private InsertTestSetup setupInsertTest(int batchInsertSize, boolean supportsBatchGeneratedKeys) throws Exception {
+        final String table = "foo";
+        final String schema = "bar";
+
+        InsertTestSetup setup = new InsertTestSetup();
+
+        setup.store = new JDBCDataStore();
+        setup.store.setNamespaceURI(schema);
+        setup.store.setBatchInsertSize(batchInsertSize);
+
+        DatabaseMetaData metaData = InsertTestSetup.mockConnectionMetaData(table);
+
+        setup.ps = mock(PreparedStatement.class);
+        setup.cx = mock(Connection.class);
+        when(setup.cx.getMetaData()).thenReturn(metaData);
+        when(setup.cx.prepareStatement(anyString(), any(String[].class))).thenReturn(setup.ps);
+
+        PreparedStatementSQLDialect sqlDialect = mock(PreparedStatementSQLDialect.class);
+        when(sqlDialect.supportsBatchGeneratedKeys()).thenReturn(supportsBatchGeneratedKeys);
+        when(sqlDialect.includeTable(schema, table, setup.cx)).thenReturn(true);
+        when(sqlDialect.getDesiredTablesType()).thenReturn(new String[] {"TABLE"});
+        when(sqlDialect.lookupGeneratedValuesPostInsert()).thenReturn(true);
+        setup.store.setSQLDialect(sqlDialect);
+
+        DataSource ds = mock(DataSource.class);
+        setup.store.setDataSource(ds);
+        when(ds.getConnection()).thenReturn(setup.cx);
+
+        PrimaryKeyFinder pkFinder = mock(PrimaryKeyFinder.class);
+        PrimaryKey pk = new PrimaryKey(table, Arrays.asList(new AutoGeneratedPrimaryKeyColumn("ID", Integer.class)));
+        when(pkFinder.getPrimaryKey(any(), any(), any(), any())).thenReturn(pk);
+        setup.store.setPrimaryKeyFinder(pkFinder);
+
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName(table);
+        tb.setNamespaceURI("bar");
+        tb.add("name", String.class);
+        setup.featureType = tb.buildFeatureType();
+
+        SimpleFeature feature = mock(SimpleFeature.class);
+        when(feature.getAttribute("name")).thenReturn("Test Name");
+        Map<Object, Object> userData = new HashMap<>();
+        when(feature.getUserData()).thenReturn(userData);
+
+        setup.collection = List.of(feature);
+
+        // Mock the generated keys ResultSet
+        ResultSet generatedKeysRs = mock(ResultSet.class);
+        when(generatedKeysRs.next()).thenReturn(true, false);
+        when(generatedKeysRs.getObject(1)).thenReturn(123);
+        when(setup.ps.getGeneratedKeys()).thenReturn(generatedKeysRs);
+
+        return setup;
+    }
+
+    /** Test that batch insert is used when dialect supports it */
+    @Test
+    public void testBatchInsertWithAutoGeneratedKey() throws Exception {
+        InsertTestSetup setup = setupInsertTest(1, true);
+
+        when(setup.ps.executeBatch()).thenReturn(new int[] {1});
+
+        setup.store.insert(setup.collection, setup.featureType, setup.cx);
+
+        verify(setup.ps, times(1)).executeBatch();
+        verify(setup.ps, never()).executeUpdate();
+    }
+
+    /** Test that single insert is used when the dialect does not return generated keys and batch size is one */
+    @Test
+    public void testSingleInsertWithAutoGeneratedKey() throws Exception {
+        InsertTestSetup setup = setupInsertTest(1, false);
+
+        when(setup.ps.executeUpdate()).thenReturn(1);
+
+        setup.store.insert(setup.collection, setup.featureType, setup.cx);
+
+        verify(setup.ps, times(1)).executeUpdate();
+        verify(setup.ps, never()).executeBatch();
+    }
+
+    /** Test that batch insert is used when the dialect does not return generated keys and batch size more than one */
+    @Test
+    public void testBatchInsertWithoutAutoGeneratedKey() throws Exception {
+        InsertTestSetup setup = setupInsertTest(100, false);
+
+        when(setup.ps.executeBatch()).thenReturn(new int[] {1});
+
+        setup.store.insert(setup.collection, setup.featureType, setup.cx);
+
+        verify(setup.ps, times(1)).executeBatch();
+        verify(setup.ps, never()).executeUpdate();
     }
 }

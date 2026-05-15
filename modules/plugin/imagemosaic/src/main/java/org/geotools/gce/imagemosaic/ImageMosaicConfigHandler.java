@@ -837,7 +837,7 @@ public class ImageMosaicConfigHandler {
             final String rootMosaicDir) {
         final boolean isAbsolutePath = Boolean.parseBoolean(configuration.getParameter(Prop.ABSOLUTE_PATH));
         hints = updateHints(ancillaryFile, configuration, hints, Utils.AUXILIARY_FILES_PATH);
-        hints = updateHints(datastoreFile, configuration, hints, Utils.AUXILIARY_DATASTORE_PATH);
+
         // the ND readers use the parentDir in case the path was not absolute
         if (!isAbsolutePath) {
             hints.put(Utils.PARENT_DIR, rootMosaicDir);
@@ -1352,13 +1352,6 @@ public class ImageMosaicConfigHandler {
                     String auxiliaryFilePath = (String) runHints.get(Utils.AUXILIARY_FILES_PATH);
                     if (auxiliaryFilePath != null && auxiliaryFilePath.trim().length() > 0) {
                         configBuilder.setAuxiliaryFilePath(auxiliaryFilePath);
-                    }
-                }
-                if (runHints.containsKey(Utils.AUXILIARY_DATASTORE_PATH)) {
-                    String auxiliaryDatastorePath = (String) runHints.get(Utils.AUXILIARY_DATASTORE_PATH);
-                    if (auxiliaryDatastorePath != null
-                            && auxiliaryDatastorePath.trim().length() > 0) {
-                        configBuilder.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
                     }
                 }
             }

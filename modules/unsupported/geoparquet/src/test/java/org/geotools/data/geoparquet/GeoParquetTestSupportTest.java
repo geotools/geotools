@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -32,6 +31,7 @@ import java.util.Map;
 import org.geotools.jackson.datatype.geoparquet.GeoParquetModule;
 import org.junit.ClassRule;
 import org.junit.Test;
+import tools.jackson.databind.ObjectMapper;
 
 /** Tests for GeoParquetTestSupport to verify it correctly generates test data structure. */
 public class GeoParquetTestSupportTest {

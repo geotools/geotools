@@ -54,6 +54,7 @@ public class PolygonFunction extends DGGSSetFunctionBase {
     public Object evaluate(Object object) {
         // get the zone being tested
         String testedZoneId = (String) getParameterValue(object, 0);
+
         if (testedZoneId == null) return false;
 
         return matches(testedZoneId, () -> {
@@ -62,17 +63,17 @@ public class PolygonFunction extends DGGSSetFunctionBase {
             Integer resolution = (Integer) getParameterValue(object, 2);
             Boolean compact =
                     Optional.ofNullable((Boolean) getParameterValue(null, 3)).orElse(false);
-            DGGSInstance dggs = (DGGSInstance) getParameterValue(object, 4);
+            DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(object, 4);
             if (polygon == null || resolution == null || dggs == null) return Collections.emptyIterator();
 
             // check resolution first
-            if (dggs.getZone(testedZoneId).getResolution() != resolution) return Collections.emptyIterator();
+            if (dggs.getZoneFromString(testedZoneId).getResolution() != resolution) return Collections.emptyIterator();
             return dggs.polygon(polygon, resolution, compact);
         });
     }
 
     @Override
-    public void setDGGSInstance(DGGSInstance dggs) {
+    public void setDGGSInstance(DGGSInstance<?> dggs) {
         Literal dggsLiteral = FF.literal(dggs);
         List<Expression> parameters = getParameters();
         if (parameters.size() == 4) {
@@ -91,7 +92,7 @@ public class PolygonFunction extends DGGSSetFunctionBase {
         Integer resolution = (Integer) getParameterValue(null, 2);
         Boolean compact =
                 Optional.ofNullable((Boolean) getParameterValue(null, 3)).orElse(false);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 4);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 4);
 
         return dggs.polygon(polygon, resolution, compact);
     }
@@ -102,7 +103,7 @@ public class PolygonFunction extends DGGSSetFunctionBase {
         if (!isStable()) throw new IllegalStateException("Source parameters are not stable");
         Polygon polygon = (Polygon) getParameterValue(null, 1);
         Integer resolution = (Integer) getParameterValue(null, 2);
-        DGGSInstance dggs = (DGGSInstance) getParameterValue(null, 4);
+        DGGSInstance<?> dggs = (DGGSInstance<?>) getParameterValue(null, 4);
 
         return dggs.countPolygon(polygon, resolution);
     }

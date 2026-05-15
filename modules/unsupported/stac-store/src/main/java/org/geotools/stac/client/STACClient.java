@@ -20,9 +20,6 @@ import static java.util.Collections.singletonMap;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
@@ -44,6 +41,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPResponse;
 import org.geotools.util.logging.Logging;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Minimal STAC API client supporting the needs of the STAC datastore. Not currently meant to be a generic STAC client.
@@ -68,11 +67,10 @@ public class STACClient implements Closeable {
 
     /** Initialize an ObjectMapper that's tolerant, won't generate missing fields, and can parse GeoJSON geometries */
     static {
-        OBJECT_MAPPER = new ObjectMapper();
-        OBJECT_MAPPER.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
-        OBJECT_MAPPER.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
-        OBJECT_MAPPER.registerModule(new JtsModule());
-        OBJECT_MAPPER.setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
+        OBJECT_MAPPER = JsonMapper.builder()
+                .addModule(new JtsModule())
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_EMPTY))
+                .build();
     }
 
     private final HTTPClient http;

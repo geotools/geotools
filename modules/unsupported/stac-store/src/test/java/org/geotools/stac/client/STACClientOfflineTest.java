@@ -26,9 +26,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -46,6 +43,9 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /** STACClient test using stored responses and a mock HTTPClient, can be run offline */
 @SuppressWarnings("unchecked")
@@ -120,7 +120,7 @@ public class STACClientOfflineTest extends STACOfflineTest {
         assertThat(feature.getAttribute("datetime"), instanceOf(Date.class));
         assertThat(feature.getAttribute("processing:software"), instanceOf(ObjectNode.class));
         ObjectNode processing = (ObjectNode) feature.getAttribute("processing:software");
-        assertEquals("1.3", processing.get("CATENA").textValue());
+        assertEquals("1.3", processing.get("CATENA").asString());
 
         // test the extra properties outside the properties node
         Map<String, Object> top = (Map<String, Object>) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
@@ -129,8 +129,8 @@ public class STACClientOfflineTest extends STACOfflineTest {
         ArrayNode links = (ArrayNode) top.get("links");
         assertNotNull(links);
         String license = StreamSupport.stream(links.spliterator(), false)
-                .filter(l -> "license".equals(l.get("rel").textValue()))
-                .map(l -> l.get("href").textValue())
+                .filter(l -> "license".equals(l.get("rel").asString()))
+                .map(l -> l.get("href").asString())
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Could not find the license rel"));
         assertEquals("https://spdx.org/licenses/CC-BY-4.0", license);
@@ -139,8 +139,8 @@ public class STACClientOfflineTest extends STACOfflineTest {
         ObjectNode assets = (ObjectNode) top.get("assets");
         assertNotNull(assets);
         ObjectNode sre_b2 = (ObjectNode) assets.get("SRE_B2");
-        assertEquals("Surface Reflectance (SRE_B2)", sre_b2.get("title").textValue());
-        assertEquals("image/tiff; application=geotiff", sre_b2.get("type").textValue());
+        assertEquals("Surface Reflectance (SRE_B2)", sre_b2.get("title").asString());
+        assertEquals("image/tiff; application=geotiff", sre_b2.get("type").asString());
         assertNotNull(sre_b2.get("href"));
     }
 
@@ -170,12 +170,12 @@ public class STACClientOfflineTest extends STACOfflineTest {
         ObjectNode assets = (ObjectNode) top.get("assets");
         assertNotNull(assets);
         ObjectNode visual = (ObjectNode) assets.get("thumbnail");
-        assertEquals("Thumbnail", visual.get("title").textValue());
+        assertEquals("Thumbnail", visual.get("title").asString());
         assertNotNull(visual.get("href"));
 
         // check id
         assertEquals(
-                "SENTINEL2B_20220714-105646-098_L2A_T32ULB_C", top.get("id").textValue());
+                "SENTINEL2B_20220714-105646-098_L2A_T32ULB_C", top.get("id").asString());
     }
 
     @Test

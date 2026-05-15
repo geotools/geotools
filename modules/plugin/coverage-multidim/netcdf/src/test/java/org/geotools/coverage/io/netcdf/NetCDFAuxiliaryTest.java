@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.coverage.io.netcdf.auxiliary.NetCDFAuxiliaryStoreFactory;
 import org.geotools.test.TestData;
 import org.junit.Test;
 

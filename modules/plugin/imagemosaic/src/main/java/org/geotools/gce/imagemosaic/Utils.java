@@ -48,6 +48,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,6 +56,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Queue;
@@ -126,6 +128,7 @@ import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
+import org.locationtech.jts.densify.Densifier;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -159,8 +162,6 @@ public class Utils {
     public static final Key COG_SETTINGS = new Hints.Key(Map.class);
 
     public static final Key AUXILIARY_FILES_PATH = new Key(String.class);
-
-    public static final Key AUXILIARY_DATASTORE_PATH = new Key(String.class);
 
     public static final Key PARENT_DIR = new Key(String.class);
 
@@ -203,6 +204,13 @@ public class Utils {
      */
     static final boolean OPTIMIZE_CROP;
 
+    /**
+     * Enables local reprojection for heterogeneous mosaics, in other words, when a coverage has heterogeneous crs
+     * granules, marks the reader as a reprojecting one, and the renderer will delegate target reprojection to it.
+     * (intentionally marked as non-final to help testing)
+     */
+    public static boolean HETEROGENEOUS_LOCAL_REPROJECT;
+
     static final double DEFAULT_LINESTRING_DECIMATION_SPAN = 0.8;
 
     static final int DEFAULT_COORDS_DECIMATION_THRESHOLD = 200;
@@ -218,6 +226,13 @@ public class Utils {
             OPTIMIZE_CROP = false;
         } else {
             OPTIMIZE_CROP = true;
+        }
+
+        String localReprojectProp = System.getProperty("org.geotools.imagemosaic.heterogeneousLocalReproject");
+        if (localReprojectProp != null && localReprojectProp.equalsIgnoreCase("FALSE")) {
+            HETEROGENEOUS_LOCAL_REPROJECT = false;
+        } else {
+            HETEROGENEOUS_LOCAL_REPROJECT = true;
         }
 
         try {
@@ -2227,16 +2242,16 @@ public class Utils {
 
     /** Merge statistics across datasets. */
     public static PAMDataset mergePamDatasets(PAMDataset[] pamDatasets) {
-        PAMDataset merged = pamDatasets[0];
-        if (pamDatasets.length > 1) {
-            merged = initRasterBands(pamDatasets[0]);
+        if (pamDatasets.length > 1 && Arrays.stream(pamDatasets).allMatch(Objects::nonNull)) {
+            PAMDataset merged = initRasterBands(pamDatasets[0]);
             if (merged != null) {
                 for (PAMDataset pamDataset : pamDatasets) {
                     updatePamDatasets(pamDataset, merged);
                 }
             }
+            return merged;
         }
-        return merged;
+        return pamDatasets[0];
     }
 
     /**
@@ -2270,21 +2285,27 @@ public class Utils {
      * min between them
      */
     private static void updateMDI(MDI mdiInput, MDI mdiOutput) {
-        Double current = Double.parseDouble(mdiInput.getValue());
-        Object value = mdiOutput.getValue();
-        if (value != null) {
-            Double output = Double.parseDouble((String) value);
-            if (mdiInput.getKey().toUpperCase().endsWith("_MAXIMUM")) {
-                if (current < output) {
-                    current = output;
-                }
-            } else {
-                if (output < current) {
-                    current = output;
+        String key = mdiInput.getKey().toUpperCase();
+        if (key.endsWith("_MAXIMUM") || key.endsWith("_MINIMUM") || key.endsWith("_STDDEV") || key.endsWith("_MEAN")) {
+            double current = Double.parseDouble(mdiInput.getValue());
+            String value = mdiOutput.getValue();
+            if (value != null) {
+                double output = Double.parseDouble(value);
+                if (key.endsWith("_MAXIMUM")) {
+                    if (current < output) {
+                        current = output;
+                    }
+                } else {
+                    // For other statistics we simply take the min
+                    if (output < current) {
+                        current = output;
+                    }
                 }
             }
+            mdiOutput.setValue(Double.toString(current));
+        } else {
+            mdiOutput.setValue(mdiInput.getValue());
         }
-        mdiOutput.setValue(Double.toString(current));
     }
 
     /**
@@ -2421,24 +2442,24 @@ public class Utils {
             CoordinateReferenceSystem targetCRS,
             ReferencedEnvelope targetReferenceEnvelope)
             throws FactoryException, TransformException {
-        ProjectionHandler handler;
         CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
         if (targetReferenceEnvelope == null) {
             targetReferenceEnvelope = ReferencedEnvelope.reference(getCRSEnvelope(targetCRS));
+        } else if (CRS.isTransformationRequired(targetCRS, targetReferenceEnvelope.getCoordinateReferenceSystem())) {
+            targetReferenceEnvelope = reprojectEnvelope(targetReferenceEnvelope, targetCRS, null);
         }
-        if (targetReferenceEnvelope != null) {
-            handler = ProjectionHandlerFinder.getHandler(targetReferenceEnvelope, sourceCRS, true);
-        } else {
-            // cannot handle wrapping if we do not have a reference envelope, but
-            // cutting/adapting will still work
-            ReferencedEnvelope reference = new ReferencedEnvelope(targetCRS);
-            handler = ProjectionHandlerFinder.getHandler(reference, sourceCRS, false);
-        }
-
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(targetReferenceEnvelope, sourceCRS, true);
         if (handler != null) {
             MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
             Geometry footprint = JTS.toGeometry(sourceEnvelope);
-            Geometry preProcessed = handler.preProcess(footprint);
+            // similar to the envelope reprojection, use a 5-points densification on each side
+            Geometry densified = Densifier.densify(
+                    footprint,
+                    Math.min(
+                                    footprint.getEnvelopeInternal().getWidth(),
+                                    footprint.getEnvelopeInternal().getHeight())
+                            / 5);
+            Geometry preProcessed = handler.preProcess(densified);
             if (preProcessed == null) {
                 return null;
             }

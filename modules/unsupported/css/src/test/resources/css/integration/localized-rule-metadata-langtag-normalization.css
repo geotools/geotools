@@ -1,0 +1,11 @@
+/*
+ * @title Roads
+ * @title[en-US] Roads EN hyphen
+ * @title[en_US] Roads EN underscore
+ * @abstract Roads abstract
+ * @abstract[en-US] Roads abstract EN hyphen
+ * @abstract[en_US] Roads abstract EN underscore
+ */
+* {
+  stroke: #555555;
+}

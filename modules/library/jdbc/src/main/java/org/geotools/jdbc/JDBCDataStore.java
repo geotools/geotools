@@ -1801,6 +1801,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         final String sql = buildInsertPS(kind, featureType, keysFetcher, dialect);
         LOGGER.log(Level.FINE, "Inserting new features with ps: {0}", sql);
 
+        // Check if we need to fall back to individual inserts
+        // (for dialects that don't support batch + generated keys)
+        boolean needsGeneratedKeys = keysFetcher.isPostInsert();
+        boolean supportsBatchGeneratedKeys = dialect.supportsBatchGeneratedKeys();
+        boolean useBatch = !needsGeneratedKeys || supportsBatchGeneratedKeys || batchInsertSize > 1;
+
         // create the prepared statement
         final PreparedStatement ps;
         if (keysFetcher.isPostInsert()) {
@@ -1810,57 +1816,85 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             ps = cx.prepareStatement(sql);
         }
         try {
-            for (SimpleFeature feature : features) {
-                // set the attribute values
-                int i = 1;
-                for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-                    String colName = att.getLocalName();
-                    // skip the pk columns in case we have exposed them, we grab the
-                    // value from the pk itself
-                    if (keysFetcher.isKey(colName)) {
-                        continue;
-                    }
+            if (useBatch) {
+                for (SimpleFeature feature : features) {
+                    // set the attribute values
+                    int i = setInsertParameters(ps, featureType, feature, keysFetcher, dialect, cx);
 
-                    Class binding = att.getType().getBinding();
-                    EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+                    keysFetcher.setKeyValues(dialect, ps, cx, featureType, feature, i);
 
-                    Object value = feature.getAttribute(colName);
-                    if (value == null && !att.isNillable()) {
-                        throw new IOException("Cannot set a NULL value on the not null column " + colName);
-                    }
-
-                    if (Geometry.class.isAssignableFrom(binding)) {
-                        Geometry g = linearize(value, binding);
-                        int srid = getGeometrySRID(g, att);
-                        int dimension = getGeometryDimension(g, att);
-                        dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
-                    } else if (this.dialect.isArray(att)) {
-                        dialect.setArrayValue(value, att, ps, i, cx);
-                    } else {
-                        if (mapping != null) {
-                            value = mapping.fromValue((String) value);
-                            binding = Integer.class;
-                        }
-
-                        dialect.setValue(value, binding, att, ps, i, cx);
-                    }
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(i + " = " + value);
-                    }
-                    i++;
+                    dialect.onInsert(ps, cx, featureType);
+                    ps.addBatch();
                 }
+                int[] inserts = ps.executeBatch();
+                checkAllInserted(inserts, features.size());
+                keysFetcher.postInsert(featureType, features, ps);
+            } else {
+                for (SimpleFeature feature : features) {
+                    int i = setInsertParameters(ps, featureType, feature, keysFetcher, dialect, cx);
 
-                keysFetcher.setKeyValues(dialect, ps, cx, featureType, feature, i);
+                    keysFetcher.setKeyValues(dialect, ps, cx, featureType, feature, i);
+                    dialect.onInsert(ps, cx, featureType);
 
-                dialect.onInsert(ps, cx, featureType);
-                ps.addBatch();
+                    int rowsAffected = ps.executeUpdate();
+                    if (rowsAffected != 1) {
+                        throw new IOException("Insert failed for feature");
+                    }
+
+                    // Get generated keys immediately for this single feature
+                    keysFetcher.postInsert(featureType, Collections.singletonList(feature), ps);
+
+                    ps.clearParameters();
+                }
             }
-            int[] inserts = ps.executeBatch();
-            checkAllInserted(inserts, features.size());
-            keysFetcher.postInsert(featureType, features, ps);
         } finally {
             closeSafe(ps);
         }
+    }
+
+    protected int setInsertParameters(
+            PreparedStatement ps,
+            SimpleFeatureType featureType,
+            SimpleFeature feature,
+            KeysFetcher keysFetcher,
+            PreparedStatementSQLDialect dialect,
+            Connection cx)
+            throws IOException, SQLException {
+        int i = 1;
+        for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+            String colName = att.getLocalName();
+            if (keysFetcher.isKey(colName)) {
+                continue;
+            }
+
+            Class binding = att.getType().getBinding();
+            EnumMapping mapping = (EnumMapping) att.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+
+            Object value = feature.getAttribute(colName);
+            if (value == null && !att.isNillable()) {
+                throw new IOException("Cannot set a NULL value on the not null column " + colName);
+            }
+
+            if (Geometry.class.isAssignableFrom(binding)) {
+                Geometry g = linearize(value, binding);
+                int srid = getGeometrySRID(g, att);
+                int dimension = getGeometryDimension(g, att);
+                dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
+            } else if (this.dialect.isArray(att)) {
+                dialect.setArrayValue(value, att, ps, i, cx);
+            } else {
+                if (mapping != null) {
+                    value = mapping.fromValue((String) value);
+                    binding = Integer.class;
+                }
+                dialect.setValue(value, binding, att, ps, i, cx);
+            }
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(i + " = " + value);
+            }
+            i++;
+        }
+        return i;
     }
 
     @SuppressWarnings("unchecked")

@@ -25,14 +25,16 @@ The GeoParquet DataStore provides read and query access to GeoParquet format dat
 
 ## How It Works
 
-Under the hood, this DataStore uses [DuckDB](https://duckdb.org/) and its Spatial and Parquet extensions to provide high-performance access to GeoParquet files. DuckDB is an embedded analytical database that excels at reading and processing Parquet files. The implementation:
+Under the hood, this DataStore uses [DuckDB](https://duckdb.org/) and its Spatial and Parquet extensions through the shared `gt-duckdb` module. DuckDB is an embedded analytical database that excels at reading and processing Parquet files. The implementation:
 
-1. Creates SQL views over GeoParquet files (local or remote)
+1. Uses the shared DuckDB integration provided by `gt-duckdb`
 2. Detects and manages Hive-partitioned datasets (directory structures with key=value patterns)
 3. Handles GeoParquet metadata parsing and schema detection
 4. Translates GeoTools filters to optimized SQL queries
 5. Converts spatial operations to DuckDB spatial functions
-6. Manages extension loading (spatial, parquet, httpfs)
+6. Manages the required DuckDB initialization internally through GeoTools
+
+The DuckDB execution layer is managed inside GeoTools. Public use of the generic DuckDB store is guarded by the GeoTools-side execution wrapper; GeoParquet uses the same shared infrastructure for its internal managed execution path.
 
 This implementation detail is abstracted away from the user, providing a clean GeoTools DataStore interface.
 
@@ -195,11 +197,12 @@ The GeoParquet module has strong typing for Coordinate Reference Systems (CRS):
 - **Geometry simplification**: Supports `ST_SimplifyPreserveTopology` for rendering optimization (`ST_Simplify` results in too many empty geometries
     with the tolerance given by the GeoTools renderer as a Hint).
 - **Query pushdown**: Converts GeoTools filters to optimized SQL queries that filter at the data source
-- **View-based access**: Creates SQL views over Parquet files for efficient querying
+- **Managed dataset access**: Uses internally managed DuckDB objects to query Parquet-backed datasets efficiently
 
 ## Implementation Notes
 
-- The first time a DataStore is created, required DuckDB extensions (spatial, parquet, httpfs) will be installed
+- GeoParquet depends on the shared `gt-duckdb` module for DuckDB connectivity and SQL dialect support
+- Required DuckDB initialization is managed internally by GeoTools
 - For performance reasons, it's recommended to use a persistent DuckDB database when working with very large files repeatedly
 - For remote files, the httpfs extension handles HTTP(S) and S3 communication
 - Each GeoParquet file in a directory appears as a separate feature type in the DataStore
@@ -240,6 +243,5 @@ The GeoParquet module has strong typing for Coordinate Reference Systems (CRS):
 ## Dependencies
 
 - GeoTools Core and JDBC modules
-- DuckDB JDBC driver (version specified in the root `pom.xml` for the `org.duckdb:duckdb_jdbc` dependency)
+- `gt-duckdb` (GeoParquet depends on the shared DuckDB module, which brings `org.duckdb:duckdb_jdbc`; the driver version is managed in `build/platform-dependencies/pom.xml`)
 - Jackson Databind (for parsing GeoParquet metadata)
-

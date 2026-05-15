@@ -210,6 +210,7 @@ public class FillImpl implements Fill, Cloneable {
 
     /** Returns a clone of the FillImpl. */
     @Override
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public Object clone() {
         try {
             FillImpl clone = (FillImpl) super.clone();

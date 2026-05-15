@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
@@ -94,6 +95,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.sqlite.Function;
 import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteConnection;
 
 /**
  * Provides access to a GeoPackage database.
@@ -104,6 +106,9 @@ import org.sqlite.SQLiteConfig;
 public class GeoPackage implements Closeable {
 
     static final Logger LOGGER = Logging.getLogger(GeoPackage.class);
+
+    /** WeakHashMap to track connections that have already had SQLite functions registered */
+    private static final WeakHashMap<Connection, Boolean> INITIALIZED_CONNECTIONS = new WeakHashMap<>();
 
     public static final String GEOPACKAGE_CONTENTS = "gpkg_contents";
 
@@ -128,6 +133,8 @@ public class GeoPackage implements Closeable {
     public static final String SPATIAL_INDEX = "gpkg_spatial_index";
 
     public static final String SCHEMA = "gpkg_schema";
+
+    static final String ALLOW_EXTENSION_LOADING_KEY = "org.geotools.sqlite.extensions";
 
     /**
      * Adding this key into a {@link FeatureType#getUserData()} with a value of true will allow creating tables without
@@ -310,7 +317,14 @@ public class GeoPackage implements Closeable {
      * <p>This method creates all the necessary metadata tables.
      */
     static void init(Connection cx) throws SQLException {
-        createFunctions(cx);
+        // init portion requiring native connection
+        SQLiteConnection liteCx = unwrapConnection(cx);
+        createFunctions(liteCx);
+        // if the extensions loading is allowed, we can load the extensions
+        boolean extensionLoadingAllowed = Boolean.getBoolean(ALLOW_EXTENSION_LOADING_KEY);
+        liteCx.getDatabase().enable_load_extension(extensionLoadingAllowed);
+        LOGGER.log(Level.FINE, () -> "Loading SQLite extensions is enabled: " + extensionLoadingAllowed);
+
         // see if we have to create the table structure
         boolean initialized = false;
         try (Statement st = cx.createStatement();
@@ -347,13 +361,23 @@ public class GeoPackage implements Closeable {
     }
 
     static void createFunctions(Connection cx) throws SQLException {
-        while (cx instanceof DelegatingConnection) {
-            cx = ((DelegatingConnection) cx).getDelegate();
+        // Unwrap the connection to get the real SQLite connection
+        Connection unwrapped = cx;
+        while (unwrapped instanceof DelegatingConnection) {
+            unwrapped = ((DelegatingConnection) unwrapped).getDelegate();
+        }
+
+        // Check if functions are already created on this connection
+        // This prevents "error creating function" when reusing pooled connections
+        synchronized (INITIALIZED_CONNECTIONS) {
+            if (INITIALIZED_CONNECTIONS.containsKey(unwrapped)) {
+                return;
+            }
         }
 
         // minx
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MinX",
                 new GeometryDoubleFunction() {
 
@@ -367,7 +391,7 @@ public class GeoPackage implements Closeable {
 
         // maxx
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MaxX",
                 new GeometryDoubleFunction() {
                     @Override
@@ -380,7 +404,7 @@ public class GeoPackage implements Closeable {
 
         // miny
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MinY",
                 new GeometryDoubleFunction() {
 
@@ -393,7 +417,7 @@ public class GeoPackage implements Closeable {
                 Function.FLAG_DETERMINISTIC);
         // maxy
         Function.create(
-                cx,
+                unwrapped,
                 "ST_MaxY",
                 new GeometryDoubleFunction() {
 
@@ -407,7 +431,7 @@ public class GeoPackage implements Closeable {
 
         // empty
         Function.create(
-                cx,
+                unwrapped,
                 "ST_IsEmpty",
                 new GeometryBooleanFunction() {
                     @Override
@@ -417,6 +441,19 @@ public class GeoPackage implements Closeable {
                 },
                 1,
                 Function.FLAG_DETERMINISTIC);
+
+        // Mark this connection as initialized
+        synchronized (INITIALIZED_CONNECTIONS) {
+            INITIALIZED_CONNECTIONS.put(unwrapped, Boolean.TRUE);
+        }
+    }
+
+    /** Simple unwrapper, which assumes we have control over the {@link DataSource} and/or pooling library. */
+    private static SQLiteConnection unwrapConnection(Connection cx) {
+        while (cx instanceof DelegatingConnection) {
+            cx = ((DelegatingConnection) cx).getDelegate();
+        }
+        return (SQLiteConnection) cx;
     }
 
     /**

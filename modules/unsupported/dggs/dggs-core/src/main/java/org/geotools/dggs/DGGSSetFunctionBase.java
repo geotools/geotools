@@ -77,7 +77,7 @@ public abstract class DGGSSetFunctionBase extends FunctionImpl implements DGGSSe
     }
 
     @Override
-    public void setDGGSInstance(DGGSInstance dggs) {
+    public void setDGGSInstance(DGGSInstance<?> dggs) {
         Literal dggsLiteral = FF.literal(dggs);
         List<Expression> parameters = getParameters();
         if (parameters.size() == dggsParameterIndex) {

@@ -16,10 +16,14 @@
  */
 package org.geotools.data.geoparquet;
 
+import java.util.List;
+import java.util.function.Supplier;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.data.duckdb.DuckDBFilterToSQL;
+import org.geotools.jackson.datatype.geoparquet.BboxCovering;
+import org.geotools.jackson.datatype.geoparquet.Geometry;
 
 /**
  * Filter SQL encoder for GeoParquet queries.
@@ -40,6 +44,21 @@ import org.geotools.data.duckdb.DuckDBFilterToSQL;
  */
 public class GeoParquetFilterToSQL extends DuckDBFilterToSQL {
 
+    /** Supplier for accessing GeoParquet dataset metadata during filter encoding. */
+    private Supplier<GeoparquetDatasetMetadata> datasetMetadataSupplier;
+
+    /**
+     * Sets the supplier for GeoParquet dataset metadata.
+     *
+     * <p>This supplier is used to access the dataset metadata during filter encoding. It is particularly important for
+     * optimizing spatial filters like BBOX by using the bounding box components defined in the metadata.
+     *
+     * @param supplier A supplier that provides access to the GeoParquet dataset metadata
+     */
+    public void setDatasetMetadataSupplier(Supplier<GeoparquetDatasetMetadata> supplier) {
+        this.datasetMetadataSupplier = supplier;
+    }
+
     /**
      * Returns a string representation of this filter encoder.
      *
@@ -58,7 +77,8 @@ public class GeoParquetFilterToSQL extends DuckDBFilterToSQL {
      * components, which can be much more efficient.
      *
      * <p>The generated SQL follows the pattern: {@code bbox.xmin <= maxX and bbox.xmax >= minX and bbox.ymin <= maxY
-     * and bbox.ymax >= minY} which implements a proper spatial intersection test using only simple comparisons.
+     * and bbox.ymax >= minY} which implements a proper spatial intersection test using only simple comparisons. The
+     * actual column names for the bbox components are resolved from the dataset metadata if available.
      *
      * @param filter The BBOX filter to encode
      * @param leftExp The left expression (typically the geometry column)
@@ -75,8 +95,47 @@ public class GeoParquetFilterToSQL extends DuckDBFilterToSQL {
         double ymin = bounds.getMinY();
         double ymax = bounds.getMaxY();
 
-        // bbox intersection predicate
+        String[] acc = resolveCoveringBboxAccessors();
+        if (acc != null) {
+            // acc = [xminAccessor, yminAccessor, xmaxAccessor, ymaxAccessor]
+            write(
+                    "%s <= %f and %s >= %f and %s <= %f and %s >= %f",
+                    acc[0], xmax, // xmin <= queryMaxX
+                    acc[2], xmin, // xmax >= queryMinX
+                    acc[1], ymax, // ymin <= queryMaxY
+                    acc[3], ymin); // ymax >= queryMinY
+            return extraData;
+        }
+
+        // Fallback to current behavior (hard-coded bbox)
         write("bbox.xmin <= %f and bbox.xmax >= %f and bbox.ymin <= %f and bbox.ymax >= %f", xmax, xmin, ymax, ymin);
         return extraData;
+    }
+
+    /**
+     * Resolves the column accessors for the bounding box components from the GeoParquet dataset metadata if available.
+     */
+    private String[] resolveCoveringBboxAccessors() {
+        if (datasetMetadataSupplier == null) return null;
+
+        GeoparquetDatasetMetadata md = datasetMetadataSupplier.get();
+        if (md == null || md.isEmpty()) return null;
+
+        Geometry g = md.getPrimaryColumn().orElse(null);
+        if (g == null || g.getCovering() == null || g.getCovering().getBbox() == null) return null;
+
+        BboxCovering bbox = g.getCovering().getBbox();
+
+        String xmin = pathToAccessor(bbox.getXmin());
+        String ymin = pathToAccessor(bbox.getYmin());
+        String xmax = pathToAccessor(bbox.getXmax());
+        String ymax = pathToAccessor(bbox.getYmax());
+
+        if (xmin == null || ymin == null || xmax == null || ymax == null) return null;
+        return new String[] {xmin, ymin, xmax, ymax};
+    }
+
+    private static String pathToAccessor(List<String> path) {
+        return (path == null || path.isEmpty()) ? null : String.join(".", path);
     }
 }

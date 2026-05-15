@@ -23,13 +23,12 @@ import io.tileverse.pmtiles.store.VectorTileStore;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.feature.type.Name;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.logging.Logging;
+import org.geotools.pmtiles.store.PMTilesDataStore;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
@@ -73,8 +72,6 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
  */
 public abstract class VectorTilesDataStore extends ContentDataStore {
 
-    static final Logger LOGGER = Logging.getLogger(VectorTilesDataStore.class);
-
     public static final GeometryFactory DEFAULT_GEOMETRY_FACTORY =
             new GeometryFactory(new PackedCoordinateSequenceFactory());
 
@@ -98,6 +95,8 @@ public abstract class VectorTilesDataStore extends ContentDataStore {
 
     /**
      * Returns the underlying {@link VectorTileStore} that provides access to the tile data.
+     *
+     * <p>Used by {@link VectorTilesFeatureSource}
      *
      * @return the vector tile store
      */

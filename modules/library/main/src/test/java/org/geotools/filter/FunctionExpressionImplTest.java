@@ -172,7 +172,7 @@ public class FunctionExpressionImplTest {
         return sb.toString();
     }
 
-    @SuppressWarnings("ReturnValueIgnored")
+    @SuppressWarnings({"ReturnValueIgnored", "PMD.UselessPureMethodCall"})
     private void testFunction(Function function, List<String> errors)
             throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final String functionClass = function.getClass().getName();

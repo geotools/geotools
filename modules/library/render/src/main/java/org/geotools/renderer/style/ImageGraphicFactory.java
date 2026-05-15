@@ -85,6 +85,9 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
                 LOGGER.warning("Unable to read image at " + location + " : " + ioe.getMessage());
                 return null;
             }
+            if (image == null) {
+                return null;
+            }
             imageCache.put(location, image);
         }
 

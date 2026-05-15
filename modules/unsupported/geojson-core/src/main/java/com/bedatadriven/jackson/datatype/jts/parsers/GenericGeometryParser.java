@@ -30,13 +30,13 @@ import static com.bedatadriven.jackson.datatype.jts.GeoJson.POINT;
 import static com.bedatadriven.jackson.datatype.jts.GeoJson.POLYGON;
 import static com.bedatadriven.jackson.datatype.jts.GeoJson.TYPE;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import java.io.Closeable;
 import java.util.HashMap;
 import java.util.Map;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.exc.JsonNodeException;
 
 /** Created by mihaildoronin on 11/11/15. */
 public class GenericGeometryParser extends BaseParser implements GeometryParser<Geometry> {
@@ -56,14 +56,14 @@ public class GenericGeometryParser extends BaseParser implements GeometryParser<
     }
 
     @Override
-    public Geometry geometryFromJson(JsonNode node) throws JsonMappingException {
-        String typeName = node.get(TYPE).asText();
+    public Geometry geometryFromJson(JsonNode node) throws DatabindException {
+        String typeName = node.get(TYPE).asString();
         GeometryParser parser = parsers.get(typeName);
         if (parser != null) {
             return parser.geometryFromJson(node);
         } else {
             // TODO find a better way of doing this!
-            throw new JsonMappingException((Closeable) null, "Invalid geometry type: " + typeName);
+            throw JsonNodeException.from(node, "Invalid geometry type: " + typeName);
         }
     }
 }

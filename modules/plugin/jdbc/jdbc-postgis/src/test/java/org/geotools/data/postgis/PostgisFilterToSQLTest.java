@@ -260,7 +260,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
         filterToSql.encode(pointer);
         String sql = writer.toString().toLowerCase().trim();
-        assertEquals("testjson ::json  -> 'arr' ->> 0", sql);
+        assertEquals("testjson -> 'arr' ->> 0", sql);
     }
 
     @Test
@@ -270,7 +270,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         Filter startsWith = ff.equals(pointer, ff.literal("value"));
         filterToSql.encode(startsWith);
         String sql = writer.toString().toLowerCase().trim();
-        assertEquals("where testjson ::json  ->> '1407' = 'value'", sql);
+        assertEquals("where testjson ->> '1407' = 'value'", sql);
     }
 
     @Test
@@ -280,7 +280,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         Filter startsWith = ff.equals(pointer, ff.literal("escaped_apostrophe"));
         filterToSql.encode(startsWith);
         String sql = writer.toString().toLowerCase().trim();
-        assertEquals("where testjson ::json  ->> '''' = 'escaped_apostrophe'", sql);
+        assertEquals("where testjson ->> '''' = 'escaped_apostrophe'", sql);
     }
 
     @Test
@@ -290,7 +290,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         Filter startsWith = ff.equals(pointer, ff.literal("escaped_literal"));
         filterToSql.encode(startsWith);
         String sql = writer.toString().toLowerCase().trim();
-        assertEquals("where testjson ::json  ->> '''2202' = 'escaped_literal'", sql);
+        assertEquals("where testjson ->> '''2202' = 'escaped_literal'", sql);
     }
 
     @Test
@@ -301,8 +301,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         Filter startsWith = ff.equals(pointer, ff.literal("complex_pointer"));
         filterToSql.encode(startsWith);
         String sql = writer.toString().toLowerCase().trim();
-        assertEquals(
-                "where testjson ::json  -> 'numeric_key' -> '0714' -> 'array_index' ->> 1407 = 'complex_pointer'", sql);
+        assertEquals("where testjson -> 'numeric_key' -> '0714' -> 'array_index' ->> 1407 = 'complex_pointer'", sql);
     }
 
     @Test
@@ -313,7 +312,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         Filter less = ff.less(pointer, literal);
         filterToSql.encode(less);
         String sql = writer.toString().toLowerCase().trim();
-        assertEquals("where (testjson ::json  -> 'arr' ->> 0)::integer < 3", sql);
+        assertEquals("where (testjson -> 'arr' ->> 0)::integer < 3", sql);
     }
 
     @Test
@@ -325,7 +324,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         Filter like = ff.like(pointer, "a_literal", "%", "-", "\\", true);
         filterToSql.encode(like);
         String sql = writer.toString().toLowerCase().trim();
-        assertEquals("where testjson ::json  -> 'arr' ->> 0 like 'a_literal'", sql);
+        assertEquals("where testjson -> 'arr' ->> 0 like 'a_literal'", sql);
     }
 
     @Test

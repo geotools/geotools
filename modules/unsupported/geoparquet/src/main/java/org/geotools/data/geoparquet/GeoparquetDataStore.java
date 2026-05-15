@@ -24,6 +24,7 @@ import org.geotools.api.data.DataStore;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
+import org.geotools.data.duckdb.ForwardingDataStore;
 import org.geotools.feature.NameImpl;
 import org.geotools.jdbc.JDBCDataStore;
 

@@ -24,7 +24,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
  * Interface for stores implementing DGGS access. Each feature type returned by a DGGSStore must have at a minimum a
  * zone identifier column and a {@link #RESOLUTION} field
  */
-public interface DGGSStore extends DataStore {
+public interface DGGSStore<I> extends DataStore {
 
     /** A view parameter to forcefully choose a resolution */
     String VP_RESOLUTION = "res";
@@ -41,5 +41,5 @@ public interface DGGSStore extends DataStore {
      */
     String DGGS_INTRINSIC = "dggsInstrisic";
 
-    DGGSFeatureSource getDGGSFeatureSource(String typeName) throws IOException;
+    DGGSFeatureSource<I> getDGGSFeatureSource(String typeName) throws IOException;
 }

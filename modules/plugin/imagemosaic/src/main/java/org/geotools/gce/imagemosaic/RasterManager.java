@@ -963,16 +963,12 @@ public class RasterManager implements Cloneable {
     private void updateHints(Hints hints, MosaicConfigurationBean configuration, ImageMosaicReader parentReader) {
         if (configuration != null) {
             String auxiliaryFilePath = configuration.getAuxiliaryFilePath();
-            String auxiliaryDatastorePath = configuration.getAuxiliaryDatastorePath();
             boolean update = false;
             if (auxiliaryFilePath != null) {
                 hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, auxiliaryFilePath));
                 update = true;
             }
-            if (auxiliaryDatastorePath != null) {
-                hints.add(new RenderingHints(Utils.AUXILIARY_DATASTORE_PATH, auxiliaryDatastorePath));
-                update = true;
-            }
+
             if (update && !hints.containsKey(Utils.PARENT_DIR)) {
                 String parentDir = null;
                 if (parentReader.parentDirectory != null) {
@@ -1535,7 +1531,12 @@ public class RasterManager implements Cloneable {
         if (domainsManager != null) {
             metadataNames.addAll(domainsManager.getMetadataNames());
         }
+        if (heterogeneousCRS && Utils.HETEROGENEOUS_LOCAL_REPROJECT) {
+            metadataNames.add(AbstractGridCoverage2DReader.REPROJECTING_READER);
+        }
+
         metadataNames.add(AbstractGridCoverage2DReader.MULTICRS_READER);
+
         return metadataNames.toArray(new String[metadataNames.size()]);
     }
 
@@ -1625,6 +1626,11 @@ public class RasterManager implements Cloneable {
                 return "";
             }
         }
+
+        if (name.equalsIgnoreCase(AbstractGridCoverage2DReader.REPROJECTING_READER) && heterogeneousCRS) {
+            return String.valueOf(Utils.HETEROGENEOUS_LOCAL_REPROJECT);
+        }
+
         // check additional domains
         if (domainsManager != null) {
             return domainsManager.getMetadataValue(name);
@@ -1720,9 +1726,9 @@ public class RasterManager implements Cloneable {
             ReferencedEnvelope referenceBounds, CoordinateReferenceSystem targetCRS, ReferencedEnvelope bounds)
             throws FactoryException, TransformException {
         ProjectionHandler ph = ProjectionHandlerFinder.getHandler(referenceBounds, targetCRS, true);
-        ReferencedEnvelope targetBounds = null;
         if (ph != null) {
             List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+            ReferencedEnvelope targetBounds = null;
             for (ReferencedEnvelope envelope : queryEnvelopes) {
                 ReferencedEnvelope transformed = envelope.transform(targetCRS, true);
                 if (targetBounds == null) {
@@ -1731,10 +1737,19 @@ public class RasterManager implements Cloneable {
                     targetBounds.expandToInclude(transformed);
                 }
             }
+            try {
+                ReferencedEnvelope transformedBounds = bounds.transform(targetCRS, true, 20);
+                return targetBounds.intersection(transformedBounds);
+            } catch (FactoryException | TransformException e) {
+                LOGGER.log(
+                        Level.FINE,
+                        "Could not reproject the data to target CRS, using only the transformed read envelope",
+                        e);
+            }
+            return targetBounds;
         } else {
-            targetBounds = bounds.transform(targetCRS, true);
+            return bounds.transform(targetCRS, true);
         }
-        return targetBounds;
     }
 
     /**

@@ -16,633 +16,231 @@
  */
 package org.geotools.coverage.io.catalog;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.logging.Level;
+import java.util.Objects;
 import java.util.logging.Logger;
-import org.apache.commons.lang3.StringUtils;
-import org.geotools.api.data.DataStore;
-import org.geotools.api.data.DataStoreFactorySpi;
-import org.geotools.api.data.FeatureStore;
 import org.geotools.api.data.Query;
-import org.geotools.api.data.QueryCapabilities;
-import org.geotools.api.data.Repository;
-import org.geotools.api.data.SimpleFeatureSource;
-import org.geotools.api.data.SimpleFeatureStore;
-import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.coverage.util.FeatureUtilities;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultTransaction;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.NameImpl;
-import org.geotools.feature.SchemaException;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.FeatureCalc;
-import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.SoftValueHashMap;
-import org.geotools.util.Utilities;
 
 /**
- * This class simply builds an index for fast indexed queries.
+ * Before GT 35.x version this class relied on an underlying {@code DataStore} (H2/PostGIS/...) to persist and query
+ * slice metadata (time/elevation/other dimensions) and the corresponding {@code imageIndex}.
  *
- * <p>TODO: we may consider converting {@link CoverageSlice}s to {@link SimpleFeature}s
+ * <p>Current implementation delegates query planning and slice iteration to a {@link SliceProvider}. That can compute
+ * matches on-the-fly (e.g. using a deterministic Var/T/Z -> imageIndex mapping).
  */
 public class CoverageSlicesCatalog {
-
-    /**
-     * CoverageSlicesCatalog always used an hidden H2 DB to store granules index related to a specific file.
-     *
-     * <p>Starting from 14.x it also can be setup on top of a shared PostGIS datastore.
-     *
-     * <p>Using a PostGIS shared index, we need to add a LOCATION attribute to distinguish the different granules, as
-     * well as add a Filter setting the LOCATION value to each query from a reader (1 reader <-> 1 file <-> 1 location)
-     */
-    public static class WrappedCoverageSlicesCatalog extends CoverageSlicesCatalog {
-
-        private static final FilterFactory FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
-
-        /** Internal query filter to be ANDED with the input query */
-        private Filter queryFilter;
-
-        public WrappedCoverageSlicesCatalog(DataStoreConfiguration config, File file, Repository repository)
-                throws IOException {
-            super(config, repository);
-            queryFilter =
-                    FF.equal(FF.property(CoverageSlice.Attributes.LOCATION), FF.literal(file.getCanonicalPath()), true);
-        }
-
-        @Override
-        public List<CoverageSlice> getGranules(Query q) throws IOException {
-            return super.getGranules(refineQuery(q));
-        }
-
-        @Override
-        public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
-            super.computeAggregateFunction(refineQuery(query), function);
-        }
-
-        @Override
-        public void removeGranules(String typeName, Filter filter, Transaction transaction) throws IOException {
-            super.removeGranules(typeName, refineFilter(filter), transaction);
-        }
-
-        /** Refine query to make sure to restrict the query to the single file associated. */
-        private Query refineQuery(Query q) {
-            Query query = new Query(q);
-            query.setFilter(refineFilter(q.getFilter()));
-            return query;
-        }
-
-        /** Refine filter to make sure to AND the filter with a filter selecting the proper file */
-        private Filter refineFilter(Filter filter) {
-            return filter != null ? FF.and(filter, queryFilter) : queryFilter;
-        }
-    }
 
     /** Logger. */
     static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CoverageSlicesCatalog.class);
 
-    /** The slices index store */
-    private DataStore slicesIndexStore;
-
-    /** The feature type name */
-    private Set<String> typeNames = new HashSet<>();
-
     public static final String IMAGE_INDEX_ATTR = "imageindex";
 
-    private static final String HIDDEN_FOLDER = ".mapping";
+    private final Map<String, CoverageSlicesContext> contextsByTypeName = new LinkedHashMap<>();
 
-    private final SoftValueHashMap<Integer, CoverageSlice> coverageSliceDescriptorsCache = new SoftValueHashMap<>(0);
+    public CoverageSlicesCatalog() {}
 
-    private boolean repositoryStore;
-
-    public CoverageSlicesCatalog(final String database, final File parentLocation) {
-        this(database, parentLocation, null);
+    public String[] getTypeNames() {
+        return contextsByTypeName.keySet().toArray(new String[0]);
     }
 
-    public CoverageSlicesCatalog(final String database, final File parentLocation, Repository repository) {
-        this(new DataStoreConfiguration(DataStoreConfiguration.getDefaultParams(database, parentLocation)), repository);
-    }
+    /**
+     * Resolver that can translate GeoTools {@link Query} objects into a stream of matching slices.
+     *
+     * <p>Implementations are expected to:
+     *
+     * <ul>
+     *   <li>Recognize TIME/ELEVATION (and other dimension) constraints in {@code Query#getFilter()}
+     *   <li>Compute the matching tuples and their {@code imageIndex} without materializing all slices
+     *   <li>Build {@link CoverageSlice} instances (or at least their originator {@link SimpleFeature}) lazily
+     * </ul>
+     *
+     * It matches the FeatureSource behavior by returning an Iterator to iterate over the CoverageSlices resulting from
+     * a specific Query.
+     */
+    public interface SliceProvider {
 
-    public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig) {
-        this(datastoreConfig, null);
-    }
+        /** Return the SliceIterator object to iterate on the CoverageSlices resulting from the provided Query. */
+        Iterator<CoverageSlice> iterate(Query query) throws IOException;
 
-    public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig, Repository repository) {
-        DataStoreFactorySpi spi = datastoreConfig.getDatastoreSpi();
-        String storeName = datastoreConfig.getStoreName();
-        boolean useRepository = storeName != null && repository != null;
-        try {
-            // creating a store, this might imply creating it for an existing underlying store or
-            // creating a brand new one
-            boolean isPostgis = Utils.isPostgisStore(spi);
-            boolean isH2 = Utils.isH2Store(spi);
+        /**
+         * Optional fast-path for counts. Implementations may return {@code -1} to indicate that the catalog should fall
+         * back to counting by iteration.
+         */
+        default int count(Query query) throws IOException {
+            return -1;
+        }
 
-            Map<String, Serializable> params = datastoreConfig.getParams();
-            if (isPostgis && params != null) {
-                Utils.fixPostgisDBCreationParams(params);
-            }
-            if (useRepository) {
-                Name name = new NameImpl(storeName);
-                slicesIndexStore = repository.dataStore(name);
-                if (slicesIndexStore == null && storeName.indexOf(':') > -1) {
-                    int idx = storeName.lastIndexOf(':');
-                    name = new NameImpl(storeName.substring(0, idx), storeName.substring(idx + 1));
-                    slicesIndexStore = repository.dataStore(name);
-                }
-
-                if (slicesIndexStore == null) {
-                    throw new IllegalArgumentException("Could not locate store named " + storeName);
-                }
-                this.repositoryStore = true;
-            } else {
-                if (!(isH2 || isPostgis)) {
-                    throw new IllegalArgumentException(
-                            "Low level index for multidim granules only supports" + " H2 and PostGIS databases");
-                }
-                Utilities.ensureNonNull("params", params);
-
-                slicesIndexStore = spi.createDataStore(params);
-            }
-            boolean wrapDatastore = false;
-            String parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
-            if (params.containsKey(Utils.Prop.WRAP_STORE)) {
-                wrapDatastore = (Boolean) params.get(Utils.Prop.WRAP_STORE);
-            }
-            if (isPostgis && wrapDatastore) {
-                slicesIndexStore = new PostgisDatastoreWrapper(slicesIndexStore, parentLocation, HIDDEN_FOLDER);
-            }
-
-            String typeName = null;
-            String[] typeNamesValues = null;
-
-            // Handle multiple typeNames
-            if (params.containsKey(Utils.Prop.TYPENAME)) {
-                typeName = (String) params.get(Utils.Prop.TYPENAME);
-                if (!StringUtils.isEmpty(typeName)) {
-                    if (typeName.contains(",")) {
-                        typeNamesValues = typeName.split(",");
-                    } else {
-                        typeNamesValues = new String[] {typeName};
-                    }
-                }
-            }
-
-            // if no type name was provided, then grab them from the underlying store
-            if (typeNamesValues == null) {
-                typeNamesValues = slicesIndexStore.getTypeNames();
-            }
-
-            if (typeNamesValues != null) {
-                for (String tn : typeNamesValues) {
-                    this.typeNames.add(tn);
-                }
-                if (!this.typeNames.isEmpty())
-                    extractBasicProperties(typeNames.iterator().next());
-            } else if (typeName != null) {
-                this.typeNames.add(typeName);
-                extractBasicProperties(typeName);
-            }
-        } catch (Throwable e) {
-            try {
-                if (slicesIndexStore != null) {
-                    slicesIndexStore.dispose();
-                }
-            } catch (Throwable e1) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, e1.getLocalizedMessage(), e1);
-                }
-            } finally {
-                slicesIndexStore = null;
-            }
-
-            throw new IllegalArgumentException(e);
+        /**
+         * Optional fast-path for bounds. Implementations may return {@code null} to indicate that the catalog should
+         * fall back to computing bounds by iteration.
+         */
+        default ReferencedEnvelope bounds(Query query) throws IOException {
+            return null;
         }
     }
 
     /**
-     * If the underlying store has been disposed we throw an {@link IllegalStateException}.
-     *
-     * <p>We need to arrive here with at least a read lock!
-     *
-     * @throws IllegalStateException in case the underlying store has been disposed.
+     * A CoverageSlices context holds the typeName and underlying schema of a coverage, plus a SliceProvider instance to
+     * extract CoverageSlices from that schema via a provided query.
      */
-    private void checkStore() throws IllegalStateException {
-        if (slicesIndexStore == null) {
-            throw new IllegalStateException("The index store has been disposed already.");
+    public static final class CoverageSlicesContext {
+        private final String typeName;
+        private final SimpleFeatureType schema;
+        private SliceProvider sliceProvider;
+
+        public CoverageSlicesContext(SimpleFeatureType schema) {
+            this.schema = Objects.requireNonNull(schema, "schema");
+            this.typeName = schema.getTypeName();
+        }
+
+        public void setSliceProvider(SliceProvider sliceProvider) {
+            this.sliceProvider = sliceProvider;
+        }
+
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public SimpleFeatureType getSchema() {
+            return schema;
+        }
+
+        public SliceProvider getSliceProvider() {
+            return sliceProvider;
         }
     }
 
-    private void extractBasicProperties(String typeName) throws IOException {
+    private CoverageSlicesContext context(String typeName) {
+        return contextsByTypeName.get(typeName);
+    }
 
-        if (typeName == null) {
-            final String[] typeNames = slicesIndexStore.getTypeNames();
-            if (typeNames == null || typeNames.length <= 0) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Problems when opening the index,"
-                            + " no typenames for the schema are defined");
-                }
-                return;
+    /**
+     * Streams matching {@link CoverageSlice}s without materializing them into a list.
+     *
+     * <p>This is the preferred entry point for callers that want to avoid eagerly loading all slices.
+     */
+    public Iterator<CoverageSlice> iterateGranules(final Query q) throws IOException {
+        Query query = prepareQuery(q);
+        return context(requiredTypeName(query)).getSliceProvider().iterate(query);
+    }
+    /**
+     * Returns the number of granules matching the provided query without loading them all. Falls back to iteration if
+     * the underlying store cannot compute counts.
+     */
+    public int getCount(final Query q) throws IOException {
+        Query query = prepareQuery(q);
+        SliceProvider provider = context(requiredTypeName(query)).getSliceProvider();
+
+        int fast = provider.count(query);
+        if (fast >= 0) {
+            return fast;
+        }
+
+        int count = 0;
+        Iterator<CoverageSlice> it = provider.iterate(query);
+        while (it.hasNext()) {
+            it.next();
+            count++;
+        }
+
+        return count;
+    }
+
+    /**
+     * Returns bounds for granules matching the provided query without loading them all. Falls back to
+     * feature-collection bounds if the underlying store can't compute it directly.
+     */
+    public ReferencedEnvelope getBounds(final Query q) throws IOException {
+        Query query = prepareQuery(q);
+        SliceProvider provider = context(requiredTypeName(query)).getSliceProvider();
+
+        ReferencedEnvelope fast = provider.bounds(query);
+        if (fast != null) {
+            return fast;
+        }
+
+        ReferencedEnvelope envelope = null;
+        Iterator<CoverageSlice> it = provider.iterate(query);
+        while (it.hasNext()) {
+            CoverageSlice slice = it.next();
+            SimpleFeature feature = slice.getOriginator();
+            if (feature == null) {
+                continue;
             }
-            if (typeName == null) {
-                typeName = typeNames[0];
-                addTypeName(typeName, false);
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.warning("BBOXFilterExtractor::extractBasicProperties(): passed typename is null, using: "
-                            + typeName);
+            BoundingBox bbox = feature.getBounds();
+            if (bbox == null) {
+                continue;
             }
-
-            // loading all the features into memory to build an in-memory index.
-            for (String type : typeNames) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
-                            + typeName
-                            + "\' in DataStore:getTypeNames(). Testing: \'"
-                            + type
-                            + "\'.");
-                if (type.equalsIgnoreCase(typeName)) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): SUCCESS -> type \'"
-                                + typeName
-                                + "\' is equalsIgnoreCase() to \'"
-                                + type
-                                + "\'.");
-                    typeName = type;
-                    addTypeName(typeName, false);
-                    break;
-                }
-            }
-        }
-    }
-
-    private void addTypeName(String typeName, final boolean check) {
-        if (check && this.typeNames.contains(typeName)) {
-            throw new IllegalArgumentException("This typeName already exists: " + typeName);
-        }
-        this.typeNames.add(typeName);
-    }
-
-    public String[] getTypeNames() {
-        if (this.typeNames != null && !this.typeNames.isEmpty()) {
-            return this.typeNames.toArray(new String[] {});
-        }
-        return null;
-    }
-
-    public boolean hasTypeName(String typeName) {
-        return typeNames != null && typeNames.contains(typeName);
-    }
-
-    private final ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
-
-    public void dispose() {
-        final Lock l = rwLock.writeLock();
-        l.lock();
-        try {
-            try {
-                if (slicesIndexStore != null && !repositoryStore) slicesIndexStore.dispose();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            } finally {
-                slicesIndexStore = null;
-            }
-        } finally {
-            l.unlock();
-        }
-    }
-
-    public void addGranule(final String typeName, final SimpleFeature granule, final Transaction transaction)
-            throws IOException {
-        Utilities.ensureNonNull("typeName", typeName);
-        Utilities.ensureNonNull("granule", granule);
-        Utilities.ensureNonNull("transaction", transaction);
-        final DefaultFeatureCollection collection = new DefaultFeatureCollection();
-        collection.add(granule);
-        addGranules(typeName, collection, transaction);
-    }
-
-    public void addGranules(
-            final String typeName, final SimpleFeatureCollection granules, final Transaction transaction)
-            throws IOException {
-        Utilities.ensureNonNull("granuleMetadata", granules);
-        final Lock lock = rwLock.writeLock();
-        lock.lock();
-        try {
-            // check if the index has been cleared
-            checkStore();
-
-            final SimpleFeatureStore store = (SimpleFeatureStore) slicesIndexStore.getFeatureSource(typeName);
-            store.setTransaction(transaction);
-            store.addFeatures(granules);
-
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    public List<CoverageSlice> getGranules(final Query q) throws IOException {
-        Utilities.ensureNonNull("query", q);
-        final List<CoverageSlice> returnValue = new ArrayList<>();
-        final Lock lock = rwLock.readLock();
-        lock.lock();
-        try {
-            checkStore();
-            final String typeName = q.getTypeName();
-
-            //
-            // Load tiles informations, especially the bounds, which will be reused
-            //
-            final SimpleFeatureSource featureSource = slicesIndexStore.getFeatureSource(typeName);
-            if (featureSource == null) {
-                throw new NullPointerException(
-                        "The provided SimpleFeatureSource is null, it's impossible to create an index!");
-            }
-            Transaction tx = null;
-            try { // NOPMD (UseTryWithResources)
-
-                // Transform feature stores will use an autoCommit transaction which doesn't
-                // have any state. Getting the features iterator may throw an exception
-                // by interpreting a null state as a closed transaction. Therefore
-                // we use a DefaultTransaction instance when dealing with stores.
-                if (featureSource instanceof FeatureStore store) {
-                    tx = new DefaultTransaction("getGranulesTransaction" + System.nanoTime());
-                    store.setTransaction(tx);
-                }
-                String[] requestedProperties = q.getPropertyNames();
-                boolean postRetypeRequired = requestedProperties != Query.ALL_NAMES;
-                SimpleFeatureType target = null;
-                if (postRetypeRequired) {
-                    List<String> propertiesList = new ArrayList<>(Arrays.asList(requestedProperties));
-                    if (!propertiesList.contains(IMAGE_INDEX_ATTR)) {
-                        // IMAGE_INDEX_ATTRIBUTE is mandatory for coverage slices descriptor
-                        // caching.
-                        // add that the property
-                        String[] properties = new String[requestedProperties.length + 1];
-                        System.arraycopy(requestedProperties, 0, properties, 0, requestedProperties.length);
-                        properties[requestedProperties.length] = IMAGE_INDEX_ATTR;
-                        q.setPropertyNames(properties);
-                    }
-
-                    // prepare target FeatureType
-                    target = SimpleFeatureTypeBuilder.retype(featureSource.getSchema(), requestedProperties);
-                }
-
-                final SimpleFeatureCollection features = featureSource.getFeatures(q);
-                if (features == null) {
-                    throw new NullPointerException(
-                            "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
-                }
-
-                // load the feature from the underlying datastore as needed
-                try (SimpleFeatureIterator it = features.features()) {
-                    if (it == null) {
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine(
-                                    "The provided SimpleFeatureCollection returned a null iterator, it's impossible to create an index!");
-                        }
-                        return Collections.emptyList();
-                    }
-                    if (!it.hasNext()) {
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine(
-                                    "The provided SimpleFeatureCollection is empty, it's impossible to create an index!");
-                        }
-                        return Collections.emptyList();
-                    }
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Index Loaded");
-                    }
-
-                    // getting the features
-                    while (it.hasNext()) {
-                        SimpleFeature feature = it.next();
-                        final SimpleFeature sf = feature;
-                        final CoverageSlice slice;
-
-                        // caching by granule's index
-                        synchronized (coverageSliceDescriptorsCache) {
-                            Integer granuleIndex = (Integer) sf.getAttribute(IMAGE_INDEX_ATTR);
-                            if (coverageSliceDescriptorsCache.containsKey(granuleIndex)) {
-                                slice = coverageSliceDescriptorsCache.get(granuleIndex);
-                            } else {
-                                // create the granule coverageDescriptor (eventually retyping its
-                                // feature)
-                                slice = new CoverageSlice(
-                                        postRetypeRequired ? SimpleFeatureBuilder.retype(sf, target) : sf);
-                                coverageSliceDescriptorsCache.put(granuleIndex, slice);
-                            }
-                        }
-                        returnValue.add(slice);
-                    }
-                }
-            } finally {
-                if (tx != null) {
-                    tx.close();
-                }
-            }
-            // return
-            return returnValue;
-        } catch (Throwable e) {
-            final IOException ioe = new IOException();
-            ioe.initCause(e);
-            throw ioe;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    public ReferencedEnvelope getBounds(final String typeName) {
-        final Lock lock = rwLock.readLock();
-        lock.lock();
-        try {
-            checkStore();
-            return this.slicesIndexStore.getFeatureSource(typeName).getBounds();
-
-        } catch (IOException e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
-            return null;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    public void createType(SimpleFeatureType featureType) throws IOException {
-        Utilities.ensureNonNull("featureType", featureType);
-        final Lock lock = rwLock.writeLock();
-        lock.lock();
-        try {
-            String typeName = null;
-            checkStore();
-            SimpleFeatureType existing = null;
-
-            // Add existence checks
-            Name name = featureType.getName();
-            if (this instanceof WrappedCoverageSlicesCatalog) {
-                try {
-                    // Check the store doesn't already exists
-                    existing = slicesIndexStore.getSchema(name);
-                } catch (IOException ioe) {
-
-                    // Logs existence check at finer level
-                    if (LOGGER.isLoggable(Level.FINER)) {
-                        LOGGER.finer(ioe.getLocalizedMessage());
-                    }
-                }
-            }
-            if (existing == null) {
-                slicesIndexStore.createSchema(featureType);
+            ReferencedEnvelope bounds = new ReferencedEnvelope(bbox);
+            if (envelope == null) {
+                envelope = bounds;
             } else {
-
-                // Logs existence check at finer level
-                if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer("schema " + name + " already exists");
-                }
+                envelope.expandToInclude(bounds);
             }
-            typeName = featureType.getTypeName();
-            if (typeName != null) {
-                addTypeName(typeName, true);
-            }
-            extractBasicProperties(typeName);
-        } finally {
-            lock.unlock();
         }
+
+        return envelope;
     }
 
-    public void createType(String identification, String typeSpec) throws SchemaException, IOException {
-        Utilities.ensureNonNull("typeSpec", typeSpec);
-        Utilities.ensureNonNull("identification", identification);
-        final SimpleFeatureType featureType = DataUtilities.createType(identification, typeSpec);
-        createType(featureType);
+    private Query prepareQuery(Query q) throws IOException {
+        Query query = (q == null) ? null : new Query(q);
+
+        if (query == null || query.getTypeName() == null || query.getTypeName().isEmpty()) {
+            if (contextsByTypeName.size() == 1) {
+                String onlyTypeName = contextsByTypeName.keySet().iterator().next();
+                Query newQuery = new Query(onlyTypeName);
+                return query != null ? DataUtilities.mixQueries(query, newQuery, query.getHandle()) : newQuery;
+            }
+            throw new IOException(
+                    "Query typename is required for multi-typename CoverageSlicesCatalog. Known typenames: "
+                            + contextsByTypeName.keySet());
+        }
+        return query;
     }
 
     public SimpleFeatureType getSchema(final String typeName) throws IOException {
-        final Lock lock = rwLock.readLock();
-        lock.lock();
-        try {
-            checkStore();
-            if (typeName == null) {
-                return null;
-            }
-            return slicesIndexStore.getSchema(typeName);
-        } finally {
-            lock.unlock();
-        }
+        CoverageSlicesContext context = context(typeName);
+        return context != null ? context.getSchema() : null;
     }
 
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
-        final Lock lock = rwLock.readLock();
-        lock.lock();
-        try {
-            checkStore();
-            SimpleFeatureSource fs = slicesIndexStore.getFeatureSource(query.getTypeName());
-
-            if (fs instanceof ContentFeatureSource source) source.accepts(query, function, null);
-            else {
-                final SimpleFeatureCollection collection = fs.getFeatures(query);
-                collection.accepts(function, null);
-            }
-        } finally {
-            lock.unlock();
+        Iterator<CoverageSlice> it = iterateGranules(query);
+        while (it.hasNext()) {
+            CoverageSlice slice = it.next();
+            SimpleFeature feature = slice.getOriginator();
+            function.visit(feature);
         }
     }
 
-    public QueryCapabilities getQueryCapabilities(final String typeName) {
-        final Lock lock = rwLock.readLock();
-        lock.lock();
-        try {
-            checkStore();
-
-            return slicesIndexStore.getFeatureSource(typeName).getQueryCapabilities();
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.INFO)) LOGGER.log(Level.INFO, "Unable to collect QueryCapabilities", e);
-            return null;
-        } finally {
-            lock.unlock();
+    private String requiredTypeName(Query query) throws IOException {
+        String typeName = query.getTypeName();
+        if (typeName == null || typeName.isEmpty()) {
+            throw new IOException("Missing typename in query");
         }
+        return typeName;
     }
 
-    @Override
-    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
-    protected void finalize() throws Throwable {
-        super.finalize();
-
-        // warn people
-        if (this.slicesIndexStore != null) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("This granule catalog was not properly dispose as it still points to:"
-                        + slicesIndexStore.getInfo().toString());
-            }
-            // try to dispose the underlying store if it has not been disposed yet
-            this.dispose();
+    public List<CoverageSlice> getGranules(final Query q) throws IOException {
+        List<CoverageSlice> out = new ArrayList<>();
+        Iterator<CoverageSlice> it = iterateGranules(q);
+        while (it.hasNext()) {
+            out.add(it.next());
         }
+        return out;
     }
 
-    public void removeGranules(String typeName, Filter filter, Transaction transaction) throws IOException {
-        Utilities.ensureNonNull("typeName", typeName);
-        Utilities.ensureNonNull("filter", filter);
-        Utilities.ensureNonNull("transaction", transaction);
-        final Lock lock = rwLock.writeLock();
-        lock.lock();
-        try {
-            // check if the index has been cleared
-            checkStore();
-
-            final SimpleFeatureStore store = (SimpleFeatureStore) slicesIndexStore.getFeatureSource(typeName);
-            store.setTransaction(transaction);
-            store.removeFeatures(filter);
-
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    @SuppressWarnings("PMD.UseTryWithResources") // transaction needed in catch
-    public void purge(Filter filter) throws IOException {
-        DefaultTransaction transaction = null;
-        try {
-            transaction = new DefaultTransaction("CleanupTransaction" + System.nanoTime());
-            for (String typeName : typeNames) {
-                removeGranules(typeName, filter, transaction);
-            }
-            transaction.commit();
-        } catch (Throwable e) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Rollback");
-            }
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new IOException(e);
-        } finally {
-            try {
-                if (transaction != null) {
-                    transaction.close();
-                }
-            } catch (Throwable t) {
-
-            }
-        }
+    public void registerContext(CoverageSlicesContext context) {
+        contextsByTypeName.put(context.getTypeName(), context);
     }
 }

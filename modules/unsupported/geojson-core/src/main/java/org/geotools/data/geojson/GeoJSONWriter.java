@@ -17,16 +17,6 @@
 package org.geotools.data.geojson;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.cfg.CacheProvider;
-import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
-import com.fasterxml.jackson.databind.ser.SerializerFactory;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -63,6 +53,17 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.ObjectWriteContext;
+import tools.jackson.core.PrettyPrinter;
+import tools.jackson.core.json.JsonFactory;
+import tools.jackson.core.json.JsonFactoryBuilder;
+import tools.jackson.core.util.DefaultPrettyPrinter;
+import tools.jackson.core.util.MinimalPrettyPrinter;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Wrapper to handle writing GeoJSON FeatureCollections
@@ -125,24 +126,23 @@ public class GeoJSONWriter implements AutoCloseable {
         } catch (FactoryException e) {
             throw new RuntimeException("CRS factory not found in GeoJSONDatastore writer", e);
         }
-        mapper = new ObjectMapper();
         module = new JtsModule(maxDecimals);
-        mapper.registerModule(module);
+        mapper = JsonMapper.builder().addModule(module).build();
 
         if (outputStream instanceof BufferedOutputStream) {
             this.out = outputStream;
         } else {
             this.out = new BufferedOutputStream(outputStream);
         }
-        JsonFactory factory = new JsonFactory();
-        generator = factory.createGenerator(out);
+        JsonFactory factory = new JsonFactoryBuilder().build();
+        generator = factory.createGenerator(ObjectWriteContext.empty(), out);
     }
 
     /** @throws IOException */
     private void initialise() throws IOException {
         if (!singleFeature) {
             generator.writeStartObject();
-            generator.writeStringField("type", "FeatureCollection");
+            generator.writeStringProperty("type", "FeatureCollection");
             if (bounds != null && isEncodeFeatureBounds()) {
                 /* If they have provided a bbox we can write it out at the top of the file,
                  * else we'll need to do it at the bottom.
@@ -150,7 +150,7 @@ public class GeoJSONWriter implements AutoCloseable {
                 writeBoundingEnvelope();
                 notWritenBbox = false;
             }
-            generator.writeFieldName("features");
+            generator.writeName("features");
             generator.writeStartArray();
             inArray = true;
         }
@@ -166,7 +166,7 @@ public class GeoJSONWriter implements AutoCloseable {
                 throw new RuntimeException(e);
             }
         }
-        generator.writeArrayFieldStart("bbox");
+        generator.writeArrayPropertyStart("bbox");
         double[] coords = {bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY()};
         formatter.setMaximumFractionDigits(maxDecimals);
 
@@ -193,10 +193,9 @@ public class GeoJSONWriter implements AutoCloseable {
     /**
      * @param currentFeature
      * @throws IOException
-     * @throws JsonProcessingException
+     * @throws JacksonException
      */
-    private void writeFeature(SimpleFeature currentFeature, JsonGenerator g)
-            throws IOException, JsonProcessingException {
+    private void writeFeature(SimpleFeature currentFeature, JsonGenerator g) throws IOException, JacksonException {
         Geometry defaultGeometry = (Geometry) currentFeature.getDefaultGeometry();
         if (isEncodeFeatureBounds() && notWritenBbox) {
             final BoundingBox bbox = currentFeature.getDefaultGeometryProperty().getBounds();
@@ -207,9 +206,9 @@ public class GeoJSONWriter implements AutoCloseable {
             }
         }
         g.writeStartObject();
-        g.writeStringField("type", "Feature");
+        g.writeStringProperty("type", "Feature");
 
-        g.writeFieldName("properties");
+        g.writeName("properties");
         g.writeStartObject();
         for (Property p : currentFeature.getProperties()) {
             PropertyType type = p.getType();
@@ -219,11 +218,11 @@ public class GeoJSONWriter implements AutoCloseable {
             Object value = p.getValue();
             String name = p.getName().getLocalPart();
             if (value == null) {
-                g.writeNullField(name);
+                g.writeNullProperty(name);
                 continue;
             }
             Class<?> binding = p.getType().getBinding();
-            g.writeFieldName(name);
+            g.writeName(name);
             writeValue(g, value, binding);
         }
         g.writeEndObject();
@@ -238,15 +237,15 @@ public class GeoJSONWriter implements AutoCloseable {
                 writeBbox(g, defaultGeometry);
             }
 
-            g.writeFieldName("geometry");
+            g.writeName("geometry");
             String gString = mapper.writeValueAsString(defaultGeometry);
             g.writeRawValue(gString);
 
         } else {
-            g.writeFieldName("geometry");
+            g.writeName("geometry");
             g.writeNull();
         }
-        g.writeStringField("id", currentFeature.getID());
+        g.writeStringProperty("id", currentFeature.getID());
         g.writeEndObject();
         g.flush();
     }
@@ -266,23 +265,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } else if (Date.class.isAssignableFrom(binding)) {
             g.writeString(this.dateFormatter.format(value));
         } else if (Object.class.isAssignableFrom(binding) && value instanceof JsonNode node) {
-            node.serialize(
-                    g,
-                    new DefaultSerializerProvider(
-                            mapper.getSerializerProvider(),
-                            mapper.getSerializationConfig(),
-                            mapper.getSerializerFactory()) {
-                        @Override
-                        public DefaultSerializerProvider createInstance(
-                                SerializationConfig config, SerializerFactory jsf) {
-                            throw new UnsupportedOperationException();
-                        }
-
-                        @Override
-                        public DefaultSerializerProvider withCaches(CacheProvider cacheProvider) {
-                            throw new UnsupportedOperationException();
-                        }
-                    });
+            mapper.writeTree(generator, node);
         } else if (binding.isArray()) {
             g.writeStartArray();
             int length = Array.getLength(value);
@@ -336,7 +319,7 @@ public class GeoJSONWriter implements AutoCloseable {
     }
 
     private void writeBbox(JsonGenerator g, Geometry defaultGeometry) throws IOException {
-        g.writeFieldName("bbox");
+        g.writeName("bbox");
         final Envelope envelope = defaultGeometry.getEnvelopeInternal();
         double[] coords = {envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY()};
         formatter.setMaximumFractionDigits(maxDecimals);
@@ -384,11 +367,12 @@ public class GeoJSONWriter implements AutoCloseable {
      * Utility encoding a single JTS geometry in GeoJSON with configurable max decimals, and returning it as a string
      */
     public static String toGeoJSON(Geometry geometry, int maxDecimals) {
-        ObjectMapper lMapper = new ObjectMapper();
-        lMapper.registerModule(new JtsModule(maxDecimals));
+
+        ObjectMapper lMapper =
+                JsonMapper.builder().addModule(new JtsModule(maxDecimals)).build();
         try {
             return lMapper.writeValueAsString(geometry);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.warning(e.getLocalizedMessage());
         }
         return "";
@@ -396,9 +380,9 @@ public class GeoJSONWriter implements AutoCloseable {
 
     /** Utility encoding a single {@link SimpleFeature}, and returning it as a string */
     public static String toGeoJSON(SimpleFeature f) {
-        JsonFactory factory = new JsonFactory();
+        JsonFactory factory = new JsonFactoryBuilder().build();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (JsonGenerator lGenerator = factory.createGenerator(out);
+        try (JsonGenerator lGenerator = factory.createGenerator(ObjectWriteContext.empty(), out);
                 GeoJSONWriter writer = new GeoJSONWriter(out)) {
             writer.writeFeature(f, lGenerator);
         } catch (IOException e) {
@@ -488,15 +472,28 @@ public class GeoJSONWriter implements AutoCloseable {
         this.singleFeature = singleFeature;
     }
 
-    /** Enables/disables pretty printing. */
+    /**
+     * Enables/disables pretty printing. This needs to be called before any writing happens, or the output will be
+     * broken
+     */
     public void setPrettyPrinting(boolean prettyPrint) {
-        if (prettyPrint) generator.setPrettyPrinter(new DefaultPrettyPrinter());
-        else generator.setPrettyPrinter(null);
+        if (isPrettyPrinting() == prettyPrint) return;
+        // generator is immutable, need to recreate
+        generator = new JsonFactoryBuilder().build().createGenerator(getWriteContext(prettyPrint), out);
+    }
+
+    private static ObjectWriteContext.Base getWriteContext(boolean prettyPrint) {
+        return new ObjectWriteContext.Base() {
+            @Override
+            public PrettyPrinter getPrettyPrinter() {
+                return prettyPrint ? new DefaultPrettyPrinter() : new MinimalPrettyPrinter();
+            }
+        };
     }
 
     /** Returns true if pretty printing is enabled, false otherwise. */
     public boolean isPrettyPrinting() {
-        return generator.getPrettyPrinter() != null;
+        return generator.getPrettyPrinter() instanceof DefaultPrettyPrinter;
     }
 
     /**

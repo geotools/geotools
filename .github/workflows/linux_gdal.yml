@@ -26,7 +26,7 @@ jobs:
         sudo tar xvf "$FILE" -C /
         sudo mv /usr/lib/jni/libgdalalljni.so /usr/lib
     - name: Maven repository caching
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.m2/repository
         key: gt-maven-${{ hashFiles('**/pom.xml') }}

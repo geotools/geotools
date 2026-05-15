@@ -23,14 +23,15 @@
     <commons-digester.version>1.8.1</commons-digester.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
     <commons-exec.version>1.3</commons-exec.version>
-    <commons-io.version>2.19.0</commons-io.version>
-    <commons-jxpath.version>1.3</commons-jxpath.version>
+    <commons-io.version>2.21.0</commons-io.version>
+    <commons-jxpath.version>1.4.0</commons-jxpath.version>
     <commons-lang3.version>3.18.0</commons-lang3.version>
     <commons-logging.version>1.3.5</commons-logging.version>
     <commons-pool.version>1.5.4</commons-pool.version>
     <commons-text.version>1.13.0</commons-text.version>
     <conversantmedia-disruptor.version>1.2.15</conversantmedia-disruptor.version>
     <db2.jdbc.version>12.1.0.0</db2.jdbc.version>
+    <duckdb-jdbc.version>1.4.2.0</duckdb-jdbc.version>
     <eastwood.version>1.1.1-20090908</eastwood.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <eclipse.xsd.version>2.12.0</eclipse.xsd.version>
@@ -38,16 +39,18 @@
     <geodb.version>0.9</geodb.version>
     <geographiclib-java.version>1.49</geographiclib-java.version>
     <guava.version>33.5.0-jre</guava.version>
-    <h2.version>1.1.119</h2.version>
+    <h2.version>2.2.224</h2.version>
     <hsqldb.version>2.7.2</hsqldb.version>
     <httpclient4.version>4.5.14</httpclient4.version>
     <httpclient5.version>5.4.4</httpclient5.version>
     <httpcore5.version>5.3.6</httpcore5.version>
-    <imageio.ext.version>2.1-SNAPSHOT</imageio.ext.version>
+    <imageio.ext.version>2.1.0</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
-    <jackson.version>2.19.0</jackson.version>
+    <!-- jackson2 BOM imported for dependency convergence. It must match the version used for jackson-annotations in the jackson3 BOM -->
+    <jackson2.version>2.21.0</jackson2.version>
+    <jackson.version>3.1.2</jackson.version>
     <jai-imageio.version>1.1</jai-imageio.version>
-    <imagen.version>0.9.2-SNAPSHOT</imagen.version>
+    <imagen.version>0.9.2</imagen.version>
     <javacsv.version>2.0</javacsv.version>
     <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
     <jakarta-mail.version>2.1.2</jakarta-mail.version>
@@ -65,20 +68,20 @@
     <jt.version>1.6.0</jt.version>
     <jtds.jdbc.version>1.3.1</jtds.jdbc.version>
     <jts.version>1.20.0</jts.version>
-    <log4j.version>2.24.3</log4j.version>
-    <logback.version>1.5.19</logback.version>
-    <lz4.version>1.8.0</lz4.version>
+    <log4j.version>2.25.4</log4j.version>
+    <logback.version>1.5.25</logback.version>
+    <lz4.version>1.10.2</lz4.version>
     <mssql-jdbc.version>13.2.1.jre11</mssql-jdbc.version>
-    <mysql-connector-java.version>9.4.0</mysql-connector-java.version>
+    <mysql-connector-java.version>9.6.0</mysql-connector-java.version>
     <mongodb-driver-legacy.version>4.0.6</mongodb-driver-legacy.version>
     <netcdf.version>5.5.3</netcdf.version>
-    <ojdbc17.version>23.7.0.25.01</ojdbc17.version>
+    <ojdbc17.version>23.26.1.0.0</ojdbc17.version>
     <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
-    <opencsv.version>5.0</opencsv.version>
+    <opencsv.version>5.12.0</opencsv.version>
     <opendap.version>2.1</opendap.version>
     <oro.version>2.0.8</oro.version>
     <picocontainer.version>1.2</picocontainer.version>
-    <postgresql.jdbc.version>42.7.8</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.7.11</postgresql.jdbc.version>
     <postgis-driver.version>1.0</postgis-driver.version>
     <re2j.version>1.8</re2j.version>
     <reload4j.version>1.2.19</reload4j.version>
@@ -88,7 +91,7 @@
     <snakeyaml.version>2.4</snakeyaml.version>
     <spatialdb.version>0.1</spatialdb.version>
     <spotbugs-annotations.version>4.0.2</spotbugs-annotations.version>
-    <sqlite-jdbc.version>3.41.2.2</sqlite-jdbc.version>
+    <sqlite-jdbc.version>3.51.1.0</sqlite-jdbc.version>
     <systems-common.version>2.1</systems-common.version>
     <tech-units-indriya.version>2.2</tech-units-indriya.version>
     <uber-h3.version>3.7.3</uber-h3.version>
@@ -133,10 +136,19 @@
         <version>${logback.version}</version>
       </dependency>
 
-      <!-- Jackson -->
       <dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson/jackson-bom -->
         <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${jackson2.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Jackson -->
+      <dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson/jackson-bom -->
+        <groupId>tools.jackson</groupId>
         <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
         <type>pom</type>
@@ -417,26 +429,21 @@
         <version>${h2.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.duckdb</groupId>
+        <artifactId>duckdb_jdbc</artifactId>
+        <version>${duckdb-jdbc.version}</version>
+      </dependency>
+      <dependency>
         <!-- gt-jdbc-h2 dependency -->
         <groupId>org.opengeo</groupId>
         <artifactId>geodb</artifactId>
         <version>${geodb.version}</version>
         <exclusions>
           <exclusion>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-          </exclusion>
-          <exclusion>
             <groupId>net.sourceforge.hatbox</groupId>
             <artifactId>hatbox</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <!-- gt-jdbc-h2 dependency -->
-        <groupId>net.sourceforge.hatbox</groupId>
-        <artifactId>hatbox</artifactId>
-        <version>1.0.b11</version>
       </dependency>
       <dependency>
         <groupId>com.oracle</groupId>
@@ -1074,7 +1081,7 @@
         <version>${clickhouse-jdbc.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.lz4</groupId>
+        <groupId>at.yawk.lz4</groupId>
         <artifactId>lz4-java</artifactId>
         <version>${lz4.version}</version>
       </dependency>

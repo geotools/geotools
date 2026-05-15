@@ -76,7 +76,7 @@ public class DGGSStoreFactory implements DataStoreFactorySpi {
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         // setup the DGGS instance
         String factoryId = (String) DGGS_FACTORY_ID.lookUp(params);
-        DGGSInstance dggs = DGGSFactoryFinder.createInstance(factoryId, params);
+        DGGSInstance<?> dggs = DGGSFactoryFinder.createInstance(factoryId, params);
         String zoneIdAttribute = (String) ZONE_ID_COLUMN_NAME.lookUp(params);
         Integer resolution = (Integer) RESOLUTION.lookUp(params);
         DataStore delegate;
@@ -101,7 +101,7 @@ public class DGGSStoreFactory implements DataStoreFactorySpi {
             // 2. New path: create delegate DataStore directly from prefixed params
             delegate = getDelegateDatastore(params);
         }
-        return new DGGSDataStore(dggs, delegate, zoneIdAttribute, resolution);
+        return new DGGSDataStore<>(dggs, delegate, zoneIdAttribute, resolution);
     }
 
     private DataStore getDelegateDatastore(Map<String, ?> params) throws IOException {

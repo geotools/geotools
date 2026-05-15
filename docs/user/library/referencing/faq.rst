@@ -161,11 +161,11 @@ Q: How do I add my own EPSG Codes?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The   ``gt-epsg-wkt`` plugin is intended to be used on its own and should not be combined
-with any of the other   ``gt-epsg-h2``  or   ``gt-epsg-hsql`` plugins as they will end up in
+with any of the other   or   ``gt-epsg-hsql`` plugins as they will end up in
 conflict.
 
 If you want to add a few more definitions over and above those provided by the
-official database (i.e. ``gt-epsg-hsql`` or ``gt-epsg-h2``)  please use the following (taken from the
+official database (i.e. ``gt-epsg-hsql``)  please use the following (taken from the
 uDig application)::
   
      URL url = new URL(url, "epsg.properties");

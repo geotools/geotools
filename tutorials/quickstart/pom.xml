@@ -29,7 +29,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.11.0</version>
+        <version>5.14.4</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -237,7 +237,7 @@
       </activation>
       <properties>
         <maven.pmd.plugin.version>3.24.0</maven.pmd.plugin.version>
-        <pmd.version>7.14.0</pmd.version>
+        <pmd.version>7.24.0</pmd.version>
         <pom.fmt.action>sort</pom.fmt.action>
       </properties>
       <build>
@@ -314,7 +314,7 @@
               <dependency>
                 <groupId>com.puppycrawl.tools</groupId>
                 <artifactId>checkstyle</artifactId>
-                <version>9.3</version>
+                <version>12.3.1</version>
               </dependency>
             </dependencies>
             <configuration>

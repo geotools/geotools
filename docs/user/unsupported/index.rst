@@ -18,6 +18,7 @@ Research and Development:
 
    arcgis-rest
    css
+   duckdb
    geojson
    geoparquet
    pmtiles
@@ -31,6 +32,7 @@ Research and Development:
 Unsupported DataStore implementations:
 
 * :doc:`/library/data/elasticsearch` Support for search and analytics engine
+* :doc:`duckdb` (Active) Support for guarded DuckDB access (read-only by default, optional managed writes)
 * :doc:`geoparquet` (Active) Support for reading GeoParquet format data files, both local and remote
 * :doc:`pmtiles` (Active) Support for reading Protomaps PMTiles vector tiles from local and cloud storage
 * :doc:`/library/data/wfs-ng` (Active) Supports communication with a Web Feature Server using the standard GeoTools DataStore API

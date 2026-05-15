@@ -17,11 +17,6 @@
 
 package org.geotools.filter.text.cqljson;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -42,6 +37,11 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.JsonNodeType;
+import tools.jackson.databind.node.ObjectNode;
 
 final class CQLJsonFilterBuilder {
     private static final String WC_MULTI = "%";
@@ -63,7 +63,7 @@ final class CQLJsonFilterBuilder {
 
     private String toCompareString(JsonNode jsonNode) throws CQLException {
         if (jsonNode != null && jsonNode.getNodeType() == JsonNodeType.STRING) {
-            return jsonNode.textValue();
+            return jsonNode.asString();
         } else {
             throw new CQLException("Expected string but got null or other type.");
         }
@@ -71,7 +71,7 @@ final class CQLJsonFilterBuilder {
 
     private Expression toCharacterExpression(JsonNode jsonNode) throws CQLException, IOException, ParseException {
         if (jsonNode != null && jsonNode.getNodeType() == JsonNodeType.STRING) {
-            String stringExpression = jsonNode.textValue();
+            String stringExpression = jsonNode.asString();
             return filterFactory.literal(stringExpression);
         } else if (jsonNode != null && jsonNode.getNodeType() == JsonNodeType.OBJECT) {
             if (isProperty(jsonNode)) {
@@ -89,7 +89,7 @@ final class CQLJsonFilterBuilder {
     private Function getFunction(JsonNode node) throws CQLException, IOException, ParseException {
         if (isFunction(node)) {
             ObjectNode function = (ObjectNode) node.get("function");
-            String functionName = function.get("name").textValue();
+            String functionName = function.get("name").asString();
             List<Expression> expressions = new ArrayList<>();
             ArrayNode args = (ArrayNode) function.get("args");
             for (final JsonNode argNode : args) {
@@ -145,7 +145,7 @@ final class CQLJsonFilterBuilder {
     }
 
     private Expression getArithmetic(JsonNode node) throws CQLException, IOException, ParseException {
-        String operator = node.get("op").textValue();
+        String operator = node.get("op").asString();
         List<Expression> expressions = new ArrayList<>();
         ArrayNode args = (ArrayNode) node.get("args");
         for (final JsonNode argNode : args) {
@@ -226,7 +226,7 @@ final class CQLJsonFilterBuilder {
         boolean out = false;
         if (node != null && node.getNodeType() == JsonNodeType.OBJECT) {
             if (node.get("op") != null) {
-                if (ARITHMETIC_OPERATORS.contains(node.get("op").textValue())) {
+                if (ARITHMETIC_OPERATORS.contains(node.get("op").asString())) {
                     return true;
                 }
             }
@@ -258,12 +258,12 @@ final class CQLJsonFilterBuilder {
     private Expression getTime(JsonNode node) throws CQLException {
         if (node != null && node.getNodeType() == JsonNodeType.OBJECT) {
             if (node.get("date") != null) {
-                LocalDate date = LocalDate.parse(node.get("date").textValue());
+                LocalDate date = LocalDate.parse(node.get("date").asString());
                 Date sqlDate = java.sql.Date.valueOf(date);
                 return filterFactory.literal(sqlDate);
             }
             if (node.get("timestamp") != null) {
-                Date date = Date.from(Instant.parse(node.get("timestamp").textValue()));
+                Date date = Date.from(Instant.parse(node.get("timestamp").asString()));
                 return filterFactory.literal(date);
             }
         }
@@ -304,7 +304,7 @@ final class CQLJsonFilterBuilder {
 
     private PropertyName getPropertyName(JsonNode node) throws CQLException {
         if (node != null && node.get("property") != null) {
-            return filterFactory.property(node.get("property").textValue());
+            return filterFactory.property(node.get("property").asString());
         } else {
             throw new CQLException("Expected property but got null or other type.");
         }

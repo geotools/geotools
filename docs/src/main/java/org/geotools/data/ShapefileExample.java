@@ -106,7 +106,7 @@ public class ShapefileExample {
         dumper.setCharset(Charset.forName("ISO-8859-15"));
         // split when shp or dbf reaches 100MB
         int maxSize = 100 * 1024 * 1024;
-        dumper.setMaxDbfSize(maxSize);
+        dumper.setMaxShpSize(maxSize);
         dumper.setMaxDbfSize(maxSize);
         // actually dump data
         SimpleFeatureCollection fc = getFeatureCollection();

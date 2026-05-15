@@ -47,6 +47,10 @@ import org.junit.Test;
 
 public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.FileWriter {
 
+    // The URL used to test the invalid URL handling. The old fake domain is not fake any longer,
+    // this is a replacement that minimizes the chances of a server actually being present (high edge of
+    // the ephemeral port range).
+    private static final String INVALID_URI = "http://127.0.0.1:65534/blah.shp";
     private String typeName;
     private Map<ShpFileType, File> map;
     private ShpFiles files;
@@ -93,7 +97,7 @@ public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.Fil
 
     @Test
     public void testExceptionGetInputStream() throws Exception {
-        ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
+        ShpFiles shpFiles = new ShpFiles(new URL(INVALID_URI));
         try {
             shpFiles.getInputStream(SHP, this);
             fail("maybe test is bad?  We want an exception here");
@@ -104,7 +108,7 @@ public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.Fil
 
     @Test
     public void testExceptionGetOutputStream() throws Exception {
-        ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
+        ShpFiles shpFiles = new ShpFiles(new URL(INVALID_URI));
         try {
             shpFiles.getOutputStream(SHP, this);
             fail("maybe test is bad?  We want an exception here");
@@ -115,7 +119,7 @@ public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.Fil
 
     @Test
     public void testExceptionGetWriteChannel() throws Exception {
-        ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
+        ShpFiles shpFiles = new ShpFiles(new URL(INVALID_URI));
         try {
             shpFiles.getWriteChannel(SHP, this);
             fail("maybe test is bad?  We want an exception here");
@@ -126,7 +130,7 @@ public class ShpFilesStreamTest implements org.geotools.data.shapefile.files.Fil
 
     @Test
     public void testExceptionGetReadChannel() throws Exception {
-        ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
+        ShpFiles shpFiles = new ShpFiles(new URL(INVALID_URI));
         try {
             shpFiles.getReadChannel(SHP, this);
             fail("maybe test is bad?  We want an exception here");

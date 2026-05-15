@@ -16,19 +16,17 @@
  */
 package org.geotools.stac.client;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import java.io.IOException;
 import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cqljson.CQL2Json;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-public class STACFilterSerializer extends JsonSerializer<Filter> {
+public class STACFilterSerializer extends ValueSerializer<Filter> {
     @Override
-    public void serialize(Filter filter, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException {
+    public void serialize(Filter filter, JsonGenerator jsonGenerator, SerializationContext serializerProvider) {
         FilterLang lang = null;
         Object container = jsonGenerator.currentValue();
         if (container instanceof SearchQuery query) {
@@ -41,7 +39,7 @@ public class STACFilterSerializer extends JsonSerializer<Filter> {
             jsonGenerator.writeString(CQL2.toCQL2(defaulted));
         } else if (lang == FilterLang.CQL2_JSON) {
             JsonNode node = CQL2Json.toCQL2Json(defaulted);
-            jsonGenerator.writeObject(node);
+            jsonGenerator.writePOJO(node);
         }
     }
 }

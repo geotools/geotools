@@ -24,14 +24,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.json.JsonMapper;
 
 /** Created by mihaildoronin on 11/11/15. */
 public abstract class BaseJtsModuleTest<T extends Geometry> {
@@ -45,9 +46,10 @@ public abstract class BaseJtsModuleTest<T extends Geometry> {
 
     @Before
     public void setup() {
-        mapper = new ObjectMapper();
-        mapper.registerModule(
-                new JtsModule(new GeometryFactory(), getMaxDecimals(), getMinDecimals(), RoundingMode.HALF_UP));
+        mapper = JsonMapper.builder()
+                .addModule(
+                        new JtsModule(new GeometryFactory(), getMaxDecimals(), getMinDecimals(), RoundingMode.HALF_UP))
+                .build();
         writer = mapper.writer();
         geometry = createGeometry();
         geometryAsGeoJson = createGeometryAsGeoJson();

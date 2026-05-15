@@ -1005,4 +1005,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public boolean canGroupOnGeometry() {
         return true;
     }
+
+    @Override
+    public boolean supportsBatchGeneratedKeys() {
+        return false;
+    }
 }

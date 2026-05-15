@@ -27,6 +27,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -104,6 +105,23 @@ public class GeoPkgDataStoreFactoryTest {
         thread2.join();
         assertFalse(failed.get());
         assertTrue(time.get() <= 10000);
+    }
+
+    @Test
+    public void testImmutableUrlParameter() throws IOException {
+        GeoPkgDataStoreFactory factory = new GeoPkgDataStoreFactory();
+        Map<String, Serializable> map = new HashMap<>();
+        map.put(GeoPkgDataStoreFactory.DBTYPE.key, "geopkg");
+        map.put(GeoPkgDataStoreFactory.DATABASE.key, tmp.newFile("immutable.gpkg"));
+        map.put(GeoPkgDataStoreFactory.IMMUTABLE.key, true);
+
+        assertTrue(factory.createDataSource(map).getUrl().endsWith("?immutable=true"));
+    }
+
+    @Test
+    public void testImmutableParameterInfo() {
+        assertTrue(Arrays.asList(new GeoPkgDataStoreFactory().getParametersInfo())
+                .contains(GeoPkgDataStoreFactory.IMMUTABLE));
     }
 
     private void createGeoPackage(String geoPackageName, Integer connectTimeout, String tableName) throws IOException {

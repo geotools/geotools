@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Random;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -273,6 +274,183 @@ public class CircularArcTest {
         }
         CoordinateArraySequence cs = new CoordinateArraySequence(coords);
         return new LineString(cs, new GeometryFactory());
+    }
+
+    @Test
+    public void testCollinearLinearizeWithArray() {
+        // Regression: package-private linearize(tolerance, array) must mirror the collinear
+        // short-circuit already present in the public linearize(tolerance) API.
+        CircularArc arc = new CircularArc(0, 0, 0, 10, 0, 20);
+        GrowableOrdinateArray array = new GrowableOrdinateArray();
+        double[] linearized = arc.linearize(0, array).getData();
+        assertArrayEquals(new double[] {0, 0, 0, 10, 0, 20}, linearized, 0d);
+        assertFinite(linearized);
+    }
+
+    @Test
+    public void testNearCollinearLargeCoordinatesNoInfinity() {
+        // Stress case: near-collinear configuration at huge magnitudes should never produce
+        // Infinity/NaN during center/radius/tolerance computations.
+        CircularArc arc = new CircularArc(0, 0, 1e150, 1, 2e150, 0);
+        double[] linearized = arc.linearize(0.1, new GrowableOrdinateArray()).getData();
+        assertFinite(linearized);
+    }
+
+    @Test
+    public void testLinearizeWithArrayProtectsFromNonFiniteCachedValues() {
+        // Defensive path: if cached center/radius state is non-finite, linearization must
+        // fall back to control points instead of attempting trigonometric sampling.
+        CircularArc arc = new CircularArc(0, 0, 1, 1, 2, 0);
+        arc.radius = 1;
+        arc.centerX = Double.POSITIVE_INFINITY;
+        arc.centerY = 0;
+        double[] linearized = arc.linearize(0.1, new GrowableOrdinateArray()).getData();
+        assertArrayEquals(arc.getControlPoints(), linearized, 0d);
+        assertFinite(linearized);
+    }
+
+    @Test
+    public void testFuzzNearCollinearLinearizeAlwaysFinite() {
+        // Deterministic bounded fuzzing across multiple magnitudes:
+        // generate near-collinear triplets and assert linearization never emits Infinity/NaN.
+        Random random = new Random(20260304L);
+        double[] magnitudes = {1d, 1e4, 1e8, 1e12, 1e16, 1e32, 1e64, 1e128, 1e256, 1e300};
+        int executed = 0;
+
+        for (double magnitude : magnitudes) {
+            for (int i = 0; i < 25; i++) {
+                CircularArc arc = randomNearCollinearArc(random, magnitude);
+                if (arc == null) {
+                    continue;
+                }
+
+                // Exercise both segmentation branches to stress numeric paths consistently.
+                double[] linearizedMax = arc.linearize(Double.MAX_VALUE, new GrowableOrdinateArray())
+                        .getData();
+                double[] linearizedMin =
+                        arc.linearize(0d, new GrowableOrdinateArray()).getData();
+                assertFinite(linearizedMax);
+                assertFinite(linearizedMin);
+                executed++;
+            }
+        }
+
+        // Sanity guard to ensure the fuzz loop actually exercised a substantial number of cases.
+        assertTrue("Expected at least 150 valid fuzz cases, got " + executed, executed >= 150);
+    }
+
+    @Test
+    public void testConditionNumberFromRAcceptsTinyOvershoot() {
+        // Floating point math can produce R = 1 + epsilon for a valid matrix; we accept this
+        // tiny overshoot and clamp to 1 so the condition number remains finite and stable.
+        double rawR = 1.0 + CircularArc.CONDITION_R_DOMAIN_EPS / 2.0;
+        double k = CircularArc.conditionNumberFromR(rawR);
+        assertEquals(1.0, k, 0d);
+    }
+
+    @Test
+    public void testConditionNumberFromRRejectsClearlyInvalidDomain() {
+        // Values outside the accepted R domain are treated as invalid so callers can classify
+        // the system as effectively collinear instead of continuing with unstable math.
+        assertTrue(Double.isNaN(CircularArc.conditionNumberFromR(Double.NaN)));
+        assertTrue(Double.isNaN(CircularArc.conditionNumberFromR(0.0)));
+        assertTrue(Double.isNaN(CircularArc.conditionNumberFromR(-1.0)));
+        assertTrue(Double.isNaN(CircularArc.conditionNumberFromR(1.0 + CircularArc.CONDITION_R_DOMAIN_EPS * 2.0)));
+    }
+
+    @Test
+    public void testSamplingOverflowFallsBackToControlPoints() {
+        // Black-box regression: this closed circle has finite center/radius, but the regular
+        // sampling sequence hits an angle where centerX + radius*cos(angle) overflows.
+        final double tolerance = 0.0;
+        CircularArc arc = buildSamplingOverflowArc();
+
+        double[] linearized =
+                arc.linearize(tolerance, new GrowableOrdinateArray()).getData();
+        assertArrayEquals(arc.getControlPoints(), linearized, 0d);
+        assertFinite(linearized);
+    }
+
+    @Test
+    public void testSamplingOverflowRollsBackPrefixedArray() {
+        // The overflow fallback should rollback to the original array size before appending
+        // control points, so pre-existing ordinates are preserved with no partial samples.
+        final double tolerance = 0.0;
+        CircularArc arc = buildSamplingOverflowArc();
+
+        GrowableOrdinateArray prefixed = new GrowableOrdinateArray();
+        prefixed.add(-111d, -222d);
+        prefixed.add(-333d, -444d);
+        arc.linearize(tolerance, prefixed);
+
+        double[] expected = new double[4 + arc.getControlPoints().length];
+        expected[0] = -111d;
+        expected[1] = -222d;
+        expected[2] = -333d;
+        expected[3] = -444d;
+        System.arraycopy(arc.getControlPoints(), 0, expected, 4, arc.getControlPoints().length);
+
+        double[] actual = prefixed.getData();
+        assertArrayEquals(expected, actual, 0d);
+        assertFinite(actual);
+    }
+
+    private CircularArc buildSamplingOverflowArc() {
+        // Closed-circle branch: center=(9e307,0), radius=9e307 are finite.
+        // During sampling the full-circle sweep includes angle 2*pi, where x = 9e307 + 9e307
+        // overflows to +Infinity and triggers the linearization fallback.
+        return new CircularArc(9e307, 9e307, 9e307, -9e307, 9e307, 9e307);
+    }
+
+    private CircularArc randomNearCollinearArc(Random random, double magnitude) {
+        // Build three points almost on the same line:
+        // start/end define a long segment, mid is perturbed by a tiny perpendicular offset.
+        double angle = random.nextDouble() * Math.PI * 2;
+        double ux = Math.cos(angle);
+        double uy = Math.sin(angle);
+        double px = -uy;
+        double py = ux;
+
+        double centerX = (random.nextDouble() - 0.5) * magnitude * 0.5;
+        double centerY = (random.nextDouble() - 0.5) * magnitude * 0.5;
+        double halfLength = magnitude * (0.1 + random.nextDouble() * 0.4);
+
+        double sx = centerX - halfLength * ux;
+        double sy = centerY - halfLength * uy;
+        double ex = centerX + halfLength * ux;
+        double ey = centerY + halfLength * uy;
+
+        double t = 0.2 + random.nextDouble() * 0.6;
+        double mxLine = sx + (ex - sx) * t;
+        double myLine = sy + (ey - sy) * t;
+
+        // Near-collinear offset in [1e-14, 1e-8] of the segment size.
+        double nearFactor = Math.pow(10, -(8 + random.nextInt(7)));
+        double offset = halfLength * nearFactor;
+        if (offset == 0d) {
+            offset = Math.ulp(halfLength);
+        }
+
+        double mx = mxLine + px * offset;
+        double my = myLine + py * offset;
+        if (!Double.isFinite(sx)
+                || !Double.isFinite(sy)
+                || !Double.isFinite(mx)
+                || !Double.isFinite(my)
+                || !Double.isFinite(ex)
+                || !Double.isFinite(ey)) {
+            return null;
+        }
+
+        return new CircularArc(sx, sy, mx, my, ex, ey);
+    }
+
+    private void assertFinite(double[] ordinates) {
+        // All linearized coordinates must be finite; this is the core regression assertion
+        // for the Infinity/NaN bug we are protecting against.
+        for (double ordinate : ordinates) {
+            assertTrue("Found non finite ordinate: " + ordinate, Double.isFinite(ordinate));
+        }
     }
 
     @Test

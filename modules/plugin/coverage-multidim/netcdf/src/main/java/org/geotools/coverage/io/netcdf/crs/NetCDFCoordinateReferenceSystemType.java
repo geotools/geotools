@@ -160,7 +160,7 @@ public enum NetCDFCoordinateReferenceSystemType {
         if (crs instanceof DefaultGeographicCRS) {
             crsType = WGS84;
         } else if (crs instanceof DefaultDerivedCRS rS
-                && ((DefaultDerivedCRS) crs).getConversionFromBase().getMathTransform() instanceof RotatedPole) {
+                && rS.getConversionFromBase().getMathTransform() instanceof RotatedPole) {
             return ROTATED_POLE;
         } else if (crs instanceof ProjectedCRS projectedCRS) {
             // NetCDF supports a reduced number of CRS Type (WGS84 + some projection).

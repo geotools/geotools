@@ -16,27 +16,25 @@
  */
 package org.geotools.stac.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import org.geotools.data.geojson.PagingFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.http.HTTPClient;
+import tools.jackson.databind.JsonNode;
 
 class STACPagingFeatureCollection extends PagingFeatureCollection {
 
     private final HTTPClient http;
 
-    public STACPagingFeatureCollection(
-            SimpleFeatureCollection first, ObjectNode next, Integer matched, HTTPClient http) {
+    public STACPagingFeatureCollection(SimpleFeatureCollection first, JsonNode next, Integer matched, HTTPClient http) {
         super(first, next, matched);
         this.http = http;
     }
 
     @Override
-    protected SimpleFeatureCollection readNext(ObjectNode next) throws IOException {
+    protected SimpleFeatureCollection readNext(JsonNode next) throws IOException {
         if (next == null) return null;
         JsonNode href = next.get("href");
         if (href == null) return null;
@@ -44,8 +42,8 @@ class STACPagingFeatureCollection extends PagingFeatureCollection {
         // TODO: consider complex request merge logic for POST requests, described at
         // https://github.com/radiantearth/stac-api-spec/tree/main/item-search#pagination
 
-        LOGGER.fine(() -> "Fetching next page of data at " + href.textValue());
-        try (InputStream is = http.get(new URL(href.textValue())).getResponseStream();
+        LOGGER.fine(() -> "Fetching next page of data at " + href.asString());
+        try (InputStream is = http.get(new URL(href.asString())).getResponseStream();
                 STACGeoJSONReader reader = new STACGeoJSONReader(is, http)) {
             return reader.getFeatures();
         }

@@ -162,8 +162,8 @@ Build the Release
 
 Run the geotools-release job in Jenkins.
 
-* `geotools-release-jdk11 <https://build.geoserver.org/view/release/job/geotools-release-jdk11/>`__
-* `geotools-release-jdk17 <https://build.geoserver.org/view/release/job/geotools-release-jdk17/>`__
+* `geotools-release-jdk11 <https://build.geoserver.org/view/release/job/geotools-release-jdk11/>`__ (33.x)
+* `geotools-release-jdk17 <https://build.geoserver.org/view/release/job/geotools-release-jdk17/>`__ (34.x+)
 
 The job takes the following parameters:
 
@@ -203,7 +203,7 @@ Download and try out some of the artifacts from the above location and do a
 quick smoke test that there are no issues. Engage other developers to help 
 test on the developer list.
 
-It is important to test the artifacts using the minimum supported version of Java (currently Java 17).
+It is important to test the artifacts using the minimum supported version of Java (currently Java 11 for 33.x and Java 17 for 34.x+).
 
 1. Source download: The Jenkins job will perform a build of the source artifacts on an empty Maven
    repository to make sure any random user out there can do the same. If you want
@@ -216,9 +216,9 @@ It is important to test the artifacts using the minimum supported version of Jav
    
    If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 
-3. Userguide: Open and check the tutorial -> quickstart -> eclipse guide, search for `geotools.version`, which should reference the correct release tag and snapshot tag.
+2. Userguide: Open and check the tutorial -> quickstart -> eclipse guide, search for `geotools.version`, which should reference the correct release tag and snapshot tag.
 
-4. Binary download:
+3. Binary download:
    
    * Checking the README.html links go to the correct stable or maintenance user guide
    
@@ -273,13 +273,13 @@ This job will rsync all the artifacts located at::
 
 to the SourceForge FRS server, and also deploy the artifacts to the public geotools maven repository.
 
-#. Navigate to `Sourceforge <https://sourceforge.net/projects/geotools/>`__ and verify that the artifacts have been uploaded properly.
-#. If this is the latest stable release, make its ``-bin.zip`` the default download for all platforms (use the "i" button).
+#. Navigate to `SourceForge <https://sourceforge.net/projects/geotools/>`__ and verify that the artifacts have been uploaded properly.
+#. If this is the latest **stable** release, make its ``-bin.zip`` the default download for all platforms (use the "i" button).
 
 Release notes
 -------------
 
-Publish release notes to github tag:
+Publish release notes to GitHub tag:
 
 #. Select the correct release from `JIRA Releases <https://osgeo-org.atlassian.net/projects/GEOT?orderField=RANK&selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=released>`__ page.
 
@@ -309,7 +309,7 @@ Publish release notes to github tag:
 
       [GEOT-7007](https://osgeo-org.atlassian.net/browse/GEOT-7007) Shapefile set files search may take very long on big shapefile directories
 
-#. Navigate to github tags https://github.com/geotools/geotools/tags
+#. Navigate to GitHub tags https://github.com/geotools/geotools/tags
    
    Locate the new tag from the list, and use :menuselection:`... --> Create release`
    
@@ -330,7 +330,7 @@ Announce on GeoTools Blog
 #. Create a new blog post announcing your release; copy and paste a previous blog post preserving series information unless this is the first of a new series
 #. You will need to correct the following information: 
 
-   * Update the Sourceforge links above to reflect the release
+   * Update the SourceForge links above to reflect the release
    * Update the Release Notes with link to GitHub release URL: https://github.com/geotools/geotools/releases/tag/26.1
    * Paste the Release Notes hyperlinks from Jira, after using a tool like https://www.htmlwasher.com/ to clean up the HTML.
    * For a new stable series, be sure to thank those involved with the release (testing, completed proposals, docs, and so on)

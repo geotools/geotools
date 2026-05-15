@@ -30,14 +30,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IllformedLocaleException;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -59,6 +63,7 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.util.InternationalString;
 import org.geotools.brewer.styling.builder.ChannelSelectionBuilder;
 import org.geotools.brewer.styling.builder.ColorMapBuilder;
 import org.geotools.brewer.styling.builder.ColorMapEntryBuilder;
@@ -105,7 +110,9 @@ import org.geotools.styling.zoom.WellKnownZoomContextFinder;
 import org.geotools.styling.zoom.ZoomContext;
 import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.util.Converters;
+import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.Range;
+import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDTransformer;
 
@@ -169,10 +176,11 @@ public class CssTranslator {
     static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /** Matches the title tag inside a rule comment */
-    static final Pattern TITLE_PATTERN = Pattern.compile("^.*@title\\s*(?:\\:\\s*)?(.+)\\s*$");
+    static final Pattern TITLE_PATTERN = Pattern.compile("^.*@title(?:\\[([^\\]]*)\\])?\\s*(?:\\:\\s*)?(.+)\\s*$");
 
     /** Matches the abstract tag inside a rule comment */
-    static final Pattern ABSTRACT_PATTERN = Pattern.compile("^.*@abstract\\s*(?:\\:\\s*)?(.+)\\s*$");
+    static final Pattern ABSTRACT_PATTERN =
+            Pattern.compile("^.*@abstract(?:\\[([^\\]]*)\\])?\\s*(?:\\:\\s*)?(.+)\\s*$");
 
     /** The global composite property */
     static final String COMPOSITE = "composite";
@@ -259,6 +267,9 @@ public class CssTranslator {
     int maxCombinations = MAX_OUTPUT_RULES_DEFAULT;
 
     List<ZoomContextFinder> zoomContextFinders = Collections.emptyList();
+
+    /** Parsed metadata line with optional normalized language and non-empty text. */
+    private record MetadataEntry(String langTag, String text) {}
 
     public int getMaxCombinations() {
         return maxCombinations;
@@ -1099,11 +1110,11 @@ public class CssTranslator {
         // ok, build the rule
         RuleBuilder ruleBuilder = fts.rule();
         ruleBuilder.filter(filter);
-        String title = getCombinedTag(cssRule.getComment(), TITLE_PATTERN, ", ");
+        InternationalString title = getCombinedTag(cssRule.getComment(), TITLE_PATTERN, "title", ", ");
         if (title != null) {
             ruleBuilder.title(title);
         }
-        String ruleAbstract = getCombinedTag(cssRule.getComment(), ABSTRACT_PATTERN, "\n");
+        InternationalString ruleAbstract = getCombinedTag(cssRule.getComment(), ABSTRACT_PATTERN, "abstract", "\n");
         if (ruleAbstract != null) {
             ruleBuilder.ruleAbstract(ruleAbstract);
         }
@@ -1158,30 +1169,176 @@ public class CssTranslator {
         return Objects.equals(p1, p2);
     }
 
-    private String getCombinedTag(String comment, Pattern p, String separator) {
+    /**
+     * Extracts and combines metadata tags from a rule comment.
+     *
+     * <p>All matching lines are aggregated in declaration order. Default metadata (no language suffix) is combined into
+     * one value, while localized metadata is combined independently per language.
+     *
+     * @param comment rule comment block
+     * @param p pattern used to match metadata line and capture optional language + text
+     * @param separator separator used between multiple metadata fragments
+     * @return an international string containing default and localized values, or {@code null} if no metadata is found
+     */
+    private InternationalString getCombinedTag(String comment, Pattern p, String directive, String separator) {
         if (comment == null || comment.isEmpty()) {
             return null;
         }
-        StringBuilder sb = new StringBuilder();
+        StringBuilder defaultText = new StringBuilder();
+        Map<String, StringBuilder> localizedBuilders = new LinkedHashMap<>();
 
-        for (String line : comment.split("\n")) {
-            Matcher matcher = p.matcher(line);
-            if (matcher.matches()) {
-                String text = matcher.group(1).trim();
-                if (!text.isEmpty()) {
-                    if (sb.length() > 0) {
-                        sb.append(separator);
-                    }
-                    sb.append(text);
-                }
-            }
+        for (String line : comment.split("\\R")) {
+            parseMetadataEntry(line, p, directive)
+                    .ifPresent(entry -> appendMetadata(entry, defaultText, localizedBuilders, separator));
         }
 
-        if (sb.length() > 0) {
-            return sb.toString();
-        } else {
+        return buildInternationalString(defaultText.toString(), compactLocalized(localizedBuilders));
+    }
+
+    /**
+     * Parses one comment line for localized/default metadata.
+     *
+     * @throws IllegalArgumentException if an explicit localized tag is malformed
+     */
+    private Optional<MetadataEntry> parseMetadataEntry(String line, Pattern pattern, String directive) {
+        Matcher matcher = pattern.matcher(line);
+        if (!matcher.matches()) {
+            return Optional.empty();
+        }
+        String malformedTag = getUnclosedLocalizedTag(line, directive);
+        if (malformedTag != null) {
+            throw new IllegalArgumentException("Invalid localized @"
+                    + directive
+                    + " metadata: missing closing ']' in language tag near \""
+                    + malformedTag
+                    + "\"");
+        }
+
+        String text = matcher.group(2).trim();
+        if (text.isEmpty()) {
+            return Optional.empty();
+        }
+
+        String langTag = normalizeLangTag(matcher.group(1), directive);
+        return Optional.of(new MetadataEntry(langTag, text));
+    }
+
+    private String getUnclosedLocalizedTag(String line, String directive) {
+        String token = "@" + directive + "[";
+        int open = line.indexOf(token);
+        if (open < 0) {
             return null;
         }
+        int start = open + token.length();
+        int close = line.indexOf(']', start);
+        if (close >= 0) {
+            return null;
+        }
+        return line.substring(start).trim();
+    }
+
+    /**
+     * Validates and normalizes a localized metadata language tag.
+     *
+     * <p>Accepted tags use BCP-47 syntax and may contain both '-' and '_' separators.
+     */
+    private String normalizeLangTag(String rawLangTag, String directive) {
+        if (rawLangTag == null) {
+            return null;
+        }
+        if (StringUtils.isBlank(rawLangTag)) {
+            throw new IllegalArgumentException(
+                    "Invalid localized @" + directive + " metadata: empty language tag inside []");
+        }
+        String trimmed = rawLangTag.trim();
+        if (trimmed.chars().anyMatch(Character::isWhitespace)) {
+            throw new IllegalArgumentException("Invalid localized @"
+                    + directive
+                    + " metadata: language tag contains spaces (\""
+                    + rawLangTag
+                    + "\"). Use BCP47 forms like en or en-US.");
+        }
+        Locale parsedLocale;
+        try {
+            parsedLocale = new Locale.Builder()
+                    .setLanguageTag(trimmed.replace('_', '-'))
+                    .build();
+        } catch (IllformedLocaleException e) {
+            throw new IllegalArgumentException(
+                    "Invalid localized @"
+                            + directive
+                            + " metadata: malformed language tag \""
+                            + rawLangTag
+                            + "\". Use BCP47 forms like en, en-US or it.",
+                    e);
+        }
+        if (parsedLocale.getLanguage().isEmpty()) {
+            throw new IllegalArgumentException("Invalid localized @"
+                    + directive
+                    + " metadata: language tag \""
+                    + rawLangTag
+                    + "\" does not include a language subtag.");
+        }
+        return parsedLocale.toLanguageTag();
+    }
+
+    /** Adds one metadata fragment to either default or localized aggregation bucket. */
+    private void appendMetadata(
+            MetadataEntry entry,
+            StringBuilder defaultText,
+            Map<String, StringBuilder> localizedTexts,
+            String separator) {
+        // Localized entries are aggregated per-language, default entries use the shared default bucket.
+        StringBuilder target = entry.langTag() == null
+                ? defaultText
+                : localizedTexts.computeIfAbsent(entry.langTag(), k -> new StringBuilder());
+        appendWithSeparator(target, entry.text(), separator);
+    }
+
+    /** Appends text to a builder, inserting a separator when appending non-first values. */
+    private void appendWithSeparator(StringBuilder target, String text, String separator) {
+        if (target.length() > 0) {
+            target.append(separator);
+        }
+        target.append(text);
+    }
+
+    /** Converts non-empty localized builders into immutable string values. */
+    private Map<String, String> compactLocalized(Map<String, StringBuilder> localizedBuilders) {
+        Map<String, String> localizedValues = new LinkedHashMap<>();
+        for (Map.Entry<String, StringBuilder> entry : localizedBuilders.entrySet()) {
+            if (entry.getValue().length() > 0) {
+                localizedValues.put(entry.getKey(), entry.getValue().toString());
+            }
+        }
+        return localizedValues;
+    }
+
+    private InternationalString buildInternationalString(String defaultText, Map<String, String> localizedTexts) {
+        if (StringUtils.isBlank(defaultText) && localizedTexts.isEmpty()) {
+            return null;
+        }
+        if (localizedTexts.isEmpty()) {
+            return new SimpleInternationalString(defaultText);
+        }
+        GrowableInternationalString result = new GrowableInternationalString(defaultText) {
+            @Override
+            public String toString() {
+                // forces the “no specific locale” lookup (null locale), which in GrowableInternationalString resolves
+                // to the default/unlocalized value first
+                return super.toString(null);
+            }
+        };
+        for (Map.Entry<String, String> entry : localizedTexts.entrySet()) {
+            Locale locale = Locale.forLanguageTag(entry.getKey().replace('_', '-'));
+            try {
+                result.add(locale, entry.getValue());
+            } catch (IllegalArgumentException e) {
+                throw new IllegalStateException(
+                        "Conflicting localized metadata for language '" + entry.getKey() + "'", e);
+            }
+        }
+        return result;
     }
 
     /** Builds a polygon symbolizer into the current rule, if a <code>fill</code> property is found */
@@ -2094,11 +2251,11 @@ public class CssTranslator {
         String css = FileUtils.readFileToString(input, "UTF-8");
         Stylesheet styleSheet = CssParser.parse(css);
 
-        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
-        handler.setLevel(java.util.logging.Level.FINE);
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setLevel(Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger(CssTranslator.class).setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger(CssTranslator.class).addHandler(handler);
+        Logging.getLogger(CssTranslator.class).setLevel(Level.FINE);
+        Logging.getLogger(CssTranslator.class).addHandler(handler);
 
         CssTranslator translator = new CssTranslator();
         Style style = translator.translate(styleSheet);

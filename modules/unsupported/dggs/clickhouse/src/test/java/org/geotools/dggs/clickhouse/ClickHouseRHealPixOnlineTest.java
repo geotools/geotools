@@ -47,7 +47,7 @@ import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // JUnit 3 tests here
-public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
+public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase<String> {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
@@ -57,7 +57,7 @@ public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
     }
 
     @Override
-    protected void setupTestData(DGGSDataStore dataStore) throws Exception {
+    protected void setupTestData(DGGSDataStore<String> dataStore) throws Exception {
         try (Connection cx = ((JDBCDataStore) dataStore.getDelegate()).getConnection(Transaction.AUTO_COMMIT);
                 Statement st = cx.createStatement();
                 PreparedStatement ps = cx.prepareStatement("INSERT INTO \"rpix\" VALUES (?, ?, ?)")) {
@@ -149,24 +149,24 @@ public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testCountAll() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
         assertEquals(6 + 54 + (54 * 2), fs.getCount(Query.ALL));
     }
 
     public void testCountLikeZone() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
         PropertyIsLike like = FF.like(FF.property("zoneId"), "R%");
         assertEquals(1 + 9 + 9 * 2, fs.getCount(new Query(null, like)));
     }
 
     public void testCountFilterResolution() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
         PropertyIsEqualTo eq = FF.equals(FF.property(DGGSDataStore.RESOLUTION), FF.literal(2));
         assertEquals(54 * 2, fs.getCount(new Query(null, eq)));
     }
 
     public void testCountSouthPolar() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
 
         BBOX bbox = FF.bbox(
                 FF.property(DGGSDataStore.GEOMETRY),
@@ -176,7 +176,7 @@ public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testCountSouthPolarResolutionOne() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
 
         BBOX bbox = FF.bbox(
                 FF.property(DGGSDataStore.GEOMETRY),
@@ -193,7 +193,7 @@ public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testGetAllFeatures() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
 
         Query q = new Query();
         q.setSortBy(new SortBy[] {FF.sort("zoneId", SortOrder.ASCENDING)});
@@ -214,10 +214,10 @@ public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testGetFeaturesByBoundingBox() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
 
         Query q = new Query();
-        // bbox slighltly smaller than R area
+        // bbox slightly smaller than R area
         q.setFilter(FF.bbox(FF.property(""), new ReferencedEnvelope(-37, 47, -39, 40, DefaultGeographicCRS.WGS84)));
         addResolutionHint(q, 2);
         q.setSortBy(new SortBy[] {FF.sort("zoneId", SortOrder.ASCENDING)});
@@ -238,7 +238,7 @@ public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testGetAllFeaturesDefaultGeometry() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
 
         Query q = new Query();
         q.setSortBy(new SortBy[] {FF.sort("zoneId", SortOrder.ASCENDING)});
@@ -254,7 +254,7 @@ public class ClickHouseRHealPixOnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testGetAllFeaturesPaging() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("rpix");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("rpix");
 
         // do a paging without sorting, and without a pk on the primary table
         Query q = new Query();

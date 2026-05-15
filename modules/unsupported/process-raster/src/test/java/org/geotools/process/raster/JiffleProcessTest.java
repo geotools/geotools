@@ -436,6 +436,7 @@ public class JiffleProcessTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     public void testMultibandBandIndexExpressionsInvalidBandCount() {
         GridCoverage2D c1 = buildCoverage(ONE_DIAGONAL);
         GridCoverage2D c2 = buildCoverage(TWO_SOLID);

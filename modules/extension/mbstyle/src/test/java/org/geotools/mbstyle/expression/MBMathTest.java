@@ -361,4 +361,100 @@ public class MBMathTest extends AbstractMBExpressionTest {
                             getExpressionEvaluation(j, "atan", testFeatures[i]).toString()));
         }
     }
+
+    @Test
+    public void testAbs() throws Exception {
+        final JSONObject j = getObjectByLayerId("mathAbs", "layout");
+        for (int i = 0; i < intVals.length; ++i) {
+            _assertEquals(
+                    5d,
+                    Double.parseDouble(
+                            getExpressionEvaluation(j, "abs5", testFeatures[i]).toString()));
+            _assertEquals(
+                    7d,
+                    Double.parseDouble(getExpressionEvaluation(j, "absNeg", testFeatures[i])
+                            .toString()));
+            _assertEquals(
+                    Math.abs(intVals[i]),
+                    Double.parseDouble(getExpressionEvaluation(j, "absWithFeature", testFeatures[i])
+                            .toString()));
+        }
+    }
+
+    @Test
+    public void testCeil() throws Exception {
+        final JSONObject j = getObjectByLayerId("mathCeil", "layout");
+        for (int i = 0; i < intVals.length; ++i) {
+            _assertEquals(
+                    4d,
+                    Double.parseDouble(
+                            getExpressionEvaluation(j, "ceil", testFeatures[i]).toString()));
+            _assertEquals(
+                    -3d,
+                    Double.parseDouble(getExpressionEvaluation(j, "ceilNeg", testFeatures[i])
+                            .toString()));
+            _assertEquals(
+                    5d,
+                    Double.parseDouble(getExpressionEvaluation(j, "ceilWhole", testFeatures[i])
+                            .toString()));
+            _assertEquals(
+                    Math.ceil(doubleVals[i]),
+                    Double.parseDouble(getExpressionEvaluation(j, "ceilWithFeature", testFeatures[i])
+                            .toString()));
+        }
+    }
+
+    @Test
+    public void testFloor() throws Exception {
+        final JSONObject j = getObjectByLayerId("mathFloor", "layout");
+        for (int i = 0; i < intVals.length; ++i) {
+            _assertEquals(
+                    3d,
+                    Double.parseDouble(
+                            getExpressionEvaluation(j, "floor", testFeatures[i]).toString()));
+            _assertEquals(
+                    -4d,
+                    Double.parseDouble(getExpressionEvaluation(j, "floorNeg", testFeatures[i])
+                            .toString()));
+            _assertEquals(
+                    5d,
+                    Double.parseDouble(getExpressionEvaluation(j, "floorWhole", testFeatures[i])
+                            .toString()));
+            _assertEquals(
+                    Math.floor(doubleVals[i]),
+                    Double.parseDouble(getExpressionEvaluation(j, "floorWithFeature", testFeatures[i])
+                            .toString()));
+        }
+    }
+
+    @Test
+    public void testRound() throws Exception {
+        final JSONObject j = getObjectByLayerId("mathRound", "layout");
+        for (int i = 0; i < intVals.length; ++i) {
+            _assertEquals(
+                    3d,
+                    Double.parseDouble(
+                            getExpressionEvaluation(j, "round", testFeatures[i]).toString()));
+            // round(3.5) = 4 (halfway rounds away from zero)
+            _assertEquals(
+                    4d,
+                    Double.parseDouble(getExpressionEvaluation(j, "roundUp", testFeatures[i])
+                            .toString()));
+            // round(-3.7) = -4
+            _assertEquals(
+                    -4d,
+                    Double.parseDouble(getExpressionEvaluation(j, "roundNeg", testFeatures[i])
+                            .toString()));
+            // round half away from zero for feature values
+            _assertEquals(
+                    mapboxRound(doubleVals[i]),
+                    Double.parseDouble(getExpressionEvaluation(j, "roundWithFeature", testFeatures[i])
+                            .toString()));
+        }
+    }
+
+    /** Mapbox round: halfway values are rounded away from zero. */
+    private static double mapboxRound(double value) {
+        return Math.signum(value) * Math.floor(Math.abs(value) + 0.5);
+    }
 }

@@ -1615,7 +1615,7 @@ Returns the absolute value of the input.
      - OpenLayers
    * - basic functionality
      - >= 0.45.0
-     - >= Not yet supported
+     - >= 35.0
      - >= 3.0.0
 
 .. _expressions-acos:
@@ -1711,7 +1711,7 @@ Returns the smallest integer that is greater than or equal to the input.
      - OpenLayers
    * - basic functionality
      - >= 0.45.0
-     - >= Not yet supported
+     - >= 35.0
      - >= 3.0.0
 
 .. _expressions-cos:
@@ -1783,7 +1783,7 @@ Returns the largest integer that is less than or equal to the input.
      - OpenLayers
    * - basic functionality
      - >= 0.45.0
-     - >= Not yet supported
+     - >= 35.0
      - >= 3.0.0
 
 .. _expressions-ln:
@@ -1976,7 +1976,7 @@ Rounds the input to the nearest integer. Halfway values are rounded away from ze
      - OpenLayers
    * - basic functionality
      - >= 0.45.0
-     - >= Not yet supported
+     - >= 35.0
      - >= 3.0.0
 
 .. _expressions-sin:

@@ -181,6 +181,8 @@ public class XMLConfigDigester {
         digester.addCallParam(typeMapping + "/sourceDataStore", 0);
         digester.addCallMethod(typeMapping + "/sourceType", "setSourceTypeName", 1);
         digester.addCallParam(typeMapping + "/sourceType", 0);
+        digester.addCallMethod(typeMapping + "/sourceDatabaseSchema", "setSourceDatabaseSchema", 1);
+        digester.addCallParam(typeMapping + "/sourceDatabaseSchema", 0);
         digester.addCallMethod(typeMapping + "/targetElement", "setTargetElementName", 1);
         digester.addCallParam(typeMapping + "/targetElement", 0);
         digester.addCallMethod(typeMapping + "/defaultGeometry", "setDefaultGeometryXPath", 1);

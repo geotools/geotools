@@ -31,12 +31,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.xml.transform.TransformerException;
 import org.geotools.api.filter.Filter;
@@ -99,7 +101,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(expected, actual);
     }
 
-    private void assertVendorOption(String expectedValue, String name, org.geotools.api.style.Symbolizer ps) {
+    private void assertVendorOption(String expectedValue, String name, Symbolizer ps) {
         assertEquals(expectedValue, ps.getOptions().get(name));
     }
 
@@ -812,6 +814,383 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertSingleSymbolizer(rule, PointSymbolizer.class);
     }
 
+    /** Verifies rules with no comment metadata keep title/abstract unset. */
+    @Test
+    public void ruleMetadataNoComment() throws Exception {
+        String css = "* { mark: symbol('circle'); }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertNull(rule.getDescription().getTitle());
+        assertNull(rule.getDescription().getAbstract());
+    }
+
+    /** Verifies empty comment metadata does not set title/abstract and does not fail translation. */
+    @Test
+    public void ruleMetadataEmptyComment() throws Exception {
+        String css =
+                """
+                /**/
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertNull(rule.getDescription().getTitle());
+        assertNull(rule.getDescription().getAbstract());
+    }
+
+    /** Verifies default + localized rule metadata are mapped to InternationalString entries. */
+    @Test
+    public void localizedRuleMetadata() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Default title
+                 * @title[en] English title
+                 * @title[it] Titolo in italiano
+                 * @abstract Default abstract
+                 * @abstract[en-US] English abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals("Default title", rule.getDescription().getTitle().toString());
+        assertEquals("English title", rule.getDescription().getTitle().toString(Locale.ENGLISH));
+        assertEquals("Titolo in italiano", rule.getDescription().getTitle().toString(Locale.ITALIAN));
+        assertEquals("Default abstract", rule.getDescription().getAbstract().toString());
+        assertEquals("English abstract", rule.getDescription().getAbstract().toString(Locale.US));
+    }
+
+    /** Verifies sparse per-locale aggregation when combined rules contribute different locales. */
+    @Test
+    public void localizedRuleMetadataCombinedSparse() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Base title
+                 * @title[en] Base title EN
+                 * @abstract Base abstract
+                 * @abstract[en] Base abstract EN
+                 */
+                * {
+                  fill: red;
+                }
+                /*
+                 * @title Overlay title
+                 * @title[it] Titolo overlay
+                 * @abstract Overlay abstract
+                 * @abstract[it] Riassunto overlay
+                 */
+                * {
+                  stroke: black;
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(
+                "Base title, Overlay title", rule.getDescription().getTitle().toString());
+        assertEquals("Base title EN", rule.getDescription().getTitle().toString(Locale.ENGLISH));
+        assertEquals("Titolo overlay", rule.getDescription().getTitle().toString(Locale.ITALIAN));
+        assertEquals(
+                "Base abstract\nOverlay abstract",
+                rule.getDescription().getAbstract().toString());
+        assertEquals("Base abstract EN", rule.getDescription().getAbstract().toString(Locale.ENGLISH));
+        assertEquals("Riassunto overlay", rule.getDescription().getAbstract().toString(Locale.ITALIAN));
+    }
+
+    /** Verifies same-locale values from combined rules are concatenated with expected separators. */
+    @Test
+    public void localizedRuleMetadataCombinedSameLocale() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Base title
+                 * @title[en] Base title EN
+                 * @abstract Base abstract
+                 * @abstract[en] Base abstract EN
+                 */
+                * {
+                  fill: red;
+                }
+                /*
+                 * @title Overlay title
+                 * @title[en] Overlay title EN
+                 * @abstract Overlay abstract
+                 * @abstract[en] Overlay abstract EN
+                 */
+                * {
+                  stroke: black;
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(
+                "Base title, Overlay title", rule.getDescription().getTitle().toString());
+        assertEquals(
+                "Base title EN, Overlay title EN",
+                rule.getDescription().getTitle().toString(Locale.ENGLISH));
+        assertEquals(
+                "Base abstract\nOverlay abstract",
+                rule.getDescription().getAbstract().toString());
+        assertEquals(
+                "Base abstract EN\nOverlay abstract EN",
+                rule.getDescription().getAbstract().toString(Locale.ENGLISH));
+    }
+
+    /** Verifies underscore locale tags are accepted and resolved through locale normalization. */
+    @Test
+    public void localizedRuleMetadataUnderscoreLocale() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Default title
+                 * @title[en_US] English title
+                 * @abstract Default abstract
+                 * @abstract[en_US] English abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals("Default title", rule.getDescription().getTitle().toString());
+        assertEquals("English title", rule.getDescription().getTitle().toString(Locale.US));
+        assertEquals("Default abstract", rule.getDescription().getAbstract().toString());
+        assertEquals("English abstract", rule.getDescription().getAbstract().toString(Locale.US));
+    }
+
+    /** Verifies explicitly malformed localized tags (matching pattern but invalid locale) fail translation. */
+    @Test
+    public void localizedRuleMetadataMalformedLocaleFails() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Default title
+                 * @title[_] Invalid localized title
+                 * @title[en] English title
+                 * @abstract Default abstract
+                 * @abstract[_] Invalid localized abstract
+                 * @abstract[en] English abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
+        assertThat(e.getMessage(), containsString("\"_\""));
+    }
+
+    /** Verifies language tags with spaces fail with an explicit actionable message. */
+    @Test
+    public void localizedRuleMetadataTagWithSpacesFails() throws Exception {
+        String css =
+                """
+                /*
+                 * @title[en us] Invalid locale with spaces
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("contains spaces"));
+    }
+
+    /** Verifies localized metadata parsing works with Windows CRLF line endings in rule comments. */
+    @Test
+    public void localizedRuleMetadataWithCrlfLineEndings() throws Exception {
+        String css = "/*\r\n"
+                + " * @title Default title\r\n"
+                + " * @title[en] English title\r\n"
+                + " * @abstract Default abstract\r\n"
+                + " * @abstract[it] Astratto italiano\r\n"
+                + " */\r\n"
+                + "* {\r\n"
+                + "  mark: symbol('circle');\r\n"
+                + "}\r\n";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals("Default title", rule.getDescription().getTitle().toString());
+        assertEquals("English title", rule.getDescription().getTitle().toString(Locale.ENGLISH));
+        assertEquals("Default abstract", rule.getDescription().getAbstract().toString());
+        assertEquals("Astratto italiano", rule.getDescription().getAbstract().toString(Locale.ITALIAN));
+    }
+
+    /** Verifies localized-only metadata works even when no default metadata text is provided. */
+    @Test
+    public void localizedRuleMetadataOnlyLocalizedNoDefault() throws Exception {
+        String css =
+                """
+                /*
+                 * @title[en] English title
+                 * @abstract[it] Riassunto italiano
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals("", rule.getDescription().getTitle().toString());
+        assertEquals("English title", rule.getDescription().getTitle().toString(Locale.ENGLISH));
+        assertEquals("", rule.getDescription().getAbstract().toString());
+        assertEquals("Riassunto italiano", rule.getDescription().getAbstract().toString(Locale.ITALIAN));
+    }
+
+    /** Verifies malformed localized abstract metadata aborts translation for the whole style. */
+    @Test
+    public void localizedRuleMetadataMalformedLocaleInAbstractFailsWholeTranslation() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Default title
+                 * @title[en] English title
+                 * @abstract Default abstract
+                 * @abstract[_] Invalid localized abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
+        assertThat(e.getMessage(), containsString("\"_\""));
+    }
+
+    /** Verifies mixed-case locale tags are normalized and retrievable through standard Locale lookups. */
+    @Test
+    public void localizedRuleMetadataCaseNormalizedLocale() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Default title
+                 * @title[EN-us] English title mixed case
+                 * @abstract Default abstract
+                 * @abstract[EN-us] English abstract mixed case
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(
+                "English title mixed case", rule.getDescription().getTitle().toString(Locale.US));
+        assertEquals(
+                "English abstract mixed case",
+                rule.getDescription().getAbstract().toString(Locale.US));
+    }
+
+    /** Verifies script-based locale tags (e.g. zh-Hans, sr-Cyrl) are accepted and resolved correctly. */
+    @Test
+    public void localizedRuleMetadataScriptLocale() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Default title
+                 * @title[zh-Hans] Chinese simplified title
+                 * @abstract Default abstract
+                 * @abstract[sr_Cyrl] Serbian cyrillic abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals("Default title", rule.getDescription().getTitle().toString());
+        assertEquals(
+                "Chinese simplified title",
+                rule.getDescription().getTitle().toString(Locale.forLanguageTag("zh-Hans")));
+        assertEquals("Default abstract", rule.getDescription().getAbstract().toString());
+        assertEquals(
+                "Serbian cyrillic abstract",
+                rule.getDescription().getAbstract().toString(Locale.forLanguageTag("sr-Cyrl")));
+    }
+
+    /** Verifies malformed BCP47 forms that pass the regex are rejected by strict locale validation. */
+    @Test
+    public void localizedRuleMetadataStrictMalformedBcp47Fails() throws Exception {
+        String css =
+                """
+                /*
+                 * @title[en-] Invalid trailing separator
+                 * @title[en--US] Invalid double separator
+                 * @abstract[en-US-x] Invalid incomplete private use
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
+        assertThat(e.getMessage(), containsString("en-"));
+    }
+
+    /** Verifies empty localized tag brackets fail fast for both title and abstract metadata. */
+    @Test
+    public void localizedRuleMetadataEmptyBracketTagFails() throws Exception {
+        String css =
+                """
+                /*
+                 * @title[] Missing locale for title
+                 * @abstract[] Missing locale for abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("empty language tag"));
+    }
+
+    /** Verifies unclosed localized tag brackets fail fast for both title and abstract metadata. */
+    @Test
+    public void localizedRuleMetadataUnclosedBracketTagFails() throws Exception {
+        String css =
+                """
+                /*
+                 * @title[en Missing closing bracket for title
+                 * @abstract[it Missing closing bracket for abstract
+                 */
+                * {
+                    mark: symbol('circle');
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("missing closing ']'"));
+    }
+
+    /** Verifies malformed localized metadata in any combined rule aborts translation. */
+    @Test
+    public void localizedRuleMetadataMalformedLocaleInCombinedRulesFailsTranslation() throws Exception {
+        String css =
+                """
+                /*
+                 * @title Base title
+                 * @title[en] Base title EN
+                 */
+                * {
+                  fill: red;
+                }
+                /*
+                 * @title Overlay title
+                 * @title[_] Invalid localized title
+                 */
+                * {
+                  stroke: black;
+                }
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> translate(css));
+        assertThat(e.getMessage(), containsString("malformed language tag"));
+    }
+
     @Test
     public void scaleWithinOr() throws IOException, CQLException {
         String css = "[@scale < 10000],[foo='bar'] { fill: orange; }";
@@ -842,12 +1221,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     @Test
     public void testEmptyStyle() throws Exception {
         String css = "* { line: gray }";
-        try {
-            translate(css);
-            fail("Generating an empty style, should have thrown an exception");
-        } catch (IllegalArgumentException e) {
-            // fine
-        }
+        assertThrows(IllegalArgumentException.class, () -> translate(css));
     }
 
     @Test

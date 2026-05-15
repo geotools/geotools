@@ -216,6 +216,11 @@ public class DataUtilities {
         typeMap.put("int", Integer.class);
         typeMap.put("0", Integer.class);
 
+        typeEncode.put(Long.class, "Long");
+        typeMap.put("Long", Long.class);
+        typeMap.put("long", Long.class);
+        typeMap.put("0L", Long.class);
+
         typeEncode.put(Double.class, "Double");
         typeMap.put("Double", Double.class);
         typeMap.put("double", Double.class);

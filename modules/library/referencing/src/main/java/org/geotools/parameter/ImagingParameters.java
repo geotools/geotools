@@ -338,7 +338,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
             assert values.size() == cloned.length : values;
             for (int i = 0; i < cloned.length; i++) {
                 if (!(cloned[i] instanceof ImagingParameter)) {
-                    cloned[i] = ((ParameterValue) values.get(i)).clone();
+                    cloned[i] = values.get(i).clone();
                 }
             }
         }

@@ -62,10 +62,6 @@
       <artifactId>gt-imagemosaic</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-h2</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <scope>test</scope>

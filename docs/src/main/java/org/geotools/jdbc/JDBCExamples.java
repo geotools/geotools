@@ -19,38 +19,14 @@ import org.geotools.api.data.DataStoreFinder;
 
 public class JDBCExamples {
 
-    void h2Example() throws IOException {
-        // h2Example start
+    void gpkgExample() throws IOException {
+        // gpkgExample start
         Map<String, Object> params = new HashMap<>();
-        params.put("dbtype", "h2");
-        params.put("database", "geotools");
-
+        params.put("dbtype", "geopkg");
+        params.put("database", "geotools.gpkg");
+        params.put("SPI", "org.geotools.geopkg.GeoPkgDataStoreFactory");
         DataStore datastore = DataStoreFinder.getDataStore(params);
-        // h2Example end
-    }
-
-    void h2AbsPathExample() throws IOException {
-        // h2AbsPathExample start
-        Map<String, Object> params = new HashMap<>();
-        params.put("dbtype", "h2");
-        params.put("database", "/abs/path/to/geotools");
-
-        DataStore datastore = DataStoreFinder.getDataStore(params);
-        // h2AbsPathExample end
-    }
-
-    void h2TcpExample() throws IOException {
-        // h2TcpExample start
-        Map<String, Object> params = new HashMap<>();
-        params.put("dbtype", "h2");
-        params.put("host", "localhost");
-        params.put("port", 9902);
-        params.put("database", "geotools");
-        params.put("passwd", "geotools");
-        params.put("passwd", "geotools");
-
-        DataStore datastore = DataStoreFinder.getDataStore(params);
-        // h2TcpExample end
+        // gpkgExample end
     }
 
     void postgisExample() throws IOException {

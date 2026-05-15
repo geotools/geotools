@@ -59,7 +59,7 @@ public class H3DGGSInstanceTest {
 
     private static final ReferencedEnvelope WORLD = new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
     private static final GeometryFactory GF = new GeometryFactory();
-    private DGGSInstance h3i;
+    private DGGSInstance<?> h3i;
     private H3Core h3;
 
     @Before
@@ -74,7 +74,7 @@ public class H3DGGSInstanceTest {
 
     @Test
     public void getZone() throws JepException {
-        Zone zone = h3i.getZone("8029fffffffffff");
+        Zone zone = h3i.getZoneFromString("8029fffffffffff");
         assertNotNull(zone);
         assertEquals(0, zone.getResolution());
 
@@ -100,14 +100,12 @@ public class H3DGGSInstanceTest {
 
     @Test
     public void countZonesFromEnvelopeWorldResZero() {
-        ReferencedEnvelope envelope = WORLD;
-        assertZoneCount(envelope, 0);
+        assertZoneCount(WORLD, 0);
     }
 
     @Test
     public void countZonesFromEnvelopeWorldResOne() {
-        ReferencedEnvelope envelope = WORLD;
-        assertZoneCount(envelope, 1);
+        assertZoneCount(WORLD, 1);
     }
 
     @Test
@@ -157,11 +155,11 @@ public class H3DGGSInstanceTest {
 
     @Test
     public void testBoundaryNorthPoleZero() throws ParseException {
-        Zone zone = h3i.getZone("8001fffffffffff");
+        Zone zone = h3i.getZoneFromString("8001fffffffffff");
         Polygon boundary = zone.getBoundary();
-        assertEquals(boundary.getEnvelopeInternal().getMinX(), -180d, 0);
-        assertEquals(boundary.getEnvelopeInternal().getMaxX(), 180d, 0);
-        assertEquals(boundary.getEnvelopeInternal().getMaxY(), 90d, 0);
+        assertEquals(-180d, boundary.getEnvelopeInternal().getMinX(), 0);
+        assertEquals(180d, boundary.getEnvelopeInternal().getMaxX(), 0);
+        assertEquals(90d, boundary.getEnvelopeInternal().getMaxY(), 0);
         Polygon expected = (Polygon)
                 new WKTReader()
                         .read(
@@ -171,7 +169,7 @@ public class H3DGGSInstanceTest {
 
     @Test
     public void testNeighborsNorthPole() {
-        Iterator<Zone> iterator = h3i.neighbors("8001fffffffffff", 1);
+        Iterator<Zone> iterator = h3i.neighborsFromString("8001fffffffffff", 1);
         List<String> neighbors = new ArrayList<>();
         iterator.forEachRemaining(z -> neighbors.add(z.getId()));
         // round the pole we go
@@ -191,7 +189,7 @@ public class H3DGGSInstanceTest {
     @Test
     public void testNeighborsDateline() {
         // pentagon on the dateline
-        Iterator<Zone> iterator = h3i.neighbors("807ffffffffffff", 1);
+        Iterator<Zone> iterator = h3i.neighborsFromString("807ffffffffffff", 1);
         List<String> neighbors = new ArrayList<>();
         iterator.forEachRemaining(z -> neighbors.add(z.getId()));
         // round the pole we go
@@ -206,7 +204,7 @@ public class H3DGGSInstanceTest {
     @Test
     public void testNeighborsAll() {
         // pentagon at the equator/greenwitch (close to), with this distance should catch them all
-        Iterator<Zone> iterator = h3i.neighbors("8075fffffffffff", 10);
+        Iterator<Zone> iterator = h3i.neighborsFromString("8075fffffffffff", 10);
         List<String> neighbors = new ArrayList<>();
         iterator.forEachRemaining(z -> neighbors.add(z.getId()));
         // get all
@@ -225,7 +223,7 @@ public class H3DGGSInstanceTest {
         // keep the resolution small, the list can grow veeeeeery fast
         for (int r = 1; r < 4; r++) {
             Set<String> actual = new HashSet<>();
-            h3i.children(parent, r).forEachRemaining(z -> actual.add(z.getId()));
+            h3i.childrenFromString(parent, r).forEachRemaining(z -> actual.add(z.getId()));
             Set<String> expected = new HashSet<>(h3.h3ToChildren(parent, r));
             assertEquals(expected, actual);
         }

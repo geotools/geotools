@@ -16,18 +16,17 @@
  */
 package org.geotools.data.elasticsearch;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import java.io.IOException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 public class TotalDeserializer extends StdDeserializer<Long> {
 
     public TotalDeserializer() {
-        this(null);
+        this(Long.class);
     }
 
     public TotalDeserializer(Class<?> vc) {
@@ -36,11 +35,11 @@ public class TotalDeserializer extends StdDeserializer<Long> {
 
     @Override
     public Long deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-            throws IOException, JsonProcessingException {
+            throws JacksonException {
         try {
             return jsonParser.readValueAs(Long.class);
         } catch (MismatchedInputException e) {
-            JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+            JsonNode node = jsonParser.objectReadContext().readTree(jsonParser);
             return node.get("value").longValue();
         }
     }

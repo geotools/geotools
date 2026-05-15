@@ -18,9 +18,9 @@ package org.geotools.renderer.label;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineBreakMeasurer;
+import java.awt.font.LineMetrics;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.text.AttributedCharacterIterator;
@@ -61,10 +61,8 @@ class LabelSplitter {
         boolean singleFont =
                 fonts.length == 1 || textLength == fonts[0].canDisplayUpTo(text.toCharArray(), 0, textLength);
         if (!(text.contains("\n") || labelItem.getAutoWrap() > 0) && singleFont) {
-            FontRenderContext frc = graphics.getFontRenderContext();
-            TextLayout layout = new TextLayout(text, fonts[0], frc);
             LineInfo lineInfo = new LineInfo();
-            List<LineComponent> components = buildLineComponents(text, fonts[0], labelItem, graphics, layout);
+            List<LineComponent> components = buildLineComponents(text, fonts[0], labelItem, graphics);
             components.forEach(c -> lineInfo.add(c));
             return Collections.singletonList(lineInfo);
         }
@@ -82,10 +80,7 @@ class LabelSplitter {
                 List<FontRange> ranges = buildFontRanges(line, fonts);
                 for (FontRange range : ranges) {
                     graphics.setFont(range.font);
-                    FontRenderContext frc = graphics.getFontRenderContext();
-                    TextLayout layout = new TextLayout(range.text, range.font, frc);
-                    List<LineComponent> components =
-                            buildLineComponents(range.text, range.font, labelItem, graphics, layout);
+                    List<LineComponent> components = buildLineComponents(range.text, range.font, labelItem, graphics);
                     components.forEach(c -> lineInfo.add(c));
                 }
                 lines.add(lineInfo);
@@ -129,8 +124,6 @@ class LabelSplitter {
                         } else {
                             newPosition = nextBoundary;
                         }
-                        AttributedCharacterIterator subIter = attributed.getIterator(null, prevPosition, newPosition);
-                        layout = new TextLayout(subIter, graphics.getFontRenderContext());
                         lineMeasurer.setPosition(newPosition);
                     }
 
@@ -159,11 +152,9 @@ class LabelSplitter {
                             extracted = extracted.replaceAll("\\s+$", "");
                         }
                         currentLineRange++;
-                        AttributedCharacterIterator subIter = attributed.getIterator(null, start, end);
                         graphics.setFont(range.font);
-                        layout = new TextLayout(subIter, graphics.getFontRenderContext());
                         List<LineComponent> components =
-                                buildLineComponents(extracted, range.font, labelItem, graphics, layout);
+                                buildLineComponents(extracted, range.font, labelItem, graphics);
                         components.forEach(c -> lineInfo.add(c));
                     }
                     lines.add(lineInfo);
@@ -176,11 +167,13 @@ class LabelSplitter {
     }
 
     private List<LineComponent> buildLineComponents(
-            String text, Font font, LabelCacheItem labelItem, Graphics2D graphics, TextLayout layout) {
+            String text, Font font, LabelCacheItem labelItem, Graphics2D graphics) {
         final double wordSpacing = labelItem.getWordSpacing();
         if (text.trim().indexOf(' ') == -1 || wordSpacing <= 0) {
             // no word spacing
-            LineComponent component = new LineComponent(text, layoutSentence(text, labelItem, graphics, font), layout);
+            GlyphVector gv = layoutSentence(text, labelItem, graphics, font);
+            LineMetrics metrics = font.getLineMetrics(text, graphics.getFontRenderContext());
+            LineComponent component = new LineComponent(text, gv, metrics);
             return Arrays.asList(component);
         } else {
             // java does not support word spacing, we need to fake it. Since the machinery
@@ -190,20 +183,19 @@ class LabelSplitter {
             List<LineComponent> result = new ArrayList<>();
             for (int i = 0; i < parts.length; i++) {
                 String part = parts[i];
-                LineComponent component =
-                        new LineComponent(part, layoutSentence(part, labelItem, graphics, font), layout);
+                GlyphVector gv = layoutSentence(part, labelItem, graphics, font);
+                LineMetrics metrics = font.getLineMetrics(part, graphics.getFontRenderContext());
+                LineComponent component = new LineComponent(part, gv, metrics);
                 result.add(component);
                 if (i < parts.length - 1) {
                     // add a fake space with a tracking adjusting its size to the
                     // desired extra word spacing
                     double tracking = wordSpacing / font.getSize();
                     Font spacerFont = font.deriveFont(Collections.singletonMap(TextAttribute.TRACKING, tracking));
-                    TextLayout spacerLayout =
-                            new TextLayout(SINGLE_CHAR_STRING, spacerFont, graphics.getFontRenderContext());
-                    LineComponent spacer = new LineComponent(
-                            SINGLE_CHAR_STRING,
-                            layoutSentence(SINGLE_CHAR_STRING, labelItem, graphics, spacerFont),
-                            spacerLayout);
+                    GlyphVector gvWhiteSpace = layoutSentence(SINGLE_CHAR_STRING, labelItem, graphics, spacerFont);
+                    LineMetrics metricsWhiteSpace =
+                            spacerFont.getLineMetrics(SINGLE_CHAR_STRING, graphics.getFontRenderContext());
+                    LineComponent spacer = new LineComponent(SINGLE_CHAR_STRING, gvWhiteSpace, metricsWhiteSpace);
                     result.add(spacer);
                 }
             }

@@ -57,6 +57,7 @@ import org.junit.Test;
  *
  * @author Sean Geoghegan
  */
+@SuppressWarnings("PMD.UnnecessaryCast")
 public class StyleObjectTest {
     private StyleFactory styleFactory;
     private FilterFactory filterFactory;

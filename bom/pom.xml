@@ -202,11 +202,6 @@
       </dependency>
       <dependency>
         <groupId>org.geotools.jdbc</groupId>
-        <artifactId>gt-jdbc-h2</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.geotools.jdbc</groupId>
         <artifactId>gt-jdbc-hana</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -695,6 +690,11 @@
       <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-geojson-store</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-duckdb</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

@@ -41,6 +41,8 @@ public class TypeMapping implements Serializable {
 
     private String sourceTypeName;
 
+    private String sourceDatabaseSchema;
+
     private String indexDataStore;
     private String indexTypeName;
 
@@ -95,6 +97,14 @@ public class TypeMapping implements Serializable {
 
     public void setSourceTypeName(String sourceTypeName) {
         this.sourceTypeName = sourceTypeName;
+    }
+
+    public String getSourceDatabaseSchema() {
+        return sourceDatabaseSchema;
+    }
+
+    public void setSourceDatabaseSchema(String sourceDatabaseSchema) {
+        this.sourceDatabaseSchema = sourceDatabaseSchema;
     }
 
     public String getTargetElementName() {
@@ -179,6 +189,8 @@ public class TypeMapping implements Serializable {
                 .append(sourceDataStore)
                 .append(",\n sourceTypeName=")
                 .append(sourceTypeName)
+                .append(",\n sourceDatabaseSchema=")
+                .append(sourceDatabaseSchema)
                 .append(",\n targetElementName=")
                 .append(targetElementName)
                 .append(",\n attributeMappings=")

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.Feature;
@@ -45,7 +46,7 @@ import org.hamcrest.Matchers;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // JUnit 3 tests here
-public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
+public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase<String> {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
@@ -55,11 +56,12 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
     }
 
     @Override
-    protected void setupTestData(DGGSDataStore dataStore) throws Exception {
+    protected void setupTestData(DGGSDataStore<String> dataStore) throws Exception {
         try (Connection cx = ((JDBCDataStore) dataStore.getDelegate()).getConnection(Transaction.AUTO_COMMIT);
                 Statement st = cx.createStatement()) {
             // cleanup
-            st.execute("DROP TABLE IF EXISTS zoneAttributes");
+            st.execute("DROP TABLE IF EXISTS zoneAttributes;");
+            st.execute("DROP TABLE IF EXISTS noZones;");
 
             st.execute("CREATE TABLE zoneAttributes (\n"
                     + "    zoneId String,\n"
@@ -76,12 +78,26 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
                     + "('8011fffffffffff', 1, 75, 0),\n"
                     + "('8011fffffffffff', 2, 25, 0),\n"
                     + "('8011fffffffffff', 3, 0, 0);");
+
+            st.execute("CREATE TABLE noZones (\n"
+                    + "    ts UInt32,\n"
+                    + "    value UInt32,\n"
+                    + "    resolution UInt8\n"
+                    + ") ENGINE = MergeTree()\n"
+                    + "ORDER BY ts;");
+
+            st.execute("INSERT INTO noZones VALUES\n" + "(1, 100, 0),\n" + "(2, 50, 0),\n" + "(3, 150, 0);");
         }
     }
 
     public void testTypeNames() throws IOException {
         List<String> names = Arrays.asList(dataStore.getTypeNames());
         assertThat(names, Matchers.hasItem("zoneAttributes"));
+        assertThat(names, Matchers.not(Matchers.hasItem("noZones")));
+
+        DataStore delegate = dataStore.getDelegate();
+        names = Arrays.asList(delegate.getTypeNames());
+        assertThat(names, Matchers.hasItem("noZones"));
     }
 
     public void testDataStoreSchema() throws IOException {
@@ -116,7 +132,7 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
     }
 
     public void testCountAll() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("zoneAttributes");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("zoneAttributes");
         assertEquals(6, fs.getCount(Query.ALL));
     }
 
@@ -140,15 +156,15 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase {
                 };
 
         // execute visit, the visitor should be optimized out
-        DGGSFeatureSource fs = dataStore.getFeatureSource("zoneAttributes");
+        DGGSFeatureSource<String> fs = dataStore.getFeatureSource("zoneAttributes");
         fs.getFeatures().accepts(visitor, null);
         assertEquals(0, visitCount.get());
         assertTrue(setValueCalled.get());
 
         @SuppressWarnings("PMD.CloseResource") // the store manages the dggs lifecycle
-        DGGSInstance ddgs = dataStore.getDggs();
-        Polygon p1 = ddgs.getZone("8009fffffffffff").getBoundary();
-        Polygon p2 = ddgs.getZone("8011fffffffffff").getBoundary();
+        DGGSInstance<String> dggs = dataStore.getDggs();
+        Polygon p1 = dggs.getZoneFromString("8009fffffffffff").getBoundary();
+        Polygon p2 = dggs.getZoneFromString("8011fffffffffff").getBoundary();
 
         @SuppressWarnings("unchecked")
         Map<List<Object>, Object> results = visitor.getResult().toMap();

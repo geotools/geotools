@@ -130,14 +130,15 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     }
 
     /** A Simple Test Method which read an arcGrid and write it as a GRASS Ascii Grid */
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     public void writeGrassUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
-        /** Step 1: Reading the coverage */
+        /* Step 1: Reading the coverage */
         GridCoverageReader reader = new ArcGridReader(rf, hints);
         final GridCoverage2D gc1 = (GridCoverage2D) reader.read();
 
-        /** Step 2: Write grid coverage out to temp file */
+        /* Step 2: Write grid coverage out to temp file */
         final GridCoverageWriter writer = new ArcGridWriter(wf);
 
         // setting write parameters
@@ -155,14 +156,14 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         writer.write(gc1, gpv);
         writer.dispose();
 
-        /** Step 3: Read the just written coverage */
+        /* Step 3: Read the just written coverage */
         GridCoverageReader reader2 = new ArcGridReader(wf, hints);
         final GridCoverage2D gc2 = (GridCoverage2D) reader2.read();
 
-        /** Step 4: Check if the 2 coverage are equals */
+        /* Step 4: Check if the 2 coverage are equals */
         compare(gc1, gc2);
 
-        /** Step 5: Show the new coverage */
+        /* Step 5: Show the new coverage */
         if (TestData.isInteractiveTest()) {
             gc1.show();
             gc2.show();
@@ -173,6 +174,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     }
 
     /** A Simple Test Method which read an arcGrid and write it as an ArcGrid */
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     public void writeEsriUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);

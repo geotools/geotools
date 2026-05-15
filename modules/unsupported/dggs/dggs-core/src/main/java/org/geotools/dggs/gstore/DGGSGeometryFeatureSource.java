@@ -72,11 +72,11 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-class DGGSGeometryFeatureSource extends ContentFeatureSource implements DGGSFeatureSource {
+class DGGSGeometryFeatureSource<I> extends ContentFeatureSource implements DGGSFeatureSource<I> {
 
     static final Logger LOGGER = Logging.getLogger(DGGSGeometryFeatureSource.class);
 
-    private final DGGSGeometryStore store;
+    private final DGGSGeometryStore<I> store;
     private final DGGSResolutionCalculator resolutions;
     private static final AttributeDescriptor ZONE_ID_DESCRIPTOR;
 
@@ -89,7 +89,7 @@ class DGGSGeometryFeatureSource extends ContentFeatureSource implements DGGSFeat
         }
     }
 
-    public DGGSGeometryFeatureSource(ContentEntry entry, DGGSGeometryStore store) {
+    public DGGSGeometryFeatureSource(ContentEntry entry, DGGSGeometryStore<I> store) {
         super(entry, Query.ALL);
         this.store = store;
         this.resolutions = store.resolutions;
@@ -248,7 +248,7 @@ class DGGSGeometryFeatureSource extends ContentFeatureSource implements DGGSFeat
                     && name.getPropertyName().equals("zoneId")
                     && ex2 instanceof Literal) {
                 query.setFilter(Filter.INCLUDE); // replaced filter with source iterator
-                Zone zone = store.dggs.getZone(ex2.evaluate(null, String.class));
+                Zone zone = store.dggs.getZoneFromString(ex2.evaluate(null, String.class));
                 if (zone == null) return new EmptyIterator<>();
                 return new SingletonIterator<>(zone);
             }
@@ -294,7 +294,7 @@ class DGGSGeometryFeatureSource extends ContentFeatureSource implements DGGSFeat
     }
 
     @Override
-    public DGGSInstance getDGGS() {
+    public DGGSInstance<I> getDGGS() {
         return store.dggs;
     }
 

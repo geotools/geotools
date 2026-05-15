@@ -20,10 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +50,10 @@ import org.junit.runners.Parameterized;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.JsonNodeType;
 
 /**
  * Informal test used to document expected functionality for workshop.
@@ -251,7 +251,7 @@ public class GeoJSONWriteTest {
 
         String json = writeSingleFeature(feature);
         JsonNode root = new ObjectMapper().readTree(json);
-        assertEquals("Feature", root.get("type").textValue());
+        assertEquals("Feature", root.get("type").asString());
     }
 
     @Test
@@ -266,7 +266,7 @@ public class GeoJSONWriteTest {
         String json = writeSingleFeature(feature);
         JsonNode root = new ObjectMapper().readTree(json);
         String isoDatePattern = "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2})\\:(\\d{2})\\:(\\d{2})\\.(\\d{3})Z";
-        String date = root.get("properties").get("date").textValue();
+        String date = root.get("properties").get("date").asString();
         assertTrue(date + " does not match ISO date", date.matches(isoDatePattern));
     }
 
@@ -290,7 +290,7 @@ public class GeoJSONWriteTest {
 
         String json = out.toString(StandardCharsets.UTF_8);
         JsonNode root = new ObjectMapper().readTree(json);
-        String date = root.get("properties").get("date").textValue();
+        String date = root.get("properties").get("date").asString();
 
         FastDateFormat utm = FastDateFormat.getInstance(
                 DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.getPattern(), GeoJSONWriter.DEFAULT_TIME_ZONE);
@@ -361,7 +361,7 @@ public class GeoJSONWriteTest {
         assertEquals(JsonNodeType.NUMBER, array.get(0).getNodeType());
         assertEquals(1, array.get(0).intValue());
         assertEquals(JsonNodeType.STRING, array.get(1).getNodeType());
-        assertEquals("two", array.get(1).textValue());
+        assertEquals("two", array.get(1).asString());
         assertEquals(JsonNodeType.NULL, array.get(2).getNodeType());
     }
 
@@ -397,7 +397,7 @@ public class GeoJSONWriteTest {
         assertEquals(JsonNodeType.NUMBER, object.get("a").getNodeType());
         assertEquals(10, object.get("a").intValue());
         assertEquals(JsonNodeType.STRING, object.get("b").getNodeType());
-        assertEquals("foo", object.get("b").textValue());
+        assertEquals("foo", object.get("b").asString());
 
         // parse back and check object is retained
         SimpleFeature parsedFeature = GeoJSONReader.parseFeature(json);

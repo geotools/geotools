@@ -46,6 +46,7 @@ import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.dggs.DGGSFeatureCollection;
 import org.geotools.dggs.DGGSInstance;
 import org.geotools.dggs.DGGSQuerySplitter;
+import org.geotools.dggs.gstore.DGGSFeatureSource;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -53,15 +54,15 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.decorate.Wrapper;
 
-public class DGGSFeatureSourceImpl implements org.geotools.dggs.gstore.DGGSFeatureSource {
+public class DGGSFeatureSourceImpl<I> implements DGGSFeatureSource<I> {
 
-    private final DGGSDataStore dataStore;
+    private final DGGSDataStore<I> dataStore;
     private final SimpleFeatureType schema;
     private final SimpleFeatureSource delegate;
     private final DGGSQuerySplitter splitter;
     private final AttributeDescriptor descriptor;
 
-    public DGGSFeatureSourceImpl(DGGSDataStore dataStore, SimpleFeatureSource delegate, SimpleFeatureType schema) {
+    public DGGSFeatureSourceImpl(DGGSDataStore<I> dataStore, SimpleFeatureSource delegate, SimpleFeatureType schema) {
         this.delegate = delegate;
         this.dataStore = dataStore;
         this.schema = schema;
@@ -85,7 +86,7 @@ public class DGGSFeatureSourceImpl implements org.geotools.dggs.gstore.DGGSFeatu
     }
 
     @Override
-    public DGGSInstance getDGGS() {
+    public DGGSInstance<I> getDGGS() {
         return dataStore.getDggs();
     }
 
@@ -217,7 +218,7 @@ public class DGGSFeatureSourceImpl implements org.geotools.dggs.gstore.DGGSFeatu
             if (propertyNames != null) {
                 outputSchema = SimpleFeatureTypeBuilder.retype(getSchema(), propertyNames);
             }
-            result = new DGGSFeatureCollection(result, outputSchema, dataStore.getZoneIdAttribute(), getDGGS());
+            result = new DGGSFeatureCollection<>(result, outputSchema, dataStore.getZoneIdAttribute(), getDGGS());
         }
         if (split.post != Filter.INCLUDE) {
             result = new FilteringSimpleFeatureCollection(result, split.post);

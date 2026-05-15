@@ -16,16 +16,13 @@
  */
 package org.geotools.pmtiles.store;
 
-import com.google.common.annotations.VisibleForTesting;
 import io.tileverse.pmtiles.PMTilesReader;
 import io.tileverse.pmtiles.store.PMTilesVectorTileStore;
-import io.tileverse.pmtiles.store.VectorTileStore;
 import io.tileverse.rangereader.RangeReader;
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.geotools.util.logging.Logging;
 import org.geotools.vectortiles.store.VectorTilesDataStore;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * GeoTools DataStore implementation for reading PMTiles archives containing Mapbox Vector Tiles.
@@ -49,45 +46,28 @@ import org.geotools.vectortiles.store.VectorTilesDataStore;
  * @see VectorTilesDataStore
  * @see <a href="https://github.com/protomaps/PMTiles">PMTiles Specification</a>
  */
+@NullMarked
 public class PMTilesDataStore extends VectorTilesDataStore {
 
-    static final Logger LOGGER = Logging.getLogger(PMTilesDataStore.class);
-
-    private RangeReader rangeReader;
+    private PMTilesReader pmtilesReader;
 
     /**
-     * Creates a new PMTiles datastore from a {@link RangeReader}.
+     * Creates a new PMTiles datastore from a {@link PMTilesReader}.
      *
-     * <p>The RangeReader provides the underlying byte-range access to the PMTiles archive, which can be from any
-     * supported source (local file, HTTP, cloud storage). The datastore takes ownership of the RangeReader and will
-     * close it when {@link #dispose()} is called.
+     * <p>The PMTilesReader provides access to the PMTiles archive and manages the underlying byte-range reader and
+     * caches. The datastore takes ownership of the reader and will close it when {@link #dispose()} is called.
      *
-     * @param rangeReader the RangeReader providing access to the PMTiles archive
+     * @param factory the factory that created this datastore, used for accessing shared resources
+     * @param pmtilesReader the PMTilesReader providing access to the PMTiles archive
      * @throws IOException if the PMTiles archive cannot be read or is invalid
      */
-    public PMTilesDataStore(RangeReader rangeReader) throws IOException {
-        super(PMTilesDataStoreFactory.INSTANCE, createTileStore(rangeReader));
-        this.rangeReader = rangeReader;
+    public PMTilesDataStore(PMTilesDataStoreFactory factory, PMTilesReader pmtilesReader) throws IOException {
+        super(factory, new PMTilesVectorTileStore(pmtilesReader));
+        this.pmtilesReader = pmtilesReader;
     }
 
     /**
-     * Creates a new PMTiles datastore from a {@link PMTilesReader} for testing purposes.
-     *
-     * @param pmtiles the PMTilesReader to use
-     * @throws IOException if the PMTiles archive cannot be read or is invalid
-     */
-    @VisibleForTesting
-    PMTilesDataStore(PMTilesReader pmtiles) throws IOException {
-        super(PMTilesDataStoreFactory.INSTANCE, new PMTilesVectorTileStore(pmtiles));
-    }
-
-    private static VectorTileStore createTileStore(RangeReader rangeReader) throws IOException {
-        PMTilesReader pmtilesReader = new PMTilesReader(rangeReader::asByteChannel);
-        return new PMTilesVectorTileStore(pmtilesReader);
-    }
-
-    /**
-     * Disposes of this datastore and releases all resources, including closing the underlying {@link RangeReader}.
+     * Disposes of this datastore and releases all resources, including closing the underlying {@link PMTilesReader}.
      *
      * <p>After calling this method, the datastore should not be used anymore.
      */
@@ -96,20 +76,18 @@ public class PMTilesDataStore extends VectorTilesDataStore {
         try {
             super.dispose();
         } finally {
-            closeRangeReader();
+            closePmtilesReader();
         }
     }
 
-    private void closeRangeReader() {
-        String sourceIdentifier = null;
-        try (RangeReader reader = this.rangeReader) {
-            this.rangeReader = null;
-            if (reader != null) {
-                sourceIdentifier = reader.getSourceIdentifier();
-                LOGGER.fine("Closing range reader " + sourceIdentifier);
+    private void closePmtilesReader() {
+        if (pmtilesReader != null) {
+            String sourceIdentifier = pmtilesReader.getSourceIdentifier();
+            try {
+                pmtilesReader.close();
+            } catch (IOException e) {
+                super.LOGGER.log(Level.WARNING, "Error closing range reader %s".formatted(sourceIdentifier), e);
             }
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Error closing range reader " + sourceIdentifier, e);
         }
     }
 }

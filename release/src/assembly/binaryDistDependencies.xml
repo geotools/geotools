@@ -137,7 +137,6 @@
         <include>org.geotools.xsd:gt-xsd-wps</include>
         
         <include>org.geotools.jdbc:gt-jdbc-db2</include>
-        <include>org.geotools.jdbc:gt-jdbc-h2</include>
         <include>org.geotools.jdbc:gt-jdbc-hana</include>
         <include>org.geotools.jdbc:gt-jdbc-mysql</include>
         <include>org.geotools.jdbc:gt-jdbc-oracle</include>

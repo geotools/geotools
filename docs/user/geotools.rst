@@ -77,7 +77,6 @@ Supported Formats
   + ``db2``
   + ``geopackage``
   + ``hana``  
-  + ``h2``  
   + ``mysql``  
   + ``oracle``  
   + ``postgis``

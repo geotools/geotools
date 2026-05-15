@@ -612,6 +612,28 @@ public class SLDStyleFactoryTest {
         Assert.assertNull(bs.getDashArray());
     }
 
+    /**
+     * Tests that astronomically small dash array values (e.g., 1E-12) are treated as zero. This can happen when MBStyle
+     * line-dasharray is multiplied by a line-width that interpolates to near-zero at certain zoom levels. Without this
+     * fix, Java2D's Marlin renderer crashes with "array exceeds maximum capacity" when trying to compute an impossibly
+     * large number of dashes.
+     */
+    @Test
+    public void testDashArrayNearZero() throws Exception {
+        LineSymbolizer ls = sf.createLineSymbolizer();
+        Stroke stroke = sf.createStroke(ff.literal("red"), ff.literal(1));
+        // Simulate values that can occur from MBStyle zoom interpolation (e.g., 2 * lineWidth where lineWidth ~ 0)
+        Expression nearZero = ff.literal(2.462030579408747E-12);
+        stroke.setDashArray(Arrays.asList(nearZero, nearZero));
+        ls.setStroke(stroke);
+
+        // Near-zero dash array should be treated as zero and ignored (no dashed stroke)
+        LineStyle2D ls2d = (LineStyle2D) sld.createLineStyle(feature, ls, range);
+        assertThat(ls2d.getStroke(), CoreMatchers.instanceOf(BasicStroke.class));
+        BasicStroke bs = (BasicStroke) ls2d.getStroke();
+        Assert.assertNull(bs.getDashArray());
+    }
+
     @Test
     public void testOptimizedMarkFactoryHints() {
         // create a list with two mark factories identifiers

@@ -1,0 +1,160 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2025, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.dggs.clickhouse;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import com.clickhouse.data.value.UnsignedInteger;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.dggs.DGGSInstance;
+import org.geotools.dggs.datastore.DGGSDataStore;
+import org.geotools.dggs.gstore.DGGSFeatureSource;
+import org.geotools.dggs.h3.H3DGGSFactory;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.Aggregate;
+import org.geotools.feature.visitor.GroupByVisitor;
+import org.geotools.jdbc.JDBCDataStore;
+import org.hamcrest.Matchers;
+import org.locationtech.jts.geom.Polygon;
+
+@SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // JUnit 3 tests here
+public class ClickHouseH3IntegerOnlineTest extends ClickHouseOnlineTestCase<Long> {
+
+    private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
+
+    @Override
+    protected String getDGGSId() {
+        return new H3DGGSFactory().getId();
+    }
+
+    @Override
+    protected void setupTestData(DGGSDataStore<Long> dataStore) throws Exception {
+        try (Connection cx = ((JDBCDataStore) dataStore.getDelegate()).getConnection(Transaction.AUTO_COMMIT);
+                Statement st = cx.createStatement()) {
+            // cleanup
+            st.execute("DROP TABLE IF EXISTS zoneAttributesInt");
+
+            st.execute("CREATE TABLE zoneAttributesInt (\n"
+                    + "    zoneId Int64,\n"
+                    + "    ts UInt32,\n"
+                    + "    value UInt32,\n"
+                    + "    resolution UInt8\n"
+                    + ") ENGINE = MergeTree()\n"
+                    + "ORDER BY (zoneId, ts);");
+
+            st.execute("INSERT INTO zoneAttributesInt VALUES\n"
+                    + "(576636674163867647, 1, 100, 0),\n"
+                    + "(576636674163867647, 2, 50, 0),\n"
+                    + "(576636674163867647, 3, 150, 0),\n"
+                    + "(576777411652222975, 1, 75, 0),\n"
+                    + "(576777411652222975, 2, 25, 0),\n"
+                    + "(576777411652222975, 3, 0, 0);");
+        }
+    }
+
+    public void testTypeNames() throws IOException {
+        List<String> names = Arrays.asList(dataStore.getTypeNames());
+        assertThat(names, Matchers.hasItem("zoneAttributesInt"));
+    }
+
+    public void testDataStoreSchema() throws IOException {
+        SimpleFeatureType schema = dataStore.getSchema("zoneAttributesInt");
+        assertZoneAttributesSchema(schema);
+    }
+
+    public void testFeatureSourceSchema() throws IOException {
+        SimpleFeatureType schema =
+                dataStore.getFeatureSource("zoneAttributesInt").getSchema();
+        assertZoneAttributesSchema(schema);
+    }
+
+    public void testFeatureCollectionSchema() throws IOException {
+        SimpleFeatureType schema =
+                dataStore.getFeatureSource("zoneAttributesInt").getFeatures().getSchema();
+        assertZoneAttributesSchema(schema);
+    }
+
+    private void assertZoneAttributesSchema(SimpleFeatureType schema) {
+        assertEquals(5, schema.getAttributeDescriptors().size());
+        assertDescriptor(schema, "zoneId", Long.class);
+        assertDescriptor(schema, "resolution", Short.class);
+        assertDescriptor(schema, "ts", Long.class);
+        assertDescriptor(schema, "value", Long.class);
+        assertDescriptor(schema, "geometry", Polygon.class);
+    }
+
+    private void assertDescriptor(SimpleFeatureType schema, String name, Class<?> binding) {
+        AttributeDescriptor ad = schema.getDescriptor(name);
+        assertNotNull(name + " not found", ad);
+        assertEquals(binding, ad.getType().getBinding());
+    }
+
+    public void testCountAll() throws Exception {
+        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesInt");
+        assertEquals(6, fs.getCount(Query.ALL));
+    }
+
+    public void testDelegateGroupBy() throws Exception {
+        AtomicInteger visitCount = new AtomicInteger(0);
+        AtomicBoolean setValueCalled = new AtomicBoolean(false);
+        GroupByVisitor visitor =
+                new GroupByVisitor(
+                        Aggregate.MAX, FF.property("value"), List.of(FF.property(DGGSDataStore.GEOMETRY)), null) {
+                    @Override
+                    public void visit(Feature feature) {
+                        super.visit(feature);
+                        visitCount.incrementAndGet();
+                    }
+
+                    @Override
+                    public void setValue(List<GroupByRawResult> value) {
+                        super.setValue(value);
+                        setValueCalled.set(true);
+                    }
+                };
+
+        // execute visit, the visitor should be optimized out
+        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesInt");
+        fs.getFeatures().accepts(visitor, null);
+        assertEquals(0, visitCount.get());
+        assertTrue(setValueCalled.get());
+
+        @SuppressWarnings("PMD.CloseResource") // the store manages the dggs lifecycle
+        DGGSInstance<Long> dggs = dataStore.getDggs();
+        Polygon p1 = dggs.getZone(Long.parseUnsignedLong("8009fffffffffff", 16)).getBoundary();
+        Polygon p2 = dggs.getZone(Long.parseUnsignedLong("8011fffffffffff", 16)).getBoundary();
+
+        @SuppressWarnings("unchecked")
+        Map<List<Object>, Object> results = visitor.getResult().toMap();
+        assertEquals(2, results.size());
+        assertEquals(UnsignedInteger.valueOf(150), results.get(List.of(p1)));
+        assertEquals(UnsignedInteger.valueOf(75), results.get(List.of(p2)));
+    }
+}

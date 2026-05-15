@@ -37,7 +37,6 @@ import org.geotools.util.logging.Logging;
  *
  * @author Stéphane Brunner @ camptocamp
  */
-@SuppressWarnings("PMD.CheckResultSet")
 class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
     private static final Logger LOGGER = Logging.getLogger(TeradataPrimaryKeyFinder.class);
 
@@ -146,7 +145,7 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
                 }
                 next = result.next();
             }
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
         }
 
         return columns;
@@ -176,7 +175,7 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
                 }
                 next = result.next();
             }
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
         }
 
         return columns;
@@ -202,7 +201,7 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
                         }
                         next = md.next();
                     }
-                } catch (SQLException e) {
+                } catch (SQLException ignored) {
                 }
             }
         }

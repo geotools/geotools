@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClientBase;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.util.logging.Logging;
 
@@ -32,7 +32,7 @@ public class SingleLayerMapper implements SolrLayerMapper {
     static final Logger LOGGER = Logging.getLogger(SingleLayerMapper.class);
 
     @Override
-    public List<String> createTypeNames(HttpSolrClient solr) throws Exception {
+    public List<String> createTypeNames(HttpSolrClientBase solr) throws Exception {
         // try to parse the url and return the name of the core
         try {
             URL url = new URL(solr.getBaseURL());

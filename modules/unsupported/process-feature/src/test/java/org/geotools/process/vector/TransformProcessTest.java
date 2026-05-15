@@ -26,6 +26,7 @@ import org.geotools.api.data.DataStore;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -123,5 +124,14 @@ public class TransformProcessTest {
         SimpleFeatureType schema = result.getSchema();
         AttributeDescriptor number = schema.getDescriptor("number");
         assertTrue(Long.class.isAssignableFrom(number.getType().getBinding()));
+    }
+
+    @Test
+    public void testStringLiteral() throws Exception {
+        String definition = "dato='2025-06-21'";
+        List<Definition> definitions = TransformProcess.toDefinition(definition);
+        assertEquals(1, definitions.size());
+        assertEquals("dato", definitions.get(0).name);
+        assertTrue(definitions.get(0).expression instanceof Literal);
     }
 }

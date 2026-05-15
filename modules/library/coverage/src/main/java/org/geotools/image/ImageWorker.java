@@ -4651,7 +4651,7 @@ public class ImageWorker {
         pb.set(destNodata, 5);
         image = ImageN.create("Rescale", pb, getRenderingHints());
         if (!Double.isNaN(destNodata)) {
-            setNoData(RangeFactory.create((byte) destNodata, (byte) destNodata));
+            setNoData(RangeFactory.create(destNodata, destNodata));
         }
         return this;
     }

@@ -236,6 +236,53 @@
             "layout": {
               "atan": ["atan", ["get", "anotherIntField"], 5]
             }
+        },
+        {
+            "id": "mathAbs",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "abs5": ["abs", 5],
+                "absNeg": ["abs", -7],
+                "absWithFeature": ["abs", ["get", "anotherIntField"]]
+            }
+        },
+        {
+            "id": "mathCeil",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "ceil": ["ceil", 3.2],
+                "ceilNeg": ["ceil", -3.7],
+                "ceilWhole": ["ceil", 5],
+                "ceilWithFeature": ["ceil", ["get", "doubleField"]]
+            }
+        },
+        {
+            "id": "mathFloor",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "floor": ["floor", 3.7],
+                "floorNeg": ["floor", -3.2],
+                "floorWhole": ["floor", 5],
+                "floorWithFeature": ["floor", ["get", "doubleField"]]
+            }
+        },
+        {
+            "id": "mathRound",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "round": ["round", 3.4],
+                "roundUp": ["round", 3.5],
+                "roundNeg": ["round", -3.7],
+                "roundWithFeature": ["round", ["get", "doubleField"]]
+            }
         }
     ]
 }

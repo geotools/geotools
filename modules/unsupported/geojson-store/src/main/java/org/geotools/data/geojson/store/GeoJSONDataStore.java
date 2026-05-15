@@ -85,18 +85,19 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     }
 
     @Override
-    protected List<Name> createTypeNames() throws IOException {
+    protected List<Name> createTypeNames() {
         if (schema != null) {
-            return Collections.singletonList(new NameImpl(schema.getTypeName()));
-        }
-        String name = new File(getUrl().getFile()).getName();
-        int index = name.lastIndexOf('.');
-        if (index > 0) {
-            name = name.substring(0, index);
+            typeName = new NameImpl(schema.getTypeName());
         } else {
-            name = "Unamed URL";
+            String name = new File(getUrl().getFile()).getName();
+            int index = name.lastIndexOf('.');
+            if (index > 0) {
+                name = name.substring(0, index);
+            } else {
+                name = "Unnamed URL";
+            }
+            typeName = new NameImpl(name);
         }
-        typeName = new NameImpl(name);
         return Collections.singletonList(typeName);
     }
 
@@ -143,7 +144,9 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     @Override
     public SimpleFeatureSource getFeatureSource() throws IOException {
         if (typeName == null) {
-            createTypeNames();
+            // calling createTypeNames() has the side-effect of populating typeName,
+            // but we really should rely on the returned value
+            typeName = (NameImpl) createTypeNames().get(0);
         }
         return super.getFeatureSource(typeName);
     }

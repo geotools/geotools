@@ -58,6 +58,8 @@ public class FeatureTypeMapping {
 
     private String sourceDatastoreId;
 
+    private String sourceDatabaseSchema;
+
     // Index FeatureSource, optional
     private FeatureSource<SimpleFeatureType, SimpleFeature> indexSource;
 
@@ -149,6 +151,14 @@ public class FeatureTypeMapping {
 
     public List<AttributeMapping> getAttributeMappings() {
         return Collections.unmodifiableList(attributeMappings);
+    }
+
+    public String getSourceDatabaseSchema() {
+        return sourceDatabaseSchema;
+    }
+
+    public void setSourceDatabaseSchema(String sourceDatabaseSchema) {
+        this.sourceDatabaseSchema = sourceDatabaseSchema;
     }
 
     public List<NestedAttributeMapping> getNestedMappings() {

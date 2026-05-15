@@ -94,6 +94,7 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
      *
      * @param source Object The object on disk representing the coverage to test.
      */
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     private File write(Object source, String format)
             throws IOException, IllegalArgumentException, FactoryException, TransformException, ParseException {
         // instantiating a reader

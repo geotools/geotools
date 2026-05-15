@@ -50,6 +50,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -413,16 +414,24 @@ public class GridCoverageReaderHelperTest {
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
         FileUtils.copyDirectory(testDataFolder, testDirectory);
 
-        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
-        ReferencedEnvelope mapExtent = new ReferencedEnvelope(11, 13, -1, 1, DefaultGeographicCRS.WGS84);
-        GridCoverageReaderHelper helper = new GridCoverageReaderHelper(
-                imReader, new Rectangle(1024, 512), mapExtent, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-        ReferencedEnvelope readEnvelope = helper.getReadEnvelope();
-        final double EPS = 1e-3;
-        assertEquals(10.981, readEnvelope.getMinX(), EPS);
-        assertEquals(13.019, readEnvelope.getMaxX(), EPS);
-        assertEquals(-1.039, readEnvelope.getMinY(), EPS);
-        assertEquals(1.039, readEnvelope.getMaxY(), EPS);
+        try {
+            Utils.HETEROGENEOUS_LOCAL_REPROJECT = false;
+            ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+            ReferencedEnvelope mapExtent = new ReferencedEnvelope(11, 13, -1, 1, DefaultGeographicCRS.WGS84);
+            GridCoverageReaderHelper helper = new GridCoverageReaderHelper(
+                    imReader,
+                    new Rectangle(1024, 512),
+                    mapExtent,
+                    Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            ReferencedEnvelope readEnvelope = helper.getReadEnvelope();
+            final double EPS = 1e-3;
+            assertEquals(10.981, readEnvelope.getMinX(), EPS);
+            assertEquals(13.019, readEnvelope.getMaxX(), EPS);
+            assertEquals(-1.039, readEnvelope.getMinY(), EPS);
+            assertEquals(1.039, readEnvelope.getMaxY(), EPS);
+        } finally {
+            Utils.HETEROGENEOUS_LOCAL_REPROJECT = true;
+        }
     }
 
     // fails on Travis but not locally in IDE nor Maven. There are other tests covering this

@@ -49,7 +49,6 @@
   </developers>
 
   <modules>
-    <module>jdbc-h2</module>
     <module>jdbc-oracle</module>
     <module>jdbc-postgis</module>
     <module>jdbc-db2</module>

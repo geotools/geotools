@@ -24,8 +24,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.bedatadriven.jackson.datatype.jts.JtsModule;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.Serializable;
@@ -92,6 +90,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class ElasticFilterTest {
 
@@ -872,7 +872,7 @@ public class ElasticFilterTest {
     }
 
     @Test
-    public void testQueryViewParam() throws JsonProcessingException {
+    public void testQueryViewParam() throws JacksonException {
         Map<String, Object> idsQuery = ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("type1")));
         parameters.put("q", new ObjectMapper().writeValueAsString(idsQuery));
 
@@ -915,7 +915,7 @@ public class ElasticFilterTest {
     }
 
     @Test
-    public void testAndQueryViewParam() throws JsonProcessingException {
+    public void testAndQueryViewParam() throws JacksonException {
         Map<String, Object> idsQuery = ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
         builder.queryBuilder = idsQuery;
         parameters.put("q", new ObjectMapper().writeValueAsString(idsQuery));
@@ -925,7 +925,7 @@ public class ElasticFilterTest {
     }
 
     @Test
-    public void testNativeOnlyQueryViewParam() throws JsonProcessingException {
+    public void testNativeOnlyQueryViewParam() throws JacksonException {
         parameters.put("native-only", "true");
         Map<String, Object> idsQuery = ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
         builder.queryBuilder = idsQuery;

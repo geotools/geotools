@@ -30,7 +30,7 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
 import org.geotools.api.temporal.Instant;
 import org.geotools.api.temporal.Period;
 import org.geotools.temporal.object.DefaultInstant;
@@ -44,13 +44,12 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class);
 
     static {
-        // uncomment to turn up logging
-
-        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
-        handler.setLevel(java.util.logging.Level.FINE);
-
-        org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class).setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class).addHandler(handler);
+        if (Boolean.getBoolean("gt.solr.tests.verbose")) {
+            java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+            handler.setLevel(java.util.logging.Level.FINE);
+            LOGGER.setLevel(java.util.logging.Level.FINE);
+            LOGGER.addHandler(handler);
+        }
     }
 
     protected SolrFeatureSource featureSource;
@@ -68,10 +67,11 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     protected DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
     // tests setup will take care of instantiating the client and closing it
-    private HttpSolrClient solrClient;
+    private HttpJdkSolrClient solrClient;
 
     @Override
     protected void setUpInternal() throws Exception {
+        fixture.setProperty(SolrDataStoreFactory.URL.key, TestContainersSupport.solrCoreUrl("test_core"));
         // add to provided Solr core the necessary data
         String coreUrl = fixture.getProperty(SolrDataStoreFactory.URL.key);
         this.solrClient = TestsSolrUtils.instantiateClient(coreUrl);
@@ -83,6 +83,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         TestsSolrUtils.createWktField(this.solrClient, "geo");
         TestsSolrUtils.createWktField(this.solrClient, "geo2");
         TestsSolrUtils.createBboxField(this.solrClient, "geo3");
+        TestsSolrUtils.createField(this.solrClient, "installed_tdt", "pdate");
         // get Solr documents from the test data
         try (InputStream documents = TestsSolrUtils.resourceToStream("/wifiAccessPoint.xml")) {
             // add the documents to the Solr core, letting Solr infer the rest of the schema
@@ -165,6 +166,11 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     @Override
     protected String getFixtureId() {
         return SolrDataStoreFactory.NAMESPACE.sample.toString();
+    }
+
+    @Override
+    protected Properties createOfflineFixture() {
+        return TestContainersSupport.offlineFixture();
     }
 
     protected Date date(String date) throws ParseException {

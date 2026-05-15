@@ -100,8 +100,8 @@ public abstract class MBExpression extends FunctionImpl {
 
     /* A list of math expression names */
     public static final List math = Arrays.asList(
-            "-", "*", "/", "%", "^", "+", "acos", "asin", "atan", "cos", "e", "ln", "ln2", "log10", "log2", "max",
-            "min", "pi", "sin", "sqrt", "tan");
+            "-", "*", "/", "%", "^", "+", "abs", "acos", "asin", "atan", "ceil", "cos", "e", "floor", "ln", "ln2",
+            "log10", "log2", "max", "min", "pi", "round", "sin", "sqrt", "tan");
 
     /* A list of ramps expression names */
     public static final List ramps = Arrays.asList("interpolate", "step");

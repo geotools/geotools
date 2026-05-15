@@ -16,8 +16,6 @@
  */
 package org.geotools.data.geojson;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.NoSuchElementException;
@@ -27,6 +25,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.BaseSimpleFeatureCollection;
 import org.geotools.util.logging.Logging;
+import tools.jackson.databind.JsonNode;
 
 /** A GeoJSON specific feature collection that can follow "next" links in order to retrieve all data */
 public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
@@ -35,9 +34,9 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
 
     final Integer matched;
     private final SimpleFeatureCollection first;
-    private final ObjectNode next;
+    private final JsonNode next;
 
-    public PagingFeatureCollection(SimpleFeatureCollection first, ObjectNode next, Integer matched) {
+    public PagingFeatureCollection(SimpleFeatureCollection first, JsonNode next, Integer matched) {
         super(first.getSchema());
         this.first = first;
         this.next = next;
@@ -63,29 +62,29 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
         return first;
     }
 
-    protected ObjectNode getNext() {
+    protected JsonNode getNext() {
         return next;
     }
     /**
      * Reads the next feature collection, or return null if there is none. Subclasses can override if they need a
      * different logic for fetching the next page.
      */
-    protected SimpleFeatureCollection readNext(ObjectNode next) throws IOException {
+    protected SimpleFeatureCollection readNext(JsonNode next) throws IOException {
         if (next == null) return null;
         JsonNode href = next.get("href");
         if (href == null) return null;
 
-        LOGGER.fine(() -> "Fetching next page of data at " + href.textValue());
-        try (GeoJSONReader reader = new GeoJSONReader(new URL(href.textValue()))) {
+        LOGGER.fine(() -> "Fetching next page of data at " + href.asString());
+        try (GeoJSONReader reader = new GeoJSONReader(new URL(href.asString()))) {
             return reader.getFeatures();
         }
     }
 
     protected class PagingFeatureIterator implements SimpleFeatureIterator {
         private SimpleFeatureIterator delegate;
-        private ObjectNode nextPage;
+        private JsonNode nextPage;
 
-        public PagingFeatureIterator(SimpleFeatureIterator delegate, ObjectNode next) {
+        public PagingFeatureIterator(SimpleFeatureIterator delegate, JsonNode next) {
             this.delegate = delegate;
             this.nextPage = next;
         }

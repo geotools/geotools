@@ -35,14 +35,16 @@ Features
 How It Works
 ------------
 
-Under the hood, this DataStore uses `DuckDB <https://duckdb.org/>`_ and its Spatial and Parquet extensions to provide high-performance access to GeoParquet files. DuckDB is an embedded analytical database that excels at reading and processing Parquet files. The implementation:
+Under the hood, this DataStore uses `DuckDB <https://duckdb.org/>`_ and its Spatial and Parquet extensions through the shared ``gt-duckdb`` module. DuckDB is an embedded analytical database that excels at reading and processing Parquet files. The implementation:
 
-1. Creates SQL views over GeoParquet files (local or remote)
+1. Uses the shared DuckDB integration provided by ``gt-duckdb``
 2. Detects and manages Hive-partitioned datasets (directory structures with key=value patterns)
 3. Handles GeoParquet metadata parsing and schema detection
 4. Translates GeoTools filters to optimized SQL queries
 5. Converts spatial operations to DuckDB spatial functions
-6. Manages extension loading (spatial, parquet, httpfs)
+6. Manages the required DuckDB initialization internally through GeoTools
+
+The DuckDB execution layer is managed inside GeoTools. Public use of the generic DuckDB store is guarded by the GeoTools-side execution wrapper; GeoParquet uses the same shared infrastructure for its internal managed execution path.
 
 This implementation detail is abstracted away from the user, providing a clean GeoTools DataStore interface.
 
@@ -218,6 +220,13 @@ The implementation parses the ``geo`` metadata field from Parquet files to obtai
 - CRS information using PROJJSON (v0.7 schema) format
 - Bounding box information
 - Additional metadata fields
+
+Implementation Notes
+--------------------
+
+- GeoParquet depends on the shared ``gt-duckdb`` module for DuckDB connectivity and SQL dialect support
+- Required DuckDB initialization is managed internally by GeoTools
+- For remote files, the ``httpfs`` extension handles HTTP(S) and S3 communication
 
 Geometry Type Handling
 ----------------------

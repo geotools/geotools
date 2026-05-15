@@ -47,7 +47,7 @@ import org.hamcrest.Matchers;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation") // JUnit 3 tests here
-public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestCase {
+public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestCase<Long> {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
@@ -56,15 +56,15 @@ public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestC
         return new H3DGGSFactory().getId();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected DGGSDataStore getDataStore() throws Exception {
+    protected DGGSDataStore<Long> getDataStore() throws Exception {
         String dggsId = getDGGSId();
         if (DGGSFactoryFinder.getFactory(dggsId).isEmpty()) {
             throw new Exception(dggsId + " is not present, skipping the test");
         }
 
         DGGSStoreFactory factory = new DGGSStoreFactory();
-        @SuppressWarnings("unchecked")
         Map<String, Object> params = toParamMap(fixture);
         params.put(DGGSStoreFactory.STORE_NAME.key, "test");
         // Use the exact Param key your DGGSStoreFactory declares, e.g. "repository"
@@ -72,11 +72,11 @@ public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestC
         params.put(DGGSStoreFactory.ZONE_ID_COLUMN_NAME.key, "zoneId");
         params.put(DGGSStoreFactory.RESOLUTION.key, "0");
 
-        return (DGGSDataStore) factory.createDataStore(params);
+        return (DGGSDataStore<Long>) factory.createDataStore(params);
     }
 
     @Override
-    protected void setupTestData(DGGSDataStore dataStore) throws Exception {
+    protected void setupTestData(DGGSDataStore<Long> dataStore) throws Exception {
         try (Connection cx = ((JDBCDataStore) dataStore.getDelegate()).getConnection(Transaction.AUTO_COMMIT);
                 Statement st = cx.createStatement()) {
             // cleanup
@@ -136,7 +136,7 @@ public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestC
     }
 
     public void testCountAll() throws Exception {
-        DGGSFeatureSource fs = dataStore.getFeatureSource("zoneAttributesNoRes");
+        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesNoRes");
         assertEquals(6, fs.getCount(Query.ALL));
     }
 
@@ -160,15 +160,15 @@ public class ClickHouseH3FixedResolutionOnlineTest extends ClickHouseOnlineTestC
                 };
 
         // execute visit, the visitor should be optimized out
-        DGGSFeatureSource fs = dataStore.getFeatureSource("zoneAttributesNoRes");
+        DGGSFeatureSource<Long> fs = dataStore.getFeatureSource("zoneAttributesNoRes");
         fs.getFeatures().accepts(visitor, null);
         assertEquals(0, visitCount.get());
         assertTrue(setValueCalled.get());
 
         @SuppressWarnings("PMD.CloseResource") // the store manages the dggs lifecycle
-        DGGSInstance ddgs = dataStore.getDggs();
-        Polygon p1 = ddgs.getZone("8009fffffffffff").getBoundary();
-        Polygon p2 = ddgs.getZone("8011fffffffffff").getBoundary();
+        DGGSInstance<Long> dggs = dataStore.getDggs();
+        Polygon p1 = dggs.getZoneFromString("8009fffffffffff").getBoundary();
+        Polygon p2 = dggs.getZoneFromString("8011fffffffffff").getBoundary();
 
         @SuppressWarnings("unchecked")
         Map<List<Object>, Object> results = visitor.getResult().toMap();

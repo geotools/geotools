@@ -132,7 +132,7 @@ public class FeatureFlatTest {
     }
 
     @Test
-    @SuppressWarnings("ReturnValueIgnored")
+    @SuppressWarnings({"ReturnValueIgnored", "PMD.UselessPureMethodCall"})
     public void testToStringWontThrow() throws IllegalAttributeException {
         SimpleFeature f = SampleFeatureFixtures.createFeature();
         f.setAttributes(new Object[f.getAttributeCount()]);

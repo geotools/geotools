@@ -16,11 +16,11 @@
  */
 package org.geotools.jackson.datatype.projjson;
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.Serial;
 import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
+import tools.jackson.core.Version;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * Jackson Module that supports serialization and deserialization of PROJJSON objects.
@@ -32,7 +32,7 @@ import org.geotools.jackson.datatype.projjson.model.CoordinateReferenceSystem;
  * href="https://proj.org/en/latest/schemas/v0.7/projjson.schema.json">
  * https://proj.org/en/latest/schemas/v0.7/projjson.schema.json </a>
  *
- * <p>To use this module with an existing {@link com.fasterxml.jackson.databind.ObjectMapper}:
+ * <p>To use this module with an existing {@link tools.jackson.databind.ObjectMapper}:
  *
  * <pre>
  * ObjectMapper mapper = new ObjectMapper();
@@ -48,8 +48,7 @@ public class ProjJSONModule extends SimpleModule {
     public ProjJSONModule() {
         super("ProjJSONModule", new Version(1, 0, 0, null, "org.geotools.jackson.datatype", "projjson"));
 
-        // Register serializers/deserializers
-        addSerializer(CoordinateReferenceSystem.class, new CoordinateReferenceSystemSerializer());
+        // Register the deserializers (serialization seems to be covered fine by the default behavior)
         addDeserializer(CoordinateReferenceSystem.class, new CoordinateReferenceSystemDeserializer());
     }
 
@@ -58,7 +57,7 @@ public class ProjJSONModule extends SimpleModule {
      *
      * @return The new module instance
      */
-    public static Module getInstance() {
+    public static JacksonModule getInstance() {
         return new ProjJSONModule();
     }
 }

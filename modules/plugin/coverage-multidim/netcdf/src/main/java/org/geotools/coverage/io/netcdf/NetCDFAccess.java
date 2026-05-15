@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.DataSourceException;
-import org.geotools.api.data.Repository;
 import org.geotools.api.data.ServiceInfo;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.util.ProgressListener;
@@ -139,14 +138,6 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
                 String filePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
                 filePath = makeAbsolute(prefix, filePath);
                 reader.setAuxiliaryFilesPath(filePath);
-            }
-            if (hints.containsKey(Utils.AUXILIARY_DATASTORE_PATH)) {
-                String filePath = (String) hints.get(Utils.AUXILIARY_DATASTORE_PATH);
-                filePath = makeAbsolute(prefix, filePath);
-                reader.setAuxiliaryDatastorePath(filePath);
-            }
-            if (hints.containsKey(Hints.REPOSITORY)) {
-                reader.setRepository((Repository) hints.get(Hints.REPOSITORY));
             }
         }
     }

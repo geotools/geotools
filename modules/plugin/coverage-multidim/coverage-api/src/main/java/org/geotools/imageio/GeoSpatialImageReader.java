@@ -27,14 +27,11 @@ import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
 import org.geotools.api.data.Query;
-import org.geotools.api.data.Repository;
 import org.geotools.api.feature.type.Name;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
-import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
-import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
@@ -49,16 +46,11 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     protected File file;
 
     /** the coverage slices slicesCatalog */
-    CoverageSlicesCatalog slicesCatalog;
+    protected CoverageSlicesCatalog slicesCatalog;
 
     protected int numImages = -1;
 
     private String auxiliaryFilesPath = null;
-
-    /** Path of the auxiliary datastore properties file, used as low level granules index */
-    private String auxiliaryDatastorePath = null;
-
-    Repository repository;
 
     protected GeoSpatialImageReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
@@ -74,16 +66,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     @Override
     public void dispose() {
         super.dispose();
-
-        try {
-            if (slicesCatalog != null) {
-                slicesCatalog.dispose();
-            }
-        } catch (Throwable t) {
-
-        } finally {
-            slicesCatalog = null;
-        }
+        slicesCatalog = null;
     }
 
     @Override
@@ -122,13 +105,6 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     /** */
     public abstract CoverageSourceDescriptor getCoverageDescriptor(Name name);
 
-    protected void setCatalog(CoverageSlicesCatalog catalog) {
-        if (slicesCatalog != null) {
-            slicesCatalog.dispose();
-        }
-        slicesCatalog = catalog;
-    }
-
     /**
      * Return the list of imageIndex related to the feature in the slicesCatalog which result from the specified query.
      *
@@ -152,28 +128,9 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
         this.auxiliaryFilesPath = auxiliaryFilesPath;
     }
 
-    public String getAuxiliaryDatastorePath() {
-        return auxiliaryDatastorePath;
-    }
-
-    public void setAuxiliaryDatastorePath(String auxiliaryDatastorePath) {
-        this.auxiliaryDatastorePath = auxiliaryDatastorePath;
-    }
-
-    public void setRepository(Repository repository) {
-        this.repository = repository;
-    }
-
     /** Returns the underlying slicesCatalog. */
     public CoverageSlicesCatalog getCatalog() {
         return slicesCatalog;
-    }
-
-    /** Initialize a slicesCatalog on top of the provided {@link DataStoreConfiguration} instance */
-    protected void initCatalog(DataStoreConfiguration datastoreConfig) throws IOException {
-        slicesCatalog = datastoreConfig.isShared()
-                ? new WrappedCoverageSlicesCatalog(datastoreConfig, file, repository)
-                : new CoverageSlicesCatalog(datastoreConfig, repository);
     }
 
     @Override
@@ -185,24 +142,10 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
 
     @Override
     public boolean init(RenderingHints hints) {
-        if (hints != null
-                && (hints.containsKey(Utils.AUXILIARY_FILES_PATH)
-                        || hints.containsKey(Utils.AUXILIARY_DATASTORE_PATH))) {
-            if (hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                String path = getPath(hints, Utils.AUXILIARY_FILES_PATH);
-                if (path != null) {
-                    setAuxiliaryFilesPath(path);
-                }
-            }
-            if (hints.containsKey(Utils.AUXILIARY_DATASTORE_PATH)) {
-                String path = getPath(hints, Utils.AUXILIARY_DATASTORE_PATH);
-                if (path != null) {
-                    setAuxiliaryDatastorePath(path);
-                }
-            }
-            Repository repository = (Repository) hints.get(Hints.REPOSITORY);
-            if (repository != null) {
-                setRepository(repository);
+        if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
+            String path = getPath(hints, Utils.AUXILIARY_FILES_PATH);
+            if (path != null) {
+                setAuxiliaryFilesPath(path);
             }
             return true;
         }

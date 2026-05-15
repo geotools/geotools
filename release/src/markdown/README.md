@@ -35,6 +35,12 @@ The user guide includes the following tutorials:
 
 Welcome to GeoTools development!
 
+## Unsupported Module Highlights
+
+- `gt-duckdb` is now available as an unsupported module providing the shared DuckDB integration for GeoTools.
+- The public DuckDB datastore is exposed through a GeoTools-side guarded execution policy intended to reduce the exposed SQL surface.
+- `gt-geoparquet` now depends on `gt-duckdb` for shared DuckDB connectivity and dialect support.
+
 ## Reference
 
 The following is provided as a quick reference only, please the

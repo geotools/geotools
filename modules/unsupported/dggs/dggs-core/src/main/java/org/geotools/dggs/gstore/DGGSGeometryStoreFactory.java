@@ -41,8 +41,8 @@ public class DGGSGeometryStoreFactory implements DataStoreFactorySpi {
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         String factoryId = (String) DGGS_FACTORY_ID.lookUp(params);
         @SuppressWarnings("PMD.CloseResource") // managed by DGGSGeometryStore
-        DGGSInstance instance = DGGSFactoryFinder.createInstance(factoryId, params);
-        DGGSGeometryStore store = new DGGSGeometryStore(instance);
+        DGGSInstance<?> instance = DGGSFactoryFinder.createInstance(factoryId, params);
+        DGGSGeometryStore<?> store = new DGGSGeometryStore<>(instance);
 
         String namespace = (String) NAMESPACE.lookUp(params);
         if (namespace != null) {

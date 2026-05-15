@@ -17,7 +17,6 @@
 package org.geotools.dggs.gstore;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.feature.type.Name;
 import org.geotools.data.store.ContentDataStore;
@@ -29,28 +28,28 @@ import org.geotools.feature.NameImpl;
  * A store returning DGGS zones as GeoTools {@link org.geotools.api.feature.simple.SimpleFeature}, without any actual
  * data associated to them. It's pure DGGS structure description.
  */
-public class DGGSGeometryStore extends ContentDataStore implements DGGSStore {
+public class DGGSGeometryStore<I> extends ContentDataStore implements DGGSStore<I> {
 
     public static final String ZONE_ID = "zoneId";
     public static final String RESOLUTION = "resolution";
     public static final String GEOMETRY = "geometry";
 
-    DGGSInstance dggs;
+    DGGSInstance<I> dggs;
     DGGSResolutionCalculator resolutions;
 
-    public DGGSGeometryStore(DGGSInstance dggs) {
+    public DGGSGeometryStore(DGGSInstance<I> dggs) {
         this.dggs = dggs;
         this.resolutions = new DGGSResolutionCalculator(dggs, null);
     }
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
-        return Arrays.asList(new NameImpl(namespaceURI, dggs.getIdentifier()));
+        return List.of(new NameImpl(namespaceURI, dggs.getIdentifier()));
     }
 
     @Override
-    protected DGGSGeometryFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return new DGGSGeometryFeatureSource(entry, this);
+    protected DGGSGeometryFeatureSource<I> createFeatureSource(ContentEntry entry) throws IOException {
+        return new DGGSGeometryFeatureSource<>(entry, this);
     }
 
     @Override
@@ -59,8 +58,8 @@ public class DGGSGeometryStore extends ContentDataStore implements DGGSStore {
     }
 
     @Override
-    public DGGSFeatureSource getDGGSFeatureSource(String typeName) throws IOException {
+    public DGGSFeatureSource<I> getDGGSFeatureSource(String typeName) throws IOException {
         ContentEntry entry = ensureEntry(new NameImpl(namespaceURI, typeName));
-        return new DGGSGeometryFeatureSource(entry, this);
+        return new DGGSGeometryFeatureSource<>(entry, this);
     }
 }

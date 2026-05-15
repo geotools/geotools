@@ -19,10 +19,6 @@ package org.geotools.filter.text.cqljson;
 import static org.geotools.filter.text.cqljson.FilterToCQL2Json.ARGS;
 import static org.geotools.filter.text.cqljson.FilterToCQL2Json.OP;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.awt.Color;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -44,6 +40,10 @@ import org.geotools.api.temporal.Period;
 import org.geotools.data.geojson.GeoJSONWriter;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /** This class is responsible to convert an expression to a CQL2-JSON expression. */
 public class ExpressionToCQL2Json implements ExpressionVisitor {
@@ -221,7 +221,7 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
             } else {
                 output.add(objectMapper.readTree(GeoJSONWriter.toGeoJSON(value)));
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new IllegalArgumentException("Unable to convert Geometry into GeoJSON while building CQL2-JSON");
         }
     }

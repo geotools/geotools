@@ -99,7 +99,7 @@ public class GroupedMatrixAggregate implements FeatureCalc, FeatureAttributeVisi
     }
 
     private List<CalcResult> getResult(List<FeatureCalc> calculators) {
-        return calculators.stream().map(c -> c.getResult()).collect(Collectors.toList());
+        return calculators.stream().map(FeatureCalc::getResult).collect(Collectors.toList());
     }
 
     @Override
@@ -201,14 +201,13 @@ public class GroupedMatrixAggregate implements FeatureCalc, FeatureAttributeVisi
         }
 
         private List<Object> calcToValue(List<CalcResult> calcResults) {
-            return calcResults.stream().map(cr -> cr.getValue()).collect(Collectors.toList());
+            return calcResults.stream().map(CalcResult::getValue).collect(Collectors.toList());
         }
 
         @Override
         public CalcResult merge(CalcResult resultsToAdd) {
-            if (!(resultsToAdd instanceof MemoryResult))
+            if (!(resultsToAdd instanceof MemoryResult other))
                 throw new IllegalArgumentException("Cannot merge this result: " + resultsToAdd);
-            MemoryResult other = (MemoryResult) resultsToAdd;
 
             Map<List<Object>, List<CalcResult>> mergedMap = new LinkedHashMap<>();
             // scan first map and merge if neeeded
@@ -255,11 +254,6 @@ public class GroupedMatrixAggregate implements FeatureCalc, FeatureAttributeVisi
                 public GroupByResult next() {
                     Map.Entry<List<Object>, List<CalcResult>> e = it.next();
                     return new GroupByResult(e.getKey(), calcToValue(e.getValue()));
-                }
-
-                @Override
-                public void remove() {
-                    throw new UnsupportedOperationException("remove");
                 }
 
                 @Override

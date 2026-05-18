@@ -54,7 +54,7 @@ import tools.jackson.databind.ValueSerializer;
  */
 public class GeometrySerializer extends ValueSerializer<Geometry> {
 
-    private RoundingMode roundingMode = RoundingMode.HALF_UP;
+    private final RoundingMode roundingMode = RoundingMode.HALF_UP;
     NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH);
 
     int maximumFractionDigits;
@@ -234,7 +234,7 @@ public class GeometrySerializer extends ValueSerializer<Geometry> {
     }
 
     private void writeNumber(final JsonGenerator jgen, final double n) {
-        jgen.writeNumber(format.format(n));
+        jgen.writeRawValue(format.format(n));
     }
 
     public RoundingMode getRoundingMode() {

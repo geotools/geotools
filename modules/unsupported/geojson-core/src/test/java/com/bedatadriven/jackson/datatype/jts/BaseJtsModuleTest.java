@@ -22,6 +22,7 @@ package com.bedatadriven.jackson.datatype.jts;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.json.JsonMapper;
@@ -81,11 +83,17 @@ public abstract class BaseJtsModuleTest<T extends Geometry> {
         assertThat(toJson(geometry), equalTo(geometryAsGeoJson));
     }
 
-    protected String toJson(Object value) throws IOException {
+    @Test
+    public void shouldSerializeAsJsonNOde() {
+        var node = mapper.valueToTree(geometry);
+        assertThat(node.toString(), equalTo(geometryAsGeoJson));
+    }
+
+    protected String toJson(Object value) {
         return writer.writeValueAsString(value);
     }
 
-    protected void assertRoundTrip(T geom) throws IOException {
+    protected void assertRoundTrip(T geom) {
         String json = writer.writeValueAsString(geom);
 
         Geometry regeom = mapper.readerFor(Geometry.class).readValue(json);

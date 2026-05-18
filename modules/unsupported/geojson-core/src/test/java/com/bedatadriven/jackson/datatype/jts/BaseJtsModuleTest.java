@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.json.JsonMapper;
@@ -82,7 +83,7 @@ public abstract class BaseJtsModuleTest<T extends Geometry> {
 
     @Test
     public void shouldSerializeAsJsonNOde() {
-        var node = mapper.valueToTree(geometry);
+        JsonNode node = mapper.valueToTree(geometry);
         assertThat(node.toString(), equalTo(geometryAsGeoJson));
     }
 

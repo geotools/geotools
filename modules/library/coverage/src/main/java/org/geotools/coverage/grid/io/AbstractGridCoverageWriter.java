@@ -16,11 +16,18 @@
  */
 package org.geotools.coverage.grid.io;
 
+import it.geosolutions.io.output.adapter.OutputStreamAdapter;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.stream.ImageOutputStream;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.image.io.ImageIOExt;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -46,10 +53,45 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
     protected Hints hints = GeoTools.getDefaultHints();
 
     /** The destination {@link ImageOutputStream}. */
-    protected ImageOutputStream outStream = null;
+    private ImageOutputStream outStream = null;
 
     /** Default constructor for an {@link AbstractGridCoverageWriter}. */
     public AbstractGridCoverageWriter() {}
+
+    /**
+     * Computes the {@link ImageOutputStream} to write the geotiff to, based on the type of the destination object. The
+     * destination can be a {@link File}, a {@link URL}, an {@link OutputStream} or an {@link ImageOutputStream}.
+     *
+     * @param image The image that will be written
+     * @return The output stream to write the GeoTIFF to.
+     * @throws IOException Might be thrown during the construction of the output stream, for instance if the destination
+     *     is a file and it cannot be created.
+     */
+    @SuppressWarnings("PMD.CloseResource")
+    protected ImageOutputStream getImageOutputStream(RenderedImage image) throws IOException {
+        if (this.outStream != null) return this.outStream;
+
+        if (destination instanceof File) {
+            this.outStream = ImageIOExt.createImageOutputStream(image, destination);
+        } else if (destination instanceof URL dest) {
+            if (dest.getProtocol().equalsIgnoreCase("file"))
+                this.outStream = ImageIOExt.createImageOutputStream(image, URLs.urlToFile(dest));
+            else this.outStream = ImageIOExt.createImageOutputStream(image, destination);
+        } else if (destination instanceof OutputStream) {
+            if (destination instanceof OutputStreamAdapter adapter) {
+                this.outStream = adapter.getWrappedStream();
+                this.destination = outStream;
+            } else {
+                this.outStream = ImageIOExt.createImageOutputStream(image, destination);
+            }
+        } else if (destination instanceof ImageOutputStream stream) {
+            this.outStream = stream;
+        } else throw new IllegalArgumentException("The provided destination cannot be used!");
+
+        if (this.outStream == null)
+            throw new IOException("Could not create an ImageOutputStream for destination: " + destination);
+        return this.outStream;
+    }
 
     /** Releases resources held by this {@link AbstractGridCoverageWriter}. */
     @Override

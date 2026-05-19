@@ -21,16 +21,22 @@ import it.geosolutions.io.output.adapter.OutputStreamAdapter;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.media.range.NoDataContainer;
+import org.eclipse.imagen.operator.ConstantDescriptor;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
 import org.geotools.api.coverage.grid.GridEnvelope;
@@ -48,6 +54,7 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverageWriter;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
@@ -58,6 +65,7 @@ import org.geotools.coverage.processing.Operations;
 import org.geotools.data.WorldFileReader;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -788,11 +796,42 @@ public class GeoTiffWriterTest extends Assert {
         OutputStream os = new OutputStreamAdapter(fos);
         GeoTiffWriter writer = new GeoTiffWriter(os);
 
-        // Check the writer is actually using the wrapped ImageOutputStream for writing
+        // Check the write
+        writer.write(coverage, (GeneralParameterValue[]) null);
+
+        // Check the writer actually used the wrapped ImageOutputStream for writing
         Assert.assertSame(fos, writer.getDestination());
 
-        // Check the write
-        writeAndRead(coverage, null, -9999d, geotiff, writer);
+        // then dispose
+        writer.dispose();
+        // do not dispose the coverage here as it is reused
+        // coverage.dispose(true);
+
+        // read back
+        readGeotiff(geotiff, null);
+    }
+
+    private static void readGeotiff(File geotiff, Boolean writeNoDataParam) throws IOException {
+        GridCoverage2D coverage;
+        // Reading it back
+        GeoTiffReader reader1 = new GeoTiffReader(geotiff);
+        coverage = reader1.read();
+        Map<?, ?> props = coverage.getProperties();
+        if (writeNoDataParam == null) {
+            writeNoDataParam = GeoTiffFormat.WRITE_NODATA.getDefaultValue();
+            Boolean expected = Boolean.valueOf(System.getProperty("geotiff.writenodata", "true"));
+            assertEquals(expected, writeNoDataParam);
+        }
+        if (writeNoDataParam) {
+            // checking that nodata exists/not exists if the writing params is true/false
+            assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
+            NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
+            assertEquals(-9999d, nodata.getAsSingleValue(), 1e-6);
+        } else {
+            // checking that nodata exists/not exists if the writing params is true/false
+            assertFalse(props.containsKey(NoDataContainer.GC_NODATA));
+        }
+        reader1.dispose();
     }
 
     @Test
@@ -828,5 +867,39 @@ public class GeoTiffWriterTest extends Assert {
             if (reader2 != null) reader2.dispose();
             if (writer != null) writer.dispose();
         }
+    }
+
+    /** Writes a 10x10 constant image via GeoTiffWriter and returns the ImageOutputStream used. */
+    private ImageOutputStream writeConstantCoverage(long threshold) throws Exception {
+        Long prev = ImageIOExt.getFilesystemThreshold();
+        ImageIOExt.setFilesystemThreshold(threshold);
+        try {
+            RenderedImage image = ConstantDescriptor.create(10f, 10f, new Byte[] {0}, null);
+            GridCoverage2D coverage = new GridCoverageFactory()
+                    .create("test", image, new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));
+            GeoTiffWriter writer = new GeoTiffWriter(new ByteArrayOutputStream());
+            try {
+                writer.write(coverage, (GeneralParameterValue[]) null);
+                Field f = AbstractGridCoverageWriter.class.getDeclaredField("outStream");
+                f.setAccessible(true);
+                return (ImageOutputStream) f.get(writer);
+            } finally {
+                writer.dispose();
+            }
+        } finally {
+            ImageIOExt.setFilesystemThreshold(prev);
+        }
+    }
+
+    /** 10x10x1 byte = 100 bytes; threshold = 50000 → memory cache. */
+    @Test
+    public void testSmallImageUsesMemoryCacheOutputStream() throws Exception {
+        assertTrue(writeConstantCoverage(50_000L) instanceof MemoryCacheImageOutputStream);
+    }
+
+    /** threshold = 1 byte → 100-byte image exceeds it → file cache, avoiding in-memory buffering for large rasters. */
+    @Test
+    public void testLargeImageUsesFileCacheOutputStream() throws Exception {
+        assertTrue(writeConstantCoverage(1L) instanceof FileCacheImageOutputStream);
     }
 }

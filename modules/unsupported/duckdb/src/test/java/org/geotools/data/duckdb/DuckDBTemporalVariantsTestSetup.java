@@ -49,61 +49,74 @@ public class DuckDBTemporalVariantsTestSetup extends JDBCDelegatingTestSetup {
     }
 
     protected void createTemporalVariantsTable() throws Exception {
-        run("CREATE TABLE \"" + TABLE + "\" ("
-                + "\"id\" INTEGER PRIMARY KEY, "
-                + "\"ts_plain\" TIMESTAMP, "
-                + "\"ts_s\" TIMESTAMP_S, "
-                + "\"ts_ms\" TIMESTAMP_MS, "
-                + "\"ts_ns\" TIMESTAMP_NS, "
-                + "\"ts_tz\" TIMESTAMPTZ, "
-                + "\"ts_tz_long\" TIMESTAMP WITH TIME ZONE, "
-                + "\"t_plain\" TIME, "
-                + "\"t_ns\" TIME_NS, "
-                + "\"t_tz\" TIMETZ, "
-                + "\"t_tz_long\" TIME WITH TIME ZONE"
-                + ")");
+        run(
+                """
+                CREATE TABLE "%s" (
+                    "id" INTEGER PRIMARY KEY,
+                    "ts_plain" TIMESTAMP,
+                    "ts_s" TIMESTAMP_S,
+                    "ts_ms" TIMESTAMP_MS,
+                    "ts_ns" TIMESTAMP_NS,
+                    "ts_tz" TIMESTAMPTZ,
+                    "ts_tz_long" TIMESTAMP WITH TIME ZONE,
+                    "t_plain" TIME,
+                    "t_ns" TIME_NS,
+                    "t_tz" TIMETZ,
+                    "t_tz_long" TIME WITH TIME ZONE
+                )
+                """
+                        .formatted(TABLE));
 
-        run("INSERT INTO \"" + TABLE + "\" VALUES "
-                + "(1, "
-                + "TIMESTAMP '2020-01-01 00:00:00', "
-                + "CAST('2020-01-01 00:00:00' AS TIMESTAMP_S), "
-                + "CAST('2020-01-01 00:00:00.100' AS TIMESTAMP_MS), "
-                + "CAST('2020-01-01 00:00:00.100000000' AS TIMESTAMP_NS), "
-                + "CAST('2020-01-01 00:00:00+00' AS TIMESTAMPTZ), "
-                + "CAST('2020-01-01 00:00:00+00' AS TIMESTAMP WITH TIME ZONE), "
-                + "TIME '10:00:00', "
-                + "CAST('10:00:00.100000000' AS TIME_NS), "
-                + "CAST('10:00:00+00' AS TIMETZ), "
-                + "CAST('10:00:00+00' AS TIME WITH TIME ZONE)"
-                + ")");
+        run(
+                """
+                INSERT INTO "%s" VALUES
+                    (1,
+                    TIMESTAMP '2020-01-01 00:00:00',
+                    CAST('2020-01-01 00:00:00' AS TIMESTAMP_S),
+                    CAST('2020-01-01 00:00:00.100' AS TIMESTAMP_MS),
+                    CAST('2020-01-01 00:00:00.100000000' AS TIMESTAMP_NS),
+                    CAST('2020-01-01 00:00:00+00' AS TIMESTAMPTZ),
+                    CAST('2020-01-01 00:00:00+00' AS TIMESTAMP WITH TIME ZONE),
+                    TIME '10:00:00',
+                    CAST('10:00:00.100000000' AS TIME_NS),
+                    CAST('10:00:00+00' AS TIMETZ),
+                    CAST('10:00:00+00' AS TIME WITH TIME ZONE))
+                """
+                        .formatted(TABLE));
 
-        run("INSERT INTO \"" + TABLE + "\" VALUES "
-                + "(2, "
-                + "TIMESTAMP '2020-01-02 00:00:00', "
-                + "CAST('2020-01-02 00:00:00' AS TIMESTAMP_S), "
-                + "CAST('2020-01-02 00:00:00.200' AS TIMESTAMP_MS), "
-                + "CAST('2020-01-02 00:00:00.200000000' AS TIMESTAMP_NS), "
-                + "CAST('2020-01-02 00:00:00+00' AS TIMESTAMPTZ), "
-                + "CAST('2020-01-02 00:00:00+00' AS TIMESTAMP WITH TIME ZONE), "
-                + "TIME '12:00:00', "
-                + "CAST('12:00:00.200000000' AS TIME_NS), "
-                + "CAST('12:00:00+00' AS TIMETZ), "
-                + "CAST('12:00:00+00' AS TIME WITH TIME ZONE)"
-                + ")");
+        run(
+                """
+                INSERT INTO "%s" VALUES
+                    (2,
+                    TIMESTAMP '2020-01-02 00:00:00',
+                    CAST('2020-01-02 00:00:00' AS TIMESTAMP_S),
+                    CAST('2020-01-02 00:00:00.200' AS TIMESTAMP_MS),
+                    CAST('2020-01-02 00:00:00.200000000' AS TIMESTAMP_NS),
+                    CAST('2020-01-02 00:00:00+00' AS TIMESTAMPTZ),
+                    CAST('2020-01-02 00:00:00+00' AS TIMESTAMP WITH TIME ZONE),
+                    TIME '12:00:00',
+                    CAST('12:00:00.200000000' AS TIME_NS),
+                    CAST('12:00:00+00' AS TIMETZ),
+                    CAST('12:00:00+00' AS TIME WITH TIME ZONE))
+                """
+                        .formatted(TABLE));
 
-        run("INSERT INTO \"" + TABLE + "\" VALUES "
-                + "(3, "
-                + "TIMESTAMP '2020-01-03 00:00:00', "
-                + "CAST('2020-01-03 00:00:00' AS TIMESTAMP_S), "
-                + "CAST('2020-01-03 00:00:00.300' AS TIMESTAMP_MS), "
-                + "CAST('2020-01-03 00:00:00.300000000' AS TIMESTAMP_NS), "
-                + "CAST('2020-01-03 00:00:00+00' AS TIMESTAMPTZ), "
-                + "CAST('2020-01-03 00:00:00+00' AS TIMESTAMP WITH TIME ZONE), "
-                + "TIME '14:00:00', "
-                + "CAST('14:00:00.300000000' AS TIME_NS), "
-                + "CAST('14:00:00+00' AS TIMETZ), "
-                + "CAST('14:00:00+00' AS TIME WITH TIME ZONE)"
-                + ")");
+        run(
+                """
+                INSERT INTO "%s" VALUES
+                    (3,
+                    TIMESTAMP '2020-01-03 00:00:00',
+                    CAST('2020-01-03 00:00:00' AS TIMESTAMP_S),
+                    CAST('2020-01-03 00:00:00.300' AS TIMESTAMP_MS),
+                    CAST('2020-01-03 00:00:00.300000000' AS TIMESTAMP_NS),
+                    CAST('2020-01-03 00:00:00+00' AS TIMESTAMPTZ),
+                    CAST('2020-01-03 00:00:00+00' AS TIMESTAMP WITH TIME ZONE),
+                    TIME '14:00:00',
+                    CAST('14:00:00.300000000' AS TIME_NS),
+                    CAST('14:00:00+00' AS TIMETZ),
+                    CAST('14:00:00+00' AS TIME WITH TIME ZONE))
+                """
+                        .formatted(TABLE));
     }
 
     private void dropTemporalVariantsTable() {

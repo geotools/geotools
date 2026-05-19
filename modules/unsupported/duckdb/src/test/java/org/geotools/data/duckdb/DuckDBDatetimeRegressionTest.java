@@ -190,19 +190,31 @@ public class DuckDBDatetimeRegressionTest {
                 DuckDBTestUtils.createStore(tmp.newFolder().toPath().resolve("datetime.duckdb"), false);
         DuckDBTestUtils.runSetupSql(
                 store,
-                "CREATE TABLE \"" + TABLE_NAME + "\" ("
-                        + "id INTEGER PRIMARY KEY, "
-                        + "geom GEOMETRY, "
-                        + "d DATE, "
-                        + "ts TIMESTAMP, "
-                        + "grp VARCHAR"
-                        + ")",
-                "INSERT INTO \"" + TABLE_NAME + "\" VALUES "
-                        + "(1, ST_GeomFromText('POINT (0 0)'), DATE '2020-02-19', TIMESTAMP '2020-02-19 22:00:00', 'a')",
-                "INSERT INTO \"" + TABLE_NAME + "\" VALUES "
-                        + "(2, ST_GeomFromText('POINT (1 1)'), DATE '2020-02-20', TIMESTAMP '2020-02-20 02:00:00', 'a')",
-                "INSERT INTO \"" + TABLE_NAME + "\" VALUES "
-                        + "(3, ST_GeomFromText('POINT (2 2)'), DATE '2020-03-19', TIMESTAMP '2020-03-19 01:00:00', 'b')");
+                """
+                CREATE TABLE "%s" (
+                    id INTEGER PRIMARY KEY,
+                    geom GEOMETRY,
+                    d DATE,
+                    ts TIMESTAMP,
+                    grp VARCHAR
+                )
+                """
+                        .formatted(TABLE_NAME),
+                """
+                INSERT INTO "%s" VALUES
+                    (1, ST_GeomFromText('POINT (0 0)'), DATE '2020-02-19', TIMESTAMP '2020-02-19 22:00:00', 'a')
+                """
+                        .formatted(TABLE_NAME),
+                """
+                INSERT INTO "%s" VALUES
+                    (2, ST_GeomFromText('POINT (1 1)'), DATE '2020-02-20', TIMESTAMP '2020-02-20 02:00:00', 'a')
+                """
+                        .formatted(TABLE_NAME),
+                """
+                INSERT INTO "%s" VALUES
+                    (3, ST_GeomFromText('POINT (2 2)'), DATE '2020-03-19', TIMESTAMP '2020-03-19 01:00:00', 'b')
+                """
+                        .formatted(TABLE_NAME));
         return store;
     }
 
@@ -211,24 +223,29 @@ public class DuckDBDatetimeRegressionTest {
                 DuckDBTestUtils.createStore(tmp.newFolder().toPath().resolve("timestamp-variants.duckdb"), false);
         DuckDBTestUtils.runSetupSql(
                 store,
-                "CREATE TABLE \"timestamp_variants\" ("
-                        + "id INTEGER PRIMARY KEY, "
-                        + "ts_plain TIMESTAMP, "
-                        + "ts_s TIMESTAMP_S, "
-                        + "ts_ms TIMESTAMP_MS, "
-                        + "ts_ns TIMESTAMP_NS, "
-                        + "ts_tz TIMESTAMPTZ, "
-                        + "ts_tz_long TIMESTAMP WITH TIME ZONE"
-                        + ")",
-                "INSERT INTO \"timestamp_variants\" VALUES "
-                        + "(1, "
-                        + "TIMESTAMP '2020-01-01 00:00:00', "
-                        + "CAST('2020-01-01 00:00:00' AS TIMESTAMP_S), "
-                        + "CAST('2020-01-01 00:00:00.123' AS TIMESTAMP_MS), "
-                        + "CAST('2020-01-01 00:00:00.123456789' AS TIMESTAMP_NS), "
-                        + "CAST('2020-01-01 00:00:00+00' AS TIMESTAMPTZ), "
-                        + "CAST('2020-01-01 00:00:00+00' AS TIMESTAMP WITH TIME ZONE)"
-                        + ")");
+                """
+                CREATE TABLE "timestamp_variants" (
+                    id INTEGER PRIMARY KEY,
+                    ts_plain TIMESTAMP,
+                    ts_s TIMESTAMP_S,
+                    ts_ms TIMESTAMP_MS,
+                    ts_ns TIMESTAMP_NS,
+                    ts_tz TIMESTAMPTZ,
+                    ts_tz_long TIMESTAMP WITH TIME ZONE
+                )
+                """
+                        .formatted(),
+                """
+                INSERT INTO "timestamp_variants" VALUES
+                    (1,
+                    TIMESTAMP '2020-01-01 00:00:00',
+                    CAST('2020-01-01 00:00:00' AS TIMESTAMP_S),
+                    CAST('2020-01-01 00:00:00.123' AS TIMESTAMP_MS),
+                    CAST('2020-01-01 00:00:00.123456789' AS TIMESTAMP_NS),
+                    CAST('2020-01-01 00:00:00+00' AS TIMESTAMPTZ),
+                    CAST('2020-01-01 00:00:00+00' AS TIMESTAMP WITH TIME ZONE))
+                """
+                        .formatted());
         return store;
     }
 
@@ -237,21 +254,27 @@ public class DuckDBDatetimeRegressionTest {
                 DuckDBTestUtils.createStore(tmp.newFolder().toPath().resolve("temporal-variants.duckdb"), false);
         DuckDBTestUtils.runSetupSql(
                 store,
-                "CREATE TABLE \"temporal_variants\" ("
-                        + "id INTEGER PRIMARY KEY, "
-                        + "d DATE, "
-                        + "t_plain TIME, "
-                        + "t_ns TIME_NS, "
-                        + "t_tz TIMETZ, "
-                        + "t_tz_long TIME WITH TIME ZONE, "
-                        + "ts_tz TIMESTAMPTZ"
-                        + ")",
-                "INSERT INTO \"temporal_variants\" VALUES "
-                        + "(1, DATE '2020-01-01', TIME '12:34:56', "
-                        + "CAST('12:34:56.123456789' AS TIME_NS), "
-                        + "CAST('12:34:56+02' AS TIMETZ), "
-                        + "CAST('12:34:56+02' AS TIME WITH TIME ZONE), "
-                        + "CAST('2020-01-01 12:34:56+02' AS TIMESTAMPTZ))");
+                """
+                CREATE TABLE "temporal_variants" (
+                    id INTEGER PRIMARY KEY,
+                    d DATE,
+                    t_plain TIME,
+                    t_ns TIME_NS,
+                    t_tz TIMETZ,
+                    t_tz_long TIME WITH TIME ZONE,
+                    ts_tz TIMESTAMPTZ
+                )
+                """
+                        .formatted(),
+                """
+                INSERT INTO "temporal_variants" VALUES
+                    (1, DATE '2020-01-01', TIME '12:34:56',
+                    CAST('12:34:56.123456789' AS TIME_NS),
+                    CAST('12:34:56+02' AS TIMETZ),
+                    CAST('12:34:56+02' AS TIME WITH TIME ZONE),
+                    CAST('2020-01-01 12:34:56+02' AS TIMESTAMPTZ))
+                """
+                        .formatted());
         return store;
     }
 

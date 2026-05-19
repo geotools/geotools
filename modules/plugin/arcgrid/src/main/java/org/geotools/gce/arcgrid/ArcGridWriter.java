@@ -26,7 +26,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
@@ -34,7 +33,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.IIOImage;
-import javax.imageio.stream.ImageOutputStream;
 import org.eclipse.imagen.Interpolation;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
@@ -58,7 +56,6 @@ import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.processing.operation.SelectSampleDimension;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.GeneralBounds;
-import org.geotools.image.io.ImageIOExt;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameter;
@@ -106,41 +103,8 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      *
      * @param destination the URL or String pointing to the file to load the ArcGrid
      */
-    @SuppressWarnings("PMD.CloseResource") // ImageOutputStream stream
     public ArcGridWriter(Object destination, Hints hints) throws DataSourceException {
         this.destination = destination;
-        if (destination instanceof File)
-            try {
-                super.outStream = ImageIOExt.createImageOutputStream(null, destination);
-            } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                throw new DataSourceException(e);
-            }
-        else if (destination instanceof URL dest) {
-            if (dest.getProtocol().equalsIgnoreCase("file")) {
-                File destFile = URLs.urlToFile(dest);
-                try {
-                    super.outStream = ImageIOExt.createImageOutputStream(null, destFile);
-                } catch (IOException e) {
-                    if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                    throw new DataSourceException(e);
-                }
-            }
-
-        } else if (destination instanceof OutputStream) {
-
-            try {
-                super.outStream = ImageIOExt.createImageOutputStream(null, destination);
-            } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                throw new DataSourceException(e);
-            }
-
-        } else if (destination instanceof ImageOutputStream stream) {
-            this.destination = outStream = stream;
-        } else {
-            throw new DataSourceException("The provided destination cannot be used!");
-        }
         // //
         //
         // managing hints
@@ -275,7 +239,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
             // Setting Output
             // //
             // mWriter.reset();
-            mWriter.setOutput(outStream);
+            mWriter.setOutput(getImageOutputStream(source));
 
             // //
             // no data management

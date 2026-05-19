@@ -19,7 +19,6 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
-import it.geosolutions.io.output.adapter.OutputStreamAdapter;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
@@ -27,8 +26,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -63,12 +60,10 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.WorldFileWriter;
 import org.geotools.image.io.GridCoverageWriterProgressAdapter;
-import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.w3c.dom.Node;
@@ -106,25 +101,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
 
     /** Constructor for a {@link GeoTiffWriter}. */
     public GeoTiffWriter(Object destination, Hints hints) throws IOException {
-
         this.destination = destination;
-        if (destination instanceof File) this.outStream = ImageIOExt.createImageOutputStream(null, destination);
-        else if (destination instanceof URL) {
-            final URL dest = (URL) destination;
-            if (dest.getProtocol().equalsIgnoreCase("file")) {
-                final File destFile = URLs.urlToFile(dest);
-                this.outStream = ImageIOExt.createImageOutputStream(null, destFile);
-            }
-
-        } else if (destination instanceof OutputStream) {
-            if (destination instanceof OutputStreamAdapter) {
-                this.outStream = ((OutputStreamAdapter) destination).getWrappedStream();
-                this.destination = outStream;
-            } else {
-                this.outStream = ImageIOExt.createImageOutputStream(null, destination);
-            }
-        } else if (destination instanceof ImageOutputStream) this.outStream = (ImageOutputStream) destination;
-        else throw new IllegalArgumentException("The provided destination canno be used!");
         // //
         //
         // managing hints
@@ -240,7 +217,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // write image
         //
-        writeImage(gc.getRenderedImage(), this.outStream, metadata, gtParams, listener);
+        writeImage(gc.getRenderedImage(), metadata, gtParams, listener);
 
         //
         // write tfw
@@ -341,17 +318,17 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     }
 
     /** Writes the provided rendered image to the provided image output stream using the supplied geotiff metadata. */
-    @SuppressWarnings("PMD.UseTryWithResources")
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.CloseResource"})
     private boolean writeImage(
             final RenderedImage image,
-            final ImageOutputStream outputStream,
             final GeoTiffIIOMetadataEncoder geoTIFFMetadata,
             GeoToolsWriteParams gtParams,
             ProgressListener listener)
             throws IOException {
-        if (image == null || outputStream == null) {
+        if (image == null) {
             throw new NullPointerException("Some input parameters are null");
         }
+        final ImageOutputStream outputStream = getImageOutputStream(image);
         final ImageWriteParam params = gtParams.getAdaptee();
         if (params instanceof TIFFImageWriteParam && gtParams instanceof GeoTiffWriteParams) {
             TIFFImageWriteParam param = (TIFFImageWriteParam) params;

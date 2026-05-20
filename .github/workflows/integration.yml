@@ -34,22 +34,56 @@ jobs:
         run: |
           sudo ethtool -K eth0 tx off rx off
       - name: Build GeoTools (no tests, prepare fresh artifacts)
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
+          echo "Building GeoTools for integration tests on $BRANCH_NAME"
+          pwd
+          echo "GitHub workspace: $GITHUB_WORKSPACE"
           mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn clean install -T1C -Dall --file pom.xml -DskipTests
       - name: Checkout GeoWebCache, GeoServer and ...
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
+          echo "Integration tests for $BRANCH_NAME"
+          
           cd ~
           echo "Preparing git ssh checkouts"
-          mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+          mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config                    
+          
           echo "Checking out GeoWebCache"
           mkdir geowebcache
-          git clone https://github.com/GeoWebCache/geowebcache.git geowebcache
+          git clone -q https://github.com/GeoWebCache/geowebcache.git geowebcache
+          cd geowebcache
+          GWC_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
+          if [ "$GWC_BRANCH_EXISTS" -eq 0 ]; then
+            echo "Branch found on geowebcache. Switching and tracking: $BRANCH_NAME"
+            git switch "$BRANCH_NAME"
+          fi
+          cd ..
+          
           echo "Checking out GeoServer"
           mkdir geoserver
-          git clone https://github.com/geoserver/geoserver.git geoserver
+          git clone -q https://github.com/geoserver/geoserver.git geoserver
+          cd geoserver
+          GS_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
+          if [ "$GS_BRANCH_EXISTS" -eq 0 ]; then
+            echo "Branch found on geoserver. Switching and tracking: $BRANCH_NAME"
+            git switch "$BRANCH_NAME"
+          fi
+          cd ..
+          
+          
           echo "Checking out mapfish-print-v2"
           mkdir mapfish-print-v2
-          git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
+          git clone -q https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
+          cd mapfish-print-v2
+          MF_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
+          if [ "$MF_BRANCH_EXISTS" -eq 0 ]; then
+            echo "Branch found on mapfish-print-v2. Switching and tracking: $BRANCH_NAME"
+            git switch "$BRANCH_NAME"
+          fi
+          cd ..
       - name: Build Mapfish-print v2 with tests
         run: |
           cd ~

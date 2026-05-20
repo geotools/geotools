@@ -34,6 +34,7 @@ you to what is available.
 .. toctree::
    :maxdepth: 1
    
+   xmlutils
    geometry
    filter
    style

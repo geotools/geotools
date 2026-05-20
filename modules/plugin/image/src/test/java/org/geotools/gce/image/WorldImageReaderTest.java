@@ -178,8 +178,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         // HINTS
         //
         ///////////////////////////////////////////////////////////////////////
-        Hints hints = new Hints();
-        hints.put(Hints.OVERVIEW_POLICY, OverviewPolicy.QUALITY);
+        Hints hints = new Hints(Hints.OVERVIEW_POLICY, OverviewPolicy.QUALITY);
         WorldImageReader wiReader = new WorldImageReader(file, hints);
 
         // between 16 and 9, any value should report the match of 16
@@ -221,8 +220,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         // HINTS
         //
         ///////////////////////////////////////////////////////////////////////
-        Hints hints = new Hints();
-        hints.put(Hints.OVERVIEW_POLICY, OverviewPolicy.SPEED);
+        Hints hints = new Hints(Hints.OVERVIEW_POLICY, OverviewPolicy.SPEED);
         WorldImageReader wiReader = new WorldImageReader(file, hints);
         // between 16 and 9, any value should report the match of 16
         assertEquals(1, getChosenOverview(15, wiReader));

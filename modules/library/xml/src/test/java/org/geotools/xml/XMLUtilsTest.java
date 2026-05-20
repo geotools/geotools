@@ -55,8 +55,7 @@ public class XMLUtilsTest {
         assertTrue("gml", gml.exists());
         assertTrue("xsd", xsd.exists());
         URI uri = gml.toURI();
-        Hints hints = new Hints();
-        hints.put(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+        Hints hints = new Hints(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
 
         // parsing InputSource
         InputSource gmlSource = new InputSource(uri.toString());

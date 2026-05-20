@@ -177,7 +177,6 @@ common class for lookup.
 
 ``CommonFactoryFinder``
 
-
 * ``FilterFactory``
 * ``StyleFactory``
 * ``Function``
@@ -213,6 +212,12 @@ For access to coverage (i.e. raster) information:
 * ``MathTransformFactory``
 * ``CoordinateOperationFactory``
 * ``CoordinateOperationAuthorityFactory``
+
+``XMLUtils`` - used to access XML parsing services
+
+* ``DocumentFactory``
+* ``TransformerFactory``
+* ``SAXParserFactory``
 
 Where to get a Factory
 ----------------------
@@ -289,10 +294,9 @@ factories together.
 Popular techniques:
 
 * reflection - ``picocontainer`` looks the constructors using reflection to see if any of the required parameters are available
-* configuration - Spring uses a big XML file marking how each factory is created
+* configuration - SpringFramework uses annotations (or a big XML file) marking how each factory is created
 
-The other nice thing is the container can put off creating the
-factories until you actually ask for them.::
+Container approach can put off creating the factories until you actually ask for them.::
   
   container.registerImplementationClass( PositionFactory.class, PositionFactoryImpl.class );
   container.registerImplementationClass( CoordinateFactory.class, CoordinateFactoryImpl.class );

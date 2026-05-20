@@ -209,8 +209,7 @@ public class GeoTiffReaderTest {
 
         // hint for CRS
         crs = CRS.decode("EPSG:32632", true);
-        final Hints hint = new Hints();
-        hint.put(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, crs);
+        final Hints hint = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, crs);
 
         // getting a reader
         reader = new GeoTiffReader(noCrs, hint);

@@ -181,8 +181,7 @@ public class NumericConverterFactoryTest {
     }
 
     Object convertSafe(Object source, Class<?> target) throws Exception {
-        Hints hints = new Hints();
-        hints.put(ConverterFactory.SAFE_CONVERSION, Boolean.TRUE);
+        Hints hints = new Hints(ConverterFactory.SAFE_CONVERSION, Boolean.TRUE);
         return factory.createConverter(source.getClass(), target, hints).convert(source, target);
     }
 

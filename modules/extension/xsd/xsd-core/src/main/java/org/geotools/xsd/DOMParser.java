@@ -83,8 +83,7 @@ public class DOMParser {
         // "Parser" traverses Document issuing SAX events (fake as document has already been parsed)
         Parser fake = new Parser(configuration);
         if (entityResolver != null) {
-            Hints hints = new Hints();
-            hints.put(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+            Hints hints = new Hints(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
 
             fake.setEntityResolver(GeoTools.getEntityResolver(hints));
         } else {

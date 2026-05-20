@@ -79,8 +79,7 @@ public class GeoTiffCRSFactoryDeadlockTest {
 
     Future getUnit(ExecutorService executorService, final boolean[] exceptionOccurred) {
         return executorService.submit(() -> {
-            Hints hints = new Hints();
-            hints.add(new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true));
+            Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true);
             AllAuthoritiesFactory factory = new AllAuthoritiesFactory(hints);
             Unit<?> unit = null;
             try {

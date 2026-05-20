@@ -275,8 +275,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
          * Use a LiteCoordinateSequence, since this mimics GeoServer behaviour better, and it exposes bugs in
          * CoordinateSequence handling.
          */
-        final Hints hints = new Hints();
-        hints.put(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
+        final Hints hints = new Hints(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
         Query query = new Query(tname(getPoly3d()));
         query.setHints(hints);
 

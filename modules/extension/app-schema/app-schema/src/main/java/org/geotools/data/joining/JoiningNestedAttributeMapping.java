@@ -182,8 +182,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             selectedProperties.add(filterFac.property(this.nestedTargetXPath.toString()));
         }
 
-        final Hints hints = new Hints();
-        hints.put(Query.INCLUDE_MANDATORY_PROPS, includeMandatory);
+        final Hints hints = new Hints(Query.INCLUDE_MANDATORY_PROPS, includeMandatory);
 
         if (resolveDepth > 0) {
             hints.put(Hints.RESOLVE, ResolveValueType.ALL);

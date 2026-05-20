@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.image.DataBuffer;
 import java.io.File;
 import java.io.IOException;
@@ -100,8 +99,7 @@ public final class SRPTest extends GDALTestCase {
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(64).setTileWidth(64);
 
-        Hints hints = new Hints();
-        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
+        Hints hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, l);
 
         // get a reader
         final BaseGDALGridCoverage2DReader reader = new SRPReader(source, hints);

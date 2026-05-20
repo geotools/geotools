@@ -17,7 +17,6 @@
  */
 package org.geotools.coverageio.gdal.aig;
 
-import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -67,8 +66,7 @@ public final class AIGTest extends GDALTestCase {
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(3).setTileWidth(1);
 
-        Hints hints = new Hints();
-        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
+        Hints hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, l);
 
         // get a reader
         final URL url = file.toURI().toURL();

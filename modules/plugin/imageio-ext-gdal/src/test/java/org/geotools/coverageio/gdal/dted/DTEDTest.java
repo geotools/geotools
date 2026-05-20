@@ -18,7 +18,6 @@
 package org.geotools.coverageio.gdal.dted;
 
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -63,8 +62,7 @@ public final class DTEDTest extends GDALTestCase {
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
 
-        Hints hints = new Hints();
-        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
+        Hints hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, l);
 
         // get a reader
         final File file = TestData.file(this, fileName);

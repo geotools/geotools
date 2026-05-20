@@ -28,7 +28,6 @@ import static org.junit.Assert.fail;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -113,8 +112,7 @@ public final class VRTTest extends GDALTestCase {
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
 
-        Hints hints = new Hints();
-        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
+        Hints hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, l);
 
         // get a reader
         final File file = TestData.file(this, fileName);
@@ -191,8 +189,7 @@ public final class VRTTest extends GDALTestCase {
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
 
-        Hints hints = new Hints();
-        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
+        Hints hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, l);
 
         // get a reader
         final File file = TestData.file(this, "n43.dt0.nan.vrt");

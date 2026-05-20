@@ -17,7 +17,6 @@
 package org.geotools.coverageio.gdal.envihdr;
 
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
@@ -72,8 +71,7 @@ public class EnviHdrTest extends GDALTestCase {
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
 
-        Hints hints = new Hints();
-        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
+        Hints hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, l);
 
         // get a reader
         final URL url = file.toURI().toURL();
@@ -162,8 +160,7 @@ public class EnviHdrTest extends GDALTestCase {
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
 
-        Hints hints = new Hints();
-        hints.add(new RenderingHints(ImageN.KEY_IMAGE_LAYOUT, l));
+        Hints hints = new Hints(ImageN.KEY_IMAGE_LAYOUT, l);
 
         // get a reader
         final URL url = file.toURI().toURL();

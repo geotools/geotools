@@ -2043,7 +2043,7 @@ public class Utils {
             // TileCache
             TileCache tc = Utils.getTileCacheHint(inputHints);
             if (tc != null) {
-                hints.add(new RenderingHints(ImageN.KEY_TILE_CACHE, tc));
+                hints.put(ImageN.KEY_TILE_CACHE, tc);
             }
 
             // TileScheduler

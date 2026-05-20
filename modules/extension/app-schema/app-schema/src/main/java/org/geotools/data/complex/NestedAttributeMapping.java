@@ -364,8 +364,7 @@ public class NestedAttributeMapping extends AttributeMapping {
             selectedProperties.add(propertyName);
         }
 
-        final Hints hints = new Hints();
-        hints.put(Query.INCLUDE_MANDATORY_PROPS, includeMandatory);
+        final Hints hints = new Hints(Query.INCLUDE_MANDATORY_PROPS, includeMandatory);
 
         if (resolveDepth > 0) {
             hints.put(Hints.RESOLVE, ResolveValueType.ALL);

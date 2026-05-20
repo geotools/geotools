@@ -33,6 +33,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.LocalTime;
+import java.time.OffsetTime;
+import java.util.HashMap;
+import java.util.Map;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
@@ -91,6 +100,122 @@ public class DuckDBDialectTest {
         Mockito.when(columnMetaData.getString("TYPE_NAME")).thenReturn("VARCHAR");
 
         assertEquals(String.class, dialect.getMapping(columnMetaData, cx));
+    }
+
+    @Test
+    public void testGetMappingRecognizesTimestampSecondPrecisionTypeName() throws Exception {
+        DuckDBDialect dialect = createDialect();
+        ResultSet columnMetaData = Mockito.mock(ResultSet.class);
+        Connection cx = Mockito.mock(Connection.class);
+
+        Mockito.when(columnMetaData.getString("TYPE_NAME")).thenReturn("TIMESTAMP_S");
+
+        assertEquals(Timestamp.class, dialect.getMapping(columnMetaData, cx));
+    }
+
+    @Test
+    public void testGetMappingRecognizesLongTimestampWithTimeZoneTypeName() throws Exception {
+        DuckDBDialect dialect = createDialect();
+        ResultSet columnMetaData = Mockito.mock(ResultSet.class);
+        Connection cx = Mockito.mock(Connection.class);
+
+        Mockito.when(columnMetaData.getString("TYPE_NAME")).thenReturn("TIMESTAMP WITH TIME ZONE");
+
+        assertEquals(Timestamp.class, dialect.getMapping(columnMetaData, cx));
+    }
+
+    @Test
+    public void testGetMappingRecognizesTimestamptzAliasTypeName() throws Exception {
+        DuckDBDialect dialect = createDialect();
+        ResultSet columnMetaData = Mockito.mock(ResultSet.class);
+        Connection cx = Mockito.mock(Connection.class);
+
+        Mockito.when(columnMetaData.getString("TYPE_NAME")).thenReturn("TIMESTAMPTZ");
+
+        assertEquals(Timestamp.class, dialect.getMapping(columnMetaData, cx));
+    }
+
+    @Test
+    public void testGetMappingRecognizesLongTimeWithTimeZoneTypeName() throws Exception {
+        DuckDBDialect dialect = createDialect();
+        ResultSet columnMetaData = Mockito.mock(ResultSet.class);
+        Connection cx = Mockito.mock(Connection.class);
+
+        Mockito.when(columnMetaData.getString("TYPE_NAME")).thenReturn("TIME WITH TIME ZONE");
+
+        assertEquals(Time.class, dialect.getMapping(columnMetaData, cx));
+    }
+
+    @Test
+    public void testRegisterSqlTypeToClassMappingsIncludesTemporalTimezoneTypes() {
+        DuckDBDialect dialect = createDialect();
+        Map<Integer, Class<?>> mappings = new HashMap<>();
+
+        dialect.registerSqlTypeToClassMappings(mappings);
+
+        assertEquals(Time.class, mappings.get(Types.TIME_WITH_TIMEZONE));
+        assertEquals(Timestamp.class, mappings.get(Types.TIMESTAMP_WITH_TIMEZONE));
+    }
+
+    @Test
+    public void testRegisterSqlTypeNameToClassMappingsIncludesTemporalAliases() {
+        DuckDBDialect dialect = createDialect();
+        Map<String, Class<?>> mappings = new HashMap<>();
+
+        dialect.registerSqlTypeNameToClassMappings(mappings);
+
+        assertEquals(Time.class, mappings.get("TIME_NS"));
+        assertEquals(Time.class, mappings.get("TIMETZ"));
+        assertEquals(Time.class, mappings.get("TIME WITH TIME ZONE"));
+        assertEquals(Timestamp.class, mappings.get("TIMESTAMP_S"));
+        assertEquals(Timestamp.class, mappings.get("TIMESTAMP_MS"));
+        assertEquals(Timestamp.class, mappings.get("TIMESTAMP_NS"));
+        assertEquals(Timestamp.class, mappings.get("TIMESTAMPTZ"));
+        assertEquals(Timestamp.class, mappings.get("TIMESTAMP WITH TIME ZONE"));
+    }
+
+    @Test
+    public void testConvertValueConvertsOffsetTimeToSqlTime() {
+        DuckDBDialect dialect = createDialect();
+        AttributeDescriptor descriptor = mockDescriptor(Time.class);
+        OffsetTime value = OffsetTime.parse("12:34:56+02:00");
+
+        Object converted = dialect.convertValue(value, descriptor);
+
+        assertEquals(Time.class, converted.getClass());
+        assertEquals(Time.valueOf(LocalTime.of(12, 34, 56)), converted);
+    }
+
+    @Test
+    public void testConvertValueConvertsTimeWithTimezoneTextToSqlTime() {
+        DuckDBDialect dialect = createDialect();
+        AttributeDescriptor descriptor = mockDescriptor(Time.class);
+
+        Object converted = dialect.convertValue("12:34:56+02:00", descriptor);
+
+        assertEquals(Time.class, converted.getClass());
+        assertEquals(Time.valueOf(LocalTime.of(12, 34, 56)), converted);
+    }
+
+    @Test
+    public void testConvertValueConvertsLocalTimeTextWithNanosToSqlTime() {
+        DuckDBDialect dialect = createDialect();
+        AttributeDescriptor descriptor = mockDescriptor(Time.class);
+
+        Object converted = dialect.convertValue("12:34:56.123456789", descriptor);
+
+        assertEquals(Time.class, converted.getClass());
+        assertEquals(Time.valueOf(LocalTime.of(12, 34, 56, 123456789)), converted);
+    }
+
+    @Test
+    public void testConvertValueLeavesInvalidTimeTextUnchanged() {
+        DuckDBDialect dialect = createDialect();
+        AttributeDescriptor descriptor = mockDescriptor(Time.class);
+
+        Object converted = dialect.convertValue("not-a-time", descriptor);
+
+        assertNull(converted);
     }
 
     @Test
@@ -266,6 +391,14 @@ public class DuckDBDialectTest {
             store.dispose();
             DuckDBTestUtils.deleteRecursively(directory);
         }
+    }
+
+    private AttributeDescriptor mockDescriptor(Class<?> binding) {
+        AttributeDescriptor descriptor = Mockito.mock(AttributeDescriptor.class);
+        AttributeType attributeType = Mockito.mock(AttributeType.class);
+        Mockito.when(descriptor.getType()).thenReturn(attributeType);
+        Mockito.doReturn(binding).when(attributeType).getBinding();
+        return descriptor;
     }
 
     private static final class ParentMappingDuckDBDialect extends DuckDBDialect {

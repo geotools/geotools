@@ -105,7 +105,9 @@ import org.geotools.styling.ShadedReliefImpl;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayerImpl;
 import org.geotools.util.Base64;
+import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.GrowableInternationalString;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.XMLUtils;
@@ -357,6 +359,13 @@ public class SLDParser {
         }
     }
 
+    /**
+     * Configured DocumentBuilder for parsing SLD documents, which requires namespace information.
+     *
+     * @param namespaceAware
+     * @return
+     * @throws ParserConfigurationException
+     */
     protected javax.xml.parsers.DocumentBuilder newDocumentBuilder(boolean namespaceAware)
             throws ParserConfigurationException {
         javax.xml.parsers.DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
@@ -364,22 +373,23 @@ public class SLDParser {
 
         if (entityResolver != null) {
             try {
-                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                if (entityResolver == DefaultEntityResolver.INSTANCE) {
+                    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "http");
+                } else if (entityResolver == NullEntityResolver.INSTANCE) {
+                    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+                } else {
+                    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "file,http");
+                }
             } catch (IllegalArgumentException notSupported) {
                 LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
             }
-            try {
-                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
-            } catch (IllegalArgumentException notSupported) {
-                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
-            }
             dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            dbf.setFeature("http://xml.org/sax/features/external-general-entities", true);
             dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+
+            dbf.setFeature("http://xml.org/sax/features/external-general-entities", true);
         }
 
         javax.xml.parsers.DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf);
-
         if (entityResolver != null) {
             db.setEntityResolver(entityResolver);
         } else {

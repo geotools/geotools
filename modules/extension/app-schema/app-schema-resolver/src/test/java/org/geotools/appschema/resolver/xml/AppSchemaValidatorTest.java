@@ -20,7 +20,12 @@ package org.geotools.appschema.resolver.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import org.geotools.util.DefaultEntityResolver;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -29,6 +34,15 @@ import org.junit.Test;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
 public class AppSchemaValidatorTest {
+    @Before
+    public void setUp() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, DefaultEntityResolver.INSTANCE);
+    }
 
     /** Test that validation succeeds for a known-valid XML instance document. */
     @Test

@@ -45,10 +45,10 @@ public class XMLHandlerHints implements Map<String, Object> {
     public static final String FILTER_COMPLIANCE_STRICTNESS = "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
     /** Supplied {@link EntityResolver} for Schema and/or DTD validation */
     public static final String ENTITY_RESOLVER = GeoTools.ENTITY_RESOLVER;
-    /** Supplied {@link SaxParserFactory} */
+    /** Supplied {@code SaxParserFactory} */
     public static final String SAX_PARSER_FACTORY = "javax.xml.parsers.SAXParserFactory";
 
-    /** The value so that the parser will encode all Geotools filters with no modifications. */
+    /** The value so that the parser will encode all GeoTools filters with no modifications. */
     public static final Integer VALUE_FILTER_COMPLIANCE_LOW = Integer.valueOf(0);
     /**
      * The value so the parser will be slightly more compliant to the Filter 1.0.0 spec. It will encode:

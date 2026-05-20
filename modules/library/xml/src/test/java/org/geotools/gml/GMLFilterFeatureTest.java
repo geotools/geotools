@@ -33,6 +33,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml.producer.FeatureTransformer;
+import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -72,9 +73,10 @@ public class GMLFilterFeatureTest {
         final GMLFilterFeature filterFeature = new GMLFilterFeature(handler);
         final GMLFilterGeometry filterGeometry = new GMLFilterGeometry(filterFeature);
         final GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
-        final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        final SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
         parserFactory.setNamespaceAware(true);
-        final SAXParser parser = parserFactory.newSAXParser();
+
+        final SAXParser parser = XMLUtils.newSAXParser(parserFactory);
         final XMLReader reader = parser.getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(new InputSource(new StringReader(gml)));

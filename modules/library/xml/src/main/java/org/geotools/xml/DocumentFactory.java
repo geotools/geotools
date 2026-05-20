@@ -24,6 +24,8 @@ import java.util.logging.Level;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
 import org.xml.sax.SAXException;
@@ -64,7 +66,7 @@ public class DocumentFactory {
 
     /**
      * When this hint is contained and set to Boolean.TRUE, external entities will be disabled. This setting is used to
-     * alivate XXE attacks, preventing both {@link #VALIDATION_HINT} and {@link XMLHandlerHints#ENTITY_RESOLVER} from
+     * alleviate XXE attacks, preventing both {@link #VALIDATION_HINT} and {@link XMLHandlerHints#ENTITY_RESOLVER} from
      * being effective.
      */
     public static final String DISABLE_EXTERNAL_ENTITIES = "DocumentFactory_DISABLE_EXTERNAL_ENTITIES";
@@ -131,14 +133,21 @@ public class DocumentFactory {
      * Convenience method to create an instance of a SAXParser if it is null.
      */
     private static SAXParser getParser(Map<String, Object> hints) throws SAXException {
-        SAXParserFactory spf = null;
-        if (hints != null && hints.containsKey(XMLHandlerHints.SAX_PARSER_FACTORY)) {
-            spf = (SAXParserFactory) hints.get(XMLHandlerHints.SAX_PARSER_FACTORY);
-        } else {
-            spf = SAXParserFactory.newInstance();
+
+        Hints factoryConfig = GeoTools.getDefaultHints();
+        if (hints != null && hints.containsKey(XMLHandlerHints.ENTITY_RESOLVER)) {
+            factoryConfig.put(Hints.ENTITY_RESOLVER, hints.get(XMLHandlerHints.ENTITY_RESOLVER));
         }
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
+
+        SAXParserFactory saxParserFactory;
+        if (hints != null && hints.containsKey(XMLHandlerHints.SAX_PARSER_FACTORY)) {
+            SAXParserFactory provided = (SAXParserFactory) hints.get(XMLHandlerHints.SAX_PARSER_FACTORY);
+            saxParserFactory = XMLUtils.toSAXParserFactory(provided, factoryConfig);
+        } else {
+            saxParserFactory = XMLUtils.newSAXParserFactory(factoryConfig);
+        }
+        saxParserFactory.setNamespaceAware(true);
+        saxParserFactory.setValidating(false);
 
         try {
             // Extra precaution to reduce/prevent XXE attacks
@@ -150,17 +159,17 @@ public class DocumentFactory {
             //
             // Note: XMLSaxHandler will reject all DTD references - but we may as well avoid early
             // spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            saxParserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
             // Step 2 optionally disable external entities
             //
             if (hints != null
                     && hints.containsKey(DISABLE_EXTERNAL_ENTITIES)
                     && Boolean.TRUE.equals(hints.get(DISABLE_EXTERNAL_ENTITIES))) {
-                spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                saxParserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             }
-            SAXParser sp = spf.newSAXParser();
+            SAXParser sp = XMLUtils.newSAXParser(saxParserFactory, factoryConfig);
             return sp;
         } catch (ParserConfigurationException e) {
             throw new SAXException(e);

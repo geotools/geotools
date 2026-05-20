@@ -25,15 +25,25 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.EntityResolver2;
@@ -44,7 +54,7 @@ import org.xml.sax.ext.EntityResolver2;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
 public class AppSchemaValidator {
-
+    public static Logger LOGGER = Logging.getLogger(AppSchemaValidator.class);
     /**
      * Pattern matching a string that starts with an XML declaration with an encoding, with a single group that contains
      * the encoding.
@@ -109,20 +119,34 @@ public class AppSchemaValidator {
      * @param input stream from which XML instance document is read
      */
     public void parse(InputStream input) {
-        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        // Use Entity Resolver backed by SchemaResolver
+        AppSchemaEntityResolver appSchmeaEntityResolver = new AppSchemaEntityResolver(GeoTools.getDefaultHints());
+
+        Hints hints = GeoTools.addDefaultHints(new Hints(Hints.ENTITY_RESOLVER, appSchmeaEntityResolver));
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory(hints);
         parserFactory.setNamespaceAware(true);
         parserFactory.setValidating(true);
+        try {
+            parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            LOGGER.fine(
+                    "Parser does not support feature " + XMLConstants.ACCESS_EXTERNAL_SCHEMA + ": " + e.getMessage());
+        }
         XMLReader xmlReader;
         try {
-            SAXParser parser = parserFactory.newSAXParser();
+            SAXParser parser = XMLUtils.newSAXParser(parserFactory, hints);
             // Validation is against XML Schema
             parser.setProperty(
                     "http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+            if (parser.getXMLReader().getEntityResolver() != null) {
+                // only allow access to external schema when entity resolver in use
+                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+            }
             xmlReader = parser.getXMLReader();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        xmlReader.setEntityResolver(new AppSchemaEntityResolver());
+        xmlReader.setEntityResolver(appSchmeaEntityResolver);
         // We principally care about the failures themselves, but it is also possible to install a
         // ContentHandler to output annotated XML that identifies the precise location of failures.
         // That can be done with a serializer that implements both ContentHandler and ErrorHandler.
@@ -271,6 +295,11 @@ public class AppSchemaValidator {
      * (that is, XML schemas).
      */
     private class AppSchemaEntityResolver implements EntityResolver2 {
+        EntityResolver entityResolver;
+
+        public AppSchemaEntityResolver(Hints hints) {
+            this.entityResolver = GeoTools.getEntityResolver(hints);
+        }
 
         /**
          * Always throws {@link UnsupportedOperationException}. The {@link EntityResolver2} interface must be used so
@@ -285,12 +314,14 @@ public class AppSchemaValidator {
                     + "so that relative URLs are resolved correctly");
         }
         /**
-         * Always returns null to indicate that there is no external subset.
+         * Delegate to library entity resolver, or {@code null} to indicate that there is no external subset.
          *
          * @see org.xml.sax.ext.EntityResolver2#getExternalSubset(java.lang.String, java.lang.String)
          */
         @Override
-        public InputSource getExternalSubset(String name, String baseURI) {
+        public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
+            if (entityResolver instanceof EntityResolver2 entityResolver2)
+                return entityResolver2.getExternalSubset(name, baseURI);
             return null;
         }
 
@@ -308,6 +339,15 @@ public class AppSchemaValidator {
         public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
                 throws SAXException, IOException {
             return new InputSource(resolver.resolve(systemId, baseURI));
+        }
+
+        @Override
+        public String toString() {
+            return new StringBuilder()
+                    .append("AppSchemaEntityResolver {")
+                    .append(resolver)
+                    .append("}")
+                    .toString();
         }
     }
 

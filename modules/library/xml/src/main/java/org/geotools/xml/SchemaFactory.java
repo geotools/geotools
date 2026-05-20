@@ -34,10 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xml.schema.Attribute;
@@ -76,14 +78,15 @@ public class SchemaFactory {
      */
     private Map<URI, Schema> schemas = loadSchemas();
 
-    /** Schema Resolver: uses local versions of schemas or cached ones if available. */
     File cacheDir;
 
+    /** Schema Resolver: uses local versions of schemas or cached ones if available. */
     private SchemaResolver resolver;
 
-    /*
-     * The SAX parser to use if one is required ... isn't loaded until first
-     * use.
+    /**
+     * The SAX parser to use if one is required ... isn't loaded until first use.
+     *
+     * <p>See {@link #setParser()}
      */
     private SAXParser parser;
 
@@ -111,12 +114,12 @@ public class SchemaFactory {
         }
     }
 
+    /** SchemaFactory instance */
     protected static SchemaFactory getInstance() {
         return is;
     }
 
-    /*
-     */
+    /** Load schemas from ClassLoaders. */
     private Map<URI, Schema> loadSchemas() {
         schemas = new HashMap<>();
 
@@ -402,16 +405,18 @@ public class SchemaFactory {
     }
 
     /*
-     * convinience method to create an instance of a SAXParser if it is null.
+     * Convenience method to create an instance of a SAXParser for Schema processing, if it is {@code null}.
      */
     private void setParser() throws SAXException {
         if (parser == null) {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setNamespaceAware(true);
-            spf.setValidating(false);
-
+            SAXParserFactory saxParserFactory = XMLUtils.newSAXParserFactory();
+            saxParserFactory.setNamespaceAware(true);
+            saxParserFactory.setValidating(false);
             try {
-                parser = spf.newSAXParser();
+                parser = XMLUtils.newSAXParser(saxParserFactory);
+                parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver(null));
+                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
             } catch (ParserConfigurationException | SAXException e) {
                 throw new SAXException(e);
             }

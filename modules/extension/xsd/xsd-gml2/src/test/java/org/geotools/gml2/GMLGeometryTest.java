@@ -16,7 +16,6 @@
  */
 package org.geotools.gml2;
 
-import javax.xml.parsers.SAXParserFactory;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
@@ -33,10 +32,6 @@ public class GMLGeometryTest {
 
     @Before
     public void setUp() throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-
-        spf.setNamespaceAware(true);
-
         Configuration configuration = new GMLConfiguration();
 
         parser = new Parser(configuration);

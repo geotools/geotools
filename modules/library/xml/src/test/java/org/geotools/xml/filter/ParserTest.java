@@ -18,7 +18,6 @@ package org.geotools.xml.filter;
 
 import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -26,6 +25,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.test.TestData;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xml.ogc.FilterTestSupport;
 import org.junit.Before;
 import org.junit.Test;
@@ -256,8 +256,7 @@ public class ParserTest extends FilterTestSupport {
         // uncomment to use xerces parser
         // parser.setContentHandler(documentFilter);
         // parser.parse(uri);
-        SAXParserFactory fac = SAXParserFactory.newInstance();
-        SAXParser parser = fac.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser();
 
         ParserAdapter p = new ParserAdapter(parser.getParser());
         p.setContentHandler(documentFilter);

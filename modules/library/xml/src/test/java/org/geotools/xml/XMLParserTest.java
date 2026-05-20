@@ -33,11 +33,11 @@ public class XMLParserTest {
 
     @Test
     public void testNestedFeature() throws Throwable {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        parserFactory.setValidating(false);
 
-        SAXParser parser = spf.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
         String path = "/wfsgetfeature.xml";
         File f = TestData.copy(this, path);

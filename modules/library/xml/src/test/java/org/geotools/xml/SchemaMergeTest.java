@@ -39,10 +39,10 @@ public class SchemaMergeTest {
     @Before
     public void setUp() throws Exception {
 
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
-        parser = spf.newSAXParser();
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        parserFactory.setValidating(false);
+        parser = XMLUtils.newSAXParser(parserFactory);
     }
 
     @Test

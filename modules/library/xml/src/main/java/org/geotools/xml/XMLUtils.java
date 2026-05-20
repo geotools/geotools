@@ -19,6 +19,7 @@ package org.geotools.xml;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,6 +69,19 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class XMLUtils {
     static final Logger LOGGER = Logging.getLogger(XMLUtils.class);
+
+    //
+    // SAXParser and SAXParserFactory utility methods
+    //
+    /**
+     * Create a new SAXParserFactory that respects library configuration.
+     *
+     * @return SAX Parser Factory
+     */
+    public static SAXParserFactory newSAXParserFactory() {
+        return newSAXParserFactory(null);
+    }
+
     /**
      * Create a new SAXParserFactory that respects library configuration.
      *
@@ -76,8 +90,81 @@ public class XMLUtils {
      */
     public static SAXParserFactory newSAXParserFactory(final Hints hints) {
         // Factory applying GeoTools configuration to SAXParserFactory
-        return new GTSAXParserFactory(hints);
+        return newSAXParserFactory(null, hints);
     }
+
+    /**
+     * Create a new SAXParser that respects library configuration.
+     *
+     * @param hints Factory hints
+     * @return SAX Parser Factory
+     */
+    public static SAXParserFactory newSAXParserFactory(final SAXParserFactory factory, final Hints hints) {
+        // Factory applying GeoTools configuration to SAXParserFactory
+        return new GTSAXParserFactory(factory, hints);
+    }
+
+    /**
+     * Cast / wraps to GTSAXParserFactory respecting GeoTools configuration.
+     *
+     * @param factory SAXParserFactory factory, or {@code null}
+     * @param hints Factory configuration
+     * @return GTSAXParserFactory respecting GeoTools configuration.
+     */
+    public static GTSAXParserFactory toSAXParserFactory(SAXParserFactory factory, Hints hints) {
+        if (factory == null) {
+            return new GTSAXParserFactory(hints);
+        } else if (factory instanceof GTSAXParserFactory gtSaxParserFactory) {
+            if (Objects.equals(gtSaxParserFactory.hints, hints)) {
+                return gtSaxParserFactory;
+            } else {
+                // Wrap original factory with modified hints
+                return new GTSAXParserFactory(gtSaxParserFactory.factory, hints);
+            }
+        }
+        return new GTSAXParserFactory(factory, hints);
+    }
+
+    /**
+     * Creates a new instance of a SAXParser using GeoTools configuration.
+     *
+     * @return SAXParser setup with library configuration
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    public static SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
+        return toSAXParserFactory(null, null).newSAXParser();
+    }
+
+    /**
+     * Creates a new instance of a SAXParser provided factory, applying GeoTools configuration.
+     *
+     * @return SAXParser
+     * @param factory SAXParserFactory factory, or {@code null}
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    public static SAXParser newSAXParser(SAXParserFactory factory) throws ParserConfigurationException, SAXException {
+        return toSAXParserFactory(factory, null).newSAXParser();
+    }
+
+    /**
+     * Creates a new instance of a SAXParser provided factory, applying GeoTools configuration.
+     *
+     * @return SAXParser
+     * @param factory SAXParserFactory factory, or {@code null}
+     * @param hints Factory configuration
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    public static SAXParser newSAXParser(SAXParserFactory factory, Hints hints)
+            throws ParserConfigurationException, SAXException {
+        return toSAXParserFactory(factory, hints).newSAXParser();
+    }
+
+    //
+    // TransformerFactory and Transformer utility methods
+    //
 
     /**
      * Create a new TransformerFactory that respects library configuration.
@@ -113,7 +200,7 @@ public class XMLUtils {
 
     /** Creates a new Transformer as an alternative to direct use of {@link TransformerFactory#newTransformer()}. */
     public static Transformer newTransformer(Hints hints) throws TransformerConfigurationException {
-        return newTransformerFactory(hints).newTransformer(); // NOPMD AvoidTransform
+        return newTransformerFactory(hints).newTransformer(); // NOPMD
     }
 
     /**
@@ -144,7 +231,7 @@ public class XMLUtils {
     }
 
     /**
-     * Cast to GTTransformerFactory or GTSAXTransformFactory respecting GeoTools configuration.
+     * Cast /wraps to GTTransformerFactory or GTSAXTransformFactory respecting GeoTools configuration.
      *
      * @param factory Transformer factory, or {@code null}
      * @param hints Factory configuration
@@ -153,11 +240,19 @@ public class XMLUtils {
     protected static TransformerFactory toTransformerFactory(TransformerFactory factory, Hints hints) {
         if (factory == null) {
             return new GTTransformerFactory(hints);
-        } else if (factory instanceof GTSAXTransformerFactory saxFactory) {
-            if (saxFactory.hints == hints) {
+        } else if (factory instanceof GTTransformerFactory gtTransformerFactory) {
+            if (Objects.equals(gtTransformerFactory.hints, hints)) {
+                return gtTransformerFactory;
+            } else {
+                // Wrap original factory with modified hints
+                return new GTTransformerFactory(gtTransformerFactory.factory, hints);
+            }
+        } else if (factory instanceof GTSAXTransformerFactory gtSaxFactory) {
+            if (Objects.equals(gtSaxFactory.hints, hints)) {
                 return factory;
             } else {
-                return new GTSAXTransformerFactory(saxFactory, hints);
+                // Wrap original factory with modified hints
+                return new GTSAXTransformerFactory(gtSaxFactory.factory, hints);
             }
         } else if (factory instanceof SAXTransformerFactory saxFactory) {
             return new GTSAXTransformerFactory(saxFactory, hints);
@@ -172,7 +267,7 @@ public class XMLUtils {
      * @return XML transformer
      */
     public static Transformer newTransformer(Source source) throws TransformerConfigurationException {
-        return newTransformerFactory().newTransformer(source);
+        return newTransformer(source, null);
     }
 
     /**
@@ -183,7 +278,7 @@ public class XMLUtils {
      * @return XML transformer
      */
     public static Transformer newTransformer(Source source, Hints hints) throws TransformerConfigurationException {
-        return newTransformerFactory(hints).newTransformer(source);
+        return newTransformer(null, source, null);
     }
 
     /**
@@ -195,7 +290,7 @@ public class XMLUtils {
      */
     public static Transformer newTransformer(TransformerFactory factory, Source source)
             throws TransformerConfigurationException {
-        return toTransformerFactory(factory, GeoTools.getDefaultHints()).newTransformer(source);
+        return newTransformer(factory, source, null);
     }
 
     /**
@@ -208,7 +303,7 @@ public class XMLUtils {
      */
     public static Transformer newTransformer(TransformerFactory factory, Source source, Hints hints)
             throws TransformerConfigurationException {
-        return toTransformerFactory(factory, hints).newTransformer(source);
+        return toTransformerFactory(factory, hints).newTransformer(source); // NOPMD AvoidTransformer
     }
 
     /**
@@ -394,7 +489,7 @@ public class XMLUtils {
     public static void checkSupportForJAXP15Properties() {
         List<String> classes = new ArrayList<>();
         try {
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            TransformerFactory transformerFactory = TransformerFactory.newInstance(); // NOPMD AvoidTransformerFactory
             try {
                 transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
                 transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
@@ -475,18 +570,62 @@ public class XMLUtils {
         // || ((c >= 0x10000) && (c <= 0x10FFFF));
     }
 
+    /**
+     * Apply GeoTools configuration to the transformer, including {@code GeoTools.getEntityResolver(hints)}.
+     *
+     * @param transformer XML Transformer
+     * @return transformer
+     */
+    static Transformer config(Transformer transformer, Hints hints) {
+        URIResolver uriResolver = transformer.getURIResolver();
+        if (uriResolver != null && !(uriResolver instanceof GTURIResolver)) {
+            final EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
+            transformer.setURIResolver(new GTURIResolver(entityResolver, uriResolver, hints));
+        } else {
+            transformer.setURIResolver(new GTURIResolver(GeoTools.getEntityResolver(hints), null, hints));
+        }
+        return transformer;
+    }
+
+    /**
+     * Apply GeoTools configuration to TransformHandler.
+     *
+     * @param handler Transform handler
+     * @return Transform handler
+     */
+    static TransformerHandler config(TransformerHandler handler, Hints hints) {
+        XMLUtils.config(handler.getTransformer(), hints);
+        return handler;
+    }
+
+    /**
+     * Apply GeoTools configuration to XMLFilter.
+     *
+     * @param filter XML Fitler
+     * @return XML Filter
+     */
+    static XMLFilter config(XMLFilter filter, Hints hints) {
+        filter.setEntityResolver(GeoTools.getEntityResolver(hints));
+        return filter;
+    }
+
     /** Wrapper ensuring system SAXParserFactory configured with {@code GeoTools.getEntityResolver(hints)}. */
     private static class GTSAXParserFactory extends SAXParserFactory {
-        private final SAXParserFactory factory;
-        private final Hints hints;
+        protected final SAXParserFactory factory;
+        protected final Hints hints;
 
         public GTSAXParserFactory(Hints hints) {
+            this(SAXParserFactory.newInstance(), hints); // NOPMD AvoidParserzfactory
+        }
+
+        public GTSAXParserFactory(SAXParserFactory factory, Hints hints) {
             this.hints = hints;
-            this.factory = SAXParserFactory.newInstance();
+            this.factory = factory != null ? factory : SAXParserFactory.newInstance(); // NOPMD AvoidParserFactory
             try {
-                factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                this.factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
-                // feature secure processing recommended, but not supported
+                LOGGER.finer("Parser does not support secure processing feature: "
+                        + this.factory.getClass().getName());
             }
         }
 
@@ -545,7 +684,9 @@ public class XMLUtils {
         @Override
         public SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
             SAXParser parser = factory.newSAXParser();
-            parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver(hints));
+            if (parser.getXMLReader() != null) {
+                parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver(hints));
+            }
             return parser;
         }
 
@@ -630,39 +771,22 @@ public class XMLUtils {
         protected final TransformerFactory factory;
 
         public GTTransformerFactory(Hints hints) {
-            this(TransformerFactory.newInstance(), hints);
+            this(null, hints);
         }
 
         public GTTransformerFactory(TransformerFactory factory, Hints hints) {
             this.hints = hints != null ? hints : GeoTools.getDefaultHints();
-            this.factory = factory;
+            this.factory = factory != null ? factory : TransformerFactory.newInstance(); // NOPMD AvoidTransformer
         }
 
         @Override
         public Transformer newTransformer(Source source) throws TransformerConfigurationException {
-            return config(factory.newTransformer(source));
+            return XMLUtils.config(factory.newTransformer(source), hints); // NOPMD AvoidTransformerSource
         }
 
         @Override
         public Transformer newTransformer() throws TransformerConfigurationException {
-            return config(factory.newTransformer()); // NOPMD AvoidTransform
-        }
-
-        /**
-         * Apply GeoTools configuration to the transformer, including {@code GeoTools.getEntityResolver(hints)}.
-         *
-         * @param transformer XML Transformer
-         * @return transformer
-         */
-        protected Transformer config(Transformer transformer) {
-            URIResolver uriResolver = transformer.getURIResolver();
-            if (uriResolver != null && !(uriResolver instanceof GTURIResolver)) {
-                final EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
-                transformer.setURIResolver(new GTURIResolver(entityResolver, uriResolver));
-            } else {
-                transformer.setURIResolver(new GTURIResolver(GeoTools.getEntityResolver(hints)));
-            }
-            return transformer;
+            return XMLUtils.config(factory.newTransformer(), hints); // NOPMD AvoidTransform
         }
 
         @Override
@@ -770,56 +894,17 @@ public class XMLUtils {
             this.factory = factory;
             this.hints = hints != null ? hints : GeoTools.getDefaultHints();
         }
-        // apply configuration
-        /**
-         * Apply GeoTools configuration to the transformer, including {@code GeoTools.getEntityResolver(hints)}.
-         *
-         * @param transformer XML Transformer
-         * @return transformer
-         */
-        protected Transformer config(Transformer transformer) {
-            URIResolver uriResolver = transformer.getURIResolver();
-            if (uriResolver != null && !(uriResolver instanceof GTURIResolver)) {
-                final EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
-                transformer.setURIResolver(new GTURIResolver(entityResolver, uriResolver));
-            } else {
-                transformer.setURIResolver(new GTURIResolver(GeoTools.getEntityResolver(hints)));
-            }
-            return transformer;
-        }
-
-        /**
-         * Apply GeoTools configuration to TransformHandler.
-         *
-         * @param handler Transform handler
-         * @return Transform handler
-         */
-        protected TransformerHandler config(TransformerHandler handler) {
-            config(handler.getTransformer());
-            return handler;
-        }
-
-        /**
-         * Apply GeoTools configuration to XMLFilter.
-         *
-         * @param filter XML Fitler
-         * @return XML Filter
-         */
-        protected XMLFilter config(XMLFilter filter) {
-            filter.setEntityResolver(GeoTools.getEntityResolver(hints));
-            return filter;
-        }
 
         // overrides
 
         @Override
         public Transformer newTransformer(Source source) throws TransformerConfigurationException {
-            return config(factory.newTransformer(source));
+            return XMLUtils.config(factory.newTransformer(source), hints); // NOPMD AvoidTransform
         }
 
         @Override
         public Transformer newTransformer() throws TransformerConfigurationException {
-            return config(factory.newTransformer()); // NOPMD AvoidTransform
+            return XMLUtils.config(factory.newTransformer(), null); // NOPMD AvoidTransform
         }
 
         @Override
@@ -876,17 +961,17 @@ public class XMLUtils {
 
         @Override
         public TransformerHandler newTransformerHandler(Source src) throws TransformerConfigurationException {
-            return config(factory.newTransformerHandler(src));
+            return XMLUtils.config(factory.newTransformerHandler(src), hints);
         }
 
         @Override
         public TransformerHandler newTransformerHandler(Templates templates) throws TransformerConfigurationException {
-            return config(factory.newTransformerHandler(templates));
+            return XMLUtils.config(factory.newTransformerHandler(templates), hints);
         }
 
         @Override
         public TransformerHandler newTransformerHandler() throws TransformerConfigurationException {
-            return config(factory.newTransformerHandler());
+            return XMLUtils.config(factory.newTransformerHandler(), hints);
         }
 
         @Override
@@ -896,12 +981,12 @@ public class XMLUtils {
 
         @Override
         public XMLFilter newXMLFilter(Source src) throws TransformerConfigurationException {
-            return config(factory.newXMLFilter(src));
+            return XMLUtils.config(factory.newXMLFilter(src), null);
         }
 
         @Override
         public XMLFilter newXMLFilter(Templates templates) throws TransformerConfigurationException {
-            return config(factory.newXMLFilter(templates));
+            return XMLUtils.config(factory.newXMLFilter(templates), hints);
         }
 
         @Override
@@ -914,14 +999,20 @@ public class XMLUtils {
     private static class GTURIResolver implements URIResolver {
         private final EntityResolver entityResolver;
         private final URIResolver uriResolver;
+        private final Hints hints;
 
         public GTURIResolver(EntityResolver entityResolver) {
             this(entityResolver, null);
         }
 
         public GTURIResolver(EntityResolver entityResolver, URIResolver uriResolver) {
+            this(entityResolver, uriResolver, null);
+        }
+
+        public GTURIResolver(EntityResolver entityResolver, URIResolver uriResolver, Hints hints) {
             this.entityResolver = entityResolver;
             this.uriResolver = uriResolver;
+            this.hints = hints;
         }
 
         @Override
@@ -929,7 +1020,12 @@ public class XMLUtils {
             try {
                 // step 1: check with entity resolver, will return null (external), source (internal), or exception
                 // (forbidden)
-                entityResolver.resolveEntity(href, base);
+                InputSource source = entityResolver.resolveEntity(href, base);
+                if (source != null) {
+                    // resolved internally, wrap and apply GeoTools configuration
+                    return XMLUtils.sax(source, hints);
+                }
+
                 // step 2: check with uri resolver
                 if (uriResolver != null) {
                     return uriResolver.resolve(href, base);

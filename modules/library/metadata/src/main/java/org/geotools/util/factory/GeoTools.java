@@ -883,7 +883,11 @@ public final class GeoTools {
         return Hints.getDefaults(false);
     }
 
-    /** Used to combine provided hints with global GeoTools defaults. */
+    /**
+     * Used to combine provided hints with global GeoTools defaults.
+     *
+     * @return A copy of the GeoTools default hints, with provided Hints added.
+     */
     public static Hints addDefaultHints(final Hints hints) {
         final Hints completed = getDefaultHints();
         if (hints != null) {

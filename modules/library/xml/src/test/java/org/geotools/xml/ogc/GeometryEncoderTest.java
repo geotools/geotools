@@ -26,6 +26,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.geotools.TestData;
 import org.geotools.xml.PrintHandler;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xml.XSISAXHandler;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.Schema;
@@ -52,10 +53,11 @@ public class GeometryEncoderTest {
         XSISAXHandler contentHandler = new XSISAXHandler(u);
         XSISAXHandler.setLogLevel(Level.WARNING);
 
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
-        SAXParser parser = spf.newSAXParser();
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        parserFactory.setValidating(false);
+
+        SAXParser parser = XMLUtils.newSAXParser(parserFactory);
         parser.parse(f, contentHandler);
 
         Schema schema = contentHandler.getSchema();

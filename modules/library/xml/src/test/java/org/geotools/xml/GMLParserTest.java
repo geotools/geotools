@@ -43,11 +43,11 @@ public class GMLParserTest {
 
     @Test
     public void testParseEmptyCollectionFeatures() throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        parserFactory.setValidating(false);
 
-        SAXParser parser = spf.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
         String path = "xml/fme/empty-collection/lakes.xml";
         File f = TestData.copy(this, path);
@@ -72,11 +72,11 @@ public class GMLParserTest {
     @Test
     @Ignore
     public void testOneFeature() throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        parserFactory.setValidating(false);
 
-        SAXParser parser = spf.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
         String path = "xml/geoserver/oneFeature.xml";
         File f = TestData.copy(this, path);
@@ -103,11 +103,11 @@ public class GMLParserTest {
     @Ignore
     public void testMoreFeatures() {
         try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setNamespaceAware(true);
-            spf.setValidating(false);
+            SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+            parserFactory.setNamespaceAware(true);
+            parserFactory.setValidating(false);
 
-            SAXParser parser = spf.newSAXParser();
+            SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
             String path = "xml/geoserver/roads.xml";
             File f = TestData.copy(this, path);
@@ -138,11 +138,11 @@ public class GMLParserTest {
     @Test
     public void testPatternSchema() {
         try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setNamespaceAware(true);
-            spf.setValidating(false);
+            SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+            parserFactory.setNamespaceAware(true);
+            parserFactory.setValidating(false);
 
-            SAXParser parser = spf.newSAXParser();
+            SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
             String path = "xml/patternfacet/states.xml";
             File f = TestData.copy(this, path);
@@ -171,11 +171,11 @@ public class GMLParserTest {
 
     @Test
     public void testFMERoadsFeatures() throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        parserFactory.setValidating(false);
 
-        SAXParser parser = spf.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
         String path = "xml/fme/roads/roads.xml";
         File f = TestData.copy(this, path);
@@ -199,11 +199,11 @@ public class GMLParserTest {
 
     @Test
     public void testFMELakesFeatures() throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        parserFactory.setValidating(false);
 
-        SAXParser parser = spf.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
         String path = "xml/fme/lakes/lakes.xml";
         File f = TestData.copy(this, path);
@@ -322,11 +322,11 @@ public class GMLParserTest {
     @Test
     public void testProblemFeatures() {
         try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setNamespaceAware(true);
-            spf.setValidating(false);
+            SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+            parserFactory.setNamespaceAware(true);
+            parserFactory.setValidating(false);
 
-            SAXParser parser = spf.newSAXParser();
+            SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
             String path = "xml/iba-gml-bad.xml";
             File f = TestData.copy(this, path);

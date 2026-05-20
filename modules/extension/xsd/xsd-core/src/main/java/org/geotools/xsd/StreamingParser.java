@@ -18,10 +18,13 @@ package org.geotools.xsd;
 
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.impl.ElementNameStreamingParserHandler;
 import org.geotools.xsd.impl.StreamingParserHandler;
 import org.geotools.xsd.impl.TypeStreamingParserHandler;
@@ -122,6 +125,8 @@ import org.xml.sax.SAXException;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class StreamingParser {
+    public static Logger LOGGER = Logging.getLogger(StreamingParser.class.getName());
+
     /** The sax driver / handler. */
     private StreamingParserHandler handler;
 
@@ -190,7 +195,7 @@ public class StreamingParser {
             c = clazz.getConstructor(new Class[] {Configuration.class, String.class});
             return (StreamingParserHandler) c.newInstance(new Object[] {configuration, xpath});
         } catch (Exception e) {
-            // shoudl not happen
+            // should not happen
             throw new RuntimeException(e);
         }
 
@@ -200,9 +205,9 @@ public class StreamingParser {
     /** Internal constructor. */
     protected StreamingParser(Configuration configuration, InputStream input, StreamingParserHandler handler)
             throws ParserConfigurationException, SAXException {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        parser = spf.newSAXParser();
+        SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+        parserFactory.setNamespaceAware(true);
+        this.parser = XMLUtils.newSAXParser(parserFactory);
 
         this.handler = handler;
         this.input = input;
@@ -210,6 +215,11 @@ public class StreamingParser {
 
     public void setEntityResolver(EntityResolver entityResolver) {
         handler.setEntityResolver(entityResolver);
+        try {
+            parser.getXMLReader().setEntityResolver(entityResolver);
+        } catch (SAXException e) {
+            LOGGER.fine("Unable to set entity resolver on parser: " + e.getMessage());
+        }
     }
 
     /**

@@ -29,7 +29,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.BinaryLogicOperator;
 import org.geotools.api.filter.Filter;
@@ -44,6 +43,7 @@ import org.geotools.filter.LogicFilterImpl;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
@@ -90,9 +90,7 @@ public class FilterFilterTest {
         GMLFilterDocument documentFilter = new GMLFilterDocument(geometryFilter);
 
         // read in XML file and parse to content handler
-
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser parser = factory.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser();
         ParserAdapter adapter = new ParserAdapter(parser.getParser());
         adapter.setContentHandler(documentFilter);
         adapter.parse(requestSource);
@@ -147,8 +145,7 @@ public class FilterFilterTest {
         GMLFilterDocument documentFilter = new GMLFilterDocument(geometryFilter);
 
         // read in XML file and parse to content handler
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser parser = factory.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser();
         ParserAdapter adapter = new ParserAdapter(parser.getParser());
         adapter.setContentHandler(documentFilter);
         adapter.parse(requestSource);
@@ -206,9 +203,7 @@ public class FilterFilterTest {
         GMLFilterDocument documentFilter = new GMLFilterDocument(geometryFilter);
 
         // read in XML file and parse to content handler
-
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser parser = factory.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser();
         ParserAdapter adapter = new ParserAdapter(parser.getParser());
         adapter.setContentHandler(documentFilter);
         adapter.parse(requestSource);
@@ -260,7 +255,7 @@ public class FilterFilterTest {
 
         InputSource requestSource = new InputSource(reader);
 
-        //		 instantiante parsers and content handlers
+        // instantiate  parsers and content handlers
         MyHandler contentHandler = new MyHandler();
         FilterFilter filterParser = new FilterFilter(contentHandler, null);
         GMLFilterGeometry geometryFilter = new GMLFilterGeometry(filterParser);
@@ -270,10 +265,10 @@ public class FilterFilterTest {
         //        logger.setLevel(Level.ALL);
         //        ConsoleHandler consoleHandler = new ConsoleHandler();
         //        consoleHandler.setLevel(Level.ALL);
-        //		logger.addHandler(consoleHandler);
+        //        logger.addHandler(consoleHandler);
+
         // read in XML file and parse to content handler
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser parser = factory.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser();
         ParserAdapter adapter = new ParserAdapter(parser.getParser());
         adapter.setContentHandler(documentFilter);
         adapter.parse(requestSource);
@@ -325,8 +320,7 @@ public class FilterFilterTest {
         logger.addHandler(consoleHandler);
 
         // read in XML file and parse to content handler
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser parser = factory.newSAXParser();
+        SAXParser parser = XMLUtils.newSAXParser();
         ParserAdapter adapter = new ParserAdapter(parser.getParser());
         adapter.setContentHandler(documentFilter);
         adapter.parse(requestSource);

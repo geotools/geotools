@@ -41,11 +41,11 @@ public class GMLParser2Test {
     @Test
     public void testFMEPostalFeatures() throws SAXException, IOException {
         try {
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            spf.setNamespaceAware(true);
-            spf.setValidating(false);
+            SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory();
+            parserFactory.setNamespaceAware(true);
+            parserFactory.setValidating(false);
 
-            SAXParser parser = spf.newSAXParser();
+            SAXParser parser = XMLUtils.newSAXParser(parserFactory);
 
             String path = "city/dj.xml";
             File f = TestData.file(this, path);
@@ -67,141 +67,4 @@ public class GMLParser2Test {
             Assert.fail(e.toString());
         }
     }
-
-    //    public void testFMEPostalFeatures() throws SAXException, IOException {
-    //        try {
-    //            SAXParserFactory spf = SAXParserFactory.newInstance();
-    //            spf.setNamespaceAware(true);
-    //            spf.setValidating(false);
-    //
-    //            SAXParser parser = spf.newSAXParser();
-    //
-    //            String path = "fme/postal/postal.gml";
-    //            File f = TestData.file(this,path);
-    //            URI u = f.toURI();
-    //
-    //            XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u,null);
-    //            XMLSAXHandler.setLogLevel(Level.WARNING);
-    //            XSISAXHandler.setLogLevel(Level.WARNING);
-    //            XMLElementHandler.setLogLevel(Level.WARNING);
-    //            XSIElementHandler.setLogLevel(Level.WARNING);
-    //
-    //            parser.parse(f, xmlContentHandler);
-    //
-    //            Object doc = xmlContentHandler.getDocument();
-    //            assertNotNull("Document missing", doc);
-    //            System.out.println(doc);
-    //
-    //            Object[] objs = (Object[])doc;
-    //
-    //            assertTrue("Should have 95054 features + 1 bbox : "+objs.length,objs.length ==
-    // 95055);
-    //
-    //        } catch (Throwable e) {
-    //            e.printStackTrace();
-    //            fail(e.toString());
-    //        }
-    //    }
-    //
-    //    public void testFMEFedCenFeatures() throws SAXException, IOException {
-    //        try {
-    //            SAXParserFactory spf = SAXParserFactory.newInstance();
-    //            spf.setNamespaceAware(true);
-    //            spf.setValidating(false);
-    //
-    //            SAXParser parser = spf.newSAXParser();
-    //
-    //            String path = "fme/fed-cen/fed308_a.gml";
-    //            File f = TestData.file(this,path);
-    //            URI u = f.toURI();
-    //
-    //            XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u,null);
-    //            XMLSAXHandler.setLogLevel(Level.WARNING);
-    //            XSISAXHandler.setLogLevel(Level.WARNING);
-    //            XMLElementHandler.setLogLevel(Level.WARNING);
-    //            XSIElementHandler.setLogLevel(Level.WARNING);
-    //
-    //            parser.parse(f, xmlContentHandler);
-    //
-    //            Object doc = xmlContentHandler.getDocument();
-    //            assertNotNull("Document missing", doc);
-    //            System.out.println(doc);
-    //
-    //            Object[] objs = (Object[])doc;
-    //
-    //            assertTrue("Should have N features + 1 bbox : "+objs.length,objs.length > 2);
-    //
-    //        } catch (Throwable e) {
-    //            e.printStackTrace();
-    //            fail(e.toString());
-    //        }
-    //    }
-    //
-    //    public void testFMEForestFeatures() throws SAXException, IOException {
-    //        try {
-    //            SAXParserFactory spf = SAXParserFactory.newInstance();
-    //            spf.setNamespaceAware(true);
-    //            spf.setValidating(false);
-    //
-    //            SAXParser parser = spf.newSAXParser();
-    //
-    //            String path = "fme/forest_districts/forest-districts-2003-04.gml";
-    //            File f = TestData.file(this,path);
-    //            URI u = f.toURI();
-    //
-    //            XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u,null);
-    //            XMLSAXHandler.setLogLevel(Level.WARNING);
-    //            XSISAXHandler.setLogLevel(Level.WARNING);
-    //            XMLElementHandler.setLogLevel(Level.WARNING);
-    //            XSIElementHandler.setLogLevel(Level.WARNING);
-    //
-    //            parser.parse(f, xmlContentHandler);
-    //
-    //            Object doc = xmlContentHandler.getDocument();
-    //            assertNotNull("Document missing", doc);
-    //            System.out.println(doc);
-    //
-    //            Object[] objs = (Object[])doc;
-    //
-    //            assertTrue("Should have N features + 1 bbox : "+objs.length,objs.length > 2);
-    //
-    //        } catch (Throwable e) {
-    //            e.printStackTrace();
-    //            fail(e.toString());
-    //        }
-    //    }
-    //
-    //    public void testFMEVictoriaFeatures() throws SAXException, IOException {
-    //        try {
-    //            SAXParserFactory spf = SAXParserFactory.newInstance();
-    //            spf.setNamespaceAware(true);
-    //            spf.setValidating(false);
-    //
-    //            SAXParser parser = spf.newSAXParser();
-    //
-    //            String path = "fme/victoria/victoria.gml";
-    //            File f = TestData.file(this,path);
-    //            URI u = f.toURI();
-    //
-    //            XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u,null);
-    //            XMLSAXHandler.setLogLevel(Level.WARNING);
-    //            XSISAXHandler.setLogLevel(Level.WARNING);
-    //            XMLElementHandler.setLogLevel(Level.WARNING);
-    //            XSIElementHandler.setLogLevel(Level.WARNING);
-    //
-    //            parser.parse(f, xmlContentHandler);
-    //
-    //            Object doc = xmlContentHandler.getDocument();
-    //            assertNotNull("Document missing", doc);
-    //            System.out.println(doc);
-    //
-    //            Object[] objs = (Object[])doc;
-    //
-    //            assertTrue("Should have N features + 1 bbox : "+objs.length,objs.length > 2);
-    //
-    //        } catch (Throwable e) {
-    //            e.printStackTrace();
-    //            fail(e.toString());
-    //        }
-    //    }
 }

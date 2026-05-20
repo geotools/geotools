@@ -37,7 +37,7 @@ public class StreamingParserTest {
         StreamingParser parser = new StreamingParser(new MLConfiguration(), in, new QName(ML.NAMESPACE, "mail"));
         parser.setEntityResolver(PreventLocalEntityResolver.INSTANCE);
         // StreamingParser returns null if the parsing fails
-        assertNull(parser.parse());
+        assertNull("parsing failed", parser.parse());
     }
 
     @Test

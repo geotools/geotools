@@ -23,11 +23,16 @@ import org.xml.sax.SAXException;
 
 /** Placeholder EntityResolver used to test {@link SVGGraphicFactory#defaultResolver()}. */
 public class PlaceholderEntityResolver implements EntityResolver {
-    /** No argumentgs constructor */
+    /** No arguments constructor */
     public PlaceholderEntityResolver() {}
 
     @Override
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "PlaceholderEntityResolver";
     }
 }

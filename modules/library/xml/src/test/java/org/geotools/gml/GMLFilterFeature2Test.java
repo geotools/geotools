@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.xml.XMLUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.InputSource;
@@ -30,7 +30,7 @@ public class GMLFilterFeature2Test {
 
     private static SAXParser createParser() {
         try {
-            return SAXParserFactory.newInstance().newSAXParser();
+            return XMLUtils.newSAXParser();
         } catch (ParserConfigurationException | SAXException exception) {
             throw new RuntimeException(exception);
         }

@@ -36,17 +36,40 @@ jobs:
         run: |
           sudo ethtool -K eth0 tx off rx off
       - name: Build GeoTools (no tests, prepare fresh artifacts)
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
+          echo "Building GeoTools for integration qa tests on $BRANCH_NAME"
           mvn -B -ntp clean install -T1C -Dall --file pom.xml -DskipTests
       - name: Checkout GeoWebCache and GeoServer
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
           cd ~
           echo "Preparing git ssh checkouts"
           mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
           echo "Checking out GeoWebCache"
-          git clone https://github.com/GeoWebCache/geowebcache.git geowebcache
+          mkdir geowebcache
+          git clone -q https://github.com/GeoWebCache/geowebcache.git geowebcache
+          cd geowebcache
+          GWC_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
+          if [ "$GWC_BRANCH_EXISTS" -eq 0 ]; then
+            echo "Branch found on geowebcache. Switching and tracking: $BRANCH_NAME"
+            git switch "$BRANCH_NAME"
+          fi
+          cd ..
+          
           echo "Checking out GeoServer"
-          git clone https://github.com/geoserver/geoserver.git geoserver
+          mkdir geoserver
+          git clone -q https://github.com/geoserver/geoserver.git geoserver
+          cd geoserver
+          GS_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
+          if [ "$GS_BRANCH_EXISTS" -eq 0 ]; then
+            echo "Branch found on geoserver. Switching and tracking: $BRANCH_NAME"
+            git switch "$BRANCH_NAME"
+          fi
+          cd ..
+          
       - name: Build GeoWebCache with QA checks
         run: |
           cd ~

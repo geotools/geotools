@@ -38,8 +38,6 @@ jobs:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
           echo "Building GeoTools for integration tests on $BRANCH_NAME"
-          pwd
-          echo "GitHub workspace: $GITHUB_WORKSPACE"
           mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn clean install -T1C -Dall --file pom.xml -DskipTests
       - name: Checkout GeoWebCache, GeoServer and ...
         env:

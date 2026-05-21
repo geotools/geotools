@@ -47,6 +47,8 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import org.geotools.util.DefaultEntityResolver;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -696,7 +698,16 @@ public class XMLUtils {
         }
     }
 
-    /** Wrapper ensuring DocumentBuilderFactory configured with {@code GeoTools.getEntityResolver(hints)}. */
+    /**
+     * Wrapper ensuring DocumentBuilderFactory configured with {@code GeoTools.getEntityResolver(hints)}.
+     *
+     * <p>This class provides special handling for known trusted EntityResolver implementations:
+     *
+     * <ul>
+     *   <li>{@code DefaultEntityResolver}: Allowing external {@code http} access
+     *   <li>{@code NullEntityResolver}: Allowing external {@code all} access
+     * </ul>
+     */
     private static class GTDocumentBuilderFactory extends DocumentBuilderFactory {
         final Hints hints;
         private final DocumentBuilderFactory factory;
@@ -708,6 +719,19 @@ public class XMLUtils {
                 this.factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             } catch (ParserConfigurationException e) {
                 // feature secure processing recommended, but not supported
+            }
+            // Sensible factory defaults based on EntityResolver
+            EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
+            try {
+                if (entityResolver == DefaultEntityResolver.INSTANCE) {
+                    this.factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "http");
+                    this.factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "http");
+                } else if (entityResolver == NullEntityResolver.INSTANCE) {
+                    this.factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+                    this.factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
+                }
+            } catch (IllegalArgumentException notSupported) {
+                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
             }
         }
 

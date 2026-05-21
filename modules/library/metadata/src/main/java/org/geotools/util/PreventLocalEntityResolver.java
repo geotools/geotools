@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -36,7 +35,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * <p>When parsing an XML entity reference to a local file a SAXException is thrown, which can be handled appropriately.
  *
- * <p>This implementation is both recommended and the default returned by {@link GeoTools#getEntityResolver()}.
+ * <p>For a more restrictive EntityResolver {@link DefaultEntityResolver} is recommended.
  *
  * @author Davide Savazzi - geo-solutions.it
  */

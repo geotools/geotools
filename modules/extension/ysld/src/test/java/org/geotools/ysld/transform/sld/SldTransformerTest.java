@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.StringWriter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.xml.XMLUtils;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlUtil;
 import org.geotools.ysld.Ysld;
@@ -1952,7 +1953,7 @@ public class SldTransformerTest {
 
     SldTransformer transformer(String dirname, String filename) throws Exception {
         StringWriter yaml = new StringWriter();
-        XMLInputFactory factory = XMLInputFactory.newFactory();
+        XMLInputFactory factory = XMLUtils.newXMLInputFactory();
         XMLStreamReader xml = factory.createXMLStreamReader(YsldTests.sld(dirname, filename));
         return new SldTransformer(xml, yaml);
     }

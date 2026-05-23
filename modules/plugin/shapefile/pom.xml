@@ -147,7 +147,6 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-xml</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>

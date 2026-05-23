@@ -37,6 +37,7 @@ import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.util.NullEntityResolver;
+import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -191,8 +192,7 @@ public class XmlStreamGeometryReaderParameterizedTest {
     }
 
     private void testWithGmlString(final String gml, final boolean isGml3_2) throws Exception {
-        XMLInputFactory f = XMLInputFactory.newInstance();
-        f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        XMLInputFactory f = XMLUtils.newXMLInputFactory();
         XMLStreamReader r = f.createXMLStreamReader(new StringReader(gml));
         XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r);
         r.nextTag();

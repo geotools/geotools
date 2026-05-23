@@ -30,6 +30,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLResolver;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.SourceLocator;
@@ -71,6 +74,50 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class XMLUtils {
     static final Logger LOGGER = Logging.getLogger(XMLUtils.class);
+
+    //
+    // XMLInputFactory
+    //
+
+    /**
+     * Creates an XMLInputFactory configured with GeoTools library defaults.
+     *
+     * @return XMLInputFactory
+     */
+    public static XMLInputFactory newXMLInputFactory() {
+        return newXMLInputFactory(GeoTools.getDefaultHints());
+    }
+    /**
+     * Creates an XMLInputFactory configured with GeoTools library defaults.
+     *
+     * @param hints Factory hints
+     * @return XMLInputFactory
+     */
+    public static XMLInputFactory newXMLInputFactory(Hints hints) {
+        XMLInputFactory factory = XMLInputFactory.newInstance(); // NOPMD AvoidXMLInputFactory
+
+        // Disable DTD: few of our protocols / formats are old enough to require DTD
+        if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
+                // disable resolving of external DTD entities (coalescing needs to be false)
+                factory.setProperty(XMLInputFactory.IS_COALESCING, false);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES)) {
+                factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+            }
+        }
+        if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
+            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+        }
+
+        // Disable XSD: Expect XMLInputFactory to uses Validator for access XSD
+        if (factory.isPropertySupported(XMLConstants.ACCESS_EXTERNAL_SCHEMA)) {
+            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        }
+         factory.setXMLResolver(new GTXMLResolver(GeoTools.getEntityResolver(hints), factory.getXMLResolver(), hints));
+        return factory;
+    }
 
     //
     // SAXParser and SAXParserFactory utility methods
@@ -1042,8 +1089,7 @@ public class XMLUtils {
         @Override
         public Source resolve(String href, String base) throws TransformerException {
             try {
-                // step 1: check with entity resolver, will return null (external), source (internal), or exception
-                // (forbidden)
+                // step 1: check resolver: null (external), source (internal), or exception (forbidden)
                 InputSource source = entityResolver.resolveEntity(href, base);
                 if (source != null) {
                     // resolved internally, wrap and apply GeoTools configuration
@@ -1065,6 +1111,14 @@ public class XMLUtils {
             } catch (SAXException | IOException e) {
                 throw new TransformerException(e);
             }
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("GTURIResolver{");
+            sb.append("uriResolver=").append(uriResolver);
+            sb.append('}');
+            return sb.toString();
         }
     }
 
@@ -1141,6 +1195,73 @@ public class XMLUtils {
         @Override
         public String toString() {
             return "SAXErrorHandler";
+        }
+    }
+
+    /** EntityResolver that delegates to EntityResolver to verify allowed locations. */
+    private static class GTXMLResolver implements XMLResolver {
+
+        private final EntityResolver entityResolver;
+        private final XMLResolver xmlResolver;
+        private final Hints hints;
+
+        public GTXMLResolver(EntityResolver entityResolver, XMLResolver xmlResolver, Hints hints) {
+            this.entityResolver = entityResolver;
+            this.xmlResolver = xmlResolver;
+            this.hints = hints;
+        }
+
+        /**
+         * java.io.InputStream (2) javax.xml.stream.XMLStreamReader (3) java.xml.stream.XMLEventReader.
+         *
+         * @param publicID The public identifier of the external entity being referenced, or null if none was supplied.
+         * @param systemID The system identifier of the external entity being referenced.
+         * @param baseURI Absolute base URI associated with systemId.
+         * @param namespace The namespace of the entity to resolve.
+         * @return
+         * @throws XMLStreamException
+         */
+        @Override
+        public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace)
+                throws XMLStreamException {
+            // step 1: check with xml resolver: null (external), source (internal), or exception (forbidden)
+            InputSource source = null;
+            try {
+                source = entityResolver.resolveEntity(publicID, systemID);
+                if (source != null) {
+                    // 1. Prefer the character stream (Reader) if available
+                    if (source.getCharacterStream() != null) {
+                        XMLInputFactory factory = XMLUtils.newXMLInputFactory(hints);
+                        return factory.createXMLStreamReader(source.getCharacterStream());
+                    }
+                    // 2. Fall back to the byte stream (InputStream)
+                    else if (source.getByteStream() != null) {
+                        XMLInputFactory factory = XMLUtils.newXMLInputFactory(hints);
+                        return factory.createXMLStreamReader(source.getByteStream(), source.getEncoding());
+                    }
+                    // 3. Allow factory to resolve systemId
+                    else if (source.getSystemId() != null) {
+                        return null;
+                    }
+                }
+                // step 2: check with uri resolver
+                if (xmlResolver != null) {
+                    return xmlResolver.resolveEntity(publicID, systemID, baseURI, namespace);
+                } else {
+                    // step 3: allow input factory to handle
+                    return null;
+                }
+            } catch (SAXException | IOException e) {
+                throw new XMLStreamException(e);
+            }
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("GTXMLResolver{");
+            sb.append("xmlResolver=").append(xmlResolver);
+            sb.append('}');
+            return sb.toString();
         }
     }
 }

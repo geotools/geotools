@@ -35,6 +35,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 /**
  * @author Christian Mueller
@@ -67,7 +69,12 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
 
     static {
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
+        try {
+            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
         URL url = GeneralizationInfosProviderImpl.class.getResource("/geninfos_1.0.xsd");
         Schema schema = null;
         try {
@@ -77,6 +84,12 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
             throw new RuntimeException(e);
         }
         VALIDATOR = schema.newValidator();
+        try {
+            VALIDATOR.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            VALIDATOR.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

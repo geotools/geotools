@@ -16,9 +16,6 @@
  */
 package org.geotools.data.shapefile.shp.xml;
 
-import static javax.xml.stream.XMLInputFactory.IS_COALESCING;
-import static javax.xml.stream.XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES;
-import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
 import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
@@ -31,6 +28,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.xml.XMLUtils;
 import org.locationtech.jts.geom.Envelope;
 
 public class ShpXmlFileReader implements FileReader {
@@ -47,12 +45,7 @@ public class ShpXmlFileReader implements FileReader {
     }
 
     private XMLStreamReader reader(InputStream in) throws XMLStreamException {
-        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        // disable resolving of external DTD entities (coalescing needs to be false)
-        inputFactory.setProperty(IS_COALESCING, false);
-        inputFactory.setProperty(IS_REPLACING_ENTITY_REFERENCES, false);
-        // disallow DTDs entirely
-        inputFactory.setProperty(SUPPORT_DTD, false);
+        XMLInputFactory inputFactory = XMLUtils.newXMLInputFactory();
 
         return inputFactory.createXMLStreamReader(in, "UTF-8");
     }

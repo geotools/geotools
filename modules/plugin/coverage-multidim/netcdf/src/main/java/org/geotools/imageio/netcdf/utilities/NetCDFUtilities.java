@@ -61,6 +61,7 @@ import org.geotools.io.MemoryMappedFileCache;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.xml.XMLUtils;
 import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.featurecollection.FeatureCollectionConfigBuilder;
 import ucar.ma2.Array;
@@ -788,8 +789,7 @@ public class NetCDFUtilities {
             XMLStreamReader reader = null;
             try {
                 streamSource = new StreamSource(input);
-                XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-                inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+                XMLInputFactory inputFactory = XMLUtils.newXMLInputFactory();
                 reader = inputFactory.createXMLStreamReader(streamSource);
                 reader.nextTag();
                 if ("netcdf".equals(reader.getName().getLocalPart())) {

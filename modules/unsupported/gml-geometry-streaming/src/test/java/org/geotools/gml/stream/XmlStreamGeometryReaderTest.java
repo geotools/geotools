@@ -27,6 +27,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -36,7 +37,7 @@ import org.locationtech.jts.geom.Point;
 public class XmlStreamGeometryReaderTest {
     @Test
     public void testUnsafeXMLStreamReader() throws Exception {
-        XMLInputFactory f = XMLInputFactory.newInstance();
+        XMLInputFactory f = XMLInputFactory.newInstance(); // NOPMD AvoidXMLInputFactory
         // DTD support allows XXE and XML bombs
         f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
         XMLStreamReader r = f.createXMLStreamReader(new StringReader("<root></root>"));
@@ -48,8 +49,7 @@ public class XmlStreamGeometryReaderTest {
 
     @Test
     public void testUnknownElement() throws XMLStreamException {
-        XMLInputFactory f = XMLInputFactory.newInstance();
-        f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        XMLInputFactory f = XMLUtils.newXMLInputFactory();
         XMLStreamReader r = f.createXMLStreamReader(new StringReader("<unknown></unknown>"));
         XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r, new GeometryFactory());
         r.nextTag();
@@ -59,8 +59,7 @@ public class XmlStreamGeometryReaderTest {
 
     @Test
     public void testZ() throws XMLStreamException, FactoryException, IOException {
-        XMLInputFactory f = XMLInputFactory.newInstance();
-        f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        XMLInputFactory f = XMLUtils.newXMLInputFactory();
         XMLStreamReader r = f.createXMLStreamReader(
                 new StringReader(
                         "<gml:Point xmlns:gml=\"http://www.opengis.net/gml\" srsDimension=\"3\"><gml:pos>1 2 3</gml:pos></gml:Point>"));

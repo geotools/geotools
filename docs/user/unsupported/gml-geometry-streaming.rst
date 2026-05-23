@@ -15,8 +15,7 @@ Efficiently read GML geometry elements using StAX in a streaming manner. No writ
 
 Here is a small example from the test cases::
 
-    XMLInputFactory f = XMLInputFactory.newInstance();
-    f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+    XMLInputFactory f = XMLUtils.newXMLInputFactory();
     XMLStreamReader r = f.createXMLStreamReader(new StringReader(gmlStringSnippet));
     XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r);
     r.nextTag();

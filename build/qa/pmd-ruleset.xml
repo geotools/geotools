@@ -252,6 +252,26 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
       </property>
     </properties>
   </rule>
+  
+  <rule name="AvoidXMLInputFactory"
+        language="java"
+        message="Do not use XMLInputFactory.newInstance() directly; recommend XMLUtils.newXMLInputFactory()"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <description>
+      Notice use of SAXParserFactory.newSAXParser() which should be avoided in favor of
+      XMLUtils.newSAXParser(Hints) to respect GeoTools init configuration.
+    </description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          <![CDATA[
+              //MethodCall[pmd-java:matchesSig("javax.xml.stream.XMLInputFactory#newInstance()")]
+              ]]>
+        </value>
+      </property>
+    </properties>
+  </rule>
 
 
 </ruleset>

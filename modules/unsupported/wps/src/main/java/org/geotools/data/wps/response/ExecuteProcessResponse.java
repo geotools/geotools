@@ -31,6 +31,7 @@ import org.geotools.data.ows.Response;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPSConfiguration;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.xml.sax.SAXException;
@@ -70,7 +71,7 @@ public class ExecuteProcessResponse extends Response {
                     inputStream.mark(8192);
 
                     try {
-                        XMLInputFactory factory = XMLInputFactory.newFactory();
+                        XMLInputFactory factory = XMLUtils.newXMLInputFactory();
                         // disable DTDs
                         factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
                         // disable external entities

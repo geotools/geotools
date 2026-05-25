@@ -107,6 +107,7 @@ public class XMLUtils {
                 factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
             }
         }
+
         if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
             factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         }
@@ -115,7 +116,8 @@ public class XMLUtils {
         if (factory.isPropertySupported(XMLConstants.ACCESS_EXTERNAL_SCHEMA)) {
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         }
-         factory.setXMLResolver(new GTXMLResolver(GeoTools.getEntityResolver(hints), factory.getXMLResolver(), hints));
+        // factory.setXMLResolver(new GTXMLResolver(GeoTools.getEntityResolver(hints), factory.getXMLResolver(),
+        // hints));
         return factory;
     }
 

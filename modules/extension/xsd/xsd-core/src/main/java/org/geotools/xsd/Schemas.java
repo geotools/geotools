@@ -97,6 +97,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -158,21 +159,24 @@ public class Schemas {
 
             String namespaceURI = conf.getNamespaceURI();
             String schemaLocation = null;
-
-            // first check if entity resolver would allow reading the schema location
-            if (entityResolver != null) {
-                try {
-                    entityResolver.resolveEntity(null, conf.getXSD().getSchemaLocation());
-                } catch (IOException | SAXException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
             try {
                 URL location = new URL(conf.getXSD().getSchemaLocation());
                 schemaLocation = location.toExternalForm();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
+            }
+
+            // first check if entity resolver would allow reading the schema location
+            if (entityResolver != null) {
+                try {
+                    if (entityResolver instanceof EntityResolver2 entityResolver2) {
+                        entityResolver2.resolveEntity(null, null, null, schemaLocation);
+                    } else {
+                        entityResolver.resolveEntity(null, schemaLocation);
+                    }
+                } catch (IOException | SAXException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             if (LOGGER.isLoggable(Level.FINE)) {

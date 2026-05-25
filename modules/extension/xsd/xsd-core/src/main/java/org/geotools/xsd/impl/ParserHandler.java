@@ -588,7 +588,7 @@ public class ParserHandler extends DefaultHandler2 {
                         } catch (Exception e) {
                             String msg =
                                     "Error loading schema for namespace: " + namespace + " at location: " + location;
-                            logger.warning(msg);
+                            logger.log(Level.WARNING,msg,e);
 
                             if (isStrict()) {
                                 // strict mode, throw exception

@@ -56,6 +56,10 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.referencing.CRS;
+import org.geotools.util.DefaultEntityResolver;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.PreventLocalEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.XSD;
@@ -347,24 +351,31 @@ public abstract class AbstractGetFeatureParserTest {
 
     @Test
     public void testParseGeoServer_ArchSites_XXE() throws Exception {
-        final QName featureName = GEOS_ARCHSITES_11.TYPENAME;
-        final URL schemaLocation = GEOS_ARCHSITES_11.SCHEMA;
-        final URL data = WFSTestData.url("GeoServer_2.0/1.1.0_XXE_GetFeature/GetFeature_archsites.xml");
-
-        final String[] properties = {"cat", "str1", "the_geom"};
-        final SimpleFeatureType featureType =
-                getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
-
-        GetParser<SimpleFeature> parser = getParser(featureName, schemaLocation, featureType, data, null);
         try {
-            IOException exception = assertThrows(IOException.class, () -> parser.parse());
-            assertThat(exception.getCause(), instanceOf(XMLStreamException.class));
-            exception.printStackTrace();
-            assertThat(
-                    exception.getCause().getMessage(),
-                    containsString("The entity \"xxe\" was referenced, but not declared"));
-        } finally {
-            parser.close();
+            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+
+            final QName featureName = GEOS_ARCHSITES_11.TYPENAME;
+            final URL schemaLocation = GEOS_ARCHSITES_11.SCHEMA;
+            final URL data = WFSTestData.url("GeoServer_2.0/1.1.0_XXE_GetFeature/GetFeature_archsites.xml");
+
+            final String[] properties = {"cat", "str1", "the_geom"};
+            final SimpleFeatureType featureType =
+                    getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
+
+            GetParser<SimpleFeature> parser = getParser(featureName, schemaLocation, featureType, data, null);
+            try {
+                IOException exception = assertThrows(IOException.class, () -> parser.parse());
+                assertThat(exception.getCause(), instanceOf(XMLStreamException.class));
+                exception.printStackTrace();
+                assertThat(
+                        exception.getCause().getMessage(),
+                        containsString("The entity \"xxe\" was referenced, but not declared"));
+            } finally {
+                parser.close();
+            }
+        }
+        finally {
+
         }
     }
 

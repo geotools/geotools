@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xsd.Binding;
@@ -125,7 +126,7 @@ public class EmfComplexFeatureReader {
         // create stream parser
 
         try (InputStream input = resolvedLocation.openStream()) {
-            XMLInputFactory factory = XMLInputFactory.newFactory();
+            XMLInputFactory factory = XMLUtils.newXMLInputFactory();
             // disable DTDs
             factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
             // disable external entities

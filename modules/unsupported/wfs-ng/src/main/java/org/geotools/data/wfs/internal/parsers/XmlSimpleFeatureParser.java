@@ -26,6 +26,7 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.api.data.DataSourceException;
@@ -43,8 +44,13 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.gml.stream.XmlStreamGeometryReader;
 import org.geotools.gml3.GML;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.wfs.WFS;
+import org.geotools.xml.XMLUtils;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.EntityResolver2;
 
 /**
  * A {@link GetParser<SimpleFeature>} implementation that uses plain xml pull to parse a GetFeature response.
@@ -92,7 +98,25 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         this.builder = new SimpleFeatureBuilder(targetType);
 
         try {
-            XMLInputFactory factory = XMLInputFactory.newFactory();
+            XMLInputFactory factory = XMLUtils.newXMLInputFactory();
+            final EntityResolver entityResolver = GeoTools.getEntityResolver(null);
+            factory.setXMLResolver(new XMLResolver() {
+                @Override
+                public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace)
+                        throws XMLStreamException {
+                    try {
+                        if (entityResolver instanceof EntityResolver2 entityResolver2) {
+                            entityResolver2.resolveEntity(publicID, systemID, baseURI, namespace);
+                        } else {
+                            entityResolver.resolveEntity(publicID, systemID);
+                        }
+                    } catch (IOException | SAXException e) {
+                        throw new XMLStreamException(e);
+                    }
+                    return null;
+                }
+            });
+
             // disable DTDs
             factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
             // disable external entities

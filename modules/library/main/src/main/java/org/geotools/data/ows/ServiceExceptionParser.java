@@ -50,6 +50,7 @@ public class ServiceExceptionParser {
         List<ServiceException> exceptions = new ArrayList<>();
         try {
             XMLInputFactory inputFactory = XMLInputFactory.newInstance(); // NOPMD AvoidXMLInputFactory
+
             // disable resolving of external DTD entities (coalescing needs to be false)
             inputFactory.setProperty(IS_COALESCING, false);
             inputFactory.setProperty(IS_REPLACING_ENTITY_REFERENCES, false);

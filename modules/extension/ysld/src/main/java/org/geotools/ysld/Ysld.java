@@ -41,6 +41,7 @@ import org.geotools.api.style.ResourceLocator;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.zoom.ZoomContextFinder;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.ysld.encode.YsldEncoder;
 import org.geotools.ysld.parse.YsldParser;
@@ -115,7 +116,7 @@ public class Ysld {
     public static XMLStreamReader xmlReader(Object input) throws IOException {
         YsldInput in = reader(input);
         try {
-            XMLInputFactory xmlFactory = XMLInputFactory.newFactory();
+            XMLInputFactory xmlFactory = XMLUtils.newXMLInputFactory();
             try {
                 return xmlFactory.createXMLStreamReader(in.reader);
             } catch (XMLStreamException e) {

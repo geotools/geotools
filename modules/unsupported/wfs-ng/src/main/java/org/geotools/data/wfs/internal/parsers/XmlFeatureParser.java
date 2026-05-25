@@ -40,6 +40,7 @@ import org.geotools.gml.stream.XmlStreamGeometryReader;
 import org.geotools.gml3.GML;
 import org.geotools.util.Converters;
 import org.geotools.wfs.WFS;
+import org.geotools.xml.XMLUtils;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
@@ -77,7 +78,7 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
         this.targetType = targetType;
 
         try {
-            XMLInputFactory factory = XMLInputFactory.newFactory();
+            XMLInputFactory factory = XMLUtils.newXMLInputFactory();
             // disable DTDs
             factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
             // disable external entities

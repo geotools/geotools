@@ -92,10 +92,13 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
     private EntityResolver getTempFileEntityResolver(EntityResolver resolver, File tempSchema) {
         if (resolver == null) return null;
-        if (resolver instanceof EntityResolver2 resolver2) return new TempEntityResolver2(resolver2, tempSchema);
+        if (resolver instanceof EntityResolver2 resolver2) {
+            return new TempEntityResolver2(resolver2, tempSchema);
+        }
         return new TempEntityResolver(resolver, tempSchema);
     }
 
+    /** Wraps provided EntityResolver to handle tempSchemaURIs internally. */
     private static class TempEntityResolver implements EntityResolver {
         private final EntityResolver delegate;
         private Set<String> tempSchemaURIs;
@@ -152,8 +155,14 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
         protected boolean isTempSchema(String systemId) {
             return tempSchemaURIs.contains(systemId);
         }
+
+        @Override
+        public String toString() {
+            return "TempEntityResolver{" + this.delegate + "}";
+        }
     }
 
+    /** Wraps provided EntityResolver2 to handle tempSchemaURIs internally. */
     private static class TempEntityResolver2 extends TempEntityResolver implements EntityResolver2 {
         EntityResolver2 delegate;
 
@@ -171,8 +180,15 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
         @Override
         public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
                 throws SAXException, IOException {
-            if (isTempSchema(systemId)) return null;
+            if (isTempSchema(systemId)) {
+                return null; // handled internally
+            }
             return delegate.resolveEntity(name, publicId, baseURI, systemId);
+        }
+
+        @Override
+        public String toString() {
+            return "TempEntityResolver2{" + this.delegate + "}";
         }
     }
 }

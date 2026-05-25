@@ -141,7 +141,7 @@ public class PullParser {
     }
 
     XMLStreamReader createPullParser(InputStream input) {
-        XMLInputFactory factory = XMLInputFactory.newInstance();//XMLUtils.newXMLInputFactory();
+        XMLInputFactory factory = XMLUtils.newXMLInputFactory();
         factory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
         factory.setProperty(XMLInputFactory.IS_VALIDATING, false);
         factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);

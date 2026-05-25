@@ -39,9 +39,11 @@ import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.KVP;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLHandlerHints;
 import org.xml.sax.EntityResolver;
@@ -423,14 +425,20 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         String name = "WFSDataStoreFactory:ENTITY_RESOLVER";
         String title = "EntityResolver";
         String description = "Sets the entity resolver used to expand XML entities";
-        parametersInfo[19] = ENTITY_RESOLVER = new WFSFactoryParam<>(
-                name,
-                EntityResolver.class,
-                title,
-                description,
-                PreventLocalEntityResolver.INSTANCE,
-                Parameter.LEVEL,
-                "program");
+        parametersInfo[19] = ENTITY_RESOLVER =
+                new WFSFactoryParam<>(
+                        name,
+                        EntityResolver.class,
+                        title,
+                        description,
+                        DefaultEntityResolver.INSTANCE,
+                        Parameter.LEVEL,
+                        "program") {
+                    @Override
+                    public Object getDefaultValue() {
+                        return GeoTools.getEntityResolver(null);
+                    }
+                };
     }
 
     /** Optional {@code Boolean} use connection pooling for http(s) requests */

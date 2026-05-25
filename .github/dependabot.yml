@@ -26,6 +26,17 @@ updates:
       - dependency-name: "org.codehaus.mojo:*"
       - dependency-name: "*:*maven-plugin*"
       - dependency-name: "org.xmlunit:xmlunit-matchers"
+      # Block Maven 4.x ecosystem until Maven 4 adopted as minimum
+      - dependency-name: "org.codehaus.plexus:*"
+        versions: [ "[4.0.0,)" ]
+      - dependency-name: "org.apache.maven:*"
+        versions: [ "[4.0.0,)" ]
+      - dependency-name: "org.apache.maven.shared:*"
+        versions: [ "[4.0.0,)" ]
+      - dependency-name: "org.apache.maven.wagon:*"
+        versions: [ "[4.0.0,)" ]
+      - dependency-name: "org.apache.maven.doxia:*"
+        versions: [ "[4.0.0,)" ]
       # Keep Java 17-compatible tool versions; newer releases require Java 21.
       - dependency-name: "com.google.errorprone:error_prone_core"
         versions: [ "[2.43.0,)" ]

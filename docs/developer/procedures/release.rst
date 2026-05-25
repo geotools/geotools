@@ -315,7 +315,7 @@ Publish release notes to GitHub tag:
    
    * Release title: `GeoTools 26.1`
    * Write: Paste the markdown from Jira release notes editor
-   * Set as the latest release: only tick this for stable releases, leave unticked for maintenance and support releases
+   * Release label: Choose `Latest` for stable releases, and `None` for maintenance and support releases
 
    Use :guilabel:`Publish release` button to publish the release notes.
    

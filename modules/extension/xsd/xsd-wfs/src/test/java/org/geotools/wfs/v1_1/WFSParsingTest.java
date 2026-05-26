@@ -33,6 +33,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -245,7 +246,12 @@ public class WFSParsingTest {
     @Test
     public void testParseDescribeFeatureType() throws Exception {
         String loc = getClass().getResource("geoserver-DescribeFeatureType.xml").getFile();
-        XSDSchema schema = Schemas.parse(loc);
+        XSDSchema schema = Schemas.parse(
+                loc,
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                NullEntityResolver.INSTANCE);
 
         assertNotNull(schema);
         final String targetNs = "http://cite.opengeospatial.org/gmlsf";

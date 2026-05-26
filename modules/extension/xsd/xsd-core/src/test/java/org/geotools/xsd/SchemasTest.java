@@ -49,6 +49,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.xs.XS;
 import org.geotools.xsd.impl.HTTPURIHandler;
 import org.hamcrest.CoreMatchers;
@@ -66,7 +67,7 @@ public class SchemasTest {
 
     @Before
     public void setUp() throws Exception {
-
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
         tmp = File.createTempFile("schemas", "xsd");
         tmp.delete();
         tmp.mkdir();
@@ -154,7 +155,7 @@ public class SchemasTest {
         tmp.delete();
 
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "false");
-
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
         executorService.shutdown();
     }
 

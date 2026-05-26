@@ -62,6 +62,8 @@ import org.geotools.data.wfs.internal.ExceptionDetails;
 import org.geotools.data.wfs.internal.WFSException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Before;
@@ -163,6 +165,7 @@ public abstract class AbstractIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
         first = createFirstType();
         second = createSecondType();
 
@@ -181,6 +184,7 @@ public abstract class AbstractIntegrationTest {
     public void tearDown() throws Exception {
         tearDownDataStore(data);
         data = null;
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
     }
 
     @Test

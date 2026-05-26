@@ -58,7 +58,6 @@ import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.referencing.CRS;
 import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.NullEntityResolver;
-import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.factory.Hints;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xsd.Configuration;
@@ -71,6 +70,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
+import org.xml.sax.EntityResolver;
 
 /**
  * This abstract class comprises a sort of compliance tests for {@link GetParser<SimpleFeature>} implementations.
@@ -351,8 +351,9 @@ public abstract class AbstractGetFeatureParserTest {
 
     @Test
     public void testParseGeoServer_ArchSites_XXE() throws Exception {
+        EntityResolver prior = null;
         try {
-            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+            prior = (EntityResolver) Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
 
             final QName featureName = GEOS_ARCHSITES_11.TYPENAME;
             final URL schemaLocation = GEOS_ARCHSITES_11.SCHEMA;
@@ -366,16 +367,40 @@ public abstract class AbstractGetFeatureParserTest {
             try {
                 IOException exception = assertThrows(IOException.class, () -> parser.parse());
                 assertThat(exception.getCause(), instanceOf(XMLStreamException.class));
-                exception.printStackTrace();
                 assertThat(
                         exception.getCause().getMessage(),
                         containsString("The entity \"xxe\" was referenced, but not declared"));
             } finally {
                 parser.close();
             }
+        } finally {
+            if (prior != null) Hints.putSystemDefault(Hints.ENTITY_RESOLVER, prior);
         }
-        finally {
+    }
 
+    @Test
+    public void testParseGeoServer_ArchSites_XXE_Forgiving() throws Exception {
+        EntityResolver prior = null;
+        try {
+            prior = (EntityResolver) Hints.putSystemDefault(Hints.ENTITY_RESOLVER, DefaultEntityResolver.INSTANCE);
+
+            final QName featureName = GEOS_ARCHSITES_11.TYPENAME;
+            final URL schemaLocation = GEOS_ARCHSITES_11.SCHEMA;
+            final URL data = WFSTestData.url("GeoServer_2.0/1.1.0_XXE_GetFeature/GetFeature_archsites.xml");
+
+            final String[] properties = {"cat", "str1", "the_geom"};
+            final SimpleFeatureType featureType =
+                    getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
+
+            GetParser<SimpleFeature> parser = getParser(featureName, schemaLocation, featureType, data, null);
+            try {
+                SimpleFeature feature = parser.parse();
+                assertNotNull(feature);
+            } finally {
+                parser.close();
+            }
+        } finally {
+            if (prior != null) Hints.putSystemDefault(Hints.ENTITY_RESOLVER, prior);
         }
     }
 

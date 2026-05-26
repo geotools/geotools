@@ -35,6 +35,8 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.resolver.SchemaCache;
 import org.junit.AfterClass;
 import org.junit.Assume;
@@ -54,6 +56,9 @@ public final class HttpConfigTest {
 
     @BeforeClass
     public static void setup() {
+        // ALlow access to local files for testing
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+
         // will fail on GitHub linux build, due to TCP port opening. Tests depending on it
         // will have to be skipped with the same variable
         if (LINUX_GITHUB_BUILD) return;
@@ -78,6 +83,7 @@ public final class HttpConfigTest {
             // remove the test schema cache
             FileUtils.deleteQuietly(APP_SCHEMA_CACHE_DIR);
         }
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
     }
 
     @Test

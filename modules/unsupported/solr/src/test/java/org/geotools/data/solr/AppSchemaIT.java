@@ -45,7 +45,9 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -125,12 +127,20 @@ public final class AppSchemaIT extends OnlineTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
+        super.setUpInternal();
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
         TestContainersSupport.solrCoreUrl(CORE_NAME);
         fixture.setProperty(SOLR_URL_KEY, TestContainersSupport.solrServerUrl());
         client = new HttpJdkSolrClient.Builder(getSolrCoreURL()).build();
         solrDataSetup();
         prepareFiles();
         setupDataStore();
+    }
+
+    @Override
+    protected final void tearDownInternal() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+        super.tearDownInternal();
     }
 
     protected void setupDataStore() throws Exception {

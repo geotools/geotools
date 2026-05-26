@@ -55,6 +55,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
@@ -340,15 +341,19 @@ public class SolrDataStore extends ContentDataStore {
             FilterToSolr f2s = initializeFilterToSolr(featureType);
             String fq = layerMapper.prepareFilterQuery(featureType);
             Filter simplified = SimplifyingFilterVisitor.simplify(q.getFilter(), featureType);
-            String ffq = f2s.encodeToString(simplified);
-            if (ffq != null && !ffq.isEmpty()) {
-                fq = fq != null ? fq + " AND " + ffq : ffq;
+            try {
+                String ffq = f2s.encodeToString(simplified);
+                if (ffq != null && !ffq.isEmpty()) {
+                    fq = fq != null ? fq + " AND " + ffq : ffq;
+                }
+                query.setFilterQueries(fq);
+
+                // Add viewpPrams
+                addViewparams(q, query);
+            } catch (IllegalFilterException e) {
+                // Solr could not support this filter, so the result is going to be inefficient client side processing
+                LOGGER.log(Level.WARNING, e.getMessage());
             }
-            query.setFilterQueries(fq);
-
-            // Add viewpPrams
-            addViewparams(q, query);
-
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -407,7 +412,8 @@ public class SolrDataStore extends ContentDataStore {
 
             // Add viewparams parameters
             addViewparams(q, query);
-
+        } catch (IllegalFilterException e) {
+            LOGGER.log(Level.WARNING, e.getMessage());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

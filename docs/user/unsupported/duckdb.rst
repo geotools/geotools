@@ -20,7 +20,8 @@ Features
 - **Native Geometry Support**: Works with DuckDB native ``GEOMETRY`` columns
 - **Spatial Queries**: Supports spatial filters through the GeoTools JDBC stack
 - **Guarded Execution Model**: Public access is restricted to a GeoTools-managed execution policy
-- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, and geometry simplification settings
+- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, geometry simplification, and DuckDB resource limit settings
+- **DuckDB Resource Limits**: Supports per-store ``memory_limit`` and ``threads`` configuration
 
 Security Model
 --------------
@@ -35,6 +36,7 @@ The public DuckDB store is exposed through a restricted GeoTools-side execution 
 - In ``read_only=true`` mode (default), public SQL is limited to read-only statements
 - ``WITH`` common table expressions are rejected in public read-only mode
 - In ``read_only=false`` mode, managed writes are enabled, but view creation and arbitrary session SQL remain blocked
+- ``memory_limit`` and ``threads`` are applied per datastore instance and translated into DuckDB ``SET`` statements during connection initialization
 
 This module is intended to reduce the exposed SQL surface while still allowing DuckDB-backed access through standard GeoTools APIs.
 
@@ -113,6 +115,14 @@ Parameters
      - Boolean
      - No
      - Guarded read-only mode toggle (default: ``true``). Set ``false`` to enable managed write operations.
+   * - **memory_limit**
+     - String
+     - No
+     - DuckDB memory limit for the datastore, for example ``1GB``
+   * - **threads**
+     - Integer
+     - No
+     - DuckDB maximum number of execution threads for the datastore
    * - **namespace**
      - String
      - No
@@ -162,4 +172,5 @@ Notes
 
 - This is an unsupported GeoTools module
 - The public store focuses on native DuckDB datasets with guarded access
+- ``memory_limit`` and ``threads`` are store-scoped DuckDB settings; they do not affect unrelated DuckDB stores in the same JVM
 - GeoParquet may rely on additional internal DuckDB capabilities through a trusted internal policy implemented in GeoTools

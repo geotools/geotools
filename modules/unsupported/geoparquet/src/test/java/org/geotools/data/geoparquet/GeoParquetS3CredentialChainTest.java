@@ -117,18 +117,48 @@ public class GeoParquetS3CredentialChainTest {
     }
 
     @Test
+    public void testConfigWithEndpoint() throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("uri", "s3://test-bucket/data.parquet");
+        params.put("use_aws_credential_chain", true);
+        params.put("endpoint", "http://minio.local:9000");
+
+        GeoParquetConfig config = GeoParquetConfig.valueOf(params);
+        assertNotNull(config);
+        assertTrue("Credential chain should be enabled", config.isUseAwsCredentialChain());
+        assertEquals("Endpoint should be set", "http://minio.local:9000", config.getEndpoint());
+    }
+
+    @Test
+    public void testConfigWithUrlStyle() throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("uri", "s3://test-bucket/data.parquet");
+        params.put("use_aws_credential_chain", true);
+        params.put("url_style", "path");
+
+        GeoParquetConfig config = GeoParquetConfig.valueOf(params);
+        assertNotNull(config);
+        assertTrue("Credential chain should be enabled", config.isUseAwsCredentialChain());
+        assertEquals("URL style should be set", "path", config.getUrlStyle());
+    }
+
+    @Test
     public void testConfigWithRegionAndProfile() throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("uri", "s3://test-bucket/data.parquet");
         params.put("use_aws_credential_chain", true);
         params.put("aws_region", "us-east-1");
         params.put("aws_profile", "prod_profile");
+        params.put("endpoint", "http://minio.local:9000");
+        params.put("url_style", "path");
 
         GeoParquetConfig config = GeoParquetConfig.valueOf(params);
         assertNotNull(config);
         assertTrue("Credential chain should be enabled", config.isUseAwsCredentialChain());
         assertEquals("Region should be set", "us-east-1", config.getAwsRegion());
         assertEquals("Profile should be set", "prod_profile", config.getAwsProfile());
+        assertEquals("Endpoint should be set", "http://minio.local:9000", config.getEndpoint());
+        assertEquals("URL style should be set", "path", config.getUrlStyle());
     }
 
     @Test
@@ -143,13 +173,15 @@ public class GeoParquetS3CredentialChainTest {
         assertTrue("Credential chain should be enabled", config.isUseAwsCredentialChain());
         assertNull("Region should be null", config.getAwsRegion());
         assertNull("Profile should be null", config.getAwsProfile());
+        assertNull("Endpoint should be null", config.getEndpoint());
+        assertNull("URL style should be null", config.getUrlStyle());
     }
 
     // Tests for buildCreateSecretSql method
 
     @Test
     public void testBuildCreateSecretSqlBasic() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql(null, null);
+        String sql = GeoParquetViewManager.buildCreateSecretSql(null, null, null, null);
 
         String expected =
                 """
@@ -164,7 +196,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlWithRegion() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql("us-east-1", null);
+        String sql = GeoParquetViewManager.buildCreateSecretSql("us-east-1", null, null, null);
 
         String expected =
                 """
@@ -179,7 +211,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlWithProfile() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql(null, "production");
+        String sql = GeoParquetViewManager.buildCreateSecretSql(null, "production", null, null);
 
         String expected =
                 """
@@ -194,7 +226,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlWithRegionAndProfile() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql("eu-west-1", "staging");
+        String sql = GeoParquetViewManager.buildCreateSecretSql("eu-west-1", "staging", null, null);
 
         String expected =
                 """
@@ -209,7 +241,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlWithEmptyStrings() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql("", "");
+        String sql = GeoParquetViewManager.buildCreateSecretSql("", "", "", "");
 
         String expected =
                 """
@@ -224,7 +256,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlEscapesSingleQuotesInRegion() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql("us'east'1", null);
+        String sql = GeoParquetViewManager.buildCreateSecretSql("us'east'1", null, null, null);
 
         String expected =
                 """
@@ -239,7 +271,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlEscapesSingleQuotesInProfile() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql(null, "prod'uction");
+        String sql = GeoParquetViewManager.buildCreateSecretSql(null, "prod'uction", null, null);
 
         String expected =
                 """
@@ -254,7 +286,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlEscapesSingleQuotesInBothParameters() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql("ap'south'1", "dev'profile");
+        String sql = GeoParquetViewManager.buildCreateSecretSql("ap'south'1", "dev'profile", null, null);
 
         String expected =
                 """
@@ -269,7 +301,7 @@ public class GeoParquetS3CredentialChainTest {
 
     @Test
     public void testBuildCreateSecretSqlWithWhitespaceOnlyStrings() {
-        String sql = GeoParquetViewManager.buildCreateSecretSql("   ", "  \t  ");
+        String sql = GeoParquetViewManager.buildCreateSecretSql("   ", "  \t  ", "   ", "  \t  ");
 
         String expected =
                 """
@@ -280,5 +312,35 @@ public class GeoParquetS3CredentialChainTest {
                 """;
 
         assertEquals("SQL with whitespace-only strings should match basic SQL", expected, sql);
+    }
+
+    @Test
+    public void testBuildCreateSecretSqlWithEndpointAndUrlStyle() {
+        String sql = GeoParquetViewManager.buildCreateSecretSql(null, null, "http://minio.local:9000", "path");
+
+        String expected =
+                """
+                CREATE OR REPLACE SECRET geoparquet_s3_secret (
+                    TYPE s3,
+                    PROVIDER credential_chain, URL_STYLE 'path', ENDPOINT 'http://minio.local:9000'
+                )
+                """;
+
+        assertEquals("SQL with endpoint and URL style should match expected", expected, sql);
+    }
+
+    @Test
+    public void testBuildCreateSecretSqlEscapesSingleQuotesInEndpointAndUrlStyle() {
+        String sql = GeoParquetViewManager.buildCreateSecretSql(null, null, "http://minio.local:9000/o'hare", "pa'th");
+
+        String expected =
+                """
+                CREATE OR REPLACE SECRET geoparquet_s3_secret (
+                    TYPE s3,
+                    PROVIDER credential_chain, URL_STYLE 'pa''th', ENDPOINT 'http://minio.local:9000/o''hare'
+                )
+                """;
+
+        assertEquals("SQL should properly escape single quotes in endpoint and URL style", expected, sql);
     }
 }

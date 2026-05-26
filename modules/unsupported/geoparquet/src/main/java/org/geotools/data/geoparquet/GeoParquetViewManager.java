@@ -301,7 +301,8 @@ class GeoParquetViewManager {
 
         // Create S3 secret if credential chain is enabled
         if (config.isUseAwsCredentialChain()) {
-            createAwsCredentialChainSecret(config.getAwsRegion(), config.getAwsProfile());
+            createAwsCredentialChainSecret(
+                    config.getAwsRegion(), config.getAwsProfile(), config.getEndpoint(), config.getUrlStyle());
             LOGGER.log(CONFIG, "Created AWS credential chain secret for S3 access to " + targetUri);
         }
 
@@ -329,12 +330,18 @@ class GeoParquetViewManager {
      * <p>If a region is specified, it will override the automatically fetched region. If a profile is specified,
      * credentials will be loaded from that profile in ~/.aws/credentials and ~/.aws/config files.
      *
+     * <p>When provided, endpoint and URL style are forwarded to DuckDB's S3 secret configuration so the datastore can
+     * talk to S3-compatible services that require path-style access or custom endpoints.
+     *
      * @param region AWS region to use (may be null for automatic detection)
      * @param profile AWS profile name to load credentials from (may be null for default)
+     * @param endpoint DuckDB S3 endpoint to use (may be null for default)
+     * @param urlStyle DuckDB S3 URL style to use (may be null for default)
      * @throws IOException If secret creation fails
      */
-    private void createAwsCredentialChainSecret(String region, String profile) throws IOException {
-        String createSecretSql = buildCreateSecretSql(region, profile);
+    private void createAwsCredentialChainSecret(String region, String profile, String endpoint, String urlStyle)
+            throws IOException {
+        String createSecretSql = buildCreateSecretSql(region, profile, endpoint, urlStyle);
 
         try (Connection c = getConnection();
                 Statement st = c.createStatement()) {
@@ -348,13 +355,14 @@ class GeoParquetViewManager {
     /**
      * Builds a DuckDB CREATE SECRET SQL statement for AWS credential chain authentication.
      *
-     * <p>This method constructs the SQL with optional region and profile parameters. The generated SQL follows the
-     * pattern:
+     * <p>This method constructs the SQL with optional region, profile, endpoint, and URL style parameters. The
+     * generated SQL follows the pattern:
      *
      * <pre>
      * CREATE OR REPLACE SECRET geoparquet_s3_secret (
      *     TYPE s3,
      *     PROVIDER credential_chain[, CHAIN 'config'][, PROFILE 'profile_name'][, REGION 'region_name']
+     *         [, URL_STYLE 'path'][, ENDPOINT 'http://minio:9000']
      * )
      * </pre>
      *
@@ -363,13 +371,17 @@ class GeoParquetViewManager {
      *
      * @param region AWS region to use (may be null or empty for automatic detection)
      * @param profile AWS profile name to load credentials from (may be null or empty for default)
+     * @param endpoint DuckDB S3 endpoint to use (may be null or empty for default)
+     * @param urlStyle DuckDB S3 URL style to use (may be null or empty for default)
      * @return A complete CREATE SECRET SQL statement
      */
-    static String buildCreateSecretSql(String region, String profile) {
+    static String buildCreateSecretSql(String region, String profile, String endpoint, String urlStyle) {
         // Build optional clauses for the CREATE SECRET statement
         String chainClause = "";
         String profileClause = "";
         String regionClause = "";
+        String urlStyleClause = "";
+        String endpointClause = "";
 
         if (StringUtils.isNotBlank(profile)) {
             // CHAIN 'config' is required when using PROFILE parameter to specify a non-default profile.
@@ -384,13 +396,21 @@ class GeoParquetViewManager {
             regionClause = ", REGION '%s'".formatted(region.replace("'", "''"));
         }
 
+        if (StringUtils.isNotBlank(urlStyle)) {
+            urlStyleClause = ", URL_STYLE '%s'".formatted(urlStyle.replace("'", "''"));
+        }
+
+        if (StringUtils.isNotBlank(endpoint)) {
+            endpointClause = ", ENDPOINT '%s'".formatted(endpoint.replace("'", "''"));
+        }
+
         return """
                 CREATE OR REPLACE SECRET geoparquet_s3_secret (
                     TYPE s3,
-                    PROVIDER credential_chain%s%s%s
+                    PROVIDER credential_chain%s%s%s%s%s
                 )
                 """
-                .formatted(chainClause, profileClause, regionClause);
+                .formatted(chainClause, profileClause, regionClause, urlStyleClause, endpointClause);
     }
 
     /**

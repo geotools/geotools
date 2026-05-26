@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -113,6 +114,17 @@ public class DuckDBDataStoreFactoryTest {
     }
 
     @Test
+    public void testResourceLimitParametersAreExposed() {
+        DuckDBDataStoreFactory factory = new DuckDBDataStoreFactory();
+        DataAccessFactory.Param[] params = factory.getParametersInfo();
+
+        assertTrue(Arrays.stream(params)
+                .anyMatch(param -> AbstractDuckDBDataStoreFactory.MEMORY_LIMIT.key.equals(param.key)));
+        assertTrue(
+                Arrays.stream(params).anyMatch(param -> AbstractDuckDBDataStoreFactory.THREADS.key.equals(param.key)));
+    }
+
+    @Test
     public void testCreateDataStoreWrapsJdbcStoreAndFeatureSourcesReportWrapper() throws Exception {
         File database = new File(temporaryFolder.newFolder("duckdb-factory"), "store.duckdb");
         createSeedTable(database);
@@ -185,6 +197,32 @@ public class DuckDBDataStoreFactoryTest {
         try {
             store = factory.createDataStore(params);
             assertWritableCreateTableSucceeds(store, "writable_engine_check");
+        } finally {
+            if (store != null) {
+                store.dispose();
+            }
+        }
+    }
+
+    @Test
+    public void testCreateDataStoreAppliesDuckdbResourceLimitsPerStore() throws Exception {
+        File database = new File(temporaryFolder.newFolder("duckdb-limits"), "store.duckdb");
+        createSeedTable(database);
+
+        DuckDBDataStoreFactory factory = new DuckDBDataStoreFactory();
+        Map<String, Object> params = new HashMap<>();
+        params.put("dbtype", "duckdb");
+        params.put("database", database.getAbsolutePath());
+        params.put("read_only", Boolean.FALSE);
+        params.put("memory_limit", "1GB");
+        params.put("threads", 2);
+
+        DuckDBDataStore store = null;
+        try {
+            store = factory.createDataStore(params);
+
+            assertDuckDbSetting(store, "memory_limit", "953.6 MiB");
+            assertDuckDbSetting(store, "threads", "2");
         } finally {
             if (store != null) {
                 store.dispose();
@@ -332,6 +370,20 @@ public class DuckDBDataStoreFactoryTest {
         try (Connection connection = store.delegate.getDataSource().getConnection();
                 Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE " + tableName);
+        }
+    }
+
+    private void assertDuckDbSetting(DuckDBDataStore store, String settingName, String expectedValue) throws Exception {
+        try (Connection connection = store.delegate.getDataSource().getConnection();
+                Statement statement = connection.createStatement();
+                java.sql.ResultSet resultSet =
+                        statement.executeQuery("SELECT current_setting('" + settingName + "')")) {
+            if (!resultSet.next()) {
+                fail("Expected DuckDB setting " + settingName + " to be returned");
+            }
+            String actualValue = resultSet.getString(1);
+            assertNotNull(actualValue);
+            assertEquals(expectedValue, actualValue.trim());
         }
     }
 }

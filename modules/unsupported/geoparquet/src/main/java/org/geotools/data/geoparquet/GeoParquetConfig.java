@@ -18,8 +18,10 @@ package org.geotools.data.geoparquet;
 
 import static org.geotools.data.geoparquet.GeoParquetDataStoreFactory.AWS_PROFILE;
 import static org.geotools.data.geoparquet.GeoParquetDataStoreFactory.AWS_REGION;
+import static org.geotools.data.geoparquet.GeoParquetDataStoreFactory.ENDPOINT;
 import static org.geotools.data.geoparquet.GeoParquetDataStoreFactory.MAX_HIVE_DEPTH;
 import static org.geotools.data.geoparquet.GeoParquetDataStoreFactory.URI_PARAM;
+import static org.geotools.data.geoparquet.GeoParquetDataStoreFactory.URL_STYLE;
 import static org.geotools.data.geoparquet.GeoParquetDataStoreFactory.USE_AWS_CREDENTIAL_CHAIN;
 
 import java.io.IOException;
@@ -56,6 +58,8 @@ class GeoParquetConfig {
     private boolean useAwsCredentialChain;
     private String awsRegion;
     private String awsProfile;
+    private String endpoint;
+    private String urlStyle;
 
     /**
      * Constructs a new GeoParquetConfig.
@@ -65,14 +69,24 @@ class GeoParquetConfig {
      * @param useAwsCredentialChain Whether to use AWS credential chain for S3 authentication
      * @param awsRegion AWS region to use for S3 access (may be null)
      * @param awsProfile AWS profile to load credentials from (may be null)
+     * @param endpoint DuckDB S3 endpoint to use for S3-compatible services (may be null)
+     * @param urlStyle DuckDB S3 URL style to use, such as "path" (may be null)
      */
     public GeoParquetConfig(
-            URI uri, Integer maxHiveDepth, boolean useAwsCredentialChain, String awsRegion, String awsProfile) {
+            URI uri,
+            Integer maxHiveDepth,
+            boolean useAwsCredentialChain,
+            String awsRegion,
+            String awsProfile,
+            String endpoint,
+            String urlStyle) {
         this.targetUri = uri;
         this.maxHiveDepth = maxHiveDepth;
         this.useAwsCredentialChain = useAwsCredentialChain;
         this.awsRegion = awsRegion;
         this.awsProfile = awsProfile;
+        this.endpoint = endpoint;
+        this.urlStyle = urlStyle;
     }
 
     /**
@@ -97,7 +111,10 @@ class GeoParquetConfig {
         }
         String awsRegion = (String) AWS_REGION.lookUp(params);
         String awsProfile = (String) AWS_PROFILE.lookUp(params);
-        return new GeoParquetConfig(uri, maxHiveDepth, useAwsCredentialChain, awsRegion, awsProfile);
+        String endpoint = (String) ENDPOINT.lookUp(params);
+        String urlStyle = (String) URL_STYLE.lookUp(params);
+        return new GeoParquetConfig(
+                uri, maxHiveDepth, useAwsCredentialChain, awsRegion, awsProfile, endpoint, urlStyle);
     }
 
     /**
@@ -177,5 +194,23 @@ class GeoParquetConfig {
      */
     public String getAwsProfile() {
         return awsProfile;
+    }
+
+    /**
+     * Gets the DuckDB S3 endpoint to use for S3-compatible services.
+     *
+     * @return the S3 endpoint, or null if not specified
+     */
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    /**
+     * Gets the DuckDB S3 URL style.
+     *
+     * @return the URL style, or null if not specified
+     */
+    public String getUrlStyle() {
+        return urlStyle;
     }
 }

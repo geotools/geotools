@@ -132,6 +132,10 @@ Remote GeoParquet File (S3)
    // Optional: use a specific AWS profile
    params.put("aws_profile", "my_profile");
 
+   // Optional: connect to an S3-compatible endpoint and force path-style URLs
+   params.put("endpoint", "http://minio.local:9000");
+   params.put("url_style", "path");
+
    DataStore store = DataStoreFinder.getDataStore(params);
 
 This approach automatically discovers credentials from:
@@ -170,6 +174,8 @@ Parameter                     Type     Required  Description
 **use_aws_credential_chain**  Boolean  No        Use AWS SDK credential chain for S3 authentication (default: ``false``)
 **aws_region**                String   No        AWS region for S3 access (e.g., ``us-east-1``, ``eu-west-1``). Overrides region from credential chain.
 **aws_profile**               String   No        AWS profile name to load credentials from ``~/.aws/credentials``. Requires ``use_aws_credential_chain=true``.
+**endpoint**                  String   No        DuckDB S3 endpoint for S3-compatible services such as MinIO.
+**url_style**                 String   No        DuckDB S3 URL style; use ``path`` for path-style access.
 **simplify**                  Boolean  No        Enable geometry simplification for rendering optimization (default: ``true``)
 **namespace**                 String   No        Namespace URI to use for features
 ============================= ======== ========= ===========================================================
@@ -190,6 +196,8 @@ Optionally specify:
 
 - ``aws_region`` to override the region
 - ``aws_profile`` to use a specific profile from ``~/.aws/credentials``
+- ``endpoint`` to target S3-compatible services
+- ``url_style=path`` when the endpoint requires path-style access
 
 **Legacy Approach: URI Query Parameters (Deprecated)**
 

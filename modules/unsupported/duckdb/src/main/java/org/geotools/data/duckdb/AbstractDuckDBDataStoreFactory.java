@@ -17,6 +17,7 @@
 package org.geotools.data.duckdb;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
@@ -62,6 +63,22 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
             .required(false)
             .defaultValue(true)
             .userLevel()
+            .build();
+
+    public static final Param MEMORY_LIMIT = new ParamBuilder("memory_limit")
+            .type(String.class)
+            .title("Memory limit")
+            .description("DuckDB memory limit for the store, for example '1GB'")
+            .required(false)
+            .advancedLevel()
+            .build();
+
+    public static final Param THREADS = new ParamBuilder("threads")
+            .type(Integer.class)
+            .title("Threads")
+            .description("DuckDB maximum number of execution threads for the store")
+            .required(false)
+            .advancedLevel()
             .build();
 
     public static final Param SCREENMAP = new ParamBuilder("screenmap")
@@ -123,6 +140,8 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
         addDatabaseSpecificParameters(parameters);
 
         parameters.put(READ_ONLY.key, READ_ONLY);
+        parameters.put(MEMORY_LIMIT.key, MEMORY_LIMIT);
+        parameters.put(THREADS.key, THREADS);
         parameters.put(SIMPLIFY.key, SIMPLIFY);
         parameters.put(SCREENMAP.key, SCREENMAP);
         // add these ones back, order matters for the webui
@@ -145,7 +164,7 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
     protected BasicDataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
 
         DuckDBDialect duckDBDialect = (DuckDBDialect) dialect;
-        List<String> databaseInitSqls = duckDBDialect.getDatabaseInitSql();
+        List<String> databaseInitSqls = getDatabaseInitSql(params, duckDBDialect);
         Boolean readOnly = (Boolean) READ_ONLY.lookUp(params);
         String jdbcUrl = getJDBCUrl(params);
         boolean inMemory = "jdbc:duckdb:".equals(jdbcUrl);
@@ -163,6 +182,40 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
         dataSource.setMaxActive(2 * Runtime.getRuntime().availableProcessors());
 
         return dataSource;
+    }
+
+    private List<String> getDatabaseInitSql(Map<String, ?> params, DuckDBDialect duckDBDialect) throws IOException {
+        List<String> databaseInitSqls = new ArrayList<>(duckDBDialect.getDatabaseInitSql());
+
+        String memoryLimit = normalizeStringParam(MEMORY_LIMIT.lookUp(params));
+        if (memoryLimit != null) {
+            databaseInitSqls.add("SET memory_limit = '" + escapeSqlLiteral(memoryLimit) + "'");
+        }
+
+        Integer threads = (Integer) THREADS.lookUp(params);
+        if (threads != null) {
+            if (threads.intValue() <= 0) {
+                throw new IOException("DuckDB datastore parameter 'threads' must be greater than zero");
+            }
+            databaseInitSqls.add("SET threads = " + threads);
+        }
+
+        return databaseInitSqls;
+    }
+
+    private String normalizeStringParam(Object value) throws IOException {
+        if (value == null) {
+            return null;
+        }
+        String stringValue = value.toString().trim();
+        if (stringValue.isEmpty()) {
+            throw new IOException("DuckDB datastore parameter 'memory_limit' must not be empty");
+        }
+        return stringValue;
+    }
+
+    private String escapeSqlLiteral(String value) {
+        return value.replace("'", "''");
     }
 
     @Override

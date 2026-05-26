@@ -36,6 +36,7 @@ import org.geotools.api.filter.Id;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
 import org.locationtech.jts.geom.Coordinate;
@@ -291,6 +292,8 @@ public abstract class DataTestCase {
         buildingType = null;
         buildingFeatures = null;
         buildingBounds = null;
+
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
     }
 
     /**

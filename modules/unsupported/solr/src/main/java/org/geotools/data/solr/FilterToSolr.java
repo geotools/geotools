@@ -82,6 +82,7 @@ import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.IllegalFilterException;
 
 /** Encodes a OGC filter into a SOLR query syntax */
 public class FilterToSolr implements FilterVisitor {
@@ -144,7 +145,7 @@ public class FilterToSolr implements FilterVisitor {
                 throw new Exception("Problem writing filter: ", ioe);
             }
         } else {
-            throw new Exception("Filter type not supported: " + filter.toString());
+            throw new IllegalFilterException("Filter type not natively supported: " + filter.toString());
         }
     }
 

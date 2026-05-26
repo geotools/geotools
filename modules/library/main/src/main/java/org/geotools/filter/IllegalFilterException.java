@@ -21,7 +21,7 @@ import java.io.Serial;
 /**
  * Defines an exception for illegal filters.
  *
- * <p>TODO: JD: Changed this exception to runtime exception. Go through all methods that throw this expception and
+ * <p>TODO: JD: Changed this exception to runtime exception. Go through all methods that throw this exception and
  * reflect the new geoapi method throws it with a javadoc.
  */
 public class IllegalFilterException extends RuntimeException {

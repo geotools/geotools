@@ -123,7 +123,6 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
         try {
             parsed = parser.parse();
         } catch (XMLStreamException | SAXException e) {
-            e.printStackTrace();
             throw new IOException(
                     "Error parsing xml for features of type: "
                             + (featureType == null ? "Unknown" : featureType.getName()),

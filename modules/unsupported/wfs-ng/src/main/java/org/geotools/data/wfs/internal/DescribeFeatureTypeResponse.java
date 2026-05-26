@@ -34,6 +34,7 @@ import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.xsd.Configuration;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -91,7 +92,10 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
     }
 
     private EntityResolver getTempFileEntityResolver(EntityResolver resolver, File tempSchema) {
-        if (resolver == null) return null;
+        if (resolver == null) {
+            resolver = GeoTools.getEntityResolver(null);
+        }
+
         if (resolver instanceof EntityResolver2 resolver2) {
             return new TempEntityResolver2(resolver2, tempSchema);
         }

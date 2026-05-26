@@ -144,7 +144,7 @@ public class FilterToSolr implements FilterVisitor {
                 throw new Exception("Problem writing filter: ", ioe);
             }
         } else {
-            throw new Exception("Filter type not supported");
+            throw new Exception("Filter type not supported: " + filter.toString());
         }
     }
 

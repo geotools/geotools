@@ -37,6 +37,10 @@ import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
+import org.junit.After;
+import org.junit.Before;
 import org.locationtech.jts.geom.Geometry;
 
 public abstract class SolrTestSupport extends OnlineTestCase {
@@ -68,6 +72,16 @@ public abstract class SolrTestSupport extends OnlineTestCase {
 
     // tests setup will take care of instantiating the client and closing it
     private HttpJdkSolrClient solrClient;
+
+    @Before
+    public void setup() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
+
+    @After
+    public void teardown() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+    }
 
     @Override
     protected void setUpInternal() throws Exception {

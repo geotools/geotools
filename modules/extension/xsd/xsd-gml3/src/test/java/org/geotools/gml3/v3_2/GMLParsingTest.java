@@ -34,9 +34,12 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Parser;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
@@ -44,6 +47,15 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class GMLParsingTest {
+    @Before
+    public void setUp() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+    }
 
     @Test
     public void testGML() throws Exception {

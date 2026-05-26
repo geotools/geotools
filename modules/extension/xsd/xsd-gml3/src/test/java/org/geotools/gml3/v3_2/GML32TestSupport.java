@@ -35,6 +35,7 @@ public abstract class GML32TestSupport extends XMLTestSupport {
         GML3MockData.setGML(GML.getInstance());
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         GML3MockData.setGML(null);

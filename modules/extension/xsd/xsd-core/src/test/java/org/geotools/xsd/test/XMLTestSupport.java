@@ -32,6 +32,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.test.xml.XmlTestSupport;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
@@ -44,6 +46,7 @@ import org.geotools.xsd.impl.BindingLoader;
 import org.geotools.xsd.impl.BindingWalkerFactoryImpl;
 import org.geotools.xsd.impl.NamespaceSupportWrapper;
 import org.geotools.xsd.impl.SchemaIndexImpl;
+import org.junit.After;
 import org.junit.Before;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -150,10 +153,16 @@ public abstract class XMLTestSupport extends XmlTestSupport {
     /** Creates an empty xml document. */
     @Before
     public void setUp() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
         DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
         docFactory.setNamespaceAware(true);
 
         document = docFactory.newDocumentBuilder().newDocument(); // NOPMD: AvoidDocumentBuilder
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
     }
 
     /**

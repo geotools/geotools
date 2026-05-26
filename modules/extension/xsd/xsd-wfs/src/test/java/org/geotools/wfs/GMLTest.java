@@ -49,6 +49,8 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.wfs.GML.Version;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -211,44 +213,54 @@ public class GMLTest {
     // WFS 1.1
     @Test
     public void testGML3ParseSimpleFeatureType() throws IOException {
-        URL schemaLocation = TestData.getResource(this, "states.xsd");
+        try {
+            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+            URL schemaLocation = TestData.getResource(this, "states.xsd");
 
-        GML gml = new GML(Version.WFS1_1);
-        gml.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+            GML gml = new GML(Version.WFS1_1);
+            gml.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
-        SimpleFeatureType featureType =
-                gml.decodeSimpleFeatureType(schemaLocation, new NameImpl("http://www.openplans.org/topp", "states"));
+            SimpleFeatureType featureType = gml.decodeSimpleFeatureType(
+                    schemaLocation, new NameImpl("http://www.openplans.org/topp", "states"));
 
-        assertNotNull(featureType);
-        assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
+            assertNotNull(featureType);
+            assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
 
-        List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        List<String> names = new ArrayList<>(attributes.size());
-        for (AttributeDescriptor desc : attributes) {
-            names.add(desc.getLocalName());
+            List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
+            List<String> names = new ArrayList<>(attributes.size());
+            for (AttributeDescriptor desc : attributes) {
+                names.add(desc.getLocalName());
+            }
+            assertEquals("Expected number of Attributes", 23, names.size());
+        } finally {
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
         }
-        assertEquals("Expected number of Attributes", 23, names.size());
     }
 
     @Test
     public void testGML2ParseSimpleFeatureType() throws IOException {
-        URL schemaLocation = TestData.getResource(this, "states_gml2.xsd");
+        try {
+            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+            URL schemaLocation = TestData.getResource(this, "states_gml2.xsd");
 
-        GML gml = new GML(Version.WFS1_0);
-        gml.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+            GML gml = new GML(Version.WFS1_0);
+            gml.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
-        SimpleFeatureType featureType =
-                gml.decodeSimpleFeatureType(schemaLocation, new NameImpl("http://www.openplans.org/topp", "states"));
+            SimpleFeatureType featureType = gml.decodeSimpleFeatureType(
+                    schemaLocation, new NameImpl("http://www.openplans.org/topp", "states"));
 
-        assertNotNull(featureType);
-        assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
+            assertNotNull(featureType);
+            assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
 
-        List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
-        List<String> names = new ArrayList<>(attributes.size());
-        for (AttributeDescriptor desc : attributes) {
-            names.add(desc.getLocalName());
+            List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
+            List<String> names = new ArrayList<>(attributes.size());
+            for (AttributeDescriptor desc : attributes) {
+                names.add(desc.getLocalName());
+            }
+            assertEquals("Expected number of Attributes", 23, names.size());
+        } finally {
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
         }
-        assertEquals("Expected number of Attributes", 23, names.size());
     }
 
     @Test

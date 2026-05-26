@@ -36,7 +36,11 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.referencing.CRS;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -69,6 +73,16 @@ public class WFSContentComplexFeatureSourceTest {
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
 
     private static final Filter FILTER = ff.bbox(GEOM_FIELD_NAME, 58.71, 58.73, 7.39, 7.41, "EPSG:4258");
+
+    @Before
+    public void setUp() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+    }
 
     @Test
     public void testGetFeaturesWithoutArgument() throws Exception {

@@ -26,6 +26,8 @@ import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 
 /**
@@ -43,6 +45,7 @@ public class XlinkMissingNamespaceTest extends AppSchemaTestSupport {
     @Test
     public void testGetClientProperties() throws IOException {
         try {
+            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
             XMLConfigDigester reader = new XMLConfigDigester();
 
             URL url = getClass().getResource("/test-data/MappedFeatureMissingNamespaceXlink.xml");
@@ -52,6 +55,8 @@ public class XlinkMissingNamespaceTest extends AppSchemaTestSupport {
 
         } catch (Exception ex) {
             assertSame(java.io.IOException.class, ex.getClass());
+        } finally {
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
         }
     }
 }

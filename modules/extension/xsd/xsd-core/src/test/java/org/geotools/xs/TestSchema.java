@@ -33,7 +33,9 @@ import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.util.XSDParser;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Schemas;
@@ -41,6 +43,7 @@ import org.geotools.xsd.SimpleBinding;
 import org.geotools.xsd.impl.BindingLoader;
 import org.geotools.xsd.impl.ElementImpl;
 import org.geotools.xsd.impl.PicoMap;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,9 +59,12 @@ public abstract class TestSchema {
         url = TestSchema.class.getResource("sample.xsd");
 
         try {
+            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
             schema = Schemas.parse(url.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
         }
 
         xsd = schema.getSchemaForSchema();
@@ -177,14 +183,18 @@ public abstract class TestSchema {
 
     @Before
     public void setUp() throws Exception {
-        // TODO Auto-generated method stub
-
         qname = getQName();
 
         if (qname != null) {
             typeDef = xsdSimple(qname.getLocalPart());
             strategy = (SimpleBinding) stratagy(qname);
         }
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
     }
 
     @Test

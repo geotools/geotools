@@ -33,13 +33,27 @@ import org.geotools.data.DataUtilities;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /** Test GML 3.1 encoding utilities. Most of the work is delegate on {@link GMLEncodingUtils}. */
 public class GML3EncodingUtilsTest {
+
+    @Before
+    public void setUp() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+    }
 
     @Test
     public void testGeometriesGML3FeatureEncoding() throws Exception {

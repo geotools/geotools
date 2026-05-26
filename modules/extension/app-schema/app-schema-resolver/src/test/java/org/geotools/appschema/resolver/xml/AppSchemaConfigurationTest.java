@@ -25,7 +25,9 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSchema;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
@@ -63,6 +65,7 @@ public class AppSchemaConfigurationTest {
     /** Hack the log level so we can see schemas loading. */
     @Before
     public void before() {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
         if (ADJUST_LOGLEVEL) {
             logLevel = LOGGER.getLevel();
             LOGGER.setLevel(LOGLEVEL);
@@ -78,6 +81,7 @@ public class AppSchemaConfigurationTest {
             getRootLogHandler().setLevel(rootLogLevel);
             LOGGER.setLevel(logLevel);
         }
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
     }
 
     /** Return the root log handler, needed to hack the log level. */

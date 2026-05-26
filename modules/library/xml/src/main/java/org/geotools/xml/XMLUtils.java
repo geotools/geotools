@@ -90,11 +90,20 @@ public class XMLUtils {
     /**
      * Creates an XMLInputFactory configured with GeoTools library defaults.
      *
+     * <p>The XMLInputFactory provided will be configured to be more forgiving when {@code NullEntityResolver} is used
+     * as this indicates the library is configured to work with local files.
+     *
+     * <p>When working with EntityResolvers allowing `http` access, such as {@code `DefaultEntityResolver`} more
+     * restrictions are enforced.
+     *
      * @param hints Factory hints
      * @return XMLInputFactory
      */
     public static XMLInputFactory newXMLInputFactory(Hints hints) {
         XMLInputFactory factory = XMLInputFactory.newInstance(); // NOPMD AvoidXMLInputFactory
+
+        // Used to determine sensible defaults based on entity resolver selected
+        EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
 
         // Disable DTD: few of our protocols / formats are old enough to require DTD
         if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
@@ -104,7 +113,13 @@ public class XMLUtils {
                 factory.setProperty(XMLInputFactory.IS_COALESCING, false);
             }
             if (factory.isPropertySupported(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES)) {
-                factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+                if (entityResolver == NullEntityResolver.INSTANCE) {
+                    factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, true);
+                } else if (entityResolver == DefaultEntityResolver.INSTANCE) {
+                    factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+                } else {
+                    factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+                }
             }
         }
 

@@ -33,12 +33,15 @@ import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.referencing.CRS;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.xsd.Configuration;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
+import org.xml.sax.EntityResolver;
 
 public class PullParserTest extends AbstractGetFeatureParserTest {
 
@@ -77,23 +80,33 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
     /** We inject an HTTPClient that are used for fetching the schema specified in wfs_get_feature.xml */
     @Test
     public void testUsingHttpClientForSchema() throws Exception {
-        Configuration wfsConfiguration = new WFSConfiguration();
-        try (InputStream inputStream = TestData.openStream(this, "wfs_get_feature.xml")) {
-            FeatureType featureType = createMjosovervakFeatureType();
-            String axisOrder = null;
-            HTTPClient httpClient = createMjosovervakHttpClient();
-            GetParser<SimpleFeature> parser =
-                    new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
-            SimpleFeature first = parser.parse();
-            Assert.assertNotNull(first);
-            Assert.assertEquals("Svanfoss", first.getAttribute("STATION_NAME"));
+        EntityResolver prior = null;
+        try {
+            prior = (EntityResolver) Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+            Configuration wfsConfiguration = new WFSConfiguration();
+            try (InputStream inputStream = TestData.openStream(this, "wfs_get_feature.xml")) {
+                FeatureType featureType = createMjosovervakFeatureType();
+                String axisOrder = null;
+                HTTPClient httpClient = createMjosovervakHttpClient();
+                GetParser<SimpleFeature> parser =
+                        new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
+                SimpleFeature first = parser.parse();
+                Assert.assertNotNull(first);
+                Assert.assertEquals("Svanfoss", first.getAttribute("STATION_NAME"));
 
-            SimpleFeature second = parser.parse();
-            Assert.assertNotNull(second);
-            Assert.assertEquals("M071", second.getAttribute("STATION_CODE"));
+                SimpleFeature second = parser.parse();
+                Assert.assertNotNull(second);
+                Assert.assertEquals("M071", second.getAttribute("STATION_CODE"));
 
-            SimpleFeature third = parser.parse();
-            Assert.assertNull(third);
+                SimpleFeature third = parser.parse();
+                Assert.assertNull(third);
+            }
+        } finally {
+            if (prior != null) {
+                Hints.putSystemDefault(Hints.ENTITY_RESOLVER, prior);
+            } else {
+                Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+            }
         }
     }
 

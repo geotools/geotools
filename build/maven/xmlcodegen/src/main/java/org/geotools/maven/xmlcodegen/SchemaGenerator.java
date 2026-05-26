@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.xsd.XSDAttributeDeclaration;
@@ -370,8 +371,7 @@ public class SchemaGenerator extends AbstractGenerator {
                     try {
                         createType(definition, 0);
                     } catch (Exception e) {
-                        logger.warning("XERRORX generating " + xsdType);
-                        e.printStackTrace();
+                        logger.log(Level.WARNING,"XERRORX generating " + xsdType,e);
                     }
                 }
             }

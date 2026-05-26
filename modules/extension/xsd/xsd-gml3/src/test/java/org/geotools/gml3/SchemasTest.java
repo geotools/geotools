@@ -10,10 +10,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.xsd.Schemas;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class SchemasTest {
+
+    @Before
+    public void setUp() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+    }
 
     @Test
     public void testConcurrentParse() throws Exception {

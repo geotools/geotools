@@ -49,6 +49,8 @@ import org.geotools.data.solr.TestsSolrUtils;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.resolver.SchemaCache;
 import org.junit.AfterClass;
@@ -85,6 +87,7 @@ public final class ComplexFeaturesIT extends OnlineTestCase {
 
     @Override
     public void setUpInternal() throws IOException {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
         fixture.setProperty("solr_url", TestContainersSupport.solrCoreUrl("complex_stations"));
         // instantiate the Apache Solr client
         try (HttpJdkSolrClient client = new HttpJdkSolrClient.Builder(getSolrCoreURL()).build()) {
@@ -108,6 +111,7 @@ public final class ComplexFeaturesIT extends OnlineTestCase {
                     "Error removing tests root directory '%s'.".formatted(TESTS_ROOT_DIR.getAbsolutePath()),
                     exception);
         }
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
     }
 
     /** Tests retrieving all complex feature from App-Schema store that uses Apache Solr as a data store. */

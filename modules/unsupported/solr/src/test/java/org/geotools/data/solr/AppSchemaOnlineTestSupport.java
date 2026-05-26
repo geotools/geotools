@@ -40,7 +40,9 @@ import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.solr.SolrTypeData.SolrTypes;
 import org.geotools.data.solr.StationData.Stations;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
@@ -93,6 +95,8 @@ public abstract class AppSchemaOnlineTestSupport extends OnlineTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+
         configFieldsSetup();
         TestContainersSupport.solrCoreUrl(CORE_NAME);
         fixture.setProperty(SOLR_URL_KEY, TestContainersSupport.solrServerUrl());

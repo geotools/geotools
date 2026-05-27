@@ -487,5 +487,5 @@ COPY (
 );
 
 SELECT 'Export complete.' AS status;
-SELECT 'NOTE: DuckDB version 1.2.2 does not add CRS information to GeoParquet metadata and does not provide API to modify it.' AS note;
+SELECT 'NOTE: DuckDB does not always add CRS information to GeoParquet metadata and may not provide an API to modify it directly.' AS note;
 SELECT 'The GeoParquetDataStore code handles missing CRS information by defaulting to EPSG:4326 (WGS 84).' AS note;

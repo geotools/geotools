@@ -20,6 +20,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.sql.Connection;
 import java.sql.Driver;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -153,12 +155,35 @@ class DuckdbConnectionFactory extends DriverConnectionFactory {
                 if (!allowInstall && isInstallStatement(sql)) {
                     continue;
                 }
-                stmt.execute(sql);
+                executeInitSql(conn, stmt, sql);
             }
         }
     }
 
+    private void executeInitSql(Connection conn, Statement stmt, String sql) throws SQLException {
+        if (isGeometryAlwaysXySetStatement(sql) && !isDuckDbSettingAvailable(conn, "geometry_always_xy")) {
+            return;
+        }
+        stmt.execute(sql);
+    }
+
     private boolean isInstallStatement(String sql) {
         return sql != null && sql.trim().regionMatches(true, 0, "install", 0, "install".length());
+    }
+
+    private boolean isDuckDbSettingAvailable(Connection conn, String settingName) throws SQLException {
+        try (PreparedStatement ps =
+                conn.prepareStatement("SELECT 1 FROM duckdb_settings() WHERE lower(name) = lower(?) LIMIT 1")) {
+            ps.setString(1, settingName);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    static boolean isGeometryAlwaysXySetStatement(String sql) {
+        String trimmed = sql == null ? "" : sql.trim();
+        return trimmed.toLowerCase(java.util.Locale.ROOT)
+                .matches("set\\s+geometry_always_xy\\s*=\\s*(true|false)\\s*;?");
     }
 }

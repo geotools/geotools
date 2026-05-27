@@ -581,7 +581,6 @@ public class GeoParquetDialect extends DuckDBDialect {
     private SimpleFeatureType buildTypeNarrowedGeometryFeatureType(SimpleFeatureType schema) {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.init(schema);
-
         schema.getAttributeDescriptors().stream()
                 .filter(GeometryDescriptor.class::isInstance)
                 .map(GeometryDescriptor.class::cast)
@@ -616,7 +615,6 @@ public class GeoParquetDialect extends DuckDBDialect {
         if (narrowedGeomType.equals(orig.getType().getBinding())) {
             return orig;
         }
-
         AttributeTypeBuilder builder = new AttributeTypeBuilder();
         builder.init(orig);
         builder.setBinding(narrowedGeomType);
@@ -638,17 +636,17 @@ public class GeoParquetDialect extends DuckDBDialect {
      * buildGeometryDescriptorOverride and enforceMuliForCurrentTypeName.
      *
      * @param typeName The name of the feature type
-     * @param geometryAttirbute The name of the geometry column
+     * @param geometryAttribute The name of the geometry column
      * @return The most specific JTS geometry class for the column
      */
-    private Class<? extends Geometry> getNarrowedGeometryType(String typeName, String geometryAttirbute) {
+    private Class<? extends Geometry> getNarrowedGeometryType(String typeName, String geometryAttribute) {
         GeoparquetDatasetMetadata md;
         try {
             md = getGeoparquetMetadata(typeName);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-        return md.getNarrowedGeometryType(geometryAttirbute);
+        return md.getNarrowedGeometryType(geometryAttribute);
     }
 
     /**

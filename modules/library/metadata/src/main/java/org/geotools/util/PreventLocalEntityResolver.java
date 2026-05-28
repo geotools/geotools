@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 import org.geotools.util.logging.Logging;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -39,7 +38,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author Davide Savazzi - geo-solutions.it
  */
-public class PreventLocalEntityResolver implements EntityResolver2, Serializable {
+public class PreventLocalEntityResolver implements EntityResolver3, Serializable {
 
     /** serialVersionUID */
     @Serial
@@ -68,6 +67,17 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
 
     protected PreventLocalEntityResolver() {
         // singleton
+    }
+
+    /**
+     * PreventLocalEntityResolver provides access {@code "http"} and internal {@code "jar:file,jar:nested,vfs"}
+     * protocols.
+     *
+     * @return {@code "http,jar:file,jar:nested,vfs"}
+     */
+    @Override
+    public String getAccess() {
+        return "http,jar:file,jar:nested,vfs";
     }
 
     @Override

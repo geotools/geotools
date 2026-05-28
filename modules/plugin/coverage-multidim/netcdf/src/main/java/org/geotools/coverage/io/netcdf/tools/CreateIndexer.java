@@ -144,6 +144,7 @@ public class CreateIndexer {
 
         SAXBuilder saxBuilder = new SAXBuilder();
         saxBuilder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+
         Document doc = saxBuilder.build(finalAuxFile);
         Element root = doc.getRootElement();
         Set<String> timeAttributes = new HashSet<>();

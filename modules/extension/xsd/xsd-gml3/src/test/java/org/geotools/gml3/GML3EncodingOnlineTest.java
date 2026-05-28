@@ -32,6 +32,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
 import org.geotools.util.NullEntityResolver;
+import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
@@ -112,7 +113,7 @@ public class GML3EncodingOnlineTest {
     }
 
     void validate(byte[] data, Configuration configuration) throws Exception {
-        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        SchemaFactory sf = XMLUtils.newSchemaFactory(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
         Schema s = sf.newSchema(new URI(configuration.getXSD().getSchemaLocation()).toURL());
 

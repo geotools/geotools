@@ -68,7 +68,8 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
     protected static Validator VALIDATOR;
 
     static {
-        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        SchemaFactory factory = XMLUtils.newSchemaFactory(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        // no need for external xsd as we are parsing local geninfos_1.0.xsd resource
         try {
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");

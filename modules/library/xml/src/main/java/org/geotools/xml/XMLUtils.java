@@ -568,7 +568,7 @@ public class XMLUtils {
         SchemaFactory factory = SchemaFactory.newInstance(schemaLanguage); // NOPMD AvoidSchemaFactory
 
         EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
-        final String ACCESS = getAccess(entityResolver);
+        final String ACCESS = getAccess(entityResolver, "file http");
         try {
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, ACCESS);
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
@@ -592,9 +592,10 @@ public class XMLUtils {
      * <p>If the entity provider is not recognized {@code ""} is provided to cut off access.
      *
      * @param entityResolver EntityResolver
+     * @param protocol Default protocol to use if entityResolver is not recognized
      * @return Entity resolution protocol: {@code "all"}, {@code "http"}, or {@code ""} based on provided entityResolver
      */
-    private static String getAccess(EntityResolver entityResolver) {
+    private static String getAccess(EntityResolver entityResolver, String protocol) {
         if (entityResolver == null) {
             return "";
         }
@@ -604,7 +605,7 @@ public class XMLUtils {
                 || entityResolver == DefaultEntityResolver.INSTANCE) {
             return "http";
         }
-        return "";
+        return protocol;
     }
 
     /**
@@ -855,7 +856,7 @@ public class XMLUtils {
             }
             // Sensible factory defaults based on EntityResolver
             EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
-            final String ACCESS = getAccess(entityResolver);
+            final String ACCESS = getAccess(entityResolver, "file http");
 
             try {
                 this.factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ACCESS);
@@ -867,9 +868,6 @@ public class XMLUtils {
             } catch (IllegalArgumentException notSupported) {
                 LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
             }
-
-            //
-
         }
 
         @Override

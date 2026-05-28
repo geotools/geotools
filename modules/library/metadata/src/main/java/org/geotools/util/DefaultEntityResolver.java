@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.EntityResolver2;
 
 /**
  * Entity Resolver which allows to resolve on OGC & INSPIRE schemas, roughly inspired from the `AllowListEntityResolver`
@@ -42,7 +41,7 @@ import org.xml.sax.ext.EntityResolver2;
  *
  * @author Pierre Mauduit (Camptocamp)
  */
-public class DefaultEntityResolver implements EntityResolver2, Serializable {
+public class DefaultEntityResolver implements EntityResolver3, Serializable {
 
     @Serial
     private static final long serialVersionUID = -793816026668809854L;
@@ -100,6 +99,17 @@ public class DefaultEntityResolver implements EntityResolver2, Serializable {
                 + "|"
                 + Pattern.quote(INSPIRE)
                 + ")/[^?#;]*\\.(xsd|dtd)");
+    }
+
+    /**
+     * DefaultEntityResolver allows access to {@code "http"} protocol, and select internal content
+     * {@code "jar:file,jar:nested,vfs"}.
+     *
+     * @return {@code "http,jar:file,jar:nested,vfs"}
+     */
+    @Override
+    public String getAccess() {
+        return "http,jar:file,jar:nested,vfs";
     }
 
     @Override

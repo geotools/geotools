@@ -51,8 +51,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.geotools.util.DefaultEntityResolver;
+import org.geotools.util.EntityResolver3;
 import org.geotools.util.NullEntityResolver;
-import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -568,7 +568,7 @@ public class XMLUtils {
         SchemaFactory factory = SchemaFactory.newInstance(schemaLanguage); // NOPMD AvoidSchemaFactory
 
         EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
-        final String ACCESS = getAccess(entityResolver, "file http");
+        final String ACCESS = getAccess(entityResolver, "");
         try {
             factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, ACCESS);
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
@@ -599,11 +599,11 @@ public class XMLUtils {
         if (entityResolver == null) {
             return "";
         }
-        if (entityResolver == NullEntityResolver.INSTANCE) {
-            return "all";
-        } else if (entityResolver == PreventLocalEntityResolver.INSTANCE
-                || entityResolver == DefaultEntityResolver.INSTANCE) {
-            return "http";
+        if (entityResolver instanceof EntityResolver3 entityResolver3) {
+            return entityResolver3.getAccess();
+        }
+        if (protocol == null) {
+            return ""; // no access
         }
         return protocol;
     }
@@ -856,7 +856,7 @@ public class XMLUtils {
             }
             // Sensible factory defaults based on EntityResolver
             EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
-            final String ACCESS = getAccess(entityResolver, "file http");
+            final String ACCESS = getAccess(entityResolver, "");
 
             try {
                 this.factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ACCESS);

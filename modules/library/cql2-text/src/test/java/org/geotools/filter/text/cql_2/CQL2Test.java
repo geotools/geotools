@@ -184,6 +184,11 @@ public class CQL2Test {
         assertFilter("A = 1 OR A = 2 OR A = 3", "(A IN (1,2)) OR A = 3", Or.class);
     }
 
+    @Test
+    public void inPredicateGEOT7885() throws CQLException {
+        assertFilter("processing:level IN ('L0', 'L1')", "\"processing:level\" IN ('L0','L1')", Or.class);
+    }
+
     /**
      * Like predicate sample
      *

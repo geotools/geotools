@@ -798,6 +798,40 @@ public class HeterogenousCRSTest {
         imReader.dispose();
     }
 
+    @Test
+    public void testHeteroExternalOverviewsInNativeCRS() throws Exception {
+        String testLocation = "hetero_s2_ovr";
+        URL storeUrl = TestData.url(this, testLocation);
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(new File(storeUrl.toURI()), testDirectory);
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+
+        // All granules are EPSG:32632; mosaic CRS is 4326.
+        // Requesting in UTM32N at 1/4 resolution forces overview use (levelIndex > 0)
+        // on the same-CRS path — the bug in ReadParamsController would produce wrong subsampling.
+        CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
+        ReferencedEnvelope env4326 = ReferencedEnvelope.reference(imReader.getOriginalEnvelope());
+        ReferencedEnvelope envUtm = env4326.transform(utm32n, true);
+        GridEnvelope originalRange = imReader.getOriginalGridRange();
+        GridEnvelope2D readRange = new GridEnvelope2D(0, 0, originalRange.getSpan(0) / 4, originalRange.getSpan(1) / 4);
+
+        ParameterValue<GridGeometry2D> ggp = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        ggp.setValue(new GridGeometry2D(readRange, envUtm));
+
+        GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] {ggp});
+        assertNotNull(coverage);
+        assertTrue(CRS.equalsIgnoreMetadata(utm32n, coverage.getCoordinateReferenceSystem()));
+
+        // resolution ~4× native (100m) = ~400m; 50m tolerance
+        AffineTransform tx = (AffineTransform) coverage.getGridGeometry().getGridToCRS();
+        assertEquals(400, XAffineTransform.getScaleX0(tx), 50);
+        assertEquals(400, XAffineTransform.getScaleY0(tx), 50);
+
+        imReader.dispose();
+    }
+
     public List<String> getSourceFilesForParams(ImageMosaicReader imReader, GeneralParameterValue... params)
             throws IOException {
         GridCoverage2D coverage = imReader.read(params);

@@ -205,15 +205,15 @@ public abstract class XSD {
      * <p>This method may be extended, but should not be overridden.
      */
     protected XSDSchema buildSchema() throws IOException {
-        // grab all the dependencies and create schema locators from the build
-        // schemas
+        // grab all the dependencies and create schema locators from build schemas
+        //
         List<XSDSchemaLocator> locators = new ArrayList<>();
         List<XSDSchemaLocationResolver> resolvers = new ArrayList<>();
 
         for (XSD dependency : allDependencies()) {
             SchemaLocator locator = dependency.createSchemaLocator();
-
             if (locator != null) {
+                locator.setEntityResolver(entityResolver);
                 locators.add(locator);
             }
 
@@ -236,8 +236,8 @@ public abstract class XSD {
             resolvers.add(resolver);
         }
 
-        // parse the location of the xsd with all the locators for dependent schemas
-        // no resolver as the code should be referencing only local schemas
+        // The entityResolver is used to check the getSchemaLocation() before parsing starts,
+        // however during parsing the code should reference the local schemas all the locators for dependent schemas
         return Schemas.parse(getSchemaLocation(), locators, resolvers, Collections.emptyList(), entityResolver);
     }
 

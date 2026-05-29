@@ -34,6 +34,8 @@ import org.geotools.api.data.DataSourceException;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.Configuration;
@@ -54,13 +56,15 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
         try {
             final Document rawDocument;
             try {
-                DocumentBuilderFactory builderFactory = XMLUtils.newDocumentBuilderFactory();
+                Hints hints = GeoTools.getDefaultHints();
+                if (entityResolver != null) {
+                    hints.put(Hints.ENTITY_RESOLVER, entityResolver);
+                }
+                DocumentBuilderFactory builderFactory = XMLUtils.newDocumentBuilderFactory(hints);
                 builderFactory.setNamespaceAware(true);
                 builderFactory.setValidating(false);
-                DocumentBuilder documentBuilder = XMLUtils.newDocumentBuilder(builderFactory);
-                if (entityResolver != null) {
-                    documentBuilder.setEntityResolver(entityResolver);
-                }
+
+                DocumentBuilder documentBuilder = XMLUtils.newDocumentBuilder(builderFactory, hints);
                 rawDocument = documentBuilder.parse(response.getResponseStream());
             } catch (Exception e) {
                 throw new IOException("Error parsing capabilities document: " + e.getMessage(), e);
@@ -85,7 +89,7 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
 
             for (Configuration wfsConfig : tryConfigs) {
                 try {
-                    parsedCapabilities = parseCapabilities(rawDocument, wfsConfig);
+                    parsedCapabilities = parseCapabilities(rawDocument, wfsConfig, entityResolver);
                     if (parsedCapabilities != null) {
                         break;
                     }
@@ -107,9 +111,10 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
         }
     }
 
-    private EObject parseCapabilities(final Document document, final Configuration wfsConfig) throws IOException {
+    private EObject parseCapabilities(
+            final Document document, final Configuration wfsConfig, EntityResolver entityResolver) throws IOException {
 
-        DOMParser parser = new DOMParser(wfsConfig, document);
+        DOMParser parser = new DOMParser(wfsConfig, document, entityResolver);
         final Object parsed;
         try {
             parsed = parser.parse();

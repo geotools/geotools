@@ -26,7 +26,6 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.api.data.DataSourceException;
@@ -45,12 +44,11 @@ import org.geotools.gml.stream.XmlStreamGeometryReader;
 import org.geotools.gml3.GML;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.wfs.WFS;
 import org.geotools.xml.XMLUtils;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.xml.sax.EntityResolver;
-import org.xml.sax.SAXException;
-import org.xml.sax.ext.EntityResolver2;
 
 /**
  * A {@link GetParser<SimpleFeature>} implementation that uses plain xml pull to parse a GetFeature response.
@@ -98,29 +96,23 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         this.builder = new SimpleFeatureBuilder(targetType);
 
         try {
-            XMLInputFactory factory = XMLUtils.newXMLInputFactory();
             final EntityResolver entityResolver = GeoTools.getEntityResolver(null);
-            factory.setXMLResolver(new XMLResolver() {
-                @Override
-                public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace)
-                        throws XMLStreamException {
-                    try {
-                        if (entityResolver instanceof EntityResolver2 entityResolver2) {
-                            entityResolver2.resolveEntity(publicID, systemID, baseURI, namespace);
-                        } else {
-                            entityResolver.resolveEntity(publicID, systemID);
-                        }
-                    } catch (IOException | SAXException e) {
-                        throw new XMLStreamException(e);
-                    }
-                    return null;
-                }
-            });
+            Hints hints = new Hints(Hints.ENTITY_RESOLVER, entityResolver);
+            XMLInputFactory factory = XMLUtils.newXMLInputFactory(hints);
 
             // disable DTDs
-            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
+                factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
+                factory.setProperty(XMLInputFactory.IS_COALESCING, false);
+            }
+
             // disable external entities
-            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
+                factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, true);
+            }
+
             parser = factory.createXMLStreamReader(inputStream, "UTF-8");
 
             geometryReader = new XmlStreamGeometryReader(parser, new GeometryFactory());

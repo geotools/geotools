@@ -178,7 +178,11 @@ public class Parser {
      */
     public Object parse(InputSource source) throws IOException, SAXException, ParserConfigurationException {
         SAXParser parser = parser();
-
+        if (handler.getEntityResolver() == null) {
+            LOGGER.warning("Parsing with no entity resolver configured");
+        } else {
+            LOGGER.info("Parsing with entity resolver: " + handler.getEntityResolver());
+        }
         parser.parse(source, handler);
 
         return handler.getValue();

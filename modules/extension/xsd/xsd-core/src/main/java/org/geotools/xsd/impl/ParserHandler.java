@@ -36,6 +36,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.xs.XS;
 import org.geotools.xsd.BindingFactory;
@@ -44,6 +45,7 @@ import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.ParserDelegate;
 import org.geotools.xsd.ParserNamespaceSupport;
 import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.SchemaLocator;
 import org.geotools.xsd.Schemas;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -562,6 +564,9 @@ public class ParserHandler extends DefaultHandler2 {
 
                     // next check for schema override
                     for (XSDSchemaLocator locator : locators) {
+                        if (locator instanceof SchemaLocator schemaLocator) {
+                            schemaLocator.setEntityResolver(NullEntityResolver.INSTANCE);
+                        }
                         XSDSchema schema = locator.locateSchema(null, namespace, location, null);
 
                         if (schema != null) {

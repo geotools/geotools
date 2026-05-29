@@ -100,16 +100,10 @@ public class ReadParamsController {
                 }
             }
         } else {
-            // work on overviews
-            // TODO this is bad side effect of how the Overviews are managed
-            // right now. There are two problems here,
-            // first we are assuming that we are working with LON/LAT,
-            // second is that we are getting just an approximation of
-            // raster dimensions. The solution is to have the rater
-            // dimensions on each level and to confront raster dimensions,
-            // which means working
-            rasterWidth = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(0) / selectedRes[0]);
-            rasterHeight = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(1) / selectedRes[1]);
+            // Scale level-0 raster dimensions by overview scale factor.
+            // Avoids dividing bbox span by resolution (broken when CRS units differ, e.g. 4326 bbox + meter res).
+            rasterWidth = (int) Math.round(spatialDomainManager.coverageRasterArea.width / level.scaleFactor);
+            rasterHeight = (int) Math.round(spatialDomainManager.coverageRasterArea.height / level.scaleFactor);
         }
         // /////////////////////////////////////////////////////////////////////
         ImageUtilities.setSubsamplingFactors(readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);

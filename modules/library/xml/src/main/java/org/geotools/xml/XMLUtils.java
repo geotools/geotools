@@ -17,6 +17,8 @@
 package org.geotools.xml;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,9 +52,7 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.EntityResolver3;
-import org.geotools.util.NullEntityResolver;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -107,34 +107,52 @@ public class XMLUtils {
 
         // Used to determine sensible defaults based on entity resolver selected
         EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
-
-        if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
-            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
-        }
-
-        // Disable XSD: Expect XMLInputFactory to uses Validator for access XSD
-        if (factory.isPropertySupported(XMLConstants.ACCESS_EXTERNAL_SCHEMA)) {
-            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-        }
-
-        // Disable DTD: few of our protocols / formats are old enough to require DTD
-        if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
-            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-        }
-        if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
-            // disable resolving of external DTD entities (coalescing needs to be false)
-            factory.setProperty(XMLInputFactory.IS_COALESCING, false);
-        }
-        if (factory.isPropertySupported(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES)) {
-            if (entityResolver == NullEntityResolver.INSTANCE) {
-                factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, true);
-            } else if (entityResolver == DefaultEntityResolver.INSTANCE) {
-                factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
-            } else {
+        String access = getAccess(entityResolver, "");
+        if (access.isEmpty()) {
+            // GeoTools locks down all external entity facilities by default
+            if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
+                factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            }
+            if (factory.isPropertySupported(XMLConstants.ACCESS_EXTERNAL_SCHEMA)) {
+                factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, false);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
+                factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
+                factory.setProperty(XMLInputFactory.IS_COALESCING, false);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES)) {
                 factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
             }
         }
+        if (!access.isEmpty()) {
+            // If EntityResolver3 is used to provide access information,
+            // external entity facilities will be relaxed accordingly
+            boolean all = access.contains("all");
+            boolean internal = access.contains("all")
+                    || access.contains("file")
+                    || access.contains("jar")
+                    || access.contains("vfs");
 
+            boolean external = access.contains("all") || access.contains("http");
+            if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
+                factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, internal || external);
+            }
+            if (factory.isPropertySupported(XMLConstants.ACCESS_EXTERNAL_SCHEMA)) {
+                factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, access);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
+                factory.setProperty(XMLInputFactory.SUPPORT_DTD, internal || external);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
+                // coalescing needs to be false to disable resolving of external DTD entities
+                factory.setProperty(XMLInputFactory.IS_COALESCING, internal || external);
+            }
+            if (factory.isPropertySupported(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES)) {
+                factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, all);
+            }
+        }
         factory.setXMLResolver(new GTXMLResolver(entityResolver, factory.getXMLResolver(), hints));
         return factory;
     }
@@ -1352,7 +1370,109 @@ public class XMLUtils {
         }
     }
 
-    /** LSResourceResolver that delegates to EntityResolver to verify allowed locations. */
+    /**
+     * Adapts InputSource to LSResource, allowing to be directly used during DOM Load and Save operations.
+     *
+     * <p>Adapted from GeoServer {@code InputSourceToLSResource} example.
+     */
+    private static class GTLSInput implements LSInput {
+
+        private InputSource delegate;
+
+        public GTLSInput(InputSource delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void setPublicId(String publicId) {
+            delegate.setPublicId(publicId);
+        }
+
+        @Override
+        public String getPublicId() {
+            return delegate.getPublicId();
+        }
+
+        @Override
+        public void setSystemId(String systemId) {
+            delegate.setSystemId(systemId);
+        }
+
+        @Override
+        public String getSystemId() {
+            return delegate.getSystemId();
+        }
+
+        @Override
+        public void setByteStream(InputStream byteStream) {
+            delegate.setByteStream(byteStream);
+        }
+
+        @Override
+        public InputStream getByteStream() {
+            return delegate.getByteStream();
+        }
+
+        @Override
+        public void setEncoding(String encoding) {
+            delegate.setEncoding(encoding);
+        }
+
+        @Override
+        public String getEncoding() {
+            return delegate.getEncoding();
+        }
+
+        @Override
+        public void setCharacterStream(Reader characterStream) {
+            delegate.setCharacterStream(characterStream);
+        }
+
+        @Override
+        public Reader getCharacterStream() {
+            return delegate.getCharacterStream();
+        }
+
+        @Override
+        public String getStringData() {
+            return null;
+        }
+
+        @Override
+        public void setStringData(String stringData) {
+            // nothing to do
+
+        }
+
+        @Override
+        public String getBaseURI() {
+            return null;
+        }
+
+        @Override
+        public void setBaseURI(String baseURI) {}
+
+        @Override
+        public boolean getCertifiedText() {
+            return false;
+        }
+
+        @Override
+        public void setCertifiedText(boolean certifiedText) {}
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("GTLSResource{");
+            sb.append("delegate=").append(delegate);
+            sb.append('}');
+            return sb.toString();
+        }
+    }
+
+    /**
+     * LSResourceResolver that delegates to EntityResolver to verify allowed locations during DOM Load and Save
+     * operations.
+     */
     private static class GTLSResourceResolver implements LSResourceResolver {
 
         private final EntityResolver entityResolver;
@@ -1381,7 +1501,7 @@ public class XMLUtils {
                 try {
                     InputSource source = entityResolver.resolveEntity(publicId, systemId);
                     if (source != null) {
-                        return null; // resolved internally, allow processor to handle
+                        return new GTLSInput(source);
                     }
                 } catch (SAXException | IOException e) {
                     throw new RuntimeException(e);

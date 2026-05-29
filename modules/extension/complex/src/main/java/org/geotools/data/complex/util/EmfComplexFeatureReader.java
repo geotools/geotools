@@ -27,6 +27,9 @@ import javax.xml.stream.XMLStreamReader;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
 import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
+import org.geotools.appschema.resolver.xml.AppSchemaEntityResolver;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
@@ -34,6 +37,7 @@ import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
+import org.xml.sax.EntityResolver;
 
 /**
  * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link AttributeType}s and
@@ -73,15 +77,17 @@ public class EmfComplexFeatureReader {
     }
 
     /**
-     * Parses the GML schema represented by the <code>configuration</code>'s {@link Configuration#getSchemaFileURL()
-     * schema location} into a {@link SchemaIndex}.
+     * Parses the GML schema represented by the <code>configuration</code>'s {@link Configuration schema location} into
+     * a {@link SchemaIndex}.
      *
      * @param configuration configuration object used to access the XSDSchema to parse. This configuration object might
      *     contain {@link Binding}s
      */
     public SchemaIndex parse(Configuration configuration) throws IOException {
         // find out the schemas involved in the app schema configuration
-        final SchemaIndex appSchemaIndex = Schemas.findSchemas(configuration);
+        EntityResolver entityResolver = new AppSchemaEntityResolver(resolver, NullEntityResolver.INSTANCE);
+
+        final SchemaIndex appSchemaIndex = Schemas.findSchemas(configuration, entityResolver);
 
         return appSchemaIndex;
     }
@@ -126,7 +132,12 @@ public class EmfComplexFeatureReader {
         // create stream parser
 
         try (InputStream input = resolvedLocation.openStream()) {
-            XMLInputFactory factory = XMLUtils.newXMLInputFactory();
+            EntityResolver entityResolver = new AppSchemaEntityResolver(resolver);
+            Hints hints = new Hints(Hints.ENTITY_RESOLVER, entityResolver);
+
+            XMLInputFactory factory = XMLUtils.newXMLInputFactory(hints);
+            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, true);
+
             // disable DTDs
             factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
             // disable external entities

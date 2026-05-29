@@ -336,4 +336,12 @@ public class SchemaResolver {
         }
         return "%032x".formatted(new BigInteger(1, md.digest(bytesOfMessage)));
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SchemaResolver{");
+        sb.append("catalog=").append(catalog);
+        sb.append('}');
+        return sb.toString();
+    }
 }

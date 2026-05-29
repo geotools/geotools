@@ -892,7 +892,8 @@ public class AppSchemaDataAccessConfigurator {
         final List schemaFiles = config.getTargetSchemasUris();
 
         EmfComplexFeatureReader schemaParser = EmfComplexFeatureReader.newInstance();
-        schemaParser.setResolver(buildResolver());
+        SchemaResolver resolver = buildResolver();
+        schemaParser.setResolver(resolver);
 
         // create a single type registry for all the schemas in the config
         typeRegistry = new AppSchemaFeatureTypeRegistry(namespaces);

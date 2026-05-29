@@ -212,8 +212,8 @@ public abstract class XSD {
 
         for (XSD dependency : allDependencies()) {
             SchemaLocator locator = dependency.createSchemaLocator();
-
             if (locator != null) {
+                locator.setEntityResolver(entityResolver);
                 locators.add(locator);
             }
 

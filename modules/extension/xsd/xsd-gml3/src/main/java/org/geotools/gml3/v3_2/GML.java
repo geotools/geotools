@@ -16,6 +16,8 @@
  */
 package org.geotools.gml3.v3_2;
 
+import static java.util.Collections.emptyList;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -2110,7 +2112,9 @@ public final class GML extends XSD {
                             throw new RuntimeException(e);
                         }
                     }
-                }));
+                }),
+                emptyList(),
+                this.entityResolver);
         // leak prevention
         schema.resolveElementDeclaration(NAMESPACE, "_Feature").eAdapters().add(new SubstitutionGroupLeakPreventer());
         schema.eAdapters().add(new ReferencingDirectiveLeakPreventer());

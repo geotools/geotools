@@ -247,9 +247,8 @@ public class ParserTest {
                 parser.setHandleMixedContent(true);
             }
         };
-
         Parser p = new Parser(cfg);
-
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         p.parse(getClass().getResourceAsStream("mixed1.xml"));
         Assert.assertEquals("Hello 'there' how are 'you'?", sb.toString());
 
@@ -401,6 +400,7 @@ public class ParserTest {
         };
 
         Parser p = new Parser(cfg);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         p.setEntityExpansionLimit(1);
         SAXParseException expected = null;
         try {
@@ -441,6 +441,7 @@ public class ParserTest {
         };
 
         Parser p = new Parser(cfg);
+        p.setEntityResolver(NullEntityResolver.INSTANCE);
         p.setEntityExpansionLimit(100);
         SAXParseException unexpected = null;
         try {

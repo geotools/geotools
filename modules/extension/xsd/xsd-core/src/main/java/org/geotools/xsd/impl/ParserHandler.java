@@ -44,6 +44,7 @@ import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.ParserDelegate;
 import org.geotools.xsd.ParserNamespaceSupport;
 import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.SchemaLocator;
 import org.geotools.xsd.Schemas;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
@@ -562,6 +563,9 @@ public class ParserHandler extends DefaultHandler2 {
 
                     // next check for schema override
                     for (XSDSchemaLocator locator : locators) {
+                        if (locator instanceof SchemaLocator schemaLocator) {
+                            schemaLocator.setEntityResolver(entityResolver);
+                        }
                         XSDSchema schema = locator.locateSchema(null, namespace, location, null);
 
                         if (schema != null) {

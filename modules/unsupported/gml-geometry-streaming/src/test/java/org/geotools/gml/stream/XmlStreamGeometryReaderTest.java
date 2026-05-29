@@ -50,6 +50,7 @@ public class XmlStreamGeometryReaderTest {
     @Test
     public void testUnknownElement() throws XMLStreamException {
         XMLInputFactory f = XMLUtils.newXMLInputFactory();
+        f.setProperty(XMLInputFactory.SUPPORT_DTD, false);
         XMLStreamReader r = f.createXMLStreamReader(new StringReader("<unknown></unknown>"));
         XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r, new GeometryFactory());
         r.nextTag();
@@ -60,6 +61,7 @@ public class XmlStreamGeometryReaderTest {
     @Test
     public void testZ() throws XMLStreamException, FactoryException, IOException {
         XMLInputFactory f = XMLUtils.newXMLInputFactory();
+        f.setProperty(XMLInputFactory.SUPPORT_DTD, false);
         XMLStreamReader r = f.createXMLStreamReader(
                 new StringReader(
                         "<gml:Point xmlns:gml=\"http://www.opengis.net/gml\" srsDimension=\"3\"><gml:pos>1 2 3</gml:pos></gml:Point>"));

@@ -18,13 +18,19 @@ package org.geotools.gml3.bindings.smil;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.logging.Logger;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.gml3.smil.SMIL20;
 import org.geotools.gml3.smil.SMIL20LANG;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Schemas;
 
 public class SMIL20SchemaLocator implements XSDSchemaLocator {
+
+    public static final Logger LOGGER = Logging.getLogger(SMIL20SchemaLocator.class);
+
     @Override
     public XSDSchema locateSchema(
             XSDSchema schema, String namespaceURI, String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
@@ -32,9 +38,14 @@ public class SMIL20SchemaLocator implements XSDSchemaLocator {
             String location = getClass().getResource("smil20.xsd").toString();
 
             try {
-                return Schemas.parse(location, null, Collections.singletonList(new SMIL20SchemaLocationResolver()));
+                return Schemas.parse(
+                        location,
+                        null,
+                        Collections.singletonList(new SMIL20SchemaLocationResolver()),
+                        Collections.emptyList(),
+                        NullEntityResolver.INSTANCE);
             } catch (IOException e) {
-                // TODO:  log this
+                LOGGER.fine("Unable to load SMIL 2.0 schema: " + e.getMessage());
             }
         }
 
@@ -42,9 +53,14 @@ public class SMIL20SchemaLocator implements XSDSchemaLocator {
             String location = getClass().getResource("smil20-language.xsd").toString();
 
             try {
-                return Schemas.parse(location, null, Collections.singletonList(new SMIL20SchemaLocationResolver()));
+                return Schemas.parse(
+                        location,
+                        null,
+                        Collections.singletonList(new SMIL20SchemaLocationResolver()),
+                        Collections.emptyList(),
+                        NullEntityResolver.INSTANCE);
             } catch (IOException e) {
-                // TODO:  log this
+                LOGGER.fine("Unable to load SMIL 2.0 language schema: " + e.getMessage());
             }
         }
 

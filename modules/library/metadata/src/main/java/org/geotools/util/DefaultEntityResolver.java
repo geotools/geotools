@@ -59,7 +59,7 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
     public static String W3C = "www.w3.org";
 
     /** Prefix used for SAXException message */
-    private static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for {0}";
+    static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for {0}";
 
     /**
      * Internal uri schema references.
@@ -133,21 +133,7 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
             throw new SAXException("External entity systemId not provided");
         }
         try {
-            String uri;
-
-            if (URI.create(systemId).isAbsolute()) {
-                uri = systemId;
-            } else {
-                // use the baseURI to convert a relative systemId to absolute
-                if (baseURI == null) {
-                    throw new SAXException(ERROR_MESSAGE_BASE + systemId);
-                }
-                if ((baseURI.endsWith(".xsd") || baseURI.endsWith(".XSD")) && baseURI.lastIndexOf('/') != -1) {
-                    uri = baseURI.substring(0, baseURI.lastIndexOf('/')) + '/' + systemId;
-                } else {
-                    uri = baseURI + '/' + systemId;
-                }
-            }
+            String uri = toURI(baseURI, systemId);
             uri = normalize(uri);
             // check if the absolute systemId is an allowed URI jar or vfs reference
             if (INTERNAL_URIS.matcher(uri).matches()) {
@@ -165,7 +151,27 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
         throw new SAXException(MessageFormat.format(ERROR_MESSAGE_BASE, systemId));
     }
 
-    private static String normalize(String uri) throws IOException {
+    static String toURI(String baseURI, String systemId) throws SAXException {
+        if (systemId == null) {
+            throw new SAXException("External entity systemId not provided");
+        }
+
+        if (URI.create(systemId).isAbsolute()) {
+            return systemId;
+        } else {
+            // use the baseURI to convert a relative systemId to absolute
+            if (baseURI == null) {
+                throw new SAXException(ERROR_MESSAGE_BASE + systemId);
+            }
+            if ((baseURI.endsWith(".xsd") || baseURI.endsWith(".XSD")) && baseURI.lastIndexOf('/') != -1) {
+                return baseURI.substring(0, baseURI.lastIndexOf('/')) + '/' + systemId;
+            } else {
+                return baseURI + '/' + systemId;
+            }
+        }
+    }
+
+    static String normalize(String uri) throws IOException {
         if (!URI.create(uri).isAbsolute()) {
             uri = "file:" + uri;
         }
@@ -201,7 +207,7 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
         return uri;
     }
 
-    private static String normalize(String scheme, String path, boolean allowHost, boolean archive) {
+    static String normalize(String scheme, String path, boolean allowHost, boolean archive) {
         String prefix = "/";
         if (allowHost && path.startsWith("//") && !path.startsWith("///")) {
             prefix = path.substring(0, path.indexOf('/', 2) + 1);
@@ -229,7 +235,7 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
         return scheme + prefix + String.join("/", names) + suffix;
     }
 
-    private static String toAbsolutePath(String path) {
+    static String toAbsolutePath(String path) {
         path = new File(path).getAbsolutePath().replace(File.separator, "/");
         return (path.startsWith("/") ? "" : "/") + path;
     }

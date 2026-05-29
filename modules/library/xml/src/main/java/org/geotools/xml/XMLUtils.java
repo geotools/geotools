@@ -68,6 +68,7 @@ import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
+import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -1331,9 +1332,13 @@ public class XMLUtils {
         public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace)
                 throws XMLStreamException {
             // step 1: check with xml resolver: null (external), source (internal), or exception (forbidden)
-            InputSource source = null;
+            InputSource source;
             try {
-                source = entityResolver.resolveEntity(publicID, systemID);
+                if (entityResolver instanceof EntityResolver2 entityResolver2) {
+                    source = entityResolver2.resolveEntity(publicID, systemID, baseURI, namespace);
+                } else {
+                    source = entityResolver.resolveEntity(publicID, systemID);
+                }
                 if (source != null) {
                     // 1. Prefer the character stream (Reader) if available
                     if (source.getCharacterStream() != null) {

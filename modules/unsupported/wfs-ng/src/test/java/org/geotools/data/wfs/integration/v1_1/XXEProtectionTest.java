@@ -55,20 +55,19 @@ public class XXEProtectionTest {
     }
 
     private void assertEntityResolutionDisabled(Throwable t) {
-        if (t instanceof SAXException se) {
-            String message = se.getMessage();
-            if (message != null && message.contains("Entity resolution disallowed")) {
-                // fine, we found the message
-                return;
+        Throwable cause = t;
+        while (cause != null) {
+            if (cause instanceof SAXException se) {
+                String message = se.getMessage();
+                if (message != null && message.contains("Entity resolution disallowed")) {
+                    // fine, we found the message
+                    return;
+                }
             }
+            // if we got here we drill down
+            cause = cause.getCause();
         }
-
-        // if we got here we drill down or fail, the message was not found
-        if (t.getCause() != null) {
-            assertEntityResolutionDisabled(t.getCause());
-        } else {
-            fail("Could not find the message about entity resolution disabled");
-        }
+        throw new AssertionError("Could not find the message about entity resolution disabled", t);
     }
 
     /** The pull parser we use has entity resolution disabled, make sure it stays that way */

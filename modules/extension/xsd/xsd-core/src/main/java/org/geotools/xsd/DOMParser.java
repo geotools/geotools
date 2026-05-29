@@ -24,9 +24,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
-import org.geotools.util.NullEntityResolver;
 import org.geotools.util.factory.GeoTools;
-import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xsd.impl.ParserHandler;
 import org.w3c.dom.Document;
@@ -83,9 +81,7 @@ public class DOMParser {
         // "Parser" traverses Document issuing SAX events (fake as document has already been parsed)
         Parser fake = new Parser(configuration);
         if (entityResolver != null) {
-            Hints hints = new Hints(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
-
-            fake.setEntityResolver(GeoTools.getEntityResolver(hints));
+            fake.setEntityResolver(entityResolver);
         } else {
             fake.setEntityResolver(GeoTools.getEntityResolver(null));
         }

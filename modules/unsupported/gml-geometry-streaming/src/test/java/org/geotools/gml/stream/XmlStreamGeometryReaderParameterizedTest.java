@@ -192,8 +192,11 @@ public class XmlStreamGeometryReaderParameterizedTest {
     }
 
     private void testWithGmlString(final String gml, final boolean isGml3_2) throws Exception {
-        XMLInputFactory f = XMLUtils.newXMLInputFactory();
-        XMLStreamReader r = f.createXMLStreamReader(new StringReader(gml));
+        XMLInputFactory factory = XMLUtils.newXMLInputFactory();
+        if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        }
+        XMLStreamReader r = factory.createXMLStreamReader(new StringReader(gml));
         XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r);
         r.nextTag();
         Geometry g = geometryReader.readGeometry();

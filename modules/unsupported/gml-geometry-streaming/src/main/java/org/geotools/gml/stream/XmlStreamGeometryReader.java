@@ -65,6 +65,8 @@ public class XmlStreamGeometryReader {
     /**
      * Create a new instance of the XML Stream Geometry Reader.
      *
+     * <p>Reader is required to have DTD entity resolution disabled.
+     *
      * @param reader the reader providing the data to parse
      */
     public XmlStreamGeometryReader(final XMLStreamReader reader) {
@@ -73,6 +75,8 @@ public class XmlStreamGeometryReader {
 
     /**
      * Create a new instance of the XML Stream Geometry Reader.
+     *
+     * <p>Reader is required to have DTD entity resolution disabled.
      *
      * @param reader the reader providing the data to parse
      * @param geometryFactory a specific {@link GeometryFactory} to use for constructing geometries

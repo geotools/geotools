@@ -33,6 +33,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.EntityResolver3;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xsd.Configuration;
@@ -167,12 +168,25 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
     }
 
     /** Wraps provided EntityResolver2 to handle tempSchemaURIs internally. */
-    private static class TempEntityResolver2 extends TempEntityResolver implements EntityResolver2 {
+    private static class TempEntityResolver2 extends TempEntityResolver implements EntityResolver3 {
         EntityResolver2 delegate;
 
         public TempEntityResolver2(EntityResolver2 delegate, File tempSchema) {
             super(delegate, tempSchema);
             this.delegate = delegate;
+        }
+
+        @Override
+        public String getAccess() {
+            if (delegate instanceof EntityResolver3 entityResolver3) {
+                String access = entityResolver3.getAccess();
+                if (access.contains("file") || access.contains("all")) {
+                    return access;
+                } else {
+                    return access + ",file";
+                }
+            }
+            return "all";
         }
 
         @Override

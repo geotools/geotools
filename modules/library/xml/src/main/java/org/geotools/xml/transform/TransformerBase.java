@@ -22,12 +22,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -414,14 +416,17 @@ public abstract class TransformerBase {
                 throws SAXException {
             if (namespaceDecls != null) {
 
-                // call startPrefixMapping for any namespace prefixes
+                // Collect namespace prefixes into a TreeMap for deterministic output
+                Map<String, String> nsPrefixes = new TreeMap<>();
                 for (int i = 0; i < namespaceDecls.getLength(); i++) {
                     final String nsQName = namespaceDecls.getQName(i);
                     if (nsQName != null && nsQName.startsWith("xmlns:")) {
-                        final String nsPrefix = nsQName.substring(6);
-                        final String nsUri = namespaceDecls.getValue(i);
-                        startPrefixMapping(nsPrefix, nsUri);
+                        nsPrefixes.put(nsQName.substring(6), namespaceDecls.getValue(i));
                     }
+                }
+                // call startPrefixMapping in sorted order
+                for (Map.Entry<String, String> entry : nsPrefixes.entrySet()) {
+                    startPrefixMapping(entry.getKey(), entry.getValue());
                 }
 
                 for (int i = 0, ii = atts.getLength(); i < ii; i++) {
@@ -785,7 +790,7 @@ public abstract class TransformerBase {
         /** Utility method to copy namespace declarations from "sub" translators into this ns support... */
         protected void addNamespaceDeclarations(TranslatorSupport trans) {
             NamespaceSupport additional = trans.getNamespaceSupport();
-            java.util.Enumeration declared = additional.getDeclaredPrefixes();
+            Enumeration declared = additional.getDeclaredPrefixes();
             while (declared.hasMoreElements()) {
                 String prefix1 = declared.nextElement().toString();
                 nsSupport.declarePrefix(prefix1, additional.getURI(prefix1));
@@ -1041,40 +1046,35 @@ public abstract class TransformerBase {
                 ContentHandlerFilter filter = new ContentHandlerFilter(handler, atts);
                 translator = base.createTranslator(filter);
 
+                // Collect all namespace declarations, then add them in sorted order
+                // for deterministic XML output
+                Map<String, String> nsDeclarations = new TreeMap<>();
+
                 if (translator.getDefaultNamespace() != null) {
-                    // declare the default mapping
+                    // declare the default mapping (xmlns="...")
                     atts.addAttribute(XMLNS_NAMESPACE, null, "xmlns", "CDATA", translator.getDefaultNamespace());
 
-                    // if prefix non-null, declare the mapping
+                    // if prefix non-null, include it in the sorted declarations
                     if (translator.getDefaultPrefix() != null) {
-                        atts.addAttribute(
-                                XMLNS_NAMESPACE,
-                                null,
-                                "xmlns:" + translator.getDefaultPrefix(),
-                                "CDATA",
-                                translator.getDefaultNamespace());
+                        nsDeclarations.put(translator.getDefaultPrefix(), translator.getDefaultNamespace());
                     }
                 }
 
                 NamespaceSupport ns = translator.getNamespaceSupport();
-                java.util.Enumeration e = ns.getPrefixes();
-
-                // TODO: only add schema locations for namespaces that are
-                // actually here, or some sort of better checking.
-                // Set namespaces = new HashSet();
+                Enumeration e = ns.getPrefixes();
                 while (e.hasMoreElements()) {
                     String prefix = e.nextElement().toString();
-
                     if (prefix.equals("xml")) {
                         continue;
                     }
+                    nsDeclarations.put(prefix, ns.getURI(prefix));
+                }
 
-                    String xmlns = "xmlns:" + prefix;
-
+                // Add all prefixed namespace declarations in alphabetical order
+                for (Map.Entry<String, String> entry : nsDeclarations.entrySet()) {
+                    String xmlns = "xmlns:" + entry.getKey();
                     if (atts.getValue(xmlns) == null) {
-                        atts.addAttribute(XMLNS_NAMESPACE, null, xmlns, "CDATA", ns.getURI(prefix));
-
-                        // namespaces.add(ns.getURI(prefix));
+                        atts.addAttribute(XMLNS_NAMESPACE, null, xmlns, "CDATA", entry.getValue());
                     }
                 }
 

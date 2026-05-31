@@ -189,6 +189,11 @@ public class CQL2Test {
         assertFilter("processing:level IN ('L0', 'L1')", "\"processing:level\" IN ('L0','L1')", Or.class);
     }
 
+    @Test
+    public void inPredicateFuncGEOT7885() throws CQLException {
+        assertFilter("strToUpperCase('L0') IN ('L0', 'L1')", "strToUpperCase('L0') IN ('L0','L1')", Or.class);
+    }
+
     /**
      * Like predicate sample
      *

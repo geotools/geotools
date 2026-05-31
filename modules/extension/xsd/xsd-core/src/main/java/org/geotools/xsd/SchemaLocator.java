@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
 /**
@@ -55,14 +54,6 @@ public class SchemaLocator implements XSDSchemaLocator {
      */
     public SchemaLocator(XSD xsd) {
         this.xsd = xsd;
-    }
-
-    public void setEntityResolver(EntityResolver entityResolver) {
-        xsd.entityResolver = entityResolver;
-    }
-
-    public EntityResolver getEntityResolver() {
-        return xsd.entityResolver;
     }
 
     /**

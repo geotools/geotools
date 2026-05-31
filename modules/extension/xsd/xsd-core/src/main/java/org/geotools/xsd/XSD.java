@@ -213,7 +213,6 @@ public abstract class XSD {
         for (XSD dependency : allDependencies()) {
             SchemaLocator locator = dependency.createSchemaLocator();
             if (locator != null) {
-                locator.setEntityResolver(entityResolver);
                 locators.add(locator);
             }
 
@@ -236,9 +235,10 @@ public abstract class XSD {
             resolvers.add(resolver);
         }
 
-        // parse the location of the xsd with all the locators for dependent schemas
-        // no resolver as the code should be referencing only local schemas
-        return Schemas.parse(getSchemaLocation(), locators, resolvers, Collections.emptyList(), entityResolver);
+        // Internal schemas from getSchemaLocation() are trusted classpath resources.
+        // Do not pass the entity resolver here - it would block file: protocol access
+        // to schemas resolved from jar/classpath locations during development (target/classes).
+        return Schemas.parse(getSchemaLocation(), locators, resolvers, Collections.emptyList(), null);
     }
 
     public SchemaLocator createSchemaLocator() {

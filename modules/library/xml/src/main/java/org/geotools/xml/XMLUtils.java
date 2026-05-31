@@ -128,14 +128,17 @@ public class XMLUtils {
         }
         if (!access.isEmpty()) {
             // If EntityResolver3 is used to provide access information,
-            // external entity facilities will be relaxed accordingly
-            boolean all = access.contains("all");
-            boolean internal = access.contains("all")
-                    || access.contains("file")
-                    || access.contains("jar")
-                    || access.contains("vfs");
+            // external entity facilities will be relaxed accordingly.
+            // Use comma-delimited parsing to avoid substring false positives
+            // (e.g. "jar:file" should not match standalone "file" protocol)
+            java.util.Set<String> protocols = new java.util.HashSet<>(java.util.Arrays.asList(access.split(",")));
+            boolean all = protocols.contains("all");
+            boolean internal = all
+                    || protocols.contains("file")
+                    || protocols.stream().anyMatch(p -> p.startsWith("jar"))
+                    || protocols.contains("vfs");
 
-            boolean external = access.contains("all") || access.contains("http");
+            boolean external = all || protocols.contains("http") || protocols.contains("https");
             if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
                 factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, internal || external);
             }
@@ -144,8 +147,7 @@ public class XMLUtils {
             }
             if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
                 factory.setProperty(XMLInputFactory.SUPPORT_DTD, internal || external);
-            }
-            if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
+            }            if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
                 // coalescing needs to be false to disable resolving of external DTD entities
                 factory.setProperty(XMLInputFactory.IS_COALESCING, internal || external);
             }

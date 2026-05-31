@@ -141,6 +141,9 @@ public class PullParser {
     }
 
     XMLStreamReader createPullParser(InputStream input) {
+        // PullParser is used for streaming feature parsing of trusted WFS responses.
+        // DTD and external entities are disabled at the StAX level as a security measure,
+        // independent of the entity resolver (which handles SAX-based parsing paths).
         XMLInputFactory factory = XMLUtils.newXMLInputFactory();
         factory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
         factory.setProperty(XMLInputFactory.IS_VALIDATING, false);

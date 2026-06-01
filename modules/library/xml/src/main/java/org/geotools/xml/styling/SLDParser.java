@@ -105,9 +105,8 @@ import org.geotools.styling.ShadedReliefImpl;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayerImpl;
 import org.geotools.util.Base64;
-import org.geotools.util.DefaultEntityResolver;
+import org.geotools.util.EntityResolver3;
 import org.geotools.util.GrowableInternationalString;
-import org.geotools.util.NullEntityResolver;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.XMLUtils;
@@ -195,9 +194,12 @@ public class SLDParser {
 
     protected StyleFactory factory;
 
+    protected boolean supportsDTD = false;
+
     /** provides complete control for detecting relative onlineresources */
     private ResourceLocator onlineResourceLocator;
 
+    /** Provide control of entity resolution, yse EntityResolver3 to limit protocols supported. */
     private EntityResolver entityResolver;
 
     private boolean disposeInputSource;
@@ -352,6 +354,25 @@ public class SLDParser {
         this.entityResolver = entityResolver;
     }
 
+    /**
+     * Use of DTD is not recommended, and is {@code false} by default. May be set to true {@cpde true} if required for
+     * XML using DOCTYPE.
+     *
+     * @return {@code false} to prevent support of DTD.
+     */
+    public boolean isSupportsDTD() {
+        return supportsDTD;
+    }
+
+    /**
+     * Use of DTD is not recommended, and is {@code false} by default.
+     *
+     * @param supportsDTD {@code false} to prevent support of DTD, {@cpde true} if required for XML using DOCTYPE.
+     */
+    public void setSupportsDTD(boolean supportsDTD) {
+        this.supportsDTD = supportsDTD;
+    }
+
     /** Internal setter for source url. */
     void setSourceUrl(URL sourceUrl) {
         if (onlineResourceLocator instanceof DefaultResourceLocator locator) {
@@ -371,29 +392,64 @@ public class SLDParser {
         javax.xml.parsers.DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
         dbf.setNamespaceAware(namespaceAware);
 
-        if (entityResolver != null) {
+        if (this.supportsDTD) {
+            // DTD access restricted by XMLUtils, provided limited DTD access using entityResolver guidance
+            String access;
+            if (entityResolver != null && entityResolver instanceof EntityResolver3 entityResolver3)
+                access = entityResolver3.getAccess();
+            else access = "";
             try {
-                if (entityResolver == DefaultEntityResolver.INSTANCE) {
-                    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "http");
-                } else if (entityResolver == NullEntityResolver.INSTANCE) {
-                    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
-                } else {
-                    dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "file,http");
-                }
+                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, access);
             } catch (IllegalArgumentException notSupported) {
                 LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
             }
-            dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        }
 
-            dbf.setFeature("http://xml.org/sax/features/external-general-entities", true);
+        // First use xerces settings
+        final String DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl";
+        try {
+            if (dbf.getFeature(DISALLOW_DOCTYPE_DECL) != !this.supportsDTD)
+                dbf.setFeature(DISALLOW_DOCTYPE_DECL, !this.supportsDTD);
+        } catch (ParserConfigurationException notSupported) {
+            LOGGER.fine("Parser does not support '" + DISALLOW_DOCTYPE_DECL + "': " + notSupported.getMessage());
+        }
+
+        try {
+            dbf.setXIncludeAware(this.supportsDTD);
+        } catch (UnsupportedOperationException e) {
+            LOGGER.fine("setXIncludeAware setting not supported: "
+                    + this.factory.getClass().getName());
+        }
+
+        // Disable DTD (although this is now the default from XMLUtils
+        final String LOAD_EXTERNAL_DTD = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+        final String EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
+        final String EXTERNAL_PARAMETER_ENTITIES = "http://xml.org/sax/features/external-parameter-entities";
+
+        try {
+            if (dbf.getFeature(LOAD_EXTERNAL_DTD) != this.supportsDTD)
+                dbf.setFeature(LOAD_EXTERNAL_DTD, this.supportsDTD);
+        } catch (ParserConfigurationException notSupported) {
+            LOGGER.fine("Parser does not support '" + LOAD_EXTERNAL_DTD + "': " + notSupported.getMessage());
+        }
+        try {
+            if (dbf.getFeature(EXTERNAL_GENERAL_ENTITIES) != this.supportsDTD)
+                dbf.setFeature(EXTERNAL_GENERAL_ENTITIES, this.supportsDTD);
+        } catch (ParserConfigurationException notSupported) {
+            LOGGER.fine("Parser does not support '" + EXTERNAL_GENERAL_ENTITIES + "': " + notSupported.getMessage());
+        }
+        try {
+            if (dbf.getFeature(EXTERNAL_PARAMETER_ENTITIES) != this.supportsDTD)
+                dbf.setFeature(EXTERNAL_PARAMETER_ENTITIES, this.supportsDTD);
+        } catch (ParserConfigurationException notSupported) {
+            LOGGER.fine("Parser does not support '" + EXTERNAL_PARAMETER_ENTITIES + "': " + notSupported.getMessage());
         }
 
         javax.xml.parsers.DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf);
         if (entityResolver != null) {
             db.setEntityResolver(entityResolver);
         } else {
-            db.setEntityResolver(GeoTools.getEntityResolver(null));
+            db.setEntityResolver(GeoTools.getEntityResolver());
         }
 
         return db;

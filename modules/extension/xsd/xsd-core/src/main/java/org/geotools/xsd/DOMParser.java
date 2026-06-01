@@ -83,7 +83,7 @@ public class DOMParser {
         if (entityResolver != null) {
             fake.setEntityResolver(entityResolver);
         } else {
-            fake.setEntityResolver(GeoTools.getEntityResolver(null));
+            fake.setEntityResolver(GeoTools.getEntityResolver());
         }
 
         // Create the handler to handle the SAX events

@@ -96,7 +96,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         this.builder = new SimpleFeatureBuilder(targetType);
 
         try {
-            final EntityResolver entityResolver = GeoTools.getEntityResolver(null);
+            final EntityResolver entityResolver = GeoTools.getEntityResolver();
             Hints hints = new Hints(Hints.ENTITY_RESOLVER, entityResolver);
             XMLInputFactory factory = XMLUtils.newXMLInputFactory(hints);
 

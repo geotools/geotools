@@ -54,6 +54,7 @@ import org.geotools.util.NullEntityResolver;
 import org.geotools.xml.XMLUtils;
 import org.junit.Test;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class SLDParserTest {
 
@@ -792,24 +793,42 @@ public class SLDParserTest {
             parser.readXML();
             fail("parsing should thrown an error");
         } catch (RuntimeException e) {
+            // Parsing now returns a proper SAXException due to restrictions on parsing preventing
+            // DTD access early so the entityResolver is never called
+            assertTrue(e.getMessage(), e.getCause() instanceof SAXException);
+            assertTrue(e.getMessage().contains("DOCTYPE is disallowed"));
+        }
+
+        parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
+        parser.setSupportsDTD(true);
+        // If we allow DTDs (bad idea) we can restore turn off the parser protections
+        // and rely on the entityResolver (which will in this case produce FileNotFound)
+        try {
+            parser.readXML();
+            fail("parsing should thrown an error");
+        } catch (RuntimeException e) {
             assertTrue(e.getMessage(), e.getCause() instanceof FileNotFoundException);
         }
 
         parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
+
         // Set an EntityResolver implementation to prevent reading entities from the local file
-        // system.
-        // When resolving an XML entity, the empty InputSource returned by this resolver provokes
+        // system. When resolving an XML entity, the empty InputSource returned by this resolver provokes
         // a MalformedURLException
+        parser.setSupportsDTD(true);
         parser.setEntityResolver((publicId, systemId) -> new InputSource());
 
         try {
             parser.readXML();
             fail("parsing should thrown an error");
         } catch (RuntimeException e) {
-            assertTrue(e.getCause() instanceof MalformedURLException);
+            // DTD access is allowed early so the entityResolver called to produce a MalformedURLException
+            assertTrue(e.getMessage(), e.getCause() instanceof MalformedURLException);
         }
 
         parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
+
         // Set another EntityResolver
         parser.setEntityResolver((publicId, systemId) -> {
             if ("file:///this/file/is/top/secret".equals(systemId)) {
@@ -818,6 +837,8 @@ public class SLDParserTest {
                 return new InputSource();
             }
         });
+        // and allow DTD access
+        parser.setSupportsDTD(true);
 
         // now parsing shouldn't throw an exception
         parser.readXML();

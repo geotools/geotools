@@ -94,7 +94,7 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
     private EntityResolver getTempFileEntityResolver(EntityResolver resolver, File tempSchema) {
         if (resolver == null) {
-            resolver = GeoTools.getEntityResolver(null);
+            resolver = GeoTools.getEntityResolver();
         }
 
         if (resolver instanceof EntityResolver2 resolver2) {

@@ -128,7 +128,7 @@ public class Schemas {
      * @return a {@link SchemaIndex} holding the schemas related to <code>configuration</code>
      */
     public static final SchemaIndex findSchemas(Configuration configuration) {
-        return findSchemas(configuration, GeoTools.getEntityResolver(null));
+        return findSchemas(configuration, GeoTools.getEntityResolver());
     }
     /**
      * Finds all the XSDSchemas used by the {@link Configuration configuration} by looking at the configuration's schema
@@ -241,7 +241,7 @@ public class Schemas {
     public static final XSDSchema parse(
             String location, List<XSDSchemaLocator> locators, List<XSDSchemaLocationResolver> resolvers)
             throws IOException {
-        return parse(location, locators, resolvers, emptyList(), GeoTools.getEntityResolver(null));
+        return parse(location, locators, resolvers, emptyList(), GeoTools.getEntityResolver());
     }
 
     /**

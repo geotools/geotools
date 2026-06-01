@@ -228,22 +228,22 @@ public final class GeoToolsTest {
         // confirm system hints work
         try {
             Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
-            assertSame(NullEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
+            assertSame(NullEntityResolver.INSTANCE, GeoTools.getEntityResolver());
 
             // test default behavor
             Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
-            assertSame(DefaultEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
+            assertSame(DefaultEntityResolver.INSTANCE, GeoTools.getEntityResolver());
 
             // test system property functions with default constructor
             System.getProperties().put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.factory.PlaceholderEntityResolver");
             Hints.scanSystemProperties();
-            EntityResolver entityResolver = GeoTools.getEntityResolver(null);
+            EntityResolver entityResolver = GeoTools.getEntityResolver();
             assertTrue(entityResolver instanceof PlaceholderEntityResolver);
 
             // test system property functions with INSTANCE field constructor
             System.getProperties().put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.NullEntityResolver");
             Hints.scanSystemProperties();
-            entityResolver = GeoTools.getEntityResolver(null);
+            entityResolver = GeoTools.getEntityResolver();
             assertTrue(entityResolver instanceof NullEntityResolver);
         } finally {
             System.clearProperty(GeoTools.ENTITY_RESOLVER);

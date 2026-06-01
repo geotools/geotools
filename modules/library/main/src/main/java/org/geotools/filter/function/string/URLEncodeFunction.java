@@ -19,8 +19,8 @@ package org.geotools.filter.function.string;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -79,18 +79,13 @@ public class URLEncodeFunction extends FunctionExpressionImpl {
             }
         }
 
-        try {
-            String encoded = URLEncoder.encode(stringToBeEncoded, "utf-8");
-            if (!formUrlEncode.booleanValue()) {
-                // Using URLEncoder, spaces are converted to plus signs, convert to %20 for non form
-                // url encoding
-                encoded = encoded.replaceAll("\\+", "%20");
-            }
-
-            return encoded;
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function strURLEncode argument #0 - " + e.getMessage());
+        String encoded = URLEncoder.encode(stringToBeEncoded, StandardCharsets.UTF_8);
+        if (!formUrlEncode.booleanValue()) {
+            // Using URLEncoder, spaces are converted to plus signs, convert to %20 for non form
+            // url encoding
+            encoded = encoded.replaceAll("\\+", "%20");
         }
+
+        return encoded;
     }
 }

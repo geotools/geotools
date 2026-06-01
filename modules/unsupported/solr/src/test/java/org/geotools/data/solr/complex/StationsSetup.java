@@ -128,7 +128,7 @@ public final class StationsSetup {
                 // we have context, substitute placeholders with the provided context
                 String content = IOUtils.toString(input, StandardCharsets.UTF_8);
                 content = replace(content, context);
-                IOUtils.write(content, output, "UTF-8");
+                IOUtils.write(content, output, StandardCharsets.UTF_8);
             }
         } catch (Exception exception) {
             throw new RuntimeException("Error copying resource to destination.", exception);

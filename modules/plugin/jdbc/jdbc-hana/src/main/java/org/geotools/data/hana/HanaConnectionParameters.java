@@ -16,8 +16,8 @@
  */
 package org.geotools.data.hana;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,13 +121,9 @@ public final class HanaConnectionParameters {
                 } else {
                     sb.append('&');
                 }
-                try {
-                    sb.append(URLEncoder.encode(option.getKey(), "UTF-8"));
-                    sb.append('=');
-                    sb.append(URLEncoder.encode(option.getValue(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    throw new AssertionError(e);
-                }
+                sb.append(URLEncoder.encode(option.getKey(), StandardCharsets.UTF_8));
+                sb.append('=');
+                sb.append(URLEncoder.encode(option.getValue(), StandardCharsets.UTF_8));
             }
         }
         return sb.toString();

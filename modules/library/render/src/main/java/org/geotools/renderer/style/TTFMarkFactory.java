@@ -26,8 +26,8 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -130,12 +130,7 @@ public class TTFMarkFactory implements MarkFactory {
         if (!link.startsWith("ttf://")) return null;
 
         String family;
-        try {
-            family = URLDecoder.decode(link.substring(6), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // UTF-8 not supported??
-            throw new RuntimeException(e);
-        }
+        family = URLDecoder.decode(link.substring(6), StandardCharsets.UTF_8);
         int markIdx = mark.getMarkIndex();
         char character = (char) markIdx;
         return getShape(family, character);

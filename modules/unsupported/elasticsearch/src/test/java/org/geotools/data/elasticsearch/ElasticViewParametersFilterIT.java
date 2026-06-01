@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.common.collect.ImmutableMap;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +71,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         init("not-active");
         Map<String, String> vparams = new HashMap<>();
         Map<String, Object> query = ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA"));
-        vparams.put("q", URLEncoder.encode(mapper.writeValueAsString(query), "UTF-8"));
+        vparams.put("q", URLEncoder.encode(mapper.writeValueAsString(query), StandardCharsets.UTF_8));
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);

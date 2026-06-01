@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import javax.imageio.stream.ImageInputStreamImpl;
 import org.geotools.s3.cache.CacheEntryKey;
 import org.geotools.s3.cache.CacheManagement;
@@ -63,7 +64,7 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
             StringBuilder keyBuilder = new StringBuilder();
             this.bucket = parts[2];
             for (int i = 3; i < parts.length; i++) {
-                keyBuilder.append("/").append(URLDecoder.decode(parts[i], "UTF-8"));
+                keyBuilder.append("/").append(URLDecoder.decode(parts[i], StandardCharsets.UTF_8));
             }
             this.key = keyBuilder.toString();
             /* Strip leading slash */

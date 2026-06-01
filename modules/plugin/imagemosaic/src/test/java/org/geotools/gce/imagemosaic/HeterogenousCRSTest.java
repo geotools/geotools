@@ -636,11 +636,12 @@ public class HeterogenousCRSTest {
                 HeterogeneousCRS=true
                 MosaicCRS=EPSG\\:3857
                 Schema=*the_geom:Polygon,location:String,crs:String""";
-        FileUtils.writeStringToFile(new File(testDirectory, "indexer.properties"), indexer, "UTF-8");
+        FileUtils.writeStringToFile(new File(testDirectory, "indexer.properties"), indexer, StandardCharsets.UTF_8);
 
         // footprint management
         String footprints = "footprint_source=raster";
-        FileUtils.writeStringToFile(new File(testDirectory, "footprints.properties"), footprints, "UTF-8");
+        FileUtils.writeStringToFile(
+                new File(testDirectory, "footprints.properties"), footprints, StandardCharsets.UTF_8);
 
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, new Hints());
         Assert.assertNotNull(imReader);

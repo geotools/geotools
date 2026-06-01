@@ -83,9 +83,6 @@ public class TestData implements Runnable {
     /** The test data directory. */
     private static final String DIRECTORY = "test-data";
 
-    /** Encoding of URL path. */
-    private static final String ENCODING = "UTF-8";
-
     /**
      * The {@linkplain System#getProperty(String) system property} key for more extensive test suite. The value for this
      * key is returned by the {@link #isExtensiveTest} method. Some test suites will perform more extensive test
@@ -104,7 +101,7 @@ public class TestData implements Runnable {
     public static final String INTERACTIVE_TEST_KEY = "org.geotools.test.interactive";
 
     /**
-     * The files to delete at shutdown time. {@link File#deleteOnExit} alone doesn't seem suffisient since it will
+     * The files to delete at shutdown time. {@link File#deleteOnExit} alone doesn't seem sufficient since it will
      * preserve any overwritten files.
      */
     private static final Deque<Deletable> toDelete = new ArrayDeque<>();
@@ -294,7 +291,7 @@ public class TestData implements Runnable {
      */
     public static File file(final Object caller, final String path) throws FileNotFoundException, IOException {
         final URL url = url(caller, path);
-        final File file = new File(URLDecoder.decode(url.getPath(), ENCODING));
+        final File file = new File(URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8));
         if (!file.exists()) {
             throw new FileNotFoundException("Can not locate test-data for \"" + path + '"');
         }
@@ -366,7 +363,7 @@ public class TestData implements Runnable {
     public static ReadableByteChannel openChannel(final Object caller, final String name)
             throws FileNotFoundException, IOException {
         final URL url = url(caller, name);
-        final File file = new File(URLDecoder.decode(url.getPath(), ENCODING));
+        final File file = new File(URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8));
         if (file.exists()) {
             return new RandomAccessFile(file, "r").getChannel();
         }

@@ -17,9 +17,9 @@
 package org.geotools.renderer.style.svg;
 
 import java.awt.RenderingHints.Key;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Arrays;
 import java.util.Collections;
@@ -126,17 +126,12 @@ public class RenderableSVGCache {
         final int idx = parameter.indexOf("=");
         final String key = idx > 0 ? parameter.substring(0, idx) : parameter;
 
-        try {
-            String value = null;
-            if (idx > 0 && parameter.length() > idx + 1) {
-                final String encodedValue = parameter.substring(idx + 1);
-                value = URLDecoder.decode(encodedValue, "UTF-8");
-            }
-            return new SimpleImmutableEntry<>(key, value);
-        } catch (UnsupportedEncodingException e) {
-            // UTF-8 not supported??
-            throw new RuntimeException(e);
+        String value = null;
+        if (idx > 0 && parameter.length() > idx + 1) {
+            final String encodedValue = parameter.substring(idx + 1);
+            value = URLDecoder.decode(encodedValue, StandardCharsets.UTF_8);
         }
+        return new SimpleImmutableEntry<>(key, value);
     }
 
     private boolean hasParameters(Element root) {

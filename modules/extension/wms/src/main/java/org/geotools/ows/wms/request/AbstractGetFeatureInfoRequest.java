@@ -16,9 +16,9 @@
  */
 package org.geotools.ows.wms.request;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
@@ -66,8 +66,9 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest i
             try {
                 // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]
                 queryLayerString = queryLayerString
-                        + URLEncoder.encode(layer.getName(), "UTF-8").replaceAll("\\+", "%20");
-            } catch (UnsupportedEncodingException | NullPointerException e) {
+                        + URLEncoder.encode(layer.getName(), StandardCharsets.UTF_8)
+                                .replaceAll("\\+", "%20");
+            } catch (NullPointerException e) {
                 queryLayerString = queryLayerString + layer.getName();
             }
 

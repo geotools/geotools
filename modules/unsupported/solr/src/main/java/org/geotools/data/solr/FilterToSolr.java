@@ -18,9 +18,9 @@
 package org.geotools.data.solr;
 
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -739,11 +739,7 @@ public class FilterToSolr implements FilterVisitor {
             FID = FID.substring(this.featureTypeName.length() + 1);
         }
 
-        try {
-            FID = URLDecoder.decode(FID, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        FID = URLDecoder.decode(FID, StandardCharsets.UTF_8);
 
         return FID;
     }

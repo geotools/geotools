@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
@@ -1169,7 +1170,7 @@ public class GeoPackageTest {
         for (String ext : exts) {
             if ("prj".equals(ext)) {
                 String wkt = CRS.decode("EPSG:26713", true).toWKT();
-                FileUtils.writeStringToFile(new File(d, "bugsites.prj"), wkt, "UTF-8");
+                FileUtils.writeStringToFile(new File(d, "bugsites.prj"), wkt, StandardCharsets.UTF_8);
             } else {
                 FileUtils.copyURLToFile(TestData.url("shapes/bugsites." + ext), new File(d, "bugsites." + ext));
             }
@@ -1187,7 +1188,7 @@ public class GeoPackageTest {
         for (String ext : exts) {
             if ("prj".equals(ext)) {
                 String wkt = CRS.decode("EPSG:4326", true).toWKT();
-                FileUtils.writeStringToFile(new File(d, "BooleanTest.prj"), wkt, "UTF-8");
+                FileUtils.writeStringToFile(new File(d, "BooleanTest.prj"), wkt, StandardCharsets.UTF_8);
             } else {
                 FileUtils.copyURLToFile(TestData.url("shapes/BooleanTest." + ext), new File(d, "BooleanTest." + ext));
             }

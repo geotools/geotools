@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -313,7 +314,7 @@ public class ShapefileDumperTest {
     /** Verifies the contents of the CST file are the expected ones */
     private void assertCst(String typeName, String expectedCharset) throws IOException {
         File cst = new File(dumperFolder, typeName + ".cst");
-        String actualCharset = FileUtils.readFileToString(cst, "UTF-8");
+        String actualCharset = FileUtils.readFileToString(cst, StandardCharsets.UTF_8);
         assertEquals(expectedCharset, actualCharset);
     }
 

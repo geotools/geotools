@@ -3013,9 +3013,9 @@ public class ImageMosaicReaderTest {
         Consumer<File> mosaicDirSetup = dir -> {
             File indexer = new File(dir, "indexer.properties");
             try {
-                String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
+                String indexerContents = FileUtils.readFileToString(indexer, StandardCharsets.UTF_8);
                 indexerContents += "AbsolutePath=true\n";
-                FileUtils.writeStringToFile(indexer, indexerContents, "UTF-8");
+                FileUtils.writeStringToFile(indexer, indexerContents, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -3033,9 +3033,9 @@ public class ImageMosaicReaderTest {
         Consumer<File> mosaicDirSetup = dir -> {
             File indexer = new File(dir, "indexer.properties");
             try {
-                String indexerContents = FileUtils.readFileToString(indexer, "UTF-8");
+                String indexerContents = FileUtils.readFileToString(indexer, StandardCharsets.UTF_8);
                 indexerContents += "PathType=ABSOLUTE\n";
-                FileUtils.writeStringToFile(indexer, indexerContents, "UTF-8");
+                FileUtils.writeStringToFile(indexer, indexerContents, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -3886,7 +3886,7 @@ public class ImageMosaicReaderTest {
         assertTrue(props.exists() && props.canRead() && props.canWrite());
 
         // Getting the written properties
-        String properties = FileUtils.readFileToString(props, "UTF-8");
+        String properties = FileUtils.readFileToString(props, StandardCharsets.UTF_8);
 
         // Ensure the ExpandToRGB property is set
         assertTrue(properties.contains("ExpandToRGB"));
@@ -3895,7 +3895,7 @@ public class ImageMosaicReaderTest {
         properties = properties.replace("ExpandToRGB=false", "ExpandToRGB=true");
 
         // Write it on the file
-        FileUtils.write(props, properties, "UTF-8", false);
+        FileUtils.write(props, properties, StandardCharsets.UTF_8, false);
 
         // Read the Directory again
         reader = getReader(testURL, format);
@@ -3941,10 +3941,10 @@ public class ImageMosaicReaderTest {
         // enable palette expansion
         File props = new File(workDir, "index_palette_bandselect.properties");
         assertTrue(props.exists() && props.canRead() && props.canWrite());
-        String properties = FileUtils.readFileToString(props, "UTF-8");
+        String properties = FileUtils.readFileToString(props, StandardCharsets.UTF_8);
         assertTrue(properties.contains("ExpandToRGB"));
         properties = properties.replace("ExpandToRGB=false", "ExpandToRGB=true");
-        FileUtils.write(props, properties, "UTF-8", false);
+        FileUtils.write(props, properties, StandardCharsets.UTF_8, false);
 
         // grab the reader again
         reader = getReader(testURL, format);

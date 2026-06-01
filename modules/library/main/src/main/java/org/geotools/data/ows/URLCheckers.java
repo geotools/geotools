@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
@@ -184,7 +185,7 @@ public class URLCheckers {
 
         if (location.indexOf('%') != -1) {
             try {
-                URLDecoder.decode(location, "UTF-8");
+                URLDecoder.decode(location, StandardCharsets.UTF_8);
             } catch (Exception e) {
                 throw new URLCheckerException("The location could not be URL decoded: " + location);
             }

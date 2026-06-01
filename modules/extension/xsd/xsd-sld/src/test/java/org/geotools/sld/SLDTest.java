@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.geotools.api.style.FeatureTypeStyle;
@@ -142,7 +143,8 @@ public class SLDTest {
 
         Configuration config = new SLDConfiguration();
         Parser parser = new Parser(config);
-        StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, "UTF-8"));
+        StyledLayerDescriptor sld =
+                (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, StandardCharsets.UTF_8));
 
         Style s = ((UserLayer) sld.layers().get(0)).getUserStyles()[0];
         TextSymbolizer symbolizer = (TextSymbolizer)

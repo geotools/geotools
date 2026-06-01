@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -510,20 +511,20 @@ public class NetCDFMultiDimTest {
     @Test
     public void test2DTime_FeatureCollection_DiffSize() throws Exception {
         File dir = TestData.file(this, "twodimtime");
-        String content = FileUtils.readFileToString(new File(dir, "twodimtime_diffsize.fc"), "UTF-8");
+        String content = FileUtils.readFileToString(new File(dir, "twodimtime_diffsize.fc"), StandardCharsets.UTF_8);
         content = content.replaceAll("\\$\\{DIRECTORY\\}", dir.toString());
         File tempFile = tempFolder.newFile("twodimtime_diffsize.fc");
-        FileUtils.writeStringToFile(tempFile, content, "UTF-8");
+        FileUtils.writeStringToFile(tempFile, content, StandardCharsets.UTF_8);
         test2DTime_DiffSize(tempFile);
     }
     /** @throws Exception */
     @Test
     public void test2DTime_Aggregation_DiffSize() throws Exception {
         File dir = TestData.file(this, "twodimtime");
-        String content = FileUtils.readFileToString(new File(dir, "twodimtime_diffsize.ncml"), "UTF-8");
+        String content = FileUtils.readFileToString(new File(dir, "twodimtime_diffsize.ncml"), StandardCharsets.UTF_8);
         content = content.replaceAll("\\$\\{DIRECTORY\\}", dir.toString());
         File tempFile = tempFolder.newFile("twodimtime_diffsize.ncml");
-        FileUtils.writeStringToFile(tempFile, content, "UTF-8");
+        FileUtils.writeStringToFile(tempFile, content, StandardCharsets.UTF_8);
         test2DTime_DiffSize(tempFile);
     }
 

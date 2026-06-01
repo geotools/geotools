@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -133,7 +134,7 @@ public class SchemaFactory {
                 while (e.hasMoreElements()) {
                     URL res = (URL) e.nextElement();
                     try (BufferedReader rd =
-                            new BufferedReader(new InputStreamReader(res.openStream(), "UTF" + "-8"))) {
+                            new BufferedReader(new InputStreamReader(res.openStream(), StandardCharsets.UTF_8))) {
 
                         while (rd.ready()) {
                             String factoryClassName = rd.readLine().trim();

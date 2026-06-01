@@ -122,8 +122,7 @@ public class URIs {
     public static String urlDecode(String value) {
         // TODO: URLEncoder also encodes ( and ) which are considered safe chars,
         // see also http://www.w3.org/International/O-URL-code.html
-        return URLDecoder.decode(
-                new String(value.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 
     /**

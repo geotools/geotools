@@ -415,7 +415,7 @@ public class SchemaFactory {
             saxParserFactory.setValidating(false);
             try {
                 parser = XMLUtils.newSAXParser(saxParserFactory);
-                parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver(null));
+                parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver());
                 parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
                 parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
             } catch (ParserConfigurationException | SAXException e) {

@@ -436,7 +436,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                         "program") {
                     @Override
                     public Object getDefaultValue() {
-                        return GeoTools.getEntityResolver(null);
+                        return GeoTools.getEntityResolver();
                     }
                 };
     }

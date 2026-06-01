@@ -204,6 +204,6 @@ public class XMLHandlerHints implements Map<String, Object> {
                 return entityResolver;
             }
         }
-        return GeoTools.getEntityResolver(null);
+        return GeoTools.getEntityResolver();
     }
 }

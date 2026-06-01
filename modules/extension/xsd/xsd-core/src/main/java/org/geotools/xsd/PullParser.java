@@ -62,7 +62,7 @@ public class PullParser {
 
     public PullParser(Configuration config, InputStream input, PullParserHandler handler) {
         this.handler = handler;
-        this.handler.setEntityResolver(GeoTools.getEntityResolver(null));
+        this.handler.setEntityResolver(GeoTools.getEntityResolver());
         pp = createPullParser(input);
     }
 

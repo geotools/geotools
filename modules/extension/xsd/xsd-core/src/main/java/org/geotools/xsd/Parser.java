@@ -91,7 +91,7 @@ public class Parser {
      *     </code>.
      */
     public Parser(Configuration configuration) {
-        this(configuration, GeoTools.getEntityResolver(null));
+        this(configuration, GeoTools.getEntityResolver());
     }
     /**
      * Creates a new instance of the parser.

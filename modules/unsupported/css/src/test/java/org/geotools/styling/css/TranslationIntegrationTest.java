@@ -18,6 +18,7 @@ package org.geotools.styling.css;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,7 +47,7 @@ public class TranslationIntegrationTest extends AbstractIntegrationTest {
         for (File file : root.listFiles()) {
             if (file.getName().endsWith(".css")) {
                 result.add(new Object[] {file.getName(), file, true});
-                final String css = FileUtils.readFileToString(file, "UTF-8");
+                final String css = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
                 if (!css.contains("@mode 'Flat'") && !css.contains("@mode \"Flat\"")) {
                     result.add(new Object[] {file.getName() + "-first", file, false});
                 }

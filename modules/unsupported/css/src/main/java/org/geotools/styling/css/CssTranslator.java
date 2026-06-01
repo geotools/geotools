@@ -25,6 +25,7 @@ import static org.geotools.api.style.FeatureTypeStyle.VT_LABEL_ATTRIBUTES;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -2248,7 +2249,7 @@ public class CssTranslator {
 
         long start = System.currentTimeMillis();
 
-        String css = FileUtils.readFileToString(input, "UTF-8");
+        String css = FileUtils.readFileToString(input, StandardCharsets.UTF_8);
         Stylesheet styleSheet = CssParser.parse(css);
 
         ConsoleHandler handler = new ConsoleHandler();

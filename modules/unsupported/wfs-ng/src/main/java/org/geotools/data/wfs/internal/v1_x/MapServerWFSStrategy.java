@@ -98,7 +98,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                 String[] tokens = mapServerVersion.split("\\.");
                 if (tokens.length == 3 && versionCompare(mapServerVersion, "5.6.7") < 0) {
                     StringWriter writer = new StringWriter();
-                    IOUtils.copy(in, writer, "UTF-8");
+                    IOUtils.copy(in, writer, StandardCharsets.UTF_8);
                     String pc = writer.toString();
 
                     boolean reformatted = false;

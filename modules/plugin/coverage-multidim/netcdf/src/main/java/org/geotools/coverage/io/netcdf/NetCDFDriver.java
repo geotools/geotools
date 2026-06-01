@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -140,7 +141,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
             // to enable caching.
             //
             if (url.getProtocol().equalsIgnoreCase("file")) {
-                File file = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
+                File file = new File(URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8));
                 if (file.exists()) {
                     if (!file.canRead() || !file.isFile()) {
                         if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("File cannot be read or it is a directory");

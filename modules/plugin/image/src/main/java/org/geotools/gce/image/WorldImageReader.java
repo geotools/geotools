@@ -167,7 +167,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
                     if (auth != null && !auth.equals("")) {
                         path = "//" + auth + path;
                     }
-                    this.source = input = new File(URLDecoder.decode(path, "UTF-8"));
+                    this.source = input = new File(URLDecoder.decode(path, StandardCharsets.UTF_8));
                 } else if (sourceURL.getProtocol().equalsIgnoreCase("http")) {
                     // // getting a stream to the reader
                     // this.source = sourceURL.openStream();
@@ -453,7 +453,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
         if (input instanceof URL rL && rL.getProtocol().equalsIgnoreCase("http")) {
             try {
                 // getting the query
-                final String query = java.net.URLDecoder.decode(rL.getQuery().intern(), "UTF-8");
+                final String query = java.net.URLDecoder.decode(rL.getQuery().intern(), StandardCharsets.UTF_8);
 
                 // should we proceed? Let's look for a getmap WMS request
                 if (query.intern().indexOf("GetMap") == -1) {
@@ -490,7 +490,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader impleme
                     }
                 }
 
-            } catch (IndexOutOfBoundsException | MismatchedDimensionException | IOException | FactoryException e) {
+            } catch (IndexOutOfBoundsException | MismatchedDimensionException | FactoryException e) {
                 // TODO how to handle this?
                 return false;
             }

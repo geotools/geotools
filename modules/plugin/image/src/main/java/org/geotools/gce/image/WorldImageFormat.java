@@ -19,8 +19,8 @@ package org.geotools.gce.image;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -191,12 +191,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
             else {
                 if (protocol.equalsIgnoreCase("http")) {
                     final String query;
-                    try {
-                        query = java.net.URLDecoder.decode(url.getQuery().intern(), "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                        return false;
-                    }
+                    query = java.net.URLDecoder.decode(url.getQuery().intern(), StandardCharsets.UTF_8);
 
                     // should we proceed? Let's look for a getmap WMS request
                     // we do a very basic check we should make this stronger!

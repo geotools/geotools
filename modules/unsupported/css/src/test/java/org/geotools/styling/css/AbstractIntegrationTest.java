@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.logging.Level;
 import javax.xml.parsers.ParserConfigurationException;
@@ -68,7 +69,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
     @Test
     public void translateTest() throws Exception {
-        String css = FileUtils.readFileToString(file, "UTF-8");
+        String css = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         if (!exclusiveRulesEnabled && !css.contains("@mode")) {
             css = "@mode \"Simple\";\n" + css;
         }
@@ -109,7 +110,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         Style actual = cssToSld(css);
         File sldFile2 = new File("./target/css", FilenameUtils.getBaseName(file.getName()) + ".sld");
         writeStyle(actual, sldFile2);
-        String actualSld = FileUtils.readFileToString(sldFile2, "UTF-8");
+        String actualSld = FileUtils.readFileToString(sldFile2, StandardCharsets.UTF_8);
 
         List validationErrors = validateSLD(actualSld);
         if (!validationErrors.isEmpty()) {
@@ -128,7 +129,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             fail("Validation failed");
         }
 
-        String expectedSld = FileUtils.readFileToString(sldFile, "UTF-8");
+        String expectedSld = FileUtils.readFileToString(sldFile, StandardCharsets.UTF_8);
         StyledLayerDescriptor expectedSLD = parseToSld(expectedSld);
         StyledLayerDescriptor actualSLD = parseToSld(actualSld);
         // Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
@@ -143,14 +144,14 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
             // Try the java9 version
             if (sldFile_java9.exists()) {
-                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9, "UTF-8"));
+                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9, StandardCharsets.UTF_8));
                 if (expectedSLD.equals(actualSLD)) {
                     return;
                 }
             }
 
             if (sldFile_java17.exists()) {
-                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java17, "UTF-8"));
+                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java17, StandardCharsets.UTF_8));
                 if (expectedSLD.equals(actualSLD)) {
                     return;
                 }

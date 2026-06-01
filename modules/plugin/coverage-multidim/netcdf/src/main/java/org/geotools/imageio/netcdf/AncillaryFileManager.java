@@ -209,7 +209,7 @@ public class AncillaryFileManager implements FileSetManager {
             destinationDir.mkdirs();
             // Creation of an origin.txt file with the absolute file path internally written
             File origin = new File(destinationDir, "origin.txt");
-            FileUtils.write(origin, ncFile.getAbsolutePath(), "UTF-8");
+            FileUtils.write(origin, ncFile.getAbsolutePath(), StandardCharsets.UTF_8);
         }
 
         indexerFile = lookupFile(indexFilePath, baseName, AuxiliaryFileType.INDEXER_XML);

@@ -195,7 +195,7 @@ public class ImageMosaicFootprintsTest {
                                 Geometry g = (Geometry) sf.getDefaultGeometry();
                                 File wkbFile = new File(testMosaic, fileName.substring(0, idx) + ".wkt");
                                 String wkt = new WKTWriter().write(g);
-                                FileUtils.writeStringToFile(wkbFile, wkt, "UTF-8");
+                                FileUtils.writeStringToFile(wkbFile, wkt, StandardCharsets.UTF_8);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }

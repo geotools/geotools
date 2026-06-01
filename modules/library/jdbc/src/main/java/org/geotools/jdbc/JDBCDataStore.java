@@ -21,9 +21,9 @@ import static org.geotools.jdbc.VirtualTable.WHERE_CLAUSE_PLACE_HOLDER_LENGTH;
 import static org.geotools.jdbc.VirtualTable.setKeepWhereClausePlaceHolderHint;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -2295,11 +2295,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             FID = FID.substring(key.getTableName().length() + 1);
         }
 
-        try {
-            FID = URLDecoder.decode(FID, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        FID = URLDecoder.decode(FID, StandardCharsets.UTF_8);
 
         // check for case of multi column primary key and try to backwards map using
         // "." as a seperator of values

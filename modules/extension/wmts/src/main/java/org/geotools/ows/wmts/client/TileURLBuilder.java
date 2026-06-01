@@ -16,8 +16,8 @@
  */
 package org.geotools.ows.wmts.client;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
@@ -101,15 +101,11 @@ class TileURLBuilder {
      */
     String createURL(String tileMatrix, int tileCol, int tileRow) {
         final StringBuilder builder = new StringBuilder(urlLength);
-        try {
-            String encodedtileMatrix = URLEncoder.encode(tileMatrix, "UTF-8");
-            parts.forEach(part -> part.append(builder, encodedtileMatrix, tileCol, tileRow));
-            final String url = builder.toString();
-            urlLength = Math.max(urlLength, url.length());
-            return url;
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Didn't support UTF-8", e);
-        }
+        String encodedtileMatrix = URLEncoder.encode(tileMatrix, StandardCharsets.UTF_8);
+        parts.forEach(part -> part.append(builder, encodedtileMatrix, tileCol, tileRow));
+        final String url = builder.toString();
+        urlLength = Math.max(urlLength, url.length());
+        return url;
     }
 
     private void addColParts() {

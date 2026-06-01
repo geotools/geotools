@@ -27,10 +27,10 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -303,13 +303,9 @@ class RasterLayerResponse {
         this.request = request;
         inputURL = rasterManager.getInputURL();
         File tempFile = null;
-        try {
-            if (inputURL.getProtocol().equalsIgnoreCase("file"))
-                tempFile = new File(URLDecoder.decode(inputURL.getFile(), "UTF-8"));
-            else throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
+        if (inputURL.getProtocol().equalsIgnoreCase("file"))
+            tempFile = new File(URLDecoder.decode(inputURL.getFile(), StandardCharsets.UTF_8));
+        else throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
 
         location = tempFile.getAbsolutePath();
         coverageEnvelope = rasterManager.getCoverageEnvelope();

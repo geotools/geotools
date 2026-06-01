@@ -399,7 +399,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
         Assert.assertTrue(response.getContentType().contains("text/html"));
         try (InputStream stream = response.getInputStream();
                 StringBuilderWriter writer = new StringBuilderWriter()) {
-            IOUtils.copy(stream, writer, "UTF-8");
+            IOUtils.copy(stream, writer, StandardCharsets.UTF_8);
 
             String info = writer.toString();
             Assert.assertFalse("response available", info.isEmpty());

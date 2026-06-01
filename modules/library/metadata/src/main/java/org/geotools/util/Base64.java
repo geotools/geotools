@@ -67,8 +67,14 @@ import java.nio.charset.StandardCharsets;
  * @author rob@iharder.net
  * @version 2.1
  */
-@SuppressWarnings({"NotJavadoc", "StringCharset", "UnnecessaryParentheses", "EmptyCatch", "DefaultCharset"
-}) // Third-party utility class, suppressing errorprone warnings for legacy code
+@SuppressWarnings({
+    "NotJavadoc",
+    "StringCharset",
+    "UnnecessaryParentheses",
+    "EmptyCatch",
+    "DefaultCharset",
+    "PMD.UseStandardCharsets"
+}) // Third-party utility class, suppressing errorprone and PMD warnings for legacy code
 public class Base64 {
 
     /* ********  P U B L I C   F I E L D S  ******** */

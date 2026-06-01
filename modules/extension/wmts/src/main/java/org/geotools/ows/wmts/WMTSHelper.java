@@ -16,8 +16,8 @@
  */
 package org.geotools.ows.wmts;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -68,25 +68,24 @@ public class WMTSHelper {
         String separator = !baseUrl.contains("?") ? "?" : "&";
 
         String lowerBase = baseUrl.toLowerCase();
-        try {
-            for (String key : params.keySet()) {
-                if (!lowerBase.contains(key.toLowerCase() + "=")) {
-                    Object val = params.get(key);
-                    if (val != null) {
-                        String valString = val.toString();
-                        arguments
-                                .append(separator)
-                                .append(key)
-                                .append("=")
-                                .append(valString.startsWith("{") ? valString : URLEncoder.encode(valString, "UTF-8"));
-                        separator = "&";
-                    }
+        for (String key : params.keySet()) {
+            if (!lowerBase.contains(key.toLowerCase() + "=")) {
+                Object val = params.get(key);
+                if (val != null) {
+                    String valString = val.toString();
+                    arguments
+                            .append(separator)
+                            .append(key)
+                            .append("=")
+                            .append(
+                                    valString.startsWith("{")
+                                            ? valString
+                                            : URLEncoder.encode(valString, StandardCharsets.UTF_8));
+                    separator = "&";
                 }
             }
-            return baseUrl + arguments.toString();
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Doesn't support UTF-8", e);
         }
+        return baseUrl + arguments.toString();
     }
 
     /**
@@ -97,10 +96,6 @@ public class WMTSHelper {
      * @return the encoded parameter
      */
     public static String encodeParameter(String name) {
-        try {
-            return URLEncoder.encode(name, "UTF-8").replaceAll("\\+", "%20");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Doesn't support UTF-8", e);
-        }
+        return URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
     }
 }

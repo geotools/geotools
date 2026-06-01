@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -124,7 +125,7 @@ public class ServersTest {
             total++;
             Random random = new Random();
             String dir = "tests";
-            String filename = URLEncoder.encode(server.getHost() + random.nextInt(10000), "UTF-8");
+            String filename = URLEncoder.encode(server.getHost() + random.nextInt(10000), StandardCharsets.UTF_8);
             //            File file = new File("C:\\"+dir+"\\"+filename+".txt");
             //            file.createNewFile();
             //            PrintStream out = new PrintStream(new FileOutputStream(file));

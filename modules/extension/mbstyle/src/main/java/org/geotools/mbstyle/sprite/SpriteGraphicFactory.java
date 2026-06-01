@@ -23,10 +23,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -190,20 +190,15 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
 
         Map<String, String> paramsMap = new HashMap<>();
         for (String s : nvps) {
-            try {
-                String[] nvp = s.split("=");
-                if (nvp.length == 1 && nvps.length == 1) {
-                    // Allow the simple case url#iconName (omitting name=iconName)
-                    paramsMap.put("icon", URLDecoder.decode(nvp[0], "utf-8"));
-                } else {
-                    String k = URLDecoder.decode(nvp[0], "utf-8").trim().toLowerCase();
-                    String v = URLDecoder.decode(nvp[1], "utf-8");
-                    paramsMap.put(k, v);
-                }
-
-            } catch (UnsupportedEncodingException uee) {
-                throw new MBSpriteException(
-                        "Exception decoding URL fragment for external graphic URL. URL was: " + urlStr, uee);
+            String[] nvp = s.split("=");
+            if (nvp.length == 1 && nvps.length == 1) {
+                // Allow the simple case url#iconName (omitting name=iconName)
+                paramsMap.put("icon", URLDecoder.decode(nvp[0], StandardCharsets.UTF_8));
+            } else {
+                String k =
+                        URLDecoder.decode(nvp[0], StandardCharsets.UTF_8).trim().toLowerCase();
+                String v = URLDecoder.decode(nvp[1], StandardCharsets.UTF_8);
+                paramsMap.put(k, v);
             }
         }
 

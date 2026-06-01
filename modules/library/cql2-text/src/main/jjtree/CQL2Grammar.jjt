@@ -353,8 +353,8 @@ void Predicate() #void:
 void InPredicate() #void:
 {}
 {
-        LOOKAHEAD(3)    Attribute() <NOT> <IN> InPredicateList()    #Not_In_Predicate_Node
-    |   LOOKAHEAD(2)    Attribute()       <IN> InPredicateList()    #In_Predicate_Node
+        LOOKAHEAD(Attribute() <NOT>)    Attribute() <NOT> <IN> InPredicateList()    #Not_In_Predicate_Node
+    |   LOOKAHEAD(Attribute() <IN>)    Attribute()       <IN> InPredicateList()    #In_Predicate_Node
     |                   Function()        <IN> InPredicateList()    #In_Predicate_Node
 }
 

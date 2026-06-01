@@ -49,7 +49,7 @@ You may carefully relax settings as needed if working with local files:
 TransformerFactory and Transformer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The same approach is taken with TransformerFactory and Transformer.
+Use XMLUtils to create instances of TransformerFactory and Transformer.
 
 XMLTransformer:
 
@@ -100,3 +100,31 @@ Use Hints to provide factory configuration:
    
    SAXParser parser = XMLUtils.newSAXParser(parserFactory);
    parser.parse(file, contentHandler);
+
+XMLInputFactory and PullParsers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+XMLUtils supports XMLInputFactory for use with pull parsers such as XMLStreamReader:
+
+.. code-block:: java
+
+   XMLInputFactory factory = XMLUtils.newXMLInputFactory();
+   XMLStreamReader parser = factory.createXMLStreamReader(source.getCharacterStream());
+
+The XMLInputFactory is setup without DTD suppert (both ``SUPPORT_DTD`` and ``IS_COALESCING`` are disabled).
+DTD support is not required for the majority of OGC Standards.
+
+If you do need for any reason to work with DTD the factory can be configured after creation:
+
+.. code-block:: java
+   
+   XMLInputFactory factory = XMLUtils.newXMLInputFactory();
+   
+   if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
+       factory.setProperty(XMLInputFactory.SUPPORT_DTD, true);
+   }
+   if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
+       factory.setProperty(XMLInputFactory.IS_COALESCING, true);
+   }
+   XMLStreamReader parser = factory.createXMLStreamReader(source.getCharacterStream());
+   

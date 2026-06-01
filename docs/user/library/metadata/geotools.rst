@@ -82,17 +82,85 @@ To access the configured ``ENTITY_RESOLVER``:
    
    parser.setEntityResolver( GeoTools.getEntityResolver(hints) );
 
-GeoTools also includes several ``EntityResolver`` implementations:
-
-* ``DefaultEntityResolver``: For working with OGC and INSPIRE XML documents, only allows DTD and XML Schema references to Open Geospatial and INSPIRE registries.
-* ``PreventLocalEntityResolver``: For use when working with external XML documents, only allows DTD and XML Schema references to remote resources.
-* ``NullEntityResolver``: Placeholder allowing the default ``SAXParser`` access-anything behavior.
-
 The library uses ``DefaultEntityResolver`` by default, if you wish to work with a local XML file (referencing local DTD and XMLSchema) please use the following during application setup:
 
 .. code-block:: java
 
    Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+
+GeoTools defines `EntityResolver3` interface providing the `EntityResolver3.getAccess()` method listing the protocols required for the Entity Resolver to function. This information is used by XMLUtils when configuring xml services for use by the library.
+
+GeoTools also includes several ``EntityResolver3`` implementations:
+
+.. list-table:: EntityResolver3
+   :widths: 25 25 50
+   :header-rows: 1
+
+   * - Implementation
+     - Access
+     - Intended Use
+   * - ``DefaultEntityResolver.INSTANCE``
+     - ``"http,jar,jar:file,vfs"``
+     - For working with OGC and INSPIRE XML documents, only allows DTD and XML Schema references to Open Geospatial and INSPIRE registries.
+   * - ``PreventLocalEntityResolver.INSTANCE``
+     - ``"http,jar,jar:file,vfs"``
+     -  For use when working with external XML documents, only allows DTD and XML Schema references to remote resources.
+   * - ``NullEntityResolver.INSTANCE``
+     - ``"all"``
+     - Allowing the default ``SAXParser`` access-anything behavior.
+   * - ``PreventEntityResolver.INSTANCE``
+     - ``""``
+     - Any use results in SAXException blocking all entity resolution, does not allow any protocols.
+   * - ``InternalEntityResolver.INSTANCE``
+     - ``"http,jar,jar:file,vfs,file"``
+     - Supports IDE development where ``target/classe`` and ``target/test-classes`` may be used during testing.
+
+To use ``InternalEntityResolver`` during a test case to allow access to internal content during test (from IDE or maven) while limiting "http" locations to OGC and INSPIRE registries.
+
+.. code-block:: java
+
+   @Before
+   public void setup(){
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, InternalEntityResolver.INSTANCE);
+   }
+   @Before
+   public void setup(){
+        Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+   }
+   @Test
+   public void test(){
+        EntityResolver entityResolver = GeoTools.getEntityResolver();
+        if (entityResolver instanceof EntityResolver3 entityResolver3) {
+             assertTrue(entityResolver3.getAccess().contains("file"));
+        }
+        
+        
+        DocumentBuilderFactory docFactory = XMLUtils.newDocumentBuilderFactory();
+        docFactory.setNamespaceAware(true);
+
+        InputStream gml = Example.class.getResourceAsStream("features.gml"))
+        document = docFactory.newDocumentBuilder().parse(gml);
+   }
+
+For a more general online test configure ``InternalEntityResolver.INSTANCE`` to delegate to 
+``PreventLocalEntityResolver`` which allows unrestricted "http" access:
+
+.. code-block:: java
+
+   @Before
+   public void setup(){
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, new InternalEntityResolver(PreventLocalEntityResolver.INSTANCE));
+   }
+
+To limit access to only internal content configure ``InternalEntityResolver.INSTANCE`` to delegate to ``PreventEntityResolver``:
+
+.. code-block:: java
+
+   @Before
+   public void setup(){
+        Hints.putSystemDefault(Hints.ENTITY_RESOLVER, new InternalEntityResolver(PreventEntityResolver.INSTANCE));
+   }
+
 
 Logging
 ^^^^^^^

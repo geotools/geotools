@@ -899,6 +899,14 @@ public final class GeoTools {
     /**
      * Returns the default entity resolver, used to configure {@link SAXParser}.
      *
+     * @return An entity resolver (never {@code null})
+     */
+    public static EntityResolver getEntityResolver() {
+        return getEntityResolver(null);
+    }
+    /**
+     * Returns the default entity resolver, used to configure {@link SAXParser}.
+     *
      * @param hints An optional set of hints, or {@code null} if none, see {@link Hints#ENTITY_RESOLVER}.
      * @return An entity resolver (never {@code null})
      */

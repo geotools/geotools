@@ -109,6 +109,17 @@ public class XMLUtils {
         // Used to determine sensible defaults based on entity resolver selected
         EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
         String access = getAccess(entityResolver, "");
+
+        // We are disabling DTD by default since it is not often used by OGC Standards
+        // (only WMS1.1 and GML1 and SLD1.0 standards make use of DTD)
+        if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        }
+        if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
+            // coalescing needs to be false to disable resolving of external DTD entities
+            factory.setProperty(XMLInputFactory.IS_COALESCING, false);
+        }
+
         if (access.isEmpty()) {
             // GeoTools locks down all external entity facilities by default
             if (factory.isPropertySupported(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES)) {
@@ -126,8 +137,7 @@ public class XMLUtils {
             if (factory.isPropertySupported(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES)) {
                 factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
             }
-        }
-        if (!access.isEmpty()) {
+        } else {
             // If EntityResolver3 is used to provide access information,
             // external entity facilities will be relaxed accordingly
             boolean all = access.contains("all");
@@ -142,13 +152,6 @@ public class XMLUtils {
             }
             if (factory.isPropertySupported(XMLConstants.ACCESS_EXTERNAL_SCHEMA)) {
                 factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, access);
-            }
-            if (factory.isPropertySupported(XMLInputFactory.SUPPORT_DTD)) {
-                factory.setProperty(XMLInputFactory.SUPPORT_DTD, internal || external);
-            }
-            if (factory.isPropertySupported(XMLInputFactory.IS_COALESCING)) {
-                // coalescing needs to be false to disable resolving of external DTD entities
-                factory.setProperty(XMLInputFactory.IS_COALESCING, internal || external);
             }
             if (factory.isPropertySupported(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES)) {
                 factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, all);

@@ -25,6 +25,7 @@ import org.geotools.gml3.GMLSchema;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -63,5 +64,10 @@ public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
     @Test
     public void testMultiSurfaceTypeAssignable() {
         Assert.assertTrue(GMLSchema.MULTISURFACETYPE_TYPE.getBinding().isAssignableFrom(MultiSurface.class));
+    }
+
+    @Test
+    public void testIsMultiPologynType() {
+        Assert.assertEquals(MultiPolygon.class, GMLSchema.MULTISURFACETYPE_TYPE.getBinding());
     }
 }

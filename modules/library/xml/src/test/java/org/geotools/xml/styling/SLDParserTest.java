@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -50,6 +51,7 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.EntityResolver3;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.xml.XMLUtils;
 import org.junit.Test;
@@ -785,10 +787,10 @@ public class SLDParserTest {
     @Test
     public void testExternalEntitiesDisabled() {
         // this SLD file references as external entity a file on the local filesystem
-        SLDParser parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
+        SLDParser parser;
+        parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
         parser.setEntityResolver(NullEntityResolver.INSTANCE);
-        // With NullEntityResolver EntityResolver, the parser be able to read the entity file on the local
-        // file system
+        // With NullEntityResolver, the parser can try and read the entity file on the local file system
         try {
             parser.readXML();
             fail("parsing should thrown an error");
@@ -800,12 +802,15 @@ public class SLDParserTest {
         }
 
         parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
-        parser.setEntityResolver(NullEntityResolver.INSTANCE);
-        parser.setSupportsDTD(true);
-        // If we allow DTDs (bad idea) we can restore turn off the parser protections
+
+        // If we allow DTDs we can restore turn off the parser protections
         // and rely on the entityResolver (which will in this case produce FileNotFound)
+        parser.setSupportDTD(true);
+        parser.setExpandEntityReferences(true);
+        parser.setEntityResolver(NullEntityResolver.INSTANCE);
         try {
-            parser.readXML();
+            Object obj = parser.readXML();
+            assertNotNull("We do not expect any output", obj);
             fail("parsing should thrown an error");
         } catch (RuntimeException e) {
             assertTrue(e.getMessage(), e.getCause() instanceof FileNotFoundException);
@@ -816,8 +821,30 @@ public class SLDParserTest {
         // Set an EntityResolver implementation to prevent reading entities from the local file
         // system. When resolving an XML entity, the empty InputSource returned by this resolver provokes
         // a MalformedURLException
-        parser.setSupportsDTD(true);
-        parser.setEntityResolver((publicId, systemId) -> new InputSource());
+        parser.setSupportDTD(true);
+        parser.setExpandEntityReferences(true);
+        parser.setEntityResolver(new EntityResolver3() {
+            @Override
+            public String getAccess() {
+                return "all";
+            }
+
+            @Override
+            public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
+                return new InputSource();
+            }
+
+            @Override
+            public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
+                    throws SAXException, IOException {
+                return new InputSource();
+            }
+
+            @Override
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                return new InputSource();
+            }
+        });
 
         try {
             parser.readXML();
@@ -838,7 +865,7 @@ public class SLDParserTest {
             }
         });
         // and allow DTD access
-        parser.setSupportsDTD(true);
+        parser.setSupportDTD(true);
 
         // now parsing shouldn't throw an exception
         parser.readXML();

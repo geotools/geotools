@@ -12,12 +12,13 @@
  */
 package org.geotools.xml;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -61,6 +62,8 @@ public class DocumentFactoryTest {
     @Mock
     private SAXParserFactory mockSaxParserFactory;
 
+    private final Map<String, Boolean> features = new HashMap<>();
+
     @Mock
     private SAXParser mockSaxParser;
 
@@ -69,11 +72,13 @@ public class DocumentFactoryTest {
 
     @Before
     public void before() throws Exception {
-        uri = new URI("http://geotools.org");
-        hints = new HashMap<>();
+        this.uri = new URI("http://geotools.org");
+        this.hints = new HashMap<>();
 
         MockitoAnnotations.openMocks(this);
         hints.put(XMLHandlerHints.SAX_PARSER_FACTORY, mockSaxParserFactory);
+
+        // mock factory parser
         when(mockSaxParserFactory.newSAXParser()).thenReturn(mockSaxParser);
 
         Answer<Void> startDocumentAnswer = invocationOnMock -> {
@@ -83,6 +88,21 @@ public class DocumentFactoryTest {
         };
         doAnswer(startDocumentAnswer).when(mockSaxParser).parse(anyString(), any(XMLSAXHandler.class));
         doAnswer(startDocumentAnswer).when(mockSaxParser).parse(any(InputStream.class), any(XMLSAXHandler.class));
+
+        // mock factory features (stateful which is annoying)
+        Answer<Void> setFeatureAnswer = invocationOnMock -> {
+            String name = invocationOnMock.getArgument(0);
+            Boolean value = invocationOnMock.getArgument(1);
+            features.put(name, value);
+            return null;
+        };
+
+        Answer<Boolean> getFeatureAnswer = invocationOnMock -> {
+            String name = invocationOnMock.getArgument(0);
+            return features.getOrDefault(name, Boolean.FALSE);
+        };
+        doAnswer(setFeatureAnswer).when(mockSaxParserFactory).setFeature(anyString(), anyBoolean());
+        when(mockSaxParserFactory.getFeature(anyString())).thenAnswer(getFeatureAnswer);
     }
 
     @Test
@@ -94,6 +114,7 @@ public class DocumentFactoryTest {
     @Test
     public void testGetInstanceFromURIWithSpecifiedLevelAndDisableExternalEntitiesTrue() throws Exception {
         hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.TRUE);
+        hints.put(DocumentFactory.ENABLE_DTD, Boolean.TRUE);
         DocumentFactory.getInstance(uri, hints, Level.WARNING);
 
         verifyDisableExternalEntities(true);
@@ -135,6 +156,7 @@ public class DocumentFactoryTest {
     @Test
     public void testGetInstanceFromInputStreamWithSpecifiedLevelAndDisableExternalEntitiesTrue() throws Exception {
         hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.TRUE);
+        hints.put(DocumentFactory.ENABLE_DTD, Boolean.TRUE);
         DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 
         verifyDisableExternalEntities(true);
@@ -167,16 +189,20 @@ public class DocumentFactoryTest {
     void verifyDisableExternalEntities(boolean disabledExternalEntities)
             throws SAXNotRecognizedException, SAXNotSupportedException, ParserConfigurationException {
 
-        verify(mockSaxParserFactory, atLeastOnce()).setFeature(LOAD_EXTERNAL_DTD, false);
-        verify(mockSaxParserFactory, atLeastOnce()).setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        assertTrue(XMLConstants.FEATURE_SECURE_PROCESSING, features.get(XMLConstants.FEATURE_SECURE_PROCESSING));
 
-        verify(mockSaxParserFactory, atLeastOnce()).setFeature(XMLUtils.LOAD_EXTERNAL_DTD, false);
-
-        // double check DTD support disabled
+        // double external entity support disabled
         if (disabledExternalEntities) {
-            verify(mockSaxParserFactory, atLeastOnce()).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
-            verify(mockSaxParserFactory, atLeastOnce()).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
-            verify(mockSaxParserFactory, atLeastOnce()).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
+            // DTD support is used for force use of external entities
+            assertFalse(DISALLOW_DOCTYPE_DECLAIRATION, features.get(DISALLOW_DOCTYPE_DECLAIRATION));
+
+            assertFalse(EXTERNAL_GENERAL_ENTITIES_FEATURE, features.get(EXTERNAL_GENERAL_ENTITIES_FEATURE));
+            assertFalse(EXTERNAL_PARAMETER_ENTITIES_FEATURE, features.get(EXTERNAL_PARAMETER_ENTITIES_FEATURE));
+        } else {
+            assertTrue(DISALLOW_DOCTYPE_DECLAIRATION, features.get(DISALLOW_DOCTYPE_DECLAIRATION));
+
+            assertTrue(EXTERNAL_GENERAL_ENTITIES_FEATURE, features.get(EXTERNAL_GENERAL_ENTITIES_FEATURE));
+            assertTrue(EXTERNAL_PARAMETER_ENTITIES_FEATURE, features.get(EXTERNAL_PARAMETER_ENTITIES_FEATURE));
         }
     }
 }

@@ -686,7 +686,7 @@ public class XMLUtils {
                     + factory.getClass().getName());
         }
         try {
-            factory.setXIncludeAware(false);
+            if (factory.isXIncludeAware() != supportDTD) factory.setXIncludeAware(supportDTD);
         } catch (UnsupportedOperationException e) {
             LOGGER.fine("setXIncludeAware setting not supported: "
                     + factory.getClass().getName());
@@ -713,12 +713,6 @@ public class XMLUtils {
             if (factory.getFeature(LOAD_EXTERNAL_DTD) != supportDTD) factory.setFeature(LOAD_EXTERNAL_DTD, supportDTD);
         } catch (ParserConfigurationException e) {
             LOGGER.fine("Xerces `" + LOAD_EXTERNAL_DTD + "` setting not supported: "
-                    + factory.getClass().getName());
-        }
-        try {
-            factory.setExpandEntityReferences(false);
-        } catch (UnsupportedOperationException e) {
-            LOGGER.fine("setExpandEntityReferences setting not supported: "
                     + factory.getClass().getName());
         }
 
@@ -1057,7 +1051,8 @@ public class XMLUtils {
             this.hints = hints != null ? hints : GeoTools.getDefaultHints();
             this.factory = DocumentBuilderFactory.newInstance(); // NOPMD AvoidDocumentBuilderFactory
 
-            // DocumentBuilderFactory and SAXParserFactory can be protected with the same techniques
+            // choosing sensible defaults for document builder factory
+            // see: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
             try {
                 this.factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             } catch (ParserConfigurationException e) {
@@ -1065,6 +1060,13 @@ public class XMLUtils {
                 LOGGER.fine("Parser does not support secure processing feature: "
                         + this.factory.getClass().getName());
             }
+            try {
+                factory.setExpandEntityReferences(false);
+            } catch (UnsupportedOperationException e) {
+                LOGGER.fine("setExpandEntityReferences setting not supported: "
+                        + factory.getClass().getName());
+            }
+
             supportDTD(this.factory, false, hints);
 
             // Sensible XSD factory defaults based on EntityResolver3
@@ -1083,6 +1085,26 @@ public class XMLUtils {
             builder.setEntityResolver(GeoTools.getEntityResolver(hints));
 
             return builder;
+        }
+
+        @Override
+        public boolean isExpandEntityReferences() {
+            return factory.isExpandEntityReferences();
+        }
+
+        @Override
+        public void setExpandEntityReferences(boolean expandEntityReferences) {
+            factory.setExpandEntityReferences(expandEntityReferences);
+        }
+
+        @Override
+        public boolean isXIncludeAware() {
+            return this.factory.isXIncludeAware();
+        }
+
+        @Override
+        public void setXIncludeAware(boolean state) {
+            this.factory.setXIncludeAware(state);
         }
 
         @Override

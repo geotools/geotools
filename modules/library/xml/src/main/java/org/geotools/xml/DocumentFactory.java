@@ -145,6 +145,9 @@ public class DocumentFactory {
 
     /*
      * Convenience method to create an instance of a SAXParser if it is null.
+     *
+     * Tests can request SAXParser configuration using hints {@code ENTITY_RESOLVER}, {@code SAX_PARSER_FACTORY},
+     * {@code ENABLE_DTD}, {@code DISABLE_EXTERNAL_ENTITIES}.
      */
     private static SAXParser getParser(Map<String, Object> hints) throws SAXException {
 
@@ -162,7 +165,6 @@ public class DocumentFactory {
         }
         saxParserFactory.setNamespaceAware(true);
         saxParserFactory.setValidating(false);
-
         try {
             // Extra precaution to reduce/prevent XXE attacks
             //
@@ -171,27 +173,21 @@ public class DocumentFactory {
 
             boolean enableDTD = hint(hints, ENABLE_DTD, false);
 
-            // Step 1 distable DTD support - not needed for schema driven parser
+            // Step 1 Factory Disable/enable DTD support - not needed for schema driven parser
             //
             // Note: XMLSaxHandler will reject all DTD references - but we may as well avoid early
-            saxParserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", !enableDTD);
+            XMLUtils.supportDTD(saxParserFactory, enableDTD, factoryConfig);
 
-            if (enableDTD) {
-                XMLUtils.supportDTD(saxParserFactory, true, factoryConfig);
-            }
-            saxParserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", enableDTD);
+            // Step 2 Factory optionally disable external entities
+            boolean disableExternalEntities = hint(hints, DISABLE_EXTERNAL_ENTITIES, enableDTD);
+            saxParserFactory.setFeature(
+                    "http://xml.org/sax/features/external-general-entities", !disableExternalEntities);
+            saxParserFactory.setFeature(
+                    "http://xml.org/sax/features/external-parameter-entities", !disableExternalEntities);
 
-            // Step 2 optionally disable external entities
-            //
-            if (hint(hints, DISABLE_EXTERNAL_ENTITIES, true)) {
-                saxParserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            }
-
+            // Step 3 Parser external access based on entityResolver used
             SAXParser parser = XMLUtils.newSAXParser(saxParserFactory, factoryConfig);
-            if (enableDTD) {
-                XMLUtils.supportDTD(parser, enableDTD, factoryConfig);
-            }
+            XMLUtils.supportDTD(parser, enableDTD, factoryConfig);
 
             return parser;
         } catch (ParserConfigurationException e) {

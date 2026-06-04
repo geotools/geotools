@@ -277,8 +277,8 @@ public class WMSCoverageReaderTest {
             @Override
             public HTTPResponse get(URL url) throws IOException {
                 if (url.getQuery().contains("GetCapabilities")) {
-                    URL caps130 = WMSCoverageReaderTest.class.getResource("caps110.xml");
-                    return new MockHttpResponse(caps130, "text/xml");
+                    URL caps110 = WMSCoverageReaderTest.class.getResource("caps110.xml");
+                    return new MockHttpResponse(caps110, "text/xml");
                 } else if (url.getQuery().contains("GetMap") && url.getQuery().contains("world4326")) {
                     Map<String, String> params = WMSTestUtils.parseParams(url.getQuery());
                     assertEquals("1.1.0", params.get("VERSION"));

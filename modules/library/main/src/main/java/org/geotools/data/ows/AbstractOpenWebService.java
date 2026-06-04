@@ -266,15 +266,26 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R> {
             String clientVersion = tempSpecification.getVersion();
 
             GetCapabilitiesRequest request = tempSpecification.createGetCapabilitiesRequest(serverURL);
-            request.setRequestHints(hints);
+            Map<String, Object> specificationHints = hints != null ? new HashMap<>(hints) : new HashMap<>();
+            if (tempSpecification.supportsDTD()) {
+                specificationHints.put("DocumentFactory_ENABLE_DTD", Boolean.TRUE);
+            }
+            // Suppress warnings and failures during version negotiation
+            // (WMS1.0 DTD support will trigger failures when parsed with newer specifications)
+            specificationHints.put("DocumentFactory_Level", Level.OFF);
+            request.setRequestHints(specificationHints);
 
             // Grab document
             C tempCapabilities;
+            Level tempLevel = LOGGER.getLevel();
             try {
+                LOGGER.setLevel(Level.OFF);
                 tempCapabilities = (C) issueRequest(request).getCapabilities();
             } catch (ServiceException e) {
                 tempCapabilities = null;
                 exception = e;
+            } finally {
+                LOGGER.setLevel(tempLevel);
             }
 
             int compare = -1;
@@ -455,7 +466,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R> {
             return response;
         } finally {
             if (!success) {
-                LOGGER.log(Level.SEVERE, "Failed to execute request " + finalURL);
+                Logger logger = Logging.getLogger(getClass());
+                logger.log(Level.FINE, "Failed to execute request " + finalURL);
             }
         }
     }

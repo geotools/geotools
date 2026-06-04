@@ -59,4 +59,14 @@ public abstract class Specification {
      * @return a configured GetCapabilitiesRequest that can be used to access the Document
      */
     public abstract GetCapabilitiesRequest createGetCapabilitiesRequest(URL server);
+
+    /**
+     * Older specifications that require DTD support may override this method to return {@code true}. By default, DTD
+     * support is disabled for all specifications.
+     *
+     * @return {@code true} if DTD support is required for this specification, {@code false} otherwise
+     */
+    public boolean supportsDTD() {
+        return false;
+    }
 }

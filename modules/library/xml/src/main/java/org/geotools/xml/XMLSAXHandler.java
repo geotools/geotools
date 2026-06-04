@@ -57,7 +57,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @see XMLElementHandler
  */
 public class XMLSAXHandler extends DefaultHandler {
-    /** the logger -- should be used for debugging (assuming there are bugs LOL) */
+    /** the logger -- should be used for debugging and tracing parsing errors */
     protected static final Logger logger = org.geotools.util.logging.Logging.getLogger(XMLSAXHandler.class);
 
     protected static Level level = Level.FINE;

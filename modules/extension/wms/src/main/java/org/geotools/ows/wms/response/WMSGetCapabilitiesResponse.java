@@ -21,11 +21,13 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.xml.WMSSchema;
+import org.geotools.util.logging.Logging;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.xml.sax.SAXException;
@@ -36,6 +38,8 @@ import org.xml.sax.SAXException;
  * @author Richard Gould
  */
 public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
+
+    public static Logger LOGGER = Logging.getLogger(WMSGetCapabilitiesResponse.class);
 
     public WMSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
         this(response, null);
@@ -51,17 +55,18 @@ public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
             if (!hints.containsKey(DocumentFactory.VALIDATION_HINT)) {
                 hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
             }
+            if (!hints.containsKey(DocumentFactory.ENABLE_DTD)) {
+                hints.put(DocumentFactory.ENABLE_DTD, Boolean.FALSE);
+            }
             Object object;
             try (InputStream inputStream = response.getResponseStream()) {
                 object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
             } catch (SAXException e) {
                 throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
             }
-
             if (object instanceof ServiceException exception) {
                 throw exception;
             }
-
             this.capabilities = (Capabilities) object;
         } finally {
             response.dispose();

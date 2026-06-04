@@ -199,6 +199,20 @@ Once you have configured your ``SchemaResolver``, you can use it to build an ``A
 
 * For an example of how to determine which GML version to use, see ``EmfAppSchemaReader`` in ``gt-app-schema``.
 
+AppSchemaValidator
+^^^^^^^^^^^^^^^^^^
+
+Validation is available using ``AppSchemaValidator``:
+
+.. code-block:: java
+   
+   AppSchemaValidator validator = buildValidator(catalog);
+   validator.setSupportDTD(true);
+   validator.parse(input);
+   validator.checkForFailures();
+
+Be advised that DTD support is now disabled by default. You may enable directly in Java as shown above,
+or change the default using the system property ``org.geotools.appschema.resolver.xml.AppSchemaValidator.supportDTD=true``.
 
 Sample DataAccess
 ^^^^^^^^^^^^^^^^^

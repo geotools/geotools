@@ -14,9 +14,9 @@ package org.geotools.xml;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -44,11 +45,13 @@ import org.xml.sax.SAXNotSupportedException;
  * @author Aaron Waddell
  */
 public class DocumentFactoryTest {
-    private final String LOAD_EXTERNAL_DTD = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+    private static final String DISALLOW_DOCTYPE_DECLAIRATION = "http://apache.org/xml/features/disallow-doctype-decl";
+    private static final String LOAD_EXTERNAL_DTD = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
 
-    private final String EXTERNAL_GENERAL_ENTITIES_FEATURE = "http://xml.org/sax/features/external-general-entities";
+    private static final String EXTERNAL_GENERAL_ENTITIES_FEATURE =
+            "http://xml.org/sax/features/external-general-entities";
 
-    private final String EXTERNAL_PARAMETER_ENTITIES_FEATURE =
+    private static final String EXTERNAL_PARAMETER_ENTITIES_FEATURE =
             "http://xml.org/sax/features/external-parameter-entities";
 
     private URI uri;
@@ -164,17 +167,16 @@ public class DocumentFactoryTest {
     void verifyDisableExternalEntities(boolean disabledExternalEntities)
             throws SAXNotRecognizedException, SAXNotSupportedException, ParserConfigurationException {
 
-        // double check DTD support disabled
-        // verify(mockSaxParserFactory).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
-        verify(mockSaxParserFactory).setFeature(LOAD_EXTERNAL_DTD, false);
+        verify(mockSaxParserFactory, atLeastOnce()).setFeature(LOAD_EXTERNAL_DTD, false);
+        verify(mockSaxParserFactory, atLeastOnce()).setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
-        // check optional eternal entity disabled
+        verify(mockSaxParserFactory, atLeastOnce()).setFeature(XMLUtils.LOAD_EXTERNAL_DTD, false);
+
+        // double check DTD support disabled
         if (disabledExternalEntities) {
-            verify(mockSaxParserFactory).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
-            verify(mockSaxParserFactory).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
-        } else {
-            verify(mockSaxParserFactory, never()).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
-            verify(mockSaxParserFactory, never()).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
+            verify(mockSaxParserFactory, atLeastOnce()).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
+            verify(mockSaxParserFactory, atLeastOnce()).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
+            verify(mockSaxParserFactory, atLeastOnce()).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
         }
     }
 }

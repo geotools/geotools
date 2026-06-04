@@ -111,9 +111,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
+ * Public portion of Web Map Service Schema.
+ *
  * @author Richard Gould
- *     <p>TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style -
- *     Code Templates
  */
 public class WMSSchema implements Schema {
 
@@ -348,6 +348,16 @@ public class WMSSchema implements Schema {
     @Override
     public boolean isElementFormDefault() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("WMSSchema[version=");
+        builder.append(getVersion());
+        builder.append(", id=");
+        builder.append(getId());
+        builder.append("]");
+        return builder.toString();
     }
 
     public static Schema getInstance() {

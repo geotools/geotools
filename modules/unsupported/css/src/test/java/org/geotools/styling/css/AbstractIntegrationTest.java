@@ -37,6 +37,7 @@ import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
+import org.geotools.util.InternalEntityResolver;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.geotools.xsd.Parser;
@@ -170,6 +171,8 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
     private List validateSLD(String sld) throws IOException, SAXException, ParserConfigurationException {
         Parser parser = new Parser(new SLDConfiguration());
+        parser.setAllowDTD(true);
+        parser.setEntityResolver(InternalEntityResolver.INSTANCE);
         parser.validate(new StringReader(sld));
         return parser.getValidationErrors();
     }

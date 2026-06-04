@@ -64,6 +64,7 @@ public class WMSParserTest {
     public void testWMS111EntityResolver() throws Exception {
         Map<String, Object> hints = new HashMap<>();
         hints.put(XMLHandlerHints.ENTITY_RESOLVER, PreventLocalEntityResolver.INSTANCE);
+        hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.FALSE);
 
         WebMapServer wms =
                 new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.1.1Capabilities.xml"), hints);
@@ -100,6 +101,7 @@ public class WMSParserTest {
     public void testWMS130EntityResolver() throws Exception {
         Map<String, Object> hints = new HashMap<>();
         hints.put(XMLHandlerHints.ENTITY_RESOLVER, PreventLocalEntityResolver.INSTANCE);
+        hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.FALSE);
 
         WebMapServer wms =
                 new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.3.0Capabilities.xml"), hints);

@@ -24,7 +24,6 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -81,8 +80,10 @@ public class Parser {
     /** sax handler which maintains the element stack */
     private ParserHandler handler;
 
-    /** Entity expansion limit configuration, set to null by default */
+    /** Entity expansion limit configuration, set to {@code null} by default */
     private Integer entityExpansionLimit;
+    /** Allow DTD configuration, set to {@code false} by default */
+    private boolean allowDTD = false;
 
     /**
      * Creates a new instance of the parser.
@@ -181,7 +182,7 @@ public class Parser {
         if (handler.getEntityResolver() == null) {
             LOGGER.warning("Parsing with no entity resolver configured");
         } else {
-            LOGGER.info("Parsing with entity resolver: " + handler.getEntityResolver());
+            LOGGER.fine("Parsing with entity resolver: " + handler.getEntityResolver());
         }
         parser.parse(source, handler);
 
@@ -436,24 +437,28 @@ public class Parser {
             pFactory.setFeature("http://apache.org/xml/features/validation/schema", true);
             pFactory.setFeature("http://apache.org/xml/features/validation/schema-full-checking", true);
         }
-        SAXParser parser = pFactory.newSAXParser();
+        if (allowDTD) {
+            XMLUtils.supportDTD(pFactory, true, hints);
+        }
+        SAXParser parser = XMLUtils.newSAXParser(pFactory, hints);
         if (parser.getXMLReader().getEntityResolver() != getEntityResolver()) {
             LOGGER.fine("Force entity resolver if required:" + getEntityResolver());
             parser.getXMLReader().setEntityResolver(getEntityResolver());
         }
 
-        if (parser.getXMLReader().getEntityResolver() != null) {
-            try {
-                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
-            } catch (IllegalArgumentException notSupported) {
-                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
-            }
-            try {
-                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
-            } catch (IllegalArgumentException notSupported) {
-                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
-            }
-        }
+        //        if (parser.getXMLReader().getEntityResolver() != null) {
+        //            String access = XMLUtils.getAccess(parser.getXMLReader().getEntityResolver(), "all");
+        //            try {
+        //                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, access);
+        //            } catch (IllegalArgumentException notSupported) {
+        //                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
+        //            }
+        //            try {
+        //                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, access);
+        //            } catch (IllegalArgumentException notSupported) {
+        //                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
+        //            }
+        //        }
 
         // set the schema sources of this configuration, and all dependent ones
         StringBuffer schemaLocation = new StringBuffer();
@@ -480,8 +485,12 @@ public class Parser {
                 "http://apache.org/xml/properties/schema/external-schemaLocation", schemaLocation.toString());
         // add the handler as a LexicalHandler too.
         parser.setProperty(SAX_PROPERTY_PREFIX + LEXICAL_HANDLER_PROPERTY, handler);
+
         // set Entity expansion limit
         setupEntityExpansionLimit(parser);
+
+        // Set allow DTD
+        if (this.allowDTD) XMLUtils.supportDTD(parser, true, hints);
 
         // return built parser
         return parser;
@@ -506,5 +515,9 @@ public class Parser {
 
     public void setEntityExpansionLimit(Integer entityExpansionLimit) {
         this.entityExpansionLimit = entityExpansionLimit;
+    }
+
+    public void setAllowDTD(boolean allowDTD) {
+        this.allowDTD = allowDTD;
     }
 }

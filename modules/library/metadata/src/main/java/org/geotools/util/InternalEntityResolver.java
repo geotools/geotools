@@ -81,12 +81,21 @@ public class InternalEntityResolver implements EntityResolver3 {
         if (delegate instanceof EntityResolver3 entityResolver3) {
             if (entityResolver3.getAccess() != null
                     && !entityResolver3.getAccess().isEmpty()) {
+                boolean hasFile = false;
+                boolean hasJarFile = false;
+                for (String protocol : entityResolver3.getAccess().split(",")) {
+                    if (protocol.trim().equalsIgnoreCase("file")) {
+                        hasFile = true;
+                    } else if (protocol.trim().equalsIgnoreCase("jar:file")) {
+                        hasJarFile = true;
+                    }
+                }
                 StringBuilder access = new StringBuilder();
                 access.append(entityResolver3.getAccess());
-                if (access.indexOf("file") == -1) {
+                if (!hasFile) {
                     access.append(",file");
                 }
-                if (access.indexOf("jar:file") == -1) {
+                if (!hasJarFile) {
                     access.append(",jar:file");
                 }
                 return access.toString();
@@ -121,7 +130,7 @@ public class InternalEntityResolver implements EntityResolver3 {
             }
             throw new SAXException("External entity systemId not provided");
         }
-        String uri = DefaultEntityResolver.toURI(null, baseURI);
+        String uri = DefaultEntityResolver.toURI(baseURI, systemId);
         uri = DefaultEntityResolver.normalize(uri);
         if (INTERNAL_URIS.matcher(uri).matches()) {
             return null;

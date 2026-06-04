@@ -19,6 +19,7 @@ package org.geotools.xsd.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.util.EntityResolver3;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -33,7 +34,7 @@ import org.xml.sax.ext.EntityResolver2;
  *
  * @author Justin Deoliveira, OpenGeo
  */
-public class ValidatorHandler extends DefaultHandler2 {
+public class ValidatorHandler extends DefaultHandler2 implements EntityResolver3 {
 
     /** flag to control if an exception is thrown on a validation error */
     boolean failOnValidationError = false;
@@ -95,5 +96,10 @@ public class ValidatorHandler extends DefaultHandler2 {
 
     public List<Exception> getErrors() {
         return errors;
+    }
+
+    @Override
+    public String getAccess() {
+        return "all";
     }
 }

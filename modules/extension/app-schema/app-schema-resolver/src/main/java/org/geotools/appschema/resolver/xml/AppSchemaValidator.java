@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.XMLConstants;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.geotools.util.NullEntityResolver;
@@ -42,8 +41,6 @@ import org.geotools.xml.resolver.SchemaResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
@@ -68,6 +65,13 @@ public class AppSchemaValidator {
 
     /** Are validation warnings considered failures? The default is true. */
     private boolean failOnWarning = true;
+
+    /**
+     * Is DTD support required? The default is {@code false} and may be defined externally using the
+     * {@code org.geotools.appschema.resolver.xml.AppSchemaValidator.supportDTD} system property.
+     */
+    private boolean supportDTD = Boolean.valueOf(
+            System.getProperty("org.geotools.appschema.resolver.xml.AppSchemaValidator.supportDTD", "false"));
 
     /**
      * Construct an {@link AppSchemaValidator} that performs schema validation against schemas found on the classpath
@@ -113,6 +117,27 @@ public class AppSchemaValidator {
     }
 
     /**
+     * Used to configure a validation to allow / disallow DTD use.
+     *
+     * @param supportDTD {@code false} to disable DTD support, {@code true} to enable DTD support
+     */
+    public void setSupportDTD(boolean supportDTD) {
+        this.supportDTD = supportDTD;
+    }
+
+    /**
+     * Used to configure a validation to allow / disallow DTD use.
+     *
+     * <p>The default is {@code false} and may be defined externally using the
+     * {@code org.geotools.appschema.resolver.xml.AppSchemaValidator.supportDTD} system property.
+     *
+     * @preturn {@code false} to disable DTD support, {@code true} to enable DTD support
+     */
+    boolean isSupportDTD() {
+        return supportDTD;
+    }
+
+    /**
      * Parse an XML instance document read from an {@link InputStream}, recording any validation failures.
      *
      * @param input stream from which XML instance document is read
@@ -126,15 +151,18 @@ public class AppSchemaValidator {
         SAXParserFactory parserFactory = XMLUtils.newSAXParserFactory(hints);
         parserFactory.setNamespaceAware(true);
         parserFactory.setValidating(true);
-        try {
-            parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
-            LOGGER.fine(
-                    "Parser does not support feature " + XMLConstants.ACCESS_EXTERNAL_SCHEMA + ": " + e.getMessage());
-        }
+        XMLUtils.supportDTD(parserFactory, this.supportDTD, hints);
+        //        try {
+        //            parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        //        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+        //            LOGGER.fine(
+        //                    "Parser does not support feature " + XMLConstants.ACCESS_EXTERNAL_SCHEMA + ": " +
+        // e.getMessage());
+        //        }
         XMLReader xmlReader;
         try {
             SAXParser parser = parserFactory.newSAXParser();
+            XMLUtils.supportDTD(parser, this.supportDTD, hints);
             // Validation is against XML Schema
             parser.setProperty(
                     "http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");

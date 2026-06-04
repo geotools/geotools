@@ -45,6 +45,7 @@ public class WMSComplexTypesTest {
         URL getCapsURL = getCaps.toURI().toURL();
         Map<String, Object> hints = new HashMap<>();
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+        hints.put(DocumentFactory.ENABLE_DTD, Boolean.TRUE);
         Object object = null;
 
         try {
@@ -119,6 +120,7 @@ public class WMSComplexTypesTest {
         URL getCapsURL = getCaps.toURI().toURL();
         Map<String, Object> hints = new HashMap<>();
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+        hints.put(DocumentFactory.ENABLE_DTD, Boolean.TRUE);
         if (!hints.containsKey(DocumentFactory.VALIDATION_HINT)) {
             // Removing validation to match WMSGetCapabilitiesResponse behavior
             hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);

@@ -250,6 +250,7 @@ public class WMSSchemaTest {
         URL getCapsURL = getCaps.toURI().toURL();
         Map<String, Object> hints = new HashMap<>();
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+        hints.put(DocumentFactory.ENABLE_DTD, Boolean.TRUE);
         Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
         Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);

@@ -32,6 +32,10 @@ public class WMS1_3_0 extends WMS1_1_1 {
         return "1.3.0";
     }
 
+    @Override
+    public boolean supportsDTD() {
+        return false;
+    }
     /* (non-Javadoc)
      * @see org.geotools.data.wms.Specification#createGetCapabilitiesRequest(java.net.URL)
      */

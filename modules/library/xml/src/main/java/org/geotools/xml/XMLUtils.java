@@ -262,6 +262,98 @@ public class XMLUtils {
         return toSAXParserFactory(factory, hints).newSAXParser();
     }
 
+    /**
+     * Used to configure a SAXParserFactory to allow / disallow DTD use.
+     *
+     * <p>DTD support requires both SAXParser parser to be configured:
+     *
+     * <pre>{@literal
+     * SAXParserFactory factory = XMLUtils.newSAXParserFactory(hints);
+     * XMLUtils.supportDTD(factory,true,hints);
+     * SAXParser parser = factory.newSAXParser();
+     * XMLUtils.supportDTD(parser,true,hints);
+     * XMLReader reader = parser.getXMLReader();
+     * }</pre>
+     *
+     * @param factory SAXParserFactory to configure
+     * @param supportDTD {@code false} to disable DTD support, {@code true} to enable DTD support
+     * @param hints Factory configuration
+     * @return SAXParser with DTD support configured according to {@code supportDTD} and GeoTools configuration
+     */
+    public static SAXParserFactory supportDTD(SAXParserFactory factory, boolean supportDTD, Hints hints) {
+        // Recommended: Disable Xerces
+        try {
+            if (factory.getFeature(DISALLOW_DOCTYPE_DECL) != !supportDTD)
+                factory.setFeature(DISALLOW_DOCTYPE_DECL, !supportDTD);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            // Xerces specific feature, so not required to be supported
+            LOGGER.fine("Xerces `" + DISALLOW_DOCTYPE_DECL + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        try {
+            factory.setXIncludeAware(!supportDTD);
+        } catch (UnsupportedOperationException e) {
+            LOGGER.fine("setXIncludeAware setting not supported: "
+                    + factory.getClass().getName());
+        }
+
+        // For non Xerces parser, try another way...
+        // Both EXTERNAL_GENERAL_ENTITIES and EXTERNAL_PARAMETER_ENTITIES need to be disabled/enabled together
+        try {
+            if (factory.getFeature(EXTERNAL_GENERAL_ENTITIES) != supportDTD)
+                factory.setFeature(EXTERNAL_GENERAL_ENTITIES, supportDTD);
+        } catch (SAXNotSupportedException | ParserConfigurationException | SAXNotRecognizedException e) {
+            LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        try {
+            if (factory.getFeature(EXTERNAL_PARAMETER_ENTITIES) != supportDTD)
+                factory.setFeature(EXTERNAL_PARAMETER_ENTITIES, supportDTD);
+        } catch (SAXNotRecognizedException | SAXNotSupportedException | ParserConfigurationException e) {
+            LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        // Disable/enable external DTDs as well
+        try {
+            if (factory.getFeature(LOAD_EXTERNAL_DTD) != supportDTD) factory.setFeature(LOAD_EXTERNAL_DTD, supportDTD);
+        } catch (SAXNotSupportedException | ParserConfigurationException | SAXNotRecognizedException e) {
+            LOGGER.fine("Xerces `" + LOAD_EXTERNAL_DTD + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        return factory;
+    }
+
+    /**
+     * Used to configure SAXParser to allow / disallow DTD use.
+     *
+     * <p>When {@code false} the setting ACCESS_EXTERNAL_DTD is set to {@code ""}, however when {@code true} a value is
+     * determined using the parsers EntityResolver (if present), or provided factory Hints.
+     *
+     * <p>For more information see {@link XMLUtils#getAllow(EntityResolver,Stirng)}.
+     *
+     * @param parser SAXParser
+     * @param supportDTD {@code false} to disallow DTD support, or {@code true} to allow.
+     * @param hints Factory configuration hints
+     * @return SAXParser configured
+     */
+    public static SAXParser supportDTD(SAXParser parser, boolean supportDTD, Hints hints) {
+        EntityResolver entityResolver;
+        try {
+            if (parser.getXMLReader() != null && parser.getXMLReader().getEntityResolver() != null)
+                entityResolver = parser.getXMLReader().getEntityResolver();
+            else entityResolver = GeoTools.getEntityResolver(hints);
+        } catch (SAXException e) {
+            entityResolver = GeoTools.getEntityResolver(hints);
+        }
+        String allow = supportDTD ? XMLUtils.getAccess(entityResolver, "all") : "";
+        try {
+            parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, allow);
+        } catch (IllegalArgumentException | SAXNotRecognizedException | SAXNotSupportedException notSupported) {
+            LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
+        }
+        return parser;
+    }
+
     //
     // TransformerFactory and Transformer utility methods
     //
@@ -575,6 +667,77 @@ public class XMLUtils {
         return new GTDocumentBuilderFactory(hints);
     }
 
+    /**
+     * Used to configure a DocumentBuilderFactory to allow / disallow DTD use.
+     *
+     * @param factory DocumentBuilderFactory to configure
+     * @param supportDTD {@code false} to disable DTD support, {@code true} to enable DTD support
+     * @param hints Factory configuration
+     * @return SAXParser with DTD support configured according to {@code supportDTD} and GeoTools configuration
+     */
+    public static DocumentBuilderFactory supportDTD(DocumentBuilderFactory factory, boolean supportDTD, Hints hints) {
+        // Recommended: Disable Xerces only
+        try {
+            if (factory.getFeature(DISALLOW_DOCTYPE_DECL) != !supportDTD)
+                factory.setFeature(DISALLOW_DOCTYPE_DECL, !supportDTD);
+        } catch (ParserConfigurationException e) {
+            // Xerces specific feature, so not required to be supported
+            LOGGER.fine("Xerces `" + DISALLOW_DOCTYPE_DECL + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        try {
+            factory.setXIncludeAware(false);
+        } catch (UnsupportedOperationException e) {
+            LOGGER.fine("setXIncludeAware setting not supported: "
+                    + factory.getClass().getName());
+        }
+
+        // Both EXTERNAL_GENERAL_ENTITIES and EXTERNAL_PARAMETER_ENTITIES need to be disabled together
+        try {
+            if (factory.getFeature(EXTERNAL_PARAMETER_ENTITIES) != supportDTD)
+                factory.setFeature(EXTERNAL_PARAMETER_ENTITIES, supportDTD);
+        } catch (ParserConfigurationException e) {
+            LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        try {
+            if (factory.getFeature(EXTERNAL_GENERAL_ENTITIES) != supportDTD)
+                factory.setFeature(EXTERNAL_GENERAL_ENTITIES, supportDTD);
+        } catch (ParserConfigurationException e) {
+            LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+
+        // disable external DTDs as well
+        try {
+            if (factory.getFeature(LOAD_EXTERNAL_DTD) != supportDTD) factory.setFeature(LOAD_EXTERNAL_DTD, supportDTD);
+        } catch (ParserConfigurationException e) {
+            LOGGER.fine("Xerces `" + LOAD_EXTERNAL_DTD + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        try {
+            factory.setExpandEntityReferences(false);
+        } catch (UnsupportedOperationException e) {
+            LOGGER.fine("setExpandEntityReferences setting not supported: "
+                    + factory.getClass().getName());
+        }
+
+        try {
+            if (supportDTD) {
+                // If EntityResolver3 is used to provide access information,
+                // external entity facilities will be relaxed accordingly
+                EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
+                String allow = getAccess(entityResolver, "all");
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, allow);
+            } else {
+                // Do not allow DTD access on any protocol
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            }
+        } catch (IllegalArgumentException notSupported) {
+            LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
+        }
+        return factory;
+    }
     //
     // SchemaFactory
     //
@@ -626,7 +789,7 @@ public class XMLUtils {
      * @param protocol Default protocol to use if entityResolver is not recognized
      * @return Entity resolution protocol: {@code "all"}, {@code "http"}, or {@code ""} based on provided entityResolver
      */
-    private static String getAccess(EntityResolver entityResolver, String protocol) {
+    public static String getAccess(EntityResolver entityResolver, String protocol) {
         if (entityResolver == null) {
             return "";
         }
@@ -795,59 +958,7 @@ public class XMLUtils {
                 LOGGER.fine("Parser does not support secure processing feature: "
                         + this.factory.getClass().getName());
             }
-            // Disable DTD Use
-            boolean disabledDTD = false;
-
-            // Recommended: Disable Xerces only
-            try {
-                this.factory.setFeature(DISALLOW_DOCTYPE_DECL, true);
-                this.factory.setXIncludeAware(false);
-                disabledDTD = true;
-            } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
-                // Xerces specific feature, so not required to be supported
-                LOGGER.fine("Xerces `" + DISALLOW_DOCTYPE_DECL + "` setting not supported: "
-                        + this.factory.getClass().getName());
-            } catch (UnsupportedOperationException e) {
-                LOGGER.fine("setXIncludeAware setting not supported: "
-                        + this.factory.getClass().getName());
-            }
-
-            if (!disabledDTD) {
-                // Xerces disable not supported, try another way...
-
-                // Both EXTERNAL_GENERAL_ENTITIES and EXTERNAL_PARAMETER_ENTITIES need to be disabled together
-                try {
-                    this.factory.setFeature(EXTERNAL_PARAMETER_ENTITIES, false);
-                } catch (SAXNotRecognizedException | SAXNotSupportedException | ParserConfigurationException e) {
-                    LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                try {
-                    this.factory.setFeature(EXTERNAL_GENERAL_ENTITIES, false);
-                } catch (SAXNotSupportedException | ParserConfigurationException | SAXNotRecognizedException e) {
-                    LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                // disable external DTDs as well
-                try {
-                    this.factory.setFeature(LOAD_EXTERNAL_DTD, false);
-                } catch (SAXNotSupportedException | ParserConfigurationException | SAXNotRecognizedException e) {
-                    LOGGER.fine("Xerces `" + LOAD_EXTERNAL_DTD + "` setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                try {
-                    this.factory.setXIncludeAware(false);
-                } catch (UnsupportedOperationException e) {
-                    LOGGER.fine("setXIncludeAware setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                disabledDTD = true;
-            }
-
-            if (!disabledDTD) {
-                LOGGER.warning("Unable to ensure DTD support is disabled: "
-                        + this.factory.getClass().getName());
-            }
+            XMLUtils.supportDTD(this, false, hints);
         }
 
         @Override
@@ -910,13 +1021,8 @@ public class XMLUtils {
             if (parser.getXMLReader() != null) {
                 parser.getXMLReader().setEntityResolver(entityResolver);
             }
+            XMLUtils.supportDTD(parser, false, hints);
 
-            // Do not allow DTD access on any protocol
-            try {
-                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            } catch (IllegalArgumentException notSupported) {
-                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
-            }
             // Sensible XSD factory defaults based on EntityResolver3
             final String ACCESS = getAccess(entityResolver, "");
             try {
@@ -959,72 +1065,7 @@ public class XMLUtils {
                 LOGGER.fine("Parser does not support secure processing feature: "
                         + this.factory.getClass().getName());
             }
-            // Disable DTD Use
-            boolean disabledDTD = false;
-
-            // Recommended: Disable Xerces only
-            try {
-                this.factory.setFeature(DISALLOW_DOCTYPE_DECL, true);
-                this.factory.setXIncludeAware(false);
-                disabledDTD = true;
-            } catch (ParserConfigurationException e) {
-                // Xerces specific feature, so not required to be supported
-                LOGGER.fine("Xerces `" + DISALLOW_DOCTYPE_DECL + "` setting not supported: "
-                        + this.factory.getClass().getName());
-            } catch (UnsupportedOperationException e) {
-                LOGGER.fine("setXIncludeAware setting not supported: "
-                        + this.factory.getClass().getName());
-            }
-
-            if (!disabledDTD) {
-                // Xerces disable not supported, try another way...
-
-                // Both EXTERNAL_GENERAL_ENTITIES and EXTERNAL_PARAMETER_ENTITIES need to be disabled together
-                try {
-                    this.factory.setFeature(EXTERNAL_PARAMETER_ENTITIES, false);
-                } catch (ParserConfigurationException e) {
-                    LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                try {
-                    this.factory.setFeature(EXTERNAL_GENERAL_ENTITIES, false);
-                } catch (ParserConfigurationException e) {
-                    LOGGER.fine("Sax `" + EXTERNAL_PARAMETER_ENTITIES + "` setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                // disable external DTDs as well
-                try {
-                    this.factory.setFeature(LOAD_EXTERNAL_DTD, false);
-                } catch (ParserConfigurationException e) {
-                    LOGGER.fine("Xerces `" + LOAD_EXTERNAL_DTD + "` setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                try {
-                    this.factory.setXIncludeAware(false);
-                } catch (UnsupportedOperationException e) {
-                    LOGGER.fine("setXIncludeAware setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                try {
-                    this.factory.setExpandEntityReferences(false);
-                } catch (UnsupportedOperationException e) {
-                    LOGGER.fine("setExpandEntityReferences setting not supported: "
-                            + this.factory.getClass().getName());
-                }
-                disabledDTD = true;
-            }
-
-            if (!disabledDTD) {
-                LOGGER.warning("Unable to ensure DTD support is disabled: "
-                        + this.factory.getClass().getName());
-            }
-
-            // Do not allow DTD access on any protocol
-            try {
-                this.factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            } catch (IllegalArgumentException notSupported) {
-                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
-            }
+            supportDTD(this.factory, false, hints);
 
             // Sensible XSD factory defaults based on EntityResolver3
             EntityResolver entityResolver = GeoTools.getEntityResolver(hints);

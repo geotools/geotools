@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.factory.Hints;
+import org.geotools.xml.resolver.SchemaCatalog;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -53,8 +54,13 @@ public class AppSchemaValidatorTest {
     /** Test that validation fails with an expected error message for a known-invalid XML instance document. */
     @Test
     public void validateErMineralOccurrenceWithErrors() {
-        try {
-            AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence_with_errors.xml", null);
+        try (InputStream input =
+                AppSchemaValidatorTest.class.getResourceAsStream("/test-data/er_MineralOccurrence_with_errors.xml")) {
+            AppSchemaValidator validator = AppSchemaValidator.buildValidator((SchemaCatalog) null);
+            validator.setSupportDTD(true);
+            validator.parse(input);
+            validator.checkForFailures();
+
             Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
@@ -69,7 +75,12 @@ public class AppSchemaValidatorTest {
      */
     @Test
     public void validateWfs20Example01() throws IOException {
-        AppSchemaValidator.validateResource("/test-data/Example01.xml", null);
+        try (InputStream input = AppSchemaValidatorTest.class.getResourceAsStream("/test-data/Example01.xml")) {
+            AppSchemaValidator validator = AppSchemaValidator.buildValidator((SchemaCatalog) null);
+            validator.setSupportDTD(true);
+            validator.parse(input);
+            validator.checkForFailures();
+        }
     }
 
     /** Tests for {@link AppSchemaValidator#getEncoding(String)}. */
@@ -135,8 +146,13 @@ public class AppSchemaValidatorTest {
      * specification. This version converts the resource to a string and back before validation.
      */
     @Test
-    public void validateWfs20Example01AsString() {
-        validateResourceAsString("/test-data/Example01.xml");
+    public void validateWfs20Example01AsString() throws IOException {
+        try (InputStream input = AppSchemaValidatorTest.class.getResourceAsStream("/test-data/Example01.xml")) {
+            AppSchemaValidator validator = AppSchemaValidator.buildValidator((SchemaCatalog) null);
+            validator.setSupportDTD(true);
+            validator.parse(input);
+            validator.checkForFailures();
+        }
     }
 
     /** Test that a GetFeature can be validated. */

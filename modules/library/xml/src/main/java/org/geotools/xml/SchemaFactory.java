@@ -413,8 +413,10 @@ public class SchemaFactory {
             SAXParserFactory saxParserFactory = XMLUtils.newSAXParserFactory();
             saxParserFactory.setNamespaceAware(true);
             saxParserFactory.setValidating(false);
+            XMLUtils.supportDTD(saxParserFactory, true, null);
             try {
                 parser = XMLUtils.newSAXParser(saxParserFactory);
+                XMLUtils.supportDTD(parser, true, null);
                 parser.getXMLReader().setEntityResolver(GeoTools.getEntityResolver());
                 parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "all");
                 parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "all");

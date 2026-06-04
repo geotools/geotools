@@ -153,6 +153,7 @@ public class SLDExampleTest {
 
         Parser parser = new Parser(new SLDConfiguration());
         parser.setEntityResolver(NullEntityResolver.INSTANCE);
+        parser.setAllowDTD(true);
         try (InputStream location = getClass().getResourceAsStream(file)) {
             parser.parse(location);
             Assert.fail("parsing should fail with a FileNotFoundException because the parser try to "

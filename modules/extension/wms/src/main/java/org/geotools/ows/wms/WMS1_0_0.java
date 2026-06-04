@@ -81,6 +81,10 @@ public class WMS1_0_0 extends WMSSpecification {
     /** Public constructor creates the WMS1_0_0 object. */
     public WMS1_0_0() {}
 
+    @Override
+    public boolean supportsDTD() {
+        return true;
+    }
     /**
      * Expected version attribute for root element.
      *

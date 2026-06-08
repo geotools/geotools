@@ -18,13 +18,16 @@ package org.geotools.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.logging.Level;
 import org.geotools.util.logging.Logging;
 
@@ -58,9 +61,32 @@ public final class NIOUtilities {
     /** Wheter direct buffers usage is enabled, or not */
     private static boolean directBuffersEnabled = true;
 
+    /** A function to implement {@link #clean(java.nio.ByteBuffer) }. */
+    private static final Function<ByteBuffer, Boolean> CLEANUP_FUNCTION;
+
     static {
         String directBuffers = System.getProperty("geotools.nioutilities.direct", "true");
         directBuffersEnabled = "TRUE".equalsIgnoreCase(directBuffers);
+
+        // set the cleanup function based on the system property.
+        String cleanup = System.getProperty("geotools.nioutilities.cleanup", "");
+        if (cleanup.equalsIgnoreCase("memorysegment")) {
+            CLEANUP_FUNCTION = memorySegmentCleanup().orElseThrow();
+        } else if (cleanup.equalsIgnoreCase("unsafe")) {
+            CLEANUP_FUNCTION = cleanupAfterJdk8(true).orElseThrow();
+        } else if (cleanup.equalsIgnoreCase("noop")) {
+            CLEANUP_FUNCTION = NIOUtilities::noopClean;
+        } else {
+            // user hasn't made a choice (or an unknown choice) so we decide what's best
+            // cleanupAfterJdk8 is the best clean up available currently but may trigger deprecated API warnings
+            // on newer JVMs. If you need to stop these warnings more than you need the better cleanup then
+            // setting skipUnsafeVersionCheck to false will prevent cleanupAfterJdk8 being used on these JVMs
+            CLEANUP_FUNCTION = cleanupAfterJdk8("TRUE"
+                            .equalsIgnoreCase(
+                                    System.getProperty("geotools.nioutilities.skipUnsafeVersionCheck", "true")))
+                    .or(() -> memorySegmentCleanup())
+                    .orElse(NIOUtilities::noopClean);
+        }
     }
 
     /** Wheter direct buffers are used, or not (defaults to true) */
@@ -177,28 +203,97 @@ public final class NIOUtilities {
         if (buffer == null || !buffer.isDirect()) {
             return true;
         }
-        return cleanupAfterJdk8(buffer);
+        return CLEANUP_FUNCTION.apply(buffer);
     }
 
-    private static boolean cleanupAfterJdk8(ByteBuffer buffer) {
-        boolean success = false;
+    /**
+     * Returns a cleanup function that uses <code>java.lang.foreign.MemorySegment</code> which was added in JDK22.
+     *
+     * <p>Note: memory segment clean up only works for direct mapped buffers. Other buffers are not cleaned at all.
+     *
+     * <p>This cleanup is better than nothing but not as good as {@link #cleanupAfterJdk8(boolean) }. In the future it
+     * might be possible to allocate direct non-mapped buffers via an Arena which can be cleaned up by closing the Arena
+     * that the buffers were allocated from.
+     */
+    private static Optional<Function<ByteBuffer, Boolean>> memorySegmentCleanup() {
+        try {
+            // MemorySegment is a new API added in JDK22. If this class cannot be found then the class
+            // loader will throw an exception which will be caught below and the empty optional returned.
+            final Class<?> memorySegmentClass = Class.forName("java.lang.foreign.MemorySegment");
+            final Method ofBufferMethod = memorySegmentClass.getMethod("ofBuffer", Buffer.class);
+            final Method isMappedMethod = memorySegmentClass.getMethod("isMapped");
+            final Method unloadMethod = memorySegmentClass.getMethod("unload");
+
+            return Optional.of((byteBuffer) -> {
+                try {
+                    Object memorySegment = ofBufferMethod.invoke(null, byteBuffer);
+                    // only mapped memory segments can be unloaded
+                    if (Boolean.TRUE.equals(isMappedMethod.invoke(memorySegment))) {
+                        unloadMethod.invoke(memorySegment);
+                        return Boolean.TRUE;
+                    }
+
+                    return Boolean.FALSE;
+                } catch (Exception e) {
+                    if (isLoggable()) {
+                        log(e, byteBuffer);
+                    }
+                }
+                return Boolean.FALSE;
+            });
+        } catch (Exception e) {
+            // There was some problem getting the MemorySegment, most likely because the current JRE
+            // is < 22 so MemorySegment cannot be found. no need to log this is expected
+            return Optional.empty();
+        }
+    }
+
+    /** a clean function that does nothing except leave cleanup to the JVM */
+    private static Boolean noopClean(ByteBuffer buffer) {
+        return false;
+    }
+
+    /**
+     * Returns a clean up function that uses the <code>com.sun.Unsafe</code> API.
+     *
+     * <p>Note, by default this cleanup will not be returned if the JVM version is 24 or higher as this will output
+     * terminally deprecated warnings.
+     *
+     * @param skipVersionCheck when true skip the JVM version check
+     */
+    private static Optional<Function<ByteBuffer, Boolean>> cleanupAfterJdk8(boolean skipVersionCheck) {
+        if (!skipVersionCheck && Runtime.version().feature() >= 24) {
+            // The Unsafe API has been marked as terminally deprecated and JVM's >= 24 output warnings
+            // should it be used. So
+            return Optional.empty();
+        }
         try {
             // https://bugs.openjdk.java.net/browse/JDK-8171377
             // https://bugs.openjdk.java.net/browse/JDK-4724038
-            final Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
-            final Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
+            Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+            Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
             theUnsafeField.setAccessible(true);
-            final Object theUnsafe = theUnsafeField.get(null);
-            final Method invokeCleanerMethod = unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
-            invokeCleanerMethod.invoke(theUnsafe, buffer);
+            Object theUnsafe = theUnsafeField.get(null);
+            Method invokeCleanerMethod = unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
 
-            success = true;
+            return Optional.of((buffer) -> {
+                boolean success = false;
+                try {
+                    invokeCleanerMethod.invoke(theUnsafe, buffer);
+
+                    success = true;
+                } catch (Exception e) {
+                    if (isLoggable()) {
+                        log(e, buffer);
+                    }
+                }
+                return success;
+            });
         } catch (Exception e) {
-            if (isLoggable()) {
-                log(e, buffer);
-            }
+            // There was some problem getting the Unsafe API. This won't be expected until it is removed
+            // from future JDK versions
+            return Optional.empty();
         }
-        return success;
     }
 
     public static boolean returnToCache(final ByteBuffer buffer) {

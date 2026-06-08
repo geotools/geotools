@@ -55,6 +55,7 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.EntityResolver3;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
@@ -858,7 +859,7 @@ public class SLDParserTest {
         try {
             builder.parse(input(SLD_XSD_EXTERNALENTITY));
         } catch (SAXException | IOException e) {
-            assertTrue(e.getMessage().contains("Entity resolution disallowed"));
+            XmlTestSupport.assertMessageContains(e, "Entity resolution disallowed");
         }
 
         // Test SLDParser against SLD_XSD_EXTERNALENTITY requires validation enabled
@@ -874,8 +875,8 @@ public class SLDParserTest {
             assertTrue(
                     "SAXException expected, was " + e.getCause().getClass().getSimpleName(),
                     e.getCause() instanceof SAXException);
-            assertTrue(e.getMessage().contains("Entity resolution disallowed"));
-            assertTrue(e.getMessage().contains("/this/file/is/top/secret"));
+            XmlTestSupport.assertMessageContains(e, "Entity resolution disallowed");
+            XmlTestSupport.assertMessageContains(e, "top", "secret");
         } finally {
             Logging.getLogger(XMLUtils.class).setLevel(Level.INFO);
         }
@@ -899,7 +900,8 @@ public class SLDParserTest {
             assertTrue(
                     "SAXException expected, was " + e.getCause().getClass().getSimpleName(),
                     e.getCause() instanceof SAXException);
-            assertTrue(e.getMessage().contains("DOCTYPE is disallowed"));
+            // DOCTYPE disallowed message, is locale dependent: DOCTYPE non consentito in it_IT.UTF-8
+            XmlTestSupport.assertMessageContains(e, "DOCTYPE");
         } finally {
             Logging.getLogger(XMLUtils.class).setLevel(Level.INFO);
         }
@@ -920,7 +922,8 @@ public class SLDParserTest {
                     "FileNotFoundException expected, was "
                             + e.getCause().getClass().getSimpleName(),
                     e.getCause() instanceof FileNotFoundException);
-            assertTrue(e.getMessage().contains("/this/file/is/top/secret"));
+            // Windows may not preserve /this/file/is/top/secret path
+            XmlTestSupport.assertMessageContains(e, "top", "secret");
         }
 
         parser = new SLDParser(styleFactory, input(SLD_DTD_EXTERNALENTITY));

@@ -47,7 +47,6 @@ import org.xml.sax.SAXNotSupportedException;
  */
 public class DocumentFactoryTest {
     private static final String DISALLOW_DOCTYPE_DECLAIRATION = "http://apache.org/xml/features/disallow-doctype-decl";
-    private static final String LOAD_EXTERNAL_DTD = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
 
     private static final String EXTERNAL_GENERAL_ENTITIES_FEATURE =
             "http://xml.org/sax/features/external-general-entities";

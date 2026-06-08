@@ -35,6 +35,8 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.filter.Filter;
@@ -199,14 +201,17 @@ public class SLDParser {
     /** Support entity resolution expansion, default {@code false}. */
     protected boolean expandEntityReferences = false;
 
+    /** Support XInclude , default {@code false}. */
+    protected boolean xinclude = false;
+
+    /** Support validating , default {@code false}. */
+    protected boolean validating = false;
+
     /** provides complete control for detecting relative onlineresources */
     private ResourceLocator onlineResourceLocator;
 
     /** Provide control of entity resolution, yse EntityResolver3 to limit protocols supported. */
     private EntityResolver entityResolver;
-
-    /** Provide control over factory use and parsing */
-    private Hints hints = null;
 
     private boolean disposeInputSource;
 
@@ -390,14 +395,52 @@ public class SLDParser {
     }
 
     /**
-     * Use of expand entity references is not recommended, and is {@code false} by default. May be set to true
-     * {@cpde true} DOCTYPE is used to define injected entities.
+     * Use of expand entity references is not recommended, and is {@code false} by default. May be set to {@code true}
+     * if DOCTYPE is used to to define references.
      *
      * @param expandEntityReferences Use {@code false} to prevent support of expanding entity references, or
      *     {@code true} if required.
      */
     public void setExpandEntityReferences(boolean expandEntityReferences) {
         this.expandEntityReferences = expandEntityReferences;
+    }
+
+    /**
+     * Use of XInclude is not recommended, and is {@code false} by default. May be set to {@code true} to support
+     * inclusion of xsd content.
+     *
+     * @param xinclude Use {@code false} to prevent use of XInclude, or {@code true} if required.
+     */
+    public void setXInclude(boolean xinclude) {
+        this.xinclude = xinclude;
+    }
+
+    /**
+     * Use of XInclude is not recommended, and is {@code false} by default. May be set to {@code true} to support
+     * inclusion of xsd content.
+     *
+     * @return Use {@code false} to prevent use of XInclude, or {@code true} if required.
+     */
+    public boolean getXInclude() {
+        return this.xinclude;
+    }
+
+    /**
+     * Use of XInclude is not recommended, and is {@code false} by default.
+     *
+     * @param validating Use {@code false} to parse document without validation.
+     */
+    public void setValidating(boolean validating) {
+        this.validating = validating;
+    }
+
+    /**
+     * Use of validating is not required, and is {@code false} by default.
+     *
+     * @return Use {@code false} to parse document without validation.
+     */
+    public boolean getValidating() {
+        return this.validating;
     }
 
     /** Internal setter for source url. */
@@ -423,71 +466,33 @@ public class SLDParser {
 
         javax.xml.parsers.DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory(hints);
         dbf.setNamespaceAware(namespaceAware);
-
-        XMLUtils.supportDTD(dbf, this.supportDTD, hints);
-
+        if (validating) {
+            dbf.setValidating(true);
+            dbf.setAttribute(
+                    "http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        }
+        // XSD configuration
         try {
-            if (dbf.isExpandEntityReferences() != this.expandEntityReferences)
-                dbf.setExpandEntityReferences(this.expandEntityReferences);
+            if (dbf.isXIncludeAware() != xinclude) dbf.setXIncludeAware(xinclude);
+        } catch (UnsupportedOperationException e) {
+            LOGGER.fine("setXIncludeAware setting not supported: "
+                    + factory.getClass().getName());
+        }
+
+        // DTD configuration
+        XMLUtils.supportDTD(dbf, this.supportDTD, hints);
+        try {
+            if (this.expandEntityReferences && !this.supportDTD) {
+                throw new IllegalStateException(
+                        "SLDParser expandEntityReferences is set to true, but supportDTD is false.");
+            }
+            // Expand entity references also requires Document Type Definition to define declaration
+            if (dbf.isExpandEntityReferences() != (this.expandEntityReferences && this.supportDTD))
+                dbf.setExpandEntityReferences(this.expandEntityReferences && this.supportDTD);
         } catch (UnsupportedOperationException e) {
             LOGGER.fine("setExpandEntityReferences setting not supported: "
                     + factory.getClass().getName());
         }
-        //        if (this.supportsDTD) {
-        //            // DTD access restricted by XMLUtils, provided limited DTD access using entityResolver guidance
-        //            String access;
-        //            if (entityResolver != null && entityResolver instanceof EntityResolver3 entityResolver3)
-        //                access = entityResolver3.getAccess();
-        //            else access = "";
-        //            try {
-        //                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, access);
-        //            } catch (IllegalArgumentException notSupported) {
-        //                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
-        //            }
-        //        }
-        //
-        //        // First use xerces settings
-        //        final String DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl";
-        //        try {
-        //            if (dbf.getFeature(DISALLOW_DOCTYPE_DECL) != !this.supportsDTD)
-        //                dbf.setFeature(DISALLOW_DOCTYPE_DECL, !this.supportsDTD);
-        //        } catch (ParserConfigurationException notSupported) {
-        //            LOGGER.fine("Parser does not support '" + DISALLOW_DOCTYPE_DECL + "': " +
-        // notSupported.getMessage());
-        //        }
-        //
-        //        try {
-        //            dbf.setXIncludeAware(this.supportsDTD);
-        //        } catch (UnsupportedOperationException e) {
-        //            LOGGER.fine("setXIncludeAware setting not supported: "
-        //                    + this.factory.getClass().getName());
-        //        }
-
-        //        // Disable DTD (although this is now the default from XMLUtils
-        //        final String LOAD_EXTERNAL_DTD = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
-        //        final String EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
-        //        final String EXTERNAL_PARAMETER_ENTITIES = "http://xml.org/sax/features/external-parameter-entities";
-        //
-        //        try {
-        //            if (dbf.getFeature(LOAD_EXTERNAL_DTD) != this.supportsDTD)
-        //                dbf.setFeature(LOAD_EXTERNAL_DTD, this.supportsDTD);
-        //        } catch (ParserConfigurationException notSupported) {
-        //            LOGGER.fine("Parser does not support '" + LOAD_EXTERNAL_DTD + "': " + notSupported.getMessage());
-        //        }
-        //        try {
-        //            if (dbf.getFeature(EXTERNAL_GENERAL_ENTITIES) != this.supportsDTD)
-        //                dbf.setFeature(EXTERNAL_GENERAL_ENTITIES, this.supportsDTD);
-        //        } catch (ParserConfigurationException notSupported) {
-        //            LOGGER.fine("Parser does not support '" + EXTERNAL_GENERAL_ENTITIES + "': " +
-        // notSupported.getMessage());
-        //        }
-        //        try {
-        //            if (dbf.getFeature(EXTERNAL_PARAMETER_ENTITIES) != this.supportsDTD)
-        //                dbf.setFeature(EXTERNAL_PARAMETER_ENTITIES, this.supportsDTD);
-        //        } catch (ParserConfigurationException notSupported) {
-        //            LOGGER.fine("Parser does not support '" + EXTERNAL_PARAMETER_ENTITIES + "': " +
-        // notSupported.getMessage());
-        //        }
 
         javax.xml.parsers.DocumentBuilder db = XMLUtils.newDocumentBuilder(dbf, hints);
 
@@ -502,7 +507,8 @@ public class SLDParser {
      */
     public Style[] readXML() {
         try {
-            dom = newDocumentBuilder(true).parse(source);
+            DocumentBuilder documentBuilder = newDocumentBuilder(true);
+            dom = documentBuilder.parse(source);
         } catch (ParserConfigurationException | IOException | SAXException pce) {
             throw new RuntimeException(pce);
         } finally {

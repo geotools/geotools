@@ -647,9 +647,7 @@ public class XMLUtils {
 
         DocumentBuilder builder = factory.newDocumentBuilder(); // NOPMD AvoidDocumentBuilder
         builder.setEntityResolver(GeoTools.getEntityResolver(hints));
-        if (factory.isValidating()) {
-            builder.setErrorHandler(new SAXErrorHandler());
-        }
+        builder.setErrorHandler(new SAXErrorHandler());
         return builder;
     }
 
@@ -683,12 +681,6 @@ public class XMLUtils {
         } catch (ParserConfigurationException e) {
             // Xerces specific feature, so not required to be supported
             LOGGER.fine("Xerces `" + DISALLOW_DOCTYPE_DECL + "` setting not supported: "
-                    + factory.getClass().getName());
-        }
-        try {
-            if (factory.isXIncludeAware() != supportDTD) factory.setXIncludeAware(supportDTD);
-        } catch (UnsupportedOperationException e) {
-            LOGGER.fine("setXIncludeAware setting not supported: "
                     + factory.getClass().getName());
         }
 
@@ -1060,6 +1052,9 @@ public class XMLUtils {
                 LOGGER.fine("Parser does not support secure processing feature: "
                         + this.factory.getClass().getName());
             }
+            supportDTD(this.factory, false, hints);
+
+            // Expand Entity References disabled by default, as it requires DTD support
             try {
                 factory.setExpandEntityReferences(false);
             } catch (UnsupportedOperationException e) {
@@ -1067,9 +1062,13 @@ public class XMLUtils {
                         + factory.getClass().getName());
             }
 
-            supportDTD(this.factory, false, hints);
-
             // Sensible XSD factory defaults based on EntityResolver3
+            try {
+                if (factory.isXIncludeAware() != false) factory.setXIncludeAware(false);
+            } catch (UnsupportedOperationException e) {
+                LOGGER.fine("setXIncludeAware setting not supported: "
+                        + factory.getClass().getName());
+            }
             EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
             final String ACCESS = getAccess(entityResolver, "");
             try {
@@ -1145,6 +1144,36 @@ public class XMLUtils {
         @Override
         public boolean getFeature(String name) throws ParserConfigurationException {
             return this.factory.getFeature(name);
+        }
+
+        @Override
+        public void setIgnoringComments(boolean ignoreComments) {
+            this.factory.setIgnoringComments(ignoreComments);
+        }
+
+        @Override
+        public boolean isIgnoringComments() {
+            return this.factory.isIgnoringComments();
+        }
+
+        @Override
+        public void setSchema(Schema schema) {
+            this.factory.setSchema(schema);
+        }
+
+        @Override
+        public Schema getSchema() {
+            return this.factory.getSchema();
+        }
+
+        @Override
+        public void setCoalescing(boolean coalescing) {
+            this.factory.setCoalescing(coalescing);
+        }
+
+        @Override
+        public boolean isCoalescing() {
+            return this.factory.isCoalescing();
         }
 
         @Override

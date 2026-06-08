@@ -60,8 +60,7 @@ public class XXEProtectionTest {
             if (cause instanceof SAXException se) {
                 String message = se.getMessage();
                 if (message != null
-                        && (message.contains("Entity resolution disallowed")
-                                || message.contains("DOCTYPE is disallowed when the feature"))) {
+                        && (message.contains("Entity resolution disallowed") || message.contains("DOCTYPE"))) {
                     // fine, we found the message
                     return;
                 }

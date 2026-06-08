@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.hamcrest.Matcher;
+import org.junit.Assert;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
 import org.xmlunit.matchers.EvaluateXPathMatcher;
@@ -95,5 +96,22 @@ public abstract class XmlTestSupport {
                 .checkForSimilar()
                 .withNamespaceContext(getNamespaces())
                 .build();
+    }
+
+    /**
+     * Assert throwable message contains expected string.
+     *
+     * <p>Intended to search for fragments when testing the contents of Locale or platform specific error messages.
+     *
+     * @param throwable Throwable
+     * @param expected Expected string
+     */
+    public static void assertMessageContains(Throwable throwable, String... expected) {
+        String message = (throwable != null && throwable.getMessage() != null) ? throwable.getMessage() : "";
+        for (String fragment : expected) {
+            if (!message.contains(fragment)) {
+                Assert.fail("Expected " + String.join(",", expected) + ": " + message);
+            }
+        }
     }
 }

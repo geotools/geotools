@@ -18,13 +18,16 @@ package org.geotools.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.logging.Level;
 import org.geotools.util.logging.Logging;
 
@@ -177,7 +180,44 @@ public final class NIOUtilities {
         if (buffer == null || !buffer.isDirect()) {
             return true;
         }
-        return cleanupAfterJdk8(buffer);
+        return memorySegmentmentCleanup().orElse((buf) -> cleanupAfterJdk8(buf)).apply(buffer);
+    }
+
+    /**
+     * Returns a cleanup function that uses <code>java.lang.foreign.MemorySegment</code> which was added in JDK22. This
+     * is the preferred way to signal to the JVM that memory can be freed.
+     */
+    private static Optional<Function<ByteBuffer, Boolean>> memorySegmentmentCleanup() {
+        try {
+            // MemorySegment is a new API added in JDK22. If this class cannot be found then the class
+            // loader will throw an exception which will be caught below and the empty optional returned.
+            final Class<?> memorySegmentClass = Class.forName("java.lang.foreign.MemorySegment");
+            final Method ofBufferMethod = memorySegmentClass.getMethod("ofBuffer", Buffer.class);
+            final Method isMappedMethod = memorySegmentClass.getMethod("isMapped");
+            final Method unloadMethod = memorySegmentClass.getMethod("unload");
+
+            return Optional.of((byteBuffer) -> {
+                try {
+                    Object memorySegment = ofBufferMethod.invoke(null, byteBuffer);
+                    // only mapped memory segments can be unloaded
+                    if (Boolean.TRUE.equals(isMappedMethod.invoke(memorySegment))) {
+                        unloadMethod.invoke(memorySegment);
+                        return Boolean.TRUE;
+                    }
+
+                    return Boolean.FALSE;
+                } catch (Exception e) {
+                    if (isLoggable()) {
+                        log(e, byteBuffer);
+                    }
+                }
+                return Boolean.FALSE;
+            });
+        } catch (Exception e) {
+            // There was some problem getting the MemorySegment, most likely because the current JRE
+            // is < 22 so MemorySegment cannot be found. no need to log this is expected
+            return Optional.empty();
+        }
     }
 
     private static boolean cleanupAfterJdk8(ByteBuffer buffer) {

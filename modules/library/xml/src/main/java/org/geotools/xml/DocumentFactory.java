@@ -61,7 +61,7 @@ public class DocumentFactory {
      * When this hint is contained and set to {@code Boolean.FALSE}, element ordering will not be validated. This key
      * may also affect data validation within the parse routines.
      *
-     * <p>The inherent safety of the resulting objects is weekend by turning this param to false.
+     * <p>The inherent safety of the resulting objects is weakened by turning this param to {@code false}.
      */
     public static final String VALIDATION_HINT = "DocumentFactory_VALIDATION_HINT";
 
@@ -84,7 +84,7 @@ public class DocumentFactory {
     public static final String LOG_LEVEL = "DocumentFactory_LOG_LEVEL";
 
     /**
-     * calls getInstance(URI,Level) with Level.WARNING
+     * Calls getInstance(URI,Level) with Level.WARNING.
      *
      * @param hints May be null.
      * @return Object

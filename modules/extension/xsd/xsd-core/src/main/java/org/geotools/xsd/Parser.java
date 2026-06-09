@@ -80,7 +80,7 @@ public class Parser {
     /** sax handler which maintains the element stack */
     private ParserHandler handler;
 
-    /** Entity expansion limit configuration, set to {@code null} by default */
+    /** Entity expansion limit configuration, set to {@code null} for default {@code DEFAULT_ENTITY_EXPANSION_LIMIT}. */
     private Integer entityExpansionLimit;
     /** Allow DTD configuration, set to {@code false} by default */
     private boolean allowDTD = false;
@@ -445,20 +445,6 @@ public class Parser {
             LOGGER.fine("Force entity resolver if required:" + getEntityResolver());
             parser.getXMLReader().setEntityResolver(getEntityResolver());
         }
-
-        //        if (parser.getXMLReader().getEntityResolver() != null) {
-        //            String access = XMLUtils.getAccess(parser.getXMLReader().getEntityResolver(), "all");
-        //            try {
-        //                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, access);
-        //            } catch (IllegalArgumentException notSupported) {
-        //                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
-        //            }
-        //            try {
-        //                parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, access);
-        //            } catch (IllegalArgumentException notSupported) {
-        //                LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
-        //            }
-        //        }
 
         // set the schema sources of this configuration, and all dependent ones
         StringBuffer schemaLocation = new StringBuffer();

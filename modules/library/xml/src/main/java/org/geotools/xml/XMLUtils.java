@@ -1744,6 +1744,12 @@ public class XMLUtils {
             if (XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(type)) {
                 try {
                     InputSource source = entityResolver.resolveEntity(publicId, systemId);
+                    if (entityResolver instanceof EntityResolver2 entityResolver2) {
+                        // Note: order of arguments differs between LSResourceResolver and EntityResolver
+                        source = entityResolver2.resolveEntity(null, publicId, baseURI, systemId);
+                    } else {
+                        source = entityResolver.resolveEntity(publicId, systemId);
+                    }
                     if (source != null) {
                         return new GTLSInput(source);
                     }

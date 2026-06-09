@@ -426,9 +426,10 @@ public class SLDParser {
     }
 
     /**
-     * Use of XInclude is not recommended, and is {@code false} by default.
+     * Use of validating is not required, and is {@code false} by default. Use of validating,
      *
-     * @param validating Use {@code false} to parse document without validation.
+     * @param validating Use {@code false} to parse document without validation, or {@code true} to validate using
+     *     {@code XMLConstants.W3C_XML_SCHEMA_NS_URI}.
      */
     public void setValidating(boolean validating) {
         this.validating = validating;
@@ -437,7 +438,8 @@ public class SLDParser {
     /**
      * Use of validating is not required, and is {@code false} by default.
      *
-     * @return Use {@code false} to parse document without validation.
+     * @return Use {@code false} to parse document without validation, or {@code true} to validate using
+     *     {@code XMLConstants.W3C_XML_SCHEMA_NS_URI}.
      */
     public boolean getValidating() {
         return this.validating;

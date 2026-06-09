@@ -870,7 +870,7 @@ public class SLDParserTest {
         try {
             Logging.getLogger(XMLUtils.class).setLevel(Level.OFF);
             parser.readXML();
-            fail("parsing should thrown an error");
+            fail("parsing should have thrown an error");
         } catch (RuntimeException e) {
             assertTrue(
                     "SAXException expected, was " + e.getCause().getClass().getSimpleName(),

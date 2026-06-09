@@ -152,13 +152,6 @@ public class AppSchemaValidator {
         parserFactory.setNamespaceAware(true);
         parserFactory.setValidating(true);
         XMLUtils.supportDTD(parserFactory, this.supportDTD, hints);
-        //        try {
-        //            parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        //        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
-        //            LOGGER.fine(
-        //                    "Parser does not support feature " + XMLConstants.ACCESS_EXTERNAL_SCHEMA + ": " +
-        // e.getMessage());
-        //        }
         XMLReader xmlReader;
         try {
             SAXParser parser = parserFactory.newSAXParser();

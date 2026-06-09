@@ -210,7 +210,7 @@ public class SLDParser {
     /** provides complete control for detecting relative onlineresources */
     private ResourceLocator onlineResourceLocator;
 
-    /** Provide control of entity resolution, yse EntityResolver3 to limit protocols supported. */
+    /** Provide control of entity resolution, use EntityResolver3 to limit protocols supported. */
     private EntityResolver entityResolver;
 
     private boolean disposeInputSource;

@@ -333,10 +333,10 @@ public class GMLParserTest {
             URI u = f.toURI();
 
             XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u, null);
-            XMLSAXHandler.setLogLevel(Level.WARNING);
-            XSISAXHandler.setLogLevel(Level.WARNING);
-            XMLElementHandler.setLogLevel(Level.WARNING);
-            XSIElementHandler.setLogLevel(Level.WARNING);
+            XMLSAXHandler.setLogLevel(Level.OFF);
+            XSISAXHandler.setLogLevel(Level.OFF);
+            XMLElementHandler.setLogLevel(Level.OFF);
+            XSIElementHandler.setLogLevel(Level.OFF);
 
             parser.parse(f, xmlContentHandler);
 

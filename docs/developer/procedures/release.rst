@@ -109,7 +109,7 @@ When creating the first release candidate of a series, there are some extra step
 * Commit the changes and push to the main branch on GitHub::
 
     git commit -am "Update version to 28-SNAPSHOT"
-    git push geotools main
+    git push upstream main
       
 * Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on main; for example, if `main` branch is now ``28-SNAPSHOT``, create a Jira version ``28-RC1`` for the first release of the ``28.x`` series
 

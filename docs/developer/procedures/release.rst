@@ -117,11 +117,11 @@ When creating the first release candidate of a series, there are some extra step
 
 * Update the jobs on build.geoserver.org:
   
-  * Disable the previous maintenance jobs, and remove them from the geotools view.
+  * Disable the previous maintenance jobs, and remove them from the geotools view. `Job > Configure <https://build.geoserver.org/view/geotools/job/geotools-33.x/configure>`_ > toggle Enabled to Disabled in top right corner.
     
     Even if you wish to continue build prior branches please disable the documentation builds.
 
-  * For the new stable branch create new jobs, duplicate from the two existing ``stable`` jobs (geotools-27.x and geotools-27.x-docs), editing branch specifier to the new branch (e.g. `27.x` -> `28.x`)
+  * For the new stable branch create new jobs, duplicate from the two existing ``stable`` jobs (geotools-27.x and geotools-27.x-docs), editing branch specifier to the new branch (e.g. `27.x` -> `28.x`) and Post-build Actions (geowebcache-1.XX.x,geotools-28.x-docs). GeoTools view https://build.geoserver.org/view/geotools/ > + New Item > geotools-28.x > Copy from > geotools-27.x > Save. Replace versions. Save.
 
 * Announce on the developer mailing list that the new stable branch has been created.
 

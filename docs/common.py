@@ -31,9 +31,9 @@ extlinks = {
     'wiki': ('https://github.com/geotools/geotools/wiki/%s', None),
     'website': ('https://geotools.org/%s', None),
     'geoserver': ('https://docs.geoserver.org/latest/en/user/%s', None),
-    'developer': ('https://docs.geotools.org/latest/developer/%s', None),
-    'user': ('https://docs.geotools.org/latest/userguide/%s', None),
-    'api': ('https://docs.geotools.org/latest/javadocs/%s', None),
+    'developer': ('https://docs.geotools.org/stable/developer/%s', None),
+    'user': ('https://docs.geotools.org/stable/userguide/%s', None),
+    'api': ('https://docs.geotools.org/stable/javadocs/%s', None),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-%s')
 }
 

@@ -100,6 +100,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
         }
     }
 
+    @SuppressWarnings("EffectivelyPrivate")
     private static class LoggingHTTPResponse extends DelegateHTTPResponse {
 
         private InputStream input;

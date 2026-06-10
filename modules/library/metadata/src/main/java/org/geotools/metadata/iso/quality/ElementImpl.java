@@ -97,7 +97,8 @@ public class ElementImpl extends MetadataEntity implements Element {
     /** Returns the name of the test applied to the data. */
     @Override
     public Collection<InternationalString> getNamesOfMeasure() {
-        return namesOfMeasure = nonNullCollection(namesOfMeasure, InternationalString.class);
+        namesOfMeasure = nonNullCollection(namesOfMeasure, InternationalString.class);
+        return namesOfMeasure;
     }
 
     /** Set the name of the test applied to the data. */
@@ -211,7 +212,8 @@ public class ElementImpl extends MetadataEntity implements Element {
      */
     @Override
     public Collection<Result> getResults() {
-        return results = nonNullCollection(results, Result.class);
+        results = nonNullCollection(results, Result.class);
+        return results;
     }
 
     /**

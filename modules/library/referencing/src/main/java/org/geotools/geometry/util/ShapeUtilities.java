@@ -421,7 +421,7 @@ public final class ShapeUtilities {
         x2 -= x0;
         y2 -= y0;
         switch (orientation) {
-            case PARALLEL: {
+            case PARALLEL -> {
                 /*
                  * Applique une rotation de façon à ce que (x2,y2)
                  * tombe sur l'axe des x, c'est-à-dire que y2=0.
@@ -448,9 +448,8 @@ public final class ShapeUtilities {
                  */
                 x1 = x * rx2 - y * ry2 + x0;
                 y1 = y * rx2 + x * ry2 + y0;
-                break;
             }
-            case HORIZONTAL: {
+            case HORIZONTAL -> {
                 final double a = (y2 - y1 * x2 / x1) / (x2 - x1); // Really "a*x2"
                 final double check = abs(a);
                 if (!(check <= 1 / EPS)) return null; // Deux points ont les mêmes coordonnées.
@@ -459,10 +458,8 @@ public final class ShapeUtilities {
                 x1 = (1 + b / (2 * a)) * x2 - y2 / (2 * a);
                 y1 = y0 + b * x1;
                 x1 += x0;
-                break;
             }
-            default:
-                throw new IllegalArgumentException();
+            default -> throw new IllegalArgumentException();
         }
         if (dest != null) {
             dest.setLocation(x1, y1);
@@ -531,13 +528,16 @@ public final class ShapeUtilities {
             final int code = it.currentSegment(buffer);
             if (it.isDone()) {
                 switch (code) {
-                    case PathIterator.SEG_LINETO:
+                    case PathIterator.SEG_LINETO -> {
                         return new Line2D.Float(x1, y1, buffer[0], buffer[1]);
-                    case PathIterator.SEG_QUADTO:
+                    }
+                    case PathIterator.SEG_QUADTO -> {
                         return new QuadCurve2D.Float(x1, y1, buffer[0], buffer[1], buffer[2], buffer[3]);
-                    case PathIterator.SEG_CUBICTO:
+                    }
+                    case PathIterator.SEG_CUBICTO -> {
                         return new CubicCurve2D.Float(
                                 x1, y1, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]);
+                    }
                 }
             }
         }

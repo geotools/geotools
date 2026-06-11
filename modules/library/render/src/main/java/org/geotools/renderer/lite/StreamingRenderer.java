@@ -129,6 +129,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.OffsetCurveBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.Layer;
@@ -3367,9 +3368,12 @@ public class StreamingRenderer implements GTRenderer {
             // we need to clone if the clone flag is high or if the coordinate sequence is not the
             // one we asked for
             Geometry geom = originalGeom;
-            if (clone || !(geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)) {
-                int dim = sa.crs != null ? sa.crs.getCoordinateSystem().getDimension() : 2;
-                geom = LiteCoordinateSequence.cloneGeometry(geom, dim);
+            boolean liteSequence =
+                    geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory;
+            boolean twoDimensional = CoordinateSequences.coordinateDimension(geom) <= 2;
+            // FEATURE_2D is only a hint and not all feature sources honor it, so enforce 2D before painting.
+            if (clone || !liteSequence || !twoDimensional) {
+                geom = LiteCoordinateSequence.cloneGeometry(geom, 2);
             }
 
             LiteShape2 shape;

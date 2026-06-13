@@ -539,15 +539,17 @@ public class LabelCacheImpl implements LabelCache {
         }
     }
 
+    /** Index margin covering how far a label may be placed outside displayArea (floored to avoid a tiny tree). */
+    private static int labelIndexMargin(LabelCacheItem item) {
+        return Math.max(256, item.getMaxDisplacement() + item.getSpaceAround());
+    }
+
     void paintLabels(Graphics2D graphics, Rectangle displayArea) {
         if (!activeLayers.isEmpty()) {
             throw new IllegalStateException(activeLayers
                     + " are layers that started rendering but have not completed,"
                     + " stop() or endLayer() must be called before end() is called");
         }
-        LabelIndex glyphs = new LabelIndex();
-        glyphs.reserveArea(reserved);
-
         // Used to check the paintLineLabel function
         int paintedLineLabels = 0;
 
@@ -562,16 +564,23 @@ public class LabelCacheImpl implements LabelCache {
         displayArea.width -= 1;
         displayArea.height -= 1;
 
-        // prepare the geometry clipper
-        clipper = new GeometryClipper(new Envelope(
-                displayArea.getMinX(), displayArea.getMaxX(), displayArea.getMinY(), displayArea.getMaxY()));
-
         List<LabelCacheItem> items; // both grouped and non-grouped
         if (needsOrdering) {
             items = orderedLabels();
         } else {
             items = getActiveLabels();
         }
+
+        // size the index to cover labels placed outside displayArea by displacement + space-around;
+        // labels falling beyond the index bounds still match, but degrade to a root-level linear scan
+        int margin = 0;
+        for (LabelCacheItem item : items) margin = Math.max(margin, labelIndexMargin(item));
+        LabelIndex glyphs = new LabelIndex(displayArea, margin);
+        glyphs.reserveArea(reserved);
+
+        // prepare the geometry clipper
+        clipper = new GeometryClipper(new Envelope(
+                displayArea.getMinX(), displayArea.getMaxX(), displayArea.getMinY(), displayArea.getMaxY()));
         LabelPainter painter = constructPainter.apply(graphics, labelRenderingMode);
         for (LabelCacheItem labelItem : items) {
             if (stop) return;
@@ -739,7 +748,7 @@ public class LabelCacheImpl implements LabelCache {
             labelDistance += textBounds.getWidth();
         }
         // min distance, if any
-        LabelIndex groupLabels = new LabelIndex();
+        LabelIndex groupLabels = new LabelIndex(displayArea, labelIndexMargin(labelItem));
         // Max displacement for the current label
         double labelOffset = labelItem.getMaxDisplacement();
         boolean allowOverruns = labelItem.allowOverruns();
@@ -945,7 +954,7 @@ public class LabelCacheImpl implements LabelCache {
         int labelDistance = labelItem.getRepeat();
         // min distance, if any
         int minDistance = labelItem.getMinGroupDistance();
-        LabelIndex groupLabels = new LabelIndex();
+        LabelIndex groupLabels = new LabelIndex(displayArea, labelIndexMargin(labelItem));
         // Max displacement for the current label
         double labelOffset = labelItem.getMaxDisplacement();
         boolean allowOverruns = labelItem.allowOverruns();

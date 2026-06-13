@@ -34,6 +34,7 @@ public class LabelIndex {
 
     private final LabelQuadtree index;
     private Envelope lastHit;
+    private final Envelope queryEnv = new Envelope();
 
     /**
      * @param displayArea rendering area in screen coordinates
@@ -53,10 +54,11 @@ public class LabelIndex {
      */
     public boolean labelsWithinDistance(Rectangle2D bounds, double distance) {
         if (distance < 0) return false;
-        Envelope query = toEnvelope(bounds);
-        query.expandBy(distance);
-        if (lastHit != null && lastHit.intersects(query)) return true;
-        Envelope found = index.findFirst(query);
+        queryEnv.init(
+                bounds.getMinX() - distance, bounds.getMaxX() + distance,
+                bounds.getMinY() - distance, bounds.getMaxY() + distance);
+        if (lastHit != null && lastHit.intersects(queryEnv)) return true;
+        Envelope found = index.findFirst(queryEnv);
         if (found != null) {
             lastHit = found;
             return true;

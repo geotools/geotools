@@ -102,6 +102,9 @@ abstract class GlyphProcessor {
     public static class IndexAdder extends GlyphProcessor {
 
         LabelIndex index;
+        // per-instance buffers for transformBounds; IndexAdder is used single-threaded per label
+        private final double[] cornerBuffer = new double[8];
+        private final Rectangle2D.Double boundsBuffer = new Rectangle2D.Double();
 
         public IndexAdder(LabelPainter painter, LabelIndex index) {
             super(painter);
@@ -111,8 +114,11 @@ abstract class GlyphProcessor {
         @Override
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
             if (Character.isWhitespace(c)) return false;
-            Rectangle2D labelEnvelope =
-                    tx.createTransformedShape(glyphVector.getGlyphOutline(g)).getBounds2D();
+            // visual bounds instead of the glyph outline: avoids a per-glyph Shape allocation. For
+            // rotated glyphs this over-estimates a bit (bounding box of the rotated box), never
+            // under, so conflict detection stays safe.
+            Rectangle2D labelEnvelope = LabelCacheImpl.transformBounds(
+                    tx, glyphVector.getGlyphVisualBounds(g).getBounds2D(), cornerBuffer, boundsBuffer);
             index.addLabel(labelItem, labelEnvelope);
             return true;
         }

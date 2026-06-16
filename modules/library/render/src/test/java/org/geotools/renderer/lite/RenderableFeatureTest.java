@@ -18,6 +18,8 @@
 package org.geotools.renderer.lite;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.when;
 
 import java.awt.geom.AffineTransform;
@@ -29,10 +31,14 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.feature.NameImpl;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
+import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.mockito.Mockito;
 
@@ -69,5 +75,62 @@ public class RenderableFeatureTest {
         };
         rf.setFeature(feature);
         rf.getShape(symbolizer, null);
+    }
+
+    @Test
+    public void testLiteCoordinateSequenceIsForcedTo2D() throws FactoryException {
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {13, 10, 5, 13, 40, 7}, 3);
+        GeometryFactory liteGeometryFactory = new GeometryFactory(new LiteCoordinateSequenceFactory());
+        LineString lineString = liteGeometryFactory.createLineString(cs);
+        assertEquals(3, CoordinateSequences.coordinateDimension(lineString));
+
+        StreamingRenderer.RenderableFeature rf = new StreamingRenderer().new RenderableFeature("layerId", false);
+        LiteShape2 shape = rf.getShape(null, new AffineTransform(), lineString, false);
+
+        assertEquals(2, CoordinateSequences.coordinateDimension(shape.getGeometry()));
+        assertEquals(3, CoordinateSequences.coordinateDimension(lineString));
+    }
+
+    @Test
+    public void test2DLiteCoordinateSequenceIsReusedWhenCloneIsNotRequested() throws FactoryException {
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {13, 10, 13, 40}, 2);
+        GeometryFactory liteGeometryFactory = new GeometryFactory(new LiteCoordinateSequenceFactory());
+        LineString lineString = liteGeometryFactory.createLineString(cs);
+
+        StreamingRenderer.RenderableFeature rf = new StreamingRenderer().new RenderableFeature("layerId", false);
+        LiteShape2 shape = rf.getShape(null, new AffineTransform(), lineString, false);
+
+        assertSame(lineString, shape.getGeometry());
+        assertEquals(2, CoordinateSequences.coordinateDimension(shape.getGeometry()));
+    }
+
+    @Test
+    public void testNonLite3DCoordinateSequenceIsForcedTo2D() throws FactoryException {
+        LineString lineString = new GeometryFactory().createLineString(new org.locationtech.jts.geom.Coordinate[] {
+            new org.locationtech.jts.geom.Coordinate(13, 10, 5), new org.locationtech.jts.geom.Coordinate(13, 40, 7)
+        });
+        assertEquals(3, CoordinateSequences.coordinateDimension(lineString));
+
+        StreamingRenderer.RenderableFeature rf = new StreamingRenderer().new RenderableFeature("layerId", false);
+        LiteShape2 shape = rf.getShape(null, new AffineTransform(), lineString, false);
+
+        assertNotSame(lineString, shape.getGeometry());
+        assertEquals(2, CoordinateSequences.coordinateDimension(shape.getGeometry()));
+        assertEquals(3, CoordinateSequences.coordinateDimension(lineString));
+    }
+
+    @Test
+    public void testForced2DShapeIsCachedAgainstOriginalGeometry() throws FactoryException {
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {13, 10, 5, 13, 40, 7}, 3);
+        GeometryFactory liteGeometryFactory = new GeometryFactory(new LiteCoordinateSequenceFactory());
+        LineString lineString = liteGeometryFactory.createLineString(cs);
+
+        StreamingRenderer.RenderableFeature rf = new StreamingRenderer().new RenderableFeature("layerId", false);
+        LiteShape2 first = rf.getShape(null, new AffineTransform(), lineString, false);
+        LiteShape2 second = rf.getShape(null, new AffineTransform(), lineString, false);
+
+        assertSame(first, second);
+        assertEquals(2, CoordinateSequences.coordinateDimension(second.getGeometry()));
+        assertEquals(3, CoordinateSequences.coordinateDimension(lineString));
     }
 }

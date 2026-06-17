@@ -191,7 +191,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
         // as defined in CRS. Had to cast to DefaultMathTransformFactory because
         // createBaseToDerived is not defined in MathTransformFactory interface (GeoAPI).
         DefaultMathTransformFactory mtf = (DefaultMathTransformFactory) factories.getMathTransformFactory();
-        MathTransform mt2 =  inverse
+        MathTransform mt2 = inverse
                 ? mtf.createBaseToDerived(targetCRS, mt, sourceCRS.getCoordinateSystem())
                 : mtf.createBaseToDerived(sourceCRS, mt, targetCRS.getCoordinateSystem());
 

@@ -84,7 +84,7 @@
     <postgresql.jdbc.version>42.7.11</postgresql.jdbc.version>
     <postgis-driver.version>1.0</postgis-driver.version>
     <re2j.version>1.8</re2j.version>
-    <reload4j.version>1.2.19</reload4j.version>
+    <reload4j.version>1.2.26</reload4j.version>
     <sdoapi.version>10.2.0</sdoapi.version>
     <singlestore-jdbc-version>1.2.5</singlestore-jdbc-version>
     <slf4j.version>2.0.18</slf4j.version>

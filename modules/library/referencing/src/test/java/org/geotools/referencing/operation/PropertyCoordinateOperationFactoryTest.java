@@ -204,16 +204,10 @@ public class PropertyCoordinateOperationFactoryTest {
      * @throws NoninvertibleTransformException if the backward transform is not invertible
      */
     @Test
-    public void test_inverseOperation() throws NoninvertibleTransformException {
-        CoordinateReferenceSystem sourceCRS;
-        CoordinateReferenceSystem targetCRS;
-        try {
-            sourceCRS = DefaultGeographicCRS.WGS84;
-            targetCRS = CRS.decode("EPSG:1000001");
-        } catch (FactoryException e) {
-            // this should throw an exception
-            throw new RuntimeException(e);
-        }
+    public void testInverseOperation() throws NoninvertibleTransformException, FactoryException {
+        // decode some CRSs for testing
+        CoordinateReferenceSystem sourceCRS = DefaultGeographicCRS.WGS84;
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:1000001");
 
         // core tests
         ///////////////

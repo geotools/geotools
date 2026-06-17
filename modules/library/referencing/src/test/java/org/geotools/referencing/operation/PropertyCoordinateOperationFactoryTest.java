@@ -24,21 +24,33 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.Position2D;
+import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.util.factory.AbstractFactory;
-import org.jspecify.annotations.NonNull;
+import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
+import org.geotools.util.URLs;
+import org.geotools.util.factory.FactoryIteratorProvider;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -49,15 +61,38 @@ import org.junit.Test;
  */
 public class PropertyCoordinateOperationFactoryTest {
 
-    private static final String RESOURCE = "epsg_operations.properties";
+    private static FactoryIteratorProvider FACTORIES_PROVIDER;
     private PropertyCoordinateOperationFactory factory;
 
     Position2D expectedPoint_EPSG4326 = new Position2D(2.0, 47.0);
     Position2D expectedPoint_EPSG1000001 = new Position2D(-651.6472, -4636.7108);
 
+    /** Programmatically register a factory provider for the test cases. */
+    @BeforeClass
+    @SuppressWarnings("unchecked")
+    public static void setUpClass() {
+        FACTORIES_PROVIDER = new FactoryIteratorProvider() {
+            @Override
+            public <T> Iterator<T> iterator(Class<T> category) {
+                if (CRSAuthorityFactory.class == category) {
+                    return List.of((T) new TestPropertyAuthorityFactory()).iterator();
+                }
+                return null;
+            }
+        };
+        GeoTools.addFactoryIteratorProvider(FACTORIES_PROVIDER);
+        CRS.reset("all");
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
+        GeoTools.removeFactoryIteratorProvider(FACTORIES_PROVIDER);
+        CRS.reset("all");
+    }
+
     @Before
     public void setUp() {
-        factory = new TestPropertyCoordinateOperationFactory(RESOURCE);
+        factory = new TestPropertyCoordinateOperationFactory();
     }
 
     /**
@@ -224,12 +259,12 @@ public class PropertyCoordinateOperationFactoryTest {
      */
     public static class TestPropertyCoordinateOperationFactory extends PropertyCoordinateOperationFactory {
 
-        private final String resource;
+        private static final String RESOURCE =
+                "./src/test/resources/org/geotools/referencing/operation/epsg_operations.properties";
         private Properties processedDefinitions;
 
-        public TestPropertyCoordinateOperationFactory(String resource) {
-            super(null, AbstractFactory.MAXIMUM_PRIORITY);
-            this.resource = resource;
+        public TestPropertyCoordinateOperationFactory() {
+            super(null, MAXIMUM_PRIORITY);
         }
 
         /**
@@ -265,7 +300,7 @@ public class PropertyCoordinateOperationFactoryTest {
             return processedDefinitions;
         }
 
-        private static @NonNull String qualifyCode(String code) {
+        private static String qualifyCode(String code) {
             if (!code.contains(":")) {
                 code = "EPSG:" + code;
             }
@@ -274,7 +309,37 @@ public class PropertyCoordinateOperationFactoryTest {
 
         @Override
         protected URL getDefinitionsURL() {
-            return getClass().getResource(resource);
+            return URLs.fileToUrl(new File(RESOURCE));
+        }
+    }
+
+    /** An authority factory that reads from the 'epsg.properties' defined in the test directory. */
+    public static class TestPropertyAuthorityFactory extends FactoryUsingWKT {
+
+        private static final String RESOURCE =
+                "./src/test/resources/org/geotools/referencing/operation/epsg.properties";
+        public static final CitationImpl TEST_AUTHORITY;
+
+        static {
+            CitationImpl citation = new CitationImpl("EPSG");
+            citation.getIdentifiers().add(new NamedIdentifier(null, "EPSG"));
+            citation.freeze();
+            TEST_AUTHORITY = citation;
+        }
+
+        public TestPropertyAuthorityFactory() {
+            super(null, MAXIMUM_PRIORITY);
+            this.hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, false);
+        }
+
+        @Override
+        protected Citation[] getAuthorities() {
+            return new Citation[] {TEST_AUTHORITY};
+        }
+
+        @Override
+        protected URL getDefinitionsURL() {
+            return URLs.fileToUrl(new File(RESOURCE));
         }
     }
 }

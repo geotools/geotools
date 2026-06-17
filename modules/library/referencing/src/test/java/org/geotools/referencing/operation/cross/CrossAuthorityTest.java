@@ -95,7 +95,7 @@ public class CrossAuthorityTest {
     /**
      * Tests that the given code can be decoded and that the identifier can be looked up again.
      *
-     * @param code teh EPSG code
+     * @param code the EPSG code
      * @throws FactoryException should the decoding fail
      */
     private static void testTestIdentifier(String code) throws FactoryException {

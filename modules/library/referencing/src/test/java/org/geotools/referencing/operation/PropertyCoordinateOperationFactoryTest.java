@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2026, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -100,17 +100,11 @@ public class PropertyCoordinateOperationFactoryTest {
      * epsg_operations.
      */
     @Test
-    public void testForwardLookup() {
+    public void testForwardLookup() throws FactoryException {
+        // decode some CRSs for testing
+        CoordinateReferenceSystem sourceCRS = DefaultGeographicCRS.WGS84;
+        CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:1000001");
 
-        CoordinateReferenceSystem sourceCRS;
-        CoordinateReferenceSystem targetCRS;
-        try {
-            sourceCRS = DefaultGeographicCRS.WGS84;
-            targetCRS = CRS.decode("EPSG:1000001");
-        } catch (FactoryException e) {
-            // this should throw an exception
-            throw new RuntimeException(e);
-        }
         // core tests
         ///////////////
         Set<CoordinateOperation> coordinateOperations = factory.findFromDatabase(sourceCRS, targetCRS, 1);
@@ -157,16 +151,10 @@ public class PropertyCoordinateOperationFactoryTest {
      * but its inverse is defined.
      */
     @Test
-    public void testBackwardLookup() {
-        CoordinateReferenceSystem sourceCRS;
-        CoordinateReferenceSystem targetCRS;
-        try {
-            sourceCRS = CRS.decode("EPSG:1000001");
-            targetCRS = DefaultGeographicCRS.WGS84;
-        } catch (FactoryException e) {
-            // this should throw an exception
-            throw new RuntimeException(e);
-        }
+    public void testBackwardLookup() throws FactoryException {
+        // decode some CRSs for testing
+        CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:1000001");
+        CoordinateReferenceSystem targetCRS = DefaultGeographicCRS.WGS84;
 
         // core tests
         ///////////////

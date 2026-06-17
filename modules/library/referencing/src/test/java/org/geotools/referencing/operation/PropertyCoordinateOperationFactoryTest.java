@@ -234,7 +234,7 @@ public class PropertyCoordinateOperationFactoryTest {
      * assert two positions by a delta of '1e-03'.
      *
      * @param position1 position one
-     * @param position2 position one
+     * @param position2 position two
      */
     private void assertPositions(Position2D position1, Position2D position2) {
         assertEquals(position1.x, position2.x, 1e-3);

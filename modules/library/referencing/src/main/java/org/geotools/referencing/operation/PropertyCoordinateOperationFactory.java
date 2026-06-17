@@ -89,9 +89,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
 
     ReferencingFactoryContainer factories;
 
-    /**
-     * Creates a factory for the specified authority from the specified file.
-     */
+    /** Creates a factory for the specified authority from the specified file. */
     public PropertyCoordinateOperationFactory(Hints userHints, int priority) {
         super(userHints, priority);
         /*
@@ -111,9 +109,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
         this.factories = ReferencingFactoryContainer.instance(userHints);
     }
 
-    /**
-     * Loads definitions from the specified input stream. The stream is closed by this method.
-     */
+    /** Loads definitions from the specified input stream. The stream is closed by this method. */
     protected Properties getDefinitions() {
         if (definitions == null) {
             Properties props = new Properties();
@@ -242,8 +238,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
 
     /**
      * Gets an identifier for the given CRS. First uses the internal identifier, if there is a single one and it's
-     * suitable. Otherwise, falls back on {@link CRS#lookupIdentifier(IdentifiedObject, boolean)}, for a fast
-     * lookup.
+     * suitable. Otherwise, falls back on {@link CRS#lookupIdentifier(IdentifiedObject, boolean)}, for a fast lookup.
      *
      * @param crs the CRS to get the identifier for
      * @return the identifier, or {@code null} if none found

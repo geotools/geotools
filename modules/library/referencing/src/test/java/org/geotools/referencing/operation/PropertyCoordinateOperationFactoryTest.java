@@ -1,14 +1,30 @@
-package org.geotools.referencing.factory.epsg;
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.referencing.operation;
 
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.Position2D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.operation.PropertyCoordinateOperationFactory;
 import org.geotools.util.factory.AbstractFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +42,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * This class defines a basic test suite for
+ * {@link PropertyCoordinateOperationFactory}.
+ *
+ * @author skalesse
+ * @since 2026-06-17
+ */
 public class PropertyCoordinateOperationFactoryTest {
 
     private static final String RESOURCE = "epsg_operations.properties";
@@ -39,6 +62,10 @@ public class PropertyCoordinateOperationFactoryTest {
         factory = new TestPropertyCoordinateOperationFactory(RESOURCE);
     }
 
+    /**
+     * A basic test for forward lookup, i.e. the mapping for the
+     * requested operation is directly defined in epsg_operations.
+     */
     @Test
     public void testForwardLookup()  {
 
@@ -94,6 +121,11 @@ public class PropertyCoordinateOperationFactoryTest {
         }
     }
 
+    /**
+     * A basic test for backward lookup, i.e. the mapping for the
+     * requested operation is not defined in epsg_operations, but
+     * its inverse is defined.
+     */
     @Test
     public void testBackwardLookup()  {
         CoordinateReferenceSystem sourceCRS;
@@ -148,14 +180,53 @@ public class PropertyCoordinateOperationFactoryTest {
         }
     }
 
-    private void assertPositions(Position2D expectedPointEpsg1000001, Position2D dstPointEpsg1000001) {
-        assertEquals(expectedPointEpsg1000001.x, dstPointEpsg1000001.x, 1e-3);
-        assertEquals(expectedPointEpsg1000001.y, dstPointEpsg1000001.y, 1e-3);
+    /**
+     * The ultimate test that creating the inverse operation from an
+     * indirect mapping is really returning the inverse transform.
+     * This test verifies the fix for
+     * <a href="https://osgeo-org.atlassian.net/browse/GEOT-7917">GEOT-7917</a>
+     *
+     * @throws NoninvertibleTransformException if the backward transform is not invertible
+     */
+    @Test
+    public void test_inverseOperation() throws NoninvertibleTransformException {
+        CoordinateReferenceSystem sourceCRS;
+        CoordinateReferenceSystem targetCRS;
+        try {
+            sourceCRS = DefaultGeographicCRS.WGS84;
+            targetCRS = CRS.decode("EPSG:1000001");
+        } catch (FactoryException e) {
+            // this should throw an exception
+            throw new RuntimeException(e);
+        }
+
+        // core tests
+        ///////////////
+        CoordinateOperation forwardOperation  = factory.findFromDatabase(sourceCRS, targetCRS, 1).iterator().next();
+        MathTransform forwardTransform = forwardOperation.getMathTransform();
+        CoordinateOperation backwardOperation = factory.findFromDatabase(targetCRS, sourceCRS, 1).iterator().next();
+        MathTransform backwardTransform = backwardOperation.getMathTransform();
+
+        assertThat(
+                "Forward transform should be inverse of backward transform",
+                forwardTransform.equals(backwardTransform.inverse()),
+                is (true)
+        );
+    }
+
+    /**
+     * assert two positions by a delta of '1e-03'.
+     * @param position1 position one
+     * @param position2 position one
+     */
+    private void assertPositions(Position2D position1, Position2D position2) {
+        assertEquals(position1.x, position2.x, 1e-3);
+        assertEquals(position1.y, position2.y, 1e-3);
     }
 
     /**
      * An implementation of the {@link PropertyCoordinateOperationFactory} that
-     * implements {@link #getDefinitionsURL()} by loading the 'epsg_operations.properties'
+     * implements {@link #getDefinitionsURL()} for loading the 'epsg_operations.properties'
      * from the system resources passed into the constructor.
      */
     public static class TestPropertyCoordinateOperationFactory extends PropertyCoordinateOperationFactory {

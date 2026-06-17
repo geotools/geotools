@@ -16,6 +16,17 @@
  */
 package org.geotools.referencing.operation;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.emptyCollectionOf;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+
+import java.net.URL;
+import java.util.Properties;
+import java.util.Set;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
@@ -26,25 +37,12 @@ import org.geotools.geometry.Position2D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.AbstractFactory;
+import org.jspecify.annotations.NonNull;
 import org.junit.Before;
 import org.junit.Test;
-import wiremock.org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.net.URL;
-import java.util.Properties;
-import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.emptyCollectionOf;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
 
 /**
- * This class defines a basic test suite for
- * {@link PropertyCoordinateOperationFactory}.
+ * This class defines a basic test suite for {@link PropertyCoordinateOperationFactory}.
  *
  * @author skalesse
  * @since 2026-06-17
@@ -54,7 +52,7 @@ public class PropertyCoordinateOperationFactoryTest {
     private static final String RESOURCE = "epsg_operations.properties";
     private PropertyCoordinateOperationFactory factory;
 
-    Position2D expectedPoint_EPSG4326    = new Position2D(2.0, 47.0);
+    Position2D expectedPoint_EPSG4326 = new Position2D(2.0, 47.0);
     Position2D expectedPoint_EPSG1000001 = new Position2D(-651.6472, -4636.7108);
 
     @Before
@@ -63,11 +61,11 @@ public class PropertyCoordinateOperationFactoryTest {
     }
 
     /**
-     * A basic test for forward lookup, i.e. the mapping for the
-     * requested operation is directly defined in epsg_operations.
+     * A basic test for forward lookup, i.e. the mapping for the requested operation is directly defined in
+     * epsg_operations.
      */
     @Test
-    public void testForwardLookup()  {
+    public void testForwardLookup() {
 
         CoordinateReferenceSystem sourceCRS;
         CoordinateReferenceSystem targetCRS;
@@ -83,32 +81,30 @@ public class PropertyCoordinateOperationFactoryTest {
         Set<CoordinateOperation> coordinateOperations = factory.findFromDatabase(sourceCRS, targetCRS, 1);
         assertThat(
                 "Set of coordinate operations should not be empty",
-                coordinateOperations, not(emptyCollectionOf(CoordinateOperation.class))
-        );
-        assertThat(
-                "Exactly one operation should be found",
-                coordinateOperations, hasSize(1)
-        );
+                coordinateOperations,
+                not(emptyCollectionOf(CoordinateOperation.class)));
+        assertThat("Exactly one operation should be found", coordinateOperations, hasSize(1));
 
         // CRS tests
         ////////////////
-        CoordinateOperation coordinateOperation = coordinateOperations.iterator().next();
+        CoordinateOperation coordinateOperation =
+                coordinateOperations.iterator().next();
         assertThat(
                 "The operation should have the correct source CRS set",
-                coordinateOperation.getSourceCRS(), is(sourceCRS)
-        );
+                coordinateOperation.getSourceCRS(),
+                is(sourceCRS));
         assertThat(
                 "The operation should have the correct target CRS set",
-                coordinateOperation.getTargetCRS(), is(targetCRS)
-        );
+                coordinateOperation.getTargetCRS(),
+                is(targetCRS));
 
         // math transform tests
         ///////////////////////
         MathTransform mathTransform = coordinateOperation.getMathTransform();
         assertThat(
                 "The transformation should not be an inverse transformation",
-                mathTransform.toWKT(), not(containsString("INVERSE_MT"))
-        );
+                mathTransform.toWKT(),
+                not(containsString("INVERSE_MT")));
 
         // transformation tests
         ///////////////////////
@@ -122,12 +118,11 @@ public class PropertyCoordinateOperationFactoryTest {
     }
 
     /**
-     * A basic test for backward lookup, i.e. the mapping for the
-     * requested operation is not defined in epsg_operations, but
-     * its inverse is defined.
+     * A basic test for backward lookup, i.e. the mapping for the requested operation is not defined in epsg_operations,
+     * but its inverse is defined.
      */
     @Test
-    public void testBackwardLookup()  {
+    public void testBackwardLookup() {
         CoordinateReferenceSystem sourceCRS;
         CoordinateReferenceSystem targetCRS;
         try {
@@ -143,24 +138,22 @@ public class PropertyCoordinateOperationFactoryTest {
         Set<CoordinateOperation> coordinateOperations = factory.findFromDatabase(sourceCRS, targetCRS, 1);
         assertThat(
                 "Set of coordinate operations should not be empty",
-                coordinateOperations, not(emptyCollectionOf(CoordinateOperation.class))
-        );
-        assertThat(
-                "Exactly one operation should be found",
-                coordinateOperations, hasSize(1)
-        );
+                coordinateOperations,
+                not(emptyCollectionOf(CoordinateOperation.class)));
+        assertThat("Exactly one operation should be found", coordinateOperations, hasSize(1));
 
         // CRS tests
         ////////////////
-        CoordinateOperation coordinateOperation = coordinateOperations.iterator().next();
+        CoordinateOperation coordinateOperation =
+                coordinateOperations.iterator().next();
         assertThat(
                 "The operation should have the correct source CRS set",
-                coordinateOperation.getSourceCRS(), is(sourceCRS)
-        );
+                coordinateOperation.getSourceCRS(),
+                is(sourceCRS));
         assertThat(
                 "The operation should have the correct target CRS set",
-                coordinateOperation.getTargetCRS(), is(targetCRS)
-        );
+                coordinateOperation.getTargetCRS(),
+                is(targetCRS));
 
         // math transform tests
         ////////////////
@@ -168,8 +161,8 @@ public class PropertyCoordinateOperationFactoryTest {
         String mathTransformWKT = mathTransform.toWKT();
         assertThat(
                 "The transformation should not be an inverse transformation",
-                mathTransformWKT, containsString("INVERSE_MT")
-        );
+                mathTransformWKT,
+                containsString("INVERSE_MT"));
 
         Position2D dstPoint_EPSG_4326 = new Position2D();
         try {
@@ -181,10 +174,9 @@ public class PropertyCoordinateOperationFactoryTest {
     }
 
     /**
-     * The ultimate test that creating the inverse operation from an
-     * indirect mapping is really returning the inverse transform.
-     * This test verifies the fix for
-     * <a href="https://osgeo-org.atlassian.net/browse/GEOT-7917">GEOT-7917</a>
+     * The ultimate test that creating the inverse operation from an indirect mapping is really returning the inverse
+     * transform. This test verifies the fix for <a
+     * href="https://osgeo-org.atlassian.net/browse/GEOT-7917">GEOT-7917</a>
      *
      * @throws NoninvertibleTransformException if the backward transform is not invertible
      */
@@ -202,20 +194,22 @@ public class PropertyCoordinateOperationFactoryTest {
 
         // core tests
         ///////////////
-        CoordinateOperation forwardOperation  = factory.findFromDatabase(sourceCRS, targetCRS, 1).iterator().next();
+        CoordinateOperation forwardOperation =
+                factory.findFromDatabase(sourceCRS, targetCRS, 1).iterator().next();
         MathTransform forwardTransform = forwardOperation.getMathTransform();
-        CoordinateOperation backwardOperation = factory.findFromDatabase(targetCRS, sourceCRS, 1).iterator().next();
+        CoordinateOperation backwardOperation =
+                factory.findFromDatabase(targetCRS, sourceCRS, 1).iterator().next();
         MathTransform backwardTransform = backwardOperation.getMathTransform();
 
         assertThat(
                 "Forward transform should be inverse of backward transform",
                 forwardTransform.equals(backwardTransform.inverse()),
-                is (true)
-        );
+                is(true));
     }
 
     /**
      * assert two positions by a delta of '1e-03'.
+     *
      * @param position1 position one
      * @param position2 position one
      */
@@ -225,9 +219,8 @@ public class PropertyCoordinateOperationFactoryTest {
     }
 
     /**
-     * An implementation of the {@link PropertyCoordinateOperationFactory} that
-     * implements {@link #getDefinitionsURL()} for loading the 'epsg_operations.properties'
-     * from the system resources passed into the constructor.
+     * An implementation of the {@link PropertyCoordinateOperationFactory} that implements {@link #getDefinitionsURL()}
+     * for loading the 'epsg_operations.properties' from the system resources passed into the constructor.
      */
     public static class TestPropertyCoordinateOperationFactory extends PropertyCoordinateOperationFactory {
 
@@ -240,10 +233,8 @@ public class PropertyCoordinateOperationFactoryTest {
         }
 
         /**
-         * This method overrides the super() method, so to imitate
-         * org.vfny.geoserver.crs.GeoserverWKTOperationFactory's behavior of
-         * qualifying the operations with an 'EPSG:' entry if not already
-         * present.
+         * This method overrides the super() method, so to imitate org.vfny.geoserver.crs.GeoserverWKTOperationFactory's
+         * behavior of qualifying the operations with an 'EPSG:' entry if not already present.
          *
          * @return a 'qualified' version of the definitions.
          */

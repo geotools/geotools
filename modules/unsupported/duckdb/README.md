@@ -10,7 +10,7 @@ The DuckDB DataStore provides read-focused access to DuckDB databases within the
 - **Native Geometry Support**: Works with DuckDB native `GEOMETRY` columns
 - **Spatial Queries**: Supports spatial filters through the GeoTools JDBC stack
 - **Guarded Public API**: Public access is restricted to the wrapped GeoTools datastore API
-- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, and geometry simplification settings
+- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, geometry simplification, and DuckDB resource limit settings
 
 ## Security Model
 
@@ -22,6 +22,7 @@ The public DuckDB store is exposed through a restricted GeoTools-side wrapper.
 - Native filters are disabled (`DuckDBFilterToSQL` rejects `NativeFilter`)
 - Initialization SQL is managed internally by GeoTools
 - `read_only=true` is enforced both at the GeoTools API layer and at the DuckDB engine level, so file-backed databases are opened with DuckDB's read-only connection property
+- `memory_limit` and `threads` are applied per datastore instance and translated to DuckDB `SET` statements during connection initialization
 
 This module is intended to reduce the exposed SQL surface while still allowing DuckDB-backed access through standard GeoTools APIs.
 
@@ -78,6 +79,8 @@ SimpleFeatureCollection features = source.getFeatures(filter);
 | **memory** | Boolean | No | Use an in-memory DuckDB database (default: `false`) |
 | **database** | String | No | Path to a DuckDB database file; required unless `memory=true` |
 | **read_only** | Boolean | No | Open the DuckDB database in read-only mode at both the GeoTools API layer and the engine level (default: `true`) |
+| **memory_limit** | String | No | DuckDB memory limit for the datastore, for example `1GB` |
+| **threads** | Integer | No | DuckDB maximum number of execution threads for the datastore |
 | **namespace** | String | No | Namespace URI to use for features |
 | **fetch size** | Integer | No | JDBC fetch size used for result streaming |
 | **screenmap** | Boolean | No | Enable screenmap support for rendering optimization (default: `true`) |
@@ -91,3 +94,4 @@ SimpleFeatureCollection features = source.getFeatures(filter);
 
 - The public store focuses on native DuckDB datasets and guarded API access
 - `read_only` is enabled by default and can be disabled per-store instance
+- `memory_limit` and `threads` are store-scoped DuckDB settings; they do not affect unrelated DuckDB stores in the same JVM

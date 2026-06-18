@@ -23,8 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A factory for loggers that redirect all Java logging events to <A HREF="">logback framework</A> (using the
- * <AHREF="https://www.slf4j.org/">sl4j</A> API).
+ * A factory for loggers that redirect all Java logging events to <a href="https://logback.qos.ch/">logback
+ * framework</a> (using the <a href="https://www.slf4j.org/">SLF4J</a> API).
  *
  * <p>The sl4j api is used to all interactions excepting {@link LogbackLogger#setLevel(Level)} (which is primarily used
  * during test cases).
@@ -91,7 +91,7 @@ public class LogbackLoggerFactory extends LoggerFactory<org.slf4j.Logger> {
             LoggerContext context = (LoggerContext) org.slf4j.LoggerFactory.getILoggerFactory();
             ConfigurationWatchList configurationWatchList =
                     ConfigurationWatchListUtil.getConfigurationWatchList(context);
-            return configurationWatchList.getMainURL().toString();
+            return configurationWatchList.getTopURL().toString();
         } catch (Exception unknown) {
             return "unknown";
         }

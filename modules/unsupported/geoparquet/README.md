@@ -158,10 +158,19 @@ SimpleFeatureCollection centralBuildings = buildings.getFeatures(filter);
 | **max_hive_depth** | Integer | No | Maximum depth of Hive partition hierarchy to use (null = all levels, 0 = none, 1+ = specific level) |
 | **simplify** | Boolean | No | Enable geometry simplification for rendering optimization (default: `true`) |
 | **namespace** | String | No | Namespace URI to use for features |
+| **use_aws_credential_chain** | Boolean | No | Use AWS SDK credential chain for S3 authentication (default: `false`) |
+| **aws_region** | String | No | AWS region for S3 access. Overrides the region from the credential chain. |
+| **aws_profile** | String | No | AWS profile name to load credentials from `~/.aws/credentials` |
+| **endpoint** | String | No | DuckDB S3 endpoint for S3-compatible services such as MinIO |
+| **url_style** | String | No | DuckDB S3 URL style; use `path` for path-style access |
 
-For S3 URIs, you can include authentication parameters:
-```
-s3://bucket/path/to/file.parquet?region=us-west-2&access_key=ACCESS_KEY&secret_key=SECRET_KEY&endpoint=ENDPOINT
+For S3-compatible services, add the endpoint and URL style as datastore parameters:
+
+```java
+params.put("use_aws_credential_chain", true);
+params.put("aws_region", "us-west-2");
+params.put("endpoint", "http://minio.local:9000");
+params.put("url_style", "path");
 ```
 
 ## GeoParquet Metadata Support

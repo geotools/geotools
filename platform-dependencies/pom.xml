@@ -47,7 +47,7 @@
     <imageio.ext.version>2.1.0</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <!-- jackson2 BOM imported for dependency convergence. It must match the version used for jackson-annotations in the jackson3 BOM -->
-    <jackson2.version>2.21.0</jackson2.version>
+    <jackson2.version>2.22.0</jackson2.version>
     <jackson.version>3.2.0</jackson.version>
     <jai-imageio.version>1.1</jai-imageio.version>
     <imagen.version>0.9.2</imagen.version>

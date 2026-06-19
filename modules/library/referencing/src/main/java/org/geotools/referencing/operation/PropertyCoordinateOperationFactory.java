@@ -95,7 +95,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
         /*
          * Removes the hint processed by the super-class. This includes hints like
          * LENIENT_DATUM_SHIFT, which usually don't apply to authority factories.
-         * Another way to see this is to said that this class "consumed" the hints.
+         * Another way to see this is to say that this class "consumed" the hints.
          * By removing them, we increase the chances to get an empty map of remaining hints,
          * which in turn help to get the default CoordinateOperationAuthorityFactory
          * (instead of forcing a new instance).

@@ -1400,7 +1400,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         List<Expression> groupByExpressions = extractGroupByExpressions(visitor);
         // result of the function
         try {
-            Object result = null;
             List<Object> results = new ArrayList<>();
             Statement st = null;
             ResultSet rs = null;
@@ -1437,17 +1436,21 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 } else {
                     results = getListValues(cx, featureType, rs, groupByExpressions, converter, query.getHints());
                 }
-                if (results.size() == 1 && !(results.get(0) instanceof List)) result = results.get(0);
             } finally {
                 closeSafe(rs);
                 closeSafe(st);
             }
 
+            // a grouped query returns one value per group, always handed over as a list
             if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
-                setResult(visitor, results);
-                return results;
-            } else if (setResult(visitor, result == null ? results : result)) {
-                return result == null ? results : result;
+                return setResult(visitor, results) ? results : null;
+            }
+            // a non grouped aggregate (max, min, sum, ...) is a single scalar: the one returned row
+            // is the value itself, even when it is null (an empty domain, e.g. max over no rows).
+            // Anything else (no row, or many) is passed along as the list it is.
+            Object aggregate = results.size() == 1 && !(results.get(0) instanceof List) ? results.get(0) : results;
+            if (setResult(visitor, aggregate)) {
+                return aggregate;
             }
             return null;
         } catch (SQLException e) {
@@ -1713,11 +1716,15 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             if (AGGREGATE_SETVALUE_CACHE.containsKey(visitor.getClass())) {
                 s = AGGREGATE_SETVALUE_CACHE.get(visitor.getClass());
             } else {
-                try {
-                    s = visitor.getClass().getMethod("setValue", result.getClass());
-                } catch (Exception e) {
+                if (result != null) {
+                    try {
+                        s = visitor.getClass().getMethod("setValue", result.getClass());
+                    } catch (Exception e) {
+                    }
                 }
 
+                // null result (e.g. MAX over an empty domain): no exact-type match possible,
+                // fall back to the by-name scan below, which finds setValue regardless of result
                 if (s == null) {
                     for (Method m : visitor.getClass().getMethods()) {
                         if ("setValue".equals(m.getName()) && m.getParameterCount() == 1) {
@@ -1730,8 +1737,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
             if (s != null) {
                 Class<?> type = s.getParameterTypes()[0];
-                if (!type.isInstance(result)) {
-                    // convert
+                // null is a legitimate aggregate result (e.g. MAX over an empty domain),
+                // pass it through as-is to non primitive setters, skip conversion
+                if (result != null && !type.isInstance(result)) {
                     Object converted = Converters.convert(result, type);
                     if (converted != null) {
                         result = converted;
@@ -1739,6 +1747,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         // could not set value
                         return false;
                     }
+                } else if (result == null && type.isPrimitive()) {
+                    return false;
                 }
 
                 s.invoke(visitor, result);

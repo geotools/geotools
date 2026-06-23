@@ -1400,7 +1400,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         List<Expression> groupByExpressions = extractGroupByExpressions(visitor);
         // result of the function
         try {
-            Object result = null;
             List<Object> results = new ArrayList<>();
             Statement st = null;
             ResultSet rs = null;
@@ -1437,17 +1436,22 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 } else {
                     results = getListValues(cx, featureType, rs, groupByExpressions, converter, query.getHints());
                 }
-                if (results.size() == 1 && !(results.get(0) instanceof List)) result = results.get(0);
             } finally {
                 closeSafe(rs);
                 closeSafe(st);
             }
 
+            // a grouped query returns one value per group, always handed over as a list
             if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
                 setResult(visitor, results);
                 return results;
-            } else if (setResult(visitor, result == null ? results : result)) {
-                return result == null ? results : result;
+            }
+            // a non grouped aggregate (max, min, sum, ...) is a single scalar: the one returned row
+            // is the value itself, even when it is null (an empty domain, e.g. max over no rows).
+            // Anything else (no row, or many) is passed along as the list it is.
+            Object aggregate = results.size() == 1 && !(results.get(0) instanceof List) ? results.get(0) : results;
+            if (setResult(visitor, aggregate)) {
+                return aggregate;
             }
             return null;
         } catch (SQLException e) {

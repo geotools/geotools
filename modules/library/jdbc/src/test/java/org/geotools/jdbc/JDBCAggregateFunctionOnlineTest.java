@@ -30,6 +30,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.Feature;
@@ -239,6 +244,51 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         assertEquals(1.1, v.getResult().toDouble(), 0.01);
+    }
+
+    @Test
+    public void testMaxWithEmptyResult() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+
+        MaxVisitor v = new MyMaxVisitor(p);
+
+        // a filter matching no feature: the aggregate is computed and empty (SQL max returns null).
+        // the optimization must set the empty result on the visitor without choking on it, rather
+        // than failing internally and silently falling back on a full collection visit
+        Filter f = ff.greater(ff.property(aname("doubleProperty")), ff.literal(1000));
+        Query q = new Query(tname("ft1"), f);
+
+        // pre-fix the empty result was wrapped in a list and choked MaxVisitor.setValue, the failure
+        // was caught and logged while the visit silently fell back on a full scan: watch that log
+        AtomicBoolean optimizationAbandoned = new AtomicBoolean(false);
+        Handler handler = new Handler() {
+            @Override
+            public void publish(LogRecord record) {
+                if (String.valueOf(record.getMessage()).contains("Failed to set optimized result")) {
+                    optimizationAbandoned.set(true);
+                }
+            }
+
+            @Override
+            public void flush() {}
+
+            @Override
+            public void close() {}
+        };
+        Logger logger = dataStore.getLogger();
+        Level oldLevel = logger.getLevel();
+        logger.addHandler(handler);
+        logger.setLevel(Level.ALL);
+        try {
+            dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        } finally {
+            logger.removeHandler(handler);
+            logger.setLevel(oldLevel);
+        }
+
+        assertNull(v.getResult().getValue());
+        assertFalse("optimized aggregate must not fail on an empty result", optimizationAbandoned.get());
     }
 
     @Test

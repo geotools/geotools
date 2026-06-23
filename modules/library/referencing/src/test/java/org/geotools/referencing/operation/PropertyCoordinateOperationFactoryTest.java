@@ -104,7 +104,6 @@ public class PropertyCoordinateOperationFactoryTest {
         CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:1000001");
 
         // core tests
-        ///////////////
         Set<CoordinateOperation> coordinateOperations = factory.findFromDatabase(sourceCRS, targetCRS, 1);
         assertThat(
                 "Set of coordinate operations should not be empty",

@@ -1337,40 +1337,41 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected int getCount(SimpleFeatureType featureType, Query query, Connection cx) throws IOException {
 
         CountVisitor v = new CountVisitor();
-        getAggregateValue(v, featureType, query, cx);
+        visitAggregateValue(v, featureType, query, cx);
         return v.getCount();
     }
 
     /**
-     * Results the value of an aggregate function over a query.
+     * Computes an aggregate function over a query, and sets its value on the visitor. The value itself is not returned,
+     * as it can legitimately be null (e.g. a max over a filter matching no record).
      *
-     * @return generated result, or null if unsupported
+     * @return true if the aggregate has been computed and set on the visitor, false if unsupported
      */
-    protected Object getAggregateValue(
+    protected boolean visitAggregateValue(
             FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx) throws IOException {
         // check if group by is supported by the underlying store
         if (isGroupByVisitor(visitor)
                 && (!dialect.isGroupBySupported() || !isSupportedGroupBy(featureType, (GroupByVisitor) visitor))) {
-            return null;
+            return false;
         }
         // try to match the visitor with an aggregate function
         String function = matchAggregateFunction(visitor);
         if (function == null) {
             // this visitor is not supported
-            return null;
+            return false;
         }
 
         Filter[] preAndPost = dialect.splitFilter(query.getFilter(), featureType);
         if (!preAndPost[1].equals(Filter.INCLUDE)) {
             // we can't process all of the filter
-            return null;
+            return false;
         }
         // try to extract an aggregate attribute from the visitor
         List<Expression> aggregateExpressions = null;
         if (!isCountVisitor(visitor)) {
             aggregateExpressions = getAggregateExpression(visitor);
             if (aggregateExpressions != null && !fullySupports(aggregateExpressions)) {
-                return null;
+                return false;
             }
         }
 
@@ -1385,7 +1386,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 if (!isSortAttributesPartOfUnique(unique, query)) {
                     // cannot execute this one on a database, but the visitor requires order
                     // preservation, so, fall back on in-memory execution.
-                    return null;
+                    return false;
                 }
             }
         }
@@ -1400,7 +1401,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         List<Expression> groupByExpressions = extractGroupByExpressions(visitor);
         // result of the function
         try {
-            Object result = null;
             List<Object> results = new ArrayList<>();
             Statement st = null;
             ResultSet rs = null;
@@ -1437,19 +1437,23 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 } else {
                     results = getListValues(cx, featureType, rs, groupByExpressions, converter, query.getHints());
                 }
-                if (results.size() == 1 && !(results.get(0) instanceof List)) result = results.get(0);
             } finally {
                 closeSafe(rs);
                 closeSafe(st);
             }
 
+            // a grouped query returns one value per group, always handed over as a list
             if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
-                setResult(visitor, results);
-                return results;
-            } else if (setResult(visitor, result == null ? results : result)) {
-                return result == null ? results : result;
+                return setResult(visitor, results);
             }
-            return null;
+            // a non grouped aggregate (max, min, sum, ...) is a single scalar: the one returned row
+            // is the value itself. Anything else (no row, or many) is passed along as the list it is.
+            Object aggregate = results.size() == 1 && !(results.get(0) instanceof List) ? results.get(0) : results;
+            // an empty domain (e.g. max over a filter matching no record) comes back as a null value.
+            // The visitors already report it as CalcResult.NULL_RESULT when they are handed nothing,
+            // and some of them reject a null value, so leave the visitor alone in that case
+            if (aggregate == null) return true;
+            return setResult(visitor, aggregate);
         } catch (SQLException e) {
             throw (IOException) new IOException().initCause(e);
         }

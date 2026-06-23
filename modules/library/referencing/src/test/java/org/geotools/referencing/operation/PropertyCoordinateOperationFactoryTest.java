@@ -55,17 +55,15 @@ import org.junit.Test;
 
 /**
  * This class defines a basic test suite for {@link PropertyCoordinateOperationFactory}.
- *
- * @author skalesse
- * @since 2026-06-17
+ * Especially shall it verify that inverse mapping is functioning properly.
  */
 public class PropertyCoordinateOperationFactoryTest {
 
     private static FactoryIteratorProvider FACTORIES_PROVIDER;
     private PropertyCoordinateOperationFactory factory;
 
-    Position2D expectedPoint_EPSG4326 = new Position2D(2.0, 47.0);
-    Position2D expectedPoint_EPSG1000001 = new Position2D(-651.6472, -4636.7108);
+    Position2D expectedPointEPSG4326 = new Position2D(2.0, 47.0);
+    Position2D expectedPointEPSG1000001 = new Position2D(-651.6472, -4636.7108);
 
     /** Programmatically register a factory provider for the test cases. */
     @BeforeClass
@@ -115,7 +113,6 @@ public class PropertyCoordinateOperationFactoryTest {
         assertThat("Exactly one operation should be found", coordinateOperations, hasSize(1));
 
         // CRS tests
-        ////////////////
         CoordinateOperation coordinateOperation =
                 coordinateOperations.iterator().next();
         assertThat(
@@ -128,7 +125,6 @@ public class PropertyCoordinateOperationFactoryTest {
                 is(targetCRS));
 
         // math transform tests
-        ///////////////////////
         MathTransform mathTransform = coordinateOperation.getMathTransform();
         assertThat(
                 "The transformation should not be an inverse transformation",
@@ -136,11 +132,10 @@ public class PropertyCoordinateOperationFactoryTest {
                 not(containsString("INVERSE_MT")));
 
         // transformation tests
-        ///////////////////////
         try {
-            Position2D dstPoint_EPSG1000001 = new Position2D();
-            mathTransform.transform(expectedPoint_EPSG4326, dstPoint_EPSG1000001);
-            assertPositions(expectedPoint_EPSG1000001, dstPoint_EPSG1000001);
+            Position2D dstPointEPSG1000001 = new Position2D();
+            mathTransform.transform(expectedPointEPSG4326, dstPointEPSG1000001);
+            assertPositions(expectedPointEPSG1000001, dstPointEPSG1000001);
         } catch (TransformException e) {
             throw new RuntimeException(e);
         }
@@ -157,7 +152,6 @@ public class PropertyCoordinateOperationFactoryTest {
         CoordinateReferenceSystem targetCRS = DefaultGeographicCRS.WGS84;
 
         // core tests
-        ///////////////
         Set<CoordinateOperation> coordinateOperations = factory.findFromDatabase(sourceCRS, targetCRS, 1);
         assertThat(
                 "Set of coordinate operations should not be empty",
@@ -166,7 +160,6 @@ public class PropertyCoordinateOperationFactoryTest {
         assertThat("Exactly one operation should be found", coordinateOperations, hasSize(1));
 
         // CRS tests
-        ////////////////
         CoordinateOperation coordinateOperation =
                 coordinateOperations.iterator().next();
         assertThat(
@@ -179,7 +172,6 @@ public class PropertyCoordinateOperationFactoryTest {
                 is(targetCRS));
 
         // math transform tests
-        ////////////////
         MathTransform mathTransform = coordinateOperation.getMathTransform();
         String mathTransformWKT = mathTransform.toWKT();
         assertThat(
@@ -187,19 +179,18 @@ public class PropertyCoordinateOperationFactoryTest {
                 mathTransformWKT,
                 containsString("INVERSE_MT"));
 
-        Position2D dstPoint_EPSG_4326 = new Position2D();
+        Position2D dstPointEPSG4326 = new Position2D();
         try {
-            mathTransform.transform(expectedPoint_EPSG1000001, dstPoint_EPSG_4326);
-            assertPositions(expectedPoint_EPSG4326, dstPoint_EPSG_4326);
+            mathTransform.transform(expectedPointEPSG1000001, dstPointEPSG4326);
+            assertPositions(expectedPointEPSG4326, dstPointEPSG4326);
         } catch (TransformException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * The ultimate test that creating the inverse operation from an indirect mapping is really returning the inverse
-     * transform. This test verifies the fix for <a
-     * href="https://osgeo-org.atlassian.net/browse/GEOT-7917">GEOT-7917</a>
+     * The ultimate test that creating the inverse operation from an
+     * indirect mapping is actually returning the inverse transform.
      *
      * @throws NoninvertibleTransformException if the backward transform is not invertible
      */
@@ -210,7 +201,6 @@ public class PropertyCoordinateOperationFactoryTest {
         CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:1000001");
 
         // core tests
-        ///////////////
         CoordinateOperation forwardOperation =
                 factory.findFromDatabase(sourceCRS, targetCRS, 1).iterator().next();
         MathTransform forwardTransform = forwardOperation.getMathTransform();

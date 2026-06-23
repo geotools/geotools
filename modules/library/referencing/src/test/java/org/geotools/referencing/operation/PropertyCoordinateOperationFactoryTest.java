@@ -54,8 +54,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * This class defines a basic test suite for {@link PropertyCoordinateOperationFactory}.
- * Especially shall it verify that inverse mapping is functioning properly.
+ * This class defines a basic test suite for {@link PropertyCoordinateOperationFactory}. Especially shall it verify that
+ * inverse mapping is functioning properly.
  */
 public class PropertyCoordinateOperationFactoryTest {
 
@@ -189,8 +189,8 @@ public class PropertyCoordinateOperationFactoryTest {
     }
 
     /**
-     * The ultimate test that creating the inverse operation from an
-     * indirect mapping is actually returning the inverse transform.
+     * The ultimate test that creating the inverse operation from an indirect mapping is actually returning the inverse
+     * transform.
      *
      * @throws NoninvertibleTransformException if the backward transform is not invertible
      */

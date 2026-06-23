@@ -24,14 +24,21 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
@@ -40,6 +47,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor;
+import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.GroupByVisitorBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
@@ -239,6 +247,56 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         assertEquals(1.1, v.getResult().toDouble(), 0.01);
+    }
+
+    @Test
+    public void testAggregatesWithEmptyResult() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("doubleProperty"));
+        // a filter matching no feature, the aggregates are computed over an empty domain
+        Filter f = ff.greater(ff.property(aname("doubleProperty")), ff.literal(1000));
+        Query q = new Query(tname("ft1"), f);
+
+        for (FeatureCalc visitor :
+                Arrays.asList(new MaxVisitor(p), new MinVisitor(p), new SumVisitor(p), new AverageVisitor(p))) {
+            assertEmptyAggregate(q, visitor);
+        }
+    }
+
+    /** Checks the aggregate is computed in SQL, and reported as an empty result, without a fallback visit */
+    private void assertEmptyAggregate(Query q, FeatureCalc visitor) throws Exception {
+        // a visitor unable to take the value makes the optimization log the failure and give up
+        AtomicBoolean optimizationAbandoned = new AtomicBoolean(false);
+        Handler handler = new Handler() {
+            @Override
+            public void publish(LogRecord record) {
+                if (String.valueOf(record.getMessage()).contains("Failed to set optimized result")) {
+                    optimizationAbandoned.set(true);
+                }
+            }
+
+            @Override
+            public void flush() {}
+
+            @Override
+            public void close() {}
+        };
+        Logger logger = dataStore.getLogger();
+        Level oldLevel = logger.getLevel();
+        logger.addHandler(handler);
+        logger.setLevel(Level.ALL);
+        String name = visitor.getClass().getSimpleName();
+        try (Connection cx = dataStore.getConnection(Transaction.AUTO_COMMIT)) {
+            assertTrue(
+                    name + " must be computed in SQL, not by visiting features",
+                    dataStore.visitAggregateValue(visitor, dataStore.getSchema(tname("ft1")), q, cx));
+        } finally {
+            logger.removeHandler(handler);
+            logger.setLevel(oldLevel);
+        }
+
+        assertFalse(name + " must not fail on an empty result", optimizationAbandoned.get());
+        assertNull(name + " must report an empty result", visitor.getResult().getValue());
     }
 
     @Test

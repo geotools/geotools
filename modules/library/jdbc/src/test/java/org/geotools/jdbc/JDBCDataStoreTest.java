@@ -251,7 +251,7 @@ public class JDBCDataStoreTest {
     }
 
     @Test
-    public void testSplitFilterByGetAggregateValue() throws Exception {
+    public void testSplitFilterByVisitAggregateValue() throws Exception {
         JDBCDataStore store = new JDBCDataStore();
         store.aggregateFunctions = new HashMap<>();
         store.aggregateFunctions.put(CountVisitor.class, "COUNT");
@@ -271,7 +271,7 @@ public class JDBCDataStoreTest {
         when(query.getFilter()).thenReturn(Filter.INCLUDE);
         SimpleFeatureType featureType = mock(SimpleFeatureType.class);
         when(query.getTypeName()).thenReturn("test");
-        store.getAggregateValue(groupVisitor, featureType, query, null);
+        store.visitAggregateValue(groupVisitor, featureType, query, null);
         verify(sqlDialect, times(1)).splitFilter(any(), any());
     }
 }

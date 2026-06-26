@@ -144,7 +144,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
     public synchronized boolean isAvailable() {
         if (isAvailable == null) {
             try {
-                Class.forName("tools.jackson.databind.json.JSONMapper");
+                Class.forName("tools.jackson.databind.json.JsonMapper");
                 JsonMapper.builder().addModule(new JtsModule()).build();
                 isAvailable = true;
             } catch (ClassNotFoundException e) {

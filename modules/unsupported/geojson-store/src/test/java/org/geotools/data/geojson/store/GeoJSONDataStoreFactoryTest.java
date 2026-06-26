@@ -19,6 +19,7 @@ package org.geotools.data.geojson.store;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -138,5 +139,10 @@ public class GeoJSONDataStoreFactoryTest {
             fail("Failed to get feature source with exception: " + e.getClass().getName() + " message: "
                     + e.getMessage());
         }
+    }
+
+    @Test
+    public void testIsAvailable() throws IOException, SchemaException {
+        assertTrue(fac.isAvailable());
     }
 }

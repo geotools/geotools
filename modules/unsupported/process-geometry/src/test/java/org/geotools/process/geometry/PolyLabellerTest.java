@@ -18,6 +18,13 @@
 
 package org.geotools.process.geometry;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
@@ -94,6 +101,29 @@ public class PolyLabellerTest {
         // delta < 0.5 is good enough for precision 1 above
         double delta = point.distance(expected);
         Assert.assertTrue("close enough: " + delta, delta < 0.5);
+    }
+
+    @Test
+    public void testPointType() throws ParseException {
+        SimpleFeatureTypeBuilder type = new SimpleFeatureTypeBuilder();
+        type.setName("type");
+        type.add("geometry", Polygon.class);
+        type.setDefaultGeometry("geometry");
+        SimpleFeatureType typeSchema = type.buildFeatureType();
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(typeSchema);
+        WKTReader reader = new WKTReader();
+
+        MultiPolygon p = (MultiPolygon)
+                reader.read(
+                        "MultiPolygon (((0 5, 5 10, 10 5, 5 0, 0 5)),((11.74609375 1.6357421875, 11.7255859375 3.24609375, 13.9306640625 3.3076171875, 13.951171875 1.73828125, 11.74609375 1.6357421875)))");
+
+        featureBuilder.set("geometry", p);
+        SimpleFeature feature = featureBuilder.buildFeature(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Function labelPos = ff.function("labelPoint", ff.property("geometry"), ff.literal(1.0));
+        Object pos = labelPos.evaluate(feature);
+        Assert.assertNotNull(pos);
+        Assert.assertTrue("Wrong type returned: " + pos.getClass().getName(), pos instanceof Point);
     }
 
     @Test

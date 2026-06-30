@@ -26,13 +26,15 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
-import org.locationtech.jts.awt.PointShapeFactory.Point;
+
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 public class PolygonLabelFunction implements Function {
     static FunctionName NAME = new FunctionNameImpl(
             "labelPoint",
-            Point.class,
+
+        Point.class,
             FunctionNameImpl.parameter("polygon", Geometry.class),
             FunctionNameImpl.parameter("tolerance", Double.class));
 

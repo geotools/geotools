@@ -144,7 +144,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         } else {
             headers = new HashMap<>(headers); // avoid parameter modification
         }
-        HttpPost postMethod = new HttpPost(url.toExternalForm());
+        HttpPost postMethod = new HttpPost(encodeURL(url).toExternalForm());
         postMethod.setConfig(requestConfig);
         HttpEntity requestEntity;
         if (credsProvider != null) {
@@ -225,7 +225,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
             url = appendURL(url, extraParams);
         }
 
-        HttpGet getMethod = new HttpGet(url.toExternalForm());
+        HttpGet getMethod = new HttpGet(encodeURL(url).toExternalForm());
         getMethod.setConfig(requestConfig);
 
         if (tryGzip) {

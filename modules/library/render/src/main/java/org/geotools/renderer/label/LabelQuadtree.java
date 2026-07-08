@@ -23,9 +23,9 @@ import org.locationtech.jts.geom.Envelope;
 /**
  * Minimal quadtree for screen-space envelope collision detection with true early-exit support.
  *
- * <p>Unlike JTS {@code Quadtree}, {@link #anyIntersects} stops traversal immediately on the first matching item rather
- * than visiting all intersecting branches. Items that span quadrant boundaries are stored at the node where insertion
- * is attempted; items outside the tree bounds accumulate at the root.
+ * <p>Unlike JTS {@code Quadtree}, {@link #findFirst(Envelope)} stops traversal immediately on the first matching item
+ * rather than visiting all intersecting branches. Items that span quadrant boundaries are stored at the node where
+ * insertion is attempted; items outside the tree bounds accumulate at the root.
  */
 class LabelQuadtree {
 

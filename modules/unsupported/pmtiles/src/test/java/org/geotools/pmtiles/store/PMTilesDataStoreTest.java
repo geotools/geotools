@@ -46,6 +46,8 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -204,5 +206,26 @@ public class PMTilesDataStoreTest {
                 assertThat(defaultGeometry, instanceOf(Geometry.class));
             }
         }
+    }
+
+    /**
+     * A filter using a function that casts to Feature (here dimension(geometry())) must be evaluated against a
+     * SimpleFeature view of each vector tile feature, not the raw MvtFeature, which would return null and drop
+     * everything. The buildings layer is all polygons, so the polygon predicate keeps them all and the line predicate
+     * keeps none.
+     */
+    @Test
+    public void getFeaturesWithGeometryFunctionFilter() throws IOException {
+        FilterFactory ff = store.getFilterFactory();
+        SimpleFeatureSource buildings = store.getFeatureSource("buildings");
+        int total = buildings.getFeatures().size();
+        assertThat(total, greaterThan(0));
+
+        Function dimension = ff.function("dimension", ff.function("geometry"));
+        assertEquals(
+                total,
+                buildings.getFeatures(ff.equals(dimension, ff.literal(2))).size());
+        assertEquals(
+                0, buildings.getFeatures(ff.equals(dimension, ff.literal(1))).size());
     }
 }

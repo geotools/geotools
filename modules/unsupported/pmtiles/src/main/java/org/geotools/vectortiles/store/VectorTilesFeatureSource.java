@@ -54,6 +54,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -64,6 +65,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
 import org.geotools.filter.spatial.ReprojectingFilterVisitor;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.filter.visitor.SpatialFilterVisitor;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -124,6 +126,22 @@ import org.locationtech.jts.geom.util.AffineTransformation;
 public class VectorTilesFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(VectorTilesFeatureSource.class);
+
+    /** Detects presence of a function call in a filter */
+    private static class FunctionDetector extends DefaultFilterVisitor {
+
+        boolean foundFunction = false;
+
+        @Override
+        public Object visit(Function expression, Object data) {
+            foundFunction = true;
+            return data;
+        }
+
+        public boolean foundFunction() {
+            return foundFunction;
+        }
+    }
 
     /** TileJSON layer metadata */
     protected final VectorLayer layerMetadata;
@@ -480,7 +498,23 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
      */
     private Predicate<Feature> preFilter(Query query) {
         Filter filter = query.getFilter();
+        if (Filter.INCLUDE.equals(filter)) {
+            return f -> true;
+        }
+        // Functions like geometry() instanceof/cast to Feature/SimpleFeature and return null against a plain
+        // MvtFeature, silently dropping every feature. When the filter uses a function, evaluate it against a
+        // temporary SimpleFeature view; otherwise the property accessor handles PropertyName access directly.
+        if (containsFunction(filter)) {
+            SimpleFeatureType schema = getSchema();
+            return mvtFeature -> filter.evaluate(new VectorTilesSimpleFeature(schema, mvtFeature));
+        }
         return filter::evaluate;
+    }
+
+    private static boolean containsFunction(Filter filter) {
+        FunctionDetector detector = new FunctionDetector();
+        filter.accept(detector, null);
+        return detector.foundFunction();
     }
 
     private Filter postFilter(Query query) {

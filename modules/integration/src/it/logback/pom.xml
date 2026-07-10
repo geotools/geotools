@@ -12,7 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.deploy.skip>true</maven.deploy.skip>
     <geotools.version>36-SNAPSHOT</geotools.version>
-    <logback.version>1.5.34</logback.version>
+    <logback.version>1.5.35</logback.version>
   </properties>
   <dependencies>
     <dependency>

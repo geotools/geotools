@@ -36,7 +36,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public class VectorTilesZoomSelectionTest {
+public class VectorTilesFeatureSourceTest {
 
     @Rule
     public TemporaryFolder tmpFolder = new TemporaryFolder();
@@ -60,8 +60,9 @@ public class VectorTilesZoomSelectionTest {
     }
 
     /**
-     * The 256px WebMercatorQuad pyramid must be read as 512px display tiles (Mapbox/MapLibre/protomaps convention), so
-     * a screen resolution that matches matrix level z resolves to z-1, not z.
+     * The 256px WebMercatorQuad pyramid must be read as {@link VectorTilesDataStore#DEFAULT_DISPLAY_TILE_SIZE 512px}
+     * display tiles, matching the MapLibre/Mapbox GL vector source convention, so a screen resolution that matches
+     * matrix level z resolves to z-1, not z.
      */
     @Test
     public void testDisplaySizeShiftsZoomOneLevelShallower() throws IOException {
@@ -78,9 +79,25 @@ public class VectorTilesZoomSelectionTest {
         assertEquals(rawZoom, rawMatch);
 
         // reading tiles as 512px display shifts the pick one level shallower; the generalization-distance path
-        // takes the screen resolution directly, so the test pins only the 512/tileWidth shift under test
+        // takes the screen resolution directly, so the test pins only the displayTileSize/tileWidth shift under test
         Query query = new Query("boundaries");
         query.setHints(new Hints(Hints.GEOMETRY_GENERALIZATION, resolution));
         assertEquals(OptionalInt.of(rawZoom - 1), fs.determineZoomLevel(query));
+    }
+
+    @Test
+    public void testDisplayTileSizeIsConfigurablePerStore() throws IOException {
+        store.setDisplayTileSize(256);
+
+        VectorTilesFeatureSource fs = (VectorTilesFeatureSource) store.getFeatureSource("boundaries");
+        TileMatrixSet ms = fs.getMatrixSet();
+
+        int rawZoom = 13;
+        double resolution = ms.resolution(rawZoom);
+
+        // displayTileSize == tileWidth (256 == 256), no shift
+        Query query = new Query("boundaries");
+        query.setHints(new Hints(Hints.GEOMETRY_GENERALIZATION, resolution));
+        assertEquals(OptionalInt.of(rawZoom), fs.determineZoomLevel(query));
     }
 }

@@ -125,14 +125,6 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(VectorTilesFeatureSource.class);
 
-    /**
-     * Display tile size vector tiles are authored against (Mapbox/MapLibre/protomaps use 512px, which is universal for
-     * vector tiles); overridable via the {@code org.geotools.vectortiles.displayTileSize} system property for the rare
-     * data authored for a different target.
-     */
-    private static final int VECTOR_TILE_DISPLAY_SIZE =
-            Integer.getInteger("org.geotools.vectortiles.displayTileSize", 512);
-
     /** TileJSON layer metadata */
     protected final VectorLayer layerMetadata;
 
@@ -625,10 +617,12 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
         final int matrixsetMinZoom = matrixSet.minZoomLevel();
         final int matrixsetMaxZoom = matrixSet.maxZoomLevel();
 
-        // Vector tiles are authored for 512px display (Mapbox/MapLibre/protomaps convention), but the pyramid
-        // resolutions are for 256px tiles; scale by 512/tileWidth so the picked zoom matches the resolution the
-        // tiles were authored for, instead of one level too deep (finer detail than the screen resolution warrants).
-        final double displayResolution = simplificationDistance * VECTOR_TILE_DISPLAY_SIZE / matrixSet.tileWidth();
+        // Protomaps and the MapLibre/Mapbox GL family target a 512px display size, regardless of the matrix's own
+        // pixel width (256, per the WebMercatorQuad definition), so for a given screen resolution they request one
+        // zoom level shallower than a 256px-based reader would. Scale by displayTileSize/tileWidth to match that
+        // convention, instead of reading one level too deep.
+        final int displayTileSize = getDataStore().getDisplayTileSize();
+        final double displayResolution = simplificationDistance * displayTileSize / matrixSet.tileWidth();
 
         final int bestZoom =
                 tileStore.findBestZoomLevel(displayResolution, strategy, matrixsetMinZoom, matrixsetMaxZoom);

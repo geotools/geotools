@@ -46,6 +46,7 @@ import org.geotools.tileverse.rangereader.ParamBuilder;
 import org.geotools.tileverse.rangereader.RangeReaderParams;
 import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
+import org.geotools.vectortiles.store.VectorTilesDataStore;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 
@@ -72,6 +73,8 @@ import org.jspecify.annotations.NullMarked;
  * <ul>
  *   <li>{@linkplain #URIP pmtiles} - PMTiles archive URI (required)
  *   <li>{@linkplain #NAMESPACEP namespace} - Feature type namespace (optional)
+ *   <li>{@linkplain #DISPLAY_TILE_SIZE displayTileSize} - Display tile size in pixels rendering clients use, defaults
+ *       to {@value VectorTilesDataStore#DEFAULT_DISPLAY_TILE_SIZE}
  *   <li>{@linkplain #RANGEREADER_PROVIDER_ID io.tileverse.rangereader.provider} - Optionally force a specific
  *       {@code RangeReaderProvider} by its {@link RangeReaderProvider#getId() id}, defaults to automatic detection by
  *       {@link RangeReaderFactory#findBestProvider(io.tileverse.rangereader.spi.RangeReaderConfig)}
@@ -156,6 +159,22 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
             .title("Namespace prefix")
             .type(String.class)
             .optional()
+            .advancedLevel()
+            .build();
+
+    /**
+     * Display tile size (in pixels) the archive's rendering clients are assumed to use, overriding
+     * {@link VectorTilesDataStore#DEFAULT_DISPLAY_TILE_SIZE}.
+     */
+    public static final Param DISPLAY_TILE_SIZE = ParamBuilder.builder()
+            .key("displayTileSize")
+            .title("Display tile size")
+            .description("Tile size in pixels rendering clients of this archive are assumed to use when picking a "
+                    + "zoom level. Protomaps and the MapLibre/Mapbox GL family target 512px; override only if the "
+                    + "archive's clients use a different convention.")
+            .type(Integer.class)
+            .optional()
+            .defaultValue(VectorTilesDataStore.DEFAULT_DISPLAY_TILE_SIZE)
             .advancedLevel()
             .build();
 
@@ -309,7 +328,7 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
                 .toList();
 
         Predicate<Param> filter = p -> !ignore.contains(p.key);
-        return RangeReaderParams.appendAfter(filter, NAMESPACEP, URIP);
+        return RangeReaderParams.appendAfter(filter, NAMESPACEP, URIP, DISPLAY_TILE_SIZE);
     }
 
     @Override
@@ -347,6 +366,9 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
 
         String namespaceURI = lookup(NAMESPACEP, params, String.class);
         store.setNamespaceURI(namespaceURI);
+
+        Integer displayTileSize = lookup(DISPLAY_TILE_SIZE, params, Integer.class);
+        store.setDisplayTileSize(displayTileSize);
 
         return store;
     }

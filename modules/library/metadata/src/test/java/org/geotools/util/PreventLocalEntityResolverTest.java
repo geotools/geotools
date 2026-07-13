@@ -76,6 +76,17 @@ public class PreventLocalEntityResolverTest {
         assertNull(INSTANCE.resolveEntity(null, null, "jar:file:/xyz/foo.jar!/bar/a.xsd", "b.xsd"));
     }
 
+    @Test
+    public void testAllowsHttpDescribeFeatureTypeSchemaUrl() throws Exception {
+        String url =
+                "https://service.example.org/wfs?SERVICE=WFS&VERSION=2.0.0&REQUEST=DescribeFeatureType&TYPENAME=ns:Type";
+        assertNull(
+                "DescribeFeatureType HTTP requests should be allowed",
+                INSTANCE.resolveEntity("name", "publicId", "https://service.example.org/wfs", url));
+
+        assertNull("DescribeFeatureType HTTP requests should be allowed", INSTANCE.resolveEntity(null, url));
+    }
+
     // Relative VFS URL is not unit tested because it requires a
     // custom URL stream handler that is a part of JBoss/WildFly.
 

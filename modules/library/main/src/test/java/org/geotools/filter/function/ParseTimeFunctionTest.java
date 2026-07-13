@@ -73,17 +73,16 @@ public class ParseTimeFunctionTest {
     private static void assertionForParsedInstance(String expression, TemporalAmount timeInThePast) {
         Function parseTime = FF.function("parseTime", FF.literal(expression));
 
-        Instant generatedDate = Instant.now().minus(timeInThePast);
+        Instant generatedDate = Instant.now().minus(timeInThePast).truncatedTo(ChronoUnit.SECONDS);
         Date date = (Date) parseTime.evaluate(null);
         Instant evaluatedTime = date.toInstant().truncatedTo(ChronoUnit.SECONDS);
 
-        // round to nearest second (add 0.5 second and truncate)
-        Instant generatedDateRounded =
-                generatedDate.plus(500, ChronoUnit.MICROS).truncatedTo(ChronoUnit.SECONDS);
-        Instant evaluatedTimeRounded =
-                evaluatedTime.plus(500, ChronoUnit.MICROS).truncatedTo(ChronoUnit.SECONDS);
-
-        assertEquals(timeInThePast.toString(), generatedDateRounded, evaluatedTimeRounded);
+        // two separate clock reads (here and inside the function) can land on either side
+        // of a second boundary, so allow up to 1 second of drift instead of requiring exact equality
+        long diffSeconds =
+                Math.abs(Duration.between(generatedDate, evaluatedTime).getSeconds());
+        assertTrue(
+                timeInThePast + " expected close to " + generatedDate + " but was " + evaluatedTime, diffSeconds <= 1);
     }
 
     private static void assertionForParseLocalDateTIme(

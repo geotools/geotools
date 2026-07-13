@@ -62,6 +62,10 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
      */
     private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|jar:nested|http|vfs)[^?#;]*\\.xsd");
 
+    /** Allow uri references for WFS DescribeFeatureType requests. */
+    private static final java.util.regex.Pattern DESCRIBE_FEATURE_TYPE_URL = Pattern.compile(
+            "^https?://[^?#;]*\\?(?:[^#;]*[&;])?request=DescribeFeatureType(?:[&;]|$).*", Pattern.CASE_INSENSITIVE);
+
     /** Singleton instance of PreventLocalEntityResolver */
     public static final PreventLocalEntityResolver INSTANCE = new PreventLocalEntityResolver();
 
@@ -102,6 +106,10 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s"
                     .formatted(name, publicId, baseURI, systemId));
+        }
+
+        if (systemId != null && DESCRIBE_FEATURE_TYPE_URL.matcher(systemId).matches()) {
+            return null;
         }
 
         try {

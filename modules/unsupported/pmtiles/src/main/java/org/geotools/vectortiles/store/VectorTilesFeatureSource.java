@@ -617,8 +617,15 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
         final int matrixsetMinZoom = matrixSet.minZoomLevel();
         final int matrixsetMaxZoom = matrixSet.maxZoomLevel();
 
+        // Protomaps and the MapLibre/Mapbox GL family target a 512px display size, regardless of the matrix's own
+        // pixel width (256, per the WebMercatorQuad definition), so for a given screen resolution they request one
+        // zoom level shallower than a 256px-based reader would. Scale by displayTileSize/tileWidth to match that
+        // convention, instead of reading one level too deep.
+        final int displayTileSize = getDataStore().getDisplayTileSize();
+        final double displayResolution = simplificationDistance * displayTileSize / matrixSet.tileWidth();
+
         final int bestZoom =
-                tileStore.findBestZoomLevel(simplificationDistance, strategy, matrixsetMinZoom, matrixsetMaxZoom);
+                tileStore.findBestZoomLevel(displayResolution, strategy, matrixsetMinZoom, matrixsetMaxZoom);
 
         final boolean layerIsVisible = layerIsVisibleAtZoomLevel(bestZoom);
 

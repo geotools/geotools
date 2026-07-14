@@ -111,6 +111,31 @@ An example data set looks something like::
     
   * ``NumFiles``: should be the same as the number of features in your shapefile
 
+Granule image cache
+^^^^^^^^^^^^^^^^^^^
+
+Mosaics made of many small granules (small tiles, or zoomed-out views that compose thousands of tiny
+overviews when no pyramid was built) re-read and re-decode the same granules from disk on every
+request. An optional cache can keep the decoded granule images in memory and serve later reads of the
+same granule from there, skipping the disk I/O and decode. All later processing (band select, rescale,
+affine, ROI) still runs after the cache, so the output is identical to an uncached read.
+
+The cache is a shared pool that is created and owned outside the reader and injected through the
+``Hints.GRANULE_IMAGE_CACHE`` hint (an ``org.geotools.gce.imagemosaic.GranuleImageCache`` instance),
+much like the multithreaded-read ``ExecutorService`` is injected through ``Hints.EXECUTOR_SERVICE``.
+The pool is bounded by total decoded bytes and evicts least-recently-used entries; a single pool can be
+shared by many readers. Entries are keyed by owning mosaic plus granule URL, image index and bands, so
+disposing a reader drops all of that mosaic's entries at once (via ``invalidateMosaic``).
+A single stale granule (an in-place overwrite, a re-harvest, a delete) is dropped with
+``GranuleImageCache.invalidateGranule``, while ``invalidateAll`` clears the whole pool.
+
+Caching is off unless enabled per read, through two read parameters:
+
+* ``CacheGranules`` (Boolean, default ``false``): enables reuse and population of the injected cache.
+* ``CacheGranulesThresholdKB`` (Integer, default ``-1``): overrides the pool's default per-granule
+  eligibility threshold for this read; a granule whose full decoded raster is larger than the threshold
+  is read normally and not cached. ``-1`` keeps the pool default.
+
 **Reference**
 
 * `ImageMosaicFormat <https://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/ImageMosaicFormat.html>`_ (javadoc)

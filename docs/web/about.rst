@@ -12,9 +12,9 @@ For an overview of the capabilities of GeoTools please check the User Guide :use
 
 Current :developer:`version <conventions/version.html>` information:
 
-* `27.x <http://sourceforge.net/projects/geotools/files/GeoTools%2027%20Releases/>`__: Development
-* `26.x <http://sourceforge.net/projects/geotools/files/GeoTools%2026%20Releases/>`__: Stable
-* `25.x <http://sourceforge.net/projects/geotools/files/GeoTools%2025%20Releases/>`__: Maintenance
+* `36.x <http://sourceforge.net/projects/geotools/files/GeoTools%2036%20Releases/>`__: Development
+* `35.x <http://sourceforge.net/projects/geotools/files/GeoTools%2035%20Releases/>`__: Stable
+* `34.x <http://sourceforge.net/projects/geotools/files/GeoTools%2034%20Releases/>`__: Maintenance
 
 GeoTools is used by a :wiki:`number of projects <screenshots>`
 including Web Feature Servers, Web Map Servers, and desktop applications.

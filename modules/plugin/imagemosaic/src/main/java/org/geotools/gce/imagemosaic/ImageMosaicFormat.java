@@ -147,6 +147,14 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     public static final ParameterDescriptor<Boolean> ALLOW_MULTITHREADING = new DefaultParameterDescriptor<>(
             "AllowMultithreading", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
 
+    /** Enables reuse of decoded granules through the shared cache injected via {@link Hints#GRANULE_IMAGE_CACHE}. */
+    public static final ParameterDescriptor<Boolean> CACHE_GRANULES = new DefaultParameterDescriptor<>(
+            "CacheGranules", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
+
+    /** Overrides the cache pool's default per-granule eligibility threshold, in KB; -1 keeps the pool default. */
+    public static final ParameterDescriptor<Integer> GRANULE_CACHE_THRESHOLD_KB =
+            new DefaultParameterDescriptor<>("CacheGranulesThresholdKB", Integer.class, null, Integer.valueOf(-1));
+
     /** Control the background values for the output coverage */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES =
             new DefaultParameterDescriptor<>("BackgroundValues", double[].class, null, null);
@@ -260,6 +268,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     BACKGROUND_VALUES,
                     SUGGESTED_TILE_SIZE,
                     ALLOW_MULTITHREADING,
+                    CACHE_GRANULES,
+                    GRANULE_CACHE_THRESHOLD_KB,
                     MAX_ALLOWED_TILES,
                     TIME,
                     ELEVATION,

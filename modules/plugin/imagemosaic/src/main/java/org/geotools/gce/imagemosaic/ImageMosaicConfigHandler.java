@@ -632,6 +632,28 @@ public class ImageMosaicConfigHandler {
 
         // Add the granules collection to the store
         store.addGranules(collection);
+
+        // a (re)harvest of this location means the file may have changed: drop any stale cached image for it
+        invalidateCachedGranule(mosaicReader, mosaicConfiguration, fileLocation);
+    }
+
+    /**
+     * Drops the shared-cache entry for a granule location, resolving its URL the same way the read path does (the
+     * mosaic parent directory as the RELATIVE base). No-op when no cache is injected, or when the granule file no
+     * longer exists (URL resolution checks readability), so call this before deleting the file.
+     */
+    static void invalidateCachedGranule(
+            ImageMosaicReader mosaicReader, MosaicConfigurationBean mosaicConfiguration, String fileLocation) {
+        GranuleImageCache imageCache = mosaicReader.getGranuleImageCache();
+        File parentDirectory = mosaicReader.parentDirectory;
+        if (imageCache == null || mosaicConfiguration == null || parentDirectory == null || fileLocation == null) {
+            return;
+        }
+        PathType pathType = mosaicConfiguration.getCatalogConfigurationBean().getPathType();
+        URL granuleUrl = pathType.resolvePath(URLs.fileToUrl(parentDirectory).toString(), fileLocation);
+        if (granuleUrl != null) {
+            imageCache.invalidateGranule(granuleUrl);
+        }
     }
 
     private void handleStructuredGridCoverage(

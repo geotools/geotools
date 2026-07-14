@@ -30,6 +30,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
@@ -42,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -1049,87 +1051,43 @@ public class GranuleDescriptor {
                 imageIndex = index;
                 readParameters = imageReadParameters;
             }
-            // Defining an Overview Index value
-            int ovrIndex = imageIndex;
+            // Overview index and (for external overviews) URL, resolved from metadata so a cache hit needs no open
             boolean isExternal = ovrProvider.isExternalOverview(imageIndex);
-            // Define a new URL to use (it may change if using external overviews)
-            URL granuleURLUpdated = granuleUrl;
-            // If the file is external we must update the Granule elements
-            if (isExternal) {
-                granuleURLUpdated = ovrProvider.getOvrURL();
-                assert ovrProvider.getExternalOverviewInputStreamSpi() != null
-                        : "no cachedStreamSPI available for external overview!";
-                SourceSPIProvider sourceSpiProvider =
-                        ovrProvider.getSourceSpiProvider().getCompatibleSourceProvider(granuleURLUpdated);
-                inStream = sourceSpiProvider.getStream();
-                // get a reader and try to cache the relevant SPI
-                reader = sourceSpiProvider.getReader();
-                if (reader == null) {
-                    if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                        LOGGER.warning(new StringBuilder("Unable to get s reader for granuleDescriptor ")
-                                .append(this.toString())
-                                .append(" with request ")
-                                .append(request.toString())
-                                .append(" Resulting in no granule loaded: Empty result")
-                                .toString());
-                    }
-                    return null;
-                }
-                // set input
-                boolean ignoreMetadata = false;
-                if (reader instanceof InitializingReader initializingReader) {
-                    ignoreMetadata = initializingReader.init(hints);
-                }
-                reader.setInput(inStream, false, ignoreMetadata);
-                // External Overview index
-                ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
+            URL granuleURLUpdated = isExternal ? ovrProvider.getOvrURL() : granuleUrl;
+            int ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
 
+            // Try to serve the whole granule straight from the shared cache, without opening the file. The key needs
+            // only metadata; a hit also carries the level dimensions, enough to rebuild the geometry (this descriptor
+            // is alive) and clip to the requested window. The base level must be present to rebuild; if not (unusual),
+            // fall back to a normal open.
+            ImageMosaicReader parentReader = request.getRasterManager().parentReader;
+            GranuleImageCache imageCache = Optional.ofNullable(parentReader.getGranuleImageCache())
+                    .filter(c -> c.isEnabled() && request.isCacheGranules())
+                    .orElse(null);
+            ImageCacheKey cacheKey = imageCache == null
+                    ? null
+                    : new ImageCacheKey(parentReader.getMosaicId(), granuleURLUpdated, ovrIndex, request.getBands());
+            BufferedImage cached = null;
+            if (imageCache != null) {
+                // a hit rebuilds the level geometry from this descriptor's base level; without it, fall back to an open
+                cached = granuleLevels.get(0) == null ? null : imageCache.get(cacheKey);
+                boolean isHit = cached != null;
+                LOGGER.fine(() -> (isHit ? "Granule cache hit for " : "Granule cache miss for ") + cacheKey);
+            }
+
+            final GranuleOverviewLevelDescriptor selectedlevel;
+            if (cached != null) {
+                cleanupInFinally = true; // nothing was opened, the finally has nothing to close
+                selectedlevel = buildLevel(isExternal ? imageIndex : ovrIndex, cached);
             } else {
-                ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
-
-                // get a stream from the granuleAccessProvider
-                assert cachedStreamSPI != null : "no cachedStreamSPI available!";
-                inStream = granuleAccessProvider.getImageInputStream();
-
-                if (inStream == null) return null;
-
-                // get a reader and try to cache the relevant SPI
-                if (cachedReaderSPI == null) {
-                    reader = ImageIOExt.getImageioReader(inStream);
-                    if (reader != null) cachedReaderSPI = reader.getOriginatingProvider();
-                } else {
-                    reader = granuleAccessProvider.getImageReader();
+                Opened opened = openAndGetLevel(isExternal, granuleURLUpdated, imageIndex, ovrIndex, hints, request);
+                reader = opened.reader();
+                inStream = opened.inStream();
+                if (opened.selectedlevel() == null) {
+                    return null; // could not open or get a reader, already logged; the finally closes the stream
                 }
-                if (reader == null) {
-                    if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                        LOGGER.warning(new StringBuilder("Unable to get a reader for granuleDescriptor ")
-                                .append(this.toString())
-                                .append(" with request ")
-                                .append(request.toString())
-                                .append(" Resulting in no granule loaded: Empty result")
-                                .toString());
-                    }
-                    return null;
-                }
+                selectedlevel = opened.selectedlevel();
             }
-            // set input
-            if (reader instanceof InitializingReader initializingReader) {
-                initializingReader.init(hints);
-            }
-            reader.setInput(inStream);
-
-            // check if the reader wants to be aware of the current request
-            if (MethodUtils.getAccessibleMethod(reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
-                    != null) {
-                try {
-                    MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
-                } catch (Exception exception) {
-                    throw new RuntimeException("Error setting raster layer request on reader.", exception);
-                }
-            }
-
-            // get selected level and base level dimensions
-            final GranuleOverviewLevelDescriptor selectedlevel = getLevel(ovrIndex, reader, imageIndex, isExternal);
 
             // now create the crop grid to world which can be used to decide
             // which source area we need to crop in the selected level taking
@@ -1178,69 +1136,47 @@ public class GranuleDescriptor {
                         + granuleUrl);
             }
 
-            // Setting subsampling
-            int newSubSamplingFactor = 0;
-            final String pluginName = cachedReaderSPI.getPluginClassName();
-            if (pluginName != null && pluginName.equals(ImageUtilities.DIRECT_KAKADU_PLUGIN)) {
-                final int ssx = readParameters.getSourceXSubsampling();
-                final int ssy = readParameters.getSourceYSubsampling();
-                newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx, ssy);
-                if (newSubSamplingFactor != 0) {
-                    if (newSubSamplingFactor > maxDecimationFactor && maxDecimationFactor != -1) {
-                        newSubSamplingFactor = maxDecimationFactor;
-                    }
-                    readParameters.setSourceSubsampling(newSubSamplingFactor, newSubSamplingFactor, 0, 0);
-                }
-            }
-
-            // set the source region
+            // request source region, needed by the read and by the ROI / raster-to-model tail
             readParameters.setSourceRegion(sourceArea);
-
-            // don't pass down the band selection if the original color model is indexed and
-            // color expansion is enabled
             final boolean expandToRGB = request.getRasterManager().isExpandMe();
-            if (expandToRGB
-                    && getRawColorModel(reader, ovrIndex) instanceof IndexColorModel
-                    && readParameters instanceof EnhancedImageReadParam erp) {
-                erp.setBands(null);
-            }
-
-            // deferred loading needs a target image type to work, otherwise it's going
-            // to use the native image number of bands
-            if (nativeBandSelection
-                    && readParameters instanceof EnhancedImageReadParam param
-                    && param.getBands() != null
-                    && request.getReadType() == ReadType.JAI_IMAGEREAD) {
-                int[] bands = param.getBands();
-                ImageTypeSpecifier selected = ImageIOUtilities.getBandSelectedType(bands.length, sampleModel);
-                readParameters.setDestinationType(selected);
-            }
 
             RenderedImage raster;
-            try {
-                // read
-                raster = request.getReadType()
-                        .read(
-                                readParameters,
-                                ovrIndex,
-                                granuleURLUpdated,
+            if (cached != null) {
+                // served from cache: clip the whole-granule image to the requested window, no read
+                raster = ImageCacheClipper.clip(
+                        cached,
+                        sourceArea,
+                        readParameters.getSourceXSubsampling(),
+                        readParameters.getSourceYSubsampling());
+            } else {
+                boolean willCache = cacheKey != null
+                        && ImageCacheKey.isCacheable(
+                                imageCache,
+                                request.getGranuleCacheThresholdKB(),
                                 selectedlevel.rasterDimensions,
-                                reader,
-                                hints,
-                                false);
-
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-                    LOGGER.log(
-                            java.util.logging.Level.FINE,
-                            "Unable to load raster for granuleDescriptor "
-                                    + this.toString()
-                                    + " with request "
-                                    + request.toString()
-                                    + " Resulting in no granule loaded: Empty result",
-                            e);
+                                request.getBands(),
+                                sampleModel);
+                if (willCache) {
+                    // a cached read is always realized, so the reader and stream can be closed in the finally
+                    cleanupInFinally = true;
+                    LOGGER.fine(() -> "Caching granule read for " + cacheKey);
                 }
-                return null;
+                raster = readGranuleImage(
+                        request,
+                        readParameters,
+                        reader,
+                        hints,
+                        ovrIndex,
+                        granuleURLUpdated,
+                        selectedlevel,
+                        imageCache,
+                        cacheKey,
+                        sourceArea,
+                        expandToRGB,
+                        willCache);
+                if (raster == null) {
+                    return null;
+                }
             }
 
             // perform band selection if necessary, so far netcdf is the only low level reader that
@@ -1399,6 +1335,266 @@ public class GranuleDescriptor {
                     reader.dispose();
                 }
             }
+        }
+    }
+
+    /**
+     * The open reader and stream plus the resolved level; {@code selectedlevel} is {@code null} when the open failed.
+     */
+    private record Opened(
+            ImageReader reader, ImageInputStream inStream, GranuleOverviewLevelDescriptor selectedlevel) {}
+
+    /**
+     * Opens the granule (or its external overview) and reads the level geometry from it. On failure the returned
+     * {@link Opened#selectedlevel()} is {@code null}, while {@code reader}/{@code inStream} still carry whatever was
+     * opened so the caller's finally can close them.
+     */
+    private Opened openAndGetLevel(
+            boolean isExternal,
+            URL granuleURLUpdated,
+            int imageIndex,
+            int ovrIndex,
+            Hints hints,
+            RasterLayerRequest request)
+            throws IOException {
+        ImageInputStream inStream;
+        ImageReader reader;
+        if (isExternal) {
+            assert ovrProvider.getExternalOverviewInputStreamSpi() != null
+                    : "no cachedStreamSPI available for external overview!";
+            SourceSPIProvider sourceSpiProvider =
+                    ovrProvider.getSourceSpiProvider().getCompatibleSourceProvider(granuleURLUpdated);
+            inStream = sourceSpiProvider.getStream();
+            reader = sourceSpiProvider.getReader();
+            if (reader == null) {
+                if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
+                    LOGGER.warning(new StringBuilder("Unable to get s reader for granuleDescriptor ")
+                            .append(this.toString())
+                            .append(" with request ")
+                            .append(request.toString())
+                            .append(" Resulting in no granule loaded: Empty result")
+                            .toString());
+                }
+                return new Opened(reader, inStream, null);
+            }
+            boolean ignoreMetadata = false;
+            if (reader instanceof InitializingReader initializingReader) {
+                ignoreMetadata = initializingReader.init(hints);
+            }
+            reader.setInput(inStream, false, ignoreMetadata);
+        } else {
+            // get a stream from the granuleAccessProvider
+            assert cachedStreamSPI != null : "no cachedStreamSPI available!";
+            inStream = granuleAccessProvider.getImageInputStream();
+
+            if (inStream == null) return new Opened(null, null, null);
+
+            // get a reader and try to cache the relevant SPI
+            if (cachedReaderSPI == null) {
+                reader = ImageIOExt.getImageioReader(inStream);
+                if (reader != null) cachedReaderSPI = reader.getOriginatingProvider();
+            } else {
+                reader = granuleAccessProvider.getImageReader();
+            }
+            if (reader == null) {
+                if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
+                    LOGGER.warning(new StringBuilder("Unable to get a reader for granuleDescriptor ")
+                            .append(this.toString())
+                            .append(" with request ")
+                            .append(request.toString())
+                            .append(" Resulting in no granule loaded: Empty result")
+                            .toString());
+                }
+                return new Opened(reader, inStream, null);
+            }
+        }
+        // set input
+        if (reader instanceof InitializingReader initializingReader) {
+            initializingReader.init(hints);
+        }
+        reader.setInput(inStream);
+
+        // check if the reader wants to be aware of the current request
+        if (MethodUtils.getAccessibleMethod(reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
+                != null) {
+            try {
+                MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
+            } catch (Exception exception) {
+                throw new RuntimeException("Error setting raster layer request on reader.", exception);
+            }
+        }
+
+        // get selected level and base level dimensions
+        GranuleOverviewLevelDescriptor selectedlevel = getLevel(ovrIndex, reader, imageIndex, isExternal);
+        return new Opened(reader, inStream, selectedlevel);
+    }
+
+    /**
+     * Reads the granule from the open reader, either populating and clipping through the cache (when {@code willCache})
+     * or with a plain read; returns {@code null} if nothing could be read (logged at FINE).
+     */
+    private RenderedImage readGranuleImage(
+            RasterLayerRequest request,
+            ImageReadParam readParameters,
+            ImageReader reader,
+            Hints hints,
+            int ovrIndex,
+            URL granuleURLUpdated,
+            GranuleOverviewLevelDescriptor selectedlevel,
+            GranuleImageCache imageCache,
+            ImageCacheKey cacheKey,
+            Rectangle sourceArea,
+            boolean expandToRGB,
+            boolean willCache) {
+        // Kakadu decode-subsampling only helps a direct decode; a cached read pulls the whole granule at full
+        // resolution and subsamples in the clip, so skip it when caching
+        if (!willCache) {
+            final String pluginName = cachedReaderSPI.getPluginClassName();
+            if (pluginName != null && pluginName.equals(ImageUtilities.DIRECT_KAKADU_PLUGIN)) {
+                final int ssx = readParameters.getSourceXSubsampling();
+                final int ssy = readParameters.getSourceYSubsampling();
+                int newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx, ssy);
+                if (newSubSamplingFactor != 0) {
+                    if (newSubSamplingFactor > maxDecimationFactor && maxDecimationFactor != -1) {
+                        newSubSamplingFactor = maxDecimationFactor;
+                    }
+                    readParameters.setSourceSubsampling(newSubSamplingFactor, newSubSamplingFactor, 0, 0);
+                }
+            }
+        }
+
+        // don't pass down the band selection if the original color model is indexed and color expansion is on
+        if (expandToRGB
+                && getRawColorModel(reader, ovrIndex) instanceof IndexColorModel
+                && readParameters instanceof EnhancedImageReadParam erp) {
+            erp.setBands(null);
+        }
+        // deferred loading needs a target image type, otherwise it uses the native band count
+        if (nativeBandSelection
+                && readParameters instanceof EnhancedImageReadParam param
+                && param.getBands() != null
+                && request.getReadType() == ReadType.JAI_IMAGEREAD) {
+            int[] selBands = param.getBands();
+            ImageTypeSpecifier selected = ImageIOUtilities.getBandSelectedType(selBands.length, sampleModel);
+            readParameters.setDestinationType(selected);
+        }
+
+        try {
+            if (willCache) {
+                return readCached(
+                        imageCache,
+                        cacheKey,
+                        request.getReadType(),
+                        readParameters,
+                        ovrIndex,
+                        granuleURLUpdated,
+                        selectedlevel.rasterDimensions,
+                        reader,
+                        hints,
+                        sourceArea,
+                        readParameters.getSourceXSubsampling(),
+                        readParameters.getSourceYSubsampling());
+            }
+            return request.getReadType()
+                    .read(
+                            readParameters,
+                            ovrIndex,
+                            granuleURLUpdated,
+                            selectedlevel.rasterDimensions,
+                            reader,
+                            hints,
+                            false);
+        } catch (Throwable e) {
+            if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+                LOGGER.log(
+                        java.util.logging.Level.FINE,
+                        "Unable to load raster for granuleDescriptor "
+                                + this.toString()
+                                + " with request "
+                                + request.toString()
+                                + " Resulting in no granule loaded: Empty result",
+                        e);
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Serves a whole-granule read through the image cache, clipped to the requested view, or {@code null} if nothing
+     * was read.
+     */
+    private static RenderedImage readCached(
+            GranuleImageCache imageCache,
+            ImageCacheKey cacheKey,
+            ReadType readType,
+            ImageReadParam readParameters,
+            int imageIndex,
+            URL granuleUrl,
+            Rectangle rasterDimensions,
+            ImageReader reader,
+            Hints hints,
+            Rectangle sourceArea,
+            int subsamplingX,
+            int subsamplingY)
+            throws Exception {
+        // getOrLoad reads the whole granule once per key, atomically: concurrent requests share one read, and a
+        // MissingRasterException from the loader comes back as a null granule. Read via the configured readType so
+        // cached pixels match the uncached output (read types decode some sources differently, e.g. LZW TIFFs with a
+        // horizontal predictor). Mutating readParameters is safe: GranuleLoader gives each load its own clone; restored
+        // in the finally for the rest of loadRaster.
+        BufferedImage granule = imageCache.getOrLoad(cacheKey, () -> {
+            readParameters.setSourceRegion(rasterDimensions);
+            readParameters.setSourceSubsampling(1, 1, 0, 0);
+            try {
+                RenderedImage read =
+                        readType.read(readParameters, imageIndex, granuleUrl, rasterDimensions, reader, hints, false);
+                if (read == null) {
+                    throw new GranuleImageCache.MissingRasterException();
+                }
+                // the whole level is read at full resolution, so the cached image size is the level dimension and a
+                // later hit can rebuild the geometry and clip without reopening the granule
+                if (read instanceof BufferedImage bufferedImage) {
+                    return bufferedImage;
+                }
+                // deferred read (JAI_IMAGEREAD): copy into a detached image while the stream is open, then
+                // dispose the operation so its rendering and cached tiles are not leaked; the reader and stream
+                // are left to loadRaster's finally (cleanupInFinally is set), so they are not touched here
+                PlanarImage deferred = PlanarImage.wrapRenderedImage(read);
+                try {
+                    return deferred.getAsBufferedImage();
+                } finally {
+                    ImageUtilities.disposeSinglePlanarImage(deferred);
+                }
+            } finally {
+                readParameters.setSourceRegion(sourceArea);
+                readParameters.setSourceSubsampling(subsamplingX, subsamplingY, 0, 0);
+            }
+        });
+        if (granule == null) {
+            return null;
+        }
+        return ImageCacheClipper.clip(granule, sourceArea, subsamplingX, subsamplingY);
+    }
+
+    /**
+     * Rebuilds the overview level for a cache hit from the cached image size, reusing the base level and this
+     * descriptor's base grid-to-world, so no granule open is needed. Mirrors the construction in {@link #getLevel}.
+     */
+    private GranuleOverviewLevelDescriptor buildLevel(int indexValue, RenderedImage image) {
+        synchronized (granuleLevels) {
+            GranuleOverviewLevelDescriptor existing = granuleLevels.get(indexValue);
+            if (existing != null) {
+                return existing;
+            }
+            // the cached image was read over the whole level at full resolution, so its size is the level dimension
+            int width = image.getWidth();
+            int height = image.getHeight();
+            GranuleOverviewLevelDescriptor baseLevel = granuleLevels.get(0);
+            double scaleX = baseLevel.width / (1.0 * width);
+            double scaleY = baseLevel.height / (1.0 * height);
+            GranuleOverviewLevelDescriptor newLevel = new GranuleOverviewLevelDescriptor(scaleX, scaleY, width, height);
+            granuleLevels.put(indexValue, newLevel);
+            return newLevel;
         }
     }
 

@@ -97,6 +97,14 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
                 Set<String> removedLocations = getRemovedLocations(countsByFilter, countsByLocation);
                 boolean deleteData = policy == GranuleRemovalPolicy.ALL;
 
+                // drop stale cached images before the files go: URL resolution needs the file to still exist
+                if (deleteData) {
+                    for (String location : removedLocations) {
+                        ImageMosaicConfigHandler.invalidateCachedGranule(
+                                manager.parentReader, manager.configuration, location);
+                    }
+                }
+
                 // for single files, we can be efficient and do a single pass, for files
                 // providing multiple granules, not, as the descriptor is going to be created
                 // during the visit, whether we use it or not, and that may cause the involved

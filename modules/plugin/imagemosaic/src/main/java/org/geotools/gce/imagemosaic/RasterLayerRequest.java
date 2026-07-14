@@ -120,6 +120,11 @@ public class RasterLayerRequest {
 
     private boolean multithreadingAllowed;
 
+    private boolean cacheGranules;
+
+    private int granuleCacheThresholdKB =
+            ImageMosaicFormat.GRANULE_CACHE_THRESHOLD_KB.getDefaultValue().intValue();
+
     private boolean skipDuplicates;
 
     private List<?> requestedTimes;
@@ -193,6 +198,16 @@ public class RasterLayerRequest {
 
     public boolean isMultithreadingAllowed() {
         return multithreadingAllowed;
+    }
+
+    /** Whether this read should reuse and populate the shared granule image cache. */
+    public boolean isCacheGranules() {
+        return cacheGranules;
+    }
+
+    /** Per-request override of the pool's per-granule caching threshold, in KB; -1 to keep the pool default. */
+    public int getGranuleCacheThresholdKB() {
+        return granuleCacheThresholdKB;
     }
 
     public DecimationPolicy getDecimationPolicy() {
@@ -514,6 +529,18 @@ public class RasterLayerRequest {
                 continue;
             }
 
+            if (name.equals(ImageMosaicFormat.CACHE_GRANULES.getName())) {
+                if (value == null) continue;
+                cacheGranules = ((Boolean) value).booleanValue();
+                continue;
+            }
+
+            if (name.equals(ImageMosaicFormat.GRANULE_CACHE_THRESHOLD_KB.getName())) {
+                if (value == null) continue;
+                granuleCacheThresholdKB = (Integer) value;
+                continue;
+            }
+
             if (name.equals(AbstractGridFormat.FOOTPRINT_BEHAVIOR.getName())) {
                 if (value == null) continue;
                 footprintBehavior = FootprintBehavior.valueOf((String) value);
@@ -768,6 +795,20 @@ public class RasterLayerRequest {
             final Object value = param.getValue();
             if (value == null) return;
             multithreadingAllowed = ((Boolean) value).booleanValue();
+            return;
+        }
+
+        if (name.equals(ImageMosaicFormat.CACHE_GRANULES.getName())) {
+            final Object value = param.getValue();
+            if (value == null) return;
+            cacheGranules = ((Boolean) value).booleanValue();
+            return;
+        }
+
+        if (name.equals(ImageMosaicFormat.GRANULE_CACHE_THRESHOLD_KB.getName())) {
+            final Object value = param.getValue();
+            if (value == null) return;
+            granuleCacheThresholdKB = (Integer) value;
             return;
         }
 

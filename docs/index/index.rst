@@ -9,6 +9,9 @@ Quickstart to get up and running with GeoTools in minutes:
 * `NetBeans Quickstart <https://docs.geotools.org/latest/userguide/tutorial/quickstart/netbeans.html>`__
   ( `stable <https://docs.geotools.org/stable/userguide/tutorial/quickstart/netbeans.html>`__
   | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/quickstart/netbeans.html>`__ )
+* `IntelliJ Quickstart <https://docs.geotools.org/latest/userguide/tutorial/quickstart/intellij.html>`__
+  ( `stable <https://docs.geotools.org/stable/userguide/tutorial/quickstart/intellij.html>`__
+  | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/quickstart/intellij.html>`__ )
 * `Maven command line Quickstart <https://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html>`__
   ( `stable <https://docs.geotools.org/stable/userguide/tutorial/quickstart/maven.html>`__
   | `maintenance <https://docs.geotools.org/maintenance/userguide/tutorial/quickstart/maven.html>`__ )

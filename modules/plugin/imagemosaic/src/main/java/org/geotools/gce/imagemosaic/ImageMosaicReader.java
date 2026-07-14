@@ -142,6 +142,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
     ExecutorService multiThreadedLoader;
 
+    GranuleImageCache granuleImageCache;
+
     String locationAttributeName = Utils.DEFAULT_LOCATION_ATTRIBUTE;
 
     int maxAllowedTiles = ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue();
@@ -188,6 +190,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                     }
                 }
             }
+        }
+
+        // shared granule image cache, injected by the caller; absent hint = no caching
+        if (this.hints.get(Hints.GRANULE_IMAGE_CACHE) instanceof GranuleImageCache cache) {
+            this.granuleImageCache = cache;
         }
 
         // max allowed tiles for a single request
@@ -684,12 +691,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         super.dispose();
         synchronized (this) {
             try {
+                // free this mosaic's cached granule images when the reader goes (store reload/remove/reset), so heap
+                // tracks the mosaic lifecycle rather than waiting for the shared pool's size bound to reclaim it
+                if (granuleImageCache != null) granuleImageCache.invalidateMosaic(getMosaicId());
                 if (granuleCatalog != null) this.granuleCatalog.dispose();
                 disposeManagers();
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
         }
+    }
+
+    /** Stable identifier of this mosaic, shared by all its coverages, used to scope granule cache eviction. */
+    public String getMosaicId() {
+        return sourceURL != null ? sourceURL.toExternalForm() : null;
     }
 
     /** Dispose raster managers */
@@ -1393,6 +1408,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
     public ExecutorService getMultiThreadedLoader() {
         return multiThreadedLoader;
+    }
+
+    /** Returns the shared granule image cache injected via {@link Hints#GRANULE_IMAGE_CACHE}, or {@code null}. */
+    public GranuleImageCache getGranuleImageCache() {
+        return granuleImageCache;
     }
 
     @Override

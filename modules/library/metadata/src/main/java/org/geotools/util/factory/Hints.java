@@ -680,6 +680,13 @@ public class Hints extends RenderingHints {
      */
     public static final ClassKey EXECUTOR_SERVICE = new ClassKey("java.util.concurrent.ExecutorService");
 
+    /**
+     * The shared image-mosaic granule image cache to use, an {@code org.geotools.gce.imagemosaic.GranuleImageCache}.
+     *
+     * @since 36.0
+     */
+    public static final ClassKey GRANULE_IMAGE_CACHE = new ClassKey("org.geotools.gce.imagemosaic.GranuleImageCache");
+
     /** Default resample tolerance value, if not specified via the {@link #RESAMPLE_TOLERANCE} hint */
     public static double DEFAULT_RESAMPLE_TOLERANCE = 0.333;
 

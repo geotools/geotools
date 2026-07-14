@@ -85,6 +85,8 @@ import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.gce.imagemosaic.GranuleImageCache;
+import org.geotools.gce.imagemosaic.GuavaGranuleImageCache;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
@@ -295,6 +297,47 @@ public class NetCDFMosaicReaderTest {
             float[] v1 = (float[]) coverage1.evaluate(center);
             float[] v2 = (float[]) coverage2.evaluate(center);
             assertNotEquals(v1[0], v2[0], 0f);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testCachedTimeSlicesDoNotCollide() throws Exception {
+        // polyphemus holds two time slices in a single file: same location, imageindex 0 and 1. With the granule
+        // image cache enabled, reading one slice must not serve its pixels for the other, i.e. the two slices must
+        // produce distinct cache keys even though they share a URL.
+        File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
+        File mosaic = tempFolder.newFolder("nc_cache_slices");
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, StandardCharsets.UTF_8);
+        File dsp = TestData.file(this, "datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        // cache injected as a shared pool and turned on via the read parameter
+        GranuleImageCache cache = new GuavaGranuleImageCache(64L * 1024 * 1024, 10L * 1024 * 1024);
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic, new Hints(Hints.GRANULE_IMAGE_CACHE, cache));
+        assertNotNull(reader);
+        try {
+            ParameterValue<Boolean> cacheGranules = ImageMosaicFormat.CACHE_GRANULES.createValue();
+            cacheGranules.setValue(true);
+            ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+            time.setValue(Arrays.asList(parseTimeStamp("2013-03-01T00:00:00.000Z")));
+            GeneralParameterValue[] params = {NO_DEFERRED_LOADING_PARAM, cacheGranules, time};
+            GridCoverage2D coverage1 = reader.read(params); // populates the cache for slice 0
+            time.setValue(Arrays.asList(parseTimeStamp("2013-03-01T01:00:00.000Z")));
+            GridCoverage2D coverage2 = reader.read(params);
+
+            Position center = reader.getOriginalEnvelope().getMedian();
+            float[] v1 = (float[]) coverage1.evaluate(center);
+            float[] v2 = (float[]) coverage2.evaluate(center);
+            // a cache-key collision would make the second read return the first slice's cached pixels
+            assertNotEquals("Time slices must not share a cache entry", v1[0], v2[0], 0f);
+            assertTrue("both slices should be cached", cache.size() >= 2);
         } finally {
             reader.dispose();
         }

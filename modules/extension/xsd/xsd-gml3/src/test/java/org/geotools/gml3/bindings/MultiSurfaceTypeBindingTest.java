@@ -67,7 +67,7 @@ public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
     }
 
     @Test
-    public void testIsMultiPologynType() {
+    public void testIsMultiPolygonType() {
         Assert.assertEquals(MultiPolygon.class, GMLSchema.MULTISURFACETYPE_TYPE.getBinding());
     }
 }

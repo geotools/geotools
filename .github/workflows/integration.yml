@@ -42,46 +42,45 @@ jobs:
       - name: Checkout GeoWebCache, GeoServer and ...
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           echo "Integration tests for $BRANCH_NAME"
-          
+
           cd ~
           echo "Preparing git ssh checkouts"
-          mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config                    
-          
+          mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+
+          # Pick the downstream branch/PR for a companion repo, run from inside its clone.
+          # Precedence: explicit "Downstream <Name> PR: <n>" in the PR body (fails the build
+          # if that PR cannot be checked out), then a branch matching this PR's branch name,
+          # then the default branch.
+          resolve_downstream() {
+            local label="$1"
+            local pr_num
+            pr_num=$(printf '%s' "$PR_BODY" | grep -oiP "downstream\s+${label}\s+PR:\s*#?\K[0-9]+" | head -1 || true)
+            if [ -n "$pr_num" ]; then
+              echo "Explicit downstream PR for ${label}: #${pr_num}"
+              gh pr checkout "$pr_num"
+              return
+            fi
+            if git ls-remote --heads origin "refs/heads/$BRANCH_NAME" | grep -q .; then
+              echo "Branch found matching $BRANCH_NAME, switching"
+              git switch "$BRANCH_NAME"
+            fi
+          }
+
           echo "Checking out GeoWebCache"
-          mkdir geowebcache
           git clone -q https://github.com/GeoWebCache/geowebcache.git geowebcache
-          cd geowebcache
-          GWC_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
-          if [ "$GWC_BRANCH_EXISTS" -eq 0 ]; then
-            echo "Branch found on geowebcache. Switching and tracking: $BRANCH_NAME"
-            git switch "$BRANCH_NAME"
-          fi
-          cd ..
-          
+          ( cd geowebcache && resolve_downstream "GeoWebCache" )
+
           echo "Checking out GeoServer"
-          mkdir geoserver
           git clone -q https://github.com/geoserver/geoserver.git geoserver
-          cd geoserver
-          GS_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
-          if [ "$GS_BRANCH_EXISTS" -eq 0 ]; then
-            echo "Branch found on geoserver. Switching and tracking: $BRANCH_NAME"
-            git switch "$BRANCH_NAME"
-          fi
-          cd ..
-          
-          
+          ( cd geoserver && resolve_downstream "GeoServer" )
+
           echo "Checking out mapfish-print-v2"
-          mkdir mapfish-print-v2
           git clone -q https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
-          cd mapfish-print-v2
-          MF_BRANCH_EXISTS=$(git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; echo $?)
-          if [ "$MF_BRANCH_EXISTS" -eq 0 ]; then
-            echo "Branch found on mapfish-print-v2. Switching and tracking: $BRANCH_NAME"
-            git switch "$BRANCH_NAME"
-          fi
-          cd ..
+          ( cd mapfish-print-v2 && resolve_downstream "mapfish-print-v2" )
       - name: Build Mapfish-print v2 with tests
         run: |
           cd ~

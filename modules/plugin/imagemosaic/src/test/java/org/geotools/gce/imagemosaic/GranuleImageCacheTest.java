@@ -326,6 +326,8 @@ public class GranuleImageCacheTest {
     /**
      * Returns the task result, disposing the reader afterwards even on failure; the result must not hold the reader.
      */
+    // actually used but PMD cannot tell the difference between Task (void) and function (returning)
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private static <R> R withReader(ImageMosaicReader reader, ReaderFunction<R> task) throws Exception {
         try {
             return task.apply(reader);

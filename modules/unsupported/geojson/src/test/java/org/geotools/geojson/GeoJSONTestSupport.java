@@ -45,7 +45,7 @@ public abstract class GeoJSONTestSupport {
     }
 
     protected void assertEqualsLax(SimpleFeature f1, SimpleFeature f2) {
-        Assert.assertEquals(f1.getID(), f1.getID());
+        Assert.assertEquals(f1.getID(), f2.getID());
         Assert.assertEquals(f1.getAttributeCount(), f2.getAttributeCount());
 
         for (int i = 0; i < f1.getAttributeCount(); i++) {

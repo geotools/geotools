@@ -30,11 +30,13 @@ import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.matching.ContainsPattern;
 import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 import org.apache.hc.core5.http.HttpException;
 import org.geotools.http.HTTPResponse;
 import org.junit.After;
@@ -289,6 +291,39 @@ public class MultithreadedHttpClientTest {
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             response = client.post(url, postBody, "text/plain", Map.of("Authorization", headerValue));
             service.verify(postRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
+        } finally {
+            if (response != null) {
+                response.dispose();
+            }
+        }
+    }
+
+    @Test
+    public void testGzipEncodedResponse() throws IOException {
+        String testContent =
+                """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <response>
+            <message>GZipped test content - this is some longer text to ensure proper compression</message>
+        </response>""";
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+            gzipOutputStream.write(testContent.getBytes(StandardCharsets.UTF_8));
+        }
+        byte[] gzipContent = byteArrayOutputStream.toByteArray();
+
+        service.stubFor(get(urlEqualTo("/gzip"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withHeader("Content-Encoding", "gzip")
+                        .withBody(gzipContent)));
+
+        HTTPResponse response = null;
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            response = client.get(new URL("http://localhost:" + service.port() + "/gzip"));
+            String result = IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8);
+            Assert.assertEquals(testContent, result);
         } finally {
             if (response != null) {
                 response.dispose();

@@ -95,8 +95,8 @@ public class CrossAuthorityTest {
     /**
      * Tests that the given code can be decoded and that the identifier can be looked up again.
      *
-     * @param code
-     * @throws FactoryException
+     * @param code the CRS code to decode (e.g., "TEST:1234")
+     * @throws FactoryException should the decoding fail
      */
     private static void testTestIdentifier(String code) throws FactoryException {
         CoordinateReferenceSystem crs = CRS.decode(code);
@@ -118,7 +118,10 @@ public class CrossAuthorityTest {
         CoordinateOperation backwards = CRS.getCoordinateOperationFactory(true).createOperation(targetCRS, sourceCRS);
         assertEquals(backwards.getSourceCRS(), targetCRS);
         assertEquals(backwards.getTargetCRS(), sourceCRS);
-        checkConcatenatedGeocentricTranslation(backwards, 1, -1, -2, -3);
+
+        // verify that the inverse of the backwards is actually the forward transform
+        assertEquals(forward.getMathTransform(), backwards.getMathTransform().inverse());
+        checkConcatenatedGeocentricTranslation(backwards, 2, -1, -2, -3);
     }
 
     /** Tests a custom operation found in {@link TestCoordinateOperationFactory2} */
@@ -131,7 +134,10 @@ public class CrossAuthorityTest {
         checkConcatenatedGeocentricTranslation(forward, 1, 4, 5, 6);
 
         CoordinateOperation backwards = CRS.getCoordinateOperationFactory(true).createOperation(targetCRS, sourceCRS);
-        checkConcatenatedGeocentricTranslation(backwards, 1, -4, -5, -6);
+        checkConcatenatedGeocentricTranslation(backwards, 2, -4, -5, -6);
+
+        // verify that the inverse of the backwards is actually the forward transform
+        assertEquals(forward.getMathTransform(), backwards.getMathTransform().inverse());
     }
 
     /**
@@ -147,7 +153,10 @@ public class CrossAuthorityTest {
         checkConcatenatedGeocentricTranslation(forward, 2, 1, 2, 3);
 
         CoordinateOperation backwards = CRS.getCoordinateOperationFactory(true).createOperation(targetCRS, sourceCRS);
-        checkConcatenatedGeocentricTranslation(backwards, 1, -1, -2, -3);
+        checkConcatenatedGeocentricTranslation(backwards, 2, -1, -2, -3);
+
+        // verify that the inverse of the backwards is actually the forward transform
+        assertEquals(forward.getMathTransform(), backwards.getMathTransform().inverse());
     }
 
     private void checkConcatenatedGeocentricTranslation(

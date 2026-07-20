@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
@@ -88,17 +89,13 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
 
     ReferencingFactoryContainer factories;
 
-    /**
-     * Creates a factory for the specified authority from the specified file.
-     *
-     * @throws IOException if the definitions can't be read.
-     */
+    /** Creates a factory for the specified authority from the specified file. */
     public PropertyCoordinateOperationFactory(Hints userHints, int priority) {
         super(userHints, priority);
         /*
-         * Removes the hint processed by the super-class. This include hints like
+         * Removes the hint processed by the super-class. This includes hints like
          * LENIENT_DATUM_SHIFT, which usually don't apply to authority factories.
-         * An other way to see this is to said that this class "consumed" the hints.
+         * Another way to see this is to say that this class "consumed" the hints.
          * By removing them, we increase the chances to get an empty map of remaining hints,
          * which in turn help to get the default CoordinateOperationAuthorityFactory
          * (instead of forcing a new instance).
@@ -112,11 +109,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
         this.factories = ReferencingFactoryContainer.instance(userHints);
     }
 
-    /**
-     * Loads definitions from the specified input stream. The stream is closed by this method.
-     *
-     * @throws IOException if the definitions can't be read.
-     */
+    /** Loads definitions from the specified input stream. The stream is closed by this method. */
     protected Properties getDefinitions() {
         if (definitions == null) {
             Properties props = new Properties();
@@ -181,7 +174,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
         }
 
         // Create MathTransform from WKT
-        MathTransform mt = null;
+        MathTransform mt;
         try {
             mt = factories.getMathTransformFactory().createFromWKT(wkt);
         } catch (FactoryException e) {
@@ -194,7 +187,9 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
         // as defined in CRS. Had to cast to DefaultMathTransformFactory because
         // createBaseToDerived is not defined in MathTransformFactory interface (GeoAPI).
         DefaultMathTransformFactory mtf = (DefaultMathTransformFactory) factories.getMathTransformFactory();
-        MathTransform mt2 = mtf.createBaseToDerived(sourceCRS, mt, targetCRS.getCoordinateSystem());
+        MathTransform mt2 = inverse
+                ? mtf.createBaseToDerived(targetCRS, mt, sourceCRS.getCoordinateSystem())
+                : mtf.createBaseToDerived(sourceCRS, mt, targetCRS.getCoordinateSystem());
 
         // Extract name from the transform, if possible, or use class name.
         String methodName;
@@ -225,7 +220,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
                 new DefaultOperationMethod(props, mt2.getSourceDimensions(), mt2.getTargetDimensions(), null);
 
         // Finally create CoordinateOperation
-        CoordinateOperation coordop = null;
+        CoordinateOperation coordop;
         if (!inverse) { // Direct operation
             props.put("name", sourceCRS + " \u21E8 " + targetCRS);
             coordop = DefaultOperation.create(props, sourceCRS, targetCRS, mt2, method, CoordinateOperation.class);
@@ -243,8 +238,7 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
 
     /**
      * Gets an identifier for the given CRS. First uses the internal identifier, if there is a single one and it's
-     * suitable. Otherwise, falls back on {@link CRS#lookupIdentifier(CoordinateReferenceSystem, boolean)}, for a fast
-     * lookup.
+     * suitable. Otherwise, falls back on {@link CRS#lookupIdentifier(IdentifiedObject, boolean)}, for a fast lookup.
      *
      * @param crs the CRS to get the identifier for
      * @return the identifier, or {@code null} if none found

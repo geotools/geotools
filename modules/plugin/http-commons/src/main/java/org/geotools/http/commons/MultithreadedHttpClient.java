@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.zip.GZIPInputStream;
 import org.apache.hc.client5.http.auth.AuthCache;
 import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.Credentials;
@@ -69,8 +68,8 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
- * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection manager that allows to
- * reuse connections to the backing server and to limit the {@link #setMaxConnections(int) max number of concurrent
+ * An Apache HttpComponents based {@link HTTPClient} backed by a multithreaded connection manager that allows to reuse
+ * connections to the backing server and to limit the {@link #setMaxConnections(int) max number of concurrent
  * connections}.
  *
  * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser}, and
@@ -379,17 +378,10 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         public InputStream getResponseStream() throws IOException {
             if (responseBodyAsStream == null) {
                 responseBodyAsStream = methodResponse.getEntity().getContent();
-                // commons httpclient does not handle gzip encoding automatically, we have to check
-                // ourselves: https://issues.apache.org/jira/browse/HTTPCLIENT-816
-                Header header = methodResponse.getFirstHeader("Content-Encoding");
-                if (header != null && "gzip".equals(header.getValue())) {
-                    responseBodyAsStream = new GZIPInputStream(responseBodyAsStream);
-                }
             }
             return responseBodyAsStream;
         }
 
-        /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
         @Override
         public String getResponseCharset() {
             final Header encoding = new BasicHeader(

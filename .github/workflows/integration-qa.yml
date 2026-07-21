@@ -61,7 +61,7 @@ jobs:
             pr_num=$(printf '%s' "$PR_BODY" | grep -oiP "downstream\s+${label}\s+PR:\s*#?\K[0-9]+" | head -1 || true)
             if [ -n "$pr_num" ]; then
               echo "Explicit downstream PR for ${label}: #${pr_num}"
-              gh pr checkout "$pr_num"
+              gh pr checkout "$pr_num" || true
               return
             fi
             if git ls-remote --heads origin "refs/heads/$BRANCH_NAME" | grep -q .; then

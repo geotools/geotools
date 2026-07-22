@@ -115,6 +115,8 @@ GeoTools also includes several ``EntityResolver3`` implementations:
      - ``"http,jar,jar:file,vfs,file"``
      - Supports IDE development where ``target/classe`` and ``target/test-classes`` may be used during testing.
 
+When resolving an allow-listed ``http(s)`` reference, ``PreventLocalEntityResolver`` follows HTTP redirects itself, validating each intermediate location against the same allow-list before following it.
+
 To use ``InternalEntityResolver`` during a test case to allow access to internal content during test (from IDE or maven) while limiting "http" locations to OGC and INSPIRE registries.
 
 .. code-block:: java

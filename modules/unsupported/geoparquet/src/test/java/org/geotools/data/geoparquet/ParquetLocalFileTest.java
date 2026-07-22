@@ -36,9 +36,14 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.data.duckdb.AbstractDuckDBDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCFeatureSource;
+import org.geotools.jdbc.NullPrimaryKey;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,6 +51,7 @@ import org.junit.Test;
 public class ParquetLocalFileTest extends GeoParquetTestBase {
 
     private DataStore dataStorePrimaryKey;
+    private JDBCDataStore dataStoreNoPrimaryKey;
 
     /** Flag to detect Windows OS */
     private static final boolean IS_WINDOWS =
@@ -68,6 +74,24 @@ public class ParquetLocalFileTest extends GeoParquetTestBase {
         params.put(GeoParquetDataStoreFactory.URI_PARAM.key, file.toURI().toASCIIString());
         params.put(GeoParquetDataStoreFactory.PRIMARY_KEY_ID.key, "fire_id");
         dataStorePrimaryKey = new GeoParquetDataStoreFactory().createDataStore(params);
+
+        params.remove(GeoParquetDataStoreFactory.PRIMARY_KEY_ID.key);
+        params.put(AbstractDuckDBDataStoreFactory.READ_ONLY.key, Boolean.FALSE);
+        dataStoreNoPrimaryKey = new GeoParquetDataStoreFactoryDelegate().createDataStore(params);
+    }
+
+    @After
+    @Override
+    public void tearDown() {
+        if (dataStorePrimaryKey != null) {
+            dataStorePrimaryKey.dispose();
+            dataStorePrimaryKey = null;
+        }
+        if (dataStoreNoPrimaryKey != null) {
+            dataStoreNoPrimaryKey.dispose();
+            dataStoreNoPrimaryKey = null;
+        }
+        super.tearDown();
     }
 
     @SuppressWarnings("rawtypes")
@@ -155,6 +179,17 @@ public class ParquetLocalFileTest extends GeoParquetTestBase {
                     desc.getType().getBinding());
         }
         assertNull("Schema should not have a geometry attribute", schema.getGeometryDescriptor());
+    }
+
+    @Test
+    public void testDatastoreWithoutIdFallsBackToNullPrimaryKey() throws IOException {
+        GeoParquetDialect dialect = (GeoParquetDialect) dataStoreNoPrimaryKey.getSQLDialect();
+        String typeName = dialect.getTypeNames().get(0);
+        dialect.ensureViewExists(typeName);
+
+        JDBCFeatureSource source = (JDBCFeatureSource) dataStoreNoPrimaryKey.getFeatureSource(typeName);
+        verifyFeatureSource(source, 42);
+        assertTrue(source.getPrimaryKey() instanceof NullPrimaryKey);
     }
 
     @Test

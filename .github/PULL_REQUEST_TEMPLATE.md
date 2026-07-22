@@ -3,9 +3,9 @@
 <!-- Downstream integration builds: if this change needs matching PRs in GeoWebCache,
 GeoServer or mapfish-print-v2 to compile or pass tests, add one line per companion so
 the integration workflow checks out that PR instead of the default branch:
-Downstream GeoWebCache PR: 1234
-Downstream GeoServer PR: 5678
-Downstream mapfish-print-v2 PR: 9012
+Downstream GeoWebCache PR: <number>
+Downstream GeoServer PR: <number>
+Downstream mapfish-print-v2 PR: <number>
 Otherwise the workflow uses a companion branch with the same name as this PR's branch,
 or the default branch. -->
   

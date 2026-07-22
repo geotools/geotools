@@ -48,9 +48,10 @@ public class DefaultEntityResolverTest {
         PreventLocalEntityResolver prevent = PreventLocalEntityResolver.INSTANCE;
         InputSource src;
 
-        src = prevent.resolveEntity(
-                "p", "http://inspire.ec.europa.eu/draft-schemas/omso/2.0rc3/SpecialisedObservations.xsd");
-        assertNull("http", src);
+        // wrong extension, rejected by the allow-list before any http(s) fetch is attempted
+        assertThrows(SAXException.class, () -> {
+            prevent.resolveEntity("p", "http://example.invalid/a.txt");
+        });
         assertThrows(SAXException.class, () -> {
             prevent.resolveEntity("gml.xsd", "file:/target/classes/org/geotools/gml/v3_2/gml.xsd");
         });

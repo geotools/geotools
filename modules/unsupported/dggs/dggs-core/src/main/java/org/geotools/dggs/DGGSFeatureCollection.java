@@ -84,6 +84,7 @@ public class DGGSFeatureCollection<I> implements SimpleFeatureCollection {
         // if the visitor is geometryless, we can delegate to the underlying collection
         if (isGeometryless(visitor, getSchema())) {
             delegate.accepts(visitor, progress);
+            return;
         }
 
         // special case for aggregate visitors grouping on geometry (need to map the geometry to zone ids)

@@ -38,6 +38,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -174,7 +176,7 @@ public class JJTreeJavaCC extends AbstractMojo {
         for (Object userNode : userNodes) {
             final File nodeFile = (File) userNode;
             try {
-                FileUtils.copyFileToDirectory(nodeFile, outputPackageDirectory);
+                copyToDirectory(nodeFile, outputPackageDirectory);
             } catch (IOException e) {
                 throw new MojoExecutionException("Failed to copy Node.java files for JJTree.", e);
             }
@@ -194,7 +196,7 @@ public class JJTreeJavaCC extends AbstractMojo {
                 throw new MojoFailureException("JJTree failed with error code " + status + '.');
             }
             try {
-                FileUtils.copyFileToDirectory(sourceFile, new File(timestampDirectory));
+                copyToDirectory(sourceFile, new File(timestampDirectory));
             } catch (IOException e) {
                 throw new MojoExecutionException("Failed to copy processed .jjt file.", e);
             }
@@ -223,7 +225,7 @@ public class JJTreeJavaCC extends AbstractMojo {
                 throw new MojoFailureException("JavaCC failed with error code " + status + '.');
             }
             try {
-                FileUtils.copyFileToDirectory(sourceFile, new File(timestampDirectory));
+                copyToDirectory(sourceFile, new File(timestampDirectory));
             } catch (IOException e) {
                 throw new MojoExecutionException("Failed to copy processed .jj file.", e);
             }
@@ -258,6 +260,55 @@ public class JJTreeJavaCC extends AbstractMojo {
     }
 
     /**
+     * Copies a file into a directory, overwriting any existing target. Uses {@link Files#copy} rather than plexus
+     * {@code FileUtils}, whose memory-mapped copy leaves the target locked on Windows until the mapping is
+     * garbage-collected. The copy is retried because Windows may still hold a short-lived handle on the freshly written
+     * source (antivirus/indexer scan), which surfaces as a transient "file used by another process" error.
+     */
+    private static void copyToDirectory(final File source, final File targetDirectory) throws IOException {
+        Files.createDirectories(targetDirectory.toPath());
+        final File target = new File(targetDirectory, source.getName());
+        withRetry(() -> Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING));
+    }
+
+    /** An IO operation with no result, retried by {@link #withRetry}. */
+    private interface IOAction {
+        void run() throws IOException;
+    }
+
+    /**
+     * Runs an IO action, retrying on {@link IOException} to ride out transient Windows file locks. The main offender is
+     * javacc's {@code OutputFile} constructor, which opens a reader on an already-generated shared file
+     * (JavaCharStream, TokenMgrError, ...) to checksum it and never closes it; with two grammars writing the same
+     * package, that leaked handle keeps the file locked on Windows until its {@link java.lang.ref.Cleaner} runs. Each
+     * failed attempt forces a GC to release such handles, then waits with a growing back-off and rethrows the last
+     * failure if all fail.
+     */
+    private static void withRetry(final IOAction action) throws IOException {
+        final int maxAttempts = 5;
+        for (int attempt = 1; ; attempt++) {
+            try {
+                action.run();
+                return;
+            } catch (IOException e) {
+                if (attempt == maxAttempts) {
+                    throw e;
+                }
+                // javacc leaks the reader (OutputFile ctor / checkVersion, both unfixed on master as of 7.0.13,
+                // https://github.com/javacc/javacc/blob/master/src/main/java/org/javacc/parser/OutputFile.java#L105
+                // and L173); only a GC closes it via its Cleaner. Drop this once javacc closes those readers.
+                System.gc();
+                try {
+                    Thread.sleep(50L * attempt);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw e;
+                }
+            }
+        }
+    }
+
+    /**
      * Adds @SuppressWarnings("unchecked") annotation to generated parser classes to suppress Java 17 warnings about raw
      * type usage in generated code.
      *
@@ -281,8 +332,12 @@ public class JJTreeJavaCC extends AbstractMojo {
                 writer.newLine();
             }
         }
-        sourceFile.delete();
-        fixedFile.renameTo(sourceFile);
+        replaceFile(fixedFile, sourceFile);
+    }
+
+    /** Replaces {@code target} with {@code source}, retrying to ride out transient Windows file locks. */
+    private static void replaceFile(final File source, final File target) throws IOException {
+        withRetry(() -> Files.move(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING));
     }
 
     /**
@@ -306,8 +361,7 @@ public class JJTreeJavaCC extends AbstractMojo {
                 writer.newLine();
             }
         }
-        sourceFile.delete();
-        fixedFile.renameTo(sourceFile);
+        replaceFile(fixedFile, sourceFile);
     }
 
     /**

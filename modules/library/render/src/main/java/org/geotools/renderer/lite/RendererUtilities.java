@@ -697,7 +697,7 @@ public final class RendererUtilities {
 
         Coordinate c = new Coordinate();
         Point pp = gf.createPoint(c);
-        c.y = centroid.getY();
+        c.y = centroid.getCoordinateSequence().getY(0);
         int max = -1;
         int maxIdx = -1;
         int containCounter = -1;

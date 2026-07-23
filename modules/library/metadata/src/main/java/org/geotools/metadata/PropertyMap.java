@@ -109,6 +109,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
      *
      * @author Martin Desruisseaux
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class Property implements Map.Entry<String, Object> {
         /** The property index. */
         final int index;

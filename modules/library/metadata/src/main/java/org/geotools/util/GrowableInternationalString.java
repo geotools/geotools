@@ -121,15 +121,12 @@ public class GrowableInternationalString extends AbstractInternationalString imp
     public synchronized void add(final Locale locale, final String string) throws IllegalArgumentException {
         if (string != null) {
             switch (localMap.size()) {
-                case 0: {
+                case 0 -> {
                     localMap = Collections.singletonMap(locale, string);
                     defaultValue = null; // Will be recomputed when first needed.
                     return;
                 }
-                case 1: {
-                    localMap = new LinkedHashMap<>(localMap);
-                    break;
-                }
+                case 1 -> localMap = new LinkedHashMap<>(localMap);
             }
             String old = localMap.get(locale);
 
@@ -195,7 +192,8 @@ public class GrowableInternationalString extends AbstractInternationalString imp
                 // Found two consecutive '_' characters
                 break;
             }
-            parts[i] = key.substring(position, position = next);
+            parts[i] = key.substring(position, next);
+            position = next;
         }
         throw new IllegalArgumentException(
                 MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "locale", key.substring(prefix.length())));

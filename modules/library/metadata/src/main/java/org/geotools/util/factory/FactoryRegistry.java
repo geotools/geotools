@@ -691,10 +691,9 @@ public class FactoryRegistry {
      * @return true if factory instance is available for use
      */
     private boolean isAvailable(final Object factory) {
-        if (!(factory instanceof OptionalFactory)) {
+        if (!(factory instanceof OptionalFactory optionalFactory)) {
             return true;
         }
-        final OptionalFactory optionalFactory = (OptionalFactory) factory;
         final Class<? extends OptionalFactory> type = optionalFactory.getClass();
         if (!testingAvailability.addAndCheck(type)) {
             throw new RecursiveSearchException(type);
@@ -728,23 +727,14 @@ public class FactoryRegistry {
         for (int i = 0; i < 4; i++) {
             final ClassLoader loader;
             try {
-                switch (i) {
-                    case 0:
-                        loader = getClass().getClassLoader();
-                        break;
-                    case 1:
-                        loader = FactoryRegistry.class.getClassLoader();
-                        break;
-                    case 2:
-                        loader = Thread.currentThread().getContextClassLoader();
-                        break;
-                    case 3:
-                        loader = ClassLoader.getSystemClassLoader();
-                        break;
+                loader = switch (i) {
+                    case 0 -> getClass().getClassLoader();
+                    case 1 -> FactoryRegistry.class.getClassLoader();
+                    case 2 -> Thread.currentThread().getContextClassLoader();
+                    case 3 -> ClassLoader.getSystemClassLoader();
                     // Add any supplementary class loaders here, if needed.
-                    default:
-                        throw new AssertionError(i); // Should never happen.
-                }
+                    default -> throw new AssertionError(i); // Should never happen.
+                };
             } catch (SecurityException exception) {
                 // We are not allowed to get a class loader.
                 // Continue; some other class loader may be available.

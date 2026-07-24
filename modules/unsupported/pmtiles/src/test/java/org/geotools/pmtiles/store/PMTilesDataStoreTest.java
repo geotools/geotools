@@ -26,10 +26,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import io.tileverse.geom.BoundingBox2D;
 import io.tileverse.pmtiles.InvalidHeaderException;
 import io.tileverse.pmtiles.PMTilesReader;
 import io.tileverse.pmtiles.PMTilesTestData;
-import io.tileverse.tiling.common.BoundingBox2D;
 import io.tileverse.tiling.matrix.TileMatrix;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -79,7 +79,7 @@ public class PMTilesDataStoreTest {
     @Before
     public void setUp() throws IOException, InvalidHeaderException {
         Path andorraPMTiles = PMTilesTestData.andorra(tmpFolder.getRoot().toPath());
-        reader = new PMTilesReader(andorraPMTiles);
+        reader = PMTilesReader.open(andorraPMTiles.toUri());
         store = new PMTilesDataStore(new PMTilesDataStoreFactory(), reader);
         store.setNamespaceURI(namespaceURI);
         store.setFeatureTypeFactory(CommonFactoryFinder.getFeatureTypeFactory(null));

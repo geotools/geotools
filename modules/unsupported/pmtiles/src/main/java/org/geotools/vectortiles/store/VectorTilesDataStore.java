@@ -19,7 +19,7 @@ package org.geotools.vectortiles.store;
 import static java.util.Objects.requireNonNull;
 
 import io.tileverse.jackson.databind.tilejson.v3.VectorLayer;
-import io.tileverse.pmtiles.store.VectorTileStore;
+import io.tileverse.vectortile.store.VectorTileStore;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;

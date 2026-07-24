@@ -47,7 +47,7 @@ public class VectorTilesFeatureSourceTest {
     @Before
     public void setUp() throws IOException {
         Path andorra = PMTilesTestData.andorra(tmpFolder.getRoot().toPath());
-        reader = new PMTilesReader(andorra);
+        reader = PMTilesReader.open(andorra.toUri());
         store = new PMTilesDataStore(new PMTilesDataStoreFactory(), reader);
         store.setNamespaceURI("http://test");
         store.setFeatureTypeFactory(CommonFactoryFinder.getFeatureTypeFactory(null));

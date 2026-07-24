@@ -18,24 +18,23 @@ The PMTiles DataStore provides read and query access to Protomaps PMTiles format
 - **Attribute Filters**: Filter data based on attribute values
 - **Vector Tiles**: Accesses Mapbox Vector Tile (MVT) data stored in PMTiles format
 - **Efficient Random Access**: Leverages PMTiles' optimized structure for fast tile retrieval
-- **Memory Caching**: Configurable in-memory caching with block alignment for performance optimization
-- **Block-Aligned Reads**: Optimizes cloud storage access with configurable block alignment
+- **Memory Caching**: Configurable in-memory caching for performance optimization
 
 ## How It Works
 
-Under the hood, this DataStore uses the [Tileverse PMTiles](https://github.com/tileverse/tileverse) library and the [Tileverse Range Reader](https://github.com/tileverse/tileverse) library to provide flexible, high-performance access to PMTiles files. The implementation:
+Under the hood, this DataStore uses the [Tileverse PMTiles](https://github.com/tileverse/tileverse) library and the [Tileverse Storage](https://github.com/tileverse/tileverse) library to provide flexible, high-performance access to PMTiles files. The implementation:
 
-1. Uses the Range Reader library to access PMTiles files from various sources (local, HTTP, S3, Azure, GCS)
+1. Uses the Storage library to access PMTiles files from various sources (local, HTTP, S3, Azure, GCS)
 2. Reads the PMTiles header and directory structure for efficient tile lookups
 3. Decodes Mapbox Vector Tiles (MVT) from the PMTiles archive
 4. Translates GeoTools queries to tile requests based on spatial bounds and zoom levels
 5. Provides a standard GeoTools DataStore interface for vector tile data
 
-The Range Reader library provides a unified interface for reading byte ranges from different storage backends, with support for:
+The Storage library provides a unified interface for reading byte ranges from different storage backends, with support for:
 
 - **Decorators**: Composable caching and optimization layers
 - **Authentication**: Flexible credential management for cloud storage and HTTP
-- **Performance**: Block-aligned reads and in-memory caching
+- **Performance**: In-memory caching of byte ranges
 
 ## Usage
 
@@ -75,8 +74,8 @@ DataStore store = DataStoreFinder.getDataStore(params);
 ```java
 Map<String, Object> params = new HashMap<>();
 params.put("pmtiles", "https://example.com/secure/data.pmtiles");
-params.put("io.tileverse.rangereader.http.username", "myuser");
-params.put("io.tileverse.rangereader.http.password", "mypassword");
+params.put("storage.http.username", "myuser");
+params.put("storage.http.password", "mypassword");
 
 DataStore store = DataStoreFinder.getDataStore(params);
 ```
@@ -86,7 +85,7 @@ DataStore store = DataStoreFinder.getDataStore(params);
 ```java
 Map<String, Object> params = new HashMap<>();
 params.put("pmtiles", "https://example.com/secure/data.pmtiles");
-params.put("io.tileverse.rangereader.http.bearer-token", "your-bearer-token");
+params.put("storage.http.bearer-token", "your-bearer-token");
 
 DataStore store = DataStoreFinder.getDataStore(params);
 ```
@@ -96,9 +95,9 @@ DataStore store = DataStoreFinder.getDataStore(params);
 ```java
 Map<String, Object> params = new HashMap<>();
 params.put("pmtiles", "s3://my-bucket/tiles/data.pmtiles");
-params.put("io.tileverse.rangereader.s3.region", "us-west-2");
-params.put("io.tileverse.rangereader.s3.aws-access-key-id", "AKIAIOSFODNN7EXAMPLE");
-params.put("io.tileverse.rangereader.s3.aws-secret-access-key", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY");
+params.put("storage.s3.region", "us-west-2");
+params.put("storage.s3.aws-access-key-id", "AKIAIOSFODNN7EXAMPLE");
+params.put("storage.s3.aws-secret-access-key", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY");
 
 DataStore store = DataStoreFinder.getDataStore(params);
 ```
@@ -108,7 +107,7 @@ DataStore store = DataStoreFinder.getDataStore(params);
 ```java
 Map<String, Object> params = new HashMap<>();
 params.put("pmtiles", "https://myaccount.blob.core.windows.net/container/tiles/data.pmtiles");
-params.put("io.tileverse.rangereader.azure.account-key", "BASE64_ENCODED_KEY");
+params.put("storage.azure.account-key", "BASE64_ENCODED_KEY");
 
 DataStore store = DataStoreFinder.getDataStore(params);
 ```
@@ -118,9 +117,9 @@ DataStore store = DataStoreFinder.getDataStore(params);
 ```java
 Map<String, Object> params = new HashMap<>();
 params.put("pmtiles", "https://storage.googleapis.com/my-bucket/tiles/data.pmtiles");
-params.put("io.tileverse.rangereader.gcs.project-id", "my-project");
+params.put("storage.gcs.project-id", "my-project");
 // Enable default credentials chain (looks for application default credentials)
-params.put("io.tileverse.rangereader.gcs.default-credentials-chain", true);
+params.put("storage.gcs.default-credentials-chain", true);
 
 DataStore store = DataStoreFinder.getDataStore(params);
 ```
@@ -130,12 +129,10 @@ DataStore store = DataStoreFinder.getDataStore(params);
 ```java
 Map<String, Object> params = new HashMap<>();
 params.put("pmtiles", "s3://my-bucket/tiles/data.pmtiles");
-params.put("io.tileverse.rangereader.s3.region", "us-west-2");
+params.put("storage.s3.region", "us-west-2");
 
-// Enable in-memory caching with block alignment
-params.put("io.tileverse.rangereader.caching.enabled", true);
-params.put("io.tileverse.rangereader.caching.blockaligned", true);
-params.put("io.tileverse.rangereader.caching.blocksize", 65536); // 64 KB blocks
+// Enable in-memory caching
+params.put("storage.caching.enabled", true);
 
 DataStore store = DataStoreFinder.getDataStore(params);
 ```
@@ -148,84 +145,73 @@ DataStore store = DataStoreFinder.getDataStore(params);
 |-----------|------|----------|-------------|
 | **pmtiles** | String | Yes | URI to a PMTiles file. Supports local files (file://), HTTP/HTTPS, AWS S3 (s3://), Azure Blob Storage, and Google Cloud Storage URLs |
 | **namespace** | String | No | Namespace URI to use for features |
-| **io.tileverse.rangereader.provider** | String | No | Force a specific RangeReader provider (file, http, s3, azure, gcs) |
+| **storage.provider** | String | No | Force a specific storage provider (file, http, s3, azure, gcs) |
 
 ### HTTP/HTTPS Parameters
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **io.tileverse.rangereader.http.timeout-millis** | Integer | HTTP connection timeout in milliseconds |
-| **io.tileverse.rangereader.http.trust-all-certificates** | Boolean | Trust all SSL/TLS certificates (use with caution, for development only) |
-| **io.tileverse.rangereader.http.username** | String | HTTP Basic Authentication username |
-| **io.tileverse.rangereader.http.password** | String | HTTP Basic Authentication password |
-| **io.tileverse.rangereader.http.bearer-token** | String | Bearer token for token-based authentication |
-| **io.tileverse.rangereader.http.api-key-headername** | String | Custom header name for API key authentication |
-| **io.tileverse.rangereader.http.api-key** | String | API key value |
-| **io.tileverse.rangereader.http.api-key-value-prefix** | String | Optional prefix for API key value (e.g., "Bearer " or "ApiKey ") |
+| **storage.http.timeout-millis** | Integer | HTTP connection timeout in milliseconds |
+| **storage.http.trust-all-certificates** | Boolean | Trust all SSL/TLS certificates (use with caution, for development only) |
+| **storage.http.username** | String | HTTP Basic Authentication username |
+| **storage.http.password** | String | HTTP Basic Authentication password |
+| **storage.http.bearer-token** | String | Bearer token for token-based authentication |
+| **storage.http.api-key-headername** | String | Custom header name for API key authentication |
+| **storage.http.api-key** | String | API key value |
+| **storage.http.api-key-value-prefix** | String | Optional prefix for API key value (e.g., "Bearer " or "ApiKey ") |
 
 ### Memory Caching Parameters
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **io.tileverse.rangereader.caching.enabled** | Boolean | Enable in-memory caching (default: false) |
-| **io.tileverse.rangereader.caching.blockaligned** | Boolean | Apply block alignment for cached byte ranges (default: false) |
-| **io.tileverse.rangereader.caching.blocksize** | Integer | Cache block size in bytes, must be power of 2 (default: 65536 = 64 KB) |
+| **storage.caching.enabled** | Boolean | Enable in-memory caching (default: false) |
 
 ### AWS S3 Parameters
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **io.tileverse.rangereader.s3.region** | String | AWS region (e.g., us-west-2) |
-| **io.tileverse.rangereader.s3.aws-access-key-id** | String | AWS access key ID |
-| **io.tileverse.rangereader.s3.aws-secret-access-key** | String | AWS secret access key |
-| **io.tileverse.rangereader.s3.use-default-credentials-provider** | Boolean | Use AWS default credentials provider chain (default: false) |
-| **io.tileverse.rangereader.s3.default-credentials-profile** | String | AWS credentials profile name to use |
-| **io.tileverse.rangereader.s3.force-path-style** | Boolean | Enable S3 path style access for S3-compatible services like MinIO (default: false) |
+| **storage.s3.region** | String | AWS region (e.g., us-west-2) |
+| **storage.s3.aws-access-key-id** | String | AWS access key ID |
+| **storage.s3.aws-secret-access-key** | String | AWS secret access key |
+| **storage.s3.use-default-credentials-provider** | Boolean | Use AWS default credentials provider chain (default: false) |
+| **storage.s3.default-credentials-profile** | String | AWS credentials profile name to use |
+| **storage.s3.force-path-style** | Boolean | Enable S3 path style access for S3-compatible services like MinIO (default: false) |
 
 ### Azure Blob Storage Parameters
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **io.tileverse.rangereader.azure.blob-name** | String | Set the blob name if the endpoint points to the account URL |
-| **io.tileverse.rangereader.azure.account-key** | String | Azure storage account key |
-| **io.tileverse.rangereader.azure.sas-token** | String | Shared Access Signature (SAS) token |
+| **storage.azure.blob-name** | String | Set the blob name if the endpoint points to the account URL |
+| **storage.azure.account-key** | String | Azure storage account key |
+| **storage.azure.sas-token** | String | Shared Access Signature (SAS) token |
 
 ### Google Cloud Storage Parameters
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **io.tileverse.rangereader.gcs.project-id** | String | Google Cloud project ID |
-| **io.tileverse.rangereader.gcs.quota-project-id** | String | Quota project ID for billing purposes |
-| **io.tileverse.rangereader.gcs.default-credentials-chain** | Boolean | Use default application credentials chain (default: false) |
+| **storage.gcs.project-id** | String | Google Cloud project ID |
+| **storage.gcs.quota-project-id** | String | Quota project ID for billing purposes |
+| **storage.gcs.default-credentials-chain** | Boolean | Use default application credentials chain (default: false) |
 
 ## Performance Optimization
 
 ### Memory Caching Architecture
 
-For optimal performance with cloud storage, enable in-memory caching with block alignment:
+For optimal performance with cloud storage, enable in-memory caching:
 
 ```
 Client Request → Memory Cache (fast, configurable size)
-              → Block Alignment (optimize read sizes)
-              → RangeReader (S3/Azure/HTTP/File)
+              → Storage Range Reader (S3/Azure/HTTP/File)
 ```
+
+PMTiles is optimized for byte-range requests natively; enabling the memory cache is sufficient.
 
 ### Recommended Settings for Cloud Storage
 
 ```java
-// Enable memory cache with block alignment for optimal cloud storage performance
-params.put("io.tileverse.rangereader.caching.enabled", true);
-params.put("io.tileverse.rangereader.caching.blockaligned", true);
-params.put("io.tileverse.rangereader.caching.blocksize", 65536); // 64 KB for cloud storage
+// Enable memory cache for optimal cloud storage performance
+params.put("storage.caching.enabled", true);
 ```
-
-### Block Alignment Strategy
-
-Block-aligned reads are particularly beneficial for cloud storage:
-- Reduces the number of HTTP requests
-- Aligns reads with cloud storage block boundaries
-- Trades slightly higher bandwidth for lower latency
-- Recommended block size: 64 KB for cloud, 4 KB for local files
 
 ## PMTiles Format
 
@@ -240,7 +226,7 @@ PMTiles is designed for efficient cloud-native tile serving:
 ## Implementation Notes
 
 - The DataStore is read-only (no writing capabilities)
-- All RangeReader implementations are thread-safe for concurrent server use
+- All storage range reader implementations are thread-safe for concurrent server use
 - Proper resource management: Use try-with-resources or call dispose() on the DataStore
 - The PMTiles directory is cached in memory for fast tile lookups
 - Tile data is decoded on-demand as features are requested
@@ -251,7 +237,6 @@ PMTiles is designed for efficient cloud-native tile serving:
 - Support for major cloud storage providers (S3, Azure, GCS)
 - Flexible HTTP authentication mechanisms
 - Multi-level caching for performance
-- Block-aligned reads for cloud optimization
 - Integration with GeoTools DataStore API
 - Spatial and attribute query support
 
@@ -270,11 +255,11 @@ PMTiles is designed for efficient cloud-native tile serving:
 
 - GeoTools Core modules
 - Tileverse PMTiles library (io.tileverse.pmtiles:tileverse-pmtiles)
-- Tileverse Range Reader library (io.tileverse.rangereader:tileverse-rangereader-all)
+- Tileverse Storage library (io.tileverse.storage:tileverse-storage-all)
 
 ## Resources
 
 - [PMTiles Specification](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md)
 - [Protomaps.com](https://protomaps.com/) - PMTiles hosting and tools
 - [Mapbox Vector Tiles Specification](https://github.com/mapbox/vector-tile-spec)
-- [Tileverse Range Reader](https://github.com/tileverse/tileverse-io)
+- [Tileverse Storage](https://github.com/tileverse/tileverse-io)

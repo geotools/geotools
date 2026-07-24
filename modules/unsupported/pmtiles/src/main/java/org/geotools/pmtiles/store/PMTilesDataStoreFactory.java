@@ -22,23 +22,18 @@ import io.tileverse.cache.CacheStats;
 import io.tileverse.io.ByteBufferPool;
 import io.tileverse.io.ByteBufferPool.PoolStatistics;
 import io.tileverse.pmtiles.PMTilesReader;
-import io.tileverse.rangereader.RangeReader;
-import io.tileverse.rangereader.RangeReaderFactory;
-import io.tileverse.rangereader.azure.AzureBlobRangeReaderProvider;
-import io.tileverse.rangereader.gcs.GoogleCloudStorageRangeReaderProvider;
-import io.tileverse.rangereader.http.HttpRangeReaderProvider;
-import io.tileverse.rangereader.s3.S3RangeReaderProvider;
-import io.tileverse.rangereader.spi.RangeReaderConfig;
-import io.tileverse.rangereader.spi.RangeReaderProvider;
+import io.tileverse.storage.StorageConfig;
+import io.tileverse.storage.StorageFactory;
+import io.tileverse.storage.azure.AzureBlobStorageProvider;
+import io.tileverse.storage.gcs.GoogleCloudStorageProvider;
+import io.tileverse.storage.http.HttpStorageProvider;
+import io.tileverse.storage.s3.S3StorageProvider;
+import io.tileverse.storage.spi.StorageProvider;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.Parameter;
@@ -54,8 +49,8 @@ import org.jspecify.annotations.NullMarked;
  * Factory for creating {@link PMTilesDataStore} instances.
  *
  * <p>This factory supports creating PMTiles datastores from various sources including local files, HTTP/HTTPS servers,
- * and cloud storage providers (AWS S3, Azure Blob Storage, Google Cloud Storage). It uses the Tileverse Range Reader
- * library's SPI mechanism to automatically select the appropriate {@link RangeReaderProvider} based on the URI scheme.
+ * and cloud storage providers (AWS S3, Azure Blob Storage, Google Cloud Storage). It uses the Tileverse Storage
+ * library's SPI mechanism to automatically select the appropriate {@link StorageProvider} based on the URI scheme.
  *
  * <p><b>Supported URI Schemes:</b>
  *
@@ -75,71 +70,66 @@ import org.jspecify.annotations.NullMarked;
  *   <li>{@linkplain #NAMESPACEP namespace} - Feature type namespace (optional)
  *   <li>{@linkplain #DISPLAY_TILE_SIZE displayTileSize} - Display tile size in pixels rendering clients use, defaults
  *       to {@value VectorTilesDataStore#DEFAULT_DISPLAY_TILE_SIZE}
- *   <li>{@linkplain #RANGEREADER_PROVIDER_ID io.tileverse.rangereader.provider} - Optionally force a specific
- *       {@code RangeReaderProvider} by its {@link RangeReaderProvider#getId() id}, defaults to automatic detection by
- *       {@link RangeReaderFactory#findBestProvider(io.tileverse.rangereader.spi.RangeReaderConfig)}
+ *   <li>{@linkplain #RANGEREADER_PROVIDER_ID storage.provider} - Optionally force a specific {@code StorageProvider} by
+ *       its {@link StorageProvider#getId() id}, defaults to automatic detection by
+ *       {@link StorageFactory#findProvider(StorageConfig)}
  *       <ul>
- *         <li>{@code http} for {@link HttpRangeReaderProvider}
- *         <li>{@code azure} for {@link AzureBlobRangeReaderProvider}
- *         <li>{@code s3} for {@link S3RangeReaderProvider}
- *         <li>{@code gcs} for {@link GoogleCloudStorageRangeReaderProvider}
+ *         <li>{@code http} for {@link HttpStorageProvider}
+ *         <li>{@code azure} for {@link AzureBlobStorageProvider}
+ *         <li>{@code s3} for {@link S3StorageProvider}
+ *         <li>{@code gcs} for {@link GoogleCloudStorageProvider}
  *       </ul>
  *   <li><strong>Caching parameters</strong>:
  *       <ul>
- *         <li>{@linkplain #MEMORY_CACHE_ENABLED io.tileverse.rangereader.caching.enabled} - Enable in-memory caching
+ *         <li>{@linkplain #MEMORY_CACHE_ENABLED storage.caching.enabled} - Enable in-memory caching
  *       </ul>
  *   <li><strong>HTTP(S) parameters</strong>:
  *       <ul>
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_CONNECTION_TIMEOUT_MILLIS
- *             io.tileverse.rangereader.http.timeout-millis} - HTTP connection timeout in milliseconds
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_TRUST_ALL_SSL_CERTIFICATES
- *             io.tileverse.rangereader.http.trust-all-certificates} - Trust all SSL/TLS certificates
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_AUTH_USERNAME io.tileverse.rangereader.http.username} - HTTP
- *             Basic Auth username
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_AUTH_PASSWORD io.tileverse.rangereader.http.password} - HTTP
- *             Basic Auth password
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_AUTH_BEARER_TOKEN io.tileverse.rangereader.http.bearer-token} -
- *             HTTP Bearer Token
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_AUTH_API_KEY_HEADERNAME
- *             io.tileverse.rangereader.http.api-key-headername} - API-Key header name
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_AUTH_API_KEY io.tileverse.rangereader.http.api-key} - API key
- *             value
- *         <li>{@linkplain HttpRangeReaderProvider#HTTP_AUTH_API_KEY_VALUE_PREFIX
- *             io.tileverse.rangereader.http.api-key-value-prefix} - API key value prefix
+ *         <li>{@linkplain HttpStorageProvider#HTTP_CONNECTION_TIMEOUT_MILLIS storage.http.timeout-millis} - HTTP
+ *             connection timeout in milliseconds
+ *         <li>{@linkplain HttpStorageProvider#HTTP_TRUST_ALL_SSL_CERTIFICATES storage.http.trust-all-certificates} -
+ *             Trust all SSL/TLS certificates
+ *         <li>{@linkplain HttpStorageProvider#HTTP_AUTH_USERNAME storage.http.username} - HTTP Basic Auth username
+ *         <li>{@linkplain HttpStorageProvider#HTTP_AUTH_PASSWORD storage.http.password} - HTTP Basic Auth password
+ *         <li>{@linkplain HttpStorageProvider#HTTP_AUTH_BEARER_TOKEN storage.http.bearer-token} - HTTP Bearer Token
+ *         <li>{@linkplain HttpStorageProvider#HTTP_AUTH_API_KEY_HEADERNAME storage.http.api-key-headername} - API-Key
+ *             header name
+ *         <li>{@linkplain HttpStorageProvider#HTTP_AUTH_API_KEY storage.http.api-key} - API key value
+ *         <li>{@linkplain HttpStorageProvider#HTTP_AUTH_API_KEY_VALUE_PREFIX storage.http.api-key-value-prefix} - API
+ *             key value prefix
  *       </ul>
  *   <li><strong>Azure Blob parameters</strong>:
  *       <ul>
- *         <li>{@linkplain AzureBlobRangeReaderProvider#AZURE_BLOB_NAME io.tileverse.rangereader.azure.blob-name} - Set
- *             the Azure blob name if the endpoint points to the account url
- *         <li>{@linkplain AzureBlobRangeReaderProvider#AZURE_ACCOUNT_KEY io.tileverse.rangereader.azure.account-key} -
- *             Azure Account access key
- *         <li>{@linkplain AzureBlobRangeReaderProvider#AZURE_SAS_TOKEN io.tileverse.rangereader.azure.sas-token} -
- *             Azure SAS token to use for authenticating requests
+ *         <li>{@linkplain AzureBlobStorageProvider#AZURE_BLOB_NAME storage.azure.blob-name} - Set the Azure blob name
+ *             if the endpoint points to the account url
+ *         <li>{@linkplain AzureBlobStorageProvider#AZURE_ACCOUNT_KEY storage.azure.account-key} - Azure Account access
+ *             key
+ *         <li>{@linkplain AzureBlobStorageProvider#AZURE_SAS_TOKEN storage.azure.sas-token} - Azure SAS token to use
+ *             for authenticating requests
  *       </ul>
  *   <li><strong>AWS S3 parameters</strong>:
  *       <ul>
- *         <li>{@linkplain S3RangeReaderProvider#S3_FORCE_PATH_STYLE io.tileverse.rangereader.s3.force-path-style} -
- *             Enable S3 path style access
- *         <li>{@linkplain S3RangeReaderProvider#S3_AWS_REGION io.tileverse.rangereader.s3.region} - Configure the
- *             region with which the AWS S3 SDK should communicate
- *         <li>{@linkplain S3RangeReaderProvider#S3_AWS_ACCESS_KEY_ID io.tileverse.rangereader.s3.aws-access-key-id} -
- *             AWS Access Key ID
- *         <li>{@linkplain S3RangeReaderProvider#S3_AWS_SECRET_ACCESS_KEY
- *             io.tileverse.rangereader.s3.aws-secret-access-key} - AWS Secret Access Key
- *         <li>{@linkplain S3RangeReaderProvider#S3_USE_DEFAULT_CREDENTIALS_PROVIDER
- *             io.tileverse.rangereader.s3.use-default-credentials-provider} - Use Default Credentials Provider
- *         <li>{@linkplain S3RangeReaderProvider#S3_DEFAULT_CREDENTIALS_PROFILE
- *             io.tileverse.rangereader.s3.default-credentials-profile} - Default Credentials Profile
+ *         <li>{@linkplain S3StorageProvider#S3_FORCE_PATH_STYLE storage.s3.force-path-style} - Enable S3 path style
+ *             access
+ *         <li>{@linkplain S3StorageProvider#S3_REGION storage.s3.region} - Configure the region with which the AWS S3
+ *             SDK should communicate
+ *         <li>{@linkplain S3StorageProvider#S3_ANONYMOUS storage.s3.anonymous} - Anonymous public access (skips
+ *             credential resolution; use for buckets like Overture Maps that allow unsigned reads)
+ *         <li>{@linkplain S3StorageProvider#S3_AWS_ACCESS_KEY_ID storage.s3.aws-access-key-id} - AWS Access Key ID
+ *         <li>{@linkplain S3StorageProvider#S3_AWS_SECRET_ACCESS_KEY storage.s3.aws-secret-access-key} - AWS Secret
+ *             Access Key
+ *         <li>{@linkplain S3StorageProvider#S3_USE_DEFAULT_CREDENTIALS_PROVIDER
+ *             storage.s3.use-default-credentials-provider} - Use Default Credentials Provider
+ *         <li>{@linkplain S3StorageProvider#S3_DEFAULT_CREDENTIALS_PROFILE storage.s3.default-credentials-profile} -
+ *             Default Credentials Profile
  *       </ul>
  *   <li><strong>Google Cloud Storage parameters</strong>:
  *       <ul>
- *         <li>{@linkplain GoogleCloudStorageRangeReaderProvider#GCS_PROJECT_ID io.tileverse.rangereader.gcs.project-id}
- *             - Google Cloud project ID
- *         <li>{@linkplain GoogleCloudStorageRangeReaderProvider#GCS_QUOTA_PROJECT_ID
- *             io.tileverse.rangereader.gcs.quota-project-id} - Quota ProjectId that specifies the project used for
- *             quota and billing purposes
- *         <li>{@linkplain GoogleCloudStorageRangeReaderProvider#GCS_USE_DEFAULT_APPLICTION_CREDENTIALS} - Whether to
- *             use the default application credentials chain
+ *         <li>{@linkplain GoogleCloudStorageProvider#GCS_PROJECT_ID storage.gcs.project-id} - Google Cloud project ID
+ *         <li>{@linkplain GoogleCloudStorageProvider#GCS_QUOTA_PROJECT_ID storage.gcs.quota-project-id} - Quota
+ *             ProjectId that specifies the project used for quota and billing purposes
+ *         <li>{@linkplain GoogleCloudStorageProvider#GCS_USE_DEFAULT_APPLICTION_CREDENTIALS} - Whether to use the
+ *             default application credentials chain
  *       </ul>
  * </ul>
  *
@@ -198,17 +188,12 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
             .build();
 
     /**
-     * Optional parameter to force selecting a specific {@link RangeReaderProvider} by its
-     * {@link RangeReaderProvider#getId() id}
+     * Optional parameter to force selecting a specific {@link StorageProvider} by its {@link StorageProvider#getId()
+     * id}
      */
     public static final Param RANGEREADER_PROVIDER_ID = RangeReaderParams.RANGEREADER_PROVIDER_ID;
 
-    /**
-     * Enable memory cache for raw byte data.
-     *
-     * <p>{@link RangeReaderParams#MEMORY_CACHE_BLOCK_ALIGNED} and {@link RangeReaderParams#MEMORY_CACHE_BLOCK_SIZE} are
-     * not included because they don't make sense for PMTiles, which is optimized for byte-range requests natively
-     */
+    /** Enable memory cache for raw byte data. */
     public static final Param MEMORY_CACHE_ENABLED = RangeReaderParams.MEMORY_CACHE_ENABLED;
 
     public static final Param HTTP_CONNECTION_TIMEOUT_MILLIS = RangeReaderParams.HTTP_CONNECTION_TIMEOUT_MILLIS;
@@ -222,6 +207,8 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
 
     /** Set the blob name if the endpoint points to the account url */
     public static final Param AZURE_BLOB_NAME = RangeReaderParams.AZURE_BLOB_NAME;
+    /** Anonymous public access (Container- or Blob-level) - skips Azure credential resolution entirely */
+    public static final Param AZURE_ANONYMOUS = RangeReaderParams.AZURE_ANONYMOUS;
     /** Account access key */
     public static final Param AZURE_ACCOUNT_KEY = RangeReaderParams.AZURE_ACCOUNT_KEY;
     /** SAS token to use for authenticating requests */
@@ -231,6 +218,8 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     public static final Param S3_FORCE_PATH_STYLE = RangeReaderParams.S3_FORCE_PATH_STYLE;
     /** Force an AWS region */
     public static final Param S3_AWS_REGION = RangeReaderParams.S3_AWS_REGION;
+    /** Anonymous public access - skips S3 credential resolution entirely */
+    public static final Param S3_ANONYMOUS = RangeReaderParams.S3_ANONYMOUS;
     /** AWS Access Key */
     public static final Param S3_AWS_ACCESS_KEY_ID = RangeReaderParams.S3_AWS_ACCESS_KEY_ID;
     /** AWS Secret Access Key */
@@ -315,20 +304,13 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Dynamically builds the list of configuration parameters based on which {@link RangeReaderProvider}s are
-     * available.
+     * Dynamically builds the list of configuration parameters based on which {@link StorageProvider}s are available.
      *
      * @see RangeReaderParams#appendAfter(org.geotools.api.data.DataAccessFactory.Param...)
      */
     @Override
     public Param[] getParametersInfo() {
-        List<String> ignore = Stream.of(
-                        RangeReaderParams.MEMORY_CACHE_BLOCK_ALIGNED, RangeReaderParams.MEMORY_CACHE_BLOCK_SIZE)
-                .map(p -> p.key)
-                .toList();
-
-        Predicate<Param> filter = p -> !ignore.contains(p.key);
-        return RangeReaderParams.appendAfter(filter, NAMESPACEP, URIP, DISPLAY_TILE_SIZE);
+        return RangeReaderParams.appendAfter(NAMESPACEP, URIP, DISPLAY_TILE_SIZE);
     }
 
     @Override
@@ -338,7 +320,7 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public boolean canProcess(java.util.Map<String, ?> params) {
-        params = RangeReaderConfig.normalizeKeys(params);
+        params = StorageConfig.normalizeKeys(params);
         boolean canProcess = DataStoreFactorySpi.super.canProcess(params);
         URI toURI;
         try {
@@ -373,19 +355,11 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
         return store;
     }
 
-    @SuppressWarnings("PMD.CloseResource")
     private PMTilesReader createPMTilesReader(Map<String, ?> params) throws IOException {
-        RangeReader reader = createRangeReader(params);
-        PMTilesReader pmTilesReader = new PMTilesReader(reader);
+        URI uri = lookup(URIP, params, URI.class);
+        PMTilesReader pmTilesReader = PMTilesReader.open(RangeReaderParams.toStorageConfig(uri, params));
         pmTilesReader.cacheManager(cacheManager);
         return pmTilesReader;
-    }
-
-    static RangeReader createRangeReader(Map<String, ?> params) throws IOException {
-        URI uri = lookup(URIP, params, URI.class);
-
-        Properties rangeReaderConfig = RangeReaderParams.toProperties(params);
-        return RangeReaderFactory.create(uri, rangeReaderConfig);
     }
 
     /**
@@ -401,7 +375,7 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
             if (rawValue == null) {
                 lookUp = null;
             } else {
-                lookUp = RangeReaderConfig.convertToURI(rawValue);
+                lookUp = StorageConfig.convertToURI(rawValue);
             }
         } else {
             lookUp = param.lookUp(params);

@@ -22,7 +22,7 @@
  *
  * <p>This package provides reusable abstractions for creating GeoTools DataStores that read vector tiles from tile
  * archives or services. While designed primarily for PMTiles, these abstractions can be used with any tiled vector data
- * source that implements the Tileverse {@link io.tileverse.pmtiles.store.VectorTileStore} interface.
+ * source that implements the Tileverse {@link io.tileverse.vectortile.store.VectorTileStore} interface.
  *
  * <h2>Architecture</h2>
  *
@@ -81,8 +81,8 @@
  *       pagination
  *   <li>{@link org.geotools.vectortiles.store.ExtractMultiBoundsFilterVisitor} - Extracts bounding boxes from complex
  *       filters as a list of individual envelopes from spatial predicates, for
- *       {@link io.tileverse.pmtiles.store.VectorTileStore} to skip tiles that would otherwise be included only as the
- *       result of union'ing all the bounding boxes in the GeoTools filter.
+ *       {@link io.tileverse.vectortile.store.VectorTileStore} to skip tiles that would otherwise be included only as
+ *       the result of union'ing all the bounding boxes in the GeoTools filter.
  *   <li>{@link org.geotools.vectortiles.store.VectorTilesFeaturePropertyAccessorFactory} - Property access for
  *       filtering at the {@link io.tileverse.vectortile.model.VectorTile.Layer.Feature vector tile} level
  * </ul>
@@ -182,7 +182,7 @@
  * <h2>Thread Safety</h2>
  *
  * <p>All classes in this package are designed for thread-safe concurrent access. The underlying
- * {@link io.tileverse.pmtiles.store.VectorTileStore} must also be thread-safe.
+ * {@link io.tileverse.vectortile.store.VectorTileStore} must also be thread-safe.
  *
  * <h2>Performance Considerations</h2>
  *
@@ -202,7 +202,7 @@
  *
  * @see org.geotools.vectortiles.store.VectorTilesDataStore
  * @see org.geotools.vectortiles.store.VectorTilesFeatureSource
- * @see io.tileverse.pmtiles.store.VectorTileStore
+ * @see io.tileverse.vectortile.store.VectorTileStore
  * @see <a href="https://github.com/mapbox/vector-tile-spec">Mapbox Vector Tile Specification</a>
  * @see <a href="https://github.com/mapbox/tilejson-spec">TileJSON Specification</a>
  */

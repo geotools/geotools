@@ -60,8 +60,7 @@
  * // Create datastore from S3
  * Map<String, Object> params = new HashMap<>();
  * params.put("pmtiles", "s3://my-bucket/tiles.pmtiles");
- * params.put("io.tileverse.rangereader.caching.enabled", true);
- * params.put("io.tileverse.rangereader.caching.blockaligned", true);
+ * params.put("storage.caching.enabled", true);
  *
  * PMTilesDataStore datastore = PMTilesDataStoreFactory.INSTANCE.createDataStore(params);
  *
@@ -87,9 +86,7 @@
  *
  * <ul>
  *   <li><b>namespace</b>: Feature type namespace URI
- *   <li><b>io.tileverse.rangereader.caching.enabled</b>: Enable memory caching (default: false)
- *   <li><b>io.tileverse.rangereader.caching.blockaligned</b>: Use block-aligned caching (default: false)
- *   <li><b>io.tileverse.rangereader.caching.blocksize</b>: Cache block size in bytes
+ *   <li><b>storage.caching.enabled</b>: Enable memory caching (default: false)
  * </ul>
  *
  * <h3>Cloud Provider Authentication</h3>
@@ -110,7 +107,6 @@
  *
  * <ul>
  *   <li>Enable memory caching for frequently accessed data
- *   <li>Use block-aligned caching to align reads with tile boundaries
  *   <li>Provide resolution hints ({@link org.geotools.util.factory.Hints#GEOMETRY_DISTANCE}) for automatic zoom level
  *       selection
  *   <li>Use spatial filters (BBOX) to minimize tile reads

@@ -18,7 +18,7 @@ package org.geotools.pmtiles.store;
 
 import io.tileverse.pmtiles.PMTilesReader;
 import io.tileverse.pmtiles.store.PMTilesVectorTileStore;
-import io.tileverse.rangereader.RangeReader;
+import io.tileverse.storage.RangeReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import org.geotools.vectortiles.store.VectorTilesDataStore;

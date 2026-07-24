@@ -49,7 +49,7 @@
   </developers>
 
   <properties>
-    <tileverse.version>1.4.0</tileverse.version>
+    <tileverse.version>2.0.2</tileverse.version>
   </properties>
   <!-- =========================================================== -->
   <!--     Dependency Mangement                                    -->
@@ -84,8 +84,8 @@
       <artifactId>tileverse-pmtiles</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.tileverse.rangereader</groupId>
-      <artifactId>tileverse-rangereader-all</artifactId>
+      <groupId>io.tileverse.storage</groupId>
+      <artifactId>tileverse-storage-all</artifactId>
     </dependency>
 
     <!-- test depedencies -->

@@ -18,17 +18,18 @@
 package org.geotools.tileverse.rangereader;
 
 import com.google.api.client.util.store.DataStoreFactory;
-import io.tileverse.rangereader.RangeReaderFactory;
-import io.tileverse.rangereader.azure.AzureBlobRangeReaderProvider;
-import io.tileverse.rangereader.gcs.GoogleCloudStorageRangeReaderProvider;
-import io.tileverse.rangereader.http.HttpRangeReaderProvider;
-import io.tileverse.rangereader.s3.S3RangeReaderProvider;
-import io.tileverse.rangereader.spi.AbstractRangeReaderProvider;
-import io.tileverse.rangereader.spi.RangeReaderConfig;
-import io.tileverse.rangereader.spi.RangeReaderParameter;
-import io.tileverse.rangereader.spi.RangeReaderProvider;
+import io.tileverse.storage.StorageConfig;
+import io.tileverse.storage.StorageFactory;
+import io.tileverse.storage.StorageParameter;
+import io.tileverse.storage.azure.AzureBlobStorageProvider;
+import io.tileverse.storage.gcs.GoogleCloudStorageProvider;
+import io.tileverse.storage.http.HttpStorageProvider;
+import io.tileverse.storage.s3.S3StorageProvider;
+import io.tileverse.storage.spi.AbstractStorageProvider;
+import io.tileverse.storage.spi.StorageProvider;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -44,13 +45,13 @@ import org.geotools.util.Converters;
  * <p>This class converts between:
  *
  * <ul>
- *   <li>{@link RangeReaderParameter} - Tileverse Range Reader SPI configuration parameters
+ *   <li>{@link StorageParameter} - Tileverse Storage SPI configuration parameters
  *   <li>{@link Param} - GeoTools DataStore factory parameters
- *   <li>{@link Properties} - Configuration properties for {@link RangeReaderFactory}
+ *   <li>{@link Properties} - Configuration properties for {@link StorageFactory}
  * </ul>
  *
- * <p><b>Purpose:</b> The Tileverse Range Reader library uses an SPI mechanism with {@link RangeReaderProvider}s that
- * declare their configuration parameters. This class dynamically discovers all available providers and converts their
+ * <p><b>Purpose:</b> The Tileverse Storage library uses an SPI mechanism with {@link StorageProvider}s that declare
+ * their configuration parameters. This class dynamically discovers all available providers and converts their
  * parameters to GeoTools DataStore parameters, enabling seamless configuration through GeoServer or other GeoTools
  * applications.
  *
@@ -68,70 +69,77 @@ import org.geotools.util.Converters;
  * <pre>{@code
  * // In PMTilesDataStoreFactory
  * Map<String, Object> connectionParams = ...;
- * Properties rangeReaderConfig = RangeReaderParams.toProperties(connectionParams);
- * RangeReader reader = RangeReaderFactory.create(uri, rangeReaderConfig);
+ * Properties storageConfig = RangeReaderParams.toProperties(connectionParams);
+ * try (Storage storage = StorageFactory.open(parent, storageConfig);
+ *         RangeReader reader = storage.openRangeReader(key)) { ... }
  * }</pre>
  *
- * @see RangeReaderFactory
- * @see RangeReaderProvider
+ * @see StorageFactory
+ * @see StorageProvider
  * @see PMTilesDataStoreFactory
  */
 public class RangeReaderParams {
 
     /**
-     * Param {@link DataStoreFactory} can use to force selecting a specific {@link RangeReaderProvider} with
-     * {@link RangeReaderParams#toProperties(Map) toProperties(connectionParameters)} and used to obtain the range reder
-     * through {@link RangeReaderFactory#create(Properties)} or {@link RangeReaderConfig#fromProperties(Properties)}
+     * Param {@link DataStoreFactory} can use to force selecting a specific {@link StorageProvider} with
+     * {@link RangeReaderParams#toProperties(Map) toProperties(connectionParameters)} and used to obtain the storage
+     * through {@link StorageFactory#open(Properties)} or {@link StorageConfig#fromProperties(Properties)}
      */
-    public static final Param RANGEREADER_PROVIDER_ID = dataStoreParam(RangeReaderConfig.FORCE_PROVIDER_ID);
+    public static final Param RANGEREADER_PROVIDER_ID = dataStoreParam(StorageConfig.FORCE_PROVIDER_ID);
 
-    public static final Param MEMORY_CACHE_ENABLED = dataStoreParam(AbstractRangeReaderProvider.MEMORY_CACHE_ENABLED);
-    public static final Param MEMORY_CACHE_BLOCK_ALIGNED =
-            dataStoreParam(AbstractRangeReaderProvider.MEMORY_CACHE_BLOCK_ALIGNED);
-    public static final Param MEMORY_CACHE_BLOCK_SIZE =
-            dataStoreParam(AbstractRangeReaderProvider.MEMORY_CACHE_BLOCK_SIZE);
+    public static final Param MEMORY_CACHE_ENABLED = dataStoreParam(AbstractStorageProvider.MEMORY_CACHE_ENABLED);
 
     public static final Param HTTP_CONNECTION_TIMEOUT_MILLIS =
-            dataStoreParam(HttpRangeReaderProvider.HTTP_CONNECTION_TIMEOUT_MILLIS);
+            dataStoreParam(HttpStorageProvider.HTTP_CONNECTION_TIMEOUT_MILLIS);
     public static final Param HTTP_TRUST_ALL_SSL_CERTIFICATES =
-            dataStoreParam(HttpRangeReaderProvider.HTTP_TRUST_ALL_SSL_CERTIFICATES);
-    public static final Param HTTP_AUTH_USERNAME = dataStoreParam(HttpRangeReaderProvider.HTTP_AUTH_USERNAME);
-    public static final Param HTTP_AUTH_PASSWORD = dataStoreParam(HttpRangeReaderProvider.HTTP_AUTH_PASSWORD);
-    public static final Param HTTP_AUTH_BEARER_TOKEN = dataStoreParam(HttpRangeReaderProvider.HTTP_AUTH_BEARER_TOKEN);
+            dataStoreParam(HttpStorageProvider.HTTP_TRUST_ALL_SSL_CERTIFICATES);
+    public static final Param HTTP_AUTH_USERNAME = dataStoreParam(HttpStorageProvider.HTTP_AUTH_USERNAME);
+    public static final Param HTTP_AUTH_PASSWORD = dataStoreParam(HttpStorageProvider.HTTP_AUTH_PASSWORD);
+    public static final Param HTTP_AUTH_BEARER_TOKEN = dataStoreParam(HttpStorageProvider.HTTP_AUTH_BEARER_TOKEN);
     public static final Param HTTP_AUTH_API_KEY_HEADERNAME =
-            dataStoreParam(HttpRangeReaderProvider.HTTP_AUTH_API_KEY_HEADERNAME);
-    public static final Param HTTP_AUTH_API_KEY = dataStoreParam(HttpRangeReaderProvider.HTTP_AUTH_API_KEY);
+            dataStoreParam(HttpStorageProvider.HTTP_AUTH_API_KEY_HEADERNAME);
+    public static final Param HTTP_AUTH_API_KEY = dataStoreParam(HttpStorageProvider.HTTP_AUTH_API_KEY);
     public static final Param HTTP_AUTH_API_KEY_VALUE_PREFIX =
-            dataStoreParam(HttpRangeReaderProvider.HTTP_AUTH_API_KEY_VALUE_PREFIX);
+            dataStoreParam(HttpStorageProvider.HTTP_AUTH_API_KEY_VALUE_PREFIX);
 
-    public static final Param AZURE_BLOB_NAME = dataStoreParam(AzureBlobRangeReaderProvider.AZURE_BLOB_NAME);
-    public static final Param AZURE_ACCOUNT_KEY = dataStoreParam(AzureBlobRangeReaderProvider.AZURE_ACCOUNT_KEY);
-    public static final Param AZURE_SAS_TOKEN = dataStoreParam(AzureBlobRangeReaderProvider.AZURE_SAS_TOKEN);
+    public static final Param AZURE_BLOB_NAME = dataStoreParam(AzureBlobStorageProvider.AZURE_BLOB_NAME);
+    public static final Param AZURE_ANONYMOUS = dataStoreParam(AzureBlobStorageProvider.AZURE_ANONYMOUS);
+    public static final Param AZURE_ACCOUNT_KEY = dataStoreParam(AzureBlobStorageProvider.AZURE_ACCOUNT_KEY);
+    public static final Param AZURE_SAS_TOKEN = dataStoreParam(AzureBlobStorageProvider.AZURE_SAS_TOKEN);
+    public static final Param AZURE_CONNECTION_STRING =
+            dataStoreParam(AzureBlobStorageProvider.AZURE_CONNECTION_STRING);
+    public static final Param AZURE_ENDPOINT = dataStoreParam(AzureBlobStorageProvider.AZURE_ENDPOINT);
+    public static final Param AZURE_MAX_RETRIES = dataStoreParam(AzureBlobStorageProvider.AZURE_MAX_RETRIES);
+    public static final Param AZURE_RETRY_DELAY = dataStoreParam(AzureBlobStorageProvider.AZURE_RETRY_DELAY);
+    public static final Param AZURE_MAX_RETRY_DELAY = dataStoreParam(AzureBlobStorageProvider.AZURE_MAX_RETRY_DELAY);
+    public static final Param AZURE_TRY_TIMEOUT = dataStoreParam(AzureBlobStorageProvider.AZURE_TRY_TIMEOUT);
 
-    public static final Param S3_FORCE_PATH_STYLE = dataStoreParam(S3RangeReaderProvider.S3_FORCE_PATH_STYLE);
-    public static final Param S3_AWS_REGION = dataStoreParam(S3RangeReaderProvider.S3_REGION);
-    public static final Param S3_AWS_ACCESS_KEY_ID = dataStoreParam(S3RangeReaderProvider.S3_AWS_ACCESS_KEY_ID);
-    public static final Param S3_AWS_SECRET_ACCESS_KEY = dataStoreParam(S3RangeReaderProvider.S3_AWS_SECRET_ACCESS_KEY);
+    public static final Param S3_FORCE_PATH_STYLE = dataStoreParam(S3StorageProvider.S3_FORCE_PATH_STYLE);
+    public static final Param S3_REQUESTER_PAYS = dataStoreParam(S3StorageProvider.S3_REQUESTER_PAYS);
+    public static final Param S3_ENDPOINT = dataStoreParam(S3StorageProvider.S3_ENDPOINT);
+    public static final Param S3_AWS_REGION = dataStoreParam(S3StorageProvider.S3_REGION);
+    public static final Param S3_ANONYMOUS = dataStoreParam(S3StorageProvider.S3_ANONYMOUS);
+    public static final Param S3_AWS_ACCESS_KEY_ID = dataStoreParam(S3StorageProvider.S3_AWS_ACCESS_KEY_ID);
+    public static final Param S3_AWS_SECRET_ACCESS_KEY = dataStoreParam(S3StorageProvider.S3_AWS_SECRET_ACCESS_KEY);
     public static final Param S3_USE_DEFAULT_CREDENTIALS_PROVIDER =
-            dataStoreParam(S3RangeReaderProvider.S3_USE_DEFAULT_CREDENTIALS_PROVIDER);
+            dataStoreParam(S3StorageProvider.S3_USE_DEFAULT_CREDENTIALS_PROVIDER);
     public static final Param S3_DEFAULT_CREDENTIALS_PROFILE =
-            dataStoreParam(S3RangeReaderProvider.S3_DEFAULT_CREDENTIALS_PROFILE);
+            dataStoreParam(S3StorageProvider.S3_DEFAULT_CREDENTIALS_PROFILE);
 
-    public static final Param GCS_PROJECT_ID = dataStoreParam(GoogleCloudStorageRangeReaderProvider.GCS_PROJECT_ID);
-    public static final Param GCS_QUOTA_PROJECT_ID =
-            dataStoreParam(GoogleCloudStorageRangeReaderProvider.GCS_QUOTA_PROJECT_ID);
+    public static final Param GCS_PROJECT_ID = dataStoreParam(GoogleCloudStorageProvider.GCS_PROJECT_ID);
+    public static final Param GCS_QUOTA_PROJECT_ID = dataStoreParam(GoogleCloudStorageProvider.GCS_QUOTA_PROJECT_ID);
+    public static final Param GCS_USER_PROJECT = dataStoreParam(GoogleCloudStorageProvider.GCS_USER_PROJECT);
     public static final Param GCS_USE_DEFAULT_APPLICTION_CREDENTIALS =
-            dataStoreParam(GoogleCloudStorageRangeReaderProvider.GCS_USE_DEFAULT_APPLICTION_CREDENTIALS);
+            dataStoreParam(GoogleCloudStorageProvider.GCS_USE_DEFAULT_APPLICTION_CREDENTIALS);
+    public static final Param GCS_ENDPOINT = dataStoreParam(GoogleCloudStorageProvider.GCS_ENDPOINT);
 
     /**
-     * Aggregated list of supported {@link RangeReaderProvider#getParameters() range reader parameters} converted to
+     * Aggregated list of supported {@link StorageProvider#getParameters() storage provider parameters} converted to
      * {@link Param DataAccessFactory.Param}
      */
     public static final List<Param> PROVIDER_PARAMS = List.of(
             RANGEREADER_PROVIDER_ID,
             MEMORY_CACHE_ENABLED,
-            MEMORY_CACHE_BLOCK_ALIGNED,
-            MEMORY_CACHE_BLOCK_SIZE,
             HTTP_CONNECTION_TIMEOUT_MILLIS,
             HTTP_TRUST_ALL_SSL_CERTIFICATES,
             HTTP_AUTH_USERNAME,
@@ -141,56 +149,80 @@ public class RangeReaderParams {
             HTTP_AUTH_API_KEY,
             HTTP_AUTH_API_KEY_VALUE_PREFIX,
             AZURE_BLOB_NAME,
+            AZURE_ANONYMOUS,
             AZURE_ACCOUNT_KEY,
             AZURE_SAS_TOKEN,
+            AZURE_CONNECTION_STRING,
+            AZURE_ENDPOINT,
+            AZURE_MAX_RETRIES,
+            AZURE_RETRY_DELAY,
+            AZURE_MAX_RETRY_DELAY,
+            AZURE_TRY_TIMEOUT,
             S3_FORCE_PATH_STYLE,
+            S3_REQUESTER_PAYS,
+            S3_ENDPOINT,
             S3_AWS_REGION,
+            S3_ANONYMOUS,
             S3_AWS_ACCESS_KEY_ID,
             S3_AWS_SECRET_ACCESS_KEY,
             S3_USE_DEFAULT_CREDENTIALS_PROVIDER,
             S3_DEFAULT_CREDENTIALS_PROFILE,
             GCS_PROJECT_ID,
             GCS_QUOTA_PROJECT_ID,
-            GCS_USE_DEFAULT_APPLICTION_CREDENTIALS);
+            GCS_USER_PROJECT,
+            GCS_USE_DEFAULT_APPLICTION_CREDENTIALS,
+            GCS_ENDPOINT);
 
     private RangeReaderParams() {
         // private constructor, utility class
     }
 
     /**
-     * Appends Range Reader configuration parameters after the specified datastore parameters.
+     * Appends all storage configuration parameters after the specified datastore parameters.
      *
-     * <p>This method is used by {@link PMTilesDataStoreFactory#getParametersInfo()} to dynamically include all Range
-     * Reader configuration parameters based on available providers.
+     * <p>This method is used by {@link PMTilesDataStoreFactory#getParametersInfo()} to dynamically include all storage
+     * configuration parameters based on available providers.
+     *
+     * @param dataStoreParams the base datastore parameters (e.g., URI, namespace)
+     * @return array combining datastore parameters followed by all storage parameters
+     */
+    public static Param[] appendAfter(Param... dataStoreParams) {
+        return appendAfter(param -> true, dataStoreParams);
+    }
+
+    /**
+     * Appends storage configuration parameters after the specified datastore parameters.
+     *
+     * <p>This method is used by {@link PMTilesDataStoreFactory#getParametersInfo()} to dynamically include all storage
+     * configuration parameters based on available providers.
      *
      * @param filter a filter predicate to apply in case some parameters need to be excluded
      * @param dataStoreParams the base datastore parameters (e.g., URI, namespace)
-     * @return array combining datastore parameters followed by all Range Reader parameters
+     * @return array combining datastore parameters followed by all storage parameters
      */
     public static Param[] appendAfter(Predicate<Param> filter, Param... dataStoreParams) {
-        List<Param> rangeReaderParams = PROVIDER_PARAMS;
-        return Stream.concat(
-                        Stream.of(dataStoreParams), rangeReaderParams.stream().filter(filter))
+        List<Param> storageParams = PROVIDER_PARAMS;
+        return Stream.concat(Stream.of(dataStoreParams), storageParams.stream().filter(filter))
                 .toArray(Param[]::new);
     }
 
     /**
-     * Converts a {@link RangeReaderParameter} to a GeoTools {@link Param}.
+     * Converts a {@link StorageParameter} to a GeoTools {@link Param}.
      *
      * <p>This conversion handles:
      *
      * <ul>
-     *   <li>Key mapping from Range Reader parameter keys
+     *   <li>Key mapping from storage parameter keys
      *   <li>Type conversion to GeoTools-compatible types
      *   <li>Default values and sample values
      *   <li>Parameter groups (basic vs advanced)
      *   <li>Descriptions and titles for UI display
      * </ul>
      *
-     * @param param the Range Reader parameter to convert
+     * @param param the storage parameter to convert
      * @return the equivalent GeoTools Param
      */
-    public static Param dataStoreParam(RangeReaderParameter<?> param) {
+    public static Param dataStoreParam(StorageParameter<?> param) {
         Object defaultValue = param.defaultValue().orElse(null);
         List<?> sampleValues = param.sampleValues();
         Object[] options = sampleValues.isEmpty() ? null : sampleValues.toArray();
@@ -211,10 +243,11 @@ public class RangeReaderParams {
     }
 
     /**
-     * Converts DataStore connection parameters to Range Reader configuration properties.
+     * Converts DataStore connection parameters to storage configuration properties.
      *
-     * <p>This method extracts all Range Reader-related parameters from the DataStore connection parameters map and
-     * converts them to a {@link Properties} object suitable for passing to {@link RangeReaderFactory#create}.
+     * <p>This method extracts all storage-related parameters from the DataStore connection parameters map and converts
+     * them to a {@link Properties} object suitable for passing to {@link StorageFactory#open(java.net.URI,
+     * Properties)}.
      *
      * <p>The conversion includes:
      *
@@ -231,10 +264,13 @@ public class RangeReaderParams {
      *
      * @param connectionParams the DataStore connection parameters (from
      *     {@link PMTilesDataStoreFactory#createDataStore})
-     * @return properties object suitable for {@link RangeReaderFactory#create}
+     * @return properties object suitable for {@link StorageFactory#open(java.net.URI, Properties)}
      */
     public static Properties toProperties(Map<String, ?> connectionParams) {
-        Map<String, Object> normalized = RangeReaderConfig.normalizeKeys(connectionParams);
+        // Rewrite any legacy io.tileverse.rangereader.* keys into the canonical storage.* form;
+        // Param.lookUp is keyed off param.key(), now storage.*, and would otherwise miss values
+        // persisted in older GeoServer catalogs.
+        Map<String, Object> normalized = StorageConfig.normalizeKeys(connectionParams);
         Properties configOpts = new Properties();
         addProperty(RANGEREADER_PROVIDER_ID, normalized, configOpts);
         PROVIDER_PARAMS.forEach(param -> addProperty(param, normalized, configOpts));
@@ -252,5 +288,17 @@ public class RangeReaderParams {
             String val = Converters.convert(lookUp, String.class);
             configOpts.setProperty(param.key, val);
         }
+    }
+
+    /**
+     * Builds a {@link StorageConfig} addressing {@code uri} as the leaf object, with backend-specific tuning taken from
+     * GeoTools connection {@code params}. Pass the result to {@code PMTilesReader.open(StorageConfig)} or
+     * {@code VersatilesReader.open(StorageConfig)}; the reader owns the resulting {@code Storage} and
+     * {@code RangeReader} and closes both.
+     */
+    public static StorageConfig toStorageConfig(URI uri, Map<String, ?> params) {
+        Properties merged = toProperties(params);
+        merged.setProperty(StorageConfig.URI_KEY, uri.toString());
+        return StorageConfig.fromProperties(merged);
     }
 }

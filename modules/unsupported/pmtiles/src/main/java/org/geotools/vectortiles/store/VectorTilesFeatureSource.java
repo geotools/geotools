@@ -24,15 +24,15 @@ import static org.geotools.util.factory.Hints.GEOMETRY_GENERALIZATION;
 import static org.geotools.util.factory.Hints.JTS_COORDINATE_SEQUENCE_FACTORY;
 import static org.geotools.util.factory.Hints.JTS_GEOMETRY_FACTORY;
 
+import io.tileverse.geom.BoundingBox2D;
 import io.tileverse.jackson.databind.tilejson.v3.VectorLayer;
-import io.tileverse.pmtiles.store.VectorTileStore;
-import io.tileverse.pmtiles.store.VectorTilesQuery;
-import io.tileverse.tiling.common.BoundingBox2D;
 import io.tileverse.tiling.matrix.TileMatrixSet;
 import io.tileverse.tiling.store.TileStore;
 import io.tileverse.tiling.store.TileStore.Strategy;
 import io.tileverse.vectortile.model.VectorTile;
 import io.tileverse.vectortile.model.VectorTile.Layer.Feature;
+import io.tileverse.vectortile.store.VectorTileStore;
+import io.tileverse.vectortile.store.VectorTilesQuery;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -121,7 +121,7 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  *
  * @see VectorTilesDataStore
  * @see VectorTilesFeatureReader
- * @see io.tileverse.pmtiles.store.VectorTileStore
+ * @see io.tileverse.vectortile.store.VectorTileStore
  */
 public class VectorTilesFeatureSource extends ContentFeatureSource {
 

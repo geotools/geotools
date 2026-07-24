@@ -131,7 +131,10 @@ public class DuckDBDialect extends BasicSQLDialect {
     //    }
 
     public List<String> getDatabaseInitSql() {
-        return List.of("install spatial", "load spatial");
+        // DuckDB 1.5 warns unless users explicitly choose the old or new axis-order behavior for affected
+        // spatial functions. The dialect does not currently emit those functions, but opt into X/Y order
+        // now to align with common GIS longitude/latitude behavior and DuckDB's planned future default.
+        return List.of("install spatial", "load spatial", "SET geometry_always_xy = true");
     }
 
     @Override

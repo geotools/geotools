@@ -128,7 +128,8 @@ public class DuckDBTestSetup extends JDBCTestSetup {
         Properties db = fixture;
         ensureDatabaseDirectory(db);
 
-        DuckdbDataSource dataSource = new DuckdbDataSource(List.of("install spatial", "load spatial"));
+        DuckdbDataSource dataSource =
+                new DuckdbDataSource(List.of("install spatial", "load spatial", "SET geometry_always_xy = true"));
         dataSource.setDriverClassName(db.getProperty("driver"));
         dataSource.setUrl(db.getProperty("url"));
 

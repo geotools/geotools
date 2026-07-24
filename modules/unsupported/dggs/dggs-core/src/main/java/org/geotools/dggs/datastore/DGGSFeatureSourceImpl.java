@@ -42,6 +42,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.dggs.DGGSFeatureCollection;
 import org.geotools.dggs.DGGSInstance;
@@ -209,16 +210,26 @@ public class DGGSFeatureSourceImpl<I> implements DGGSFeatureSource<I> {
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {
         DGGSQuerySplitter.PrePost split = splitter.split(query);
 
-        SimpleFeatureCollection result = delegate.getFeatures(split.pre);
         String[] propertyNames = query.getPropertyNames();
-        // need to wrap only if the geometry property is requested
-        if (propertyNames == null
-                || Arrays.stream(propertyNames).anyMatch(n -> GEOMETRY.equals(n) || DEFAULT_GEOMETRY.equals(n))) {
-            SimpleFeatureType outputSchema = getSchema();
-            if (propertyNames != null) {
-                outputSchema = SimpleFeatureTypeBuilder.retype(getSchema(), propertyNames);
+        // geometry is virtual: compute it whenever explicitly requested, or whenever a
+        // post-filter (e.g. bbox) needs to evaluate it, even if the caller's property
+        // selection did not ask for geometry in the output
+        boolean geometryRequested = propertyNames == null
+                || Arrays.stream(propertyNames).anyMatch(n -> GEOMETRY.equals(n) || DEFAULT_GEOMETRY.equals(n));
+        boolean needsGeometry = geometryRequested || split.post != Filter.INCLUDE;
+        if (needsGeometry && propertyNames != null) {
+            String zoneIdAttribute = dataStore.getZoneIdAttribute();
+            String[] delegateProperties = split.pre.getPropertyNames();
+            if (delegateProperties != null && Arrays.stream(delegateProperties).noneMatch(zoneIdAttribute::equals)) {
+                String[] expandedProperties = Arrays.copyOf(delegateProperties, delegateProperties.length + 1);
+                expandedProperties[delegateProperties.length] = zoneIdAttribute;
+                split.pre.setPropertyNames(expandedProperties);
             }
-            result = new DGGSFeatureCollection<>(result, outputSchema, dataStore.getZoneIdAttribute(), getDGGS());
+        }
+
+        SimpleFeatureCollection result = delegate.getFeatures(split.pre);
+        if (needsGeometry) {
+            result = new DGGSFeatureCollection<>(result, getSchema(), dataStore.getZoneIdAttribute(), getDGGS());
         }
         if (split.post != Filter.INCLUDE) {
             result = new FilteringSimpleFeatureCollection(result, split.post);
@@ -228,6 +239,12 @@ public class DGGSFeatureSourceImpl<I> implements DGGSFeatureSource<I> {
         } else if (delegate.getDataStore() instanceof Wrapper w && w.isWrapperFor(JDBCDataStore.class)) {
             JDBCDataStore jdbcDataStore = w.unwrap(JDBCDataStore.class);
             result = new AggregatorCollection(result, jdbcDataStore, new Query(split.pre), getSchema());
+        }
+        // drop back down to what the caller actually asked for (e.g. geometry pulled in
+        // above only to satisfy the post-filter, but not part of the requested properties)
+        if (propertyNames != null && (needsGeometry && !geometryRequested)) {
+            SimpleFeatureType outputSchema = SimpleFeatureTypeBuilder.retype(getSchema(), propertyNames);
+            result = new ReTypingFeatureCollection(result, outputSchema);
         }
         result = reprojectFeatureCollection(result, query);
         return result;

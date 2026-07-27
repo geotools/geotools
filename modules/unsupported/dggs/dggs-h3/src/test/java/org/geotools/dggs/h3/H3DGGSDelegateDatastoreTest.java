@@ -27,13 +27,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.dggs.datastore.DGGSDataStore;
 import org.geotools.dggs.datastore.DGGSStoreFactory;
 import org.geotools.dggs.gstore.DGGSFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,6 +89,52 @@ public class H3DGGSDelegateDatastoreTest extends H3DGGSInstanceTest {
             SimpleFeatureCollection above20 = source.getFeatures(landcoverQuery);
             assertEquals(25, above20.size());
 
+        } finally {
+            if (datastore != null) {
+                datastore.dispose();
+            }
+        }
+    }
+
+    @Test
+    public void testDelegateDatastoreBBoxWithPropertySelection() throws IOException, URISyntaxException {
+        DGGSStoreFactory factory = new DGGSStoreFactory();
+        URL resource = getClass().getResource("/org/geotools/dggs/h3/localsample.parquet");
+        File file = new File(resource.toURI());
+        String dataUri = file.toURI().toASCIIString();
+
+        Map<String, Object> params = new HashMap<>();
+        params.put(DGGSStoreFactory.ZONE_ID_COLUMN_NAME.key, "h3indexstr");
+        params.put(DGGSStoreFactory.RESOLUTION.key, "10");
+        params.put(DGGSStoreFactory.DGGS_FACTORY_ID.key, "H3");
+        params.put(DGGSStoreFactory.DELEGATE_PREFIX + "dbtype", "geoparquet");
+        params.put(DGGSStoreFactory.DELEGATE_PREFIX + "uri", dataUri);
+        DGGSDataStore<?> datastore = null;
+        try {
+            datastore = (DGGSDataStore<?>) factory.createDataStore(params);
+            String typeName = datastore.getTypeNames()[0];
+            DGGSFeatureSource<?> source = datastore.getFeatureSource(typeName);
+
+            SimpleFeatureCollection all = source.getFeatures();
+            int expectedCount = all.size();
+            ReferencedEnvelope bounds = DataUtilities.bounds(all);
+            Filter bboxFilter = FF.bbox(FF.property(""), bounds);
+
+            // bbox alone (full property set, geometry included): must match every feature
+            Query bboxOnly = new Query(typeName, bboxFilter);
+            assertEquals(expectedCount, source.getFeatures(bboxOnly).size());
+
+            // bbox + property selection that excludes geometry: must still match every
+            // feature, geometry is only needed internally to evaluate the bbox post-filter
+            Query bboxWithProperties = new Query(typeName, bboxFilter);
+            bboxWithProperties.setPropertyNames("landcover");
+            SimpleFeatureCollection restricted = source.getFeatures(bboxWithProperties);
+            assertEquals(expectedCount, restricted.size());
+
+            // and the output schema must honor the requested property selection
+            SimpleFeatureType resultSchema = restricted.getSchema();
+            assertEquals(1, resultSchema.getAttributeCount());
+            assertEquals("landcover", resultSchema.getDescriptor(0).getLocalName());
         } finally {
             if (datastore != null) {
                 datastore.dispose();

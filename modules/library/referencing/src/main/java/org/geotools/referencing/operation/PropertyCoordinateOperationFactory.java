@@ -89,9 +89,16 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
 
     ReferencingFactoryContainer factories;
 
+    /**
+     * Consulted when the property file has no entry for a CRS pair, so that the EPSG predefined operations are used
+     * before the analytic synthesis inherited from the default factory.
+     */
+    private final AuthorityBackedFactory authorityFactory;
+
     /** Creates a factory for the specified authority from the specified file. */
     public PropertyCoordinateOperationFactory(Hints userHints, int priority) {
         super(userHints, priority);
+        this.authorityFactory = new AuthorityBackedFactory(userHints);
         /*
          * Removes the hint processed by the super-class. This includes hints like
          * LENIENT_DATUM_SHIFT, which usually don't apply to authority factories.
@@ -139,7 +146,13 @@ public abstract class PropertyCoordinateOperationFactory extends DefaultCoordina
             }
         }
 
-        return result;
+        // Property file definitions win, see authorityFactory for the rest of the order. Callers reaching this
+        // factory through ReferencingFactoryFinder get it alone, without the registry wide
+        // ManyCoordinateOperationFactory that would otherwise consult the EPSG operations for them.
+        if (!result.isEmpty()) {
+            return result;
+        }
+        return authorityFactory.findFromDatabase(sourceCRS, targetCRS, limit);
     }
 
     private Set<CoordinateOperation> getCoordinateOperations(

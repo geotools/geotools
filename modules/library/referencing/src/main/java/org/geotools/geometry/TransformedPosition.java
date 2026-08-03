@@ -28,7 +28,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
@@ -148,7 +147,8 @@ public class TransformedPosition extends GeneralPosition {
         super(targetCRS);
         ensureNonNull("targetCRS", targetCRS);
         defaultCRS = CRS.equalsIgnoreMetadata(sourceCRS, targetCRS) ? null : sourceCRS;
-        factory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
+        factory = CRS.getCoordinateOperationFactory(
+                hints != null && Boolean.TRUE.equals(hints.get(Hints.LENIENT_DATUM_SHIFT)));
     }
 
     /**

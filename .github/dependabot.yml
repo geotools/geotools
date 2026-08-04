@@ -25,7 +25,6 @@ updates:
       - dependency-name: "org.apache.maven.plugins:*"
       - dependency-name: "org.codehaus.mojo:*"
       - dependency-name: "*:*maven-plugin*"
-      - dependency-name: "org.xmlunit:xmlunit-matchers"
       # Block Maven 4.x ecosystem until Maven 4 adopted as minimum
       - dependency-name: "org.codehaus.plexus:*"
         versions: [ "[4.0.0,)" ]

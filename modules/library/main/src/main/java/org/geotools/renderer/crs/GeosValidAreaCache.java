@@ -20,7 +20,6 @@ import static org.geotools.referencing.operation.projection.GeostationarySatelli
 import static org.geotools.referencing.operation.projection.MapProjection.AbstractProvider.CENTRAL_MERIDIAN;
 
 import java.awt.geom.Point2D;
-import java.util.regex.Pattern;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -64,8 +63,8 @@ final class GeosValidAreaCache {
     private static final Geometry WORLD_LEFT = GF.toGeometry(new Envelope(-360, -180, -90, 90));
     private static final Geometry WORLD_RIGHT = GF.toGeometry(new Envelope(180, 360, -90, 90));
 
-    /** CRS signature -> valid area already. */
-    private final SoftValueHashMap<CrsKey, Geometry> validAreaCache = new SoftValueHashMap<>();
+    /** GEOS CRS -> valid area. */
+    private final SoftValueHashMap<CoordinateReferenceSystem, Geometry> validAreaCache = new SoftValueHashMap<>();
 
     /**
      * Returns the valid area geometry for GEOS projected CRS in WGS84.
@@ -75,16 +74,19 @@ final class GeosValidAreaCache {
      */
     public Geometry getValidAreaInGeosCrs(CoordinateReferenceSystem geosCrs)
             throws FactoryException, TransformException {
-        CrsKey key = CrsKey.of(geosCrs);
-        Geometry cached = validAreaCache.get(key);
+        // the CRS is the key: equals/hashCode are structural, so two equal CRS instances share the
+        // entry. The comparison covers metadata too, not just the projection parameters, so CRSs
+        // that differ only by name or authority code get separate entries: a few wasted entries,
+        // never a wrong valid area
+        Geometry cached = validAreaCache.get(geosCrs);
         if (cached != null) return cached;
 
         synchronized (validAreaCache) {
-            cached = validAreaCache.get(key);
+            cached = validAreaCache.get(geosCrs);
             if (cached != null) return cached;
 
             Geometry wgs84 = buildValidAreaWgs84(geosCrs);
-            validAreaCache.put(key, wgs84);
+            validAreaCache.put(geosCrs, wgs84);
             return wgs84;
         }
     }
@@ -236,35 +238,6 @@ final class GeosValidAreaCache {
             return rightTranslated.union(left);
         } else {
             return poly;
-        }
-    }
-
-    /** CRS key based on normalized WKT, with pre-computed hash for faster lookups. */
-    private static final class CrsKey {
-        private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
-
-        private final String signature;
-        private final int hash;
-
-        private CrsKey(String signature) {
-            this.signature = signature;
-            this.hash = signature.hashCode();
-        }
-
-        static CrsKey of(CoordinateReferenceSystem crs) {
-            String wkt = crs.toWKT().replaceAll("\\s+", " ").trim();
-            String canonical = WHITESPACE_PATTERN.matcher(wkt).replaceAll(" ").trim();
-            return new CrsKey(canonical);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return (this == o) || (o instanceof CrsKey && signature.equals(((CrsKey) o).signature));
-        }
-
-        @Override
-        public int hashCode() {
-            return hash;
         }
     }
 }

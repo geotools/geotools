@@ -23,13 +23,12 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -153,7 +152,10 @@ public class CoverageProcessor {
      * not contains duplicated values. Note that while keys are {@link String} objects, the operation name are actually
      * case-insensitive because of the comparator used in the sorted map.
      */
-    private final Map<String, Operation> operations = Collections.synchronizedMap(new TreeMap<>(COMPARATOR));
+    private final Map<String, Operation> operations = new ConcurrentSkipListMap<>(COMPARATOR);
+
+    /** Set once {@link #scanForPlugins()} completed, gates the lock free {@link #operations} reads. */
+    private volatile boolean scanned;
 
     /**
      * The rendering hints for ImageN operations (never {@code null}). This field is usually given as argument to
@@ -364,28 +366,23 @@ public class CoverageProcessor {
      */
     protected void addOperation(final Operation operation) throws IllegalStateException {
         Utilities.ensureNonNull("operation", operation);
+        ensureScanned();
+        // the put/rollback in addOperation0 has to be atomic against a concurrent add
         synchronized (operations) {
-            if (operations.isEmpty()) {
-                scanForPlugins();
-            }
             addOperation0(operation);
         }
     }
 
     /**
-     * Removes the specified operation to this processor. This method is usually invoked at construction time before
-     * this processor is made accessible.
+     * Removes the specified operation from this processor. The removal is atomic, but it is not ordered against the
+     * put/rollback pair in {@link #addOperation(Operation)}: callers that may run concurrently with an operation being
+     * added have to serialize themselves.
      *
      * @param operation The operation to remove.
      */
     protected void removeOperation(final Operation operation) {
         Utilities.ensureNonNull("operation", operation);
-        synchronized (operations) {
-            if (operations.isEmpty()) {
-                return;
-            }
-            operations.remove(operation.getName().trim());
-        }
+        operations.remove(operation.getName().trim());
     }
 
     /**
@@ -407,12 +404,8 @@ public class CoverageProcessor {
      * as well as a list of its parameters.
      */
     public Collection<Operation> getOperations() {
-        synchronized (operations) {
-            if (operations.isEmpty()) {
-                scanForPlugins();
-            }
-            return operations.values();
-        }
+        ensureScanned();
+        return operations.values();
     }
 
     /**
@@ -425,15 +418,24 @@ public class CoverageProcessor {
     public Operation getOperation(String name) throws OperationNotFoundException {
         Utilities.ensureNonNull("name", name);
         name = name.trim();
+        ensureScanned();
+        final Operation operation = operations.get(name);
+        if (operation != null) {
+            return operation;
+        }
+        throw new OperationNotFoundException(MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+    }
+
+    /**
+     * Runs the lazy plugin scan once, and returns only once it completed: readers must not see a half populated map, so
+     * the map being non empty cannot be the signal, {@link #scanned} is.
+     */
+    private void ensureScanned() {
+        if (scanned) return;
         synchronized (operations) {
-            if (operations.isEmpty()) {
+            if (!scanned) {
                 scanForPlugins();
             }
-            final Operation operation = operations.get(name);
-            if (operation != null) {
-                return operation;
-            }
-            throw new OperationNotFoundException(MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
         }
     }
 
@@ -545,6 +547,8 @@ public class CoverageProcessor {
                     .filter(operation ->
                             !operations.containsKey(operation.getName().trim()))
                     .forEach(this::addOperation0);
+            // written last: the volatile write publishes the operations added above
+            scanned = true;
         }
     }
 

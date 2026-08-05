@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.DoubleStream;
 import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -293,6 +294,15 @@ public class ImageWorker {
     static boolean WARP_REDUCTION_ENABLED =
             Boolean.parseBoolean(System.getProperty(WARP_REDUCTION_ENABLED_KEY, "TRUE"));
 
+    /** Controls the mosaic-crop reduction */
+    public static final String MOSAIC_CROP_REDUCTION_ENABLED_KEY = "org.geotools.image.reduceMosaicCrop";
+
+    static boolean MOSAIC_CROP_REDUCTION_ENABLED =
+            Boolean.parseBoolean(System.getProperty(MOSAIC_CROP_REDUCTION_ENABLED_KEY, "TRUE"));
+
+    private static final int LAYOUT_BOUNDS_MASK =
+            ImageLayout.MIN_X_MASK | ImageLayout.MIN_Y_MASK | ImageLayout.WIDTH_MASK | ImageLayout.HEIGHT_MASK;
+
     /**
      * Workaround class for compressing PNG using the default PNGImageEncoder shipped with the JDK.
      *
@@ -379,6 +389,7 @@ public class ImageWorker {
             GTWarpPropertyGenerator.register(false);
         }
         LOGGER.log(Level.INFO, "Warp/affine reduction enabled: " + WARP_REDUCTION_ENABLED);
+        LOGGER.log(Level.INFO, "Mosaic/crop reduction enabled: " + MOSAIC_CROP_REDUCTION_ENABLED);
         GTAffinePropertyGenerator.register(false);
     }
 
@@ -4306,6 +4317,26 @@ public class ImageWorker {
             }
         }
 
+        // Single image mosaic over a nodata driven crop? Such a crop is a mosaic itself (see
+        // cropNoData), so the two copy every tile in turn, a destination raster and a pixel
+        // copy each. Fuse them, only the nodata range has to move over.
+        boolean fusedCropNoData = false;
+        if (MOSAIC_CROP_REDUCTION_ENABLED
+                && nodata == null
+                && type == MosaicDescriptor.MOSAIC_TYPE_OVERLAY
+                && images != null
+                && images.length == 1
+                && images[0] instanceof RenderedOp crop) {
+            Range cropNoData = singleSourceNoData(crop, background);
+            // the mosaic must stay inside the crop, or pixels the crop excluded would come back
+            if (cropNoData != null && crop.getBounds().contains(layoutBounds())) {
+                // replace the mosaic images, skipping the source operation and going to its source
+                images = new RenderedImage[] {(RenderedImage) crop.getSources().get(0)};
+                nodata = new Range[] {cropNoData};
+                fusedCropNoData = true;
+            }
+        }
+
         // ParameterBlock creation
         ParameterBlock pb = new ParameterBlock();
         int srcNum = 0;
@@ -4351,7 +4382,9 @@ public class ImageWorker {
             }
         }
 
-        if (noInternalNoData && thresholds != null) {
+        // thresholds stand in for a missing nodata: without the fusion the crop nodata would have
+        // reached this method as a source property, taking the same precedence over them
+        if (noInternalNoData && thresholds != null && !fusedCropNoData) {
             nodataNew = handleMosaicThresholds(thresholds, srcNum);
         }
         // Setting the parameters
@@ -4379,6 +4412,79 @@ public class ImageWorker {
             setROI(null);
         }
         return this;
+    }
+
+    /**
+     * The nodata range of a single source operation that crops/mosaic by filling with nodata, {@code null} when it does
+     * anything more, or when the fill is not a {@link #harmlessFill harmless} one. This "crop" is a mosaic: either a
+     * Mosaic operation, which is what {@link org.geotools.coverage.processing.operation.Crop} builds when nodata or a
+     * ROI are involved, or a Crop operation, which image processing renders as a mosaic too once it sees the nodata
+     * range. A Crop without nodata is instead a pure bounds change, its tiles are the source ones, so there is nothing
+     * to fuse and this method returns {@code null} for it.
+     */
+    private static Range singleSourceNoData(RenderedOp op, double[] background) {
+        if (op.getNumSources() != 1 || !(op.getSources().get(0) instanceof RenderedImage)) return null;
+        ParameterBlock params = op.getParameterBlock();
+        if ("Crop".equals(op.getOperationName())) {
+            // x, y, width, height, ROI, NoData, destNoData. destNoData is set only when the crop
+            // fills, hence the count check. The ROI needs no check of its own: the operation reduces
+            // it to its bounding box, so its whole effect is already in the bounds checked above.
+            if (params.getNumParameters() < 7) return null;
+            return harmlessFill(params.getObjectParameter(5), params.getObjectParameter(6), background);
+        }
+        if ("Mosaic".equals(op.getOperationName())) {
+            // type, alphas, ROIs, thresholds, background, NoData. Alphas or ROIs mean masking, not
+            // just cropping, and fusing those would need a ROI intersection.
+            if (params.getNumParameters() < 6
+                    || !MosaicDescriptor.MOSAIC_TYPE_OVERLAY.equals(params.getObjectParameter(0))
+                    || params.getObjectParameter(1) != null
+                    || params.getObjectParameter(2) != null) return null;
+            Object nodata = params.getObjectParameter(5);
+            if (!(nodata instanceof Range[] ranges) || ranges.length != 1) return null;
+            return harmlessFill(ranges[0], params.getObjectParameter(4), background);
+        }
+        return null;
+    }
+
+    /**
+     * The nodata range, when the fill that comes with it is one the enclosing mosaic writes anyway: either the fill is
+     * nodata itself, so the mosaic matches those pixels and replaces them, or it is the same constant the mosaic fills
+     * with. {@code null} when the two differ, dropping the crop would then change pixels.
+     *
+     * <p>Fill inside the nodata range: crop has {@code NoData = [0,0]} and {@code destNoData = {0}}, mosaic background
+     * 255. Before fusion the crop writes 0, then the mosaic matches it against {@code [0,0]} and writes 255. After
+     * fusion the mosaic matches the source nodata directly and writes 255, same pixels.
+     *
+     * <p>Fill equal to the mosaic background: {@code NoData = [0,0]}, {@code destNoData = {255}}, background 255.
+     * Before fusion the crop writes 255 and the mosaic passes it through, after fusion the mosaic matches the source
+     * nodata and fills 255, same pixels again.
+     *
+     * <p>Rejected instead: {@code NoData = [0,0]}, {@code destNoData = {1}}, background 255. Those pixels are 1 with
+     * the crop in place, they would become 255 without it.
+     */
+    private static Range harmlessFill(Object nodata, Object fill, double[] background) {
+        if (!(nodata instanceof Range range) || !(fill instanceof double[] fillValues)) return null;
+        if (fillValues.length == 0) return null;
+        if (DoubleStream.of(fillValues).allMatch(range::contains)) return range;
+
+        // same constant on both sides, lengths may differ (per band background, single value fill)
+        if (background == null || background.length == 0) return null;
+        double constant = background[0];
+        return DoubleStream.concat(DoubleStream.of(fillValues), DoubleStream.of(background))
+                        .allMatch(v -> v == constant)
+                ? range
+                : null;
+    }
+
+    /**
+     * Bounds pinned by the image layout hint, empty when it does not pin all four. An empty rectangle is contained in
+     * nothing, so a missing layout blocks the crop fusion.
+     */
+    private Rectangle layoutBounds() {
+        Object hint = getRenderingHint(ImageN.KEY_IMAGE_LAYOUT);
+        if (!(hint instanceof ImageLayout layout)) return new Rectangle();
+        if (!layout.isValid(LAYOUT_BOUNDS_MASK)) return new Rectangle();
+        return new Rectangle(layout.getMinX(null), layout.getMinY(null), layout.getWidth(null), layout.getHeight(null));
     }
 
     private ROI mosaicROIs(List sources, ROI... roiArray) {

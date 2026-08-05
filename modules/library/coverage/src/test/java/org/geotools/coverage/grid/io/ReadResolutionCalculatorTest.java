@@ -29,6 +29,13 @@ public class ReadResolutionCalculatorTest {
 
     private static final double NATIVE_RES = 0.02;
 
+    /** Geostationary projection, defined only over the satellite disc. */
+    private static final String GEOS_WKT = "PROJCS[\"GEOS\", GEOGCS[\"WGS84\", DATUM[\"WGS84\", "
+            + "SPHEROID[\"WGS84\", 6378137.0, 298.257223563]], PRIMEM[\"Greenwich\", 0.0], "
+            + "UNIT[\"degree\", 0.017453292519943295]], PROJECTION[\"GEOS\"], "
+            + "PARAMETER[\"central_meridian\", 0.0], PARAMETER[\"satellite_height\", 35785831.0], "
+            + "PARAMETER[\"false_easting\", 0.0], PARAMETER[\"false_northing\", 0.0], UNIT[\"m\", 1.0]]";
+
     @Test
     public void testReadResolutionCalculator() throws Exception {
         // &BBOX=-10000000,10000000,0,20000000&WIDTH=256&HEIGHT=256
@@ -65,6 +72,31 @@ public class ReadResolutionCalculatorTest {
         // Before the fix, that computation would have returned a wrong full resolution
         assertEquals(1.53466E-4, requestedResolution[0], 1e-6);
         assertEquals(1.53466E-4, requestedResolution[1], 1e-6);
+    }
+
+    @Test
+    public void testAccurateResolutionToleratesPointsOutsideProjectionValidity() throws Exception {
+        // a geostationary tile straddling the disc border: the calculator must skip the probe
+        // points that fail to transform and still return a computed resolution, not the native one
+        final CoordinateReferenceSystem requestCRS = CRS.parseWKT(GEOS_WKT);
+        final CoordinateReferenceSystem nativeCRS = CRS.decode("EPSG:4326", true);
+        // a tile in the geostationary CRS whose area reaches past the disc edge
+        final ReferencedEnvelope requestBounds = new ReferencedEnvelope(4000000, 5400000, 0, 1400000, requestCRS);
+        final ReferencedEnvelope readBounds = requestBounds.transform(nativeCRS, true);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 256, 256), requestBounds);
+
+        // a native resolution fine enough that maxOversamplingFactor does not clamp the result,
+        // otherwise the assertions below would check the clamp instead of the probe minimum
+        final double nativeRes = 0.001;
+        ReadResolutionCalculator calculator =
+                new ReadResolutionCalculator(gg, nativeCRS, new double[] {nativeRes, nativeRes});
+        calculator.setAccurateResolution(true);
+        double[] res = calculator.computeRequestedResolution(readBounds);
+
+        // the shortest reprojected probe segment, well away from both the native resolution and
+        // the classic envelope based one, so this pins the accurate computation itself
+        assertEquals(0.0517345, res[0], 1e-7);
+        assertEquals(0.0517345, res[1], 1e-7);
     }
 
     @Test

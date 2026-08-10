@@ -260,7 +260,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>utilities</artifactId>
+      <artifactId>imagen-utilities</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
@@ -268,7 +268,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>rendered-image-browser</artifactId>
+      <artifactId>imagen-rendered-image-browser</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

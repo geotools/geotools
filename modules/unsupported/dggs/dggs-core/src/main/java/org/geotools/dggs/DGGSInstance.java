@@ -17,6 +17,7 @@
 package org.geotools.dggs;
 
 import com.google.common.collect.Iterators;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -190,6 +191,22 @@ public interface DGGSInstance<I> extends AutoCloseable {
      *     If false, return a filter matching only the children at the target resolution instead.
      */
     Filter getChildFilter(FilterFactory ff, I zoneId, int resolution, boolean upTo, AttributeDescriptor zoneAttribute);
+
+    /**
+     * Given several parent ids, returns a filter matching all possible children of any of them, at the given
+     * resolution. The default implementation just OR's the individual {@link #getChildFilter} results; subclasses can
+     * override to coalesce adjacent/overlapping child ranges into fewer predicates.
+     *
+     * @param zoneIds The parent zone ids
+     */
+    default Filter getChildrenFilter(
+            FilterFactory ff, List<I> zoneIds, int resolution, boolean upTo, AttributeDescriptor zoneAttribute) {
+        List<Filter> filters = new ArrayList<>();
+        for (I zoneId : zoneIds) {
+            filters.add(getChildFilter(ff, zoneId, resolution, upTo, zoneAttribute));
+        }
+        return filters.size() == 1 ? filters.get(0) : ff.or(filters);
+    }
 
     /** Parses a string representation of a zone id into the proper type */
     I parseId(String id);

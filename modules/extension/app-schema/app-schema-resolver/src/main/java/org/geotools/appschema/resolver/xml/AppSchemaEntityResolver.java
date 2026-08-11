@@ -47,6 +47,7 @@ public class AppSchemaEntityResolver implements EntityResolver3 {
     public AppSchemaEntityResolver(SchemaResolver resolver) {
         this.resolver = resolver;
         this.entityResolver = NullEntityResolver.INSTANCE;
+        this.resolver.setEntityResolver(this.entityResolver);
     }
 
     /**
@@ -59,6 +60,7 @@ public class AppSchemaEntityResolver implements EntityResolver3 {
     public AppSchemaEntityResolver(SchemaResolver resolver, Hints hints) {
         this.resolver = resolver;
         this.entityResolver = GeoTools.getEntityResolver(hints);
+        this.resolver.setEntityResolver(this.entityResolver);
     }
 
     /**
@@ -71,6 +73,7 @@ public class AppSchemaEntityResolver implements EntityResolver3 {
     public AppSchemaEntityResolver(SchemaResolver resolver, EntityResolver entityResolver) {
         this.resolver = resolver;
         this.entityResolver = entityResolver != null ? entityResolver : NullEntityResolver.INSTANCE;
+        this.resolver.setEntityResolver(this.entityResolver);
     }
 
     @Override

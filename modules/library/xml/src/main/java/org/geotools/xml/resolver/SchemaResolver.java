@@ -17,6 +17,7 @@
 
 package org.geotools.xml.resolver;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -108,11 +110,13 @@ public class SchemaResolver {
         try {
             locationUri = new URI(location);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            LOGGER.log(Level.FINE, "Unable to resolve '" + location + "' with context: '" + context + "'", e);
+            throw new RuntimeException("Failed to resolve schema location: " + location + " with context: " + context);
         }
         if (!locationUri.isAbsolute()) {
             // Location is relative, so need to resolve against context.
             if (context == null) {
+                LOGGER.log(Level.FINE, "Unable to resolve '" + location + "' with context: '" + context + "'");
                 throw new RuntimeException("Could not determine absolute schema location for "
                         + location
                         + " because context schema location is unknown");
@@ -130,6 +134,7 @@ public class SchemaResolver {
             try {
                 contextUri = new URI(originalContext);
             } catch (URISyntaxException e) {
+                LOGGER.log(Level.FINE, "Unable to resolve context: '" + originalContext + "'", e);
                 throw new RuntimeException(e);
             }
             locationUri = contextUri.resolve(locationUri);
@@ -165,7 +170,11 @@ public class SchemaResolver {
         }
         // Use download cache.
         if (resolvedLocation == null && cache != null) {
-            resolvedLocation = cache.resolveLocation(location);
+            try {
+                resolvedLocation = cache.resolveLocation(location);
+            } catch (IOException e) {
+                throw new RuntimeException(String.format("Failed to resolve %s", location), e);
+            }
         }
         // Fail if still not resolved.
         if (resolvedLocation == null) {
@@ -204,6 +213,9 @@ public class SchemaResolver {
      */
     public static String getSimpleHttpResourcePath(String location, boolean keepQuery) {
         URI locationUri;
+        if (location == null) {
+            throw new NullPointerException("Unable to resolve location: null");
+        }
         try {
             locationUri = new URI(location);
         } catch (URISyntaxException e) {

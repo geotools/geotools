@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -95,6 +96,43 @@ public class SchemaCacheTest {
                         .getCanonicalFile()
                         .toURI()
                         .toString());
+    }
+
+    /** A location whose path resolves above the cache directory is not served, even if the file exists. */
+    @Test
+    public void resolveLocationAboveCacheDirectory() throws Exception {
+        File root = folder.newFolder("schemas");
+        File cacheDirectory = new File(root, "cache");
+        Assert.assertTrue(cacheDirectory.mkdirs());
+        Assert.assertTrue(new File(root, "other.xsd").createNewFile());
+        String location = "http://schemas.example.org/../../../../other.xsd";
+        SchemaCache cache = new SchemaCache(cacheDirectory, false);
+
+        FileNotFoundException e =
+                Assert.assertThrows(FileNotFoundException.class, () -> cache.resolveLocation(location));
+        Assert.assertEquals("Schema location restricted to cache directory", e.getMessage());
+
+        RuntimeException re =
+                Assert.assertThrows(RuntimeException.class, () -> new SchemaResolver(cache).resolve(location));
+        Assert.assertEquals("Failed to resolve " + location, re.getMessage());
+        Assert.assertEquals(FileNotFoundException.class, re.getCause().getClass());
+    }
+
+    /** A sibling directory whose name starts with the cache directory name is outside the cache. */
+    @Test
+    public void resolveLocationInSiblingDirectory() throws Exception {
+        File root = folder.newFolder("sibling");
+        File cacheDirectory = new File(root, "cache");
+        Assert.assertTrue(cacheDirectory.mkdirs());
+        File sibling = new File(root, "cache-old");
+        Assert.assertTrue(sibling.mkdirs());
+        Assert.assertTrue(new File(sibling, "other.xsd").createNewFile());
+        SchemaCache cache = new SchemaCache(cacheDirectory, false);
+
+        FileNotFoundException e = Assert.assertThrows(
+                FileNotFoundException.class,
+                () -> cache.resolveLocation("http://schemas.example.org/../../../../cache-old/other.xsd"));
+        Assert.assertEquals("Schema location restricted to cache directory", e.getMessage());
     }
 
     /**

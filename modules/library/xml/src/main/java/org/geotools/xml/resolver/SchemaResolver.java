@@ -17,6 +17,7 @@
 
 package org.geotools.xml.resolver;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,7 +26,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.util.factory.GeoTools;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.EntityResolver2;
 
 /**
  * XML Schema resolver that maps absolute URLs to local URL resources.
@@ -63,6 +69,8 @@ public class SchemaResolver {
      */
     private Map<String, String> resolvedLocationToOriginalLocationMap = new ConcurrentHashMap<>();
 
+    /** Used to verify {@code xsd} */
+    private EntityResolver entityResolver;
     /**
      * Constructor.
      *
@@ -72,6 +80,7 @@ public class SchemaResolver {
         this.catalog = catalog;
         this.classpath = classpath;
         this.cache = cache;
+        this.entityResolver = GeoTools.getEntityResolver();
     }
 
     /** Constructor. */
@@ -95,6 +104,27 @@ public class SchemaResolver {
     }
 
     /**
+     * Set the entity resolver used to verify xsd locations.
+     *
+     * @param entityResolver
+     */
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
+    }
+
+    /**
+     * Get entity resolver used to verify xsd locations.
+     *
+     * @return EntityResolver
+     */
+    public EntityResolver getEntityResolver() {
+        if (this.entityResolver == null) {
+            return GeoTools.getEntityResolver();
+        }
+        return this.entityResolver;
+    }
+
+    /**
      * Resolve an absolute or relative URL to a local file or jar URL. Relative URLs are resolved against a context
      * schema URL if provided.
      *
@@ -105,14 +135,25 @@ public class SchemaResolver {
      */
     public String resolve(String location, String context) {
         URI locationUri;
+        if (getEntityResolver() instanceof EntityResolver2 entityResolver2) {
+            try {
+                entityResolver2.resolveEntity(null, null, context, location);
+            } catch (SAXException | IOException e) {
+                LOGGER.log(Level.FINE, "Unable to resolve '" + location + "' with context: '" + context + "'", e);
+                throw new RuntimeException(
+                        "Failed to resolve schema location: " + location + " with context: " + context);
+            }
+        }
         try {
             locationUri = new URI(location);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            LOGGER.log(Level.FINE, "Unable to resolve '" + location + "' with context: '" + context + "'", e);
+            throw new RuntimeException("Failed to resolve schema location: " + location + " with context: " + context);
         }
         if (!locationUri.isAbsolute()) {
             // Location is relative, so need to resolve against context.
             if (context == null) {
+                LOGGER.log(Level.FINE, "Unable to resolve '" + location + "' with context: '" + context + "'");
                 throw new RuntimeException("Could not determine absolute schema location for "
                         + location
                         + " because context schema location is unknown");
@@ -130,7 +171,17 @@ public class SchemaResolver {
             try {
                 contextUri = new URI(originalContext);
             } catch (URISyntaxException e) {
+                LOGGER.log(Level.FINE, "Unable to resolve context: '" + originalContext + "'", e);
                 throw new RuntimeException(e);
+            }
+            if (getEntityResolver() instanceof EntityResolver2 entityResolver2) {
+                try {
+                    entityResolver2.resolveEntity(null, null, originalContext, location);
+                } catch (SAXException | IOException e) {
+                    LOGGER.log(Level.FINE, "Unable to resolve '" + location + "' with context: '" + context + "'", e);
+                    throw new RuntimeException(
+                            "Failed to resolve schema location: " + location + " with context: " + context);
+                }
             }
             locationUri = contextUri.resolve(locationUri);
         }
@@ -165,7 +216,12 @@ public class SchemaResolver {
         }
         // Use download cache.
         if (resolvedLocation == null && cache != null) {
-            resolvedLocation = cache.resolveLocation(location);
+            try {
+                getEntityResolver().resolveEntity(null, location);
+                resolvedLocation = cache.resolveLocation(location);
+            } catch (SAXException | IOException e) {
+                throw new RuntimeException("Failed to resolve %s".formatted(location), e);
+            }
         }
         // Fail if still not resolved.
         if (resolvedLocation == null) {
@@ -204,6 +260,9 @@ public class SchemaResolver {
      */
     public static String getSimpleHttpResourcePath(String location, boolean keepQuery) {
         URI locationUri;
+        if (location == null) {
+            throw new NullPointerException("Unable to resolve location: null");
+        }
         try {
             locationUri = new URI(location);
         } catch (URISyntaxException e) {

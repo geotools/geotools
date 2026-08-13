@@ -42,7 +42,7 @@
     <h2.version>2.2.224</h2.version>
     <hsqldb.version>2.7.4</hsqldb.version>
     <httpclient4.version>4.5.14</httpclient4.version>
-    <httpclient5.version>5.6.2</httpclient5.version>
+    <httpclient5.version>5.6.3</httpclient5.version>
     <httpcore5.version>5.4.3</httpcore5.version>
     <imageio.ext.version>2.1-SNAPSHOT</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>

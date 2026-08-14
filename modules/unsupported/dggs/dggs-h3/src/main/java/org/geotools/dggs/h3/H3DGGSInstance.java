@@ -352,6 +352,50 @@ public class H3DGGSInstance implements DGGSInstance<Long> {
     }
 
     @Override
+    public Filter getChildrenFilter(
+            FilterFactory ff, List<Long> zoneIds, int resolution, boolean upTo, AttributeDescriptor zoneAttribute) {
+        Class<?> binding = zoneAttribute.getType().getBinding();
+        // range merge relies on numeric ordering matching id ordering, not true for the hex string encoding
+        if (!Number.class.isAssignableFrom(binding)) {
+            return DGGSInstance.super.getChildrenFilter(ff, zoneIds, resolution, upTo, zoneAttribute);
+        }
+
+        // one range per zone, computed from that zone alone (not the whole batch's span), so trailing
+        // unused digits stay filled with each zone's own sentinel bits and the range stays as tight
+        // as a single getChildFilter call would produce
+        List<long[]> ranges = new ArrayList<>();
+        for (Long zoneId : zoneIds) {
+            H3Index idx = new H3Index(zoneId);
+            ranges.add(new long[] {idx.lowestIdChild(resolution), idx.highestIdChild(resolution)});
+        }
+        List<long[]> merged = mergeRanges(ranges);
+
+        Expression prop = ff.property(zoneAttribute.getLocalName());
+        List<Filter> filters = merged.stream()
+                .map(range -> ff.between(prop, ff.literal(range[0]), ff.literal(range[1])))
+                .collect(Collectors.toList());
+        return filters.size() == 1 ? filters.get(0) : ff.or(filters);
+    }
+
+    /** Sorts ranges by lower bound and coalesces adjacent/overlapping ones, each range as {@code [lowest, highest]}. */
+    private static List<long[]> mergeRanges(List<long[]> ranges) {
+        List<long[]> sorted = new ArrayList<>(ranges);
+        sorted.sort((a, b) -> Long.compare(a[0], b[0]));
+
+        List<long[]> merged = new ArrayList<>();
+        for (long[] range : sorted) {
+            long[] last = merged.isEmpty() ? null : merged.get(merged.size() - 1);
+            // "+ 1" also merges touching ranges (no gap between them), not just overlapping ones
+            if (last != null && range[0] <= last[1] + 1) {
+                last[1] = Math.max(last[1], range[1]);
+            } else {
+                merged.add(range);
+            }
+        }
+        return merged;
+    }
+
+    @Override
     public Long parseId(String id) {
         return h3.stringToH3(id);
     }

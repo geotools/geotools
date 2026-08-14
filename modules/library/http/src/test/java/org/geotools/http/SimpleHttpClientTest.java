@@ -151,6 +151,38 @@ public class SimpleHttpClientTest {
     }
 
     /**
+     * A capabilities document may expose an online resource with raw, non-ASCII characters. HttpClient 4 used to
+     * percent-encode them on the request line, HttpURLConnection does not, so the client must do it. WireMock decodes
+     * query parameters, so a correctly encoded request matches the expected decoded value.
+     */
+    @Test
+    public void testRawUnicodeQueryIsEncoded() throws IOException {
+        UrlPattern urlPattern = urlMatching("/wms.*");
+        service.stubFor(get(urlPattern).willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+
+        SimpleHttpClient client = new SimpleHttpClient();
+        client.get(new URL("http://localhost:" + service.port() + "/wms?layers=città&x=y"));
+
+        service.verify(getRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("città"))
+                .withQueryParam("x", equalTo("y")));
+    }
+
+    @Test
+    public void testRawUnicodeQueryIsEncodedOnPost() throws IOException {
+        UrlPattern urlPattern = urlMatching("/wms.*");
+        service.stubFor(post(urlPattern).willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+
+        SimpleHttpClient client = new SimpleHttpClient();
+        ByteArrayInputStream body = new ByteArrayInputStream("x".getBytes(StandardCharsets.UTF_8));
+        client.post(new URL("http://localhost:" + service.port() + "/wms?layers=città&x=y"), body, "text/plain");
+
+        service.verify(postRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("città"))
+                .withQueryParam("x", equalTo("y")));
+    }
+
+    /**
      * Tests if redirection (HTTP -> HTTPS) is followed
      *
      * @throws IOException

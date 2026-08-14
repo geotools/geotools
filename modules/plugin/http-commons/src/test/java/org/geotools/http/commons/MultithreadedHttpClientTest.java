@@ -23,6 +23,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -174,6 +175,53 @@ public class MultithreadedHttpClientTest {
         } else {
             System.setProperty(SYS_PROP_KEY_PORT, sysPropOriginalValue[2]);
         }
+    }
+
+    /**
+     * HttpClient 5 sends the request line verbatim, unlike HttpClient 4 which percent-encoded it. A capabilities
+     * document exposing an online resource with raw non-ASCII characters must still produce a valid request.
+     */
+    @Test
+    public void testRawUnicodeQueryIsEncoded() throws IOException {
+        service.stubFor(get(urlMatching("/wms.*"))
+                .willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+        URL url = new URL("http://localhost:" + service.port() + "/wms?layers=città&x=y");
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.get(url);
+        }
+        service.verify(getRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("città"))
+                .withQueryParam("x", equalTo("y")));
+    }
+
+    @Test
+    public void testRawUnicodeQueryIsEncodedOnPost() throws IOException {
+        service.stubFor(post(urlMatching("/wms.*"))
+                .willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+        URL url = new URL("http://localhost:" + service.port() + "/wms?layers=città&x=y");
+        ByteArrayInputStream body = new ByteArrayInputStream("x".getBytes(StandardCharsets.UTF_8));
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.post(url, body, "text/plain");
+        }
+        service.verify(postRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("città"))
+                .withQueryParam("x", equalTo("y")));
+    }
+
+    /**
+     * Multi-byte (CJK) and astral (emoji, surrogate pair) characters must round-trip through UTF-8 percent-encoding.
+     */
+    @Test
+    public void testMultiByteQueryIsEncoded() throws IOException {
+        service.stubFor(get(urlMatching("/wms.*"))
+                .willReturn(aResponse().withStatus(200).withBody("<ok/>")));
+        URL url = new URL("http://localhost:" + service.port() + "/wms?layers=北京&emoji=😀");
+        try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
+            sut.get(url);
+        }
+        service.verify(getRequestedFor(urlMatching("/wms.*"))
+                .withQueryParam("layers", equalTo("北京"))
+                .withQueryParam("emoji", equalTo("😀")));
     }
 
     @Test

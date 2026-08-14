@@ -60,6 +60,14 @@ public class PostgisJsonPathExistsTest extends SQLFilterTestSupport {
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
         assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.operations == \"OP1\")')", sql);
+
+        writer = new StringWriter();
+        filterToSql.setWriter(writer);
+
+        pointer = ff.function("jsonArrayContains", ff.property("WON'T"), ff.literal("/won't"), ff.literal("can't"));
+        filterToSql.encode(pointer);
+        sql = writer.toString().trim();
+        assertEquals("jsonb_path_exists(WON'T::jsonb, '$ ? (@.won''t == \"can''t\")')", sql);
     }
 
     @Test
@@ -99,6 +107,6 @@ public class PostgisJsonPathExistsTest extends SQLFilterTestSupport {
                 "jsonArrayContains", ff.property("OPERATIONS"), ff.literal("/operations"), ff.literal("\"'FOO"));
         filterToSql.encode(pointer);
         String sql = writer.toString().trim();
-        assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.operations == \"\"'FOO\")')", sql);
+        assertEquals("jsonb_path_exists(OPERATIONS::jsonb, '$ ? (@.operations == \"\\\"''FOO\")')", sql);
     }
 }

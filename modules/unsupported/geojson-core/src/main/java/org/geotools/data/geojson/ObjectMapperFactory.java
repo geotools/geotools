@@ -23,7 +23,7 @@ import tools.jackson.databind.json.JsonMapper;
 /**
  * Support class providing {@link tools.jackson.databind.ObjectMapper} instances configured with the desired settings.
  */
-class ObjectMapperFactory {
+public class ObjectMapperFactory {
 
     private static final ObjectMapper DEFAULT_MAPPER;
 

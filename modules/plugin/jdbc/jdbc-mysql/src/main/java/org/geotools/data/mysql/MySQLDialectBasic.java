@@ -176,7 +176,12 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     @Override
     public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql) throws IOException {
         if (value != null) {
-            if (delegate.usePreciseSpatialOps) {
+            boolean usePreciseSpatialOps = delegate.usePreciseSpatialOps;
+            // MySQL 8 stores geographic SRS ordinates in latitude-longitude order; declare
+            // GeoTools' east/north convention so the server does not swap them.
+            String axisOrder =
+                    (usePreciseSpatialOps && delegate.isMySqlVersion80OrAbove) ? ", 'axis-order=long-lat'" : "";
+            if (usePreciseSpatialOps) {
                 sql.append("ST_GeomFromText('");
                 // HACK; mysql 8 will throw a MysqlDataTruncation exception if srid == -1 which
                 // happens when JDBCDataStore#getDescriptorSRID(AttributeDescriptor) can't find the
@@ -188,7 +193,7 @@ public class MySQLDialectBasic extends BasicSQLDialect {
                 sql.append("GeomFromText('");
             }
             sql.append(new WKTWriter().write(value));
-            sql.append("', ").append(srid).append(")");
+            sql.append("', ").append(srid).append(axisOrder).append(")");
         } else {
             sql.append("NULL");
         }
@@ -238,7 +243,8 @@ public class MySQLDialectBasic extends BasicSQLDialect {
 
     @Override
     public FilterToSQL createFilterToSQL() {
-        MySQLFilterToSQL fts = new MySQLFilterToSQL(delegate.getUsePreciseSpatialOps());
+        MySQLFilterToSQL fts =
+                new MySQLFilterToSQL(delegate.getUsePreciseSpatialOps(), delegate.isMySqlVersion80OrAbove());
         // see https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_no_backslash_escapes
         // NOTE: for future enhancement, do not escape backslashes when the NO_BACKSLASH_ESCAPES
         // mode is enabled since that would create an incorrect string in the SQL

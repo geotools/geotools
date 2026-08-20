@@ -244,6 +244,11 @@ public class MySQLDialect extends SQLDialect {
             sql.append("asWKB(");
         }
         encodeColumnName(prefix, gatt.getLocalName(), sql);
+        // MySQL 8 returns geographic SRS ordinates in latitude-longitude order; ask for
+        // east/north to match GeoTools' internal convention without reordering JTS coordinates.
+        if (this.usePreciseSpatialOps && this.isMySqlVersion80OrAbove) {
+            sql.append(", 'axis-order=long-lat'");
+        }
         sql.append(")");
     }
 
@@ -281,7 +286,13 @@ public class MySQLDialect extends SQLDialect {
             sql.append("envelope(");
             encodeColumnName(null, geometryColumn, sql);
         }
-        sql.append("))");
+        if (this.usePreciseSpatialOps && this.isMySqlVersion80OrAbove) {
+            // Close the outer ST_SRID, then pass the axis-order option to ST_asWKB so that
+            // MySQL 8 returns geographic SRS ordinates in east/north order.
+            sql.append("), 'axis-order=long-lat')");
+        } else {
+            sql.append("))");
+        }
     }
 
     @Override

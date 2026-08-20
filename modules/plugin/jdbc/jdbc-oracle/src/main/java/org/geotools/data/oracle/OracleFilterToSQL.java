@@ -255,7 +255,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     private String encodeJsonPointer(Function jsonPointer, Object extraData) {
         Expression json = getParameter(jsonPointer, 0, true);
         Expression pointer = getParameter(jsonPointer, 1, true);
-        if (json instanceof PropertyName && pointer instanceof Literal literal) {
+        if (json instanceof PropertyName propertyName && pointer instanceof Literal literal) {
             String strPointer = literal.getValue().toString();
             String escapedLiteral = EscapeSql.escapeLiteral(strPointer, true, true);
             List<String> pointerEl = Stream.of(escapedLiteral.split("/"))
@@ -270,7 +270,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                     sb.append("." + property);
                 }
             }
-            return "JSON_VALUE(%s, '%s')".formatted(json, sb);
+            String strColumnName = quoteIdentifier(propertyName.getPropertyName());
+            return "JSON_VALUE(%s, '%s')".formatted(strColumnName, sb);
         }
         return null;
     }
@@ -616,12 +617,22 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
         String[] pointers = jsonPath.getValue().toString().split("/");
         if (pointers.length > 0) {
-            String strJsonPath = escapeLiteral(String.join(".", pointers));
-            String strExpected = escapeLiteral(expected.evaluate(null, String.class));
-            return "json_exists(%s, '$%s?(@ == \"%s\")')".formatted(columnName, strJsonPath, strExpected);
+            String strColumnName = quoteIdentifier(columnName.getPropertyName());
+            String strJsonPath = EscapeSql.escapeLiteral(String.join(".", pointers), true, true);
+            String strExpected = EscapeSql.escapeLiteral(expected.evaluate(null, String.class), true, true);
+            return "json_exists(%s, '$%s?(@ == \"%s\")')".formatted(strColumnName, strJsonPath, strExpected);
         } else {
             throw new IllegalArgumentException("Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
+    }
+
+    /**
+     * Quotes a raw identifier for use in the hand-built JSON function SQL fragments above, regardless of the dialect's
+     * configured name escape ({@link #escapeName(String)} depends on {@code sqlNameEscape}, which
+     * {@link org.geotools.jdbc.JDBCDataStore} resets to {@link OracleDialect#getNameEscape()} ("") after construction).
+     */
+    private static String quoteIdentifier(String name) {
+        return "\"" + name.replace("\"", "\"\"") + "\"";
     }
 
     @Override

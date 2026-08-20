@@ -147,7 +147,7 @@ public class OracleFilterToSqlTest {
                 "jsonArrayContains", ff.property("operations"), ff.literal("/operations"), ff.literal("OP1"));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
-        assertEquals("WHERE json_exists(operations, '$.operations?(@ == \"OP1\")')", encoded);
+        assertEquals("WHERE json_exists(\"operations\", '$.operations?(@ == \"OP1\")')", encoded);
     }
 
     @Test
@@ -156,7 +156,7 @@ public class OracleFilterToSqlTest {
                 ff.function("jsonArrayContains", ff.property("operations"), ff.literal("/operations"), ff.literal(1));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
-        assertEquals("WHERE json_exists(operations, '$.operations?(@ == \"1\")')", encoded);
+        assertEquals("WHERE json_exists(\"operations\", '$.operations?(@ == \"1\")')", encoded);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class OracleFilterToSqlTest {
                 "jsonArrayContains", ff.property("operations"), ff.literal("/operations/parameters"), ff.literal(1));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
-        assertEquals("WHERE json_exists(operations, '$.operations.parameters?(@ == \"1\")')", encoded);
+        assertEquals("WHERE json_exists(\"operations\", '$.operations.parameters?(@ == \"1\")')", encoded);
     }
 
     @Test
@@ -174,7 +174,7 @@ public class OracleFilterToSqlTest {
                 ff.function("jsonArrayContains", ff.property("operations"), ff.literal("/'FOO"), ff.literal(1));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
-        assertEquals("WHERE json_exists(operations, '$.''FOO?(@ == \"1\")')", encoded);
+        assertEquals("WHERE json_exists(\"operations\", '$.''FOO?(@ == \"1\")')", encoded);
     }
 
     @Test
@@ -186,14 +186,59 @@ public class OracleFilterToSqlTest {
                 ff.literal("'FOO"));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
-        assertEquals("WHERE json_exists(operations, '$.operations.parameters?(@ == \"''FOO\")')", encoded);
+        assertEquals("WHERE json_exists(\"operations\", '$.operations.parameters?(@ == \"''FOO\")')", encoded);
+    }
+
+    @Test
+    public void testJsonArrayContainsEscapesBackslashInExpectedValue() throws Exception {
+        Function function = ff.function(
+                "jsonArrayContains", ff.property("operations"), ff.literal("/operations"), ff.literal("back\\slash"));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        assertEquals("WHERE json_exists(\"operations\", '$.operations?(@ == \"back\\\\slash\")')", encoded);
+    }
+
+    @Test
+    public void testJsonArrayContainsEscapesExpectedValue() throws Exception {
+        Function function = ff.function(
+                "jsonArrayContains",
+                ff.property("operations"),
+                ff.literal("/operations"),
+                ff.literal("zzz\" || @==@ || @==\"zzz"));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        assertEquals(
+                "WHERE json_exists(\"operations\", '$.operations?(@ == \"zzz\\\" || @==@ || @==\\\"zzz\")')", encoded);
+    }
+
+    @Test
+    public void testJsonArrayContainsEscapesColumnName() throws Exception {
+        Function function = ff.function(
+                "jsonArrayContains", ff.property("foo\" OR 1=1 --"), ff.literal("/operations"), ff.literal("OP1"));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        assertEquals("WHERE json_exists(\"foo\"\" OR 1=1 --\", '$.operations?(@ == \"OP1\")')", encoded);
+    }
+
+    @Test
+    public void testJsonArrayContainsEscapesColumnNameAndExpectedValueTogether() throws Exception {
+        Function function = ff.function(
+                "jsonArrayContains",
+                ff.property("foo\" OR 1=1 --"),
+                ff.literal("/operations"),
+                ff.literal("zzz\" || @==@ || @==\"zzz"));
+        Filter filter = ff.equals(function, ff.literal(true));
+        String encoded = encoder.encodeToString(filter);
+        assertEquals(
+                "WHERE json_exists(\"foo\"\" OR 1=1 --\", '$.operations?(@ == \"zzz\\\" || @==@ || @==\\\"zzz\")')",
+                encoded);
     }
 
     @Test
     public void testFunctionJsonPointer() throws Exception {
         Function function = ff.function("jsonPointer", ff.property("operations"), ff.literal("/operations/parameters"));
         String encoded = encoder.encodeToString(function);
-        assertEquals("JSON_VALUE(operations, '$.operations.parameters')", encoded);
+        assertEquals("JSON_VALUE(\"operations\", '$.operations.parameters')", encoded);
     }
 
     @Test
@@ -201,7 +246,22 @@ public class OracleFilterToSqlTest {
         Function function =
                 ff.function("jsonPointer", ff.property("operations"), ff.literal("/operations/parameters/0"));
         String encoded = encoder.encodeToString(function);
-        assertEquals("JSON_VALUE(operations, '$.operations.parameters[0]')", encoded);
+        assertEquals("JSON_VALUE(\"operations\", '$.operations.parameters[0]')", encoded);
+    }
+
+    @Test
+    public void testFunctionJsonPointerEscapesPointer() throws Exception {
+        Function function = ff.function("jsonPointer", ff.property("operations"), ff.literal("/'FOO"));
+        String encoded = encoder.encodeToString(function);
+        assertEquals("JSON_VALUE(\"operations\", '$.''FOO')", encoded);
+    }
+
+    @Test
+    public void testFunctionJsonPointerEscapesColumnName() throws Exception {
+        Function function =
+                ff.function("jsonPointer", ff.property("foo\" OR 1=1 --"), ff.literal("/operations/parameters"));
+        String encoded = encoder.encodeToString(function);
+        assertEquals("JSON_VALUE(\"foo\"\" OR 1=1 --\", '$.operations.parameters')", encoded);
     }
 
     // THIS ONE WON'T PASS RIGHT NOW, BUT WE NEED TO PUT A TEST LIKE THIS

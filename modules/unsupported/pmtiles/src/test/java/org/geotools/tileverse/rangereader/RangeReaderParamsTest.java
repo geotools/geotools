@@ -26,40 +26,39 @@ import java.util.Properties;
 import org.junit.Test;
 
 /**
- * Verifies that {@link RangeReaderParams#toProperties(Map)} accepts forward-compatible {@code storage.*} parameter keys
- * (canonical in tileverse 2.x) by translating them to the canonical {@code io.tileverse.rangereader.*} form tileverse
- * 1.4 understands.
+ * Verifies that {@link RangeReaderParams#toProperties(Map)} accepts pre-{@code storage.*} legacy parameter keys as
+ * emitted by existing GeoServer catalogs.
  */
 public class RangeReaderParamsTest {
 
     @Test
-    public void toPropertiesNormalizesFutureKeys() {
+    public void toPropertiesNormalizesLegacyKeys() {
         Map<String, Object> connectionParams = new HashMap<>();
         connectionParams.put("pmtiles", "file:///tmp/sample.pmtiles");
-        connectionParams.put("storage.provider", "file");
-        connectionParams.put("storage.caching.enabled", Boolean.TRUE);
-        connectionParams.put("storage.s3.region", "us-west-2");
+        connectionParams.put("io.tileverse.rangereader.provider", "file");
+        connectionParams.put("io.tileverse.rangereader.caching.enabled", Boolean.TRUE);
+        connectionParams.put("io.tileverse.rangereader.s3.region", "us-west-2");
 
         Properties props = RangeReaderParams.toProperties(connectionParams);
 
-        assertEquals("file", props.getProperty("io.tileverse.rangereader.provider"));
-        assertEquals("true", props.getProperty("io.tileverse.rangereader.caching.enabled"));
-        assertEquals("us-west-2", props.getProperty("io.tileverse.rangereader.s3.region"));
+        assertEquals("file", props.getProperty("storage.provider"));
+        assertEquals("true", props.getProperty("storage.caching.enabled"));
+        assertEquals("us-west-2", props.getProperty("storage.s3.region"));
         assertFalse(
-                "no storage.* keys should remain in the output",
-                props.stringPropertyNames().stream().anyMatch(k -> k.startsWith("storage.")));
+                "no legacy keys should remain in the output",
+                props.stringPropertyNames().stream().anyMatch(k -> k.startsWith("io.tileverse.rangereader.")));
     }
 
     @Test
     public void toPropertiesPassesCanonicalKeys() {
         Map<String, Object> connectionParams = new HashMap<>();
         connectionParams.put("pmtiles", "file:///tmp/sample.pmtiles");
-        connectionParams.put("io.tileverse.rangereader.provider", "file");
-        connectionParams.put("io.tileverse.rangereader.caching.enabled", Boolean.TRUE);
+        connectionParams.put("storage.provider", "file");
+        connectionParams.put("storage.caching.enabled", Boolean.TRUE);
 
         Properties props = RangeReaderParams.toProperties(connectionParams);
 
-        assertEquals("file", props.getProperty("io.tileverse.rangereader.provider"));
-        assertEquals("true", props.getProperty("io.tileverse.rangereader.caching.enabled"));
+        assertEquals("file", props.getProperty("storage.provider"));
+        assertEquals("true", props.getProperty("storage.caching.enabled"));
     }
 }

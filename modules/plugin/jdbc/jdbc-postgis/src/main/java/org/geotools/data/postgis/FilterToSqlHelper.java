@@ -800,7 +800,8 @@ class FilterToSqlHelper {
         } else if (value instanceof Double double1) {
             return "(@.%s == %f)".formatted(jsonPath[lastIndex], double1);
         }
-        return "(@.%s == \"%s\")".formatted(jsonPath[lastIndex], value);
+        String literal = escapeJsonLiteral(String.valueOf(value));
+        return "(@.%s == \"%s\")".formatted(jsonPath[lastIndex], literal);
     }
 
     private String constructPath(String[] jsonPath) {

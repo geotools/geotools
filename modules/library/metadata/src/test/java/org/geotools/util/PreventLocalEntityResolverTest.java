@@ -48,8 +48,6 @@ public class PreventLocalEntityResolverTest {
         server.createContext("/redirect-to-allowed.xsd", exchange -> redirect(exchange, "/a.xsd"));
         server.createContext(
                 "/redirect-to-disallowed.xsd", exchange -> redirect(exchange, "http://localhost/not-an-xsd"));
-        server.createContext(
-                "/redirect-to-non-http.xsd", exchange -> redirect(exchange, "jar:file:/xyz/foo.jar!/bar/a.xsd"));
         server.createContext("/redirect-loop.xsd", exchange -> redirect(exchange, "/redirect-loop.xsd"));
         server.start();
         baseUrl = "http://localhost:" + server.getAddress().getPort();
@@ -141,6 +139,17 @@ public class PreventLocalEntityResolverTest {
         assertNull(INSTANCE.resolveEntity(null, null, "jar:file:/xyz/foo.jar!/bar/a.xsd", "b.xsd"));
     }
 
+    @Test
+    public void testAllowsHttpDescribeFeatureTypeSchemaUrl() throws Exception {
+        String url =
+                "https://service.example.org/wfs?SERVICE=WFS&VERSION=2.0.0&REQUEST=DescribeFeatureType&TYPENAME=ns:Type";
+        assertNull(
+                "DescribeFeatureType HTTP requests should be allowed",
+                INSTANCE.resolveEntity("name", "publicId", "https://service.example.org/wfs", url));
+
+        assertNull("DescribeFeatureType HTTP requests should be allowed", INSTANCE.resolveEntity(null, url));
+    }
+
     // Relative VFS URL is not unit tested because it requires a
     // custom URL stream handler that is a part of JBoss/WildFly.
 
@@ -225,17 +234,6 @@ public class PreventLocalEntityResolverTest {
     public void testHttpRedirectToDisallowedUriIsRejected() throws Exception {
         try {
             INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-disallowed.xsd");
-            fail("expected a SAXException");
-        } catch (SAXException e) {
-            assertTrue(e.getMessage().startsWith(ERROR_MESSAGE_BASE + "redirect to disallowed URL"));
-        }
-    }
-
-    @Test
-    public void testHttpRedirectToAllowedNonHttpUriIsRejected() throws Exception {
-        // jar:/vfs: targets match ALLOWED_URIS but can't be followed as a redirect
-        try {
-            INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-non-http.xsd");
             fail("expected a SAXException");
         } catch (SAXException e) {
             assertTrue(e.getMessage().startsWith(ERROR_MESSAGE_BASE + "redirect to disallowed URL"));

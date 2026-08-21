@@ -26,10 +26,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import io.tileverse.geom.BoundingBox2D;
 import io.tileverse.pmtiles.InvalidHeaderException;
 import io.tileverse.pmtiles.PMTilesReader;
 import io.tileverse.pmtiles.PMTilesTestData;
-import io.tileverse.tiling.common.BoundingBox2D;
 import io.tileverse.tiling.matrix.TileMatrix;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -46,6 +46,8 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -77,7 +79,7 @@ public class PMTilesDataStoreTest {
     @Before
     public void setUp() throws IOException, InvalidHeaderException {
         Path andorraPMTiles = PMTilesTestData.andorra(tmpFolder.getRoot().toPath());
-        reader = new PMTilesReader(andorraPMTiles);
+        reader = PMTilesReader.open(andorraPMTiles.toUri());
         store = new PMTilesDataStore(new PMTilesDataStoreFactory(), reader);
         store.setNamespaceURI(namespaceURI);
         store.setFeatureTypeFactory(CommonFactoryFinder.getFeatureTypeFactory(null));
@@ -204,5 +206,26 @@ public class PMTilesDataStoreTest {
                 assertThat(defaultGeometry, instanceOf(Geometry.class));
             }
         }
+    }
+
+    /**
+     * A filter using a function that casts to Feature (here dimension(geometry())) must be evaluated against a
+     * SimpleFeature view of each vector tile feature, not the raw MvtFeature, which would return null and drop
+     * everything. The buildings layer is all polygons, so the polygon predicate keeps them all and the line predicate
+     * keeps none.
+     */
+    @Test
+    public void getFeaturesWithGeometryFunctionFilter() throws IOException {
+        FilterFactory ff = store.getFilterFactory();
+        SimpleFeatureSource buildings = store.getFeatureSource("buildings");
+        int total = buildings.getFeatures().size();
+        assertThat(total, greaterThan(0));
+
+        Function dimension = ff.function("dimension", ff.function("geometry"));
+        assertEquals(
+                total,
+                buildings.getFeatures(ff.equals(dimension, ff.literal(2))).size());
+        assertEquals(
+                0, buildings.getFeatures(ff.equals(dimension, ff.literal(1))).size());
     }
 }

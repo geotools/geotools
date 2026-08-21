@@ -72,7 +72,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>stats</artifactId>
+      <artifactId>imagen-stats</artifactId>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>

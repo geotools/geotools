@@ -40,17 +40,17 @@
     <geographiclib-java.version>1.49</geographiclib-java.version>
     <guava.version>33.5.0-jre</guava.version>
     <h2.version>2.2.224</h2.version>
-    <hsqldb.version>2.7.2</hsqldb.version>
+    <hsqldb.version>2.7.4</hsqldb.version>
     <httpclient4.version>4.5.14</httpclient4.version>
-    <httpclient5.version>5.4.4</httpclient5.version>
-    <httpcore5.version>5.3.6</httpcore5.version>
-    <imageio.ext.version>2.1.0</imageio.ext.version>
+    <httpclient5.version>5.6.3</httpclient5.version>
+    <httpcore5.version>5.4.3</httpcore5.version>
+    <imageio.ext.version>2.1-SNAPSHOT</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <!-- jackson2 BOM imported for dependency convergence. It must match the version used for jackson-annotations in the jackson3 BOM -->
     <jackson2.version>2.22.0</jackson2.version>
     <jackson.version>3.2.0</jackson.version>
     <jai-imageio.version>1.1</jai-imageio.version>
-    <imagen.version>0.9.2</imagen.version>
+    <imagen.version>0.9.3-SNAPSHOT</imagen.version>
     <javacsv.version>2.0</javacsv.version>
     <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
     <jakarta-mail.version>2.1.2</jakarta-mail.version>
@@ -70,7 +70,7 @@
     <jts.version>1.20.0</jts.version>
     <log4j.version>2.26.1</log4j.version>
     <logback.version>1.5.38</logback.version>
-    <lz4.version>1.10.2</lz4.version>
+    <lz4.version>1.11.1</lz4.version>
     <mssql-jdbc.version>13.2.1.jre11</mssql-jdbc.version>
     <mysql-connector-java.version>9.6.0</mysql-connector-java.version>
     <mongodb-driver-legacy.version>4.0.6</mongodb-driver-legacy.version>
@@ -81,7 +81,7 @@
     <opendap.version>2.1</opendap.version>
     <oro.version>2.0.8</oro.version>
     <picocontainer.version>1.2</picocontainer.version>
-    <postgresql.jdbc.version>42.7.11</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.7.13</postgresql.jdbc.version>
     <postgis-driver.version>1.0</postgis-driver.version>
     <re2j.version>1.8</re2j.version>
     <reload4j.version>1.2.26</reload4j.version>
@@ -563,202 +563,202 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>jiffle-op</artifactId>
+        <artifactId>imagen-jiffle-op</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>classbreaks</artifactId>
+        <artifactId>imagen-classbreaks</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>affine</artifactId>
+        <artifactId>imagen-affine</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>algebra</artifactId>
+        <artifactId>imagen-algebra</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>bandmerge</artifactId>
+        <artifactId>imagen-bandmerge</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>bandselect</artifactId>
+        <artifactId>imagen-bandselect</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>bandcombine</artifactId>
+        <artifactId>imagen-bandcombine</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>border</artifactId>
+        <artifactId>imagen-border</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>buffer</artifactId>
+        <artifactId>imagen-buffer</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>crop</artifactId>
+        <artifactId>imagen-crop</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>iterators</artifactId>
+        <artifactId>imagen-iterators</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>lookup</artifactId>
+        <artifactId>imagen-lookup</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>mosaic</artifactId>
+        <artifactId>imagen-mosaic</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>nullop</artifactId>
+        <artifactId>imagen-nullop</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>rescale</artifactId>
+        <artifactId>imagen-rescale</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>scale</artifactId>
+        <artifactId>imagen-scale</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>scale2</artifactId>
+        <artifactId>imagen-scale2</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>stats</artifactId>
+        <artifactId>imagen-stats</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>translate</artifactId>
+        <artifactId>imagen-translate</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>utilities</artifactId>
+        <artifactId>imagen-utilities</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>warp</artifactId>
+        <artifactId>imagen-warp</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>zonal</artifactId>
+        <artifactId>imagen-zonal</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>binarize</artifactId>
+        <artifactId>imagen-binarize</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>format</artifactId>
+        <artifactId>imagen-format</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>colorconvert</artifactId>
+        <artifactId>imagen-colorconvert</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>errordiffusion</artifactId>
+        <artifactId>imagen-errordiffusion</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>orderdither</artifactId>
+        <artifactId>imagen-orderdither</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>colorindexer</artifactId>
+        <artifactId>imagen-colorindexer</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>imagefunction</artifactId>
+        <artifactId>imagen-imagefunction</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>piecewise</artifactId>
+        <artifactId>imagen-piecewise</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>classifier</artifactId>
+        <artifactId>imagen-classifier</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>rlookup</artifactId>
+        <artifactId>imagen-rlookup</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>vectorbin</artifactId>
+        <artifactId>imagen-vectorbin</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>shadedrelief</artifactId>
+        <artifactId>imagen-shadedrelief</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>concurrent-tile-cache</artifactId>
+        <artifactId>imagen-concurrent-tile-cache</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>rendered-image-browser</artifactId>
+        <artifactId>imagen-rendered-image-browser</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>imageread</artifactId>
+        <artifactId>imagen-imageread</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>convolve</artifactId>
+        <artifactId>imagen-convolve</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>contour</artifactId>
+        <artifactId>imagen-contour</artifactId>
         <version>${imagen.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.imagen</groupId>
-        <artifactId>vectorize</artifactId>
+        <artifactId>imagen-vectorize</artifactId>
         <version>${imagen.version}</version>
       </dependency>
 

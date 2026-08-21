@@ -64,15 +64,19 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
     private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|jar:nested|http|vfs)[^?#;]*\\.xsd");
 
     /** Max number of redirects followed when fetching an allow-listed http(s) URI, to avoid a redirect loop */
-    protected static final int MAX_REDIRECTS =
+    private static final int MAX_REDIRECTS =
             Integer.getInteger("org.geotools.util.preventLocalEntityResolver.maxRedirects", 5);
 
     /**
      * Connect/read timeout (seconds) when fetching an allow-listed http(s) URI, same default as
      * {@code SimpleHttpClient}
      */
-    protected static final int TIMEOUT_SECONDS =
+    private static final int TIMEOUT_SECONDS =
             Integer.getInteger("org.geotools.util.preventLocalEntityResolver.timeout", 30);
+
+    /** Allow uri references for WFS DescribeFeatureType requests. */
+    private static final java.util.regex.Pattern DESCRIBE_FEATURE_TYPE_URL = Pattern.compile(
+            "^https?://[^?#;]*\\?(?:[^#;]*[&;])?request=DescribeFeatureType(?:[&;]|$).*", Pattern.CASE_INSENSITIVE);
 
     /** Singleton instance of PreventLocalEntityResolver */
     public static final PreventLocalEntityResolver INSTANCE = new PreventLocalEntityResolver();
@@ -115,6 +119,10 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s"
                     .formatted(name, publicId, baseURI, systemId));
+        }
+
+        if (systemId != null && DESCRIBE_FEATURE_TYPE_URL.matcher(systemId).matches()) {
+            return null;
         }
 
         String uri = null;
@@ -170,10 +178,7 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
 
             String resolvedLocation = resolveRedirectLocation(currentUri, location);
 
-            // only http(s) can be followed further; jar/vfs targets are not valid redirect
-            // destinations and would break the HttpURLConnection cast on the next iteration
-            if (!ALLOWED_URIS.matcher(resolvedLocation).matches()
-                    || !resolvedLocation.regionMatches(true, 0, "http", 0, 4)) {
+            if (!ALLOWED_URIS.matcher(resolvedLocation).matches()) {
                 throw new SAXException(ERROR_MESSAGE_BASE + "redirect to disallowed URL " + resolvedLocation);
             }
 

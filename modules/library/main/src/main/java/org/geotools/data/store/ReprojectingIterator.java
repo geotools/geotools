@@ -29,7 +29,7 @@ import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
-import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.CRS;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.locationtech.jts.geom.Geometry;
 
@@ -72,9 +72,7 @@ public class ReprojectingIterator implements Iterator<SimpleFeature> {
         this.schema = schema;
         tx = transformer;
 
-        MathTransform transform = ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                .createOperation(source, target)
-                .getMathTransform();
+        MathTransform transform = CRS.findMathTransform(source, target, true);
         tx.setMathTransform(transform);
     }
 

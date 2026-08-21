@@ -78,19 +78,19 @@
 
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>contour</artifactId>
+      <artifactId>imagen-contour</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>vectorize</artifactId>
+      <artifactId>imagen-vectorize</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>jiffle-op</artifactId>
+      <artifactId>imagen-jiffle-op</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.imagen</groupId>
-      <artifactId>classbreaks</artifactId>
+      <artifactId>imagen-classbreaks</artifactId>
     </dependency>
 
     <!-- Test dependencies -->
@@ -140,6 +140,10 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-image</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-runtime</artifactId>
     </dependency>
   </dependencies>
 

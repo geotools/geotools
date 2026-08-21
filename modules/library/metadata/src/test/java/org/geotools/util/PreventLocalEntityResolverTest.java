@@ -48,6 +48,8 @@ public class PreventLocalEntityResolverTest {
         server.createContext("/redirect-to-allowed.xsd", exchange -> redirect(exchange, "/a.xsd"));
         server.createContext(
                 "/redirect-to-disallowed.xsd", exchange -> redirect(exchange, "http://localhost/not-an-xsd"));
+        server.createContext(
+                "/redirect-to-non-http.xsd", exchange -> redirect(exchange, "jar:file:/xyz/foo.jar!/bar/a.xsd"));
         server.createContext("/redirect-loop.xsd", exchange -> redirect(exchange, "/redirect-loop.xsd"));
         server.start();
         baseUrl = "http://localhost:" + server.getAddress().getPort();
@@ -223,6 +225,17 @@ public class PreventLocalEntityResolverTest {
     public void testHttpRedirectToDisallowedUriIsRejected() throws Exception {
         try {
             INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-disallowed.xsd");
+            fail("expected a SAXException");
+        } catch (SAXException e) {
+            assertTrue(e.getMessage().startsWith(ERROR_MESSAGE_BASE + "redirect to disallowed URL"));
+        }
+    }
+
+    @Test
+    public void testHttpRedirectToAllowedNonHttpUriIsRejected() throws Exception {
+        // jar:/vfs: targets match ALLOWED_URIS but can't be followed as a redirect
+        try {
+            INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-non-http.xsd");
             fail("expected a SAXException");
         } catch (SAXException e) {
             assertTrue(e.getMessage().startsWith(ERROR_MESSAGE_BASE + "redirect to disallowed URL"));

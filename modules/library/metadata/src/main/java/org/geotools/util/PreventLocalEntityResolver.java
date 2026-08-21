@@ -64,14 +64,14 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
     private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|jar:nested|http|vfs)[^?#;]*\\.xsd");
 
     /** Max number of redirects followed when fetching an allow-listed http(s) URI, to avoid a redirect loop */
-    private static final int MAX_REDIRECTS =
+    protected static final int MAX_REDIRECTS =
             Integer.getInteger("org.geotools.util.preventLocalEntityResolver.maxRedirects", 5);
 
     /**
      * Connect/read timeout (seconds) when fetching an allow-listed http(s) URI, same default as
      * {@code SimpleHttpClient}
      */
-    private static final int TIMEOUT_SECONDS =
+    protected static final int TIMEOUT_SECONDS =
             Integer.getInteger("org.geotools.util.preventLocalEntityResolver.timeout", 30);
 
     /** Singleton instance of PreventLocalEntityResolver */
@@ -170,7 +170,10 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
 
             String resolvedLocation = resolveRedirectLocation(currentUri, location);
 
-            if (!ALLOWED_URIS.matcher(resolvedLocation).matches()) {
+            // only http(s) can be followed further; jar/vfs targets are not valid redirect
+            // destinations and would break the HttpURLConnection cast on the next iteration
+            if (!ALLOWED_URIS.matcher(resolvedLocation).matches()
+                    || !resolvedLocation.regionMatches(true, 0, "http", 0, 4)) {
                 throw new SAXException(ERROR_MESSAGE_BASE + "redirect to disallowed URL " + resolvedLocation);
             }
 

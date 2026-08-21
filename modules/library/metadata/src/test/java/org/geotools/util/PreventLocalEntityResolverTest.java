@@ -48,7 +48,15 @@ public class PreventLocalEntityResolverTest {
         server.createContext("/redirect-to-allowed.xsd", exchange -> redirect(exchange, "/a.xsd"));
         server.createContext(
                 "/redirect-to-disallowed.xsd", exchange -> redirect(exchange, "http://localhost/not-an-xsd"));
+        server.createContext(
+                "/redirect-to-non-http.xsd", exchange -> redirect(exchange, "jar:file:/xyz/foo.jar!/bar/a.xsd"));
+        server.createContext(
+                "/redirect-to-invalid-location.xsd", exchange -> redirect(exchange, "http://bad uri/a.xsd"));
         server.createContext("/redirect-loop.xsd", exchange -> redirect(exchange, "/redirect-loop.xsd"));
+        server.createContext("/not-found.xsd", exchange -> {
+            exchange.sendResponseHeaders(404, -1);
+            exchange.close();
+        });
         server.start();
         baseUrl = "http://localhost:" + server.getAddress().getPort();
     }
@@ -241,12 +249,44 @@ public class PreventLocalEntityResolverTest {
     }
 
     @Test
+    public void testHttpRedirectToAllowedNonHttpUriIsRejected() throws Exception {
+        try {
+            INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-non-http.xsd");
+            fail("expected a SAXException");
+        } catch (SAXException e) {
+            assertEquals(
+                    ERROR_MESSAGE_BASE + "redirect to disallowed URL jar:file:/xyz/foo.jar!/bar/a.xsd", e.getMessage());
+        }
+    }
+
+    @Test
     public void testHttpTooManyRedirectsAreRejected() throws Exception {
         try {
             INSTANCE.resolveEntity(null, baseUrl + "/redirect-loop.xsd");
             fail("expected a SAXException");
         } catch (SAXException e) {
             assertTrue(e.getMessage().startsWith(ERROR_MESSAGE_BASE + "too many redirects"));
+        }
+    }
+
+    @Test
+    public void testHttpErrorStatusIsRejected() throws Exception {
+        try {
+            INSTANCE.resolveEntity(null, baseUrl + "/not-found.xsd");
+            fail("expected a SAXException");
+        } catch (SAXException e) {
+            assertEquals(ERROR_MESSAGE_BASE + "HTTP status 404 fetching " + baseUrl + "/not-found.xsd", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testHttpRedirectToInvalidLocationIsRejected() throws Exception {
+        try {
+            INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-invalid-location.xsd");
+            fail("expected a SAXException");
+        } catch (SAXException e) {
+            assertTrue(e.getMessage().startsWith(ERROR_MESSAGE_BASE + "invalid redirect target"));
+            assertNotNull(e.getCause());
         }
     }
 }

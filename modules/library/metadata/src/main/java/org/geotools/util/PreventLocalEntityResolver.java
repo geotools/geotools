@@ -64,14 +64,11 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
     private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|jar:nested|http|vfs)[^?#;]*\\.xsd");
 
     /** Max number of redirects followed when fetching an allow-listed http(s) URI, to avoid a redirect loop */
-    private static final int MAX_REDIRECTS =
+    protected static final int MAX_REDIRECTS =
             Integer.getInteger("org.geotools.util.preventLocalEntityResolver.maxRedirects", 5);
 
-    /**
-     * Connect/read timeout (seconds) when fetching an allow-listed http(s) URI, same default as
-     * {@code SimpleHttpClient}
-     */
-    private static final int TIMEOUT_SECONDS =
+    /** Connect/read timeout (seconds) when fetching an allow-listed http(s) URI */
+    protected static final int TIMEOUT_SECONDS =
             Integer.getInteger("org.geotools.util.preventLocalEntityResolver.timeout", 30);
 
     /** Allow uri references for WFS DescribeFeatureType requests. */
@@ -121,24 +118,10 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
                     .formatted(name, publicId, baseURI, systemId));
         }
 
-        if (systemId != null && DESCRIBE_FEATURE_TYPE_URL.matcher(systemId).matches()) {
-            return null;
-        }
-
-        String uri = null;
-        try {
-            uri = systemId;
-            // ignore the baseURI if the systemId is absolute
-            if (!URI.create(systemId).isAbsolute()) {
-                // use the baseURI to convert a relative systemId to absolute
-                uri = new URL(new URL(baseURI), systemId).toString();
-            }
-        } catch (Exception e) {
-            // do nothing, uri stays null and the resolution is rejected below
-        }
+        String uri = absolutizeSystemId(baseURI, systemId);
 
         // check if the absolute systemId is an allowed URI
-        if (uri != null && ALLOWED_URIS.matcher(uri).matches()) {
+        if (isAllowedUri(uri)) {
             // only http(s) can redirect; fetch it here so the redirect target gets re-validated too
             if (uri.regionMatches(true, 0, "http", 0, 4)) {
                 return fetchAllowedHttpUri(uri);
@@ -151,8 +134,32 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
     }
 
     /**
-     * Fetches the content of an http(s) URI already validated against {@link #ALLOWED_URIS}, following redirects
-     * manually and re-validating each redirect target against the same allow-list before following it.
+     * Absolutizes {@code systemId} against {@code baseURI}, ignoring {@code baseURI} if {@code systemId} is already
+     * absolute. Returns null if {@code systemId} cannot be resolved to an absolute URI, in which case the resolution is
+     * rejected by the caller.
+     */
+    private static String absolutizeSystemId(String baseURI, String systemId) {
+        try {
+            if (URI.create(systemId).isAbsolute()) {
+                return systemId;
+            }
+            return new URL(new URL(baseURI), systemId).toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /** Whether {@code uri} is a non-null, allow-listed schema reference or WFS DescribeFeatureType request. */
+    private static boolean isAllowedUri(String uri) {
+        return uri != null
+                && (ALLOWED_URIS.matcher(uri).matches()
+                        || DESCRIBE_FEATURE_TYPE_URL.matcher(uri).matches());
+    }
+
+    /**
+     * Fetches the content of an http(s) URI already validated against {@link #ALLOWED_URIS} or
+     * {@link #DESCRIBE_FEATURE_TYPE_URL}, following redirects manually and re-validating each redirect target against
+     * the same allow-lists before following it.
      */
     private static InputSource fetchAllowedHttpUri(String uri) throws IOException, SAXException {
 
@@ -166,10 +173,11 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
             connection.setReadTimeout(TIMEOUT_SECONDS * 1000);
 
             int status = connection.getResponseCode();
-            if (status < HttpURLConnection.HTTP_MULT_CHOICE || status >= 400) {
-                InputSource source = new InputSource(connection.getInputStream());
-                source.setSystemId(currentUri);
-                return source;
+            if (status >= 400) {
+                throwDueToErrorStatus(connection, status, currentUri);
+            }
+            if (status < 300) {
+                return readSuccessResponse(connection, currentUri);
             }
 
             String location = connection.getHeaderField("Location");
@@ -178,14 +186,33 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
 
             String resolvedLocation = resolveRedirectLocation(currentUri, location);
 
-            if (!ALLOWED_URIS.matcher(resolvedLocation).matches()) {
+            if (!isAllowedHttpUri(resolvedLocation)) {
                 throw new SAXException(ERROR_MESSAGE_BASE + "redirect to disallowed URL " + resolvedLocation);
             }
 
             currentUri = resolvedLocation;
         }
 
-        throw new SAXException(ERROR_MESSAGE_BASE + "too many redirects for " + uri);
+        throw new SAXException(ERROR_MESSAGE_BASE + "too many redirects: " + uri);
+    }
+
+    /** Closes {@code connection} and rejects an http(s) response with an error status. */
+    private static void throwDueToErrorStatus(HttpURLConnection connection, int status, String uri)
+            throws SAXException {
+        connection.disconnect();
+        throw new SAXException(ERROR_MESSAGE_BASE + "HTTP status " + status + " fetching " + uri);
+    }
+
+    /** Wraps a successful http(s) response body, closing {@code connection} if reading it fails. */
+    private static InputSource readSuccessResponse(HttpURLConnection connection, String uri) throws IOException {
+        try {
+            InputSource source = new InputSource(connection.getInputStream());
+            source.setSystemId(uri);
+            return source;
+        } catch (IOException e) {
+            connection.disconnect();
+            throw e;
+        }
     }
 
     /** Resolves a {@code Location} redirect header against the URI it was received from, absolutizing it if needed. */
@@ -193,7 +220,13 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
         try {
             return URI.create(location).isAbsolute() ? location : new URL(new URL(currentUri), location).toString();
         } catch (Exception e) {
-            throw new SAXException(ERROR_MESSAGE_BASE + "invalid redirect target for " + currentUri);
+            throw new SAXException(
+                    ERROR_MESSAGE_BASE + "invalid redirect target " + location + " from " + currentUri, e);
         }
+    }
+
+    /** Whether {@code uri} is allow-listed and http(s), i.e. safe to fetch/follow as a redirect target. */
+    private static boolean isAllowedHttpUri(String uri) {
+        return isAllowedUri(uri) && uri.regionMatches(true, 0, "http", 0, 4);
     }
 }

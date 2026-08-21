@@ -19,6 +19,7 @@ package org.geotools.util;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
@@ -62,6 +63,14 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
      */
     private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|jar:nested|http|vfs)[^?#;]*\\.xsd");
 
+    /** Max number of redirects followed when fetching an allow-listed http(s) URI, to avoid a redirect loop */
+    protected static final int MAX_REDIRECTS =
+            Integer.getInteger("org.geotools.util.preventLocalEntityResolver.maxRedirects", 5);
+
+    /** Connect/read timeout (seconds) when fetching an allow-listed http(s) URI */
+    protected static final int TIMEOUT_SECONDS =
+            Integer.getInteger("org.geotools.util.preventLocalEntityResolver.timeout", 30);
+
     /** Allow uri references for WFS DescribeFeatureType requests. */
     private static final java.util.regex.Pattern DESCRIBE_FEATURE_TYPE_URL = Pattern.compile(
             "^https?://[^?#;]*\\?(?:[^#;]*[&;])?request=DescribeFeatureType(?:[&;]|$).*", Pattern.CASE_INSENSITIVE);
@@ -103,6 +112,7 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
     @Override
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
+
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s"
                     .formatted(name, publicId, baseURI, systemId));
@@ -112,22 +122,101 @@ public class PreventLocalEntityResolver implements EntityResolver3, Serializable
             return null;
         }
 
+        String uri = null;
         try {
-            String uri = systemId;
+            uri = systemId;
             // ignore the baseURI if the systemId is absolute
             if (!URI.create(systemId).isAbsolute()) {
                 // use the baseURI to convert a relative systemId to absolute
                 uri = new URL(new URL(baseURI), systemId).toString();
             }
-            // check if the absolute systemId is an allowed URI
-            if (ALLOWED_URIS.matcher(uri).matches()) {
-                return null;
-            }
         } catch (Exception e) {
-            // do nothing
+            // do nothing, uri stays null and the resolution is rejected below
+        }
+
+        // check if the absolute systemId is an allowed URI
+        if (uri != null && ALLOWED_URIS.matcher(uri).matches()) {
+            // only http(s) can redirect; fetch it here so the redirect target gets re-validated too
+            if (uri.regionMatches(true, 0, "http", 0, 4)) {
+                return fetchAllowedHttpUri(uri);
+            }
+            return null;
         }
 
         // do not allow external entities
         throw new SAXException(ERROR_MESSAGE_BASE + systemId);
+    }
+
+    /**
+     * Fetches the content of an http(s) URI already validated against {@link #ALLOWED_URIS}, following redirects
+     * manually and re-validating each redirect target against the same allow-list before following it.
+     */
+    private static InputSource fetchAllowedHttpUri(String uri) throws IOException, SAXException {
+
+        String currentUri = uri;
+
+        for (int redirects = 0; redirects <= MAX_REDIRECTS; redirects++) {
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(currentUri).openConnection();
+            connection.setInstanceFollowRedirects(false);
+            connection.setConnectTimeout(TIMEOUT_SECONDS * 1000);
+            connection.setReadTimeout(TIMEOUT_SECONDS * 1000);
+
+            int status = connection.getResponseCode();
+            if (status >= 400) {
+                throwDueToErrorStatus(connection, status, currentUri);
+            }
+            if (status < 300) {
+                return readSuccessResponse(connection, currentUri);
+            }
+
+            String location = connection.getHeaderField("Location");
+
+            connection.disconnect();
+
+            String resolvedLocation = resolveRedirectLocation(currentUri, location);
+
+            if (!isAllowedHttpUri(resolvedLocation)) {
+                throw new SAXException(ERROR_MESSAGE_BASE + "redirect to disallowed URL " + resolvedLocation);
+            }
+
+            currentUri = resolvedLocation;
+        }
+
+        throw new SAXException(ERROR_MESSAGE_BASE + "too many redirects: " + uri);
+    }
+
+    /** Closes {@code connection} and rejects an http(s) response with an error status. */
+    private static void throwDueToErrorStatus(HttpURLConnection connection, int status, String uri)
+            throws SAXException {
+        connection.disconnect();
+        throw new SAXException(ERROR_MESSAGE_BASE + "HTTP status " + status + " fetching " + uri);
+    }
+
+    /** Wraps a successful http(s) response body, closing {@code connection} if reading it fails. */
+    private static InputSource readSuccessResponse(HttpURLConnection connection, String uri) throws IOException {
+        try {
+            InputSource source = new InputSource(connection.getInputStream());
+            source.setSystemId(uri);
+            return source;
+        } catch (IOException e) {
+            connection.disconnect();
+            throw e;
+        }
+    }
+
+    /** Resolves a {@code Location} redirect header against the URI it was received from, absolutizing it if needed. */
+    private static String resolveRedirectLocation(String currentUri, String location) throws SAXException {
+        try {
+            return URI.create(location).isAbsolute() ? location : new URL(new URL(currentUri), location).toString();
+        } catch (Exception e) {
+            throw new SAXException(
+                    ERROR_MESSAGE_BASE + "invalid redirect target " + location + " from " + currentUri, e);
+        }
+    }
+
+    /** Whether {@code uri} is allow-listed and http(s), i.e. safe to fetch/follow as a redirect target. */
+    private static boolean isAllowedHttpUri(String uri) {
+        return ALLOWED_URIS.matcher(uri).matches() && uri.regionMatches(true, 0, "http", 0, 4);
     }
 }

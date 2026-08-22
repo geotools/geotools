@@ -116,6 +116,15 @@ public class GeoparquetDatasetMetadata {
         return sample().map(GeoParquetMetadata::getPrimaryColumn);
     }
 
+    /**
+     * Returns the set of geometry column names present in the dataset metadata.
+     *
+     * @return the geometry column names, or an empty set if the dataset has no metadata
+     */
+    public Set<String> getColumnNames() {
+        return sample().map(GeoParquetMetadata::getColumns).map(Map::keySet).orElse(Set.of());
+    }
+
     public Optional<Geometry> getPrimaryColumn() {
         return getPrimaryColumnName().flatMap(this::getColumn);
     }

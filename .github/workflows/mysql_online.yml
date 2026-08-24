@@ -13,8 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # 8.0 (until Apr 2026) and 8.4 (until Apr 2029) are LTS versions
-        mysql: [ '8.0', '8.4', '9.0' ]
+        # 8.4 (until Apr 2029) is a LTS version
+        mysql: [ '8.4', '9', '26' ]
         java: [ 17 ]
 
     steps:

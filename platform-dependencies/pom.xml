@@ -31,7 +31,7 @@
     <commons-text.version>1.15.0</commons-text.version>
     <conversantmedia-disruptor.version>1.2.15</conversantmedia-disruptor.version>
     <db2.jdbc.version>12.1.0.0</db2.jdbc.version>
-    <duckdb-jdbc.version>1.4.2.0</duckdb-jdbc.version>
+    <duckdb-jdbc.version>1.5.3.0</duckdb-jdbc.version>
     <eastwood.version>1.1.1-20090908</eastwood.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <eclipse.xsd.version>2.12.0</eclipse.xsd.version>

@@ -19,6 +19,7 @@ package org.geotools.data.duckdb.datasource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -28,8 +29,10 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverPropertyInfo;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -104,6 +107,60 @@ public class DuckdbConnectionFactoryTest {
         }
 
         assertEquals(1, driver.getConnectCount());
+    }
+
+    @Test
+    public void testUnavailableGeometryAlwaysXySettingIsSkipped() throws Exception {
+        Path database = createDatabasePath();
+        DuckdbConnectionFactory factory = new DuckdbConnectionFactory(
+                new DuckDBDriver(),
+                "jdbc:duckdb:" + database.toAbsolutePath(),
+                new Properties(),
+                List.of("SET geometry_always_xy=true"));
+
+        try (Connection connection = factory.createConnection()) {
+            assertNotNull(connection);
+        } finally {
+            factory.close();
+        }
+    }
+
+    @Test
+    public void testGeometryAlwaysXySetStatementMatchesSemicolonAndCase() {
+        assertTrue(DuckdbConnectionFactory.isGeometryAlwaysXySetStatement("SET geometry_always_xy=true;"));
+        assertTrue(DuckdbConnectionFactory.isGeometryAlwaysXySetStatement("set geometry_always_xy = false"));
+    }
+
+    @Test
+    public void testGeometryAlwaysXyIsAppliedWhenSpatialIsLoaded() throws Exception {
+        Path database = createDatabasePath();
+        DuckdbConnectionFactory factory = new DuckdbConnectionFactory(
+                new DuckDBDriver(),
+                "jdbc:duckdb:" + database.toAbsolutePath(),
+                new Properties(),
+                List.of("install spatial", "load spatial", "SET geometry_always_xy = true"));
+
+        try (Connection connection = factory.createConnection()) {
+            String value = geometryAlwaysXyValue(connection);
+            assertEquals(
+                    "SET geometry_always_xy = true was silently skipped: the availability probe ran "
+                            + "before 'load spatial', when duckdb_settings() does not list the setting yet",
+                    "true",
+                    value);
+        } finally {
+            factory.close();
+        }
+    }
+
+    private String geometryAlwaysXyValue(Connection connection) throws SQLException {
+        String query = "SELECT value FROM duckdb_settings() WHERE name = 'geometry_always_xy'";
+        try (Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+            return "<setting does not exist in this DuckDB version>";
+        }
     }
 
     private Path createDatabasePath() throws IOException {

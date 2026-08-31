@@ -19,11 +19,11 @@ package org.geotools.dggs;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.collections4.IteratorUtils;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -173,21 +173,21 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
         List<Filter> filters = new ArrayList<>();
         List<Expression> inExpressions = new ArrayList<>();
         inExpressions.add(FF.property(zoneAttribute.getLocalName()));
+        List<String> parentZoneIds = new ArrayList<>();
         while (zones.hasNext()) {
             Zone zone = zones.next();
             // exact match
             if (zone.getResolution() == resolution) {
                 inExpressions.add(buildZoneLiteral(dggs, zoneAttribute, zone.getId()));
             } else { // parent match
-                Filter childFilter = buildChildFilter(dggs, zone.getId(), resolution, zoneAttribute);
-                filters.add(childFilter);
+                // collected, not turned into a filter right away, so getChildrenFilter can merge
+                // adjacent/overlapping child ranges across all of them instead of one at a time
+                parentZoneIds.add(zone.getId());
             }
         }
 
-        if (!filters.isEmpty()) {
-            Or or = FF.or(new ArrayList<>(filters));
-            filters.clear();
-            filters.add(or);
+        if (!parentZoneIds.isEmpty()) {
+            filters.add(buildChildrenFilter(dggs, parentZoneIds, resolution, zoneAttribute));
         }
         if (inExpressions.size() > 1) {
             Function inFunction = FF.function("in", inExpressions.toArray(new Expression[inExpressions.size()]));
@@ -247,10 +247,10 @@ public class DGGSFilterTransformer extends DuplicatingFilterVisitor {
                 "Zone attribute is numeric but DGGSInstance ID type is not Number: " + dggs.idType());
     }
 
-    private static <I> Filter buildChildFilter(
-            DGGSInstance<I> dggs, String id, int resolution, AttributeDescriptor zoneAttribute) {
+    private static <I> Filter buildChildrenFilter(
+            DGGSInstance<I> dggs, List<String> ids, int resolution, AttributeDescriptor zoneAttribute) {
 
-        I zoneId = dggs.parseId(id);
-        return dggs.getChildFilter(FF, zoneId, resolution, false, zoneAttribute);
+        List<I> zoneIds = ids.stream().map(dggs::parseId).collect(Collectors.toList());
+        return dggs.getChildrenFilter(FF, zoneIds, resolution, false, zoneAttribute);
     }
 }

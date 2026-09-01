@@ -28,9 +28,13 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.http.commons.MultithreadedHttpClientFactory;
+import org.geotools.util.NullEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -81,6 +85,7 @@ public class SchemaCacheTest {
         File cacheDirectory =
                 new File(URLs.urlToFile(SchemaCacheTest.class.getResource("/test-data/cache")), "../cache");
         SchemaResolver resolver = new SchemaResolver(new SchemaCache(cacheDirectory, false));
+        resolver.setEntityResolver(NullEntityResolver.INSTANCE);
         String resolvedLocation = resolver.resolve("http://schemas.example.org/cache-test/cache-test.xsd");
         Assert.assertTrue(resolvedLocation.startsWith("file:"));
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
@@ -123,12 +128,19 @@ public class SchemaCacheTest {
     /** Test that a circular redirect is not followed indefinitely when using the multithreaded HTTP client */
     @Test
     public void circularRedirectMultithreadedHttpClient() {
-        Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
-        String redirectUrl = "http://localhost:" + service.port() + "/test";
-        service.stubFor(
-                get(urlEqualTo("/test")).willReturn(aResponse().withStatus(301).withHeader("Location", redirectUrl)));
-        byte[] responseBody = SchemaCache.download(redirectUrl);
-        Assert.assertNull(responseBody);
-        Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
+        final Logger LOGGER = Logging.getLogger("org.geotools.xml.resolver");
+        Level level = LOGGER.getLevel();
+        try {
+            LOGGER.setLevel(Level.OFF);
+            Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
+            String redirectUrl = "http://localhost:" + service.port() + "/test";
+            service.stubFor(get(urlEqualTo("/test"))
+                    .willReturn(aResponse().withStatus(301).withHeader("Location", redirectUrl)));
+            byte[] responseBody = SchemaCache.download(redirectUrl);
+            Assert.assertNull(responseBody);
+            Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
+        } finally {
+            LOGGER.setLevel(level);
+        }
     }
 }

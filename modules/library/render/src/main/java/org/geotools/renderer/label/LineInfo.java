@@ -97,6 +97,8 @@ class LineInfo {
     /** The components of the line */
     private List<LineComponent> components;
 
+    private double lineHeight = Double.NaN;
+
     LineInfo() {
         components = new ArrayList<>();
     }
@@ -124,7 +126,7 @@ class LineInfo {
             // the logical bounds include the spaces, we want them in the horizontal direction
             // in order to compose the element in the row, but we need the visual bounds for
             // vertical alignment
-            Rectangle2D verticalBounds = lineComponent.getGlyphVector().getVisualBounds();
+            Rectangle2D verticalBounds = lineComponent.getVisualBounds();
             Rectangle2D horizontalBounds = lineComponent.getGlyphVector().getLogicalBounds();
             // However... for empty text (used to place symbols along a line with conflict res.)
             // we have to use the logical bounds even for the vertical direction, as the visual
@@ -183,15 +185,13 @@ class LineInfo {
     }
 
     double getLineHeight() {
+        if (!Double.isNaN(lineHeight)) return lineHeight;
         double height = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            double ch = component.getGlyphVector().getVisualBounds().getHeight();
-            if (ch > height) {
-                height = ch;
-            }
+            double ch = component.getVisualBounds().getHeight();
+            if (ch > height) height = ch;
         }
-
-        return height;
+        return lineHeight = height;
     }
 
     float getAscent() {

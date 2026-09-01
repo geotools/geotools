@@ -65,6 +65,7 @@ import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -97,6 +98,9 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
  * <p>{@link TextSymbolizer#getPriority()} OGC Expression controls a label priority.
  *
  * <p>A label with high priority will be drawn before others, increasing its likeliness to appear on the screen
+ *
+ * <p>This class is <b>not thread safe</b>: a single instance is meant to serve one rendering at a time. To share a
+ * label cache across concurrent renderings wrap it in a {@link org.geotools.renderer.lite.SynchronizedLabelCache}.
  *
  * @author jeichar
  * @author dblasby
@@ -150,6 +154,10 @@ public class LabelCacheImpl implements LabelCache {
 
     /** List of reserved areas of the screen for which labels should fear to tread */
     private List<Rectangle2D> reserved = new ArrayList<>();
+
+    // Reused by transformBounds to avoid per-call allocation; safe because a LabelCacheImpl serves one rendering
+    private final double[] cornerBuffer = new double[8];
+    private final Rectangle2D.Double boundsBuffer = new Rectangle2D.Double();
 
     // Anchor candidate values used when looping to find a point label that can be drawn
     static final double[] RIGHT_ANCHOR_CANDIDATES = {0, 0.5, 0, 0, 0, 1};
@@ -539,15 +547,17 @@ public class LabelCacheImpl implements LabelCache {
         }
     }
 
+    /** Index margin covering how far a label may be placed outside displayArea (floored to avoid a tiny tree). */
+    private static int labelIndexMargin(LabelCacheItem item) {
+        return Math.max(256, item.getMaxDisplacement() + item.getSpaceAround());
+    }
+
     void paintLabels(Graphics2D graphics, Rectangle displayArea) {
         if (!activeLayers.isEmpty()) {
             throw new IllegalStateException(activeLayers
                     + " are layers that started rendering but have not completed,"
                     + " stop() or endLayer() must be called before end() is called");
         }
-        LabelIndex glyphs = new LabelIndex();
-        glyphs.reserveArea(reserved);
-
         // Used to check the paintLineLabel function
         int paintedLineLabels = 0;
 
@@ -562,16 +572,23 @@ public class LabelCacheImpl implements LabelCache {
         displayArea.width -= 1;
         displayArea.height -= 1;
 
-        // prepare the geometry clipper
-        clipper = new GeometryClipper(new Envelope(
-                displayArea.getMinX(), displayArea.getMaxX(), displayArea.getMinY(), displayArea.getMaxY()));
-
         List<LabelCacheItem> items; // both grouped and non-grouped
         if (needsOrdering) {
             items = orderedLabels();
         } else {
             items = getActiveLabels();
         }
+
+        // size the index to cover labels placed outside displayArea by displacement + space-around;
+        // labels falling beyond the index bounds still match, but degrade to a root-level linear scan
+        int margin = 0;
+        for (LabelCacheItem item : items) margin = Math.max(margin, labelIndexMargin(item));
+        LabelIndex glyphs = new LabelIndex(displayArea, margin);
+        glyphs.reserveArea(reserved);
+
+        // prepare the geometry clipper
+        clipper = new GeometryClipper(new Envelope(
+                displayArea.getMinX(), displayArea.getMaxX(), displayArea.getMinY(), displayArea.getMaxY()));
         LabelPainter painter = constructPainter.apply(graphics, labelRenderingMode);
         for (LabelCacheItem labelItem : items) {
             if (stop) return;
@@ -739,7 +756,7 @@ public class LabelCacheImpl implements LabelCache {
             labelDistance += textBounds.getWidth();
         }
         // min distance, if any
-        LabelIndex groupLabels = new LabelIndex();
+        LabelIndex groupLabels = new LabelIndex(displayArea, labelIndexMargin(labelItem));
         // Max displacement for the current label
         double labelOffset = labelItem.getMaxDisplacement();
         boolean allowOverruns = labelItem.allowOverruns();
@@ -945,7 +962,7 @@ public class LabelCacheImpl implements LabelCache {
         int labelDistance = labelItem.getRepeat();
         // min distance, if any
         int minDistance = labelItem.getMinGroupDistance();
-        LabelIndex groupLabels = new LabelIndex();
+        LabelIndex groupLabels = new LabelIndex(displayArea, labelIndexMargin(labelItem));
         // Max displacement for the current label
         double labelOffset = labelItem.getMaxDisplacement();
         boolean allowOverruns = labelItem.allowOverruns();
@@ -1020,8 +1037,7 @@ public class LabelCacheImpl implements LabelCache {
                             // if label will be painted as straight, use the
                             // straight bounds
                             setupLineTransform(painter, cursor, centroid, tx, true);
-                            labelEnvelope =
-                                    tx.createTransformedShape(textBounds).getBounds2D();
+                            labelEnvelope = transformBounds(tx, textBounds);
                         } else {
                             // otherwise use curved bounds, more expensive to
                             // compute
@@ -1030,7 +1046,7 @@ public class LabelCacheImpl implements LabelCache {
                         }
                     } else {
                         setupLineTransform(painter, cursor, centroid, tx, false);
-                        labelEnvelope = tx.createTransformedShape(textBounds).getBounds2D();
+                        labelEnvelope = transformBounds(tx, textBounds);
                     }
 
                     // try to paint the label, the condition under which this
@@ -1191,7 +1207,8 @@ public class LabelCacheImpl implements LabelCache {
     private void setupPointTransform(
             AffineTransform tempTransform, Point centroid, TextStyle2D textStyle, LabelPainter painter) {
 
-        tempTransform.translate(centroid.getX(), centroid.getY());
+        CoordinateSequence cs = centroid.getCoordinateSequence();
+        tempTransform.translate(cs.getX(0), cs.getY(0));
 
         double rotation = textStyle.getRotation();
         if (Double.isNaN(rotation) || Double.isInfinite(rotation)) {
@@ -1214,6 +1231,35 @@ public class LabelCacheImpl implements LabelCache {
                         ? painter.getLineHeight()
                         : painter.getLineHeightForAnchorY(textStyle.getAnchorY()));
         tempTransform.translate(displacementX, displacementY);
+    }
+
+    /** Returns the bounding box of {@code rect} after applying {@code tx}. Reuses instance buffers — not reentrant. */
+    private Rectangle2D transformBounds(AffineTransform tx, Rectangle2D rect) {
+        return transformBounds(tx, rect, cornerBuffer, boundsBuffer);
+    }
+
+    /**
+     * Returns the bounding box of {@code rect} after applying {@code tx}, avoiding a {@code Path2D} allocation. Writes
+     * the corners into {@code corners} (length 8) and the result into {@code bounds}, both supplied by the caller so
+     * the buffers can be reused without sharing state across threads.
+     */
+    static Rectangle2D transformBounds(
+            AffineTransform tx, Rectangle2D rect, double[] corners, Rectangle2D.Double bounds) {
+        corners[0] = rect.getMinX();
+        corners[1] = rect.getMinY();
+        corners[2] = rect.getMaxX();
+        corners[3] = rect.getMinY();
+        corners[4] = rect.getMaxX();
+        corners[5] = rect.getMaxY();
+        corners[6] = rect.getMinX();
+        corners[7] = rect.getMaxY();
+        tx.transform(corners, 0, corners, 0, 4);
+        double minX = Math.min(Math.min(corners[0], corners[2]), Math.min(corners[4], corners[6]));
+        double minY = Math.min(Math.min(corners[1], corners[3]), Math.min(corners[5], corners[7]));
+        double maxX = Math.max(Math.max(corners[0], corners[2]), Math.max(corners[4], corners[6]));
+        double maxY = Math.max(Math.max(corners[1], corners[3]), Math.max(corners[5], corners[7]));
+        bounds.setRect(minX, minY, maxX - minX, maxY - minY);
+        return bounds;
     }
 
     /**
@@ -1413,15 +1459,20 @@ public class LabelCacheImpl implements LabelCache {
         setupPointTransform(tempTransform, point, textStyle, painter);
 
         // check for overlaps and paint
-        Rectangle2D transformed = tempTransform
-                .createTransformedShape(painter.getFullLabelBounds())
-                .getBounds2D();
+        Rectangle2D transformed = transformBounds(tempTransform, painter.getFullLabelBounds());
         if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                 || labelItem.isConflictResolutionEnabled()
                         && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())) {
             return false;
         } else {
-            painter.paintStraightLabel(tempTransform, point.getCoordinate());
+            // labelPoint only needed when a graphic is placed independently of the label
+            Coordinate labelPoint = labelItem.getTextStyle().getGraphic() != null
+                            && labelItem.getGraphicPlacement() == GraphicPlacement.INDEPENDENT
+                    ? new Coordinate(
+                            point.getCoordinateSequence().getX(0),
+                            point.getCoordinateSequence().getY(0))
+                    : null;
+            painter.paintStraightLabel(tempTransform, labelPoint);
             if (DEBUG_CACHE_BOUNDS) {
                 painter.graphics.setStroke(new BasicStroke());
                 painter.graphics.setColor(Color.RED);
@@ -1555,16 +1606,17 @@ public class LabelCacheImpl implements LabelCache {
         // ... use at least a 2 pixel step, no matter what the label length is
         final double step = painter.getAscent() > 2 ? painter.getAscent() : 2;
         double radius = step;
-        Coordinate c = new Coordinate(centroid.getCoordinate());
-        Coordinate cc = centroid.getCoordinate();
+        CoordinateSequence centroidCS = centroid.getCoordinateSequence();
+        double ccX = centroidCS.getX(0), ccY = centroidCS.getY(0);
+        Coordinate c = new Coordinate(ccX, ccY);
         Point testPoint = centroid.getFactory().createPoint(c);
         while (radius < labelItem.getMaxDisplacement()) {
             for (int angle : displacementAngles) {
                 double dx = Math.cos(Math.toRadians(angle)) * radius;
                 double dy = Math.sin(Math.toRadians(angle)) * radius;
 
-                c.x = cc.x + dx;
-                c.y = cc.y + dy;
+                c.x = ccX + dx;
+                c.y = ccY + dy;
                 testPoint.geometryChanged();
                 if (!pg.contains(testPoint)) continue;
 
@@ -1599,9 +1651,7 @@ public class LabelCacheImpl implements LabelCache {
         AffineTransform original = new AffineTransform(tempTransform);
         setupPointTransform(tempTransform, centroid, textStyle, painter);
 
-        Rectangle2D transformed = tempTransform
-                .createTransformedShape(painter.getFullLabelBounds())
-                .getBounds2D();
+        Rectangle2D transformed = transformBounds(tempTransform, painter.getFullLabelBounds());
         if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                 || labelItem.isConflictResolutionEnabled()
                         && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())
@@ -1612,9 +1662,7 @@ public class LabelCacheImpl implements LabelCache {
                 tempTransform.setTransform(original);
                 setupPointTransform(tempTransform, centroid, textStyle, painter);
 
-                transformed = tempTransform
-                        .createTransformedShape(painter.getFullLabelBounds())
-                        .getBounds2D();
+                transformed = transformBounds(tempTransform, painter.getFullLabelBounds());
                 if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
                         || labelItem.isConflictResolutionEnabled()
                                 && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())
@@ -1681,12 +1729,14 @@ public class LabelCacheImpl implements LabelCache {
                 // lines,polys, gc, etc..
                 g = g.getCentroid(); // will be point
             if (g instanceof Point point) {
-                if (displayArea.contains(point.getX(), point.getY()) || partialsEnabled) // this is robust!
+                CoordinateSequence pcs = point.getCoordinateSequence();
+                if (displayArea.contains(pcs.getX(0), pcs.getY(0)) || partialsEnabled) // this is robust!
                 pts.add(point); // possible label location
             } else if (g instanceof MultiPoint) {
                 for (int t = 0; t < g.getNumGeometries(); t++) {
                     Point gg = (Point) g.getGeometryN(t);
-                    if (displayArea.contains(gg.getX(), gg.getY()) || partialsEnabled)
+                    CoordinateSequence gcs = gg.getCoordinateSequence();
+                    if (displayArea.contains(gcs.getX(0), gcs.getY(0)) || partialsEnabled)
                         pts.add(gg); // possible label location
                 }
             }

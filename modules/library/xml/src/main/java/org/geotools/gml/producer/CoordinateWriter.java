@@ -16,6 +16,7 @@
  */
 package org.geotools.gml.producer;
 
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -53,6 +54,9 @@ public class CoordinateWriter {
 
     /** Dimension of expected coordinates */
     private final int D;
+
+    /** Controls if coordinate measures should be written out. */
+    private boolean encodeMeasures;
 
     /** Flag controlling wether namespaces should be ignored. */
     private boolean namespaceAware = true;
@@ -206,6 +210,11 @@ public class CoordinateWriter {
         return useDummyZ;
     }
 
+    /** Controls measure output; set it before encoding starts, like the other writer settings. */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        this.encodeMeasures = encodeMeasures;
+    }
+
     public void setNamespaceAware(boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
     }
@@ -242,8 +251,11 @@ public class CoordinateWriter {
         output.startElement(namespaceUri, "coordinates", prefix + "coordinates", atts);
 
         final int coordCount = c.size();
-        // used to check whether the coordseq handles a third dimension or not
-        final int coordSeqDimension = c.getDimension();
+        // the ordinates to write, X Y [Z] [M...], measures last and only when they are encoded
+        final int[] ordinates = CoordinateSequences.ordinateIndices(c, encodeMeasures);
+        // spatial slots the sequence declares, the height among them may still be NaN on a given coordinate
+        final int spatialSlots = c.getDimension() - c.getMeasures();
+        final int firstMeasure = CoordinateSequences.spatialDimension(c);
         double x, y, z;
         // write down a coordinate at a time
         for (int i = 0, n = coordCount; i < n; i++) {
@@ -259,13 +271,19 @@ public class CoordinateWriter {
             // format y into buffer
             coordFormatter.format(y, coordBuff);
 
-            boolean zAvailable = coordSeqDimension > 2
-                    && !Double.isNaN(c.getOrdinate(i, 2))
-                    && !Double.isInfinite(c.getOrdinate(i, 2));
-            if (D == 3 || zAvailable || useDummyZ) {
+            // the height is decided per coordinate, unlike the measures, which follow the index list: the list is
+            // built from the first coordinate alone, so driving the height from it would drop the later heights of a
+            // sequence whose first one is NaN
+            boolean zAvailable = spatialSlots > 2 && Double.isFinite(c.getOrdinate(i, 2));
+            if (zAvailable || D == 3 || useDummyZ) {
                 z = zAvailable ? c.getOrdinate(i, 2) : dummyZ;
                 coordBuff.append(coordinateDelimiter);
                 coordFormatter.format(z, coordBuff);
+            }
+
+            for (int d = firstMeasure; d < ordinates.length; d++) {
+                coordBuff.append(coordinateDelimiter);
+                coordFormatter.format(c.getOrdinate(i, ordinates[d]), coordBuff);
             }
 
             // if there is another coordinate, tack on a tuple delimiter

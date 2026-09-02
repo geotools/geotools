@@ -104,7 +104,7 @@ public interface GMLDelegate {
      * @return TRUE if measures should be encoded, otherwise FALSE
      */
     default boolean getEncodeMeasures() {
-        // by default coordinates measures are encoded
-        return true;
+        // off by default, writing a measure into a coordinate is outside the GML specification
+        return false;
     }
 }

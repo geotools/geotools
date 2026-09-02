@@ -119,6 +119,7 @@ public class FeatureTransformer extends TransformerBase {
     private int numDecimals = 4;
     private boolean padWithZeros = false;
     private boolean forceDecimalEncoding = false;
+    private boolean encodeMeasures = false;
 
     public void setCollectionNamespace(String nsURI) {
         collectionNamespace = nsURI;
@@ -153,6 +154,11 @@ public class FeatureTransformer extends TransformerBase {
 
     public void setForceDecimalEncoding(boolean forceDecimalEncoding) {
         this.forceDecimalEncoding = forceDecimalEncoding;
+    }
+
+    /** Controls measure output; set it before the transform starts, like the other transformer settings. */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        this.encodeMeasures = encodeMeasures;
     }
 
     public NamespaceSupport getFeatureNamespaces() {
@@ -274,6 +280,7 @@ public class FeatureTransformer extends TransformerBase {
         t.setNumDecimals(numDecimals);
         t.setPadWithZeros(padWithZeros);
         t.setForceDecimalEncoding(forceDecimalEncoding);
+        t.setEncodeMeasures(encodeMeasures);
         t.setGmlPrefixing(prefixGml);
         t.setSrsName(srsName);
         t.setLockId(lockId);
@@ -338,6 +345,8 @@ public class FeatureTransformer extends TransformerBase {
     public class FeatureTranslator extends TranslatorSupport implements FeatureCollectionIteration.Handler {
         String fc = "FeatureCollection";
         protected GeometryTransformer.GeometryTranslator geometryTranslator;
+
+        private boolean encodeMeasures;
         String memberString;
         String currentPrefix;
         FeatureTypeNamespaces types;
@@ -382,7 +391,7 @@ public class FeatureTransformer extends TransformerBase {
                 FeatureTypeNamespaces types,
                 SchemaLocationSupport schemaLoc) {
             super(handler, prefix, ns, schemaLoc);
-            geometryTranslator = createGeometryTranslator(handler);
+            replaceGeometryTranslator(createGeometryTranslator(handler));
             this.types = types;
             this.handler = handler;
             getNamespaceSupport()
@@ -447,51 +456,62 @@ public class FeatureTransformer extends TransformerBase {
             this.collectionBounding = collectionBounding;
         }
 
+        /** Keeps the measure setting across the geometry translator rebuilds the other setters do. */
+        private void replaceGeometryTranslator(GeometryTranslator translator) {
+            translator.setEncodeMeasures(encodeMeasures);
+            geometryTranslator = translator;
+        }
+
+        void setEncodeMeasures(boolean encodeMeasures) {
+            this.encodeMeasures = encodeMeasures;
+            geometryTranslator.setEncodeMeasures(encodeMeasures);
+        }
+
         void setSrsName(String srsName) {
             this.srsName = srsName;
         }
 
         void setNumDecimals(int numDecimals) {
-            geometryTranslator = createGeometryTranslator(
+            replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     numDecimals,
                     geometryTranslator.getPadWithZeros(),
-                    geometryTranslator.getForceDecimalEncoding());
+                    geometryTranslator.getForceDecimalEncoding()));
         }
 
         void setPadWithZeros(boolean padWithZeros) {
-            geometryTranslator = createGeometryTranslator(
+            replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
                     padWithZeros,
-                    geometryTranslator.getForceDecimalEncoding());
+                    geometryTranslator.getForceDecimalEncoding()));
         }
 
         void setForceDecimalEncoding(boolean forceDecimalEncoding) {
-            geometryTranslator = createGeometryTranslator(
+            replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
                     geometryTranslator.getPadWithZeros(),
-                    forceDecimalEncoding);
+                    forceDecimalEncoding));
         }
 
         void setUseDummyZ(boolean useDummyZ) {
-            geometryTranslator = createGeometryTranslator(
+            replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
                     geometryTranslator.getPadWithZeros(),
                     geometryTranslator.getForceDecimalEncoding(),
-                    useDummyZ);
+                    useDummyZ));
         }
 
         /** If set to 3 the real z value from the coordinates will be used */
         void setDimension(int dimension) {
-            geometryTranslator = createGeometryTranslator(
+            replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
                     geometryTranslator.getPadWithZeros(),
                     geometryTranslator.getForceDecimalEncoding(),
-                    dimension);
+                    dimension));
         }
 
         public void setLockId(String lockId) {

@@ -22,9 +22,12 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.Position1D;
 import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Position3D;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Configuration;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -63,6 +66,8 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
 
     CoordinateFormatter formatter;
 
+    Configuration config;
+
     public DirectPositionTypeBinding(GeometryFactory factory) {
         this.factory = factory;
     }
@@ -70,6 +75,12 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
     public DirectPositionTypeBinding(GeometryFactory factory, CoordinateFormatter formatter) {
         this.factory = factory;
         this.formatter = formatter;
+    }
+
+    public DirectPositionTypeBinding(GeometryFactory factory, CoordinateFormatter formatter, Configuration config) {
+        this.factory = factory;
+        this.formatter = formatter;
+        this.config = config;
     }
 
     /** @generated */
@@ -130,25 +141,15 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         CoordinateSequence cs = (CoordinateSequence) object;
-        boolean hasm = cs.hasM();
         StringBuffer sb = new StringBuffer();
 
         // assume either zero or one coordinate
         if (cs.size() >= 1) {
-            int dim = cs.getDimension();
-            for (int d = 0; d < dim; d++) {
-                double v = cs.getOrdinate(0, d);
-                // if has M coordinate and no Z(dim=3), fill empty Z coordinate with 0
-                if (hasm && dim == 3 && d == 2) {
-                    formatAndAppend(sb, 0);
-                }
-                if (Double.isNaN(v) && d > 1) {
-                    continue;
-                }
-
-                formatAndAppend(sb, v);
+            int[] ordinates = CoordinateSequences.ordinateIndices(cs, GML2EncodingUtils.encodeMeasures(config));
+            for (int d : ordinates) {
+                formatAndAppend(sb, cs.getOrdinate(0, d));
             }
-            if (dim > 0) {
+            if (ordinates.length > 0) {
                 sb.setLength(sb.length() - 1);
             }
         }

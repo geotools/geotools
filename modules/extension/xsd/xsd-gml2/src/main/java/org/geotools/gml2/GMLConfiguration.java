@@ -80,6 +80,41 @@ public class GMLConfiguration extends Configuration {
     /** Property which engages "fast" gml encoding. */
     public static final QName OPTIMIZED_ENCODING = new QName("org.geotools.gml", "optimizedEncoding");
 
+    /**
+     * Presence of this property means coordinate measures are encoded; it is where the {@code encodeMeasures} flag of
+     * the GML3 configurations is kept, so that this module can read it without depending on them. Use
+     * {@link #encodeMeasures(Configuration)} and {@link #setEncodeMeasures(Configuration, boolean)} rather than the
+     * property set directly, so every caller asks the same question of the same dependency tree.
+     */
+    public static final QName ENCODE_MEASURES = new QName("org.geotools.gml", "encodeMeasures");
+
+    /**
+     * Whether coordinate measures should be encoded for the given configuration, off when there is none. This is the
+     * single lookup every encoder and every GML configuration uses, so they cannot answer the question differently.
+     */
+    public static boolean encodeMeasures(Configuration configuration) {
+        return configuration != null && configuration.hasProperty(ENCODE_MEASURES);
+    }
+
+    /** Turns measure encoding on or off on the given configuration, the counterpart of {@link #encodeMeasures}. */
+    public static void setEncodeMeasures(Configuration configuration, boolean encodeMeasures) {
+        if (encodeMeasures) {
+            configuration.getProperties().add(ENCODE_MEASURES);
+        } else {
+            configuration.getProperties().remove(ENCODE_MEASURES);
+        }
+    }
+
+    /** Whether coordinate measures are encoded; looked up across the whole dependency tree. */
+    public boolean getEncodeMeasures() {
+        return encodeMeasures(this);
+    }
+
+    /** Controls whether coordinate measures are encoded; off by default, as measures are outside the GML schema. */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        setEncodeMeasures(this, encodeMeasures);
+    }
+
     /** Srs name style to encode srsName URI's with */
     protected SrsSyntax srsSyntax = SrsSyntax.OGC_HTTP_URL;
 

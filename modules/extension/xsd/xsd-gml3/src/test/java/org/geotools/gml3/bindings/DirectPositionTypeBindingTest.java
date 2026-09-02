@@ -25,6 +25,8 @@ import org.geotools.geometry.Position1D;
 import org.geotools.geometry.Position2D;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.geotools.gml3.GMLConfiguration;
+import org.geotools.xsd.Encoder;
 import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateXYM;
@@ -77,23 +79,41 @@ public class DirectPositionTypeBindingTest extends GML3TestSupport {
         checkPosOrdinates(doc, 3);
     }
 
-    /** Tests encoding for X, Y, M ordinates number */
+    /** XYM, measures off: the M value is not a height, so the position is a plain 2D one. */
     @Test
     public void testEncodeXYM() throws Exception {
-        GeometryFactory gf = new GeometryFactory();
-        Point pointM = gf.createPoint(new CoordinateXYM(1, 1, 4));
-        CoordinateSequence seq = pointM.getCoordinateSequence();
-        Document doc = encode(seq, GML.pos);
-        checkPosOrdinates(doc, 4);
+        checkPosOrdinates(encodeMeasured(xym(), false), 2);
     }
 
-    /** Tests encoding for X, Y, Z, M ordinates number */
+    /** XYM, measures on: the measure takes the third slot, the same one posList writes it in. */
+    @Test
+    public void testEncodeXYMMeasuresEncoded() throws Exception {
+        checkPosOrdinates(encodeMeasured(xym(), true), 3);
+    }
+
+    /** XYZM, measures off: the height stays, the measure goes. */
     @Test
     public void testEncodeZM() throws Exception {
-        GeometryFactory gf = new GeometryFactory();
-        Point pointM = gf.createPoint(new CoordinateXYZM(1, 1, 2, 4));
-        CoordinateSequence seq = pointM.getCoordinateSequence();
-        Document doc = encode(seq, GML.pos);
-        checkPosOrdinates(doc, 4);
+        checkPosOrdinates(encodeMeasured(xyzm(), false), 3);
+    }
+
+    /** XYZM, measures on: four ordinates, measure last. */
+    @Test
+    public void testEncodeZMMeasuresEncoded() throws Exception {
+        checkPosOrdinates(encodeMeasured(xyzm(), true), 4);
+    }
+
+    private Document encodeMeasured(CoordinateSequence seq, boolean encodeMeasures) throws Exception {
+        GMLConfiguration configuration = new GMLConfiguration();
+        configuration.setEncodeMeasures(encodeMeasures);
+        return new Encoder(configuration).encodeAsDOM(seq, GML.pos);
+    }
+
+    private static CoordinateSequence xym() {
+        return new GeometryFactory().createPoint(new CoordinateXYM(1, 1, 4)).getCoordinateSequence();
+    }
+
+    private static CoordinateSequence xyzm() {
+        return new GeometryFactory().createPoint(new CoordinateXYZM(1, 1, 2, 4)).getCoordinateSequence();
     }
 }

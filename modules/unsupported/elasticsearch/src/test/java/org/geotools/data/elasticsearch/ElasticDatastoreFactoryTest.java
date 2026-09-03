@@ -79,7 +79,6 @@ public class ElasticDatastoreFactoryTest {
         clientBuilder = mock(RestClientBuilder.class);
         hostsCaptor = ArgumentCaptor.forClass(HttpHost[].class);
         Mockito.doReturn(clientBuilder).when(dataStoreFactory).createClientBuilder(hostsCaptor.capture());
-        @SuppressWarnings("PMD.CloseResource")
         final RestClient restClient = mock(RestClient.class);
         when(clientBuilder.build()).thenReturn(restClient);
         final DataStore dataStore = mock(DataStore.class);

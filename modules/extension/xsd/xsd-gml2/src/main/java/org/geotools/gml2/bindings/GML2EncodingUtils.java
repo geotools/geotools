@@ -31,6 +31,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
@@ -44,6 +45,7 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
+import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -281,11 +283,36 @@ public class GML2EncodingUtils {
             return null;
         }
 
-        /**
-         * For the dimension, use the actual dimension of the geometry. Using the dimension of the CRS is not
-         * sufficient, since currently CRSes don't support 3D.
-         */
-        return CoordinateSequences.coordinateDimension(geometry);
+        return getCoordinateDimension(geometry, config);
+    }
+
+    /**
+     * Number of ordinates written per coordinate: the natural dimension of the geometry, minus its measures when
+     * measure encoding is off. The declaration and every encoder path derive their count from here.
+     */
+    public static int getCoordinateDimension(Geometry geometry, Configuration config) {
+        // the dimension comes from the data, not from the CRS: 3D CRSs do exist, but 2+1D data is commonly
+        // published against a 2D one, so the CRS would under report
+        if (geometry instanceof CurvedGeometry) {
+            // curves are 2D by construction, CircularString rejects anything else, and they keep control points
+            // rather than a sequence
+            return CoordinateSequences.coordinateDimension(geometry);
+        }
+        CoordinateSequence sequence = CoordinateSequences.firstSequence(geometry);
+        if (sequence == null) {
+            return CoordinateSequences.coordinateDimension(geometry);
+        }
+        return getCoordinateDimension(sequence, encodeMeasures(config));
+    }
+
+    /** Same count as {@link #getCoordinateDimension(Geometry, Configuration)}, for a single sequence. */
+    public static int getCoordinateDimension(CoordinateSequence sequence, boolean encodeMeasures) {
+        return CoordinateSequences.ordinateIndices(sequence, encodeMeasures).length;
+    }
+
+    /** Whether coordinate measures should be encoded; off when no configuration is available, matching the default. */
+    public static boolean encodeMeasures(Configuration config) {
+        return GMLConfiguration.encodeMeasures(config);
     }
 
     public static Integer getEnvelopeDimension(ReferencedEnvelope e, Configuration configuration) {

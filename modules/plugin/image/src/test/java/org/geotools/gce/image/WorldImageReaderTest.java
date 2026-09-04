@@ -300,7 +300,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
      *
      * @param source Object
      */
-    @SuppressWarnings("PMD.UselessPureMethodCall")
+    @SuppressWarnings("PMD.UnusedReturnValue")
     private void read(Object source) throws FileNotFoundException, IOException, IllegalArgumentException {
 
         // can we read it?

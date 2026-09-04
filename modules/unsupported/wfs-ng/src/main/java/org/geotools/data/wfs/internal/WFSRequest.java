@@ -180,6 +180,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
         }
     }
 
+    @SuppressWarnings("PMD.UnusedReturnValue")
     @Override
     public WFSResponse createResponse(HTTPResponse response) throws ServiceException, IOException {
 

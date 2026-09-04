@@ -65,7 +65,7 @@ class Compositing {
     }
 
     /** Compose this {@link Compositing} element with the source GridCoverage. */
-    @SuppressWarnings("PMD.UselessPureMethodCall")
+    @SuppressWarnings("PMD.UnusedReturnValue")
     public GridCoverage2D composeGridCoverage(GridCoverage2D source, GridCoverageFactory factory) {
         if (compositingImage != null) {
             // Make sure to transform the compositingImage to RGB

@@ -319,7 +319,7 @@ public class JDBCDataStoreTest {
          *
          * @param table Name of the table to generate metadata for
          */
-        @SuppressWarnings({"PMD.CloseResource", "PMD.CheckResultSet"}) // mock resources
+        @SuppressWarnings({"PMD.CheckResultSet"}) // mock resources
         private static DatabaseMetaData mockConnectionMetaData(String table) throws Exception {
             DatabaseMetaData metaData = mock(DatabaseMetaData.class);
             when(metaData.getSearchStringEscape()).thenReturn("");
@@ -361,7 +361,7 @@ public class JDBCDataStoreTest {
      * @param batchInsertSize the batch size to configure
      * @param supportsBatchGeneratedKeys whether the dialect supports batch generated keys
      */
-    @SuppressWarnings({"PMD.CloseResource", "PMD.CheckResultSet"}) // mock resources
+    @SuppressWarnings({"PMD.CheckResultSet"}) // mock resources
     private InsertTestSetup setupInsertTest(int batchInsertSize, boolean supportsBatchGeneratedKeys) throws Exception {
         final String table = "foo";
         final String schema = "bar";

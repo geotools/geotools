@@ -227,7 +227,6 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             if (argumentCount != expected) {
                 final String suffix = ARGUMENT_COUNT_PREFIX + expected;
                 warning(file, key, "Key name should ends with \"" + suffix + "\".", null);
-                continue;
             }
         }
         /*
@@ -275,33 +274,29 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
         search:
         for (int i = 0; i < buffer.length(); i++) { // Length of 'buffer' will vary.
             switch (buffer.charAt(i)) {
-                /*
-                 * Left and right braces take us up or down a level.  Quotes will only be doubled
-                 * if we are at level 0.  If the brace is between quotes it will not be taken into
-                 * account as it will have been skipped over during the previous pass through the
-                 * loop.
-                 */
-                case '{':
+                case '{' -> {
                     level++;
                     last = i;
-                    break;
-                case '}':
+                }
+                case '}' -> {
                     level--;
                     last = i;
-                    break;
-                case '\'': {
+                }
+                case '\'' -> {
                     /*
                      * If a brace ('{' or '}') is found between quotes, the entire block is
                      * ignored and we continue with the character following the closing quote.
                      */
                     if (i + 2 < buffer.length() && buffer.charAt(i + 2) == '\'') {
                         switch (buffer.charAt(i + 1)) {
-                            case '{':
+                            case '{' -> {
                                 i += 2;
                                 continue search;
-                            case '}':
+                            }
+                            case '}' -> {
                                 i += 2;
                                 continue search;
+                            }
                         }
                     }
                     if (level <= 0) {
@@ -442,7 +437,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
                 String message = (String) resources.get(key);
                 if (message != null) {
                     out.write("    /**\n");
-                    while ((message = message.trim()).length() != 0) {
+                    message = message.trim();
+                    while (!message.isEmpty()) {
                         out.write("     * ");
                         int stop = message.length();
                         if (stop > COMMENT_LENGTH) {

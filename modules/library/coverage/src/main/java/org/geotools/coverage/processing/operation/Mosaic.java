@@ -805,7 +805,7 @@ public class Mosaic extends OperationJAI {
 
     /** We override this one to get some extra behavior that ImageWorker has (ROI, paletted images management) */
     @Override
-    @SuppressWarnings("PMD.UselessPureMethodCall")
+    @SuppressWarnings("PMD.UnusedReturnValue")
     protected RenderedImage createRenderedImage(final ParameterBlockImageN parameters, RenderingHints hints) {
         parameters.getSources();
         RenderedImage[] images = parameters

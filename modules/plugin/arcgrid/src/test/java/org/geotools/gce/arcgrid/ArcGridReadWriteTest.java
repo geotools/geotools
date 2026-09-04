@@ -130,7 +130,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     }
 
     /** A Simple Test Method which read an arcGrid and write it as a GRASS Ascii Grid */
-    @SuppressWarnings("PMD.UselessPureMethodCall")
+    @SuppressWarnings("PMD.UnusedReturnValue")
     public void writeGrassUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
@@ -174,7 +174,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     }
 
     /** A Simple Test Method which read an arcGrid and write it as an ArcGrid */
-    @SuppressWarnings("PMD.UselessPureMethodCall")
+    @SuppressWarnings("PMD.UnusedReturnValue")
     public void writeEsriUnCompressed(File rf, File wf) throws Exception {
 
         final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);

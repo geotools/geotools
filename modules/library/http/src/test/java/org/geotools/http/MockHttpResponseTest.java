@@ -34,6 +34,7 @@ public class MockHttpResponseTest {
         readAndCompare(payload, response);
     }
 
+    @SuppressWarnings("PMD.UnusedReturnValue")
     private void readAndCompare(byte[] payload, HTTPResponse response) throws IOException {
         try (InputStream is = response.getResponseStream()) {
             is.read(payload);

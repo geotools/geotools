@@ -65,6 +65,7 @@ public class MockHttpClient extends AbstractHttpClient {
         return getResponse(new Request(url, toByteArray(postContent), postContentType));
     }
 
+    @SuppressWarnings("PMD.UnusedReturnValue")
     private byte[] toByteArray(InputStream is) throws IOException {
         byte[] result;
         try (is) {

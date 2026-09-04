@@ -564,7 +564,7 @@ public class GeoTiffWriterTest extends Assert {
 
         // switching axes
         final CoordinateReferenceSystem latLon4267 = CRS.decode("EPSG:4267");
-        assertEquals(CRS.getAxisOrder(latLon4267), AxisOrder.NORTH_EAST);
+        assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(latLon4267));
         final GeneralBounds envelope = CRS.transform(coverage.getEnvelope(), latLon4267);
         envelope.setCoordinateReferenceSystem(latLon4267);
 
@@ -581,18 +581,18 @@ public class GeoTiffWriterTest extends Assert {
         final MathTransform g2w_ = gc.getGridGeometry().getGridToCRS();
         assertTrue(g2w_ instanceof AffineTransform2D);
         AffineTransform2D g2w = (AffineTransform2D) g2w_;
-        assertEquals(XAffineTransform.getSwapXY(g2w), -1);
+        assertEquals(-1, XAffineTransform.getSwapXY(g2w));
         assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(gc.getCoordinateReferenceSystem()));
         RenderedImage ri = gc.getRenderedImage();
-        assertEquals(ri.getWidth(), 120);
-        assertEquals(ri.getHeight(), 121);
+        assertEquals(120, ri.getWidth());
+        assertEquals(121, ri.getHeight());
         assertTrue(((GeneralBounds) gc.getEnvelope())
                 .equals(coverage.getEnvelope(), XAffineTransform.getScaleX0(g2w) * 1E-1, false));
         reader.dispose();
     }
 
     @Test
-    //    @Ignore
+    @SuppressWarnings("PMD.UnusedReturnValue")
     public void testWriteBigTiff() throws Exception {
 
         String[] files = {"geo.tiff", "no_crs_no_envelope.tif"};
@@ -640,10 +640,10 @@ public class GeoTiffWriterTest extends Assert {
                 fis.read(bytes);
                 if (bytes[0] == 77 && bytes[1] == 77) {
                     // Big Endian Case
-                    assertEquals(bytes[3], 43); // 43 is the magic number of BigTiff
+                    assertEquals(43, bytes[3]); // 43 is the magic number of BigTiff
                 } else {
                     // Little Endian Case
-                    assertEquals(bytes[4], 43); // 43 is the magic number of BigTiff
+                    assertEquals(43, bytes[4]); // 43 is the magic number of BigTiff
                 }
             }
             i++;

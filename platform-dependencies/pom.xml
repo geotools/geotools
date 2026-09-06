@@ -45,7 +45,7 @@
     <httpclient5.version>5.6.3</httpclient5.version>
     <httpcore5.version>5.4.3</httpcore5.version>
     <imageio.ext.version>2.1-SNAPSHOT</imageio.ext.version>
-    <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
+    <informix.jdbc.version>15.0.1.4</informix.jdbc.version>
     <!-- jackson2 BOM imported for dependency convergence. It must match the version used for jackson-annotations in the jackson3 BOM -->
     <jackson2.version>2.22.2</jackson2.version>
     <jackson.version>3.2.2</jackson.version>

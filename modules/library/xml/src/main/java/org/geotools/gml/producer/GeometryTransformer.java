@@ -60,6 +60,8 @@ public class GeometryTransformer extends TransformerBase {
 
     protected boolean forceDecimalEncoding = false;
 
+    protected boolean encodeMeasures = false;
+
     public void setUseDummyZ(boolean flag) {
         useDummyZ = flag;
     }
@@ -76,14 +78,27 @@ public class GeometryTransformer extends TransformerBase {
         this.forceDecimalEncoding = forceDecimalEncoding;
     }
 
+    /** Controls measure output; set it before encoding starts, like the other transformer settings. */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        this.encodeMeasures = encodeMeasures;
+    }
+
     /** @TODO remove constant from GometryTraslator contructor call */
     @Override
     public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
-        return new GeometryTranslator(handler, numDecimals, padWithZeros, forceDecimalEncoding, useDummyZ);
+        GeometryTranslator translator =
+                new GeometryTranslator(handler, numDecimals, padWithZeros, forceDecimalEncoding, useDummyZ);
+        translator.setEncodeMeasures(encodeMeasures);
+        return translator;
     }
 
     public static class GeometryTranslator extends TranslatorSupport {
         protected CoordinateWriter coordWriter = new CoordinateWriter();
+
+        /** Controls measure output; set it before encoding starts, like the other writer settings. */
+        public void setEncodeMeasures(boolean encodeMeasures) {
+            coordWriter.setEncodeMeasures(encodeMeasures);
+        }
 
         public GeometryTranslator(ContentHandler handler) {
             this(handler, "gml", GMLUtils.GML_URL);

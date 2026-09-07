@@ -117,6 +117,9 @@ public class GMLConfiguration extends Configuration {
     /** Property which engages "fast" gml encoding. */
     public static final QName OPTIMIZED_ENCODING = org.geotools.gml2.GMLConfiguration.OPTIMIZED_ENCODING;
 
+    /** Presence of this property means coordinate measures are encoded, see the gml2 constant it aliases. */
+    public static final QName ENCODE_MEASURES = org.geotools.gml2.GMLConfiguration.ENCODE_MEASURES;
+
     /** extended support for arcs and surface flag */
     boolean extArcSurfaceSupport = false;
 
@@ -128,9 +131,6 @@ public class GMLConfiguration extends Configuration {
 
     /** The factory used to create geometries */
     private GeometryFactory geometryFactory;
-
-    /** Controls if coordinates measures should be encoded in GML * */
-    private boolean encodeMeasures;
 
     /** Right-Pad coordinates decimals with zeros up to the configured number of decimals */
     private boolean padWithZeros;
@@ -359,7 +359,7 @@ public class GMLConfiguration extends Configuration {
      * @return TRUE if measures should be encoded, otherwise FALSE
      */
     public boolean getEncodeMeasures() {
-        return encodeMeasures;
+        return org.geotools.gml2.GMLConfiguration.encodeMeasures(this);
     }
 
     /**
@@ -368,7 +368,9 @@ public class GMLConfiguration extends Configuration {
      * @param encodeMeasures TRUE if measures should be encoded, otherwise FALSE
      */
     public void setEncodeMeasures(boolean encodeMeasures) {
-        this.encodeMeasures = encodeMeasures;
+        // kept as a property rather than a field so that gt-xsd-gml2, which cannot see this class, can
+        // read the flag, and so that the two encoder paths cannot read different answers
+        org.geotools.gml2.GMLConfiguration.setEncodeMeasures(this, encodeMeasures);
     }
 
     /**

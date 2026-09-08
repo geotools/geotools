@@ -74,41 +74,26 @@ public final class Log4JLogger extends LoggerAdapter {
     /** Returns the Log4J level for the given Java level. */
     private static org.apache.log4j.Level toLog4JLevel(final Level level) {
         final int n = level.intValue();
-        switch (n / 100) {
-            case 11: // FATAL
-                return org.apache.log4j.Level.FATAL;
-            case 10: // SEVERE
-                return org.apache.log4j.Level.ERROR;
-            case 9: // WARNING
-                return org.apache.log4j.Level.WARN;
-            case 8: // INFO
-                return org.apache.log4j.Level.INFO;
-            case 7: // CONFIG
-                return CONFIG;
-            case 6: // (not allocated)
-            case 5: // FINE
-                return org.apache.log4j.Level.DEBUG;
-            case 4: // FINER
-                return org.apache.log4j.Level.TRACE;
-            case 3: // FINEST
-                return FINEST;
-            case 2: // (not allocated)
-            case 1: // (not allocated)
-            case 0: // ALL
-                return org.apache.log4j.Level.ALL;
-            default:
-                // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                // if positive, log to fatal since we are greater than SEVERE.
+        return switch (n / 100) {
+            case 11 -> org.apache.log4j.Level.FATAL;
+            case 10 -> org.apache.log4j.Level.ERROR;
+            case 9 -> org.apache.log4j.Level.WARN;
+            case 8 -> org.apache.log4j.Level.INFO;
+            case 7 -> CONFIG;
+            case 6, 5 -> org.apache.log4j.Level.DEBUG;
+            case 4 -> org.apache.log4j.Level.TRACE;
+            case 3 -> FINEST;
+            case 2, 1, 0 -> org.apache.log4j.Level.ALL;
+            default ->
                 switch (n) {
-                    case Integer.MIN_VALUE:
-                        return org.apache.log4j.Level.ALL;
-                    case Integer.MAX_VALUE:
-                        return org.apache.log4j.Level.OFF;
-                    default:
-                        if (n >= 0) return org.apache.log4j.Level.FATAL;
-                        else return org.apache.log4j.Level.ALL;
-                }
-        }
+                    case Integer.MIN_VALUE -> org.apache.log4j.Level.ALL;
+                    case Integer.MAX_VALUE -> org.apache.log4j.Level.OFF;
+                    default -> {
+                        if (n >= 0) yield org.apache.log4j.Level.FATAL;
+                        else yield org.apache.log4j.Level.ALL;
+                    }
+                };
+        };
     }
 
     /** Returns the Java level for the given Log4J level. */

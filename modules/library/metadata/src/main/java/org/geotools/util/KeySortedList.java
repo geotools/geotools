@@ -180,6 +180,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /** The list iterator required for {@link AbstractSequentialList} implementation. */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class Iter implements ListIterator<V> {
         /** The iterator over <var>key</var>-<var>list of values</var> pairs. */
         private Iterator<Map.Entry<K, List<V>>> entriesIter;

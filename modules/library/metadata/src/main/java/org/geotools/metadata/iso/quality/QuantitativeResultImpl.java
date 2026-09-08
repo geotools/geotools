@@ -75,7 +75,8 @@ public class QuantitativeResultImpl extends MetadataEntity implements Quantitati
     /** Quantitative value or values, content determined by the evaluation procedure used. */
     @Override
     public List<Record> getValues() {
-        return values = nonNullList(values, Record.class);
+        values = nonNullList(values, Record.class);
+        return values;
     }
 
     /**
@@ -103,6 +104,7 @@ public class QuantitativeResultImpl extends MetadataEntity implements Quantitati
     }
 
     /** Temporary record implementation will we wait for a real one. */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class SimpleRecord implements Record, java.io.Serializable {
         private final java.util.Map<org.geotools.api.util.MemberName, Object> map;
 

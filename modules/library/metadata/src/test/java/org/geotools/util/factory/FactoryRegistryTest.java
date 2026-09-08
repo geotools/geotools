@@ -280,7 +280,7 @@ public final class FactoryRegistryTest {
         assertFalse(factories.findAny().isPresent());
 
         // lookup creating factories, should return factory #5 and #6
-        hints.put(Hints.CREATE_FACTORIES_WITH_HINTS, Boolean.TRUE);
+        hints.put(Hints.CREATE_FACTORIES_WITH_HINTS, true);
         factories = registry.getFactories(DummyFactory.class, f -> true, hints);
         Set<Class<?>> factorySet = factories.map(f -> f.getClass()).collect(toSet());
         assertEquals(2, factorySet.size());

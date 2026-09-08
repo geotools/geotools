@@ -53,6 +53,7 @@ public class PreventLocalEntityResolverTest {
         server.createContext(
                 "/redirect-to-invalid-location.xsd", exchange -> redirect(exchange, "http://bad uri/a.xsd"));
         server.createContext("/redirect-loop.xsd", exchange -> redirect(exchange, "/redirect-loop.xsd"));
+        server.createContext("/redirect-to-https.xsd", exchange -> redirect(exchange, "https://xyz/a.xsd"));
         server.createContext("/not-found.xsd", exchange -> {
             exchange.sendResponseHeaders(404, -1);
             exchange.close();
@@ -267,6 +268,17 @@ public class PreventLocalEntityResolverTest {
         InputSource source = INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-allowed.xsd");
         assertNotNull(source);
         assertEquals(baseUrl + "/a.xsd", source.getSystemId());
+    }
+
+    @Test
+    public void testHttpRedirectToAllowedHttpsUriIsAccepted() throws Exception {
+        try {
+            INSTANCE.resolveEntity(null, baseUrl + "/redirect-to-https.xsd");
+            fail("expected an IOException");
+        } catch (IOException expected) {
+            // no local https test server; the redirect target passed the ALLOWED_URIS check
+            // and a real connection was attempted, as intended
+        }
     }
 
     @Test

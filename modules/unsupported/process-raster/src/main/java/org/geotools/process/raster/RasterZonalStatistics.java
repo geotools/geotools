@@ -274,17 +274,22 @@ public class RasterZonalStatistics implements RasterProcess {
         void addStatsToFeature(Statistics[] stats) {
             // the statistics are returned in the order of the requested stats, for reference:
             // {StatsType.EXTREMA, StatsType.MEAN, StatsType.DEV_STD, StatsType.SUM};
-            double[] minMax = (double[]) stats[0].getResult();
             double count = stats[0].getNumSamples().doubleValue();
-            double avg = ((Number) stats[1].getResult()).doubleValue();
-            double stdDev = ((Number) stats[2].getResult()).doubleValue();
-            double sum = ((Number) stats[3].getResult()).doubleValue();
-            builder.add(count); // count
+            builder.add(count);
+            if (count == 0) {
+                // With no accepted samples the accumulators are still at their initial values:
+                // extrema would report +/-Infinity, sum and mean zero. Report no value instead.
+                for (int i = 0; i < 5; i++) {
+                    builder.add(Double.NaN);
+                }
+                return;
+            }
+            double[] minMax = (double[]) stats[0].getResult();
             builder.add(minMax[0]);
             builder.add(minMax[1]);
-            builder.add(sum);
-            builder.add(avg);
-            builder.add(stdDev);
+            builder.add(((Number) stats[3].getResult()).doubleValue()); // sum
+            builder.add(((Number) stats[1].getResult()).doubleValue()); // avg
+            builder.add(((Number) stats[2].getResult()).doubleValue()); // stddev
         }
 
         @SuppressWarnings("unchecked")

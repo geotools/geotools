@@ -1,7 +1,9 @@
 package com.bedatadriven.jackson.datatype.jts;
 
 import java.io.IOException;
+import java.util.ServiceConfigurationError;
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -17,6 +19,20 @@ public class JtsModuleTest {
     public void setupMapper() {
 
         mapper = JsonMapper.builder().addModule(new JtsModule()).build();
+    }
+
+    /**
+     * Make sure to remove JtsModule from Service registration as Jackson 2 module.
+     *
+     * <p>https://osgeo-org.atlassian.net/browse/GEOT-7954
+     */
+    @Test
+    public void serviceLoaderTest() {
+        try {
+            com.fasterxml.jackson.databind.ObjectMapper.findModules();
+        } catch (ServiceConfigurationError e) {
+            Assert.fail("JtsModule should not be registered as com.fasterxml.jackson.databind.Module");
+        }
     }
 
     @Test(expected = DatabindException.class)

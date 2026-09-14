@@ -85,35 +85,35 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
-    private final PoolingHttpClientConnectionManager connectionManager;
+    private PoolingHttpClientConnectionManager connectionManager = null;
 
-    private HttpClient client;
+    private boolean renewManager = true;
+
+    private HttpClient client = null;
 
     private ConnectionConfig connectionConfig;
 
     private RequestConfig requestConfig;
 
+    private BasicCredentialsProvider credsProvider = null;
+
     private AuthScope authScope;
+
+    private int maxConnections;
 
     public MultithreadedHttpClient() {
         connectionConfig = ConnectionConfig.custom()
                 .setSocketTimeout(Timeout.ofSeconds(30))
                 .setConnectTimeout(Timeout.ofSeconds(30))
                 .build();
-        connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
-                .setDefaultConnectionConfig(connectionConfig)
-                .build();
-        connectionManager.setMaxTotal(6);
-        connectionManager.setDefaultMaxPerRoute(6);
+
         requestConfig = RequestConfig.custom()
                 .setCookieSpec(StandardCookieSpec.RELAXED)
                 .setExpectContinueEnabled(true)
                 .build();
 
-        client = builder().build();
+        maxConnections = 6;
     }
-
-    private BasicCredentialsProvider credsProvider = null;
 
     private HttpClientBuilder builder() {
         HttpClientBuilder builder = HttpClientBuilder.create()
@@ -184,7 +184,21 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
     /** @return the http status code of the execution */
     private HttpMethodResponse executeMethod(org.apache.hc.client5.http.classic.methods.HttpUriRequestBase method)
             throws IOException, HttpException, URISyntaxException {
-
+        if (renewManager) {
+            if (connectionManager != null) {
+                connectionManager.close();
+            }
+            connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                    .setDefaultConnectionConfig(connectionConfig)
+                    .build();
+            connectionManager.setMaxTotal(maxConnections);
+            connectionManager.setDefaultMaxPerRoute(maxConnections);
+            renewManager = false;
+            client = null;
+        }
+        if (client == null) {
+            client = builder().build();
+        }
         HttpClientContext localContext = HttpClientContext.create();
         ClassicHttpResponse resp;
         if (credsProvider != null) {
@@ -277,11 +291,10 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
             // TODO - check if this works for all types of auth or do we need to look it up?
             credsProvider = new BasicCredentialsProvider();
             credsProvider.setCredentials(authScope, credentials);
-            client = builder().build();
         } else if (credsProvider != null) {
             credsProvider = null;
-            client = builder().build();
         }
+        client = null;
     }
 
     @Override
@@ -294,6 +307,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         connectionConfig = ConnectionConfig.copy(connectionConfig)
                 .setConnectTimeout(Timeout.ofSeconds(connectTimeout))
                 .build();
+        renewManager = true;
     }
 
     @Override
@@ -306,22 +320,25 @@ public class MultithreadedHttpClient extends AbstractHttpClient implements HTTPC
         requestConfig = RequestConfig.copy(requestConfig)
                 .setResponseTimeout(Timeout.ofSeconds(readTimeout))
                 .build();
+        client = null;
     }
 
     @Override
     public int getMaxConnections() {
-        return connectionManager.getDefaultMaxPerRoute();
+        return maxConnections;
     }
 
     @Override
     public void setMaxConnections(final int maxConnections) {
-        connectionManager.setDefaultMaxPerRoute(maxConnections);
-        connectionManager.setMaxTotal(maxConnections);
+        this.maxConnections = maxConnections;
+        renewManager = true;
     }
 
     @Override
     public void close() {
-        this.connectionManager.close();
+        if (connectionManager != null) {
+            this.connectionManager.close();
+        }
     }
 
     static class HttpMethodResponse implements HTTPResponse {

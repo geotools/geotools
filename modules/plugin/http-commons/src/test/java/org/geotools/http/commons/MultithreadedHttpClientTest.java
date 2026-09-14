@@ -330,4 +330,45 @@ public class MultithreadedHttpClientTest {
             }
         }
     }
+
+    /** Verifies that a response arriving slower than the configured readTimeout fails fast instead of hanging. */
+    @Test(timeout = 5000)
+    public void testReadTimeout() {
+        service.stubFor(get(urlEqualTo("/slow-response"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/plain")
+                        .withFixedDelay(3000)
+                        .withBody("too slow")));
+
+        long start = System.currentTimeMillis();
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            client.setReadTimeout(1);
+            Assert.assertThrows(
+                    IOException.class,
+                    () -> client.get(new URL("http://localhost:" + service.port() + "/slow-response")));
+        }
+        long elapsed = System.currentTimeMillis() - start;
+        Assert.assertTrue(
+                "Expected read timeout to fire around the configured 1s, but took " + elapsed + "ms", elapsed < 2000);
+    }
+
+    /**
+     * Verifies that a connection attempt taking longer than the configured connectTimeout fails fast instead of
+     * hanging. WireMock cannot delay the TCP handshake itself, so a non-routable address (RFC 5737 TEST-NET-1) is used
+     * to simulate a connection that never completes.
+     */
+    // Guards against the test hanging the build if connectTimeout isn't honored in some environment.
+    @Test(timeout = 5000)
+    public void testConnectTimeout() {
+        long start = System.currentTimeMillis();
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            client.setConnectTimeout(1);
+            Assert.assertThrows(IOException.class, () -> client.get(new URL("http://192.0.2.1:81/unreachable")));
+        }
+        long elapsed = System.currentTimeMillis() - start;
+        Assert.assertTrue(
+                "Expected connect timeout to fire around the configured 1s, but took " + elapsed + "ms",
+                elapsed < 2000);
+    }
 }

@@ -77,47 +77,37 @@ final class CommonsLogger extends LoggerAdapter {
     @Override
     public boolean isLoggable(final Level level) {
         final int n = level.intValue();
-        switch (n / 100) {
-            default: {
+        return switch (n / 100) {
+            case 11 -> // FATAL
+                logger.isFatalEnabled();
+            case 10 -> // SEVERE
+                logger.isErrorEnabled();
+            case 9 -> // WARNING
+                logger.isWarnEnabled(); // INFO
+            case 8, 7 -> // CONFIG
+                logger.isInfoEnabled(); // (not allocated)
+            case 6, 5 -> // FINE
+                logger.isDebugEnabled(); // FINER
+            // FINEST
+            // (not allocated)
+            // (not allocated)
+            case 4, 3, 2, 1, 0 -> logger.isTraceEnabled(); // ALL
+            default ->
                 switch (n) { // Special cases (should not occur often).
-                    case Integer.MIN_VALUE:
-                        return true; // ALL
-                    case Integer.MAX_VALUE:
-                        return false; // OFF
-                    default:
-                        return n >= 0 && logger.isFatalEnabled();
-                }
-            }
-            case 11: // FATAL
-                return logger.isFatalEnabled();
-            case 10: // SEVERE
-                return logger.isErrorEnabled();
-            case 9: // WARNING
-                return logger.isWarnEnabled();
-            case 8: // INFO
-            case 7: // CONFIG
-                return logger.isInfoEnabled();
-            case 6: // (not allocated)
-            case 5: // FINE
-                return logger.isDebugEnabled();
-            case 4: // FINER
-            case 3: // FINEST
-            case 2: // (not allocated)
-            case 1: // (not allocated)
-            case 0:
-                return logger.isTraceEnabled(); // ALL
-        }
+                    case Integer.MIN_VALUE -> true; // ALL
+                    case Integer.MAX_VALUE -> false; // OFF
+                    default -> n >= 0 && logger.isFatalEnabled();
+                };
+        };
     }
 
     @Override
     public void log(final Level level, final String message) {
         final int n = level.intValue();
-        switch (n / 100) {
-            case 11:
-                logger.fatal(message);
-                break;
-            default:
-                super.log(level, message);
+        if (n / 100 == 11) {
+            logger.fatal(message);
+        } else {
+            super.log(level, message);
         }
     }
 
@@ -126,38 +116,19 @@ final class CommonsLogger extends LoggerAdapter {
     public void log(final Level level, final String message, final Throwable thrown) {
         final int n = level.intValue();
         switch (n / 100) {
-            default: {
+            case 11 -> logger.fatal(message, thrown); // FATAL
+            case 10 -> logger.error(message, thrown); // SEVERE
+            case 9 -> logger.warn(message, thrown); // WARNING
+            case 8, 7 -> logger.info(message, thrown); // INFO / CONFIG
+            case 6, 5 -> logger.debug(message, thrown); // FINE
+            case 4, 3, 2, 1, 0 -> logger.trace(message, thrown); // FINER / FINEST / ALL / unallocated
+            default -> {
                 // MAX_VALUE is a special value for Level.OFF. Otherwise and
                 // if positive, log to fatal since we are greater than SEVERE.
                 if (n != Integer.MAX_VALUE || n >= 0) {
                     logger.fatal(message, thrown);
                 }
-                break;
             }
-            case 11:
-                logger.fatal(message, thrown);
-                break; // FATAL
-            case 10:
-                logger.error(message, thrown);
-                break; // SEVERE
-            case 9:
-                logger.warn(message, thrown);
-                break; // WARNING
-            case 8: // INFO
-            case 7:
-                logger.info(message, thrown);
-                break; // CONFIG
-            case 6: // (not allocated)
-            case 5:
-                logger.debug(message, thrown);
-                break; // FINE
-            case 4: // FINER
-            case 3: // FINEST
-            case 2: // (not allocated)
-            case 1: // (not allocated)
-            case 0:
-                logger.trace(message, thrown);
-                break; // ALL
         }
     }
 

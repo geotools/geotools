@@ -646,24 +646,16 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      *     method.
      */
     private int binarySearch(final Comparable value) {
-        switch (arrayElementCode) {
-            case DOUBLE:
-                return Arrays.binarySearch((double[]) array, ((Number) value).doubleValue());
-            case FLOAT:
-                return Arrays.binarySearch((float[]) array, ((Number) value).floatValue());
-            case LONG:
-                return Arrays.binarySearch((long[]) array, ((Number) value).longValue());
-            case INTEGER:
-                return Arrays.binarySearch((int[]) array, ((Number) value).intValue());
-            case SHORT:
-                return Arrays.binarySearch((short[]) array, ((Number) value).shortValue());
-            case BYTE:
-                return Arrays.binarySearch((byte[]) array, ((Number) value).byteValue());
-            case CHARACTER:
-                return Arrays.binarySearch((char[]) array, ((Character) value).charValue());
-            default:
-                return Arrays.binarySearch((Object[]) array, value);
-        }
+        return switch (arrayElementCode) {
+            case DOUBLE -> Arrays.binarySearch((double[]) array, ((Number) value).doubleValue());
+            case FLOAT -> Arrays.binarySearch((float[]) array, ((Number) value).floatValue());
+            case LONG -> Arrays.binarySearch((long[]) array, ((Number) value).longValue());
+            case INTEGER -> Arrays.binarySearch((int[]) array, ((Number) value).intValue());
+            case SHORT -> Arrays.binarySearch((short[]) array, ((Number) value).shortValue());
+            case BYTE -> Arrays.binarySearch((byte[]) array, ((Number) value).byteValue());
+            case CHARACTER -> Arrays.binarySearch((char[]) array, ((Character) value).charValue());
+            default -> Arrays.binarySearch((Object[]) array, value);
+        };
     }
 
     /**
@@ -923,24 +915,16 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         if (object != null && object.getClass().equals(getClass())) {
             final RangeSet that = (RangeSet) object;
             if (Utilities.equals(this.elementClass, that.elementClass)) {
-                switch (arrayElementCode) {
-                    case DOUBLE:
-                        return Arrays.equals((double[]) this.array, (double[]) that.array);
-                    case FLOAT:
-                        return Arrays.equals((float[]) this.array, (float[]) that.array);
-                    case LONG:
-                        return Arrays.equals((long[]) this.array, (long[]) that.array);
-                    case INTEGER:
-                        return Arrays.equals((int[]) this.array, (int[]) that.array);
-                    case SHORT:
-                        return Arrays.equals((short[]) this.array, (short[]) that.array);
-                    case BYTE:
-                        return Arrays.equals((byte[]) this.array, (byte[]) that.array);
-                    case CHARACTER:
-                        return Arrays.equals((char[]) this.array, (char[]) that.array);
-                    default:
-                        return Arrays.equals((Object[]) this.array, (Object[]) that.array);
-                }
+                return switch (arrayElementCode) {
+                    case DOUBLE -> Arrays.equals((double[]) this.array, (double[]) that.array);
+                    case FLOAT -> Arrays.equals((float[]) this.array, (float[]) that.array);
+                    case LONG -> Arrays.equals((long[]) this.array, (long[]) that.array);
+                    case INTEGER -> Arrays.equals((int[]) this.array, (int[]) that.array);
+                    case SHORT -> Arrays.equals((short[]) this.array, (short[]) that.array);
+                    case BYTE -> Arrays.equals((byte[]) this.array, (byte[]) that.array);
+                    case CHARACTER -> Arrays.equals((char[]) this.array, (char[]) that.array);
+                    default -> Arrays.equals((Object[]) this.array, (Object[]) that.array);
+                };
             }
         }
         return false;
@@ -961,30 +945,14 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
             throw new AssertionError(exception);
         }
         switch (set.arrayElementCode) {
-            case DOUBLE:
-                set.array = ((double[]) set.array).clone();
-                break;
-            case FLOAT:
-                set.array = ((float[]) set.array).clone();
-                break;
-            case LONG:
-                set.array = ((long[]) set.array).clone();
-                break;
-            case INTEGER:
-                set.array = ((int[]) set.array).clone();
-                break;
-            case SHORT:
-                set.array = ((short[]) set.array).clone();
-                break;
-            case BYTE:
-                set.array = ((byte[]) set.array).clone();
-                break;
-            case CHARACTER:
-                set.array = ((char[]) set.array).clone();
-                break;
-            default:
-                set.array = ((Object[]) set.array).clone();
-                break;
+            case DOUBLE -> set.array = ((double[]) set.array).clone();
+            case FLOAT -> set.array = ((float[]) set.array).clone();
+            case LONG -> set.array = ((long[]) set.array).clone();
+            case INTEGER -> set.array = ((int[]) set.array).clone();
+            case SHORT -> set.array = ((short[]) set.array).clone();
+            case BYTE -> set.array = ((byte[]) set.array).clone();
+            case CHARACTER -> set.array = ((char[]) set.array).clone();
+            default -> set.array = ((Object[]) set.array).clone();
         }
         return set;
     }

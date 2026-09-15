@@ -45,6 +45,8 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
     static final Logger LOGGER = Logging.getLogger(RATCollectorListener.class);
     private final File pamFile;
 
+    private final RATGeometries geometries;
+
     private List<RATCollector> collectors = new ArrayList<>();
 
     PAMDataset first = null;
@@ -55,10 +57,12 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
         String root = configuration.getParameter(Utils.Prop.ROOT_MOSAIC_DIR);
         String name = configuration.getParameter(Utils.Prop.INDEX_NAME);
         this.pamFile = new File(root, name + ".aux.xml");
+        this.geometries = RATGeometries.fromParameter(configuration.getParameter(Utils.Prop.RAT_GEOMETRIES));
     }
 
-    public RATCollectorListener(File pamFile) {
+    public RATCollectorListener(File pamFile, RATGeometries geometries) {
         this.pamFile = pamFile;
+        this.geometries = geometries;
     }
 
     @Override
@@ -146,7 +150,7 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
             for (int i = 0; i < bands.size(); i++) {
                 GDALRasterAttributeTable rat = bands.get(i).getGdalRasterAttributeTable();
                 if (rat == null) collectors.add(null);
-                else collectors.add(new RATCollector(i, rat));
+                else collectors.add(new RATCollector(i, rat, geometries));
             }
         } else if (!checkCompatible(first, pam)) {
             stopCollection = true;

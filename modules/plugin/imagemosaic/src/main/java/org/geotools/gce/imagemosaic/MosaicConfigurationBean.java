@@ -60,6 +60,9 @@ public class MosaicConfigurationBean {
     /** <code>true</code> if we need to look for Auxiliary Metadata PAM XML files */
     private boolean checkAuxiliaryMetadata;
 
+    /** How a raster attribute table geometry column differing between granules is handled */
+    private RATGeometries ratGeometries = Utils.DEFAULT_RAT_GEOMETRIES;
+
     /** OverviewLevel levels */
     private double[][] levels;
 
@@ -218,6 +221,14 @@ public class MosaicConfigurationBean {
 
     public void setCheckAuxiliaryMetadata(boolean checkAuxiliaryMetadata) {
         this.checkAuxiliaryMetadata = checkAuxiliaryMetadata;
+    }
+
+    public RATGeometries getRatGeometries() {
+        return ratGeometries;
+    }
+
+    public void setRatGeometries(RATGeometries ratGeometries) {
+        this.ratGeometries = ratGeometries;
     }
 
     public String getName() {

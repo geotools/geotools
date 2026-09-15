@@ -1137,6 +1137,11 @@ public class ImageMosaicConfigHandler {
         properties.setProperty(Utils.Prop.EXP_RGB, Boolean.toString(mosaicConfiguration.isExpandToRGB()));
         properties.setProperty(
                 Utils.Prop.CHECK_AUXILIARY_METADATA, Boolean.toString(mosaicConfiguration.isCheckAuxiliaryMetadata()));
+        if (mosaicConfiguration.getRatGeometries() != Utils.DEFAULT_RAT_GEOMETRIES) {
+            properties.setProperty(
+                    Utils.Prop.RAT_GEOMETRIES,
+                    mosaicConfiguration.getRatGeometries().name());
+        }
         properties.setProperty(Utils.Prop.HETEROGENEOUS, Boolean.toString(catalogConfigurationBean.isHeterogeneous()));
         properties.setProperty(
                 Utils.Prop.HETEROGENEOUS_CRS, Boolean.toString(catalogConfigurationBean.isHeterogeneousCRS()));
@@ -1407,6 +1412,8 @@ public class ImageMosaicConfigHandler {
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(
                     IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
+            configBuilder.setRatGeometries(
+                    RATGeometries.fromParameter(IndexerUtils.getParameter(Prop.RAT_GEOMETRIES, indexer)));
             catalogConfigurationBean.setPropertySelectionEnabled(
                     IndexerUtils.getParameterAsBoolean(Prop.PROPERTY_SELECTION, indexer));
 

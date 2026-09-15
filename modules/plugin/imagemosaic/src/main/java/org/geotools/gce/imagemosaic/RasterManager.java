@@ -1830,7 +1830,8 @@ public class RasterManager implements Cloneable {
         Query query = new Query(typeName);
         SimpleFeatureCollection granules = getGranuleCatalog().getGranules(query);
         File pamDatasetFile = getPamDatasetFile(configuration);
-        RATCollectorListener ratCollector = new RATCollectorListener(pamDatasetFile);
+        // the mosaic properties do not carry the indexer flags, so the reload uses the defaults
+        RATCollectorListener ratCollector = new RATCollectorListener(pamDatasetFile, Utils.DEFAULT_RAT_GEOMETRIES);
         GranuleDescriptor.PathResolver pathResolver = new GranuleDescriptor.PathResolver(pathType, getParentLocation());
         try (SimpleFeatureIterator it = granules.features()) {
             while (it.hasNext()) {

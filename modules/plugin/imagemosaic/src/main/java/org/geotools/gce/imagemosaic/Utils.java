@@ -436,6 +436,9 @@ public class Utils {
         public static final String QUERY_CACHE_MAX_FEATURES = "QueryCacheMaxFeatures";
 
         public static final String COLLECT_RAT = "CollectAttributeTables";
+
+        /** How the geometry columns of a raster attribute table are handled, see {@link RATGeometries}. */
+        public static final String RAT_GEOMETRIES = "AttributeTableGeometries";
     }
 
     /**
@@ -1393,6 +1396,8 @@ public class Utils {
     public static final boolean DEFAULT_RECURSION_BEHAVIOR = true;
 
     public static final boolean DEFAULT_COLLECT_RAT = false;
+
+    public static final RATGeometries DEFAULT_RAT_GEOMETRIES = RATGeometries.OFF;
 
     /** */
     public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(final URL datastoreProperties)

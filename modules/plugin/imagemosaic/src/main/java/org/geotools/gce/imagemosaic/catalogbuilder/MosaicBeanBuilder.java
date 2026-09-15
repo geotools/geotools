@@ -22,6 +22,8 @@ import java.awt.image.SampleModel;
 import java.util.Arrays;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
+import org.geotools.gce.imagemosaic.RATGeometries;
+import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 
 /**
@@ -45,6 +47,8 @@ public class MosaicBeanBuilder {
 
     /** <code>true</code> if we need to look for PAM auxiliary metadata xml files. */
     private boolean checkAuxiliaryMetadata;
+
+    private RATGeometries ratGeometries = Utils.DEFAULT_RAT_GEOMETRIES;
 
     /** OverviewLevel levels */
     private double[][] levels;
@@ -176,6 +180,14 @@ public class MosaicBeanBuilder {
         this.checkAuxiliaryMetadata = checkAuxiliaryMetadata;
     }
 
+    public RATGeometries getRatGeometries() {
+        return ratGeometries;
+    }
+
+    public void setRatGeometries(RATGeometries ratGeometries) {
+        this.ratGeometries = ratGeometries;
+    }
+
     public String getName() {
         return name;
     }
@@ -278,6 +290,7 @@ public class MosaicBeanBuilder {
             bean.setAuxiliaryFilePath(auxiliaryFilePath);
             bean.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
             bean.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
+            bean.setRatGeometries(ratGeometries);
             bean.setNoData(noData);
         }
         return bean;

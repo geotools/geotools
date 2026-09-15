@@ -93,7 +93,7 @@
     <spotbugs-annotations.version>4.0.2</spotbugs-annotations.version>
     <sqlite-jdbc.version>3.53.1.0</sqlite-jdbc.version>
     <systems-common.version>2.1</systems-common.version>
-    <tech-units-indriya.version>2.2</tech-units-indriya.version>
+    <tech-units-indriya.version>2.2.4</tech-units-indriya.version>
     <uber-h3.version>3.7.3</uber-h3.version>
     <velocity.version>1.4</velocity.version>
     <wkb4j.version>1.0-RC1</wkb4j.version>

@@ -1834,7 +1834,7 @@ public class RasterManager implements Cloneable {
         Query query = new Query(typeName);
         SimpleFeatureCollection granules = getGranuleCatalog().getGranules(query);
         File pamDatasetFile = getPamDatasetFile(configuration);
-        RATCollectorListener ratCollector = new RATCollectorListener(pamDatasetFile);
+        RATCollectorListener ratCollector = new RATCollectorListener(pamDatasetFile, configuration.getRatGeometries());
         GranuleDescriptor.PathResolver pathResolver = new GranuleDescriptor.PathResolver(pathType, getParentLocation());
         try (SimpleFeatureIterator it = granules.features()) {
             while (it.hasNext()) {

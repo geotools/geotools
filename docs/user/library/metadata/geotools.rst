@@ -104,7 +104,7 @@ GeoTools also includes several ``EntityResolver3`` implementations:
      - For working with OGC and INSPIRE XML documents, only allows DTD and XML Schema references to Open Geospatial and INSPIRE registries.
    * - ``PreventLocalEntityResolver.INSTANCE``
      - ``"http,jar,jar:file,vfs"``
-     -  For use when working with external XML documents, only allows DTD and XML Schema references to remote resources.
+     -  For use when working with external XML documents, only allows DTD and XML Schema references to remote resources. When resolving an allow-listed ``http(s)`` reference, follows HTTP redirects itself, validating each intermediate location against the same allow-list before following it.
    * - ``NullEntityResolver.INSTANCE``
      - ``"all"``
      - Allowing the default ``SAXParser`` access-anything behavior.

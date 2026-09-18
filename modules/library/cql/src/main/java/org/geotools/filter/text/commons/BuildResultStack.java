@@ -68,7 +68,7 @@ public final class BuildResultStack {
         try {
             return stack.pop();
         } catch (EmptyStackException e) {
-            throw new CQLException(e.getMessage());
+            throw new CQLException("empty stack: "+e.getMessage());
         }
     }
 

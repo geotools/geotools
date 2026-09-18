@@ -78,10 +78,8 @@ public class CQLCompiler extends CQLParser implements ICompiler {
             super.FilterCompilationUnit();
         } catch (TokenMgrError tokenError) {
             throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
-        } catch (java.lang.Error er) {
+        } catch (java.lang.Error | ParseException er) {
             throw new CQLException(er.getMessage(), getTokenInPosition(0), er.getCause(), this.source);
-        } catch (ParseException e) {
-            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 

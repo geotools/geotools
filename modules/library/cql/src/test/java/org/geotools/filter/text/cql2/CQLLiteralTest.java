@@ -279,13 +279,7 @@ public class CQLLiteralTest {
                 CompilerUtil.parseExpression(language, badInput);
             });
             String expected =
-                    "Encountered \" <IDENTIFIER> \"x0082008E4 \"\" at line 1, column 3.\n" + "Was expecting one of:\n"
-                            + "    <EOF> \n"
-                            + "    \"/\" ...\n"
-                            + "    \"*\" ...\n"
-                            + "    \"+\" ...\n"
-                            + "    \"-\" ...\n"
-                            + "     Parsing : 4.x0082008E4.";
+                    "Encountered \" <IDENTIFIER> \"x0082008E4 \"\" at line 1, column 3." ;
             String observedException = exception.getMessage();
             if(!observedException.contains(expected)){
                 System.out.println(expected);

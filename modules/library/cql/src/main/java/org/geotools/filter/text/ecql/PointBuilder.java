@@ -17,6 +17,7 @@
 
 package org.geotools.filter.text.ecql;
 
+import java.util.EmptyStackException;
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.commons.Result;
 import org.geotools.filter.text.cql2.CQLException;
@@ -39,7 +40,12 @@ final class PointBuilder extends GeometryBuilder {
     /** Builds a Point geometry */
     @Override
     public Geometry build() throws CQLException {
-        Result result = getResultStack().popResult();
+        Result result;
+        try {
+            result = getResultStack().popResult();
+        } catch (EmptyStackException e) {
+            throw new CQLException(e.getMessage(), null, e, null);
+        }
         org.geotools.filter.text.commons.IToken token = result.getToken();
         try {
             Coordinate coordinate = (Coordinate) result.getBuilt();

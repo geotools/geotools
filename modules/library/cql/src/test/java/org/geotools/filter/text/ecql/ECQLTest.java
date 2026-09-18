@@ -373,7 +373,7 @@ public final class ECQLTest {
                 "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); FLOOR(1); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
 
         Exception exception = Assert.assertThrows(CQLException.class, () -> {
-            List<Filter> list = ECQL.toFilterList(expectedECQL);
+            ECQL.toFilterList(expectedECQL);
         });
 
         String expected =

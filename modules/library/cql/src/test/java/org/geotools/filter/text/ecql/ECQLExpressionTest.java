@@ -17,8 +17,11 @@
 
 package org.geotools.filter.text.ecql;
 
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.commons.Language;
+import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLExpressionTest;
+import org.junit.Test;
 
 /**
  * Expression Test
@@ -31,5 +34,11 @@ public class ECQLExpressionTest extends CQLExpressionTest {
     public ECQLExpressionTest() {
 
         super(Language.ECQL);
+    }
+
+    @Test
+    public void testBadPoint() throws CQLException {
+        String input = "WITHIN(ATTR,POINT(10 10 ))";
+        Filter filter = parseFilter(input);
     }
 }

@@ -230,14 +230,11 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      */
     @Override
     public final double getMinimum(final int dimension) throws IndexOutOfBoundsException {
-        switch (dimension) {
-            case 0:
-                return getMinX();
-            case 1:
-                return getMinY();
-            default:
-                throw indexOutOfBounds(dimension);
-        }
+        return switch (dimension) {
+            case 0 -> getMinX();
+            case 1 -> getMinY();
+            default -> throw indexOutOfBounds(dimension);
+        };
     }
 
     /**
@@ -249,14 +246,11 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      */
     @Override
     public final double getMaximum(final int dimension) throws IndexOutOfBoundsException {
-        switch (dimension) {
-            case 0:
-                return getMaxX();
-            case 1:
-                return getMaxY();
-            default:
-                throw indexOutOfBounds(dimension);
-        }
+        return switch (dimension) {
+            case 0 -> getMaxX();
+            case 1 -> getMaxY();
+            default -> throw indexOutOfBounds(dimension);
+        };
     }
 
     /**
@@ -270,14 +264,11 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      */
     @Override
     public final double getMedian(final int dimension) throws IndexOutOfBoundsException {
-        switch (dimension) {
-            case 0:
-                return getCenterX();
-            case 1:
-                return getCenterY();
-            default:
-                throw indexOutOfBounds(dimension);
-        }
+        return switch (dimension) {
+            case 0 -> getCenterX();
+            case 1 -> getCenterY();
+            default -> throw indexOutOfBounds(dimension);
+        };
     }
 
     /**
@@ -291,14 +282,11 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      */
     @Override
     public final double getSpan(final int dimension) throws IndexOutOfBoundsException {
-        switch (dimension) {
-            case 0:
-                return getWidth();
-            case 1:
-                return getHeight();
-            default:
-                throw indexOutOfBounds(dimension);
-        }
+        return switch (dimension) {
+            case 0 -> getWidth();
+            case 1 -> getHeight();
+            default -> throw indexOutOfBounds(dimension);
+        };
     }
 
     /**

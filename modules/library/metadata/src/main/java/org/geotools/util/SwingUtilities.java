@@ -192,7 +192,7 @@ public final class SwingUtilities {
             options = new Object[] {
                 resources.getString(VocabularyKeys.OK), resources.getString(VocabularyKeys.CANCEL), button
             };
-            initialValue = options[okChoice = 0];
+            initialValue = options[okChoice];
         }
 
         // Brings ups the dialog box.

@@ -17,6 +17,9 @@
 
 package org.geotools.filter.text.cql2;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
@@ -32,9 +35,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.io.WKTReader;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Literal parser test
@@ -278,13 +278,8 @@ public class CQLLiteralTest {
             Exception exception = Assert.assertThrows(CQLException.class, () -> {
                 CompilerUtil.parseExpression(language, badInput);
             });
-            String expected =
-                    "Encountered \" <IDENTIFIER> \"x0082008E4 \"\" at line 1, column 3." ;
+            String expected = "Encountered \" <IDENTIFIER> \"x0082008E4 \"\" at line 1, column 3.";
             String observedException = exception.getMessage();
-            if(!observedException.contains(expected)){
-                System.out.println(expected);
-                System.out.println(observedException);
-            }
             Assert.assertTrue(observedException.contains(expected));
         }
     }

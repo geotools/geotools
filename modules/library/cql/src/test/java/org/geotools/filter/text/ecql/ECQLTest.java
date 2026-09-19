@@ -368,6 +368,21 @@ public final class ECQLTest {
     }
 
     @Test
+    public void unexpectedFunction() throws CQLException {
+        String expectedECQL =
+                "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); FLOOR(1); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
+
+        Exception exception = Assert.assertThrows(CQLException.class, () -> {
+            ECQL.toFilterList(expectedECQL);
+        });
+
+        String expected =
+                "class org.geotools.filter.function.math.FilterFunction_floor cannot be cast to class org.geotools.api.filter.Filter (org.geotools.filter.function.math.FilterFunction_floor and org.geotools.api.filter.Filter are in unnamed module of loader 'app') Parsing : floor([1]).";
+        String observedException = exception.getMessage();
+        Assert.assertTrue(observedException.contains(expected));
+    }
+
+    @Test
     public void filterToECQL() throws Exception {
 
         String expectedECQL = "QUANTITY = 1";

@@ -221,6 +221,14 @@ public class CQLLiteralTest {
         eqFilter = (PropertyIsEqualTo) filter;
         actual = eqFilter.getExpression2();
         Assert.assertEquals(otherChars, actual.toString());
+
+        // test bad \\u sequence throws a CQLException
+        Exception exception = Assert.assertThrows(CQLException.class, () -> {
+            testCharacterString("\\uB!");
+        });
+        String expectedMsg = "Invalid escape character at line 1 column 10. Parsing : NAME = '\\uB!'.";
+        String observedException = exception.getMessage();
+        Assert.assertTrue(observedException.contains(expectedMsg));
     }
 
     @Test
@@ -255,15 +263,25 @@ public class CQLLiteralTest {
 
     @Test
     public void doubleLiteral() throws Exception {
+        {
+            final String expected = "4.20082008E4";
 
-        final String expected = "4.20082008E4";
+            Expression expr = CompilerUtil.parseExpression(language, expected);
 
-        Expression expr = CompilerUtil.parseExpression(language, expected);
+            Literal doubleLiteral = (Literal) expr;
+            Double actual = (Double) doubleLiteral.getValue();
 
-        Literal doubleLiteral = (Literal) expr;
-        Double actual = (Double) doubleLiteral.getValue();
-
-        Assert.assertEquals(Double.parseDouble(expected), actual.doubleValue(), 8);
+            Assert.assertEquals(Double.parseDouble(expected), actual.doubleValue(), 8);
+        }
+        {
+            final String badInput = "4.x0082008E4";
+            Exception exception = Assert.assertThrows(CQLException.class, () -> {
+                CompilerUtil.parseExpression(language, badInput);
+            });
+            String expected = "Encountered \" <IDENTIFIER> \"x0082008E4 \"\" at line 1, column 3.";
+            String observedException = exception.getMessage();
+            Assert.assertTrue(observedException.contains(expected));
+        }
     }
 
     @Test
@@ -289,6 +307,16 @@ public class CQLLiteralTest {
             Long actual = (Long) intLiteral.getValue();
 
             Assert.assertEquals(Long.parseLong(maxLongValue), actual.longValue());
+        }
+        {
+            final String veryLongValue = "922337203685477580712345678";
+
+            Exception exception = Assert.assertThrows(CQLException.class, () -> {
+                CompilerUtil.parseExpression(language, veryLongValue);
+            });
+            String expected = "Problem parsing integer Parsing : 922337203685477580712345678";
+            String observedException = exception.getMessage();
+            Assert.assertTrue(observedException.contains(expected));
         }
     }
 

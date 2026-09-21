@@ -101,4 +101,22 @@ public class ExternalGraphicTest {
         BufferedImage image = RendererBaseTest.showRender("External graphic displacement", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("externalGraphicDisplacement"), image, 50);
     }
+
+    @Test
+    public void testExternalGraphicAnchorRotation() throws Exception {
+        StreamingRenderer renderer = setupMap("externalGraphicAnchorRotation.sld");
+
+        BufferedImage image =
+                RendererBaseTest.showRender("External graphic anchor with rotation ", renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("externalGraphicAnchorRotation"), image, 50);
+    }
+
+    @Test
+    public void testExternalGraphicAnchorRotationDisplacement() throws Exception {
+        StreamingRenderer renderer = setupMap("externalGraphicAnchorRotationDisplacement.sld");
+
+        BufferedImage image = RendererBaseTest.showRender(
+                "External graphic anchor with rotation and displacement", renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("externalGraphicAnchorRotationDisplacement"), image, 50);
+    }
 }

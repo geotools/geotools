@@ -76,10 +76,16 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     public void compileFilter() throws CQLException {
         try {
             super.FilterCompilationUnit();
+        } catch (CQLException e) {
+            throw e;
         } catch (TokenMgrError tokenError) {
             throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
         } catch (java.lang.Error | ParseException er) {
-            throw new CQLException(er.getMessage(), getTokenInPosition(0), er.getCause(), this.source);
+            String message = er.getMessage();
+            if (message == null) {
+                message = "Unexpected problem in CQLCompiler";
+            }
+            throw new CQLException(message, getTokenInPosition(0), er.getCause(), this.source);
         }
     }
 

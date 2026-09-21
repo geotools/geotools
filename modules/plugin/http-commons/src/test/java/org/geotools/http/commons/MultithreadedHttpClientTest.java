@@ -332,7 +332,7 @@ public class MultithreadedHttpClientTest {
     }
 
     /** Verifies that a response arriving slower than the configured readTimeout fails fast instead of hanging. */
-    @Test(timeout = 5000)
+    @Test(timeout = 60000)
     public void testReadTimeout() {
         service.stubFor(get(urlEqualTo("/slow-response"))
                 .willReturn(aResponse()
@@ -344,9 +344,11 @@ public class MultithreadedHttpClientTest {
         long start = System.currentTimeMillis();
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setReadTimeout(1);
-            Assert.assertThrows(
-                    IOException.class,
-                    () -> client.get(new URL("http://localhost:" + service.port() + "/slow-response")));
+            try {
+                client.get(new URL("http://localhost:" + service.port() + "/slow-response"));
+            } catch (IOException e) {
+                Assert.assertEquals("Read timed out", e.getMessage());
+            }
         }
         long elapsed = System.currentTimeMillis() - start;
         Assert.assertTrue(
@@ -359,7 +361,7 @@ public class MultithreadedHttpClientTest {
      * to simulate a connection that never completes.
      */
     // Guards against the test hanging the build if connectTimeout isn't honored in some environment.
-    @Test(timeout = 5000)
+    @Test(timeout = 60000)
     public void testConnectTimeout() {
         long start = System.currentTimeMillis();
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {

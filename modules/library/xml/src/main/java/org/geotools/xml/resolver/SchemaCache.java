@@ -19,6 +19,7 @@ package org.geotools.xml.resolver;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -275,19 +276,27 @@ public class SchemaCache {
      *
      * @param location the absolute http/https URL of the schema
      * @return the canonical local file URL of the schema, or null if not found
+     * @throws FileNotFoundException if the location resolves to a path outside the cache directory
      */
-    public String resolveLocation(String location) {
+    public String resolveLocation(String location) throws IOException {
         String path = SchemaResolver.getSimpleHttpResourcePath(location, this.keepQuery);
         if (path == null) {
             return null;
         }
         String relativePath = path.substring(1);
         File file;
+        File canonicalDirectory;
 
         try {
             file = new File(getDirectory(), relativePath).getCanonicalFile();
+            canonicalDirectory = getDirectory().getCanonicalFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        if (!file.toPath().startsWith(canonicalDirectory.toPath())) {
+            LOGGER.fine("Reject relative location outside of cache directory: " + location);
+            throw new FileNotFoundException("Schema location restricted to cache directory");
         }
 
         synchronized (SchemaCache.class) {
@@ -297,6 +306,7 @@ public class SchemaCache {
         }
 
         if (isDownloadAllowed()) {
+
             byte[] bytes = download(location);
             if (bytes == null) {
                 return null;

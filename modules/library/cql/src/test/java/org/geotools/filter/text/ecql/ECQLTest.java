@@ -16,6 +16,9 @@
  */
 package org.geotools.filter.text.ecql;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
@@ -372,14 +375,9 @@ public final class ECQLTest {
         String expectedECQL =
                 "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); FLOOR(1); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
 
-        Exception exception = Assert.assertThrows(CQLException.class, () -> {
-            ECQL.toFilterList(expectedECQL);
-        });
-
-        String expected =
-                "class org.geotools.filter.function.math.FilterFunction_floor cannot be cast to class org.geotools.api.filter.Filter (org.geotools.filter.function.math.FilterFunction_floor and org.geotools.api.filter.Filter are in unnamed module of loader 'app') Parsing : floor([1]).";
-        String observedException = exception.getMessage();
-        Assert.assertTrue(observedException.contains(expected));
+        CQLException e = Assert.assertThrows(CQLException.class, () -> ECQL.toFilterList(expectedECQL));
+        assertThat(e.getMessage(), containsString("floor"));
+        assertThat(e.getCause(), instanceOf(ClassCastException.class));
     }
 
     @Test

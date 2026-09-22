@@ -166,7 +166,8 @@ public class CitationImpl extends MetadataEntity implements Citation {
      */
     @Override
     public Collection<InternationalString> getAlternateTitles() {
-        return alternateTitles = nonNullCollection(alternateTitles, InternationalString.class);
+        alternateTitles = nonNullCollection(alternateTitles, InternationalString.class);
+        return alternateTitles;
     }
 
     /** Set the short name or other language name by which the cited information is known. */
@@ -208,7 +209,8 @@ public class CitationImpl extends MetadataEntity implements Citation {
      */
     @Override
     public Collection<Identifier> getIdentifiers() {
-        return identifiers = nonNullCollection(identifiers, Identifier.class);
+        identifiers = nonNullCollection(identifiers, Identifier.class);
+        return identifiers;
     }
 
     /**
@@ -224,7 +226,8 @@ public class CitationImpl extends MetadataEntity implements Citation {
      */
     @Override
     public Collection<ResponsibleParty> getCitedResponsibleParties() {
-        return citedResponsibleParties = nonNullCollection(citedResponsibleParties, ResponsibleParty.class);
+        citedResponsibleParties = nonNullCollection(citedResponsibleParties, ResponsibleParty.class);
+        return citedResponsibleParties;
     }
 
     /**
@@ -238,7 +241,8 @@ public class CitationImpl extends MetadataEntity implements Citation {
     /** Returns the mode in which the resource is represented, or an empty string if none. */
     @Override
     public Collection<PresentationForm> getPresentationForm() {
-        return presentationForm = nonNullCollection(presentationForm, PresentationForm.class);
+        presentationForm = nonNullCollection(presentationForm, PresentationForm.class);
+        return presentationForm;
     }
 
     /** Set the mode in which the resource is represented, or an empty string if none. */

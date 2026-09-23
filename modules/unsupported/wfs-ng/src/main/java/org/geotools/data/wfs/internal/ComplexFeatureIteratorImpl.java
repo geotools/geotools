@@ -36,11 +36,11 @@ public class ComplexFeatureIteratorImpl implements FeatureIterator<Feature> {
 
     private static final Logger LOGGER = Logging.getLogger(ComplexFeatureIteratorImpl.class);
 
-    private XmlComplexFeatureParser parser;
+    private final XmlComplexFeatureParser parser;
 
-    private Feature parsedFeature;
+    private Feature parsedFeature = null;
 
-    private boolean hasNextCalled;
+    private boolean parsedFirst = false;
 
     /**
      * Initialises a new instance of ComplexFeatureIteratorImpl.
@@ -49,36 +49,33 @@ public class ComplexFeatureIteratorImpl implements FeatureIterator<Feature> {
      */
     public ComplexFeatureIteratorImpl(XmlComplexFeatureParser parser) {
         this.parser = parser;
-        this.parsedFeature = null;
-        this.hasNextCalled = false;
     }
 
     @Override
     public boolean hasNext() {
-        this.hasNextCalled = true;
-        try {
-            parsedFeature = parser.parse();
-            return parsedFeature != null;
-        } catch (IOException e) {
-            LOGGER.log(Level.FINER, e.getMessage(), e);
-            close();
-            return false;
+        if (!parsedFirst) {
+            parseNext();
+            parsedFirst = true;
         }
+        return parsedFeature != null;
     }
 
     @Override
     public Feature next() throws NoSuchElementException {
-        if (!hasNextCalled) {
-            if (hasNext()) {
-                this.hasNextCalled = false;
-                return parsedFeature;
-            } else {
-                close();
-                return null;
-            }
-        } else {
-            this.hasNextCalled = false;
-            return parsedFeature;
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        Feature next = parsedFeature;
+        parseNext();
+        return next;
+    }
+
+    private void parseNext() {
+        try {
+            parsedFeature = parser.parse();
+        } catch (IOException e) {
+            parsedFeature = null;
+            LOGGER.log(Level.FINER, e.getMessage(), e);
         }
     }
 

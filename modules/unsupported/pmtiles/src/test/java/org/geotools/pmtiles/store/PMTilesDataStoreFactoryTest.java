@@ -35,7 +35,6 @@ import io.tileverse.storage.StorageParameter;
 import io.tileverse.storage.azure.AzureBlobStorageProvider;
 import io.tileverse.storage.gcs.GoogleCloudStorageProvider;
 import io.tileverse.storage.s3.S3StorageProvider;
-import io.tileverse.storage.spi.AbstractStorageProvider;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -157,10 +156,6 @@ public class PMTilesDataStoreFactoryTest {
     }
 
     private void assertParams(List<StorageParameter<?>> expected, Param[] actual) {
-        expected = new ArrayList<>(expected);
-        expected.remove(AbstractStorageProvider.MEMORY_CACHE_BLOCK_ALIGNED);
-        expected.remove(AbstractStorageProvider.MEMORY_CACHE_BLOCK_SIZE);
-
         List<Param> dataStoreParams = new ArrayList<>(Arrays.asList(actual));
         dataStoreParams.remove(URIP);
         dataStoreParams.remove(NAMESPACEP);

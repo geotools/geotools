@@ -35,7 +35,7 @@ import org.geotools.util.SimpleInternationalString;
  */
 public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymbolizer, Cloneable {
 
-    private GraphicImpl graphic = new GraphicImpl();
+    private GraphicImpl graphic;
 
     /** Creates a new instance of DefaultPointSymbolizer */
     protected PointSymbolizerImpl() {

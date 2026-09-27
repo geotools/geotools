@@ -49,6 +49,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKBReader;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.factory.Hints;
@@ -64,7 +65,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.InputStreamInStream;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
 
 /**
  * Base SQL Dialect for DuckDB-based datastores. Provides common DuckDB SQL functionality including spatial support.

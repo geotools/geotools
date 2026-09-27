@@ -30,6 +30,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.WKBReader;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.referencing.CRS;
@@ -38,7 +39,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
 import org.locationtech.jts.io.WKTReader;
 
 /**

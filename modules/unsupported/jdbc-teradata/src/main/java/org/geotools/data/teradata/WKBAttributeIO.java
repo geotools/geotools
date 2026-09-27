@@ -25,10 +25,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import org.geotools.api.data.DataSourceException;
+import org.geotools.geometry.jts.WKBReader;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.InStream;
-import org.locationtech.jts.io.WKBReader;
 import org.locationtech.jts.io.WKBWriter;
 
 /**

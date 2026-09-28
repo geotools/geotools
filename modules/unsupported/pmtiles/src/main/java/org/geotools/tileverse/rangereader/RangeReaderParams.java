@@ -121,21 +121,22 @@ public class RangeReaderParams {
     public static final Param S3_ANONYMOUS = dataStoreParam(S3StorageProvider.S3_ANONYMOUS);
     public static final Param S3_AWS_ACCESS_KEY_ID = dataStoreParam(S3StorageProvider.S3_AWS_ACCESS_KEY_ID);
     public static final Param S3_AWS_SECRET_ACCESS_KEY = dataStoreParam(S3StorageProvider.S3_AWS_SECRET_ACCESS_KEY);
-    public static final Param S3_USE_DEFAULT_CREDENTIALS_PROVIDER =
-            dataStoreParam(S3StorageProvider.S3_USE_DEFAULT_CREDENTIALS_PROVIDER);
     public static final Param S3_DEFAULT_CREDENTIALS_PROFILE =
             dataStoreParam(S3StorageProvider.S3_DEFAULT_CREDENTIALS_PROFILE);
 
     public static final Param GCS_PROJECT_ID = dataStoreParam(GoogleCloudStorageProvider.GCS_PROJECT_ID);
     public static final Param GCS_QUOTA_PROJECT_ID = dataStoreParam(GoogleCloudStorageProvider.GCS_QUOTA_PROJECT_ID);
     public static final Param GCS_USER_PROJECT = dataStoreParam(GoogleCloudStorageProvider.GCS_USER_PROJECT);
-    public static final Param GCS_USE_DEFAULT_APPLICTION_CREDENTIALS =
-            dataStoreParam(GoogleCloudStorageProvider.GCS_USE_DEFAULT_APPLICTION_CREDENTIALS);
+    public static final Param GCS_ANONYMOUS = dataStoreParam(GoogleCloudStorageProvider.GCS_ANONYMOUS);
     public static final Param GCS_ENDPOINT = dataStoreParam(GoogleCloudStorageProvider.GCS_ENDPOINT);
 
     /**
      * Aggregated list of supported {@link StorageProvider#getParameters() storage provider parameters} converted to
-     * {@link Param DataAccessFactory.Param}
+     * {@link Param DataAccessFactory.Param}.
+     *
+     * <p>The batch-read tuning of the object-store and HTTP providers ({@code storage.batch.*}) is left out on purpose:
+     * {@code PMTilesReader} fetches each tile as one range and reads its directories as contiguous blocks, and those
+     * parameters have nothing to act on.
      */
     public static final List<Param> PROVIDER_PARAMS = List.of(
             RANGEREADER_PROVIDER_ID,
@@ -165,12 +166,11 @@ public class RangeReaderParams {
             S3_ANONYMOUS,
             S3_AWS_ACCESS_KEY_ID,
             S3_AWS_SECRET_ACCESS_KEY,
-            S3_USE_DEFAULT_CREDENTIALS_PROVIDER,
             S3_DEFAULT_CREDENTIALS_PROFILE,
             GCS_PROJECT_ID,
             GCS_QUOTA_PROJECT_ID,
             GCS_USER_PROJECT,
-            GCS_USE_DEFAULT_APPLICTION_CREDENTIALS,
+            GCS_ANONYMOUS,
             GCS_ENDPOINT);
 
     private RangeReaderParams() {

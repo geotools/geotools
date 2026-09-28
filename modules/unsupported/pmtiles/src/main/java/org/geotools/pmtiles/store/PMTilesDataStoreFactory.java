@@ -118,8 +118,6 @@ import org.jspecify.annotations.NullMarked;
  *         <li>{@linkplain S3StorageProvider#S3_AWS_ACCESS_KEY_ID storage.s3.aws-access-key-id} - AWS Access Key ID
  *         <li>{@linkplain S3StorageProvider#S3_AWS_SECRET_ACCESS_KEY storage.s3.aws-secret-access-key} - AWS Secret
  *             Access Key
- *         <li>{@linkplain S3StorageProvider#S3_USE_DEFAULT_CREDENTIALS_PROVIDER
- *             storage.s3.use-default-credentials-provider} - Use Default Credentials Provider
  *         <li>{@linkplain S3StorageProvider#S3_DEFAULT_CREDENTIALS_PROFILE storage.s3.default-credentials-profile} -
  *             Default Credentials Profile
  *       </ul>
@@ -128,8 +126,8 @@ import org.jspecify.annotations.NullMarked;
  *         <li>{@linkplain GoogleCloudStorageProvider#GCS_PROJECT_ID storage.gcs.project-id} - Google Cloud project ID
  *         <li>{@linkplain GoogleCloudStorageProvider#GCS_QUOTA_PROJECT_ID storage.gcs.quota-project-id} - Quota
  *             ProjectId that specifies the project used for quota and billing purposes
- *         <li>{@linkplain GoogleCloudStorageProvider#GCS_USE_DEFAULT_APPLICTION_CREDENTIALS} - Whether to use the
- *             default application credentials chain
+ *         <li>{@linkplain GoogleCloudStorageProvider#GCS_ANONYMOUS storage.gcs.anonymous} - Anonymous public access
+ *             (unsigned requests; otherwise Application Default Credentials)
  *       </ul>
  * </ul>
  *
@@ -224,9 +222,6 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     public static final Param S3_AWS_ACCESS_KEY_ID = RangeReaderParams.S3_AWS_ACCESS_KEY_ID;
     /** AWS Secret Access Key */
     public static final Param S3_AWS_SECRET_ACCESS_KEY = RangeReaderParams.S3_AWS_SECRET_ACCESS_KEY;
-    /** Whether to use the Default Credentials Provider */
-    public static final Param S3_USE_DEFAULT_CREDENTIALS_PROVIDER =
-            RangeReaderParams.S3_USE_DEFAULT_CREDENTIALS_PROVIDER;
     /** Default Credentials Profile */
     public static final Param S3_DEFAULT_CREDENTIALS_PROFILE = RangeReaderParams.S3_DEFAULT_CREDENTIALS_PROFILE;
 
@@ -234,9 +229,8 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     public static final Param GCS_PROJECT_ID = RangeReaderParams.GCS_PROJECT_ID;
     /** Quota Project ID */
     public static final Param GCS_QUOTA_PROJECT_ID = RangeReaderParams.GCS_QUOTA_PROJECT_ID;
-    /** Whether to use the default application credentials chain, defaults to {@code false} */
-    public static final Param GCS_USE_DEFAULT_APPLICTION_CREDENTIALS =
-            RangeReaderParams.GCS_USE_DEFAULT_APPLICTION_CREDENTIALS;
+    /** Anonymous public access, otherwise Application Default Credentials */
+    public static final Param GCS_ANONYMOUS = RangeReaderParams.GCS_ANONYMOUS;
 
     @NonNull
     private static CacheManager cacheManager = CacheManager.getDefault();

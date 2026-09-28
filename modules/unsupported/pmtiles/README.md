@@ -118,8 +118,7 @@ DataStore store = DataStoreFinder.getDataStore(params);
 Map<String, Object> params = new HashMap<>();
 params.put("pmtiles", "https://storage.googleapis.com/my-bucket/tiles/data.pmtiles");
 params.put("storage.gcs.project-id", "my-project");
-// Enable default credentials chain (looks for application default credentials)
-params.put("storage.gcs.default-credentials-chain", true);
+// Application Default Credentials authenticate the requests; set storage.gcs.anonymous for a public bucket
 
 DataStore store = DataStoreFinder.getDataStore(params);
 ```
@@ -173,9 +172,11 @@ DataStore store = DataStoreFinder.getDataStore(params);
 | **storage.s3.region** | String | AWS region (e.g., us-west-2) |
 | **storage.s3.aws-access-key-id** | String | AWS access key ID |
 | **storage.s3.aws-secret-access-key** | String | AWS secret access key |
-| **storage.s3.use-default-credentials-provider** | Boolean | Use AWS default credentials provider chain (default: false) |
 | **storage.s3.default-credentials-profile** | String | AWS credentials profile name to use |
 | **storage.s3.force-path-style** | Boolean | Enable S3 path style access for S3-compatible services like MinIO (default: false) |
+
+With no anonymous access, access keys, or profile set, the store uses the AWS default credentials provider chain
+(system properties, environment variables, web identity token, `~/.aws` files, container and EC2 instance roles).
 
 ### Azure Blob Storage Parameters
 
@@ -191,7 +192,7 @@ DataStore store = DataStoreFinder.getDataStore(params);
 |-----------|------|-------------|
 | **storage.gcs.project-id** | String | Google Cloud project ID |
 | **storage.gcs.quota-project-id** | String | Quota project ID for billing purposes |
-| **storage.gcs.default-credentials-chain** | Boolean | Use default application credentials chain (default: false) |
+| **storage.gcs.anonymous** | Boolean | Anonymous (unsigned) access for public buckets and emulators; otherwise Application Default Credentials (default: false) |
 
 ## Performance Optimization
 

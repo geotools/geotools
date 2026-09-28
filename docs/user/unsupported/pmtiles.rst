@@ -138,8 +138,7 @@ Google Cloud Storage
    Map<String, Object> params = new HashMap<>();
    params.put("pmtiles", "https://storage.googleapis.com/my-bucket/tiles/data.pmtiles");
    params.put("storage.gcs.project-id", "my-project");
-   // Enable default credentials chain (looks for application default credentials)
-   params.put("storage.gcs.default-credentials-chain", true);
+   // Application Default Credentials authenticate the requests; set storage.gcs.anonymous for a public bucket
 
    DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -208,10 +207,12 @@ Parameter                                       Type    Description
 **storage.s3.aws-secret-access-key**            String  AWS secret access key
 **storage.s3.anonymous**                        Boolean Anonymous (unsigned) access for public buckets (default: false)
 **storage.s3.requester-pays**                   Boolean Add the requester-pays header to bill the requester rather than the bucket owner (default: false)
-**storage.s3.use-default-credentials-provider** Boolean Use AWS default credentials provider chain (default: false)
 **storage.s3.default-credentials-profile**      String  AWS credentials profile name to use
 **storage.s3.force-path-style**                 Boolean Enable S3 path style access for S3-compatible services like MinIO; defaults to true when an endpoint override is in effect
 =============================================== ======= ===============================================================================================================================================
+
+With no anonymous access, access keys, or profile set, the store uses the AWS default credentials provider chain
+(system properties, environment variables, web identity token, ``~/.aws`` files, container and EC2 instance roles).
 
 Azure Blob Storage Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -240,7 +241,7 @@ Parameter                                 Type    Description
 **storage.gcs.project-id**                String  Google Cloud project ID
 **storage.gcs.quota-project-id**          String  Quota project ID for billing purposes
 **storage.gcs.user-project**              String  Billing project for Requester Pays buckets
-**storage.gcs.default-credentials-chain** Boolean Use default application credentials chain (default: false)
+**storage.gcs.anonymous**                 Boolean Anonymous (unsigned) access for public buckets and emulators; otherwise Application Default Credentials
 **storage.gcs.endpoint**                  String  Custom GCS endpoint URL for emulators (e.g., http://localhost:4443 for fake-gcs-server); full URL, not a bare hostname
 ========================================= ======= ======================================================================================================================
 

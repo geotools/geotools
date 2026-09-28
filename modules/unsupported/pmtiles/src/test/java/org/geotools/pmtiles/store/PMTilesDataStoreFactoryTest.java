@@ -96,6 +96,19 @@ public class PMTilesDataStoreFactoryTest {
     }
 
     @Test
+    public void testGetParametersInfoLeavesOutBatchTuning() {
+        List<String> batchKeys = new S3StorageProvider()
+                .getParameters().stream()
+                        .filter(PMTilesDataStoreFactoryTest::isBatchTuning)
+                        .map(StorageParameter::key)
+                        .toList();
+        assertFalse(batchKeys.isEmpty());
+
+        Param[] parametersInfo = new PMTilesDataStoreFactory().getParametersInfo();
+        assertTrue(Stream.of(parametersInfo).noneMatch(p -> batchKeys.contains(p.key)));
+    }
+
+    @Test
     public void testGetParametersInfoS3() {
         Param[] parametersInfo = new PMTilesDataStoreFactory().getParametersInfo();
 
@@ -161,9 +174,17 @@ public class PMTilesDataStoreFactoryTest {
         dataStoreParams.remove(NAMESPACEP);
 
         for (StorageParameter<?> param : expected) {
+            if (isBatchTuning(param)) {
+                continue;
+            }
             Param expectedParam = RangeReaderParams.dataStoreParam(param);
             assertTrue(dataStoreParams.contains(expectedParam));
         }
+    }
+
+    /** The batch-read tuning is left out of the datastore parameters, see {@link RangeReaderParams#PROVIDER_PARAMS} */
+    private static boolean isBatchTuning(StorageParameter<?> param) {
+        return StorageParameter.GROUP_BATCH.equals(param.group());
     }
 
     private void assertCachingParameters(Param[] parametersInfo) {

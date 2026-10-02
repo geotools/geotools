@@ -17,6 +17,7 @@
 package org.geotools.xml;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -24,6 +25,8 @@ import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,7 +40,9 @@ import org.geotools.TestData;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Document;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -92,6 +97,74 @@ public class XMLUtilsTest {
         saxParser.parse(internal, handler);
 
         assertEquals(100, handler.count);
+    }
+
+    /** XInclude namespace, used to spot an include element that was left in place. */
+    private static final String XINCLUDE_NS = "http://www.w3.org/2001/XInclude";
+
+    /** Text of the fragment an include would pull in if it were expanded. */
+    private static final String FRAGMENT = "MODULAR_FRAGMENT";
+
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
+
+    @Test
+    public void saxFactoryLeavesXIncludeUnprocessed() throws Exception {
+        File document = writeXIncludeDocument();
+        Hints hints = new Hints(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+
+        SAXParserFactory factory = XMLUtils.newSAXParserFactory(hints);
+        factory.setNamespaceAware(true);
+        assertFalse(factory.isXIncludeAware());
+
+        IncludeCollector handler = new IncludeCollector();
+        factory.newSAXParser().parse(document, handler);
+
+        assertEquals(1, handler.includeElements);
+        assertFalse(handler.text.toString().contains(FRAGMENT));
+    }
+
+    @Test
+    public void documentBuilderFactoryLeavesXIncludeUnprocessed() throws Exception {
+        File document = writeXIncludeDocument();
+        Hints hints = new Hints(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+
+        DocumentBuilderFactory factory = XMLUtils.newDocumentBuilderFactory(hints);
+        factory.setNamespaceAware(true);
+        assertFalse(factory.isXIncludeAware());
+        Document parsed = XMLUtils.newDocumentBuilder(factory, hints).parse(document);
+
+        assertEquals(1, parsed.getElementsByTagNameNS(XINCLUDE_NS, "include").getLength());
+        assertFalse(parsed.getDocumentElement().getTextContent().contains(FRAGMENT));
+    }
+
+    /** Writes a document whose only child is an include of a sibling text fragment. */
+    private File writeXIncludeDocument() throws Exception {
+        File fragment = tempFolder.newFile("fragment.txt");
+        Files.writeString(fragment.toPath(), FRAGMENT, StandardCharsets.UTF_8);
+        File document = tempFolder.newFile("document.xml");
+        String xml =
+                "<root xmlns:xi=\"" + XINCLUDE_NS + "\">" + "<xi:include href=\"fragment.txt\" parse=\"text\"/></root>";
+        Files.writeString(document.toPath(), xml, StandardCharsets.UTF_8);
+        return document;
+    }
+
+    /** Counts include elements and collects character data, to see if an include expanded. */
+    public static class IncludeCollector extends DefaultHandler {
+        public int includeElements = 0;
+        public final StringBuilder text = new StringBuilder();
+
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) {
+            if (XINCLUDE_NS.equals(uri) && "include".equals(localName)) {
+                includeElements++;
+            }
+        }
+
+        @Override
+        public void characters(char[] ch, int start, int length) {
+            text.append(ch, start, length);
+        }
     }
 
     public static class FeatureMembers extends DefaultHandler {

@@ -290,12 +290,6 @@ public class XMLUtils {
             LOGGER.fine("Xerces `" + DISALLOW_DOCTYPE_DECL + "` setting not supported: "
                     + factory.getClass().getName());
         }
-        try {
-            factory.setXIncludeAware(!supportDTD);
-        } catch (UnsupportedOperationException e) {
-            LOGGER.fine("setXIncludeAware setting not supported: "
-                    + factory.getClass().getName());
-        }
 
         // For non Xerces parser, try another way...
         // Both EXTERNAL_GENERAL_ENTITIES and EXTERNAL_PARAMETER_ENTITIES need to be disabled/enabled together
@@ -318,6 +312,13 @@ public class XMLUtils {
             if (factory.getFeature(LOAD_EXTERNAL_DTD) != supportDTD) factory.setFeature(LOAD_EXTERNAL_DTD, supportDTD);
         } catch (SAXNotSupportedException | ParserConfigurationException | SAXNotRecognizedException e) {
             LOGGER.fine("Xerces `" + LOAD_EXTERNAL_DTD + "` setting not supported: "
+                    + factory.getClass().getName());
+        }
+        // XInclude awareness is configured the same way for the SAX and document builder factories
+        try {
+            if (factory.isXIncludeAware()) factory.setXIncludeAware(false);
+        } catch (UnsupportedOperationException e) {
+            LOGGER.fine("setXIncludeAware setting not supported: "
                     + factory.getClass().getName());
         }
         return factory;
@@ -722,6 +723,13 @@ public class XMLUtils {
         } catch (IllegalArgumentException notSupported) {
             LOGGER.fine("Parser does not support ACCESS_EXTERNAL_DTD: " + notSupported.getMessage());
         }
+        // XInclude awareness is configured the same way for the SAX and document builder factories
+        try {
+            if (factory.isXIncludeAware()) factory.setXIncludeAware(false);
+        } catch (UnsupportedOperationException e) {
+            LOGGER.fine("setXIncludeAware setting not supported: "
+                    + factory.getClass().getName());
+        }
         return factory;
     }
     //
@@ -1062,13 +1070,6 @@ public class XMLUtils {
                         + factory.getClass().getName());
             }
 
-            // Sensible XSD factory defaults based on EntityResolver3
-            try {
-                if (factory.isXIncludeAware() != false) factory.setXIncludeAware(false);
-            } catch (UnsupportedOperationException e) {
-                LOGGER.fine("setXIncludeAware setting not supported: "
-                        + factory.getClass().getName());
-            }
             EntityResolver entityResolver = GeoTools.getEntityResolver(hints);
             final String ACCESS = getAccess(entityResolver, "");
             try {

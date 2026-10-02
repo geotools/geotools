@@ -10,13 +10,16 @@
 package org.geotools.dggs.clickhouse;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -38,6 +41,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 /**
  * Fork of {@link JDBCDateOnlineTest} for ClickHouse, which has no support for Time columns, and might never have one
@@ -57,15 +61,43 @@ public class ClickHouseDateOnlineTest extends JDBCTestSupport {
         return params;
     }
 
+    // Etc/GMT+12 is UTC-12, the POSIX sign is inverted
+    private static final String[] TIME_ZONES = {
+        "Etc/GMT+12", "America/Los_Angeles", "America/New_York", "Etc/GMT", "Europe/Berlin", "Etc/GMT-12", "Etc/GMT-14"
+    };
+
     @Test
-    public void testReadData() throws Exception {
+    public void testReadData() throws Throwable {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("dates"));
-        SimpleFeature f = DataUtilities.first(fs.getFeatures());
-        // just checking that we can read the data without class cast exceptions
-        Date date = (Date) f.getAttribute(aname("d"));
-        assertNotNull(date);
-        Timestamp timestamp = (Timestamp) f.getAttribute(aname("dt"));
-        assertNotNull(timestamp);
+        forEachTimeZone(() -> {
+            List<String> days = new ArrayList<>();
+            List<String> times = new ArrayList<>();
+            for (SimpleFeature f : DataUtilities.list(fs.getFeatures())) {
+                days.add(f.getAttribute(aname("d")).toString());
+                times.add(f.getAttribute(aname("dt")).toString());
+            }
+            // java.sql.Date/Timestamp print in the JVM time zone, a day shift shows up here
+            assertThat(days, containsInAnyOrder("2009-06-28", "2009-01-15", "2009-09-29"));
+            assertThat(
+                    times,
+                    containsInAnyOrder("2009-06-28 15:12:41.0", "2009-01-15 13:10:12.0", "2009-09-29 17:54:23.0"));
+        });
+    }
+
+    /** Runs the check in each of {@link #TIME_ZONES}, recreating the dates table first, then restores the JVM zone. */
+    private void forEachTimeZone(ThrowingRunnable check) throws Throwable {
+        TimeZone originalTimeZone = TimeZone.getDefault();
+        try {
+            for (String zone : TIME_ZONES) {
+                TimeZone.setDefault(TimeZone.getTimeZone(zone));
+                // the setup inserts local times, so the table must be rebuilt in the new zone
+                ((ClickHouseDateTestSetup) setup).setUpData();
+                check.run();
+            }
+        } finally {
+            TimeZone.setDefault(originalTimeZone);
+            ((ClickHouseDateTestSetup) setup).setUpData();
+        }
     }
 
     @Test
@@ -77,50 +109,25 @@ public class ClickHouseDateOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    public void testFiltersByDate() throws Exception {
+    public void testFiltersByDate() throws Throwable {
         FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         FilterFactory ff = dataStore.getFilterFactory();
-        Filter f = ff.lessOrEqual(ff.property(aname("d")), ff.literal(df.parse("2009-06-28")));
-        assertEquals(2, fs.getCount(new Query(tname("dates"), f)));
+        forEachTimeZone(() -> {
+            // parse in the current zone, as a user would
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Filter f = ff.lessOrEqual(ff.property(aname("d")), ff.literal(df.parse("2009-06-28")));
+            assertEquals(2, fs.getCount(new Query(tname("dates"), f)));
+        });
     }
 
     @Test
-    public void testFilterByTimeStamp() throws Exception {
+    public void testFilterByTimeStamp() throws Throwable {
         FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
         FilterFactory ff = dataStore.getFilterFactory();
-
-        DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
-        TimeZone originalTimeZone = TimeZone.getDefault();
-        TimeZone[] zones = {
-            TimeZone.getTimeZone("Etc/GMT+12"),
-            TimeZone.getTimeZone("America/Los_Angeles"), // PST
-            TimeZone.getTimeZone("America/New_York"), // EST
-            TimeZone.getTimeZone("Etc/GMT"), // GMT
-            TimeZone.getTimeZone("Europe/Berlin"), // CET (commonly represents Central European Time)
-            TimeZone.getTimeZone("Etc/GMT-12"),
-            TimeZone.getTimeZone("Etc/GMT-14")
-        };
-
-        try {
-            for (TimeZone zone : zones) {
-                // set JVM time zone
-                TimeZone.setDefault(zone);
-
-                // regenerate the database table using the new JVM Timezone
-                ((ClickHouseDateTestSetup) setup).setUpData();
-                df.setTimeZone(zone);
-
-                Filter f = ff.equals(ff.property(aname("dt")), ff.literal("2009-06-28 15:12:41"));
-                assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
-            }
-
-        } finally {
-            // set JVM time zone
-            TimeZone.setDefault(originalTimeZone);
-            // regenerate the database table using the new JVM Timezone
-            ((ClickHouseDateTestSetup) setup).setUpData();
-        }
+        forEachTimeZone(() -> {
+            Filter f = ff.equals(ff.property(aname("dt")), ff.literal("2009-06-28 15:12:41"));
+            assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
+        });
     }
 
     @Test

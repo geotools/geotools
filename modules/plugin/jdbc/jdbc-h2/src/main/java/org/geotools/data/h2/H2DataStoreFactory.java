@@ -172,7 +172,9 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         String host = (String) HOST.lookUp(params);
         Boolean mvcc = (Boolean) MVCC.lookUp(params);
         Boolean autoServer = (Boolean) AUTO_SERVER.lookUp(params);
-        String autoServerSpec = Boolean.TRUE.equals(autoServer) ? ";AUTO_SERVER=TRUE" : "";
+        // H2 1.1.119 lock files make database opens fail intermittently with "Lock file recently modified".
+        // AUTO_SERVER mode keeps the lock file, as H2 publishes the server address in it.
+        String autoServerSpec = Boolean.TRUE.equals(autoServer) ? ";AUTO_SERVER=TRUE" : ";FILE_LOCK=NO";
 
         if (host != null && !host.equals("")) {
             Integer port = (Integer) PORT.lookUp(params);

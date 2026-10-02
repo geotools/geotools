@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,12 @@ class ClickHouseDialect extends BasicSQLDialect {
 
     protected ClickHouseDialect(JDBCDataStore dataStore) {
         super(dataStore);
+    }
+
+    @Override
+    public boolean isAutoCommitQuery() {
+        // ClickHouse has no transactions, and jdbc-v2 throws on setAutoCommit(false)
+        return true;
     }
 
     @Override
@@ -117,6 +124,8 @@ class ClickHouseDialect extends BasicSQLDialect {
             return new java.sql.Date(c.getTimeInMillis());
         } else if (value instanceof LocalDateTime time && binding.equals(java.sql.Timestamp.class)) {
             return java.sql.Timestamp.from(time.atZone(ZoneId.systemDefault()).toInstant());
+        } else if (value instanceof ZonedDateTime time && binding.equals(java.sql.Timestamp.class)) {
+            return java.sql.Timestamp.from(time.toInstant());
         }
         return null;
     }
@@ -131,7 +140,8 @@ class ClickHouseDialect extends BasicSQLDialect {
                 Class<?> targetType = resultTypes.get(0);
                 if (java.util.Date.class.isAssignableFrom(targetType)) {
                     return v -> {
-                        return convertValue(v, targetType);
+                        Date converted = convertValue(v, targetType);
+                        return converted != null ? converted : v;
                     };
                 }
             }

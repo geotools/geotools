@@ -21,16 +21,22 @@ import java.util.Map;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.geotools.jdbc.MetadataTablePrimaryKeyFinder;
 import org.geotools.jdbc.SQLDialect;
 
 public class ClickHouseJDBCDataStoreFactory extends JDBCDataStoreFactory {
     public static final String DATABASE_ID = "clickhouse";
     public static final String DRIVER_CLASSNAME = "com.clickhouse.jdbc.ClickHouseDriver";
-    /**
-     * Use the Java 11 built-in HTTP client (the default would be Commons HTTPClient, which would cause version
-     * conflicts
-     */
+    /** @deprecated ignored by the jdbc-v2 driver, which always uses Apache HttpClient 5; no longer added to the URL */
+    @Deprecated
     public static final String FORCE_HTTP_CLIENT = "http_connection_provider=HTTP_CLIENT";
+
+    /**
+     * Value of the {@code typeMappings} connection property; without it date/time values shift by the offset between
+     * the JVM and server time zones. JNDI datasources must set it themselves.
+     */
+    public static final String DATE_TIME_MAPPINGS =
+            "DateTime=java.time.ZonedDateTime,DateTime64=java.time.ZonedDateTime";
 
     // TODO: expose parameters with sensible defaults for port, user, password
 
@@ -62,13 +68,19 @@ public class ClickHouseJDBCDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     public BasicDataSource createDataSource(Map<String, ?> params) throws IOException {
         BasicDataSource ds = super.createDataSource(params);
-        ds.addConnectionProperty("max_query_size", "1000000");
+        // jdbc-v2 rejects unknown keys, server settings need the clickhouse_setting_ prefix
+        ds.addConnectionProperty("clickhouse_setting_max_query_size", "1000000");
         ds.addConnectionProperty("socket_timeout", "300000");
+        ds.addConnectionProperty("typeMappings", DATE_TIME_MAPPINGS);
+        // jdbc-v2 throws on setAutoCommit(false)/commit/rollback, the store is read-only so no-ops are safe
+        ds.addConnectionProperty("jdbc_ignore_unsupported_values", "true");
         return ds;
     }
 
     @Override
-    protected String getJDBCUrl(Map<String, ?> params) throws IOException {
-        return super.getJDBCUrl(params) + "?" + FORCE_HTTP_CLIENT;
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
+        // jdbc-v2 reports the MergeTree sorting key as primary key, but it is not unique: ignore it, as 0.6.4 did
+        dataStore.setPrimaryKeyFinder(new MetadataTablePrimaryKeyFinder());
+        return dataStore;
     }
 }

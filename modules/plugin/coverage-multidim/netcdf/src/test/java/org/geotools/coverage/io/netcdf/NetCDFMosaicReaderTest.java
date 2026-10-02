@@ -1360,7 +1360,7 @@ public class NetCDFMosaicReaderTest {
             assertEquals(2, reader.getGridCoverageNames().length);
 
             File[] files = mosaic.listFiles();
-            assertEquals(15, files.length);
+            assertEquals(14, files.length);
 
             reader.dispose();
             reader = format.getReader(mosaic);

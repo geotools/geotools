@@ -49,7 +49,7 @@ jobs:
         locale
     - name: Build with Maven
       run: |
-        mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build -fae --file pom.xml
+        mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build -Dlogging-profile=info-logging -fae --file pom.xml
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

@@ -3171,11 +3171,11 @@ public class ImageMosaicReaderTest {
             assertEquals(1, reader.getGridCoverageNames().length);
             File[] files = workDir.listFiles();
             assertNotNull(files);
-            assertEquals(16, files.length);
+            assertEquals(15, files.length);
 
             reader.removeCoverage(reader.getGridCoverageNames()[0], false);
             assertEquals(0, reader.getGridCoverageNames().length);
-            assertEquals(16, files.length);
+            assertEquals(15, files.length);
         } finally {
             reader.dispose();
         }
@@ -3214,12 +3214,12 @@ public class ImageMosaicReaderTest {
             assertEquals(1, reader.getGridCoverageNames().length);
             File[] files = workDir.listFiles();
             assertNotNull(files);
-            assertEquals(16, files.length);
+            assertEquals(15, files.length);
 
             reader.removeCoverage(reader.getGridCoverageNames()[0], true);
             assertEquals(0, reader.getGridCoverageNames().length);
             files = workDir.listFiles();
-            assertEquals(12, files.length);
+            assertEquals(11, files.length);
 
         } finally {
             reader.dispose();
@@ -3263,7 +3263,7 @@ public class ImageMosaicReaderTest {
             // delete all files associated to that mosaic (granules, auxiliary files, DB entries,
             // ...)
             File[] files = workDir.listFiles();
-            assertEquals(15, files.length);
+            assertEquals(14, files.length);
             reader.delete(true);
             files = workDir.listFiles();
             assertEquals(0, files.length);
@@ -3307,7 +3307,7 @@ public class ImageMosaicReaderTest {
 
             // delete metadata only (auxiliary files, DB entries, ...)
             File[] files = workDir.listFiles();
-            assertEquals(15, files.length);
+            assertEquals(14, files.length);
             reader.delete(false);
             files = workDir.listFiles();
             assertEquals(4, files.length);

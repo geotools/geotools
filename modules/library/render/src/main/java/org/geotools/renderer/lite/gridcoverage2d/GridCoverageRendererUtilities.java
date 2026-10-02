@@ -36,7 +36,7 @@ import org.eclipse.imagen.Interpolation;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.media.range.Range;
-import org.eclipse.imagen.media.scale.Scale2OpImage;
+import org.eclipse.imagen.media.scale2.Scale2OpImage;
 import org.eclipse.imagen.media.vectorbin.ROIGeometry;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;

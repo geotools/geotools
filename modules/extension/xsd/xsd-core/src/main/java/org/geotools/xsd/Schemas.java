@@ -82,6 +82,7 @@ import org.eclipse.xsd.util.XSDUtil;
 import org.geotools.util.DefaultEntityResolver;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.xsd.impl.HTTPURIHandler;
 import org.geotools.xsd.impl.SchemaIndexImpl;
 import org.geotools.xsd.impl.TypeWalker;
 import org.picocontainer.ComponentAdapter;
@@ -531,6 +532,21 @@ public class Schemas {
             List<XSDSchemaLocationResolver> resolvers,
             EntityResolver entityResolver)
             throws IOException {
+        return validateImportsIncludes(location, locators, resolvers, emptyList(), entityResolver);
+    }
+
+    /**
+     * Checks that the imports and includes of a schema can be resolved, walking them from the given location.
+     *
+     * <p>Locations handled by one of the URI handlers are skipped, the parser reads them through the handler.
+     */
+    public static final List validateImportsIncludes(
+            String location,
+            List<XSDSchemaLocator> locators,
+            List<XSDSchemaLocationResolver> resolvers,
+            List<URIHandler> uriHandlers,
+            EntityResolver entityResolver)
+            throws IOException {
 
         // null safety
         if (locators == null) locators = Collections.emptyList();
@@ -565,9 +581,30 @@ public class Schemas {
         while (!q.isEmpty()) {
             location = q.removeFirst();
             validator.setBaseLocation(location);
+            // the parser reads these through its URI handler, the walk does not open them. For example, GeoServer
+            // registers a handler that answers DescribeFeatureType requests to itself in process.
+            if (isHandledLocally(uriHandlers, location)) {
+                continue;
+            }
+
+            // validate every location the way the parser reads it, like a nested reference
+            InputSource source = null;
+            if (entityResolver != null) {
+                try {
+                    // the check expects URIs, the walk queues local files as paths
+                    File file = new File(location);
+                    String systemId = file.isAbsolute() ? URLs.fileToUrl(file).toExternalForm() : location;
+                    source = entityResolver.resolveEntity(null, systemId);
+                } catch (SAXException e) {
+                    throw (IOException) new IOException("Could not resolve schema location " + location).initCause(e);
+                }
+            }
+            if (source == null) {
+                source = new InputSource(location);
+            }
 
             try {
-                parser.parse(location, validator);
+                parser.parse(source, validator);
             } catch (SAXException e) {
                 throw (IOException) new IOException("parse error").initCause(e);
             }
@@ -583,6 +620,32 @@ public class Schemas {
         }
 
         return emptyList();
+    }
+
+    /**
+     * Checks if a URI handler other than {@link HTTPURIHandler} can read the location. HTTPURIHandler reads any http
+     * location, so it does not count as local.
+     */
+    private static boolean isHandledLocally(List<URIHandler> uriHandlers, String location) {
+        if (uriHandlers == null) {
+            return false;
+        }
+        URI uri;
+        try {
+            uri = URI.createURI(location);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        // handlers identify the server by host name; validate any location without one here
+        if (uri.host() == null) {
+            return false;
+        }
+        for (URIHandler handler : uriHandlers) {
+            if (!(handler instanceof HTTPURIHandler) && handler.canHandle(uri)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static final class SchemaImportIncludeValidator extends DefaultHandler {

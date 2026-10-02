@@ -576,7 +576,8 @@ public class ParserHandler extends DefaultHandler2 {
                         // validate the schema location
                         if (isValidating()) {
                             try {
-                                Schemas.validateImportsIncludes(location, locators, resolvers, entityResolver);
+                                Schemas.validateImportsIncludes(
+                                        location, locators, resolvers, uriHandlers, entityResolver);
                             } catch (IOException e) {
                                 throw (SAXException) new SAXException("error validating").initCause(e);
                             }

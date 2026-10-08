@@ -185,23 +185,21 @@ public class LineWriter extends FilterWriter {
     public void write(final int c) throws IOException {
         synchronized (lock) {
             switch (c) {
-                case '\r': {
+                case '\r' -> {
                     assert bufferBlank();
                     count = 0; // Discard whitespaces
                     writeEOL();
                     skipCR = true;
-                    break;
                 }
-                case '\n': {
+                case '\n' -> {
                     if (!skipCR) {
                         assert bufferBlank();
                         count = 0; // Discard whitespaces
                         writeEOL();
                     }
                     skipCR = false;
-                    break;
                 }
-                default: {
+                default -> {
                     if (c >= Character.MIN_VALUE && c <= Character.MAX_VALUE && isWhitespace((char) c)) {
                         if (count >= buffer.length) {
                             buffer = XArray.resize(buffer, count + Math.min(8192, count));
@@ -212,7 +210,6 @@ public class LineWriter extends FilterWriter {
                         out.write(c);
                     }
                     skipCR = false;
-                    break;
                 }
             }
         }
@@ -242,7 +239,7 @@ public class LineWriter extends FilterWriter {
             int upper = offset;
             for (; length != 0; length--) {
                 switch (cbuf[upper++]) {
-                    case '\r': {
+                    case '\r' -> {
                         writeLine(cbuf, offset, upper - 1);
                         writeEOL();
                         if (length > 1 && cbuf[upper] == '\n') {
@@ -250,24 +247,24 @@ public class LineWriter extends FilterWriter {
                             length--;
                         }
                         offset = upper;
-                        break;
                     }
-                    case '\n': {
+                    case '\n' -> {
                         writeLine(cbuf, offset, upper - 1);
                         writeEOL();
                         offset = upper;
-                        break;
                     }
                 }
             }
             skipCR = cbuf[upper - 1] == '\r';
             /*
-             * Write the remainding characters and
+             * Write the remaining characters and
              * put trailing blanks into the buffer.
              */
             for (int i = upper; --i >= offset; ) {
                 if (!isWhitespace(cbuf[i])) {
-                    writeLine(cbuf, offset, offset = i + 1);
+                    int newUpper = i + 1;
+                    writeLine(cbuf, offset, newUpper);
+                    offset = newUpper;
                     break;
                 }
             }
@@ -305,7 +302,7 @@ public class LineWriter extends FilterWriter {
             int upper = offset;
             for (; length != 0; length--) {
                 switch (string.charAt(upper++)) {
-                    case '\r': {
+                    case '\r' -> {
                         writeLine(string, offset, upper - 1);
                         writeEOL();
                         if (length > 1 && string.charAt(upper) == '\n') {
@@ -313,13 +310,11 @@ public class LineWriter extends FilterWriter {
                             length--;
                         }
                         offset = upper;
-                        break;
                     }
-                    case '\n': {
+                    case '\n' -> {
                         writeLine(string, offset, upper - 1);
                         writeEOL();
                         offset = upper;
-                        break;
                     }
                 }
             }
@@ -330,7 +325,9 @@ public class LineWriter extends FilterWriter {
              */
             for (int i = upper; --i >= offset; ) {
                 if (!isWhitespace(string.charAt(i))) {
-                    writeLine(string, offset, offset = i + 1);
+                    final int newUpper = i + 1;
+                    writeLine(string, offset, newUpper);
+                    offset = newUpper;
                     break;
                 }
             }

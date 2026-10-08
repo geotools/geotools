@@ -107,40 +107,23 @@ public class LogbackLogger extends LoggerAdapter {
      */
     private static String toLogbackLevelName(final Level level) {
         final int n = level.intValue();
-        switch (n / 100) {
-            case 11:
-            case 10:
-                return "ERROR"; // SEVERE
-            case 9:
-                return "WARN"; // WARNING
-            case 8: // INFO
-                return "INFO"; // INFO
-            case 7:
-                return "INFO"; // CONFIG
-            case 6: // (not allocated)
-            case 5:
-                return "DEBUG"; // FINE
-            case 4:
-                return "TRACE"; // FINER
-            case 3:
-                return "TRACE"; // FINEST
-            case 2: // (not allocated)
-            case 1: // (not allocated)
-            case 0:
-                return "ALL"; // ALL
-            default:
+        return switch (n / 100) {
+            case 11, 10 -> "ERROR"; // SEVERE
+            case 9 -> "WARN"; // WARNING
+            case 8, 7 -> "INFO"; // INFO / CONFIG
+            case 6, 5 -> "DEBUG"; // FINE
+            case 4, 3 -> "TRACE"; // FINER / FINEST
+            case 2, 1, 0 -> "ALL"; // ALL
+            default -> {
                 // MAX_VALUE is a special value for Level.OFF. Otherwise and
                 // if positive, log to fatal since we are greater than SEVERE.
-                switch (n) {
-                    case Integer.MIN_VALUE:
-                        return "ALL";
-                    case Integer.MAX_VALUE:
-                        return "OFF";
-                    default:
-                        if (n >= 0) return "ERROR"; // fallthrough ALL otherwise.
-                        else return "ALL";
-                }
-        }
+                yield switch (n) {
+                    case Integer.MIN_VALUE -> "ALL";
+                    case Integer.MAX_VALUE -> "OFF";
+                    default -> (n >= 0) ? "ERROR" : "ALL";
+                };
+            }
+        };
     }
 
     @Override
@@ -171,12 +154,10 @@ public class LogbackLogger extends LoggerAdapter {
     @Override
     public void log(final Level level, final String message) {
         final int n = level.intValue();
-        switch (n / 100) {
-            case 11:
-                logger.error(FATAL, message);
-                break;
-            default:
-                super.log(level, message);
+        if (n / 100 == 11) {
+            logger.error(FATAL, message);
+        } else {
+            super.log(level, message);
         }
     }
 

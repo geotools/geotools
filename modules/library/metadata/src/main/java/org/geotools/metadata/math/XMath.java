@@ -222,6 +222,7 @@ public final class XMath {
      * @return The trimmed value, or the unchanged {@code value} if there is no small change that remove at least
      *     {@code n} fraction digits.
      */
+    @SuppressWarnings("AssignmentExpression")
     public static double trimDecimalFractionDigits(final double value, final int maxULP, int n) {
         double lower = value;
         double upper = value;

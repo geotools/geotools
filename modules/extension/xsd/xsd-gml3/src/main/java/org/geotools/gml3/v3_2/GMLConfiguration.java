@@ -92,6 +92,9 @@ public class GMLConfiguration extends Configuration {
     /** Property which engages "fast" gml encoding. */
     public static final QName OPTIMIZED_ENCODING = org.geotools.gml3.GMLConfiguration.OPTIMIZED_ENCODING;
 
+    /** Presence of this property means coordinate measures are encoded, see the gml2 constant it aliases. */
+    public static final QName ENCODE_MEASURES = org.geotools.gml3.GMLConfiguration.ENCODE_MEASURES;
+
     /** gml3 configuration used to delegate to for configuration */
     org.geotools.gml3.GMLConfiguration delegate;
 
@@ -273,7 +276,7 @@ public class GMLConfiguration extends Configuration {
      * @return TRUE if measures should be encoded, otherwise FALSE
      */
     public boolean getEncodeMeasures() {
-        return delegate.getEncodeMeasures();
+        return org.geotools.gml2.GMLConfiguration.encodeMeasures(this);
     }
 
     /**
@@ -283,6 +286,8 @@ public class GMLConfiguration extends Configuration {
      */
     public void setEncodeMeasures(boolean encodeMeasures) {
         delegate.setEncodeMeasures(encodeMeasures);
+        // the delegate is not a dependency of this configuration, so the property is set here as well
+        org.geotools.gml2.GMLConfiguration.setEncodeMeasures(this, encodeMeasures);
     }
 
     /**

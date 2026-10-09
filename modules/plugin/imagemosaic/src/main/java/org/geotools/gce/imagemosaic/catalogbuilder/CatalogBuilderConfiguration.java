@@ -143,6 +143,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
         if (!equalsParameter(this, that, Prop.CACHING)) return false;
         if (!equalsParameter(this, that, Prop.RECURSIVE)) return false;
         if (!equalsParameter(this, that, Prop.COLLECT_RAT)) return false;
+        if (!equalsParameter(this, that, Prop.RAT_GEOMETRIES)) return false;
         if (!equalsParameter(this, that, Prop.COG)) return false;
         if (!equalsParameter(this, that, Prop.FOOTPRINT_MANAGEMENT)) return false;
         if (!equalsParameter(this, that, Prop.INDEX_NAME)) return false;
@@ -167,6 +168,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH)), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.RECURSIVE)), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.COLLECT_RAT)), seed);
+        seed = Utilities.hash(getParameter(Prop.RAT_GEOMETRIES), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.COG)), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.CACHING)), seed);
         seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT)), seed);
@@ -196,6 +198,9 @@ public class CatalogBuilderConfiguration implements Cloneable {
                 .append("\n");
         builder.append("collectAttributeTables:\t\t\t")
                 .append(Boolean.parseBoolean(getParameter(Prop.COLLECT_RAT)))
+                .append("\n");
+        builder.append("attributeTableGeometries:\t\t\t")
+                .append(getParameter(Prop.RAT_GEOMETRIES))
                 .append("\n");
         builder.append("footprintManagement:\t\t\t")
                 .append(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT)))

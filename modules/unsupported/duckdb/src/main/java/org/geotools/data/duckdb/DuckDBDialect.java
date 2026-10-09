@@ -49,6 +49,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKBReader;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.factory.Hints;
@@ -64,7 +65,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.InputStreamInStream;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
 
 /**
  * Base SQL Dialect for DuckDB-based datastores. Provides common DuckDB SQL functionality including spatial support.
@@ -131,7 +131,10 @@ public class DuckDBDialect extends BasicSQLDialect {
     //    }
 
     public List<String> getDatabaseInitSql() {
-        return List.of("install spatial", "load spatial");
+        // DuckDB 1.5 warns unless users explicitly choose the old or new axis-order behavior for affected
+        // spatial functions. The dialect does not currently emit those functions, but opt into X/Y order
+        // now to align with common GIS longitude/latitude behavior and DuckDB's planned future default.
+        return List.of("install spatial", "load spatial", "SET geometry_always_xy = true");
     }
 
     @Override
@@ -198,7 +201,7 @@ public class DuckDBDialect extends BasicSQLDialect {
         }
 
         // Check if it's a geometry column
-        if ("GEOMETRY".equalsIgnoreCase(typeName)) {
+        if (typeName != null && typeName.toUpperCase().startsWith("GEOMETRY")) {
             return Geometry.class;
         }
 

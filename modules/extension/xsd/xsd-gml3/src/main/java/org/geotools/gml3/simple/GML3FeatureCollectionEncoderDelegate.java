@@ -176,7 +176,7 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
             }
 
             if (config == null) {
-                return true;
+                return false;
             } else {
                 return config.getEncodeMeasures();
             }

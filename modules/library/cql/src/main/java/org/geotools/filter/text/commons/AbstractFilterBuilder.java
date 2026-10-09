@@ -142,8 +142,12 @@ public abstract class AbstractFilterBuilder {
 
         for (int i = 0; i < size; i++) {
             Result item = this.resultStack.popResult();
-            Filter result = (Filter) item.getBuilt();
-            results.add(0, result);
+            try {
+                Filter result = (Filter) item.getBuilt();
+                results.add(0, result);
+            } catch (ClassCastException e) {
+                throw new CQLException(e.getMessage(), null, e, item.getBuilt().toString());
+            }
         }
 
         return results;
@@ -487,14 +491,20 @@ public abstract class AbstractFilterBuilder {
         return filterFactory.literal(Boolean.FALSE);
     }
 
-    public Literal buildLiteralInteger(final String tokenImage) {
-
-        return filterFactory.literal(Long.parseLong(tokenImage));
+    public Literal buildLiteralInteger(final String tokenImage) throws CQLException {
+        try {
+            return filterFactory.literal(Long.parseLong(tokenImage));
+        } catch (NumberFormatException e) {
+            throw new CQLException("Problem parsing integer", null, e, tokenImage);
+        }
     }
 
-    public Literal buildLiteralDouble(final String tokenImage) {
-
-        return filterFactory.literal(Double.parseDouble(tokenImage));
+    public Literal buildLiteralDouble(final String tokenImage) throws CQLException {
+        try {
+            return filterFactory.literal(Double.parseDouble(tokenImage));
+        } catch (NumberFormatException e) {
+            throw new CQLException("Problem parsing double", null, e, tokenImage);
+        }
     }
 
     public Literal buildLiteralString(final String tokenImage) {

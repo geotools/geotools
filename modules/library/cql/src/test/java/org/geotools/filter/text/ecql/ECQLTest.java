@@ -16,6 +16,9 @@
  */
 package org.geotools.filter.text.ecql;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
@@ -365,6 +368,16 @@ public final class ECQLTest {
         String cqlResult = ECQL.toCQL(list);
 
         Assert.assertEquals(expectedECQL, cqlResult);
+    }
+
+    @Test
+    public void unexpectedFunction() throws CQLException {
+        String expectedECQL =
+                "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); FLOOR(1); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
+
+        CQLException e = Assert.assertThrows(CQLException.class, () -> ECQL.toFilterList(expectedECQL));
+        assertThat(e.getMessage(), containsString("floor"));
+        assertThat(e.getCause(), instanceOf(ClassCastException.class));
     }
 
     @Test

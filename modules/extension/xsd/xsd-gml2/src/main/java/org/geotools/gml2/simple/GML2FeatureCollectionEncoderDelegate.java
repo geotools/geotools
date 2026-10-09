@@ -67,12 +67,15 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         private boolean decimalEncoding;
 
+        private boolean encodeMeasures;
+
         public GML2Delegate(Encoder encoder) {
             this.gmlPrefix = encoder.getNamespaces().getPrefix(GML.NAMESPACE);
             this.featureMember = FEATURE_MEMBER.derive(gmlPrefix);
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
             this.padWithZeros = getPadWithZeros(encoder.getConfiguration());
             this.decimalEncoding = getForceDecimalEncoding(encoder.getConfiguration());
+            this.encodeMeasures = GML2EncodingUtils.encodeMeasures(encoder.getConfiguration());
         }
 
         private int getNumDecimals(Configuration configuration) {
@@ -214,6 +217,11 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
         @Override
         public boolean padWithZeros() {
             return padWithZeros;
+        }
+
+        @Override
+        public boolean getEncodeMeasures() {
+            return encodeMeasures;
         }
     }
 }

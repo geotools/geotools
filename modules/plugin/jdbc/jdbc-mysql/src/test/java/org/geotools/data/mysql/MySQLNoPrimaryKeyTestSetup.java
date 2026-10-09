@@ -26,10 +26,11 @@ public class MySQLNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     @Override
     protected void createLakeTable() throws Exception {
+        String axisOrder = ((MySQLTestSetup) delegate).axisOrderOption();
         run("CREATE TABLE lake(id int, " + "geom POLYGON, name varchar(255) ) ENGINE=InnoDB;");
 
         run("INSERT INTO lake (id,geom,name) VALUES ( 0,"
-                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326" + axisOrder + "),"
                 + "'muddy')");
     }
 

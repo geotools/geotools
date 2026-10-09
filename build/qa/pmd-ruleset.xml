@@ -71,7 +71,6 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
   <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators"/>
   <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues"/>
   <rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
-  <rule ref="category/java/errorprone.xml/CheckSkipResult"/>
   <rule ref="category/java/errorprone.xml/ClassCastExceptionWithToArray"/>
   <rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices"/>
   <rule ref="category/java/errorprone.xml/JumbledIncrementer"/>
@@ -81,7 +80,7 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
   <rule ref="category/java/errorprone.xml/UnconditionalIfStatement"/>
   <rule ref="category/java/errorprone.xml/UnnecessaryConversionTemporary"/>
   <rule ref="category/java/errorprone.xml/UnusedNullCheckInEquals"/>
-  <rule ref="category/java/errorprone.xml/UselessPureMethodCall"/>
+  <rule ref="category/java/errorprone.xml/UnusedReturnValue"/>
   <rule ref="category/java/errorprone.xml/CloseResource">
     <properties>
       <!-- When calling the store to close, PMD wants the full prefix before the call to the method to match, so let's try to use common var names for store ... -->

@@ -132,6 +132,14 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
     }
 
     /**
+     * First coordinate sequence of a geometry in {@link Geometry#apply(CoordinateSequenceFilter)} order, null when the
+     * geometry holds none. It is the same sequence {@link #coordinateDimension(Geometry)} reads its answer from.
+     */
+    public static CoordinateSequence firstSequence(Geometry g) {
+        return CoordinateSequenceFinder.find(g);
+    }
+
+    /**
      * Gets the dimension of the coordinates in a {@link Geometry}, by reading it from a component
      * {@link CoordinateSequence}. This will be usually either 2 or 3.
      *
@@ -187,6 +195,54 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             }
         }
         return 3;
+    }
+
+    /**
+     * Ordinate indices to read for a coordinate, in encoding order: X, Y, the height when the sequence fills one, then
+     * the measures when asked for. Callers write exactly these ordinates, so what is counted and what is written can
+     * never disagree.
+     */
+    public static int[] ordinateIndices(CoordinateSequence sequence, boolean includeMeasures) {
+        int spatial = spatialDimension(sequence);
+        int measures = includeMeasures ? carriedMeasures(sequence) : 0;
+        int[] indices = new int[spatial + measures];
+        for (int i = 0; i < spatial; i++) {
+            indices[i] = i;
+        }
+        // measures sit at the end of the sequence, after every spatial ordinate it declares
+        for (int i = 0; i < measures; i++) {
+            indices[spatial + i] = sequence.getDimension() - measures + i;
+        }
+        return indices;
+    }
+
+    /**
+     * X, Y and the height when the sequence carries a usable one. Measured sequences report their layout faithfully, so
+     * the declared dimension is used, while the heuristic is needed for the rest because CoordinateArraySequence
+     * reports three ordinates even for plain 2D data.
+     */
+    public static int spatialDimension(CoordinateSequence sequence) {
+        int measures = sequence.getMeasures();
+        if (measures == 0) {
+            return coordinateDimension(sequence);
+        }
+        int spatial = sequence.getDimension() - measures;
+        if (spatial > 2 && sequence.size() > 0 && !Double.isFinite(sequence.getOrdinate(0, 2))) {
+            return 2;
+        }
+        return spatial;
+    }
+
+    /**
+     * Measures the sequence really carries, zero when the M ordinate is not filled in: a shapefile PolyLineZ declares a
+     * measure and leaves it NaN. Only the first coordinate is checked, like the dimension is, so measures are
+     * all-or-nothing per geometry: a NaN measure on a later coordinate is encoded as NaN.
+     */
+    public static int carriedMeasures(CoordinateSequence sequence) {
+        if (sequence.getMeasures() == 0 || sequence.size() == 0 || Double.isNaN(sequence.getM(0))) {
+            return 0;
+        }
+        return sequence.getMeasures();
     }
 
     /** Returns true if the two geometries are equal in N dimensions (normal geometry equality is only 2D) */

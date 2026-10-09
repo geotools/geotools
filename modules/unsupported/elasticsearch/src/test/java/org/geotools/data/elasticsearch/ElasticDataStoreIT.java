@@ -89,7 +89,6 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
     }
 
     @Test(expected = IOException.class)
-    @SuppressWarnings("PMD.CloseResource") // all mocks
     public void testConstructionWithBadClient() throws IOException {
         Map<String, Serializable> params = createConnectionParams();
         String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
@@ -107,7 +106,6 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
     }
 
     @Test(expected = IOException.class)
-    @SuppressWarnings("PMD.CloseResource") // all mocks
     public void testConstructionWithBadProxyClient() throws IOException {
         Map<String, Serializable> params = createConnectionParams();
         String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);

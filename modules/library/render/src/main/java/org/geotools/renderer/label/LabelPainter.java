@@ -91,6 +91,9 @@ public class LabelPainter {
     /** The cached label bounds */
     Rectangle2D labelBounds;
 
+    /** The cached full label bounds (includes halo and shield) */
+    Rectangle2D fullLabelBounds;
+
     /** The class in charge of splitting the labels in multiple lines/scripts/fonts */
     LabelSplitter splitter = new LabelSplitter();
 
@@ -111,6 +114,7 @@ public class LabelPainter {
 
         // reset previous caches
         labelBounds = null;
+        fullLabelBounds = null;
         lines = null;
 
         // layout the label elements
@@ -213,8 +217,13 @@ public class LabelPainter {
         return lines.size();
     }
 
-    /** Get the straight label bounds, taking into account halo, shield and line wrapping */
-    public Rectangle2D getFullLabelBounds() {
+    /**
+     * Get the straight label bounds, taking into account halo, shield and line wrapping. The result is cached until the
+     * next {@link #setLabel(LabelCacheItem)} and the same instance is returned on subsequent calls: callers must treat
+     * it as read-only and must not mutate the returned rectangle.
+     */
+    Rectangle2D getFullLabelBounds() {
+        if (fullLabelBounds != null) return fullLabelBounds;
         // base bounds (clone them, we're going to alter the bounds directly)
         Rectangle2D bounds = (Rectangle2D) getLabelBounds().clone();
 
@@ -267,7 +276,7 @@ public class LabelPainter {
 
         normalizeBounds(bounds);
 
-        return bounds;
+        return fullLabelBounds = bounds;
     }
 
     Rectangle2D applyMargins(int[] margin, Rectangle2D bounds) {

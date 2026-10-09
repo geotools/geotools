@@ -197,7 +197,14 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
             Class<? extends Geometry> gClass, int dimension, int srid, Class binding, StringBuffer sql) {
         if (gClass != null) {
             if (delegate.usePreciseSpatialOps) {
-                sql.append("ST_GeometryFromWKB(?)");
+                sql.append("ST_GeometryFromWKB(?");
+                if (delegate.isMySqlVersion80OrAbove) {
+                    // Declare east/north order; MySQL 8 defaults geographic SRS to lat/lon.
+                    // Match MySQLDialectBasic: MySQL 8 rejects a negative SRID.
+                    if (srid < 0) srid = 0;
+                    sql.append(", ").append(srid).append(", 'axis-order=long-lat'");
+                }
+                sql.append(")");
             } else {
                 sql.append("GeomFromWKB(?)");
             }

@@ -17,6 +17,11 @@
 package org.geotools.geometry.jts;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -125,8 +130,23 @@ public class WKBReader {
      */
     private boolean isStrict = false;
 
+    private static final VarHandle DOUBLE_LE =
+            MethodHandles.byteArrayViewVarHandle(double[].class, ByteOrder.LITTLE_ENDIAN);
+    private static final VarHandle DOUBLE_BE =
+            MethodHandles.byteArrayViewVarHandle(double[].class, ByteOrder.BIG_ENDIAN);
+    /**
+     * Points read per batch on lite sequences. A 2D batch is 4 KB, so it fits the CPU L1 cache. Batches from 64 to 4096
+     * points read at the same speed, so a larger batch only uses more memory.
+     */
+    static final int COORDINATE_BATCH_SIZE = 256;
+
     private ByteOrderDataInStream dis = new ByteOrderDataInStream();
+    private InStream input;
+    private VarHandle doubleHandle = DOUBLE_BE;
     private double[] ordValues;
+    // reused read buffers: full batches and single points
+    private byte[] coordinateBytes;
+    private byte[] pointBytes;
 
     private int maxNumFieldValue;
 
@@ -177,6 +197,7 @@ public class WKBReader {
          */
         this.maxNumFieldValue = maxCoordNum;
         dis.setInStream(is);
+        input = is;
         return readGeometry(0);
     }
 
@@ -197,8 +218,10 @@ public class WKBReader {
         // always set byte order, since it may change from geometry to geometry
         if (byteOrderWKB == WKBConstants.wkbNDR) {
             dis.setOrder(ByteOrderValues.LITTLE_ENDIAN);
+            doubleHandle = DOUBLE_LE;
         } else if (byteOrderWKB == WKBConstants.wkbXDR) {
             dis.setOrder(ByteOrderValues.BIG_ENDIAN);
+            doubleHandle = DOUBLE_BE;
         } else if (isStrict) {
             throw new ParseException("Unknown geometry byte order (not NDR or XDR): " + byteOrderWKB);
         }
@@ -441,6 +464,17 @@ public class WKBReader {
     private CoordinateSequence readCoordinateSequence(int size, EnumSet<Ordinate> ordinateFlags)
             throws IOException, ParseException {
         CoordinateSequence seq = csFactory.create(size, inputDimension, ordinateFlags.contains(Ordinate.M) ? 1 : 0);
+        if (seq instanceof LiteCoordinateSequence lite
+                && lite.getDimension() == inputDimension
+                && precisionModel.getType() == PrecisionModel.FLOATING) {
+            // fast path: copy raw doubles straight into the packed array, no per-ordinate calls
+            if (size == 1) {
+                readPointOrdinates(lite.getArray());
+            } else if (size > 1) {
+                readSequenceOrdinates(lite.getArray());
+            }
+            return seq;
+        }
         int targetDim = seq.getDimension();
         if (targetDim > inputDimension) targetDim = inputDimension;
         for (int i = 0; i < size; i++) {
@@ -450,6 +484,70 @@ public class WKBReader {
             }
         }
         return seq;
+    }
+
+    /**
+     * Reads the ordinates of a single point into the packed array.
+     *
+     * <p>A VarHandle reads a double out of a byte array in a fixed byte order. For one point it costs less than
+     * creating the DoubleBuffer view that {@link #readSequenceOrdinates} uses.
+     */
+    private void readPointOrdinates(double[] ordinates) throws IOException, ParseException {
+        if (pointBytes == null || pointBytes.length != inputDimension * Double.BYTES) {
+            pointBytes = new byte[inputDimension * Double.BYTES];
+        }
+        readBytes(pointBytes);
+        for (int j = 0; j < inputDimension; j++) {
+            ordinates[j] = (double) doubleHandle.get(pointBytes, j * Double.BYTES);
+        }
+    }
+
+    /**
+     * Reads the ordinates of a sequence of two or more points into the packed array, one batch at a time.
+     *
+     * <p>Each batch goes into a reused byte array. A DoubleBuffer view then copies it into the packed array in one bulk
+     * call, swapping bytes when the WKB byte order is not the CPU byte order. The JDK runs this as a memory copy, so it
+     * is much faster than decoding one double at a time.
+     *
+     * <p>Do not read the whole sequence into one byte array: it measured up to 2x slower. A batch stays in the CPU
+     * cache, and the reader needs no temporary array as large as the sequence.
+     *
+     * <p>A partial last batch gets an array of the exact remaining size. {@link InStream#read(byte[])} has no length
+     * argument, so a larger array would read the start of the next geometry.
+     */
+    private void readSequenceOrdinates(double[] ordinates) throws IOException, ParseException {
+        int byteCount = Math.min(ordinates.length, COORDINATE_BATCH_SIZE * inputDimension) * Double.BYTES;
+        if (coordinateBytes == null || coordinateBytes.length < byteCount) {
+            coordinateBytes = new byte[byteCount];
+        }
+        ByteOrder order = doubleHandle == DOUBLE_LE ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;
+        DoubleBuffer values = ByteBuffer.wrap(coordinateBytes).order(order).asDoubleBuffer();
+        // the batch size is in doubles and does not need to end on a point boundary
+        int batchSize = values.capacity();
+        int offset = 0;
+        for (; ordinates.length - offset >= batchSize; offset += batchSize) {
+            readBytes(coordinateBytes);
+            values.get(0, ordinates, offset, batchSize);
+        }
+        int remaining = ordinates.length - offset;
+        if (remaining > 0) {
+            byte[] remainingBytes = new byte[remaining * Double.BYTES];
+            readBytes(remainingBytes);
+            ByteBuffer.wrap(remainingBytes).order(order).asDoubleBuffer().get(ordinates, offset, remaining);
+        }
+    }
+
+    /** Fills the whole array, reading again when the input returns fewer bytes, as an InputStream may do. */
+    private void readBytes(byte[] bytes) throws IOException, ParseException {
+        byte[] buffer = bytes;
+        int count = 0;
+        while (count < bytes.length) {
+            int read = input.read(buffer);
+            if (read <= 0) throw new ParseException("Attempt to read past end of input");
+            if (buffer != bytes) System.arraycopy(buffer, 0, bytes, count, read);
+            count += read;
+            if (count < bytes.length) buffer = new byte[bytes.length - count];
+        }
     }
 
     private CoordinateSequence readCoordinateSequenceCircularString(int size, EnumSet<Ordinate> ordinateFlags)

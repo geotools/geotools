@@ -53,7 +53,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 // Mock objects only; no real JDBC resources are opened in this test class.
-@SuppressWarnings({"PMD.CloseResource", "PMD.CheckResultSet"})
+@SuppressWarnings({"PMD.CheckResultSet"})
 public class DuckDBDialectTest {
 
     private DuckDBDialect createDialect() {

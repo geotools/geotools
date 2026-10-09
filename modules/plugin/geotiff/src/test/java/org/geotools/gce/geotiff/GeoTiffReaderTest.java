@@ -32,6 +32,7 @@ import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.FieldType;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.FieldUsage;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.TableType;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.awt.Color;
@@ -1612,6 +1613,52 @@ public class GeoTiffReaderTest {
         assertEquals("white", fieldValues.get(2));
 
         reader.dispose();
+    }
+
+    @Test
+    public void testRATGdal312Types() throws Exception {
+        final File file = TestData.file(GeoTiffReaderTest.class, "rat/rat-gdal312-types.tif");
+        GeoTiffReader reader = new GeoTiffFormat().getReader(file);
+        assertNotNull(reader);
+        try {
+            ResourceInfo info = reader.getInfo("rat-gdal312-types");
+            assertThat(info, CoreMatchers.instanceOf(PAMResourceInfo.class));
+            PAMDataset pam = ((PAMResourceInfo) info).getPAMDataset();
+            assertNotNull(pam);
+            List<PAMRasterBand> bands = pam.getPAMRasterBand();
+            assertEquals(1, bands.size());
+            PAMRasterBand.GDALRasterAttributeTable rat = bands.get(0).getGdalRasterAttributeTable();
+            assertNotNull(rat);
+            assertEquals(TableType.Thematic, rat.getTableType());
+
+            // the three types GDAL 3.12 added are among these, they used to read as null
+            List<PAMRasterBand.FieldDefn> fields = rat.getFieldDefn();
+            assertEquals(8, fields.size());
+            assertField(fields.get(0), "id", FieldType.Integer, FieldUsage.MinMax);
+            assertField(fields.get(1), "dataAssessment", FieldType.Integer, FieldUsage.Generic);
+            assertField(fields.get(2), "fullSeafloorCoverageAchieved", FieldType.Boolean, FieldUsage.Generic);
+            assertField(fields.get(3), "surveyDateRange.dateStart", FieldType.DateTime, FieldUsage.Generic);
+            assertField(fields.get(4), "surveyDateRange.dateEnd", FieldType.DateTime, FieldUsage.Generic);
+            assertField(fields.get(5), "surveyAuthority", FieldType.String, FieldUsage.Generic);
+            assertField(fields.get(6), "depthRange.minimumDepth", FieldType.Real, FieldUsage.Generic);
+            assertField(fields.get(7), "footprint", FieldType.WKBGeometry, FieldUsage.Generic);
+
+            List<PAMRasterBand.Row> rows = rat.getRow();
+            assertEquals(3, rows.size());
+            assertEquals(
+                    List.of(
+                            "54602",
+                            "1",
+                            "true",
+                            "2024-03-01T00:00:00.000+00:00",
+                            "2024-03-14T23:59:59.000+00:00",
+                            "NOAA",
+                            "4.75",
+                            "POLYGON ((0 0,1 0,1 1,0 1,0 0))"),
+                    rows.get(0).getF());
+        } finally {
+            reader.dispose();
+        }
     }
 
     private void assertField(PAMRasterBand.FieldDefn fieldDefn, String name, FieldType type, FieldUsage usage) {

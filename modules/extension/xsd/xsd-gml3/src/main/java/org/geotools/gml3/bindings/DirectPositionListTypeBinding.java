@@ -25,8 +25,10 @@ import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Position3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Configuration;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -65,6 +67,13 @@ import org.w3c.dom.Element;
 public class DirectPositionListTypeBinding extends AbstractComplexBinding {
 
     CoordinateFormatter formatter;
+
+    Configuration config;
+
+    public DirectPositionListTypeBinding(CoordinateFormatter formatter, Configuration config) {
+        this.formatter = formatter;
+        this.config = config;
+    }
 
     public DirectPositionListTypeBinding(CoordinateFormatter formatter) {
         this.formatter = formatter;
@@ -171,12 +180,12 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
         CoordinateSequence cs = (CoordinateSequence) object;
         StringBuffer sb = new StringBuffer();
 
-        int dim = CoordinateSequences.coordinateDimension(cs);
+        int[] ordinates = CoordinateSequences.ordinateIndices(cs, GML2EncodingUtils.encodeMeasures(config));
         int size = cs.size();
-        int nOrdWithSpace = size * dim - 1;
+        int nOrdWithSpace = size * ordinates.length - 1;
         int count = 0;
         for (int i = 0; i < size; i++) {
-            for (int d = 0; d < dim; d++) {
+            for (int d : ordinates) {
                 double ordinate = cs.getOrdinate(i, d);
                 if (formatter != null) {
                     formatter.format(ordinate, sb);

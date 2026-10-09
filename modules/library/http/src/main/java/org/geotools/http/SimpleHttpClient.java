@@ -140,7 +140,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
             finalURL = appendURL(finalURL, extraParams);
         }
 
-        URLConnection connection = finalURL.openConnection();
+        URLConnection connection = encodeURL(finalURL).openConnection();
         final boolean http = connection instanceof HttpURLConnection;
         if (headers == null) {
             headers = new HashMap<>();

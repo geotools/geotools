@@ -31,6 +31,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.WKBReader;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.referencing.CRS;
@@ -46,7 +47,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKBReader;
 
 /**
  * Delegate for {@link MySQLDialectBasic} and {@link MySQLDialectPrepared} which implements the common part of the api.
@@ -244,6 +244,11 @@ public class MySQLDialect extends SQLDialect {
             sql.append("asWKB(");
         }
         encodeColumnName(prefix, gatt.getLocalName(), sql);
+        // MySQL 8 returns geographic SRS ordinates in latitude-longitude order; ask for
+        // east/north to match GeoTools' internal convention without reordering JTS coordinates.
+        if (this.usePreciseSpatialOps && this.isMySqlVersion80OrAbove) {
+            sql.append(", 'axis-order=long-lat'");
+        }
         sql.append(")");
     }
 
@@ -281,7 +286,13 @@ public class MySQLDialect extends SQLDialect {
             sql.append("envelope(");
             encodeColumnName(null, geometryColumn, sql);
         }
-        sql.append("))");
+        if (this.usePreciseSpatialOps && this.isMySqlVersion80OrAbove) {
+            // Close the outer ST_SRID, then pass the axis-order option to ST_asWKB so that
+            // MySQL 8 returns geographic SRS ordinates in east/north order.
+            sql.append("), 'axis-order=long-lat')");
+        } else {
+            sql.append("))");
+        }
     }
 
     @Override

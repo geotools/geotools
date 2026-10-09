@@ -37,6 +37,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -308,5 +309,51 @@ public class ZonalStatsProcessTest extends Assert {
         SimpleFeature result = resultList.get(0);
         assertEquals(1d, result.getAttribute("max"));
         assertEquals(5000l, result.getAttribute("count"));
+    }
+
+    @Test
+    public void testEmptyZoneReportsNoValue() {
+        CoordinateReferenceSystem crs = DefaultEngineeringCRS.GENERIC_2D;
+
+        // left half holds 1, right half holds 0, and 0 is declared as no data
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_BINARY);
+        Graphics2D graphics = image.createGraphics();
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0, 0, 50, 100);
+        graphics.dispose();
+        GridSampleDimension band =
+                new GridSampleDimension("coverage", new Category[] {new Category("no data", (Color) null, 0)}, null);
+        GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "coverage",
+                        image,
+                        new GridGeometry2D(
+                                new GridEnvelope2D(
+                                        PlanarImage.wrapRenderedImage(image).getBounds()),
+                                new AffineTransform2D(AffineTransform.getScaleInstance(1, 1)),
+                                crs),
+                        new GridSampleDimension[] {band},
+                        null,
+                        null);
+        assertNotNull(coverage2D);
+
+        // one zone, entirely inside the no data half
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.add("geom", Polygon.class, crs);
+        tb.setName("zones");
+        SimpleFeatureType schema = tb.buildFeatureType();
+        Polygon poly = JTS.toGeometry(new Envelope(60, 90, 10, 90));
+        SimpleFeatureCollection zones =
+                DataUtilities.collection(SimpleFeatureBuilder.build(schema, new Object[] {poly}, "empty"));
+
+        SimpleFeatureCollection results = new RasterZonalStatistics().execute(coverage2D, 0, zones, null);
+        List<SimpleFeature> resultList = DataUtilities.list(results);
+
+        assertEquals(1, resultList.size());
+        SimpleFeature result = resultList.get(0);
+        assertEquals(0L, result.getAttribute("count"));
+        for (String stat : new String[] {"min", "max", "sum", "avg", "stddev"}) {
+            assertEquals(stat, Double.NaN, (Double) result.getAttribute(stat), 0d);
+        }
     }
 }

@@ -77,8 +77,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
         } catch (CQLException e) {
             throw e;
-
-        } catch (ParseException e) {
+        } catch (ParseException | java.lang.Error e) {
             throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }

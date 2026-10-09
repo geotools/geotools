@@ -64,7 +64,12 @@ public final class BuildResultStack {
     }
 
     public Result popResult() throws CQLException {
-        return stack.pop();
+
+        try {
+            return stack.pop();
+        } catch (EmptyStackException e) {
+            throw new CQLException("empty stack: " + e.getMessage());
+        }
     }
 
     public org.geotools.api.filter.expression.Expression popExpression() throws CQLException {

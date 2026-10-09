@@ -42,13 +42,20 @@ public class MySQLFilterToSQL extends FilterToSQL {
 
     protected boolean usePreciseSpatialOps;
 
+    protected boolean mySqlVersion80OrAbove;
+
     public MySQLFilterToSQL() {
-        this(false);
+        this(false, false);
     }
 
     public MySQLFilterToSQL(boolean usePreciseSpatialOps) {
+        this(usePreciseSpatialOps, false);
+    }
+
+    public MySQLFilterToSQL(boolean usePreciseSpatialOps, boolean mySqlVersion80OrAbove) {
         super();
         this.usePreciseSpatialOps = usePreciseSpatialOps;
+        this.mySqlVersion80OrAbove = mySqlVersion80OrAbove;
     }
 
     @Override
@@ -76,8 +83,11 @@ public class MySQLFilterToSQL extends FilterToSQL {
             // WKT does not support linear rings
             g = g.getFactory().createLineString(ring.getCoordinateSequence());
         }
+        // MySQL 8 stores geographic SRS ordinates in latitude-longitude order; declare GeoTools'
+        // east/north (x=longitude, y=latitude) convention so the server does not swap them.
+        String axisOrder = mySqlVersion80OrAbove ? ", 'axis-order=long-lat'" : "";
         if (usePreciseSpatialOps) {
-            out.write("ST_GeomFromText('" + g.toText() + "', " + currentSRID + ")");
+            out.write("ST_GeomFromText('" + g.toText() + "', " + currentSRID + axisOrder + ")");
         } else {
             out.write("GeomFromText('" + g.toText() + "', " + currentSRID + ")");
         }

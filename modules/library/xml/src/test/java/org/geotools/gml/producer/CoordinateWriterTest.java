@@ -16,11 +16,16 @@
  */
 package org.geotools.gml.producer;
 
+import static java.lang.Double.NaN;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateXYM;
+import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -166,6 +171,109 @@ public class CoordinateWriterTest {
         Assert.assertEquals(
                 "<coordinates>1.00,1.00,3.00 4.50,4.00,2.00 0.00,4.00,2.00 1.00,1.00,3" + ".58</coordinates>",
                 output.received);
+    }
+
+    /** XYM, measures off: the M value is not a height, so it must not be written as one. */
+    @Test
+    public void testXYMMeasuresOff() throws Exception {
+        Assert.assertEquals("<coordinates>1,1 4,4</coordinates>", writeMeasured(xym(), false));
+    }
+
+    @Test
+    public void testXYMMeasuresOn() throws Exception {
+        Assert.assertEquals("<coordinates>1,1,10 4,4,20</coordinates>", writeMeasured(xym(), true));
+    }
+
+    /** XYZM, measures off: the height stays, the measure goes. */
+    @Test
+    public void testXYZMMeasuresOff() throws Exception {
+        Assert.assertEquals("<coordinates>1,1,5 4,4,6</coordinates>", writeMeasured(xyzm(), false));
+    }
+
+    /** XYZM, measures on: four values per tuple, measure last and unchanged. */
+    @Test
+    public void testXYZMMeasuresOn() throws Exception {
+        Assert.assertEquals("<coordinates>1,1,5,10 4,4,6,20</coordinates>", writeMeasured(xyzm(), true));
+    }
+
+    /**
+     * Packed XYZM: the measure survives even though the sequence is not one of the two classes the dimension heuristic
+     * in CoordinateSequences knows how to look inside.
+     */
+    @Test
+    public void testPackedXYZMMeasuresOn() throws Exception {
+        Assert.assertEquals("<coordinates>1,1,5,10 4,4,6,20</coordinates>", writeMeasured(packedXYZM(), true));
+    }
+
+    @Test
+    public void testPackedXYZMMeasuresOff() throws Exception {
+        Assert.assertEquals("<coordinates>1,1,5 4,4,6</coordinates>", writeMeasured(packedXYZM(), false));
+    }
+
+    /** A declared measure left NaN is not one, a shapefile PolyLineZ writes its Z and nothing else. */
+    @Test
+    public void testUnfilledMeasureIsNotWritten() throws Exception {
+        CoordinateSequence coords =
+                new PackedCoordinateSequence.Double(new double[] {1, 1, 5, NaN, 4, 4, 6, NaN}, 4, 1);
+        Assert.assertEquals("<coordinates>1,1,5 4,4,6</coordinates>", writeMeasured(coords, true));
+    }
+
+    /**
+     * A height is decided per coordinate, so one left NaN does not cost the others theirs. Long standing behaviour,
+     * kept when the writers moved onto a shared ordinate list: that list is built from the first coordinate alone.
+     */
+    @Test
+    public void testUnfilledHeightDoesNotDropTheOthers() throws Exception {
+        CoordinateSequence coords = new PackedCoordinateSequence.Double(new double[] {1, 1, NaN, 4, 4, 6}, 3, 0);
+        Assert.assertEquals("<coordinates>1,1 4,4,6</coordinates>", writeMeasured(coords, false));
+    }
+
+    /** XYM with a forced third dimension: the padded height comes before the measure. */
+    @Test
+    public void testXYMDummyZMeasuresOff() throws Exception {
+        Assert.assertEquals("<coordinates>1,1,0 4,4,0</coordinates>", writeMeasured(dummyZWriter(), xym(), false));
+    }
+
+    @Test
+    public void testXYMDummyZMeasuresOn() throws Exception {
+        Assert.assertEquals("<coordinates>1,1,0,10 4,4,0,20</coordinates>", writeMeasured(dummyZWriter(), xym(), true));
+    }
+
+    private static CoordinateWriter dummyZWriter() {
+        return new CoordinateWriter(4, false, true, " ", ",", true, 0.0, 3);
+    }
+
+    private String writeMeasured(CoordinateSequence coords, boolean encodeMeasures) throws SAXException {
+        return writeMeasured(new CoordinateWriter(4), coords, encodeMeasures);
+    }
+
+    private String writeMeasured(CoordinateWriter writer, CoordinateSequence coords, boolean encodeMeasures)
+            throws SAXException {
+        writer.setEncodeMeasures(encodeMeasures);
+        CoordinateHandler output = new CoordinateHandler();
+
+        output.startDocument();
+        writer.writeCoordinates(coords, output);
+        output.endDocument();
+
+        return output.received;
+    }
+
+    /** XYM, two coordinates, measures 10 and 20. */
+    private static CoordinateSequence xym() {
+        return new CoordinateArraySequence(
+                new Coordinate[] {new CoordinateXYM(1, 1, 10), new CoordinateXYM(4, 4, 20)}, 3, 1);
+    }
+
+    /** XYZM, two coordinates, heights 5 and 6, measures 10 and 20. */
+    private static CoordinateSequence xyzm() {
+        return new CoordinateArraySequence(
+                new Coordinate[] {new CoordinateXYZM(1, 1, 5, 10), new CoordinateXYZM(4, 4, 6, 20)}, 4, 1);
+    }
+
+    /** Same values as {@link #xyzm()} in a sequence implementation the dimension heuristic cannot inspect. */
+    private static CoordinateSequence packedXYZM() {
+        return new PackedCoordinateSequence.Double(new double[] {1, 1, 5, 10, 4, 4, 6, 20}, 4, 1);
     }
 
     static class CoordinateHandler implements ContentHandler {

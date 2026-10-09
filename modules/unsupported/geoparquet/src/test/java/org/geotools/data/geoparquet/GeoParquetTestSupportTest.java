@@ -141,8 +141,8 @@ public class GeoParquetTestSupportTest {
                     "Geometry column should have 'geometry_types' field", geometryColumn.containsKey("geometry_types"));
             assertTrue("Geometry column should have 'bbox' field", geometryColumn.containsKey("bbox"));
 
-            // Note: CRS is currently not added by DuckDB 1.2.2, but we document its expected location
-            // in tests for when the DuckDB version is updated
+            // DuckDB may omit CRS metadata here; keep the assertion tolerant so the test remains
+            // valid across DuckDB 1.5.x updates.
             if (geometryColumn.containsKey("crs")) {
                 // If crs exists, verify it's structured correctly
                 Map<String, Object> crs = (Map<String, Object>) geometryColumn.get("crs");

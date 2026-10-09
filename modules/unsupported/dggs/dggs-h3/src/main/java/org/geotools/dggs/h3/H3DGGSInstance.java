@@ -347,8 +347,60 @@ public class H3DGGSInstance implements DGGSInstance<Long> {
     @Override
     public Filter getChildFilter(
             FilterFactory ff, Long zoneId, int resolution, boolean upTo, AttributeDescriptor zoneAttribute) {
+        // upTo is not honored: the resolution bits outrank the digit ones, so a range only ever covers
+        // the target resolution. No caller passes upTo = true today.
         H3Index idx = new H3Index(zoneId);
         return buildChildRangeFilter(ff, zoneAttribute, idx, resolution);
+    }
+
+    @Override
+    public Filter getChildrenFilter(
+            FilterFactory ff, List<Long> zoneIds, int resolution, boolean upTo, AttributeDescriptor zoneAttribute) {
+        // each zone's range is the full contiguous block of its subtree id space, so blocks that touch
+        // can be merged without matching any id that was not already matched
+        List<long[]> ranges = new ArrayList<>();
+        for (Long zoneId : zoneIds) {
+            H3Index idx = new H3Index(zoneId);
+            ranges.add(new long[] {idx.lowestIdChild(resolution), idx.highestIdChild(resolution)});
+        }
+        List<long[]> merged = mergeRanges(ranges);
+
+        Expression prop = ff.property(zoneAttribute.getLocalName());
+        boolean numeric = Number.class.isAssignableFrom(zoneAttribute.getType().getBinding());
+        List<Filter> filters = merged.stream()
+                .map(range -> numeric ? between(ff, prop, range) : betweenAsString(ff, prop, range))
+                .collect(Collectors.toList());
+        return filters.size() == 1 ? filters.get(0) : ff.or(filters);
+    }
+
+    private static Filter between(FilterFactory ff, Expression prop, long[] range) {
+        return ff.between(prop, ff.literal(range[0]), ff.literal(range[1]));
+    }
+
+    /**
+     * Cell ids always have the mode bits set, so they sit in [2^59, 2^60) and {@code h3ToString} renders them as 15
+     * lowercase hex chars: fixed width means the string order matches the numeric one, and range filters work too.
+     */
+    private Filter betweenAsString(FilterFactory ff, Expression prop, long[] range) {
+        return ff.between(prop, ff.literal(h3.h3ToString(range[0])), ff.literal(h3.h3ToString(range[1])));
+    }
+
+    /** Sorts ranges by lower bound and coalesces adjacent/overlapping ones, each range as {@code [lowest, highest]}. */
+    private static List<long[]> mergeRanges(List<long[]> ranges) {
+        List<long[]> sorted = new ArrayList<>(ranges);
+        sorted.sort((a, b) -> Long.compare(a[0], b[0]));
+
+        List<long[]> merged = new ArrayList<>();
+        for (long[] range : sorted) {
+            long[] last = merged.isEmpty() ? null : merged.get(merged.size() - 1);
+            // "+ 1" also merges touching ranges (no gap between them), not just overlapping ones
+            if (last != null && range[0] <= last[1] + 1) {
+                last[1] = Math.max(last[1], range[1]);
+            } else {
+                merged.add(range);
+            }
+        }
+        return merged;
     }
 
     @Override

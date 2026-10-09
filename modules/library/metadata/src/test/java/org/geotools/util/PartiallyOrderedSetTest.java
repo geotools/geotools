@@ -154,7 +154,7 @@ public class PartiallyOrderedSetTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    @SuppressWarnings({"ReturnValueIgnored", "PMD.UselessPureMethodCall"})
+    @SuppressWarnings({"ReturnValueIgnored", "PMD.UnusedReturnValue"})
     public void testLoop() {
         PartiallyOrderedSet<String> poset = new PartiallyOrderedSet<>();
         poset.add("a");

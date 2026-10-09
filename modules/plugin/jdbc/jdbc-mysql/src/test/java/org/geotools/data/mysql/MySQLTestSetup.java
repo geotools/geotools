@@ -42,6 +42,23 @@ public class MySQLTestSetup extends JDBCTestSetup {
         return new MySQLDataStoreFactory();
     }
 
+    private Boolean mySqlVersion80OrAbove;
+
+    /**
+     * Axis-order clause for geographic SRS test data. MySQL 8.0+ interprets WKT/WKB in latitude-longitude order and
+     * supports the 'axis-order' option; GeoTools hands geometries to the dialect in east/north (longitude/latitude)
+     * order, so data inserted for 8.0+ must declare long-lat to match. The option is unknown on 5.x, which keeps the
+     * legacy Cartesian behavior.
+     */
+    protected String axisOrderOption() throws Exception {
+        if (mySqlVersion80OrAbove == null) {
+            try (Connection cx = getConnection()) {
+                mySqlVersion80OrAbove = cx.getMetaData().getDatabaseMajorVersion() >= 8;
+            }
+        }
+        return mySqlVersion80OrAbove ? ", 'axis-order=long-lat'" : "";
+    }
+
     @Override
     protected void setUpData() throws Exception {
         // allow time parsing in str_to_date

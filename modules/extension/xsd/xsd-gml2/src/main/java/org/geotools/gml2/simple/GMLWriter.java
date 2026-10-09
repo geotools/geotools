@@ -279,17 +279,14 @@ public class GMLWriter {
     void coordinates(CoordinateSequence coordinates, char cs, char ts, StringBuffer sb) {
         sb.setLength(0);
         int n = coordinates.size();
-        int dim = CoordinateSequences.coordinateDimension(coordinates);
+        int[] ordinates = CoordinateSequences.ordinateIndices(coordinates, encodeMeasures);
         for (int i = 0; i < n; i++) {
             coordFormatter.format(coordinates.getX(i), sb).append(cs);
             coordFormatter.format(coordinates.getY(i), sb);
-            if (dim > 2) {
-                int totalDimensions = encodeMeasures ? dim : dim - coordinates.getMeasures();
-                // encoding the remaining ordinates, typically Z and M values
-                for (int j = 2; j < totalDimensions; j++) {
-                    sb.append(cs);
-                    coordFormatter.format(coordinates.getOrdinate(i, j), sb);
-                }
+            // the remaining ordinates, typically Z and M values
+            for (int j = 2; j < ordinates.length; j++) {
+                sb.append(cs);
+                coordFormatter.format(coordinates.getOrdinate(i, ordinates[j]), sb);
             }
             sb.append(ts);
         }

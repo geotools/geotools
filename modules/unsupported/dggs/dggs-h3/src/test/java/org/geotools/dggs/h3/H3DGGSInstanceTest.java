@@ -28,6 +28,7 @@ import com.uber.h3core.H3Core;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -36,10 +37,17 @@ import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
 import jep.JepException;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.dggs.DGGSFactory;
 import org.geotools.dggs.DGGSFactoryFinder;
 import org.geotools.dggs.DGGSInstance;
 import org.geotools.dggs.Zone;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.hamcrest.CoreMatchers;
@@ -288,5 +296,127 @@ public class H3DGGSInstanceTest {
                         "81997ffffffffff",
                         "817dbffffffffff",
                         "81547ffffffffff"));
+    }
+
+    @Test
+    public void testGetChildrenFilterMergesSiblingRanges() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        AttributeDescriptor zoneAttribute = zoneAttribute(Long.class);
+
+        // an INCOMPLETE set of siblings under the same parent (3 of the 7): this is the boundary
+        // fringe case h3.compact() cannot merge (it only folds a parent back together when all 7
+        // children are present), yet their child ranges at the target resolution are still
+        // numerically contiguous with each other, so the batched merge should collapse them into
+        // a single BETWEEN spanning the union of their individual ranges
+        String parent = "8029fffffffffff";
+        List<Long> allSiblings = new ArrayList<>();
+        for (String child : h3.h3ToChildren(parent, 1)) allSiblings.add(Long.parseUnsignedLong(child, 16));
+        assertEquals(7, allSiblings.size());
+        Collections.sort(allSiblings);
+        List<Long> siblings = allSiblings.subList(0, 3);
+
+        int targetResolution = 3;
+        long expectedLowest = Long.MAX_VALUE;
+        long expectedHighest = Long.MIN_VALUE;
+        for (Long sibling : siblings) {
+            PropertyIsBetween childFilter = (PropertyIsBetween)
+                    ((H3DGGSInstance) h3i).getChildFilter(ff, sibling, targetResolution, false, zoneAttribute);
+            long lowest = (Long) childFilter.getLowerBoundary().evaluate(null);
+            long highest = (Long) childFilter.getUpperBoundary().evaluate(null);
+            expectedLowest = Math.min(expectedLowest, lowest);
+            expectedHighest = Math.max(expectedHighest, highest);
+        }
+
+        Filter merged = ((H3DGGSInstance) h3i).getChildrenFilter(ff, siblings, targetResolution, false, zoneAttribute);
+        assertTrue("3 adjacent sibling ranges should merge into a single BETWEEN", merged instanceof PropertyIsBetween);
+        PropertyIsBetween mergedBetween = (PropertyIsBetween) merged;
+        assertEquals(expectedLowest, mergedBetween.getLowerBoundary().evaluate(null));
+        assertEquals(expectedHighest, mergedBetween.getUpperBoundary().evaluate(null));
+    }
+
+    @Test
+    public void testGetChildrenFilterKeepsDistantRangesSeparate() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        AttributeDescriptor zoneAttribute = zoneAttribute(Long.class);
+
+        // two zones from unrelated base cells: their child ranges do not touch, so they must
+        // stay as two separate BETWEEN clauses, not be incorrectly coalesced
+        Long zoneA = Long.parseUnsignedLong("8029fffffffffff", 16);
+        Long zoneB = Long.parseUnsignedLong("8075fffffffffff", 16);
+
+        Filter merged =
+                ((H3DGGSInstance) h3i).getChildrenFilter(ff, Arrays.asList(zoneA, zoneB), 3, false, zoneAttribute);
+        assertTrue(merged instanceof Or);
+        assertEquals(2, ((Or) merged).getChildren().size());
+    }
+
+    @Test
+    public void testGetChildrenFilterMergesOnStringColumn() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+
+        // same 3 incomplete siblings as the numeric merge test: a hex string column has to collapse
+        // them into one BETWEEN too, with the very same bounds, just rendered as ids
+        String parent = "8029fffffffffff";
+        List<Long> allSiblings = new ArrayList<>();
+        for (String child : h3.h3ToChildren(parent, 1)) allSiblings.add(Long.parseUnsignedLong(child, 16));
+        Collections.sort(allSiblings);
+        List<Long> siblings = allSiblings.subList(0, 3);
+
+        PropertyIsBetween numeric = (PropertyIsBetween)
+                ((H3DGGSInstance) h3i).getChildrenFilter(ff, siblings, 3, false, zoneAttribute(Long.class));
+        Filter merged = ((H3DGGSInstance) h3i).getChildrenFilter(ff, siblings, 3, false, zoneAttribute(String.class));
+
+        assertTrue(
+                "3 adjacent sibling ranges should merge on a string column too", merged instanceof PropertyIsBetween);
+        PropertyIsBetween between = (PropertyIsBetween) merged;
+        long expectedLowest = (Long) numeric.getLowerBoundary().evaluate(null);
+        long expectedHighest = (Long) numeric.getUpperBoundary().evaluate(null);
+        assertEquals(h3.h3ToString(expectedLowest), between.getLowerBoundary().evaluate(null));
+        assertEquals(h3.h3ToString(expectedHighest), between.getUpperBoundary().evaluate(null));
+    }
+
+    @Test
+    public void testGetChildrenFilterKeepsDistantRangesSeparateOnStringColumn() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        Long zoneA = Long.parseUnsignedLong("8029fffffffffff", 16);
+        Long zoneB = Long.parseUnsignedLong("8075fffffffffff", 16);
+
+        Filter merged = ((H3DGGSInstance) h3i)
+                .getChildrenFilter(ff, Arrays.asList(zoneA, zoneB), 3, false, zoneAttribute(String.class));
+        assertTrue(merged instanceof Or);
+        assertEquals(2, ((Or) merged).getChildren().size());
+    }
+
+    /**
+     * The string ranges are only valid because the hex encoding is fixed width: cell ids always have the mode bits set,
+     * so they sit in [2^59, 2^60) and render as exactly 15 lowercase chars, making the string order match the numeric
+     * one. If that ever stops holding, BETWEEN on a string column silently returns the wrong zones.
+     */
+    @Test
+    public void testIdStringEncodingIsFixedWidthAndOrderPreserving() {
+        Random random = new Random(0);
+        String previousId = null;
+        List<Long> ids = new ArrayList<>();
+        for (int i = 0; i < 500; i++) {
+            double lat = random.nextDouble() * 180 - 90;
+            double lon = random.nextDouble() * 360 - 180;
+            ids.add(h3.geoToH3(lat, lon, random.nextInt(16)));
+        }
+        Collections.sort(ids);
+        for (Long id : ids) {
+            String stringId = h3.h3ToString(id);
+            assertEquals("H3 ids must render as 15 hex chars: " + stringId, 15, stringId.length());
+            assertEquals(stringId, stringId.toLowerCase());
+            if (previousId != null) {
+                assertTrue(
+                        "string order must follow numeric order: " + previousId + " vs " + stringId,
+                        previousId.compareTo(stringId) <= 0);
+            }
+            previousId = stringId;
+        }
+    }
+
+    private static AttributeDescriptor zoneAttribute(Class<?> binding) {
+        return new AttributeTypeBuilder().binding(binding).buildDescriptor("cell_h3index");
     }
 }

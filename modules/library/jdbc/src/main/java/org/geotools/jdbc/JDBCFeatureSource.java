@@ -722,8 +722,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             // grab connection using the current transaction
             Connection cx = getDataStore().getConnection(getState());
             try {
-                Object result = getDataStore().getAggregateValue(visitor, getSchema(), query, cx);
-                return result != null;
+                return getDataStore().visitAggregateValue(visitor, getSchema(), query, cx);
             } finally {
                 // release the connection - behaviour depends on Transaction.AUTO_COMMIT
                 getDataStore().releaseConnection(cx, getState());

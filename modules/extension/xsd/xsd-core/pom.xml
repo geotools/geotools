@@ -20,7 +20,7 @@
   <groupId>org.geotools.xsd</groupId>
   <artifactId>gt-xsd-core</artifactId>
   <packaging>jar</packaging>
-  <name>XML Parsing</name>
+  <name>XML Schema Core Support</name>
   <description>Schema based xml parsing. This module contains tools for creating 
   bindings from xml types to java types. Schema modelling is based 
   on Eclipse XSD.</description>

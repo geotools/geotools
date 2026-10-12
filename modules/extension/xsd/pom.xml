@@ -22,7 +22,7 @@
   <groupId>org.geotools.xsd</groupId>
   <artifactId>xsd</artifactId>
   <packaging>pom</packaging>
-  <name>XML Parsing</name>
+  <name>XML Schema Support</name>
   <description>Parent module for xml modules.</description>
 
   <licenses>

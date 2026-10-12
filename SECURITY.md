@@ -4,10 +4,11 @@
 
 | Version | Supported          | Policy  |
 | ------- | ------------------ | ------- |
-| 29.x    | ✅                 | Supported branch (6 months from initial release) |
-| 28.x    | ⚠️                  | Maintenance branch (6 additional months)         |
-| 27.x    | :x:                | Unsupported (volunteers release as needed)       |
-| 26.x    | :x:                | Unsupported (volunteers release as needed)       |
+| 35.x    | ✅                 | Supported branch (6 months from initial release) |
+| 34.x    | ⚠️                  | Maintenance branch (6 additional months)         |
+| 33.x    | :x:                | Unsupported (volunteers release as needed)       |
+
+For up-to-date version numbers, please refer to the [Release Schedule](https://github.com/geoserver/geoserver/wiki/Release-Schedule#release-planning).
 
 ## Reporting a Vulnerability
 

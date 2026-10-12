@@ -50,7 +50,7 @@
     <jackson2.version>2.22.3</jackson2.version>
     <jackson.version>3.2.3</jackson.version>
     <jai-imageio.version>1.1</jai-imageio.version>
-    <imagen.version>0.9.3-SNAPSHOT</imagen.version>
+    <imagen.version>0.9.3</imagen.version>
     <javacsv.version>2.0</javacsv.version>
     <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
     <jakarta-mail.version>2.1.2</jakarta-mail.version>

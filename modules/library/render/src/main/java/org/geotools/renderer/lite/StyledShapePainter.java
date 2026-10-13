@@ -230,18 +230,9 @@ public class StyledShapePainter {
                     if (paint instanceof TexturePaint tp) {
                         BufferedImage image = tp.getImage();
                         Rectangle2D cornerRect = tp.getAnchorRect();
-                        Point2D anchorPoint = (Point2D) graphics.getRenderingHint(TEXTURE_ANCHOR_HINT_KEY);
-                        Rectangle2D alignedRect = null;
-                        if (anchorPoint != null) {
-                            alignedRect = new Rectangle2D.Double(
-                                    Math.round(anchorPoint.getX()),
-                                    Math.round(anchorPoint.getY()),
-                                    cornerRect.getWidth(),
-                                    cornerRect.getHeight());
-                        } else {
-                            alignedRect =
-                                    new Rectangle2D.Double(0.0, 0.0, cornerRect.getWidth(), cornerRect.getHeight());
-                        }
+                        Point2D anchor = getTextureAnchor(graphics);
+                        Rectangle2D alignedRect = new Rectangle2D.Double(
+                                anchor.getX(), anchor.getY(), cornerRect.getWidth(), cornerRect.getHeight());
                         paint = new TexturePaint(image, alignedRect);
                     }
 
@@ -801,7 +792,8 @@ public class StyledShapePainter {
                     lineStyle.setContour(ms2d.getContour());
                     lineStyle.setContourComposite(ms2d.getContourComposite());
                     lineStyle.setGraphicStroke(ms2d.getGraphicStroke());
-                    filler.fillRectangle(shape.getBounds2D(), this, clippedGraphics, lineStyle);
+                    Rectangle2D alignedBounds = alignToTextureAnchor(boundsShape, stippleSize, graphics);
+                    filler.fillRectangle(alignedBounds, this, clippedGraphics, lineStyle);
                     return;
                 }
             }
@@ -816,6 +808,7 @@ public class StyledShapePainter {
             // to be unsupported for stipple painting
             return;
         }
+        boundsShape = alignToTextureAnchor(boundsShape, stippleSize, graphics);
 
         // computes the number of times the graphic will be painted as a stipple
         int toX = (int) Math.ceil(boundsShape.getWidth() / stippleSize.getWidth());
@@ -878,6 +871,28 @@ public class StyledShapePainter {
                 paint(g, stippleShape, graphicFill, scale);
             }
         }
+    }
+
+    /**
+     * Grows the bounds so their min corner sits on the stipple grid rooted at the texture anchor, keeping the pattern
+     * phase independent of the shape bounds, which change between adjacent tiles due to geometry clipping.
+     */
+    private static Rectangle2D alignToTextureAnchor(Rectangle2D bounds, Rectangle2D stippleSize, Graphics2D graphics) {
+        Point2D anchor = getTextureAnchor(graphics);
+        double w = stippleSize.getWidth();
+        double h = stippleSize.getHeight();
+        double minX = anchor.getX() + Math.floor((bounds.getMinX() - anchor.getX()) / w) * w;
+        double minY = anchor.getY() + Math.floor((bounds.getMinY() - anchor.getY()) / h) * h;
+        return new Rectangle2D.Double(minX, minY, bounds.getMaxX() - minX, bounds.getMaxY() - minY);
+    }
+
+    /** Pixel both raster and vector fill patterns start from, (0,0) when the hint is missing. */
+    private static Point2D getTextureAnchor(Graphics2D graphics) {
+        Point2D anchor = (Point2D) graphics.getRenderingHint(TEXTURE_ANCHOR_HINT_KEY);
+        if (anchor == null) {
+            return new Point2D.Double(0, 0);
+        }
+        return new Point2D.Double(Math.round(anchor.getX()), Math.round(anchor.getY()));
     }
 
     public static class TextureAnchorKey extends Key {

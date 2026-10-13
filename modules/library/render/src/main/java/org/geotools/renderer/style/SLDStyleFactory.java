@@ -94,8 +94,11 @@ public class SLDStyleFactory {
     /** Java System Property to enable legacy default anchor point. */
     public static final String USE_LEGACY_ANCHOR_POINT_KEY = "org.geotools.renderer.style.legacyAnchorPoint";
 
+    /** Java System Property overriding the 512px default of {@link #MAX_RASTERIZATION_SIZE}. */
+    public static final String MAX_RASTERIZATION_SIZE_KEY = "org.geotools.renderer.style.maxRasterizationSize";
+
     /** The threshold at which we switch from pre-rasterized icons to dynamically painted ones (to avoid OOM) */
-    private static final int MAX_RASTERIZATION_SIZE = 512;
+    private static final int MAX_RASTERIZATION_SIZE = Integer.getInteger(MAX_RASTERIZATION_SIZE_KEY, 512);
 
     /** Holds a lookup bewteen SLD names and java constants. */
     private static final java.util.Map<String, Integer> JOIN_LOOKUP = new java.util.HashMap<>();

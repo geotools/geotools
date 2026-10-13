@@ -18,6 +18,7 @@ package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -37,6 +38,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.FontCache;
+import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.test.TestData;
 import org.junit.Before;
@@ -201,7 +203,70 @@ public class VectorFillTest {
         testParametricMark("wktcomposite", "wkt://MULTILINESTRING((-0.5 -0.5, 0.5 0.5), (0 -0.5, 0 0.5))");
     }
 
+    @Test
+    public void testVertLineTilesSeamless() throws Exception {
+        assertTilesSeamless("shape://vertline");
+    }
+
+    @Test
+    public void testTimesTilesSeamless() throws Exception {
+        assertTilesSeamless("shape://times");
+    }
+
+    @Test
+    public void testCircleTilesSeamless() throws Exception {
+        assertTilesSeamless("circle");
+    }
+
+    @Test
+    public void testLargeHatchAt300DpiTilesSeamless() throws Exception {
+        // Size 200 grows to 661px at 300 DPI, over the 512px rasterization threshold
+        DpiRescaleStyleVisitor rescaler = new DpiRescaleStyleVisitor(300 / 90.7);
+        RendererBaseTest.loadStyle(this, "fillVertLineHatch.sld").accept(rescaler);
+        Style style = (Style) rescaler.getCopy();
+        // 1000px is not a multiple of the 661px fill step, a pattern restarting at each tile would show a seam
+        BufferedImage single = renderInterior(style, 2, 8, 2000, Map.of());
+        BufferedImage left = renderInterior(style, 2, 5, 1000, Map.of());
+        BufferedImage right = renderInterior(style, 5, 8, 1000, Map.of());
+        ImageAssert.assertEquals(single.getSubimage(0, 0, 1000, 200), left, 0);
+        ImageAssert.assertEquals(single.getSubimage(1000, 0, 1000, 200), right, 0);
+    }
+
+    /** Checks two side by side tiles match the same area rendered as a single image */
+    private void assertTilesSeamless(String markName) throws Exception {
+        Style style = replaceMark(markName);
+        Map<Object, Object> hints = Map.of(StreamingRenderer.VECTOR_RENDERING_KEY, true);
+        // 150px is not a multiple of the 8px fill step, a pattern restarting at each tile would show a seam
+        BufferedImage single = renderInterior(style, 2, 8, 300, hints);
+        BufferedImage left = renderInterior(style, 2, 5, 150, hints);
+        BufferedImage right = renderInterior(style, 5, 8, 150, hints);
+        ImageAssert.assertEquals(single.getSubimage(0, 0, 150, 200), left, 0);
+        ImageAssert.assertEquals(single.getSubimage(150, 0, 150, 200), right, 0);
+    }
+
+    /** Renders an area inside the big square, so the polygon gets clipped and its outline stays out of view */
+    private BufferedImage renderInterior(Style style, double minX, double maxX, int width, Map<Object, Object> hints) {
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, style));
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setRendererHints(hints);
+        BufferedImage image = new BufferedImage(width, 200, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D graphics = image.createGraphics();
+        try {
+            renderer.paint(graphics, new Rectangle(width, 200), new ReferencedEnvelope(minX, maxX, 2, 6, WGS84));
+        } finally {
+            graphics.dispose();
+            mc.dispose();
+        }
+        return image;
+    }
+
     protected void testParametricMark(String fileName, final String markName) throws Exception {
+        runSingleLayerTest(fileName, 100, replaceMark(markName));
+    }
+
+    private Style replaceMark(final String markName) throws IOException {
         Style slashStyle = RendererBaseTest.loadStyle(this, "fillSlash.sld");
         final DuplicatingStyleVisitor markReplacer = new DuplicatingStyleVisitor() {
             @Override
@@ -212,7 +277,6 @@ public class VectorFillTest {
             }
         };
         slashStyle.accept(markReplacer);
-        Style style = (Style) markReplacer.getCopy();
-        runSingleLayerTest(fileName, 100, style);
+        return (Style) markReplacer.getCopy();
     }
 }

@@ -50,8 +50,9 @@ The following is provided as a quick reference only, please the
 
 To use the GeoTools libraries you will need:
 
-- Java 11: OpenJDK distribution tested
 - Java 17: OpenJDK distribution tested
+- Java 21: OpenJDK distribution tested
+- Java 25: OpenJDK distribution tested
 
 Details on JRE compatibility and optional extensions are found in our
 [developers guide](http://docs.geotools.org/@LINK@/userguide/build/install/jdk.html).
@@ -72,8 +73,10 @@ To compile and run Quickstart.java:
 ``` shell
 mkdir bin
 javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
-java -cp "lib/*;bin" org.geotools.tutorial.quickstart.Quickstart
+java -cp "lib/*:bin" org.geotools.tutorial.quickstart.Quickstart
 ```
+
+Note, for testing on Windows, replace the `:` classpath separator in the last line above with `;` i.e. "lib/*;bin"
 
 For more information see user Guide [Quickstart](http://docs.geotools.org/@LINK@/userguide/tutorial/quickstart/index.html).
 

@@ -18,7 +18,6 @@ package org.geotools.dggs.clickhouse;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.clickhouse.data.value.UnsignedInteger;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -169,7 +168,7 @@ public class ClickHouseH3OnlineTest extends ClickHouseOnlineTestCase<String> {
         @SuppressWarnings("unchecked")
         Map<List<Object>, Object> results = visitor.getResult().toMap();
         assertEquals(2, results.size());
-        assertEquals(UnsignedInteger.valueOf(150), results.get(List.of(p1)));
-        assertEquals(UnsignedInteger.valueOf(75), results.get(List.of(p2)));
+        assertEquals(150L, ((Number) results.get(List.of(p1))).longValue());
+        assertEquals(75L, ((Number) results.get(List.of(p2))).longValue());
     }
 }

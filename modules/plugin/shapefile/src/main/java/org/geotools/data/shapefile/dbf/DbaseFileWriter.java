@@ -309,6 +309,9 @@ public class DbaseFileWriter implements Closeable {
         private Charset charset;
 
         private boolean swallowFieldSizeErrors = false;
+
+        private final int padUnitLength;
+
         private static Logger logger = org.geotools.util.logging.Logging.getLogger(DbaseFileWriter.class);
 
         public FieldFormatter(Charset charset, TimeZone timeZone, boolean swallowFieldSizeErrors) {
@@ -329,6 +332,8 @@ public class DbaseFileWriter implements Closeable {
             emptyString = sb.toString();
 
             this.swallowFieldSizeErrors = swallowFieldSizeErrors;
+
+            this.padUnitLength = " ".getBytes(charset).length;
         }
 
         public String getFieldString(int size, String s) {
@@ -354,8 +359,12 @@ public class DbaseFileWriter implements Closeable {
                 // Now we ensure that the buffer is padded with spaces if it is smaller than size.
                 // This could be because the input string isn't as big as size, or that it contains
                 // multi-byte characters that have been removed.
-                while (size > buffer.toString().getBytes(charset).length) {
-                    buffer.append(' ');
+                int length = buffer.toString().getBytes(charset).length;
+                if (size > length) {
+                    int pads = (size - length + padUnitLength - 1) / padUnitLength;
+                    char[] padding = new char[pads];
+                    Arrays.fill(padding, ' ');
+                    buffer.append(padding);
                 }
             }
 

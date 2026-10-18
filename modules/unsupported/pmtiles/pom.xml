@@ -49,7 +49,7 @@
   </developers>
 
   <properties>
-    <tileverse.version>2.1-RC</tileverse.version>
+    <tileverse.version>2.1.0</tileverse.version>
   </properties>
   <!-- =========================================================== -->
   <!--     Dependency Mangement                                    -->

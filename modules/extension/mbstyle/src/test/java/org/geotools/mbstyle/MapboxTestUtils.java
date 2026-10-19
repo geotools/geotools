@@ -111,6 +111,18 @@ public class MapboxTestUtils {
         return (JSONObject) object;
     }
 
+    /** Wraps the given layer JSON bodies in a minimal vector style with a single "src" vector source. */
+    public static String style(String... layers) {
+        return """
+                {
+                  "version": 8,
+                  "name": "t",
+                  "sources": { "src": { "type": "vector" } },
+                  "layers": [%s]
+                }"""
+                .formatted(String.join(",\n", layers));
+    }
+
     /**
      * Returns the first style associated to the layer at <code>layerIndex</code>. An exception will be thrown if the
      * layer is neither a {@link UserLayer} nor a {@link NamedLayer}.

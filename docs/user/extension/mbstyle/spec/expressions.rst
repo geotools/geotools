@@ -1096,6 +1096,8 @@ Interpolation types:
         stop_input_n: number, stop_output_n: OutputType, ...
     ]: OutputType (number, array<number>, or Color)
 
+GeoTools supports the ``linear`` and ``exponential`` types, with number and color outputs. It does not support ``cubic-bezier``: a style that uses it fails to load. It does not support ``array<number>`` outputs either. A color output must be a literal color string, so a color computed by an expression in a stop output is interpolated as a number.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1106,7 +1108,7 @@ Interpolation types:
      - OpenLayers
    * - basic functionality
      - >= 0.42.0
-     - >= Not yet supported
+     - >= 35.3
      - >= 3.0.0
 
 .. _expressions-interpolate-hcl:
@@ -1193,7 +1195,7 @@ Produces discrete, stepped results by evaluating a piece wise-constant function 
      - OpenLayers
    * - basic functionality
      - >= 0.42.0
-     - >= Not yet supported
+     - >= 35.3
      - >= 3.0.0
 
 .. _expressions.variable_binding:

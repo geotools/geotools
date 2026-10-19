@@ -36,6 +36,7 @@ import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Fill;
 import org.geotools.api.style.Graphic;
@@ -57,6 +58,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.CategorizeFunction;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_isometric;
 import org.geotools.filter.function.FilterFunction_offset;
 import org.geotools.filter.text.cql2.CQL;
@@ -838,5 +840,35 @@ public class StyleTransformTest {
     @SuppressWarnings("unchecked")
     private <T extends Symbolizer> T getFirstSymbolizer(FeatureTypeStyle fts) {
         return (T) fts.rules().get(0).symbolizers().get(0);
+    }
+
+    /** Parses a single inline layer through the full json -> SLD path and returns its feature type styles. */
+    private List<FeatureTypeStyle> transformInline(String layer) throws ParseException {
+        MBStyle mbStyle = new MBStyle(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        return mbStyle.layers().get(0).transform(mbStyle);
+    }
+
+    @Test
+    public void testInterpolateTextSizeEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-field": "{name}",
+                    "text-size": ["interpolate", ["linear"], ["zoom"], 5, 10, 10, 20]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        Expression size = ts.getFont().getSize();
+        // zoom 7.5 sits halfway between the 5 and 10 stops
+        EnvFunction.setLocalValue("wms_scale_denominator", 1544261.172187233);
+        try {
+            assertEquals(15.0, size.evaluate(null, Double.class), 1e-6);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
 }

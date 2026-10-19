@@ -55,6 +55,7 @@ import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.FontAttributesExtractor;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
@@ -826,14 +827,18 @@ public class SymbolMBLayer extends MBLayer {
      * @return The font to use for the label
      */
     public List<String> getTextFont() {
-        String[] fonts;
-        if (layout.get("text-font") instanceof JSONObject) {
+        Object textFont = layout.get("text-font");
+        // a data-driven expression (e.g. ["case", ...]) is handled by the dynamic textFont() path
+        if (textFont instanceof JSONObject
+                || (textFont instanceof JSONArray array
+                        && !array.isEmpty()
+                        && array.get(0) instanceof String op
+                        && MBExpression.canCreate(op))) {
             return null;
-        } else {
-            fonts = parse.array(
-                    String.class, layout, "text-font", new String[] {"Open Sans Regular", "Arial Unicode MS Regular"});
-            return Arrays.asList(fonts);
         }
+        String[] fonts = parse.array(
+                String.class, layout, "text-font", new String[] {"Open Sans Regular", "Arial Unicode MS Regular"});
+        return Arrays.asList(fonts);
     }
 
     /**

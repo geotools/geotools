@@ -1518,7 +1518,7 @@ text-font
 
 *Optional* :ref:`types-array`. *Defaults to* Open Sans Regular, Arial Unicode MS Regular. *Requires* text-field.
 
-Font stack to use for displaying text.
+Font stack to use for displaying text. When ``text-font`` is set by an expression, GeoTools uses only the first font of each stack.
 
 .. list-table::
    :widths: 19, 27, 27, 27
@@ -1534,7 +1534,7 @@ Font stack to use for displaying text.
      - >= 2.4.0
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - >= 2.4.0
 
 text-size

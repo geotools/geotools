@@ -29,6 +29,7 @@ import org.geotools.api.style.Displacement;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.util.Converters;
@@ -76,6 +77,22 @@ public class MBObjectParser {
     final FilterFactory ff;
     final StyleFactory sf;
     private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
+
+    /** Reduces every list literal in a data-driven font expression to its first font. */
+    private static final DuplicatingFilterVisitor FONT_STACK_PRIMARY = new DuplicatingFilterVisitor() {
+        @Override
+        public Object visit(Literal expression, Object extraData) {
+            if (expression.getValue() instanceof List<?> stack && !stack.isEmpty()) {
+                if (stack.size() > 1) {
+                    LOGGER.warning("Data-driven text-font stack " + stack + ": using the primary font "
+                            + stack.get(0) + " and dropping the fallbacks " + stack.subList(1, stack.size())
+                            + " (a data-driven font branch can carry only one font)");
+                }
+                return getFactory(extraData).literal(stack.get(0));
+            }
+            return super.visit(expression, extraData);
+        }
+    };
 
     /**
      * Parser used to in the provided context.
@@ -905,7 +922,9 @@ public class MBObjectParser {
         }
         if (obj instanceof JSONArray array) {
             if (array.get(0) instanceof String) {
-                return MBExpression.transformExpression(array);
+                Expression expression = MBExpression.transformExpression(array);
+                // a data-driven branch carries one font name only: keep the first font of each stack
+                return (Expression) expression.accept(FONT_STACK_PRIMARY, null);
             } else {
                 throw new MBFormatException(context + " font from JSONArray not supported");
             }

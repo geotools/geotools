@@ -34,6 +34,7 @@ import java.util.Map;
 import javax.xml.transform.TransformerException;
 import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -53,10 +54,12 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_isometric;
@@ -870,5 +873,37 @@ public class StyleTransformTest {
         } finally {
             EnvFunction.clearLocalValues();
         }
+    }
+
+    @Test
+    public void testDataDrivenFontEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-field": "{name}",
+                    "text-font": [
+                      "case",
+                      ["<=", ["get", "min_zoom"], 5],
+                      ["literal", ["Noto Sans Medium"]],
+                      ["literal", ["Noto Sans Regular"]]
+                    ]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        assertEquals(1, ts.fonts().size());
+        Function family = (Function) ts.fonts().get(0).getFamily().get(0);
+        Expression baseName = family.getParameters().get(0);
+        Expression fontName = ((Function) baseName).getParameters().get(0);
+        assertEquals("Noto Sans Medium", fontName.evaluate(place(3), String.class));
+        assertEquals("Noto Sans Regular", fontName.evaluate(place(7), String.class));
+    }
+
+    private SimpleFeature place(int minZoom) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("places", "min_zoom:int");
+        return SimpleFeatureBuilder.build(type, new Object[] {minZoom}, "places.1");
     }
 }

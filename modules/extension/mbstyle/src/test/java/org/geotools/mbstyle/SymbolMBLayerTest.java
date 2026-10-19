@@ -19,6 +19,7 @@ package org.geotools.mbstyle;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -329,5 +330,61 @@ public class SymbolMBLayerTest {
         // a tiny font
         assertThat(font.getSize(), Matchers.instanceOf(Literal.class));
         assertEquals(1, (int) font.getSize().evaluate(null, Integer.class));
+    }
+
+    private SymbolMBLayer symbolLayer(String layout) throws ParseException {
+        String layer = "{'id':'testid', 'type':'symbol', 'source':'src', 'layout':" + layout + "}";
+        MBStyle style = MBStyle.create(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        return (SymbolMBLayer) style.layer("testid");
+    }
+
+    @Test
+    public void testDataDrivenTextFont() throws ParseException {
+        // a "case" text-font is not a static font list: getTextFont() defers to the dynamic textFont()
+        SymbolMBLayer layer = symbolLayer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-font": [
+                    "case",
+                    ["<=", ["get", "min_zoom"], 5],
+                    ["literal", ["Noto Sans Medium"]],
+                    ["literal", ["Noto Sans Regular"]]
+                  ]
+                }""");
+        assertNull(layer.getTextFont());
+        // each "case" branch carries a plain font-name literal, not the wrapping ["..."] stack array
+        Function fontCase = (Function) layer.textFont();
+        List<Expression> params = fontCase.getParameters();
+        assertEquals("case", fontCase.getName());
+        assertEquals(3, params.size());
+        assertEquals("Noto Sans Medium", ((Literal) params.get(1)).getValue());
+        assertEquals("Noto Sans Regular", ((Literal) params.get(2)).getValue());
+    }
+
+    /** A data-driven branch carries one font only, so a stack keeps its first font and drops the fallbacks. */
+    @Test
+    public void testDataDrivenTextFontStack() throws ParseException {
+        SymbolMBLayer layer = symbolLayer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-font": [
+                    "case",
+                    ["<=", ["get", "min_zoom"], 5],
+                    ["literal", ["Noto Sans Medium", "Arial Unicode MS Regular"]],
+                    ["literal", ["Noto Sans Regular"]]
+                  ]
+                }""");
+        Function fontCase = (Function) layer.textFont();
+        List<Expression> params = fontCase.getParameters();
+        assertEquals("Noto Sans Medium", ((Literal) params.get(1)).getValue());
+        assertEquals("Noto Sans Regular", ((Literal) params.get(2)).getValue());
+    }
+
+    @Test
+    public void testStaticTextFontStillList() throws ParseException {
+        SymbolMBLayer layer = symbolLayer("{'text-field': '{name}', 'text-font': ['Noto Sans Regular']}");
+        assertEquals(List.of("Noto Sans Regular"), layer.getTextFont());
     }
 }

@@ -38,8 +38,8 @@ jobs:
         cd gdal-$OSX_GDAL_VERSION
         mkdir build
         cd build
-        : # See https://github.com/OSGeo/gdal/issues/6949 (Java bindings) and https://github.com/OSGeo/gdal/pull/8226 (Arrow and Parquet). Poppler is off due to build failures
-        cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_POPPLER=OFF ${CMAKE_OPTIONS} ..
+        : # See https://github.com/OSGeo/gdal/issues/6949 (Java bindings) and https://github.com/OSGeo/gdal/pull/8226 (Arrow and Parquet). Poppler and OpenEXR are off due to build failures
+        cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_POPPLER=OFF -DGDAL_USE_OPENEXR=OFF ${CMAKE_OPTIONS} ..
         cmake --build .
         cmake --build . --target install
         : # Sanity test that the gdal bindings actually work

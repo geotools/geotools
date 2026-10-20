@@ -67,8 +67,11 @@ class LabelSplitter {
             return Collections.singletonList(lineInfo);
         }
 
-        // first split along the newlines
+        // first split along the newlines; text made only of newlines still gets one empty line, so it has bounds
         String[] splitted = NEWLINE_SPLITTER.split(text);
+        if (splitted.length == 0) {
+            splitted = new String[] {""};
+        }
 
         List<LineInfo> lines = new ArrayList<>();
         if (labelItem.getAutoWrap() <= 0) {

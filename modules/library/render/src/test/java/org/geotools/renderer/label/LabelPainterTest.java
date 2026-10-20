@@ -101,8 +101,8 @@ public class LabelPainterTest {
         LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "\n\n", symbolizer);
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
-        // emtpy label
-        assertEquals(0, painter.getLineCount());
+        // one empty line, so the label still has bounds
+        assertEquals(1, painter.getLineCount());
     }
 
     @Test
@@ -111,8 +111,8 @@ public class LabelPainterTest {
         LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "\n\n", symbolizer);
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
-        // should default to 0 with no lines to paint
-        assertEquals(0.0, painter.getLineHeightForAnchorY(0), 0.0);
+        // the height of the single empty line
+        assertEquals(painter.lines.get(0).getLineHeight(), painter.getLineHeightForAnchorY(0), 0.0);
     }
 
     @Test

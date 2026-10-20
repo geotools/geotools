@@ -38,7 +38,9 @@ import org.locationtech.jts.io.WKBWriter;
  */
 public class WKBAttributeIO {
     WKBReader wkbr;
-    ByteArrayInStream inStream = new ByteArrayInStream(new byte[0]);
+    private static final byte[] EMPTY = new byte[0];
+
+    ByteArrayInStream inStream = new ByteArrayInStream(EMPTY);
     GeometryFactory gf;
     boolean base64EncodingEnabled = true;
 
@@ -84,6 +86,9 @@ public class WKBAttributeIO {
             return wkbr.read(inStream);
         } catch (Exception e) {
             throw new DataSourceException("An exception occurred while parsing WKB data", e);
+        } finally {
+            // instances live in PostGISDialect thread locals, do not keep the last geometry bytes alive
+            inStream.setBytes(EMPTY);
         }
     }
 

@@ -242,6 +242,27 @@ public class LabelCacheImplTest {
         assertNull(exception.get());
     }
 
+    /** A line label made only of newlines paints nothing, and must not fail the map. */
+    @Test
+    public void testNewlineOnlyLineLabel() throws Exception {
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, sb.createFont("Bitstream Vera Sans", 12), "name");
+        List<Exception> errors = new ArrayList<>();
+        cache.addRenderListener(new RenderListener() {
+            @Override
+            public void featureRenderer(SimpleFeature feature) {}
+
+            @Override
+            public void errorOccurred(Exception e) {
+                errors.add(e);
+            }
+        });
+        addToCache(cache, ts, createFeature("\n", L1));
+        cache.endLayer(LAYER_ID, null, null);
+        BufferedImage bi = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
+        cache.end(bi.createGraphics(), new Rectangle(0, 0, 10, 10));
+        assertEquals(List.of(), errors);
+    }
+
     @Test
     public void testFollowLineAutoWrap() throws Exception {
         // these two right now are not compatible

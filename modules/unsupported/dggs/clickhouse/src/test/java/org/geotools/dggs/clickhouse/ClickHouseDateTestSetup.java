@@ -65,6 +65,7 @@ public class ClickHouseDateTestSetup extends JDBCDelegatingTestSetup {
     @Override
     protected void initializeDataSource(BasicDataSource ds, Properties db) {
         super.initializeDataSource(ds, db);
-        ds.addConnectionProperty("typeMappings", "date=java.sql.Date");
+        // the test datasource bypasses the factory one, set the same mappings
+        ds.addConnectionProperty("typeMappings", ClickHouseJDBCDataStoreFactory.DATE_TIME_MAPPINGS);
     }
 }

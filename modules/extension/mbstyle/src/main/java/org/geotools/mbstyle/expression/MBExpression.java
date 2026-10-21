@@ -78,7 +78,7 @@ public abstract class MBExpression extends FunctionImpl {
 
     static {
         decisions = Collections.unmodifiableList(
-                Arrays.asList("!", "!=", "<", "<=", "==", ">", ">=", "all", "any", "case", "coalesce", "match"));
+                Arrays.asList("!", "!=", "<", "<=", "==", ">", ">=", "all", "any", "in", "case", "coalesce", "match"));
     }
 
     /* A list of feature data expression names */

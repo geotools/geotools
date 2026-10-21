@@ -991,6 +991,30 @@ Returns ``true`` if any of the inputs are ``true``, ``false`` otherwise. The inp
      - >= 20.0
      - >= 3.0.0
 
+.. _expressions-in:
+
+in
+^^
+
+Returns ``true`` if the first input is a member of the second input, ``false`` otherwise. The same operator can be used as a layer ``filter``. GeoTools supports the second input only as a ``["literal", [...]]`` array, not as an expression or a string.
+
+::
+
+    ["in", value, ["literal", array]]: boolean
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 1.6.0
+     - >= 35.3
+     - >= Not yet supported
+
 .. _expressions-case:
 
 case

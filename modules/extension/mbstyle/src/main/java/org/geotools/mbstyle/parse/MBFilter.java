@@ -460,6 +460,11 @@ public class MBFilter {
     }
 
     private Filter filterIn(JSONArray array, boolean in) {
+        // expression form ["in", input, haystack] vs legacy ["in", key, v0, v1, ...], told apart as MapLibre does;
+        // "!in" exists only in the legacy form
+        if (in && (!(array.get(1) instanceof String) || (array.size() > 2 && array.get(2) instanceof JSONArray))) {
+            return ff.equals(MBExpression.transformExpression(array), ff.literal(true));
+        }
         String key = parse.get(array, 1);
         Expression[] args = new Expression[array.size() - 1];
         args[0] = ff.property(key);

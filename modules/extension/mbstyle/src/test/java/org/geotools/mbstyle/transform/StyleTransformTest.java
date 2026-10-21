@@ -20,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -35,6 +36,7 @@ import javax.xml.transform.TransformerException;
 import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
@@ -938,5 +940,21 @@ public class StyleTransformTest {
                 }""");
         TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
         assertEquals("park\nA1", ts.getLabel().evaluate(poi("park", "A1"), String.class));
+    }
+
+    @Test
+    public void testInFilterEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "fill",
+                  "source": "src",
+                  "filter": ["in", ["get", "kind"], ["literal", ["park", "wood"]]],
+                  "paint": { "fill-color": "#ff0000" }
+                }""");
+        Filter filter = fts.get(0).rules().get(0).getFilter();
+        assertTrue(filter.evaluate(poi("park", null)));
+        assertFalse(filter.evaluate(poi("street", null)));
     }
 }

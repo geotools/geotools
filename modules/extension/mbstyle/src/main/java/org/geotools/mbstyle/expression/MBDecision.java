@@ -17,6 +17,8 @@
 
 package org.geotools.mbstyle.expression;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
@@ -38,6 +40,7 @@ public class MBDecision extends MBExpression {
     private static final String GREATER_THAN_EQUALS = ">=";
     private static final String ALL = "all";
     private static final String ANY = "any";
+    private static final String IN = "in";
     private static final String CASE = "case";
     private static final String COALESCE = "coalesce";
     private static final String MATCH = "match";
@@ -204,6 +207,35 @@ public class MBDecision extends MBExpression {
     }
 
     /**
+     * Membership test: returns true if the first argument is equal to one of the values in the second argument.
+     * Example: ["in", value, ["literal", [v0, ..., vn]]]: boolean
+     *
+     * @return boolean membership expression
+     */
+    private Expression decisionIn() {
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(IN, 2);
+        }
+        List<Expression> args = new ArrayList<>();
+        args.add(parse.string(json, 1));
+        for (Object value : literalValues(json.get(2))) {
+            args.add(ff.literal(value));
+        }
+        return ff.function("in", args.toArray(new Expression[0]));
+    }
+
+    /** Returns the values of a ["literal", [...]] haystack; a haystack computed by an expression is not supported. */
+    private static JSONArray literalValues(Object haystack) {
+        if (haystack instanceof JSONArray array
+                && array.size() == 2
+                && "literal".equals(array.get(0))
+                && array.get(1) instanceof JSONArray values) {
+            return values;
+        }
+        throw new MBFormatException("\"in\" supports only a [\"literal\", [...]] second argument, got " + haystack);
+    }
+
+    /**
      * Selects the first output whose corresponding test condition evaluates to true. Example: [""case"", condition:
      * boolean, output: OutputType, ...condition: boolean, output: OutputType, ...default: OutputType]: OutputType
      *
@@ -284,6 +316,8 @@ public class MBDecision extends MBExpression {
                 return decisionAll();
             case ANY:
                 return decisionAny();
+            case IN:
+                return decisionIn();
             case CASE:
                 return decisionCase();
             case COALESCE:

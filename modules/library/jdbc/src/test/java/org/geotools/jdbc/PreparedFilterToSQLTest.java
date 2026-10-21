@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.StringWriter;
 import java.util.List;
-
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;

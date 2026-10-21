@@ -87,6 +87,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /** Test parsing and transforming a Mapbox fill layer from json. */
 public class StyleTransformTest {
@@ -905,5 +907,36 @@ public class StyleTransformTest {
     private SimpleFeature place(int minZoom) throws Exception {
         SimpleFeatureType type = DataUtilities.createType("places", "min_zoom:int");
         return SimpleFeatureBuilder.build(type, new Object[] {minZoom}, "places.1");
+    }
+
+    private SimpleFeature poi(String kind, String ref) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("e2e", "kind:String,ref:String,geom:Point");
+        return SimpleFeatureBuilder.build(
+                type, new Object[] {kind, ref, new GeometryFactory().createPoint(new Coordinate(0, 0))}, "e2e.1");
+    }
+
+    @Test
+    public void testFormatTextFieldEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-font": ["Noto Sans Regular"],
+                    "text-field": [
+                      "format",
+                      ["get", "kind"],
+                      {},
+                      "\\n",
+                      {},
+                      ["get", "ref"],
+                      {}
+                    ]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        assertEquals("park\nA1", ts.getLabel().evaluate(poi("park", "A1"), String.class));
     }
 }

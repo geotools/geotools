@@ -221,6 +221,8 @@ format
 
 Returns ``formatted`` text containing annotations for use in mixed-format ``text-field`` entries. If set, the ``text-font`` argument overrides the font specified by the root layout properties. If set, the ``font-scale`` argument specifies a scaling factor relative to the ``text-size`` specified in the root layout properties.
 
+In GeoTools the section inputs are concatenated into a single label and the per-section options (``text-font``, ``font-scale``, ``text-color``) are ignored, so the whole label is rendered with one font. Mixed per-section fonts are not supported yet.
+
 ::
 
     ["format",
@@ -239,7 +241,7 @@ Returns ``formatted`` text containing annotations for use in mixed-format ``text
      - OpenLayers
    * - basic functionality
      - >= 0.48.0
-     - >= Not yet supported
+     - >= 35.3
      - >= Not yet supported
 
 .. _expressions-literal:

@@ -95,6 +95,9 @@ public abstract class MBExpression extends FunctionImpl {
         heatMap = Collections.unmodifiableList(Arrays.asList("heatmap-density"));
     }
 
+    /* A list of format expression names */
+    public static final List format = Collections.unmodifiableList(Arrays.asList("format"));
+
     /* A list of lookup expression names */
     public static final List lookUp = Arrays.asList("at", "length", "has", "get");
 
@@ -148,6 +151,8 @@ public abstract class MBExpression extends FunctionImpl {
                 return new MBFeatureData(json);
             } else if (heatMap.contains(name)) {
                 return new MBHeatmap(json);
+            } else if (format.contains(name)) {
+                return new MBFormat(json);
             } else if (lookUp.contains(name)) {
                 return new MBLookup(json);
             } else if (math.contains(name)) {
@@ -178,6 +183,7 @@ public abstract class MBExpression extends FunctionImpl {
                         || decisions.contains(name)
                         || featureData.contains(name)
                         || heatMap.contains(name)
+                        || format.contains(name)
                         || lookUp.contains(name)
                         || math.contains(name)
                         || ramps.contains(name)

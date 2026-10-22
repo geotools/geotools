@@ -92,27 +92,9 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     ReprojectingSubmosaicProducer(
             RasterLayerRequest request, RasterLayerResponse response, RasterManager rasterManager, boolean dryRun) {
         super(response, dryRun);
-        this.targetCRS = rasterManager.getConfiguration().getCrs();
-        ReferencedEnvelope requestedBounds = request.getRequestedBounds();
-        if (rasterManager.getConfiguration().getCatalogConfigurationBean().isHeterogeneousCRS()
-                && requestedBounds != null) {
-            CoordinateReferenceSystem crs = requestedBounds.getCoordinateReferenceSystem();
-            Integer code = null;
-            try {
-                code = CRS.lookupEpsgCode(crs, false);
-                // Let's switch the targetCRS to the requested one if supported
-                if (response.isHeterogeneousCRS()
-                        && (Utils.HETEROGENEOUS_LOCAL_REPROJECT
-                                || (request.isUseAlternativeCRS() && rasterManager.hasAlternativeCRS(code)))) {
-                    targetCRS = crs;
-                }
-            } catch (IOException | FactoryException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(
-                            "Unable to check for alternative CRS: " + code + " Proceeding with default target CRS");
-                }
-            }
-        }
+        // the request already decided if output goes to the requested CRS (heterogeneous, local reproject
+        // or alternative CRS), the mosaic bbox carries that decision: reproject sub-mosaics to its CRS
+        this.targetCRS = response.getMosaicBBox().getCoordinateReferenceSystem();
         this.dryRun = dryRun;
 
         Hints hints = rasterManager.getHints();

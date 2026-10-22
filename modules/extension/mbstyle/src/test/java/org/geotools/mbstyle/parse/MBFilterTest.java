@@ -16,18 +16,24 @@
  */
 package org.geotools.mbstyle.parse;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Collections;
 import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.SemanticType;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -287,6 +293,28 @@ public class MBFilterTest {
         assertEquals(
                 "match('bLabel','aLabel','firstLabel','bLabel','secondLabel','defaultLabel') = true",
                 ECQL.toCQL(filter));
+    }
+
+    @Test
+    public void notFilter() throws Exception {
+        Filter filter = new MBFilter(array("['!', ['has', 'name']]")).filter();
+        SimpleFeatureType type = DataUtilities.createType("not.test", "name:String");
+        assertFalse(filter.evaluate(SimpleFeatureBuilder.build(type, new Object[] {"Roma"}, "n.1")));
+        assertTrue(filter.evaluate(SimpleFeatureBuilder.build(type, new Object[] {null}, "n.2")));
+    }
+
+    @Test
+    public void notFilterArgumentCount() throws Exception {
+        JSONArray json = array("['!', ['has', 'name'], ['has', 'ref']]");
+        MBFormatException e = assertThrows(MBFormatException.class, () -> new MBFilter(json).filter());
+        assertThat(e.getMessage(), containsString("\"!\" should have exactly 1 argument(s)"));
+    }
+
+    @Test
+    public void notFilterNotArray() throws Exception {
+        JSONArray json = array("['!', 'name']");
+        MBFormatException e = assertThrows(MBFormatException.class, () -> new MBFilter(json).filter());
+        assertThat(e.getMessage(), containsString("\"!\" filter expects a nested expression array"));
     }
 
     @Test

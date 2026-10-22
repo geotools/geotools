@@ -19,6 +19,7 @@ package org.geotools.gml.producer;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -48,6 +49,7 @@ import org.geotools.util.factory.Hints;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xml.transform.TransformerBase;
+import org.geotools.xml.transform.Translator;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -56,6 +58,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
+
+import static javax.xml.XMLConstants.NULL_NS_URI;
 
 /**
  * FeatureTransformer provides a mechanism for converting Feature objects into (hopefully) valid gml. This is a work in
@@ -108,9 +112,9 @@ public class FeatureTransformer extends TransformerBase {
 
     private String collectionPrefix = "wfs";
     private String collectionNamespace = "http://www.opengis.net/wfs";
-    private NamespaceSupport nsLookup = new NamespaceSupport();
-    private FeatureTypeNamespaces featureTypeNamespaces = new FeatureTypeNamespaces(nsLookup);
-    private SchemaLocationSupport schemaLocation = new SchemaLocationSupport();
+    private final NamespaceSupport nsLookup = new NamespaceSupport();
+    private final FeatureTypeNamespaces featureTypeNamespaces = new FeatureTypeNamespaces(nsLookup);
+    private final SchemaLocationSupport schemaLocation = new SchemaLocationSupport();
     private boolean prefixGml = false;
     private boolean featureBounding = false;
     private boolean collectionBounding = true;
@@ -121,7 +125,7 @@ public class FeatureTransformer extends TransformerBase {
     private boolean forceDecimalEncoding = false;
     private boolean encodeMeasures = false;
 
-    public void setCollectionNamespace(String nsURI) {
+    public void setCollectionNamespace(final String nsURI) {
         collectionNamespace = nsURI;
     }
 
@@ -129,7 +133,7 @@ public class FeatureTransformer extends TransformerBase {
         return collectionNamespace;
     }
 
-    public void setCollectionPrefix(String prefix) {
+    public void setCollectionPrefix(final String prefix) {
         this.collectionPrefix = prefix;
     }
 
@@ -144,15 +148,15 @@ public class FeatureTransformer extends TransformerBase {
      *
      * @param numDecimals the number of significant digits past the decimal to include in the response.
      */
-    public void setNumDecimals(int numDecimals) {
+    public void setNumDecimals(final int numDecimals) {
         this.numDecimals = numDecimals;
     }
 
-    public void setPadWithZeros(boolean padWithZeros) {
+    public void setPadWithZeros(final boolean padWithZeros) {
         this.padWithZeros = padWithZeros;
     }
 
-    public void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+    public void setForceDecimalEncoding(final boolean forceDecimalEncoding) {
         this.forceDecimalEncoding = forceDecimalEncoding;
     }
 
@@ -169,7 +173,7 @@ public class FeatureTransformer extends TransformerBase {
         return featureTypeNamespaces;
     }
 
-    public void addSchemaLocation(String nsURI, String uri) {
+    public void addSchemaLocation(final String nsURI, final String uri) {
         schemaLocation.setLocation(nsURI, uri);
     }
 
@@ -182,7 +186,7 @@ public class FeatureTransformer extends TransformerBase {
      *     blunt approach.
      * @see CRS#toSRS(CoordinateReferenceSystem, boolean)
      */
-    public void setSrsName(String srsName) {
+    public void setSrsName(final String srsName) {
         this.srsName = srsName;
     }
 
@@ -193,7 +197,7 @@ public class FeatureTransformer extends TransformerBase {
      * @task REVISIT: Ian, this is probably the most wfs specific addition. If you'd like I can subclass and add it
      *     there. It has to be added as an attribute to FeatureCollection, to report a GetFeatureWithLock
      */
-    public void setLockId(String lockId) {
+    public void setLockId(final String lockId) {
         this.lockId = lockId;
     }
 
@@ -212,7 +216,7 @@ public class FeatureTransformer extends TransformerBase {
      * @task REVISIT: The other approach is to allow for generic mapping, users would set which attributes they wanted
      *     to have different prefixes.
      */
-    public void setGmlPrefixing(boolean prefixGml) {
+    public void setGmlPrefixing(final boolean prefixGml) {
         this.prefixGml = prefixGml;
 
         if (prefixGml && gmlAtts == null) {
@@ -226,7 +230,7 @@ public class FeatureTransformer extends TransformerBase {
      *
      * @param gmlAtts Set of strings corresponding to element names on a type.
      */
-    protected void loadGmlAttributes(Set<String> gmlAtts) {
+    protected void loadGmlAttributes(final Set<String> gmlAtts) {
         gmlAtts.add("pointProperty");
         gmlAtts.add("geometryProperty");
         gmlAtts.add("polygonProperty");
@@ -255,7 +259,7 @@ public class FeatureTransformer extends TransformerBase {
      *     as a gml:boundedBy in the gml output. Note this puts a good bit of bandwidth overhead on the output. Default
      *     is <tt>false</tt>
      */
-    public void setFeatureBounding(boolean featureBounding) {
+    public void setFeatureBounding(final boolean featureBounding) {
         this.featureBounding = featureBounding;
     }
 
@@ -266,15 +270,15 @@ public class FeatureTransformer extends TransformerBase {
      * <p>Defaults to true (for backwards compatibility), disable explicitly if you don't want feature collection bounds
      * to be generated.
      */
-    public void setCollectionBounding(boolean collectionBounding) {
+    public void setCollectionBounding(final boolean collectionBounding) {
         this.collectionBounding = collectionBounding;
     }
 
     @Override
-    public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
-        FeatureTranslator t =
+    public Translator createTranslator(final ContentHandler handler) {
+        final FeatureTranslator t =
                 createTranslator(handler, collectionPrefix, collectionNamespace, featureTypeNamespaces, schemaLocation);
-        java.util.Enumeration prefixes = nsLookup.getPrefixes();
+        final Enumeration<String> prefixes = nsLookup.getPrefixes();
 
         // setGmlPrefixing(true);
         t.setNumDecimals(numDecimals);
@@ -288,8 +292,8 @@ public class FeatureTransformer extends TransformerBase {
         t.setCollectionBounding(collectionBounding);
 
         while (prefixes.hasMoreElements()) {
-            String prefix = prefixes.nextElement().toString();
-            String uri = nsLookup.getURI(prefix);
+            final String prefix = prefixes.nextElement();
+            final String uri = nsLookup.getURI(prefix);
             t.getNamespaceSupport().declarePrefix(prefix, uri);
         }
 
@@ -298,34 +302,34 @@ public class FeatureTransformer extends TransformerBase {
 
     /** Template method for creating the translator. */
     protected FeatureTranslator createTranslator(
-            ContentHandler handler,
-            String prefix,
-            String ns,
-            FeatureTypeNamespaces featureTypeNamespaces,
-            SchemaLocationSupport schemaLocationSupport) {
+            final ContentHandler handler,
+            final String prefix,
+            final String ns,
+            final FeatureTypeNamespaces featureTypeNamespaces,
+            final SchemaLocationSupport schemaLocationSupport) {
         return new FeatureTranslator(handler, prefix, ns, featureTypeNamespaces, schemaLocationSupport);
     }
 
     public static class FeatureTypeNamespaces {
-        Map<FeatureType, String> lookup = new HashMap<>();
-        NamespaceSupport nsSupport;
-        String defaultPrefix = null;
+        private final Map<FeatureType, String> lookup = new HashMap<>();
+        private final NamespaceSupport nsSupport;
+        private String defaultPrefix = null;
 
-        public FeatureTypeNamespaces(NamespaceSupport nsSupport) {
+        public FeatureTypeNamespaces(final NamespaceSupport nsSupport) {
             this.nsSupport = nsSupport;
         }
 
-        public void declareDefaultNamespace(String prefix, String nsURI) {
+        public void declareDefaultNamespace(final String prefix, final String nsURI) {
             defaultPrefix = prefix;
             nsSupport.declarePrefix(prefix, nsURI);
         }
 
-        public void declareNamespace(FeatureType type, String prefix, String nsURI) {
+        public void declareNamespace(final FeatureType type, final String prefix, final String nsURI) {
             lookup.put(type, prefix);
             nsSupport.declarePrefix(prefix, nsURI);
         }
 
-        public String findPrefix(FeatureType type) {
+        public String findPrefix(final FeatureType type) {
             String pre = lookup.get(type);
 
             if (pre == null) {
@@ -343,13 +347,12 @@ public class FeatureTransformer extends TransformerBase {
 
     /** Outputs gml without any fancy indents or newlines. */
     public class FeatureTranslator extends TranslatorSupport implements FeatureCollectionIteration.Handler {
-        String fc = "FeatureCollection";
-        protected GeometryTransformer.GeometryTranslator geometryTranslator;
-
+        private static final String FC = "FeatureCollection";
+        private GeometryTransformer.GeometryTranslator geometryTranslator;
         private boolean encodeMeasures;
-        String memberString;
-        String currentPrefix;
-        FeatureTypeNamespaces types;
+        private final String memberString;
+        private String currentPrefix;
+        private final FeatureTypeNamespaces types;
         boolean prefixGml = false;
         boolean featureBounding = false;
         boolean collectionBounding = true;
@@ -385,36 +388,36 @@ public class FeatureTransformer extends TransformerBase {
          * @param schemaLoc Schema location information
          */
         public FeatureTranslator(
-                ContentHandler handler,
-                String prefix,
-                String ns,
-                FeatureTypeNamespaces types,
-                SchemaLocationSupport schemaLoc) {
+                final ContentHandler handler,
+                final String prefix,
+                final String ns,
+                final FeatureTypeNamespaces types,
+                final SchemaLocationSupport schemaLoc) {
             super(handler, prefix, ns, schemaLoc);
             replaceGeometryTranslator(createGeometryTranslator(handler));
             this.types = types;
             this.handler = handler;
             getNamespaceSupport()
                     .declarePrefix(geometryTranslator.getDefaultPrefix(), geometryTranslator.getDefaultNamespace());
-            memberString = geometryTranslator.getDefaultPrefix() + ":featureMember";
+            this.memberString = geometryTranslator.getDefaultPrefix() + ":featureMember";
         }
 
         /** Method to be subclassed to return a custom geometry translator, mostly for gml3 geometry support. */
-        protected GeometryTranslator createGeometryTranslator(ContentHandler handler) {
+        protected GeometryTranslator createGeometryTranslator(final ContentHandler handler) {
             return new GeometryTransformer.GeometryTranslator(handler);
         }
 
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler, int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding) {
+                final ContentHandler handler, final int numDecimals, final boolean padWithZeros, final boolean forceDecimalEncoding) {
             return new GeometryTransformer.GeometryTranslator(handler, numDecimals, padWithZeros, forceDecimalEncoding);
         }
         /** */
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler,
-                int numDecimals,
-                boolean padWithZeros,
-                boolean forceDecimalEncoding,
-                boolean useDummyZ) {
+                final ContentHandler handler,
+                final int numDecimals,
+                final boolean padWithZeros,
+                final boolean forceDecimalEncoding,
+                final boolean useDummyZ) {
             return new GeometryTransformer.GeometryTranslator(
                     handler, numDecimals, padWithZeros, forceDecimalEncoding, useDummyZ);
         }
@@ -428,11 +431,11 @@ public class FeatureTransformer extends TransformerBase {
          * @return GeometryTranslator that will delegate a CoordinateWriter configured with the above parameters
          */
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler,
-                int numDecimals,
-                boolean padWithZeros,
-                boolean forceDecimalEncoding,
-                int dimension) {
+                final ContentHandler handler,
+                final int numDecimals,
+                final  boolean padWithZeros,
+                final boolean forceDecimalEncoding,
+                final int dimension) {
             return new GeometryTranslator(
                     handler,
                     "gml",
@@ -444,15 +447,15 @@ public class FeatureTransformer extends TransformerBase {
                     dimension);
         }
 
-        void setGmlPrefixing(boolean prefixGml) {
+        void setGmlPrefixing(final boolean prefixGml) {
             this.prefixGml = prefixGml;
         }
 
-        void setFeatureBounding(boolean bounding) {
+        void setFeatureBounding(final boolean bounding) {
             this.featureBounding = bounding;
         }
 
-        void setCollectionBounding(boolean collectionBounding) {
+        void setCollectionBounding(final boolean collectionBounding) {
             this.collectionBounding = collectionBounding;
         }
 
@@ -467,11 +470,11 @@ public class FeatureTransformer extends TransformerBase {
             geometryTranslator.setEncodeMeasures(encodeMeasures);
         }
 
-        void setSrsName(String srsName) {
+        void setSrsName(final String srsName) {
             this.srsName = srsName;
         }
 
-        void setNumDecimals(int numDecimals) {
+        void setNumDecimals(final int numDecimals) {
             replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     numDecimals,
@@ -479,7 +482,7 @@ public class FeatureTransformer extends TransformerBase {
                     geometryTranslator.getForceDecimalEncoding()));
         }
 
-        void setPadWithZeros(boolean padWithZeros) {
+        void setPadWithZeros(final boolean padWithZeros) {
             replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
@@ -487,7 +490,7 @@ public class FeatureTransformer extends TransformerBase {
                     geometryTranslator.getForceDecimalEncoding()));
         }
 
-        void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+        void setForceDecimalEncoding(final boolean forceDecimalEncoding) {
             replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
@@ -495,7 +498,7 @@ public class FeatureTransformer extends TransformerBase {
                     forceDecimalEncoding));
         }
 
-        void setUseDummyZ(boolean useDummyZ) {
+        void setUseDummyZ(final boolean useDummyZ) {
             replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
@@ -505,7 +508,7 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         /** If set to 3 the real z value from the coordinates will be used */
-        void setDimension(int dimension) {
+        void setDimension(final int dimension) {
             replaceGeometryTranslator(createGeometryTranslator(
                     handler,
                     geometryTranslator.getNumDecimals(),
@@ -514,7 +517,7 @@ public class FeatureTransformer extends TransformerBase {
                     dimension));
         }
 
-        public void setLockId(String lockId) {
+        public void setLockId(final String lockId) {
             this.lockId = lockId;
         }
 
@@ -524,19 +527,20 @@ public class FeatureTransformer extends TransformerBase {
 
         @Override
         @SuppressWarnings("unchecked")
-        public void encode(Object o) throws IllegalArgumentException {
+        public void encode(final Object o) throws IllegalArgumentException {
             try {
                 if (o instanceof FeatureCollection) {
-                    SimpleFeatureCollection fc = (SimpleFeatureCollection) o;
+                    final SimpleFeatureCollection fc = (SimpleFeatureCollection) o;
                     FeatureCollectionIteration.iteration(this, fc);
+
                 } else if (o instanceof FeatureCollection[] results) {
                     // Did FeatureResult[] so that we are sure they're all the same type.
                     // Could also consider collections here...
                     startFeatureCollection();
                     if (collectionBounding) {
                         ReferencedEnvelope bounds = null;
-                        for (FeatureCollection result : results) {
-                            ReferencedEnvelope more = result.getBounds();
+                        for (final FeatureCollection result : results) {
+                            final ReferencedEnvelope more = result.getBounds();
                             if (bounds == null) {
                                 bounds = new ReferencedEnvelope(more);
                             } else {
@@ -548,13 +552,13 @@ public class FeatureTransformer extends TransformerBase {
                         writeNullBounds();
                     }
 
-                    for (FeatureCollection<SimpleFeatureType, SimpleFeature> result : results) {
+                    for (final FeatureCollection<SimpleFeatureType, SimpleFeature> result : results) {
                         handleFeatureIterator(DataUtilities.simple(result).features());
                     }
                     endFeatureCollection();
                 } else if (o instanceof FeatureReader) {
                     // THIS IS A HACK FOR QUICK USE
-                    FeatureReader<SimpleFeatureType, SimpleFeature> r =
+                    final FeatureReader<SimpleFeatureType, SimpleFeature> r =
                             (FeatureReader<SimpleFeatureType, SimpleFeature>) o;
 
                     startFeatureCollection();
@@ -590,23 +594,23 @@ public class FeatureTransformer extends TransformerBase {
                 } else {
                     throw new IllegalArgumentException("Cannot encode " + o);
                 }
-            } catch (IOException ioe) {
+            } catch (final IOException ioe) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ioe);
                 throw new RuntimeException("error reading FeatureResults", ioe);
             }
         }
 
-        public void handleFeatureIterator(SimpleFeatureIterator iterator) throws IOException {
+        public void handleFeatureIterator(final SimpleFeatureIterator iterator) throws IOException {
             try (iterator) {
                 while (iterator.hasNext() && running) {
-                    SimpleFeature f = iterator.next();
+                    final SimpleFeature f = iterator.next();
                     handleFeature(f);
 
-                    SimpleFeatureType t = f.getFeatureType();
+                    final SimpleFeatureType t = f.getFeatureType();
 
                     for (int i = 0, ii = f.getAttributeCount(); i < ii; i++) {
-                        AttributeDescriptor descriptor = t.getDescriptor(i);
-                        Object value = f.getAttribute(i);
+                        final AttributeDescriptor descriptor = t.getDescriptor(i);
+                        final Object value = f.getAttribute(i);
                         handleAttribute(descriptor, value);
                     }
                     endFeature(f);
@@ -616,45 +620,45 @@ public class FeatureTransformer extends TransformerBase {
             }
         }
 
-        public void handleFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
+        public void handleFeatureReader(final FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
             try (reader) {
                 while (reader.hasNext() && running) {
-                    SimpleFeature f = reader.next();
+                    final SimpleFeature f = reader.next();
                     handleFeature(f);
 
-                    SimpleFeatureType t = f.getFeatureType();
+                    final SimpleFeatureType t = f.getFeatureType();
 
                     for (int i = 0, ii = f.getAttributeCount(); i < ii; i++) {
-                        AttributeDescriptor descriptor = t.getDescriptor(i);
-                        Object value = f.getAttribute(i);
+                        final AttributeDescriptor descriptor = t.getDescriptor(i);
+                        final Object value = f.getAttribute(i);
                         handleAttribute(descriptor, value);
                     }
 
                     endFeature(f);
                 }
-            } catch (Exception ioe) {
+            } catch (final Exception ioe) {
                 throw new RuntimeException("Error reading Features", ioe);
             }
         }
 
         public void startFeatureCollection() {
             try {
-                String element = getDefaultPrefix() == null ? fc : getDefaultPrefix() + ":" + fc;
-                AttributesImpl atts = new AttributesImpl();
+                final String element = getDefaultPrefix() == null ? FC : getDefaultPrefix() + ":" + FC;
+                final AttributesImpl atts = new AttributesImpl();
 
                 if (lockId != null) {
-                    atts.addAttribute("", "lockId", "lockId", "", lockId);
+                    atts.addAttribute(NULL_NS_URI, "lockId", "lockId", "", lockId);
                 }
 
-                contentHandler.startElement("", "", element, atts);
+                contentHandler.startElement(NULL_NS_URI, "", element, atts);
 
-            } catch (SAXException se) {
+            } catch (final SAXException se) {
                 throw new RuntimeException(se);
             }
         }
 
         public void endFeatureCollection() {
-            end(fc);
+            end(FC);
         }
 
         /**
@@ -663,9 +667,11 @@ public class FeatureTransformer extends TransformerBase {
          * @param collection FeatureCollection being encoded
          */
         @Override
-        public void handleFeatureCollection(FeatureCollection<?, ?> collection) {
+        public void handleFeatureCollection(final FeatureCollection<?, ?> collection) {
             startFeatureCollection();
-            if (collectionBounding) writeBounds(collection.getBounds());
+            if (collectionBounding) {
+                writeBounds(collection.getBounds());
+            }
         }
 
         /**
@@ -674,11 +680,11 @@ public class FeatureTransformer extends TransformerBase {
          *
          * @throws RuntimeException if it is thorwn while writing the element or coordinates
          */
-        public void writeBounds(BoundingBox bounds) {
+        public void writeBounds(final BoundingBox bounds) {
             try {
-                String boundedBy = geometryTranslator.getDefaultPrefix() + ":" + "boundedBy";
+                final String boundedBy = geometryTranslator.getDefaultPrefix() + ":" + "boundedBy";
 
-                contentHandler.startElement("", "", boundedBy, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, "", boundedBy, NULL_ATTS);
 
                 Envelope env = null;
                 if (bounds != null) {
@@ -687,7 +693,7 @@ public class FeatureTransformer extends TransformerBase {
                             new Coordinate(bounds.getMaxX(), bounds.getMaxY()));
                 }
                 geometryTranslator.encode(env, srsName);
-                contentHandler.endElement("", "", boundedBy);
+                contentHandler.endElement(NULL_NS_URI, "", boundedBy);
             } catch (SAXException se) {
                 throw new RuntimeException(se);
             }
@@ -700,15 +706,15 @@ public class FeatureTransformer extends TransformerBase {
          */
         public void writeNullBounds() {
             try {
-                String boundedBy = geometryTranslator.getDefaultPrefix() + ":boundedBy";
-                String nullBox = geometryTranslator.getDefaultPrefix() + ":null";
+                final String boundedBy = geometryTranslator.getDefaultPrefix() + ":boundedBy";
+                final String nullBox = geometryTranslator.getDefaultPrefix() + ":null";
 
-                contentHandler.startElement("", "", boundedBy, NULL_ATTS);
-                contentHandler.startElement("", "", nullBox, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, "", boundedBy, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, "", nullBox, NULL_ATTS);
                 contentHandler.characters("unknown".toCharArray(), 0, "unknown".length());
-                contentHandler.endElement("", "", nullBox);
-                contentHandler.endElement("", "", boundedBy);
-            } catch (SAXException se) {
+                contentHandler.endElement(NULL_NS_URI, "", nullBox);
+                contentHandler.endElement(NULL_NS_URI, "", boundedBy);
+            } catch (final SAXException se) {
                 throw new RuntimeException(se);
             }
         }
@@ -719,7 +725,7 @@ public class FeatureTransformer extends TransformerBase {
          * @param collection Feature collection we have just finished encoding
          */
         @Override
-        public void endFeatureCollection(FeatureCollection<?, ?> collection) {
+        public void endFeatureCollection(final FeatureCollection<?, ?> collection) {
             endFeatureCollection();
         }
 
@@ -731,17 +737,17 @@ public class FeatureTransformer extends TransformerBase {
          *     exception
          */
         @Override
-        public void endFeature(Feature f) {
+        public void endFeature(final Feature f) {
             try {
-                Name typeName = f.getType().getName();
+                final Name typeName = f.getType().getName();
                 String name = typeName.getLocalPart();
 
                 if (currentPrefix != null) {
                     name = currentPrefix + ":" + name;
                 }
-                contentHandler.endElement("", "", name);
-                contentHandler.endElement("", "", memberString);
-            } catch (Exception e) {
+                contentHandler.endElement(NULL_NS_URI, "", name);
+                contentHandler.endElement(NULL_NS_URI, "", memberString);
+            } catch (final Exception e) {
                 throw new RuntimeException(e);
             }
         }
@@ -754,7 +760,7 @@ public class FeatureTransformer extends TransformerBase {
          * @throws RuntimeException Any problems are bundled up in a generic runtime exception
          */
         @Override
-        public void handleAttribute(PropertyDescriptor descriptor, Object value) {
+        public void handleAttribute(final PropertyDescriptor descriptor, final Object value) {
             try {
                 if (value != null) {
                     String name = descriptor.getName().getLocalPart();
@@ -771,12 +777,12 @@ public class FeatureTransformer extends TransformerBase {
                             && name.equals("boundedBy")
                             && value instanceof Geometry geomValue) {
 
-                        Envelope envelopeInternal = geomValue.getEnvelopeInternal();
+                        final Envelope envelopeInternal = geomValue.getEnvelopeInternal();
                         CoordinateReferenceSystem crs = null;
-                        if (descriptor instanceof GeometryDescriptor geometryDescriptor) {
+                        if (descriptor instanceof final GeometryDescriptor geometryDescriptor) {
                             crs = geometryDescriptor.getCoordinateReferenceSystem();
                         }
-                        ReferencedEnvelope bounds = new ReferencedEnvelope(envelopeInternal, crs);
+                        final ReferencedEnvelope bounds = new ReferencedEnvelope(envelopeInternal, crs);
 
                         writeBounds(bounds);
                     } else {
@@ -790,13 +796,13 @@ public class FeatureTransformer extends TransformerBase {
                             name = thisPrefix + ":" + name;
                         }
 
-                        contentHandler.startElement("", "", name, NULL_ATTS);
+                        contentHandler.startElement(NULL_NS_URI, "", name, NULL_ATTS);
 
-                        if (value instanceof Geometry geomValue) {
+                        if (value instanceof final Geometry geomValue) {
                             if (dimension == 0) {
                                 // lets look at the CRS
-                                GeometryDescriptor geometryType = (GeometryDescriptor) descriptor;
-                                CoordinateReferenceSystem crs = geometryType.getCoordinateReferenceSystem();
+                                final GeometryDescriptor geometryType = (GeometryDescriptor) descriptor;
+                                final CoordinateReferenceSystem crs = geometryType.getCoordinateReferenceSystem();
                                 if (crs == null) {
                                     // I won't even bother people with a warning
                                     // (until DataStore quality has improved
@@ -812,35 +818,38 @@ public class FeatureTransformer extends TransformerBase {
                             }
                             geometryTranslator.encode(geomValue, srsName);
                         } else if (value instanceof Date) {
-                            String text = getDateString(value);
+                            final String text = getDateString(value);
                             contentHandler.characters(text.toCharArray(), 0, text.length());
                         } else {
-                            String text = XMLUtils.removeXMLInvalidChars(value.toString());
+                            final String text = XMLUtils.removeXMLInvalidChars(value.toString());
 
                             contentHandler.characters(text.toCharArray(), 0, text.length());
                         }
 
-                        contentHandler.endElement("", "", name);
+                        contentHandler.endElement(NULL_NS_URI, "", name);
                     }
                 }
 
                 // REVISIT: xsi:nillable is the proper xml way to handle nulls,
                 // but OGC people are fine with just leaving it out.
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new IllegalStateException("Could not transform '" + descriptor.getName() + "': " + e, e);
             }
         }
 
-        private String getDateString(Object value) {
-            String text = null;
-            if (value instanceof java.sql.Date date) text = DateUtil.serializeSqlDate(date);
-            else if (value instanceof java.sql.Time time) {
+        private String getDateString(final Object value) {
+            final String text;
+            if (value instanceof java.sql.Date date) {
+                text = DateUtil.serializeSqlDate(date);
+
+            } else if (value instanceof java.sql.Time time) {
                 // is date time formatting activated?
                 if (isDateTimeFormattingEnabled()) {
                     text = DatatypeConverterImpl.getInstance().printTime(dateToCalendar(time));
                 } else {
                     text = DateUtil.serializeSqlTime(time);
                 }
+
             } else {
                 // is date time formatting activated?
                 if (isDateTimeFormattingEnabled()) {
@@ -854,19 +863,19 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         private boolean isDateTimeFormattingEnabled() {
-            Object hint = Hints.getSystemDefault(Hints.DATE_TIME_FORMAT_HANDLING);
+            final Object hint = Hints.getSystemDefault(Hints.DATE_TIME_FORMAT_HANDLING);
             return !Boolean.FALSE.equals(hint);
         }
 
-        private Calendar dateToCalendar(Date value) {
-            Calendar calendar = getConfiguredCalendar();
+        private Calendar dateToCalendar(final Date value) {
+            final Calendar calendar = getConfiguredCalendar();
             calendar.clear();
             calendar.setTimeInMillis(value.getTime());
             return calendar;
         }
 
         private Calendar getConfiguredCalendar() {
-            Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
+            final Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
             if (Boolean.TRUE.equals(hint)) {
                 return Calendar.getInstance();
             } else {
@@ -888,13 +897,13 @@ public class FeatureTransformer extends TransformerBase {
          * @throws RuntimeException Used to report any troubles during encoding
          */
         @Override
-        public void handleFeature(Feature f) {
+        public void handleFeature(final Feature f) {
             try {
-                contentHandler.startElement("", "", memberString, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, "", memberString, NULL_ATTS);
 
-                FeatureType type = f.getType();
+                final FeatureType type = f.getType();
                 String name = type.getName().getLocalPart();
-                String namespaceURI = type.getName().getNamespaceURI();
+                final String namespaceURI = type.getName().getNamespaceURI();
                 if (namespaceURI != null) {
                     currentPrefix = getNamespaceSupport().getPrefix(namespaceURI);
                     if (currentPrefix == null) {
@@ -912,13 +921,13 @@ public class FeatureTransformer extends TransformerBase {
                 if (currentPrefix == null) {
                     throw new IllegalStateException(
                             "FeatureType namespace/prefix unknown for " + name + "look up in: " + types);
-                } else if (currentPrefix.length() > 0) {
+                } else if (!currentPrefix.isEmpty()) {
                     name = currentPrefix + ":" + name;
                 }
 
-                Attributes fidAtts = encodeFeatureId(f);
+                final Attributes fidAtts = encodeFeatureId(f);
 
-                contentHandler.startElement("", "", name, fidAtts);
+                contentHandler.startElement(NULL_NS_URI, "", name, fidAtts);
 
                 // encode the bounds if requested and the bounds are not missing or empty
                 if (featureBounding && f.getBounds() != null && !f.getBounds().isEmpty()) {
@@ -929,17 +938,17 @@ public class FeatureTransformer extends TransformerBase {
                         writeBounds(f.getBounds());
                     }
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new IllegalStateException("Could not transform " + f.getIdentifier() + " :" + e, e);
             }
         }
 
-        protected Attributes encodeFeatureId(Feature f) {
-            AttributesImpl fidAtts = new org.xml.sax.helpers.AttributesImpl();
-            String fid = f.getIdentifier().getID();
+        protected Attributes encodeFeatureId(final Feature f) {
+            final AttributesImpl fidAtts = new org.xml.sax.helpers.AttributesImpl();
+            final String fid = f.getIdentifier().getID();
 
             if (fid != null) {
-                fidAtts.addAttribute("", "fid", "fid", "fids", fid);
+                fidAtts.addAttribute(NULL_NS_URI, "fid", "fid", "fids", fid);
             }
 
             return fidAtts;

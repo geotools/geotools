@@ -100,6 +100,10 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
+import static javax.xml.XMLConstants.NULL_NS_URI;
+import static javax.xml.XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+
 /**
  * Produces SLD to an output stream.
  *
@@ -287,7 +291,7 @@ public class SLDTransformer extends TransformerBase {
                     for (Locale locale : growable.getLocales()) {
                         if (locale != null) {
                             AttributesImpl atts = new AttributesImpl();
-                            atts.addAttribute("", "lang", "lang", "", locale.toString());
+                            atts.addAttribute(NULL_NS_URI, "lang", "lang", "", locale.toString());
                             element("Localized", growable.toString(locale), atts);
                         }
                     }
@@ -434,7 +438,7 @@ public class SLDTransformer extends TransformerBase {
 
         private void encodeMixedStrokeDasharray(List<Expression> expressions) {
             AttributesImpl attributes = new AttributesImpl();
-            attributes.addAttribute("", "name", "name", "", "stroke-dasharray");
+            attributes.addAttribute(NULL_NS_URI, "name", "name", "", "stroke-dasharray");
             start("CssParameter", attributes);
             for (Expression expression : expressions) {
                 filterTranslator.encode(expression);
@@ -469,7 +473,8 @@ public class SLDTransformer extends TransformerBase {
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = text.getUnitOfMeasure();
             if (uom != null) {
-                atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
+                atts.addAttribute(
+                        NULL_NS_URI, "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
             }
 
             start("TextSymbolizer", atts);
@@ -529,7 +534,7 @@ public class SLDTransformer extends TransformerBase {
             OtherText otherText = text.getOtherText();
             if (otherText != null) {
                 AttributesImpl otherTextAtts = new AttributesImpl();
-                otherTextAtts.addAttribute("", "target", "target", "", otherText.getTarget());
+                otherTextAtts.addAttribute(NULL_NS_URI, "target", "target", "", otherText.getTarget());
                 element("OtherText", otherText.getText(), null, otherTextAtts);
             }
 
@@ -596,7 +601,8 @@ public class SLDTransformer extends TransformerBase {
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = raster.getUnitOfMeasure();
             if (uom != null)
-                atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
+                atts.addAttribute(
+                        NULL_NS_URI, "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
 
             start("RasterSymbolizer", atts);
 
@@ -690,11 +696,11 @@ public class SLDTransformer extends TransformerBase {
             else if (colorMap.getType() == org.geotools.api.style.ColorMap.TYPE_VALUES) typeString = "values";
             else typeString = "ramp"; // Also the default in the parser
             if (!"ramp".equals(typeString)) {
-                atts.addAttribute("", "type", "type", "", typeString);
+                atts.addAttribute(NULL_NS_URI, "type", "type", "", typeString);
             }
             final boolean extended = colorMap.getExtendedColors();
             if (extended) {
-                atts.addAttribute("", "extended", "extended", "", "" + extended);
+                atts.addAttribute(NULL_NS_URI, "extended", "extended", "", Boolean.toString(extended));
             }
 
             start("ColorMap", atts);
@@ -710,10 +716,10 @@ public class SLDTransformer extends TransformerBase {
             if (colorEntry != null) {
                 AttributesImpl atts = new AttributesImpl();
                 atts.addAttribute(
-                        "", "color", "color", "", colorEntry.getColor().evaluate(null, String.class));
+                        NULL_NS_URI, "color", "color", "", colorEntry.getColor().evaluate(null, String.class));
                 if (colorEntry.getOpacity() != null) {
                     atts.addAttribute(
-                            "",
+                            NULL_NS_URI,
                             "opacity",
                             "opacity",
                             "",
@@ -721,14 +727,14 @@ public class SLDTransformer extends TransformerBase {
                 }
                 if (colorEntry.getQuantity() != null) {
                     atts.addAttribute(
-                            "",
+                            NULL_NS_URI,
                             "quantity",
                             "quantity",
                             "",
                             colorEntry.getQuantity().toString());
                 }
                 if (colorEntry.getLabel() != null) {
-                    atts.addAttribute("", "label", "label", "", colorEntry.getLabel());
+                    atts.addAttribute(NULL_NS_URI, "label", "label", "", colorEntry.getLabel());
                 }
                 element("ColorMapEntry", (String) null, atts);
             }
@@ -737,9 +743,9 @@ public class SLDTransformer extends TransformerBase {
         @Override
         public void visit(Symbolizer sym) {
             try {
-                contentHandler.startElement("", "!--", "!--", NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, "!--", "!--", NULL_ATTS);
                 chars("Unidentified Symbolizer " + sym.getClass());
-                contentHandler.endElement("", "--", "--");
+                contentHandler.endElement(NULL_NS_URI, "--", "--");
             } catch (SAXException se) {
                 throw new RuntimeException(se);
             }
@@ -752,7 +758,8 @@ public class SLDTransformer extends TransformerBase {
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = poly.getUnitOfMeasure();
             if (uom != null)
-                atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
+                atts.addAttribute(
+                        NULL_NS_URI, "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
 
             start("PolygonSymbolizer", atts);
             encodeGeometryExpression(poly.getGeometry());
@@ -777,7 +784,7 @@ public class SLDTransformer extends TransformerBase {
 
             if (exgr.getURI() != null) {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
+                atts.addAttribute(XMLNS_ATTRIBUTE_NS_URI, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
                 atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
                 atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href", "", exgr.getURI());
                 element("OnlineResource", (String) null, atts);
@@ -796,7 +803,8 @@ public class SLDTransformer extends TransformerBase {
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = line.getUnitOfMeasure();
             if (uom != null)
-                atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
+                atts.addAttribute(
+                        NULL_NS_URI, "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
 
             start("LineSymbolizer", atts);
             encodeGeometryExpression(line.getGeometry());
@@ -855,11 +863,11 @@ public class SLDTransformer extends TransformerBase {
             }
 
             if (rule.getMinScaleDenominator() != 0.0) {
-                element("MinScaleDenominator", rule.getMinScaleDenominator() + "");
+                element("MinScaleDenominator", Double.toString(rule.getMinScaleDenominator()));
             }
 
             if (rule.getMaxScaleDenominator() != Double.POSITIVE_INFINITY) {
-                element("MaxScaleDenominator", rule.getMaxScaleDenominator() + "");
+                element("MaxScaleDenominator", Double.toString(rule.getMaxScaleDenominator()));
             }
 
             for (Symbolizer symbolizer : rule.symbolizers()) {
@@ -899,7 +907,8 @@ public class SLDTransformer extends TransformerBase {
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = ps.getUnitOfMeasure();
             if (uom != null)
-                atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
+                atts.addAttribute(
+                        NULL_NS_URI, "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
 
             start("PointSymbolizer", atts);
 
@@ -953,7 +962,7 @@ public class SLDTransformer extends TransformerBase {
         @Override
         public void visit(StyledLayerDescriptor sld) {
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute("", "version", "version", "", "1.0.0");
+            atts.addAttribute(NULL_NS_URI, "version", "version", "", "1.0.0");
             start("StyledLayerDescriptor", atts);
 
             if (sld.getName() != null && sld.getName().length() > 0) {
@@ -1099,7 +1108,7 @@ public class SLDTransformer extends TransformerBase {
                 }
 
                 final String defaultNS = this.getDefaultNamespace();
-                ftrax.getFeatureTypeNamespaces().declareDefaultNamespace("", defaultNS);
+                ftrax.getFeatureTypeNamespaces().declareDefaultNamespace(DEFAULT_NS_PREFIX, defaultNS);
                 final String ns = featureType.getName().getNamespaceURI();
                 if (ns == null) {
                     LOGGER.info(
@@ -1151,9 +1160,9 @@ public class SLDTransformer extends TransformerBase {
 
         public void visit(Filter filter) {
             try {
-                contentHandler.startElement("", "", "ogc:Filter", NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, "", "ogc:Filter", NULL_ATTS);
                 filterTranslator.encode(filter);
-                contentHandler.endElement("", "", "ogc:Filter");
+                contentHandler.endElement(NULL_NS_URI, "", "ogc:Filter");
             } catch (SAXException se) {
                 throw new RuntimeException(se);
             }
@@ -1293,7 +1302,7 @@ public class SLDTransformer extends TransformerBase {
             }
 
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute("", "name", "name", "", name);
+            atts.addAttribute(NULL_NS_URI, "name", "name", "", name);
             encodeValue("CssParameter", atts, expression, defaultValue);
         }
 
@@ -1337,7 +1346,7 @@ public class SLDTransformer extends TransformerBase {
 
         void encodeVendorOption(String key, String value) {
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute("", "name", "name", "", key);
+            atts.addAttribute(NULL_NS_URI, "name", "name", "", key);
             start("VendorOption", atts);
             chars(value);
             end("VendorOption");
@@ -1408,7 +1417,7 @@ public class SLDTransformer extends TransformerBase {
 
                 for (Entry<String, Expression> entry : opts.entrySet()) {
                     AttributesImpl atts = new AttributesImpl();
-                    atts.addAttribute("", "name", "name", "", entry.getKey());
+                    atts.addAttribute(NULL_NS_URI, "name", "name", "", entry.getKey());
                     element("VendorOption", entry.getValue().evaluate(null).toString(), atts);
                 }
 

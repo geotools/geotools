@@ -175,9 +175,10 @@ public class GMLWriter {
             atts = new AttributesImpl();
         }
         if (qualifiedName != null) {
-            String localName = null;
-            if (qualifiedName.contains(":")) {
-                localName = qualifiedName.split(":")[1];
+            String localName = qualifiedName;
+            final int qnSepIx = localName.indexOf(':');
+            if (qnSepIx > -1) {
+                localName = qualifiedName.substring(qnSepIx + 1);
             }
             handler.startElement(qn.getNamespaceURI(), localName, qualifiedName, atts);
         } else {

@@ -41,6 +41,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /**
  * Used to walk through GeometryObjects issuing SAX events as needed.
  *
@@ -242,7 +244,7 @@ public class GeometryTransformer extends TransformerBase {
                 start(boxName);
             } else {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute("", "srsName", "srsName", "", srsName);
+                atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "", srsName);
                 start(boxName, atts);
             }
 
@@ -329,7 +331,7 @@ public class GeometryTransformer extends TransformerBase {
                 start(geomName);
             } else {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute("", "srsName", "srsName", "", srsName);
+                atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "", srsName);
                 start(geomName, atts);
             }
 

@@ -22,18 +22,19 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -57,16 +58,12 @@ import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.eclipse.xsd.util.XSDUtil;
 import org.geotools.api.feature.ComplexAttribute;
-import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.Property;
-import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xml.transform.QNameValidatingHandler;
-import org.geotools.xs.XS;
 import org.geotools.xsd.impl.BindingFactoryImpl;
 import org.geotools.xsd.impl.BindingLoader;
 import org.geotools.xsd.impl.BindingPropertyExtractor;
@@ -92,6 +89,12 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.NamespaceSupport;
+
+import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
+import static javax.xml.XMLConstants.NULL_NS_URI;
+import static javax.xml.XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
+import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
+import static javax.xml.XMLConstants.XML_NS_PREFIX;
 
 /**
  * Encodes objects as xml based on a schema.
@@ -145,29 +148,29 @@ public class Encoder {
     static final String INDENT_AMOUNT_KEY = "{http://xml.apache.org/xslt}indent-amount";
 
     /** the schema + index * */
-    private XSDSchema schema;
+    private final XSDSchema schema;
 
-    private SchemaIndex index;
+    private final SchemaIndex index;
 
     /** binding factory + context * */
-    private BindingLoader bindingLoader;
+    private final BindingLoader bindingLoader;
 
     private MutablePicoContainer context;
 
     /** binding walker */
-    private BindingWalker bindingWalker;
+    private final BindingWalker bindingWalker;
 
     /** property extractors */
-    private List<PropertyExtractor> propertyExtractors;
+    private final List<PropertyExtractor> propertyExtractors;
 
     /** element encoder */
-    private ElementEncoder encoder;
+    private final ElementEncoder encoder;
 
     /** factory for creating nodes * */
     private Document doc;
 
     /** namespaces */
-    private NamespaceSupport namespaces;
+    private final NamespaceSupport namespaces;
 
     /** document serializer * */
     private ContentHandler serializer;
@@ -176,7 +179,7 @@ public class Encoder {
     private Map<String, String> schemaLocations;
 
     /** output format/properties */
-    private Properties outputProps;
+    private final Properties outputProps;
 
     /** namespace aware */
     private boolean namespaceAware = true;
@@ -190,10 +193,10 @@ public class Encoder {
     private Logger logger;
 
     /** if true the encoder may encode complex features that map to a complex type that is not GML valid * */
-    private boolean relaxed = Boolean.parseBoolean(System.getProperty("encoder.relaxed", "true"));
+    private final boolean relaxed = Boolean.parseBoolean(System.getProperty("encoder.relaxed", "true"));
 
     /** The configuration used by the encoder */
-    private Configuration configuration;
+    private final Configuration configuration;
 
     /**
      * Creates an encoder from a configuration.
@@ -203,14 +206,14 @@ public class Encoder {
      *
      * @param configuration The encoder configuration.
      */
-    public Encoder(Configuration configuration) {
+    public Encoder(final Configuration configuration) {
         this(configuration, getSchema(configuration));
     }
 
-    public static XSDSchema getSchema(Configuration configuration) {
+    public static XSDSchema getSchema(final Configuration configuration) {
         try {
             return configuration.getXSD().getSchema();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -221,7 +224,7 @@ public class Encoder {
      * @param configuration The encoder configuration.
      * @param schema The schema instance.
      */
-    public Encoder(Configuration configuration, XSDSchema schema) {
+    public Encoder(final Configuration configuration, final XSDSchema schema) {
         this.configuration = configuration;
         this.schema = schema;
 
@@ -426,7 +429,7 @@ public class Encoder {
      * <p>Warning that setting this to <code>false</code> will result in no namespace prefixes on encoded elements and
      * attributes, and no schema declarations on the root element.document;
      */
-    public void setNamespaceAware(boolean namespaceAware) {
+    public void setNamespaceAware(final boolean namespaceAware) {
         this.namespaceAware = namespaceAware;
     }
 
@@ -455,7 +458,7 @@ public class Encoder {
      *
      * <p>When this flag is set {@link #encode(Object, QName, ContentHandler)} should be used to encode.
      */
-    public void setInline(boolean inline) {
+    public void setInline(final boolean inline) {
         this.inline = inline;
     }
 
@@ -467,7 +470,7 @@ public class Encoder {
      * @param rootElementType The type name of the root element.
      * @since 8.0
      */
-    public void setRootElementType(QName rootElementType) {
+    public void setRootElementType(final QName rootElementType) {
         this.rootElementType = rootElementType;
     }
 
@@ -480,7 +483,7 @@ public class Encoder {
      * @param namespaceURI A namespace uri.
      * @param location A schema location.
      */
-    public void setSchemaLocation(String namespaceURI, String location) {
+    public void setSchemaLocation(final String namespaceURI, final String location) {
         schemaLocations.put(namespaceURI, location);
     }
 
@@ -514,7 +517,7 @@ public class Encoder {
      * @param name The name of the element being encoded in the schema.
      * @param out The output stream.
      */
-    public void encode(Object object, QName name, OutputStream out) throws IOException {
+    public void encode(final Object object, final QName name, final OutputStream out) throws IOException {
         if (inline) {
             String msg = "Must use 'encode(Object,QName,ContentHandler)' when inline flag is set";
             throw new IllegalStateException(msg);
@@ -533,14 +536,11 @@ public class Encoder {
         xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
 
-        // TODO
-        // xmls.setNamespaces(namespaceAware);
         xmls = new QNameValidatingHandler(xmls);
         try {
             encode(object, name, xmls);
-        } catch (SAXException e) {
-            // SAXException does not sets initCause(). Instead, it holds its own
-            // "exception" field.
+        } catch (final SAXException e) {
+            // SAXException does not sets initCause(). Instead, it holds its own "exception" field.
             if (e.getException() != null && e.getCause() == null) {
                 e.initCause(e.getException());
             }
@@ -552,13 +552,13 @@ public class Encoder {
      * Helper method that checks if the complex feature we want to encode maps to a complex type that respects the GML
      * object-property model.
      */
-    private boolean isNonStripedNestedElement(Object next, XSDElementDeclaration element) {
+    private boolean isNonStripedNestedElement(final Object next, final XSDElementDeclaration element) {
         if (!(next instanceof ComplexAttribute)) {
             return false;
         }
-        ComplexAttribute complex = (ComplexAttribute) next;
+        final ComplexAttribute complex = (ComplexAttribute) next;
         // let's see if we need to encode this
-        Collection<Property> nestedProperties = complex.getProperties();
+        final Collection<Property> nestedProperties = complex.getProperties();
         if (nestedProperties == null || nestedProperties.isEmpty()) {
             return false;
         }
@@ -571,7 +571,7 @@ public class Encoder {
             return false;
         }
         // so let's see if the nested type is a reference
-        for (XSDParticle childParticle : Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+        for (final XSDParticle childParticle : Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
             XSDElementDeclaration childElement = (XSDElementDeclaration) childParticle.getContent();
             if (childElement.isElementDeclarationReference()) {
                 childElement = childElement.getResolvedElementDeclaration();
@@ -588,14 +588,14 @@ public class Encoder {
         return true;
     }
 
-    public void encode(Object object, QName name, ContentHandler handler) throws IOException, SAXException {
+    public void encode(final Object object, final QName name, final ContentHandler handler) throws IOException, SAXException {
 
         // maintain a stack of (encoding,element declaration pairs)
-        Stack<EncodingEntry> encoded = null;
+        Deque<EncodingEntry> encoded = null;
 
         // make sure the xs namespace is declared
-        if (namespaces.getPrefix(XS.NAMESPACE) == null) {
-            namespaces.declarePrefix("xs", XS.NAMESPACE);
+        if (namespaces.getPrefix(W3C_XML_SCHEMA_NS_URI) == null) {
+            namespaces.declarePrefix("xs", W3C_XML_SCHEMA_NS_URI);
         }
 
         try {
@@ -616,14 +616,14 @@ public class Encoder {
                 throw new IOException("Unable to create document", e);
             }
 
-            encoded = new Stack<>();
+            encoded = new ArrayDeque<>();
 
-            XSDElementDeclaration root = getRootDeclaration(name);
+            final XSDElementDeclaration root = getRootDeclaration(name);
 
-            encoded.add(new EncodingEntry(object, root, null));
+            encoded.addLast(new EncodingEntry(object, root, null));
 
             while (!encoded.isEmpty()) {
-                EncodingEntry entry = encoded.peek();
+                final EncodingEntry entry = encoded.peekFirst();
 
                 if (entry.encoding != null) {
                     // element has been started, get the next child
@@ -651,13 +651,11 @@ public class Encoder {
             // case
             if (encoded != null) {
                 while (!encoded.isEmpty()) {
-                    EncodingEntry entry = encoded.pop();
+                    final EncodingEntry entry = encoded.removeFirst();
                     if (!entry.children.isEmpty()) {
-                        Object[] child = entry.children.get(0);
-                        Iterator itr = (Iterator) child[1];
                         try {
-                            closeIterator(itr, child[2]);
-                        } catch (Exception e) {
+                            closeIterator(entry.children.get(0).iterator);
+                        } catch (final Exception e) {
                             // ignore, we are already in an error case.
                         }
                     }
@@ -668,16 +666,16 @@ public class Encoder {
         }
     }
 
-    private void startEncoding(Object object, EncodingEntry entry) throws SAXException, IOException {
+    private void startEncoding(final Object object, final EncodingEntry entry) throws SAXException, IOException {
         // first make sure the element is not abstract
         if (entry.element.isAbstract()) {
             // look for a non abstract substitute - substitution groups are subject to
             // changes over time, so we make a copy to avoid being hit with a
             // ConcurrentModificationException
-            List sub = safeCopy(entry.element.getSubstitutionGroup());
+            final List<XSDElementDeclaration> sub = safeCopy(entry.element.getSubstitutionGroup());
 
             if (!sub.isEmpty()) {
-                XSDElementDeclaration substitute = getConcreteSubstitute(entry, sub);
+                final XSDElementDeclaration substitute = getConcreteSubstitute(entry, sub);
                 if (substitute != null) {
                     entry.element = substitute;
                 }
@@ -700,30 +698,28 @@ public class Encoder {
         populateChildren(entry);
     }
 
-    private void setupEntryAttributes(Object object, EncodingEntry entry) {
-        List attributes = index.getAttributes(entry.element);
+    private void setupEntryAttributes(final Object object, final EncodingEntry entry) {
+        final List<XSDAttributeDeclaration> attributes = index.getAttributes(entry.element);
 
-        for (Object value : attributes) {
-            XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) value;
+        for (final XSDAttributeDeclaration attribute : attributes) {
 
             // do not encode the attribute if it has already been
             // encoded by the parent
-            String ns = attribute.getTargetNamespace();
-            String local = attribute.getName();
+            final String ns = attribute.getTargetNamespace();
+            final String local = attribute.getName();
 
-            if (entry.encoding.getAttributeNS(ns, local) != null
-                    && !"".equals(entry.encoding.getAttributeNS(ns, local))) {
+            if (!entry.encoding.getAttributeNS(ns, local).isEmpty()) {
                 continue;
             }
 
             // get the object(s) for this attribute
-            GetPropertyExecutor executor = new GetPropertyExecutor(entry.object, attribute);
+            final GetPropertyExecutor executor = new GetPropertyExecutor(entry.object, attribute);
 
             BindingVisitorDispatch.walk(object, bindingWalker, entry.element, executor, context);
 
             if (executor.getChildObject() != null) {
                 // encode the attribute
-                Attr attr = (Attr) encode(executor.getChildObject(), attribute);
+                final Attr attr = (Attr) encode(executor.getChildObject(), attribute);
 
                 if (attr != null) {
                     entry.encoding.setAttributeNodeNS(attr);
@@ -732,16 +728,15 @@ public class Encoder {
         }
     }
 
-    private void populateChildren(EncodingEntry entry) throws SAXException, IOException {
+    private void populateChildren(final EncodingEntry entry) throws SAXException, IOException {
         // TODO: this method of getting at properties won't maintain order very well,
         // need to come up with a better system that is capable of handling feature types
-        for (PropertyExtractor propertyExtractor : propertyExtractors) {
+        for (final PropertyExtractor propertyExtractor : propertyExtractors) {
             if (propertyExtractor.canHandle(entry.object)) {
-                List extracted = propertyExtractor.properties(entry.object, entry.element);
+                final List<ExtractedProperty<?>> extractedProperties = propertyExtractor.properties(entry.object, entry.element);
                 O:
-                for (Object o : extracted) {
-                    Object[] tuple = (Object[]) o;
-                    XSDParticle particle = (XSDParticle) tuple[0];
+                for (final ExtractedProperty<?> extractedProperty : extractedProperties) {
+                    final XSDParticle particle = extractedProperty.particle;
                     XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 
                     if (child == null) {
@@ -749,8 +744,7 @@ public class Encoder {
                     }
 
                     // check for a comment
-                    if (child != null
-                            && COMMENT.getNamespaceURI().equals(child.getTargetNamespace())
+                    if (COMMENT.getNamespaceURI().equals(child.getTargetNamespace())
                             && COMMENT.getLocalPart().equals(child.getName())) {
                         comment(child.getElement());
 
@@ -763,11 +757,11 @@ public class Encoder {
 
                     // do not encode the element if the parent has already
                     // been encoded by the parent
-                    String ns = child.getTargetNamespace();
-                    String local = child.getName();
+                    final String ns = child.getTargetNamespace();
+                    final String local = child.getName();
 
                     for (int i = 0; i < entry.encoding.getChildNodes().getLength(); i++) {
-                        Node node = entry.encoding.getChildNodes().item(i);
+                        final Node node = entry.encoding.getChildNodes().item(i);
 
                         if (node instanceof Element) {
                             if (ns != null) {
@@ -782,7 +776,7 @@ public class Encoder {
                         }
                     }
 
-                    Object obj = tuple[1];
+                    final Object obj = extractedProperty.value;
 
                     // if the value is null, can we skip it? Or do we have to go out
                     // with an non empty element with xs:nil?
@@ -809,10 +803,10 @@ public class Encoder {
                     } else {
                         // look the containing group
                         if (particle.eContainer() instanceof XSDModelGroup) {
-                            XSDModelGroup group = (XSDModelGroup) particle.eContainer();
+                            final XSDModelGroup group = (XSDModelGroup) particle.eContainer();
 
                             if (group.eContainer() instanceof XSDParticle) {
-                                XSDParticle cParticle = (XSDParticle) group.eContainer();
+                                final XSDParticle cParticle = (XSDParticle) group.eContainer();
 
                                 if (cParticle.isSetMaxOccurs()) {
                                     maxOccurs = cParticle.getMaxOccurs();
@@ -823,71 +817,72 @@ public class Encoder {
 
                     if (maxOccurs == -1 || maxOccurs > 1) {
                         // may have a collection or array, unwrap it
-                        Iterator iterator = null;
+                        final Iterator<?> iterator;
 
-                        if (obj instanceof Iterator iterator1) {
+                        if (obj instanceof final Iterator<?> iterator1) {
                             iterator = iterator1;
+
                         } else if (obj != null && obj.getClass().isArray()) {
-                            Object[] array = (Object[]) obj;
+                            final Object[] array = (Object[]) obj;
                             iterator = Arrays.asList(array).iterator();
-                        } else if (obj instanceof Collection collection) {
+
+                        } else if (obj instanceof final Collection<?> collection) {
                             iterator = collection.iterator();
-                        } else if (obj instanceof FeatureCollection) {
-                            @SuppressWarnings("unchecked")
-                            FeatureCollection<FeatureType, Feature> collection = (FeatureCollection) obj;
+
+                        } else if (obj instanceof final FeatureCollection<?, ?> collection) {
                             iterator = DataUtilities.iterator(collection.features());
+
                         } else {
-                            iterator = new SingleIterator(obj);
+                            iterator = new SingleIterator<>(obj);
                         }
 
-                        entry.children.add(new Object[] {child, iterator, obj});
+                        entry.children.add(new EncodingEntryChild<>(child, iterator));
                     } else {
                         // only one, just add the object
-                        entry.children.add(new Object[] {child, new SingleIterator(obj), obj});
+                        entry.children.add(new EncodingEntryChild<>(child, new SingleIterator<>(obj)));
                     }
                 }
             }
         }
     }
 
-    private void setupSchemaLocations(EncodingEntry entry) throws SAXException {
+    private void setupSchemaLocations(final EncodingEntry entry) throws SAXException {
         // write out the leading edge of the element
         if (schemaLocations != null) {
             // root element, add schema locations if set
             if (!schemaLocations.isEmpty()) {
                 // declare the schema instance mapping
-                serializer.startPrefixMapping("xsi", XSDUtil.SCHEMA_INSTANCE_URI_2001);
+                serializer.startPrefixMapping("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
                 serializer.endPrefixMapping("xsi");
-                namespaces.declarePrefix("xsi", XSDUtil.SCHEMA_INSTANCE_URI_2001);
+                namespaces.declarePrefix("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
 
-                StringBuffer schemaLocation = new StringBuffer();
+                final StringBuilder schemaLocation = new StringBuilder();
 
-                for (Iterator e = schemaLocations.entrySet().iterator(); e.hasNext(); ) {
-                    Map.Entry tuple = (Map.Entry) e.next();
-                    String namespaceURI = (String) tuple.getKey();
-                    String location = (String) tuple.getValue();
+                for (final Iterator<Map.Entry<String, String>> e = schemaLocations.entrySet().iterator(); e.hasNext(); ) {
+                    final Map.Entry<String, String> tuple = e.next();
+                    final String namespaceURI = tuple.getKey();
+                    final String location = tuple.getValue();
 
-                    schemaLocation.append(namespaceURI + " " + location);
+                    schemaLocation.append(namespaceURI).append(' ').append(location);
 
                     if (e.hasNext()) {
-                        schemaLocation.append(" ");
+                        schemaLocation.append(' ');
                     }
                 }
 
                 entry.encoding.setAttributeNS(
-                        XSDUtil.SCHEMA_INSTANCE_URI_2001, "xsi:schemaLocation", schemaLocation.toString());
+                        W3C_XML_SCHEMA_INSTANCE_NS_URI, "xsi:schemaLocation", schemaLocation.toString());
             }
 
             schemaLocations = null;
         }
     }
 
-    private XSDElementDeclaration getConcreteSubstitute(EncodingEntry entry, List sub) {
+    private XSDElementDeclaration getConcreteSubstitute(final EncodingEntry entry, final List<XSDElementDeclaration> sub) {
         // match up by type
-        List<Object[]> matches = new ArrayList<>();
+        final List<Object[]> matches = new ArrayList<>();
 
-        for (Object o : sub) {
-            XSDElementDeclaration e = (XSDElementDeclaration) o;
+        for (final XSDElementDeclaration e : sub) {
 
             if (e == null || e.equals(entry.element)) {
                 continue;
@@ -902,7 +897,7 @@ public class Encoder {
 
             if (binding == null) {
                 // try the type
-                XSDTypeDefinition type = e.getType();
+                final XSDTypeDefinition type = e.getType();
 
                 if (type == null || type.getName() == null) {
                     continue;
@@ -930,14 +925,13 @@ public class Encoder {
         // if one, we are gold
         if (matches.size() == 1) {
             entry.element = (XSDElementDeclaration) matches.get(0)[0];
-        }
-        // if multiple we have a problem
-        else if (!matches.isEmpty()) {
+        } else if (!matches.isEmpty()) {
+            // if multiple we have a problem
             if (logger.isLoggable(Level.FINE)) {
-                StringBuffer msg = new StringBuffer("Found multiple non-abstract bindings for ");
+                final StringBuilder msg = new StringBuilder("Found multiple non-abstract bindings for ");
                 msg.append(entry.element.getName()).append(": ");
 
-                for (Object[] match : matches) {
+                for (final Object[] match : matches) {
                     msg.append(match.getClass().getName());
                     msg.append(", ");
                 }
@@ -946,18 +940,19 @@ public class Encoder {
             }
 
             // try sorting by the type of the binding
-            Collections.sort(matches, new MatchComparator());
+            matches.sort(new MatchComparator());
         }
 
         if (!matches.isEmpty()) {
             return (XSDElementDeclaration) matches.get(0)[0];
         }
+
         return null;
     }
 
-    private void finishElement(Stack<EncodingEntry> encoded, EncodingEntry entry) throws SAXException {
+    private void finishElement(final Deque<EncodingEntry> encoded, final EncodingEntry entry) throws SAXException {
         end(entry.encoding, entry.element);
-        encoded.pop();
+        encoded.removeFirst();
 
         // clean up the entry
         entry.object = null;
@@ -967,13 +962,13 @@ public class Encoder {
         entry.parent = null;
     }
 
-    private void processChildren(ContentHandler handler, Stack<EncodingEntry> encoded, EncodingEntry entry) {
-        Object[] child = entry.children.get(0);
-        XSDElementDeclaration element = ((XSDElementDeclaration) child[0]).getResolvedElementDeclaration();
-        Iterator itr = (Iterator) child[1];
+    private void processChildren(final ContentHandler handler, final Deque<EncodingEntry> encoded, final EncodingEntry entry) {
+        final EncodingEntryChild<?> child = entry.children.get(0);
+        final XSDElementDeclaration element = child.elementDecl.getResolvedElementDeclaration();
+        final Iterator<?> itr = child.iterator;
 
         if (itr.hasNext()) {
-            Object next = itr.next();
+            final Object next = itr.next();
 
             // here we check for instanceof EncoderDelegate
             if (next instanceof EncoderDelegate delegate) {
@@ -985,26 +980,25 @@ public class Encoder {
                 }
             } else {
                 if (next instanceof ComplexAttribute attribute && relaxed && isNonStripedNestedElement(next, element)) {
-                    for (Property property : attribute.getProperties()) {
+                    for (final Property property : attribute.getProperties()) {
                         // add object sub properties, i.e. nested complex features
-                        encoded.push(new EncodingEntry(property, element, entry));
+                        encoded.addFirst(new EncodingEntry(property, element, entry));
                     }
                 } else {
                     // add the next object to be encoded to the stack
-                    encoded.push(new EncodingEntry(next, element, entry));
+                    encoded.addFirst(new EncodingEntry(next, element, entry));
                 }
             }
         } else {
             // iterator done, close it
-            Object source = child[2];
-            closeIterator(itr, source);
+            closeIterator(itr);
 
             // this child is done, remove from child list
             entry.children.remove(0);
         }
     }
 
-    private XSDElementDeclaration getRootDeclaration(QName name) {
+    private XSDElementDeclaration getRootDeclaration(final QName name) {
         // add the first entry
         XSDElementDeclaration root = index.getElementDeclaration(name);
 
@@ -1018,11 +1012,7 @@ public class Encoder {
             }
 
             if (typeDefintion != null) {
-                XSDTypeDefinition type = index.getTypeDefinition(typeDefintion);
-
-                if (type == null) {
-                    throw new NullPointerException();
-                }
+                final XSDTypeDefinition type = Objects.requireNonNull(index.getTypeDefinition(typeDefintion));
 
                 // create a mock element declaration
                 root = XSDFactory.eINSTANCE.createXSDElementDeclaration();
@@ -1033,30 +1023,32 @@ public class Encoder {
         }
 
         if (root == null) {
-            String msg = "Could not find element declaration for:" + name;
-            throw new IllegalArgumentException(msg);
+            throw new IllegalArgumentException("Could not find element declaration for:" + name);
         }
+
         return root;
     }
 
     private void setupNamespaces() throws SAXException {
         // write out all the namespace prefix value mappings
-        for (Enumeration e = namespaces.getPrefixes(); e.hasMoreElements(); ) {
-            String prefix = (String) e.nextElement();
-            String uri = namespaces.getURI(prefix);
+        for (final Enumeration<String> e = namespaces.getPrefixes(); e.hasMoreElements(); ) {
+            final String prefix = e.nextElement();
+            final String uri = namespaces.getURI(prefix);
 
-            if ("xml".equals(prefix)) {
+            if (XML_NS_PREFIX.equals(prefix)) {
                 continue;
             }
             serializer.startPrefixMapping(prefix, uri);
         }
-        for (Map.Entry<String, String> stringStringEntry :
-                schema.getQNamePrefixToNamespaceMap().entrySet()) {
-            Map.Entry entry = stringStringEntry;
-            String pre = (String) entry.getKey();
-            String ns = (String) entry.getValue();
 
-            if (XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001.equals(ns)) {
+        for (final Map.Entry<String, String> prefixNsEntry : schema.getQNamePrefixToNamespaceMap().entrySet()) {
+            String prefix = prefixNsEntry.getKey();
+            if (prefix == null) {
+                prefix = DEFAULT_NS_PREFIX;
+            }
+            final String ns = prefixNsEntry.getValue();
+
+            if (W3C_XML_SCHEMA_INSTANCE_NS_URI.equals(ns)) {
                 continue;
             }
 
@@ -1064,24 +1056,24 @@ public class Encoder {
             if (namespaces.getPrefix(ns) != null) {
                 continue;
             }
-            serializer.startPrefixMapping(pre != null ? pre : "", ns);
-            serializer.endPrefixMapping(pre != null ? pre : "");
+            serializer.startPrefixMapping(prefix, ns);
+            serializer.endPrefixMapping(prefix);
 
-            namespaces.declarePrefix(pre != null ? pre : "", ns);
+            namespaces.declarePrefix(prefix, ns);
         }
 
         // ensure a default namespace prefix set
-        if (namespaces.getURI("") == null) {
-            namespaces.declarePrefix("", schema.getTargetNamespace());
+        if (namespaces.getURI(DEFAULT_NS_PREFIX) == null) {
+            namespaces.declarePrefix(DEFAULT_NS_PREFIX, schema.getTargetNamespace());
         }
     }
 
     /** Makes a defensive copy of an e-list handling the eventual issues due to concurrent modifications */
-    private <T> List<T> safeCopy(EList<T> substitutionGroup) {
+    private <T> List<T> safeCopy(final EList<T> substitutionGroup) {
         while (true) {
             try {
                 return new ArrayList<>(substitutionGroup);
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (final ArrayIndexOutOfBoundsException e) {
                 // ok, the list was modified just during the copy...
             }
         }
@@ -1093,16 +1085,18 @@ public class Encoder {
      * <p>Note that this method should be used for testing or convenience since it does not stream and loads the entire
      * encoded result into memory.
      */
-    public Document encodeAsDOM(Object object, QName name) throws IOException, SAXException, TransformerException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        encode(object, name, out);
+    public Document encodeAsDOM(final Object object, final QName name) throws IOException, SAXException, TransformerException {
+        try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            encode(object, name, out);
 
-        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-        DOMResult result = new DOMResult();
+            try (final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
+                final DOMResult result = new DOMResult();
 
-        Transformer tx = XMLUtils.newTransformer();
-        tx.transform(new StreamSource(in), result);
-        return (Document) result.getNode();
+                final Transformer tx = XMLUtils.newTransformer();
+                tx.transform(new StreamSource(in), result);
+                return (Document) result.getNode();
+            }
+        }
     }
 
     /**
@@ -1113,33 +1107,33 @@ public class Encoder {
      *
      * @since 8.0
      */
-    public String encodeAsString(Object object, QName name) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        encode(object, name, out);
-        return new String(out.toByteArray(), StandardCharsets.UTF_8);
+    public String encodeAsString(final Object object, final QName name) throws IOException {
+        try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            encode(object, name, out);
+            return new String(out.toByteArray(), StandardCharsets.UTF_8);
+        }
     }
 
-    protected void closeIterator(Iterator iterator, Object source) {
+    protected void closeIterator(final Iterator<?> iterator) {
         DataUtilities.close(iterator);
     }
 
-    protected Node encode(Object object, XSDNamedComponent component) {
+    protected Node encode(final Object object, final XSDNamedComponent component) {
         return encode(object, component, null);
     }
 
-    protected Node encode(Object object, XSDNamedComponent component, XSDTypeDefinition container) {
-        if (component instanceof XSDElementDeclaration element) {
-
+    protected Node encode(final Object object, final XSDNamedComponent component, final XSDTypeDefinition container) {
+        if (component instanceof final XSDElementDeclaration element) {
             return encoder.encode(object, element, doc, container);
-        } else if (component instanceof XSDAttributeDeclaration attribute) {
 
+        } else if (component instanceof final XSDAttributeDeclaration attribute) {
             return encoder.encode(object, attribute, doc, container);
         }
 
         return null;
     }
 
-    protected void start(Element element, XSDElementDeclaration declaration) throws SAXException {
+    protected void start(final Element element, final XSDElementDeclaration declaration) throws SAXException {
         String uri, local;
 
         if (element.getLocalName() != null) {
@@ -1148,37 +1142,37 @@ public class Encoder {
         } else {
             // namespace unaware dom tree
             local = element.getNodeName();
-            if (local.contains(":")) {
-                String[] split = local.split(":");
-                local = split[1];
-                uri = namespaces.getURI(split[0]);
+            final int qnSepIx = local.indexOf(':');
+            if (qnSepIx > -1) {
+                final String prefix = local.substring(0, qnSepIx);
+                uri = namespaces.getURI(prefix);
+                local = local.substring(qnSepIx + 1);
+
             } else {
                 uri = null;
             }
         }
         String qName = local;
 
-        NamespaceSupport namespaces = this.namespaces;
-
         // declaration == null -> gml3 envelope encoding test failing
         // declaration.getSchema() == null -> wfs 2.0 feature collection encoding test failing
         if (forceQualified(declaration)) {
-            uri = uri != null ? uri : namespaces.getURI("");
+            uri = uri != null ? uri : namespaces.getURI(DEFAULT_NS_PREFIX);
             qName = namespaces.getPrefix(uri) + ":" + qName;
 
         } else {
-            uri = "";
+            uri = NULL_NS_URI;
         }
 
-        DOMAttributes atts = new DOMAttributes(element.getAttributes(), namespaces);
+        final DOMAttributes atts = new DOMAttributes(element.getAttributes(), namespaces);
         serializer.startElement(uri, local, qName, atts);
 
         // write out any text
         for (int i = 0; i < element.getChildNodes().getLength(); i++) {
-            Node node = element.getChildNodes().item(i);
+            final Node node = element.getChildNodes().item(i);
 
             if (node instanceof Text text) {
-                String data = XMLUtils.removeXMLInvalidChars(text.getData());
+                final String data = XMLUtils.removeXMLInvalidChars(text.getData());
                 char[] ch = data.toCharArray();
                 serializer.characters(ch, 0, ch.length);
             }
@@ -1186,11 +1180,11 @@ public class Encoder {
 
         // write out any child elements
         for (int i = 0; i < element.getChildNodes().getLength(); i++) {
-            Node node = element.getChildNodes().item(i);
+            final Node node = element.getChildNodes().item(i);
 
             if (node instanceof Element child) {
-                QName childName = new QName(child.getNamespaceURI(), child.getNodeName());
-                XSDElementDeclaration childDecl =
+                final QName childName = new QName(child.getNamespaceURI(), child.getNodeName());
+                final XSDElementDeclaration childDecl =
                         declaration != null ? Schemas.getChildElementDeclaration(declaration, childName) : null;
                 start(child, childDecl);
                 end(child, childDecl);
@@ -1202,11 +1196,11 @@ public class Encoder {
         this.namespaces.pushContext();
 
         if (uri != null) {
-            this.namespaces.declarePrefix("", uri);
+            this.namespaces.declarePrefix(DEFAULT_NS_PREFIX, uri);
         }
     }
 
-    boolean forceQualified(XSDElementDeclaration e) {
+    boolean forceQualified(final XSDElementDeclaration e) {
         return namespaceAware
                 && (e == null
                         || e.isGlobal()
@@ -1214,35 +1208,35 @@ public class Encoder {
                         || e.getSchema().getElementFormDefault() == XSDForm.QUALIFIED_LITERAL);
     }
 
-    protected void comment(Element element) throws SAXException, IOException {
+    protected void comment(final Element element) throws SAXException, IOException {
         if (serializer instanceof LexicalHandler handler) {
-            NodeList children = element.getChildNodes();
+            final NodeList children = element.getChildNodes();
 
             for (int i = 0; i < children.getLength(); i++) {
-                Node text = children.item(i);
-                String str = text.getNodeValue();
+                final Node text = children.item(i);
+                final String str = text.getNodeValue();
                 handler.comment(str.toCharArray(), 0, str.length());
             }
         }
     }
 
-    protected void end(Element element, XSDElementDeclaration declaration) throws SAXException {
+    protected void end(final Element element, final XSDElementDeclaration declaration) throws SAXException {
         // push off last context
         namespaces.popContext();
 
         String uri = element.getNamespaceURI();
-        String local = element.getLocalName();
+        final String local = element.getLocalName();
         String qName = element.getLocalName();
 
-        if (element.getPrefix() != null && !"".equals(element.getPrefix())) {
+        if (element.getPrefix() != null && !DEFAULT_NS_PREFIX.equals(element.getPrefix())) {
             qName = element.getPrefix() + ":" + qName;
         } else {
             if (forceQualified(declaration)) {
-                uri = uri != null ? uri : namespaces.getURI("");
+                uri = uri != null ? uri : namespaces.getURI(DEFAULT_NS_PREFIX);
                 if (uri != null) {
                     qName = namespaces.getPrefix(uri) + ":" + qName;
                 } else {
-                    uri = "";
+                    uri = NULL_NS_URI;
                 }
             }
         }
@@ -1250,31 +1244,13 @@ public class Encoder {
         serializer.endElement(uri, local, qName);
     }
 
-    private static class NullIterator implements Iterator {
-        @Override
-        public void remove() {
-            // do nothing
-        }
+    private static class SingleIterator<T> implements Iterator<T> {
+        private final T item;
+        private boolean more;
 
-        @Override
-        public boolean hasNext() {
-            return false;
-        }
-
-        @Override
-        public Object next() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-    }
-
-    private static class SingleIterator implements Iterator {
-        Object object;
-        boolean more;
-
-        public SingleIterator(Object object) {
-            this.object = object;
-            more = true;
+        public SingleIterator(final T item) {
+            this.item = item;
+            this.more = true;
         }
 
         @Override
@@ -1288,10 +1264,9 @@ public class Encoder {
         }
 
         @Override
-        public Object next() {
-            more = false;
-
-            return object;
+        public T next() {
+            this.more = false;
+            return item;
         }
     }
 
@@ -1300,23 +1275,32 @@ public class Encoder {
         public Object object;
         public XSDElementDeclaration element;
         public Element encoding;
-        public List<Object[]> children; // list of (element,iterator) tuples
+        public List<EncodingEntryChild> children;
         public EncodingEntry parent;
 
-        public EncodingEntry(Object object, XSDElementDeclaration element, EncodingEntry parent) {
+        public EncodingEntry(final Object object, final XSDElementDeclaration element, final EncodingEntry parent) {
             this.object = object;
             this.element = element;
             this.parent = parent;
+            this.children = new ArrayList<>();
+        }
+    }
 
-            children = new ArrayList<>();
+    private static class EncodingEntryChild<T> {
+        final XSDElementDeclaration elementDecl;
+        final Iterator<T> iterator;
+
+        public EncodingEntryChild(final XSDElementDeclaration elementDecl, final Iterator<T> iterator) {
+            this.elementDecl = elementDecl;
+            this.iterator = iterator;
         }
     }
 
     private static class DOMAttributes implements Attributes {
-        NamedNodeMap atts;
-        NamespaceSupport namespaces;
+        final NamedNodeMap atts;
+        final NamespaceSupport namespaces;
 
-        public DOMAttributes(NamedNodeMap atts, NamespaceSupport namespaces) {
+        public DOMAttributes(final NamedNodeMap atts, final NamespaceSupport namespaces) {
             this.atts = atts;
             this.namespaces = namespaces;
         }
@@ -1327,15 +1311,15 @@ public class Encoder {
         }
 
         @Override
-        public String getLocalName(int index) {
+        public String getLocalName(final int index) {
             String local = atts.item(index).getLocalName();
             if (nullOrEmpty(local)) {
                 // check the qname
-                String qName = getQName(index);
+                final String qName = getQName(index);
                 if (!nullOrEmpty(qName)) {
-                    int dot = qName.indexOf(':');
-                    if (dot > -1) {
-                        local = qName.split(":")[1];
+                    final int qnSepIdx = qName.indexOf(':');
+                    if (qnSepIdx > -1) {
+                        local = qName.substring(qnSepIdx + 1);
                     }
                 }
             }
@@ -1344,12 +1328,12 @@ public class Encoder {
         }
 
         @Override
-        public String getQName(int index) {
-            Node n = atts.item(index);
+        public String getQName(final int index) {
+            final Node n = atts.item(index);
 
             if (namespaces != null) {
-                String uri = n.getNamespaceURI();
-                String prefix = uri != null ? namespaces.getPrefix(uri) : null;
+                final String uri = n.getNamespaceURI();
+                final String prefix = uri != null ? namespaces.getPrefix(uri) : null;
 
                 if (prefix != null) {
                     return prefix + ":" + n.getLocalName();
@@ -1360,12 +1344,12 @@ public class Encoder {
         }
 
         @Override
-        public String getType(int index) {
+        public String getType(final int index) {
             return "CDATA"; // TODO: this properly
         }
 
         @Override
-        public String getURI(int index) {
+        public String getURI(final int index) {
             String ns = atts.item(index).getNamespaceURI();
             if (ns == null) {
                 ns = XMLUtils.qName(getQName(index), namespaces).getNamespaceURI();
@@ -1375,35 +1359,35 @@ public class Encoder {
         }
 
         @Override
-        public String getValue(int index) {
+        public String getValue(final int index) {
             return atts.item(index).getNodeValue();
         }
 
         @Override
-        public int getIndex(String qName) {
-            String pre = null;
+        public int getIndex(final String qName) {
+            String prefix = null;
             String local = null;
 
-            if (qName.lastIndexOf(':') != -1) {
-                String[] split = qName.split(":");
-                pre = split[0];
-                local = split[1];
+            final int qnSepIdx = qName.lastIndexOf(':');
+            if (qnSepIdx > -1) {
+                prefix = qName.substring(0, qnSepIdx);
+                local = qName.substring(qnSepIdx + 1);
             } else {
-                pre = "";
+                prefix = DEFAULT_NS_PREFIX;
                 local = qName;
             }
 
             for (int i = 0; i < atts.getLength(); i++) {
-                Node att = atts.item(i);
+                final Node att = atts.item(i);
 
                 if (att.getLocalName().equals(local)) {
-                    String apre = att.getPrefix();
+                    String attPrefix = att.getPrefix();
 
-                    if (apre == null) {
-                        apre = "";
+                    if (attPrefix == null) {
+                        attPrefix = DEFAULT_NS_PREFIX;
                     }
 
-                    if (pre.equals(apre)) {
+                    if (prefix.equals(attPrefix)) {
                         return i;
                     }
                 }
@@ -1413,18 +1397,18 @@ public class Encoder {
         }
 
         @Override
-        public String getType(String qName) {
+        public String getType(final String qName) {
             return getType(getIndex(qName));
         }
 
         @Override
-        public String getValue(String qName) {
+        public String getValue(final String qName) {
             return getValue(getIndex(qName));
         }
 
         @Override
-        public int getIndex(String uri, String localName) {
-            if (uri == null || uri.equals("")) {
+        public int getIndex(final String uri, final String localName) {
+            if (uri == null || uri.equals(NULL_NS_URI)) {
                 return getIndex(localName);
             }
 
@@ -1432,20 +1416,20 @@ public class Encoder {
         }
 
         @Override
-        public String getType(String uri, String localName) {
+        public String getType(final String uri, final String localName) {
             return getType(getIndex(uri, localName));
         }
 
         @Override
-        public String getValue(String uri, String localName) {
+        public String getValue(final String uri, final String localName) {
             return getValue(getIndex(uri, localName));
         }
 
-        boolean nullOrEmpty(String val) {
-            return val == null || "".equals(val);
+        boolean nullOrEmpty(final String val) {
+            return val == null || val.isEmpty();
         }
 
-        String emptyIfNull(String val) {
+        String emptyIfNull(final String val) {
             return val != null ? val : "";
         }
     }
@@ -1472,9 +1456,9 @@ public class Encoder {
     @SuppressWarnings("unchecked")
     private static class MatchComparator implements Comparator<Object[]> {
         @Override
-        public int compare(Object[] match1, Object[] match2) {
-            Binding b1 = (Binding) match1[1];
-            Binding b2 = (Binding) match2[1];
+        public int compare(final Object[] match1, final Object[] match2) {
+            final Binding b1 = (Binding) match1[1];
+            final Binding b2 = (Binding) match2[1];
 
             if (b1.getType() != b2.getType()) {
                 if (b2.getType().isAssignableFrom(b1.getType())) {
@@ -1487,11 +1471,11 @@ public class Encoder {
             }
 
             // use binding comparability
-            if (b1 instanceof Comparable comparable) {
+            if (b1 instanceof final Comparable comparable) {
                 return comparable.compareTo(b2);
             }
 
-            if (b2 instanceof Comparable comparable) {
+            if (b2 instanceof final Comparable comparable) {
                 return -1 * comparable.compareTo(b1);
             }
 

@@ -78,6 +78,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /**
  * An XMLEncoder for Filters and Expressions.
  *
@@ -142,7 +144,7 @@ public class FilterTransformer extends TransformerBase {
             Set<Identifier> fids = filter.getIdentifiers();
             for (Identifier fid : fids) {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute(null, "fid", "fid", null, fid.toString());
+                atts.addAttribute(NULL_NS_URI, "fid", "fid", "", fid.toString());
                 element("FeatureId", null, atts);
             }
             return extraData;
@@ -279,9 +281,9 @@ public class FilterTransformer extends TransformerBase {
             Expression expression = filter.getExpression();
 
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute("", "wildCard", "wildCard", "", wcm);
-            atts.addAttribute("", "singleChar", "singleChar", "", wcs);
-            atts.addAttribute("", "escape", "escape", "", esc);
+            atts.addAttribute(NULL_NS_URI, "wildCard", "wildCard", "", wcm);
+            atts.addAttribute(NULL_NS_URI, "singleChar", "singleChar", "", wcs);
+            atts.addAttribute(NULL_NS_URI, "escape", "escape", "", esc);
 
             start("PropertyIsLike", atts);
 
@@ -311,7 +313,7 @@ public class FilterTransformer extends TransformerBase {
             AttributesImpl atts = new AttributesImpl();
             if (filter.getNilReason() != null) {
                 atts.addAttribute(
-                        "", "nilReason", "nilReason", "", filter.getNilReason().toString());
+                        NULL_NS_URI, "nilReason", "nilReason", "", filter.getNilReason().toString());
             }
 
             String type = "PropertyIsNil";
@@ -537,7 +539,7 @@ public class FilterTransformer extends TransformerBase {
             String type = "Function";
 
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute("", "name", "name", "", expression.getName());
+            atts.addAttribute(NULL_NS_URI, "name", "name", "", expression.getName());
             start(type, atts);
 
             for (org.geotools.api.filter.expression.Expression parameter : expression.getParameters()) {

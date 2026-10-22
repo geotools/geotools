@@ -1152,16 +1152,27 @@ public class Encoder {
                 uri = null;
             }
         }
-        String qName = local;
 
         // declaration == null -> gml3 envelope encoding test failing
         // declaration.getSchema() == null -> wfs 2.0 feature collection encoding test failing
+        final String qName;
         if (forceQualified(declaration)) {
-            uri = uri != null ? uri : namespaces.getURI(DEFAULT_NS_PREFIX);
-            qName = namespaces.getPrefix(uri) + ":" + qName;
+            final String uriPrefix;
+            if (uri == null) {
+                uriPrefix = DEFAULT_NS_PREFIX;
+                uri = namespaces.getURI(uriPrefix);
+            } else {
+                uriPrefix = namespaces.getPrefix(uri);
+            }
 
+            if (uriPrefix != null && !DEFAULT_NS_PREFIX.equals(uriPrefix)) {
+                qName = uriPrefix + ":" + local;
+            } else {
+                qName = local;
+            }
         } else {
             uri = NULL_NS_URI;
+            qName = local;
         }
 
         final DOMAttributes atts = new DOMAttributes(element.getAttributes(), namespaces);
@@ -1226,18 +1237,28 @@ public class Encoder {
 
         String uri = element.getNamespaceURI();
         final String local = element.getLocalName();
-        String qName = element.getLocalName();
 
+        final String qName;
         if (element.getPrefix() != null && !DEFAULT_NS_PREFIX.equals(element.getPrefix())) {
-            qName = element.getPrefix() + ":" + qName;
+            qName = element.getPrefix() + ":" + local;
         } else {
             if (forceQualified(declaration)) {
-                uri = uri != null ? uri : namespaces.getURI(DEFAULT_NS_PREFIX);
-                if (uri != null) {
-                    qName = namespaces.getPrefix(uri) + ":" + qName;
+                final String uriPrefix;
+                if (uri == null) {
+                    uriPrefix = DEFAULT_NS_PREFIX;
+                    uri = namespaces.getURI(uriPrefix);
                 } else {
-                    uri = NULL_NS_URI;
+                    uriPrefix = namespaces.getPrefix(uri);
                 }
+
+                if (uriPrefix != null && !DEFAULT_NS_PREFIX.equals(uriPrefix)) {
+                    qName = uriPrefix + ":" + local;
+                } else {
+                    qName = local;
+                }
+            } else {
+                uri = NULL_NS_URI;
+                qName = local;
             }
         }
 

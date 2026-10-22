@@ -852,10 +852,6 @@ public class Encoder {
             // root element, add schema locations if set
             if (!schemaLocations.isEmpty()) {
                 // declare the schema instance mapping
-                serializer.startPrefixMapping("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
-                serializer.endPrefixMapping("xsi");
-                namespaces.declarePrefix("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
-
                 final StringBuilder schemaLocation = new StringBuilder();
 
                 for (final Iterator<Map.Entry<String, String>> e = schemaLocations.entrySet().iterator(); e.hasNext(); ) {
@@ -1030,41 +1026,35 @@ public class Encoder {
     }
 
     private void setupNamespaces() throws SAXException {
+        for (final Map.Entry<String, String> prefixNsEntry : schema.getQNamePrefixToNamespaceMap().entrySet()) {
+            final String ns = prefixNsEntry.getValue();
+            if ((!W3C_XML_SCHEMA_INSTANCE_NS_URI.equals(ns)) && namespaces.getPrefix(ns) == null) {
+                String prefix = prefixNsEntry.getKey();
+                if (prefix == null) {
+                    prefix = DEFAULT_NS_PREFIX;
+                }
+                namespaces.declarePrefix(prefix, ns);
+            }
+        }
+
+        if (!schemaLocations.isEmpty()) {
+            // declare the schema instance namespace
+            namespaces.declarePrefix("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
+        }
+
+        if (namespaces.getURI(DEFAULT_NS_PREFIX) == null) {
+            // ensure a default namespace prefix is set
+            namespaces.declarePrefix(DEFAULT_NS_PREFIX, schema.getTargetNamespace());
+        }
+
         // write out all the namespace prefix value mappings
         for (final Enumeration<String> e = namespaces.getPrefixes(); e.hasMoreElements(); ) {
             final String prefix = e.nextElement();
             final String uri = namespaces.getURI(prefix);
 
-            if (XML_NS_PREFIX.equals(prefix)) {
-                continue;
+            if (!XML_NS_PREFIX.equals(prefix)) {
+                serializer.startPrefixMapping(prefix, uri);
             }
-            serializer.startPrefixMapping(prefix, uri);
-        }
-
-        for (final Map.Entry<String, String> prefixNsEntry : schema.getQNamePrefixToNamespaceMap().entrySet()) {
-            String prefix = prefixNsEntry.getKey();
-            if (prefix == null) {
-                prefix = DEFAULT_NS_PREFIX;
-            }
-            final String ns = prefixNsEntry.getValue();
-
-            if (W3C_XML_SCHEMA_INSTANCE_NS_URI.equals(ns)) {
-                continue;
-            }
-
-            // skip ones already registered
-            if (namespaces.getPrefix(ns) != null) {
-                continue;
-            }
-            serializer.startPrefixMapping(prefix, ns);
-            serializer.endPrefixMapping(prefix);
-
-            namespaces.declarePrefix(prefix, ns);
-        }
-
-        // ensure a default namespace prefix set
-        if (namespaces.getURI(DEFAULT_NS_PREFIX) == null) {
-            namespaces.declarePrefix(DEFAULT_NS_PREFIX, schema.getTargetNamespace());
         }
     }
 

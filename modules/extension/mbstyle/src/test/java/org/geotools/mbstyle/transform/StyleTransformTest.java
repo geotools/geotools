@@ -957,4 +957,22 @@ public class StyleTransformTest {
         assertTrue(filter.evaluate(poi("park", null)));
         assertFalse(filter.evaluate(poi("street", null)));
     }
+
+    @Test
+    public void testNotFilterEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "fill",
+                  "source": "src",
+                  "filter": ["!", ["has", "ref"]],
+                  "paint": { "fill-color": "#ff0000" }
+                }""");
+        assertEquals(1, fts.size());
+        assertEquals(1, fts.get(0).rules().size());
+        Filter filter = fts.get(0).rules().get(0).getFilter();
+        assertTrue(filter.evaluate(poi("park", null)));
+        assertFalse(filter.evaluate(poi("park", "A1")));
+    }
 }

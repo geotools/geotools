@@ -724,7 +724,7 @@ The expressions in this section can be used to add conditional logic to your sty
 !
 ^
 
-Logical negation. Returns true if the input is false, and false if the input is true.
+Logical negation. Returns true if the input is false, and false if the input is true. The same operator can be used as a layer ``filter``.
 
 ::
 
@@ -741,6 +741,10 @@ Logical negation. Returns true if the input is false, and false if the input is 
    * - basic functionality
      - >= 0.41.0
      - >= 20.0
+     - >= 3.0.0
+   * - layer filter
+     - >= 0.41.0
+     - >= 35.3
      - >= 3.0.0
 
 .. _expressions-!=:

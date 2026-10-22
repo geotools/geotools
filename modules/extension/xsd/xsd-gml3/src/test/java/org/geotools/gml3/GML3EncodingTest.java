@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -233,10 +234,21 @@ public class GML3EncodingTest extends XmlTestSupport {
 
         Encoder encoder = new Encoder(configuration);
         Document dom = encoder.encodeAsDOM(feature, GML.featureMember);
+
+        Element docElement = dom.getDocumentElement();
+        assertEquals(GML.featureMember.getLocalPart(), docElement.getLocalName());
+        assertEquals(GML.featureMember.getNamespaceURI(), docElement.getNamespaceURI());
+        assertEquals("gml", docElement.getPrefix());
+        assertEquals("gml:" + GML.featureMember.getLocalPart(), docElement.getNodeName());
+        assertFalse(docElement.hasAttribute("example"));
+
         Node featureNode = dom.getDocumentElement().getFirstChild();
         assertTrue(featureNode instanceof Element);
         Element featureElement = (Element) featureNode;
+        assertEquals(TEST.TestFeature.getLocalPart(), featureElement.getLocalName());
+        assertEquals(TEST.TestFeature.getNamespaceURI(), featureElement.getNamespaceURI());
+        assertNull(featureElement.getPrefix());
+        assertEquals(TEST.TestFeature.getLocalPart(), featureElement.getNodeName());
         assertTrue(featureElement.hasAttribute("example"));
-        assertFalse(dom.getDocumentElement().hasAttribute("example"));
     }
 }

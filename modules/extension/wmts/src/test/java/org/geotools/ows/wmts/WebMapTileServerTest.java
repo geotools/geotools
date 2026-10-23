@@ -16,16 +16,23 @@
  */
 package org.geotools.ows.wmts;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -306,8 +313,20 @@ public class WebMapTileServerTest {
 
     @Test
     public void testGetTile() throws ServiceException, IOException, NoSuchAuthorityCodeException, FactoryException {
-        URL url = new URL("https://sgx.geodatenzentrum.de/wmts_basemapde_schummerung");
-        WebMapTileServer wmts = new WebMapTileServer(url);
+        WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
+        server.start();
+        WebMapTileServer wmts;
+        try {
+            server.stubFor(get(urlPathEqualTo("/wmts_basemapde_schummerung"))
+                    .withQueryParam("REQUEST", equalTo("GetCapabilities"))
+                    .willReturn(aResponse()
+                            .withHeader("Content-Type", "application/xml")
+                            .withBody(Files.readAllBytes(TestData.file(null, "sgx_basemapde_schummerung.getcapa.xml")
+                                    .toPath()))));
+            wmts = new WebMapTileServer(new URL(server.baseUrl() + "/wmts_basemapde_schummerung"));
+        } finally {
+            server.stop();
+        }
         WMTSCapabilities capabilities = wmts.getCapabilities();
         WMTSLayer layer = capabilities.getLayer("de_basemapde_web_raster_hillshade");
         TileMatrixSet matrixSet = capabilities.getMatrixSet("GLOBAL_WEBMERCATOR");

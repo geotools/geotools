@@ -1344,9 +1344,24 @@ is-supported-script
 
 Returns ``true`` if the input string is expected to render legibly. Returns ``false`` if the input string contains sections that cannot be rendered without potential loss of meaning (e.g. Indic scripts that require complex text shaping, or right-to-left scripts if the ``mapbox-gl-rtl-text`` plugin is not in use in Mapbox GL JS).
 
+GeoTools draws complex and right-to-left scripts, so the expression returns ``true`` when the fonts installed in the operating system of the server can display every character of the string. A string in a script that no such font covers returns ``false``. Fonts that GeoServer loads from its data directory are not taken into account.
+
 ::
 
     ["is-supported-script", string]: boolean
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.45.0
+     - >= 35.3
+     - >= Not yet supported
 
 .. _expressions-resolved-locale:
 

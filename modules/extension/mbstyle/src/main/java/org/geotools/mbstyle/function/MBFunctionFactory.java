@@ -62,6 +62,7 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(MapBoxAnchorFunction.NAME);
         functionList.add(FontAlternativesFunction.NAME);
         functionList.add(MapBoxRoundFunction.NAME);
+        functionList.add(IsSupportedScriptFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -135,6 +136,8 @@ public class MBFunctionFactory implements FunctionFactory {
             f = new MapBoxFontWeightFunction();
         } else if (MapBoxRoundFunction.NAME.getFunctionName().equals(name)) {
             f = new MapBoxRoundFunction();
+        } else if (IsSupportedScriptFunction.NAME.getFunctionName().equals(name)) {
+            f = new IsSupportedScriptFunction();
         }
 
         if (f instanceof FunctionImpl fi) {

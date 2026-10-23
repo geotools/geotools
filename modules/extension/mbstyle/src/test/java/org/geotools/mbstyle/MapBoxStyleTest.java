@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.List;
 import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
@@ -103,5 +104,26 @@ public class MapBoxStyleTest {
                             .featureTypeStyles()
                             .size());
         }
+    }
+
+    /** A style with a visible background layer validates without problems. */
+    @Test
+    public void testValidateBackground() throws Exception {
+        String json = MapboxTestUtils.style(
+                """
+                {
+                  "id": "bg",
+                  "type": "background",
+                  "paint": { "background-color": "#cccccc" }
+                }""",
+                """
+                {
+                  "id": "f",
+                  "type": "fill",
+                  "source": "src",
+                  "paint": { "fill-color": "#ff0000" }
+                }""");
+        List<Exception> problems = MapBoxStyle.validate(new StringReader(json));
+        assertEquals(List.of(), problems);
     }
 }

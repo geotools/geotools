@@ -60,15 +60,15 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter implem
             final char c = pattern.charAt(i);
             if (!Character.isLetterOrDigit(c)) {
                 switch (c) {
-                    case '?':
+                    case '?' -> {
                         buffer.append('.');
                         continue;
-                    case '*':
+                    }
+                    case '*' -> {
                         buffer.append(".*");
                         continue;
-                    default:
-                        buffer.append('\\');
-                        break;
+                    }
+                    default -> buffer.append('\\');
                 }
             }
             buffer.append(c);

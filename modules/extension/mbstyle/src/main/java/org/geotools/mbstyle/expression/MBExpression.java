@@ -110,7 +110,7 @@ public abstract class MBExpression extends FunctionImpl {
     public static final List ramps = Arrays.asList("interpolate", "step");
 
     /* A list of string expression names */
-    public static final List string = Arrays.asList("concat", "downcase", "upcase");
+    public static final List string = Arrays.asList("concat", "downcase", "upcase", "is-supported-script");
 
     /* A list of types expression names */
     public static final List types = Arrays.asList(

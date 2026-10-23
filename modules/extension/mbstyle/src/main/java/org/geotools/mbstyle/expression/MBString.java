@@ -22,6 +22,7 @@ import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.mbstyle.function.IsSupportedScriptFunction;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 
@@ -93,6 +94,19 @@ public class MBString extends MBExpression {
     }
 
     /**
+     * Returns true when the server fonts can display every character of the input string. ["is-supported-script",
+     * string]: boolean
+     *
+     * @return script support expression
+     */
+    public Expression stringIsSupportedScript() {
+        if (json.size() != 2) {
+            throwUnexpectedArgumentCount(name, 1);
+        }
+        return ff.function(IsSupportedScriptFunction.NAME.getName(), parse.string(json, 1));
+    }
+
+    /**
      * Will return a function base on the mbexpression string name;
      *
      * @return expression based on mbexpression string name
@@ -106,6 +120,8 @@ public class MBString extends MBExpression {
                 return stringDowncase();
             case "upcase":
                 return stringUpcase();
+            case "is-supported-script":
+                return stringIsSupportedScript();
             default:
                 throw new MBFormatException(name + " is an unsupported string function");
         }

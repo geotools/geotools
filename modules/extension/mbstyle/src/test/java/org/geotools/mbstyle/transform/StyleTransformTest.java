@@ -975,4 +975,29 @@ public class StyleTransformTest {
         assertTrue(filter.evaluate(poi("park", null)));
         assertFalse(filter.evaluate(poi("park", "A1")));
     }
+
+    @Test
+    public void testIsSupportedScriptEndToEnd() throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {
+                    "text-font": ["Noto Sans Regular"],
+                    "text-field": [
+                      "case",
+                      ["is-supported-script", ["get", "kind"]],
+                      ["get", "kind"],
+                      "?"
+                    ]
+                  }
+                }""");
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        // a Latin label is displayable by the server fonts, so the case picks the native value
+        assertEquals("park", ts.getLabel().evaluate(poi("park", null), String.class));
+        // U+0378 is a permanently unassigned code point: no font has a glyph for it
+        assertEquals("?", ts.getLabel().evaluate(poi("A\u0378B", null), String.class));
+    }
 }

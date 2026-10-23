@@ -19,7 +19,13 @@ package org.geotools.xml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.StringReader;
@@ -28,6 +34,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -47,6 +54,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class XMLUtilsTest {
@@ -97,6 +105,19 @@ public class XMLUtilsTest {
         saxParser.parse(internal, handler);
 
         assertEquals(100, handler.count);
+    }
+
+    /** Parsers without JAXP 1.5 support (e.g. Apache Xerces) must still be usable. */
+    @Test
+    public void saxParserIgnoresUnsupportedAccessExternalSchema() throws Exception {
+        SAXParserFactory factory = mock(SAXParserFactory.class);
+        SAXParser parser = mock(SAXParser.class);
+        when(factory.newSAXParser()).thenReturn(parser);
+        doThrow(new SAXNotRecognizedException(XMLConstants.ACCESS_EXTERNAL_SCHEMA))
+                .when(parser)
+                .setProperty(eq(XMLConstants.ACCESS_EXTERNAL_SCHEMA), any());
+
+        assertSame(parser, XMLUtils.newSAXParser(factory));
     }
 
     /** XInclude namespace, used to spot an include element that was left in place. */

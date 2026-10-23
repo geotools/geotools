@@ -27,6 +27,7 @@ import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyledLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.mbstyle.layer.BackgroundMBLayer;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
@@ -101,6 +102,12 @@ public class MapBoxStyle {
         boolean hasVisibleLayer = false;
         for (MBLayer layer : layers) {
             if (!layer.visibility()) {
+                continue;
+            }
+            // MBStyle.transform() turns the background layer into the style background fill, so it has no per-layer
+            // transform: the full transform below checks it
+            if (layer instanceof BackgroundMBLayer) {
+                hasVisibleLayer = true;
                 continue;
             }
             try {

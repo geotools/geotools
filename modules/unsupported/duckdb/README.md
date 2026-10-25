@@ -10,7 +10,7 @@ The DuckDB DataStore provides read-focused access to DuckDB databases within the
 - **Native Geometry Support**: Works with DuckDB native `GEOMETRY` columns
 - **Spatial Queries**: Supports spatial filters through the GeoTools JDBC stack
 - **Guarded Public API**: Public access is restricted to the wrapped GeoTools datastore API
-- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, geometry simplification, and DuckDB resource limit settings
+- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, and DuckDB resource limit settings
 
 ## Security Model
 
@@ -56,7 +56,6 @@ SimpleFeatureSource source = store.getFeatureSource(typeNames[0]);
 Map<String, Object> params = new HashMap<>();
 params.put("dbtype", "duckdb");
 params.put("database", "/path/to/data.duckdb");
-params.put("simplification", true);
 params.put("screenmap", true);
 
 DataStore store = DataStoreFinder.getDataStore(params);
@@ -84,7 +83,6 @@ SimpleFeatureCollection features = source.getFeatures(filter);
 | **namespace** | String | No | Namespace URI to use for features |
 | **fetch size** | Integer | No | JDBC fetch size used for result streaming |
 | **screenmap** | Boolean | No | Enable screenmap support for rendering optimization (default: `true`) |
-| **simplification** | Boolean | No | Enable on-the-fly geometry simplification (default: `true`) |
 
 ## Relationship with GeoParquet
 

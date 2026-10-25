@@ -16,6 +16,10 @@
  */
 package org.geotools.data.duckdb;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -25,6 +29,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,13 +39,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import org.geotools.api.data.DataAccessFactory;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.decorate.Wrapper;
+import org.geotools.util.factory.Hints;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -324,6 +332,30 @@ public class DuckDBDataStoreFactoryTest {
             if (store != null) {
                 store.dispose();
             }
+        }
+    }
+
+    /** Stores saved with the removed "simplification" parameter still open, and do not simplify. */
+    @Test
+    public void testRemovedSimplificationParameterIsIgnored() throws Exception {
+        File database = new File(temporaryFolder.newFolder("duckdb-simplification"), "store.duckdb");
+        createSeedTable(database);
+        Map<String, Object> params = new HashMap<>();
+        params.put("dbtype", "duckdb");
+        params.put("database", database.getAbsolutePath());
+        params.put("simplification", Boolean.TRUE);
+
+        assertTrue(new DuckDBDataStoreFactory().canProcess(params));
+        DataStore store = DataStoreFinder.getDataStore(params);
+        try {
+            assertThat(store, instanceOf(DuckDBDataStore.class));
+            SimpleFeatureSource featureSource = store.getFeatureSource("existing");
+            assertEquals(1, featureSource.getCount(Query.ALL));
+            Set<RenderingHints.Key> hints = featureSource.getSupportedHints();
+            assertThat(hints, not(hasItem(Hints.GEOMETRY_SIMPLIFICATION)));
+            assertThat(hints, not(hasItem(Hints.GEOMETRY_GENERALIZATION)));
+        } finally {
+            store.dispose();
         }
     }
 

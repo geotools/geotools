@@ -277,9 +277,6 @@ class GeoParquetDataStoreFactoryDelegate extends AbstractDuckDBDataStoreFactory 
     /** Parameter for enabling/disabling screen map optimization for rendering. */
     public static final Param SCREENMAP = AbstractDuckDBDataStoreFactory.SCREENMAP;
 
-    /** Parameter for enabling/disabling geometry simplification when rendering. */
-    public static final Param SIMPLIFY = AbstractDuckDBDataStoreFactory.SIMPLIFY;
-
     /** Parameter for limiting DuckDB memory usage, e.g. '1GB'. */
     public static final Param MEMORY_LIMIT = AbstractDuckDBDataStoreFactory.MEMORY_LIMIT;
 

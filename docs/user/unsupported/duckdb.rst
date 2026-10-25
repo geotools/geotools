@@ -20,7 +20,7 @@ Features
 - **Native Geometry Support**: Works with DuckDB native ``GEOMETRY`` columns
 - **Spatial Queries**: Supports spatial filters through the GeoTools JDBC stack
 - **Guarded Execution Model**: Public access is restricted to a GeoTools-managed execution policy
-- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, geometry simplification, and DuckDB resource limit settings
+- **GeoTools JDBC Integration**: Supports namespace, fetch size, screenmap, and DuckDB resource limit settings
 - **DuckDB Resource Limits**: Supports per-store ``memory_limit`` and ``threads`` configuration
 
 Security Model
@@ -75,7 +75,6 @@ Query Example
    Map<String, Object> params = new HashMap<>();
    params.put("dbtype", "duckdb");
    params.put("database", "/path/to/data.duckdb");
-   params.put("simplification", true);
    params.put("screenmap", true);
 
    DataStore store = DataStoreFinder.getDataStore(params);
@@ -135,10 +134,12 @@ Parameters
      - Boolean
      - No
      - Enable screenmap support for rendering optimization (default: ``true``)
-   * - **simplification**
-     - Boolean
-     - No
-     - Enable on-the-fly geometry simplification (default: ``true``)
+
+Geometry simplification
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The store returns geometries as stored, and the renderer drops the points a map does not need. DuckDB runs in
+the same process, so simplifying there would not reduce data transfer, and would slow the query down.
 
 Configuration Rules
 -------------------

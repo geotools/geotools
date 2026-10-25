@@ -23,7 +23,6 @@ Features
 - **Partition Depth Control**: Configure how many levels of partitioning to use with the `max_hive_depth` parameter
 - **Spatial Queries**: Full support for spatial filters (intersects, contains, within, etc.)
 - **Attribute Filters**: Filter data based on attribute values
-- **Geometry Simplification**: Supports on-the-fly geometry simplification for rendering optimization
 - **GeoParquet Metadata**: Parses and utilizes the GeoParquet 'geo' metadata for schema information and optimizations
 - **Precise Geometry Types**: Extracts and uses specific geometry types (Point, LineString, etc.) from GeoParquet metadata
 - **Projection Support**: Handles coordinate reference systems properly
@@ -176,7 +175,6 @@ Parameter                     Type     Required  Description
 **aws_profile**               String   No        AWS profile name to load credentials from ``~/.aws/credentials``. Requires ``use_aws_credential_chain=true``.
 **endpoint**                  String   No        DuckDB S3 endpoint for S3-compatible services such as MinIO.
 **url_style**                 String   No        DuckDB S3 URL style; use ``path`` for path-style access.
-**simplify**                  Boolean  No        Enable geometry simplification for rendering optimization (default: ``true``)
 **namespace**                 String   No        Namespace URI to use for features
 ============================= ======== ========= ===========================================================
 

@@ -42,7 +42,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.AttributeType;
-import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -216,33 +215,6 @@ public class DuckDBDialectTest {
         Object converted = dialect.convertValue("not-a-time", descriptor);
 
         assertNull(converted);
-    }
-
-    @Test
-    public void testEncodeGeometryColumnGeneralizedFallsBackCleanlyWhenDistanceIsNull() {
-        DuckDBDialect dialect = createDialect();
-        GeometryDescriptor descriptor = Mockito.mock(GeometryDescriptor.class);
-        StringBuffer sql = new StringBuffer();
-
-        Mockito.when(descriptor.getLocalName()).thenReturn("geom");
-
-        dialect.encodeGeometryColumnGeneralized(descriptor, "features", 4326, sql, null);
-
-        assertEquals("ST_AsWKB(\"features\".\"geom\"::GEOMETRY)::BLOB", sql.toString());
-    }
-
-    @Test
-    public void testEncodeGeometryColumnGeneralizedUsesAliasWhenPresent() {
-        DuckDBDialect dialect = createDialect();
-        GeometryDescriptor descriptor = Mockito.mock(GeometryDescriptor.class);
-        StringBuffer sql = new StringBuffer();
-
-        Mockito.when(descriptor.getLocalName()).thenReturn("geom");
-
-        dialect.encodeGeometryColumnGeneralized(descriptor, "features", 4326, sql, 12.5);
-
-        assertEquals(
-                "ST_AsWKB(ST_SimplifyPreserveTopology(\"features\".\"geom\"::GEOMETRY, 12.5))::BLOB", sql.toString());
     }
 
     @Test

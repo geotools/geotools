@@ -35,8 +35,6 @@ public class DuckDBDataStoreFactory extends ForwardingDataStoreFactory<DuckDBJDB
 
     public static final JDBCDataStoreFactory.Param DB_PATH = DuckDBJDBCDataStoreFactory.DB_PATH;
 
-    public static final JDBCDataStoreFactory.Param SIMPLIFY = AbstractDuckDBDataStoreFactory.SIMPLIFY;
-
     public DuckDBDataStoreFactory() {
         super(new DuckDBJDBCDataStoreFactory());
     }

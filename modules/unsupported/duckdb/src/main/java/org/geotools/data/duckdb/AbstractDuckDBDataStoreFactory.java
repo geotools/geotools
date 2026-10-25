@@ -39,7 +39,7 @@ import org.geotools.jdbc.SQLDialect;
  *   <li>Common parameter definition and handling
  *   <li>DuckDB JDBC connection setup and configuration
  *   <li>Extension management
- *   <li>DataStore configuration (simplification, etc.)
+ *   <li>DataStore configuration (screenmap, resource limits)
  * </ul>
  *
  * <p>Subclasses like GeoParquetDataStoreFactory extend this to provide format-specific implementation details while
@@ -91,33 +91,6 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
             .advancedLevel()
             .build();
 
-    /**
-     * Enables usage of a simplification function, when the queries contain geometry simplification hints. The
-     * simplification function used depends on SIMPLIFICATION_METHOD setting, and is ST_Simplify by default.
-     */
-    public static final Param SIMPLIFY = new ParamBuilder("simplification")
-            .type(Boolean.class)
-            .title("Support on the fly geometry simplification")
-            .description(
-                    "When enabled, operations such as map rendering will pass a hint that will enable the usage of a simplification function")
-            .required(false)
-            .defaultValue(true)
-            .build();
-
-    // NOTE: not giving an option, see note on
-    // DuckdbDialect#encodeGeometryColumnSimplified()
-    // /** Simplification method to use if SIMPLIFY is true. By default ST_Simplify
-    // is used. */
-    // public static final Param SIMPLIFICATION_METHOD = new Param(
-    // "Method used to simplify geometries",
-    // SimplificationMethod.class,
-    // "Allows choosing the PostGIS simplification function to use, between
-    // ST_Simplify and
-    // ST_SimplifyPreserveTopology",
-    // false,
-    // SimplificationMethod.FAST,
-    // new KVP(Parameter.OPTIONS, Arrays.asList(SimplificationMethod.values())));
-
     /** Allows subclasses to add their specific parameters */
     protected abstract void addDatabaseSpecificParameters(Map<String, Object> parameters);
 
@@ -142,11 +115,9 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
         parameters.put(READ_ONLY.key, READ_ONLY);
         parameters.put(MEMORY_LIMIT.key, MEMORY_LIMIT);
         parameters.put(THREADS.key, THREADS);
-        parameters.put(SIMPLIFY.key, SIMPLIFY);
         parameters.put(SCREENMAP.key, SCREENMAP);
         // add these ones back, order matters for the webui
         parameters.put(FETCHSIZE.key, FETCHSIZE);
-        // parameters.put(SIMPLIFICATION_METHOD.key, SIMPLIFICATION_METHOD);
     }
 
     @Override
@@ -224,16 +195,6 @@ public abstract class AbstractDuckDBDataStoreFactory extends JDBCDataStoreFactor
 
         Boolean screenmap = (Boolean) SCREENMAP.lookUp(params);
         dialect.setScreenMapEnabled(screenmap == null || screenmap);
-
-        // check geometry simplification (on by default)
-        Boolean simplify = (Boolean) SIMPLIFY.lookUp(params);
-        dialect.setSimplifyEnabled(simplify == null || simplify);
-
-        // check preserving topology when simplifying geometries (off by default)
-        // REVISIT: see note in DuckbDialect#encodeGeometryColumnSimplified()
-        // SimplificationMethod simplificationMethod = (SimplificationMethod)
-        // SIMPLIFICATION_METHOD.lookUp(params);
-        // dialect.setTopologyPreserved(SimplificationMethod.PRESERVETOPOLOGY.equals(simplificationMethod));
 
         // Allow subclasses to perform additional setup
         return setupDataStore(dataStore, params);

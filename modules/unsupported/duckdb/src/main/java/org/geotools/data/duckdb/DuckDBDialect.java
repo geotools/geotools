@@ -78,7 +78,6 @@ import org.locationtech.jts.io.ParseException;
  *   <li>Filter and query translation
  *   <li>Extension management (spatial, etc.)
  *   <li>Optimized bounds calculations
- *   <li>Geometry simplification for rendering
  * </ul>
  *
  * <p>This base dialect is extended by format-specific dialects like {@code GeoParquetDialect} to provide specialized
@@ -96,12 +95,8 @@ public class DuckDBDialect extends BasicSQLDialect {
 
     private boolean screenMapEnabled = true;
 
-    private boolean simplifyEnabled = true;
-
     // null means "not probed yet"; true/false are stable cached outcomes.
     private volatile Boolean stSridAvailable;
-
-    // private boolean topologyPreserved;
 
     protected DuckDBDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -121,14 +116,6 @@ public class DuckDBDialect extends BasicSQLDialect {
     public void setScreenMapEnabled(boolean screenMapEnabled) {
         this.screenMapEnabled = screenMapEnabled;
     }
-
-    public void setSimplifyEnabled(boolean simplifyEnabled) {
-        this.simplifyEnabled = simplifyEnabled;
-    }
-
-    //    public void setTopologyPreserved(boolean topologyPreserved) {
-    //        this.topologyPreserved = topologyPreserved;
-    //    }
 
     public List<String> getDatabaseInitSql() {
         // DuckDB 1.5 warns unless users explicitly choose the old or new axis-order behavior for affected
@@ -164,10 +151,6 @@ public class DuckDBDialect extends BasicSQLDialect {
 
     @Override
     protected void addSupportedHints(Set<Hints.Key> hints) {
-        if (simplifyEnabled) {
-            hints.add(Hints.GEOMETRY_SIMPLIFICATION);
-            hints.add(Hints.GEOMETRY_GENERALIZATION);
-        }
         hints.add(Hints.FEATURE_2D);
         if (screenMapEnabled) {
             hints.add(Hints.SCREENMAP);
@@ -551,42 +534,6 @@ public class DuckDBDialect extends BasicSQLDialect {
             return "%s.%s".formatted(escapeName(prefix), escapeName(raw));
         }
         return escapeName(raw);
-    }
-
-    @Override
-    public void encodeGeometryColumnGeneralized(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
-
-        if (distance == null) {
-            encodeGeometryColumn(gatt, prefix, srid, null, sql);
-            return;
-        }
-
-        String geometryColumn = gatt.getLocalName();
-        sql.append("ST_AsWKB(ST_SimplifyPreserveTopology(");
-        sql.append(encodeColumnName(prefix, geometryColumn));
-        sql.append("::GEOMETRY, " + distance + "))::BLOB");
-    }
-
-    @Override
-    public void encodeGeometryColumnSimplified(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
-
-        if (simplifyEnabled && distance != null) {
-            // NOTE: gotta use ST_SimplifyPreserveTopology always, ST_Simplify() results in too many empty/invalid
-            // geometryies (as of duckdb 1.2)
-            // if (topologyPreserved) {
-            // force topology preserving simplification
-            encodeGeometryColumnGeneralized(gatt, prefix, srid, sql, distance);
-            //            } else {
-            //                String geometryColumn = gatt.getLocalName();
-            //                sql.append("ST_AsWKB(ST_Simplify(");
-            //                encodeColumnName(null, geometryColumn, sql);
-            //                sql.append("::GEOMETRY, " + distance + "))::BLOB");
-            //            }
-        } else { // fallback to no simplification
-            encodeGeometryColumn(gatt, prefix, srid, null, sql);
-        }
     }
 
     @Override

@@ -13,7 +13,6 @@ The GeoParquet DataStore provides read and query access to GeoParquet format dat
 - **Partition Depth Control**: Configure how many levels of partitioning to use with the `max_hive_depth` parameter
 - **Spatial Queries**: Full support for spatial filters (intersects, contains, within, etc.)
 - **Attribute Filters**: Filter data based on attribute values
-- **Geometry Simplification**: Supports on-the-fly geometry simplification for rendering optimization
 - **GeoParquet Metadata**: Parses and utilizes the GeoParquet 'geo' metadata for schema information and optimizations
 - **Precise Geometry Types**: Extracts and uses specific geometry types (Point, LineString, etc.) from GeoParquet metadata
 - **Projection Support**: Handles coordinate reference systems properly
@@ -156,7 +155,6 @@ SimpleFeatureCollection centralBuildings = buildings.getFeatures(filter);
 | **dbtype** | String | Yes | Must be "geoparquet" |
 | **uri** | String | Yes | URI to GeoParquet file or directory (supports file://, https://, s3://) |
 | **max_hive_depth** | Integer | No | Maximum depth of Hive partition hierarchy to use (null = all levels, 0 = none, 1+ = specific level) |
-| **simplify** | Boolean | No | Enable geometry simplification for rendering optimization (default: `true`) |
 | **namespace** | String | No | Namespace URI to use for features |
 | **use_aws_credential_chain** | Boolean | No | Use AWS SDK credential chain for S3 authentication (default: `false`) |
 | **aws_region** | String | No | AWS region for S3 access. Overrides the region from the credential chain. |
@@ -203,8 +201,6 @@ The GeoParquet module has strong typing for Coordinate Reference Systems (CRS):
 ## Optimized Operations
 
 - **Bounds calculation**: Uses GeoParquet metadata or specialized bbox columns when available, falling back to ST_Extent_Agg for general cases
-- **Geometry simplification**: Supports `ST_SimplifyPreserveTopology` for rendering optimization (`ST_Simplify` results in too many empty geometries
-    with the tolerance given by the GeoTools renderer as a Hint).
 - **Query pushdown**: Converts GeoTools filters to optimized SQL queries that filter at the data source
 - **Managed dataset access**: Uses internally managed DuckDB objects to query Parquet-backed datasets efficiently
 
@@ -215,7 +211,6 @@ The GeoParquet module has strong typing for Coordinate Reference Systems (CRS):
 - For performance reasons, it's recommended to use a persistent DuckDB database when working with very large files repeatedly
 - For remote files, the httpfs extension handles HTTP(S) and S3 communication
 - Each GeoParquet file in a directory appears as a separate feature type in the DataStore
-- On-the-fly geometry simplification uses ST_SimplifyPreserveTopology for best results with rendering
 
 ## Implemented Features
 

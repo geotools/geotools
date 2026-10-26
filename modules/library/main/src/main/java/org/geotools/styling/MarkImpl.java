@@ -64,7 +64,7 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
         LOGGER.fine("creating defaultMark");
 
         try {
-            StyleFactory sfac = new StyleFactoryImpl();
+            StyleFactory sfac = new StyleFactoryImpl(filterFactory);
             fill = FillImpl.cast(sfac.getDefaultFill());
             stroke = StrokeImpl.cast(sfac.getDefaultStroke());
 

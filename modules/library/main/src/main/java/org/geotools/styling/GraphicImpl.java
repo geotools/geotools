@@ -34,10 +34,8 @@ import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.style.Symbol;
 import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
-import org.geotools.util.factory.GeoTools;
 
 /**
  * Direct implementation of Graphic.
@@ -140,7 +138,8 @@ public class GraphicImpl
 
     /** Creates a new instance of DefaultGraphic */
     protected GraphicImpl() {
-        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+        // the factory is not used, so skip the lookup
+        this((FilterFactory) null);
     }
 
     public GraphicImpl(FilterFactory factory) {

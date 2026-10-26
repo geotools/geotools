@@ -19,7 +19,12 @@ package org.geotools.styling.visitor;
 
 import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
 
-/** RenderingSelectorStyleVisitor implementation meant to be used when rendering maps * */
+/**
+ * RenderingSelectorStyleVisitor implementation meant to be used when rendering maps
+ *
+ * @deprecated StreamingRenderer no longer uses it. It will be removed in a future release.
+ */
+@Deprecated(forRemoval = true)
 public class MapRenderingSelectorStyleVisitor extends RenderingSelectorStyleVisitor {
 
     @Override

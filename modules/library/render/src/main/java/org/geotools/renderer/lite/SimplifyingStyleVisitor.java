@@ -20,8 +20,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Rule;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.FeatureTypeStyleImpl;
@@ -44,15 +46,12 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
                 new SimplifyingFilterVisitor());
     }
 
-    SimplifyingStyleVisitor(FeatureType schema) {
-        super(
-                CommonFactoryFinder.getStyleFactory(null),
-                CommonFactoryFinder.getFilterFactory(null),
-                getFilterSimplifier(schema));
+    SimplifyingStyleVisitor(StyleFactory styleFactory, FilterFactory filterFactory, FeatureType schema) {
+        super(styleFactory, filterFactory, getFilterSimplifier(filterFactory, schema));
     }
 
-    private static SimplifyingFilterVisitor getFilterSimplifier(FeatureType schema) {
-        SimplifyingFilterVisitor filterSimplifier = new SimplifyingFilterVisitor();
+    private static SimplifyingFilterVisitor getFilterSimplifier(FilterFactory filterFactory, FeatureType schema) {
+        SimplifyingFilterVisitor filterSimplifier = new SimplifyingFilterVisitor(filterFactory);
         filterSimplifier.setFeatureType(schema);
         return filterSimplifier;
     }

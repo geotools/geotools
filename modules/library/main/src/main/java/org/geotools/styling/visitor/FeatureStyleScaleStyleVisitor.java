@@ -29,7 +29,10 @@ import org.geotools.util.logging.Logging;
  *
  * <p>It reads the options {@link FeatureTypeStyle#MAX_SCALE_DENOMINATOR} and
  * {@link FeatureTypeStyle#MIN_SCALE_DENOMINATOR} from the current FeatureTypeStyle being visited.
+ *
+ * @deprecated StreamingRenderer no longer uses it. It will be removed in a future release.
  */
+@Deprecated(forRemoval = true)
 public class FeatureStyleScaleStyleVisitor extends DuplicatingStyleVisitor {
 
     private static final Logger LOGGER = Logging.getLogger(FeatureStyleScaleStyleVisitor.class);

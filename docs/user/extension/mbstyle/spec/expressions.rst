@@ -1098,6 +1098,10 @@ Selects the output whose label value matches the input value, or the fallback va
      - >= 0.41.0
      - >= 20.0
      - >= 3.0.0
+   * - array labels such as ``[2, 4]``
+     - >= 0.41.0
+     - >= 35.3
+     - >= 3.0.0
 
 .. _expressions.ramps_scales_curves:
 

@@ -139,6 +139,14 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     private boolean rangeSimplicationEnabled = false;
 
+    /** Creates a visitor that uses the default filter factory. */
+    public SimplifyingFilterVisitor() {}
+
+    /** Creates a visitor that builds the simplified filters with the given factory. */
+    public SimplifyingFilterVisitor(FilterFactory factory) {
+        super(factory);
+    }
+
     public void setFIDValidator(FIDValidator validator) {
         this.fidValidator = validator == null ? ANY_FID_VALID : validator;
     }

@@ -23,6 +23,7 @@ import org.geotools.styling.StyleBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
+@SuppressWarnings("removal")
 public class FeatureStyleScaleStyleVisitorTest {
 
     @Test

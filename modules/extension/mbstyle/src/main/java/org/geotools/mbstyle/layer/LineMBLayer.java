@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -36,12 +37,14 @@ import org.geotools.api.style.Stroke;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
 import org.geotools.text.Text;
+import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -66,6 +69,8 @@ import org.json.simple.JSONObject;
  * @author Reggie Beckwith (Boundless)
  */
 public class LineMBLayer extends MBLayer {
+
+    private static final Logger LOGGER = Logging.getLogger(LineMBLayer.class);
     private final JSONObject layout;
 
     private final JSONObject paint;
@@ -433,12 +438,11 @@ public class LineMBLayer extends MBLayer {
      *
      * <p>Units in line widths. Disabled by line-pattern.
      *
-     * @return A list of dash and gap lengths defining the pattern for a dashed line.
+     * @return A list of dash and gap lengths defining the pattern for a dashed line, or null for an expression
      */
     public List<Double> getLineDasharray() {
         List<Double> ret = new ArrayList<>();
-        if (paint.get("line-dasharray") != null && paint.get("line-dasharray") instanceof JSONArray) {
-            JSONArray a = (JSONArray) paint.get("line-dasharray");
+        if (paint.get("line-dasharray") instanceof JSONArray a && !(!a.isEmpty() && a.get(0) instanceof String)) {
             for (Object o : a) {
                 Number n = (Number) o;
                 ret.add(n.doubleValue());
@@ -466,6 +470,11 @@ public class LineMBLayer extends MBLayer {
         if (defn == null) {
             return null;
         } else if (defn instanceof JSONArray array) {
+            // a data expression (e.g. a zoom "step" selecting different dash patterns) has a string
+            // operator at position 0, while a plain dash pattern is an array of numbers
+            if (!array.isEmpty() && array.get(0) instanceof String) {
+                return expressionDasharray(array);
+            }
             List<Expression> expressionList = new ArrayList<>();
             for (int i = 0; i < array.size(); i++) {
                 expressionList.add(parse.number(array, i, 0));
@@ -477,6 +486,62 @@ public class LineMBLayer extends MBLayer {
             throw new MBFormatException("\"line-dasharray\": Expected array or function, but was "
                     + defn.getClass().getSimpleName());
         }
+    }
+
+    /**
+     * Converts a dash pattern expression (for example a zoom "step" or a "match") whose outputs are number arrays into
+     * one dash expression per array position, so the dash lengths follow the zoom or the feature at render time. When
+     * the outputs do not all share the same length, falls back to the last output as a fixed pattern.
+     */
+    @SuppressWarnings("unchecked") // json-simple JSONArray is a raw ArrayList
+    private List<Expression> expressionDasharray(JSONArray expression) {
+        List<JSONArray> patterns = new ArrayList<>();
+        for (Object element : expression) {
+            JSONArray pattern = dashPattern(element);
+            if (pattern != null) {
+                patterns.add(pattern);
+            }
+        }
+        if (patterns.isEmpty()) {
+            throw new MBFormatException("\"line-dasharray\": unsupported expression " + expression);
+        }
+        // transposing needs every output array to have the same length
+        int length = patterns.get(0).size();
+        if (!patterns.stream().allMatch(p -> p.size() == length)) {
+            JSONArray last = patterns.get(patterns.size() - 1);
+            LOGGER.warning("Layer " + getId() + ": \"line-dasharray\" outputs have different lengths, using " + last
+                    + " for every zoom and feature: " + expression);
+            List<Expression> fixed = new ArrayList<>();
+            for (Object v : last) {
+                fixed.add(ff.literal(v));
+            }
+            return fixed;
+        }
+        // rebuild the expression once per dash position, substituting the scalar at that index for each stop array
+        List<Expression> perPosition = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            JSONArray scalarExpression = new JSONArray();
+            for (Object element : expression) {
+                JSONArray pattern = dashPattern(element);
+                scalarExpression.add(pattern != null ? pattern.get(i) : element);
+            }
+            perPosition.add(MBExpression.transformExpression(scalarExpression));
+        }
+        return perPosition;
+    }
+
+    /**
+     * Returns the number array of a ["literal", [..]] dash output, else null. A bare number array is not an output: in
+     * an expression it can only be a "match" label.
+     */
+    private static JSONArray dashPattern(Object element) {
+        if (element instanceof JSONArray array
+                && array.size() == 2
+                && "literal".equals(array.get(0))
+                && array.get(1) instanceof JSONArray inner) {
+            return inner;
+        }
+        return null;
     }
 
     /**

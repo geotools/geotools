@@ -910,6 +910,8 @@ Specifies the lengths of the alternating dashes and gaps that form the
 dash pattern. The lengths are later scaled by the line width. To convert
 a dash length to pixels, multiply the length by the current line width.
 
+GeoTools supports an expression, such as a zoom ``step`` or a ``match``, whose outputs are ``["literal", [...]]`` arrays. When the outputs have different lengths, the last one is used as a fixed pattern. Functions are not supported.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -924,7 +926,7 @@ a dash length to pixels, multiply the length by the current line width.
      - >= 2.4.0
    * - data-driven styling
      - Not yet supported
-     - >= 17.1
+     - >= 35.3
      - >= 2.4.0
 
 line-pattern

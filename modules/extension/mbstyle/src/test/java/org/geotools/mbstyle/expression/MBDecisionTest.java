@@ -256,6 +256,12 @@ public class MBDecisionTest extends AbstractMBExpressionTest {
     }
 
     @Test
+    public void testDecisionMatchBareArrayLabel() throws Exception {
+        final JSONObject j = getObjectByLayerId("decisionMatch", "layout");
+        assertEquals("arrayLabel", getExpressionEvaluation(j, "match-bareArrayLabel"));
+    }
+
+    @Test
     public void testDecisionMatch() throws Exception {
         final JSONObject j = getObjectByLayerId("decisionMatch", "layout");
         // get the match-thirdLabel, which should evaluate to "thirdLabel"

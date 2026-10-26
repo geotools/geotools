@@ -207,6 +207,12 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
+              "match-bareArrayLabel": ["match",
+                  "labelInArray",
+                  "aLabel", "firstLabel",
+                  ["myLabel", "labelInArray"], "arrayLabel",
+                  "defaultLabel"
+              ],
               "match-thirdLabel": ["match",
                   "myLabel",
                   "aLabel", "firstLabel",

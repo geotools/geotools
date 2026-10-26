@@ -289,10 +289,21 @@ public class MBDecision extends MBExpression {
         }
         Expression[] expressions = new Expression[json.size() - 1];
         for (int i = 1; i < json.size(); ++i) {
-            Expression expression = parse.string(json, i);
-            expressions[i - 1] = expression;
+            expressions[i - 1] = isLabelList(i) ? ff.literal(json.get(i)) : parse.string(json, i);
         }
         return ff.function("match", expressions);
+    }
+
+    /**
+     * Returns true when the match argument at the index is a bare array of label values, such as [2, 4]. Labels sit at
+     * the even positions before the default; an array starting with an expression name stays an expression.
+     */
+    private boolean isLabelList(int index) {
+        return index % 2 == 0
+                && index < json.size() - 1
+                && json.get(index) instanceof JSONArray label
+                && !label.isEmpty()
+                && !(label.get(0) instanceof String name && MBExpression.canCreate(name));
     }
 
     @Override

@@ -159,9 +159,6 @@ import org.geotools.renderer.style.StyleAttributeExtractor;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
-import org.geotools.styling.visitor.FeatureStyleScaleStyleVisitor;
-import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
-import org.geotools.styling.visitor.RenderingSelectorStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
@@ -1849,8 +1846,12 @@ public class StreamingRenderer implements GTRenderer {
      * @return true if the scale is compatible with the rule settings
      */
     private boolean isWithInScale(Rule r) {
-        return r.getMinScaleDenominator() - TOLERANCE <= scaleDenominator
-                && r.getMaxScaleDenominator() + TOLERANCE > scaleDenominator;
+        return isWithInScale(r.getMinScaleDenominator(), r.getMaxScaleDenominator(), scaleDenominator);
+    }
+
+    /** Returns true if the scale denominator is in the range, with a small tolerance. */
+    static boolean isWithInScale(double minScale, double maxScale, double scaleDenominator) {
+        return minScale - TOLERANCE <= scaleDenominator && maxScale + TOLERANCE > scaleDenominator;
     }
 
     /**
@@ -1867,22 +1868,19 @@ public class StreamingRenderer implements GTRenderer {
 
         LiteFeatureTypeStyle lfts;
         boolean foundComposite = false;
-        // apply the rendering map selector {@MapRenderingSelectorStyleVisitor} and scale visitors
-        // {@FeatureStyleScaleStyleVisitor} to the style
-        Style style = applyStyleVisitors(layer);
 
         FeatureType schema = layer.getFeatureSource().getSchema();
-        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
-            if (isFeatureTypeStyleActive(schema, fts)) {
+        for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
+            if (fts != null && isFeatureTypeStyleActive(schema, fts)) {
 
-                SimplifyingStyleVisitor simplifier = new SimplifyingStyleVisitor(schema);
-                fts.accept(simplifier);
-                fts = (FeatureTypeStyle) simplifier.getCopy();
+                // copy only the rules drawn at this scale
+                fts = new MapScaleStyleVisitor(STYLE_FACTORY, filterFactory, schema, scaleDenominator).copyForMap(fts);
+                if (fts == null) continue;
 
                 // DJB: this FTS is compatible with this FT.
 
                 // get applicable rules at the current scale
-                List<List<Rule>> splittedRules = splitRules(fts);
+                List<List<Rule>> splittedRules = splitRules(fts, false);
                 List<Rule> ruleList = splittedRules.get(0);
                 List<Rule> elseRuleList = splittedRules.get(1);
 
@@ -1942,30 +1940,6 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     /**
-     * Applies the style visitors to the layer style, returning a new style with the modifications applied.
-     *
-     * <p>This method is used to apply the rendering map selector {@MapRenderingSelectorStyleVisitor} and scale visitors
-     * {@FeatureStyleScaleStyleVisitor} to the style.
-     *
-     * @param layer The layer whose style is to be modified.
-     * @return A new Style object with the modifications applied.
-     */
-    private static Style applyStyleVisitors(Layer layer) {
-        // check if any <VendorOption name="renderingMap">false</VendorOption>
-        // is present in the style removing style's elements not meant to be applied
-        // to the data
-        RenderingSelectorStyleVisitor selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
-        layer.getStyle().accept(selectorStyleVisitor);
-        Style style = (Style) selectorStyleVisitor.getCopy();
-        // Set the max and min scale denominators from the parent feature style to the children rules
-        // if they are set on the vendor options.
-        FeatureStyleScaleStyleVisitor scaleStyleVisitor = new FeatureStyleScaleStyleVisitor();
-        style.accept(scaleStyleVisitor);
-        style = (Style) scaleStyleVisitor.getCopy();
-        return style;
-    }
-
-    /**
      * Returns true if the ScreenMap optimization can be applied given the current renderer and configuration and the
      * style to be applied
      */
@@ -1994,12 +1968,13 @@ public class StreamingRenderer implements GTRenderer {
                                 || fts.featureTypeNames().stream().anyMatch(tn -> FeatureTypes.matches(ftype, tn)));
     }
 
-    private List<List<Rule>> splitRules(FeatureTypeStyle fts) {
+    /** Splits the rules into normal and else rules. With checkScale set, rules out of scale are left out. */
+    private List<List<Rule>> splitRules(FeatureTypeStyle fts, boolean checkScale) {
         List<Rule> ruleList = new ArrayList<>();
         List<Rule> elseRuleList = new ArrayList<>();
 
         for (Rule r : fts.rules())
-            if (isWithInScale(r)) {
+            if (!checkScale || isWithInScale(r)) {
                 if (r.isElseFilter()) {
                     elseRuleList.add(r);
                 } else {
@@ -2079,7 +2054,7 @@ public class StreamingRenderer implements GTRenderer {
             for (FeatureTypeStyle fts : styleLayer.getStyle().featureTypeStyles()) {
                 if (isFeatureTypeStyleActive(ftype, fts)) {
                     // get applicable rules at the current scale
-                    List<List<Rule>> splittedRules = splitRules(fts);
+                    List<List<Rule>> splittedRules = splitRules(fts, true);
                     List<Rule> ruleList = splittedRules.get(0);
                     List<Rule> elseRuleList = splittedRules.get(1);
 

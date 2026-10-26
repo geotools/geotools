@@ -81,8 +81,8 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
 
     // TODO: make container ready
     private final FilterFactory filterFactory;
-    private AnchorPointImpl anchorPoint = new AnchorPointImpl();
-    private DisplacementImpl displacement = new DisplacementImpl();
+    private AnchorPointImpl anchorPoint;
+    private DisplacementImpl displacement;
     private Expression rotation = null;
 
     public PointPlacementImpl() {
@@ -91,6 +91,8 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
 
     public PointPlacementImpl(FilterFactory factory) {
         filterFactory = factory;
+        anchorPoint = new AnchorPointImpl(factory);
+        displacement = new DisplacementImpl(factory);
         try {
             rotation = filterFactory.literal(Integer.valueOf(0));
         } catch (org.geotools.filter.IllegalFilterException ife) {

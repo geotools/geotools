@@ -16,16 +16,23 @@
  */
 package org.geotools.mbstyle.expression;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.xml.styling.SLDTransformer;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.junit.Test;
 
 public class MBLookupTest extends AbstractMBExpressionTest {
@@ -118,5 +125,18 @@ public class MBLookupTest extends AbstractMBExpressionTest {
         String xml = new SLDTransformer().transform(getFeatures.get(0));
         assertTrue(
                 xml.contains("<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
+    }
+
+    /**
+     * The renderer simplifies rule filters with no feature type. "has" must stay a PropertyExists call, since its
+     * result depends on the feature.
+     */
+    @Test
+    public void testHasNotFoldedBySimplifier() throws Exception {
+        JSONArray json = (JSONArray) new JSONParser().parse("[\"has\", \"name\"]");
+        Expression expr = MBExpression.transformExpression(json);
+        Expression simplified = (Expression) expr.accept(new SimplifyingFilterVisitor(), null);
+        assertThat(simplified, instanceOf(Function.class));
+        assertEquals("PropertyExists", ((Function) simplified).getName());
     }
 }

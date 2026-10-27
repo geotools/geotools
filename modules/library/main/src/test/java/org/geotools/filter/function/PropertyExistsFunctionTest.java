@@ -16,6 +16,9 @@
  */
 package org.geotools.filter.function;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+
 import java.util.Collections;
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -27,6 +30,7 @@ import org.geotools.api.metadata.citation.Citation;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.junit.After;
 import org.junit.Assert;
@@ -101,6 +105,20 @@ public class PropertyExistsFunctionTest {
 
         f.setParameters(list(ff.property("nonExistentProperty")));
         Assert.assertEquals(Boolean.FALSE, f.evaluate(pojo));
+    }
+
+    /** The result depends on the feature, so the simplifier keeps the call even with a literal property name. */
+    @Test
+    public void testNotFoldedBySimplifier() throws Exception {
+        Function function = ff.function("propertyexists", ff.literal("name"));
+        Expression simplified = (Expression) function.accept(new SimplifyingFilterVisitor(), null);
+        assertThat(simplified, instanceOf(Function.class));
+        SimpleFeatureType withName = DataUtilities.createType("ns", "name:String");
+        SimpleFeatureType withoutName = DataUtilities.createType("ns", "title:String");
+        Assert.assertEquals(
+                Boolean.TRUE, simplified.evaluate(SimpleFeatureBuilder.build(withName, new Object[] {"a"}, null)));
+        Assert.assertEquals(
+                Boolean.FALSE, simplified.evaluate(SimpleFeatureBuilder.build(withoutName, new Object[] {"a"}, null)));
     }
 
     @Test

@@ -29,11 +29,17 @@ import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
-/** A new function to check if a property exists. */
-public class PropertyExistsFunction extends FunctionExpressionImpl {
+/**
+ * A new function to check if a property exists.
+ *
+ * <p>Volatile because the result depends on the feature (or bean) being evaluated, even when the property name is a
+ * constant: a filter/style simplifier must not fold it to a literal by evaluating it against a null feature.
+ */
+public class PropertyExistsFunction extends FunctionExpressionImpl implements VolatileFunction {
 
     // public static FunctionName NAME = new FunctionNameImpl("PropertyExists","propertyName");
     public static FunctionName NAME = new FunctionNameImpl(

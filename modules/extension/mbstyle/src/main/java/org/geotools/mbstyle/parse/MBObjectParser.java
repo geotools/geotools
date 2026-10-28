@@ -1210,7 +1210,7 @@ public class MBObjectParser {
             return function.color();
         } else if (obj instanceof JSONArray array) {
             if (array.get(0) instanceof String) {
-                return MBExpression.transformExpression(array);
+                return convertColorLiterals(MBExpression.transformExpression(array));
             } else {
                 throw new MBFormatException(context + " color from JSONArray not supported");
             }
@@ -1220,6 +1220,35 @@ public class MBObjectParser {
                     + " limited to String or JSONObject but was "
                     + obj.getClass().getSimpleName());
         }
+    }
+
+    /**
+     * Turns rgb(), rgba(), hsl() and hsla() strings in a color expression into Color literals.
+     *
+     * <p>The renderer reads a color string without the {@link Hints#COLOR_DEFINITION} "CSS" hint, so it parses hex
+     * only. Color names stay strings: match keys such as "grassland" are string literals too.
+     */
+    private Expression convertColorLiterals(Expression expression) {
+        DuplicatingFilterVisitor converter = new DuplicatingFilterVisitor() {
+            @Override
+            public Object visit(Literal literal, Object extraData) {
+                if (literal.getValue() instanceof String value && isFunctionalColor(value)) {
+                    Color color = convertToColor(value);
+                    if (color != null) {
+                        return ff.literal(color);
+                    }
+                }
+                return super.visit(literal, extraData);
+            }
+        };
+        return (Expression) expression.accept(converter, null);
+    }
+
+    private static boolean isFunctionalColor(String value) {
+        return value.startsWith("rgb(")
+                || value.startsWith("rgba(")
+                || value.startsWith("hsl(")
+                || value.startsWith("hsla(");
     }
 
     /**

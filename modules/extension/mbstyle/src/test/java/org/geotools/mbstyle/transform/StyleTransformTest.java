@@ -567,6 +567,95 @@ public class StyleTransformTest {
         assertEquals("INDEPENDENT", ts.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
         assertEquals("false", ts.getOptions().get(org.geotools.api.style.PointSymbolizer.FALLBACK_ON_DEFAULT_MARK));
         assertNotNull(ts.getGraphic());
+        // text-offset is [0,0] here, so the label keeps the center anchor from text-anchor
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+    }
+
+    /** Without variable anchors the label keeps its text-anchor and only moves by the text-offset, as in Mapbox. */
+    @Test
+    public void testSymbolIconLabelKeepsTextAnchor() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-offset": [1.1, 0]
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+    }
+
+    /**
+     * text-variable-anchor ["left", "right"] becomes the displacementMode search E,W, with a maxDisplacement just above
+     * the offset length so the renderer runs the search.
+     */
+    @Test
+    public void testSymbolVariableAnchorDisplacementMode() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-size": 14,
+                "text-offset": [1.1, 0],
+                "text-variable-anchor": ["left", "right"]
+                """);
+        assertEquals("E,W", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        // the offset length is 14 * 1.1 = 15.4, rounded up plus one
+        assertEquals("17", ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+    }
+
+    /** Each of the eight anchors maps to its own direction; "center" and repeated anchors are dropped. */
+    @Test
+    public void testSymbolVariableAnchorAllSides() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "text-field": "{name}",
+                "text-variable-anchor": ["left", "right", "top", "bottom", "top-left", "top-right",
+                    "bottom-left", "bottom-right", "center", "left"]
+                """);
+        assertEquals("E,W,S,N,SE,SW,NE,NW", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+    }
+
+    /**
+     * A zoom step of variable anchors becomes the union of the anchors of all stops, since displacementMode cannot
+     * follow the zoom.
+     */
+    @Test
+    public void testSymbolVariableAnchorZoomExpression() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-offset": [1.1, 0],
+                "text-variable-anchor": [
+                  "step",
+                  ["zoom"],
+                  ["literal", ["bottom", "left", "right", "top"]],
+                  8,
+                  ["literal", ["center"]]
+                ]
+                """);
+        assertEquals("N,E,W,S", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        // the default text size 16 times the 1.1 offset is 17.6, rounded up plus one
+        assertEquals("19", ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+    }
+
+    /** Without text-variable-anchor, no displacementMode or maxDisplacement option is added. */
+    @Test
+    public void testSymbolNoVariableAnchorNoDisplacementMode() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "icon-image": "foo",
+                "text-field": "{name}",
+                "text-offset": [1.1, 0]
+                """);
+        assertNull(ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        assertNull(ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
     }
 
     @Test
@@ -853,6 +942,23 @@ public class StyleTransformTest {
     private List<FeatureTypeStyle> transformInline(String layer) throws ParseException {
         MBStyle mbStyle = new MBStyle(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
         return mbStyle.layers().get(0).transform(mbStyle);
+    }
+
+    /** Transforms a single point symbol layer with the given layout body and returns its (only) TextSymbolizer. */
+    private TextSymbolizer symbolFromLayout(String layoutBody) throws ParseException {
+        String layer =
+                """
+                {
+                  "id": "poi",
+                  "type": "symbol",
+                  "source": "src",
+                  "source-layer": "x",
+                  "layout": { %s }
+                }"""
+                        .formatted(layoutBody);
+        MBStyle mbStyle = new MBStyle(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        List<FeatureTypeStyle> fts = mbStyle.layers("src").get(0).transform(mbStyle);
+        return (TextSymbolizer) fts.get(0).rules().get(0).symbolizers().get(0);
     }
 
     @Test

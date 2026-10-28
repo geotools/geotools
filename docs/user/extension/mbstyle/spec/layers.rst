@@ -1914,6 +1914,34 @@ and down, while negative values indicate left and up.
      - 22.2
      - >= 2.4.0
 
+text-variable-anchor
+""""""""""""""""""""
+
+*Optional* :ref:`types-array`. *One of* center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right.
+*Requires* text-field, symbol-placement = point.
+
+To increase the chance of placing high-priority labels on the map, you can provide an array of
+text-anchor locations: the renderer will attempt to place the label at each location, in order,
+before moving onto the next label. To apply an offset, use the text-radial-offset or the
+two-dimensional text-offset.
+
+GeoTools moves the label to the other anchors when it collides with another label. A zoom
+expression is accepted: the anchors tried on collision are those of all the zoom stops together.
+
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.54.0
+     - >= 35.3
+     - Not yet supported
+
 text-allow-overlap
 """"""""""""""""""
 

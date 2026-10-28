@@ -27,9 +27,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
@@ -69,6 +71,7 @@ import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.text.Text;
+import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -85,6 +88,8 @@ import org.json.simple.JSONObject;
  * </ul>
  */
 public class SymbolMBLayer extends MBLayer {
+
+    private static final Logger LOGGER = Logging.getLogger(SymbolMBLayer.class);
 
     static final Font TINY_FONT;
 
@@ -1236,6 +1241,81 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Returns every name in text-variable-anchor, across all zoom stops, in order and without repeats. The caller drops
+     * the names that are not anchors, such as "step" or "center".
+     */
+    private List<String> getTextVariableAnchor() {
+        Object value = layout.get("text-variable-anchor");
+        if (!(value instanceof JSONArray)) {
+            return Collections.emptyList();
+        }
+        Set<String> anchors = new LinkedHashSet<>();
+        collectStrings((JSONArray) value, anchors);
+        return new ArrayList<>(anchors);
+    }
+
+    /** Returns true for the zoom form of text-variable-anchor, a "step" on zoom. */
+    private boolean isZoomDrivenVariableAnchor() {
+        return layout.get("text-variable-anchor") instanceof JSONArray array
+                && !array.isEmpty()
+                && "step".equals(array.get(0));
+    }
+
+    /** Recursively appends every String scalar found in the array (and any nested arrays) to {@code out}. */
+    private static void collectStrings(JSONArray array, Set<String> out) {
+        for (Object element : array) {
+            if (element instanceof JSONArray nested) {
+                collectStrings(nested, out);
+            } else if (element instanceof String s) {
+                out.add(s);
+            }
+        }
+    }
+
+    /**
+     * Maps text-variable-anchor positions to a comma-separated displacementMode value. The anchor names the side of the
+     * label placed AT the point, so the label sits on the opposite side: "left" (label to the right) -> E, "right" ->
+     * W, and so on. "center" and unknowns carry no directional flip and are dropped.
+     */
+    private String displacementModeFromVariableAnchor() {
+        List<String> modes = new ArrayList<>();
+        for (String anchor : getTextVariableAnchor()) {
+            String mode =
+                    switch (anchor.trim().toLowerCase()) {
+                        case "left" -> "E";
+                        case "right" -> "W";
+                        case "top" -> "S";
+                        case "bottom" -> "N";
+                        case "top-left" -> "SE";
+                        case "top-right" -> "SW";
+                        case "bottom-left" -> "NE";
+                        case "bottom-right" -> "NW";
+                        default -> null;
+                    };
+            if (mode != null && !modes.contains(mode)) {
+                modes.add(mode);
+            }
+        }
+        return String.join(",", modes);
+    }
+
+    /**
+     * The renderer's displacement search skips entirely unless maxDisplacement >= the offset magnitude (fontSize *
+     * offset in ems). So return just above that magnitude: enough to flip the label to the opposite side, not so much
+     * it wanders. fontSize is a zoom expression, resolved to a literal with a 16px fallback.
+     */
+    private int maxLabelDisplacement(Expression fontSize) {
+        double size = MBStyleTransformer.requireLiteral(
+                fontSize, Double.class, 16.0, "text-size (for text-variable-anchor displacement)", getId());
+        double[] offset = getTextOffset();
+        double magnitude = size * Math.hypot(offset[0], offset[1]);
+        if (magnitude <= 0) {
+            magnitude = size; // no offset: still allow a one-font-size flip
+        }
+        return (int) Math.ceil(magnitude) + 1;
+    }
+
+    /**
      * (Optional) Defaults to false. Requires text-field.
      *
      * <p>If true, the text will be visible even if it collides with other previously drawn symbols.
@@ -1820,6 +1900,23 @@ public class SymbolMBLayer extends MBLayer {
                 MBStyleTransformer.requireLiteral(symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
         Map<String, String> options = symbolizer.getOptions();
         options.put(TextSymbolizer.LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
+
+        // Mapbox text-variable-anchor: the sides the label may flip to when the preferred spot collides.
+        // maxDisplacement must be set too, or the renderer never searches the other anchors
+        if (labelPlacement instanceof PointPlacement) {
+            String displacementMode = displacementModeFromVariableAnchor();
+            if (!displacementMode.isEmpty()) {
+                options.put(TextSymbolizer.DISPLACEMENT_MODE_KEY, displacementMode);
+                options.put(TextSymbolizer.MAX_DISPLACEMENT_KEY, String.valueOf(maxLabelDisplacement(fontSize)));
+                if (isZoomDrivenVariableAnchor()) {
+                    LOGGER.warning("Mapbox 'text-variable-anchor' is zoom-driven on layer '"
+                            + getId()
+                            + "'; displacementMode is a static vendor option, so the union of all zoom stops ("
+                            + displacementMode
+                            + ") is applied at every zoom.");
+                }
+            }
+        }
 
         // text max angle - only for line placement
         // throw MBFormatException if point placement

@@ -22,8 +22,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
+import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.LineMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
@@ -114,6 +116,31 @@ public class MBObjectParserTest {
                 MapboxTestUtils.object("{'expr': { 'base': 1, 'stops': [ [ 0, true ], [ 10, true ], [ 22, true ] ] }}");
         Expression expression = parser.bool(object, "expr", true);
         assertTrue("Parse result must be a function", Function.class.isAssignableFrom(expression.getClass()));
+    }
+
+    /**
+     * Mapbox styles use CSS functional colors (rgb/rgba/hsl/hsla) as expression outputs. The renderer converts a fill
+     * string to a color without the CSS hint, so those must be turned into Color literals at parse time, while match
+     * keys (which are feature values, not colors) are left as strings.
+     */
+    @Test
+    public void testFunctionalColorsInExpression() throws ParseException {
+        JSONObject object = MapboxTestUtils.object("{'fill-color': ['match', ['get', 'kind'], "
+                + "'grassland', 'rgba(210, 239, 207, 1)', "
+                + "'water', 'hsl(200, 50%, 50%)', "
+                + "'#e2dfda']}");
+        Expression expression = parser.color(object, "fill-color", Color.black);
+
+        List<Expression> params = ((Function) expression).getParameters();
+        // keys stay strings, output colors become Color literals
+        assertEquals("kind", ((PropertyName) params.get(0)).getPropertyName());
+        assertEquals("grassland", params.get(1).evaluate(null));
+        assertEquals(new Color(210, 239, 207), params.get(2).evaluate(null));
+        assertEquals("water", params.get(3).evaluate(null));
+        // hsl(200, 50%, 50%) is (63.75, 148.75, 191.25) by the CSS formula
+        assertEquals(new Color(64, 149, 191), params.get(4).evaluate(null));
+        // the plain hex fallback still resolves to a color at render time
+        assertEquals(new Color(0xe2, 0xdf, 0xda), params.get(5).evaluate(null, Color.class));
     }
 
     /** Test parsing from a Mapbox enumeration property to a GeoTools expression. */

@@ -250,7 +250,8 @@ public class SymbolMBLayerTest {
         List<FeatureTypeStyle> featureTypeFont = fontLayer.transformInternal(fontStyle);
         TextSymbolizer text = (TextSymbolizer)
                 featureTypeFont.get(0).rules().get(0).symbolizers().get(0);
-        Font font = text.fonts().get(0);
+        // the base family comes after the exact face
+        Font font = text.fonts().get(1);
         Expression family = font.getFamily().get(0);
         assertThat(family, instanceOf(FontAlternativesFunction.class));
         FontAlternativesFunction fontAlternatives = (FontAlternativesFunction) family;

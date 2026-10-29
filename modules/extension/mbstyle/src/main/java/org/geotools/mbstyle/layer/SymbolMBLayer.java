@@ -1841,6 +1841,9 @@ public class SymbolMBLayer extends MBLayer {
         if (staticFonts != null) {
             for (String textFont : staticFonts) {
                 FontAttributesExtractor fae = new FontAttributesExtractor(textFont);
+                if (!fae.getBaseName().equals(textFont)) {
+                    fonts.add(exactFaceFont(ff.literal(textFont), fontSize));
+                }
                 Font font = sb.createFont(
                         ff.function(FontAlternativesFunction.NAME.getName(), ff.literal(fae.getBaseName())),
                         ff.literal(fae.isItalic() ? "italic" : "normal"),
@@ -1850,6 +1853,7 @@ public class SymbolMBLayer extends MBLayer {
             }
         } else if (textFont() != null) {
             Expression dynamicFont = textFont();
+            fonts.add(exactFaceFont(dynamicFont, fontSize));
             Font font = sb.createFont(
                     ff.function(
                             FontAlternativesFunction.NAME.getName(),
@@ -2042,6 +2046,18 @@ public class SymbolMBLayer extends MBLayer {
                 filter.semanticTypeIdentifiers(), // we only expect this to be applied to
                 // polygons
                 rules));
+    }
+
+    /**
+     * Returns a font for the exact face named, such as "Arial Black", at normal style and weight. The face carries its
+     * own weight and style. A missing face resolves to no font, so the next font in the list takes over.
+     */
+    private Font exactFaceFont(Expression faceName, Expression fontSize) {
+        return sf.createFont(
+                ff.function(FontAlternativesFunction.NAME.getName(), faceName),
+                ff.literal("normal"),
+                ff.literal("normal"),
+                fontSize);
     }
 
     /**

@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -243,7 +243,7 @@ public class FontCache {
      * Sans Bold" or "Noto Sans Bold Italic" thought (strips all font names containing "bold" and "italic", case
      * insesitive).
      *
-     * @return A list of font names with the same base name
+     * @return A list of font names with the same base name, the base face first, then the others by name
      */
     public List<String> getAlternatives(String name) {
         List<String> result = alternatives.get(name);
@@ -259,8 +259,11 @@ public class FontCache {
             for (Font font : fonts) {
                 collectAlternative(name, font.getName(), result);
             }
-            // leave further altered fonts down the line, base ones first
-            Collections.sort(result);
+            // the regular face goes first, ahead of script faces that also cover its characters, such as
+            // "Noto Sans CJK HK" for Latin text; a face named just like the base sorts first by name already
+            String regular = name + " Regular";
+            result.sort(
+                    Comparator.comparing((String n) -> !n.equals(regular)).thenComparing(Comparator.naturalOrder()));
             alternatives.put(name, result);
         }
 

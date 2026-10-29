@@ -26,8 +26,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +84,10 @@ import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.RasterMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.renderer.lite.LabelShieldTest;
+import org.geotools.renderer.style.FontCache;
+import org.geotools.renderer.style.SLDStyleFactory;
+import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.SLD;
 import org.hamcrest.CoreMatchers;
 import org.json.simple.JSONArray;
@@ -824,11 +830,12 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof TextSymbolizer);
         TextSymbolizer tsym = (TextSymbolizer) symbolizer;
 
-        assertEquals(1, tsym.fonts().size());
-        assertEquals(1, tsym.fonts().get(0).getFamily().size());
+        // the exact face first, then the base family
+        assertEquals(2, tsym.fonts().size());
+        assertEquals(1, tsym.fonts().get(1).getFamily().size());
 
         FontAlternativesFunction family =
-                (FontAlternativesFunction) tsym.fonts().get(0).getFamily().get(0);
+                (FontAlternativesFunction) tsym.fonts().get(1).getFamily().get(0);
         MapBoxFontBaseNameFunction familyBaseName =
                 (MapBoxFontBaseNameFunction) family.getParameters().get(0);
         assertEquals(
@@ -1004,12 +1011,60 @@ public class StyleTransformTest {
                   }
                 }""");
         TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
-        assertEquals(1, ts.fonts().size());
-        Function family = (Function) ts.fonts().get(0).getFamily().get(0);
+        assertEquals(2, ts.fonts().size());
+        Function exactFace = (Function) ts.fonts().get(0).getFamily().get(0);
+        Function family = (Function) ts.fonts().get(1).getFamily().get(0);
         Expression baseName = family.getParameters().get(0);
         Expression fontName = ((Function) baseName).getParameters().get(0);
-        assertEquals("Noto Sans Medium", fontName.evaluate(place(3), String.class));
-        assertEquals("Noto Sans Regular", fontName.evaluate(place(7), String.class));
+        SimpleFeature important = place(3);
+        SimpleFeature minor = place(7);
+        assertEquals("Noto Sans Medium", fontName.evaluate(important, String.class));
+        assertEquals("Noto Sans Regular", fontName.evaluate(minor, String.class));
+        assertEquals("Noto Sans", baseName.evaluate(important, String.class));
+        assertEquals("Noto Sans", baseName.evaluate(minor, String.class));
+        assertEquals("Noto Sans Medium", exactFace.getParameters().get(0).evaluate(important, String.class));
+    }
+
+    /** A face name with a weight renders with that exact face when it is installed. */
+    @Test
+    public void testExactFontFace() throws Exception {
+        registerFont(StyleTransformTest.class, "DejaVuSans-ExtraLight.ttf");
+        Font font = firstLabelFont("DejaVu Sans ExtraLight");
+        assertEquals("DejaVu Sans ExtraLight", font.getName());
+        assertFalse(font.isBold());
+    }
+
+    /** A heavy face that is not installed falls back to the bold base family. */
+    @Test
+    public void testMissingHeavyFontFace() throws Exception {
+        registerFont(LabelShieldTest.class, "Vera.ttf");
+        Font font = firstLabelFont("Bitstream Vera Sans Black");
+        assertEquals("Bitstream Vera Sans", font.getName());
+        assertTrue(font.isBold());
+    }
+
+    private static void registerFont(Class<?> base, String fileName) throws Exception {
+        try (InputStream is = TestData.getResource(base, fileName).openStream()) {
+            // drops font lists cached by earlier tests, which miss the font registered here
+            FontCache.getDefaultInstance().resetCache();
+            FontCache.getDefaultInstance().registerFont(Font.createFont(Font.TRUETYPE_FONT, is));
+        }
+    }
+
+    /** Returns the first Java font the renderer picks for a label using the given text-font. */
+    private Font firstLabelFont(String textFont) throws Exception {
+        List<FeatureTypeStyle> fts = transformInline(
+                """
+                {
+                  "id": "l",
+                  "type": "symbol",
+                  "source": "src",
+                  "layout": {"text-field": "{kind}", "text-font": ["%s"]}
+                }"""
+                        .formatted(textFont));
+        TextSymbolizer ts = getFirstSymbolizer(fts.get(0));
+        TextStyle2D style = (TextStyle2D) new SLDStyleFactory().createStyle(poi("shop", "1"), ts);
+        return style.getFonts()[0];
     }
 
     private SimpleFeature place(int minZoom) throws Exception {

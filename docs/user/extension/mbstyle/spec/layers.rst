@@ -1522,6 +1522,8 @@ text-font
 
 Font stack to use for displaying text. When ``text-font`` is set by an expression, GeoTools uses only the first font of each stack.
 
+GeoTools first looks for the exact face named, such as ``Arial Black``. It falls back to the family name without the weight and style words, here ``Arial``, when that face is not installed. Bold, ExtraBold, Black and Heavy then render bold, Italic and Oblique render italic, and other weights such as Medium and SemiBold render regular.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1

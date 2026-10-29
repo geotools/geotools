@@ -60,7 +60,10 @@ import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.label.LabelCacheItem.GraphicResize;
 import org.geotools.renderer.lite.LabelCache;
 import org.geotools.renderer.lite.RendererUtilities;
+import org.geotools.renderer.style.MarkStyle2D;
+import org.geotools.renderer.style.PointStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
+import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
@@ -1460,14 +1463,18 @@ public class LabelCacheImpl implements LabelCache {
 
         // check for overlaps and paint
         Rectangle2D transformed = transformBounds(tempTransform, painter.getFullLabelBounds());
-        if (!(displayArea.contains(transformed) || labelItem.isPartialsEnabled())
-                || labelItem.isConflictResolutionEnabled()
-                        && glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())) {
+        // an INDEPENDENT graphic (e.g. a POI icon beside its label) is drawn at the feature point, apart from the
+        // offset label: reserve it as a second box, instead of growing the label box over the gap between them
+        Rectangle2D iconBounds = independentGraphicBounds(labelItem, point);
+        boolean conflict = labelItem.isConflictResolutionEnabled()
+                && (glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround())
+                        || iconBounds != null && glyphs.labelsWithinDistance(iconBounds, labelItem.getSpaceAround()));
+        boolean inside = displayArea.contains(transformed) && (iconBounds == null || encloses(displayArea, iconBounds));
+        if (!(inside || labelItem.isPartialsEnabled()) || conflict) {
             return false;
         } else {
             // labelPoint only needed when a graphic is placed independently of the label
-            Coordinate labelPoint = labelItem.getTextStyle().getGraphic() != null
-                            && labelItem.getGraphicPlacement() == GraphicPlacement.INDEPENDENT
+            Coordinate labelPoint = iconBounds != null
                     ? new Coordinate(
                             point.getCoordinateSequence().getX(0),
                             point.getCoordinateSequence().getY(0))
@@ -1478,9 +1485,45 @@ public class LabelCacheImpl implements LabelCache {
                 painter.graphics.setColor(Color.RED);
                 painter.graphics.draw(transformed);
             }
-            if (labelItem.isConflictResolutionEnabled()) glyphs.addLabel(labelItem, transformed);
+            if (labelItem.isConflictResolutionEnabled()) {
+                glyphs.addLabel(labelItem, transformed);
+                if (iconBounds != null) glyphs.addLabel(labelItem, iconBounds);
+            }
             return true;
         }
+    }
+
+    /**
+     * Checks the box lies within the area, edges included. Unlike {@link Rectangle#contains(Rectangle2D)}, it accepts a
+     * box with no width or height, such as the one of a vertical line mark.
+     */
+    private static boolean encloses(Rectangle area, Rectangle2D box) {
+        return box.getMinX() >= area.getMinX()
+                && box.getMaxX() <= area.getMaxX()
+                && box.getMinY() >= area.getMinY()
+                && box.getMaxY() <= area.getMaxY();
+    }
+
+    /**
+     * Returns the screen bounds of an INDEPENDENT graphic painted at the feature point, or null when the item has no
+     * such graphic. Rotation and graphic resize are left out: the box only keeps other labels off the icon.
+     */
+    Rectangle2D independentGraphicBounds(LabelCacheItem labelItem, Point point) {
+        Style2D graphic = labelItem.getTextStyle().getGraphic();
+        if (labelItem.getGraphicPlacement() != GraphicPlacement.INDEPENDENT || graphic == null) {
+            return null;
+        }
+        // a mark comes already anchored and displaced around the origin, an image has its corner there
+        Rectangle dimensions = labelItem.getTextStyle().getGraphicDimensions();
+        double x = dimensions.getX();
+        double y = dimensions.getY();
+        if (graphic instanceof PointStyle2D image && !(graphic instanceof MarkStyle2D)) {
+            // same placement as StyledShapePainter
+            x += image.getDisplacementX() - image.getAnchorPointX() * dimensions.getWidth();
+            y += image.getDisplacementY() - (1 - image.getAnchorPointY()) * dimensions.getHeight();
+        }
+        return new Rectangle2D.Double(
+                point.getX() + x, point.getY() + y, dimensions.getWidth(), dimensions.getHeight());
     }
 
     /** Splits the polygon into its component lines and labels those, one by one */

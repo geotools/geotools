@@ -41,7 +41,7 @@ public class ShapeMarkFactory implements MarkFactory {
         shapes.put("backslash", new Line2D.Double(-0.5, 0.5, 0.5, -0.5));
 
         ExplicitBoundsShape dotShape = new ExplicitBoundsShape(new Ellipse2D.Double(-0.1, -0.1, 0.1, 0.1));
-        dotShape.setBounds(new Rectangle2D.Double(-0.5, 0.5, 1.0, 1.0));
+        dotShape.setBounds(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
         shapes.put("dot", dotShape);
 
         GeneralPath gp = new GeneralPath();

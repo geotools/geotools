@@ -53,8 +53,11 @@ import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Point;
 
 /**
  * This class performs the layouting and painting of the single label (leaving the label cache the task to sort labels
@@ -218,6 +221,16 @@ public class LabelPainter {
     }
 
     /**
+     * Returns true when an INDEPENDENT graphic is painted at the feature point, apart from the label: only point labels
+     * do so, other geometries draw the graphic on the label back.
+     */
+    private boolean isGraphicAtPoint() {
+        Geometry geometry = labelItem.getGeometry();
+        return labelItem.getGraphicPlacement() == INDEPENDENT
+                && (geometry instanceof Point || geometry instanceof MultiPoint);
+    }
+
+    /**
      * Get the straight label bounds, taking into account halo, shield and line wrapping. The result is cached until the
      * next {@link #setLabel(LabelCacheItem)} and the same instance is returned on subsequent calls: callers must treat
      * it as read-only and must not mutate the returned rectangle.
@@ -235,8 +248,8 @@ public class LabelPainter {
         bounds.add(bounds.getMinX() - haloRadius, bounds.getMinY() - haloRadius);
         bounds.add(bounds.getMaxX() + haloRadius, bounds.getMaxY() + haloRadius);
 
-        // if there is a shield, expand the bounds to account for it as well
-        if (labelItem.getTextStyle().getGraphic() != null) {
+        // if there is a shield, expand the bounds to account for it as well, unless it is reserved apart
+        if (labelItem.getTextStyle().getGraphic() != null && !isGraphicAtPoint()) {
             Rectangle2D area = labelItem.getTextStyle().getGraphicDimensions();
             // center the graphics on the labels back
             Rectangle2D shieldBounds;

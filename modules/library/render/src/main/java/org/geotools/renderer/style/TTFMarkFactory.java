@@ -115,7 +115,7 @@ public class TTFMarkFactory implements MarkFactory {
         tx.scale(1 / max, -1 / max);
         tx.translate(-bounds.getCenterX(), -bounds.getCenterY());
         ExplicitBoundsShape shape = new ExplicitBoundsShape(tx.createTransformedShape(s));
-        shape.setBounds(new Rectangle2D.Double(-0.5, 0.5, 1.0, 1.0));
+        shape.setBounds(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
         return shape;
     }
 

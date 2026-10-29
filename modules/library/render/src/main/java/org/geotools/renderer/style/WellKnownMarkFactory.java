@@ -78,12 +78,12 @@ public class WellKnownMarkFactory implements MarkFactory {
         crossPath.lineTo(0.5f, 0.125f);
 
         cross = new ExplicitBoundsShape(crossPath);
-        ((ExplicitBoundsShape) cross).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) cross).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         AffineTransform at = new AffineTransform();
         at.rotate(Math.PI / 4.0);
         X = new ExplicitBoundsShape(crossPath.createTransformedShape(at));
-        ((ExplicitBoundsShape) X).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) X).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         GeneralPath starPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         starPath.moveTo(-0.309f, -0.5f);
@@ -99,7 +99,7 @@ public class WellKnownMarkFactory implements MarkFactory {
         starPath.lineTo(-0.309f, -0.5f);
 
         star = new ExplicitBoundsShape(starPath);
-        ((ExplicitBoundsShape) star).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) star).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         GeneralPath trianglePath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         trianglePath.moveTo(0f, 1f);
@@ -112,7 +112,7 @@ public class WellKnownMarkFactory implements MarkFactory {
         trianglePath.transform(at);
 
         triangle = new ExplicitBoundsShape(trianglePath);
-        ((ExplicitBoundsShape) triangle).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) triangle).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         GeneralPath arrowPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         arrowPath.moveTo(0f, -.5f);
@@ -125,7 +125,7 @@ public class WellKnownMarkFactory implements MarkFactory {
         arrowPath.lineTo(0f, -.5f);
 
         arrow = new ExplicitBoundsShape(arrowPath);
-        ((ExplicitBoundsShape) arrow).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) arrow).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         GeneralPath hatchPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         hatchPath.moveTo(.55f, .57f);
@@ -147,7 +147,7 @@ public class WellKnownMarkFactory implements MarkFactory {
         hatchPath.lineTo(-.57f, .5f);
 
         hatch = new ExplicitBoundsShape(hatchPath);
-        ((ExplicitBoundsShape) hatch).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+        ((ExplicitBoundsShape) hatch).setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
 
         square = new Double(-.5, -.5, 1., 1.);
     }

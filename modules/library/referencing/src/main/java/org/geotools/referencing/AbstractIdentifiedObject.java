@@ -114,6 +114,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * {@link #NAME_COMPARATOR} implementation as a named class (rather than anonymous) for more predictable
      * serialization.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class NameComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
         @Serial
@@ -139,6 +140,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * {@link #IDENTIFIER_COMPARATOR} implementation as a named class (rather than anonymous) for more predictable
      * serialization.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class IdentifierComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
         @Serial
@@ -181,6 +183,7 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      * {@link #REMARKS_COMPARATOR} implementation as a named class (rather than anonymous) for more predictable
      * serialization.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class RemarksComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
         @Serial
@@ -341,66 +344,48 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
              *       so it should not change across implementations.
              */
             switch (key.hashCode()) {
-                // Fix case for common keywords. They are not used
-                // by this class, but are used by some subclasses.
-                case -1528693765:
+                case -1528693765 -> {
                     if (key.equalsIgnoreCase("anchorPoint")) key = "anchorPoint";
-                    break;
-                case -1805658881:
+                }
+                case -1805658881 -> {
                     if (key.equalsIgnoreCase("bursaWolf")) key = "bursaWolf";
-                    break;
-                case 109688209:
+                }
+                case 109688209 -> {
                     if (key.equalsIgnoreCase("operationVersion")) key = "operationVersion";
-                    break;
-                case 1479434472:
+                }
+                case 1479434472 -> {
                     if (key.equalsIgnoreCase("coordinateOperationAccuracy")) key = "coordinateOperationAccuracy";
-                    break;
-                case 1126917133:
+                }
+                case 1126917133 -> {
                     if (key.equalsIgnoreCase("positionalAccuracy")) key = "positionalAccuracy";
-                    break;
-                case 1127093059:
+                }
+                case 1127093059 -> {
                     if (key.equalsIgnoreCase("realizationEpoch")) key = "realizationEpoch";
-                    break;
-                case 1790520781:
+                }
+                case 1790520781 -> {
                     if (key.equalsIgnoreCase("domainOfValidity")) key = "domainOfValidity";
-                    break;
-                case -1109785975:
+                }
+                case -1109785975 -> {
                     if (key.equalsIgnoreCase("validArea")) key = "validArea";
-                    break;
-
-                // -------------------------------------
-                // "name": String or ReferenceIdentifier
-                // -------------------------------------
-                case 3373707: {
+                }
+                case 3373707 -> {
                     if (key.equals(NAME_KEY)) {
                         if (value instanceof String) {
                             name = new NamedIdentifier(properties, false);
                             assert value.equals(((Identifier) name).getCode()) : name;
                         } else {
-                            // Should be an instance of ReferenceIdentifier, but we don't check
-                            // here. The type will be checked at the end of this method, which
-                            // will thrown an exception with detailed message in case of
-                            // mismatch.
                             name = value;
                         }
                         continue NEXT_KEY;
                     }
-                    break;
                 }
-                // -------------------------------------------------------
-                // "alias": String, String[], GenericName or GenericName[]
-                // -------------------------------------------------------
-                case 92902992: {
+                case 92902992 -> {
                     if (key.equals(ALIAS_KEY)) {
                         alias = NameFactory.toArray(value);
                         continue NEXT_KEY;
                     }
-                    break;
                 }
-                // -----------------------------------------------------------
-                // "identifiers": ReferenceIdentifier or ReferenceIdentifier[]
-                // -----------------------------------------------------------
-                case 1368189162: {
+                case 1368189162 -> {
                     if (key.equals(IDENTIFIERS_KEY)) {
                         if (value != null) {
                             if (value instanceof ReferenceIdentifier identifier) {
@@ -411,19 +396,14 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
                         }
                         continue NEXT_KEY;
                     }
-                    break;
                 }
-                // ----------------------------------------
-                // "remarks": String or InternationalString
-                // ----------------------------------------
-                case 1091415283: {
+                case 1091415283 -> {
                     if (key.equals(REMARKS_KEY)) {
                         if (value instanceof InternationalString) {
                             remarks = value;
                             continue NEXT_KEY;
                         }
                     }
-                    break;
                 }
             }
             /*
@@ -522,16 +502,20 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         Object value = null;
         try {
             key = NAME_KEY;
-            this.name = (ReferenceIdentifier) (value = name);
+            value = name;
+            this.name = (ReferenceIdentifier) value;
 
             key = ALIAS_KEY;
-            this.alias = asSet((GenericName[]) (value = alias));
+            value = alias;
+            this.alias = asSet((GenericName[]) value);
 
             key = IDENTIFIERS_KEY;
-            this.identifiers = asSet((ReferenceIdentifier[]) (value = identifiers));
+            value = identifiers;
+            this.identifiers = asSet((ReferenceIdentifier[]) value);
 
             key = REMARKS_KEY;
-            this.remarks = (InternationalString) (value = remarks);
+            value = remarks;
+            this.remarks = (InternationalString) value;
         } catch (ClassCastException exception) {
             InvalidParameterValueException e = new InvalidParameterValueException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value), key, value);
@@ -927,9 +911,9 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
      */
     protected static boolean equals(
             final IdentifiedObject object1, final IdentifiedObject object2, final boolean compareMetadata) {
-        if (!(object1 instanceof AbstractIdentifiedObject)) return Utilities.equals(object1, object2);
-        if (!(object2 instanceof AbstractIdentifiedObject)) return Utilities.equals(object2, object1);
-        return equals((AbstractIdentifiedObject) object1, (AbstractIdentifiedObject) object2, compareMetadata);
+        if (!(object1 instanceof AbstractIdentifiedObject o)) return Utilities.equals(object1, object2);
+        if (!(object2 instanceof AbstractIdentifiedObject o2)) return Utilities.equals(object2, object1);
+        return equals(o, o2, compareMetadata);
     }
 
     /**
@@ -1030,14 +1014,11 @@ public class AbstractIdentifiedObject extends Formattable implements IdentifiedO
         if (array == null) {
             return null;
         }
-        switch (array.length) {
-            case 0:
-                return null;
-            case 1:
-                return Collections.singleton(array[0]);
-            default:
-                return Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(array)));
-        }
+        return switch (array.length) {
+            case 0 -> null;
+            case 1 -> Collections.singleton(array[0]);
+            default -> Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(array)));
+        };
     }
 
     /**

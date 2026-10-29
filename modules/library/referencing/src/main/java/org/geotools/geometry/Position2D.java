@@ -206,14 +206,11 @@ public class Position2D extends Point2D.Double implements Position, Serializable
      */
     @Override
     public final double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
-        switch (dimension) {
-            case 0:
-                return x;
-            case 1:
-                return y;
-            default:
-                throw new IndexOutOfBoundsException(String.valueOf(dimension));
-        }
+        return switch (dimension) {
+            case 0 -> x;
+            case 1 -> y;
+            default -> throw new IndexOutOfBoundsException(String.valueOf(dimension));
+        };
     }
 
     /**
@@ -227,14 +224,9 @@ public class Position2D extends Point2D.Double implements Position, Serializable
     @Override
     public final void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
         switch (dimension) {
-            case 0:
-                x = value;
-                break;
-            case 1:
-                y = value;
-                break;
-            default:
-                throw new IndexOutOfBoundsException(String.valueOf(dimension));
+            case 0 -> x = value;
+            case 1 -> y = value;
+            default -> throw new IndexOutOfBoundsException(String.valueOf(dimension));
         }
     }
 

@@ -97,6 +97,7 @@ public final class Utilities {
      * The class for the {@link #EMPTY_QUEUE} instance. Defined as a named class rather than anonymous in order to avoid
      * serialization issue.
      */
+    @SuppressWarnings("EffectivelyPrivate")
     private static final class EmptyQueue<E> extends AbstractQueue<E> implements Serializable {
         /** For cross-version compatibility. * */
         private static final long serialVersionUID = -6147951199761870325L;
@@ -341,32 +342,32 @@ public final class Utilities {
         if (object1 == null || object2 == null) {
             return false;
         }
-        if (object1 instanceof Object[]) {
-            return object2 instanceof Object[] os && Arrays.deepEquals((Object[]) object1, os);
+        if (object1 instanceof Object[] o1) {
+            return object2 instanceof Object[] os && Arrays.deepEquals(o1, os);
         }
-        if (object1 instanceof double[]) {
-            return object2 instanceof double[] ds && Arrays.equals((double[]) object1, ds);
+        if (object1 instanceof double[] d1) {
+            return object2 instanceof double[] ds && Arrays.equals(d1, ds);
         }
-        if (object1 instanceof float[]) {
-            return object2 instanceof float[] fs && Arrays.equals((float[]) object1, fs);
+        if (object1 instanceof float[] f1) {
+            return object2 instanceof float[] fs && Arrays.equals(f1, fs);
         }
-        if (object1 instanceof long[]) {
-            return object2 instanceof long[] ls && Arrays.equals((long[]) object1, ls);
+        if (object1 instanceof long[] l1) {
+            return object2 instanceof long[] ls && Arrays.equals(l1, ls);
         }
-        if (object1 instanceof int[]) {
-            return object2 instanceof int[] is && Arrays.equals((int[]) object1, is);
+        if (object1 instanceof int[] i1) {
+            return object2 instanceof int[] is && Arrays.equals(i1, is);
         }
-        if (object1 instanceof short[]) {
-            return object2 instanceof short[] ss && Arrays.equals((short[]) object1, ss);
+        if (object1 instanceof short[] s1) {
+            return object2 instanceof short[] ss && Arrays.equals(s1, ss);
         }
-        if (object1 instanceof byte[]) {
-            return object2 instanceof byte[] bs && Arrays.equals((byte[]) object1, bs);
+        if (object1 instanceof byte[] b1) {
+            return object2 instanceof byte[] bs && Arrays.equals(b1, bs);
         }
-        if (object1 instanceof char[]) {
-            return object2 instanceof char[] cs && Arrays.equals((char[]) object1, cs);
+        if (object1 instanceof char[] c1) {
+            return object2 instanceof char[] cs && Arrays.equals(c1, cs);
         }
-        if (object1 instanceof boolean[]) {
-            return object2 instanceof boolean[] bs && Arrays.equals((boolean[]) object1, bs);
+        if (object1 instanceof boolean[] b1) {
+            return object2 instanceof boolean[] bs && Arrays.equals(b1, bs);
         }
         return object1.equals(object2);
     }

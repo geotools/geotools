@@ -39,7 +39,7 @@ class BufferSoftReference extends SoftReference<ByteBuffer> {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof BufferSoftReference)) {
+        if (!(other instanceof BufferSoftReference otherBufferSoftReference)) {
             return false;
         }
 
@@ -47,7 +47,7 @@ class BufferSoftReference extends SoftReference<ByteBuffer> {
         if (buffer == null) {
             return false;
         } else {
-            ByteBuffer otherBuffer = ((BufferSoftReference) other).get();
+            ByteBuffer otherBuffer = otherBufferSoftReference.get();
             if (otherBuffer == null) {
                 return false;
             }

@@ -60,6 +60,17 @@ public class FontCacheTest {
         assertThat(alternatives, hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
     }
 
+    /** The base face comes first, even when script faces sort before it by name. */
+    @Test
+    public void testBaseFaceFirst() {
+        FontCache fc = FontCache.getDefaultInstance();
+        for (String name : List.of("Test Sans Regular", "Test Sans Arabic Regular", "Test Sans Adlam Regular")) {
+            fc.registerFont(new Font(name, Font.PLAIN, 12));
+        }
+        List<String> expected = List.of("Test Sans Regular", "Test Sans Adlam Regular", "Test Sans Arabic Regular");
+        assertEquals(expected, fc.getAlternatives("Test Sans"));
+    }
+
     private Font loadFont(String fontName) {
         return FontCache.loadFromUrl(
                 StreamingRendererTest.class.getResource("test-data/" + fontName).toExternalForm());

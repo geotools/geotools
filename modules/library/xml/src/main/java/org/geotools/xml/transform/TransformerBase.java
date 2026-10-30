@@ -43,15 +43,18 @@ import javax.xml.transform.stream.StreamResult;
 import org.geotools.xml.XMLUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
-import org.xml.sax.helpers.XMLFilterImpl;
 
 import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
 import static javax.xml.XMLConstants.NULL_NS_URI;
@@ -1025,25 +1028,26 @@ public abstract class TransformerBase {
     }
 
     /** Support for the setup of an XMLReader for use in a transformation. */
-    public static class XMLReaderSupport extends XMLFilterImpl {
+    public static class XMLReaderSupport implements XMLReader {
         private final TransformerBase base;
         private final Object object;
         private Translator translator;
+
+        private Map<String, Boolean> features = null;
+        private Map<String, Object> properties = null;
+        private ContentHandler contentHandler = null;
+        private DTDHandler dtdHandler = null;
+        private EntityResolver entityResolver = null;
+        private ErrorHandler errorHandler = null;
 
         public XMLReaderSupport(final TransformerBase transfomerBase, final Object object) {
             this.base = transfomerBase;
             this.object = object;
         }
 
-        public final Translator getTranslator() {
-            return translator;
-        }
-
         @Override
-        public void setFeature(final String name, final boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
-            // no-op. The base XMLFilterImpl will throw an exception, so we must override this as
-            // Transformer implementations such as Saxonica's Saxon expect to at least switch on
-            // http://xml.org/sax/features/namespaces
+        public void parse(final String systemId) throws SAXException {
+            parse(new InputSource(systemId));
         }
 
         @Override
@@ -1121,6 +1125,88 @@ public abstract class TransformerBase {
             handler.startDocument();
             translator.encode(object);
             handler.endDocument();
+        }
+
+        public final Translator getTranslator() {
+            return translator;
+        }
+
+        @Override
+        public boolean getFeature(final String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+            boolean feature = false;
+            if (features != null) {
+                final Boolean featureVal = features.get(name);
+                if (featureVal != null) {
+                    feature = featureVal;
+                }
+            }
+            return feature;
+        }
+
+        @Override
+        public void setFeature(final String name, final boolean value)
+                throws SAXNotRecognizedException, SAXNotSupportedException {
+            if (features == null) {
+                features = new HashMap<>();
+            }
+            features.put(name, value);
+        }
+
+        @Override
+        public Object getProperty(final String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+            if (properties == null) {
+                return null;
+            }
+            return properties.get(name);
+        }
+
+        @Override
+        public void setProperty(final String name, final Object value)
+                throws SAXNotRecognizedException, SAXNotSupportedException {
+            if (properties == null) {
+                properties = new HashMap<>();
+            }
+            properties.put(name, value);
+        }
+
+        @Override
+        public ContentHandler getContentHandler() {
+            return contentHandler;
+        }
+
+        @Override
+        public void setContentHandler(final ContentHandler contentHandler) {
+            this.contentHandler = contentHandler;
+        }
+
+        @Override
+        public DTDHandler getDTDHandler() {
+            return dtdHandler;
+        }
+
+        @Override
+        public void setDTDHandler(final DTDHandler dtdHandler) {
+            this.dtdHandler = dtdHandler;
+        }
+
+        @Override
+        public EntityResolver getEntityResolver() {
+            return entityResolver;
+        }
+
+        @Override
+        public void setEntityResolver(final EntityResolver entityResolver) {
+            this.entityResolver = entityResolver;
+        }
+
+        @Override
+        public ErrorHandler getErrorHandler() {
+            return errorHandler;
+        }
+
+        @Override
+        public void setErrorHandler(final ErrorHandler errorHandler) {
+            this.errorHandler = errorHandler;
         }
     }
 }

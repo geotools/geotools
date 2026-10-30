@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class BoundingShapeTypeBindingTest extends GML32TestSupport {
     @Test
@@ -35,17 +36,19 @@ public class BoundingShapeTypeBindingTest extends GML32TestSupport {
 
         Document dom = encode(e, GML.boundedBy);
 
-        assertEquals("gml:Envelope", dom.getDocumentElement().getFirstChild().getNodeName());
+        Node documentElement = dom.getDocumentElement().getFirstChild();
+        assertEquals("Envelope", documentElement.getLocalName());
+        assertEquals(GML.NAMESPACE, documentElement.getNamespaceURI());
     }
 
     @Test
     public void testEncodeWithCRS() throws Exception {
         Envelope e = new ReferencedEnvelope(-180, -90, 180, 90, CRS.decode("EPSG:4326"));
         Document dom = encode(e, GML.boundedBy);
-        assertEquals("gml:Envelope", dom.getDocumentElement().getFirstChild().getNodeName());
-        assertTrue(((Element) dom.getDocumentElement().getFirstChild())
-                .getAttribute("srsName")
-                .endsWith("4326"));
+        Node envelope = dom.getDocumentElement().getFirstChild();
+        assertEquals("Envelope", envelope.getLocalName());
+        assertEquals(GML.NAMESPACE, envelope.getNamespaceURI());
+        assertTrue(((Element) envelope).getAttribute("srsName").endsWith("4326"));
     }
 
     @Test
@@ -54,6 +57,8 @@ public class BoundingShapeTypeBindingTest extends GML32TestSupport {
         e.setToNull();
 
         Document dom = encode(e, GML.boundedBy);
-        assertEquals("gml:Null", dom.getDocumentElement().getFirstChild().getNodeName());
+        Node nullNode = dom.getDocumentElement().getFirstChild();
+        assertEquals("Null", nullNode.getLocalName());
+        assertEquals(GML.NAMESPACE, nullNode.getNamespaceURI());
     }
 }

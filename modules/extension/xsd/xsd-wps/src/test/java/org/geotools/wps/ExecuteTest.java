@@ -124,7 +124,7 @@ public class ExecuteTest extends XMLTestSupport {
 
         Document dom = encode(response, WPS.ExecuteResponse);
         // print(dom);
-        NodeList nodes = dom.getElementsByTagName("wps:ProcessStarted");
+        NodeList nodes = dom.getElementsByTagNameNS(WPS.NAMESPACE, "ProcessStarted");
         assertEquals(1, nodes.getLength());
         Node psNode = nodes.item(0);
         assertEquals("Working really hard here", psNode.getTextContent());

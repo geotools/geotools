@@ -11,6 +11,7 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class SortByTypeBindingTest extends FESTestSupport {
     @Test
@@ -45,7 +46,9 @@ public class SortByTypeBindingTest extends FESTestSupport {
         list.add(sortBy);
 
         Document doc = encode(list, FES.SortBy);
-        assertEquals("fes:SortBy", doc.getDocumentElement().getNodeName());
+        Element docElement = doc.getDocumentElement();
+        assertEquals(FES.SortBy.getLocalPart(), docElement.getLocalName());
+        assertEquals(FES.SortBy.getNamespaceURI(), docElement.getNamespaceURI());
         assertEquals(
                 1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortProperty").getLength());
         assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortOrder").getLength());

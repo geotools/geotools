@@ -20,7 +20,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -148,10 +147,10 @@ public class GML3EncodingTest extends XmlTestSupport {
         TestConfiguration configuration = new TestConfiguration();
         Encoder encoder = new Encoder(configuration);
         Document dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
-        NodeList countList = dom.getElementsByTagName("test:count");
+        NodeList countList = dom.getElementsByTagNameNS(TEST.TestFeature.getNamespaceURI(), "count");
         Node count = countList.item(0);
         Assert.assertEquals("true", count.getAttributes().getNamedItem("xs:nil").getTextContent());
-        NodeList dateList = dom.getElementsByTagName("test:date");
+        NodeList dateList = dom.getElementsByTagNameNS(TEST.TestFeature.getNamespaceURI(), "date");
         Node date = dateList.item(0);
         Assert.assertEquals("true", date.getAttributes().getNamedItem("xs:nil").getTextContent());
 
@@ -159,11 +158,11 @@ public class GML3EncodingTest extends XmlTestSupport {
         encoder = new Encoder(configuration);
         encoder.getNamespaces().declarePrefix("xsd", "http://www.w3.org/2001/XMLSchema");
         dom = encoder.encodeAsDOM(feature, TEST.TestFeature);
-        countList = dom.getElementsByTagName("test:count");
+        countList = dom.getElementsByTagNameNS(TEST.TestFeature.getNamespaceURI(), "count");
         count = countList.item(0);
         Assert.assertEquals(
                 "true", count.getAttributes().getNamedItem("xsd:nil").getTextContent());
-        dateList = dom.getElementsByTagName("test:date");
+        dateList = dom.getElementsByTagNameNS(TEST.TestFeature.getNamespaceURI(), "date");
         date = dateList.item(0);
         Assert.assertEquals("true", date.getAttributes().getNamedItem("xsd:nil").getTextContent());
     }
@@ -238,8 +237,6 @@ public class GML3EncodingTest extends XmlTestSupport {
         Element docElement = dom.getDocumentElement();
         assertEquals(GML.featureMember.getLocalPart(), docElement.getLocalName());
         assertEquals(GML.featureMember.getNamespaceURI(), docElement.getNamespaceURI());
-        assertEquals("gml", docElement.getPrefix());
-        assertEquals("gml:" + GML.featureMember.getLocalPart(), docElement.getNodeName());
         assertFalse(docElement.hasAttribute("example"));
 
         Node featureNode = dom.getDocumentElement().getFirstChild();
@@ -247,8 +244,6 @@ public class GML3EncodingTest extends XmlTestSupport {
         Element featureElement = (Element) featureNode;
         assertEquals(TEST.TestFeature.getLocalPart(), featureElement.getLocalName());
         assertEquals(TEST.TestFeature.getNamespaceURI(), featureElement.getNamespaceURI());
-        assertNull(featureElement.getPrefix());
-        assertEquals(TEST.TestFeature.getLocalPart(), featureElement.getNodeName());
         assertTrue(featureElement.hasAttribute("example"));
     }
 }

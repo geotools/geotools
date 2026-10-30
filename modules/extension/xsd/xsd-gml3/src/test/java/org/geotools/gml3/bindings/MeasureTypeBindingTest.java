@@ -26,6 +26,7 @@ import org.geotools.gml3.GML;
 import org.geotools.measure.Measure;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
     @Test
@@ -45,9 +46,12 @@ public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
         ComplexAttribute myCode = gmlMeasureType(GML.measure, "12", "m");
         Document dom = encode(myCode, GML.measure);
         // print(dom);
-        assertEquals("gml:measure", dom.getDocumentElement().getNodeName());
-        assertEquals("12", dom.getDocumentElement().getFirstChild().getNodeValue());
-        assertNotNull(dom.getDocumentElement().getAttribute("uom"));
-        assertEquals("m", dom.getDocumentElement().getAttribute("uom"));
+        Element docElement = dom.getDocumentElement();
+        assertEquals("measure", docElement.getLocalName());
+        assertEquals(GML.NAMESPACE, docElement.getNamespaceURI());
+        assertEquals("measure", docElement.getNodeName());
+        assertEquals("12", docElement.getFirstChild().getNodeValue());
+        assertNotNull(docElement.getAttribute("uom"));
+        assertEquals("m", docElement.getAttribute("uom"));
     }
 }

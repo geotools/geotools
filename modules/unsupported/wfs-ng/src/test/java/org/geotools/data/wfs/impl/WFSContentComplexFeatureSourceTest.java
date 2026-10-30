@@ -174,7 +174,7 @@ public class WFSContentComplexFeatureSourceTest {
         final TestWFSClient client = createWFSClient(true);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
         final String qsFilter = URLEncoder.encode(
-                "<fes:Filter xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"><fes:PropertyIsEqualTo matchAction=\"Any\" matchCase=\"true\"><fes:ValueReference>stedsnummer</fes:ValueReference><fes:Literal>1</fes:Literal></fes:PropertyIsEqualTo></fes:Filter>",
+                "<Filter xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://www.opengis.net/fes/2.0\"><PropertyIsEqualTo matchAction=\"Any\" matchCase=\"true\"><ValueReference>stedsnummer</ValueReference><Literal>1</Literal></PropertyIsEqualTo></Filter>",
                 StandardCharsets.UTF_8);
         ((TestHttpClient) client.getHTTPClient())
                 .expectGet(

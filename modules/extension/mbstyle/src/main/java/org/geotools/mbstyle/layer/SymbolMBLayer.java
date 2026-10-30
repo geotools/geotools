@@ -638,11 +638,13 @@ public class SymbolMBLayer extends MBLayer {
      *
      * <p>Size of the additional area around the icon bounding box used for detecting symbol collisions.
      *
-     * @return Padding around the icon for collision-detection.
+     * @return Padding around the icon for collision-detection, or the default 2 when the padding is an expression
      * @throws MBFormatException JSON provided inconsistent with specification
      */
     public Number getIconPadding() throws MBFormatException {
-        return parse.optional(Number.class, layout, "icon-padding", 2.0);
+        // only picks the larger of text and icon padding; spaceAround uses iconPadding() itself
+        Expression padding = parse.number(layout, "icon-padding", 2.0);
+        return padding instanceof Literal ? padding.evaluate(null, Double.class) : 2.0;
     }
 
     /**
@@ -652,7 +654,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException JSON provided inconsistent with specification
      */
     public Expression iconPadding() throws MBFormatException {
-        return parse.percentage(layout, "icon-padding", 2.0);
+        return parse.number(layout, "icon-padding", 2.0);
     }
 
     /**
@@ -1110,11 +1112,13 @@ public class SymbolMBLayer extends MBLayer {
      *
      * <p>Size of the additional area around the text bounding box used for detecting symbol collisions.
      *
-     * @return Padding around the label for detecting collisions
+     * @return Padding around the label for detecting collisions, or the default 2 when the padding is an expression
      * @throws MBFormatException JSON definition inconsistent with specification
      */
     public Number getTextPadding() throws MBFormatException {
-        return parse.optional(Number.class, layout, "text-padding", 2.0);
+        // only picks the larger of text and icon padding; spaceAround uses textPadding() itself
+        Expression padding = parse.number(layout, "text-padding", 2.0);
+        return padding instanceof Literal ? padding.evaluate(null, Double.class) : 2.0;
     }
 
     /**
@@ -1124,7 +1128,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException JSON definition inconsistent with specification
      */
     public Expression textPadding() throws MBFormatException {
-        return parse.percentage(layout, "text-padding", 2.0);
+        return parse.number(layout, "text-padding", 2.0);
     }
 
     /**
@@ -1985,7 +1989,7 @@ public class SymbolMBLayer extends MBLayer {
         if (!hasIconImage()
                 || "point".equalsIgnoreCase(symbolPlacementVal.trim())
                 || getTextPadding().doubleValue() >= getIconPadding().doubleValue()) {
-            options.put("spaceAround", String.valueOf(getTextPadding()));
+            options.put("spaceAround", MBStyleTransformer.vendorOptionExpression(textPadding()));
         }
         // halo blur
         // layer.textHaloBlur();

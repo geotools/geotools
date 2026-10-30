@@ -251,7 +251,12 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     private void scaleIntOption(Map<String, String> options, String optionName, Unit<Length> uom) {
         if (options.containsKey(optionName)) {
             String strValue = options.get(optionName);
-            if (strValue != null) {
+            if (RescaleStyleVisitor.isExpressionOption(strValue)) {
+                double multiplier = Double.parseDouble(rescale("1", uom));
+                if (multiplier != 1) {
+                    options.put(optionName, RescaleStyleVisitor.multiplyExpressionOption(strValue, multiplier));
+                }
+            } else if (strValue != null) {
                 options.put(optionName, toInt(rescale(strValue, uom)));
             }
         }

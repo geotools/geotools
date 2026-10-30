@@ -50,16 +50,17 @@ public class LabelWrapTest {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.add("geom", Point.class);
         builder.add("label", String.class);
+        builder.add("wrap", Integer.class);
         builder.setName("labelWrap");
         SimpleFeatureType type = builder.buildFeatureType();
 
         GeometryFactory gf = new GeometryFactory();
         SimpleFeature f1 = SimpleFeatureBuilder.build(
-                type, new Object[] {gf.createPoint(new Coordinate(5, 8)), "A long label, no newlines"}, null);
+                type, new Object[] {gf.createPoint(new Coordinate(5, 8)), "A long label, no newlines", 85}, null);
         SimpleFeature f2 = SimpleFeatureBuilder.build(
-                type, new Object[] {gf.createPoint(new Coordinate(5, 5)), "A long label\nwith newlines"}, null);
+                type, new Object[] {gf.createPoint(new Coordinate(5, 5)), "A long label\nwith newlines", 85}, null);
         SimpleFeature f3 = SimpleFeatureBuilder.build(
-                type, new Object[] {gf.createPoint(new Coordinate(5, 2)), "A long label with (parenthesis)"}, null);
+                type, new Object[] {gf.createPoint(new Coordinate(5, 2)), "A long label with (parenthesis)", 85}, null);
 
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(f1);
@@ -87,7 +88,7 @@ public class LabelWrapTest {
     @Test
     public void testAutoWrapWithIncreasedSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, 5);
+                getStyleWithOption("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, "5");
         BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceIncreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
@@ -96,7 +97,7 @@ public class LabelWrapTest {
     @Test
     public void testAutoWrapWithDecreasedSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, -2);
+                getStyleWithOption("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, "-2");
         BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceDecreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
@@ -105,21 +106,30 @@ public class LabelWrapTest {
     @Test
     public void testAutoWrapWithIncreasedWordSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY, 15);
+                getStyleWithOption("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY, "15");
         BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledWordSpaceIncreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
-    private Style getCharSpacedStyle(String styleFile, String key, float spacing) throws IOException {
+    @Test
+    public void testAutoWrapFromAttribute() throws Exception {
+        Style style = getStyleWithOption(
+                "textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, "${wrap}");
+        BufferedImage image = renderLabels(fs, style, "Label wrap from an attribute");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
+    }
+
+    private Style getStyleWithOption(String styleFile, String key, String value) throws IOException {
         Style style = RendererBaseTest.loadStyle(this, styleFile);
         DuplicatingStyleVisitor visitor = new DuplicatingStyleVisitor() {
             @Override
             public void visit(TextSymbolizer text) {
                 super.visit(text);
                 TextSymbolizer ts = (TextSymbolizer) getCopy();
-                ts.getOptions().put(key, String.valueOf(spacing));
+                ts.getOptions().put(key, value);
             }
         };
         style.accept(visitor);

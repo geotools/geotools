@@ -116,10 +116,7 @@ public class AnchorPointImpl implements org.geotools.api.style.AnchorPoint, Clon
         } else if (anchor instanceof AnchorPointImpl impl) {
             return impl;
         } else {
-            AnchorPointImpl copy = new AnchorPointImpl();
-            copy.setAnchorPointX(anchor.getAnchorPointX());
-            copy.setAnchorPointY(anchor.getAnchorPointY());
-            return copy;
+            return new AnchorPointImpl(ff, anchor.getAnchorPointX(), anchor.getAnchorPointY());
         }
     }
 

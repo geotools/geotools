@@ -1021,7 +1021,7 @@ public class XMLUtils {
             final String ACCESS = getAccess(entityResolver, "");
             try {
                 parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ACCESS);
-            } catch (IllegalArgumentException notSupported) {
+            } catch (IllegalArgumentException | SAXNotRecognizedException | SAXNotSupportedException notSupported) {
                 LOGGER.fine("Parser does not support ACCESS_EXTERNAL_SCHEMA: " + notSupported.getMessage());
             }
             return parser;

@@ -22,6 +22,7 @@ import static org.geotools.util.URLs.fileToUrl;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertArrayEquals;
@@ -32,8 +33,12 @@ import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -84,6 +89,7 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -102,6 +108,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.image.util.ImageUtilities;
@@ -109,6 +116,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.MapProjection;
+import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.hamcrest.Matchers;
@@ -125,6 +133,12 @@ import org.locationtech.jts.geom.Geometry;
 public class HeterogenousCRSTest {
 
     public static final double DELTA = 1E-6;
+
+    /** Stripe height of the hetero_stripes granule, in UTM metres */
+    private static final double STRIPE = 20_000;
+
+    /** About two granule pixels (1 km each), covers nearest neighbor rounding at the stripe edges */
+    private static final double EDGE_TOLERANCE = 2_000;
 
     @Rule
     public TemporaryFolder crsMosaicFolder = new TemporaryFolder();
@@ -313,14 +327,28 @@ public class HeterogenousCRSTest {
 
     @Test
     public void testReprojectingReader() throws Exception {
+        assertDirectReprojection("EPSG\\:4326");
+    }
+
+    @Test
+    public void testReprojectingReaderGranuleInMosaicCRS() throws Exception {
+        // the utm32n granule shares the mosaic CRS, but still needs a warp to the requested CRS
+        assertDirectReprojection("EPSG\\:32632");
+    }
+
+    private void assertDirectReprojection(String mosaicCRS) throws Exception {
         String testLocation = "hetero_utm";
         URL storeUrl = TestData.url(this, testLocation);
 
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
         FileUtils.copyDirectory(testDataFolder, testDirectory);
+        File indexer = new File(testDirectory, "indexer.properties");
+        String properties = FileUtils.readFileToString(indexer, StandardCharsets.UTF_8)
+                .replace("MosaicCRS=EPSG\\:4326", "MosaicCRS=" + mosaicCRS);
+        FileUtils.writeStringToFile(indexer, properties, StandardCharsets.UTF_8);
 
-        // ask for an output in web mercator, when the mosaic is in 4326
+        // ask for an output in web mercator, different from the mosaic CRS
         CoordinateReferenceSystem webMercator = CRS.decode("EPSG:3857");
         ReferencedEnvelope re = new ReferencedEnvelope(11, 13, -1, 1, WGS84).transform(webMercator, true);
         ParameterValue<GridGeometry2D> ggParam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -346,6 +374,85 @@ public class HeterogenousCRSTest {
         }
 
         imReader.dispose();
+    }
+
+    @Test
+    public void testGranuleInMosaicCRSAlignedAcrossTiles() throws Exception {
+        // single granule in the mosaic CRS at about 60N, where UTM to web mercator is clearly not affine
+        File dir = crsMosaicFolder.newFolder("hetero_stripes");
+        FileUtils.copyDirectory(new File(TestData.url(this, "hetero_stripes").toURI()), dir);
+        CoordinateReferenceSystem utm32 = CRS.decode("EPSG:32632");
+        ReferencedEnvelope granule = new ReferencedEnvelope(300_000, 700_000, 6_600_000, 6_800_000, utm32);
+
+        // two adjacent web mercator tiles, split in the middle of the granule
+        ReferencedEnvelope area = granule.transform(CRS.decode("EPSG:3857"), true);
+        ReferencedEnvelope left = new ReferencedEnvelope(area);
+        left.init(area.getMinX(), area.getMedian(0), area.getMinY(), area.getMaxY());
+        ReferencedEnvelope right = new ReferencedEnvelope(area);
+        right.init(area.getMedian(0), area.getMaxX(), area.getMinY(), area.getMaxY());
+        ImageMosaicReader reader = new ImageMosaicReader(dir, null);
+        try {
+            GridCoverage2D leftTile = assertStripesAligned(reader, left, utm32);
+            GridCoverage2D rightTile = assertStripesAligned(reader, right, utm32);
+
+            // the tiles side by side, for a visual check of the seam
+            BufferedImage tiles = new BufferedImage(512, 256, BufferedImage.TYPE_BYTE_GRAY);
+            copyTile(leftTile, left, tiles.getRaster().createWritableChild(0, 0, 256, 256, 0, 0, null));
+            copyTile(rightTile, right, tiles.getRaster().createWritableChild(256, 0, 256, 256, 0, 0, null));
+            ImageAssert.assertEquals(testFile("hetero_stripes_results/tiles.png"), tiles, 100);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    /** Alternates 50 and 200 every {@link #STRIPE} metres of northing */
+    private static int stripeValue(double northing) {
+        return Math.floorMod((long) Math.floor(northing / STRIPE), 2) == 0 ? 50 : 200;
+    }
+
+    /** Copies the pixels of the requested 256x256 tile into the target, leaving out the padding added by the reader */
+    private static void copyTile(GridCoverage2D coverage, ReferencedEnvelope tile, WritableRaster target)
+            throws TransformException {
+        double firstX = tile.getMinX() + tile.getWidth() / 512;
+        double firstY = tile.getMaxY() - tile.getHeight() / 512;
+        Position2D firstPixel = new Position2D(tile.getCoordinateReferenceSystem(), firstX, firstY);
+        GridCoordinates2D origin = coverage.getGridGeometry().worldToGrid(firstPixel);
+        target.setRect(-origin.x, -origin.y, coverage.getRenderedImage().getData());
+    }
+
+    /**
+     * Checks each striped pixel of the tile against the stripe its center falls in, back in the granule CRS, and
+     * returns the coverage read
+     */
+    private GridCoverage2D assertStripesAligned(
+            ImageMosaicReader reader, ReferencedEnvelope tile, CoordinateReferenceSystem utm) throws Exception {
+        ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 256, 256), tile));
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        Raster raster = coverage.getRenderedImage().getData();
+        MathTransform toUTM = CRS.findMathTransform(coverage.getCoordinateReferenceSystem(), utm, true);
+        MathTransform gridToUTM =
+                ConcatenatedTransform.create(coverage.getGridGeometry().getGridToCRS2D(), toUTM);
+
+        Rectangle bounds = raster.getBounds();
+        double[] point = new double[2];
+        int checked = 0;
+        int misplaced = 0;
+        for (int i = 0; i < bounds.width * bounds.height; i++) {
+            point[0] = bounds.x + i % bounds.width;
+            point[1] = bounds.y + i / bounds.width;
+            int value = raster.getSample((int) point[0], (int) point[1], 0);
+            // skip nodata, only granule values tell where a pixel landed
+            if (value != 50 && value != 200) continue;
+            gridToUTM.transform(point, 0, point, 0, 1);
+            // pixels close to a stripe edge can go either way
+            if (Math.abs(point[1] - Math.round(point[1] / STRIPE) * STRIPE) < EDGE_TOLERANCE) continue;
+            checked++;
+            if (value != stripeValue(point[1])) misplaced++;
+        }
+        assertThat(checked, greaterThan(bounds.width * bounds.height / 2));
+        assertEquals("Pixels in the wrong stripe in tile " + tile, 0, misplaced);
+        return coverage;
     }
 
     /**

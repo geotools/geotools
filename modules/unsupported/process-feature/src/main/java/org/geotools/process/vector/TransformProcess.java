@@ -108,7 +108,7 @@ import org.locationtech.jts.geom.Geometry;
 @DescribeProcess(
         title = "Transform",
         description =
-                "Computes a new feature collection from the input one by renaming, deleting, and computing new attributes.  Attribute values are specified as ECQL expressions in the form name=expression.")
+                "Computes a new feature collection from the input one by renaming, deleting, and computing new attributes.  Attribute values are specified as ECQL expressions in the form name=expression. The output has only the listed attributes, so list the geometry too to keep it.")
 public class TransformProcess implements VectorProcess {
 
     private static final Logger LOGGER = Logging.getLogger(TransformProcess.class);
@@ -142,7 +142,7 @@ public class TransformProcess implements VectorProcess {
             @DescribeParameter(
                             name = "transform",
                             description =
-                                    "The transform specification, as a list of specifiers of the form name=expression, delimited by newlines or semicolons.")
+                                    "The transform specification, as a list of specifiers of the form name=expression, delimited by newlines or semicolons. Each value is an ECQL expression, not a filter: comparisons go through functions, such as if_then_else(lessThan(avg, 0.3), 'low', 'high') or Categorize(avg, 'low', 0.3, 'high').")
                     String transform)
             throws ProcessException {
         if (transform == null) {

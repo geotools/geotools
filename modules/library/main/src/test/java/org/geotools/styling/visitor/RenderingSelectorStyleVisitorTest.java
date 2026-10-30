@@ -19,6 +19,7 @@ import org.geotools.styling.StyleBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("removal")
 public class RenderingSelectorStyleVisitorTest {
 
     StyleBuilder sb;

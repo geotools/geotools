@@ -29,6 +29,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /**
  * Encoder delegate for high speed GML 3.2 encoding of SimpleFeatureCollection
  *
@@ -47,7 +49,11 @@ class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDele
         if ("identifier".equals(name.getLocalPart()) && GML.NAMESPACE.equals(name.getNamespaceURI())) {
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute(
-                    null, "codeSpace", "codeSpace", "CDATA", featureType.getName().getNamespaceURI());
+                    NULL_NS_URI,
+                    "codeSpace",
+                    "codeSpace",
+                    "CDATA",
+                    featureType.getName().getNamespaceURI());
             return atts;
         }
 

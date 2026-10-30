@@ -437,7 +437,7 @@ public abstract class TransformerBase {
                 }
 
                 for (int i = 0, ii = atts.getLength(); i < ii; i++) {
-                    namespaceDecls.addAttribute(null, null, atts.getQName(i), atts.getType(i), atts.getValue(i));
+                    namespaceDecls.addAttribute(atts.getURI(i), null, atts.getQName(i), atts.getType(i), atts.getValue(i));
                 }
 
                 atts = namespaceDecls;

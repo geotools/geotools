@@ -51,6 +51,8 @@ import org.locationtech.jts.geom.Polygon;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /**
  * {@link SimpleFeatureCollection} encoder delegate for fast GML3 encoding
  *
@@ -199,12 +201,13 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
             URI srsName = GML3EncodingUtils.toURI(crs, srsSyntax);
             String crsName =
                     srsName != null ? srsName.toString() : crs.getName().getCode();
-            atts.addAttribute(null, "srsName", "srsName", "CDATA", crsName);
+            atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "CDATA", crsName);
         }
 
         @Override
         public void setGeometryDimensionAttribute(AttributesImpl atts, int dimension) {
-            atts.addAttribute(null, "srsDimension", "srsDimension", "CDATA", String.valueOf(dimension));
+            atts.addAttribute(
+                    NULL_NS_URI, "srsDimension", "srsDimension", "CDATA", String.valueOf(dimension));
         }
 
         @Override

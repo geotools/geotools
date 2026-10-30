@@ -41,6 +41,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /**
  * Optimized encoder delegate for GML2 feature collections.
  *
@@ -135,7 +137,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         @Override
         public void initFidAttribute(AttributesImpl atts) {
-            atts.addAttribute(null, "fid", "fid", "CDATA", "");
+            atts.addAttribute(NULL_NS_URI, "fid", "fid", "CDATA", "");
         }
 
         @Override
@@ -156,7 +158,8 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         @Override
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
-            atts.addAttribute(null, "srsName", "srsName", "CDATA", GML2EncodingUtils.toURI(crs, true));
+            atts.addAttribute(
+                    NULL_NS_URI, "srsName", "srsName", "CDATA", GML2EncodingUtils.toURI(crs, true));
         }
 
         @Override

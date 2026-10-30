@@ -52,6 +52,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /**
  * SimpleFeatureCollection encoder delegate for fast GML3 encoding
  *
@@ -70,7 +72,11 @@ public class GML32FeatureCollectionEncoderDelegate extends org.geotools.gml2.sim
         if ("identifier".equals(name.getLocalPart()) && GML.NAMESPACE.equals(name.getNamespaceURI())) {
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute(
-                    null, "codeSpace", "codeSpace", "CDATA", featureType.getName().getNamespaceURI());
+                    NULL_NS_URI,
+                    "codeSpace",
+                    "codeSpace",
+                    "CDATA",
+                    featureType.getName().getNamespaceURI());
             return atts;
         }
 
@@ -188,12 +194,13 @@ public class GML32FeatureCollectionEncoderDelegate extends org.geotools.gml2.sim
             URI srsName = GML3EncodingUtils.toURI(crs, srsSyntax);
             String crsName =
                     srsName != null ? srsName.toString() : crs.getName().getCode();
-            atts.addAttribute(null, "srsName", "srsName", "CDATA", crsName);
+            atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "CDATA", crsName);
         }
 
         @Override
         public void setGeometryDimensionAttribute(AttributesImpl atts, int dimension) {
-            atts.addAttribute(null, "srsDimension", "srsDimension", "CDATA", String.valueOf(dimension));
+            atts.addAttribute(
+                    NULL_NS_URI, "srsDimension", "srsDimension", "CDATA", String.valueOf(dimension));
         }
 
         @Override

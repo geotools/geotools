@@ -36,12 +36,18 @@ import org.xml.sax.helpers.NamespaceSupport;
 /** Validates that element names do not contain invalid/illegal XML characters. */
 public class QNameValidatingHandler implements TransformerHandler {
 
+    private static final char[] CDATA_START = {'<', '!', '[', 'C', 'D', 'A', 'T', 'A', '['};
+    private static final char[] CDATA_END = {']', ']', '>'};
+
     private final ContentHandler original;
     private final NamespaceSupport namespaces;
+    private final boolean saxonTransformer;
 
     public QNameValidatingHandler(final ContentHandler original, final NamespaceSupport namespaces) {
         this.original = original;
         this.namespaces = namespaces;
+        this.saxonTransformer = "net.sf.saxon.jaxp.IdentityTransformerHandler"
+                .equals(original.getClass().getName());
     }
 
     @Override
@@ -183,14 +189,24 @@ public class QNameValidatingHandler implements TransformerHandler {
 
     @Override
     public void startCDATA() throws SAXException {
-        if (original instanceof final LexicalHandler handler) {
-            handler.startCDATA();
+        if (saxonTransformer) {
+            // Saxon drops the CDATA start tag, so attempt to create it manually
+            original.processingInstruction(Result.PI_DISABLE_OUTPUT_ESCAPING, "");
+            original.characters(CDATA_START, 0, CDATA_START.length);
+
+        } else if (original instanceof final LexicalHandler handler) {
+           handler.startCDATA();
         }
     }
 
     @Override
     public void endCDATA() throws SAXException {
-        if (original instanceof final LexicalHandler handler) {
+        if (saxonTransformer) {
+            // Saxon drops the CDATA end tag, so attempt to create it manually
+            original.characters(CDATA_END, 0, CDATA_END.length);
+            original.processingInstruction(Result.PI_ENABLE_OUTPUT_ESCAPING, "");
+
+        } else if (original instanceof final LexicalHandler handler) {
             handler.endCDATA();
         }
     }

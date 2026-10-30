@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
@@ -17,6 +18,7 @@ import org.geotools.api.style.Graphic;
 import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.Rule;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
@@ -41,6 +43,34 @@ public class StyleAttributeExtractorTest {
         assertTrue(atts.contains("attribute"));
         assertEquals(1, atts.size());
         assertTrue(extractor.getDefaultGeometryUsed());
+    }
+
+    /** Attributes used by a ${cql} vendor option are extracted, so the renderer reads them from the data. */
+    @Test
+    public void testTextVendorOptionExpression() {
+        TextSymbolizer text = sb.createTextSymbolizer(Color.BLACK, sb.createFont("Serif", 10), "name");
+        text.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "${padding * 2}");
+
+        StyleAttributeExtractor extractor = new StyleAttributeExtractor();
+        sb.createRule(text).accept(extractor);
+
+        assertEquals(Set.of("name", "padding"), extractor.getAttributeNameSet());
+    }
+
+    /**
+     * The truncated extractor decides whether a text symbolizer can be cached: of its options, only charSpacing goes
+     * into the cached style, so only its attributes count.
+     */
+    @Test
+    public void testTruncatedTextVendorOptionExpression() {
+        TextSymbolizer text = sb.createTextSymbolizer(Color.BLACK, sb.createFont("Serif", 10), "name");
+        text.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "${padding * 2}");
+        text.getOptions().put(TextSymbolizer.CHAR_SPACING_KEY, "${spacing}");
+
+        StyleAttributeExtractorTruncated extractor = new StyleAttributeExtractorTruncated();
+        text.accept(extractor);
+
+        assertEquals(Set.of("spacing"), extractor.getAttributeNameSet());
     }
 
     @Test

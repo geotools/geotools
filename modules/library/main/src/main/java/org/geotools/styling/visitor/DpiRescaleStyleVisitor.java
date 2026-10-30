@@ -19,6 +19,7 @@ package org.geotools.styling.visitor;
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.measure.Units;
 
 /**
  * This is a style visitor that will produce a copy of the provided style. The copy will be rescaled by a provided
@@ -54,6 +55,10 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
     protected void rescaleOption(Map<String, String> options, String key, double defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
         String value = options.get(key);
+        if (isExpressionOption(value)) {
+            rescaleExpressionOption(options, key, scaleFactor);
+            return;
+        }
         if (value == null) {
             value = String.valueOf(defaultValue);
         }
@@ -67,6 +72,10 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
         String value = options.get(key);
+        if (isExpressionOption(value)) {
+            rescaleExpressionOption(options, key, scaleFactor);
+            return;
+        }
         if (value == null) {
             value = String.valueOf(defaultValue);
         }
@@ -74,5 +83,15 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
         Measure v = new Measure(value, defaultUnit);
         String rescaled = RescalingMode.Pixels.rescaleToString(scaleFactor, v);
         options.put(key, String.valueOf(rescaled));
+    }
+
+    /**
+     * Rescales a <code>${cql}</code> vendor option in pixels. Like the literal values, options in real world units are
+     * left to the unit of measure rescaling, which already accounts for the DPI.
+     */
+    private void rescaleExpressionOption(Map<String, String> options, String key, double scaleFactor) {
+        if (defaultUnit == null || defaultUnit == Units.PIXEL) {
+            options.put(key, multiplyExpressionOption(options.get(key), scaleFactor));
+        }
     }
 }

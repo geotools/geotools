@@ -581,6 +581,38 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals("true", ts.getOptions().get("followLine"));
     }
 
+    /** An expression in a vendor option becomes a ${cql} option, evaluated for each feature as in SLD. */
+    @Test
+    public void labelVendorOptionExpression() throws Exception {
+        String css = "* { label: 'test'; label-auto-wrap: [if_then_else(greaterThan(population, 100000), 150, 80)]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertEquals(
+                "${if_then_else(greaterThan(population,100000),150,80)}",
+                ts.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+    }
+
+    /** A $ inside the expression is escaped, so the renderer reads the expression back unchanged. */
+    @Test
+    public void labelVendorOptionExpressionEscape() throws Exception {
+        String css = "* { label: 'test'; label-auto-wrap: [strLength(strConcat(name, ' $'))]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertEquals("${strLength(strConcat(name,' \\$'))}", ts.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+    }
+
+    /** A function written without brackets is an expression as well. */
+    @Test
+    public void labelVendorOptionFunction() throws Exception {
+        String css = "* { label: 'test'; label-padding: env('pad', 5)}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertEquals("${env('pad','5')}", ts.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
+    }
+
     @Test
     public void labelMixedMode() throws Exception {
         String css = "* { label: [att1]'\n('[att2]')';}";

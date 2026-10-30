@@ -535,8 +535,7 @@ public class Encoder {
         xmls.getTransformer().setOutputProperties(outputProps);
         xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
-
-        xmls = new QNameValidatingHandler(xmls);
+        xmls = new QNameValidatingHandler(xmls, namespaces);
         try {
             encode(object, name, xmls);
         } catch (final SAXException e) {
@@ -599,7 +598,9 @@ public class Encoder {
         }
 
         try {
-            serializer = handler instanceof QNameValidatingHandler ? handler : new QNameValidatingHandler(handler);
+            serializer = handler instanceof QNameValidatingHandler
+                    ? handler
+                    : new QNameValidatingHandler(handler, namespaces);
 
             if (!inline) {
                 serializer.startDocument();
@@ -1026,25 +1027,31 @@ public class Encoder {
     }
 
     private void setupNamespaces() throws SAXException {
-        for (final Map.Entry<String, String> prefixNsEntry : schema.getQNamePrefixToNamespaceMap().entrySet()) {
+        String targetNs = schema.getTargetNamespace();
+        if (targetNs == null) {
+            targetNs = NULL_NS_URI;
+        }
+        String targetPrefix = DEFAULT_NS_PREFIX;
+
+        for (final Map.Entry<String, String> prefixNsEntry :
+                schema.getQNamePrefixToNamespaceMap().entrySet()) {
             final String ns = prefixNsEntry.getValue();
-            if ((!W3C_XML_SCHEMA_INSTANCE_NS_URI.equals(ns)) && namespaces.getPrefix(ns) == null) {
-                String prefix = prefixNsEntry.getKey();
-                if (prefix == null) {
-                    prefix = DEFAULT_NS_PREFIX;
+            String prefix = prefixNsEntry.getKey();
+            if (prefix == null) {
+                prefix = DEFAULT_NS_PREFIX;
+            }
+            if (ns.equals(targetNs)) {
+                targetPrefix = prefix;
+            } else {
+                if ((!W3C_XML_SCHEMA_INSTANCE_NS_URI.equals(ns)) && namespaces.getPrefix(ns) == null) {
+                    namespaces.declarePrefix(prefix, ns);
                 }
-                namespaces.declarePrefix(prefix, ns);
             }
         }
 
         if (!schemaLocations.isEmpty()) {
             // declare the schema instance namespace
             namespaces.declarePrefix("xsi", W3C_XML_SCHEMA_INSTANCE_NS_URI);
-        }
-
-        if (namespaces.getURI(DEFAULT_NS_PREFIX) == null) {
-            // ensure a default namespace prefix is set
-            namespaces.declarePrefix(DEFAULT_NS_PREFIX, schema.getTargetNamespace());
         }
 
         // write out all the namespace prefix value mappings
@@ -1055,6 +1062,17 @@ public class Encoder {
             if (!XML_NS_PREFIX.equals(prefix)) {
                 serializer.startPrefixMapping(prefix, uri);
             }
+        }
+
+        final String defaultNs = namespaces.getURI(DEFAULT_NS_PREFIX);
+        if (defaultNs == null) {
+            // ensure a default namespace prefix is set
+            namespaces.declarePrefix(DEFAULT_NS_PREFIX, targetNs);
+            serializer.startPrefixMapping(DEFAULT_NS_PREFIX, targetNs);
+
+        } else if (!defaultNs.equals(targetNs)) {
+            namespaces.declarePrefix(targetPrefix, targetNs);
+            serializer.startPrefixMapping(targetPrefix, targetNs);
         }
     }
 
@@ -1125,7 +1143,6 @@ public class Encoder {
 
     protected void start(final Element element, final XSDElementDeclaration declaration) throws SAXException {
         String uri, local;
-
         if (element.getLocalName() != null) {
             uri = element.getNamespaceURI();
             local = element.getLocalName();
@@ -1145,12 +1162,14 @@ public class Encoder {
 
         // declaration == null -> gml3 envelope encoding test failing
         // declaration.getSchema() == null -> wfs 2.0 feature collection encoding test failing
+        final String uriPrefix;
         final String qName;
         if (forceQualified(declaration)) {
-            final String uriPrefix;
             if (uri == null) {
                 uriPrefix = DEFAULT_NS_PREFIX;
                 uri = namespaces.getURI(uriPrefix);
+            } else if (uri.equals(namespaces.getURI(DEFAULT_NS_PREFIX))) {
+                uriPrefix = DEFAULT_NS_PREFIX;
             } else {
                 uriPrefix = namespaces.getPrefix(uri);
             }
@@ -1161,8 +1180,25 @@ public class Encoder {
                 qName = local;
             }
         } else {
+            uriPrefix = DEFAULT_NS_PREFIX;
             uri = NULL_NS_URI;
             qName = local;
+        }
+
+        // start a namespace prefix mapping for this element if needed
+        this.namespaces.pushContext();
+        if (uriPrefix != null) {
+            final String knownNs = namespaces.getURI(uriPrefix);
+            if (knownNs == null || !knownNs.equals(uri)) {
+                namespaces.declarePrefix(uriPrefix, uri);
+                serializer.startPrefixMapping(uriPrefix, uri);
+            }
+        } else {
+            final String knownPrefix = namespaces.getPrefix(uri);
+            if (knownPrefix == null) {
+                namespaces.declarePrefix(DEFAULT_NS_PREFIX, uri);
+                serializer.startPrefixMapping(DEFAULT_NS_PREFIX, uri);
+            }
         }
 
         final DOMAttributes atts = new DOMAttributes(element.getAttributes(), namespaces);
@@ -1191,14 +1227,6 @@ public class Encoder {
                 end(child, childDecl);
             }
         }
-
-        // push a new context for children, declaring the default prefix to be the one of this
-        // element
-        this.namespaces.pushContext();
-
-        if (uri != null) {
-            this.namespaces.declarePrefix(DEFAULT_NS_PREFIX, uri);
-        }
     }
 
     boolean forceQualified(final XSDElementDeclaration e) {
@@ -1222,37 +1250,40 @@ public class Encoder {
     }
 
     protected void end(final Element element, final XSDElementDeclaration declaration) throws SAXException {
-        // push off last context
-        namespaces.popContext();
-
         String uri = element.getNamespaceURI();
         final String local = element.getLocalName();
 
         final String qName;
-        if (element.getPrefix() != null && !DEFAULT_NS_PREFIX.equals(element.getPrefix())) {
-            qName = element.getPrefix() + ":" + local;
-        } else {
-            if (forceQualified(declaration)) {
-                final String uriPrefix;
-                if (uri == null) {
-                    uriPrefix = DEFAULT_NS_PREFIX;
-                    uri = namespaces.getURI(uriPrefix);
-                } else {
-                    uriPrefix = namespaces.getPrefix(uri);
-                }
-
-                if (uriPrefix != null && !DEFAULT_NS_PREFIX.equals(uriPrefix)) {
-                    qName = uriPrefix + ":" + local;
-                } else {
-                    qName = local;
-                }
+        if (forceQualified(declaration)) {
+            final String uriPrefix;
+            if (uri == null) {
+                uriPrefix = DEFAULT_NS_PREFIX;
+                uri = namespaces.getURI(uriPrefix);
+            } else if (uri.equals(namespaces.getURI(DEFAULT_NS_PREFIX))) {
+                uriPrefix = DEFAULT_NS_PREFIX;
             } else {
-                uri = NULL_NS_URI;
+                uriPrefix = namespaces.getPrefix(uri);
+            }
+
+            if (uriPrefix != null && !DEFAULT_NS_PREFIX.equals(uriPrefix)) {
+                qName = uriPrefix + ":" + local;
+            } else {
                 qName = local;
             }
+        } else {
+            uri = NULL_NS_URI;
+            qName = local;
         }
 
         serializer.endElement(uri, local, qName);
+
+        // end a namespace prefix mapping for this element if needed
+        for (final Enumeration startedPrefixMappings = namespaces.getDeclaredPrefixes();
+                startedPrefixMappings.hasMoreElements(); ) {
+            final String prefix = (String) startedPrefixMappings.nextElement();
+            serializer.endPrefixMapping(prefix);
+        }
+        namespaces.popContext();
     }
 
     private static class SingleIterator<T> implements Iterator<T> {
@@ -1331,6 +1362,8 @@ public class Encoder {
                     final int qnSepIdx = qName.indexOf(':');
                     if (qnSepIdx > -1) {
                         local = qName.substring(qnSepIdx + 1);
+                    } else {
+                        local = qName;
                     }
                 }
             }

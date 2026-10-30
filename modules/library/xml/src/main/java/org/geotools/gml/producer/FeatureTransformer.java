@@ -350,7 +350,8 @@ public class FeatureTransformer extends TransformerBase {
         private static final String FC = "FeatureCollection";
         private GeometryTransformer.GeometryTranslator geometryTranslator;
         private boolean encodeMeasures;
-        private final String memberString;
+        private final String localNameMemberString;
+        private final String qNameMemberString;
         private String currentPrefix;
         private final FeatureTypeNamespaces types;
         boolean prefixGml = false;
@@ -399,7 +400,10 @@ public class FeatureTransformer extends TransformerBase {
             this.handler = handler;
             getNamespaceSupport()
                     .declarePrefix(geometryTranslator.getDefaultPrefix(), geometryTranslator.getDefaultNamespace());
-            this.memberString = geometryTranslator.getDefaultPrefix() + ":featureMember";
+            this.localNameMemberString = "featureMember";
+            this.qNameMemberString = geometryTranslator.getDefaultPrefix() != null
+                    ? geometryTranslator.getDefaultPrefix() + ":" + localNameMemberString
+                    : localNameMemberString;
         }
 
         /** Method to be subclassed to return a custom geometry translator, mostly for gml3 geometry support. */
@@ -643,14 +647,15 @@ public class FeatureTransformer extends TransformerBase {
 
         public void startFeatureCollection() {
             try {
-                final String element = getDefaultPrefix() == null ? FC : getDefaultPrefix() + ":" + FC;
+                final String localName = FC;
+                final String qName = getDefaultPrefix() != null ? getDefaultPrefix() + ":" + localName : localName;
                 final AttributesImpl atts = new AttributesImpl();
 
                 if (lockId != null) {
                     atts.addAttribute(NULL_NS_URI, "lockId", "lockId", "CDATA", lockId);
                 }
 
-                contentHandler.startElement(NULL_NS_URI, "", element, atts);
+                contentHandler.startElement(NULL_NS_URI, localName, qName, atts);
 
             } catch (final SAXException se) {
                 throw new RuntimeException(se);
@@ -682,9 +687,12 @@ public class FeatureTransformer extends TransformerBase {
          */
         public void writeBounds(final BoundingBox bounds) {
             try {
-                final String boundedBy = geometryTranslator.getDefaultPrefix() + ":" + "boundedBy";
+                final String localName = "boundedBy";
+                final String qName = geometryTranslator.getDefaultPrefix() != null
+                        ? geometryTranslator.getDefaultPrefix() + ":" + localName
+                        : localName;
 
-                contentHandler.startElement(NULL_NS_URI, "", boundedBy, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, localName, qName, NULL_ATTS);
 
                 Envelope env = null;
                 if (bounds != null) {
@@ -693,7 +701,7 @@ public class FeatureTransformer extends TransformerBase {
                             new Coordinate(bounds.getMaxX(), bounds.getMaxY()));
                 }
                 geometryTranslator.encode(env, srsName);
-                contentHandler.endElement(NULL_NS_URI, "", boundedBy);
+                contentHandler.endElement(NULL_NS_URI, localName, qName);
             } catch (SAXException se) {
                 throw new RuntimeException(se);
             }
@@ -706,14 +714,20 @@ public class FeatureTransformer extends TransformerBase {
          */
         public void writeNullBounds() {
             try {
-                final String boundedBy = geometryTranslator.getDefaultPrefix() + ":boundedBy";
-                final String nullBox = geometryTranslator.getDefaultPrefix() + ":null";
+                final String localNameBoundedBy = "boundedBy";
+                final String qNameBoundedBy = geometryTranslator.getDefaultPrefix() != null
+                        ? geometryTranslator.getDefaultPrefix() + ":" + localNameBoundedBy
+                        : localNameBoundedBy;
+                final String localNullBox = "null";
+                final String qNameNullBox = geometryTranslator.getDefaultPrefix() != null
+                        ? geometryTranslator.getDefaultPrefix() + ":" + localNullBox
+                        : localNullBox;
 
-                contentHandler.startElement(NULL_NS_URI, "", boundedBy, NULL_ATTS);
-                contentHandler.startElement(NULL_NS_URI, "", nullBox, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, localNameBoundedBy, qNameBoundedBy, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, localNullBox, qNameNullBox, NULL_ATTS);
                 contentHandler.characters("unknown".toCharArray(), 0, "unknown".length());
-                contentHandler.endElement(NULL_NS_URI, "", nullBox);
-                contentHandler.endElement(NULL_NS_URI, "", boundedBy);
+                contentHandler.endElement(NULL_NS_URI, localNullBox, qNameNullBox);
+                contentHandler.endElement(NULL_NS_URI, localNameBoundedBy, qNameBoundedBy);
             } catch (final SAXException se) {
                 throw new RuntimeException(se);
             }
@@ -740,13 +754,11 @@ public class FeatureTransformer extends TransformerBase {
         public void endFeature(final Feature f) {
             try {
                 final Name typeName = f.getType().getName();
-                String name = typeName.getLocalPart();
+                final String localName = typeName.getLocalPart();
+                final String qName = currentPrefix != null ? currentPrefix + ":" + localName : localName;
 
-                if (currentPrefix != null) {
-                    name = currentPrefix + ":" + name;
-                }
-                contentHandler.endElement(NULL_NS_URI, "", name);
-                contentHandler.endElement(NULL_NS_URI, "", memberString);
+                contentHandler.endElement(NULL_NS_URI, localName, qName);
+                contentHandler.endElement(NULL_NS_URI, localNameMemberString, qNameMemberString);
             } catch (final Exception e) {
                 throw new RuntimeException(e);
             }
@@ -763,7 +775,7 @@ public class FeatureTransformer extends TransformerBase {
         public void handleAttribute(final PropertyDescriptor descriptor, final Object value) {
             try {
                 if (value != null) {
-                    String name = descriptor.getName().getLocalPart();
+                    final String localName = descriptor.getName().getLocalPart();
 
                     // HACK: this should be user configurable, along with the
 
@@ -774,7 +786,7 @@ public class FeatureTransformer extends TransformerBase {
                             // cite tests, and having this check before the string
                             // equals should get us better performance.  Albeit
                             // very slightly, but this method gets called millions
-                            && name.equals("boundedBy")
+                            && localName.equals("boundedBy")
                             && value instanceof Geometry geomValue) {
 
                         final Envelope envelopeInternal = geomValue.getEnvelopeInternal();
@@ -788,15 +800,13 @@ public class FeatureTransformer extends TransformerBase {
                     } else {
                         String thisPrefix = currentPrefix;
 
-                        if (prefixGml && gmlAtts.contains(name)) {
+                        if (prefixGml && gmlAtts.contains(localName)) {
                             thisPrefix = "gml";
                         }
 
-                        if (thisPrefix != null) {
-                            name = thisPrefix + ":" + name;
-                        }
+                        final String qName = thisPrefix != null ? thisPrefix + ":" + localName : localName;
 
-                        contentHandler.startElement(NULL_NS_URI, "", name, NULL_ATTS);
+                        contentHandler.startElement(NULL_NS_URI, localName, qName, NULL_ATTS);
 
                         if (value instanceof final Geometry geomValue) {
                             if (dimension == 0) {
@@ -826,7 +836,7 @@ public class FeatureTransformer extends TransformerBase {
                             contentHandler.characters(text.toCharArray(), 0, text.length());
                         }
 
-                        contentHandler.endElement(NULL_NS_URI, "", name);
+                        contentHandler.endElement(NULL_NS_URI, localName, qName);
                     }
                 }
 
@@ -899,10 +909,10 @@ public class FeatureTransformer extends TransformerBase {
         @Override
         public void handleFeature(final Feature f) {
             try {
-                contentHandler.startElement(NULL_NS_URI, "", memberString, NULL_ATTS);
+                contentHandler.startElement(NULL_NS_URI, localNameMemberString, qNameMemberString, NULL_ATTS);
 
                 final FeatureType type = f.getType();
-                String name = type.getName().getLocalPart();
+                final String localName = type.getName().getLocalPart();
                 final String namespaceURI = type.getName().getNamespaceURI();
                 if (namespaceURI != null) {
                     currentPrefix = getNamespaceSupport().getPrefix(namespaceURI);
@@ -918,16 +928,19 @@ public class FeatureTransformer extends TransformerBase {
                     currentPrefix = types.findPrefix(type);
                 }
 
+                final String qName;
                 if (currentPrefix == null) {
                     throw new IllegalStateException(
-                            "FeatureType namespace/prefix unknown for " + name + "look up in: " + types);
+                            "FeatureType namespace/prefix unknown for " + localName + "look up in: " + types);
                 } else if (!currentPrefix.isEmpty()) {
-                    name = currentPrefix + ":" + name;
+                    qName = currentPrefix + ":" + localName;
+                } else {
+                    qName = localName;
                 }
 
                 final Attributes fidAtts = encodeFeatureId(f);
 
-                contentHandler.startElement(NULL_NS_URI, "", name, fidAtts);
+                contentHandler.startElement(NULL_NS_URI, localName, qName, fidAtts);
 
                 // encode the bounds if requested and the bounds are not missing or empty
                 if (featureBounding && f.getBounds() != null && !f.getBounds().isEmpty()) {

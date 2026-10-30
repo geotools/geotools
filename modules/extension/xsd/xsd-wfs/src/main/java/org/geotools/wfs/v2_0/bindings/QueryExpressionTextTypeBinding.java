@@ -97,11 +97,15 @@ public class QueryExpressionTextTypeBinding extends AbstractComplexEMFBinding {
             // using the current namespace context
             DocumentBuilderFactory dbf = XMLUtils.newDocumentBuilderFactory();
             dbf.setNamespaceAware(true);
+
+            namespaceContext.pushContext();
+            namespaceContext.declarePrefix("wfs", WFS.NAMESPACE);
             ConvertToDomHandler h =
                     new ConvertToDomHandler(XMLUtils.newDocumentBuilder(dbf).newDocument(), namespaceContext);
 
             SAXParser saxp = XMLUtils.newSAXParserFactory(null).newSAXParser();
             saxp.parse(new InputSource(new StringReader(qe.getValue())), h);
+            namespaceContext.popContext();
 
             Document d = h.getDocument();
             e.appendChild(document.importNode(d.getDocumentElement(), true));

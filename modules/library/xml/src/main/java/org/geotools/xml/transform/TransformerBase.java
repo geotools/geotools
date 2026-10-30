@@ -437,7 +437,8 @@ public abstract class TransformerBase {
                 }
 
                 for (int i = 0, ii = atts.getLength(); i < ii; i++) {
-                    namespaceDecls.addAttribute(atts.getURI(i), null, atts.getQName(i), atts.getType(i), atts.getValue(i));
+                    namespaceDecls.addAttribute(
+                            atts.getURI(i), atts.getLocalName(i), atts.getQName(i), atts.getType(i), atts.getValue(i));
                 }
 
                 atts = namespaceDecls;
@@ -448,7 +449,12 @@ public abstract class TransformerBase {
                 namespaceURI = NULL_NS_URI;
             }
             if (localName == null) {
-                localName = "";
+                final int idx = qName.indexOf(':');
+                if (idx > 0) {
+                    localName = qName.substring(idx + 1);
+                } else {
+                    localName = qName;
+                }
             }
             original.startElement(namespaceURI, localName, qName, atts);
             level++;
@@ -1042,7 +1048,8 @@ public abstract class TransformerBase {
 
         @Override
         public void parse(final InputSource in) throws SAXException {
-            final ContentHandler handler = new QNameValidatingHandler(getContentHandler());
+            final NamespaceSupport handlerNsSupport = new NamespaceSupport();
+            final ContentHandler handler = new QNameValidatingHandler(getContentHandler(), handlerNsSupport);
 
             if (base.isNamespaceDeclartionEnabled()) {
                 final AttributesImpl atts = new AttributesImpl();
@@ -1055,7 +1062,7 @@ public abstract class TransformerBase {
 
                 if (translator.getDefaultNamespace() != null) {
                     // declare the default mapping (xmlns="...")
-                    atts.addAttribute(XMLNS_ATTRIBUTE_NS_URI, null, XMLNS_ATTRIBUTE, "CDATA", translator.getDefaultNamespace());
+                    atts.addAttribute(XMLNS_ATTRIBUTE_NS_URI, XMLNS_ATTRIBUTE, XMLNS_ATTRIBUTE, "CDATA", translator.getDefaultNamespace());
 
                     // if prefix non-null, include it in the sorted declarations
                     if (translator.getDefaultPrefix() != null) {
@@ -1075,16 +1082,17 @@ public abstract class TransformerBase {
 
                 // Add all prefixed namespace declarations in alphabetical order
                 for (final Map.Entry<String, String> entry : nsDeclarations.entrySet()) {
-                    final String xmlns = XMLNS_ATTRIBUTE + ':' + entry.getKey();
-                    if (atts.getValue(xmlns) == null) {
-                        atts.addAttribute(XMLNS_ATTRIBUTE_NS_URI, null, xmlns, "CDATA", entry.getValue());
+                    final String localName = entry.getKey();
+                    final String qName = XMLNS_ATTRIBUTE + ':' + entry.getKey();
+                    if (atts.getValue(qName) == null) {
+                        atts.addAttribute(XMLNS_ATTRIBUTE_NS_URI, localName, qName, "CDATA", entry.getValue());
                     }
                 }
 
                 final String defaultNS = ns.getURI(DEFAULT_NS_PREFIX);
 
-                if (defaultNS != null && atts.getValue(XMLNS_ATTRIBUTE + ':') == null) {
-                    atts.addAttribute(XMLNS_ATTRIBUTE_NS_URI, null, XMLNS_ATTRIBUTE + ':', "CDATA", defaultNS);
+                if (defaultNS != null && atts.getValue(XMLNS_ATTRIBUTE) == null) {
+                    atts.addAttribute(XMLNS_ATTRIBUTE_NS_URI, XMLNS_ATTRIBUTE, XMLNS_ATTRIBUTE, "CDATA", defaultNS);
 
                     // namespaces.add(defaultNS);
                 }
@@ -1093,9 +1101,19 @@ public abstract class TransformerBase {
 
                 if (schemaLocSup != null && !schemaLocSup.getSchemaLocation().isEmpty()) {
                     atts.addAttribute(
-                            XMLNS_ATTRIBUTE_NS_URI, null, XMLNS_ATTRIBUTE + ":xsi", "CDATA", W3C_XML_SCHEMA_INSTANCE_NS_URI);
-                    atts.addAttribute(null, null, "xsi:schemaLocation", null, schemaLocSup.getSchemaLocation());
+                            XMLNS_ATTRIBUTE_NS_URI, "xsi", XMLNS_ATTRIBUTE + ":xsi", "CDATA", W3C_XML_SCHEMA_INSTANCE_NS_URI);
+                    atts.addAttribute(
+                            W3C_XML_SCHEMA_INSTANCE_NS_URI,
+                            "schemaLocation",
+                            "xsi:schemaLocation",
+                            "CDATA",
+                            schemaLocSup.getSchemaLocation());
                 }
+
+                for (final Map.Entry<String, String> nsDeclaration : nsDeclarations.entrySet()) {
+                    handlerNsSupport.declarePrefix(nsDeclaration.getKey(), nsDeclaration.getValue());
+                }
+
             } else {
                 translator = base.createTranslator(handler);
             }

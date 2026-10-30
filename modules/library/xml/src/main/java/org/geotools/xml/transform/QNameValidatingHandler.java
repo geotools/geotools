@@ -16,6 +16,7 @@
  */
 package org.geotools.xml.transform;
 
+import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
 import static javax.xml.XMLConstants.XMLNS_ATTRIBUTE;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.eclipse.emf.ecore.xml.type.internal.DataValue.XMLChar.isValidNCName;
@@ -30,14 +31,17 @@ import org.xml.sax.DTDHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /** Validates that element names do not contain invalid/illegal XML characters. */
 public class QNameValidatingHandler implements TransformerHandler {
 
     private final ContentHandler original;
+    private final NamespaceSupport namespaces;
 
-    public QNameValidatingHandler(final ContentHandler original) {
+    public QNameValidatingHandler(final ContentHandler original, final NamespaceSupport namespaces) {
         this.original = original;
+        this.namespaces = namespaces;
     }
 
     @Override
@@ -53,12 +57,22 @@ public class QNameValidatingHandler implements TransformerHandler {
     }
 
     @Override
-    public void startElement(final String namespaceURI, final String localName, final String qName, final Attributes atts) throws SAXException {
+    public void startElement(final String namespaceURI, final String localName, String qName, final Attributes atts) throws SAXException {
         if (!checkName(localName, qName) || !checkAtts(atts)) {
             throw new DOMException(
                     DOMException.INVALID_CHARACTER_ERR,
                     "INVALID_CHARACTER_ERR: An invalid or illegal XML character is specified.");
         }
+
+        // coalesce namespaces, i.e. we don't need to use a prefix if the prefix's URI mapping is the same as the
+        // default namespace URI
+        final int qnSepIdx = qName.indexOf(':');
+        if (namespaceURI != null
+                && namespaceURI.equals(namespaces.getURI(DEFAULT_NS_PREFIX))
+                && qnSepIdx > -1) {
+            qName = qName.substring(qnSepIdx + 1);
+        }
+
         original.startElement(namespaceURI, localName, qName, atts);
     }
 
@@ -117,7 +131,16 @@ public class QNameValidatingHandler implements TransformerHandler {
     }
 
     @Override
-    public void endElement(final String namespaceURI, final String localName, final String qName) throws SAXException {
+    public void endElement(final String namespaceURI, final String localName, String qName) throws SAXException {
+        // coalesce namespaces, i.e. we don't need to use a prefix if the prefix's URI mapping is the same as the
+        // default namespace URI
+        final int qnSepIdx = qName.indexOf(':');
+        if (namespaceURI != null
+                && namespaceURI.equals(namespaces.getURI(DEFAULT_NS_PREFIX))
+                && qnSepIdx > -1) {
+            qName = qName.substring(qnSepIdx + 1);
+        }
+
         original.endElement(namespaceURI, localName, qName);
     }
 

@@ -205,7 +205,12 @@ public class GMLWriter {
             qualifiedName = qualify(qn.getNamespaceURI(), qn.getLocalPart(), null);
         }
         if (qualifiedName != null) {
-            handler.endElement(null, null, qualifiedName);
+            String localName = qualifiedName;
+            final int qnSepIx = localName.indexOf(':');
+            if (qnSepIx > -1) {
+                localName = qualifiedName.substring(qnSepIx + 1);
+            }
+            handler.endElement(qn.getNamespaceURI(), localName, qualifiedName);
         } else {
             handler.endElement(qn.getNamespaceURI(), qn.getLocalPart(), null);
         }

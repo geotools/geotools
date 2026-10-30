@@ -1051,6 +1051,8 @@ public class XMLUtils {
             this.hints = hints != null ? hints : GeoTools.getDefaultHints();
             this.factory = DocumentBuilderFactory.newInstance(); // NOPMD AvoidDocumentBuilderFactory
 
+            this.factory.setNamespaceAware(true);
+
             // choosing sensible defaults for document builder factory
             // see: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
             try {

@@ -38,10 +38,15 @@ jobs:
     - name: Build with Maven (JDK ${{ matrix.jdk }})
       run: |
         mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build --file pom.xml
-    - name: Build Saxon specific parts with Maven (JDK ${{ matrix.jdk }})
+    - name: Build Saxon 9 specific parts with Maven (JDK ${{ matrix.jdk }})
       run: |
         pushd module/extensions/xsd
-        mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build -Psaxon --file pom.xml
+        mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build -Psaxon9 --file pom.xml
+        popd
+    - name: Build Saxon 12 specific parts with Maven (JDK ${{ matrix.jdk }})
+      run: |
+        pushd module/extensions/xsd
+        mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build -Psaxon12 --file pom.xml
         popd
     - name: Remove SNAPSHOT jars from repository
       run: |

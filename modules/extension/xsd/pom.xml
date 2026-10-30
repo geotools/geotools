@@ -94,7 +94,7 @@
 
   <profiles>
     <profile>
-      <id>saxon</id>
+      <id>saxon9</id>
       <properties>
         <test.args>-Djavax.xml.transform.TransformerFactory=net.sf.saxon.jaxp.SaxonTransformerFactory</test.args>
       </properties>
@@ -102,7 +102,22 @@
         <dependency>
           <groupId>net.sf.saxon</groupId>
           <artifactId>Saxon-HE</artifactId>
-          <version>9.6.0-6</version>
+          <version>9.9.1-8</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>saxon12</id>
+      <properties>
+        <test.args>-Djavax.xml.transform.TransformerFactory=net.sf.saxon.jaxp.SaxonTransformerFactory</test.args>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>net.sf.saxon</groupId>
+          <artifactId>Saxon-HE</artifactId>
+          <version>12.10</version>
           <scope>test</scope>
         </dependency>
       </dependencies>

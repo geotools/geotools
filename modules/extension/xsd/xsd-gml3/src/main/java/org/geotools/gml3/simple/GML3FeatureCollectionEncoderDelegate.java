@@ -199,17 +199,17 @@ public class GML3FeatureCollectionEncoderDelegate extends org.geotools.gml2.simp
             URI srsName = GML3EncodingUtils.toURI(crs, srsSyntax);
             String crsName =
                     srsName != null ? srsName.toString() : crs.getName().getCode();
-            atts.addAttribute(null, "srsName", "srsName", null, crsName);
+            atts.addAttribute(null, "srsName", "srsName", "CDATA", crsName);
         }
 
         @Override
         public void setGeometryDimensionAttribute(AttributesImpl atts, int dimension) {
-            atts.addAttribute(null, "srsDimension", "srsDimension", null, String.valueOf(dimension));
+            atts.addAttribute(null, "srsDimension", "srsDimension", "CDATA", String.valueOf(dimension));
         }
 
         @Override
         public void initFidAttribute(AttributesImpl atts) {
-            atts.addAttribute(GML.NAMESPACE, "id", "gml:id", null, "");
+            atts.addAttribute(GML.NAMESPACE, "id", "gml:id", "CDATA", "");
         }
 
         @Override

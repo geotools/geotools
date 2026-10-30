@@ -647,7 +647,7 @@ public class FeatureTransformer extends TransformerBase {
                 final AttributesImpl atts = new AttributesImpl();
 
                 if (lockId != null) {
-                    atts.addAttribute(NULL_NS_URI, "lockId", "lockId", "", lockId);
+                    atts.addAttribute(NULL_NS_URI, "lockId", "lockId", "CDATA", lockId);
                 }
 
                 contentHandler.startElement(NULL_NS_URI, "", element, atts);

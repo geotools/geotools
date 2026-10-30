@@ -144,7 +144,7 @@ public class FilterTransformer extends TransformerBase {
             Set<Identifier> fids = filter.getIdentifiers();
             for (Identifier fid : fids) {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute(NULL_NS_URI, "fid", "fid", "", fid.toString());
+                atts.addAttribute(NULL_NS_URI, "fid", "fid", "CDATA", fid.toString());
                 element("FeatureId", null, atts);
             }
             return extraData;
@@ -281,9 +281,9 @@ public class FilterTransformer extends TransformerBase {
             Expression expression = filter.getExpression();
 
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute(NULL_NS_URI, "wildCard", "wildCard", "", wcm);
-            atts.addAttribute(NULL_NS_URI, "singleChar", "singleChar", "", wcs);
-            atts.addAttribute(NULL_NS_URI, "escape", "escape", "", esc);
+            atts.addAttribute(NULL_NS_URI, "wildCard", "wildCard", "CDATA", wcm);
+            atts.addAttribute(NULL_NS_URI, "singleChar", "singleChar", "CDATA", wcs);
+            atts.addAttribute(NULL_NS_URI, "escape", "escape", "CDATA", esc);
 
             start("PropertyIsLike", atts);
 
@@ -313,7 +313,7 @@ public class FilterTransformer extends TransformerBase {
             AttributesImpl atts = new AttributesImpl();
             if (filter.getNilReason() != null) {
                 atts.addAttribute(
-                        NULL_NS_URI, "nilReason", "nilReason", "", filter.getNilReason().toString());
+                        NULL_NS_URI, "nilReason", "nilReason", "CDATA", filter.getNilReason().toString());
             }
 
             String type = "PropertyIsNil";
@@ -539,7 +539,7 @@ public class FilterTransformer extends TransformerBase {
             String type = "Function";
 
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute(NULL_NS_URI, "name", "name", "", expression.getName());
+            atts.addAttribute(NULL_NS_URI, "name", "name", "CDATA", expression.getName());
             start(type, atts);
 
             for (org.geotools.api.filter.expression.Expression parameter : expression.getParameters()) {

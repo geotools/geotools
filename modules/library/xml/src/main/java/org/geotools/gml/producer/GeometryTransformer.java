@@ -244,7 +244,7 @@ public class GeometryTransformer extends TransformerBase {
                 start(boxName);
             } else {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "", srsName);
+                atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "CDATA", srsName);
                 start(boxName, atts);
             }
 
@@ -331,7 +331,7 @@ public class GeometryTransformer extends TransformerBase {
                 start(geomName);
             } else {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "", srsName);
+                atts.addAttribute(NULL_NS_URI, "srsName", "srsName", "CDATA", srsName);
                 start(geomName, atts);
             }
 

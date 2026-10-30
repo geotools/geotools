@@ -244,7 +244,7 @@ public class FeatureTypeTransformer extends TransformerBase {
         protected final void startSchemaType(String name, String namespace) throws SAXException {
             AttributesImpl atts = new AttributesImpl();
 
-            atts.addAttribute(NULL_NS_URI, "name", "name", "", name + "_Type");
+            atts.addAttribute(NULL_NS_URI, "name", "name", "CDATA", name + "_Type");
 
             contentHandler.startElement(SCHEMA_NS, "complexType", "xs:complexType", atts);
 
@@ -252,7 +252,7 @@ public class FeatureTypeTransformer extends TransformerBase {
 
             atts = new AttributesImpl();
 
-            atts.addAttribute(NULL_NS_URI, "base", "base", "", "gml:AbstractFeatureType");
+            atts.addAttribute(NULL_NS_URI, "base", "base", "CDATA", "gml:AbstractFeatureType");
 
             contentHandler.startElement(SCHEMA_NS, "extension", "xs:extension", atts);
 
@@ -297,7 +297,7 @@ public class FeatureTypeTransformer extends TransformerBase {
         protected void encodeBoolean(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
-            atts.addAttribute(NULL_NS_URI, "type", "type", "", "xs:boolean");
+            atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", "xs:boolean");
 
             contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
@@ -338,7 +338,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             AttributesImpl atts = createStandardAttributes(attribute);
 
             if (length == 0) {
-                atts.addAttribute(NULL_NS_URI, "type", "type", "", "xs:string");
+                atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", "xs:string");
 
                 contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
@@ -350,13 +350,13 @@ public class FeatureTypeTransformer extends TransformerBase {
 
                 atts = new AttributesImpl();
 
-                atts.addAttribute(NULL_NS_URI, "base", "base", "", "xs:string");
+                atts.addAttribute(NULL_NS_URI, "base", "base", "CDATA", "xs:string");
 
                 contentHandler.startElement(SCHEMA_NS, "restriction", "xs:restriction", atts);
 
                 atts = new AttributesImpl();
 
-                atts.addAttribute(NULL_NS_URI, "value", "value", "", Integer.toString(length));
+                atts.addAttribute(NULL_NS_URI, "value", "value", "CDATA", Integer.toString(length));
 
                 contentHandler.startElement(SCHEMA_NS, "maxLength", "xs:maxLength", atts);
 
@@ -400,7 +400,7 @@ public class FeatureTypeTransformer extends TransformerBase {
                 throw new RuntimeException("Called encode number with invalid attribute type.");
             }
 
-            atts.addAttribute(NULL_NS_URI, "type", "type", "", typeString);
+            atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", typeString);
 
             contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
@@ -413,13 +413,13 @@ public class FeatureTypeTransformer extends TransformerBase {
 
             Class binding = attribute.getType().getBinding();
             if (java.sql.Date.class.isAssignableFrom(binding)) {
-                atts.addAttribute(NULL_NS_URI, "type", "type", "", "xs:date");
+                atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", "xs:date");
 
             } else if (java.sql.Time.class.isAssignableFrom(binding)) {
-                atts.addAttribute(NULL_NS_URI, "type", "type", "", "xs:time");
+                atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", "xs:time");
 
             } else {
-                atts.addAttribute(NULL_NS_URI, "type", "type", "", "xs:dateTime");
+                atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", "xs:dateTime");
             }
 
             contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
@@ -457,7 +457,7 @@ public class FeatureTypeTransformer extends TransformerBase {
                 throw new RuntimeException("Unsupported type: " + type.getName());
             }
 
-            atts.addAttribute(NULL_NS_URI, "type", "type", "", typeString);
+            atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", typeString);
 
             contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
@@ -470,7 +470,7 @@ public class FeatureTypeTransformer extends TransformerBase {
 
         AttributesImpl atts = createStandardAttributes(attribute);
 
-        //atts.addAttribute(NULL_NS_URI, "type", "type", "", "gml:AbstractFeatureType");
+        //atts.addAttribute(NULL_NS_URI, "type", "type", "CDATA", "gml:AbstractFeatureType");
 
 
         contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
@@ -491,16 +491,16 @@ public class FeatureTypeTransformer extends TransformerBase {
         protected AttributesImpl createStandardAttributes(AttributeDescriptor attribute) {
             AttributesImpl atts = new AttributesImpl();
 
-            atts.addAttribute(NULL_NS_URI, "name", "name", "", attribute.getLocalName());
+            atts.addAttribute(NULL_NS_URI, "name", "name", "CDATA", attribute.getLocalName());
 
             if (attribute.isNillable() && attribute.getMinOccurs() == 0) {
-                atts.addAttribute(NULL_NS_URI, "minOccurs", "minOccurs", "", "0");
+                atts.addAttribute(NULL_NS_URI, "minOccurs", "minOccurs", "CDATA", "0");
 
-                atts.addAttribute(NULL_NS_URI, "nillable", "nillable", "", "true");
+                atts.addAttribute(NULL_NS_URI, "nillable", "nillable", "CDATA", "true");
             } else {
-                atts.addAttribute(NULL_NS_URI, "minOccurs", "minOccurs", "", "1");
+                atts.addAttribute(NULL_NS_URI, "minOccurs", "minOccurs", "CDATA", "1");
 
-                atts.addAttribute(NULL_NS_URI, "nillable", "nillable", "", "false");
+                atts.addAttribute(NULL_NS_URI, "nillable", "nillable", "CDATA", "false");
             }
 
             return atts;

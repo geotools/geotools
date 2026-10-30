@@ -817,7 +817,7 @@ public abstract class TransformerBase {
                 final String name = nameValuePairs[i];
                 final String value = nameValuePairs[i + 1];
 
-                attributes.addAttribute(NULL_NS_URI, name, name, "", value);
+                attributes.addAttribute(NULL_NS_URI, name, name, "CDATA", value);
             }
 
             return attributes;

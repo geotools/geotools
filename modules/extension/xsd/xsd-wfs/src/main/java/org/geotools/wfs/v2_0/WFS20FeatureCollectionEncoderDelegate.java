@@ -47,7 +47,7 @@ class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDele
         if ("identifier".equals(name.getLocalPart()) && GML.NAMESPACE.equals(name.getNamespaceURI())) {
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute(
-                    null, "codeSpace", "codeSpace", null, featureType.getName().getNamespaceURI());
+                    null, "codeSpace", "codeSpace", "CDATA", featureType.getName().getNamespaceURI());
             return atts;
         }
 

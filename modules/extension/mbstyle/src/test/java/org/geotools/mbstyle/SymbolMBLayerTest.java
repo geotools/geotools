@@ -19,6 +19,7 @@ package org.geotools.mbstyle;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -42,6 +43,7 @@ import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
+import org.geotools.renderer.style.ExpressionExtractor;
 import org.hamcrest.Matchers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -208,6 +210,31 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .getOptions()
                         .get("spaceAround"));
+    }
+
+    @Test
+    public void testZoomDrivenTextPadding() throws Exception {
+        // a zoom-driven text-padding cannot collapse to a scalar: it is emitted as a ${cql} vendor option the
+        // renderer evaluates per request, instead of falling back to the default of 2 (which packs labels)
+        String layer = "{'id':'testid','type':'symbol','source':'src','layout':"
+                + """
+                {
+                  "text-field": "{name}",
+                  "text-padding": ["interpolate", ["linear"], ["zoom"], 5, 3, 8, 7, 12, 11]
+                }}""";
+        MBStyle mbStyle = MBStyle.create(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        String spaceAround = ((SymbolMBLayer) mbStyle.layer("testid"))
+                .transformInternal(mbStyle)
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0)
+                .getOptions()
+                .get("spaceAround");
+        assertThat(spaceAround, Matchers.startsWith("${"));
+        // the CQL round-trips: extractCqlExpressions parses it back into an evaluable expression
+        assertNotNull(ExpressionExtractor.extractCqlExpressions(spaceAround));
     }
 
     @Test
@@ -387,5 +414,13 @@ public class SymbolMBLayerTest {
     public void testStaticTextFontStillList() throws ParseException {
         SymbolMBLayer layer = symbolLayer("{'text-field': '{name}', 'text-font': ['Noto Sans Regular']}");
         assertEquals(List.of("Noto Sans Regular"), layer.getTextFont());
+    }
+
+    /** An expression padding compares as the default 2 when picking the larger of text and icon padding. */
+    @Test
+    public void testExpressionTextPadding() throws ParseException {
+        SymbolMBLayer layer = symbolLayer(
+                "{'text-field': '{name}', 'text-padding': ['interpolate', ['linear'], ['zoom'], 5, 2, 8, 4]}");
+        assertEquals(2.0, layer.getTextPadding().doubleValue(), 0.0);
     }
 }

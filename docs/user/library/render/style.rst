@@ -529,7 +529,7 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
 
 * ``allowOverruns(false)``\ : When false does not allow labels on lines to get beyond the beginning/end of the line.  By default a partial overrun is tolerated, set to false to disallow it.
   
-* ``autoWrap(400)``\ : Number of pixels are which a long label should be split into multiple lines. Works on all geometries, on lines it is mutually exclusive with the ``followLine`` option
+* ``autoWrap(400)``\ : Number of pixels are which a long label should be split into multiple lines. Works on all geometries, on lines it is mutually exclusive with the ``followLine`` option. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
   
 * ``conflictResolution(true)``\ : Enables conflict resolution (default, true) meaning no two labels will be allowed to overlap. Symbolizers with conflict resolution off are considered outside of the conflict resolution game, they don't reserve area and can overlap with other labels.
   
@@ -551,7 +551,7 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
   
 * ``maxAngleDelta(90)``\ : When drawing curved labels, max allowed angle between two subsequent characters. Higher angles may cause disconnected words or overlapping characters
   
-* ``maxDisplacement(0)``\ : The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
+* ``maxDisplacement(0)``\ : The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
 
 * ``minGroupDistance(3)``\ : Minimum distance between two labels in the same label group. To be used when both displacement and repeat are used to avoid having two labels too close to each other
   
@@ -559,9 +559,9 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
 
 * ``polygonAlign(true)``\ : Option overriding manual rotation to align label rotation automatically for polygons.
   
-* ``spaceAround(50)``\ : The minimum distance between two labels, in pixels
+* ``spaceAround(50)``\ : The minimum distance between two labels, in pixels. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
 
-* ``charSpacing(0)``\ : The extra space between characters, in pixels. Can be negative.
+* ``charSpacing(0)``\ : The extra space between characters, in pixels. Can be negative. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
 
 * ``wordSpacing(0)``\ : The extra space between words, in pixels. Must be zero or positive.
 

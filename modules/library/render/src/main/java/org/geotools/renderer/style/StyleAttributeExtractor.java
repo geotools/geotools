@@ -356,6 +356,17 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         if (text.getPriority() != null) {
             text.getPriority().accept(this, null);
         }
+
+        visitOptions(text);
+    }
+
+    /** Visits the attributes and functions used by {@code ${cql}} vendor options. */
+    protected void visitOptions(TextSymbolizer text) {
+        for (String option : text.getOptions().values()) {
+            if (option != null && option.contains("${")) {
+                visitCqlExpression(option);
+            }
+        }
     }
 
     /** @see StyleVisitor#visit(org.geotools.api.style.Graphic) */
@@ -407,7 +418,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** Handles the special CQL expressions embedded in the style markers since the time */
-    private void visitCqlExpression(String expression) {
+    protected void visitCqlExpression(String expression) {
         Expression parsed = ExpressionExtractor.extractCqlExpressions(expression);
         if (parsed != null) parsed.accept(this, null);
     }

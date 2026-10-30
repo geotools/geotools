@@ -90,6 +90,7 @@ import org.geotools.brewer.styling.builder.TextSymbolizerBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
@@ -1969,9 +1970,17 @@ public class CssTranslator {
             }
             String sldKey = vendorOptions.get(vendorOptionKey);
             if (sldKey != null) {
-                String value = getLiteral(values, cssKey, idx, null);
-                if (value != null) {
-                    sb.option(sldKey, value);
+                Value value = getValue(values, cssKey, idx);
+                if (value instanceof Value.Expression || value instanceof Value.Function) {
+                    // the renderer evaluates a ${cql} option for each feature, as in SLD; inside ${} the
+                    // characters \, $ and } need a backslash escape
+                    String cql = ECQL.toCQL(value.toExpression())
+                            .replace("\\", "\\\\")
+                            .replace("$", "\\$")
+                            .replace("}", "\\}");
+                    sb.option(sldKey, "${" + cql + "}");
+                } else if (value != null) {
+                    sb.option(sldKey, value.toLiteral());
                 }
             }
         }

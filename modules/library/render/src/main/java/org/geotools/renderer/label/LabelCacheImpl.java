@@ -268,6 +268,7 @@ public class LabelCacheImpl implements LabelCache {
     @Override
     public void start() {
         stop = false;
+        voParser.clearRememberedResults();
     }
 
     @Override
@@ -400,11 +401,13 @@ public class LabelCacheImpl implements LabelCache {
         item.setSpaceAround(voParser.getIntOption(
                 symbolizer,
                 org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY,
-                org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND));
+                org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND,
+                feature));
         item.setMaxDisplacement(voParser.getIntOption(
                 symbolizer,
                 org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY,
-                org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT));
+                org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT,
+                feature));
         item.setMinGroupDistance(voParser.getIntOption(
                 symbolizer,
                 org.geotools.api.style.TextSymbolizer.MIN_GROUP_DISTANCE_KEY,
@@ -439,7 +442,8 @@ public class LabelCacheImpl implements LabelCache {
             item.setAutoWrap(voParser.getIntOption(
                     symbolizer,
                     org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
-                    org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP));
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP,
+                    feature));
         } else {
             // at fine level cause it would show up for every label with this setup
             LOGGER.log(Level.FINE, "Disabling auto-wrap, it's not supported along with followLine yet");

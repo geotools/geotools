@@ -826,7 +826,7 @@ public class SLDStyleFactory {
             attributes.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
         }
         double spacing = voParser.getDoubleOption(
-                symbolizer, TextSymbolizer.CHAR_SPACING_KEY, TextSymbolizer.DEFAULT_CHAR_SPACING);
+                symbolizer, TextSymbolizer.CHAR_SPACING_KEY, TextSymbolizer.DEFAULT_CHAR_SPACING, feature);
         if (spacing != 0) {
             // tracking is a percentage of the font size
             double tracking = spacing / size;

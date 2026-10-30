@@ -222,6 +222,18 @@ public class MBStyleTransformer {
         }
     }
 
+    /**
+     * Renders an expression bound for a scalar vendor option: a {@link Literal} becomes its plain string value, any
+     * other expression becomes a {@code ${cql}} placeholder the renderer evaluates per feature, so zoom/data-driven
+     * values survive instead of collapsing to a static default.
+     */
+    public static String vendorOptionExpression(Expression expression) {
+        if (expression instanceof Literal) {
+            return String.valueOf(expression.evaluate(null));
+        }
+        return "${" + ECQL.toCQL(expression) + "}";
+    }
+
     /** @return The list of default font names */
     public List<String> getDefaultFonts() {
         return defaultFonts;

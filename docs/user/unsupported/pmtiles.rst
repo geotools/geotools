@@ -170,6 +170,15 @@ Parameter            Type   Required Description
 **storage.provider** String No       Force a specific storage provider (file, http, s3, azure, gcs)
 ==================== ====== ======== ====================================================================================================================================
 
+Local File Parameters
+^^^^^^^^^^^^^^^^^^^^^
+
+============================= ====== =========================================================================================================
+Parameter                     Type   Description
+============================= ====== =========================================================================================================
+**storage.file.idle-timeout** String Time after which an idle file is closed to release its file descriptor, ISO-8601 duration (default: PT1M)
+============================= ====== =========================================================================================================
+
 HTTP/HTTPS Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -220,7 +229,6 @@ Azure Blob Storage Parameters
 =================================== ======= ====================================================================================================================================
 Parameter                           Type    Description
 =================================== ======= ====================================================================================================================================
-**storage.azure.blob-name**         String  Set the blob name if the endpoint points to the account URL
 **storage.azure.account-key**       String  Azure storage account key
 **storage.azure.sas-token**         String  Shared Access Signature (SAS) token
 **storage.azure.connection-string** String  Full Azure Storage connection string (common for Azurite / local development)

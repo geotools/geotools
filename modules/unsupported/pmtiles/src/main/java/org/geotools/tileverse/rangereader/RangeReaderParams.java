@@ -22,6 +22,7 @@ import io.tileverse.storage.StorageConfig;
 import io.tileverse.storage.StorageFactory;
 import io.tileverse.storage.StorageParameter;
 import io.tileverse.storage.azure.AzureBlobStorageProvider;
+import io.tileverse.storage.file.FileStorageProvider;
 import io.tileverse.storage.gcs.GoogleCloudStorageProvider;
 import io.tileverse.storage.http.HttpStorageProvider;
 import io.tileverse.storage.s3.S3StorageProvider;
@@ -30,6 +31,7 @@ import io.tileverse.storage.spi.StorageProvider;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -89,6 +91,8 @@ public class RangeReaderParams {
 
     public static final Param MEMORY_CACHE_ENABLED = dataStoreParam(AbstractStorageProvider.MEMORY_CACHE_ENABLED);
 
+    public static final Param FILE_IDLE_TIMEOUT = dataStoreParam(FileStorageProvider.FILE_IDLE_TIMEOUT);
+
     public static final Param HTTP_CONNECTION_TIMEOUT_MILLIS =
             dataStoreParam(HttpStorageProvider.HTTP_CONNECTION_TIMEOUT_MILLIS);
     public static final Param HTTP_TRUST_ALL_SSL_CERTIFICATES =
@@ -102,7 +106,6 @@ public class RangeReaderParams {
     public static final Param HTTP_AUTH_API_KEY_VALUE_PREFIX =
             dataStoreParam(HttpStorageProvider.HTTP_AUTH_API_KEY_VALUE_PREFIX);
 
-    public static final Param AZURE_BLOB_NAME = dataStoreParam(AzureBlobStorageProvider.AZURE_BLOB_NAME);
     public static final Param AZURE_ANONYMOUS = dataStoreParam(AzureBlobStorageProvider.AZURE_ANONYMOUS);
     public static final Param AZURE_ACCOUNT_KEY = dataStoreParam(AzureBlobStorageProvider.AZURE_ACCOUNT_KEY);
     public static final Param AZURE_SAS_TOKEN = dataStoreParam(AzureBlobStorageProvider.AZURE_SAS_TOKEN);
@@ -141,6 +144,7 @@ public class RangeReaderParams {
     public static final List<Param> PROVIDER_PARAMS = List.of(
             RANGEREADER_PROVIDER_ID,
             MEMORY_CACHE_ENABLED,
+            FILE_IDLE_TIMEOUT,
             HTTP_CONNECTION_TIMEOUT_MILLIS,
             HTTP_TRUST_ALL_SSL_CERTIFICATES,
             HTTP_AUTH_USERNAME,
@@ -149,7 +153,6 @@ public class RangeReaderParams {
             HTTP_AUTH_API_KEY_HEADERNAME,
             HTTP_AUTH_API_KEY,
             HTTP_AUTH_API_KEY_VALUE_PREFIX,
-            AZURE_BLOB_NAME,
             AZURE_ANONYMOUS,
             AZURE_ACCOUNT_KEY,
             AZURE_SAS_TOKEN,
@@ -223,9 +226,12 @@ public class RangeReaderParams {
      * @return the equivalent GeoTools Param
      */
     public static Param dataStoreParam(StorageParameter<?> param) {
-        Object defaultValue = param.defaultValue().orElse(null);
+        Object defaultValue =
+                param.defaultValue().map(RangeReaderParams::paramValue).orElse(null);
         List<?> sampleValues = param.sampleValues();
-        Object[] options = sampleValues.isEmpty() ? null : sampleValues.toArray();
+        Object[] options = sampleValues.isEmpty()
+                ? null
+                : sampleValues.stream().map(RangeReaderParams::paramValue).toArray();
 
         return ParamBuilder.builder()
                 .key(param.key())
@@ -235,11 +241,23 @@ public class RangeReaderParams {
                 .description(param.description())
                 .optional()
                 .level(param.group())
-                .type(param.type())
+                .type(paramType(param.type()))
                 .defaultValue(defaultValue)
                 .options(options)
                 .password(param.password())
                 .build();
+    }
+
+    /**
+     * A duration binds as ISO-8601 text such as {@code PT30S}. {@link Param} parses text through a {@code String}
+     * constructor and {@link Duration} does not have one. A data store factory would refuse a duration stored as text.
+     */
+    private static Class<?> paramType(Class<?> type) {
+        return Duration.class.equals(type) ? String.class : type;
+    }
+
+    private static Object paramValue(Object value) {
+        return value instanceof Duration ? value.toString() : value;
     }
 
     /**

@@ -182,7 +182,6 @@ With no anonymous access, access keys, or profile set, the store uses the AWS de
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| **storage.azure.blob-name** | String | Set the blob name if the endpoint points to the account URL |
 | **storage.azure.account-key** | String | Azure storage account key |
 | **storage.azure.sas-token** | String | Shared Access Signature (SAS) token |
 

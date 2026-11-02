@@ -61,4 +61,28 @@ public class RangeReaderParamsTest {
         assertEquals("file", props.getProperty("storage.provider"));
         assertEquals("true", props.getProperty("storage.caching.enabled"));
     }
+
+    @Test
+    public void fileIdleTimeoutFromText() {
+        Map<String, Object> connectionParams = Map.of("storage.file.idle-timeout", "PT30S");
+
+        Properties props = RangeReaderParams.toProperties(connectionParams);
+
+        assertEquals("PT30S", props.getProperty("storage.file.idle-timeout"));
+    }
+
+    @Test
+    public void azureRetryDelayFromText() {
+        Map<String, Object> connectionParams = Map.of("storage.azure.retry-delay", "PT4S");
+
+        Properties props = RangeReaderParams.toProperties(connectionParams);
+
+        assertEquals("PT4S", props.getProperty("storage.azure.retry-delay"));
+    }
+
+    @Test
+    public void durationBindsAsText() {
+        assertEquals(String.class, RangeReaderParams.FILE_IDLE_TIMEOUT.type);
+        assertEquals("PT1M", RangeReaderParams.FILE_IDLE_TIMEOUT.sample);
+    }
 }

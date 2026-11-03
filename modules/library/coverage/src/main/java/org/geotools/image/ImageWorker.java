@@ -542,8 +542,8 @@ public class ImageWorker {
      * @param readMetadata If {@code true}, metadata will be read.
      */
     public final void load(final String source, final int imageChoice, final boolean readMetadata) {
-        final ParameterBlockImageN pbj = new ParameterBlockImageN("ImageRead");
-        pbj.setParameter("Input", source)
+        final ParameterBlockImageN pbj = new ParameterBlockImageN("ImageRead")
+                .setParameter("Input", source)
                 .setParameter("ImageChoice", Integer.valueOf(imageChoice))
                 .setParameter("ReadMetadata", Boolean.valueOf(readMetadata))
                 .setParameter("VerifyInput", Boolean.TRUE);

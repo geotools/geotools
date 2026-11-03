@@ -461,7 +461,7 @@ public class HeterogenousCRSTest {
      * @param sinks the sinks to explore
      * @return the warp operation or null
      */
-    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+    @SuppressWarnings({"unchecked", "PMD.ReplaceJavaUtilVector"})
     private RenderedOp getDownstreamWarp(Vector sinks) {
         if (sinks != null) {
             for (RenderedOp sink : (Vector<RenderedOp>) sinks) {

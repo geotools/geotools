@@ -16,6 +16,7 @@
  */
 package org.geotools.xsd;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.Stack;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
@@ -267,7 +267,7 @@ public abstract class Configuration {
     public final List<Configuration> allDependencies() {
         LinkedList<Configuration> unpacked = new LinkedList<>();
 
-        Stack<Configuration> stack = new Stack<>();
+        ArrayDeque<Configuration> stack = new ArrayDeque<>();
         stack.push(this);
 
         while (!stack.isEmpty()) {
@@ -292,11 +292,9 @@ public abstract class Configuration {
         }
 
         PriorityQueue<DepNode> q = new PriorityQueue<>(
-                g.nodes.size(), (o1, o2) -> Integer.valueOf(o1.outgoing().size())
-                        .compareTo(o2.outgoing().size()));
-        for (DepNode n : g.nodes.values()) {
-            q.add(n);
-        }
+                g.nodes.size(),
+                (o1, o2) -> Integer.compare(o1.outgoing().size(), o2.outgoing().size()));
+        q.addAll(g.nodes.values());
 
         unpacked = new LinkedList<>();
         while (!q.isEmpty()) {

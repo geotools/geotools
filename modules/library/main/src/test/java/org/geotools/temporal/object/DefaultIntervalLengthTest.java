@@ -18,6 +18,7 @@ package org.geotools.temporal.object;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Time;
@@ -80,7 +81,7 @@ public class DefaultIntervalLengthTest {
     /** Test of equals method, of class DefaultIntervalLength. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, intervalLength1);
+        assertNotNull(intervalLength1);
         assertEquals(intervalLength1, intervalLength1);
         assertNotEquals(intervalLength1, intervalLength2);
     }

@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -23,7 +24,7 @@ public class TestExplicitBoundsShape {
             Shape shape = createMock(Shape.class);
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
-            Assert.assertNotNull(target);
+            assertNotNull(target);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -143,7 +144,7 @@ public class TestExplicitBoundsShape {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertNotEquals(null, target);
+            assertNotNull(target);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

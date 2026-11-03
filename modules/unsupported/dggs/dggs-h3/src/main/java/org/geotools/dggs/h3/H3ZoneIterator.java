@@ -37,7 +37,10 @@ class H3ZoneIterator<R> implements Iterator<R> {
     Function<Long, Boolean> drill;
     Function<Long, Boolean> accept;
     Function<Long, R> map;
+
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     Stack<Long> candidates = new Stack<>();
+
     R next = null;
 
     public H3ZoneIterator(

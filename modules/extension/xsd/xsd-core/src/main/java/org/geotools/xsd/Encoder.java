@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -591,7 +591,7 @@ public class Encoder {
     public void encode(Object object, QName name, ContentHandler handler) throws IOException, SAXException {
 
         // maintain a stack of (encoding,element declaration pairs)
-        Stack<EncodingEntry> encoded = null;
+        ArrayDeque<EncodingEntry> encoded = null;
 
         // make sure the xs namespace is declared
         if (namespaces.getPrefix(XS.NAMESPACE) == null) {
@@ -616,7 +616,7 @@ public class Encoder {
                 throw new IOException("Unable to create document", e);
             }
 
-            encoded = new Stack<>();
+            encoded = new ArrayDeque<>();
 
             XSDElementDeclaration root = getRootDeclaration(name);
 
@@ -955,7 +955,7 @@ public class Encoder {
         return null;
     }
 
-    private void finishElement(Stack<EncodingEntry> encoded, EncodingEntry entry) throws SAXException {
+    private void finishElement(ArrayDeque<EncodingEntry> encoded, EncodingEntry entry) throws SAXException {
         end(entry.encoding, entry.element);
         encoded.pop();
 
@@ -967,7 +967,7 @@ public class Encoder {
         entry.parent = null;
     }
 
-    private void processChildren(ContentHandler handler, Stack<EncodingEntry> encoded, EncodingEntry entry) {
+    private void processChildren(ContentHandler handler, ArrayDeque<EncodingEntry> encoded, EncodingEntry entry) {
         Object[] child = entry.children.get(0);
         XSDElementDeclaration element = ((XSDElementDeclaration) child[0]).getResolvedElementDeclaration();
         Iterator itr = (Iterator) child[1];

@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.xml.gml.FCBuffer.StopException;
@@ -63,7 +63,7 @@ public class XMLSAXHandler extends DefaultHandler {
     protected static Level level = Level.FINE;
 
     // the stack of handlers
-    private Stack<XMLElementHandler> handlers = new Stack<>();
+    private ArrayDeque<XMLElementHandler> handlers = new ArrayDeque<>();
 
     /**
      * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the beggining of

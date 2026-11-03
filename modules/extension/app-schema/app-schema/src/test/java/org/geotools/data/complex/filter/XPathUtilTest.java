@@ -138,7 +138,7 @@ public class XPathUtilTest {
         XPathUtil.Step step4 = new XPathUtil.Step(XLINK.HREF, 1, true);
         XPathUtil.Step step5 = new XPathUtil.Step(XLINK.HREF, 2, false);
 
-        assertNotEquals(null, step1);
+        assertNotNull(step1);
         assertNotEquals(step1, new Object());
         assertNotEquals(step1, step2);
 

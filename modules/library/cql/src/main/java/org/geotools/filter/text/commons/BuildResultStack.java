@@ -16,9 +16,9 @@
  */
 package org.geotools.filter.text.commons;
 
+import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.EmptyStackException;
-import java.util.Stack;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
@@ -45,7 +45,7 @@ import org.locationtech.jts.geom.Geometry;
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_EXCEPTION")
 public final class BuildResultStack {
 
-    private final Stack<Result> stack = new Stack<>();
+    private final ArrayDeque<Result> stack = new ArrayDeque<>();
 
     private final String cqlSource;
 
@@ -60,7 +60,7 @@ public final class BuildResultStack {
     }
 
     public boolean empty() {
-        return stack.empty();
+        return stack.isEmpty();
     }
 
     public Result popResult() throws CQLException {

@@ -18,6 +18,7 @@ package org.geotools.feature;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -231,7 +232,7 @@ public class FeatureFlatTest {
         assertEquals(f1, f1);
         assertEquals(f2, f2);
         assertNotEquals(f1, f2);
-        assertNotEquals(null, f1);
+        assertNotNull(f1);
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("different");

@@ -43,6 +43,7 @@ final class LineStringBuilder extends GeometryBuilder {
     @Override
     public Geometry build(final int pointNode) throws CQLException {
         // Retrieve the linestirng points
+        @SuppressWarnings("PMD.ReplaceJavaUtilVector")
         Stack<Coordinate> pointStack = popCoordinatesOf(pointNode);
         // now pointStack has the coordinate in the correct order
         // the next code creates the coordinate array used to create

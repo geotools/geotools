@@ -17,13 +17,13 @@
 package org.geotools.xsd;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -156,8 +156,7 @@ public abstract class XSD {
     protected List<XSD> allDependencies() {
         LinkedList<XSD> unpacked = new LinkedList<>();
 
-        Stack<XSD> stack = new Stack<>();
-        stack.addAll(getDependencies());
+        ArrayDeque<XSD> stack = new ArrayDeque<>(getDependencies());
 
         while (!stack.isEmpty()) {
             XSD xsd = stack.pop();

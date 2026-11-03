@@ -18,6 +18,7 @@ package org.geotools.temporal.reference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 import org.geotools.api.temporal.Calendar;
@@ -130,7 +131,7 @@ public class DefaultClockTest {
     /** Test of equals method, of class DefaultClock. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, clock1);
+        assertNotNull(clock1);
         assertEquals(clock1, clock1);
         assertNotEquals(clock1, clock2);
     }

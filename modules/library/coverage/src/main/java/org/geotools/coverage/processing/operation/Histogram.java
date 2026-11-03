@@ -145,10 +145,10 @@ public class Histogram extends BaseStatisticsOperationJAI {
 
     @Override
     protected ParameterBlockImageN prepareParameters(ParameterValueGroup parameters) {
-        ParameterBlockImageN block = super.prepareParameters(parameters)
-                .setParameter("lowValue", parameters.parameter("lowValue").getValue())
-                .setParameter("highValue", parameters.parameter("highValue").getValue())
-                .setParameter("numBins", parameters.parameter("numBins").getValue());
+        ParameterBlockImageN block = super.prepareParameters(parameters);
+        block.setParameter("lowValue", parameters.parameter("lowValue").getValue());
+        block.setParameter("highValue", parameters.parameter("highValue").getValue());
+        block.setParameter("numBins", parameters.parameter("numBins").getValue());
         GridCoverage2D source = (GridCoverage2D) parameters.parameter("source0").getValue();
         // Handle ROI and NoData
         handleROINoDataInternal(block, source, STATS, 2, 3);

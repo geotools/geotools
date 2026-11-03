@@ -210,10 +210,10 @@ public class CustomPaletteBuilderTest {
                                 .setTileWidth(64))
                 .tile()
                 .getRenderedImage());
-        pbj.setParameter("numColors", 255)
-                .setParameter("alphaThreshold", 1)
-                .setParameter("subsampleX", 1)
-                .setParameter("subsampleY", 1);
+        pbj.setParameter("numColors", 255);
+        pbj.setParameter("alphaThreshold", 1);
+        pbj.setParameter("subsampleX", 1);
+        pbj.setParameter("subsampleY", 1);
         indexed = ImageN.create("org.geotools.ColorReduction", pbj);
         PlanarImage.wrapRenderedImage(indexed).getTiles();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
@@ -243,9 +243,9 @@ public class CustomPaletteBuilderTest {
                                 .setTileWidth(64))
                 .tile()
                 .getRenderedImage());
-        pbj.setParameter("quantizationColors", InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS)
-                .setParameter("alphaThreshold", 1)
-                .setParameter("IndexColorModel", icm);
+        pbj.setParameter("quantizationColors", InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS);
+        pbj.setParameter("alphaThreshold", 1);
+        pbj.setParameter("IndexColorModel", icm);
         indexed = ImageN.create("org.geotools.ColorInversion", pbj);
         PlanarImage.wrapRenderedImage(indexed).getTiles();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);

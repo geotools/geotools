@@ -841,13 +841,13 @@ public class Crop extends Operation2D {
         int w = (int) Math.ceil(env.getMaxX()) - x;
         int h = (int) Math.ceil(env.getMaxY()) - y;
 
-        ParameterBlockImageN pb = new ParameterBlockImageN("VectorBinarize")
-                .setParameter("minx", x)
-                .setParameter("miny", y)
-                .setParameter("width", w)
-                .setParameter("height", h)
-                .setParameter("geometry", PreparedGeometryFactory.prepare(theGeom))
-                .setParameter("antiAliasing", true);
+        ParameterBlockImageN pb = new ParameterBlockImageN("VectorBinarize");
+        pb.setParameter("minx", x);
+        pb.setParameter("miny", y);
+        pb.setParameter("width", w);
+        pb.setParameter("height", h);
+        pb.setParameter("geometry", PreparedGeometryFactory.prepare(theGeom));
+        pb.setParameter("antiAliasing", true);
         RenderedImage roiImage = ImageN.create("VectorBinarize", pb, null);
 
         return new ROI(roiImage);

@@ -169,12 +169,14 @@ public class PolygonExtractionProcess implements RasterProcess {
         final RenderedImage raster = coverage.getRenderedImage();
 
         // perform jai operation
-        ParameterBlockImageN pb = new ParameterBlockImageN("Vectorize").setSource("source0", raster);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Vectorize");
+        pb.setSource("source0", raster);
 
         if (roi != null) {
             pb.setParameter("roi", CoverageUtilities.prepareROI(roi, mt2D));
         }
-        pb.setParameter("band", band).setParameter("outsideValues", outsideValues);
+        pb.setParameter("band", band);
+        pb.setParameter("outsideValues", outsideValues);
         if (insideEdges != null) {
             pb.setParameter("insideEdges", insideEdges);
         }

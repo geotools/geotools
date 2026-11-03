@@ -451,12 +451,12 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 pb.addSource(it.image);
             }
         }
-        pb.setParameter("mosaicType", MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
-        pb.setParameter("sourceAlpha", null);
-        pb.setParameter("sourceROI", null);
-        pb.setParameter("sourceThreshold", null);
-        pb.setParameter("backgroundValues", new double[] {0});
-        pb.setParameter("nodata", null);
+        pb.setParameter("mosaicType", MosaicDescriptor.MOSAIC_TYPE_OVERLAY)
+                .setParameter("sourceAlpha", null)
+                .setParameter("sourceROI", null)
+                .setParameter("sourceThreshold", null)
+                .setParameter("backgroundValues", new double[] {0})
+                .setParameter("nodata", null);
 
         RenderingHints hints = new Hints(ImageN.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());

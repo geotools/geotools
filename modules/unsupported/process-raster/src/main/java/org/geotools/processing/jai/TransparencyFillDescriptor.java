@@ -89,12 +89,11 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
 
     public static RenderedOp create(
             RenderedImage source0, FillType type, RenderingHints hints, Number noData, Integer width) {
-        ParameterBlockImageN pb = new ParameterBlockImageN("TransparencyFill", RenderedRegistryMode.MODE_NAME);
-
-        pb.setSource("source0", source0);
-        pb.setParameter("type", type);
-        pb.setParameter("noData", noData);
-        pb.setParameter("width", width);
+        ParameterBlockImageN pb = new ParameterBlockImageN("TransparencyFill", RenderedRegistryMode.MODE_NAME)
+                .setSource("source0", source0)
+                .setParameter("type", type)
+                .setParameter("noData", noData)
+                .setParameter("width", width);
         return ImageN.create("TransparencyFill", pb, hints);
     }
 }

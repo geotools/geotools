@@ -350,6 +350,14 @@ public class ImageMosaicConfigHandler {
         if ("true".equalsIgnoreCase(wrapStore)) {
             catalogConfig.setWrapStore(true);
         }
+        String mosaicCRS = runConfiguration.getParameter(Prop.MOSAIC_CRS);
+        if (mosaicCRS != null) {
+            try {
+                catalogConfig.setCrs(CRS.decode(mosaicCRS, true));
+            } catch (FactoryException e) {
+                throw new IOException("Unable to decode the mosaic CRS " + mosaicCRS, e);
+            }
+        }
 
         if (Utils.checkFileReadable(datastoreProperties)) {
             // read the properties file

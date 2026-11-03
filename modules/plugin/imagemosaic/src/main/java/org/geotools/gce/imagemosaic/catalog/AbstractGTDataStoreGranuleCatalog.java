@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
@@ -40,6 +41,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -49,6 +51,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -90,6 +93,12 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     protected Properties params;
 
     private DataStoreFactorySpi spi;
+
+    /**
+     * Index reprojection by type name. One entry per coverage, whatever the CRS of the requests, so a plain map is
+     * enough.
+     */
+    private final Map<String, IndexReprojection> reprojections = new ConcurrentHashMap<>();
 
     public AbstractGTDataStoreGranuleCatalog(
             final Properties params,
@@ -288,6 +297,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             }
         } finally {
             multiScaleROIProvider = null;
+            reprojections.clear();
             disposeTileIndexStore();
         }
     }
@@ -311,6 +321,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         String typeName = query.getTypeName();
         SimpleFeatureStore fs = null;
         try {
+            query = getReprojection(typeName).toIndex(query);
             // create a writer that appends this features
             fs = (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
             boolean rollback = true;
@@ -365,16 +376,18 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             featureCollection.add(f);
             fids.add(ff.featureId(f.getID()));
         }
-        store.addFeatures(featureCollection);
+        // granules are built in the mosaic CRS, the index may be in a different one
+        store.addFeatures(getReprojection(typeName).toIndex(featureCollection));
         store.setTransaction(null);
     }
 
     @Override
     public void getGranuleDescriptors(Query query, final GranuleCatalogVisitor visitor) throws IOException {
         Utilities.ensureNonNull("query", query);
-        final Query q = mergeHints(query);
-        String typeName = q.getTypeName();
         checkStore();
+        IndexReprojection reprojection = getReprojection(query.getTypeName());
+        final Query q = reprojection.toIndex(mergeHints(query));
+        String typeName = q.getTypeName();
 
         //
         // Load tiles informations, especially the bounds, which will be
@@ -386,7 +399,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                     "The provided SimpleFeatureSource is null, it's impossible to create an index!");
         }
 
-        final SimpleFeatureCollection features = featureSource.getFeatures(q);
+        final SimpleFeatureCollection features = reprojection.toMosaic(featureSource.getFeatures(q));
         if (features == null)
             throw new NullPointerException(
                     "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
@@ -430,9 +443,10 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
         Utilities.ensureNonNull("query", q);
-        q = mergeHints(q);
-        String typeName = q.getTypeName();
         checkStore();
+        IndexReprojection reprojection = getReprojection(q.getTypeName());
+        q = reprojection.toIndex(mergeHints(q));
+        String typeName = q.getTypeName();
 
         //
         // Load tiles informations, especially the bounds, which will be
@@ -451,14 +465,31 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                         "A transaction has been specified, but the delegate tile index store is not writable");
             }
         }
-        return featureSource.getFeatures(q);
+        // a caller asking for its own output CRS gets it, not the mosaic one
+        if (q.getCoordinateSystemReproject() != null) return featureSource.getFeatures(q);
+        return reprojection.toMosaic(featureSource.getFeatures(q));
+    }
+
+    /** Index reprojection of the type, {@link IndexReprojection#NONE} when the mosaic CRS is unknown. */
+    private IndexReprojection getReprojection(String typeName) throws IOException {
+        IndexReprojection cached = reprojections.get(typeName);
+        if (cached != null) return cached;
+        CatalogConfigurationBean configuration = configurations.getByTypeName(typeName);
+        CoordinateReferenceSystem mosaicCRS = configuration != null ? configuration.getCrs() : null;
+        IndexReprojection reprojection = mosaicCRS == null
+                ? IndexReprojection.NONE
+                : IndexReprojection.create(mosaicCRS, getTileIndexStore().getSchema(typeName));
+        // racing threads compute the same value, no need for computeIfAbsent and its unchecked IOException wrapping
+        reprojections.put(typeName, reprojection);
+        return reprojection;
     }
 
     @Override
     public BoundingBox getBounds(final String typeName) {
         try {
             checkStore();
-            return this.getTileIndexStore().getFeatureSource(typeName).getBounds();
+            return getReprojection(typeName)
+                    .toMosaic(getTileIndexStore().getFeatureSource(typeName).getBounds());
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
@@ -479,7 +510,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                             "A transaction has been specified, but the delegate tile index store is not writable");
                 }
             }
-            return fs.getBounds();
+            return getReprojection(typeName).toMosaic(fs.getBounds());
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
@@ -546,6 +577,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
         getTileIndexStore().removeSchema(typeName);
         removeTypeName(typeName);
+        reprojections.remove(typeName);
     }
 
     @Override
@@ -570,17 +602,23 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         if (this.getValidTypeNames().isEmpty() || !this.getValidTypeNames().contains(typeName)) {
             return null;
         }
-        return getTileIndexStore().getSchema(typeName);
+        // granules are returned in the mosaic CRS, the type must match them or retyping wrappers fail
+        return getReprojection(typeName).mosaicSchema(getTileIndexStore().getSchema(typeName));
     }
 
     @Override
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
-        query = mergeHints(query);
         checkStore();
+        IndexReprojection reprojection = getReprojection(query.getTypeName());
+        query = reprojection.toIndex(mergeHints(query));
         SimpleFeatureSource fs = getTileIndexStore().getFeatureSource(query.getTypeName());
 
-        if (fs instanceof ContentFeatureSource source) source.accepts(query, function, null);
-        else {
+        // bounds must come out in the mosaic CRS, the store would compute them in the index one
+        if (reprojection != IndexReprojection.NONE && function instanceof BoundsVisitor) {
+            reprojection.toMosaic(fs.getFeatures(query)).accepts(function, null);
+        } else if (fs instanceof ContentFeatureSource) {
+            ((ContentFeatureSource) fs).accepts(query, function, null);
+        } else {
             final SimpleFeatureCollection collection = fs.getFeatures(query);
             collection.accepts(function, null);
         }
@@ -619,9 +657,9 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     public int getGranulesCount(Query q) throws IOException {
         Utilities.ensureNonNull("query", q);
-        q = mergeHints(q);
-        String typeName = q.getTypeName();
         checkStore();
+        q = getReprojection(q.getTypeName()).toIndex(mergeHints(q));
+        String typeName = q.getTypeName();
 
         //
         // Load tiles informations, especially the bounds, which will be

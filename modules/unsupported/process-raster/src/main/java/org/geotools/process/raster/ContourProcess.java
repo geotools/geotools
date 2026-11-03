@@ -214,8 +214,7 @@ public class ContourProcess implements RasterProcess {
         final RenderedImage raster = gc2d.getRenderedImage();
 
         // perform jai operation
-        ParameterBlockImageN pb = new ParameterBlockImageN("Contour");
-        pb.setSource("source0", raster);
+        ParameterBlockImageN pb = new ParameterBlockImageN("Contour").setSource("source0", raster);
 
         if (roi != null) {
             pb.setParameter("roi", CoverageUtilities.prepareROI(roi, mt2D));

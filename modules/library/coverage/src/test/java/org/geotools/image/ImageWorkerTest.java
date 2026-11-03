@@ -62,6 +62,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.zip.GZIPInputStream;
 import javax.imageio.ImageIO;
@@ -1521,6 +1522,29 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
 
     @Test
+    public void testWarpAffinePreserveSourceROI() throws Exception {
+        GridCoverage2D source = new GridCoverageFactory()
+                .create(
+                        "Test",
+                        getSyntheticRGB(Color.RED),
+                        new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));
+        double[] background = {1, 2, 3};
+        GridCoverage2D warped = project(source, CRS.parseWKT(GOOGLE_MERCATOR_WKT), null, "nearest", background, null);
+        RenderedOp warp = (RenderedOp) warped.getRenderedImage();
+        warp.getSourceImage(0).setProperty("ROI", new ROIShape(new Rectangle(0, 0, 64, 64)));
+
+        ImageWorker iwa = new ImageWorker(warp);
+        iwa.affine(
+                AffineTransform.getScaleInstance(0.5, 0.5),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                null);
+        RenderedOp reduced = (RenderedOp) iwa.getRenderedImage();
+        assertEquals("Warp", reduced.getOperationName());
+        assertEquals(background, reduced.getParameterBlock().getObjectParameter(2));
+        assertTrue(reduced.getParameterBlock().getObjectParameter(3) instanceof ROI);
+    }
+
+    @Test
     public void testOptimizedWarpOnLargeUpscale() throws Exception {
         BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_BYTE_INDEXED);
         GridCoverage2D source = new GridCoverageFactory()
@@ -1540,6 +1564,16 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // the tile size is not 4x4
         assertEquals(400, reduced.getTileWidth());
         assertEquals(400, reduced.getTileHeight());
+    }
+
+    @Test
+    public void testOrderedDitherNoData() {
+        ImageWorker worker = new ImageWorker(getSyntheticRGB(Color.RED))
+                .setNoData(RangeFactory.create((byte) 0, (byte) 0))
+                .setBackground(new double[] {255});
+        worker.forceIndexColorModel(false);
+        assertTrue(worker.isIndexed());
+        assertEquals(1, worker.getRenderedImage().getData().getNumBands());
     }
 
     @Test
@@ -1678,6 +1712,17 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Note that adding 4 bands to the existing 1 gray-band image will result into 5 total bands
         assertEquals(5, image.getTile(0, 0).getSampleModel().getNumBands());
         assertNoData(image, null);
+    }
+
+    @Test
+    public void testAddBandsTransformations() {
+        ImageWorker iw = new ImageWorker(gray).retainBands(1);
+        RenderedImage input = iw.getRenderedImage();
+        List<AffineTransform> transformations = List.of(new AffineTransform(), new AffineTransform());
+        RenderedOp image = (RenderedOp) iw.addBands(new RenderedImage[] {input}, false, null, transformations)
+                .getRenderedImage();
+        assertEquals(transformations, image.getParameterBlock().getObjectParameter(2));
+        assertEquals(2, image.getData().getNumBands());
     }
 
     @Test

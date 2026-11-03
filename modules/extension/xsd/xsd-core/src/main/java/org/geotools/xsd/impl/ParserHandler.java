@@ -76,7 +76,8 @@ public class ParserHandler extends DefaultHandler2 {
         void customizeContext(MutablePicoContainer context);
     }
 
-    /** execution stack * */
+    /** execution stack. */
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     protected Stack<Handler> handlers;
 
     /** namespace support * */
@@ -304,7 +305,7 @@ public class ParserHandler extends DefaultHandler2 {
         docHandler.setContext(context);
 
         // create the stack and add handler for document element
-        handlers = new Stack<>();
+        handlers = new Stack<>(); // NOPMD ReplaceJavaUtilVector
         handlers.push(docHandler);
 
         // get a logger from the context

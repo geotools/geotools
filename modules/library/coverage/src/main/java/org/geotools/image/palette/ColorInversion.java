@@ -52,7 +52,7 @@ public class ColorInversion extends PointOpImage {
 
     @Override
     // PlanarImage does not have generics, overrides this method
-    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+    @SuppressWarnings({"unchecked", "PMD.ReplaceJavaUtilVector"})
     public Vector<RenderedImage> getSources() {
         return super.getSources();
     }

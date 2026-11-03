@@ -55,6 +55,7 @@ import org.eclipse.imagen.PropertySourceImpl;
 import org.eclipse.imagen.TiledImage;
 import org.eclipse.imagen.iterator.RectIterFactory;
 import org.eclipse.imagen.iterator.WritableRectIter;
+import org.eclipse.imagen.media.imagefunction.ImageFunctionDescriptor;
 import org.eclipse.imagen.media.viewer.ImageViewer;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.Coverage;
@@ -517,7 +518,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
 
         /** Returns {@code null} to indicate that no source information is available. */
         @Override
-        @SuppressWarnings("PMD.ReplaceVectorWithList")
+        @SuppressWarnings("PMD.ReplaceJavaUtilVector")
         public Vector<RenderableImage> getSources() {
             return null;
         }

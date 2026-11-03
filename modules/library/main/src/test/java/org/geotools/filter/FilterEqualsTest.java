@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Collections;
 import java.util.logging.Logger;
@@ -86,7 +87,7 @@ public class FilterEqualsTest {
         FidFilterImpl ff2 = new FidFilterImpl(Collections.singleton(new FeatureIdImpl("1")));
         Assert.assertNotNull(ff2);
         Assert.assertEquals(ff, ff2);
-        assertNotEquals(null, ff);
+        assertNotNull(ff);
         ff2.addFid("2");
         assertNotEquals(ff, ff2);
 

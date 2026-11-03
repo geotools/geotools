@@ -18,6 +18,7 @@ package org.geotools.temporal.object;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -105,7 +106,7 @@ public class DefaultPeriodTest {
     /** Test of equals method, of class DefaultPeriod. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, period1);
+        assertNotNull(period1);
         assertEquals(period1, period1);
         assertNotEquals(period1, period2);
     }

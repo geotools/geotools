@@ -245,7 +245,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                 hints);
     }
 
-    @SuppressWarnings("PMD.ReplaceVectorWithList")
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     protected GridCoverage2DRIA(
             final GridCoverage2D src,
             final GridGeometry2D dst,
@@ -1506,7 +1506,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     @Override
     // PlanarImage does not have generics, overrides this method
-    @SuppressWarnings({"unchecked", "PMD.ReplaceVectorWithList"})
+    @SuppressWarnings({"unchecked", "PMD.ReplaceJavaUtilVector"})
     public Vector<RenderedImage> getSources() {
         return super.getSources();
     }

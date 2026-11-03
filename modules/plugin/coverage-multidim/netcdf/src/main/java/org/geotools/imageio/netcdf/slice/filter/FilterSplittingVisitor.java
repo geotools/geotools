@@ -119,7 +119,11 @@ final class FilterSplittingVisitor extends PostPreProcessFilterSplittingVisitor 
     public Object visit(Or filter, Object extraData) {
         // Only allow OR if it is a same-attribute equality disjunction,
         // because that is the only OR shape the extractor will optimize.
-        return isSupportedOr(filter) ? this.preStack.push(filter) : postProcess(filter, extraData);
+        if (isSupportedOr(filter)) {
+            preStack.push(filter);
+            return filter;
+        }
+        return postProcess(filter, extraData);
     }
 
     /** Returns true when the predicate is a property/literal comparison on a known dimension. */

@@ -75,7 +75,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * The types to be recognized for the {@code factories} argument in constructors. Must be consistent with the types
      * expected by the {@link AllAuthoritiesFactory#fromFactoryRegistry(String, Class)} method.
      */
-    @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
+    @SuppressWarnings({"unchecked"})
     private static final Class<? extends AuthorityFactory>[] FACTORY_TYPES = new Class[] {
         CRSAuthorityFactory.class,
         DatumAuthorityFactory.class,
@@ -87,7 +87,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * The types created by {@link #FACTORY_TYPES}. For each type {@code OBJECT_TYPES[i]}, the factory to be used must
      * be {@code FACTORY_TYPES[i]}.
      */
-    @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
+    @SuppressWarnings({"unchecked"})
     private static final Class<? extends IdentifiedObject>[] OBJECT_TYPES =
             new Class[] {CoordinateReferenceSystem.class, Datum.class, CoordinateSystem.class, CoordinateOperation.class
             };

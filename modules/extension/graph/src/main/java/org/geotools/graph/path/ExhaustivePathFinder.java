@@ -71,6 +71,7 @@ public class ExhaustivePathFinder {
         Map<Node, Iterator<? extends Graphable>> node2related = new HashMap<>();
 
         // create the stack and place start node on
+        @SuppressWarnings("PMD.ReplaceJavaUtilVector")
         IndexedStack<Node> stack = new IndexedStack<>();
         stack.push(from);
 

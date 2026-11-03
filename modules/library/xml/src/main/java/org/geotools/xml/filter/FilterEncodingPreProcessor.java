@@ -126,7 +126,10 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int MEDIUM = 1;
     private static final int HIGH = 2;
     private int complianceInt;
+
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     private Stack<Data> current = new Stack<>();
+
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private boolean requiresPostProcessing = false;

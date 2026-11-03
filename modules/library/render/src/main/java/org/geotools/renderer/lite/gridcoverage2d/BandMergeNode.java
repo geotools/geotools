@@ -27,12 +27,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.ROI;
 import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.media.bandmerge.BandMergeDescriptor;
 import org.eclipse.imagen.media.range.NoDataContainer;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.util.InternationalString;
@@ -88,7 +88,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
      * Holds the intermediate {@link RenderedOp} we create along the path for this {@link CoverageProcessingNode} in
      * order to be able to dispose them later on.
      */
-    private Stack<RenderedImage> intermediateOps = new Stack<>();
+    private final ArrayList<RenderedImage> intermediateOps = new ArrayList<>();
 
     /** alpha channel from previous nodes to be restored (it may be null) */
     private RenderedImage alpha;

@@ -39,7 +39,10 @@ class RHealPixZoneIterator<R> implements Iterator<R> {
     Function<RHealPixZone, Boolean> drill;
     Function<RHealPixZone, Boolean> accept;
     Function<RHealPixZone, R> map;
+
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     Stack<String> candidates = new Stack<>();
+
     R next = null;
 
     @SuppressWarnings("unchecked")

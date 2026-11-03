@@ -41,8 +41,9 @@ final class LineStringBuilder extends GeometryBuilder {
      * @see org.geotools.filter.text.txt.GeometryBuilder#build()
      */
     @Override
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     public Geometry build(final int pointNode) throws CQLException {
-        // Retrieve the linestirng points
+        // Retrieve the linestring points
         Stack<Coordinate> pointStack = popCoordinatesOf(pointNode);
         // now pointStack has the coordinate in the correct order
         // the next code creates the coordinate array used to create

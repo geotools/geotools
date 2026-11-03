@@ -18,6 +18,7 @@ package org.geotools.temporal.object;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -118,7 +119,7 @@ public class DefaultInstantTest {
     public void testEquals() {
         cal.set(2000, 1, 1);
 
-        assertNotEquals(null, instant1);
+        assertNotNull(instant1);
         assertEquals(cal.getTime().getTime(), instant1.getPosition().getDate().getTime());
         assertNotEquals(instant1, instant2);
     }

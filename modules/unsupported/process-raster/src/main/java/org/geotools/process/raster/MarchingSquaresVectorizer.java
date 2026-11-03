@@ -23,12 +23,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 import java.util.logging.Level;
 import org.eclipse.imagen.ImageLayout;
 import org.eclipse.imagen.ImageN;
@@ -200,7 +200,7 @@ public final class MarchingSquaresVectorizer {
      * A stack containing images we need to dispose. We dispose them at the end of the processing to avoid cache
      * thrashing
      */
-    private Stack<RenderedImage> imagesStack = new Stack<>();
+    private ArrayDeque<RenderedImage> imagesStack = new ArrayDeque<>();
 
     /** Simple image properties holder to have all imageProperties grouped into a single place */
     private ImageProperties imageProperties = new ImageProperties();

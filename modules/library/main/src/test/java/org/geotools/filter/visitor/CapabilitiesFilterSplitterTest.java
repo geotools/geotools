@@ -413,7 +413,7 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
                     Field postStackField = visitor.getClass().getDeclaredField("postStack");
                     postStackField.setAccessible(true);
                     @SuppressWarnings("unchecked")
-                    java.util.Stack<Object> postStack = (java.util.Stack<Object>) postStackField.get(visitor);
+                    java.util.ArrayDeque<Object> postStack = (java.util.ArrayDeque<Object>) postStackField.get(visitor);
                     postStack.push(org.geotools.api.filter.Filter.EXCLUDE);
                 } catch (Exception e) {
                     throw new RuntimeException("Could not access postStack", e);

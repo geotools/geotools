@@ -18,6 +18,7 @@ package org.geotools.temporal.object;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -89,7 +90,7 @@ public class DefaultOrdinalPositionTest {
     /** Test of equals method, of class DefaultOrdinalPosition. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, ordinalPosition1);
+        assertNotNull(ordinalPosition1);
         assertEquals(ordinalPosition1, ordinalPosition1);
         assertNotEquals(ordinalPosition1, ordinalPosition2);
     }

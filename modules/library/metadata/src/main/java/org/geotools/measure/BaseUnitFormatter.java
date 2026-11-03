@@ -162,6 +162,7 @@ public class BaseUnitFormatter implements UnitFormatter {
     }
 
     /** This class represents an exponent with both a power (numerator) and a root (denominator). */
+    @SuppressWarnings("EffectivelyPrivate")
     private static class Exponent {
         public final int pow;
         public final int root;
@@ -410,23 +411,22 @@ public class BaseUnitFormatter implements UnitFormatter {
         result = AbstractUnit.ONE;
         Token token = nextToken(csq, pos);
         switch (token) {
-            case IDENTIFIER:
-                result = parseSingleUnit(csq, pos);
-                break;
-            case OPEN_PAREN:
+            case IDENTIFIER -> result = parseSingleUnit(csq, pos);
+            case OPEN_PAREN -> {
                 pos.setIndex(pos.getIndex() + 1);
                 result = parseProductUnit(csq, pos);
                 token = nextToken(csq, pos);
                 check(token == Token.CLOSE_PAREN, "')' expected", csq, pos.getIndex());
                 pos.setIndex(pos.getIndex() + 1);
-                break;
-            default:
-                break;
+            }
+            default -> {
+                // do nothing
+            }
         }
         token = nextToken(csq, pos);
         while (true) {
             switch (token) {
-                case EXPONENT:
+                case EXPONENT -> {
                     Exponent e = readExponent(csq, pos);
                     if (e.pow != 1) {
                         result = result.pow(e.pow);
@@ -434,8 +434,8 @@ public class BaseUnitFormatter implements UnitFormatter {
                     if (e.root != 1) {
                         result = result.root(e.root);
                     }
-                    break;
-                case MULTIPLY:
+                }
+                case MULTIPLY -> {
                     pos.setIndex(pos.getIndex() + 1);
                     token = nextToken(csq, pos);
                     if (token == Token.INTEGER) {
@@ -451,8 +451,8 @@ public class BaseUnitFormatter implements UnitFormatter {
                     } else {
                         result = result.multiply(parseProductUnit(csq, pos));
                     }
-                    break;
-                case DIVIDE:
+                }
+                case DIVIDE -> {
                     pos.setIndex(pos.getIndex() + 1);
                     token = nextToken(csq, pos);
                     if (token == Token.INTEGER) {
@@ -468,8 +468,8 @@ public class BaseUnitFormatter implements UnitFormatter {
                     } else {
                         result = result.divide(parseProductUnit(csq, pos));
                     }
-                    break;
-                case PLUS:
+                }
+                case PLUS -> {
                     pos.setIndex(pos.getIndex() + 1);
                     token = nextToken(csq, pos);
                     if (token == Token.INTEGER) {
@@ -485,12 +485,11 @@ public class BaseUnitFormatter implements UnitFormatter {
                     } else {
                         throw new MeasurementParseException("not a number", csq, pos.getIndex());
                     }
-                    break;
-                case EOF:
-                case CLOSE_PAREN:
+                }
+                case EOF, CLOSE_PAREN -> {
                     return result;
-                default:
-                    throw new MeasurementParseException("unexpected token " + token, csq, pos.getIndex());
+                }
+                default -> throw new MeasurementParseException("unexpected token " + token, csq, pos.getIndex());
             }
             token = nextToken(csq, pos);
         }
@@ -559,24 +558,18 @@ public class BaseUnitFormatter implements UnitFormatter {
         while (pos.getIndex() < length) {
             c = csq.charAt(pos.getIndex());
             switch (c) {
-                case '-':
-                    isPowNegative = true;
-                    break;
-                case '\u00b9':
-                    pow = pow * 10 + 1;
-                    break;
-                case '\u00b2':
-                    pow = pow * 10 + 2;
-                    break;
-                case '\u00b3':
-                    pow = pow * 10 + 3;
-                    break;
-                case ':':
+                case '-' -> isPowNegative = true;
+                case '\u00b9' -> pow = pow * 10 + 1;
+                case '\u00b2' -> pow = pow * 10 + 2;
+                case '\u00b3' -> pow = pow * 10 + 3;
+                case ':' -> {
                     parseRoot = true;
                     break POWERLOOP;
-                default:
+                }
+                default -> {
                     if (c >= '0' && c <= '9') pow = pow * 10 + c - '0';
                     else break POWERLOOP;
+                }
             }
             pos.setIndex(pos.getIndex() + 1);
         }
@@ -590,21 +583,14 @@ public class BaseUnitFormatter implements UnitFormatter {
             while (pos.getIndex() < length) {
                 c = csq.charAt(pos.getIndex());
                 switch (c) {
-                    case '-':
-                        isRootNegative = true;
-                        break;
-                    case '\u00b9':
-                        root = root * 10 + 1;
-                        break;
-                    case '\u00b2':
-                        root = root * 10 + 2;
-                        break;
-                    case '\u00b3':
-                        root = root * 10 + 3;
-                        break;
-                    default:
+                    case '-' -> isRootNegative = true;
+                    case '\u00b9' -> root = root * 10 + 1;
+                    case '\u00b2' -> root = root * 10 + 2;
+                    case '\u00b3' -> root = root * 10 + 3;
+                    default -> {
                         if (c >= '0' && c <= '9') root = root * 10 + c - '0';
                         else break ROOTLOOP;
+                    }
                 }
                 pos.setIndex(pos.getIndex() + 1);
             }

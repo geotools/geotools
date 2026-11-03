@@ -178,6 +178,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E> implements Checked
     }
 
     /** Iterates through the elements in the set. */
+    @SuppressWarnings("EffectivelyPrivate")
     private final class Iter implements Iterator<E> {
         /** The iterator from the {@linkplain #base} set. */
         private final Iterator<B> iterator;

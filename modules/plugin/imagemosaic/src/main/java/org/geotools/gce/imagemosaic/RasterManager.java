@@ -31,6 +31,7 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,7 +44,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
@@ -955,7 +955,7 @@ public class RasterManager implements Cloneable {
             };
             alternativeCRSCache = CacheBuilder.newBuilder()
                     .maximumSize(ALTERNATIVE_CRS_CACHE_SIZE)
-                    .expireAfterWrite(ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS, TimeUnit.SECONDS)
+                    .expireAfterWrite(Duration.ofSeconds(ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS))
                     .build(loader);
         }
     }

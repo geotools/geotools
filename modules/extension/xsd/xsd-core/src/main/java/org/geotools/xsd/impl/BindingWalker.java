@@ -16,9 +16,9 @@
  */
 package org.geotools.xsd.impl;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -190,7 +190,7 @@ public class BindingWalker implements TypeWalker.Visitor {
 
         public void execute(Visitor visitor) {
             // simulated call stack
-            Stack<Binding> stack = new Stack<>();
+            ArrayDeque<Binding> stack = new ArrayDeque<>();
 
             // visit from bottom to top
             for (Object o : bindings) {

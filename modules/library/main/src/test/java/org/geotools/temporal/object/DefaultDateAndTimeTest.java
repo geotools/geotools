@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.temporal.DateAndTime;
 import org.geotools.api.temporal.TemporalReferenceSystem;
@@ -108,7 +109,7 @@ public class DefaultDateAndTimeTest {
     /** Test of equals method, of class DefaultDateAndTime. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, dateAndTime1);
+        assertNotNull(dateAndTime1);
         assertEquals(dateAndTime1, dateAndTime1);
     }
 

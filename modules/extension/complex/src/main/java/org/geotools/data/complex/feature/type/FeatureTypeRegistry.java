@@ -16,6 +16,7 @@
  */
 package org.geotools.data.complex.feature.type;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,11 +92,11 @@ public class FeatureTypeRegistry {
     private static volatile AttributeType XMLATTRIBUTE_TYPE;
 
     /**
-     * stack of currently being built type names, used by {@link #createType(Name, XSDTypeDefinition)} to prevent
-     * recursive type definitions by proxy'ing a type that appears to be already being constructed and thus still not in
-     * the type registry.
+     * stack of currently being built type names, used by {@link #createType(Name, XSDTypeDefinition,
+     * CoordinateReferenceSystem, boolean)} to prevent recursive type definitions by proxy'ing a type that appears to be
+     * already being constructed and thus still not in the type registry.
      */
-    private Stack<Name> processingTypes;
+    private ArrayDeque<Name> processingTypes;
 
     public FeatureTypeRegistry(FeatureTypeFactory typeFactory, FeatureTypeRegistryConfiguration helper) {
         this(null, typeFactory, helper);
@@ -118,7 +118,7 @@ public class FeatureTypeRegistry {
         descriptorRegistry = new HashMap<>();
         typeRegistry = new HashMap<>();
         anonTypeRegistry = new HashMap<>();
-        processingTypes = new Stack<>();
+        processingTypes = new ArrayDeque<>();
         this.helper = helper;
         this.includeAttributes = includeAttributes;
 
@@ -582,7 +582,7 @@ public class FeatureTypeRegistry {
         return attType;
     }
 
-    /** NOTE: to be called only by {@link #createType(Name, XSDTypeDefinition)} */
+    /** NOTE: to be called only by {@link #createType(Name, XSDTypeDefinition, CoordinateReferenceSystem, boolean)} */
     private AttributeType createComplexAttributeType(
             final Name assignedName,
             final Collection<PropertyDescriptor> schema,

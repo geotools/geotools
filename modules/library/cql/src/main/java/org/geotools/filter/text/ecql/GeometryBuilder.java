@@ -76,6 +76,7 @@ abstract class GeometryBuilder {
         throw new UnsupportedOperationException("should be implemented by subclass");
     }
 
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     protected Coordinate[] asCoordinate(Stack<Coordinate> stack) {
 
         int size = stack.size();
@@ -92,6 +93,7 @@ abstract class GeometryBuilder {
      *
      * @return an Stack with the required geometries
      */
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     protected Stack<Coordinate> popCoordinatesOf(int geomNode) throws CQLException {
         Stack<Coordinate> stack = new Stack<>();
         while (!getResultStack().empty()) {

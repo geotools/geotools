@@ -20,9 +20,9 @@ import java.awt.Dimension;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Properties;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.geometry.Bounds;
@@ -41,8 +41,8 @@ import org.geotools.util.logging.Logging;
 /** @author Richard Gould */
 public abstract class AbstractGetMapRequest extends AbstractWMSRequest implements GetMapRequest {
 
-    Stack<String> layers = new Stack<>();
-    Stack<String> styles = new Stack<>();
+    ArrayList<String> layers = new ArrayList<>();
+    ArrayList<String> styles = new ArrayList<>();
     static final Logger LOGGER = Logging.getLogger(AbstractGetMapRequest.class);
 
     /**
@@ -129,11 +129,11 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
 
     @Override
     public void addLayer(String layerName, String style) {
-        layers.push(layerName);
+        layers.add(layerName);
         if (style == null) {
             style = ""; // $NON-NLS-1$
         }
-        styles.push(style);
+        styles.add(style);
     }
 
     @Override

@@ -656,7 +656,7 @@ public class DuplicatingStyleVisitorTest {
         Assert.assertNotEquals("Transitivity test failed", controlNe, test);
 
         // check non-null
-        Assert.assertNotEquals("Non-null test failed", null, test);
+        Assert.assertNotNull("Non-null test failed", test);
     }
 
     private static void assertEqualsContract(Object controlEqual, Object test) {
@@ -671,7 +671,7 @@ public class DuplicatingStyleVisitorTest {
         assertEquals("Symmetry test failed", test, controlEqual);
 
         // check non-null
-        Assert.assertNotEquals("Non-null test failed", null, test);
+        Assert.assertNotNull("Non-null test failed", test);
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();

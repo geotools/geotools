@@ -76,7 +76,7 @@ import org.geotools.data.ogr.OGR;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Version;
 
-@SuppressWarnings({"PMD.UseArrayListInsteadOfVector", "PMD.ReplaceVectorWithList"})
+@SuppressWarnings({"PMD.ReplaceJavaUtilVector"})
 public class JniOGR implements OGR {
 
     private static final Method GET_FIELD_METHOD;

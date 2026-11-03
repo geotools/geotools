@@ -379,7 +379,7 @@ public class StyleObjectTest {
         Assert.assertNotEquals("Transitivity test failed", controlNe, test);
 
         // check non-null
-        Assert.assertNotEquals("Non-null test failed", null, test);
+        Assert.assertNotNull("Non-null test failed", test);
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();
@@ -399,7 +399,7 @@ public class StyleObjectTest {
         Assert.assertEquals("Symmetry test failed", test, controlEqual);
 
         // check non-null
-        Assert.assertNotEquals("Non-null test failed", null, test);
+        Assert.assertNotNull("Non-null test failed", test);
 
         // assertHashcode equality
         int controlEqHash = controlEqual.hashCode();

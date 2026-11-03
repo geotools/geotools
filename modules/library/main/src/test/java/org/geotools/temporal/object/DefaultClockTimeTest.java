@@ -73,7 +73,7 @@ public class DefaultClockTimeTest {
     /** Test of equals method, of class DefaultClockTime. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, clockTime1);
+        assertNotNull(clockTime1);
         assertEquals(clockTime1, clockTime1);
     }
 

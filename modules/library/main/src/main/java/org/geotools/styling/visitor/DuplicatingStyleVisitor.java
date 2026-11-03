@@ -105,6 +105,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected final DuplicatingFilterVisitor copyFilter;
 
     /** This is our internal stack; used to maintain state as we copy sub elements. */
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     protected Stack<Object> pages = new Stack<>();
 
     public DuplicatingStyleVisitor() {

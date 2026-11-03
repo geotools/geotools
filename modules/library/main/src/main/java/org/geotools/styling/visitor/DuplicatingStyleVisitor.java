@@ -18,11 +18,11 @@ package org.geotools.styling.visitor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.stream.Collectors;
 import javax.swing.Icon;
 import org.geotools.api.filter.Filter;
@@ -105,7 +105,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected final DuplicatingFilterVisitor copyFilter;
 
     /** This is our internal stack; used to maintain state as we copy sub elements. */
-    protected Stack<Object> pages = new Stack<>();
+    protected ArrayDeque<Object> pages = new ArrayDeque<>();
 
     public DuplicatingStyleVisitor() {
         this(CommonFactoryFinder.getStyleFactory(null));
@@ -248,7 +248,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             if (fts != null) {
                 fts.accept(this);
-                if (!pages.empty()) ftsCopy.add((FeatureTypeStyle) pages.pop());
+                if (!pages.isEmpty()) ftsCopy.add((FeatureTypeStyle) pages.pop());
             }
         }
 
@@ -494,7 +494,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         if (symbolizer == null) return null;
 
         symbolizer.accept(this);
-        Symbolizer result = pages.empty() ? null : (Symbolizer) pages.pop();
+        Symbolizer result = pages.isEmpty() ? null : (Symbolizer) pages.pop();
         return result;
     }
 

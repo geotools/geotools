@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.visitor;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.And;
@@ -130,13 +130,13 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
      * {@link FilterCapabilities}
      */
     /* Filter and Expression do not share a common ancestor, hence, Stack<Object> */
-    protected Stack<Object> postStack = new Stack<>();
+    protected ArrayDeque<Object> postStack = new ArrayDeque<>();
 
     /**
      * The stack holding the bits of the filter that <b>are</b> processable by something with the given
      * {@link FilterCapabilities}
      */
-    protected Stack<Object> preStack = new Stack<>();
+    protected ArrayDeque<Object> preStack = new ArrayDeque<>();
 
     /**
      * Operates similar to postStack. When a update is determined to affect an attribute expression the update filter is
@@ -518,7 +518,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     protected void visitBinarySpatialOperator(BinarySpatialOperator filter) {
         if (original == null) original = filter;
 
-        @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
+        @SuppressWarnings({"unchecked"})
         Class<? extends Filter>[] spatialOps = new Class[] {
             Beyond.class,
             Contains.class,
@@ -713,7 +713,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         }
     }
 
-    private void popToSize(Stack stack, int j) {
+    private void popToSize(ArrayDeque stack, int j) {
         while (j < stack.size()) {
             stack.pop();
         }

@@ -17,7 +17,7 @@
 package org.geotools.xml;
 
 import java.net.URI;
-import java.util.Stack;
+import java.util.ArrayDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.xml.handlers.xsi.IgnoreHandler;
@@ -46,7 +46,7 @@ public class XSISAXHandler extends DefaultHandler {
     protected static final Logger logger = org.geotools.util.logging.Logging.getLogger(XSISAXHandler.class);
 
     // the stack of handers representing a portion of the parse tree
-    private Stack<XSIElementHandler> handlers = new Stack<>();
+    private ArrayDeque<XSIElementHandler> handlers = new ArrayDeque<>();
 
     // The schema being used to parse into
     private Schema schema = null;

@@ -29,11 +29,30 @@ import java.awt.image.RenderedImage;
 import org.eclipse.imagen.PlanarImage;
 import org.eclipse.imagen.media.colorindexer.ColorIndexer;
 import org.eclipse.imagen.media.colorindexer.Quantizer;
+import org.eclipse.imagen.media.range.RangeFactory;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.junit.Test;
 
 public class QuantizerTest {
+
+    @Test
+    public void testColorIndexNoData() {
+        BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D gr = bi.createGraphics();
+        gr.setColor(Color.RED);
+        gr.fillRect(0, 0, 4, 4);
+        gr.dispose();
+
+        ColorIndexer indexer = new Quantizer(256).buildColorIndexer(bi);
+        RenderedImage indexed = new ImageWorker(bi)
+                .setNoData(RangeFactory.create((byte) 0, (byte) 0))
+                .setBackground(new double[] {0})
+                .colorIndex(indexer)
+                .getRenderedImage();
+        assertTrue(indexed.getColorModel() instanceof IndexColorModel);
+        assertEquals(1, indexed.getData().getNumBands());
+    }
 
     @Test
     public void testThreeColors() {

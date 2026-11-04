@@ -100,8 +100,6 @@ import org.jspecify.annotations.NullMarked;
  *       </ul>
  *   <li><strong>Azure Blob parameters</strong>:
  *       <ul>
- *         <li>{@linkplain AzureBlobStorageProvider#AZURE_BLOB_NAME storage.azure.blob-name} - Set the Azure blob name
- *             if the endpoint points to the account url
  *         <li>{@linkplain AzureBlobStorageProvider#AZURE_ACCOUNT_KEY storage.azure.account-key} - Azure Account access
  *             key
  *         <li>{@linkplain AzureBlobStorageProvider#AZURE_SAS_TOKEN storage.azure.sas-token} - Azure SAS token to use
@@ -203,8 +201,6 @@ public class PMTilesDataStoreFactory implements DataStoreFactorySpi {
     public static final Param HTTP_AUTH_API_KEY = RangeReaderParams.HTTP_AUTH_API_KEY;
     public static final Param HTTP_AUTH_API_KEY_VALUE_PREFIX = RangeReaderParams.HTTP_AUTH_API_KEY_VALUE_PREFIX;
 
-    /** Set the blob name if the endpoint points to the account url */
-    public static final Param AZURE_BLOB_NAME = RangeReaderParams.AZURE_BLOB_NAME;
     /** Anonymous public access (Container- or Blob-level) - skips Azure credential resolution entirely */
     public static final Param AZURE_ANONYMOUS = RangeReaderParams.AZURE_ANONYMOUS;
     /** Account access key */

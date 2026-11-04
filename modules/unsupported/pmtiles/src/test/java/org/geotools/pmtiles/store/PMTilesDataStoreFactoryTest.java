@@ -33,12 +33,14 @@ import io.tileverse.pmtiles.PMTilesTestData;
 import io.tileverse.storage.NotFoundException;
 import io.tileverse.storage.StorageParameter;
 import io.tileverse.storage.azure.AzureBlobStorageProvider;
+import io.tileverse.storage.file.FileStorageProvider;
 import io.tileverse.storage.gcs.GoogleCloudStorageProvider;
 import io.tileverse.storage.s3.S3StorageProvider;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -166,6 +168,39 @@ public class PMTilesDataStoreFactoryTest {
         } finally {
             System.clearProperty(GoogleCloudStorageProvider.ENABLED_KEY);
         }
+    }
+
+    @Test
+    public void testGetParametersInfoFile() {
+        Param[] parametersInfo = new PMTilesDataStoreFactory().getParametersInfo();
+
+        assertParams(new FileStorageProvider().getParameters(), parametersInfo);
+    }
+
+    // Catalogs persist connection parameters as text
+    @Test
+    public void testCanProcessDurationText() {
+        PMTilesDataStoreFactory factory = new PMTilesDataStoreFactory();
+        Map<String, Object> params = Map.of(URIP.key, andorra, "storage.file.idle-timeout", "PT30S");
+
+        assertTrue(factory.canProcess(params));
+    }
+
+    @Test
+    public void testRejectsMalformedDuration() {
+        PMTilesDataStoreFactory factory = new PMTilesDataStoreFactory();
+        Map<String, Object> params = Map.of(URIP.key, andorra, "storage.file.idle-timeout", "30 seconds");
+
+        assertThrows(DateTimeParseException.class, () -> factory.createDataStore(params));
+    }
+
+    // The file reader rejects a timeout below one millisecond, which proves the value reaches it
+    @Test
+    public void testFileIdleTimeoutReachesReader() {
+        PMTilesDataStoreFactory factory = new PMTilesDataStoreFactory();
+        Map<String, Object> params = Map.of(URIP.key, andorra, "storage.file.idle-timeout", "PT0.0001S");
+
+        assertThrows(IllegalArgumentException.class, () -> factory.createDataStore(params));
     }
 
     private void assertParams(List<StorageParameter<?>> expected, Param[] actual) {

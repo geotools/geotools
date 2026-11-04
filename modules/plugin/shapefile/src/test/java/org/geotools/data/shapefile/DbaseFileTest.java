@@ -250,4 +250,19 @@ public class DbaseFileTest extends TestCaseSupport {
         assertEquals("\u0412A cat ", formattedString);
         assertEquals(8, formattedString.getBytes(StandardCharsets.UTF_8).length);
     }
+
+    @Test
+    public void testPadShortString() throws Exception {
+        // a short string should be padded in a performant way
+        DbaseFileWriter.FieldFormatter formatter =
+                new DbaseFileWriter.FieldFormatter(StandardCharsets.UTF_8, TimeZone.getDefault(), false);
+        // outlandishly large field size to detect slow padding
+        int fieldSize = 1000000;
+
+        // very short input string will need a lot of padding
+        String formattedString = formatter.getFieldString(fieldSize, "a");
+
+        assertEquals("a" + " ".repeat(fieldSize - 1), formattedString);
+        assertEquals(fieldSize, formattedString.getBytes(StandardCharsets.UTF_8).length);
+    }
 }

@@ -70,7 +70,7 @@ public class ExponentialTransform1D extends AbstractMathTransform implements Mat
      * The inverse of this transform. Created only when first needed. Serialized in order to avoid rounding error if
      * this transform is actually the one which was created from the inverse.
      */
-    private MathTransform1D inverse;
+    private volatile MathTransform1D inverse;
 
     /** Constructs a new exponentional transform which is the inverse of the supplied logarithmic transform. */
     ExponentialTransform1D(final LogarithmicTransform1D inverse) {
@@ -144,6 +144,12 @@ public class ExponentialTransform1D extends AbstractMathTransform implements Mat
     /** Creates the inverse transform of this object. */
     @Override
     public MathTransform1D inverse() {
+        MathTransform1D result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call, linked back to this transform by its constructor. */
+    private synchronized MathTransform1D computeInverse() {
         if (inverse == null) {
             inverse = LogarithmicTransform1D.create(this);
         }

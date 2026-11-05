@@ -56,7 +56,7 @@ public class AffineTransform2D extends XAffineTransform
     private static final long serialVersionUID = -5299837898367149069L;
 
     /** The inverse transform. This field will be computed only when needed. */
-    private transient AffineTransform2D inverse;
+    private transient volatile AffineTransform2D inverse;
 
     /** Constructs a new affine transform with the same coefficient than the specified transform. */
     public AffineTransform2D(final AffineTransform transform) {
@@ -166,20 +166,27 @@ public class AffineTransform2D extends XAffineTransform
      */
     @Override
     public MathTransform2D inverse() throws NoninvertibleTransformException {
-        if (inverse == null) {
-            if (isIdentity()) {
-                inverse = this;
-            } else
-                try {
-                    synchronized (this) {
-                        inverse = new AffineTransform2D(createInverse());
-                        inverse.inverse = this;
-                    }
-                } catch (java.awt.geom.NoninvertibleTransformException exception) {
-                    throw new NoninvertibleTransformException(exception.getLocalizedMessage(), exception);
-                }
+        AffineTransform2D result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call, linked back to this transform before it is published. */
+    private synchronized AffineTransform2D computeInverse() throws NoninvertibleTransformException {
+        if (inverse != null) {
+            return inverse;
         }
-        return inverse;
+        if (isIdentity()) {
+            inverse = this;
+            return this;
+        }
+        try {
+            AffineTransform2D result = new AffineTransform2D(createInverse());
+            result.inverse = this;
+            inverse = result;
+            return result;
+        } catch (java.awt.geom.NoninvertibleTransformException exception) {
+            throw new NoninvertibleTransformException(exception.getLocalizedMessage(), exception);
+        }
     }
 
     /**

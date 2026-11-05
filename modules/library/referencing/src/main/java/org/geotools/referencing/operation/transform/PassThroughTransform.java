@@ -65,7 +65,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
      * The inverse transform. This field will be computed only when needed. But it is serialized in order to avoid
      * rounding error.
      */
-    private PassThroughTransform inverse;
+    private volatile PassThroughTransform inverse;
 
     /**
      * Create a pass through transform.
@@ -319,12 +319,21 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
 
     /** Creates the inverse transform of this object. */
     @Override
-    public synchronized MathTransform inverse() throws NoninvertibleTransformException {
-        if (inverse == null) {
-            inverse = new PassThroughTransform(firstAffectedOrdinate, subTransform.inverse(), numTrailingOrdinates);
-            inverse.inverse = this;
+    public MathTransform inverse() throws NoninvertibleTransformException {
+        PassThroughTransform result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call, linked back to this transform before it is published. */
+    private synchronized PassThroughTransform computeInverse() throws NoninvertibleTransformException {
+        if (inverse != null) {
+            return inverse;
         }
-        return inverse;
+        PassThroughTransform result =
+                new PassThroughTransform(firstAffectedOrdinate, subTransform.inverse(), numTrailingOrdinates);
+        result.inverse = this;
+        inverse = result;
+        return result;
     }
 
     /**

@@ -72,7 +72,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      * The inverse transform. This field will be computed only when needed. But it is serialized in order to avoid
      * rounding error if the inverse transform is serialized instead of the original one.
      */
-    private ConcatenatedTransform inverse;
+    private volatile ConcatenatedTransform inverse;
 
     /**
      * Constructs a concatenated transform. This constructor is for subclasses only. To create a concatenated transform,
@@ -473,13 +473,21 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
 
     /** Creates the inverse transform of this object. */
     @Override
-    public synchronized MathTransform inverse() throws NoninvertibleTransformException {
+    public MathTransform inverse() throws NoninvertibleTransformException {
         assert isValid();
-        if (inverse == null) {
-            inverse = createConcatenatedTransform(transform2.inverse(), transform1.inverse());
-            inverse.inverse = this;
+        ConcatenatedTransform result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call, linked back to this transform before it is published. */
+    private synchronized ConcatenatedTransform computeInverse() throws NoninvertibleTransformException {
+        if (inverse != null) {
+            return inverse;
         }
-        return inverse;
+        ConcatenatedTransform result = createConcatenatedTransform(transform2.inverse(), transform1.inverse());
+        result.inverse = this;
+        inverse = result;
+        return result;
     }
 
     /**

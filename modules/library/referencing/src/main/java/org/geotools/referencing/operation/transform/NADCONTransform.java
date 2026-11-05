@@ -142,7 +142,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     private MathTransform gridShiftTransform;
 
     /** The inverse of this transform. Will be created only when needed. */
-    private transient MathTransform2D inverse;
+    private transient volatile MathTransform2D inverse;
 
     /** The grid driving this transform */
     NADConGridShift grid;
@@ -361,7 +361,13 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
      * @return the inverse of this transform
      */
     @Override
-    public synchronized MathTransform2D inverse() {
+    public MathTransform2D inverse() {
+        MathTransform2D result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call. */
+    private synchronized MathTransform2D computeInverse() {
         if (inverse == null) {
             inverse = new Inverse();
         }

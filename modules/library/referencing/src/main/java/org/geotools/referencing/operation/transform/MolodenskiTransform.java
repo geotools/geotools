@@ -130,7 +130,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
     private final double adf;
 
     /** The inverse of this transform. Will be created only when first needed. */
-    private transient MolodenskiTransform inverse;
+    private transient volatile MolodenskiTransform inverse;
 
     /**
      * Constructs a Molodenski transform from the specified parameters.
@@ -441,11 +441,21 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
     /** Creates the inverse transform of this object. */
     @Override
     public MathTransform inverse() {
-        if (inverse == null) {
-            inverse = new MolodenskiTransform(abridged, a + da, b + db, target3D, a, b, source3D, -dx, -dy, -dz);
-            inverse.inverse = this;
+        MolodenskiTransform result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call, linked back to this transform before it is published. */
+    private synchronized MolodenskiTransform computeInverse() {
+        if (inverse != null) {
+            return inverse;
         }
-        return inverse;
+        MolodenskiTransform result = this instanceof As2D
+                ? new As2D(abridged, a + da, b + db, a, b, -dx, -dy, -dz)
+                : new MolodenskiTransform(abridged, a + da, b + db, target3D, a, b, source3D, -dx, -dy, -dz);
+        result.inverse = this;
+        inverse = result;
+        return result;
     }
 
     @Override
@@ -521,19 +531,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
         /** Creates the inverse transform of this object. */
         @Override
         public MathTransform2D inverse() {
-            if (super.inverse == null) {
-                super.inverse = new As2D(
-                        super.abridged,
-                        super.a + super.da,
-                        super.b + super.db,
-                        super.a,
-                        super.b,
-                        -super.dx,
-                        -super.dy,
-                        -super.dz);
-                super.inverse.inverse = this;
-            }
-            return (MathTransform2D) super.inverse;
+            return (MathTransform2D) super.inverse();
         }
     }
 

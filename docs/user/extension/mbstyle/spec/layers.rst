@@ -1983,8 +1983,9 @@ text-anchor locations: the renderer will attempt to place the label at each loca
 before moving onto the next label. To apply an offset, use the text-radial-offset or the
 two-dimensional text-offset.
 
-GeoTools moves the label to the other anchors when it collides with another label. A zoom
-expression is accepted: the anchors tried on collision are those of all the zoom stops together.
+GeoTools places the label at the first anchor, and moves it to the other anchors only when it
+collides with another label. A zoom expression is accepted: the first anchor follows the zoom,
+while the anchors tried on collision are those of all the zoom stops together.
 
 
 .. list-table::

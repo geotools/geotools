@@ -1385,6 +1385,21 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Moves the label away from its variable anchor by the length of text-offset on each axis, plus the text padding,
+     * as Mapbox does: the sign of each axis comes from the anchor, not from the offset.
+     */
+    private Displacement variableAnchorDisplacement(Object anchor, Expression fontSize) {
+        double[] offset = getTextOffset();
+        Expression signX = perAnchor(anchor, a -> awayFrom(a.getX()));
+        Expression signY = perAnchor(anchor, a -> awayFrom(a.getY()));
+        Displacement displacement = sf.displacement(
+                ff.multiply(fontSize, ff.multiply(ff.literal(Math.abs(offset[0])), signX)),
+                ff.multiply(fontSize, ff.multiply(ff.literal(Math.abs(offset[1])), signY)));
+        addVariableAnchorPadding(displacement, signX, signY);
+        return displacement;
+    }
+
+    /**
      * Returns a value of the radial anchor: a literal for an anchor name, a zoom step expression for a step of names.
      */
     @SuppressWarnings("unchecked") // json-simple JSONArray and JSONObject are raw collections
@@ -1925,8 +1940,10 @@ public class SymbolMBLayer extends MBLayer {
             // MapBox text-radial-offset: moves the label away from its anchor, in ems, and wins over text-offset
             // with variable anchors and no offset Mapbox places the label as with a zero radial offset
             boolean radial = hasTextRadialOffset() || hasTextVariableAnchor() && !hasTextOffset();
-            Object radialAnchor = radial ? radialAnchor() : null;
-            if (radial && radialAnchor == null) {
+            // with variable anchors the label sits at the first anchor, and text-offset moves it away from it
+            boolean anchored = radial || hasTextVariableAnchor();
+            Object radialAnchor = anchored ? radialAnchor() : null;
+            if (anchored && radialAnchor == null) {
                 LOGGER.warning("Mapbox label anchor ignored on layer '" + getId()
                         + "': its text-anchor or text-variable-anchor form is not supported");
             }
@@ -1934,18 +1951,15 @@ public class SymbolMBLayer extends MBLayer {
             if (radialAnchor != null) {
                 pointP.setAnchorPoint(sf.anchorPoint(
                         perAnchor(radialAnchor, TextAnchor::getX), perAnchor(radialAnchor, TextAnchor::getY)));
-                textOffset = radialDisplacement(radialAnchor, fontSize);
+                textOffset = radial
+                        ? radialDisplacement(radialAnchor, fontSize)
+                        : variableAnchorDisplacement(radialAnchor, fontSize);
             } else if (hasTextOffset()) {
                 // MapBox text-offset: +y means down, in ems
                 textOffset = textOffsetDisplacement();
                 textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
                 textOffset.setDisplacementY(
                         ff.multiply(fontSize, ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
-                if (hasTextVariableAnchor()) {
-                    double[] direction = getTextOffset();
-                    addVariableAnchorPadding(
-                            textOffset, ff.literal(Math.signum(direction[0])), ff.literal(-Math.signum(direction[1])));
-                }
             }
             if (textOffset != null) {
                 if (displacement == null) {

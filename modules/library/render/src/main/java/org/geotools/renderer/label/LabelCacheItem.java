@@ -18,10 +18,12 @@ package org.geotools.renderer.label;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
 import org.locationtech.jts.geom.Geometry;
@@ -47,6 +49,12 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     List<Geometry> geoms = new ArrayList<>();
 
     double priority = 0.0;
+
+    /** Priorities of the features merged in this group, null until a second feature joins it */
+    private DoubleSummaryStatistics groupPriorities;
+
+    /** Computes the group priority out of {@link #groupPriorities} */
+    private GroupPriority groupPriorityMode;
 
     int spaceAround = 0;
 
@@ -130,12 +138,23 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         spaceAround = space;
     }
 
+    /** Returns the label priority, for a group computed from the priorities of its features */
     public double getPriority() {
-        return priority;
+        return groupPriorities == null ? priority : groupPriorityMode.priority(groupPriorities);
     }
 
     public void setPriority(double d) {
         priority = d;
+    }
+
+    /** Adds the priority of a feature joining this group, the group priority is then computed with the given mode */
+    public void mergeGroupPriority(double featurePriority, GroupPriority mode) {
+        if (groupPriorities == null) {
+            groupPriorities = new DoubleSummaryStatistics();
+            groupPriorities.accept(priority);
+        }
+        groupPriorities.accept(featurePriority);
+        groupPriorityMode = mode;
     }
 
     /** Construct <code>LabelCacheItem</code>. */
@@ -156,7 +175,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.layerIds.addAll(other.getLayerIds());
         this.geoms.addAll(other.geoms);
         this.symbolizer = other.symbolizer;
-        this.priority = other.priority;
+        this.priority = other.getPriority();
         this.spaceAround = other.spaceAround;
         this.label = other.label;
         this.maxDisplacement = other.maxDisplacement;

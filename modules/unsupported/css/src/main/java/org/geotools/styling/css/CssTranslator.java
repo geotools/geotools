@@ -220,6 +220,7 @@ public class CssTranslator {
             entry("label-min-group-distance", TextSymbolizer.MIN_GROUP_DISTANCE_KEY),
             entry("label-repeat", TextSymbolizer.LABEL_REPEAT_KEY),
             entry("label-all-group", TextSymbolizer.LABEL_ALL_GROUP_KEY),
+            entry("label-group-priority", TextSymbolizer.GROUP_PRIORITY_KEY),
             entry("label-remove-overlaps", TextSymbolizer.REMOVE_OVERLAPS_KEY),
             entry("label-allow-overruns", TextSymbolizer.ALLOW_OVERRUNS_KEY),
             entry("label-follow-line", TextSymbolizer.FOLLOW_LINE_KEY),

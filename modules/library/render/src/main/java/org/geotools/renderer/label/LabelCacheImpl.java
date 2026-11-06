@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.label;
 
+import static org.geotools.api.style.TextSymbolizer.GROUP_PRIORITY_KEY;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -49,6 +51,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.style.TextSymbolizer.GraphicPlacement;
+import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.GeometryClipper;
@@ -365,11 +368,13 @@ public class LabelCacheImpl implements LabelCache {
                     labelCache.add(item);
                     groupedLabelsLookup.put(item, item);
                 } else {
-                    // add to the priority only in the non-default case or non-literal. Ie.
+                    // merge the priority only in the non-default case or non-literal. Ie.
                     // area()
                     Expression priority = symbolizer.getPriority();
                     if (priority != null && !(priority instanceof Literal)) {
-                        groupItem.setPriority(groupItem.getPriority() + priorityValue);
+                        GroupPriority mode = (GroupPriority)
+                                voParser.getEnumOption(symbolizer, GROUP_PRIORITY_KEY, GroupPriority.SUM);
+                        groupItem.mergeGroupPriority(priorityValue, mode);
                     }
 
                     groupItem.getGeoms().add(shape.getGeometry());

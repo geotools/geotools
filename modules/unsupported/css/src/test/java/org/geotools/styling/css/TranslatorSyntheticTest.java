@@ -643,6 +643,16 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void labelGroupPriority() throws Exception {
+        String css = "* { label: 'test'; label-group-priority: max}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("max", ts.getOptions().get(TextSymbolizer.GROUP_PRIORITY_KEY));
+    }
+
+    @Test
     public void labelShrink() throws Exception {
         String css = "* { label: 'test'; font-shrink-size-min: 5}";
         Style style = translate(css);

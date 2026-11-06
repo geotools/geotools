@@ -1021,6 +1021,33 @@ Distance between two symbol anchors.
      - Not yet supported
 
 
+symbol-sort-key
+"""""""""""""""
+
+*Optional* :ref:`types-number`.
+
+Sorts features in ascending order based on this value. Features with lower sort keys are placed first, so they
+win label conflicts. The key orders labels inside their layer only: the labels of a layer are always placed before
+those of the layers below it. A feature without a value sorts as 0.
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.53.0
+     - >= 35.3
+     - Not yet supported
+   * - data-driven styling
+     - >= 0.53.0
+     - >= 35.3
+     - Not yet supported
+
+
 symbol-avoid-edges
 """"""""""""""""""
 

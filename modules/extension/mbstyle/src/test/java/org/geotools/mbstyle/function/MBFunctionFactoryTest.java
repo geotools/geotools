@@ -17,6 +17,9 @@
  */
 package org.geotools.mbstyle.function;
 
+import static org.geotools.mbstyle.MapboxTestUtils.GEOWEBCACHE_900913_ROOT_SCALE;
+import static org.geotools.mbstyle.MapboxTestUtils.WEB_MERCATOR_QUAD_ROOT_SCALE;
+import static org.geotools.mbstyle.MapboxTestUtils.zoomScale;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
@@ -261,6 +264,23 @@ public class MBFunctionFactoryTest {
         double scaleDenomForZoom21 = 133.295598972;
         Function f21 = (Function) ECQL.toExpression("zoomLevel(" + scaleDenomForZoom21 + ", 'EPSG:3857')");
         assertEquals(21.0, f21.evaluate(null, Number.class).doubleValue(), tol);
+    }
+
+    /** A request at the exact WMTS GoogleMapsCompatible scale of a zoom level gets that zoom, not a value below it. */
+    @Test
+    public void zoomLevelWebMercatorQuadScale() throws Exception {
+        assertEquals(4.0, zoomLevel(zoomScale(WEB_MERCATOR_QUAD_ROOT_SCALE, 4)), 0);
+    }
+
+    /** A request at the GeoWebCache EPSG:900913 scale of a zoom level, from rounded bounds, gets that zoom too. */
+    @Test
+    public void zoomLevelGeoWebCacheScale() throws Exception {
+        assertEquals(4.0, zoomLevel(zoomScale(GEOWEBCACHE_900913_ROOT_SCALE, 4)), 0);
+    }
+
+    private double zoomLevel(double scaleDenominator) throws Exception {
+        Function zoomLevel = (Function) ECQL.toExpression("zoomLevel(" + scaleDenominator + ", 'EPSG:3857')");
+        return zoomLevel.evaluate(null, Double.class);
     }
 
     @Test

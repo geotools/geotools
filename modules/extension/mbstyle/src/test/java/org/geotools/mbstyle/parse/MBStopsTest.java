@@ -219,14 +219,14 @@ public class MBStopsTest {
             if (layer.getName().equalsIgnoreCase("function4")) {
                 if (i == 0) {
                     // max scale denominator should be set for zoom level 20
-                    Double minScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20);
-                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(0);
+                    Double minScaleDenom = MBObjectStops.zoomBoundaryScaleDenominator(20);
+                    Double maxScaleDenom = MBObjectStops.zoomBoundaryScaleDenominator(0);
                     assertEquals(0, i);
                     assertEquals(minScaleDenom, (Double) layer.rules().get(0).getMinScaleDenominator());
                     assertEquals(maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
                 } else if (i == 1) {
                     assertEquals(1, i);
-                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20);
+                    Double maxScaleDenom = MBObjectStops.zoomBoundaryScaleDenominator(20);
                     assertEquals(maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
                 }
                 i++;
@@ -248,14 +248,14 @@ public class MBStopsTest {
             if (layer.getName().equalsIgnoreCase("function4")) {
                 if (i == 0) {
                     // max scale denominator should be set for zoom level 20
-                    Double minScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20.5);
-                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(1.5);
+                    Double minScaleDenom = MBObjectStops.zoomBoundaryScaleDenominator(20.5);
+                    Double maxScaleDenom = MBObjectStops.zoomBoundaryScaleDenominator(1.5);
                     assertEquals(0, i);
                     assertEquals(minScaleDenom, (Double) layer.rules().get(0).getMinScaleDenominator());
                     assertEquals(maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
                 } else if (i == 1) {
                     assertEquals(1, i);
-                    Double maxScaleDenom = MBObjectStops.zoomLevelToScaleDenominator(20.6);
+                    Double maxScaleDenom = MBObjectStops.zoomBoundaryScaleDenominator(20.6);
                     assertEquals(maxScaleDenom, (Double) layer.rules().get(0).getMaxScaleDenominator());
                 }
                 i++;

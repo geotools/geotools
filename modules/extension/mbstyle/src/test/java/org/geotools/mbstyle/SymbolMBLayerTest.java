@@ -40,6 +40,7 @@ import org.geotools.api.style.TextSymbolizer;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.function.CategorizeFunction;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
 import org.geotools.mbstyle.function.MapBoxFontStyleFunction;
@@ -52,6 +53,7 @@ import org.hamcrest.Matchers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -99,6 +101,11 @@ public class SymbolMBLayerTest {
         featureTypeTestValues = testLayer.transformInternal(style);
         featureTypeWithAngle = testAngleLayer.transformInternal(angleStyle);
         featureTypeDefaults = testLayerDefault.transformInternal(defaultStyle);
+    }
+
+    @After
+    public void clearZoom() {
+        EnvFunction.clearLocalValues();
     }
 
     @Test
@@ -260,6 +267,245 @@ public class SymbolMBLayerTest {
         assertEquals("true", text.getOptions().get(TextSymbolizer.GROUP_KEY));
         assertEquals("MAX", text.getOptions().get(TextSymbolizer.GROUP_PRIORITY_KEY));
         assertEquals(1476.75, priority(text, 4), 0.01);
+    }
+
+    /** Variable anchors that change with zoom move the label away from the first anchor of the current stop. */
+    @Test
+    public void testRadialOffsetZoomVariableAnchor() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 0.5,
+                  "text-padding": 0,
+                  "text-variable-anchor": [
+                    "step", ["zoom"], ["literal", ["bottom", "left"]], 8, ["literal", ["center"]]
+                  ]
+                }""");
+
+        // below zoom 8: label above the point, 0.5 em up
+        EnvFunction.setLocalValue("wms_scale_denominator", 1e7);
+        assertPlacement(placement, null, 0.5, 0, 0, 5);
+
+        // from zoom 8: label centered on the point
+        EnvFunction.setLocalValue("wms_scale_denominator", 1e5);
+        assertPlacement(placement, null, 0.5, 0.5, 0, 0);
+    }
+
+    /** A corner anchor moves the label by the offset along the diagonal. */
+    @Test
+    public void testRadialOffsetCorner() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 1,
+                  "text-padding": 0,
+                  "text-variable-anchor": ["top-right", "left"]
+                }""");
+        double d = 10 * Math.sqrt(0.5);
+        assertPlacement(placement, null, 1, 1, -d, -d);
+    }
+
+    /** Each anchor moves the label away from the point: sides by the offset, corners along the diagonal. */
+    @Test
+    public void testRadialOffsetDirections() throws Exception {
+        double d = 10 * Math.sqrt(0.5);
+        assertPlacement(radialPlacement("bottom"), null, 0.5, 0, 0, 10);
+        assertPlacement(radialPlacement("top"), null, 0.5, 1, 0, -10);
+        assertPlacement(radialPlacement("left"), null, 0, 0.5, 10, 0);
+        assertPlacement(radialPlacement("right"), null, 1, 0.5, -10, 0);
+        assertPlacement(radialPlacement("bottom-left"), null, 0, 0, d, d);
+        assertPlacement(radialPlacement("bottom-right"), null, 1, 0, -d, d);
+        assertPlacement(radialPlacement("top-left"), null, 0, 1, d, -d);
+        assertPlacement(radialPlacement("top-right"), null, 1, 1, -d, -d);
+        assertPlacement(radialPlacement("center"), null, 0.5, 0.5, 0, 0);
+    }
+
+    /** Placement of a 10px label with a 1 em radial offset away from the given variable anchor. */
+    private PointPlacement radialPlacement(String anchor) throws Exception {
+        return pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 1,
+                  "text-padding": 0,
+                  "text-variable-anchor": ["literal", ["%s"]]
+                }"""
+                        .formatted(anchor));
+    }
+
+    /**
+     * The radial offset wins over text-offset, also for the displacement search that flips the label to the other
+     * variable anchors.
+     */
+    @Test
+    public void testRadialOffsetWinsOverTextOffset() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-offset": [5, 5],
+                  "text-radial-offset": 1,
+                  "text-padding": 0,
+                  "text-variable-anchor": ["left", "right"]
+                }""");
+        assertPlacement((PointPlacement) text.getLabelPlacement(), null, 0, 0.5, 10, 0);
+        assertEquals(11, maxDisplacement(text), 1e-9);
+    }
+
+    /** A zero radial offset leaves the label to text-anchor and text-offset. */
+    @Test
+    public void testRadialOffsetZero() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-offset": [1, 0],
+                  "text-radial-offset": 0,
+                  "text-anchor": "left"
+                }""");
+        assertPlacement(placement, null, 0, 0.5, 10, 0);
+    }
+
+    /**
+     * With variable anchors, Mapbox lays out the label on its collision box grown by the text padding, so the label
+     * also moves away from the point by the padding, on each axis the anchor points along.
+     */
+    @Test
+    public void testVariableAnchorPaddingRadial() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 1,
+                  "text-padding": 3,
+                  "text-variable-anchor": ["top-right", "left"]
+                }""");
+        double d = 10 * Math.sqrt(0.5) + 3;
+        assertPlacement((PointPlacement) text.getLabelPlacement(), null, 1, 1, -d, -d);
+        // offset plus the padding along the diagonal, rounded up, plus one: ceil(10 + 4.24) + 1
+        assertEquals(16, maxDisplacement(text), 1e-9);
+    }
+
+    /** Without offsets, variable anchors still set the anchor point and move the label by the padding. */
+    @Test
+    public void testVariableAnchorPaddingDirections() throws Exception {
+        assertPlacement(paddingPlacement("bottom"), null, 0.5, 0, 0, 3);
+        assertPlacement(paddingPlacement("top"), null, 0.5, 1, 0, -3);
+        assertPlacement(paddingPlacement("left"), null, 0, 0.5, 3, 0);
+        assertPlacement(paddingPlacement("right"), null, 1, 0.5, -3, 0);
+        assertPlacement(paddingPlacement("bottom-left"), null, 0, 0, 3, 3);
+        assertPlacement(paddingPlacement("bottom-right"), null, 1, 0, -3, 3);
+        assertPlacement(paddingPlacement("top-left"), null, 0, 1, 3, -3);
+        assertPlacement(paddingPlacement("top-right"), null, 1, 1, -3, -3);
+        assertPlacement(paddingPlacement("center"), null, 0.5, 0.5, 0, 0);
+    }
+
+    /** Placement of a label with a 3px text padding and the given single variable anchor, no offset. */
+    private PointPlacement paddingPlacement(String anchor) throws Exception {
+        return pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-padding": 3,
+                  "text-variable-anchor": ["%s"]
+                }"""
+                        .formatted(anchor));
+    }
+
+    /**
+     * Zoom driven text size and padding make the displacement change with zoom: maxDisplacement follows it, so the
+     * search for the other anchors still runs.
+     */
+    @Test
+    public void testVariableAnchorMaxDisplacementFollowsZoom() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": ["interpolate", ["linear"], ["zoom"], 5, 10, 12, 20],
+                  "text-padding": ["interpolate", ["linear"], ["zoom"], 5, 3, 12, 11],
+                  "text-radial-offset": 0.3,
+                  "text-variable-anchor": ["bottom", "left"]
+                }""");
+        PointPlacement placement = (PointPlacement) text.getLabelPlacement();
+        for (double scale : new double[] {1e7, 1e5}) {
+            EnvFunction.setLocalValue("wms_scale_denominator", scale);
+            double length = placement.getDisplacement().getDisplacementY().evaluate(null, Double.class);
+            assertEquals(Math.ceil(length) + 1, maxDisplacement(text), 1e-9);
+        }
+    }
+
+    /** The padding moves a text-offset label with variable anchors too, only along the axes the offset uses. */
+    @Test
+    public void testVariableAnchorPaddingTextOffset() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-offset": [1.1, 0],
+                  "text-padding": 3,
+                  "text-variable-anchor": ["left", "right"]
+                }""");
+        assertEquals(14, placement.getDisplacement().getDisplacementX().evaluate(null, Double.class), 1e-9);
+        assertEquals(0, placement.getDisplacement().getDisplacementY().evaluate(null, Double.class), 1e-9);
+    }
+
+    /** Without variable anchors the label moves away from text-anchor. */
+    @Test
+    public void testRadialOffsetTextAnchor() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": 2,
+                  "text-anchor": "right"
+                }""");
+        assertPlacement(placement, null, 1, 0.5, -20, 0);
+    }
+
+    /** The offset can come from an attribute, and a negative offset leaves the label on the point. */
+    @Test
+    public void testRadialOffsetFromAttribute() throws Exception {
+        PointPlacement placement = pointPlacement(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-radial-offset": ["get", "rank"],
+                  "text-anchor": "bottom"
+                }""");
+        SimpleFeatureType type = DataUtilities.createType("test", "name:String,rank:Double");
+        assertPlacement(placement, SimpleFeatureBuilder.build(type, new Object[] {"label", 2}, null), 0.5, 0, 0, 20);
+        assertPlacement(placement, SimpleFeatureBuilder.build(type, new Object[] {"label", -1}, null), 0.5, 0, 0, 0);
+    }
+
+    /** Evaluates the maxDisplacement vendor option, an expression that may depend on zoom. */
+    private double maxDisplacement(TextSymbolizer text) {
+        String option = text.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY);
+        return ExpressionExtractor.extractCqlExpressions(option).evaluate(null, Double.class);
+    }
+
+    private PointPlacement pointPlacement(String layout) throws Exception {
+        return (PointPlacement) symbolizer(layout).getLabelPlacement();
+    }
+
+    /** Checks the anchor point and the displacement (SLD axis, up is positive) evaluated on the given feature. */
+    private void assertPlacement(
+            PointPlacement placement, SimpleFeature feature, double ax, double ay, double dx, double dy) {
+        assertEquals(ax, placement.getAnchorPoint().getAnchorPointX().evaluate(feature, Double.class), 1e-9);
+        assertEquals(ay, placement.getAnchorPoint().getAnchorPointY().evaluate(feature, Double.class), 1e-9);
+        assertEquals(dx, placement.getDisplacement().getDisplacementX().evaluate(feature, Double.class), 1e-9);
+        assertEquals(dy, placement.getDisplacement().getDisplacementY().evaluate(feature, Double.class), 1e-9);
     }
 
     /** Text symbolizer of a single symbol layer whose sort key is the "rank" attribute. */

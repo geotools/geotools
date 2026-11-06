@@ -1832,7 +1832,8 @@ text-padding
 
 
 Size of the additional area around the text bounding box used for
-detecting symbol collisions.
+detecting symbol collisions. With text-variable-anchor, the label also moves away from its point
+by this distance, as in Mapbox.
 
 
 .. list-table::
@@ -1942,6 +1943,34 @@ and down, while negative values indicate left and up.
      - >= 0.35.0
      - 22.2
      - >= 2.4.0
+
+text-radial-offset
+""""""""""""""""""
+
+*Optional* :ref:`types-number`. *Units in* ems. *Defaults to* 0. *Requires* text-field.
+
+Radial offset of text, in the direction of the symbol's anchor. Useful in combination with
+text-variable-anchor, which defaults to using the two-dimensional text-offset if present.
+
+With a text-anchor expression the radial offset is ignored.
+
+
+.. list-table::
+   :widths: 19, 27, 27, 27
+   :header-rows: 1
+
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
+   * - basic functionality
+     - >= 0.54.0
+     - >= 35.3
+     - Not yet supported
+   * - data-driven styling
+     - >= 0.54.0
+     - >= 35.3
+     - Not yet supported
 
 text-variable-anchor
 """"""""""""""""""""

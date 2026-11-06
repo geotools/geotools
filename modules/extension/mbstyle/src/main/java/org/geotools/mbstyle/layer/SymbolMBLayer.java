@@ -952,7 +952,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Access text-line-height as literal or function expression
+     * Access text-letter-spacing as literal or function expression
      *
      * @return Spacing between label characters
      * @throws MBFormatException JSON definition inconsistent with specification
@@ -1320,6 +1320,11 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Expression textRadialOffset() {
         return parse.number(layout, "text-radial-offset", 0);
+    }
+
+    private boolean hasTextLetterSpacing() {
+        Object spacing = layout.get("text-letter-spacing");
+        return spacing != null && !(spacing instanceof Number number && number.doubleValue() == 0);
     }
 
     /** A zero radial offset leaves the label to text-offset, as Mapbox does without variable anchors. */
@@ -2167,6 +2172,12 @@ public class SymbolMBLayer extends MBLayer {
             double textSize = MBStyleTransformer.requireLiteral(
                     fontSize, Double.class, 16.0, "text-size (when text-max-width is specified)", getId());
             options.put(TextSymbolizer.AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
+        }
+        // text-letter-spacing is in ems, charSpacing in pixels
+        if (hasTextLetterSpacing()) {
+            options.put(
+                    TextSymbolizer.CHAR_SPACING_KEY,
+                    MBStyleTransformer.vendorOptionExpression(ff.multiply(textLetterSpacing(), fontSize)));
         }
 
         // If the layer has an icon image, add it to our symbolizer

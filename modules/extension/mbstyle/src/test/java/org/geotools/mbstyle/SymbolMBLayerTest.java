@@ -146,6 +146,53 @@ public class SymbolMBLayerTest {
                         .get("autoWrap"));
     }
 
+    /** The character spacing is text-letter-spacing ems at the text size: 0.2 * 10 = 2 pixels. */
+    @Test
+    public void testTextLetterSpacing() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-letter-spacing": 0.2
+                }""");
+        assertEquals("2.0", text.getOptions().get(TextSymbolizer.CHAR_SPACING_KEY));
+    }
+
+    @Test
+    public void testTextLetterSpacingFromAttribute() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 10,
+                  "text-letter-spacing": ["get", "spacing"]
+                }""");
+        assertEquals(2, evaluateOption(text, TextSymbolizer.CHAR_SPACING_KEY, labelFeature(10, 0.2)), 1e-9);
+    }
+
+    @Test
+    public void testTextLetterSpacingDefault() throws Exception {
+        TextSymbolizer text = symbolizer("{\"text-field\": \"{name}\"}");
+        assertNull(text.getOptions().get(TextSymbolizer.CHAR_SPACING_KEY));
+    }
+
+    @Test
+    public void testTextLetterSpacingZero() throws Exception {
+        TextSymbolizer text = symbolizer("{\"text-field\": \"{name}\", \"text-letter-spacing\": 0}");
+        assertNull(text.getOptions().get(TextSymbolizer.CHAR_SPACING_KEY));
+    }
+
+    private double evaluateOption(TextSymbolizer text, String key, SimpleFeature feature) {
+        return ExpressionExtractor.extractCqlExpressions(text.getOptions().get(key))
+                .evaluate(feature, Double.class);
+    }
+
+    private SimpleFeature labelFeature(double size, double spacing) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("test", "name:String,size:Double,spacing:Double");
+        return SimpleFeatureBuilder.build(type, new Object[] {"label", size, spacing}, null);
+    }
+
     @Test
     public void testTextRotationDefault() {
         // Default MBStyle value

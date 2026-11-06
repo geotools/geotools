@@ -127,6 +127,9 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(VectorTilesFeatureSource.class);
 
+    /** Relative distance within which a requested resolution counts as a zoom level resolution */
+    private static final double ZOOM_RESOLUTION_TOLERANCE = 1e-6;
+
     /** Detects presence of a function call in a filter */
     private static class FunctionDetector extends DefaultFilterVisitor {
 
@@ -656,7 +659,8 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
         // zoom level shallower than a 256px-based reader would. Scale by displayTileSize/tileWidth to match that
         // convention, instead of reading one level too deep.
         final int displayTileSize = getDataStore().getDisplayTileSize();
-        final double displayResolution = simplificationDistance * displayTileSize / matrixSet.tileWidth();
+        final double displayResolution =
+                snapToZoomLevel(simplificationDistance * displayTileSize / matrixSet.tileWidth(), matrixSet);
 
         final int bestZoom =
                 tileStore.findBestZoomLevel(displayResolution, strategy, matrixsetMinZoom, matrixsetMaxZoom);
@@ -682,6 +686,20 @@ public class VectorTilesFeatureSource extends ContentFeatureSource {
                 .orElse(getMatrixSet().maxZoomLevel());
 
         return z >= minz && z <= maxz;
+    }
+
+    /**
+     * Returns the resolution of the zoom level within {@link #ZOOM_RESOLUTION_TOLERANCE} of the given one, or the given
+     * resolution. A request on a zoom level, with floating point noise, then matches that level and not the next one.
+     */
+    private static double snapToZoomLevel(double resolution, TileMatrixSet matrixSet) {
+        for (int z = matrixSet.minZoomLevel(); z <= matrixSet.maxZoomLevel(); z++) {
+            double zoomResolution = matrixSet.resolution(z);
+            if (Math.abs(resolution - zoomResolution) <= zoomResolution * ZOOM_RESOLUTION_TOLERANCE) {
+                return zoomResolution;
+            }
+        }
+        return resolution;
     }
 
     private TileStore.Strategy determineStrategy(Query query) {

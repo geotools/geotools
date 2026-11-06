@@ -100,4 +100,41 @@ public class VectorTilesFeatureSourceTest {
         query.setHints(new Hints(Hints.GEOMETRY_GENERALIZATION, resolution));
         assertEquals(OptionalInt.of(rawZoom), fs.determineZoomLevel(query));
     }
+
+    /** A request on a zoom level resolution, with floating point noise, reads that level and not the coarser one. */
+    @Test
+    public void testZoomLevelResolutionNoise() throws IOException {
+        assertEquals(OptionalInt.of(12), zoomLevelForResolution(13, 1 + 1e-9));
+    }
+
+    /** A request clearly coarser than a zoom level resolution still reads the coarser level. */
+    @Test
+    public void testZoomLevelResolutionOutsideTolerance() throws IOException {
+        assertEquals(OptionalInt.of(11), zoomLevelForResolution(13, 1 + 1e-3));
+    }
+
+    /**
+     * A request scale with floating point noise below a zoom level resolution reads that level and not the finer one. A
+     * query without distance hints uses the {@code QUALITY} strategy, which picks the finer level on an inexact match.
+     */
+    @Test
+    public void testRequestScaleResolutionNoise() throws IOException {
+        VectorTilesFeatureSource fs = (VectorTilesFeatureSource) store.getFeatureSource("boundaries");
+        double resolution = fs.getMatrixSet().resolution(13) * (1 - 1e-9);
+        VectorTilesRequestScale.set(resolution / 0.00028);
+        try {
+            assertEquals(OptionalInt.of(12), fs.determineZoomLevel(new Query("boundaries")));
+        } finally {
+            VectorTilesRequestScale.clear();
+        }
+    }
+
+    /** Zoom level picked for the resolution of the given matrix level, multiplied by a factor, on 512px tiles. */
+    private OptionalInt zoomLevelForResolution(int matrixLevel, double factor) throws IOException {
+        VectorTilesFeatureSource fs = (VectorTilesFeatureSource) store.getFeatureSource("boundaries");
+        Query query = new Query("boundaries");
+        double resolution = fs.getMatrixSet().resolution(matrixLevel) * factor;
+        query.setHints(new Hints(Hints.GEOMETRY_GENERALIZATION, resolution));
+        return fs.determineZoomLevel(query);
+    }
 }

@@ -1671,11 +1671,11 @@ Text tracking amount.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
 
 text-justify

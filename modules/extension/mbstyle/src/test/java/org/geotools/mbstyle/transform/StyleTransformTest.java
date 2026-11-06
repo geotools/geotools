@@ -75,6 +75,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
+import org.geotools.mbstyle.function.ZoomLevelFunction;
 import org.geotools.mbstyle.layer.BackgroundMBLayer;
 import org.geotools.mbstyle.layer.CircleMBLayer;
 import org.geotools.mbstyle.layer.FillExtrusionMBLayer;
@@ -614,6 +615,27 @@ public class StyleTransformTest {
                         ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
                 .evaluate(null, Integer.class);
         assertEquals(19, maxDisplacement);
+        // the label sits at the first anchor, "left", and moves right by the offset length plus the padding
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.0, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(17.4, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 1e-9);
+        assertEquals(0.0, pp.getDisplacement().getDisplacementY().evaluate(null, Double.class), 1e-9);
+    }
+
+    /** With "right" as first variable anchor, the text-offset moves the label left whatever the sign of its x. */
+    @Test
+    public void testSymbolVariableAnchorRightFirst() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "point",
+                "text-field": "{name}",
+                "text-size": 14,
+                "text-offset": [1.1, 0],
+                "text-variable-anchor": ["right", "left"]
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(1.0, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(-17.4, pp.getDisplacement().getDisplacementX().evaluate(null, Double.class), 1e-9);
     }
 
     /** Each of the eight anchors maps to its own direction; "center" and repeated anchors are dropped. */
@@ -650,11 +672,16 @@ public class StyleTransformTest {
                 ]
                 """);
         assertEquals("N,E,W,S", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
-        // the offset length is 16 (default text size) * 1.1 + 2 (text padding) = 19.6, rounded up plus one
-        int maxDisplacement = ExpressionExtractor.extractCqlExpressions(
-                        ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
-                .evaluate(null, Integer.class);
-        assertEquals(21, maxDisplacement);
+        // at zoom 5 the first anchor is "bottom": the x offset does not apply, the label moves up by the padding only
+        EnvFunction.setLocalValue("wms_scale_denominator", ZoomLevelFunction.EPSG_3857_O_SCALE / Math.pow(2, 5));
+        try {
+            int maxDisplacement = ExpressionExtractor.extractCqlExpressions(
+                            ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
+                    .evaluate(null, Integer.class);
+            assertEquals(3, maxDisplacement);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
 
     /** Without text-variable-anchor, no displacementMode or maxDisplacement option is added. */

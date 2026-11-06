@@ -77,7 +77,7 @@ public class Formatter {
      *
      * @see #authorityAllowed
      */
-    @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
+    @SuppressWarnings({"unchecked"})
     private static final Class<? extends IdentifiedObject>[] AUTHORITY_EXCLUDE =
             new Class[] {CoordinateSystemAxis.class};
 

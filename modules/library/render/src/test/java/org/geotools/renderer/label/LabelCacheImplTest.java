@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.style.Font;
@@ -105,6 +106,46 @@ public class LabelCacheImplTest {
         LabelCacheItem item = labels.get(0);
         assertEquals("label1", item.getLabel());
         assertEquals(2, item.getGeoms().size());
+    }
+
+    /** By default the group priority is the sum of the feature priorities, here the line lengths 3, 7 and 5. */
+    @Test
+    public void testGroupPrioritySum() throws Exception {
+        TextSymbolizer ts = lengthPrioritySymbolizer();
+
+        addLines(ts);
+
+        List<LabelCacheItem> labels = cache.getActiveLabels();
+        assertEquals(1, labels.size());
+        assertEquals(15, labels.get(0).getPriority(), 1e-9);
+    }
+
+    @Test
+    public void testGroupPriorityMax() throws Exception {
+        TextSymbolizer ts = lengthPrioritySymbolizer();
+        ts.getOptions().put(TextSymbolizer.GROUP_PRIORITY_KEY, "max");
+
+        addLines(ts);
+
+        List<LabelCacheItem> labels = cache.getActiveLabels();
+        assertEquals(1, labels.size());
+        assertEquals(7, labels.get(0).getPriority(), 1e-9);
+    }
+
+    /** Grouped text symbolizer whose priority is the length of the labelled line. */
+    private TextSymbolizer lengthPrioritySymbolizer() {
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        ts.getOptions().put(TextSymbolizer.GROUP_KEY, "true");
+        FilterFactory ff = sb.getFilterFactory();
+        ts.setPriority(ff.function("geomLength", ff.property("geom")));
+        return ts;
+    }
+
+    /** Adds three segments of the same road, 3, 7 and 5 units long. */
+    private void addLines(TextSymbolizer ts) throws Exception {
+        addToCache(cache, ts, createFeature("road", geometry("LINESTRING(0 0, 3 0)")));
+        addToCache(cache, ts, createFeature("road", geometry("LINESTRING(3 0, 10 0)")));
+        addToCache(cache, ts, createFeature("road", geometry("LINESTRING(10 0, 15 0)")));
     }
 
     @Test

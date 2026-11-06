@@ -171,9 +171,9 @@ public class DashArrayIntegrationTest {
 
     /**
      * Tests that MBStyle line-dasharray expressions evaluate correctly at zoom levels where line-width interpolates to
-     * near-zero values. At zoom ~14, line-width is ~0 (per the stops [[14,0],[15,1],[20,10]]), so dash values become
-     * astronomically small. This verifies the expressions are constructed correctly - the actual rendering protection
-     * against near-zero values is tested in SLDStyleFactoryTest.testDashArrayNearZero.
+     * near-zero values. At zoom 14, line-width is 0 (per the stops [[14,0],[15,1],[20,10]]), and so are the dash
+     * values. This verifies the expressions are constructed correctly - the actual rendering protection against
+     * near-zero values is tested in SLDStyleFactoryTest.testDashArrayNearZero.
      */
     @Test
     public void testDashArrayExpressionValues() throws Exception {
@@ -197,13 +197,16 @@ public class DashArrayIntegrationTest {
         assertTrue("Dash values should be near zero at zoom 14", dash0 < 1e-6);
         assertTrue("Dash values should be near zero at zoom 14", dash1 < 1e-6);
 
-        // Verify the ratio is preserved (dash = 2 * lineWidth)
-        assertEquals(2.0, dash0 / strokeWidth, 0.001);
-        assertEquals(2.0, dash1 / strokeWidth, 0.001);
+        // Verify the dash follows the width (dash = 2 * lineWidth)
+        assertEquals(2 * strokeWidth, dash0, 1e-12);
+        assertEquals(2 * strokeWidth, dash1, 1e-12);
     }
 
     @Test
     public void testDashArrayWithStrokeWitdthCollapsedToNearZeroRendersOk() throws Exception {
+        // one zoom step above 14, with a line-width reaching 1 at zoom 24 only: dashes of 2e-7 px
+        Style style = createStyle(MBSTYLE.replace("[[14,0],[15,1],[20,10]]", "[[14,0],[24,1]]"));
+        EnvFunction.setGlobalValue("wms_scale_denominator", 17061.836668394135 / Math.pow(2, 1e-6));
         // bounds matching WMTS tile TileMatrix=EPSG:900913:15&TileCol=18891&TileRow=TileRow=10538
         final ReferencedEnvelope tileBounds = new ReferencedEnvelope(
                 3066042.0781481937, 3067265.070600584, 7148390.884234618, 7149613.876687013, CRS.decode("EPSG:3857"));

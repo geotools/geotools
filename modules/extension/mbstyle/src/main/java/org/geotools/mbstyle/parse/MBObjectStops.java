@@ -17,6 +17,7 @@
 package org.geotools.mbstyle.parse;
 
 import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
+import static org.geotools.mbstyle.function.ZoomLevelFunction.ZOOM_STEP;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.mbstyle.function.ZoomLevelFunction;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
@@ -196,6 +198,16 @@ public class MBObjectStops {
      */
     public static Double zoomLevelToScaleDenominator(double zoomLevel) {
         return EPSG_3857_O_SCALE / Math.pow(2, zoomLevel);
+    }
+
+    /**
+     * Returns the scale denominator to use as the boundary of a zoom range, such as a layer minzoom or maxzoom. The
+     * boundary sits one {@link ZoomLevelFunction#ZOOM_STEP} towards the lower zooms, so a request at that zoom level
+     * counts as being at or above it: a layer is drawn at its minzoom and hidden at its maxzoom. Without the step,
+     * small differences in how clients compute the scale put such requests on either side of the boundary.
+     */
+    public static Double zoomBoundaryScaleDenominator(double zoomLevel) {
+        return zoomLevelToScaleDenominator(zoomLevel - ZOOM_STEP);
     }
 
     public double getStop(MBLayer layer) {

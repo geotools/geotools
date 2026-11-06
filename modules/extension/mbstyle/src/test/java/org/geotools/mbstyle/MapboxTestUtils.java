@@ -47,6 +47,12 @@ public class MapboxTestUtils {
 
     static JSONParser jsonParser = new JSONParser();
     static final Logger LOGGER = Logging.getLogger(MapboxTestUtils.class);
+
+    /** Scale of the 256px root tile of the WMTS GoogleMapsCompatible tile matrix set, from exact web mercator bounds */
+    public static final double WEB_MERCATOR_QUAD_ROOT_SCALE = 559_082_264.0287178;
+
+    /** Scale of the 256px root tile of the GeoWebCache EPSG:900913 gridset, from bounds rounded to 20037508.34 */
+    public static final double GEOWEBCACHE_900913_ROOT_SCALE = 559_082_263.9508929;
     /** Reader for a test Mapbox Style file (json). */
     public static Reader readerTestStyle(String filename) throws IOException, ParseException {
         try (InputStream is = MapboxTestUtils.class.getResourceAsStream(filename)) {
@@ -104,6 +110,11 @@ public class MapboxTestUtils {
      *
      * @return parsed JSONArray
      */
+    /** Returns the scale of an MBStyle zoom level, whose zoom 0 is a 512px tile, given the 256px root tile scale. */
+    public static double zoomScale(double rootTileScale256, double zoom) {
+        return rootTileScale256 / 2 / Math.pow(2, zoom);
+    }
+
     public static JSONObject object(String json) throws ParseException {
         JSONParser parser = new JSONParser();
         String text = json.replace('\'', '\"');

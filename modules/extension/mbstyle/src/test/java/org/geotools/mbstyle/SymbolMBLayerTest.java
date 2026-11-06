@@ -25,6 +25,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
@@ -35,6 +37,8 @@ import org.geotools.api.style.PointPlacement;
 import org.geotools.api.style.Rule;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
@@ -210,6 +214,81 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .getOptions()
                         .get("spaceAround"));
+    }
+
+    /**
+     * Lower sort keys get higher priorities, all inside the (1000, 2000) band of the only layer, and keys in the
+     * millions that differ by one still get distinct priorities.
+     */
+    @Test
+    public void testSymbolSortKeyPriority() throws Exception {
+        TextSymbolizer text = sortKeySymbolizer();
+
+        assertEquals(1999, priority(text, -1e20), 1e-9);
+        assertEquals(1599.81, priority(text, -1000), 0.01);
+        assertEquals(1510.01, priority(text, -1), 0.01);
+        assertEquals(1500, priority(text, 0), 1e-9);
+        assertEquals(1489.99, priority(text, 1), 0.01);
+        assertEquals(1476.75, priority(text, 4), 0.01);
+        assertEquals(1400.19, priority(text, 1000), 0.01);
+        assertThat(priority(text, 1172604), Matchers.greaterThan(priority(text, 1172605)));
+        assertEquals(1001, priority(text, 1e20), 1e-9);
+    }
+
+    /** A feature without the sort key sorts as 0, in the middle of the layer band. */
+    @Test
+    public void testSymbolSortKeyMissing() throws Exception {
+        TextSymbolizer text = sortKeySymbolizer();
+
+        assertEquals(1500, priority(text, null), 1e-9);
+    }
+
+    /**
+     * Line labels are grouped by road name, the group takes the highest priority of its segments, so the sort key still
+     * applies and stays inside the layer band however many segments the road has.
+     */
+    @Test
+    public void testSymbolSortKeyLinePlacement() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "symbol-placement": "line",
+                  "symbol-sort-key": ["get", "rank"]
+                }""");
+
+        assertEquals("true", text.getOptions().get(TextSymbolizer.GROUP_KEY));
+        assertEquals("MAX", text.getOptions().get(TextSymbolizer.GROUP_PRIORITY_KEY));
+        assertEquals(1476.75, priority(text, 4), 0.01);
+    }
+
+    /** Text symbolizer of a single symbol layer whose sort key is the "rank" attribute. */
+    private TextSymbolizer sortKeySymbolizer() throws Exception {
+        return symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "symbol-sort-key": ["get", "rank"]
+                }""");
+    }
+
+    /** First symbolizer of a single symbol layer with the given layout. */
+    private TextSymbolizer symbolizer(String layout) throws Exception {
+        String layer = "{'id':'testid','type':'symbol','source':'src','layout':" + layout + "}";
+        MBStyle mbStyle = MBStyle.create(MapboxTestUtils.object(MapboxTestUtils.style(layer)));
+        return (TextSymbolizer) ((SymbolMBLayer) mbStyle.layer("testid"))
+                .transformInternal(mbStyle)
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
+    }
+
+    private double priority(TextSymbolizer text, Number rank) throws Exception {
+        SimpleFeatureType type = DataUtilities.createType("test", "name:String,rank:Double");
+        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] {"label", rank}, null);
+        return text.getPriority().evaluate(feature, Double.class);
     }
 
     @Test

@@ -55,6 +55,7 @@ import org.geotools.api.style.Stroke;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.expression.MBExpression;
@@ -105,6 +106,15 @@ public class SymbolMBLayer extends MBLayer {
     private final JSONObject paint;
 
     private static final String TYPE = "symbol";
+
+    /** Offset of a label with symbol-sort-key 0, the middle of the 1000 wide priority band of its layer */
+    private static final int SORT_KEY_MIDDLE = 500;
+
+    /** Largest distance of a sort key offset from {@link #SORT_KEY_MIDDLE}, so it never reaches the band edges */
+    private static final int SORT_KEY_HALF_RANGE = 499;
+
+    /** Natural log of 1 + the largest sort key absolute value, larger keys get the end offsets */
+    private static final double LOG_MAX_SORT_KEY = Math.log1p(1e15);
 
     private Integer labelPriority;
 
@@ -1941,6 +1951,8 @@ public class SymbolMBLayer extends MBLayer {
             options.put(TextSymbolizer.MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
             options.put(TextSymbolizer.GROUP_KEY, "true");
             options.put(TextSymbolizer.LABEL_ALL_GROUP_KEY, "true");
+            // a road split in segments ranks like its best segment, Mapbox places each segment on its own
+            options.put(TextSymbolizer.GROUP_PRIORITY_KEY, GroupPriority.MAX.name());
         } else if (hasTextMaxAngle()) {
             throw new MBFormatException(
                     "Property text-max-angle requires symbol-placement = line but symbol-placement = "
@@ -2030,7 +2042,7 @@ public class SymbolMBLayer extends MBLayer {
         // make sure rendering paints the labels in the same layer based order that
         // Mapbox GL would use
         if (labelPriority != null) {
-            symbolizer.setPriority(ff.literal(labelPriority));
+            symbolizer.setPriority(labelPriority());
         }
 
         symbolizers.add(symbolizer);
@@ -2130,6 +2142,48 @@ public class SymbolMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    /** Returns the label priority: the layer priority, raised by the symbol-sort-key offset if the layer has one. */
+    private Expression labelPriority() {
+        if (!parse.isDefined(layout, "symbol-sort-key")) {
+            return ff.literal(labelPriority);
+        }
+        // a feature without the key sorts as 0, like in Mapbox: a NaN priority would beat every other label
+        Expression key = parse.number(layout, "symbol-sort-key", 0);
+        Expression sortKey = ff.function("if_then_else", ff.function("isNull", key), ff.literal(0), key);
+        return ff.add(ff.literal(labelPriority), sortKeyOffset(sortKey));
+    }
+
+    /**
+     * Maps a symbol-sort-key to an offset between 1 and 999, added to the layer priority. Each layer owns a 1000 wide
+     * priority band (see {@link MBStyle#layers()}), so the labels of a layer stay above its priority and below the next
+     * layer. Mapbox places lower keys first, while GeoTools places higher priorities first, so the offset decreases as
+     * the key grows:
+     *
+     * <pre>{@code
+     * key:     -1e15 ... -1000    -1    0    1   1000 ... 1e15
+     * offset:    999 ...   600   510  500  490    400 ...    1
+     * }</pre>
+     *
+     * The offset follows the logarithm of the key, so small keys (e.g. zoom levels) and keys in the millions both keep
+     * distinct priorities. Keys beyond +-1e15 get the end offsets:
+     *
+     * <pre>{@code
+     * distance = SORT_KEY_HALF_RANGE * min(1, ln(1 + abs(key)) / LOG_MAX_SORT_KEY)
+     * offset   = SORT_KEY_MIDDLE + distance   if key < 0
+     *            SORT_KEY_MIDDLE - distance   otherwise
+     * }</pre>
+     */
+    private Expression sortKeyOffset(Expression sortKey) {
+        Expression logKey = ff.function("log", ff.add(ff.literal(1), ff.function("abs_4", sortKey)));
+        Expression scaled = ff.function("min", ff.literal(1), ff.divide(logKey, ff.literal(LOG_MAX_SORT_KEY)));
+        Expression distance = ff.multiply(ff.literal(SORT_KEY_HALF_RANGE), scaled);
+        return ff.function(
+                "if_then_else",
+                ff.function("lessThan", sortKey, ff.literal(0)),
+                ff.add(ff.literal(SORT_KEY_MIDDLE), distance),
+                ff.subtract(ff.literal(SORT_KEY_MIDDLE), distance));
     }
 
     public Integer getLabelPriority() {

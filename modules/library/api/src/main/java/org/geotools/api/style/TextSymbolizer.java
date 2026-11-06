@@ -9,6 +9,7 @@
  */
 package org.geotools.api.style;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
@@ -65,6 +66,11 @@ public interface TextSymbolizer extends Symbolizer {
     String LABEL_ALL_GROUP_KEY = "labelAllGroup";
     /** If in case of grouping all resulting lines have to be labelled */
     boolean DEFAULT_LABEL_ALL_GROUP = false;
+    /**
+     * Controls how the priority of a group of labels comes from the priorities of its features, see
+     * {@link GroupPriority}. Only applies when {@link #GROUP_KEY} is true and the priority is not a literal.
+     */
+    String GROUP_PRIORITY_KEY = "groupPriority";
     /**
      * When false does not allow labels on lines to get beyond the beginning/end of the line. By default a partial
      * overrun is tolerated, set to false to disallow it.
@@ -336,5 +342,29 @@ public interface TextSymbolizer extends Symbolizer {
          * the label
          */
         INDEPENDENT
+    }
+
+    /** Ways to compute the priority of a group of labels from the priorities of its features. */
+    public static enum GroupPriority {
+        /**
+         * Adds up the feature priorities, so bigger groups win, e.g. with a priority based on area or length (default
+         * for backward compatibility)
+         */
+        SUM {
+            @Override
+            public double priority(DoubleSummaryStatistics priorities) {
+                return priorities.getSum();
+            }
+        },
+        /** Takes the highest feature priority, for priorities that rank features, e.g. a road class */
+        MAX {
+            @Override
+            public double priority(DoubleSummaryStatistics priorities) {
+                return priorities.getMax();
+            }
+        };
+
+        /** Returns the group priority, given the priorities of all the features in the group */
+        public abstract double priority(DoubleSummaryStatistics priorities);
     }
 }

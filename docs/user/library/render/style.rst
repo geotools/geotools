@@ -545,6 +545,8 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
   
 * ``group(false)``\ : If true, geometries with the same labels are grouped and considered a single entity to be labeled. This allows to avoid or control repeated labels
   
+* ``groupPriority(sum)``\ : How the priority of a group comes from the priorities of its features, when ``group`` is true and the priority is not a constant. ``sum`` adds them up, so bigger groups win, e.g. with a priority based on area or length. ``max`` takes the highest one, for priorities that rank features, e.g. a road class.
+  
 * ``labelAllGroup(false)``\ : When false,  only the biggest geometry in a group is labeled (the biggest is obtained by merging, when possible, the original geometries). When true, also the smaller items in the group are labeled. Works only on lines at the moment.
   
 * ``repeat(0)``\ : When positive it's the desired distance between two subsequent labels on a "big" geometry. Works only on lines at the moment. If zero only one label is drawn no matter how big the geometry is

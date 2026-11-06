@@ -437,6 +437,7 @@ Text symbolizer definition:
         x-graphic-margin: <expression>
         x-graphic-resize: <none|proportional|stretch>
         x-group: <boolean>
+        x-groupPriority: <sum|max>
         x-labelAllGroup: <boolean>
         x-labelPriority: <expression>
         x-repeat: <expression>
@@ -557,6 +558,10 @@ The majority of hints focus on controlling text:
       # If true, geometries with the same labels are grouped and considered a single entity to be
       # abeled. This allows to avoid or control repeated labels
       x-group: false
+
+      # When grouping with a label priority that is not a constant, how the group gets its priority:
+      # sum adds up the priorities of its features (the default), max takes the highest one
+      x-groupPriority: sum
 
       # When false,  only the biggest geometry in a group is labelled (the biggest is obtained by
       # merging, when possible, the original geometries). When true, also the smaller items in the

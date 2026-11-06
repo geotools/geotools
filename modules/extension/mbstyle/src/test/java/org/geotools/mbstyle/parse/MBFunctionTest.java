@@ -296,7 +296,8 @@ public class MBFunctionTest {
         assertEquals(3.0, n.doubleValue(), .000001);
 
         Color result = fn.evaluate(feature, Color.class);
-        assertEquals(new Color(128, 0, 127), result);
+        // halfway between blue and red, each channel is 127.5, rounded to 128
+        assertEquals(new Color(128, 0, 128), result);
 
         EnvFunction.setGlobalValue("wms_scale_denominator", "4367830.18712");
         n = zoomLevel.evaluate(null, Number.class);
@@ -310,7 +311,7 @@ public class MBFunctionTest {
         // This should be zoom level 9
         assertEquals(9.0, n.doubleValue(), .000001);
         result = fn.evaluate(feature, Color.class);
-        assertEquals(new Color(127, 128, 0), result);
+        assertEquals(new Color(128, 128, 0), result);
 
         EnvFunction.setGlobalValue("wms_scale_denominator", "68247.3466735");
         n = zoomLevel.evaluate(null, Number.class);
@@ -465,7 +466,7 @@ public class MBFunctionTest {
                 result.getGreen());
         assertEquals(
                 "Exponential interpolation base is = 1, so the interpolated red value should equal the linear interpolation.",
-                127,
+                128,
                 result.getRed());
     }
 

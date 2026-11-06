@@ -31,6 +31,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
@@ -1314,19 +1315,134 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * The renderer's displacement search skips entirely unless maxDisplacement >= the offset magnitude (fontSize *
-     * offset in ems). So return just above that magnitude: enough to flip the label to the opposite side, not so much
-     * it wanders. fontSize is a zoom expression, resolved to a literal with a 16px fallback.
+     * (Optional) Units in ems. Defaults to 0. Requires text-field. Distance of the label from the point, away from the
+     * anchor named by text-variable-anchor, or by text-anchor without variable anchors.
      */
-    private int maxLabelDisplacement(Expression fontSize) {
-        double size = MBStyleTransformer.requireLiteral(
-                fontSize, Double.class, 16.0, "text-size (for text-variable-anchor displacement)", getId());
-        double[] offset = getTextOffset();
-        double magnitude = size * Math.hypot(offset[0], offset[1]);
-        if (magnitude <= 0) {
-            magnitude = size; // no offset: still allow a one-font-size flip
+    public Expression textRadialOffset() {
+        return parse.number(layout, "text-radial-offset", 0);
+    }
+
+    /** A zero radial offset leaves the label to text-offset, as Mapbox does without variable anchors. */
+    private boolean hasTextRadialOffset() {
+        Object offset = layout.get("text-radial-offset");
+        return offset != null && !(offset instanceof Number number && number.doubleValue() == 0);
+    }
+
+    /**
+     * Returns the anchor the radial offset moves the label away from, as a name or as a zoom step of names: the first
+     * variable anchor, or text-anchor without variable anchors. Returns null for forms that cannot be mapped.
+     */
+    @SuppressWarnings("unchecked") // json-simple JSONArray is a raw ArrayList
+    private Object radialAnchor() {
+        Object variable = layout.get("text-variable-anchor");
+        if (variable == null) {
+            Object anchor = layout.get("text-anchor");
+            if (anchor == null) {
+                return "center";
+            }
+            return anchor instanceof String ? anchor : null;
         }
-        return (int) Math.ceil(magnitude) + 1;
+        if (!(variable instanceof JSONArray anchors) || anchors.isEmpty()) {
+            return null;
+        }
+        if ("literal".equals(anchors.get(0)) && anchors.get(1) instanceof JSONArray names && !names.isEmpty()) {
+            return names.get(0);
+        }
+        if (anchors.get(0) instanceof String first && !"step".equals(first)) {
+            return first;
+        }
+        // zoom step: keep input and stops, replace each ["literal", [anchors]] output with its first anchor
+        JSONArray step = new JSONArray();
+        step.addAll(anchors.subList(0, 2));
+        for (int i = 2; i < anchors.size(); i += 2) {
+            if (!(anchors.get(i) instanceof JSONArray literal
+                    && literal.size() == 2
+                    && literal.get(1) instanceof JSONArray names
+                    && !names.isEmpty())) {
+                return null;
+            }
+            step.add(names.get(0));
+            if (i + 1 < anchors.size()) {
+                step.add(anchors.get(i + 1));
+            }
+        }
+        return step;
+    }
+
+    /** Moves the label away from its anchor by the radial offset, plus the text padding with variable anchors. */
+    private Displacement radialDisplacement(Object radialAnchor, Expression fontSize) {
+        Expression offset = ff.multiply(fontSize, ff.function("max", textRadialOffset(), ff.literal(0)));
+        Displacement displacement = sf.displacement(
+                ff.multiply(offset, perAnchor(radialAnchor, a -> awayFrom(a.getX()) * diagonal(a))),
+                ff.multiply(offset, perAnchor(radialAnchor, a -> awayFrom(a.getY()) * diagonal(a))));
+        if (hasTextVariableAnchor()) {
+            addVariableAnchorPadding(
+                    displacement,
+                    perAnchor(radialAnchor, a -> awayFrom(a.getX())),
+                    perAnchor(radialAnchor, a -> awayFrom(a.getY())));
+        }
+        return displacement;
+    }
+
+    /**
+     * Returns a value of the radial anchor: a literal for an anchor name, a zoom step expression for a step of names.
+     */
+    @SuppressWarnings("unchecked") // json-simple JSONArray and JSONObject are raw collections
+    private Expression perAnchor(Object radialAnchor, ToDoubleFunction<TextAnchor> value) {
+        if (radialAnchor instanceof String name) {
+            return ff.literal(value.applyAsDouble(TextAnchor.parse(name)));
+        }
+        // after the step input, outputs and stops alternate: output, stop, output, ...
+        JSONArray step = new JSONArray();
+        step.addAll((JSONArray) radialAnchor);
+        for (int i = 2; i < step.size(); i += 2) {
+            step.set(i, value.applyAsDouble(TextAnchor.parse((String) step.get(i))));
+        }
+        JSONObject holder = new JSONObject();
+        holder.put("value", step);
+        return parse.number(holder, "value", 0);
+    }
+
+    /**
+     * Returns the way the label moves along one axis, away from the side of the label placed at the point: 1 from the
+     * low side (anchor 0), -1 from the high side (anchor 1), 0 when centered. SLD y grows upwards.
+     */
+    private static double awayFrom(double anchor) {
+        return Math.signum(0.5 - anchor);
+    }
+
+    /** Corners move along the diagonal, the same distance as sides, like Mapbox does. */
+    private static double diagonal(TextAnchor anchor) {
+        return anchor.getX() != 0.5 && anchor.getY() != 0.5 ? Math.sqrt(0.5) : 1;
+    }
+
+    private boolean hasTextVariableAnchor() {
+        return layout.get("text-variable-anchor") != null;
+    }
+
+    /**
+     * Mapbox lays out labels with variable anchors on a collision box grown by the text padding, so the label moves
+     * away from the point by the padding too, on each axis its offset points along (sign -1, 0 or 1).
+     */
+    private void addVariableAnchorPadding(Displacement offset, Expression signX, Expression signY) {
+        offset.setDisplacementX(ff.add(offset.getDisplacementX(), ff.multiply(textPadding(), signX)));
+        offset.setDisplacementY(ff.add(offset.getDisplacementY(), ff.multiply(textPadding(), signY)));
+    }
+
+    /**
+     * Returns the maxDisplacement vendor option for variable anchors. The renderer searches the other anchors only
+     * while its radius, which starts at the length of the label displacement, stays within maxDisplacement: return just
+     * above that length, enough to flip the label to the other anchors, not so much it wanders. The length follows zoom
+     * and feature like the displacement. Without a displacement, allow a one-font-size flip.
+     */
+    private String maxLabelDisplacement(Displacement displacement, Expression fontSize) {
+        Expression length = fontSize;
+        if (displacement != null) {
+            Expression dx = displacement.getDisplacementX();
+            Expression dy = displacement.getDisplacementY();
+            length = ff.function("sqrt", ff.add(ff.multiply(dx, dx), ff.multiply(dy, dy)));
+        }
+        return MBStyleTransformer.vendorOptionExpression(ff.add(ff.function("ceil", length), ff.literal(1)));
     }
 
     /**
@@ -1806,13 +1922,32 @@ public class SymbolMBLayer extends MBLayer {
                 textTranslate.setDisplacementY(ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
                 displacement = textTranslate;
             }
-            // MapBox test-offset: +y mean down and expressed in ems
-            Displacement textOffset;
-            if (hasTextOffset()) {
+            // MapBox text-radial-offset: moves the label away from its anchor, in ems, and wins over text-offset
+            // with variable anchors and no offset Mapbox places the label as with a zero radial offset
+            boolean radial = hasTextRadialOffset() || hasTextVariableAnchor() && !hasTextOffset();
+            Object radialAnchor = radial ? radialAnchor() : null;
+            if (radial && radialAnchor == null) {
+                LOGGER.warning("Mapbox label anchor ignored on layer '" + getId()
+                        + "': its text-anchor or text-variable-anchor form is not supported");
+            }
+            Displacement textOffset = null;
+            if (radialAnchor != null) {
+                pointP.setAnchorPoint(sf.anchorPoint(
+                        perAnchor(radialAnchor, TextAnchor::getX), perAnchor(radialAnchor, TextAnchor::getY)));
+                textOffset = radialDisplacement(radialAnchor, fontSize);
+            } else if (hasTextOffset()) {
+                // MapBox text-offset: +y means down, in ems
                 textOffset = textOffsetDisplacement();
                 textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
                 textOffset.setDisplacementY(
                         ff.multiply(fontSize, ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
+                if (hasTextVariableAnchor()) {
+                    double[] direction = getTextOffset();
+                    addVariableAnchorPadding(
+                            textOffset, ff.literal(Math.signum(direction[0])), ff.literal(-Math.signum(direction[1])));
+                }
+            }
+            if (textOffset != null) {
                 if (displacement == null) {
                     displacement = textOffset;
                 } else {
@@ -1925,7 +2060,8 @@ public class SymbolMBLayer extends MBLayer {
             String displacementMode = displacementModeFromVariableAnchor();
             if (!displacementMode.isEmpty()) {
                 options.put(TextSymbolizer.DISPLACEMENT_MODE_KEY, displacementMode);
-                options.put(TextSymbolizer.MAX_DISPLACEMENT_KEY, String.valueOf(maxLabelDisplacement(fontSize)));
+                Displacement displacement = ((PointPlacement) labelPlacement).getDisplacement();
+                options.put(TextSymbolizer.MAX_DISPLACEMENT_KEY, maxLabelDisplacement(displacement, fontSize));
                 if (isZoomDrivenVariableAnchor()) {
                     LOGGER.warning("Mapbox 'text-variable-anchor' is zoom-driven on layer '"
                             + getId()

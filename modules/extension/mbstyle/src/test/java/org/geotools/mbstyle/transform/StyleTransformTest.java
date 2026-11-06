@@ -85,6 +85,7 @@ import org.geotools.mbstyle.layer.RasterMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.renderer.lite.LabelShieldTest;
+import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.TextStyle2D;
@@ -608,8 +609,11 @@ public class StyleTransformTest {
                 "text-variable-anchor": ["left", "right"]
                 """);
         assertEquals("E,W", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
-        // the offset length is 14 * 1.1 = 15.4, rounded up plus one
-        assertEquals("17", ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+        // the offset length is 14 * 1.1 + 2 (text padding) = 17.4, rounded up plus one
+        int maxDisplacement = ExpressionExtractor.extractCqlExpressions(
+                        ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
+                .evaluate(null, Integer.class);
+        assertEquals(19, maxDisplacement);
     }
 
     /** Each of the eight anchors maps to its own direction; "center" and repeated anchors are dropped. */
@@ -646,8 +650,11 @@ public class StyleTransformTest {
                 ]
                 """);
         assertEquals("N,E,W,S", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
-        // the default text size 16 times the 1.1 offset is 17.6, rounded up plus one
-        assertEquals("19", ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+        // the offset length is 16 (default text size) * 1.1 + 2 (text padding) = 19.6, rounded up plus one
+        int maxDisplacement = ExpressionExtractor.extractCqlExpressions(
+                        ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
+                .evaluate(null, Integer.class);
+        assertEquals(21, maxDisplacement);
     }
 
     /** Without text-variable-anchor, no displacementMode or maxDisplacement option is added. */

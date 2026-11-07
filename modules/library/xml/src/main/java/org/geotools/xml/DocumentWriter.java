@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.OperationNotSupportedException;
+import javax.xml.XMLConstants;
+
 import org.geotools.xml.handlers.xsi.AttributeHandler;
 import org.geotools.xml.handlers.xsi.ComplexTypeHandler;
 import org.geotools.xml.schema.All;
@@ -50,6 +52,9 @@ import org.geotools.xml.schema.Type;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.AttributesImpl;
+
+import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
+import static javax.xml.XMLConstants.NULL_NS_URI;
 
 /**
  * This is the thing that writes documents.
@@ -262,10 +267,10 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         ai.addAttribute(
-                "", "targetNamespace", "", "anyUri", schema.getTargetNamespace().toString());
-        ai.addAttribute("", "xmlns", "", "anyUri", XSISimpleTypes.NAMESPACE.toString());
+                NULL_NS_URI, "targetNamespace", "", "anyUri", schema.getTargetNamespace().toString());
+        ai.addAttribute(NULL_NS_URI, "xmlns", "", "anyUri", XSISimpleTypes.NAMESPACE.toString());
         ai.addAttribute(
-                "",
+                NULL_NS_URI,
                 "xmlns:" + schema.getPrefix(),
                 "",
                 "anyUri",
@@ -275,7 +280,7 @@ public class DocumentWriter {
 
         for (Schema value : imports) {
             ai.addAttribute(
-                    "",
+                    NULL_NS_URI,
                     "xmlns:" + value.getPrefix(),
                     "",
                     "anyUri",
@@ -283,19 +288,19 @@ public class DocumentWriter {
         }
 
         if (schema.getId() != null && !schema.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", schema.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", schema.getId());
         }
 
         if (schema.getVersion() != null && !schema.getVersion().isEmpty()) {
-            ai.addAttribute("", "version", "", "String", schema.getVersion());
+            ai.addAttribute(NULL_NS_URI, "version", "", "String", schema.getVersion());
         }
 
         if (schema.isAttributeFormDefault()) {
-            ai.addAttribute("", "attributeFormDefault", "", "NMTOKEN", "qualified");
+            ai.addAttribute(NULL_NS_URI, "attributeFormDefault", "", "NMTOKEN", "qualified");
         }
 
         if (schema.isElementFormDefault()) {
-            ai.addAttribute("", "elementFormDefault", "", "NMTOKEN", "qualified");
+            ai.addAttribute(NULL_NS_URI, "elementFormDefault", "", "NMTOKEN", "qualified");
         }
 
         if (schema.getBlockDefault() != Schema.NONE) {
@@ -305,7 +310,7 @@ public class DocumentWriter {
 
         if (schema.getFinalDefault() != Schema.NONE) {
             ai.addAttribute(
-                    "", "finalDefault", "", "NMTOKENS", ComplexTypeHandler.writeFinal(schema.getFinalDefault()));
+                    NULL_NS_URI, "finalDefault", "", "NMTOKENS", ComplexTypeHandler.writeFinal(schema.getFinalDefault()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "schema", ai);
@@ -355,14 +360,14 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (schema.getId() != null && !schema.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", schema.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", schema.getId());
         }
 
         ai.addAttribute(
-                "", "namespace", "", "anyUri", schema.getTargetNamespace().toString());
+                NULL_NS_URI, "namespace", "", "anyUri", schema.getTargetNamespace().toString());
 
         if (schema.getURI() != null) {
-            ai.addAttribute("", "schemaLocation", "", "anyUri", schema.getURI().toString());
+            ai.addAttribute(NULL_NS_URI, "schemaLocation", "", "anyUri", schema.getURI().toString());
         }
 
         ph.element(XSISimpleTypes.NAMESPACE, "import", ai);
@@ -373,20 +378,20 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (element.getId() != null && !element.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", element.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", element.getId());
         }
 
         if (element.getMaxOccurs() != 1) {
             ai.addAttribute(
-                    "",
+                    NULL_NS_URI,
                     "maxOccurs",
                     "",
                     "Union",
-                    element.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : "" + element.getMaxOccurs());
+                    element.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : Integer.toString(element.getMaxOccurs()));
         }
 
         if (element.getMinOccurs() != 1) {
-            ai.addAttribute("", "minOccurs", "", "ID", "" + element.getMinOccurs());
+            ai.addAttribute(NULL_NS_URI, "minOccurs", "", "ID", Integer.toString(element.getMinOccurs()));
         }
 
         boolean nested = false;
@@ -399,7 +404,7 @@ public class DocumentWriter {
             for (int i = 0; i < elems.length && !found; i++)
                 if (element.getName().equals(elems[i].getName())) {
                     found = true;
-                    ai.addAttribute("", "ref", "", "QName", element.getName());
+                    ai.addAttribute(NULL_NS_URI, "ref", "", "QName", element.getName());
                 }
 
             if (!found) {
@@ -410,11 +415,11 @@ public class DocumentWriter {
                     Schema s = SchemaFactory.getInstance(element.getNamespace());
 
                     if (element.getName() != null && !element.getName().isEmpty()) {
-                        ai.addAttribute("", "name", "", "QName", element.getName());
+                        ai.addAttribute(NULL_NS_URI, "name", "", "QName", element.getName());
                     }
 
                     ai.addAttribute(
-                            "",
+                            NULL_NS_URI,
                             "type",
                             "",
                             "QName",
@@ -431,11 +436,11 @@ public class DocumentWriter {
                         found = true;
 
                         if (element.getName() != null && !element.getName().isEmpty()) {
-                            ai.addAttribute("", "name", "", "QName", element.getName());
+                            ai.addAttribute(NULL_NS_URI, "name", "", "QName", element.getName());
                         }
 
                         ai.addAttribute(
-                                "", "type", "", "QName", element.getType().getName());
+                                NULL_NS_URI, "type", "", "QName", element.getType().getName());
                     }
 
                 types = schema.getSimpleTypes();
@@ -447,11 +452,11 @@ public class DocumentWriter {
                         found = true;
 
                         if (element.getName() != null && !element.getName().isEmpty()) {
-                            ai.addAttribute("", "name", "", "QName", element.getName());
+                            ai.addAttribute(NULL_NS_URI, "name", "", "QName", element.getName());
                         }
 
                         ai.addAttribute(
-                                "", "type", "", "QName", element.getType().getName());
+                                NULL_NS_URI, "type", "", "QName", element.getType().getName());
                     }
 
                 if (!found) {
@@ -459,25 +464,25 @@ public class DocumentWriter {
                     nested = true;
 
                     if (element.getName() != null && !element.getName().isEmpty()) {
-                        ai.addAttribute("", "name", "", "QName", element.getName());
+                        ai.addAttribute(NULL_NS_URI, "name", "", "QName", element.getName());
                     }
                 }
             }
         } else {
             // use a ref
             Schema s = SchemaFactory.getInstance(element.getNamespace());
-            ai.addAttribute("", "ref", "", "QName", s.getPrefix() + ":" + element.getName());
+            ai.addAttribute(NULL_NS_URI, "ref", "", "QName", s.getPrefix() + ":" + element.getName());
         }
 
         if (element.isNillable()) {
-            ai.addAttribute("", "nillable", "", "boolean", "true");
+            ai.addAttribute(NULL_NS_URI, "nillable", "", "boolean", "true");
         }
 
         if (element.getDefault() != null && !element.getDefault().isEmpty()) {
-            ai.addAttribute("", "default", "", "String", element.getDefault());
+            ai.addAttribute(NULL_NS_URI, "default", "", "String", element.getDefault());
         } else {
             if (element.getFixed() != null && !element.getFixed().isEmpty()) {
-                ai.addAttribute("", "fixed", "", "String", element.getFixed());
+                ai.addAttribute(NULL_NS_URI, "fixed", "", "String", element.getFixed());
             }
         }
 
@@ -491,23 +496,23 @@ public class DocumentWriter {
             }
 
             s += element.getSubstitutionGroup().getName();
-            ai.addAttribute("", "substitutionGroup", "", "QName", s);
+            ai.addAttribute(NULL_NS_URI, "substitutionGroup", "", "QName", s);
         }
 
         if (element.isForm()) {
-            ai.addAttribute("", "form", "", "NMTOKEN", "qualified");
+            ai.addAttribute(NULL_NS_URI, "form", "", "NMTOKEN", "qualified");
         }
 
         if (element.getFinal() != Schema.NONE) {
-            ai.addAttribute("", "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(element.getFinal()));
+            ai.addAttribute(NULL_NS_URI, "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(element.getFinal()));
         }
 
         if (element.getBlock() != Schema.NONE) {
-            ai.addAttribute("", "block", "", "NMTOKENS", ComplexTypeHandler.writeBlock(element.getBlock()));
+            ai.addAttribute(NULL_NS_URI, "block", "", "NMTOKENS", ComplexTypeHandler.writeBlock(element.getBlock()));
         }
 
         if (element.isAbstract()) {
-            ai.addAttribute("", "abstract", "", "boolean", "true");
+            ai.addAttribute(NULL_NS_URI, "abstract", "", "boolean", "true");
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "element", ai);
@@ -528,7 +533,7 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (attribute.getId() != null && !attribute.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", attribute.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", attribute.getId());
         }
 
         boolean nested = false;
@@ -541,7 +546,7 @@ public class DocumentWriter {
             for (int i = 0; i < elems.length && !found; i++)
                 if (attribute.getName().equals(elems[i].getName())) {
                     found = true;
-                    ai.addAttribute("", "ref", "", "QName", attribute.getName());
+                    ai.addAttribute(NULL_NS_URI, "ref", "", "QName", attribute.getName());
                 }
 
             if (!found) {
@@ -552,11 +557,11 @@ public class DocumentWriter {
                     Schema s = SchemaFactory.getInstance(attribute.getNamespace());
 
                     if (attribute.getName() != null && !attribute.getName().isEmpty()) {
-                        ai.addAttribute("", "name", "", "QName", attribute.getName());
+                        ai.addAttribute(NULL_NS_URI, "name", "", "QName", attribute.getName());
                     }
 
                     ai.addAttribute(
-                            "",
+                            NULL_NS_URI,
                             "type",
                             "",
                             "QName",
@@ -573,11 +578,11 @@ public class DocumentWriter {
                         found = true;
 
                         if (attribute.getName() != null && !attribute.getName().isEmpty()) {
-                            ai.addAttribute("", "name", "", "QName", attribute.getName());
+                            ai.addAttribute(NULL_NS_URI, "name", "", "QName", attribute.getName());
                         }
 
                         ai.addAttribute(
-                                "",
+                                NULL_NS_URI,
                                 "type",
                                 "",
                                 "QName",
@@ -589,30 +594,30 @@ public class DocumentWriter {
                     nested = true;
 
                     if (attribute.getName() != null && !attribute.getName().isEmpty()) {
-                        ai.addAttribute("", "name", "", "QName", attribute.getName());
+                        ai.addAttribute(NULL_NS_URI, "name", "", "QName", attribute.getName());
                     }
                 }
             }
         } else {
             // use a ref
             Schema s = SchemaFactory.getInstance(attribute.getNamespace());
-            ai.addAttribute("", "ref", "", "QName", s.getPrefix() + ":" + attribute.getName());
+            ai.addAttribute(NULL_NS_URI, "ref", "", "QName", s.getPrefix() + ":" + attribute.getName());
         }
 
         if (attribute.getUse() != Attribute.OPTIONAL) {
-            ai.addAttribute("", "use", "", "NMTOKEN", AttributeHandler.writeUse(attribute.getUse()));
+            ai.addAttribute(NULL_NS_URI, "use", "", "NMTOKEN", AttributeHandler.writeUse(attribute.getUse()));
         }
 
         if (attribute.getDefault() != null && !attribute.getDefault().isEmpty()) {
-            ai.addAttribute("", "default", "", "String", attribute.getDefault());
+            ai.addAttribute(NULL_NS_URI, "default", "", "String", attribute.getDefault());
         } else {
             if (attribute.getFixed() != null && !attribute.getFixed().isEmpty()) {
-                ai.addAttribute("", "fixed", "", "String", attribute.getFixed());
+                ai.addAttribute(NULL_NS_URI, "fixed", "", "String", attribute.getFixed());
             }
         }
 
         if (attribute.isForm()) {
-            ai.addAttribute("", "form", "", "NMTOKEN", "qualified");
+            ai.addAttribute(NULL_NS_URI, "form", "", "NMTOKEN", "qualified");
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "attribute", ai);
@@ -629,7 +634,7 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (group.getId() != null && !group.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", group.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", group.getId());
         }
 
         boolean nested = false;
@@ -642,31 +647,31 @@ public class DocumentWriter {
             for (int i = 0; i < groups.length && !found; i++)
                 if (group.getName().equals(groups[i].getName())) {
                     found = true;
-                    ai.addAttribute("", "ref", "", "QName", group.getName());
+                    ai.addAttribute(NULL_NS_URI, "ref", "", "QName", group.getName());
                 }
 
             if (!found) {
-                ai.addAttribute("", "name", "", "QName", group.getName());
+                ai.addAttribute(NULL_NS_URI, "name", "", "QName", group.getName());
                 nested = true;
             }
         } else {
             // use a ref
             XSISAXHandler.setLogLevel(logger.getLevel());
             Schema s = SchemaFactory.getInstance(group.getNamespace());
-            ai.addAttribute("", "ref", "", "QName", s.getPrefix() + ":" + group.getName());
+            ai.addAttribute(NULL_NS_URI, "ref", "", "QName", s.getPrefix() + ":" + group.getName());
         }
 
         if (group.getMaxOccurs() != 1) {
             ai.addAttribute(
-                    "",
+                    NULL_NS_URI,
                     "maxOccurs",
                     "",
                     "Union",
-                    group.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : "" + group.getMaxOccurs());
+                    group.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : Integer.toString(group.getMaxOccurs()));
         }
 
         if (group.getMinOccurs() != 1) {
-            ai.addAttribute("", "minOccurs", "", "ID", "" + group.getMinOccurs());
+            ai.addAttribute(NULL_NS_URI, "minOccurs", "", "ID", Integer.toString(group.getMinOccurs()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "group", ai);
@@ -688,7 +693,7 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (attributeGroup.getId() != null && !attributeGroup.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", attributeGroup.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", attributeGroup.getId());
         }
 
         boolean nested = false;
@@ -701,18 +706,18 @@ public class DocumentWriter {
             for (int i = 0; i < groups.length && !found; i++)
                 if (attributeGroup.getName().equals(groups[i].getName())) {
                     found = true;
-                    ai.addAttribute("", "ref", "", "QName", attributeGroup.getName());
+                    ai.addAttribute(NULL_NS_URI, "ref", "", "QName", attributeGroup.getName());
                 }
 
             if (!found) {
-                ai.addAttribute("", "name", "", "QName", attributeGroup.getName());
+                ai.addAttribute(NULL_NS_URI, "name", "", "QName", attributeGroup.getName());
                 nested = true;
             }
         } else {
             // use a ref
             XSISAXHandler.setLogLevel(logger.getLevel());
             Schema s = SchemaFactory.getInstance(attributeGroup.getNamespace());
-            ai.addAttribute("", "ref", "", "QName", s.getPrefix() + ":" + attributeGroup.getName());
+            ai.addAttribute(NULL_NS_URI, "ref", "", "QName", s.getPrefix() + ":" + attributeGroup.getName());
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "group", ai);
@@ -720,7 +725,7 @@ public class DocumentWriter {
         if (nested) {
             if (attributeGroup.getAnyAttributeNameSpace() != null) {
                 ai = new AttributesImpl();
-                ai.addAttribute("", "namespace", "", "special", attributeGroup.getAnyAttributeNameSpace());
+                ai.addAttribute(NULL_NS_URI, "namespace", "", "special", attributeGroup.getAnyAttributeNameSpace());
                 ph.element(XSISimpleTypes.NAMESPACE, "anyAttribute", ai);
             }
 
@@ -739,15 +744,15 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (simpleType.getId() != null && !simpleType.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", simpleType.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", simpleType.getId());
         }
 
         if (simpleType.getName() != null && !simpleType.getName().isEmpty()) {
-            ai.addAttribute("", "name", "", "NCName", simpleType.getName());
+            ai.addAttribute(NULL_NS_URI, "name", "", "NCName", simpleType.getName());
         }
 
         if (simpleType.getFinal() != Schema.NONE) {
-            ai.addAttribute("", "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(simpleType.getFinal()));
+            ai.addAttribute(NULL_NS_URI, "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(simpleType.getFinal()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "simpleType", ai);
@@ -767,7 +772,7 @@ public class DocumentWriter {
                             for (SimpleType type : sts)
                                 if (st.getName().equals(type.getName())) {
                                     ai = new AttributesImpl();
-                                    ai.addAttribute("", "base", "", "QName", st.getName());
+                                    ai.addAttribute(NULL_NS_URI, "base", "", "QName", st.getName());
                                 }
                         }
                     }
@@ -775,7 +780,7 @@ public class DocumentWriter {
                     ai = new AttributesImpl();
                     XSISAXHandler.setLogLevel(logger.getLevel());
                     Schema s = SchemaFactory.getInstance(st.getNamespace());
-                    ai.addAttribute("", "base", "", "QName", s.getPrefix() + ":" + st.getName());
+                    ai.addAttribute(NULL_NS_URI, "base", "", "QName", s.getPrefix() + ":" + st.getName());
                 }
 
                 ph.startElement(XSISimpleTypes.NAMESPACE, "restriction", ai);
@@ -808,7 +813,7 @@ public class DocumentWriter {
                             for (SimpleType type : sts)
                                 if (st.getName().equals(type.getName())) {
                                     ai = new AttributesImpl();
-                                    ai.addAttribute("", "itemType", "", "QName", st.getName());
+                                    ai.addAttribute(NULL_NS_URI, "itemType", "", "QName", st.getName());
                                 }
                         }
                     }
@@ -816,7 +821,7 @@ public class DocumentWriter {
                     ai = new AttributesImpl();
 
                     Schema s = SchemaFactory.getInstance(st.getNamespace());
-                    ai.addAttribute("", "itemType", "", "QName", s.getPrefix() + ":" + st.getName());
+                    ai.addAttribute(NULL_NS_URI, "itemType", "", "QName", s.getPrefix() + ":" + st.getName());
                 }
 
                 ph.startElement(XSISimpleTypes.NAMESPACE, "list", ai);
@@ -879,7 +884,7 @@ public class DocumentWriter {
 
                 if (memberTypes != null) {
                     ai = new AttributesImpl();
-                    ai.addAttribute("", "memberTypes", "", "QName", memberTypes);
+                    ai.addAttribute(NULL_NS_URI, "memberTypes", "", "QName", memberTypes);
                 }
 
                 ph.startElement(XSISimpleTypes.NAMESPACE, "union", ai);
@@ -903,20 +908,20 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (choice.getId() != null && !choice.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", choice.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", choice.getId());
         }
 
         if (choice.getMaxOccurs() != 1) {
             ai.addAttribute(
-                    "",
+                    NULL_NS_URI,
                     "maxOccurs",
                     "",
                     "Union",
-                    choice.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : "" + choice.getMaxOccurs());
+                    choice.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : Integer.toString(choice.getMaxOccurs()));
         }
 
         if (choice.getMinOccurs() != 1) {
-            ai.addAttribute("", "minOccurs", "", "ID", "" + choice.getMinOccurs());
+            ai.addAttribute(NULL_NS_URI, "minOccurs", "", "ID", Integer.toString(choice.getMinOccurs()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "choice", ai);
@@ -968,20 +973,20 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (sequence.getId() != null && !sequence.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", sequence.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", sequence.getId());
         }
 
         if (sequence.getMaxOccurs() != 1) {
             ai.addAttribute(
-                    "",
+                    NULL_NS_URI,
                     "maxOccurs",
                     "",
                     "Union",
-                    sequence.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : "" + sequence.getMaxOccurs());
+                    sequence.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : Integer.toString(sequence.getMaxOccurs()));
         }
 
         if (sequence.getMinOccurs() != 1) {
-            ai.addAttribute("", "minOccurs", "", "ID", "" + sequence.getMinOccurs());
+            ai.addAttribute(NULL_NS_URI, "minOccurs", "", "ID", Integer.toString(sequence.getMinOccurs()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "sequence", ai);
@@ -1028,20 +1033,20 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (all.getId() != null && !all.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", all.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", all.getId());
         }
 
         if (all.getMaxOccurs() != 1) {
             ai.addAttribute(
-                    "",
+                    NULL_NS_URI,
                     "maxOccurs",
                     "",
                     "Union",
-                    all.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : "" + all.getMaxOccurs());
+                    all.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : Integer.toString(all.getMaxOccurs()));
         }
 
         if (all.getMinOccurs() != 1) {
-            ai.addAttribute("", "minOccurs", "", "ID", "" + all.getMinOccurs());
+            ai.addAttribute(NULL_NS_URI, "minOccurs", "", "ID", Integer.toString(all.getMinOccurs()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "all", ai);
@@ -1062,24 +1067,24 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (any.getId() != null && !any.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", any.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", any.getId());
         }
 
         if (any.getMaxOccurs() != 1) {
             ai.addAttribute(
-                    "",
+                    NULL_NS_URI,
                     "maxOccurs",
                     "",
                     "Union",
-                    any.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : "" + any.getMaxOccurs());
+                    any.getMaxOccurs() == ElementGrouping.UNBOUNDED ? "unbounded" : Integer.toString(any.getMaxOccurs()));
         }
 
         if (any.getMinOccurs() != 1) {
-            ai.addAttribute("", "minOccurs", "", "ID", "" + any.getMinOccurs());
+            ai.addAttribute(NULL_NS_URI, "minOccurs", "", "ID", Integer.toString(any.getMinOccurs()));
         }
 
         if (any.getNamespace() != null) {
-            ai.addAttribute("", "namespace", "", "special", "" + any.getNamespace());
+            ai.addAttribute(NULL_NS_URI, "namespace", "", "special", any.getNamespace().toString());
         }
 
         ph.element(XSISimpleTypes.NAMESPACE, "any", ai);
@@ -1090,27 +1095,27 @@ public class DocumentWriter {
         AttributesImpl ai = new AttributesImpl();
 
         if (complexType.getId() != null && !complexType.getId().isEmpty()) {
-            ai.addAttribute("", "id", "", "ID", complexType.getId());
+            ai.addAttribute(NULL_NS_URI, "id", "", "ID", complexType.getId());
         }
 
         if (complexType.getName() != null && !complexType.getName().isEmpty()) {
-            ai.addAttribute("", "name", "", "NCName", complexType.getName());
+            ai.addAttribute(NULL_NS_URI, "name", "", "NCName", complexType.getName());
         }
 
         if (complexType.isAbstract()) {
-            ai.addAttribute("", "abstract", "", "boolean", "true");
+            ai.addAttribute(NULL_NS_URI, "abstract", "", "boolean", "true");
         }
 
         if (complexType.getFinal() != Schema.NONE) {
-            ai.addAttribute("", "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(complexType.getFinal()));
+            ai.addAttribute(NULL_NS_URI, "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(complexType.getFinal()));
         }
 
         if (complexType.getBlock() != Schema.NONE) {
-            ai.addAttribute("", "block", "", "NMTOKENS", ComplexTypeHandler.writeBlock(complexType.getBlock()));
+            ai.addAttribute(NULL_NS_URI, "block", "", "NMTOKENS", ComplexTypeHandler.writeBlock(complexType.getBlock()));
         }
 
         if (complexType.isMixed()) {
-            ai.addAttribute("", "mixed", "", "boolean", "true");
+            ai.addAttribute(NULL_NS_URI, "mixed", "", "boolean", "true");
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "complexType", ai);
@@ -1153,7 +1158,7 @@ public class DocumentWriter {
 
         if (complexType.getAnyAttributeNameSpace() != null) {
             ai = new AttributesImpl();
-            ai.addAttribute("", "namespace", "", "special", complexType.getAnyAttributeNameSpace());
+            ai.addAttribute(NULL_NS_URI, "namespace", "", "special", complexType.getAnyAttributeNameSpace());
             ph.element(XSISimpleTypes.NAMESPACE, "anyAttribute", ai);
         }
 
@@ -1174,7 +1179,7 @@ public class DocumentWriter {
         }
 
         AttributesImpl ai = new AttributesImpl();
-        ai.addAttribute("", "value", "", "ID", facet.getValue());
+        ai.addAttribute(NULL_NS_URI, "value", "", "ID", facet.getValue());
 
         switch (facet.getFacetType()) {
             case Facet.ENUMERATION:
@@ -1262,7 +1267,7 @@ public class DocumentWriter {
             }
 
             prefixMappings = new HashMap<>();
-            prefixMappings.put(schema.getTargetNamespace(), "");
+            prefixMappings.put(schema.getTargetNamespace(), DEFAULT_NS_PREFIX);
 
             Schema[] imports = schema.getImports();
 
@@ -1315,7 +1320,7 @@ public class DocumentWriter {
 
             s = s.trim();
 
-            if (!"".equals(s)) {
+            if (!s.isEmpty()) {
                 writer.write(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
                 writer.write(" xsi:schemaLocation=\"" + s + "\"");
             }
@@ -1332,18 +1337,18 @@ public class DocumentWriter {
             String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
-                if (!prefix.equals("")) {
+                if (!prefix.equals(DEFAULT_NS_PREFIX)) {
                     prefix = prefix + ":";
                 }
             } else {
                 if (namespaceURI.equals(schema.getTargetNamespace())) {
-                    prefix = "";
+                    prefix = DEFAULT_NS_PREFIX;
                 } else {
                     XSISAXHandler.setLogLevel(logger.getLevel());
                     prefix = SchemaFactory.getInstance(namespaceURI).getPrefix();
 
                     if (prefix == null) {
-                        prefix = "";
+                        prefix = DEFAULT_NS_PREFIX;
                     }
 
                     if (!prefix.isEmpty()) {
@@ -1389,18 +1394,18 @@ public class DocumentWriter {
             String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
-                if (!prefix.equals("")) {
+                if (!prefix.equals(DEFAULT_NS_PREFIX)) {
                     prefix = prefix + ":";
                 }
             } else {
                 if (namespaceURI.equals(schema.getTargetNamespace())) {
-                    prefix = "";
+                    prefix = DEFAULT_NS_PREFIX;
                 } else {
                     XSISAXHandler.setLogLevel(logger.getLevel());
                     prefix = SchemaFactory.getInstance(namespaceURI).getPrefix();
 
                     if (prefix == null) {
-                        prefix = "";
+                        prefix = DEFAULT_NS_PREFIX;
                     }
 
                     if (!prefix.isEmpty()) {
@@ -1445,18 +1450,18 @@ public class DocumentWriter {
             String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
-                if (!prefix.equals("")) {
+                if (!prefix.equals(DEFAULT_NS_PREFIX)) {
                     prefix = prefix + ":";
                 }
             } else {
                 if (namespaceURI.equals(schema.getTargetNamespace())) {
-                    prefix = "";
+                    prefix = DEFAULT_NS_PREFIX;
                 } else {
                     XSISAXHandler.setLogLevel(logger.getLevel());
                     prefix = SchemaFactory.getInstance(namespaceURI).getPrefix();
 
                     if (prefix == null) {
-                        prefix = "";
+                        prefix = DEFAULT_NS_PREFIX;
                     }
 
                     if (!prefix.isEmpty()) {

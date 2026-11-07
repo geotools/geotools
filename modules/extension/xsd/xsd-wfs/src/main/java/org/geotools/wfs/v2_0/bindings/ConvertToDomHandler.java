@@ -16,6 +16,7 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
+import javax.xml.XMLConstants;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -103,6 +104,6 @@ public class ConvertToDomHandler extends DefaultHandler {
         if (split.length > 1) {
             return nsContext.getURI(split[0]);
         }
-        return nsContext.getURI("");
+        return nsContext.getURI(XMLConstants.DEFAULT_NS_PREFIX);
     }
 }

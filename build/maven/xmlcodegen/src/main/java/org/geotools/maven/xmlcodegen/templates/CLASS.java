@@ -136,7 +136,7 @@ public class CLASS
     } catch (TransformerConfigurationException e) {
         throw new RuntimeException(e);
     }
-    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
     xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
     xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
 

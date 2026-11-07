@@ -1,4 +1,4 @@
-name: Linux JDK 21 GitHub CI
+name: Linux GitHub CI
 
 on: [pull_request]
 
@@ -12,13 +12,17 @@ concurrency:
 jobs:
   build:
     runs-on: [ubuntu-24.04]
+    strategy:
+      matrix:
+        jdk: [17, 21, 25]
     steps:
     - uses: actions/checkout@v7
-    - name: Set up JDK 21
+      cache: maven
+    - name: Set up JDK ${{ matrix.jdk }}
       uses: actions/setup-java@v6
       with:
         distribution: 'temurin'
-        java-version: 21
+        java-version: ${{ matrix.jdk }}
     - name: Setup python for docs
       uses: actions/setup-python@v7
       with:
@@ -28,19 +32,22 @@ jobs:
       working-directory: docs
       run: |
         pip install -r requirements.txt
-    - name: Maven repository caching
-      uses: actions/cache@v6
-      with:
-        path: ~/.m2/repository
-        key: gt-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          gt-maven-
     - name: Disable checksum offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: sudo ethtool -K eth0 tx off rx off
-    - name: Build with Maven
+    - name: Build with Maven (JDK ${{ matrix.jdk }})
       run: |
         mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build --file pom.xml
+    - name: Build Saxon 9 specific parts with Maven (JDK ${{ matrix.jdk }})
+      run: |
+        pushd module/extensions/xsd
+        mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build -Psaxon9 --file pom.xml
+        popd
+    - name: Build Saxon 12 specific parts with Maven (JDK ${{ matrix.jdk }})
+      run: |
+        pushd module/extensions/xsd
+        mvn -B clean install -Dspotless.apply.skip=true -Dall -T1C -U -Plinux-github-build -Psaxon12 --file pom.xml
+        popd
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

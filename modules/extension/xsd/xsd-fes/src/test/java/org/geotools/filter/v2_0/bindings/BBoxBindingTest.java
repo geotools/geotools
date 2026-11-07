@@ -33,7 +33,7 @@ public class BBoxBindingTest extends FESTestSupport {
         Filter bboxFilter = ff.bbox(ff.property("geom"), env);
         Encoder encoder = new Encoder(createConfiguration());
         String encodedFilter = encoder.encodeAsString(bboxFilter, FES.Filter);
-        Assert.assertTrue(encodedFilter.contains("<fes:ValueReference>geom</fes:ValueReference>"));
+        Assert.assertTrue(encodedFilter.contains("<ValueReference>geom</ValueReference>"));
         Assert.assertTrue(
                 encodedFilter.contains("<gml:Envelope srsDimension=\"2\" srsName=\"urn:ogc:def:crs:EPSG::4326\">"));
         Assert.assertTrue(encodedFilter.contains("<gml:lowerCorner>48.817522 -3.475684</gml:lowerCorner>"));

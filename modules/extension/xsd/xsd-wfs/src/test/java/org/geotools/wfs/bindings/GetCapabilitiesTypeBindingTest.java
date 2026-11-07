@@ -25,6 +25,7 @@ import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
     public GetCapabilitiesTypeBindingTest() {
@@ -35,10 +36,12 @@ public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
     @Test
     public void testEncode() throws Exception {
         GetCapabilitiesType getCaps = factory.createGetCapabilitiesType();
-        Document dom = encode(getCaps, WFS.GetCapabilities);
+        Document doc = encode(getCaps, WFS.GetCapabilities);
 
-        assertEquals("wfs:GetCapabilities", dom.getDocumentElement().getNodeName());
-        assertEquals("WFS", dom.getDocumentElement().getAttribute("service"));
+        Element docElement = doc.getDocumentElement();
+        assertEquals(WFS.GetCapabilities.getLocalPart(), docElement.getLocalName());
+        assertEquals(WFS.GetCapabilities.getNamespaceURI(), docElement.getNamespaceURI());
+        assertEquals("WFS", docElement.getAttribute("service"));
     }
 
     @Override

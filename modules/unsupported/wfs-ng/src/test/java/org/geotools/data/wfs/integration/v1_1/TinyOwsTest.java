@@ -108,18 +108,16 @@ public class TinyOwsTest extends XmlTestSupport {
 
     @Test
     public void testGetFirstFeatures() throws Exception {
-        final String queryXml = "<wfs:Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni:comuni11\"/>";
-        // final String queryXml = "<wfs:Query srsName=\"urn:ogc:def:crs:EPSG::3857\"
-        // typeName=\"comuni_comuni11\"/>";
+        final String queryXml = "<Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni:comuni11\"/>";
         WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), UTF_8);
-                if (stringContains(request, "<wfs:GetFeature", "maxFeatures=\"20\"", "resultType=\"hits\"", queryXml)) {
+                if (stringContains(request, "<GetFeature", "maxFeatures=\"20\"", "resultType=\"hits\"", queryXml)) {
                     assertXMLEqual("tinyows/CountFirstFeaturesRequest.xml", request);
                     return new TestHttpResponse(url("tinyows/CountFirstFeatures.xml"), "text/xml");
                 } else if (stringContains(
-                        request, "<wfs:GetFeature", "maxFeatures=\"20\"", "resultType=\"results\"", queryXml)) {
+                        request, "<GetFeature", "maxFeatures=\"20\"", "resultType=\"results\"", queryXml)) {
                     assertXMLEqual("tinyows/GetFirstFeaturesRequest.xml", request);
                     return new TestHttpResponse(url("tinyows/GetFirstFeatures.xml"), "text/xml");
                 } else {
@@ -142,7 +140,7 @@ public class TinyOwsTest extends XmlTestSupport {
                 String request = new String(IOUtils.toByteArray(postContent), UTF_8);
                 if (isResultsRequest(
                         request,
-                        "<wfs:GetFeature",
+                        "<GetFeature",
                         "maxFeatures=\"20\"",
                         "resultType=\"results\"",
                         "<ogc:PropertyIsGreaterThan")) {
@@ -342,23 +340,25 @@ public class TinyOwsTest extends XmlTestSupport {
     private boolean isHitsRequest(String text, String... tokens) {
         return stringContains(
                         text,
-                        "<wfs:GetFeature",
+                        "<GetFeature",
+                        "xmlns=\"http://www.opengis.net/wfs\"",
                         "resultType=\"hits\"",
-                        "<wfs:Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni:comuni11\"")
+                        "<Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni:comuni11\"")
                 && stringContains(text, tokens);
     }
 
     private boolean isResultsRequest(String text, String... tokens) {
         return stringContains(
                         text,
-                        "<wfs:GetFeature",
+                        "<GetFeature",
+                        "xmlns=\"http://www.opengis.net/wfs\"",
                         "resultType=\"results\"",
-                        "<wfs:Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni:comuni11\"")
+                        "<Query srsName=\"urn:ogc:def:crs:EPSG::3857\" typeName=\"comuni:comuni11\"")
                 && stringContains(text, tokens);
     }
 
     private boolean isDescribeFeatureRequest(String text) {
-        return stringContains(text, "<wfs:DescribeFeatureType");
+        return stringContains(text, "<DescribeFeatureType", "xmlns=\"http://www.opengis.net/wfs\"");
     }
 
     private boolean stringContains(String text, String... tokens) {

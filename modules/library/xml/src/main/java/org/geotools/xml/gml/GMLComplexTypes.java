@@ -85,6 +85,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import static javax.xml.XMLConstants.NULL_NS_URI;
+
 /**
  * This class is intended to act as a collection of package visible GML complexType definition to be used by the
  * GMLSchema
@@ -192,13 +194,13 @@ public class GMLComplexTypes {
         if (g.getUserData() != null) {
             // TODO Fix this when parsing is better ... should be a coord reference system
             if (g.getUserData() instanceof String) {
-                ai.addAttribute("", "srsName", "", "anyURI", (String) g.getUserData());
+                ai.addAttribute(NULL_NS_URI, "srsName", "", "anyURI", (String) g.getUserData());
             } else if (g.getUserData() instanceof CoordinateReferenceSystem) {
                 CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g.getUserData();
                 try {
                     Integer code = CRS.lookupEpsgCode(crs, false);
                     if (code != null) {
-                        ai.addAttribute("", "srsName", "", "anyURI", "EPSG:" + code);
+                        ai.addAttribute(NULL_NS_URI, "srsName", "", "anyURI", "EPSG:" + code);
                     }
                 } catch (Exception ex) {
                     logger.log(Level.WARNING, "Could not encode the srsName for geometry, no EPSG code found", ex);
@@ -207,7 +209,7 @@ public class GMLComplexTypes {
         } else {
             //            if (g.getSRID() != 0) {
             //                // deprecated version
-            //                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
+            //                ai.addAttribute(NULL_NS_URI, "srsName", "", "anyURI", "" + g.getSRID());
             //            } else {
             ai = null;
             //            }
@@ -395,11 +397,11 @@ public class GMLComplexTypes {
         }
 
         AttributesImpl ai = new AttributesImpl();
-        ai.addAttribute("", "X", "", "decimal", "" + coord.x);
-        ai.addAttribute("", "Y", "", "decimal", "" + coord.y);
+        ai.addAttribute(NULL_NS_URI, "X", "", "decimal", Double.toString(coord.x));
+        ai.addAttribute(NULL_NS_URI, "Y", "", "decimal", Double.toString(coord.y));
 
         if (!Double.isNaN(coord.getZ())) {
-            ai.addAttribute("", "Z", "", "decimal", "" + coord.getZ());
+            ai.addAttribute(NULL_NS_URI, "Z", "", "decimal", Double.toString(coord.getZ()));
         }
 
         if (e == null) {
@@ -426,9 +428,9 @@ public class GMLComplexTypes {
         String dec = ".";
         String cs = ",";
         String ts = " ";
-        ai.addAttribute("", "decimal", "", "string", dec);
-        ai.addAttribute("", "cs", "", "string", cs);
-        ai.addAttribute("", "ts", "", "string", ts);
+        ai.addAttribute(NULL_NS_URI, "decimal", "", "string", dec);
+        ai.addAttribute(NULL_NS_URI, "cs", "", "string", cs);
+        ai.addAttribute(NULL_NS_URI, "ts", "", "string", ts);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "coordinates", ai);
@@ -470,9 +472,9 @@ public class GMLComplexTypes {
         String dec = ".";
         String cs = ",";
         String ts = " ";
-        ai.addAttribute("", "decimal", "", "string", dec);
-        ai.addAttribute("", "cs", "", "string", cs);
-        ai.addAttribute("", "ts", "", "string", ts);
+        ai.addAttribute(NULL_NS_URI, "decimal", "", "string", dec);
+        ai.addAttribute(NULL_NS_URI, "cs", "", "string", cs);
+        ai.addAttribute(NULL_NS_URI, "ts", "", "string", ts);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "coordinates", ai);
@@ -777,7 +779,7 @@ public class GMLComplexTypes {
                 // TODO have someone that knows more help.
                 String srsName = attrs.getValue("srsName");
 
-                if (srsName != null && !"".equals(srsName)) {
+                if (srsName != null && !srsName.isEmpty()) {
                     // TODO support real coord systems here
                     //                    if(srsName.matches(".*epsg#\\d*")){
                     //                        String[] t = srsName.split(".*epsg#");
@@ -904,7 +906,7 @@ public class GMLComplexTypes {
                 // TODO have someone that knows more help.
                 String srsName = attrs.getValue("srsName");
 
-                if (srsName != null && !"".equals(srsName)) {
+                if (srsName != null && !srsName.isEmpty()) {
                     // TODO support real coord systems here
                     //                    if(srsName.matches(".*epsg#\\d*")){
                     //                        String[] t = srsName.split(".*epsg#");
@@ -2446,7 +2448,7 @@ public class GMLComplexTypes {
                 if (bbox != null && bbox.getCoordinateReferenceSystem() != null) {
                     // TODO Fix this when parsing is better ... should be a coord reference system
                     String srsName = CRS.toSRS(bbox.getCoordinateReferenceSystem());
-                    ai.addAttribute("", "srsName", "", "anyURI", srsName);
+                    ai.addAttribute(NULL_NS_URI, "srsName", "", "anyURI", srsName);
                 } else {
                     ai = null;
                 }
@@ -3518,7 +3520,7 @@ public class GMLComplexTypes {
                 throw new SAXException("Internal error, ElementValues require an associated Element.");
             }
 
-            String dec = attrs.getValue("", "decimal");
+            String dec = attrs.getValue(NULL_NS_URI, "decimal");
 
             if (dec == null) {
                 dec = attrs.getValue(GMLSchema.NAMESPACE.toString(), "decimal");
@@ -3526,14 +3528,14 @@ public class GMLComplexTypes {
 
             dec = dec == null || dec == "" ? "." : dec;
 
-            String cs = attrs.getValue("", "cs");
+            String cs = attrs.getValue(NULL_NS_URI, "cs");
 
             if (cs == null) {
                 cs = attrs.getValue(GMLSchema.NAMESPACE.toString(), "cs");
             }
 
             cs = cs == null || cs == "" ? ",\\s*" : cs + "\\s*";
-            String ts = attrs.getValue("", "ts");
+            String ts = attrs.getValue(NULL_NS_URI, "ts");
 
             if (ts == null) {
                 ts = attrs.getValue(GMLSchema.NAMESPACE.toString(), "ts");
@@ -3781,9 +3783,9 @@ public class GMLComplexTypes {
                 setAttribute(value, ft, values, i, j);
             }
 
-            String fid = attrs.getValue("", "fid");
+            String fid = attrs.getValue(NULL_NS_URI, "fid");
 
-            if (fid == null || "".equals(fid)) {
+            if (fid == null || fid.isEmpty()) {
                 fid = attrs.getValue(GMLSchema.NAMESPACE.toString(), "fid");
             }
 
@@ -3987,8 +3989,8 @@ public class GMLComplexTypes {
                 throws OperationNotSupportedException, IOException {
             AttributesImpl ai = new AttributesImpl();
 
-            if (f.getID() != null && !f.getID().equals("")) {
-                ai.addAttribute("", "fid", "", "ID", f.getID());
+            if (f.getID() != null && !f.getID().isEmpty()) {
+                ai.addAttribute(NULL_NS_URI, "fid", "", "ID", f.getID());
             } else {
                 ai = null;
             }
@@ -4016,8 +4018,8 @@ public class GMLComplexTypes {
                 throws OperationNotSupportedException, IOException {
             AttributesImpl ai = new AttributesImpl();
 
-            if (f.getID() != null && !f.getID().equals("")) {
-                ai.addAttribute("", "fid", "", "ID", f.getID());
+            if (f.getID() != null && !f.getID().isEmpty()) {
+                ai.addAttribute(NULL_NS_URI, "fid", "", "ID", f.getID());
             } else {
                 ai = null;
             }
@@ -4225,7 +4227,7 @@ public class GMLComplexTypes {
 
         private SimpleFeatureCollection getCollection(Attributes attrs, ElementValue[] value) {
 
-            String id = attrs.getValue("", "ID");
+            String id = attrs.getValue(NULL_NS_URI, "ID");
             if (id == null) id = attrs.getValue(GMLSchema.NAMESPACE.toString(), "ID");
             Object value2 = value[0].getValue();
             Envelope envelopeInternal = ((Geometry) value2).getEnvelopeInternal();

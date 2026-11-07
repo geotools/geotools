@@ -70,7 +70,7 @@ public class MapServerTest {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
                 String request = new String(IOUtils.toByteArray(postContent), StandardCharsets.UTF_8);
-                if (request.contains("<wfs:DescribeFeatureType")) {
+                if (request.contains("DescribeFeatureType")) {
                     return new TestHttpResponse(
                             url("MapServer/DescribeFeatureType_GovernmentalUnitCE.xsd"), "text/xml");
                 } else {

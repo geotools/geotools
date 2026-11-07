@@ -100,9 +100,9 @@ public interface SchemaIndex {
      * Returns the attributes of a specified elements.
      *
      * @param element The element.
-     * @return The list of attributed definied for the element.
+     * @return The list of attributes defined for the element.
      */
-    List getAttributes(XSDElementDeclaration element);
+    List<XSDAttributeDeclaration> getAttributes(XSDElementDeclaration element);
 
     /** Cleans up the index before desctruction. */
     void destroy();

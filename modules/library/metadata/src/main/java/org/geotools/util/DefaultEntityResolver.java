@@ -28,8 +28,11 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.geotools.util.logging.Logging;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -45,6 +48,8 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
 
     @Serial
     private static final long serialVersionUID = -793816026668809854L;
+
+    private static Logger LOGGER = Logging.getLogger(DefaultEntityResolver.class);
 
     /** Location of Open Geospatial Consortium schemas for OGC OpenGIS standards */
     public static String OGC1 = "schemas.opengis.net";
@@ -125,6 +130,8 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
     @Override
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
+        LOGGER.fine(() -> "Resolve entity: name {%s} publicId {%s} baseURI {%s} systemId {%s}"
+                .formatted(name, publicId, baseURI, systemId));
 
         if (systemId == null) {
             if (name != null) {
@@ -132,8 +139,8 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
             }
             throw new SAXException("External entity systemId not provided");
         }
+        String uri = toURI(baseURI, systemId);
         try {
-            String uri = toURI(baseURI, systemId);
             uri = normalize(uri);
             // check if the absolute systemId is an allowed URI jar or vfs reference
             if (INTERNAL_URIS.matcher(uri).matches()) {
@@ -143,8 +150,12 @@ public class DefaultEntityResolver implements EntityResolver3, Serializable {
             if (ALLOWED_URIS.matcher(uri).matches()) {
                 return null;
             }
+
         } catch (Exception e) {
-            // do nothing
+            if (e instanceof IllegalArgumentException) {
+                throw new SAXException(MessageFormat.format(ERROR_MESSAGE_BASE, uri), e);
+            }
+            LOGGER.log(Level.WARNING, "Resolve entity failed for: " + uri, e);
         }
 
         // do not allow external entities

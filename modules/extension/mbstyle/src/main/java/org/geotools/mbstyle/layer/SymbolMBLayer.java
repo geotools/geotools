@@ -2161,17 +2161,12 @@ public class SymbolMBLayer extends MBLayer {
         // halo blur
         // layer.textHaloBlur();
 
-        // auto wrap
-        // getTextSize defaults to 16, and getTextMaxWidth defaults to 10
-        // converts text-max-width(mbstyle) from ems to pixels for autoWrap(sld)
-        // Only supported when text-max-width and text-size are not functions (because vendor
-        // options don't take expressions)
-        if (hasTextMaxWidth()) {
-            double textMaxWidth =
-                    MBStyleTransformer.requireLiteral(textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
-            double textSize = MBStyleTransformer.requireLiteral(
-                    fontSize, Double.class, 16.0, "text-size (when text-max-width is specified)", getId());
-            options.put(TextSymbolizer.AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
+        // text-max-width is in ems, autoWrap in pixels.
+        // Mapbox wraps point labels at 10 ems even without text-max-width, and never wraps line labels
+        if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+            options.put(
+                    TextSymbolizer.AUTO_WRAP_KEY,
+                    MBStyleTransformer.vendorOptionExpression(ff.multiply(textMaxWidth(), fontSize)));
         }
         // text-letter-spacing is in ems, charSpacing in pixels
         if (hasTextLetterSpacing()) {

@@ -146,6 +146,44 @@ public class SymbolMBLayerTest {
                         .get("autoWrap"));
     }
 
+    /** The wrap width is text-max-width ems at the text size of each feature: 8 * 15 = 120 pixels. */
+    @Test
+    public void testTextMaxWidthFromAttribute() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": ["get", "size"],
+                  "text-max-width": 8
+                }""");
+        assertEquals(120, evaluateOption(text, TextSymbolizer.AUTO_WRAP_KEY, labelFeature(15, 0)), 1e-9);
+    }
+
+    /** Point labels wrap at the 10 ems default when text-max-width is missing: 10 * 12 = 120 pixels. */
+    @Test
+    public void testTextMaxWidthDefault() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "text-size": 12
+                }""");
+        assertEquals("120.0", text.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+    }
+
+    /** Line labels never wrap, even with text-max-width set. */
+    @Test
+    public void testTextMaxWidthLine() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "text-field": "{name}",
+                  "symbol-placement": "line",
+                  "text-max-width": 8
+                }""");
+        assertNull(text.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+    }
+
     /** The character spacing is text-letter-spacing ems at the text size: 0.2 * 10 = 2 pixels. */
     @Test
     public void testTextLetterSpacing() throws Exception {

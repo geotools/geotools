@@ -115,6 +115,13 @@ public interface TextSymbolizer extends Symbolizer {
     /** Auto wrapping long labels default */
     int DEFAULT_AUTO_WRAP = 0;
     /**
+     * When true, autoWrap splits a label into lines of about the same width, even if a line then goes past the autoWrap
+     * width. When false, each line takes as many words as fit in the autoWrap width.
+     */
+    String AUTO_WRAP_BALANCED_KEY = "autoWrapBalanced";
+    /** Balanced auto wrapping default */
+    boolean DEFAULT_AUTO_WRAP_BALANCED = false;
+    /**
      * When true forces labels to a readable orientation, when false they make follow the line orientation even if that
      * means the label will look upside down (useful when using TTF symbol fonts to add direction markers along a line)
      */

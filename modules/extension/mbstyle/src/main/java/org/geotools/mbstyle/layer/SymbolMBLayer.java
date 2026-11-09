@@ -2177,6 +2177,7 @@ public class SymbolMBLayer extends MBLayer {
             options.put(
                     TextSymbolizer.AUTO_WRAP_KEY,
                     MBStyleTransformer.vendorOptionExpression(ff.multiply(textMaxWidth(), fontSize)));
+            options.put(TextSymbolizer.AUTO_WRAP_BALANCED_KEY, "true");
         }
         // text-letter-spacing is in ems, charSpacing in pixels
         if (hasTextLetterSpacing()) {

@@ -456,6 +456,11 @@ public class LabelCacheImpl implements LabelCache {
                     org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
                     org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP,
                     feature));
+            item.setAutoWrapBalanced(voParser.getBooleanOption(
+                    symbolizer,
+                    org.geotools.api.style.TextSymbolizer.AUTO_WRAP_BALANCED_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP_BALANCED,
+                    feature));
         } else {
             // at fine level cause it would show up for every label with this setup
             LOGGER.log(Level.FINE, "Disabling auto-wrap, it's not supported along with followLine yet");

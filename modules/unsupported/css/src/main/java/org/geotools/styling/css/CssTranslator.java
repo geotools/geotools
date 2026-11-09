@@ -230,6 +230,7 @@ public class CssTranslator {
             entry("label-word-spacing", TextSymbolizer.WORD_SPACING_KEY),
             entry("label-max-angle-delta", TextSymbolizer.MAX_ANGLE_DELTA_KEY),
             entry("label-auto-wrap", TextSymbolizer.AUTO_WRAP_KEY),
+            entry("label-auto-wrap-balanced", TextSymbolizer.AUTO_WRAP_BALANCED_KEY),
             entry("label-force-ltr", TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY),
             entry("label-conflict-resolution", TextSymbolizer.CONFLICT_RESOLUTION_KEY),
             entry("label-fit-goodness", TextSymbolizer.GOODNESS_OF_FIT_KEY),

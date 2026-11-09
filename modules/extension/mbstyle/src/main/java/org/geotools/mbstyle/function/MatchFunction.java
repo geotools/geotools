@@ -22,7 +22,6 @@ import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 
 /**
@@ -88,14 +87,7 @@ class MatchFunction extends FunctionExpressionImpl {
     public Object evaluate(Object feature) {
         // get the first expression. It's the InputType to match.
         final Object inputType = params.get(0).evaluate(feature);
-        // if it's not a Number or String, it's not formatted correctly
-        if (inputType == null
-                || !Number.class.isAssignableFrom(inputType.getClass())
-                        && !String.class.isAssignableFrom(inputType.getClass())) {
-            throw new MBFormatException(
-                    "MBDecision \"match\" requires a number or string expression for input type, found %s"
-                            .formatted(inputType != null ? inputType.getClass().getName() : null));
-        }
+        // an input that is not a number or a string, e.g. a missing attribute, matches no label and gets the default
         int labelIndex = 1;
         int outputIndex = 2;
         while (outputIndex < params.size()) {

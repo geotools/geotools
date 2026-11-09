@@ -1599,7 +1599,7 @@ Font size.
 text-max-width
 """"""""""""""
 
-*Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 10. *Requires* text-field.
+*Optional* :ref:`types-number`. *Units in* ems. *Defaults to* 10. *Requires* text-field.
 
 
 
@@ -1616,11 +1616,11 @@ The maximum line width for text wrapping.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 23.0
      - >= 2.4.0
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - >= 2.4.0
 
 text-line-height

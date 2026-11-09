@@ -1322,6 +1322,14 @@ public class SymbolMBLayer extends MBLayer {
         return parse.number(layout, "text-radial-offset", 0);
     }
 
+    /**
+     * Mapbox pads both colliding boxes, the label cache pads only the new label: double the padding to keep the same
+     * distance between labels. When two labels use different paddings, the label placed second decides the distance.
+     */
+    private String spaceAround(Expression padding) {
+        return MBStyleTransformer.vendorOptionExpression(ff.multiply(ff.literal(2), padding));
+    }
+
     private boolean hasTextLetterSpacing() {
         Object spacing = layout.get("text-letter-spacing");
         return spacing != null && !(spacing instanceof Number number && number.doubleValue() == 0);
@@ -2156,7 +2164,7 @@ public class SymbolMBLayer extends MBLayer {
         if (!hasIconImage()
                 || "point".equalsIgnoreCase(symbolPlacementVal.trim())
                 || getTextPadding().doubleValue() >= getIconPadding().doubleValue()) {
-            options.put("spaceAround", MBStyleTransformer.vendorOptionExpression(textPadding()));
+            options.put(TextSymbolizer.SPACE_AROUND_KEY, spaceAround(textPadding()));
         }
         // halo blur
         // layer.textHaloBlur();
@@ -2182,7 +2190,7 @@ public class SymbolMBLayer extends MBLayer {
             if (!hasTextField()
                     || getIconPadding().doubleValue() > getTextPadding().doubleValue()
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                options.put(TextSymbolizer.SPACE_AROUND_KEY, String.valueOf(getIconPadding()));
+                options.put(TextSymbolizer.SPACE_AROUND_KEY, spaceAround(iconPadding()));
             }
             // If we have an icon with a Point placement force graphic placement independ
             // of the label final position (each one gets its own anchor and displacement)

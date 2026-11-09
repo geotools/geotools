@@ -18,7 +18,11 @@ package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertEquals;
 
+import java.awt.Color;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -154,6 +158,54 @@ public class LabelDisplacementModeTest {
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementW.png";
         ImageAssert.assertEquals(new File(refPath), image, 1300);
+    }
+
+    /**
+     * With displacementAnchor = outside, labelA takes the place 10 px right of the point, so labelA1 flips to 10 px
+     * left of it instead of covering it. The image has 30 px per unit, so x = 5 is column 150.
+     */
+    @Test
+    public void testDisplacementFlip() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementFlip.sld");
+        BufferedImage image = renderLabels(fs, style, "Label E or W Flip, Outside Anchor");
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementFlip.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1300);
+
+        // rows 40 to 75 hold only labelA and labelA1; the reference tolerance accepts an image with one of them
+        // missing, and exact antialiased pixel counts vary with the JDK, so check presence and absence
+        assertThat(countTextPixels(image, 0, 140, 40, 75), greaterThan(0));
+        assertEquals(0, countTextPixels(image, 141, 159, 40, 75));
+        assertThat(countTextPixels(image, 160, 299, 40, 75), greaterThan(0));
+    }
+
+    /**
+     * With displacementAnchor = outside, labelA takes the place 10 px above the point, so labelA1 flips to 10 px below
+     * it instead of covering it. The labelA point is at row 54, the labelA1 point at row 60.
+     */
+    @Test
+    public void testDisplacementFlipVertical() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementFlipVertical.sld");
+        BufferedImage image = renderLabels(fs, style, "Label N or S Flip, Outside Anchor");
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementFlipVertical.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1300);
+
+        assertThat(countTextPixels(image, 100, 200, 20, 44), greaterThan(0));
+        assertEquals(0, countTextPixels(image, 100, 200, 45, 69));
+        assertThat(countTextPixels(image, 100, 200, 70, 95), greaterThan(0));
+    }
+
+    /** Counts the gray label text pixels in the inclusive rectangle, skipping the red point markers. */
+    private static int countTextPixels(BufferedImage image, int minX, int maxX, int minY, int maxY) {
+        int count = 0;
+        for (int y = minY; y <= maxY; y++) {
+            for (int x = minX; x <= maxX; x++) {
+                Color c = new Color(image.getRGB(x, y));
+                if (c.getRed() == c.getGreen() && c.getGreen() == c.getBlue() && c.getRed() < 200) count++;
+            }
+        }
+        return count;
     }
 
     @Test

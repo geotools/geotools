@@ -237,6 +237,7 @@ public class CssTranslator {
             entry("label-polygon-align", TextSymbolizer.POLYGONALIGN_KEY),
             entry("label-partials", TextSymbolizer.PARTIALS_KEY),
             entry("label-displacement-mode", TextSymbolizer.DISPLACEMENT_MODE_KEY),
+            entry("label-displacement-anchor", TextSymbolizer.DISPLACEMENT_ANCHOR_KEY),
             entry("shield-resize", TextSymbolizer.GRAPHIC_RESIZE_KEY),
             entry("shield-margin", TextSymbolizer.GRAPHIC_MARGIN_KEY),
             entry("shield-placement", TextSymbolizer.GRAPHIC_PLACEMENT_KEY),

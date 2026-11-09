@@ -576,6 +576,9 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
 * ``displacementMode``\ : Comma separated list of label displacement directions for point/polygon labels (used along with ``maxDisplacement``). The indicated directions will be tried in turn.
                     Valid values are cardinal directions abbreviations, in particular, N, W, E, S, NW, NE, SW, SE.
 
+* ``displacementAnchor(any)``\ : Label anchors tried by ``displacementMode`` for the N, S, E and W directions. With ``any`` the label is first centered on the displaced position, so it may cover the point.
+                    With ``outside`` the label stays fully on the side it moves to and never covers the point: with E the label starts at the displaced position, with W it ends there, with N its bottom edge sits there, with S its top edge.
+
 * ``fontShrinkSizeMin(0)``\ : lower font size limit that could be used when rendering the label. When set (to a positive value) the rendering process will be applied iteratively by decreasing the initial font size by 1 unit until an acceptable placement location is found or the specified value is reached. Should be set to a value greater than 0 and lower than the symbolizer's font size otherwise it is ignored.
 
 * ``graphicPlacement(label)``: placement of the graphic found in the text symbolizer, compared to the associated label. If using ``label`` (default value) the graphic is centered with the label. If using ``independent`` the graphic is placed relative to label point instead, and the graphic anchor/offset are used to position it, while the label retains its own anchor/offset related to the label point. On point labels the graphic and the label then each keep their own area free of other labels. Both must fit in the display area, unless ``partials`` is enabled.

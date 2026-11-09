@@ -22,7 +22,6 @@ import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.json.simple.JSONArray;
 
 /**
  * MapBox Expression function that will return the output expression evaluation result of the output expression that is
@@ -95,15 +94,13 @@ class MatchFunction extends FunctionExpressionImpl {
             Object label = params.get(labelIndex).evaluate(feature);
             if (label != null) {
                 // if the label is a Number or String, compare it to the InputType
-                if (Number.class.isAssignableFrom(label.getClass())
-                        || String.class.isAssignableFrom(label.getClass())
-                                && MBFunctionUtil.argsEqual(label, inputType)) {
+                if ((label instanceof Number || label instanceof String)
+                        && MBFunctionUtil.argsEqual(label, inputType)) {
                     // found a matching label
                     return params.get(outputIndex).evaluate(feature);
-                } else if (JSONArray.class.isAssignableFrom(label.getClass())) {
+                } else if (label instanceof List<?> values) {
                     // potential label is an array. Loop through the values tosee if we have a match
-                    final JSONArray jsonArray = (JSONArray) label;
-                    if (jsonArray.contains(inputType)) {
+                    if (values.stream().anyMatch(value -> MBFunctionUtil.argsEqual(value, inputType))) {
                         // found a match
                         return params.get(outputIndex).evaluate(feature);
                     }

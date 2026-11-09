@@ -207,6 +207,22 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
+              "match-numberLabel": ["match",
+                  ["get", "anIntField"],
+                  1, "firstLabel",
+                  0, "zeroLabel",
+                  "defaultLabel"
+              ],
+              "match-numberArrayLabel": ["match",
+                  ["get", "anIntField"],
+                  ["literal", [1, 0]], "arrayLabel",
+                  "defaultLabel"
+              ],
+              "match-stringInputNumberLabel": ["match",
+                  "0",
+                  0, "zeroLabel",
+                  "defaultLabel"
+              ],
               "match-missingInput": ["match",
                   ["get", "missing"],
                   "aLabel", "firstLabel",

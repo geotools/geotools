@@ -256,6 +256,12 @@ public class MBDecisionTest extends AbstractMBExpressionTest {
     }
 
     @Test
+    public void testDecisionMatchMissingInput() throws Exception {
+        final JSONObject j = getObjectByLayerId("decisionMatch", "layout");
+        assertEquals("defaultLabel", getExpressionEvaluation(j, "match-missingInput"));
+    }
+
+    @Test
     public void testDecisionMatchBareArrayLabel() throws Exception {
         final JSONObject j = getObjectByLayerId("decisionMatch", "layout");
         assertEquals("arrayLabel", getExpressionEvaluation(j, "match-bareArrayLabel"));

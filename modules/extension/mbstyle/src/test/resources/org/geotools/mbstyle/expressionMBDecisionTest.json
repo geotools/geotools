@@ -207,6 +207,11 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
+              "match-missingInput": ["match",
+                  ["get", "missing"],
+                  "aLabel", "firstLabel",
+                  "defaultLabel"
+              ],
               "match-bareArrayLabel": ["match",
                   "labelInArray",
                   "aLabel", "firstLabel",

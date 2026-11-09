@@ -20,14 +20,27 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics2D;
+import java.awt.font.TextAttribute;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.label.LabelSplitter.FontRange;
+import org.geotools.renderer.label.LineInfo.LineComponent;
 import org.geotools.renderer.lite.LineTest;
 import org.geotools.renderer.style.FontCache;
+import org.geotools.renderer.style.TextStyle2D;
+import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public class LabelSplitterTest {
 
@@ -106,5 +119,83 @@ public class LabelSplitterTest {
         assertEquals(10, endRange.endChar);
         assertEquals(fallbackFont, endRange.font);
         assertEquals(remainingChars, endRange.text);
+    }
+
+    /** At 90 pixels "Emanuele Secondo" (94 pixels) does not fit, so the greedy wrap leaves "Secondo" alone. */
+    @Test
+    public void testAutoWrapGreedy() throws Exception {
+        LabelCacheItem item = labelItem("Galleria Vittorio Emanuele Secondo", vera());
+        item.setAutoWrap(90);
+        assertEquals(List.of("Galleria Vittorio", "Emanuele", "Secondo"), lineTexts(item));
+    }
+
+    /** The label is 171 pixels wide: two lines aiming at 85.5 pixels, the second goes past the 90 pixel wrap. */
+    @Test
+    public void testAutoWrapBalanced() throws Exception {
+        LabelCacheItem item = labelItem("Galleria Vittorio Emanuele Secondo", vera());
+        item.setAutoWrap(90);
+        item.setAutoWrapBalanced(true);
+        assertEquals(List.of("Galleria Vittorio", "Emanuele Secondo"), lineTexts(item));
+    }
+
+    @Test
+    public void testAutoWrapBalancedShortLabel() throws Exception {
+        LabelCacheItem item = labelItem("Galleria Vittorio", vera());
+        item.setAutoWrap(90);
+        item.setAutoWrapBalanced(true);
+        assertEquals(List.of("Galleria Vittorio"), lineTexts(item));
+    }
+
+    /**
+     * The whole label is 303 pixels wide, so all lines aim at 303 / 4 = 75.75 pixels, and only the end of the label
+     * counts as the last line. Greedy wrapping, or a target per paragraph, would split it differently.
+     */
+    @Test
+    public void testAutoWrapBalancedNewlines() throws Exception {
+        LabelCacheItem item = labelItem("Piazza del Duomo di Milano\nGalleria Vittorio Emanuele Secondo", vera());
+        item.setAutoWrap(80);
+        item.setAutoWrapBalanced(true);
+        assertEquals(
+                List.of("Piazza del", "Duomo di Milano", "Galleria Vittorio", "Emanuele Secondo"), lineTexts(item));
+    }
+
+    /** Letter spacing adds a pixel per character: 91 pixels, past the 90 pixel wrap, so two lines. */
+    @Test
+    public void testAutoWrapBalancedLetterSpacing() throws Exception {
+        Font tracked = vera().deriveFont(Map.of(TextAttribute.TRACKING, 0.1));
+        LabelCacheItem item = labelItem("Galleria Vittorio", tracked);
+        item.setAutoWrap(90);
+        item.setAutoWrapBalanced(true);
+        assertEquals(List.of("Galleria", "Vittorio"), lineTexts(item));
+    }
+
+    private Font vera() {
+        return FontCache.getDefaultInstance().getFont("Bitstream Vera Sans").deriveFont(10f);
+    }
+
+    private LabelCacheItem labelItem(String label, Font font) throws Exception {
+        TextStyle2D style = new TextStyle2D();
+        style.setFont(font);
+        LiteShape2 point = new LiteShape2(
+                new GeometryFactory().createPoint(new Coordinate(10, 10)),
+                ProjectiveTransform.create(new AffineTransform()),
+                null,
+                false);
+        return new LabelCacheItem("layer", style, point, label, new StyleFactoryImpl().createTextSymbolizer());
+    }
+
+    /** Splits the label into lines and returns the text of each one. */
+    private List<String> lineTexts(LabelCacheItem item) {
+        Graphics2D graphics = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
+        try {
+            return new LabelSplitter()
+                    .layout(item, graphics).stream().map(this::lineText).toList();
+        } finally {
+            graphics.dispose();
+        }
+    }
+
+    private String lineText(LineInfo line) {
+        return line.getComponents().stream().map(LineComponent::getText).collect(Collectors.joining());
     }
 }

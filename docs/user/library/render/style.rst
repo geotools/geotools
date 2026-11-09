@@ -531,6 +531,8 @@ Considerable vendor options are provided for working with ``TextSymbolizers``:
   
 * ``autoWrap(400)``\ : Number of pixels are which a long label should be split into multiple lines. Works on all geometries, on lines it is mutually exclusive with the ``followLine`` option. Since GeoTools 35.3 the value can also be a ``${cql}`` expression, evaluated for each feature.
   
+* ``autoWrapBalanced(false)``\ : With ``true``, ``autoWrap`` splits a label into lines of about the same width, even if a line then goes past the ``autoWrap`` width. With ``false``, each line takes as many words as fit.
+  
 * ``conflictResolution(true)``\ : Enables conflict resolution (default, true) meaning no two labels will be allowed to overlap. Symbolizers with conflict resolution off are considered outside of the conflict resolution game, they don't reserve area and can overlap with other labels.
   
 * ``followLine(true)``\ : When true activates curved labels on linear geometries. The label will follow the shape of the current line, as opposed to being drawn a tangent straight line

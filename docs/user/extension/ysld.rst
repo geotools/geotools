@@ -430,6 +430,7 @@ Text symbolizer definition:
           rotation: <expression>
         x-allowOverruns: <boolean>
         x-autoWrap: <expression>
+        x-autoWrapBalanced: <boolean>
         x-conflictResolution: <boolean>
         x-displacementAnchor: <any|outside>
         x-followLine: <boolean>
@@ -530,6 +531,10 @@ The majority of hints focus on controlling text:
       # Number of pixels are which a long label should be split into multiple lines. Works on all
       # geometries, on lines it is mutually exclusive with the followLine option
       x-autoWrap: 400
+      
+      # When true, autoWrap splits a label into lines of about the same width, even if a line then
+      # goes past the autoWrap width. When false, each line takes as many words as fit.
+      x-autoWrapBalanced: false
       
       # Enables conflict resolution (default, true) meaning no two labels will be allowed to
       # overlap. Symbolizers with conflict resolution off are considered outside of the

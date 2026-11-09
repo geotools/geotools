@@ -1368,11 +1368,11 @@ detecting symbol collisions.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 23.0
      - Not yet supported
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
 
 icon-keep-upright
@@ -1846,11 +1846,11 @@ by this distance, as in Mapbox.
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 23.0
      - Not yet supported
    * - data-driven styling
      - Not yet supported
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
 
 

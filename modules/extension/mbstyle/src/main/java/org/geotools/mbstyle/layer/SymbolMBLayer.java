@@ -2087,6 +2087,8 @@ public class SymbolMBLayer extends MBLayer {
             String displacementMode = displacementModeFromVariableAnchor();
             if (!displacementMode.isEmpty()) {
                 options.put(TextSymbolizer.DISPLACEMENT_MODE_KEY, displacementMode);
+                // Mapbox tries each anchor with the label fully on that side, never across the point
+                options.put(TextSymbolizer.DISPLACEMENT_ANCHOR_KEY, "outside");
                 Displacement displacement = ((PointPlacement) labelPlacement).getDisplacement();
                 options.put(TextSymbolizer.MAX_DISPLACEMENT_KEY, maxLabelDisplacement(displacement, fontSize));
                 if (isZoomDrivenVariableAnchor()) {

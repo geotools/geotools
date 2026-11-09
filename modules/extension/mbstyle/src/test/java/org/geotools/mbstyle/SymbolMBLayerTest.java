@@ -168,6 +168,7 @@ public class SymbolMBLayerTest {
                   "text-size": 12
                 }""");
         assertEquals("120.0", text.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+        assertEquals("true", text.getOptions().get(TextSymbolizer.AUTO_WRAP_BALANCED_KEY));
     }
 
     /** Line labels never wrap, even with text-max-width set. */
@@ -181,6 +182,7 @@ public class SymbolMBLayerTest {
                   "text-max-width": 8
                 }""");
         assertNull(text.getOptions().get(TextSymbolizer.AUTO_WRAP_KEY));
+        assertNull(text.getOptions().get(TextSymbolizer.AUTO_WRAP_BALANCED_KEY));
     }
 
     /** The character spacing is text-letter-spacing ems at the text size: 0.2 * 10 = 2 pixels. */

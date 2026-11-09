@@ -85,6 +85,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     int autoWrap = 100;
 
+    boolean autoWrapBalanced = false;
+
     boolean forceLeftToRightEnabled = true;
 
     boolean conflictResolutionEnabled = true;
@@ -190,6 +192,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.followLineEnabled = other.followLineEnabled;
         this.maxAngleDelta = other.maxAngleDelta;
         this.autoWrap = other.autoWrap;
+        this.autoWrapBalanced = other.autoWrapBalanced;
         this.forceLeftToRightEnabled = other.forceLeftToRightEnabled;
         this.conflictResolutionEnabled = other.conflictResolutionEnabled;
         this.goodnessOfFit = other.goodnessOfFit;
@@ -332,6 +335,15 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setAutoWrap(int autoWrap) {
         this.autoWrap = autoWrap;
+    }
+
+    /** Wraps labels into lines of about the same width, instead of filling each line up to the autoWrap width */
+    public boolean isAutoWrapBalanced() {
+        return autoWrapBalanced;
+    }
+
+    public void setAutoWrapBalanced(boolean autoWrapBalanced) {
+        this.autoWrapBalanced = autoWrapBalanced;
     }
 
     /*

@@ -653,6 +653,16 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void labelAutoWrapBalanced() throws Exception {
+        String css = "* { label: 'test'; label-auto-wrap: 100; label-auto-wrap-balanced: true}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("true", ts.getOptions().get(TextSymbolizer.AUTO_WRAP_BALANCED_KEY));
+    }
+
+    @Test
     public void labelDisplacementAnchor() throws Exception {
         String css = "* { label: 'test'; label-displacement-anchor: outside}";
         Style style = translate(css);

@@ -3,6 +3,7 @@ package org.geotools.renderer.label;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -331,6 +332,33 @@ public class LabelCacheImplTest {
         LabelCacheItem item = items.get(0);
         assertTrue(item.isFollowLineEnabled());
         assertEquals(0, item.getAutoWrap());
+    }
+
+    @Test
+    public void testAutoWrapBalanced() throws Exception {
+        Font font = sb.createFont("Bitstream Vera Sans", 12);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, "90");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.AUTO_WRAP_BALANCED_KEY, "true");
+
+        addToCache(cache, ts, createFeature("label1", L4));
+
+        List<LabelCacheItem> items = cache.getActiveLabels();
+        assertEquals(1, items.size());
+        assertTrue(items.get(0).isAutoWrapBalanced());
+    }
+
+    @Test
+    public void testAutoWrapBalancedDefault() throws Exception {
+        Font font = sb.createFont("Bitstream Vera Sans", 12);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, "90");
+
+        addToCache(cache, ts, createFeature("label1", L4));
+
+        List<LabelCacheItem> items = cache.getActiveLabels();
+        assertEquals(1, items.size());
+        assertFalse(items.get(0).isAutoWrapBalanced());
     }
 
     private SimpleFeature createFeature(String label, Geometry geom) {

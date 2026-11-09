@@ -653,6 +653,16 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void labelDisplacementAnchor() throws Exception {
+        String css = "* { label: 'test'; label-displacement-anchor: outside}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertLiteral("test", ts.getLabel());
+        assertEquals("outside", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_ANCHOR_KEY));
+    }
+
+    @Test
     public void labelShrink() throws Exception {
         String css = "* { label: 'test'; font-shrink-size-min: 5}";
         Style style = translate(css);

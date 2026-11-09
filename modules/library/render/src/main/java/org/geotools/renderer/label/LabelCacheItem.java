@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.DisplacementAnchor;
 import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
@@ -65,6 +66,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     int maxDisplacement = 0;
 
     int[] displacementAngles;
+
+    DisplacementAnchor displacementAnchor = TextSymbolizer.DEFAULT_DISPLACEMENT_ANCHOR;
 
     int minGroupDistance = 0;
 
@@ -246,6 +249,15 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setDisplacementAngles(int[] displacementAngles) {
         this.displacementAngles = displacementAngles;
+    }
+
+    /** Which anchors the search tries for the N, S, E and W displacement angles */
+    public DisplacementAnchor getDisplacementAnchor() {
+        return displacementAnchor;
+    }
+
+    public void setDisplacementAnchor(DisplacementAnchor displacementAnchor) {
+        this.displacementAnchor = displacementAnchor;
     }
 
     /** When enabled, repeats labels every "repeat" pixels (works on lines only atm) */

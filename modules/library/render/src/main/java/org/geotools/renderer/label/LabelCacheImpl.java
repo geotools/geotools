@@ -50,6 +50,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.DisplacementAnchor;
 import org.geotools.api.style.TextSymbolizer.GraphicPlacement;
 import org.geotools.api.style.TextSymbolizer.GroupPriority;
 import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
@@ -180,6 +181,12 @@ public class LabelCacheImpl implements LabelCache {
     static final double[] HORIZONTAL_RIGHT_ANCHOR_CANDIDATES = {0.5, 0.5, 0, 0.5};
     static final double[] LEFT_UP_ANCHOR_CANDIDATES = {1, 0, 1, 0.5};
     static final double[] LEFT_DOWN_ANCHOR_CANDIDATES = {1, 1, 1, 0.5};
+
+    // Anchor candidate values for the N, S, E, W directions with displacementAnchor = outside
+    static final double[] OUTSIDE_N_ANCHOR_CANDIDATES = {0.5, 0};
+    static final double[] OUTSIDE_S_ANCHOR_CANDIDATES = {0.5, 1};
+    static final double[] OUTSIDE_E_ANCHOR_CANDIDATES = {0, 0.5};
+    static final double[] OUTSIDE_W_ANCHOR_CANDIDATES = {1, 0.5};
 
     protected LabelRenderingMode labelRenderingMode = LabelRenderingMode.STRING;
 
@@ -491,6 +498,10 @@ public class LabelCacheImpl implements LabelCache {
                 org.geotools.api.style.TextSymbolizer.DEFAULT_WORD_SPACING));
         item.setDisplacementAngles(voParser.getDisplacementAngles(
                 symbolizer, org.geotools.api.style.TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        item.setDisplacementAnchor((DisplacementAnchor) voParser.getEnumOption(
+                symbolizer,
+                org.geotools.api.style.TextSymbolizer.DISPLACEMENT_ANCHOR_KEY,
+                org.geotools.api.style.TextSymbolizer.DEFAULT_DISPLACEMENT_ANCHOR));
 
         item.setFontShrinkSizeMin(voParser.getIntOption(
                 symbolizer,
@@ -1349,6 +1360,7 @@ public class LabelCacheImpl implements LabelCache {
         }
 
         int[] displacementAngles = labelItem.getDisplacementAngles();
+        boolean outside = labelItem.getDisplacementAnchor() == DisplacementAnchor.OUTSIDE;
 
         // ... use at least a 2 pixel step, no matter what the label length is
         final double step = painter.getAscent() > 2 ? painter.getAscent() : 2;
@@ -1412,17 +1424,19 @@ public class LabelCacheImpl implements LabelCache {
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.SE.getAngle()) {
                         anchorPointCandidates = RIGHT_DOWN_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.N.getAngle()) {
-                        anchorPointCandidates = VERTICAL_UP_ANCHOR_CANDIDATES;
+                        anchorPointCandidates = outside ? OUTSIDE_N_ANCHOR_CANDIDATES : VERTICAL_UP_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.S.getAngle()) {
-                        anchorPointCandidates = VERTICAL_DOWN_ANCHOR_CANDIDATES;
+                        anchorPointCandidates = outside ? OUTSIDE_S_ANCHOR_CANDIDATES : VERTICAL_DOWN_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.NW.getAngle()) {
                         anchorPointCandidates = LEFT_UP_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.SW.getAngle()) {
                         anchorPointCandidates = LEFT_DOWN_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.E.getAngle()) {
-                        anchorPointCandidates = HORIZONTAL_LEFT_ANCHOR_CANDIDATES;
+                        anchorPointCandidates =
+                                outside ? OUTSIDE_E_ANCHOR_CANDIDATES : HORIZONTAL_LEFT_ANCHOR_CANDIDATES;
                     } else if (angle == org.geotools.api.style.TextSymbolizer.DisplacementMode.W.getAngle()) {
-                        anchorPointCandidates = HORIZONTAL_RIGHT_ANCHOR_CANDIDATES;
+                        anchorPointCandidates =
+                                outside ? OUTSIDE_W_ANCHOR_CANDIDATES : HORIZONTAL_RIGHT_ANCHOR_CANDIDATES;
                     }
 
                     // try out various anchor point positions

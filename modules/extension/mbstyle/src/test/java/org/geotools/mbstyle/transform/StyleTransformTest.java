@@ -610,6 +610,7 @@ public class StyleTransformTest {
                 "text-variable-anchor": ["left", "right"]
                 """);
         assertEquals("E,W", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
+        assertEquals("outside", ts.getOptions().get(TextSymbolizer.DISPLACEMENT_ANCHOR_KEY));
         // the offset length is 14 * 1.1 + 2 (text padding) = 17.4, rounded up plus one
         int maxDisplacement = ExpressionExtractor.extractCqlExpressions(
                         ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY))
@@ -696,6 +697,7 @@ public class StyleTransformTest {
                 """);
         assertNull(ts.getOptions().get(TextSymbolizer.DISPLACEMENT_MODE_KEY));
         assertNull(ts.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+        assertNull(ts.getOptions().get(TextSymbolizer.DISPLACEMENT_ANCHOR_KEY));
     }
 
     @Test

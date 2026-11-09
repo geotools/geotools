@@ -431,6 +431,7 @@ Text symbolizer definition:
         x-allowOverruns: <boolean>
         x-autoWrap: <expression>
         x-conflictResolution: <boolean>
+        x-displacementAnchor: <any|outside>
         x-followLine: <boolean>
         x-forceLeftToRight: <boolean>
         x-goodnessOfFit: <expression>
@@ -534,6 +535,11 @@ The majority of hints focus on controlling text:
       # overlap. Symbolizers with conflict resolution off are considered outside of the
       # conflict resolution game, they don't reserve area and can overlap with other labels.
       x-conflictResolution: true
+      
+      # Label anchors tried by displacementMode for the N, S, E and W directions. With any the label
+      # is first centered on the displaced position, so it may cover the point. With outside the
+      # label stays on the side it moves to, so it never covers the point.
+      x-displacementAnchor: any
       
       # When true activates curved labels on linear geometries. The label will follow the shape of 
       # the current line, as opposed to being drawn a tangent straight line

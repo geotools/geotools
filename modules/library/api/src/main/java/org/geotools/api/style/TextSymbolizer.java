@@ -175,6 +175,10 @@ public interface TextSymbolizer extends Symbolizer {
      * {@link DisplacementMode}
      */
     String DISPLACEMENT_MODE_KEY = "displacementMode";
+    /** Which label anchors the displacementMode search tries, see {@link DisplacementAnchor} */
+    String DISPLACEMENT_ANCHOR_KEY = "displacementAnchor";
+    /** Default displacement anchor */
+    DisplacementAnchor DEFAULT_DISPLACEMENT_ANCHOR = DisplacementAnchor.ANY;
     /** Placement of the graphic element, see GraphicPlacement enumeration for possible value */
     String GRAPHIC_PLACEMENT_KEY = "graphicPlacement";
 
@@ -327,6 +331,14 @@ public interface TextSymbolizer extends Symbolizer {
         public int getAngle() {
             return angle;
         }
+    }
+
+    /** Label anchors tried by the displacementMode search for the N, S, E and W directions */
+    public static enum DisplacementAnchor {
+        /** Centered on the displaced position first, then the other anchors; the label may cover the point */
+        ANY,
+        /** Only the anchor that keeps the whole label on the side it moves to, so it never covers the point */
+        OUTSIDE
     }
 
     /** GraphicPlacemnts controls the position of the Graphic associated with the label */

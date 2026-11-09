@@ -19,7 +19,6 @@ package org.geotools.mbstyle;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -297,7 +296,7 @@ public class SymbolMBLayerTest {
         // defaults to 2.0
         assertEquals(2.0, testLayerDefault.getTextPadding());
         assertEquals(
-                "20.0",
+                "40.0",
                 featureTypePoint
                         .get(0)
                         .rules()
@@ -643,8 +642,9 @@ public class SymbolMBLayerTest {
                 .getOptions()
                 .get("spaceAround");
         assertThat(spaceAround, Matchers.startsWith("${"));
-        // the CQL round-trips: extractCqlExpressions parses it back into an evaluable expression
-        assertNotNull(ExpressionExtractor.extractCqlExpressions(spaceAround));
+        // twice the padding at zoom 8: Mapbox pads both labels, the label cache only the new one
+        EnvFunction.setLocalValue("wms_scale_denominator", 559_082_263.9508929 / 512);
+        assertEquals(14, ExpressionExtractor.extractCqlExpressions(spaceAround).evaluate(null, Double.class), 1e-9);
     }
 
     @Test
@@ -653,7 +653,7 @@ public class SymbolMBLayerTest {
         // defaults to 2.0
         assertEquals(2.0, testLayerDefault.getIconPadding());
         assertEquals(
-                "20.0",
+                "40.0",
                 featureTypePoint
                         .get(0)
                         .rules()
@@ -664,7 +664,7 @@ public class SymbolMBLayerTest {
                         .get("spaceAround"));
         assertEquals(30.0, testLineLayer.getIconPadding());
         assertEquals(
-                "15.0",
+                "30.0",
                 featureTypeLine
                         .get(0)
                         .rules()
@@ -673,6 +673,18 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .getOptions()
                         .get("spaceAround"));
+    }
+
+    /** A layer with an icon and no text keeps the icons twice the icon-padding apart. */
+    @Test
+    public void testIconOnlyPadding() throws Exception {
+        TextSymbolizer text = symbolizer(
+                """
+                {
+                  "icon-image": "dot",
+                  "icon-padding": 30
+                }""");
+        assertEquals("60.0", text.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test

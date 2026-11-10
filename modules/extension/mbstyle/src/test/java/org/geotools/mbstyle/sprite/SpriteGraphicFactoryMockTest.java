@@ -16,10 +16,17 @@
  */
 package org.geotools.mbstyle.sprite;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 
+import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javax.swing.Icon;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Literal;
@@ -36,6 +43,9 @@ public class SpriteGraphicFactoryMockTest {
 
     static final URL pngURL = SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.png");
     static final URL jsonURL = SpriteGraphicFactoryMockTest.class.getResource("test-data/liberty/osm-liberty.json");
+
+    /** Number of icons in osm-liberty.json */
+    static final int ICON_COUNT = 240;
 
     @Before
     public void setup() throws Exception {
@@ -54,6 +64,31 @@ public class SpriteGraphicFactoryMockTest {
         SpriteGraphicFactory factory = new SpriteGraphicFactory();
         Icon icon = factory.getIcon(null, spriteExpression, "mbsprite", 15);
         assertNotNull(icon);
+    }
+
+    /** Threads loading the same sprite index at once all get it, none fails on a parse error. */
+    @Test
+    public void testConcurrentIndexLoad() throws Exception {
+        String jsonStr = jsonURL.toExternalForm();
+        URL baseUrl =
+                URI.create(jsonStr.substring(0, jsonStr.lastIndexOf(".json"))).toURL();
+        SpriteGraphicFactory factory = new SpriteGraphicFactory();
+        ExecutorService executor = Executors.newFixedThreadPool(8);
+        try {
+            List<Future<Integer>> loads = new ArrayList<>();
+            for (int i = 0; i < 200; i++) {
+                loads.add(executor.submit(() -> {
+                    // drop the cached index, so every call parses the JSON again
+                    SpriteGraphicFactory.indexCache.remove(baseUrl);
+                    return factory.getSpriteIndex(baseUrl).getIcons().size();
+                }));
+            }
+            for (Future<Integer> load : loads) {
+                assertEquals(ICON_COUNT, (int) load.get());
+            }
+        } finally {
+            executor.shutdownNow();
+        }
     }
 
     private static Literal getAerialWayLocation() {

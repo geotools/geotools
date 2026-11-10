@@ -18,12 +18,16 @@ package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.style.Style;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -72,9 +76,40 @@ public class RepeatedLabelTest {
         checkRepeatedLabels("repeatedLabelsAlongLineSmall");
     }
 
-    private void checkRepeatedLabels(String styleName) throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, styleName + ".sld");
+    /** Repeated labels closer than minGroupDistance to a painted label of the same group are dropped. */
+    @Test
+    public void testMinGroupDistance() throws Exception {
+        Style single = RendererBaseTest.loadStyle(this, "repeatedLabelsLine.sld");
+        firstTextSymbolizer(single).getOptions().remove(TextSymbolizer.LABEL_REPEAT_KEY);
+        BufferedImage singleImage = renderLines(single);
+        Style repeated = RendererBaseTest.loadStyle(this, "repeatedLabelsLine.sld");
+        BufferedImage repeatedImage = renderLines(repeated);
+        assertThat(countDifferentPixels(singleImage, repeatedImage), greaterThan(0));
 
+        // a distance shorter than the gap between repeats keeps them all
+        firstTextSymbolizer(repeated).getOptions().put(TextSymbolizer.MIN_GROUP_DISTANCE_KEY, "1");
+        assertEquals(0, countDifferentPixels(repeatedImage, renderLines(repeated)));
+
+        firstTextSymbolizer(repeated).getOptions().put(TextSymbolizer.MIN_GROUP_DISTANCE_KEY, "1000");
+        assertEquals(0, countDifferentPixels(singleImage, renderLines(repeated)));
+    }
+
+    private TextSymbolizer firstTextSymbolizer(Style style) {
+        return (TextSymbolizer)
+                style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(1);
+    }
+
+    private int countDifferentPixels(BufferedImage a, BufferedImage b) {
+        int count = 0;
+        for (int y = 0; y < a.getHeight(); y++) {
+            for (int x = 0; x < a.getWidth(); x++) {
+                if (a.getRGB(x, y) != b.getRGB(x, y)) count++;
+            }
+        }
+        return count;
+    }
+
+    private BufferedImage renderLines(Style style) throws Exception {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs_line, style));
         mc.getViewport().setBounds(bounds);
@@ -84,7 +119,12 @@ public class RepeatedLabelTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         renderer.setMapContent(mc);
 
-        BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 500, 500);
+        return RendererBaseTest.renderImage(renderer, bounds, null, 500, 500);
+    }
+
+    private void checkRepeatedLabels(String styleName) throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, styleName + ".sld");
+        BufferedImage image = renderLines(style);
         File expected = new File("src/test/resources/org/geotools/renderer/lite/test-data/" + styleName + ".png");
         int tolerance = 2000;
         ImageAssert.assertEquals(expected, image, tolerance);

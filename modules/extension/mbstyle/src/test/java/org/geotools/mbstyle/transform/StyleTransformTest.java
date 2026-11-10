@@ -19,6 +19,9 @@ package org.geotools.mbstyle.transform;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -943,6 +946,74 @@ public class StyleTransformTest {
                         hasEntry("group", "true"),
                         hasEntry("labelAllGroup", "true"),
                         hasEntry("forceLeftToRight", "true")));
+    }
+
+    /** Viewport aligned line symbols (road shields) stay upright at their anchors along the line. */
+    @Test
+    public void testLinePlacementViewportAlignment() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "text-field": "{ref}",
+                "text-rotation-alignment": "viewport",
+                "icon-rotation-alignment": "viewport"
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0, pp.getRotation().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
+        Map<String, String> options = ts.getOptions();
+        assertThat(
+                options,
+                allOf(
+                        hasEntry("repeat", "250"),
+                        hasEntry("minGroupDistance", "125"),
+                        hasEntry("allowOverruns", "false"),
+                        hasEntry("group", "true"),
+                        hasEntry("labelAllGroup", "true")));
+        assertThat(options, not(hasKey("followLine")));
+        assertThat(options, not(hasKey("maxAngleDelta")));
+        assertThat(options, not(hasKey("forceLeftToRight")));
+    }
+
+    /** Text rotation alignment wins over the icon one, the icon is drawn around the text. */
+    @Test
+    public void testLinePlacementMapTextAlignment() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "text-field": "{ref}",
+                "icon-rotation-alignment": "viewport"
+                """);
+        assertThat(ts.getLabelPlacement(), instanceOf(LinePlacement.class));
+        assertThat(ts.getOptions(), allOf(hasEntry("followLine", "true"), hasEntry("minGroupDistance", "125")));
+    }
+
+    /** A line symbol without text keeps every repeat, Mapbox checks the distance only between equal texts. */
+    @Test
+    public void testLinePlacementIconOnly() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "icon-image": "oneway"
+                """);
+        assertThat(ts.getOptions(), not(hasKey("minGroupDistance")));
+    }
+
+    /** Mapbox ignores text-variable-anchor on line placement, the upright label stays centered on its anchor. */
+    @Test
+    public void testLinePlacementViewportVariableAnchor() throws Exception {
+        TextSymbolizer ts = symbolFromLayout(
+                """
+                "symbol-placement": "line",
+                "text-field": "{ref}",
+                "text-rotation-alignment": "viewport",
+                "text-variable-anchor": ["left", "right"]
+                """);
+        PointPlacement pp = (PointPlacement) ts.getLabelPlacement();
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(0.5, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
+        assertNull(pp.getDisplacement());
     }
 
     @Test

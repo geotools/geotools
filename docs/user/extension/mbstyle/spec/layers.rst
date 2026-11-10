@@ -1003,6 +1003,9 @@ symbol-spacing
 
 Distance between two symbol anchors.
 
+GeoTools also drops a line label closer than half this distance to another label of the same layer with the
+same text, as Mapbox does.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1182,6 +1185,9 @@ auto
     ``viewport``. When ``symbol-placement`` is set to ``line``, this is
     equivalent to ``map``.
 
+GeoTools draws line icons upright at each anchor when the alignment is ``viewport``. When the layer
+also has a ``text-field``, ``text-rotation-alignment`` decides for both.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1192,7 +1198,7 @@ auto
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
    * - ``auto`` value
      - >= 0.25.0
@@ -1492,6 +1498,9 @@ auto
     ``viewport``. When ``symbol-placement`` is set to ``line``, this is
     equivalent to ``map``.
 
+GeoTools draws line labels upright at each anchor when the alignment is ``viewport``, as for road
+shields. It also decides for the icon of the same layer.
+
 .. list-table::
    :widths: 19, 27, 27, 27
    :header-rows: 1
@@ -1502,7 +1511,7 @@ auto
      - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - Not yet supported
+     - >= 35.3
      - Not yet supported
    * - ``auto`` value
      - >= 0.25.0

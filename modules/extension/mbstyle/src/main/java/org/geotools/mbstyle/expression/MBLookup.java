@@ -83,8 +83,9 @@ public class MBLookup extends MBExpression {
      */
     public Expression lookupHas() {
         if (json.size() == 2) {
-            Expression value = parse.string(json, 1);
-            return ff.function("PropertyExists", value);
+            // a null value counts as missing: vector tile features share one schema, so an attribute that a
+            // feature does not carry is in its feature type with a null value
+            return ff.function("not", ff.function("isNull", lookupGet()));
         }
         if (json.size() == 3) {
             Expression value = parse.string(json, 1);

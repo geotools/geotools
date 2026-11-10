@@ -667,6 +667,9 @@ has
 
 Tests for the presence of an property value in the current feature's properties, or from another object if a second argument is provided.
 
+In GeoTools an attribute with a null value counts as not present, so ``has`` gives the same result whether the
+data source leaves the attribute out or stores it as null, as vector tiles do.
+
 ::
 
     ["has", string]: boolean

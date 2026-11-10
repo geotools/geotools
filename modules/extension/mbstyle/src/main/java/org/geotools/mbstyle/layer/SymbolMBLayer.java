@@ -1936,7 +1936,12 @@ public class SymbolMBLayer extends MBLayer {
         String symbolPlacementVal = MBStyleTransformer.requireLiteral(
                 symbolPlacement(), String.class, "point", "symbol-placement", getId());
         Expression fontSize = textSize();
-        if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+        boolean linePlacement = !"point".equalsIgnoreCase(symbolPlacementVal.trim());
+        // Mapbox draws viewport aligned line symbols upright at each anchor along the line (e.g. road shields):
+        // a point placement on a line geometry does the same, the renderer still walks the line to place them
+        Alignment rotationAlignment = hasTextField() ? getTextRotationAlignment() : getIconRotationAlignment();
+        boolean uprightOnLine = linePlacement && rotationAlignment == Alignment.VIEWPORT;
+        if (!linePlacement || uprightOnLine) {
             // Point Placement (default)
             PointPlacement pointP = sb.createPointPlacement();
             // Set anchor point (translated by text-translate)
@@ -1952,9 +1957,11 @@ public class SymbolMBLayer extends MBLayer {
             }
             // MapBox text-radial-offset: moves the label away from its anchor, in ems, and wins over text-offset
             // with variable anchors and no offset Mapbox places the label as with a zero radial offset
-            boolean radial = hasTextRadialOffset() || hasTextVariableAnchor() && !hasTextOffset();
+            // Mapbox ignores text-variable-anchor on line placement
+            boolean variableAnchor = hasTextVariableAnchor() && !linePlacement;
+            boolean radial = hasTextRadialOffset() || variableAnchor && !hasTextOffset();
             // with variable anchors the label sits at the first anchor, and text-offset moves it away from it
-            boolean anchored = radial || hasTextVariableAnchor();
+            boolean anchored = radial || variableAnchor;
             Object radialAnchor = anchored ? radialAnchor() : null;
             if (anchored && radialAnchor == null) {
                 LOGGER.warning("Mapbox label anchor ignored on layer '" + getId()
@@ -2083,7 +2090,7 @@ public class SymbolMBLayer extends MBLayer {
 
         // Mapbox text-variable-anchor: the sides the label may flip to when the preferred spot collides.
         // maxDisplacement must be set too, or the renderer never searches the other anchors
-        if (labelPlacement instanceof PointPlacement) {
+        if (!linePlacement) {
             String displacementMode = displacementModeFromVariableAnchor();
             if (!displacementMode.isEmpty()) {
                 options.put(TextSymbolizer.DISPLACEMENT_MODE_KEY, displacementMode);
@@ -2103,19 +2110,32 @@ public class SymbolMBLayer extends MBLayer {
 
         // text max angle - only for line placement
         // throw MBFormatException if point placement
-        if (labelPlacement instanceof LinePlacement) {
-            // Ensure the symbol follows the line, if there is no text (e.g. one ways)
-            if (pureSymbol) {
-                options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, "false");
+        if (linePlacement) {
+            if (uprightOnLine) {
+                // Mapbox anchors a line symbol only where the whole label fits on the line
+                options.put(TextSymbolizer.ALLOW_OVERRUNS_KEY, "false");
             } else {
-                // otherwise align with the text being drawn (e.g. label shields)
-                options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+                // Ensure the symbol follows the line, if there is no text (e.g. one ways)
+                if (pureSymbol) {
+                    options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, "false");
+                } else {
+                    // otherwise align with the text being drawn (e.g. label shields)
+                    options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+                }
+                // "followLine" will be true if line placement, it is an implied default of MBstyles.
+                options.put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
+                options.put(TextSymbolizer.MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
             }
-            // "followLine" will be true if line placement, it is an implied default of MBstyles.
-            options.put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
-            options.put(TextSymbolizer.MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
             options.put(TextSymbolizer.GROUP_KEY, "true");
             options.put(TextSymbolizer.LABEL_ALL_GROUP_KEY, "true");
+            // Mapbox drops a line label closer than half the symbol spacing to another one with the same text.
+            // The renderer measures the distance between label boxes, Mapbox between anchors: close enough for
+            // short labels such as road shields
+            if (!pureSymbol) {
+                options.put(
+                        TextSymbolizer.MIN_GROUP_DISTANCE_KEY,
+                        String.valueOf(Math.round(symbolSpacing.doubleValue() / 2)));
+            }
             // a road split in segments ranks like its best segment, Mapbox places each segment on its own
             options.put(TextSymbolizer.GROUP_PRIORITY_KEY, GroupPriority.MAX.name());
         } else if (hasTextMaxAngle()) {

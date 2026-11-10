@@ -658,6 +658,33 @@ public class SLDStyleFactoryTest {
         Assert.assertNull(bs.getDashArray());
     }
 
+    /** A sub-pixel dash pattern cannot be seen, the line is drawn solid instead of with millions of dashes. */
+    @Test
+    public void testDashArraySubPixel() throws Exception {
+        BasicStroke bs = dashedStroke(0.05, 0.05);
+        Assert.assertNull(bs.getDashArray());
+    }
+
+    /** One visible value is enough to keep the pattern, tiny values included. */
+    @Test
+    public void testDashArrayVisible() throws Exception {
+        BasicStroke bs = dashedStroke(0.05, 0.2);
+        Assert.assertArrayEquals(new float[] {0.05f, 0.2f}, bs.getDashArray(), 0f);
+    }
+
+    private BasicStroke dashedStroke(double... dashes) {
+        LineSymbolizer ls = sf.createLineSymbolizer();
+        Stroke stroke = sf.createStroke(ff.literal("red"), ff.literal(1));
+        List<Expression> values = new ArrayList<>();
+        for (double dash : dashes) {
+            values.add(ff.literal(dash));
+        }
+        stroke.setDashArray(values);
+        ls.setStroke(stroke);
+        LineStyle2D ls2d = (LineStyle2D) sld.createLineStyle(feature, ls, range);
+        return (BasicStroke) ls2d.getStroke();
+    }
+
     @Test
     public void testOptimizedMarkFactoryHints() {
         // create a list with two mark factories identifiers

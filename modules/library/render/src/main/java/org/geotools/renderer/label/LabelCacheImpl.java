@@ -914,6 +914,9 @@ public class LabelCacheImpl implements LabelCache {
                     if (painted) {
                         labelCount++;
 
+                        if (labelItem.getMinGroupDistance() >= 0) {
+                            glyphVectorProcessor.process(new GlyphProcessor.IndexAdder(painter, groupLabels));
+                        }
                         if (labelItem.isConflictResolutionEnabled()) {
                             if (DEBUG_CACHE_BOUNDS) {
                                 painter.graphics.setStroke(new BasicStroke());

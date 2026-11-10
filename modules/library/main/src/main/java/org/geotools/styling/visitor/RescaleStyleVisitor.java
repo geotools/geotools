@@ -265,6 +265,14 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
                     options,
                     org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
                     org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_CHAR_SPACING);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_WORD_SPACING);
             rescaleArrayOption(options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;

@@ -190,16 +190,12 @@ public class AngleFormat extends Format {
 
     /** Returns the width of the specified field. */
     private int getWidth(final int index) {
-        switch (index) {
-            case DEGREES_FIELD:
-                return width0;
-            case MINUTES_FIELD:
-                return width1;
-            case SECONDS_FIELD:
-                return width2;
-            default:
-                return 0; // Must be 0 (important!)
-        }
+        return switch (index) {
+            case DEGREES_FIELD -> width0;
+            case MINUTES_FIELD -> width1;
+            case SECONDS_FIELD -> width2;
+            default -> 0; // Must be 0 (important!)
+        };
     }
 
     /** Set the width for the specified field. All folowing fields will be set to 0. */
@@ -219,18 +215,13 @@ public class AngleFormat extends Format {
 
     /** Returns the suffix for the specified field. */
     private String getSuffix(final int index) {
-        switch (index) {
-            case PREFIX_FIELD:
-                return prefix;
-            case DEGREES_FIELD:
-                return suffix0;
-            case MINUTES_FIELD:
-                return suffix1;
-            case SECONDS_FIELD:
-                return suffix2;
-            default:
-                return null;
-        }
+        return switch (index) {
+            case PREFIX_FIELD -> prefix;
+            case DEGREES_FIELD -> suffix0;
+            case MINUTES_FIELD -> suffix1;
+            case SECONDS_FIELD -> suffix2;
+            default -> null;
+        };
     }
 
     /** Sets the suffix for the specified field. Suffix for all following fields will be set to their default value. */
@@ -363,19 +354,19 @@ public class AngleFormat extends Format {
                 rm = even ? RoundingMethod.ROUND_HALF_DOWN : RoundingMethod.ROUND_HALF_UP;
             }
 
-            switch (rm) {
-                case ROUND_HALF_DOWN:
+            return switch (rm) {
+                case ROUND_HALF_DOWN -> {
                     rounded = Math.round(scaledValue - 0.5d);
-                    return rounded / scale;
-
-                case ROUND_HALF_UP:
+                    yield rounded / scale;
+                }
+                case ROUND_HALF_UP -> {
                     rounded = Math.round(scaledValue);
-                    return rounded / scale;
+                    yield rounded / scale;
+                }
 
                 // Include impossible case to allow detection of new entries in RoundingMethod.
-                case ROUND_HALF_EVEN:
-                    throw new AssertionError(rm);
-            }
+                case ROUND_HALF_EVEN -> throw new AssertionError(rm);
+            };
         }
 
         Logger logger = Logger.getLogger(AngleFormat.class.getName());
@@ -812,20 +803,17 @@ public class AngleFormat extends Format {
      */
     synchronized StringBuffer format(
             final double number, final int type, StringBuffer toAppendTo, final FieldPosition pos) {
-        switch (type) {
-            default:
-                throw new IllegalArgumentException(Integer.toString(type)); // Should not happen.
-            case LATITUDE:
-                return format(number, toAppendTo, pos, NORTH, SOUTH);
-            case LONGITUDE:
-                return format(number, toAppendTo, pos, EAST, WEST);
-            case ALTITUDE: {
+        return switch (type) {
+            case LATITUDE -> format(number, toAppendTo, pos, NORTH, SOUTH);
+            case LONGITUDE -> format(number, toAppendTo, pos, EAST, WEST);
+            case ALTITUDE -> {
                 numberFormat.setMinimumIntegerDigits(1);
                 numberFormat.setMinimumFractionDigits(0);
                 numberFormat.setMaximumFractionDigits(2);
-                return numberFormat.format(number, toAppendTo, pos != null ? pos : dummy);
+                yield numberFormat.format(number, toAppendTo, pos != null ? pos : dummy);
             }
-        }
+            default -> throw new IllegalArgumentException(Integer.toString(type)); // Should not happen.
+        };
     }
 
     /**
@@ -899,25 +887,28 @@ public class AngleFormat extends Format {
          * essaie maintenant de sauter un des suffix standards (après
          * avoir ignoré les espaces qui le précédaient).
          */
-        char c;
-        do {
-            if (start >= length) {
-                return SYMBOLS.length;
-            }
-        } while (Character.isSpaceChar(c = source.charAt(start++)));
-        switch (c) {
-            case '\u00B0':
-                pos.setIndex(start);
-                return DEGREES_FIELD;
-            case '\'':
-                pos.setIndex(start);
-                return MINUTES_FIELD;
-            case '"':
-                pos.setIndex(start);
-                return SECONDS_FIELD;
-            default:
-                return SYMBOLS.length; // Unknow field.
+        while (start < length && Character.isSpaceChar(source.charAt(start))) {
+            start++;
         }
+        if (start >= length) {
+            return SYMBOLS.length;
+        }
+        char c = source.charAt(start++);
+        return switch (c) {
+            case '\u00B0' -> {
+                pos.setIndex(start);
+                yield DEGREES_FIELD;
+            }
+            case '\'' -> {
+                pos.setIndex(start);
+                yield MINUTES_FIELD;
+            }
+            case '"' -> {
+                pos.setIndex(start);
+                yield SECONDS_FIELD;
+            }
+            default -> SYMBOLS.length; // Unknow field.
+        };
     }
 
     /**
@@ -1044,7 +1035,8 @@ public class AngleFormat extends Format {
                  * à l'analyse du symbole qui le suit.
                  */
                 case DEGREES_FIELD: {
-                    final int indexStartField = index = pos.getIndex();
+                    index = pos.getIndex();
+                    final int indexStartField = index;
                     while (index < length && Character.isSpaceChar(source.charAt(index))) {
                         index++;
                     }
@@ -1132,7 +1124,8 @@ public class AngleFormat extends Format {
                         minutes = degrees;
                         degrees = Double.NaN;
                     }
-                    final int indexStartField = index = pos.getIndex();
+                    index = pos.getIndex();
+                    final int indexStartField = index;
                     while (index < length && Character.isSpaceChar(source.charAt(index))) {
                         index++;
                     }
@@ -1275,18 +1268,22 @@ public class AngleFormat extends Format {
         for (int index = pos.getIndex(); index < length; index++) {
             final char c = source.charAt(index);
             switch (Character.toUpperCase(c)) {
-                case NORTH:
+                case NORTH -> {
                     pos.setIndex(index + 1);
                     return new Latitude(degrees);
-                case SOUTH:
+                }
+                case SOUTH -> {
                     pos.setIndex(index + 1);
                     return new Latitude(-degrees);
-                case EAST:
+                }
+                case EAST -> {
                     pos.setIndex(index + 1);
                     return new Longitude(degrees);
-                case WEST:
+                }
+                case WEST -> {
                     pos.setIndex(index + 1);
                     return new Longitude(-degrees);
+                }
             }
             if (!Character.isSpaceChar(c)) {
                 break;

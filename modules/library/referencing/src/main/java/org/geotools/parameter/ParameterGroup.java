@@ -349,7 +349,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
     public ParameterValueGroup addGroup(String name)
             throws ParameterNotFoundException, InvalidParameterCardinalityException {
         final GeneralParameterDescriptor check = ((ParameterDescriptorGroup) descriptor).descriptor(name);
-        if (!(check instanceof ParameterDescriptorGroup)) {
+        if (!(check instanceof ParameterDescriptorGroup parameterDescriptorGroup)) {
             throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
         }
         int count = 0;
@@ -362,7 +362,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
             throw new InvalidParameterCardinalityException(
                     MessageFormat.format(ErrorKeys.TOO_MANY_OCCURENCES_$2, name, count), name);
         }
-        final ParameterValueGroup value = ((ParameterDescriptorGroup) check).createValue();
+        final ParameterValueGroup value = parameterDescriptorGroup.createValue();
         values.add(value);
         return value;
     }

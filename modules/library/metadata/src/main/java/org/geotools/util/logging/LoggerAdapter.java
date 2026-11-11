@@ -238,25 +238,18 @@ public abstract class LoggerAdapter extends Logger {
         if (params == null) {
             message = "ENTRY";
         } else
-            switch (params.length) {
-                case 0:
-                    message = "ENTRY";
-                    break;
-                case 1:
-                    message = "ENTRY {0}";
-                    break;
-                case 2:
-                    message = "ENTRY {0} {1}";
-                    break;
-                default: {
+            message = switch (params.length) {
+                case 0 -> "ENTRY";
+                case 1 -> "ENTRY {0}";
+                case 2 -> "ENTRY {0} {1}";
+                default -> {
                     final StringBuilder builder = new StringBuilder("ENTRY");
                     for (int i = 0; i < params.length; i++) {
                         builder.append(" {").append(i).append('}');
                     }
-                    message = builder.toString();
-                    break;
+                    yield builder.toString();
                 }
-            }
+            };
         logp(getDebugLevel(), sourceClass, sourceMethod, message, params);
     }
 

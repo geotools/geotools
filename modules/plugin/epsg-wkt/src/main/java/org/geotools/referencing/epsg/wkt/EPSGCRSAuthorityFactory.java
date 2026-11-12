@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.epsg.wkt;
 
+import java.io.InputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -104,8 +105,8 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     protected EPSGCRSAuthorityFactory(final CRSFactory factory, URL definition) throws FactoryException {
         this(factory);
 
-        try {
-            epsg.load(definition.openStream());
+        try (InputStream is = definition.openStream()) {
+            epsg.load(is);
         } catch (IOException io) {
             // could not load properties file
             throw new FactoryException("Could not load properties file: " + definition);
@@ -121,12 +122,16 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         //
         File file = new File("epsg.properties");
         if (file.exists()) {
-            epsg.load(new FileInputStream(file));
+            try (FileInputStream fis = new FileInputStream(file)) {
+                epsg.load(fis);
+            }
         }
         // Use the built-in property defintions
         //
         URL url = EPSGCRSAuthorityFactory.class.getResource("epsg.properties");
-        epsg.load(url.openStream());
+        try (InputStream is = url.openStream()) {
+            epsg.load(is);
+        }
     }
 
     /**

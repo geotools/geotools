@@ -1,4 +1,4 @@
-ArcfGIS ReST DataStore
+ArcGIS ReST DataStore
 ======================
 
 

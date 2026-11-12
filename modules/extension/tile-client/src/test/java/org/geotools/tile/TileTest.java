@@ -53,7 +53,7 @@ public class TileTest {
     public void testEquals() {
 
         Assert.assertEquals(this.tile, this.tile);
-        Assert.assertNotEquals(null, this.tile);
+        Assert.assertNotNull(this.tile);
 
         Tile otherTile = createTestTile();
         Assert.assertEquals(this.tile, otherTile);

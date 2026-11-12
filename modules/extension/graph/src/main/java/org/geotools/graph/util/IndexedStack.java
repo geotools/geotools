@@ -19,6 +19,7 @@ package org.geotools.graph.util;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("PMD.ReplaceJavaUtilVector")
 public class IndexedStack<E> extends java.util.Stack<E> {
     private Map<E, Integer> m_index; // object to index in stack
 

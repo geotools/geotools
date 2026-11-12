@@ -143,7 +143,7 @@ public class TestExplicitBoundsShape {
 
             ExplicitBoundsShape target = new ExplicitBoundsShape(shape);
 
-            assertNotEquals(null, target);
+            assertNotNull(target);
 
         } catch (Throwable e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

@@ -44,7 +44,7 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
     </properties>
   </rule>
   <rule ref="category/java/bestpractices.xml/ReplaceHashtableWithMap" />
-  <rule ref="category/java/bestpractices.xml/ReplaceVectorWithList" />
+  <rule ref="category/java/bestpractices.xml/ReplaceJavaUtilVector" />
   <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace" />
   <rule ref="category/java/bestpractices.xml/MissingOverride" />
   <rule ref="category/java/bestpractices.xml/UseStandardCharsets" />
@@ -92,7 +92,6 @@ GeoTools ruleset. See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.htm
   <rule ref="category/java/multithreading.xml/DontCallThreadRun"/>
   <rule ref="category/java/multithreading.xml/DoubleCheckedLocking"/>
 
-  <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
   <rule ref="category/java/performance.xml/BigIntegerInstantiation"/>
   <rule ref="category/java/performance.xml/StringInstantiation"/>
   <rule name="wildcards"

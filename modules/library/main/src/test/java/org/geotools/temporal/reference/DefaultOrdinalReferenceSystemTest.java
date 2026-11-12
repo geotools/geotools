@@ -18,6 +18,7 @@ package org.geotools.temporal.reference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 import org.geotools.api.temporal.OrdinalEra;
@@ -64,7 +65,7 @@ public class DefaultOrdinalReferenceSystemTest {
     /** Test of equals method, of class DefaultOrdinalReferenceSystem. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, ordinalReferenceSystem1);
+        assertNotNull(ordinalReferenceSystem1);
         assertEquals(ordinalReferenceSystem1, ordinalReferenceSystem1);
         assertNotEquals(ordinalReferenceSystem1, ordinalReferenceSystem2);
     }

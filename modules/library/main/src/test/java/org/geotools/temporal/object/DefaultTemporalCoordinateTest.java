@@ -18,6 +18,7 @@ package org.geotools.temporal.object;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
@@ -81,7 +82,7 @@ public class DefaultTemporalCoordinateTest {
     /** Test of equals method, of class DefaultTemporalCoordinate. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, temporalCoordinate1);
+        assertNotNull(temporalCoordinate1);
         assertEquals(temporalCoordinate1, temporalCoordinate1);
         assertNotEquals(temporalCoordinate1, temporalCoordinate2);
     }

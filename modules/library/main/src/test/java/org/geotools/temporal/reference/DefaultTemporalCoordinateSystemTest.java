@@ -18,6 +18,7 @@ package org.geotools.temporal.reference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -112,7 +113,7 @@ public class DefaultTemporalCoordinateSystemTest {
     /** Test of equals method, of class DefaultTemporalCoordinateSystem. */
     @Test
     public void testEquals() {
-        assertNotEquals(null, temporalCoordinateSystem1);
+        assertNotNull(temporalCoordinateSystem1);
         assertEquals(temporalCoordinateSystem1, temporalCoordinateSystem1);
         assertNotEquals(temporalCoordinateSystem1, temporalCoordinateSystem2);
     }

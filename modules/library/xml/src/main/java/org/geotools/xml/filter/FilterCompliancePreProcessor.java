@@ -131,6 +131,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     private int complianceInt;
 
     /** Data collected during traversal */
+    @SuppressWarnings("PMD.ReplaceJavaUtilVector")
     private Stack<Data> current = new Stack<>();
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

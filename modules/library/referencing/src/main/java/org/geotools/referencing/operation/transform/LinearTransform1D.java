@@ -61,7 +61,7 @@ public class LinearTransform1D extends AbstractMathTransform implements MathTran
     public final double offset;
 
     /** The inverse of this transform. Created only when first needed. */
-    private transient MathTransform1D inverse;
+    private transient volatile MathTransform1D inverse;
 
     /**
      * Constructs a new linear transform. This constructor is provided for subclasses only. Instances should be created
@@ -130,18 +130,26 @@ public class LinearTransform1D extends AbstractMathTransform implements MathTran
     /** Creates the inverse transform of this object. */
     @Override
     public MathTransform1D inverse() throws NoninvertibleTransformException {
-        if (inverse == null) {
-            if (isIdentity()) {
-                inverse = this;
-            } else if (scale != 0) {
-                final LinearTransform1D inverse = create(1 / scale, -offset / scale);
-                inverse.inverse = this;
-                this.inverse = inverse;
-            } else {
-                inverse = (MathTransform1D) super.inverse();
-            }
+        MathTransform1D result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call, linked back to this transform before it is published. */
+    private synchronized MathTransform1D computeInverse() throws NoninvertibleTransformException {
+        if (inverse != null) {
+            return inverse;
         }
-        return inverse;
+        if (isIdentity()) {
+            inverse = this;
+            return this;
+        }
+        if (scale == 0) {
+            return (MathTransform1D) super.inverse();
+        }
+        LinearTransform1D result = create(1 / scale, -offset / scale);
+        result.inverse = this;
+        inverse = result;
+        return result;
     }
 
     /** Tests whether this transform does not move any points. */

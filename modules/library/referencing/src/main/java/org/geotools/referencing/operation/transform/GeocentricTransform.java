@@ -102,7 +102,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
     private final boolean hasHeight;
 
     /** The inverse of this transform. Will be created only when needed. */
-    private transient MathTransform inverse;
+    private transient volatile MathTransform inverse;
 
     /**
      * Constructs a transform from the specified ellipsoid.
@@ -407,7 +407,13 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
 
     /** Returns the inverse of this transform. */
     @Override
-    public synchronized MathTransform inverse() {
+    public MathTransform inverse() {
+        MathTransform result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call. */
+    private synchronized MathTransform computeInverse() {
         if (inverse == null) {
             inverse = new Inverse();
         }

@@ -82,7 +82,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
     private static NTv2GridShiftFactory FACTORY = new NTv2GridShiftFactory();
 
     /** The inverse of this transform. Will be created only when needed. */
-    private transient MathTransform2D inverse;
+    private transient volatile MathTransform2D inverse;
 
     /**
      * Constructs a {@code NTv2Transform} from the specified grid shift file.
@@ -154,7 +154,13 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
      * @return the inverse of this transform
      */
     @Override
-    public synchronized MathTransform2D inverse() {
+    public MathTransform2D inverse() {
+        MathTransform2D result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call. */
+    private synchronized MathTransform2D computeInverse() {
         if (inverse == null) {
             inverse = new Inverse();
         }

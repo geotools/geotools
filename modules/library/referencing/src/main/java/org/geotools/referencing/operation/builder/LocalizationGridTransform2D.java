@@ -122,7 +122,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
     private final AffineTransform global;
 
     /** The inverse math transform. Will be constructed only when first requested. */
-    private transient MathTransform2D inverse;
+    private transient volatile MathTransform2D inverse;
 
     /**
      * Constructs a localization grid using the specified data.
@@ -522,6 +522,12 @@ final class LocalizationGridTransform2D extends AbstractMathTransform implements
     /** Returns the inverse transform. */
     @Override
     public MathTransform2D inverse() {
+        MathTransform2D result = inverse;
+        return result != null ? result : computeInverse();
+    }
+
+    /** Creates the inverse on the first call. */
+    private synchronized MathTransform2D computeInverse() {
         if (inverse == null) {
             inverse = new Inverse();
         }

@@ -40,6 +40,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class KMLParsingTest {
 
@@ -104,9 +105,12 @@ public class KMLParsingTest {
         // System.out.println(new String(out.toByteArray()));
 
         DocumentBuilder db = XMLUtils.newDocumentBuilder();
-        Document d = db.parse(new ByteArrayInputStream(out.toByteArray()));
-        Assert.assertEquals("kml:kml", d.getDocumentElement().getNodeName());
-        Assert.assertEquals(2, d.getElementsByTagName("kml:Placemark").getLength());
+        Document doc = db.parse(new ByteArrayInputStream(out.toByteArray()));
+        Element docElement = doc.getDocumentElement();
+        Assert.assertEquals(KML.kml.getLocalPart(), docElement.getLocalName());
+        Assert.assertEquals(KML.kml.getNamespaceURI(), docElement.getNamespaceURI());
+        Assert.assertEquals(
+                2, docElement.getElementsByTagNameNS(KML.NAMESPACE, "Placemark").getLength());
     }
 
     @Test
@@ -142,8 +146,11 @@ public class KMLParsingTest {
         encoder.encode(f, KML.kml, out);
 
         DocumentBuilder db = XMLUtils.newDocumentBuilder();
-        Document d = db.parse(new ByteArrayInputStream(out.toByteArray()));
-        Assert.assertEquals("kml:kml", d.getDocumentElement().getNodeName());
-        Assert.assertEquals(2, d.getElementsByTagName("kml:Placemark").getLength());
+        Document doc = db.parse(new ByteArrayInputStream(out.toByteArray()));
+        Element docElement = doc.getDocumentElement();
+        Assert.assertEquals(KML.kml.getLocalPart(), docElement.getLocalName());
+        Assert.assertEquals(KML.kml.getNamespaceURI(), docElement.getNamespaceURI());
+        Assert.assertEquals(
+                2, docElement.getElementsByTagNameNS(KML.NAMESPACE, "Placemark").getLength());
     }
 }

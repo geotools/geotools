@@ -51,7 +51,7 @@ public class RangeTest extends OWSTestSupport_1_1 {
         encoder.setIndenting(true);
         String xml = encoder.encodeAsString(rangeType, OWS.Range);
         // System.out.println(xml);
-        assertTrue(xml.contains("ows:rangeClosure=\"closed\""));
+        assertTrue(xml.contains("rangeClosure=\"closed\""));
     }
 
     @Test
@@ -66,6 +66,6 @@ public class RangeTest extends OWSTestSupport_1_1 {
         encoder.setIndenting(true);
         String xml = encoder.encodeAsString(rangeType, OWS.Range);
         // System.out.println(xml);
-        assertTrue(xml.contains("ows:rangeClosure=\"closed-open\""));
+        assertTrue(xml.contains("rangeClosure=\"closed-open\""));
     }
 }

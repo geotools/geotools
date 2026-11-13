@@ -78,9 +78,9 @@ public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
         Document dom = encode(GML2MockData.feature(), TEST.TestFeature);
         // print(dom);
 
-        assertEquals(1, dom.getElementsByTagName("gml:boundedBy").getLength());
-        assertEquals(1, dom.getElementsByTagName("test:geom").getLength());
-        assertEquals(1, dom.getElementsByTagName("test:count").getLength());
-        assertEquals(1, dom.getElementsByTagName("test:date").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "boundedBy").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(TEST.NAMESPACE, "geom").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(TEST.NAMESPACE, "count").getLength());
+        assertEquals(1, dom.getElementsByTagNameNS(TEST.NAMESPACE, "date").getLength());
     }
 }

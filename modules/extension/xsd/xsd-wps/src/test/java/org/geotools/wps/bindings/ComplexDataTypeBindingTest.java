@@ -19,8 +19,6 @@ package org.geotools.wps.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.Reader;
-import java.io.StringReader;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wps10.ComplexDataType;
 import net.opengis.wps10.Wps10Factory;
@@ -110,13 +108,8 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
         complexData.setMimeType("text/plain");
         complexData.getData().add(0, (EncoderDelegate) output -> {
             ((LexicalHandler) output).startCDATA();
-            Reader r = new StringReader("test data");
-            char[] buffer = new char[1024];
-            int read;
-            while ((read = r.read(buffer)) > 0) {
-                output.characters(buffer, 0, read);
-            }
-            r.close();
+            final char[] buffer = "test data".toCharArray();
+            output.characters(buffer, 0, buffer.length);
             ((LexicalHandler) output).endCDATA();
         });
 

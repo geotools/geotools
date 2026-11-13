@@ -45,6 +45,7 @@ import org.geotools.xsd.XSD;
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class XSAnyTypeBindingTest extends GML3TestSupport {
 
@@ -127,17 +128,23 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         ComplexAttribute myCode = checkAnyTypeTest(observation, SAMPLE_CLASS_VALUE);
         Document dom = encode(myCode, observation);
         // print(dom);
-        assertEquals("test:Observation", dom.getDocumentElement().getNodeName());
+        Element docElement = dom.getDocumentElement();
+        assertEquals("Observation", docElement.getLocalName());
+        assertEquals(ANYTYPETEST.NAMESPACE, docElement.getNamespaceURI());
+        assertEquals("Observation", docElement.getNodeName());
         assertEquals(
-                1, dom.getDocumentElement().getElementsByTagName("test:class").getLength());
-        assertNotNull(dom.getDocumentElement()
-                .getElementsByTagName("test:class")
+                1,
+                docElement
+                        .getElementsByTagNameNS(ANYTYPETEST.NAMESPACE, "class")
+                        .getLength());
+        assertNotNull(docElement
+                .getElementsByTagNameNS(ANYTYPETEST.NAMESPACE, "class")
                 .item(0)
                 .getFirstChild());
         assertEquals(
                 SAMPLE_CLASS_VALUE,
-                dom.getDocumentElement()
-                        .getElementsByTagName("test:class")
+                docElement
+                        .getElementsByTagNameNS(ANYTYPETEST.NAMESPACE, "class")
                         .item(0)
                         .getFirstChild()
                         .getNodeValue());
@@ -149,8 +156,10 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         ComplexAttribute unrestricted = createUnrestrictedAttr(typeName, SAMPLE_UNRESTRICTED_VALUE);
         Document dom = encode(unrestricted, typeName);
         // print(dom);
-        assertEquals("test:unrestrictedEl", dom.getDocumentElement().getNodeName());
-        assertEquals(SAMPLE_UNRESTRICTED_VALUE, dom.getDocumentElement().getTextContent());
+        Element docElement = dom.getDocumentElement();
+        assertEquals("unrestrictedEl", docElement.getLocalName());
+        assertEquals(ANYTYPETEST.NAMESPACE, docElement.getNamespaceURI());
+        assertEquals(SAMPLE_UNRESTRICTED_VALUE, docElement.getTextContent());
     }
 
     public ComplexAttribute checkAnyTypeTest(QName typeName, String classValue) {

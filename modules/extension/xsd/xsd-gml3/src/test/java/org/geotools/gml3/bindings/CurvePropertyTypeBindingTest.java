@@ -36,7 +36,8 @@ public class CurvePropertyTypeBindingTest extends GML3TestSupport {
         // print(dom);
         assertEquals(
                 1,
-                dom.getElementsByTagName("gml:Curve").getLength()
-                        + dom.getElementsByTagName("gml:LineString").getLength());
+                dom.getElementsByTagNameNS(GML.NAMESPACE, "Curve").getLength()
+                        + dom.getElementsByTagNameNS(GML.NAMESPACE, "LineString")
+                                .getLength());
     }
 }

@@ -1051,6 +1051,8 @@ public class XMLUtils {
             this.hints = hints != null ? hints : GeoTools.getDefaultHints();
             this.factory = DocumentBuilderFactory.newInstance(); // NOPMD AvoidDocumentBuilderFactory
 
+            this.factory.setNamespaceAware(true);
+
             // choosing sensible defaults for document builder factory
             // see: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
             try {
@@ -1310,6 +1312,22 @@ public class XMLUtils {
 
         public GTSAXTransformerFactory(SAXTransformerFactory factory, Hints hints) {
             this.factory = factory;
+            if ("SaxonTransformerFactory".equals(this.factory.getClass().getSimpleName())) {
+                /*
+                   Saxon drops CDATA start/end tags as there is no CDATA in XDM,
+                   so we enable the ability to disable output escaping so that we can manually create CDATA sections.
+                   See {@link org.geotools.xml.transform.QNameValidatingHandler#startCDATA()} and
+                   {@link org.geotools.xml.transform.QNameValidatingHandler#endCDATA()}.
+                */
+                try {
+                    factory.setFeature("http://saxon.sf.net/feature/use-pi-disable-output-escaping", true);
+                } catch (final TransformerConfigurationException e) {
+                    throw new IllegalStateException(
+                            "The ability to disable output escaping is needed in QNameValidatingHandler when using Saxon: "
+                                    + e.getMessage(),
+                            e);
+                }
+            }
             this.hints = hints != null ? hints : GeoTools.getDefaultHints();
         }
 

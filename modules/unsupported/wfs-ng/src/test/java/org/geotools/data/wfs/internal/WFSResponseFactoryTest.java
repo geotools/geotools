@@ -14,14 +14,18 @@ package org.geotools.data.wfs.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.net.URL;
+import javax.xml.namespace.QName;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.parsers.ServiceExceptionResponseFactory;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.factory.FactoryNotFoundException;
 import org.junit.Test;
 
 public class WFSResponseFactoryTest {
@@ -55,5 +59,47 @@ public class WFSResponseFactoryTest {
                 assertThrows(ServiceException.class, () -> responseFactory.createResponse(request, response));
         assertEquals("error occured", thrown.getMessage());
         assertEquals("60", thrown.getCode());
+    }
+
+    @Test
+    public void checkHttpResponseIsDisposedWhenResponseIsNotRecognized() throws Exception {
+        GetFeatureRequest request = createRequest();
+        String body = "<html><body>502 Bad Gateway</body></html>";
+        DisposeTrackingResponse response = new DisposeTrackingResponse("text/xml; subtype=gml/3.1.1", body);
+        assertThrows(IllegalStateException.class, () -> request.createResponse(response));
+        assertTrue("the HTTP response must be disposed", response.disposed);
+    }
+
+    @Test
+    public void checkHttpResponseIsDisposedWhenFeatureCollectionCannotBeParsed() throws Exception {
+        GetFeatureRequest request = createRequest();
+        request.setTypeName(new QName("http://www.example.org/test", "Road"));
+        String body = "<wfs:FeatureCollection xmlns:wfs=\"http://www.opengis.net/wfs\" <<< not xml";
+        DisposeTrackingResponse response = new DisposeTrackingResponse("text/xml; subtype=gml/3.1.1", body);
+        assertThrows(IOException.class, () -> request.createResponse(response));
+        assertTrue("the HTTP response must be disposed", response.disposed);
+    }
+
+    @Test
+    public void checkHttpResponseIsDisposedWhenNoResponseFactoryMatches() throws Exception {
+        GetFeatureRequest request = createRequest();
+        String body = "<html><body>Service unavailable</body></html>";
+        DisposeTrackingResponse response = new DisposeTrackingResponse("text/html", body);
+        assertThrows(FactoryNotFoundException.class, () -> request.createResponse(response));
+        assertTrue("the HTTP response must be disposed", response.disposed);
+    }
+
+    private static class DisposeTrackingResponse extends TestHttpResponse {
+
+        private boolean disposed;
+
+        DisposeTrackingResponse(String contentType, String body) {
+            super(contentType, "UTF-8", body);
+        }
+
+        @Override
+        public void dispose() {
+            disposed = true;
+        }
     }
 }

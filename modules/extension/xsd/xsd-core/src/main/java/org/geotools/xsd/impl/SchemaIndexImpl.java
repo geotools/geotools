@@ -71,11 +71,15 @@ public class SchemaIndexImpl implements SchemaIndex {
         this.schemas = new XSDSchema[schemas.length + 1];
         adapter = new SchemaAdapter();
 
-        // set the schemas passed in
-        for (int i = 0; i < schemas.length; i++) {
-            this.schemas[i] = schemas[i];
-            synchronized (this.schemas[i].eAdapters()) {
-                this.schemas[i].eAdapters().add(adapter);
+        // set the schemas passed in. Parsing a schema that imports one of them changes it and
+        // notifies its adapters while holding the Schemas.class lock, so the adapters list may
+        // only change under that same lock (taken before the list one, as in Schemas.dispose)
+        synchronized (Schemas.class) {
+            for (int i = 0; i < schemas.length; i++) {
+                this.schemas[i] = schemas[i];
+                synchronized (this.schemas[i].eAdapters()) {
+                    this.schemas[i].eAdapters().add(adapter);
+                }
             }
         }
 
@@ -89,9 +93,11 @@ public class SchemaIndexImpl implements SchemaIndex {
         if (schemas == null) {
             return;
         }
-        for (XSDSchema schema : schemas) {
-            synchronized (schema.eAdapters()) {
-                schema.eAdapters().remove(adapter);
+        synchronized (Schemas.class) {
+            for (XSDSchema schema : schemas) {
+                synchronized (schema.eAdapters()) {
+                    schema.eAdapters().remove(adapter);
+                }
             }
         }
         schemas = null;
